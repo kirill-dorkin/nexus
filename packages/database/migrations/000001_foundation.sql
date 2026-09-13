@@ -132,7 +132,7 @@ CREATE TABLE events.outbox (
   id uuid PRIMARY KEY DEFAULT uuidv7(),
   organization_id uuid REFERENCES organizations.organizations(id) ON DELETE RESTRICT,
   event_name text NOT NULL
-    CHECK (event_name ~ '^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$'),
+    CHECK (event_name ~ '^[a-z][a-z0-9_]*([.][a-z][a-z0-9_]*)+$'),
   event_version integer NOT NULL CHECK (event_version > 0),
   aggregate_type text NOT NULL CHECK (char_length(aggregate_type) BETWEEN 1 AND 100),
   aggregate_id uuid NOT NULL,

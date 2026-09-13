@@ -11,34 +11,105 @@ permissions:
 env:
   TURBO_TELEMETRY_DISABLED: "1"
   NEXT_TELEMETRY_DISABLED: "1"
+  DATABASE_URL: postgresql://platform_app:platform_app@127.0.0.1:5432/platform
+  DATABASE_MIGRATION_URL: postgresql://platform_migrator:platform_migrator@127.0.0.1:5432/platform
+  DATABASE_WORKER_URL: postgresql://platform_worker:platform_worker@127.0.0.1:5432/platform
 
 jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     steps:
+      - name: Configure Git default branch
+        run: git config --global init.defaultBranch main
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
+
       - name: Activate repository-pinned pnpm
         run: |
           corepack enable
           corepack prepare pnpm@10.34.5 --activate
           test "$(pnpm --version)" = "10.34.5"
+
+      - name: Resolve pnpm store path
+        id: pnpm-store
+        run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore pnpm store
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: ${{ runner.os }}-node24-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-node24-pnpm-
+
+      - name: Restore build caches
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: |
+            .turbo
+            apps/web/.next/cache
+          key: ${{ runner.os }}-node24-build-${{ github.head_ref || github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-node24-build-${{ github.head_ref || github.ref_name }}-
+            ${{ runner.os }}-node24-build-main-
+            ${{ runner.os }}-node24-build-
+
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
+
+      - name: Bootstrap database roles
+        run: >-
+          docker run --rm --network host
+          -e PGPASSWORD=postgres
+          -v "$PWD/infra/postgres/init:/init:ro"
+          postgres:18-alpine
+          psql -h 127.0.0.1 -U postgres -d postgres
+          --set=ON_ERROR_STOP=1
+          --file=/init/001-runtime-roles.sql
+
+      - name: Apply database migrations
+        run: pnpm db:migrate
+
+      - name: Verify migration idempotency
+        run: pnpm db:migrate
+
       - name: Brand isolation
         run: pnpm check:brand
+
       - name: Typecheck
         run: pnpm typecheck
-      - name: Tests
+
+      - name: Unit tests
         run: pnpm test
+
+      - name: Database integration tests
+        run: pnpm test:integration
+
       - name: Build
         run: pnpm build
 
-# Bootstrap note: once pnpm-lock.yaml is committed, install must use --frozen-lockfile,
-# pnpm store caching can be enabled, and the Next/Turbo build cache must be persisted.
+# Transition note: this branch adds database dependencies. Once its regenerated
+# pnpm-lock.yaml is committed, dependency installation must switch to
+# `pnpm install --frozen-lockfile` before the PR leaves draft state.

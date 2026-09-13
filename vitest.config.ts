@@ -8,6 +8,12 @@ export default defineConfig({
       "packages/**/*.test.ts",
       "tests/**/*.test.ts"
     ],
+    exclude: [
+      "**/*.integration.test.ts",
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/.next/**"
+    ],
     passWithNoTests: false,
     clearMocks: true
   }
