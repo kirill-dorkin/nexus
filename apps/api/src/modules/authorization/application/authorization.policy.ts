@@ -4,7 +4,8 @@ export const authorizationCapabilities = [
   "organization.read",
   "organization.manage",
   "authorization.read",
-  "authorization.assign_roles"
+  "authorization.assign_roles",
+  "authorization.assign_owner"
 ] as const;
 
 export type AuthorizationCapability =
@@ -47,7 +48,12 @@ export type RoleAssignmentScope = Readonly<{
 
 const roleCapabilities: Readonly<Record<SystemRoleKey, ReadonlySet<AuthorizationCapability>>> = {
   organization_owner: new Set(authorizationCapabilities),
-  organization_admin: new Set(authorizationCapabilities),
+  organization_admin: new Set([
+    "organization.read",
+    "organization.manage",
+    "authorization.read",
+    "authorization.assign_roles"
+  ]),
   instructor: new Set(["organization.read", "authorization.read"]),
   mentor: new Set(["organization.read"]),
   learner: new Set(["organization.read"])

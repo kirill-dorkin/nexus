@@ -51,6 +51,23 @@ describe("AuthorizationPolicy", () => {
     ).toBe(true);
   });
 
+  it("reserves owner assignment for organization owners", () => {
+    expect(
+      policy.allows(
+        [assignment({ roleKey: "organization_admin" })],
+        "authorization.assign_owner",
+        organizationScope
+      )
+    ).toBe(false);
+    expect(
+      policy.allows(
+        [assignment()],
+        "authorization.assign_owner",
+        organizationScope
+      )
+    ).toBe(true);
+  });
+
   it("does not let a child-scope assignment escape its exact scope", () => {
     expect(
       policy.allows(
