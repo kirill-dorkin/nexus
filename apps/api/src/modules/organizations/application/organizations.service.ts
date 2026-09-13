@@ -11,6 +11,7 @@ import type {
   Organization,
   OrganizationMembership
 } from "@platform/contracts";
+import type { DatabaseTransaction } from "@platform/database";
 
 import { DatabaseService } from "../../../database/database.service";
 import { OutboxRepository } from "../../../outbox/outbox.repository";
@@ -307,5 +308,23 @@ export class OrganizationsApplicationService {
         command
       );
     });
+  }
+
+  async requireActiveMembership(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userId: string
+  ): Promise<OrganizationMembership> {
+    const membership = await this.organizations.findMembership(
+      transaction,
+      organizationId,
+      userId
+    );
+    if (membership?.status !== "active") {
+      throw new ConflictException(
+        "An active organization membership is required for enrollment."
+      );
+    }
+    return membership;
   }
 }

@@ -5,7 +5,13 @@ export const authorizationCapabilities = [
   "organization.manage",
   "authorization.read",
   "authorization.assign_roles",
-  "authorization.assign_owner"
+  "authorization.assign_owner",
+  "course.read",
+  "course.manage",
+  "course.publish",
+  "offering.read",
+  "offering.manage",
+  "enrollment.manage"
 ] as const;
 
 export type AuthorizationCapability =
@@ -52,11 +58,34 @@ const roleCapabilities: Readonly<Record<SystemRoleKey, ReadonlySet<Authorization
     "organization.read",
     "organization.manage",
     "authorization.read",
-    "authorization.assign_roles"
+    "authorization.assign_roles",
+    "course.read",
+    "course.manage",
+    "course.publish",
+    "offering.read",
+    "offering.manage",
+    "enrollment.manage"
   ]),
-  instructor: new Set(["organization.read", "authorization.read"]),
-  mentor: new Set(["organization.read"]),
-  learner: new Set(["organization.read"])
+  instructor: new Set([
+    "organization.read",
+    "authorization.read",
+    "course.read",
+    "course.manage",
+    "course.publish",
+    "offering.read",
+    "offering.manage",
+    "enrollment.manage"
+  ]),
+  mentor: new Set([
+    "organization.read",
+    "course.read",
+    "offering.read"
+  ]),
+  learner: new Set([
+    "organization.read",
+    "course.read",
+    "offering.read"
+  ])
 };
 
 @Injectable()

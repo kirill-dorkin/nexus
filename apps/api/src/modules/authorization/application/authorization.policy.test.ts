@@ -51,6 +51,53 @@ describe("AuthorizationPolicy", () => {
     ).toBe(true);
   });
 
+  it("lets instructors manage and publish learning content", () => {
+    const instructor = assignment({ roleKey: "instructor" });
+    const courseScope: AuthorizationScope = {
+      organizationId: "org-a",
+      type: "course",
+      id: "course-a"
+    };
+
+    expect(policy.allows([instructor], "course.manage", courseScope)).toBe(true);
+    expect(policy.allows([instructor], "course.publish", courseScope)).toBe(true);
+    expect(policy.allows([instructor], "offering.manage", {
+      organizationId: "org-a",
+      type: "offering",
+      id: "offering-a"
+    })).toBe(true);
+    expect(policy.allows([instructor], "enrollment.manage", {
+      organizationId: "org-a",
+      type: "offering",
+      id: "offering-a"
+    })).toBe(true);
+  });
+
+  it("keeps learners read-only for content and delivery", () => {
+    const learner = assignment({ roleKey: "learner" });
+
+    expect(policy.allows([learner], "course.read", {
+      organizationId: "org-a",
+      type: "course",
+      id: "course-a"
+    })).toBe(true);
+    expect(policy.allows([learner], "offering.read", {
+      organizationId: "org-a",
+      type: "offering",
+      id: "offering-a"
+    })).toBe(true);
+    expect(policy.allows([learner], "course.manage", {
+      organizationId: "org-a",
+      type: "course",
+      id: "course-a"
+    })).toBe(false);
+    expect(policy.allows([learner], "enrollment.manage", {
+      organizationId: "org-a",
+      type: "offering",
+      id: "offering-a"
+    })).toBe(false);
+  });
+
   it("reserves owner assignment for organization owners", () => {
     expect(
       policy.allows(
@@ -78,7 +125,7 @@ describe("AuthorizationPolicy", () => {
             id: "course-a"
           })
         ],
-        "organization.read",
+        "course.read",
         {
           organizationId: "org-a",
           type: "course",
@@ -102,7 +149,7 @@ describe("AuthorizationPolicy", () => {
     ).toBe(false);
   });
 
-  it("keeps learner privileges read-only at this foundation layer", () => {
+  it("keeps learner privileges away from authorization mutation", () => {
     expect(
       policy.allows(
         [assignment({ roleKey: "learner" })],
