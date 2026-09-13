@@ -113,8 +113,9 @@ export class AuthenticationApplicationService {
       command.password,
       candidate.passwordHash
     );
+    const candidateUser = candidate.user;
 
-    if (!passwordMatches || candidate.user?.status !== "active") {
+    if (!passwordMatches || candidateUser === null || candidateUser.status !== "active") {
       throw new UnauthorizedException(INVALID_CREDENTIALS_MESSAGE);
     }
 
@@ -124,7 +125,7 @@ export class AuthenticationApplicationService {
     const user = await this.database.transaction(async (transaction) => {
       const activeUser = await this.identity.findActiveUser(
         transaction,
-        candidate.user.id
+        candidateUser.id
       );
 
       if (activeUser === null) {
