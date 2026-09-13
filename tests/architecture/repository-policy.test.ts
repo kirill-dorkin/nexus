@@ -77,4 +77,13 @@ describe("repository engineering policy", () => {
       ).not.toMatch(/process\.exit\(0\)/);
     }
   });
+
+  it("treats Next.js and TypeScript generated files as generated artifacts", async () => {
+    const gitignore = await readFile(path.join(repoRoot, ".gitignore"), "utf8");
+    const web = await readJson<PackageManifest>("apps/web/package.json");
+
+    expect(gitignore).toContain("next-env.d.ts");
+    expect(gitignore).toContain("*.tsbuildinfo");
+    expect(web.scripts?.typecheck).toBe("next typegen && tsc --noEmit");
+  });
 });
