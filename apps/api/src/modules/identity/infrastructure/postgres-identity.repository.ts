@@ -2,7 +2,10 @@ import { Injectable } from "@nestjs/common";
 import type { IdentityUser } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
-import { IdentityRepository } from "../application/identity.repository";
+import {
+  IdentityRepository,
+  type NewIdentityUser
+} from "../application/identity.repository";
 
 type IdentityUserRow = {
   id: string;
@@ -10,6 +13,15 @@ type IdentityUserRow = {
   display_name: string | null;
   status: IdentityUser["status"];
 };
+
+function mapIdentityUser(row: IdentityUserRow): IdentityUser {
+  return {
+    id: row.id,
+    email: row.email,
+    displayName: row.display_name,
+    status: row.status
+  };
+}
 
 @Injectable()
 export class PostgresIdentityRepository extends IdentityRepository {
@@ -24,16 +36,39 @@ export class PostgresIdentityRepository extends IdentityRepository {
       [userId]
     );
     const row = result.rows[0];
+    return row === undefined ? null : mapIdentityUser(row);
+  }
+
+  async findByNormalizedEmail(
+    transaction: DatabaseTransaction,
+    normalizedEmail: string
+  ): Promise<IdentityUser | null> {
+    const result = await transaction.client.query<IdentityUserRow>(
+      `SELECT id::text, email, display_name, status
+         FROM identity.users
+        WHERE lower(btrim(email)) = $1`,
+      [normalizedEmail]
+    );
+    const row = result.rows[0];
+    return row === undefined ? null : mapIdentityUser(row);
+  }
+
+  async createUser(
+    transaction: DatabaseTransaction,
+    user: NewIdentityUser
+  ): Promise<IdentityUser> {
+    const result = await transaction.client.query<IdentityUserRow>(
+      `INSERT INTO identity.users (id, email, display_name)
+       VALUES ($1, $2, $3)
+       RETURNING id::text, email, display_name, status`,
+      [user.id, user.email, user.displayName]
+    );
+    const row = result.rows[0];
 
     if (row === undefined) {
-      return null;
+      throw new Error("PostgreSQL did not return the created identity user.");
     }
 
-    return {
-      id: row.id,
-      email: row.email,
-      displayName: row.display_name,
-      status: row.status
-    };
+    return mapIdentityUser(row);
   }
 }
