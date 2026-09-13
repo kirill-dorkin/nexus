@@ -29,6 +29,14 @@ let migrationPool: Pool;
 let workerPool: Pool;
 let fixture: Fixture | undefined;
 
+function requireFixture(): Fixture {
+  if (fixture === undefined) {
+    throw new Error("Database integration-test fixture is not initialized.");
+  }
+
+  return fixture;
+}
+
 async function nextUuid(pool: Pool): Promise<string> {
   const result = await pool.query<{ id: string }>("SELECT uuidv7()::text AS id");
   const row = result.rows[0];
@@ -198,7 +206,7 @@ describe("database security foundation", () => {
   });
 
   it("does not expose tenant rows without transaction-local organization context", async () => {
-    if (fixture === undefined) throw new Error("Fixture is not initialized.");
+    requireFixture();
 
     const result = await appPool.query<{ id: string }>(`
       SELECT id::text AS id
@@ -215,11 +223,14 @@ describe("database security foundation", () => {
   });
 
   it("isolates organization data through RLS", async () => {
-    if (fixture === undefined) throw new Error("Fixture is not initialized.");
+    const currentFixture = requireFixture();
 
     const visibleFromA = await withTenantTransaction(
       appPool,
-      { organizationId: fixture.organizationA, userId: fixture.userA },
+      {
+        organizationId: currentFixture.organizationA,
+        userId: currentFixture.userA
+      },
       async ({ client }) =>
         client.query<{ id: string }>(`
           SELECT id::text AS id
@@ -229,26 +240,29 @@ describe("database security foundation", () => {
     );
 
     expect(visibleFromA.rows.map((row) => row.id)).toEqual([
-      fixture.organizationA
+      currentFixture.organizationA
     ]);
 
     await expect(
       withTenantTransaction(
         appPool,
-        { organizationId: fixture.organizationA, userId: fixture.userA },
+        {
+          organizationId: currentFixture.organizationA,
+          userId: currentFixture.userA
+        },
         async ({ client }) =>
           client.query(
             `INSERT INTO organizations.memberships
               (organization_id, user_id, status, joined_at)
              VALUES ($1, $2, 'active', now())`,
-            [fixture.organizationB, fixture.userA]
+            [currentFixture.organizationB, currentFixture.userA]
           )
       )
     ).rejects.toMatchObject({ code: "42501" });
   });
 
   it("keeps the outbox write-only for the API while the worker can consume across tenants", async () => {
-    if (fixture === undefined) throw new Error("Fixture is not initialized.");
+    const currentFixture = requireFixture();
 
     await expect(
       appPool.query("SELECT id FROM events.outbox LIMIT 1")
@@ -260,31 +274,34 @@ describe("database security foundation", () => {
        WHERE event_name = 'organization.created'
          AND aggregate_id IN ($1, $2)
        ORDER BY aggregate_id`,
-      [fixture.organizationA, fixture.organizationB]
+      [currentFixture.organizationA, currentFixture.organizationB]
     );
 
     expect(workerResult.rows.map((row) => row.aggregate_id).sort()).toEqual(
-      [fixture.organizationA, fixture.organizationB].sort()
+      [currentFixture.organizationA, currentFixture.organizationB].sort()
     );
   });
 
   it("rolls back domain state and outbox atomically", async () => {
-    if (fixture === undefined) throw new Error("Fixture is not initialized.");
+    const currentFixture = requireFixture();
 
     await expect(
       withTenantTransaction(
         appPool,
-        { organizationId: fixture.organizationA, userId: fixture.userA },
+        {
+          organizationId: currentFixture.organizationA,
+          userId: currentFixture.userA
+        },
         async ({ client }) => {
           await client.query(
             "UPDATE organizations.organizations SET name = 'must rollback' WHERE id = $1",
-            [fixture.organizationA]
+            [currentFixture.organizationA]
           );
           await client.query(
             `INSERT INTO events.outbox
               (organization_id, event_name, event_version, aggregate_type, aggregate_id, actor_user_id)
              VALUES ($1, 'organization.rollback_probe', 1, 'organization', $1, $2)`,
-            [fixture.organizationA, fixture.userA]
+            [currentFixture.organizationA, currentFixture.userA]
           );
 
           throw new Error("rollback probe");
@@ -294,21 +311,24 @@ describe("database security foundation", () => {
 
     const organization = await withTenantTransaction(
       appPool,
-      { organizationId: fixture.organizationA, userId: fixture.userA },
+      {
+        organizationId: currentFixture.organizationA,
+        userId: currentFixture.userA
+      },
       async ({ client }) =>
         client.query<{ name: string }>(
           "SELECT name FROM organizations.organizations WHERE id = $1",
-          [fixture.organizationA]
+          [currentFixture.organizationA]
         )
     );
-    expect(organization.rows[0]?.name).toBe(fixture.organizationAName);
+    expect(organization.rows[0]?.name).toBe(currentFixture.organizationAName);
 
     const outbox = await workerPool.query<{ count: string }>(
       `SELECT count(*)::text AS count
        FROM events.outbox
        WHERE event_name = 'organization.rollback_probe'
          AND aggregate_id = $1`,
-      [fixture.organizationA]
+      [currentFixture.organizationA]
     );
     expect(outbox.rows[0]?.count).toBe("0");
   });
