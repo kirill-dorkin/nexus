@@ -39,7 +39,7 @@ export class PostgresAuthorizationRepository extends AuthorizationRepository {
     organizationId: string,
     userId: string
   ): Promise<readonly RoleAssignmentScope[]> {
-    const result = await transaction.query<AssignmentRow>(
+    const result = await transaction.client.query<AssignmentRow>(
       `SELECT ra.organization_id::text,
               r.key AS role_key,
               ra.scope_type,
@@ -72,7 +72,7 @@ export class PostgresAuthorizationRepository extends AuthorizationRepository {
     transaction: DatabaseTransaction,
     assignment: CreateRoleAssignment
   ): Promise<void> {
-    const roleResult = await transaction.query<RoleRow>(
+    const roleResult = await transaction.client.query<RoleRow>(
       `SELECT id::text
          FROM access_control.roles
         WHERE key = $1
@@ -85,7 +85,7 @@ export class PostgresAuthorizationRepository extends AuthorizationRepository {
       throw new Error(`System role is not seeded: ${assignment.roleKey}`);
     }
 
-    await transaction.query(
+    await transaction.client.query(
       `INSERT INTO access_control.role_assignments
          (organization_id, user_id, role_id, scope_type, scope_id, assigned_by_user_id)
        VALUES ($1, $2, $3, $4, $5, $6)

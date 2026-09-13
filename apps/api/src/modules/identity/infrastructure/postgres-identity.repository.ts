@@ -17,7 +17,7 @@ export class PostgresIdentityRepository extends IdentityRepository {
     transaction: DatabaseTransaction,
     userId: string
   ): Promise<IdentityUser | null> {
-    const result = await transaction.query<IdentityUserRow>(
+    const result = await transaction.client.query<IdentityUserRow>(
       `SELECT id::text, email, display_name, status
          FROM identity.users
         WHERE id = $1`,

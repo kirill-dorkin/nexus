@@ -20,7 +20,7 @@ export class PostgresOrganizationsRepository extends OrganizationsRepository {
     transaction: DatabaseTransaction,
     organization: NewOrganization
   ): Promise<Organization> {
-    await transaction.query(
+    await transaction.client.query(
       `INSERT INTO organizations.organizations
          (id, slug, name, created_by_user_id)
        VALUES ($1, $2, $3, $4)`,
@@ -45,7 +45,7 @@ export class PostgresOrganizationsRepository extends OrganizationsRepository {
     organizationId: string,
     userId: string
   ): Promise<void> {
-    await transaction.query(
+    await transaction.client.query(
       `INSERT INTO organizations.memberships
          (organization_id, user_id, status, joined_at)
        VALUES ($1, $2, 'active', now())`,
@@ -57,7 +57,7 @@ export class PostgresOrganizationsRepository extends OrganizationsRepository {
     transaction: DatabaseTransaction,
     organizationId: string
   ): Promise<Organization | null> {
-    const result = await transaction.query<OrganizationRow>(
+    const result = await transaction.client.query<OrganizationRow>(
       `SELECT id::text, slug, name, status
          FROM organizations.organizations
         WHERE id = $1`,

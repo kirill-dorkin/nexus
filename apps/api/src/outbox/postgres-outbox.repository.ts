@@ -12,7 +12,7 @@ export class PostgresOutboxRepository extends OutboxRepository {
     transaction: DatabaseTransaction,
     message: OutboxMessage
   ): Promise<void> {
-    await transaction.query(
+    await transaction.client.query(
       `INSERT INTO events.outbox
          (organization_id, event_name, event_version, aggregate_type,
           aggregate_id, actor_user_id, payload, metadata)
