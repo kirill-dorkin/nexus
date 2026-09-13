@@ -2,24 +2,30 @@
   "name": "learning-platform-workspace",
   "private": true,
   "version": "0.0.0",
-  "packageManager": "pnpm@10.15.0",
+  "packageManager": "pnpm@10.34.5",
   "engines": {
     "node": ">=24 <25",
-    "pnpm": ">=10"
+    "pnpm": ">=10.34.5 <11"
   },
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
     "typecheck": "turbo typecheck",
-    "test": "turbo test",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "check": "pnpm check:brand && pnpm typecheck && pnpm test",
     "dev:infra": "docker compose up -d postgres redis",
     "dev:infra:down": "docker compose down",
     "rebrand": "node scripts/rebrand.mjs",
     "check:brand": "node scripts/check-brand-leaks.mjs"
   },
+  "scarfSettings": {
+    "enabled": false
+  },
   "devDependencies": {
+    "@types/node": "^24.0.0",
     "turbo": "^2.5.0",
-    "typescript": "^5.9.0"
+    "typescript": "^5.9.0",
+    "vitest": "4.1.11"
   }
 }

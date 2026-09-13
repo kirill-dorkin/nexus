@@ -12,5 +12,6 @@ Security является архитектурным требованием, а 
 - Webhooks проверяют подпись до доверенной обработки и дедуплицируются.
 - Upload/download приватных объектов выполняется через short-lived signed URLs.
 - Privileged operations попадают в immutable audit trail.
+- Dependency lifecycle scripts считаются исполнением стороннего кода: unreviewed scripts должны ломать install, а не молча запускаться или подавляться.
 
-См. `docs/security/baseline.md` и `docs/adr/0007-separate-grader-security-boundary.md`.
+См. `docs/security/baseline.md`, `docs/security/dependency-supply-chain.md`, `docs/adr/0007-separate-grader-security-boundary.md` и `docs/adr/0011-dependency-lifecycle-security.md`.
