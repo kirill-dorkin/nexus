@@ -81,7 +81,7 @@ jobs:
             ${{ runner.os }}-node24-build-
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Bootstrap database roles
         run: >-
@@ -113,7 +113,3 @@ jobs:
 
       - name: Build
         run: pnpm build
-
-# Transition note: this branch adds database dependencies. Once its regenerated
-# pnpm-lock.yaml is committed, dependency installation must switch to
-# `pnpm install --frozen-lockfile` before the PR leaves draft state.
