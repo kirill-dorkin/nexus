@@ -2,18 +2,24 @@ services:
   postgres:
     image: postgres:18-alpine
     environment:
-      POSTGRES_DB: platform
-      POSTGRES_USER: platform
-      POSTGRES_PASSWORD: platform
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: local_postgres_admin
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql
+      - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U platform -d platform"]
+      test:
+        [
+          "CMD-SHELL",
+          "PGPASSWORD=platform_app psql -h 127.0.0.1 -U platform_app -d platform -c 'SELECT 1' >/dev/null 2>&1"
+        ]
       interval: 5s
       timeout: 5s
       retries: 10
+      start_period: 5s
 
   redis:
     image: redis:7-alpine

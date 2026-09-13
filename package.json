@@ -17,6 +17,7 @@
     "check": "pnpm check:brand && pnpm typecheck && pnpm test",
     "dev:infra": "docker compose up -d postgres redis",
     "dev:infra:down": "docker compose down",
+    "db:migrate": "pnpm --filter @platform/database db:migrate",
     "rebrand": "node scripts/rebrand.mjs",
     "check:brand": "node scripts/check-brand-leaks.mjs"
   },
