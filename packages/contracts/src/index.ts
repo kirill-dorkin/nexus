@@ -16,3 +16,4 @@ export * from "./common";
 export * from "./identity";
 export * from "./organizations";
 export * from "./authorization";
+export * from "./authentication";
