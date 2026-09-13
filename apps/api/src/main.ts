@@ -1,31 +1,9 @@
 import "reflect-metadata";
-import { NestFactory } from "@nestjs/core";
-import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { AppModule } from "./app.module";
+
+import { createApiApplication } from "./app.factory";
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter()
-  );
-  app.setGlobalPrefix("v1");
-  app.enableShutdownHooks();
-
-  const swagger = new DocumentBuilder()
-    .setTitle("Learning Platform API")
-    .setVersion("1.0")
-    .build();
-  SwaggerModule.setup(
-    "openapi",
-    app,
-    SwaggerModule.createDocument(app, swagger),
-    {
-      ui: false,
-      raw: ["json"]
-    }
-  );
-
+  const app = await createApiApplication();
   const port = Number(process.env.API_PORT ?? 4000);
   await app.listen({ port, host: "0.0.0.0" });
 }

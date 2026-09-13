@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException
+} from "@nestjs/common";
 import type {
   CreateOrganizationRequest,
   Organization
@@ -10,6 +14,15 @@ import { RequestContextService } from "../../../request-context/request-context.
 import { AuthorizationApplicationService } from "../../authorization/application/authorization.service";
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { OrganizationsRepository } from "./organizations.repository";
+
+function isUniqueViolation(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    error.code === "23505"
+  );
+}
 
 @Injectable()
 export class OrganizationsApplicationService {
@@ -28,52 +41,59 @@ export class OrganizationsApplicationService {
     const creatorUserId = this.requestContext.requirePrincipal().userId;
     const organizationId = await this.database.nextUuid();
 
-    return this.database.tenantTransaction(
-      {
-        organizationId,
-        userId: creatorUserId
-      },
-      async (transaction) => {
-        await this.identity.requireActiveUser(transaction, creatorUserId);
+    try {
+      return await this.database.tenantTransaction(
+        {
+          organizationId,
+          userId: creatorUserId
+        },
+        async (transaction) => {
+          await this.identity.requireActiveUser(transaction, creatorUserId);
 
-        const organization = await this.organizations.createOrganization(
-          transaction,
-          {
-            id: organizationId,
-            slug: command.slug,
-            name: command.name,
-            createdByUserId: creatorUserId
-          }
-        );
+          const organization = await this.organizations.createOrganization(
+            transaction,
+            {
+              id: organizationId,
+              slug: command.slug,
+              name: command.name,
+              createdByUserId: creatorUserId
+            }
+          );
 
-        await this.organizations.addActiveMembership(
-          transaction,
-          organizationId,
-          creatorUserId
-        );
-        await this.authorization.bootstrapOrganizationOwner(
-          transaction,
-          organizationId,
-          creatorUserId
-        );
-        await this.outbox.append(transaction, {
-          organizationId,
-          eventName: "organization.created",
-          eventVersion: 1,
-          aggregateType: "organization",
-          aggregateId: organizationId,
-          actorUserId: creatorUserId,
-          payload: {
+          await this.organizations.addActiveMembership(
+            transaction,
             organizationId,
-            slug: organization.slug,
-            name: organization.name,
-            createdByUserId: creatorUserId
-          }
-        });
+            creatorUserId
+          );
+          await this.authorization.bootstrapOrganizationOwner(
+            transaction,
+            organizationId,
+            creatorUserId
+          );
+          await this.outbox.append(transaction, {
+            organizationId,
+            eventName: "organization.created",
+            eventVersion: 1,
+            aggregateType: "organization",
+            aggregateId: organizationId,
+            actorUserId: creatorUserId,
+            payload: {
+              organizationId,
+              slug: organization.slug,
+              name: organization.name,
+              createdByUserId: creatorUserId
+            }
+          });
 
-        return organization;
+          return organization;
+        }
+      );
+    } catch (error) {
+      if (isUniqueViolation(error)) {
+        throw new ConflictException("An organization with this slug already exists.");
       }
-    );
+      throw error;
+    }
   }
 
   async getOrganization(organizationId: string): Promise<Organization> {
