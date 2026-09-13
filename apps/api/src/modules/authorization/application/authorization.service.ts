@@ -5,7 +5,9 @@ import type { DatabaseTransaction } from "@platform/database";
 import {
   AuthorizationPolicy,
   type AuthorizationCapability,
-  type AuthorizationScope
+  type AuthorizationScope,
+  type AuthorizationScopeType,
+  type SystemRoleKey
 } from "./authorization.policy";
 import { AuthorizationRepository } from "./authorization.repository";
 
@@ -31,6 +33,24 @@ export class AuthorizationApplicationService {
     if (!this.policy.allows(assignments, capability, scope)) {
       throw new ForbiddenException("The authenticated user is not authorized for this operation.");
     }
+  }
+
+  hasRoleAssignment(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userId: string,
+    roleKey: SystemRoleKey,
+    scopeType: AuthorizationScopeType,
+    scopeId: string
+  ): Promise<boolean> {
+    return this.assignments.hasAssignment(
+      transaction,
+      organizationId,
+      userId,
+      roleKey,
+      scopeType,
+      scopeId
+    );
   }
 
   async bootstrapOrganizationOwner(

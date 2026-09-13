@@ -46,6 +46,10 @@ export class PostgresAuthorizationRepository extends AuthorizationRepository {
               ra.scope_id::text
          FROM access_control.role_assignments ra
          JOIN access_control.roles r ON r.id = ra.role_id
+         JOIN organizations.memberships m
+           ON m.organization_id = ra.organization_id
+          AND m.user_id = ra.user_id
+          AND m.status = 'active'
         WHERE ra.organization_id = $1
           AND ra.user_id = $2`,
       [organizationId, userId]
@@ -66,6 +70,31 @@ export class PostgresAuthorizationRepository extends AuthorizationRepository {
         id: row.scope_id
       };
     });
+  }
+
+  async hasAssignment(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userId: string,
+    roleKey: SystemRoleKey,
+    scopeType: AuthorizationScopeType,
+    scopeId: string
+  ): Promise<boolean> {
+    const result = await transaction.client.query<{ present: boolean }>(
+      `SELECT EXISTS (
+         SELECT 1
+           FROM access_control.role_assignments ra
+           JOIN access_control.roles r ON r.id = ra.role_id
+          WHERE ra.organization_id = $1
+            AND ra.user_id = $2
+            AND r.key = $3
+            AND r.is_system = true
+            AND ra.scope_type = $4
+            AND ra.scope_id = $5
+       ) AS present`,
+      [organizationId, userId, roleKey, scopeType, scopeId]
+    );
+    return result.rows[0]?.present ?? false;
   }
 
   async createAssignment(
