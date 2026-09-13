@@ -1,4 +1,12 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
+
 import { defineConfig } from "vitest/config";
+
+const localEnvFile = path.resolve(".env");
+if (existsSync(localEnvFile)) {
+  process.loadEnvFile(localEnvFile);
+}
 
 export default defineConfig({
   test: {

@@ -1,5 +1,13 @@
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
 import { createDatabasePool } from "../pool";
 import { migrateDatabase } from "../migrator";
+
+const localEnvFile = fileURLToPath(new URL("../../../../.env", import.meta.url));
+if (existsSync(localEnvFile)) {
+  process.loadEnvFile(localEnvFile);
+}
 
 const connectionString = process.env.DATABASE_MIGRATION_URL;
 
