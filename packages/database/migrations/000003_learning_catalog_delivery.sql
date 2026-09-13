@@ -68,14 +68,14 @@ BEGIN
       MESSAGE = 'published course versions are immutable';
   END IF;
 
-  RETURN CASE WHEN TG_OP = 'DELETE' THEN OLD ELSE NEW END;
+  RETURN NEW;
 END
 $$;
 
 REVOKE ALL ON FUNCTION learning_content.protect_published_course_version() FROM PUBLIC;
 
 CREATE TRIGGER course_versions_protect_published
-BEFORE UPDATE OR DELETE ON learning_content.course_versions
+BEFORE UPDATE ON learning_content.course_versions
 FOR EACH ROW
 EXECUTE FUNCTION learning_content.protect_published_course_version();
 
