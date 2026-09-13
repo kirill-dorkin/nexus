@@ -2,6 +2,7 @@
   "name": "learning-platform-workspace",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "packageManager": "pnpm@10.34.5",
   "engines": {
     "node": ">=24 <25",

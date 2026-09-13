@@ -18,6 +18,8 @@ Silencing these messages would hide the engineering decision instead of resolvin
 5. Explicitly deny `@scarf/scarf`. Its script exists for install analytics, not application functionality. The root manifest also sets `scarfSettings.enabled=false` so the privacy decision remains explicit outside pnpm.
 6. Remove BullMQ and ioredis from the worker until a queue adapter is actually implemented. Unused dependencies are not architectural placeholders. When queue implementation begins, the current queue version and its dependency graph must be reviewed in the same change.
 7. Placeholder `test` scripts that only return exit code 0 are prohibited. The repository uses real Vitest assertions from the foundation stage.
+8. CI uses Node's bundled Corepack to activate the exact pnpm version declared by the repository. We do not add a separate package-manager setup action when the runtime already provides this capability.
+9. GitHub Actions are pinned to immutable reviewed commit SHAs. CI setup actions must use the Node.js 24 action runtime line.
 
 ## Consequences
 
@@ -27,6 +29,7 @@ Silencing these messages would hide the engineering decision instead of resolvin
 - Deprecated transitive dependencies are removed by eliminating the unused parent dependency rather than muting deprecation warnings.
 - Queue dependencies will be introduced only together with queue code, tests, and a dependency review.
 - Test success now means assertions actually executed.
+- CI does not execute an extra package-manager installer with its own dependency graph and audit surface.
 
 ## Review procedure
 
