@@ -1,4 +1,7 @@
-import type { Organization } from "@platform/contracts";
+import type {
+  Organization,
+  OrganizationMembership
+} from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
 export type NewOrganization = Readonly<{
@@ -19,6 +22,36 @@ export abstract class OrganizationsRepository {
     organizationId: string,
     userId: string
   ): Promise<void>;
+
+  abstract inviteMembership(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userId: string
+  ): Promise<OrganizationMembership | null>;
+
+  abstract activateInvitedMembership(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userId: string
+  ): Promise<OrganizationMembership | null>;
+
+  abstract suspendActiveMembership(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userId: string
+  ): Promise<OrganizationMembership | null>;
+
+  abstract leaveMembership(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userId: string
+  ): Promise<OrganizationMembership | null>;
+
+  abstract findMembership(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userId: string
+  ): Promise<OrganizationMembership | null>;
 
   abstract findById(
     transaction: DatabaseTransaction,

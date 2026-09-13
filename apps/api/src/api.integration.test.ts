@@ -20,6 +20,25 @@ function requireEnv(name: string): string {
 
 type IdRow = { id: string };
 
+type HeaderValue = string | string[] | undefined;
+
+function firstHeaderValue(value: HeaderValue): string | undefined {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+function cookiePair(setCookie: HeaderValue): string {
+  const value = firstHeaderValue(setCookie);
+  if (value === undefined) {
+    throw new Error("Expected authentication response to set a session cookie.");
+  }
+
+  const pair = value.split(";", 1)[0];
+  if (pair === undefined || pair.length === 0) {
+    throw new Error("Expected a non-empty session cookie pair.");
+  }
+  return pair;
+}
+
 describe("Foundation 1 HTTP API", () => {
   const migrationPool = createDatabasePool(
     requireEnv("DATABASE_MIGRATION_URL"),
@@ -31,7 +50,11 @@ describe("Foundation 1 HTTP API", () => {
   let ownerUserId = "";
   let outsiderUserId = "";
   let organizationId = "";
+  let registeredUserId = "";
+  let registeredCookie = "";
   const organizationSlug = `http-${randomUUID()}`;
+  const registeredEmail = `Auth-${randomUUID()}@Example.test`;
+  const registeredPassword = "a correct integration passphrase";
 
   async function createUser(label: string): Promise<string> {
     const result = await migrationPool.query<IdRow>(
@@ -102,7 +125,166 @@ describe("Foundation 1 HTTP API", () => {
     expect(response.statusCode).toBe(401);
   });
 
-  it("returns the authenticated active identity", async () => {
+  it("registers an identity and issues a hardened opaque session cookie", async () => {
+    const response = await app.inject({
+      method: "POST",
+      url: "/v1/auth/register",
+      payload: {
+        email: ` ${registeredEmail} `,
+        password: registeredPassword,
+        displayName: " Auth Learner "
+      }
+    });
+
+    expect(response.statusCode).toBe(201);
+    const body = JSON.parse(response.body) as {
+      id: string;
+      email: string;
+      displayName: string;
+      status: string;
+    };
+    registeredUserId = body.id;
+    createdUserIds.push(registeredUserId);
+    expect(body).toMatchObject({
+      email: registeredEmail.toLowerCase(),
+      displayName: "Auth Learner",
+      status: "active"
+    });
+
+    const setCookie = firstHeaderValue(response.headers["set-cookie"]);
+    expect(setCookie).toContain("__Host-id=");
+    expect(setCookie).toContain("Path=/");
+    expect(setCookie).toContain("HttpOnly");
+    expect(setCookie).toContain("Secure");
+    expect(setCookie).toContain("SameSite=Strict");
+    expect(setCookie).not.toContain("Domain=");
+    expect(response.headers["cache-control"]).toBe("no-store");
+    registeredCookie = cookiePair(response.headers["set-cookie"]);
+  });
+
+  it("authenticates the current identity from the server-side session", async () => {
+    const response = await app.inject({
+      method: "GET",
+      url: "/v1/me",
+      headers: { cookie: registeredCookie }
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(JSON.parse(response.body)).toMatchObject({
+      id: registeredUserId,
+      email: registeredEmail.toLowerCase(),
+      status: "active"
+    });
+    expect(response.headers["cache-control"]).toBe("no-store");
+  });
+
+  it("does not reveal whether login failed because the account is unknown", async () => {
+    const wrongPassword = await app.inject({
+      method: "POST",
+      url: "/v1/auth/login",
+      payload: {
+        email: registeredEmail,
+        password: "a wrong but sufficiently long password"
+      }
+    });
+    const unknownEmail = await app.inject({
+      method: "POST",
+      url: "/v1/auth/login",
+      payload: {
+        email: `missing-${randomUUID()}@example.test`,
+        password: "a wrong but sufficiently long password"
+      }
+    });
+
+    expect(wrongPassword.statusCode).toBe(401);
+    expect(unknownEmail.statusCode).toBe(401);
+    expect(JSON.parse(wrongPassword.body)).toEqual(JSON.parse(unknownEmail.body));
+  });
+
+  it("revokes the server-side session on logout", async () => {
+    const logout = await app.inject({
+      method: "POST",
+      url: "/v1/auth/logout",
+      headers: { cookie: registeredCookie }
+    });
+
+    expect(logout.statusCode).toBe(204);
+    expect(firstHeaderValue(logout.headers["set-cookie"])).toContain("Max-Age=0");
+
+    const afterLogout = await app.inject({
+      method: "GET",
+      url: "/v1/me",
+      headers: { cookie: registeredCookie }
+    });
+    expect(afterLogout.statusCode).toBe(401);
+  });
+
+  it("rejects an expired server-side session", async () => {
+    const login = await app.inject({
+      method: "POST",
+      url: "/v1/auth/login",
+      payload: {
+        email: registeredEmail,
+        password: registeredPassword
+      }
+    });
+    expect(login.statusCode).toBe(200);
+    const cookie = cookiePair(login.headers["set-cookie"]);
+
+    await migrationPool.query(
+      `UPDATE identity.sessions
+          SET expires_at = created_at + interval '1 millisecond'
+        WHERE user_id = $1
+          AND revoked_at IS NULL`,
+      [registeredUserId]
+    );
+
+    const response = await app.inject({
+      method: "GET",
+      url: "/v1/me",
+      headers: { cookie }
+    });
+    expect(response.statusCode).toBe(401);
+  });
+
+  it("does not authenticate a suspended identity even with a valid session", async () => {
+    const login = await app.inject({
+      method: "POST",
+      url: "/v1/auth/login",
+      payload: {
+        email: registeredEmail,
+        password: registeredPassword
+      }
+    });
+    expect(login.statusCode).toBe(200);
+    const cookie = cookiePair(login.headers["set-cookie"]);
+
+    await migrationPool.query(
+      `UPDATE identity.users
+          SET status = 'suspended', updated_at = now()
+        WHERE id = $1`,
+      [registeredUserId]
+    );
+
+    const response = await app.inject({
+      method: "GET",
+      url: "/v1/me",
+      headers: { cookie }
+    });
+    const loginAgain = await app.inject({
+      method: "POST",
+      url: "/v1/auth/login",
+      payload: {
+        email: registeredEmail,
+        password: registeredPassword
+      }
+    });
+
+    expect(response.statusCode).toBe(401);
+    expect(loginAgain.statusCode).toBe(401);
+  });
+
+  it("returns the authenticated active identity from the test-only principal hook", async () => {
     const response = await app.inject({
       method: "GET",
       url: "/v1/me",

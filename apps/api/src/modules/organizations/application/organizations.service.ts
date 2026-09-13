@@ -1,11 +1,15 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException
 } from "@nestjs/common";
 import type {
+  AssignRoleRequest,
   CreateOrganizationRequest,
-  Organization
+  InviteOrganizationMemberRequest,
+  Organization,
+  OrganizationMembership
 } from "@platform/contracts";
 
 import { DatabaseService } from "../../../database/database.service";
@@ -22,6 +26,14 @@ function isUniqueViolation(error: unknown): boolean {
     "code" in error &&
     error.code === "23505"
   );
+}
+
+function organizationScope(organizationId: string) {
+  return {
+    organizationId,
+    type: "organization" as const,
+    id: organizationId
+  };
 }
 
 @Injectable()
@@ -105,11 +117,7 @@ export class OrganizationsApplicationService {
         transaction,
         context.userId,
         "organization.read",
-        {
-          organizationId,
-          type: "organization",
-          id: organizationId
-        }
+        organizationScope(organizationId)
       );
 
       const organization = await this.organizations.findById(
@@ -122,6 +130,182 @@ export class OrganizationsApplicationService {
       }
 
       return organization;
+    });
+  }
+
+  async inviteMember(
+    organizationId: string,
+    command: InviteOrganizationMemberRequest
+  ): Promise<OrganizationMembership> {
+    const context = this.requestContext.tenantContext(organizationId);
+
+    return this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+      await this.authorization.requireCapability(
+        transaction,
+        context.userId,
+        "organization.manage",
+        organizationScope(organizationId)
+      );
+      await this.identity.requireActiveUser(transaction, command.userId);
+
+      const membership = await this.organizations.inviteMembership(
+        transaction,
+        organizationId,
+        command.userId
+      );
+
+      if (membership === null) {
+        throw new ConflictException(
+          "This user already has a membership that cannot be invited."
+        );
+      }
+
+      return membership;
+    });
+  }
+
+  async acceptMembershipInvitation(
+    organizationId: string
+  ): Promise<OrganizationMembership> {
+    const context = this.requestContext.tenantContext(organizationId);
+
+    return this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+
+      const membership = await this.organizations.activateInvitedMembership(
+        transaction,
+        organizationId,
+        context.userId
+      );
+
+      if (membership === null) {
+        throw new ConflictException("An invited membership is required to join.");
+      }
+
+      return membership;
+    });
+  }
+
+  async suspendMember(
+    organizationId: string,
+    memberUserId: string
+  ): Promise<OrganizationMembership> {
+    const context = this.requestContext.tenantContext(organizationId);
+
+    if (memberUserId === context.userId) {
+      throw new BadRequestException(
+        "Use the leave-membership operation instead of suspending yourself."
+      );
+    }
+
+    return this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+      await this.authorization.requireCapability(
+        transaction,
+        context.userId,
+        "organization.manage",
+        organizationScope(organizationId)
+      );
+
+      const isOwner = await this.authorization.hasRoleAssignment(
+        transaction,
+        organizationId,
+        memberUserId,
+        "organization_owner",
+        "organization",
+        organizationId
+      );
+      if (isOwner) {
+        throw new ConflictException(
+          "Organization owners cannot be suspended before ownership is explicitly changed."
+        );
+      }
+
+      const membership = await this.organizations.suspendActiveMembership(
+        transaction,
+        organizationId,
+        memberUserId
+      );
+      if (membership === null) {
+        throw new ConflictException("An active membership is required to suspend a member.");
+      }
+
+      return membership;
+    });
+  }
+
+  async leaveMembership(organizationId: string): Promise<OrganizationMembership> {
+    const context = this.requestContext.tenantContext(organizationId);
+
+    return this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+
+      const isOwner = await this.authorization.hasRoleAssignment(
+        transaction,
+        organizationId,
+        context.userId,
+        "organization_owner",
+        "organization",
+        organizationId
+      );
+      if (isOwner) {
+        throw new ConflictException(
+          "Organization owners cannot leave before ownership is explicitly changed."
+        );
+      }
+
+      const membership = await this.organizations.leaveMembership(
+        transaction,
+        organizationId,
+        context.userId
+      );
+      if (membership === null) {
+        throw new ConflictException(
+          "An invited or active membership is required to leave."
+        );
+      }
+
+      return membership;
+    });
+  }
+
+  async assignRoleToMember(
+    organizationId: string,
+    command: AssignRoleRequest
+  ): Promise<void> {
+    const context = this.requestContext.tenantContext(organizationId);
+
+    if (
+      command.scope.type !== "organization" ||
+      command.scope.id !== organizationId
+    ) {
+      throw new BadRequestException(
+        "Only organization-scoped role assignment is available before child resources exist."
+      );
+    }
+
+    await this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+      await this.identity.requireActiveUser(transaction, command.userId);
+
+      const membership = await this.organizations.findMembership(
+        transaction,
+        organizationId,
+        command.userId
+      );
+      if (membership?.status !== "active") {
+        throw new ConflictException(
+          "Roles can only be assigned to active organization members."
+        );
+      }
+
+      await this.authorization.assignRole(
+        transaction,
+        context.userId,
+        organizationId,
+        command
+      );
     });
   }
 }

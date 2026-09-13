@@ -22,6 +22,15 @@ export abstract class AuthorizationRepository {
     userId: string
   ): Promise<readonly RoleAssignmentScope[]>;
 
+  abstract hasAssignment(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userId: string,
+    roleKey: SystemRoleKey,
+    scopeType: AuthorizationScopeType,
+    scopeId: string
+  ): Promise<boolean>;
+
   abstract createAssignment(
     transaction: DatabaseTransaction,
     assignment: CreateRoleAssignment

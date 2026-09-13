@@ -14,7 +14,35 @@ export const organizationSchema = z.object({
   status: z.enum(["active", "suspended", "archived"])
 });
 
+export const organizationMembershipStatusSchema = z.enum([
+  "invited",
+  "active",
+  "suspended",
+  "left"
+]);
+
+export const organizationMembershipSchema = z.object({
+  id: uuidSchema,
+  organizationId: uuidSchema,
+  userId: uuidSchema,
+  status: organizationMembershipStatusSchema,
+  joinedAt: z.string().datetime().nullable()
+});
+
+export const inviteOrganizationMemberRequestSchema = z.object({
+  userId: uuidSchema
+});
+
 export type CreateOrganizationRequest = z.infer<
   typeof createOrganizationRequestSchema
 >;
 export type Organization = z.infer<typeof organizationSchema>;
+export type OrganizationMembershipStatus = z.infer<
+  typeof organizationMembershipStatusSchema
+>;
+export type OrganizationMembership = z.infer<
+  typeof organizationMembershipSchema
+>;
+export type InviteOrganizationMemberRequest = z.infer<
+  typeof inviteOrganizationMemberRequestSchema
+>;
