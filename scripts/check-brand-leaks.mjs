@@ -6,11 +6,14 @@ const root = process.cwd();
 const brandPath = path.join(root, "packages/brand/brand.json");
 const brand = JSON.parse(await readFile(brandPath, "utf8"));
 const needles = [brand.name, brand.slug].filter((v) => typeof v === "string" && v.length >= 3);
-const roots = ["apps", "infra"];
+const roots = ["apps", "packages", "infra"];
 const extensions = new Set([".ts", ".tsx", ".js", ".mjs", ".json", ".yml", ".yaml", ".sql", ".sh", ".css"]);
 const findings = [];
 
 async function walk(relative) {
+  const normalized = relative.split(path.sep).join("/");
+  if (normalized === "packages/brand" || normalized.startsWith("packages/brand/")) return;
+
   const absolute = path.join(root, relative);
   const entries = await readdir(absolute, { withFileTypes: true });
   for (const entry of entries) {
