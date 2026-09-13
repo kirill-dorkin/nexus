@@ -13,7 +13,7 @@
     "build": "turbo build",
     "typecheck": "turbo typecheck",
     "test": "vitest run",
-    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:integration": "node --env-file-if-exists=.env ./node_modules/vitest/vitest.mjs run --config vitest.integration.config.ts",
     "test:watch": "vitest",
     "check": "pnpm check:brand && pnpm typecheck && pnpm test",
     "dev:infra": "docker compose up -d postgres redis",
