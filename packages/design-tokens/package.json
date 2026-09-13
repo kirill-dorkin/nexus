@@ -1,0 +1,11 @@
+{
+  "name": "@platform/design-tokens",
+  "private": true,
+  "version": "0.0.0",
+  "exports": {
+    "./tokens.css": "./tokens.css"
+  },
+  "scripts": {
+    "test": "node -e \"process.exit(0)\""
+  }
+}
