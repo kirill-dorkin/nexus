@@ -65,10 +65,10 @@ async function createOrganizationFixture(
       );
 
       await client.query(
-        `INSERT INTO authorization.role_assignments
+        `INSERT INTO access_control.role_assignments
           (organization_id, user_id, role_id, scope_type, scope_id, assigned_by_user_id)
          SELECT $1, $2, id, 'organization', $1, $2
-         FROM authorization.roles
+         FROM access_control.roles
          WHERE key = 'organization_owner'`,
         [organizationId, userId]
       );

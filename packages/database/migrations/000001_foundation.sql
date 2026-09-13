@@ -12,10 +12,10 @@ $$;
 
 CREATE SCHEMA identity;
 CREATE SCHEMA organizations;
-CREATE SCHEMA authorization;
+CREATE SCHEMA access_control;
 CREATE SCHEMA events;
 
-REVOKE ALL ON SCHEMA identity, organizations, authorization, events FROM PUBLIC;
+REVOKE ALL ON SCHEMA identity, organizations, access_control, events FROM PUBLIC;
 
 CREATE OR REPLACE FUNCTION platform_internal.current_organization_id()
 RETURNS uuid
@@ -88,7 +88,7 @@ CREATE TABLE organizations.memberships (
 CREATE INDEX memberships_user_id_idx
   ON organizations.memberships (user_id, organization_id);
 
-CREATE TABLE authorization.roles (
+CREATE TABLE access_control.roles (
   id uuid PRIMARY KEY DEFAULT uuidv7(),
   key text NOT NULL UNIQUE
     CHECK (key ~ '^[a-z][a-z0-9_]{1,63}$'),
@@ -98,7 +98,7 @@ CREATE TABLE authorization.roles (
   created_at timestamptz NOT NULL DEFAULT now()
 );
 
-INSERT INTO authorization.roles (key, name, description)
+INSERT INTO access_control.roles (key, name, description)
 VALUES
   ('organization_owner', 'Organization owner', 'Full organization ownership and delegation.'),
   ('organization_admin', 'Organization admin', 'Organization administration without ownership transfer.'),
@@ -106,11 +106,11 @@ VALUES
   ('mentor', 'Mentor', 'Learner mentoring and review capabilities.'),
   ('learner', 'Learner', 'Learning participation capabilities.');
 
-CREATE TABLE authorization.role_assignments (
+CREATE TABLE access_control.role_assignments (
   id uuid PRIMARY KEY DEFAULT uuidv7(),
   organization_id uuid NOT NULL,
   user_id uuid NOT NULL,
-  role_id uuid NOT NULL REFERENCES authorization.roles(id) ON DELETE RESTRICT,
+  role_id uuid NOT NULL REFERENCES access_control.roles(id) ON DELETE RESTRICT,
   scope_type text NOT NULL
     CHECK (scope_type IN ('organization', 'course', 'offering', 'group', 'team', 'project')),
   scope_id uuid NOT NULL,
@@ -124,9 +124,9 @@ CREATE TABLE authorization.role_assignments (
 );
 
 CREATE INDEX role_assignments_subject_idx
-  ON authorization.role_assignments (organization_id, user_id);
+  ON access_control.role_assignments (organization_id, user_id);
 CREATE INDEX role_assignments_scope_idx
-  ON authorization.role_assignments (organization_id, scope_type, scope_id);
+  ON access_control.role_assignments (organization_id, scope_type, scope_id);
 
 CREATE TABLE events.outbox (
   id uuid PRIMARY KEY DEFAULT uuidv7(),
@@ -157,12 +157,12 @@ CREATE UNIQUE INDEX outbox_idempotency_key
   ON events.outbox (organization_id, idempotency_key) NULLS NOT DISTINCT
   WHERE idempotency_key IS NOT NULL;
 
-GRANT USAGE ON SCHEMA identity, organizations, authorization, events TO platform_app;
+GRANT USAGE ON SCHEMA identity, organizations, access_control, events TO platform_app;
 GRANT SELECT, INSERT, UPDATE ON identity.users TO platform_app;
 GRANT SELECT, INSERT, UPDATE ON organizations.organizations TO platform_app;
 GRANT SELECT, INSERT, UPDATE, DELETE ON organizations.memberships TO platform_app;
-GRANT SELECT ON authorization.roles TO platform_app;
-GRANT SELECT, INSERT, DELETE ON authorization.role_assignments TO platform_app;
+GRANT SELECT ON access_control.roles TO platform_app;
+GRANT SELECT, INSERT, DELETE ON access_control.role_assignments TO platform_app;
 GRANT INSERT ON events.outbox TO platform_app;
 
 GRANT USAGE ON SCHEMA events TO platform_worker;
@@ -170,7 +170,7 @@ GRANT SELECT, UPDATE ON events.outbox TO platform_worker;
 
 ALTER TABLE organizations.organizations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE organizations.memberships ENABLE ROW LEVEL SECURITY;
-ALTER TABLE authorization.role_assignments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE access_control.role_assignments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE events.outbox ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY organizations_app_tenant_policy
@@ -188,7 +188,7 @@ CREATE POLICY memberships_app_tenant_policy
   WITH CHECK (organization_id = platform_internal.current_organization_id());
 
 CREATE POLICY role_assignments_app_tenant_policy
-  ON authorization.role_assignments
+  ON access_control.role_assignments
   FOR ALL
   TO platform_app
   USING (organization_id = platform_internal.current_organization_id())
