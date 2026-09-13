@@ -12,6 +12,8 @@ Dependency installation is treated as code execution and therefore as a security
 - Unused dependencies are removed instead of kept for hypothetical future work.
 - Analytics/telemetry install scripts are denied unless there is an explicit product decision to enable them.
 - A successful `test` command must execute real assertions; no placeholder success scripts are permitted.
+- GitHub Actions are pinned to reviewed release commit SHAs rather than mutable major tags.
+- CI dependency caching is enabled only when a committed lockfile exists and can serve as a deterministic cache key.
 
 ## Reviewed lifecycle packages
 
@@ -25,5 +27,15 @@ Dependency installation is treated as code execution and therefore as a security
 The worker does not yet implement a queue adapter, so BullMQ and ioredis are intentionally not installed. This removed the unused BullMQ v5 chain that introduced deprecated `cron-parser@4.9.0` and `msgpackr-extract` lifecycle behavior.
 
 When queue work starts, add the queue client and Redis client in the same change that introduces the adapter, integration tests, retry/idempotency semantics, and dependency review. Architecture may target BullMQ, but architecture intent is not a reason to carry unused runtime dependencies.
+
+## CI action review
+
+The CI workflow currently pins these reviewed releases by immutable commit SHA:
+
+- `actions/checkout` v7.0.1
+- `pnpm/action-setup` v6.0.9
+- `actions/setup-node` v7.0.0
+
+The selected action lines use the Node.js 24 action runtime and avoid the Node.js 20 deprecation path. Changing an action requires reviewing its release notes and updating both the SHA and the version comment in the same commit.
 
 See ADR `0011-dependency-lifecycle-security.md`.
