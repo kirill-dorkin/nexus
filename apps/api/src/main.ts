@@ -5,7 +5,10 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter()
+  );
   app.setGlobalPrefix("v1");
   app.enableShutdownHooks();
 
@@ -13,7 +16,15 @@ async function bootstrap() {
     .setTitle("Learning Platform API")
     .setVersion("1.0")
     .build();
-  SwaggerModule.setup("openapi", app, SwaggerModule.createDocument(app, swagger));
+  SwaggerModule.setup(
+    "openapi",
+    app,
+    SwaggerModule.createDocument(app, swagger),
+    {
+      ui: false,
+      raw: ["json"]
+    }
+  );
 
   const port = Number(process.env.API_PORT ?? 4000);
   await app.listen({ port, host: "0.0.0.0" });
