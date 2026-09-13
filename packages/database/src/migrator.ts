@@ -27,6 +27,7 @@ export async function readMigrations(
     .filter((entry) => entry.isFile() && entry.name.endsWith(".sql"))
     .map((entry) => entry.name)
     .sort((left, right) => left.localeCompare(right));
+  const sequenceOwners = new Map<string, string>();
 
   for (const filename of filenames) {
     if (!MIGRATION_FILE_PATTERN.test(filename)) {
@@ -34,6 +35,17 @@ export async function readMigrations(
         `Invalid migration filename "${filename}". Expected NNNNNN_snake_case.sql.`
       );
     }
+
+    const sequence = filename.slice(0, 6);
+    const existingOwner = sequenceOwners.get(sequence);
+
+    if (existingOwner !== undefined) {
+      throw new Error(
+        `Duplicate migration sequence "${sequence}" in "${existingOwner}" and "${filename}". Migration sequence numbers must be unique.`
+      );
+    }
+
+    sequenceOwners.set(sequence, filename);
   }
 
   return Promise.all(
@@ -98,13 +110,16 @@ async function loadAppliedMigrations(
   return new Map(result.rows.map((row) => [row.name, row.checksum]));
 }
 
-function validateHistory(
+export function validateMigrationHistory(
   migrations: readonly MigrationFile[],
   applied: ReadonlyMap<string, string>
 ): void {
   const sourceByName = new Map(migrations.map((migration) => [migration.name, migration]));
+  const appliedEntries = [...applied.entries()].sort(([left], [right]) =>
+    left.localeCompare(right)
+  );
 
-  for (const [name, checksum] of applied) {
+  for (const [index, [name, checksum]] of appliedEntries.entries()) {
     const source = sourceByName.get(name);
 
     if (source === undefined) {
@@ -116,6 +131,14 @@ function validateHistory(
     if (source.checksum !== checksum) {
       throw new Error(
         `Applied migration "${name}" has been modified. Expected checksum ${checksum}, found ${source.checksum}.`
+      );
+    }
+
+    const expectedSource = migrations[index];
+
+    if (expectedSource?.name !== name) {
+      throw new Error(
+        `Applied migration history is not an exact prefix of source migrations. Expected "${expectedSource?.name ?? "<none>"}" at position ${index + 1}, but database history contains "${name}". New migrations must be appended after all applied migrations.`
       );
     }
   }
@@ -137,7 +160,7 @@ export async function migrateDatabase(
     try {
       await ensureMigrationTable(client);
       const applied = await loadAppliedMigrations(client);
-      validateHistory(migrations, applied);
+      validateMigrationHistory(migrations, applied);
 
       const newlyApplied: string[] = [];
       const alreadyApplied: string[] = [];
