@@ -29,6 +29,7 @@ describe("organization membership HTTP lifecycle", () => {
   let app: NestFastifyApplication;
   let ownerUserId = "";
   let memberUserId = "";
+  let leaverUserId = "";
   let organizationId = "";
   const createdUserIds: string[] = [];
   const organizationSlug = `members-${randomUUID()}`;
@@ -51,6 +52,7 @@ describe("organization membership HTTP lifecycle", () => {
   beforeAll(async () => {
     ownerUserId = await createUser("membership-owner");
     memberUserId = await createUser("membership-member");
+    leaverUserId = await createUser("membership-leaver");
 
     app = await createApiApplication();
     app.getHttpAdapter()
@@ -183,6 +185,69 @@ describe("organization membership HTTP lifecycle", () => {
       headers: { "x-test-user-id": memberUserId }
     });
     expect(read.statusCode).toBe(200);
+  });
+
+  it("does not let a learner manage memberships or create phantom child-resource roles", async () => {
+    const inviteAsLearner = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/memberships`,
+      headers: { "x-test-user-id": memberUserId },
+      payload: { userId: leaverUserId }
+    });
+    expect(inviteAsLearner.statusCode).toBe(403);
+
+    const childScopeRole = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/role-assignments`,
+      headers: { "x-test-user-id": ownerUserId },
+      payload: {
+        userId: memberUserId,
+        roleKey: "mentor",
+        scope: { type: "course", id: randomUUID() }
+      }
+    });
+    expect(childScopeRole.statusCode).toBe(400);
+  });
+
+  it("supports leaving an active membership and reinviting the same identity", async () => {
+    const invite = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/memberships`,
+      headers: { "x-test-user-id": ownerUserId },
+      payload: { userId: leaverUserId }
+    });
+    expect(invite.statusCode).toBe(201);
+
+    const accept = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/memberships/me/accept`,
+      headers: { "x-test-user-id": leaverUserId }
+    });
+    expect(accept.statusCode).toBe(200);
+
+    const leave = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/memberships/me/leave`,
+      headers: { "x-test-user-id": leaverUserId }
+    });
+    expect(leave.statusCode).toBe(200);
+    expect(JSON.parse(leave.body)).toMatchObject({
+      userId: leaverUserId,
+      status: "left"
+    });
+
+    const reinvite = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/memberships`,
+      headers: { "x-test-user-id": ownerUserId },
+      payload: { userId: leaverUserId }
+    });
+    expect(reinvite.statusCode).toBe(201);
+    expect(JSON.parse(reinvite.body)).toMatchObject({
+      userId: leaverUserId,
+      status: "invited",
+      joinedAt: null
+    });
   });
 
   it("protects organization ownership from the incomplete membership lifecycle", async () => {
