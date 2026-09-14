@@ -206,6 +206,17 @@ export class AssignmentApplicationService {
         assignmentId,
         context.userId
       );
+      if (cancelled === null) {
+        const concurrentlyCancelled = await this.assignments.findAssignment(
+          transaction,
+          organizationId,
+          assignmentId
+        );
+        if (concurrentlyCancelled === null) {
+          throw new Error("Assignment disappeared during cancellation.");
+        }
+        return concurrentlyCancelled;
+      }
 
       await this.outbox.append(transaction, {
         organizationId,
