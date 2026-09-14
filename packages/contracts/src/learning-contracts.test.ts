@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   correctAttendanceRequestSchema,
+  createAssignmentRequestSchema,
   createCourseRequestSchema,
   createCourseRunRequestSchema,
   createCourseVersionRequestSchema,
@@ -163,6 +164,51 @@ describe("learning catalog and delivery contracts", () => {
       recordAttendanceRequestSchema.parse({
         enrollmentId: id,
         status: "maybe"
+      })
+    ).toThrow();
+  });
+
+  it("models one explicit assignment audience and validates assignment schedule", () => {
+    expect(
+      createAssignmentRequestSchema.parse({
+        activityId: id,
+        slug: "responsive-dashboard-homework",
+        name: "Responsive dashboard homework",
+        audience: { type: "offering" },
+        availableAt: "2099-10-01T09:00:00.000Z",
+        dueAt: "2099-10-08T09:00:00.000Z"
+      })
+    ).toMatchObject({
+      activityId: id,
+      audience: { type: "offering" }
+    });
+
+    expect(
+      createAssignmentRequestSchema.parse({
+        activityId: id,
+        slug: "lab-a-homework",
+        name: "Lab A homework",
+        audience: { type: "group", groupId: id }
+      }).audience
+    ).toEqual({ type: "group", groupId: id });
+
+    expect(() =>
+      createAssignmentRequestSchema.parse({
+        activityId: id,
+        slug: "invalid-audience",
+        name: "Invalid audience",
+        audience: { type: "offering", enrollmentId: id }
+      })
+    ).toThrow();
+
+    expect(() =>
+      createAssignmentRequestSchema.parse({
+        activityId: id,
+        slug: "invalid-schedule",
+        name: "Invalid schedule",
+        audience: { type: "enrollment", enrollmentId: id },
+        availableAt: "2099-10-08T09:00:00.000Z",
+        dueAt: "2099-10-01T09:00:00.000Z"
       })
     ).toThrow();
   });
