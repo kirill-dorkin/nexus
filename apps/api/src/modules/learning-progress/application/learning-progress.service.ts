@@ -23,10 +23,7 @@ import { IdentityApplicationService } from "../../identity/application/identity.
 import { LearningGraphApplicationService } from "../../learning-content/application/learning-graph.service";
 import { LearningDeliveryApplicationService } from "../../learning-delivery/application/learning-delivery.service";
 import type { ActivityAttemptCount } from "./learning-progress.query";
-import {
-  LearningProgressRepository,
-  type SubmissionContext
-} from "./learning-progress.repository";
+import { LearningProgressRepository } from "./learning-progress.repository";
 import { MasteryApplicationService } from "./mastery.service";
 
 function offeringScope(organizationId: string, offeringId: string) {
