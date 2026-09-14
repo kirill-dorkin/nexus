@@ -7,6 +7,7 @@ import {
   withTenantTransaction as runTenantTransaction,
   withTransaction as runTransaction,
   type DatabaseTransaction,
+  type DatabaseTransactionOptions,
   type TenantTransactionContext
 } from "@platform/database";
 
@@ -27,16 +28,18 @@ export class DatabaseService implements OnApplicationShutdown {
   });
 
   transaction<T>(
-    operation: (transaction: DatabaseTransaction) => Promise<T>
+    operation: (transaction: DatabaseTransaction) => Promise<T>,
+    options?: DatabaseTransactionOptions
   ): Promise<T> {
-    return runTransaction(this.pool, operation);
+    return runTransaction(this.pool, operation, options);
   }
 
   tenantTransaction<T>(
     context: TenantTransactionContext,
-    operation: (transaction: DatabaseTransaction) => Promise<T>
+    operation: (transaction: DatabaseTransaction) => Promise<T>,
+    options?: DatabaseTransactionOptions
   ): Promise<T> {
-    return runTenantTransaction(this.pool, context, operation);
+    return runTenantTransaction(this.pool, context, operation, options);
   }
 
   async nextUuid(): Promise<string> {

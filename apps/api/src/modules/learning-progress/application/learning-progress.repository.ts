@@ -1,6 +1,8 @@
 import type { Attempt, Evidence } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
+import type { ActivityAttemptCount } from "./learning-progress.query";
+
 export type NewAttempt = Readonly<{
   id: string;
   organizationId: string;
@@ -37,6 +39,13 @@ export abstract class LearningProgressRepository {
     organizationId: string,
     attemptId: string
   ): Promise<AttemptContext | null>;
+
+  abstract listActivityAttemptCounts(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    enrollmentId: string,
+    activityVersionIds: readonly string[]
+  ): Promise<readonly ActivityAttemptCount[]>;
 
   abstract createEvidence(
     transaction: DatabaseTransaction,

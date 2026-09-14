@@ -165,6 +165,23 @@ export class PostgresLearningGraphRepository extends LearningGraphRepository {
     return row === undefined ? null : mapVersionSkill(row);
   }
 
+  async listCourseVersionSkills(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseVersionId: string
+  ): Promise<readonly CourseVersionSkill[]> {
+    const result = await transaction.client.query<CourseVersionSkillRow>(
+      `SELECT organization_id::text, course_version_id::text, skill_id::text,
+              title, description, position
+         FROM learning_content.course_version_skills
+        WHERE organization_id = $1
+          AND course_version_id = $2
+        ORDER BY position, skill_id`,
+      [organizationId, courseVersionId]
+    );
+    return result.rows.map(mapVersionSkill);
+  }
+
   async createActivity(
     transaction: DatabaseTransaction,
     activity: NewCourseVersionActivity
@@ -246,6 +263,27 @@ export class PostgresLearningGraphRepository extends LearningGraphRepository {
     );
     const row = result.rows[0];
     return row === undefined ? null : mapActivity(row);
+  }
+
+  async listCourseVersionActivities(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseVersionId: string
+  ): Promise<readonly CourseVersionActivity[]> {
+    const result = await transaction.client.query<ActivityRow>(
+      `SELECT ${activitySelect}
+         FROM learning_content.course_version_activities AS activity
+         LEFT JOIN learning_content.activity_skill_mappings AS mapping
+           ON mapping.organization_id = activity.organization_id
+          AND mapping.course_version_id = activity.course_version_id
+          AND mapping.activity_id = activity.activity_id
+        WHERE activity.organization_id = $1
+          AND activity.course_version_id = $2
+        GROUP BY activity.id
+        ORDER BY activity.position, activity.activity_id`,
+      [organizationId, courseVersionId]
+    );
+    return result.rows.map(mapActivity);
   }
 
   async activityAssessesSkill(

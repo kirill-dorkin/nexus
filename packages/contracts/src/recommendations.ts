@@ -1,0 +1,103 @@
+import { z } from "zod";
+
+import { resourceSlugSchema, uuidSchema } from "./common";
+import { activityTypeSchema } from "./learning-graph";
+
+export const recommendationPolicyKeySchema = z
+  .string()
+  .min(2)
+  .max(80)
+  .regex(/^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$/);
+
+export const recommendationPolicySchema = z.object({
+  key: recommendationPolicyKeySchema,
+  version: z.number().int().positive(),
+  masteryTarget: z.number().min(0).max(1)
+});
+
+export const recommendationFocusSkillSchema = z.object({
+  skillId: uuidSchema,
+  title: z.string().trim().min(1).max(200),
+  masteryScore: z.number().min(0).max(1).nullable(),
+  targetMasteryScore: z.number().min(0).max(1)
+});
+
+export const recommendedActivitySchema = z.object({
+  activityVersionId: uuidSchema,
+  activityId: uuidSchema,
+  slug: resourceSlugSchema,
+  activityType: activityTypeSchema,
+  title: z.string().trim().min(1).max(200)
+});
+
+export const recommendationReasonCodeSchema = z.enum([
+  "focus_skill_unobserved",
+  "focus_skill_below_target"
+]);
+
+export const recommendationReasonSchema = z.object({
+  code: recommendationReasonCodeSchema,
+  attemptCount: z.number().int().nonnegative()
+});
+
+const recommendationContextShape = {
+  enrollmentId: uuidSchema,
+  offeringId: uuidSchema,
+  courseVersionId: uuidSchema,
+  policy: recommendationPolicySchema
+};
+
+export const recommendedNextLearningActionSchema = z.object({
+  status: z.literal("recommended"),
+  ...recommendationContextShape,
+  recommendation: z.object({
+    kind: z.literal("activity"),
+    activity: recommendedActivitySchema,
+    focusSkill: recommendationFocusSkillSchema,
+    reason: recommendationReasonSchema
+  })
+});
+
+export const masteryTargetMetRecommendationSchema = z.object({
+  status: z.literal("mastery_target_met"),
+  ...recommendationContextShape,
+  recommendation: z.null()
+});
+
+export const noPracticeActivityRecommendationSchema = z.object({
+  status: z.literal("no_practice_activity_available"),
+  ...recommendationContextShape,
+  focusSkill: recommendationFocusSkillSchema,
+  reason: z.object({
+    code: z.literal("no_practice_activity_available")
+  }),
+  recommendation: z.null()
+});
+
+export const nextLearningRecommendationSchema = z.discriminatedUnion("status", [
+  recommendedNextLearningActionSchema,
+  masteryTargetMetRecommendationSchema,
+  noPracticeActivityRecommendationSchema
+]);
+
+export type RecommendationPolicy = z.infer<typeof recommendationPolicySchema>;
+export type RecommendationFocusSkill = z.infer<
+  typeof recommendationFocusSkillSchema
+>;
+export type RecommendedActivity = z.infer<typeof recommendedActivitySchema>;
+export type RecommendationReasonCode = z.infer<
+  typeof recommendationReasonCodeSchema
+>;
+export type RecommendationReason = z.infer<typeof recommendationReasonSchema>;
+export type RecommendedNextLearningAction = z.infer<
+  typeof recommendedNextLearningActionSchema
+>;
+export type MasteryTargetMetRecommendation = z.infer<
+  typeof masteryTargetMetRecommendationSchema
+>;
+export type NoPracticeActivityRecommendation = z.infer<
+  typeof noPracticeActivityRecommendationSchema
+>;
+export type NextLearningRecommendation = z.infer<
+  typeof nextLearningRecommendationSchema
+>;

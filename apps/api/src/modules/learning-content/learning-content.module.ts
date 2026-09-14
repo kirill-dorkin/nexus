@@ -3,6 +3,7 @@ import { Module } from "@nestjs/common";
 import { OutboxModule } from "../../outbox/outbox.module";
 import { AuthorizationModule } from "../authorization/authorization.module";
 import { IdentityModule } from "../identity/identity.module";
+import { LearningContentQuery } from "./application/learning-content.query";
 import { LearningContentRepository } from "./application/learning-content.repository";
 import { LearningContentApplicationService } from "./application/learning-content.service";
 import { LearningGraphRepository } from "./application/learning-graph.repository";
@@ -19,6 +20,10 @@ import { SkillsController } from "./skills.controller";
     LearningContentApplicationService,
     LearningGraphApplicationService,
     {
+      provide: LearningContentQuery,
+      useExisting: LearningGraphApplicationService
+    },
+    {
       provide: LearningContentRepository,
       useClass: PostgresLearningContentRepository
     },
@@ -27,6 +32,10 @@ import { SkillsController } from "./skills.controller";
       useClass: PostgresLearningGraphRepository
     }
   ],
-  exports: [LearningContentApplicationService, LearningGraphApplicationService]
+  exports: [
+    LearningContentApplicationService,
+    LearningGraphApplicationService,
+    LearningContentQuery
+  ]
 })
 export class LearningContentModule {}

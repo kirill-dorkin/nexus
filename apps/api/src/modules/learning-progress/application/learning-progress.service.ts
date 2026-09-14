@@ -10,6 +10,7 @@ import type {
   CreateEvidenceRequest,
   Evidence
 } from "@platform/contracts";
+import type { DatabaseTransaction } from "@platform/database";
 
 import { DatabaseService } from "../../../database/database.service";
 import { OutboxRepository } from "../../../outbox/outbox.repository";
@@ -18,6 +19,7 @@ import { AuthorizationApplicationService } from "../../authorization/application
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { LearningGraphApplicationService } from "../../learning-content/application/learning-graph.service";
 import { LearningDeliveryApplicationService } from "../../learning-delivery/application/learning-delivery.service";
+import type { ActivityAttemptCount } from "./learning-progress.query";
 import { LearningProgressRepository } from "./learning-progress.repository";
 import { MasteryApplicationService } from "./mastery.service";
 
@@ -184,5 +186,19 @@ export class LearningProgressApplicationService {
 
       return evidence;
     });
+  }
+
+  listActivityAttemptCounts(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    enrollmentId: string,
+    activityVersionIds: readonly string[]
+  ): Promise<readonly ActivityAttemptCount[]> {
+    return this.progress.listActivityAttemptCounts(
+      transaction,
+      organizationId,
+      enrollmentId,
+      activityVersionIds
+    );
   }
 }
