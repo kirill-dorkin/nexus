@@ -1,0 +1,42 @@
+import { describe, expect, it } from "vitest";
+
+import {
+  AuthorizationPolicy,
+  type AuthorizationScope,
+  type RoleAssignmentScope
+} from "./authorization.policy";
+
+const offeringScope: AuthorizationScope = {
+  organizationId: "org-a",
+  type: "offering",
+  id: "offering-a"
+};
+
+function role(roleKey: RoleAssignmentScope["roleKey"]): RoleAssignmentScope {
+  return {
+    organizationId: "org-a",
+    roleKey,
+    type: "organization",
+    id: "org-a"
+  };
+}
+
+describe("learning-loop authorization", () => {
+  const policy = new AuthorizationPolicy();
+
+  it("lets an enrolled learner submit attempts but not manufacture evidence", () => {
+    expect(policy.allows([role("learner")], "attempt.submit", offeringScope)).toBe(true);
+    expect(policy.allows([role("learner")], "evidence.record", offeringScope)).toBe(false);
+  });
+
+  it("lets instructors record evidence and manage the learning graph", () => {
+    expect(policy.allows([role("instructor")], "evidence.record", offeringScope)).toBe(true);
+    expect(
+      policy.allows([role("instructor")], "activity.manage", {
+        organizationId: "org-a",
+        type: "course",
+        id: "course-a"
+      })
+    ).toBe(true);
+  });
+});
