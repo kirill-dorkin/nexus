@@ -40,6 +40,14 @@ export const evidenceSchema = z.object({
 
 export const startAttemptRequestSchema = z.object({}).strict();
 
+// Transitional compatibility command. Omitting submission starts an Attempt only;
+// supplying submission atomically starts the Attempt and creates its Submission.
+export const createAttemptRequestSchema = z
+  .object({
+    submission: jsonObjectSchema.optional()
+  })
+  .strict();
+
 export const createSubmissionRequestSchema = z
   .object({
     payload: jsonObjectSchema
@@ -57,5 +65,6 @@ export type Attempt = z.infer<typeof attemptSchema>;
 export type Submission = z.infer<typeof submissionSchema>;
 export type Evidence = z.infer<typeof evidenceSchema>;
 export type StartAttemptRequest = z.infer<typeof startAttemptRequestSchema>;
+export type CreateAttemptRequest = z.infer<typeof createAttemptRequestSchema>;
 export type CreateSubmissionRequest = z.infer<typeof createSubmissionRequestSchema>;
 export type CreateEvidenceRequest = z.infer<typeof createEvidenceRequestSchema>;
