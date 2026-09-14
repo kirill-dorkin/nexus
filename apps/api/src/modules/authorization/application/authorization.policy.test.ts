@@ -98,6 +98,24 @@ describe("AuthorizationPolicy", () => {
     })).toBe(false);
   });
 
+  it("separates recommendation self-read from other-learner visibility", () => {
+    const learner = assignment({ roleKey: "learner" });
+    const mentor = assignment({ roleKey: "mentor" });
+    const offeringScope: AuthorizationScope = {
+      organizationId: "org-a",
+      type: "offering",
+      id: "offering-a"
+    };
+
+    expect(policy.allows([learner], "recommendation.read", offeringScope)).toBe(true);
+    expect(
+      policy.allows([learner], "recommendation.read_others", offeringScope)
+    ).toBe(false);
+    expect(
+      policy.allows([mentor], "recommendation.read_others", offeringScope)
+    ).toBe(true);
+  });
+
   it("reserves owner assignment for organization owners", () => {
     expect(
       policy.allows(
