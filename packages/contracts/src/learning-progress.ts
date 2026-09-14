@@ -13,7 +13,15 @@ export const attemptSchema = z.object({
   enrollmentId: uuidSchema,
   activityVersionId: uuidSchema,
   attemptNumber: z.number().int().positive(),
-  submission: jsonObjectSchema,
+  startedAt: z.string().datetime()
+});
+
+export const submissionSchema = z.object({
+  id: uuidSchema,
+  organizationId: uuidSchema,
+  attemptId: uuidSchema,
+  payload: jsonObjectSchema,
+  submittedByUserId: uuidSchema,
   submittedAt: z.string().datetime()
 });
 
@@ -21,6 +29,7 @@ export const evidenceSchema = z.object({
   id: uuidSchema,
   organizationId: uuidSchema,
   attemptId: uuidSchema,
+  submissionId: uuidSchema,
   skillId: uuidSchema,
   kind: evidenceKindSchema,
   score: z.number().min(0).max(1).nullable(),
@@ -29,9 +38,13 @@ export const evidenceSchema = z.object({
   createdAt: z.string().datetime()
 });
 
-export const createAttemptRequestSchema = z.object({
-  submission: jsonObjectSchema.optional()
-});
+export const startAttemptRequestSchema = z.object({}).strict();
+
+export const createSubmissionRequestSchema = z
+  .object({
+    payload: jsonObjectSchema
+  })
+  .strict();
 
 export const createEvidenceRequestSchema = z.object({
   skillId: uuidSchema,
@@ -41,6 +54,8 @@ export const createEvidenceRequestSchema = z.object({
 });
 
 export type Attempt = z.infer<typeof attemptSchema>;
+export type Submission = z.infer<typeof submissionSchema>;
 export type Evidence = z.infer<typeof evidenceSchema>;
-export type CreateAttemptRequest = z.infer<typeof createAttemptRequestSchema>;
+export type StartAttemptRequest = z.infer<typeof startAttemptRequestSchema>;
+export type CreateSubmissionRequest = z.infer<typeof createSubmissionRequestSchema>;
 export type CreateEvidenceRequest = z.infer<typeof createEvidenceRequestSchema>;
