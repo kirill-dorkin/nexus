@@ -40,4 +40,10 @@ export abstract class LearningDeliveryRepository {
     transaction: DatabaseTransaction,
     enrollment: NewEnrollment
   ): Promise<Enrollment>;
+
+  abstract findEnrollment(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    enrollmentId: string
+  ): Promise<Enrollment | null>;
 }
