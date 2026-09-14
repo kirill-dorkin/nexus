@@ -2,9 +2,9 @@ import { randomUUID } from "node:crypto";
 
 import {
   createDatabasePool,
-  withTenantTransaction
+  withTenantTransaction,
+  type DatabasePool
 } from "@platform/database";
-import type { Pool } from "pg";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 function requireEnv(name: string): string {
@@ -39,11 +39,11 @@ type RevisionRow = Readonly<{
   changed_by_user_id: string | null;
 }>;
 
-let migrationPool: Pool;
-let appPool: Pool;
+let migrationPool: DatabasePool;
+let appPool: DatabasePool;
 let fixture: Fixture | undefined;
 
-async function nextUuid(pool: Pool): Promise<string> {
+async function nextUuid(pool: DatabasePool): Promise<string> {
   const result = await pool.query<{ id: string }>("SELECT uuidv7()::text AS id");
   const id = result.rows[0]?.id;
   if (id === undefined) {
@@ -358,7 +358,7 @@ describe("delivery history hardening", () => {
         `UPDATE learning_delivery.sessions
             SET course_run_id = $1
           WHERE organization_id = $2 AND id = $3`,
-        [f.courseRunId, f.organizationId, f.sessionId]
+        [f.groupSetId, f.organizationId, f.sessionId]
       )
     ).rejects.toMatchObject({ code: "55000" });
 
