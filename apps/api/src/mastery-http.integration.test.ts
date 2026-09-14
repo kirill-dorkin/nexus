@@ -195,12 +195,19 @@ describe("Mastery projection and recomputation HTTP lifecycle", () => {
 
     const attempt = await migrationPool.query<IdRow>(
       `INSERT INTO learning_progress.attempts
-         (organization_id, enrollment_id, activity_version_id, attempt_number, submission)
-       VALUES ($1, $2, $3, 1, '{}'::jsonb)
+         (organization_id, enrollment_id, activity_version_id, attempt_number)
+       VALUES ($1, $2, $3, 1)
        RETURNING id::text`,
       [organizationId, enrollmentId, activityVersionId]
     );
     attemptId = attempt.rows[0]?.id ?? "";
+
+    await migrationPool.query(
+      `INSERT INTO learning_progress.submissions
+         (organization_id, attempt_id, payload, submitted_by_user_id)
+       VALUES ($1, $2, '{}'::jsonb, $3)`,
+      [organizationId, attemptId, learnerUserId]
+    );
 
     app = await createApiApplication();
     app.getHttpAdapter()
