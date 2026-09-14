@@ -122,6 +122,8 @@ Database triggers remain the final invariant boundary, but `platform_app` also f
 
 Runtime UPDATE grants are restricted to lifecycle or presentation columns that the model intentionally permits. Structural identity columns stay migration-owned and are independently protected by triggers. This prevents a future repository method, ad-hoc query, or compromised application path from bypassing aggregate boundaries merely because the SQL role had broad table permissions.
 
+The hardening migrations are intentionally additive (`000011` and `000012`) rather than edits to `000010`. That keeps a database which already applied the original Session/Attendance migration on a valid forward-only migration path.
+
 ### 9. Authorization remains at the Offering boundary
 
 Session and Attendance operations reuse existing `offering.read` and `offering.manage` capabilities at the parent Offering scope.
