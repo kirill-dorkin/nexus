@@ -132,7 +132,7 @@ export class PostgresAssignmentRepository extends AssignmentRepository {
     organizationId: string,
     assignmentId: string,
     cancelledByUserId: string
-  ): Promise<Assignment> {
+  ): Promise<Assignment | null> {
     const result = await transaction.client.query<AssignmentRow>(
       `UPDATE learning_delivery.assignments
           SET cancelled_at = now(),
@@ -144,18 +144,6 @@ export class PostgresAssignmentRepository extends AssignmentRepository {
       [organizationId, assignmentId, cancelledByUserId]
     );
     const updated = result.rows[0];
-    if (updated !== undefined) {
-      return mapAssignment(updated);
-    }
-
-    const existing = await this.findAssignment(
-      transaction,
-      organizationId,
-      assignmentId
-    );
-    if (existing === null) {
-      throw new Error("Assignment disappeared during cancellation.");
-    }
-    return existing;
+    return updated === undefined ? null : mapAssignment(updated);
   }
 }
