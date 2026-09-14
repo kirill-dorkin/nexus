@@ -19,7 +19,7 @@ That conflation prevents a runner from having a durable started-but-not-yet-subm
 
 ### 1. Attempt starts before Submission
 
-An Attempt is created for one active Enrollment and one exact ActivityVersion. It receives its attempt number at start time and records `started_at`.
+An Attempt is created for one active Enrollment and one exact ActivityVersion. It receives its attempt number at start time and uses the Attempt creation timestamp as `startedAt`.
 
 Attempt remains append-only. Retry continues to mean a new Attempt with the next attempt number; an existing Attempt is never reset or reused.
 
@@ -36,6 +36,8 @@ Submission records the submitting learner and submission time. PostgreSQL indepe
 Rows created before this ADR already contain legacy `submission` and `submitted_at` columns. Migration creates one Submission for every historical Attempt using those values, then makes the legacy columns nullable for compatibility during the transition.
 
 New application writes use the dedicated Submission table. The legacy Attempt columns are no longer the source of truth and may be removed only in a later compatibility cleanup migration.
+
+For one transition window, the existing create-Attempt command may still carry `submission`. The application then atomically creates the Attempt and its dedicated Submission. New runner flows should start the Attempt without that field and submit through the explicit Submission endpoint.
 
 ### 4. Evidence requires a Submission
 
@@ -55,7 +57,7 @@ The transactional outbox emits:
 - `submission.submitted` when its immutable Submission is created;
 - `evidence.recorded` when normalized Evidence is appended.
 
-The previous `attempt.submitted` event represented the conflated model and is not emitted for new writes after this ADR. Historical outbox rows remain immutable.
+The previous `attempt.submitted` event represented the conflated model. It remains a deprecated compatibility alias during this transition slice and carries the new `submissionId`; new consumers must use `submission.submitted`. Historical outbox rows remain immutable.
 
 ### 7. Assignment gating and validators remain subsequent F4 policy
 
