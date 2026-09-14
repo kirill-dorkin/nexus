@@ -5,7 +5,10 @@ import {
   createAttemptRequestSchema,
   createCourseVersionActivityRequestSchema,
   createEvidenceRequestSchema,
-  createSkillRequestSchema
+  createSkillRequestSchema,
+  createSubmissionRequestSchema,
+  startAttemptRequestSchema,
+  submissionSchema
 } from "./index";
 
 const skillId = "01994f13-8de0-7a11-8d5f-1e8c5526f001";
@@ -13,6 +16,8 @@ const organizationId = "01994f13-8de0-7a11-8d5f-1e8c5526f002";
 const courseVersionId = "01994f13-8de0-7a11-8d5f-1e8c5526f003";
 const activityId = "01994f13-8de0-7a11-8d5f-1e8c5526f004";
 const activityVersionId = "01994f13-8de0-7a11-8d5f-1e8c5526f005";
+const attemptId = "01994f13-8de0-7a11-8d5f-1e8c5526f006";
+const submissionId = "01994f13-8de0-7a11-8d5f-1e8c5526f007";
 
 describe("learning loop contracts", () => {
   it("keeps activity types package-extensible instead of hard-coding a curriculum", () => {
@@ -37,13 +42,37 @@ describe("learning loop contracts", () => {
     ).toBe(false);
   });
 
-  it("accepts compact structured attempts and scored evidence", () => {
+  it("separates starting an attempt from committing its immutable submission", () => {
+    expect(startAttemptRequestSchema.parse({})).toEqual({});
+    expect(startAttemptRequestSchema.safeParse({ payload: {} }).success).toBe(false);
+
+    expect(
+      createSubmissionRequestSchema.parse({
+        payload: { answer: "grid-template-columns" }
+      }).payload
+    ).toEqual({ answer: "grid-template-columns" });
+
+    expect(
+      submissionSchema.parse({
+        id: submissionId,
+        organizationId,
+        attemptId,
+        payload: { answer: "grid-template-columns" },
+        submittedByUserId: skillId,
+        submittedAt: "2026-09-14T18:00:00.000Z"
+      }).attemptId
+    ).toBe(attemptId);
+  });
+
+  it("keeps the old atomic create-and-submit command during the transition window", () => {
     expect(
       createAttemptRequestSchema.parse({
         submission: { answer: "grid-template-columns" }
       }).submission
     ).toEqual({ answer: "grid-template-columns" });
+  });
 
+  it("accepts scored evidence", () => {
     expect(
       createEvidenceRequestSchema.parse({
         skillId,
