@@ -656,7 +656,7 @@ describe("assignment HTTP lifecycle", () => {
         WHERE organization_id = $1
           AND aggregate_type = 'assignment'
           AND aggregate_id = $2
-        ORDER BY created_at, id`,
+        ORDER BY occurred_at, id`,
       [organizationId, offeringAssignmentId]
     );
     expect(events.rows.map((row) => row.event_name)).toEqual([
