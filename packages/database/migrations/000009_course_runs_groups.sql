@@ -1,10 +1,6 @@
 -- Instructor-led delivery execution and grouping foundation.
 -- Enrollment remains offering participation; runs/groups organize delivery without creating access.
 
-ALTER TABLE learning_delivery.enrollments
-  ADD CONSTRAINT enrollments_organization_id_id_key
-  UNIQUE (organization_id, id);
-
 CREATE TABLE learning_delivery.course_runs (
   id uuid PRIMARY KEY DEFAULT uuidv7(),
   organization_id uuid NOT NULL
