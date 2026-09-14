@@ -13,8 +13,8 @@
 | `Concept` | Термин/идея предметной области; отвечает «что это?». |
 | `Misconception` | Типичная устойчивая неправильная mental model. |
 | `ActivityVersion` | Конкретная версия учебной активности и её validators/policies. |
-| `Attempt` | Одна историческая попытка пройти конкретную `ActivityVersion`; retry создаёт новый Attempt. |
-| `Submission` | Immutable artifact/answer, отправленный в рамках Attempt. |
+| `Attempt` | Одна историческая попытка пройти конкретную `ActivityVersion`; начинается до отправки ответа, а retry создаёт новый Attempt. |
+| `Submission` | Immutable artifact/answer, который ученик фиксирует в рамках одного Attempt. Не является самим Attempt. |
 | `LearningEvent` | Append-only значимое учебное событие. Не является telemetry. |
 | `LearningEvidence` | Нормализованное доказательство по конкретному skill и source. |
 | `MasteryModelVersion` | Версия алгоритма/параметров расчёта mastery. |
