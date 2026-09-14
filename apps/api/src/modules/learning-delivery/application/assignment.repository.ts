@@ -34,5 +34,5 @@ export abstract class AssignmentRepository {
     organizationId: string,
     assignmentId: string,
     cancelledByUserId: string
-  ): Promise<Assignment>;
+  ): Promise<Assignment | null>;
 }
