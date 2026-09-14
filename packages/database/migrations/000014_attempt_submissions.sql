@@ -16,7 +16,7 @@ CREATE TABLE learning_progress.submissions (
   submitted_at timestamptz NOT NULL DEFAULT now(),
   FOREIGN KEY (organization_id, attempt_id)
     REFERENCES learning_progress.attempts(organization_id, id)
-    ON DELETE RESTRICT,
+    ON DELETE CASCADE,
   UNIQUE (attempt_id),
   UNIQUE (organization_id, id),
   UNIQUE (organization_id, id, attempt_id)
@@ -128,6 +128,37 @@ ALTER TABLE learning_progress.evidence
     FOREIGN KEY (organization_id, submission_id, attempt_id)
     REFERENCES learning_progress.submissions(organization_id, id, attempt_id)
     ON DELETE RESTRICT;
+
+CREATE OR REPLACE FUNCTION learning_progress.require_evidence_submission()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY INVOKER
+SET search_path = pg_catalog
+AS $$
+BEGIN
+  IF NEW.submission_id IS NULL THEN
+    SELECT submission.id
+      INTO NEW.submission_id
+      FROM learning_progress.submissions AS submission
+     WHERE submission.organization_id = NEW.organization_id
+       AND submission.attempt_id = NEW.attempt_id;
+  END IF;
+
+  IF NEW.submission_id IS NULL THEN
+    RAISE EXCEPTION USING
+      ERRCODE = '23514',
+      MESSAGE = 'evidence requires a submitted attempt';
+  END IF;
+
+  RETURN NEW;
+END
+$$;
+
+REVOKE ALL ON FUNCTION learning_progress.require_evidence_submission() FROM PUBLIC;
+
+CREATE TRIGGER evidence_require_submission
+BEFORE INSERT ON learning_progress.evidence
+FOR EACH ROW EXECUTE FUNCTION learning_progress.require_evidence_submission();
 
 CREATE INDEX submissions_attempt_idx
   ON learning_progress.submissions (organization_id, attempt_id, submitted_at, id);
