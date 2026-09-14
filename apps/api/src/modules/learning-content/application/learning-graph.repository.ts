@@ -51,6 +51,12 @@ export abstract class LearningGraphRepository {
     skillId: string
   ): Promise<CourseVersionSkill | null>;
 
+  abstract listCourseVersionSkills(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseVersionId: string
+  ): Promise<readonly CourseVersionSkill[]>;
+
   abstract createActivity(
     transaction: DatabaseTransaction,
     activity: NewCourseVersionActivity
@@ -62,6 +68,12 @@ export abstract class LearningGraphRepository {
     courseVersionId: string,
     activityId: string
   ): Promise<CourseVersionActivity | null>;
+
+  abstract listCourseVersionActivities(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseVersionId: string
+  ): Promise<readonly CourseVersionActivity[]>;
 
   abstract activityAssessesSkill(
     transaction: DatabaseTransaction,

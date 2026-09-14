@@ -5,8 +5,10 @@ import { AuthorizationModule } from "../authorization/authorization.module";
 import { IdentityModule } from "../identity/identity.module";
 import { LearningContentModule } from "../learning-content/learning-content.module";
 import { LearningDeliveryModule } from "../learning-delivery/learning-delivery.module";
+import { LearningProgressQuery } from "./application/learning-progress.query";
 import { LearningProgressRepository } from "./application/learning-progress.repository";
 import { LearningProgressApplicationService } from "./application/learning-progress.service";
+import { MasteryQuery } from "./application/mastery.query";
 import { MasteryRepository } from "./application/mastery.repository";
 import { MasteryApplicationService } from "./application/mastery.service";
 import { PostgresLearningProgressRepository } from "./infrastructure/postgres-learning-progress.repository";
@@ -27,6 +29,14 @@ import { MasteryController } from "./mastery.controller";
     LearningProgressApplicationService,
     MasteryApplicationService,
     {
+      provide: LearningProgressQuery,
+      useExisting: LearningProgressApplicationService
+    },
+    {
+      provide: MasteryQuery,
+      useExisting: MasteryApplicationService
+    },
+    {
       provide: LearningProgressRepository,
       useClass: PostgresLearningProgressRepository
     },
@@ -35,6 +45,10 @@ import { MasteryController } from "./mastery.controller";
       useClass: PostgresMasteryRepository
     }
   ],
-  exports: [MasteryApplicationService]
+  exports: [
+    MasteryApplicationService,
+    LearningProgressQuery,
+    MasteryQuery
+  ]
 })
 export class LearningProgressModule {}

@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import type { Attempt, Evidence } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
+import type { ActivityAttemptCount } from "../application/learning-progress.query";
 import {
   LearningProgressRepository,
   type AttemptContext,
@@ -22,6 +23,11 @@ type AttemptRow = {
 type AttemptContextRow = AttemptRow & {
   offering_id: string;
   learner_user_id: string;
+};
+
+type ActivityAttemptCountRow = {
+  activity_version_id: string;
+  attempt_count: number;
 };
 
 type EvidenceRow = {
@@ -144,6 +150,34 @@ export class PostgresLearningProgressRepository extends LearningProgressReposito
       offeringId: row.offering_id,
       learnerUserId: row.learner_user_id
     };
+  }
+
+  async listActivityAttemptCounts(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    enrollmentId: string,
+    activityVersionIds: readonly string[]
+  ): Promise<readonly ActivityAttemptCount[]> {
+    if (activityVersionIds.length === 0) {
+      return [];
+    }
+
+    const result = await transaction.client.query<ActivityAttemptCountRow>(
+      `SELECT activity_version_id::text,
+              count(*)::integer AS attempt_count
+         FROM learning_progress.attempts
+        WHERE organization_id = $1
+          AND enrollment_id = $2
+          AND activity_version_id = ANY($3::uuid[])
+        GROUP BY activity_version_id
+        ORDER BY activity_version_id`,
+      [organizationId, enrollmentId, [...activityVersionIds]]
+    );
+
+    return result.rows.map((row) => ({
+      activityVersionId: row.activity_version_id,
+      attemptCount: row.attempt_count
+    }));
   }
 
   async createEvidence(

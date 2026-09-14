@@ -19,6 +19,7 @@ import { OutboxRepository } from "../../../outbox/outbox.repository";
 import { RequestContextService } from "../../../request-context/request-context.service";
 import { AuthorizationApplicationService } from "../../authorization/application/authorization.service";
 import { IdentityApplicationService } from "../../identity/application/identity.service";
+import type { PublishedLearningGraph } from "./learning-content.query";
 import { LearningContentRepository } from "./learning-content.repository";
 import { LearningGraphRepository } from "./learning-graph.repository";
 
@@ -290,6 +291,39 @@ export class LearningGraphApplicationService {
       activityVersionId,
       skillId
     );
+  }
+
+  async requirePublishedLearningGraph(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseVersionId: string
+  ): Promise<PublishedLearningGraph> {
+    const version = await this.content.findVersion(
+      transaction,
+      organizationId,
+      courseVersionId
+    );
+    if (version === null) {
+      throw new NotFoundException("Course version not found.");
+    }
+    if (version.status !== "published") {
+      throw new ConflictException(
+        "Adaptive sequencing requires a published course version."
+      );
+    }
+
+    const skills = await this.graph.listCourseVersionSkills(
+      transaction,
+      organizationId,
+      courseVersionId
+    );
+    const activities = await this.graph.listCourseVersionActivities(
+      transaction,
+      organizationId,
+      courseVersionId
+    );
+
+    return { skills, activities };
   }
 
   private async requireDraftVersion(

@@ -95,6 +95,18 @@ export class MasteryApplicationService {
     );
   }
 
+  listUserMastery(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userId: string
+  ): Promise<readonly MasteryProjection[]> {
+    return this.mastery.listUserProjections(
+      transaction,
+      organizationId,
+      userId
+    );
+  }
+
   async getUserMastery(
     organizationId: string,
     userId: string
@@ -110,7 +122,7 @@ export class MasteryApplicationService {
         organizationScope(organizationId)
       );
 
-      return this.mastery.listUserProjections(
+      return this.listUserMastery(
         transaction,
         organizationId,
         userId
