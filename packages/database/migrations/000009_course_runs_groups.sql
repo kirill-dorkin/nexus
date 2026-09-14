@@ -178,10 +178,11 @@ BEGIN
    WHERE organization_id = NEW.organization_id
      AND id = NEW.enrollment_id;
 
-  IF persisted_enrollment_status IS DISTINCT FROM 'active' THEN
+  IF NEW.ended_at IS NULL
+     AND persisted_enrollment_status IS DISTINCT FROM 'active' THEN
     RAISE EXCEPTION USING
       ERRCODE = '23514',
-      MESSAGE = 'group membership requires an active enrollment';
+      MESSAGE = 'active group membership requires an active enrollment';
   END IF;
 
   IF persisted_enrollment_offering_id IS DISTINCT FROM run_offering_id THEN
