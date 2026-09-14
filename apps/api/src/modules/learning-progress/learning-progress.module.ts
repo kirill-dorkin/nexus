@@ -7,8 +7,12 @@ import { LearningContentModule } from "../learning-content/learning-content.modu
 import { LearningDeliveryModule } from "../learning-delivery/learning-delivery.module";
 import { LearningProgressRepository } from "./application/learning-progress.repository";
 import { LearningProgressApplicationService } from "./application/learning-progress.service";
+import { MasteryRepository } from "./application/mastery.repository";
+import { MasteryApplicationService } from "./application/mastery.service";
 import { PostgresLearningProgressRepository } from "./infrastructure/postgres-learning-progress.repository";
+import { PostgresMasteryRepository } from "./infrastructure/postgres-mastery.repository";
 import { LearningProgressController } from "./learning-progress.controller";
+import { MasteryController } from "./mastery.controller";
 
 @Module({
   imports: [
@@ -18,13 +22,19 @@ import { LearningProgressController } from "./learning-progress.controller";
     LearningContentModule,
     LearningDeliveryModule
   ],
-  controllers: [LearningProgressController],
+  controllers: [LearningProgressController, MasteryController],
   providers: [
     LearningProgressApplicationService,
+    MasteryApplicationService,
     {
       provide: LearningProgressRepository,
       useClass: PostgresLearningProgressRepository
+    },
+    {
+      provide: MasteryRepository,
+      useClass: PostgresMasteryRepository
     }
-  ]
+  ],
+  exports: [MasteryApplicationService]
 })
 export class LearningProgressModule {}

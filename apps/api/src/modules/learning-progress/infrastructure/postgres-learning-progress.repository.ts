@@ -19,7 +19,10 @@ type AttemptRow = {
   submitted_at: Date;
 };
 
-type AttemptContextRow = AttemptRow & { offering_id: string };
+type AttemptContextRow = AttemptRow & {
+  offering_id: string;
+  learner_user_id: string;
+};
 
 type EvidenceRow = {
   id: string;
@@ -121,7 +124,9 @@ export class PostgresLearningProgressRepository extends LearningProgressReposito
     attemptId: string
   ): Promise<AttemptContext | null> {
     const result = await transaction.client.query<AttemptContextRow>(
-      `SELECT ${attemptSelect}, enrollment.offering_id::text
+      `SELECT ${attemptSelect},
+              enrollment.offering_id::text,
+              enrollment.user_id::text AS learner_user_id
          FROM learning_progress.attempts AS attempt
          JOIN learning_delivery.enrollments AS enrollment
            ON enrollment.organization_id = attempt.organization_id
@@ -136,7 +141,8 @@ export class PostgresLearningProgressRepository extends LearningProgressReposito
     }
     return {
       attempt: mapAttempt(row),
-      offeringId: row.offering_id
+      offeringId: row.offering_id,
+      learnerUserId: row.learner_user_id
     };
   }
 
