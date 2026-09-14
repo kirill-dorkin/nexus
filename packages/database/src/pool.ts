@@ -1,5 +1,7 @@
 import { Pool, type PoolConfig } from "pg";
 
+export type DatabasePool = Pool;
+
 export type DatabasePoolOptions = Readonly<{
   applicationName?: string;
   maxConnections?: number;
@@ -10,7 +12,7 @@ export type DatabasePoolOptions = Readonly<{
 export function createDatabasePool(
   connectionString: string,
   options: DatabasePoolOptions = {}
-): Pool {
+): DatabasePool {
   if (connectionString.trim().length === 0) {
     throw new Error("Database connection string must not be empty.");
   }

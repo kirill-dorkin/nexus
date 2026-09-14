@@ -4,6 +4,8 @@ import {
   NotFoundException
 } from "@nestjs/common";
 import type {
+  Attendance,
+  CorrectAttendanceRequest,
   CourseRun,
   CreateCourseRunRequest,
   CreateDeliveryGroupRequest,
@@ -11,11 +13,14 @@ import type {
   CreateGroupMembershipRequest,
   CreateGroupSetRequest,
   CreateLearningOfferingRequest,
+  CreateSessionRequest,
   DeliveryGroup,
   Enrollment,
   GroupMembership,
   GroupSet,
-  LearningOffering
+  LearningOffering,
+  RecordAttendanceRequest,
+  Session
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
@@ -595,6 +600,339 @@ export class LearningDeliveryApplicationService {
       }
       throw error;
     }
+  }
+
+  async createSession(
+    organizationId: string,
+    offeringId: string,
+    courseRunId: string,
+    command: CreateSessionRequest
+  ): Promise<Session> {
+    const context = this.requestContext.tenantContext(organizationId);
+    const sessionId = await this.database.nextUuid();
+
+    try {
+      return await this.database.tenantTransaction(context, async (transaction) => {
+        await this.identity.requireActiveUser(transaction, context.userId);
+        await this.authorization.requireCapability(
+          transaction,
+          context.userId,
+          "offering.manage",
+          offeringScope(organizationId, offeringId)
+        );
+
+        const courseRun = await this.delivery.findCourseRun(
+          transaction,
+          organizationId,
+          courseRunId
+        );
+        if (courseRun === null || courseRun.offeringId !== offeringId) {
+          throw new NotFoundException("Course run not found.");
+        }
+
+        if (
+          new Date(command.startsAt).getTime() < new Date(courseRun.startsAt).getTime()
+        ) {
+          throw new ConflictException("Session cannot start before its course run.");
+        }
+        if (
+          new Date(command.endsAt).getTime() > new Date(courseRun.endsAt).getTime()
+        ) {
+          throw new ConflictException("Session cannot end after its course run.");
+        }
+
+        if (command.groupId !== null) {
+          const group = await this.delivery.findGroup(
+            transaction,
+            organizationId,
+            command.groupId
+          );
+          if (group === null) {
+            throw new NotFoundException("Group not found.");
+          }
+          const groupSet = await this.delivery.findGroupSet(
+            transaction,
+            organizationId,
+            group.groupSetId
+          );
+          if (groupSet === null || groupSet.courseRunId !== courseRunId) {
+            throw new NotFoundException("Group not found.");
+          }
+        }
+
+        const session = await this.delivery.createSession(transaction, {
+          id: sessionId,
+          organizationId,
+          courseRunId,
+          groupId: command.groupId,
+          slug: command.slug,
+          name: command.name,
+          startsAt: command.startsAt,
+          endsAt: command.endsAt,
+          createdByUserId: context.userId
+        });
+
+        await this.outbox.append(transaction, {
+          organizationId,
+          eventName: "session.created",
+          eventVersion: 1,
+          aggregateType: "session",
+          aggregateId: session.id,
+          actorUserId: context.userId,
+          payload: {
+            organizationId,
+            offeringId,
+            courseRunId,
+            sessionId: session.id,
+            groupId: session.groupId,
+            startsAt: session.startsAt,
+            endsAt: session.endsAt
+          }
+        });
+
+        return session;
+      });
+    } catch (error) {
+      if (isUniqueViolation(error)) {
+        throw new ConflictException(
+          "A session with this slug already exists in the course run."
+        );
+      }
+      throw error;
+    }
+  }
+
+  async getSession(
+    organizationId: string,
+    offeringId: string,
+    courseRunId: string,
+    sessionId: string
+  ): Promise<Session> {
+    const context = this.requestContext.tenantContext(organizationId);
+
+    return this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+      await this.authorization.requireCapability(
+        transaction,
+        context.userId,
+        "offering.read",
+        offeringScope(organizationId, offeringId)
+      );
+
+      const courseRun = await this.delivery.findCourseRun(
+        transaction,
+        organizationId,
+        courseRunId
+      );
+      if (courseRun === null || courseRun.offeringId !== offeringId) {
+        throw new NotFoundException("Course run not found.");
+      }
+
+      const session = await this.delivery.findSession(
+        transaction,
+        organizationId,
+        sessionId
+      );
+      if (session === null || session.courseRunId !== courseRunId) {
+        throw new NotFoundException("Session not found.");
+      }
+      return session;
+    });
+  }
+
+  async recordAttendance(
+    organizationId: string,
+    offeringId: string,
+    courseRunId: string,
+    sessionId: string,
+    command: RecordAttendanceRequest
+  ): Promise<Attendance> {
+    const context = this.requestContext.tenantContext(organizationId);
+    const attendanceId = await this.database.nextUuid();
+
+    try {
+      return await this.database.tenantTransaction(context, async (transaction) => {
+        await this.identity.requireActiveUser(transaction, context.userId);
+        await this.authorization.requireCapability(
+          transaction,
+          context.userId,
+          "offering.manage",
+          offeringScope(organizationId, offeringId)
+        );
+
+        const courseRun = await this.delivery.findCourseRun(
+          transaction,
+          organizationId,
+          courseRunId
+        );
+        if (courseRun === null || courseRun.offeringId !== offeringId) {
+          throw new NotFoundException("Course run not found.");
+        }
+
+        const session = await this.delivery.findSession(
+          transaction,
+          organizationId,
+          sessionId
+        );
+        if (session === null || session.courseRunId !== courseRunId) {
+          throw new NotFoundException("Session not found.");
+        }
+
+        const enrollment = await this.delivery.findEnrollment(
+          transaction,
+          organizationId,
+          command.enrollmentId
+        );
+        if (enrollment === null) {
+          throw new NotFoundException("Enrollment not found.");
+        }
+        if (enrollment.offeringId !== offeringId) {
+          throw new ConflictException(
+            "Attendance requires an enrollment from the session course run offering."
+          );
+        }
+        if (
+          new Date(enrollment.enrolledAt).getTime() >
+          new Date(session.startsAt).getTime()
+        ) {
+          throw new ConflictException(
+            "Attendance requires enrollment by the session start."
+          );
+        }
+
+        if (session.groupId !== null) {
+          const isGroupMember = await this.delivery.hasGroupMembershipAt(
+            transaction,
+            organizationId,
+            session.groupId,
+            enrollment.id,
+            session.startsAt
+          );
+          if (!isGroupMember) {
+            throw new ConflictException(
+              "Group-scoped attendance requires group membership at session start."
+            );
+          }
+        }
+
+        const attendance = await this.delivery.createAttendance(transaction, {
+          id: attendanceId,
+          organizationId,
+          sessionId,
+          enrollmentId: enrollment.id,
+          status: command.status,
+          recordedByUserId: context.userId
+        });
+
+        await this.outbox.append(transaction, {
+          organizationId,
+          eventName: "attendance.recorded",
+          eventVersion: 1,
+          aggregateType: "attendance",
+          aggregateId: attendance.id,
+          actorUserId: context.userId,
+          payload: {
+            organizationId,
+            offeringId,
+            courseRunId,
+            sessionId,
+            attendanceId: attendance.id,
+            enrollmentId: attendance.enrollmentId,
+            status: attendance.status
+          }
+        });
+
+        return attendance;
+      });
+    } catch (error) {
+      if (isUniqueViolation(error)) {
+        throw new ConflictException(
+          "Attendance is already recorded for this enrollment and session."
+        );
+      }
+      throw error;
+    }
+  }
+
+  async correctAttendance(
+    organizationId: string,
+    offeringId: string,
+    courseRunId: string,
+    sessionId: string,
+    attendanceId: string,
+    command: CorrectAttendanceRequest
+  ): Promise<Attendance> {
+    const context = this.requestContext.tenantContext(organizationId);
+
+    return this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+      await this.authorization.requireCapability(
+        transaction,
+        context.userId,
+        "offering.manage",
+        offeringScope(organizationId, offeringId)
+      );
+
+      const courseRun = await this.delivery.findCourseRun(
+        transaction,
+        organizationId,
+        courseRunId
+      );
+      if (courseRun === null || courseRun.offeringId !== offeringId) {
+        throw new NotFoundException("Course run not found.");
+      }
+
+      const session = await this.delivery.findSession(
+        transaction,
+        organizationId,
+        sessionId
+      );
+      if (session === null || session.courseRunId !== courseRunId) {
+        throw new NotFoundException("Session not found.");
+      }
+
+      const attendance = await this.delivery.findAttendance(
+        transaction,
+        organizationId,
+        attendanceId
+      );
+      if (attendance === null || attendance.sessionId !== sessionId) {
+        throw new NotFoundException("Attendance not found.");
+      }
+
+      if (attendance.status === command.status) {
+        return attendance;
+      }
+
+      const corrected = await this.delivery.updateAttendanceStatus(
+        transaction,
+        organizationId,
+        attendanceId,
+        command.status,
+        context.userId
+      );
+
+      await this.outbox.append(transaction, {
+        organizationId,
+        eventName: "attendance.corrected",
+        eventVersion: 1,
+        aggregateType: "attendance",
+        aggregateId: corrected.id,
+        actorUserId: context.userId,
+        payload: {
+          organizationId,
+          offeringId,
+          courseRunId,
+          sessionId,
+          attendanceId: corrected.id,
+          enrollmentId: corrected.enrollmentId,
+          previousStatus: attendance.status,
+          status: corrected.status
+        }
+      });
+
+      return corrected;
+    });
   }
 
   async requireActiveEnrollment(

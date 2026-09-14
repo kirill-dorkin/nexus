@@ -21,6 +21,12 @@ export const enrollmentStatusSchema = z.enum([
   "withdrawn",
   "cancelled"
 ]);
+export const attendanceStatusSchema = z.enum([
+  "present",
+  "absent",
+  "late",
+  "excused"
+]);
 
 const optionalDateTimeSchema = z.string().datetime().nullable();
 const deliveryNameSchema = z.string().trim().min(1).max(160);
@@ -139,6 +145,53 @@ export const createGroupMembershipRequestSchema = z.object({
   enrollmentId: uuidSchema
 });
 
+export const sessionSchema = z.object({
+  id: uuidSchema,
+  organizationId: uuidSchema,
+  courseRunId: uuidSchema,
+  groupId: uuidSchema.nullable(),
+  slug: resourceSlugSchema,
+  name: deliveryNameSchema,
+  startsAt: z.string().datetime(),
+  endsAt: z.string().datetime()
+});
+
+export const createSessionRequestSchema = z
+  .object({
+    groupId: uuidSchema.nullable().default(null),
+    slug: resourceSlugSchema,
+    name: deliveryNameSchema,
+    startsAt: z.string().datetime(),
+    endsAt: z.string().datetime()
+  })
+  .refine(
+    (value) =>
+      new Date(value.endsAt).getTime() > new Date(value.startsAt).getTime(),
+    {
+      message: "endsAt must be later than startsAt",
+      path: ["endsAt"]
+    }
+  );
+
+export const attendanceSchema = z.object({
+  id: uuidSchema,
+  organizationId: uuidSchema,
+  sessionId: uuidSchema,
+  enrollmentId: uuidSchema,
+  status: attendanceStatusSchema,
+  recordedAt: z.string().datetime(),
+  updatedAt: z.string().datetime()
+});
+
+export const recordAttendanceRequestSchema = z.object({
+  enrollmentId: uuidSchema,
+  status: attendanceStatusSchema
+});
+
+export const correctAttendanceRequestSchema = z.object({
+  status: attendanceStatusSchema
+});
+
 export type LearningOffering = z.infer<typeof learningOfferingSchema>;
 export type CreateLearningOfferingRequest = z.infer<
   typeof createLearningOfferingRequestSchema
@@ -159,3 +212,8 @@ export type GroupMembership = z.infer<typeof groupMembershipSchema>;
 export type CreateGroupMembershipRequest = z.infer<
   typeof createGroupMembershipRequestSchema
 >;
+export type Session = z.infer<typeof sessionSchema>;
+export type CreateSessionRequest = z.infer<typeof createSessionRequestSchema>;
+export type Attendance = z.infer<typeof attendanceSchema>;
+export type RecordAttendanceRequest = z.infer<typeof recordAttendanceRequestSchema>;
+export type CorrectAttendanceRequest = z.infer<typeof correctAttendanceRequestSchema>;
