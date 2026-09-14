@@ -19,6 +19,7 @@ import { IdentityApplicationService } from "../../identity/application/identity.
 import { LearningGraphApplicationService } from "../../learning-content/application/learning-graph.service";
 import { LearningDeliveryApplicationService } from "../../learning-delivery/application/learning-delivery.service";
 import { LearningProgressRepository } from "./learning-progress.repository";
+import { MasteryApplicationService } from "./mastery.service";
 
 function offeringScope(organizationId: string, offeringId: string) {
   return {
@@ -38,7 +39,8 @@ export class LearningProgressApplicationService {
     private readonly delivery: LearningDeliveryApplicationService,
     private readonly identity: IdentityApplicationService,
     private readonly authorization: AuthorizationApplicationService,
-    private readonly outbox: OutboxRepository
+    private readonly outbox: OutboxRepository,
+    private readonly mastery: MasteryApplicationService
   ) {}
 
   async submitAttempt(
@@ -155,6 +157,13 @@ export class LearningProgressApplicationService {
         payload: command.payload ?? {},
         recordedByUserId: context.userId
       });
+
+      await this.mastery.refreshSkillProjection(
+        transaction,
+        organizationId,
+        attemptContext.learnerUserId,
+        evidence.skillId
+      );
 
       await this.outbox.append(transaction, {
         organizationId,

@@ -23,6 +23,7 @@ export type NewEvidence = Readonly<{
 export type AttemptContext = Readonly<{
   attempt: Attempt;
   offeringId: string;
+  learnerUserId: string;
 }>;
 
 export abstract class LearningProgressRepository {
