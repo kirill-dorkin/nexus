@@ -6,6 +6,10 @@ export const learningOfferingDeliveryModeSchema = z.enum([
   "self_paced",
   "cohort"
 ]);
+export const learningOfferingAccessModeSchema = z.enum([
+  "membership",
+  "entitlement_required"
+]);
 export const learningOfferingStatusSchema = z.enum([
   "open",
   "closed",
@@ -27,6 +31,7 @@ export const learningOfferingSchema = z.object({
   slug: resourceSlugSchema,
   name: z.string().trim().min(1).max(160),
   deliveryMode: learningOfferingDeliveryModeSchema,
+  accessMode: learningOfferingAccessModeSchema,
   status: learningOfferingStatusSchema,
   startsAt: optionalDateTimeSchema,
   endsAt: optionalDateTimeSchema
@@ -38,6 +43,7 @@ export const createLearningOfferingRequestSchema = z
     slug: resourceSlugSchema,
     name: z.string().trim().min(1).max(160),
     deliveryMode: learningOfferingDeliveryModeSchema,
+    accessMode: learningOfferingAccessModeSchema.default("membership"),
     startsAt: z.string().datetime().optional(),
     endsAt: z.string().datetime().optional()
   })

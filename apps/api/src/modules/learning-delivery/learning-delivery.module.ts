@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 
 import { OutboxModule } from "../../outbox/outbox.module";
 import { AuthorizationModule } from "../authorization/authorization.module";
+import { CommerceModule } from "../commerce/commerce.module";
 import { IdentityModule } from "../identity/identity.module";
 import { LearningContentModule } from "../learning-content/learning-content.module";
 import { OrganizationsModule } from "../organizations/organizations.module";
@@ -15,6 +16,7 @@ import { LearningDeliveryController } from "./learning-delivery.controller";
   imports: [
     IdentityModule,
     AuthorizationModule,
+    CommerceModule,
     OutboxModule,
     OrganizationsModule,
     LearningContentModule

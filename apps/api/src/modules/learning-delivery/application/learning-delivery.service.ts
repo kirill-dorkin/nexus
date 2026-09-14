@@ -15,6 +15,7 @@ import { DatabaseService } from "../../../database/database.service";
 import { OutboxRepository } from "../../../outbox/outbox.repository";
 import { RequestContextService } from "../../../request-context/request-context.service";
 import { AuthorizationApplicationService } from "../../authorization/application/authorization.service";
+import { EntitlementQuery } from "../../commerce/application/entitlement.query";
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { LearningContentApplicationService } from "../../learning-content/application/learning-content.service";
 import { OrganizationsApplicationService } from "../../organizations/application/organizations.service";
@@ -60,6 +61,7 @@ export class LearningDeliveryApplicationService {
     private readonly organizations: OrganizationsApplicationService,
     private readonly identity: IdentityApplicationService,
     private readonly authorization: AuthorizationApplicationService,
+    private readonly entitlements: EntitlementQuery,
     private readonly outbox: OutboxRepository
   ) {}
 
@@ -92,6 +94,7 @@ export class LearningDeliveryApplicationService {
           slug: command.slug,
           name: command.name,
           deliveryMode: command.deliveryMode,
+          accessMode: command.accessMode,
           startsAt: command.startsAt ?? null,
           endsAt: command.endsAt ?? null,
           createdByUserId: context.userId
@@ -109,7 +112,8 @@ export class LearningDeliveryApplicationService {
             offeringId: offering.id,
             courseId: version.courseId,
             courseVersionId: version.id,
-            deliveryMode: offering.deliveryMode
+            deliveryMode: offering.deliveryMode,
+            accessMode: offering.accessMode
           }
         });
 
@@ -188,6 +192,15 @@ export class LearningDeliveryApplicationService {
           organizationId,
           command.userId
         );
+
+        if (offering.accessMode === "entitlement_required") {
+          await this.entitlements.requireEffectiveOfferingEntitlement(
+            transaction,
+            organizationId,
+            command.userId,
+            offeringId
+          );
+        }
 
         const enrollment = await this.delivery.createEnrollment(transaction, {
           id: enrollmentId,

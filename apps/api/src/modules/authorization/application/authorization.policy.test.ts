@@ -73,6 +73,36 @@ describe("AuthorizationPolicy", () => {
     })).toBe(true);
   });
 
+  it("keeps commercial entitlement grants away from instructors and learners", () => {
+    const offeringScope: AuthorizationScope = {
+      organizationId: "org-a",
+      type: "offering",
+      id: "offering-a"
+    };
+
+    expect(
+      policy.allows(
+        [assignment({ roleKey: "organization_admin" })],
+        "entitlement.manage",
+        offeringScope
+      )
+    ).toBe(true);
+    expect(
+      policy.allows(
+        [assignment({ roleKey: "instructor" })],
+        "entitlement.manage",
+        offeringScope
+      )
+    ).toBe(false);
+    expect(
+      policy.allows(
+        [assignment({ roleKey: "learner" })],
+        "entitlement.manage",
+        offeringScope
+      )
+    ).toBe(false);
+  });
+
   it("keeps learners read-only for content and delivery", () => {
     const learner = assignment({ roleKey: "learner" });
 

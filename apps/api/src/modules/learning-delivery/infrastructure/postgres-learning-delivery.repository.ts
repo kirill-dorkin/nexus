@@ -18,6 +18,7 @@ type OfferingRow = {
   slug: string;
   name: string;
   delivery_mode: LearningOffering["deliveryMode"];
+  access_mode: LearningOffering["accessMode"];
   status: LearningOffering["status"];
   starts_at: Date | null;
   ends_at: Date | null;
@@ -41,6 +42,7 @@ function mapOffering(row: OfferingRow): LearningOffering {
     slug: row.slug,
     name: row.name,
     deliveryMode: row.delivery_mode,
+    accessMode: row.access_mode,
     status: row.status,
     startsAt: row.starts_at?.toISOString() ?? null,
     endsAt: row.ends_at?.toISOString() ?? null
@@ -59,6 +61,17 @@ function mapEnrollment(row: EnrollmentRow): Enrollment {
   };
 }
 
+const offeringSelect = `id::text,
+  organization_id::text,
+  course_version_id::text,
+  slug,
+  name,
+  delivery_mode,
+  access_mode,
+  status,
+  starts_at,
+  ends_at`;
+
 const enrollmentSelect = `id::text,
   organization_id::text,
   offering_id::text,
@@ -76,17 +89,9 @@ export class PostgresLearningDeliveryRepository extends LearningDeliveryReposito
     const result = await transaction.client.query<OfferingRow>(
       `INSERT INTO learning_delivery.learning_offerings
          (id, organization_id, course_version_id, slug, name, delivery_mode,
-          starts_at, ends_at, created_by_user_id)
-       VALUES ($1, $2, $3, $4, $5, $6, $7::timestamptz, $8::timestamptz, $9)
-       RETURNING id::text,
-                 organization_id::text,
-                 course_version_id::text,
-                 slug,
-                 name,
-                 delivery_mode,
-                 status,
-                 starts_at,
-                 ends_at`,
+          access_mode, starts_at, ends_at, created_by_user_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8::timestamptz, $9::timestamptz, $10)
+       RETURNING ${offeringSelect}`,
       [
         offering.id,
         offering.organizationId,
@@ -94,6 +99,7 @@ export class PostgresLearningDeliveryRepository extends LearningDeliveryReposito
         offering.slug,
         offering.name,
         offering.deliveryMode,
+        offering.accessMode,
         offering.startsAt,
         offering.endsAt,
         offering.createdByUserId
@@ -112,15 +118,7 @@ export class PostgresLearningDeliveryRepository extends LearningDeliveryReposito
     offeringId: string
   ): Promise<LearningOffering | null> {
     const result = await transaction.client.query<OfferingRow>(
-      `SELECT id::text,
-              organization_id::text,
-              course_version_id::text,
-              slug,
-              name,
-              delivery_mode,
-              status,
-              starts_at,
-              ends_at
+      `SELECT ${offeringSelect}
          FROM learning_delivery.learning_offerings
         WHERE organization_id = $1
           AND id = $2`,
