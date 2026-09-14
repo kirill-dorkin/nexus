@@ -23,13 +23,14 @@ export const enrollmentStatusSchema = z.enum([
 ]);
 
 const optionalDateTimeSchema = z.string().datetime().nullable();
+const deliveryNameSchema = z.string().trim().min(1).max(160);
 
 export const learningOfferingSchema = z.object({
   id: uuidSchema,
   organizationId: uuidSchema,
   courseVersionId: uuidSchema,
   slug: resourceSlugSchema,
-  name: z.string().trim().min(1).max(160),
+  name: deliveryNameSchema,
   deliveryMode: learningOfferingDeliveryModeSchema,
   accessMode: learningOfferingAccessModeSchema,
   status: learningOfferingStatusSchema,
@@ -41,7 +42,7 @@ export const createLearningOfferingRequestSchema = z
   .object({
     courseVersionId: uuidSchema,
     slug: resourceSlugSchema,
-    name: z.string().trim().min(1).max(160),
+    name: deliveryNameSchema,
     deliveryMode: learningOfferingDeliveryModeSchema,
     accessMode: learningOfferingAccessModeSchema.default("membership"),
     startsAt: z.string().datetime().optional(),
@@ -72,6 +73,72 @@ export const createEnrollmentRequestSchema = z.object({
   userId: uuidSchema
 });
 
+export const courseRunSchema = z.object({
+  id: uuidSchema,
+  organizationId: uuidSchema,
+  offeringId: uuidSchema,
+  slug: resourceSlugSchema,
+  name: deliveryNameSchema,
+  startsAt: z.string().datetime(),
+  endsAt: z.string().datetime()
+});
+
+export const createCourseRunRequestSchema = z
+  .object({
+    slug: resourceSlugSchema,
+    name: deliveryNameSchema,
+    startsAt: z.string().datetime(),
+    endsAt: z.string().datetime()
+  })
+  .refine(
+    (value) =>
+      new Date(value.endsAt).getTime() > new Date(value.startsAt).getTime(),
+    {
+      message: "endsAt must be later than startsAt",
+      path: ["endsAt"]
+    }
+  );
+
+export const groupSetSchema = z.object({
+  id: uuidSchema,
+  organizationId: uuidSchema,
+  courseRunId: uuidSchema,
+  slug: resourceSlugSchema,
+  name: deliveryNameSchema
+});
+
+export const createGroupSetRequestSchema = z.object({
+  slug: resourceSlugSchema,
+  name: deliveryNameSchema
+});
+
+export const deliveryGroupSchema = z.object({
+  id: uuidSchema,
+  organizationId: uuidSchema,
+  groupSetId: uuidSchema,
+  slug: resourceSlugSchema,
+  name: deliveryNameSchema
+});
+
+export const createDeliveryGroupRequestSchema = z.object({
+  slug: resourceSlugSchema,
+  name: deliveryNameSchema
+});
+
+export const groupMembershipSchema = z.object({
+  id: uuidSchema,
+  organizationId: uuidSchema,
+  groupSetId: uuidSchema,
+  groupId: uuidSchema,
+  enrollmentId: uuidSchema,
+  assignedAt: z.string().datetime(),
+  endedAt: optionalDateTimeSchema
+});
+
+export const createGroupMembershipRequestSchema = z.object({
+  enrollmentId: uuidSchema
+});
+
 export type LearningOffering = z.infer<typeof learningOfferingSchema>;
 export type CreateLearningOfferingRequest = z.infer<
   typeof createLearningOfferingRequestSchema
@@ -79,4 +146,16 @@ export type CreateLearningOfferingRequest = z.infer<
 export type Enrollment = z.infer<typeof enrollmentSchema>;
 export type CreateEnrollmentRequest = z.infer<
   typeof createEnrollmentRequestSchema
+>;
+export type CourseRun = z.infer<typeof courseRunSchema>;
+export type CreateCourseRunRequest = z.infer<typeof createCourseRunRequestSchema>;
+export type GroupSet = z.infer<typeof groupSetSchema>;
+export type CreateGroupSetRequest = z.infer<typeof createGroupSetRequestSchema>;
+export type DeliveryGroup = z.infer<typeof deliveryGroupSchema>;
+export type CreateDeliveryGroupRequest = z.infer<
+  typeof createDeliveryGroupRequestSchema
+>;
+export type GroupMembership = z.infer<typeof groupMembershipSchema>;
+export type CreateGroupMembershipRequest = z.infer<
+  typeof createGroupMembershipRequestSchema
 >;
