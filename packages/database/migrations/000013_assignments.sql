@@ -70,6 +70,40 @@ CREATE TABLE learning_delivery.assignments (
   )
 );
 
+CREATE OR REPLACE FUNCTION learning_delivery.protect_assignment_creation()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY INVOKER
+SET search_path = pg_catalog
+AS $$
+DECLARE
+  actor_user_id uuid;
+BEGIN
+  IF NEW.cancelled_at IS NOT NULL OR NEW.cancelled_by_user_id IS NOT NULL THEN
+    RAISE EXCEPTION USING
+      ERRCODE = '55000',
+      MESSAGE = 'assignment must be created active and cancelled through its lifecycle command';
+  END IF;
+
+  actor_user_id := NULLIF(current_setting('app.user_id', true), '')::uuid;
+  IF actor_user_id IS NOT NULL
+     AND NEW.created_by_user_id IS DISTINCT FROM actor_user_id THEN
+    RAISE EXCEPTION USING
+      ERRCODE = '55000',
+      MESSAGE = 'assignment creator must match the transaction principal';
+  END IF;
+
+  RETURN NEW;
+END
+$$;
+
+REVOKE ALL ON FUNCTION learning_delivery.protect_assignment_creation() FROM PUBLIC;
+
+CREATE TRIGGER assignments_00_protect_creation
+BEFORE INSERT ON learning_delivery.assignments
+FOR EACH ROW
+EXECUTE FUNCTION learning_delivery.protect_assignment_creation();
+
 CREATE OR REPLACE FUNCTION learning_delivery.validate_assignment_scope()
 RETURNS trigger
 LANGUAGE plpgsql
