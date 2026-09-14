@@ -1,22 +1,26 @@
 import { Injectable } from "@nestjs/common";
 import type {
+  Attendance,
   CourseRun,
   DeliveryGroup,
   Enrollment,
   GroupMembership,
   GroupSet,
-  LearningOffering
+  LearningOffering,
+  Session
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
 import {
   LearningDeliveryRepository,
+  type NewAttendance,
   type NewCourseRun,
   type NewDeliveryGroup,
   type NewEnrollment,
   type NewGroupMembership,
   type NewGroupSet,
-  type NewLearningOffering
+  type NewLearningOffering,
+  type NewSession
 } from "../application/learning-delivery.repository";
 
 type OfferingRow = {
@@ -76,6 +80,27 @@ type GroupMembershipRow = {
   enrollment_id: string;
   assigned_at: Date;
   ended_at: Date | null;
+};
+
+type SessionRow = {
+  id: string;
+  organization_id: string;
+  course_run_id: string;
+  group_id: string | null;
+  slug: string;
+  name: string;
+  starts_at: Date;
+  ends_at: Date;
+};
+
+type AttendanceRow = {
+  id: string;
+  organization_id: string;
+  session_id: string;
+  enrollment_id: string;
+  status: Attendance["status"];
+  recorded_at: Date;
+  updated_at: Date;
 };
 
 function mapOffering(row: OfferingRow): LearningOffering {
@@ -149,6 +174,31 @@ function mapGroupMembership(row: GroupMembershipRow): GroupMembership {
   };
 }
 
+function mapSession(row: SessionRow): Session {
+  return {
+    id: row.id,
+    organizationId: row.organization_id,
+    courseRunId: row.course_run_id,
+    groupId: row.group_id,
+    slug: row.slug,
+    name: row.name,
+    startsAt: row.starts_at.toISOString(),
+    endsAt: row.ends_at.toISOString()
+  };
+}
+
+function mapAttendance(row: AttendanceRow): Attendance {
+  return {
+    id: row.id,
+    organizationId: row.organization_id,
+    sessionId: row.session_id,
+    enrollmentId: row.enrollment_id,
+    status: row.status,
+    recordedAt: row.recorded_at.toISOString(),
+    updatedAt: row.updated_at.toISOString()
+  };
+}
+
 const offeringSelect = `id::text,
   organization_id::text,
   course_version_id::text,
@@ -195,6 +245,23 @@ const groupMembershipSelect = `id::text,
   enrollment_id::text,
   assigned_at,
   ended_at`;
+
+const sessionSelect = `id::text,
+  organization_id::text,
+  course_run_id::text,
+  group_id::text,
+  slug,
+  name,
+  starts_at,
+  ends_at`;
+
+const attendanceSelect = `id::text,
+  organization_id::text,
+  session_id::text,
+  enrollment_id::text,
+  status,
+  recorded_at,
+  updated_at`;
 
 @Injectable()
 export class PostgresLearningDeliveryRepository extends LearningDeliveryRepository {
@@ -432,5 +499,136 @@ export class PostgresLearningDeliveryRepository extends LearningDeliveryReposito
       throw new Error("PostgreSQL did not return the created group membership.");
     }
     return mapGroupMembership(row);
+  }
+
+  async hasGroupMembershipAt(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    groupId: string,
+    enrollmentId: string,
+    at: string
+  ): Promise<boolean> {
+    const result = await transaction.client.query<{ exists: boolean }>(
+      `SELECT EXISTS (
+         SELECT 1
+           FROM learning_delivery.group_memberships
+          WHERE organization_id = $1
+            AND group_id = $2
+            AND enrollment_id = $3
+            AND assigned_at <= $4::timestamptz
+            AND (ended_at IS NULL OR ended_at > $4::timestamptz)
+       ) AS exists`,
+      [organizationId, groupId, enrollmentId, at]
+    );
+    return result.rows[0]?.exists === true;
+  }
+
+  async createSession(
+    transaction: DatabaseTransaction,
+    session: NewSession
+  ): Promise<Session> {
+    const result = await transaction.client.query<SessionRow>(
+      `INSERT INTO learning_delivery.sessions
+         (id, organization_id, course_run_id, group_id, slug, name, starts_at, ends_at, created_by_user_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7::timestamptz, $8::timestamptz, $9)
+       RETURNING ${sessionSelect}`,
+      [
+        session.id,
+        session.organizationId,
+        session.courseRunId,
+        session.groupId,
+        session.slug,
+        session.name,
+        session.startsAt,
+        session.endsAt,
+        session.createdByUserId
+      ]
+    );
+    const row = result.rows[0];
+    if (row === undefined) {
+      throw new Error("PostgreSQL did not return the created session.");
+    }
+    return mapSession(row);
+  }
+
+  async findSession(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    sessionId: string
+  ): Promise<Session | null> {
+    const result = await transaction.client.query<SessionRow>(
+      `SELECT ${sessionSelect}
+         FROM learning_delivery.sessions
+        WHERE organization_id = $1
+          AND id = $2`,
+      [organizationId, sessionId]
+    );
+    const row = result.rows[0];
+    return row === undefined ? null : mapSession(row);
+  }
+
+  async createAttendance(
+    transaction: DatabaseTransaction,
+    attendance: NewAttendance
+  ): Promise<Attendance> {
+    const result = await transaction.client.query<AttendanceRow>(
+      `INSERT INTO learning_delivery.attendances
+         (id, organization_id, session_id, enrollment_id, status,
+          recorded_by_user_id, updated_by_user_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $6)
+       RETURNING ${attendanceSelect}`,
+      [
+        attendance.id,
+        attendance.organizationId,
+        attendance.sessionId,
+        attendance.enrollmentId,
+        attendance.status,
+        attendance.recordedByUserId
+      ]
+    );
+    const row = result.rows[0];
+    if (row === undefined) {
+      throw new Error("PostgreSQL did not return the created attendance.");
+    }
+    return mapAttendance(row);
+  }
+
+  async findAttendance(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    attendanceId: string
+  ): Promise<Attendance | null> {
+    const result = await transaction.client.query<AttendanceRow>(
+      `SELECT ${attendanceSelect}
+         FROM learning_delivery.attendances
+        WHERE organization_id = $1
+          AND id = $2`,
+      [organizationId, attendanceId]
+    );
+    const row = result.rows[0];
+    return row === undefined ? null : mapAttendance(row);
+  }
+
+  async updateAttendanceStatus(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    attendanceId: string,
+    status: Attendance["status"],
+    updatedByUserId: string
+  ): Promise<Attendance> {
+    const result = await transaction.client.query<AttendanceRow>(
+      `UPDATE learning_delivery.attendances
+          SET status = $3,
+              updated_by_user_id = $4
+        WHERE organization_id = $1
+          AND id = $2
+       RETURNING ${attendanceSelect}`,
+      [organizationId, attendanceId, status, updatedByUserId]
+    );
+    const row = result.rows[0];
+    if (row === undefined) {
+      throw new Error("PostgreSQL did not return the corrected attendance.");
+    }
+    return mapAttendance(row);
   }
 }
