@@ -19,3 +19,5 @@ export * from "./authorization";
 export * from "./authentication";
 export * from "./learning-content";
 export * from "./learning-delivery";
+export * from "./learning-graph";
+export * from "./learning-progress";

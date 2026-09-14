@@ -18,6 +18,7 @@ import { RequestContextService } from "../../../request-context/request-context.
 import { AuthorizationApplicationService } from "../../authorization/application/authorization.service";
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { LearningContentRepository } from "./learning-content.repository";
+import { LearningGraphRepository } from "./learning-graph.repository";
 
 function isUniqueViolation(error: unknown): boolean {
   return (
@@ -50,6 +51,7 @@ export class LearningContentApplicationService {
     private readonly database: DatabaseService,
     private readonly requestContext: RequestContextService,
     private readonly content: LearningContentRepository,
+    private readonly graph: LearningGraphRepository,
     private readonly identity: IdentityApplicationService,
     private readonly authorization: AuthorizationApplicationService,
     private readonly outbox: OutboxRepository
@@ -184,6 +186,13 @@ export class LearningContentApplicationService {
           throw new NotFoundException("Course not found.");
         }
 
+        await this.graph.cloneLatestPublishedGraph(
+          transaction,
+          organizationId,
+          courseId,
+          version.id
+        );
+
         await this.outbox.append(transaction, {
           organizationId,
           eventName: "course_version.created",
@@ -195,7 +204,8 @@ export class LearningContentApplicationService {
             organizationId,
             courseId,
             versionId: version.id,
-            versionNumber: version.versionNumber
+            versionNumber: version.versionNumber,
+            graphClonedFromLatestPublishedVersion: true
           }
         });
 

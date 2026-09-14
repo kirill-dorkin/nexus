@@ -59,6 +59,14 @@ function mapEnrollment(row: EnrollmentRow): Enrollment {
   };
 }
 
+const enrollmentSelect = `id::text,
+  organization_id::text,
+  offering_id::text,
+  user_id::text,
+  status,
+  enrolled_at,
+  completed_at`;
+
 @Injectable()
 export class PostgresLearningDeliveryRepository extends LearningDeliveryRepository {
   async createOffering(
@@ -130,13 +138,7 @@ export class PostgresLearningDeliveryRepository extends LearningDeliveryReposito
       `INSERT INTO learning_delivery.enrollments
          (id, organization_id, offering_id, user_id, created_by_user_id)
        VALUES ($1, $2, $3, $4, $5)
-       RETURNING id::text,
-                 organization_id::text,
-                 offering_id::text,
-                 user_id::text,
-                 status,
-                 enrolled_at,
-                 completed_at`,
+       RETURNING ${enrollmentSelect}`,
       [
         enrollment.id,
         enrollment.organizationId,
@@ -150,5 +152,21 @@ export class PostgresLearningDeliveryRepository extends LearningDeliveryReposito
       throw new Error("PostgreSQL did not return the created enrollment.");
     }
     return mapEnrollment(row);
+  }
+
+  async findEnrollment(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    enrollmentId: string
+  ): Promise<Enrollment | null> {
+    const result = await transaction.client.query<EnrollmentRow>(
+      `SELECT ${enrollmentSelect}
+         FROM learning_delivery.enrollments
+        WHERE organization_id = $1
+          AND id = $2`,
+      [organizationId, enrollmentId]
+    );
+    const row = result.rows[0];
+    return row === undefined ? null : mapEnrollment(row);
   }
 }

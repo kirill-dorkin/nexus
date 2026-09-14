@@ -9,6 +9,7 @@ import type {
   Enrollment,
   LearningOffering
 } from "@platform/contracts";
+import type { DatabaseTransaction } from "@platform/database";
 
 import { DatabaseService } from "../../../database/database.service";
 import { OutboxRepository } from "../../../outbox/outbox.repository";
@@ -18,6 +19,11 @@ import { IdentityApplicationService } from "../../identity/application/identity.
 import { LearningContentApplicationService } from "../../learning-content/application/learning-content.service";
 import { OrganizationsApplicationService } from "../../organizations/application/organizations.service";
 import { LearningDeliveryRepository } from "./learning-delivery.repository";
+
+export type ActiveEnrollmentContext = Readonly<{
+  enrollment: Enrollment;
+  offering: LearningOffering;
+}>;
 
 function isUniqueViolation(error: unknown): boolean {
   return (
@@ -216,5 +222,34 @@ export class LearningDeliveryApplicationService {
       }
       throw error;
     }
+  }
+
+  async requireActiveEnrollment(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    enrollmentId: string
+  ): Promise<ActiveEnrollmentContext> {
+    const enrollment = await this.delivery.findEnrollment(
+      transaction,
+      organizationId,
+      enrollmentId
+    );
+    if (enrollment === null) {
+      throw new NotFoundException("Enrollment not found.");
+    }
+    if (enrollment.status !== "active") {
+      throw new ConflictException("Only an active enrollment can create attempts.");
+    }
+
+    const offering = await this.delivery.findOffering(
+      transaction,
+      organizationId,
+      enrollment.offeringId
+    );
+    if (offering === null) {
+      throw new NotFoundException("Learning offering not found.");
+    }
+
+    return { enrollment, offering };
   }
 }

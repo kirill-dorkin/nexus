@@ -8,20 +8,28 @@ import {
   Post
 } from "@nestjs/common";
 import {
+  attachSkillToCourseVersionRequestSchema,
   createCourseRequestSchema,
+  createCourseVersionActivityRequestSchema,
   createCourseVersionRequestSchema,
   uuidSchema,
   type Course,
   type CourseVersion,
+  type CourseVersionActivity,
+  type CourseVersionSkill,
   type CreateCourseResult
 } from "@platform/contracts";
 
 import { parseRequest } from "../../http/validation";
 import { LearningContentApplicationService } from "./application/learning-content.service";
+import { LearningGraphApplicationService } from "./application/learning-graph.service";
 
 @Controller("organizations/:organizationId/courses")
 export class LearningContentController {
-  constructor(private readonly content: LearningContentApplicationService) {}
+  constructor(
+    private readonly content: LearningContentApplicationService,
+    private readonly graph: LearningGraphApplicationService
+  ) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -57,6 +65,38 @@ export class LearningContentController {
       parseRequest(uuidSchema, organizationId),
       parseRequest(uuidSchema, courseId),
       parseRequest(createCourseVersionRequestSchema, body)
+    );
+  }
+
+  @Post(":courseId/versions/:versionId/skills")
+  @HttpCode(HttpStatus.CREATED)
+  attachSkill(
+    @Param("organizationId") organizationId: string,
+    @Param("courseId") courseId: string,
+    @Param("versionId") versionId: string,
+    @Body() body: unknown
+  ): Promise<CourseVersionSkill> {
+    return this.graph.attachSkill(
+      parseRequest(uuidSchema, organizationId),
+      parseRequest(uuidSchema, courseId),
+      parseRequest(uuidSchema, versionId),
+      parseRequest(attachSkillToCourseVersionRequestSchema, body)
+    );
+  }
+
+  @Post(":courseId/versions/:versionId/activities")
+  @HttpCode(HttpStatus.CREATED)
+  createActivity(
+    @Param("organizationId") organizationId: string,
+    @Param("courseId") courseId: string,
+    @Param("versionId") versionId: string,
+    @Body() body: unknown
+  ): Promise<CourseVersionActivity> {
+    return this.graph.createActivity(
+      parseRequest(uuidSchema, organizationId),
+      parseRequest(uuidSchema, courseId),
+      parseRequest(uuidSchema, versionId),
+      parseRequest(createCourseVersionActivityRequestSchema, body)
     );
   }
 

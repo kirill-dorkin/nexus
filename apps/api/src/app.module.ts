@@ -7,6 +7,7 @@ import { AuthorizationModule } from "./modules/authorization/authorization.modul
 import { IdentityModule } from "./modules/identity/identity.module";
 import { LearningContentModule } from "./modules/learning-content/learning-content.module";
 import { LearningDeliveryModule } from "./modules/learning-delivery/learning-delivery.module";
+import { LearningProgressModule } from "./modules/learning-progress/learning-progress.module";
 import { OrganizationsModule } from "./modules/organizations/organizations.module";
 import { RequestContextModule } from "./request-context/request-context.module";
 
@@ -19,7 +20,8 @@ import { RequestContextModule } from "./request-context/request-context.module";
     AuthorizationModule,
     OrganizationsModule,
     LearningContentModule,
-    LearningDeliveryModule
+    LearningDeliveryModule,
+    LearningProgressModule
   ],
   controllers: [HealthController]
 })
