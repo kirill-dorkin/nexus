@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import type { Attempt, Evidence } from "@platform/contracts";
+import type { Attempt, Evidence, Submission } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
 import type { ActivityAttemptCount } from "../application/learning-progress.query";
@@ -7,7 +7,9 @@ import {
   LearningProgressRepository,
   type AttemptContext,
   type NewAttempt,
-  type NewEvidence
+  type NewEvidence,
+  type NewSubmission,
+  type SubmissionContext
 } from "../application/learning-progress.repository";
 
 type AttemptRow = {
@@ -16,11 +18,28 @@ type AttemptRow = {
   enrollment_id: string;
   activity_version_id: string;
   attempt_number: number;
-  submission: Record<string, unknown>;
-  submitted_at: Date;
+  created_at: Date;
 };
 
 type AttemptContextRow = AttemptRow & {
+  offering_id: string;
+  learner_user_id: string;
+};
+
+type SubmissionRow = {
+  id: string;
+  organization_id: string;
+  attempt_id: string;
+  payload: Record<string, unknown>;
+  submitted_by_user_id: string;
+  submitted_at: Date;
+};
+
+type SubmissionContextRow = SubmissionRow & {
+  attempt_enrollment_id: string;
+  attempt_activity_version_id: string;
+  attempt_number: number;
+  attempt_started_at: Date;
   offering_id: string;
   learner_user_id: string;
 };
@@ -34,6 +53,7 @@ type EvidenceRow = {
   id: string;
   organization_id: string;
   attempt_id: string;
+  submission_id: string;
   skill_id: string;
   kind: string;
   score: string | null;
@@ -47,8 +67,7 @@ const attemptSelect = `attempt.id::text,
   attempt.enrollment_id::text,
   attempt.activity_version_id::text,
   attempt.attempt_number,
-  attempt.submission,
-  attempt.submitted_at`;
+  attempt.created_at`;
 
 function mapAttempt(row: AttemptRow): Attempt {
   return {
@@ -57,7 +76,17 @@ function mapAttempt(row: AttemptRow): Attempt {
     enrollmentId: row.enrollment_id,
     activityVersionId: row.activity_version_id,
     attemptNumber: row.attempt_number,
-    submission: row.submission,
+    startedAt: row.created_at.toISOString()
+  };
+}
+
+function mapSubmission(row: SubmissionRow): Submission {
+  return {
+    id: row.id,
+    organizationId: row.organization_id,
+    attemptId: row.attempt_id,
+    payload: row.payload,
+    submittedByUserId: row.submitted_by_user_id,
     submittedAt: row.submitted_at.toISOString()
   };
 }
@@ -67,6 +96,7 @@ function mapEvidence(row: EvidenceRow): Evidence {
     id: row.id,
     organizationId: row.organization_id,
     attemptId: row.attempt_id,
+    submissionId: row.submission_id,
     skillId: row.skill_id,
     kind: row.kind,
     score: row.score === null ? null : Number(row.score),
@@ -97,9 +127,8 @@ export class PostgresLearningProgressRepository extends LearningProgressReposito
             AND activity_version_id = $4
        )
        INSERT INTO learning_progress.attempts
-         (id, organization_id, enrollment_id, activity_version_id,
-          attempt_number, submission)
-       SELECT $1, $2, $3, $4, next_attempt.attempt_number, $5::jsonb
+         (id, organization_id, enrollment_id, activity_version_id, attempt_number)
+       SELECT $1, $2, $3, $4, next_attempt.attempt_number
          FROM locked_enrollment
          CROSS JOIN next_attempt
        RETURNING id::text,
@@ -107,14 +136,12 @@ export class PostgresLearningProgressRepository extends LearningProgressReposito
                  enrollment_id::text,
                  activity_version_id::text,
                  attempt_number,
-                 submission,
-                 submitted_at`,
+                 created_at`,
       [
         attempt.id,
         attempt.organizationId,
         attempt.enrollmentId,
-        attempt.activityVersionId,
-        JSON.stringify(attempt.submission)
+        attempt.activityVersionId
       ]
     );
     const row = result.rows[0];
@@ -122,6 +149,35 @@ export class PostgresLearningProgressRepository extends LearningProgressReposito
       throw new Error("PostgreSQL did not return the created attempt.");
     }
     return mapAttempt(row);
+  }
+
+  async createSubmission(
+    transaction: DatabaseTransaction,
+    submission: NewSubmission
+  ): Promise<Submission> {
+    const result = await transaction.client.query<SubmissionRow>(
+      `INSERT INTO learning_progress.submissions
+         (id, organization_id, attempt_id, payload, submitted_by_user_id)
+       VALUES ($1, $2, $3, $4::jsonb, $5)
+       RETURNING id::text,
+                 organization_id::text,
+                 attempt_id::text,
+                 payload,
+                 submitted_by_user_id::text,
+                 submitted_at`,
+      [
+        submission.id,
+        submission.organizationId,
+        submission.attemptId,
+        JSON.stringify(submission.payload),
+        submission.submittedByUserId
+      ]
+    );
+    const row = result.rows[0];
+    if (row === undefined) {
+      throw new Error("PostgreSQL did not return the created submission.");
+    }
+    return mapSubmission(row);
   }
 
   async findAttemptContext(
@@ -152,6 +208,76 @@ export class PostgresLearningProgressRepository extends LearningProgressReposito
     };
   }
 
+  async findSubmissionContext(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    submissionId: string
+  ): Promise<SubmissionContext | null> {
+    const result = await transaction.client.query<SubmissionContextRow>(
+      `SELECT submission.id::text,
+              submission.organization_id::text,
+              submission.attempt_id::text,
+              submission.payload,
+              submission.submitted_by_user_id::text,
+              submission.submitted_at,
+              attempt.enrollment_id::text AS attempt_enrollment_id,
+              attempt.activity_version_id::text AS attempt_activity_version_id,
+              attempt.attempt_number,
+              attempt.created_at AS attempt_started_at,
+              enrollment.offering_id::text,
+              enrollment.user_id::text AS learner_user_id
+         FROM learning_progress.submissions AS submission
+         JOIN learning_progress.attempts AS attempt
+           ON attempt.organization_id = submission.organization_id
+          AND attempt.id = submission.attempt_id
+         JOIN learning_delivery.enrollments AS enrollment
+           ON enrollment.organization_id = attempt.organization_id
+          AND enrollment.id = attempt.enrollment_id
+        WHERE submission.organization_id = $1
+          AND submission.id = $2`,
+      [organizationId, submissionId]
+    );
+    const row = result.rows[0];
+    if (row === undefined) {
+      return null;
+    }
+
+    return {
+      submission: mapSubmission(row),
+      attempt: {
+        id: row.attempt_id,
+        organizationId: row.organization_id,
+        enrollmentId: row.attempt_enrollment_id,
+        activityVersionId: row.attempt_activity_version_id,
+        attemptNumber: row.attempt_number,
+        startedAt: row.attempt_started_at.toISOString()
+      },
+      offeringId: row.offering_id,
+      learnerUserId: row.learner_user_id
+    };
+  }
+
+  async findSubmissionByAttempt(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    attemptId: string
+  ): Promise<Submission | null> {
+    const result = await transaction.client.query<SubmissionRow>(
+      `SELECT id::text,
+              organization_id::text,
+              attempt_id::text,
+              payload,
+              submitted_by_user_id::text,
+              submitted_at
+         FROM learning_progress.submissions
+        WHERE organization_id = $1
+          AND attempt_id = $2`,
+      [organizationId, attemptId]
+    );
+    const row = result.rows[0];
+    return row === undefined ? null : mapSubmission(row);
+  }
+
   async listActivityAttemptCounts(
     transaction: DatabaseTransaction,
     organizationId: string,
@@ -163,14 +289,17 @@ export class PostgresLearningProgressRepository extends LearningProgressReposito
     }
 
     const result = await transaction.client.query<ActivityAttemptCountRow>(
-      `SELECT activity_version_id::text,
+      `SELECT attempt.activity_version_id::text,
               count(*)::integer AS attempt_count
-         FROM learning_progress.attempts
-        WHERE organization_id = $1
-          AND enrollment_id = $2
-          AND activity_version_id = ANY($3::uuid[])
-        GROUP BY activity_version_id
-        ORDER BY activity_version_id`,
+         FROM learning_progress.attempts AS attempt
+         JOIN learning_progress.submissions AS submission
+           ON submission.organization_id = attempt.organization_id
+          AND submission.attempt_id = attempt.id
+        WHERE attempt.organization_id = $1
+          AND attempt.enrollment_id = $2
+          AND attempt.activity_version_id = ANY($3::uuid[])
+        GROUP BY attempt.activity_version_id
+        ORDER BY attempt.activity_version_id`,
       [organizationId, enrollmentId, [...activityVersionIds]]
     );
 
@@ -186,12 +315,13 @@ export class PostgresLearningProgressRepository extends LearningProgressReposito
   ): Promise<Evidence> {
     const result = await transaction.client.query<EvidenceRow>(
       `INSERT INTO learning_progress.evidence
-         (id, organization_id, attempt_id, skill_id, kind, score,
+         (id, organization_id, attempt_id, submission_id, skill_id, kind, score,
           payload, recorded_by_user_id)
-       VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8::jsonb, $9)
        RETURNING id::text,
                  organization_id::text,
                  attempt_id::text,
+                 submission_id::text,
                  skill_id::text,
                  kind,
                  score::text,
@@ -202,6 +332,7 @@ export class PostgresLearningProgressRepository extends LearningProgressReposito
         evidence.id,
         evidence.organizationId,
         evidence.attemptId,
+        evidence.submissionId,
         evidence.skillId,
         evidence.kind,
         evidence.score,
