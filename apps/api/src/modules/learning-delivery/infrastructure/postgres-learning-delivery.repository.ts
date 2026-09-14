@@ -1,13 +1,21 @@
 import { Injectable } from "@nestjs/common";
 import type {
+  CourseRun,
+  DeliveryGroup,
   Enrollment,
+  GroupMembership,
+  GroupSet,
   LearningOffering
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
 import {
   LearningDeliveryRepository,
+  type NewCourseRun,
+  type NewDeliveryGroup,
   type NewEnrollment,
+  type NewGroupMembership,
+  type NewGroupSet,
   type NewLearningOffering
 } from "../application/learning-delivery.repository";
 
@@ -32,6 +40,42 @@ type EnrollmentRow = {
   status: Enrollment["status"];
   enrolled_at: Date;
   completed_at: Date | null;
+};
+
+type CourseRunRow = {
+  id: string;
+  organization_id: string;
+  offering_id: string;
+  slug: string;
+  name: string;
+  starts_at: Date;
+  ends_at: Date;
+};
+
+type GroupSetRow = {
+  id: string;
+  organization_id: string;
+  course_run_id: string;
+  slug: string;
+  name: string;
+};
+
+type DeliveryGroupRow = {
+  id: string;
+  organization_id: string;
+  group_set_id: string;
+  slug: string;
+  name: string;
+};
+
+type GroupMembershipRow = {
+  id: string;
+  organization_id: string;
+  group_set_id: string;
+  group_id: string;
+  enrollment_id: string;
+  assigned_at: Date;
+  ended_at: Date | null;
 };
 
 function mapOffering(row: OfferingRow): LearningOffering {
@@ -61,6 +105,50 @@ function mapEnrollment(row: EnrollmentRow): Enrollment {
   };
 }
 
+function mapCourseRun(row: CourseRunRow): CourseRun {
+  return {
+    id: row.id,
+    organizationId: row.organization_id,
+    offeringId: row.offering_id,
+    slug: row.slug,
+    name: row.name,
+    startsAt: row.starts_at.toISOString(),
+    endsAt: row.ends_at.toISOString()
+  };
+}
+
+function mapGroupSet(row: GroupSetRow): GroupSet {
+  return {
+    id: row.id,
+    organizationId: row.organization_id,
+    courseRunId: row.course_run_id,
+    slug: row.slug,
+    name: row.name
+  };
+}
+
+function mapGroup(row: DeliveryGroupRow): DeliveryGroup {
+  return {
+    id: row.id,
+    organizationId: row.organization_id,
+    groupSetId: row.group_set_id,
+    slug: row.slug,
+    name: row.name
+  };
+}
+
+function mapGroupMembership(row: GroupMembershipRow): GroupMembership {
+  return {
+    id: row.id,
+    organizationId: row.organization_id,
+    groupSetId: row.group_set_id,
+    groupId: row.group_id,
+    enrollmentId: row.enrollment_id,
+    assignedAt: row.assigned_at.toISOString(),
+    endedAt: row.ended_at?.toISOString() ?? null
+  };
+}
+
 const offeringSelect = `id::text,
   organization_id::text,
   course_version_id::text,
@@ -79,6 +167,34 @@ const enrollmentSelect = `id::text,
   status,
   enrolled_at,
   completed_at`;
+
+const courseRunSelect = `id::text,
+  organization_id::text,
+  offering_id::text,
+  slug,
+  name,
+  starts_at,
+  ends_at`;
+
+const groupSetSelect = `id::text,
+  organization_id::text,
+  course_run_id::text,
+  slug,
+  name`;
+
+const groupSelect = `id::text,
+  organization_id::text,
+  group_set_id::text,
+  slug,
+  name`;
+
+const groupMembershipSelect = `id::text,
+  organization_id::text,
+  group_set_id::text,
+  group_id::text,
+  enrollment_id::text,
+  assigned_at,
+  ended_at`;
 
 @Injectable()
 export class PostgresLearningDeliveryRepository extends LearningDeliveryRepository {
@@ -166,5 +282,155 @@ export class PostgresLearningDeliveryRepository extends LearningDeliveryReposito
     );
     const row = result.rows[0];
     return row === undefined ? null : mapEnrollment(row);
+  }
+
+  async createCourseRun(
+    transaction: DatabaseTransaction,
+    courseRun: NewCourseRun
+  ): Promise<CourseRun> {
+    const result = await transaction.client.query<CourseRunRow>(
+      `INSERT INTO learning_delivery.course_runs
+         (id, organization_id, offering_id, slug, name, starts_at, ends_at, created_by_user_id)
+       VALUES ($1, $2, $3, $4, $5, $6::timestamptz, $7::timestamptz, $8)
+       RETURNING ${courseRunSelect}`,
+      [
+        courseRun.id,
+        courseRun.organizationId,
+        courseRun.offeringId,
+        courseRun.slug,
+        courseRun.name,
+        courseRun.startsAt,
+        courseRun.endsAt,
+        courseRun.createdByUserId
+      ]
+    );
+    const row = result.rows[0];
+    if (row === undefined) {
+      throw new Error("PostgreSQL did not return the created course run.");
+    }
+    return mapCourseRun(row);
+  }
+
+  async findCourseRun(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseRunId: string
+  ): Promise<CourseRun | null> {
+    const result = await transaction.client.query<CourseRunRow>(
+      `SELECT ${courseRunSelect}
+         FROM learning_delivery.course_runs
+        WHERE organization_id = $1
+          AND id = $2`,
+      [organizationId, courseRunId]
+    );
+    const row = result.rows[0];
+    return row === undefined ? null : mapCourseRun(row);
+  }
+
+  async createGroupSet(
+    transaction: DatabaseTransaction,
+    groupSet: NewGroupSet
+  ): Promise<GroupSet> {
+    const result = await transaction.client.query<GroupSetRow>(
+      `INSERT INTO learning_delivery.group_sets
+         (id, organization_id, course_run_id, slug, name, created_by_user_id)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING ${groupSetSelect}`,
+      [
+        groupSet.id,
+        groupSet.organizationId,
+        groupSet.courseRunId,
+        groupSet.slug,
+        groupSet.name,
+        groupSet.createdByUserId
+      ]
+    );
+    const row = result.rows[0];
+    if (row === undefined) {
+      throw new Error("PostgreSQL did not return the created group set.");
+    }
+    return mapGroupSet(row);
+  }
+
+  async findGroupSet(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    groupSetId: string
+  ): Promise<GroupSet | null> {
+    const result = await transaction.client.query<GroupSetRow>(
+      `SELECT ${groupSetSelect}
+         FROM learning_delivery.group_sets
+        WHERE organization_id = $1
+          AND id = $2`,
+      [organizationId, groupSetId]
+    );
+    const row = result.rows[0];
+    return row === undefined ? null : mapGroupSet(row);
+  }
+
+  async createGroup(
+    transaction: DatabaseTransaction,
+    group: NewDeliveryGroup
+  ): Promise<DeliveryGroup> {
+    const result = await transaction.client.query<DeliveryGroupRow>(
+      `INSERT INTO learning_delivery.groups
+         (id, organization_id, group_set_id, slug, name, created_by_user_id)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING ${groupSelect}`,
+      [
+        group.id,
+        group.organizationId,
+        group.groupSetId,
+        group.slug,
+        group.name,
+        group.createdByUserId
+      ]
+    );
+    const row = result.rows[0];
+    if (row === undefined) {
+      throw new Error("PostgreSQL did not return the created delivery group.");
+    }
+    return mapGroup(row);
+  }
+
+  async findGroup(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    groupId: string
+  ): Promise<DeliveryGroup | null> {
+    const result = await transaction.client.query<DeliveryGroupRow>(
+      `SELECT ${groupSelect}
+         FROM learning_delivery.groups
+        WHERE organization_id = $1
+          AND id = $2`,
+      [organizationId, groupId]
+    );
+    const row = result.rows[0];
+    return row === undefined ? null : mapGroup(row);
+  }
+
+  async createGroupMembership(
+    transaction: DatabaseTransaction,
+    membership: NewGroupMembership
+  ): Promise<GroupMembership> {
+    const result = await transaction.client.query<GroupMembershipRow>(
+      `INSERT INTO learning_delivery.group_memberships
+         (id, organization_id, group_set_id, group_id, enrollment_id, assigned_by_user_id)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING ${groupMembershipSelect}`,
+      [
+        membership.id,
+        membership.organizationId,
+        membership.groupSetId,
+        membership.groupId,
+        membership.enrollmentId,
+        membership.assignedByUserId
+      ]
+    );
+    const row = result.rows[0];
+    if (row === undefined) {
+      throw new Error("PostgreSQL did not return the created group membership.");
+    }
+    return mapGroupMembership(row);
   }
 }
