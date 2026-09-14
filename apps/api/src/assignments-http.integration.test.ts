@@ -110,7 +110,7 @@ describe("assignment HTTP lifecycle", () => {
       url: `/v1/organizations/${organizationId}/skills`,
       headers: { "x-test-user-id": ownerUserId },
       payload: {
-        key: `${label}-${randomUUID()}`,
+        key: `assignment-skill-${randomUUID()}`,
         title: `${label} skill`
       }
     });
@@ -124,7 +124,7 @@ describe("assignment HTTP lifecycle", () => {
       url: `/v1/organizations/${organizationId}/courses`,
       headers: { "x-test-user-id": ownerUserId },
       payload: {
-        slug: `${label}-${randomUUID()}`,
+        slug: `assignment-course-${randomUUID()}`,
         title: `${label} course`
       }
     });
@@ -192,7 +192,7 @@ describe("assignment HTTP lifecycle", () => {
       headers: { "x-test-user-id": ownerUserId },
       payload: {
         courseVersionId: primaryActivity.courseVersionId,
-        slug: `${label}-${randomUUID()}`,
+        slug: `assignment-offering-${randomUUID()}`,
         name: label,
         deliveryMode,
         ...(deliveryMode === "cohort"
@@ -228,7 +228,7 @@ describe("assignment HTTP lifecycle", () => {
       url: `/v1/organizations/${organizationId}/offerings/${offeringId}/runs`,
       headers: { "x-test-user-id": ownerUserId },
       payload: {
-        slug: `${label}-${randomUUID()}`,
+        slug: `assignment-run-${randomUUID()}`,
         name: label,
         startsAt: "2099-03-01T00:00:00.000Z",
         endsAt: "2099-10-31T23:59:59.000Z"
@@ -249,7 +249,10 @@ describe("assignment HTTP lifecycle", () => {
       method: "POST",
       url: `/v1/organizations/${organizationId}/offerings/${offeringId}/runs/${runId}/group-sets`,
       headers: { "x-test-user-id": ownerUserId },
-      payload: { slug: `${label}-set-${randomUUID()}`, name: `${label} set` }
+      payload: {
+        slug: `assignment-set-${randomUUID()}`,
+        name: `${label} set`
+      }
     });
     if (groupSet.statusCode !== 201) {
       throw new Error(`Failed to create ${label} group set: ${groupSet.body}`);
@@ -260,7 +263,10 @@ describe("assignment HTTP lifecycle", () => {
       method: "POST",
       url: `/v1/organizations/${organizationId}/offerings/${offeringId}/runs/${runId}/group-sets/${groupSetId}/groups`,
       headers: { "x-test-user-id": ownerUserId },
-      payload: { slug: `${label}-${randomUUID()}`, name: label }
+      payload: {
+        slug: `assignment-group-${randomUUID()}`,
+        name: label
+      }
     });
     if (group.statusCode !== 201) {
       throw new Error(`Failed to create ${label} group: ${group.body}`);
@@ -569,6 +575,28 @@ describe("assignment HTTP lifecycle", () => {
         { organizationId, userId: ownerUserId },
         async ({ client }) =>
           client.query(
+            `INSERT INTO learning_delivery.assignments
+               (organization_id, offering_id, activity_version_id, slug, name,
+                audience_type, created_by_user_id, cancelled_at, cancelled_by_user_id)
+             VALUES ($1, $2, $3, $4, 'Pre-cancelled assignment', 'offering',
+                     $5, now(), $5)`,
+            [
+              organizationId,
+              cohortOfferingId,
+              primaryActivity.activityVersionId,
+              `pre-cancelled-${randomUUID()}`,
+              ownerUserId
+            ]
+          )
+      )
+    ).rejects.toMatchObject({ code: "55000" });
+
+    await expect(
+      withTenantTransaction(
+        appPool,
+        { organizationId, userId: ownerUserId },
+        async ({ client }) =>
+          client.query(
             `UPDATE learning_delivery.assignments
                 SET cancelled_at = now(), cancelled_by_user_id = $1
               WHERE organization_id = $2 AND id = $3`,
@@ -577,24 +605,23 @@ describe("assignment HTTP lifecycle", () => {
       )
     ).rejects.toMatchObject({ code: "55000" });
 
-    const cancel = await app.inject({
-      method: "POST",
-      url: `/v1/organizations/${organizationId}/offerings/${selfPacedOfferingId}/assignments/${offeringAssignmentId}/cancel`,
-      headers: { "x-test-user-id": ownerUserId }
-    });
-    expect(cancel.statusCode).toBe(200);
-    const cancelled = assignmentSchema.parse(JSON.parse(cancel.body));
-    expect(cancelled.cancelledAt).not.toBeNull();
+    const cancelRequest = () =>
+      app.inject({
+        method: "POST",
+        url: `/v1/organizations/${organizationId}/offerings/${selfPacedOfferingId}/assignments/${offeringAssignmentId}/cancel`,
+        headers: { "x-test-user-id": ownerUserId }
+      });
 
-    const repeat = await app.inject({
-      method: "POST",
-      url: `/v1/organizations/${organizationId}/offerings/${selfPacedOfferingId}/assignments/${offeringAssignmentId}/cancel`,
-      headers: { "x-test-user-id": ownerUserId }
-    });
-    expect(repeat.statusCode).toBe(200);
-    expect(assignmentSchema.parse(JSON.parse(repeat.body)).cancelledAt).toBe(
-      cancelled.cancelledAt
-    );
+    const [firstCancel, secondCancel] = await Promise.all([
+      cancelRequest(),
+      cancelRequest()
+    ]);
+    expect(firstCancel.statusCode).toBe(200);
+    expect(secondCancel.statusCode).toBe(200);
+    const firstCancelled = assignmentSchema.parse(JSON.parse(firstCancel.body));
+    const secondCancelled = assignmentSchema.parse(JSON.parse(secondCancel.body));
+    expect(firstCancelled.cancelledAt).not.toBeNull();
+    expect(secondCancelled.cancelledAt).toBe(firstCancelled.cancelledAt);
 
     await expect(
       withTenantTransaction(
