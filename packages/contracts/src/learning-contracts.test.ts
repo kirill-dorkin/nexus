@@ -30,15 +30,28 @@ describe("learning catalog and delivery contracts", () => {
     ).toEqual({ title: "Frontend Development v2" });
   });
 
-  it("validates offering schedule ordering without requiring dates for self-paced delivery", () => {
+  it("defaults offering access to membership and validates schedule ordering", () => {
     expect(
       createLearningOfferingRequestSchema.parse({
         courseVersionId: id,
         slug: "self-paced-2026",
         name: "Self-paced 2026",
         deliveryMode: "self_paced"
-      }).deliveryMode
-    ).toBe("self_paced");
+      })
+    ).toMatchObject({
+      deliveryMode: "self_paced",
+      accessMode: "membership"
+    });
+
+    expect(
+      createLearningOfferingRequestSchema.parse({
+        courseVersionId: id,
+        slug: "restricted-2026",
+        name: "Restricted 2026",
+        deliveryMode: "self_paced",
+        accessMode: "entitlement_required"
+      }).accessMode
+    ).toBe("entitlement_required");
 
     expect(() =>
       createLearningOfferingRequestSchema.parse({

@@ -17,6 +17,7 @@ export * from "./identity";
 export * from "./organizations";
 export * from "./authorization";
 export * from "./authentication";
+export * from "./commerce";
 export * from "./learning-content";
 export * from "./learning-delivery";
 export * from "./learning-graph";
