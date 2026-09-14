@@ -21,6 +21,7 @@
 | `StudentSkillState` | Derived projection текущего mastery/confidence/review state. |
 | `Enrollment` | Факт участия пользователя в обучении; всегда относится к одному `LearningOffering`. Не покупка и не платеж. |
 | `LearningOffering` | Обязательный universal delivery context. Self-paced — offering с соответствующей effective configuration, а не обход delivery-слоя. |
+| `Assignment` | Durable delivery-инструкция: exact `ActivityVersion` назначена аудитории внутри одного `LearningOffering`. Не является Attempt, Submission, Evidence или способом выдать доступ. |
 | `CourseRun` | Конкретное проведение `CourseVersion` внутри offering, когда нужен отдельный execution lifecycle. |
 | `GroupSet` | Измерение группирования (intake/current class/remediation/lab). |
 | `Group` | Организационная группа внутри GroupSet. |
