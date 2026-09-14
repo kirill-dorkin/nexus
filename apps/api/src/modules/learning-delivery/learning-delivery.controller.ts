@@ -5,22 +5,28 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post
 } from "@nestjs/common";
 import {
+  correctAttendanceRequestSchema,
   createCourseRunRequestSchema,
   createDeliveryGroupRequestSchema,
   createEnrollmentRequestSchema,
   createGroupMembershipRequestSchema,
   createGroupSetRequestSchema,
   createLearningOfferingRequestSchema,
+  createSessionRequestSchema,
+  recordAttendanceRequestSchema,
   uuidSchema,
+  type Attendance,
   type CourseRun,
   type DeliveryGroup,
   type Enrollment,
   type GroupMembership,
   type GroupSet,
-  type LearningOffering
+  type LearningOffering,
+  type Session
 } from "@platform/contracts";
 
 import { parseRequest } from "../../http/validation";
@@ -147,6 +153,76 @@ export class LearningDeliveryController {
       parseRequest(uuidSchema, groupSetId),
       parseRequest(uuidSchema, groupId),
       parseRequest(createGroupMembershipRequestSchema, body)
+    );
+  }
+
+  @Post(":offeringId/runs/:courseRunId/sessions")
+  @HttpCode(HttpStatus.CREATED)
+  createSession(
+    @Param("organizationId") organizationId: string,
+    @Param("offeringId") offeringId: string,
+    @Param("courseRunId") courseRunId: string,
+    @Body() body: unknown
+  ): Promise<Session> {
+    return this.delivery.createSession(
+      parseRequest(uuidSchema, organizationId),
+      parseRequest(uuidSchema, offeringId),
+      parseRequest(uuidSchema, courseRunId),
+      parseRequest(createSessionRequestSchema, body)
+    );
+  }
+
+  @Get(":offeringId/runs/:courseRunId/sessions/:sessionId")
+  getSession(
+    @Param("organizationId") organizationId: string,
+    @Param("offeringId") offeringId: string,
+    @Param("courseRunId") courseRunId: string,
+    @Param("sessionId") sessionId: string
+  ): Promise<Session> {
+    return this.delivery.getSession(
+      parseRequest(uuidSchema, organizationId),
+      parseRequest(uuidSchema, offeringId),
+      parseRequest(uuidSchema, courseRunId),
+      parseRequest(uuidSchema, sessionId)
+    );
+  }
+
+  @Post(":offeringId/runs/:courseRunId/sessions/:sessionId/attendances")
+  @HttpCode(HttpStatus.CREATED)
+  recordAttendance(
+    @Param("organizationId") organizationId: string,
+    @Param("offeringId") offeringId: string,
+    @Param("courseRunId") courseRunId: string,
+    @Param("sessionId") sessionId: string,
+    @Body() body: unknown
+  ): Promise<Attendance> {
+    return this.delivery.recordAttendance(
+      parseRequest(uuidSchema, organizationId),
+      parseRequest(uuidSchema, offeringId),
+      parseRequest(uuidSchema, courseRunId),
+      parseRequest(uuidSchema, sessionId),
+      parseRequest(recordAttendanceRequestSchema, body)
+    );
+  }
+
+  @Patch(
+    ":offeringId/runs/:courseRunId/sessions/:sessionId/attendances/:attendanceId"
+  )
+  correctAttendance(
+    @Param("organizationId") organizationId: string,
+    @Param("offeringId") offeringId: string,
+    @Param("courseRunId") courseRunId: string,
+    @Param("sessionId") sessionId: string,
+    @Param("attendanceId") attendanceId: string,
+    @Body() body: unknown
+  ): Promise<Attendance> {
+    return this.delivery.correctAttendance(
+      parseRequest(uuidSchema, organizationId),
+      parseRequest(uuidSchema, offeringId),
+      parseRequest(uuidSchema, courseRunId),
+      parseRequest(uuidSchema, sessionId),
+      parseRequest(uuidSchema, attendanceId),
+      parseRequest(correctAttendanceRequestSchema, body)
     );
   }
 }
