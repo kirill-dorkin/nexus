@@ -1,10 +1,12 @@
 import type {
+  Attendance,
   CourseRun,
   DeliveryGroup,
   Enrollment,
   GroupMembership,
   GroupSet,
-  LearningOffering
+  LearningOffering,
+  Session
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
@@ -67,6 +69,27 @@ export type NewGroupMembership = Readonly<{
   assignedByUserId: string;
 }>;
 
+export type NewSession = Readonly<{
+  id: string;
+  organizationId: string;
+  courseRunId: string;
+  groupId: string | null;
+  slug: string;
+  name: string;
+  startsAt: string;
+  endsAt: string;
+  createdByUserId: string;
+}>;
+
+export type NewAttendance = Readonly<{
+  id: string;
+  organizationId: string;
+  sessionId: string;
+  enrollmentId: string;
+  status: Attendance["status"];
+  recordedByUserId: string;
+}>;
+
 export abstract class LearningDeliveryRepository {
   abstract createOffering(
     transaction: DatabaseTransaction,
@@ -127,4 +150,42 @@ export abstract class LearningDeliveryRepository {
     transaction: DatabaseTransaction,
     membership: NewGroupMembership
   ): Promise<GroupMembership>;
+
+  abstract hasGroupMembershipAt(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    groupId: string,
+    enrollmentId: string,
+    at: string
+  ): Promise<boolean>;
+
+  abstract createSession(
+    transaction: DatabaseTransaction,
+    session: NewSession
+  ): Promise<Session>;
+
+  abstract findSession(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    sessionId: string
+  ): Promise<Session | null>;
+
+  abstract createAttendance(
+    transaction: DatabaseTransaction,
+    attendance: NewAttendance
+  ): Promise<Attendance>;
+
+  abstract findAttendance(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    attendanceId: string
+  ): Promise<Attendance | null>;
+
+  abstract updateAttendanceStatus(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    attendanceId: string,
+    status: Attendance["status"],
+    updatedByUserId: string
+  ): Promise<Attendance>;
 }
