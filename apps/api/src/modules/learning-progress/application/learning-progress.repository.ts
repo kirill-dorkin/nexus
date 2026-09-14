@@ -1,4 +1,4 @@
-import type { Attempt, Evidence } from "@platform/contracts";
+import type { Attempt, Evidence, Submission } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
 import type { ActivityAttemptCount } from "./learning-progress.query";
@@ -8,13 +8,21 @@ export type NewAttempt = Readonly<{
   organizationId: string;
   enrollmentId: string;
   activityVersionId: string;
-  submission: Readonly<Record<string, unknown>>;
+}>;
+
+export type NewSubmission = Readonly<{
+  id: string;
+  organizationId: string;
+  attemptId: string;
+  payload: Readonly<Record<string, unknown>>;
+  submittedByUserId: string;
 }>;
 
 export type NewEvidence = Readonly<{
   id: string;
   organizationId: string;
   attemptId: string;
+  submissionId: string;
   skillId: string;
   kind: string;
   score: number | null;
@@ -28,17 +36,41 @@ export type AttemptContext = Readonly<{
   learnerUserId: string;
 }>;
 
+export type SubmissionContext = Readonly<{
+  submission: Submission;
+  attempt: Attempt;
+  offeringId: string;
+  learnerUserId: string;
+}>;
+
 export abstract class LearningProgressRepository {
   abstract createAttempt(
     transaction: DatabaseTransaction,
     attempt: NewAttempt
   ): Promise<Attempt>;
 
+  abstract createSubmission(
+    transaction: DatabaseTransaction,
+    submission: NewSubmission
+  ): Promise<Submission>;
+
   abstract findAttemptContext(
     transaction: DatabaseTransaction,
     organizationId: string,
     attemptId: string
   ): Promise<AttemptContext | null>;
+
+  abstract findSubmissionContext(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    submissionId: string
+  ): Promise<SubmissionContext | null>;
+
+  abstract findSubmissionByAttempt(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    attemptId: string
+  ): Promise<Submission | null>;
 
   abstract listActivityAttemptCounts(
     transaction: DatabaseTransaction,
