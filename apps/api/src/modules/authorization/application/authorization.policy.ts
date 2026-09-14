@@ -9,9 +9,16 @@ export const authorizationCapabilities = [
   "course.read",
   "course.manage",
   "course.publish",
+  "skill.read",
+  "skill.manage",
+  "activity.read",
+  "activity.manage",
   "offering.read",
   "offering.manage",
-  "enrollment.manage"
+  "enrollment.manage",
+  "attempt.submit",
+  "evidence.read",
+  "evidence.record"
 ] as const;
 
 export type AuthorizationCapability =
@@ -62,9 +69,15 @@ const roleCapabilities: Readonly<Record<SystemRoleKey, ReadonlySet<Authorization
     "course.read",
     "course.manage",
     "course.publish",
+    "skill.read",
+    "skill.manage",
+    "activity.read",
+    "activity.manage",
     "offering.read",
     "offering.manage",
-    "enrollment.manage"
+    "enrollment.manage",
+    "evidence.read",
+    "evidence.record"
   ]),
   instructor: new Set([
     "organization.read",
@@ -72,19 +85,32 @@ const roleCapabilities: Readonly<Record<SystemRoleKey, ReadonlySet<Authorization
     "course.read",
     "course.manage",
     "course.publish",
+    "skill.read",
+    "skill.manage",
+    "activity.read",
+    "activity.manage",
     "offering.read",
     "offering.manage",
-    "enrollment.manage"
+    "enrollment.manage",
+    "evidence.read",
+    "evidence.record"
   ]),
   mentor: new Set([
     "organization.read",
     "course.read",
-    "offering.read"
+    "skill.read",
+    "activity.read",
+    "offering.read",
+    "evidence.read"
   ]),
   learner: new Set([
     "organization.read",
     "course.read",
-    "offering.read"
+    "skill.read",
+    "activity.read",
+    "offering.read",
+    "attempt.submit",
+    "evidence.read"
   ])
 };
 
