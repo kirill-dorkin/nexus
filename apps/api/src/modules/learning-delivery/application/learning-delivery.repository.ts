@@ -1,5 +1,9 @@
 import type {
+  CourseRun,
+  DeliveryGroup,
   Enrollment,
+  GroupMembership,
+  GroupSet,
   LearningOffering
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
@@ -25,6 +29,44 @@ export type NewEnrollment = Readonly<{
   createdByUserId: string;
 }>;
 
+export type NewCourseRun = Readonly<{
+  id: string;
+  organizationId: string;
+  offeringId: string;
+  slug: string;
+  name: string;
+  startsAt: string;
+  endsAt: string;
+  createdByUserId: string;
+}>;
+
+export type NewGroupSet = Readonly<{
+  id: string;
+  organizationId: string;
+  courseRunId: string;
+  slug: string;
+  name: string;
+  createdByUserId: string;
+}>;
+
+export type NewDeliveryGroup = Readonly<{
+  id: string;
+  organizationId: string;
+  groupSetId: string;
+  slug: string;
+  name: string;
+  createdByUserId: string;
+}>;
+
+export type NewGroupMembership = Readonly<{
+  id: string;
+  organizationId: string;
+  groupSetId: string;
+  groupId: string;
+  enrollmentId: string;
+  assignedByUserId: string;
+}>;
+
 export abstract class LearningDeliveryRepository {
   abstract createOffering(
     transaction: DatabaseTransaction,
@@ -47,4 +89,42 @@ export abstract class LearningDeliveryRepository {
     organizationId: string,
     enrollmentId: string
   ): Promise<Enrollment | null>;
+
+  abstract createCourseRun(
+    transaction: DatabaseTransaction,
+    courseRun: NewCourseRun
+  ): Promise<CourseRun>;
+
+  abstract findCourseRun(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseRunId: string
+  ): Promise<CourseRun | null>;
+
+  abstract createGroupSet(
+    transaction: DatabaseTransaction,
+    groupSet: NewGroupSet
+  ): Promise<GroupSet>;
+
+  abstract findGroupSet(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    groupSetId: string
+  ): Promise<GroupSet | null>;
+
+  abstract createGroup(
+    transaction: DatabaseTransaction,
+    group: NewDeliveryGroup
+  ): Promise<DeliveryGroup>;
+
+  abstract findGroup(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    groupId: string
+  ): Promise<DeliveryGroup | null>;
+
+  abstract createGroupMembership(
+    transaction: DatabaseTransaction,
+    membership: NewGroupMembership
+  ): Promise<GroupMembership>;
 }
