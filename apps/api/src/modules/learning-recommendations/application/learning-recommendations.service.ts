@@ -114,7 +114,7 @@ export class LearningRecommendationsApplicationService {
           }))
         });
 
-        const context = {
+        const recommendationContext = {
           enrollmentId,
           offeringId: enrollmentContext.offering.id,
           courseVersionId: enrollmentContext.offering.courseVersionId,
@@ -124,7 +124,7 @@ export class LearningRecommendationsApplicationService {
         if (decision.status === "mastery_target_met") {
           return {
             status: "mastery_target_met",
-            context,
+            ...recommendationContext,
             recommendation: null
           };
         }
@@ -132,7 +132,7 @@ export class LearningRecommendationsApplicationService {
         if (decision.status === "no_practice_activity_available") {
           return {
             status: "no_practice_activity_available",
-            context,
+            ...recommendationContext,
             focusSkill: decision.focusSkill,
             reason: decision.reason,
             recommendation: null
@@ -141,7 +141,7 @@ export class LearningRecommendationsApplicationService {
 
         return {
           status: "recommended",
-          context,
+          ...recommendationContext,
           recommendation: {
             kind: "activity",
             activity: {

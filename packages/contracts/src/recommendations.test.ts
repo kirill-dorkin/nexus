@@ -21,7 +21,7 @@ describe("recommendation contracts", () => {
   it("accepts an explainable activity recommendation", () => {
     const parsed = nextLearningRecommendationSchema.parse({
       status: "recommended",
-      context: context(),
+      ...context(),
       recommendation: {
         kind: "activity",
         activity: {
@@ -44,14 +44,26 @@ describe("recommendation contracts", () => {
       }
     });
 
-    expect(parsed.status).toBe("recommended");
-    expect(parsed.recommendation.reason.attemptCount).toBe(2);
+    expect(parsed).toMatchObject({
+      status: "recommended",
+      policy: {
+        key: "ordered-mastery",
+        version: 1,
+        masteryTarget: 0.8
+      },
+      recommendation: {
+        reason: {
+          code: "focus_skill_below_target",
+          attemptCount: 2
+        }
+      }
+    });
   });
 
   it("keeps mastery target met distinct from course completion", () => {
     const parsed = nextLearningRecommendationSchema.parse({
       status: "mastery_target_met",
-      context: context(),
+      ...context(),
       recommendation: null
     });
 
@@ -64,7 +76,7 @@ describe("recommendation contracts", () => {
   it("represents a focus skill with no practice activity as a structured outcome", () => {
     const parsed = nextLearningRecommendationSchema.parse({
       status: "no_practice_activity_available",
-      context: context(),
+      ...context(),
       focusSkill: {
         skillId: randomUUID(),
         title: "Transactions",
@@ -75,7 +87,10 @@ describe("recommendation contracts", () => {
       recommendation: null
     });
 
-    expect(parsed.status).toBe("no_practice_activity_available");
-    expect(parsed.reason.code).toBe("no_practice_activity_available");
+    expect(parsed).toMatchObject({
+      status: "no_practice_activity_available",
+      reason: { code: "no_practice_activity_available" },
+      recommendation: null
+    });
   });
 });
