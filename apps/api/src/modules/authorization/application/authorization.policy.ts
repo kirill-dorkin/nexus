@@ -18,7 +18,10 @@ export const authorizationCapabilities = [
   "enrollment.manage",
   "attempt.submit",
   "evidence.read",
-  "evidence.record"
+  "evidence.record",
+  "mastery.read",
+  "mastery.read_others",
+  "mastery.recompute"
 ] as const;
 
 export type AuthorizationCapability =
@@ -77,7 +80,10 @@ const roleCapabilities: Readonly<Record<SystemRoleKey, ReadonlySet<Authorization
     "offering.manage",
     "enrollment.manage",
     "evidence.read",
-    "evidence.record"
+    "evidence.record",
+    "mastery.read",
+    "mastery.read_others",
+    "mastery.recompute"
   ]),
   instructor: new Set([
     "organization.read",
@@ -93,7 +99,9 @@ const roleCapabilities: Readonly<Record<SystemRoleKey, ReadonlySet<Authorization
     "offering.manage",
     "enrollment.manage",
     "evidence.read",
-    "evidence.record"
+    "evidence.record",
+    "mastery.read",
+    "mastery.read_others"
   ]),
   mentor: new Set([
     "organization.read",
@@ -101,7 +109,9 @@ const roleCapabilities: Readonly<Record<SystemRoleKey, ReadonlySet<Authorization
     "skill.read",
     "activity.read",
     "offering.read",
-    "evidence.read"
+    "evidence.read",
+    "mastery.read",
+    "mastery.read_others"
   ]),
   learner: new Set([
     "organization.read",
@@ -110,7 +120,8 @@ const roleCapabilities: Readonly<Record<SystemRoleKey, ReadonlySet<Authorization
     "activity.read",
     "offering.read",
     "attempt.submit",
-    "evidence.read"
+    "evidence.read",
+    "mastery.read"
   ])
 };
 
