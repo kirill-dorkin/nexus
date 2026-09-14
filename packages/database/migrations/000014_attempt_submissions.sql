@@ -91,8 +91,13 @@ LANGUAGE plpgsql
 SECURITY INVOKER
 SET search_path = pg_catalog
 AS $$
+DECLARE
+  principal_user_id uuid;
 BEGIN
-  IF NEW.submission IS NOT NULL OR NEW.submitted_at IS NOT NULL THEN
+  principal_user_id := NULLIF(current_setting('app.user_id', true), '')::uuid;
+
+  IF principal_user_id IS NOT NULL
+     AND (NEW.submission IS NOT NULL OR NEW.submitted_at IS NOT NULL) THEN
     RAISE EXCEPTION USING
       ERRCODE = '55000',
       MESSAGE = 'new attempts must persist learner work through submissions';
