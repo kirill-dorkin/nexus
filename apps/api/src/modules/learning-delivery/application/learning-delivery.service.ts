@@ -4,9 +4,17 @@ import {
   NotFoundException
 } from "@nestjs/common";
 import type {
+  CourseRun,
+  CreateCourseRunRequest,
+  CreateDeliveryGroupRequest,
   CreateEnrollmentRequest,
+  CreateGroupMembershipRequest,
+  CreateGroupSetRequest,
   CreateLearningOfferingRequest,
+  DeliveryGroup,
   Enrollment,
+  GroupMembership,
+  GroupSet,
   LearningOffering
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
@@ -231,6 +239,358 @@ export class LearningDeliveryApplicationService {
       if (isUniqueViolation(error)) {
         throw new ConflictException(
           "This identity is already enrolled in the learning offering."
+        );
+      }
+      throw error;
+    }
+  }
+
+  async createCourseRun(
+    organizationId: string,
+    offeringId: string,
+    command: CreateCourseRunRequest
+  ): Promise<CourseRun> {
+    const context = this.requestContext.tenantContext(organizationId);
+    const courseRunId = await this.database.nextUuid();
+
+    try {
+      return await this.database.tenantTransaction(context, async (transaction) => {
+        await this.identity.requireActiveUser(transaction, context.userId);
+        const offering = await this.delivery.findOffering(
+          transaction,
+          organizationId,
+          offeringId
+        );
+        if (offering === null) {
+          throw new NotFoundException("Learning offering not found.");
+        }
+
+        await this.authorization.requireCapability(
+          transaction,
+          context.userId,
+          "offering.manage",
+          offeringScope(organizationId, offeringId)
+        );
+
+        if (offering.status !== "open") {
+          throw new ConflictException("Course runs require an open learning offering.");
+        }
+        if (offering.deliveryMode !== "cohort") {
+          throw new ConflictException("Course runs require a cohort learning offering.");
+        }
+        if (
+          offering.startsAt !== null &&
+          new Date(command.startsAt).getTime() < new Date(offering.startsAt).getTime()
+        ) {
+          throw new ConflictException("Course run cannot start before its offering window.");
+        }
+        if (
+          offering.endsAt !== null &&
+          new Date(command.endsAt).getTime() > new Date(offering.endsAt).getTime()
+        ) {
+          throw new ConflictException("Course run cannot end after its offering window.");
+        }
+
+        const courseRun = await this.delivery.createCourseRun(transaction, {
+          id: courseRunId,
+          organizationId,
+          offeringId,
+          slug: command.slug,
+          name: command.name,
+          startsAt: command.startsAt,
+          endsAt: command.endsAt,
+          createdByUserId: context.userId
+        });
+
+        await this.outbox.append(transaction, {
+          organizationId,
+          eventName: "course_run.created",
+          eventVersion: 1,
+          aggregateType: "course_run",
+          aggregateId: courseRun.id,
+          actorUserId: context.userId,
+          payload: {
+            organizationId,
+            offeringId,
+            courseRunId: courseRun.id,
+            startsAt: courseRun.startsAt,
+            endsAt: courseRun.endsAt
+          }
+        });
+
+        return courseRun;
+      });
+    } catch (error) {
+      if (isUniqueViolation(error)) {
+        throw new ConflictException(
+          "A course run with this slug already exists in the learning offering."
+        );
+      }
+      throw error;
+    }
+  }
+
+  async getCourseRun(
+    organizationId: string,
+    offeringId: string,
+    courseRunId: string
+  ): Promise<CourseRun> {
+    const context = this.requestContext.tenantContext(organizationId);
+
+    return this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+      await this.authorization.requireCapability(
+        transaction,
+        context.userId,
+        "offering.read",
+        offeringScope(organizationId, offeringId)
+      );
+
+      const courseRun = await this.delivery.findCourseRun(
+        transaction,
+        organizationId,
+        courseRunId
+      );
+      if (courseRun === null || courseRun.offeringId !== offeringId) {
+        throw new NotFoundException("Course run not found.");
+      }
+      return courseRun;
+    });
+  }
+
+  async createGroupSet(
+    organizationId: string,
+    offeringId: string,
+    courseRunId: string,
+    command: CreateGroupSetRequest
+  ): Promise<GroupSet> {
+    const context = this.requestContext.tenantContext(organizationId);
+    const groupSetId = await this.database.nextUuid();
+
+    try {
+      return await this.database.tenantTransaction(context, async (transaction) => {
+        await this.identity.requireActiveUser(transaction, context.userId);
+        await this.authorization.requireCapability(
+          transaction,
+          context.userId,
+          "offering.manage",
+          offeringScope(organizationId, offeringId)
+        );
+
+        const courseRun = await this.delivery.findCourseRun(
+          transaction,
+          organizationId,
+          courseRunId
+        );
+        if (courseRun === null || courseRun.offeringId !== offeringId) {
+          throw new NotFoundException("Course run not found.");
+        }
+
+        const groupSet = await this.delivery.createGroupSet(transaction, {
+          id: groupSetId,
+          organizationId,
+          courseRunId,
+          slug: command.slug,
+          name: command.name,
+          createdByUserId: context.userId
+        });
+
+        await this.outbox.append(transaction, {
+          organizationId,
+          eventName: "group_set.created",
+          eventVersion: 1,
+          aggregateType: "group_set",
+          aggregateId: groupSet.id,
+          actorUserId: context.userId,
+          payload: {
+            organizationId,
+            offeringId,
+            courseRunId,
+            groupSetId: groupSet.id
+          }
+        });
+
+        return groupSet;
+      });
+    } catch (error) {
+      if (isUniqueViolation(error)) {
+        throw new ConflictException(
+          "A group set with this slug already exists in the course run."
+        );
+      }
+      throw error;
+    }
+  }
+
+  async createGroup(
+    organizationId: string,
+    offeringId: string,
+    courseRunId: string,
+    groupSetId: string,
+    command: CreateDeliveryGroupRequest
+  ): Promise<DeliveryGroup> {
+    const context = this.requestContext.tenantContext(organizationId);
+    const groupId = await this.database.nextUuid();
+
+    try {
+      return await this.database.tenantTransaction(context, async (transaction) => {
+        await this.identity.requireActiveUser(transaction, context.userId);
+        await this.authorization.requireCapability(
+          transaction,
+          context.userId,
+          "offering.manage",
+          offeringScope(organizationId, offeringId)
+        );
+
+        const courseRun = await this.delivery.findCourseRun(
+          transaction,
+          organizationId,
+          courseRunId
+        );
+        if (courseRun === null || courseRun.offeringId !== offeringId) {
+          throw new NotFoundException("Course run not found.");
+        }
+        const groupSet = await this.delivery.findGroupSet(
+          transaction,
+          organizationId,
+          groupSetId
+        );
+        if (groupSet === null || groupSet.courseRunId !== courseRunId) {
+          throw new NotFoundException("Group set not found.");
+        }
+
+        const group = await this.delivery.createGroup(transaction, {
+          id: groupId,
+          organizationId,
+          groupSetId,
+          slug: command.slug,
+          name: command.name,
+          createdByUserId: context.userId
+        });
+
+        await this.outbox.append(transaction, {
+          organizationId,
+          eventName: "group.created",
+          eventVersion: 1,
+          aggregateType: "group",
+          aggregateId: group.id,
+          actorUserId: context.userId,
+          payload: {
+            organizationId,
+            offeringId,
+            courseRunId,
+            groupSetId,
+            groupId: group.id
+          }
+        });
+
+        return group;
+      });
+    } catch (error) {
+      if (isUniqueViolation(error)) {
+        throw new ConflictException(
+          "A group with this slug already exists in the group set."
+        );
+      }
+      throw error;
+    }
+  }
+
+  async createGroupMembership(
+    organizationId: string,
+    offeringId: string,
+    courseRunId: string,
+    groupSetId: string,
+    groupId: string,
+    command: CreateGroupMembershipRequest
+  ): Promise<GroupMembership> {
+    const context = this.requestContext.tenantContext(organizationId);
+    const membershipId = await this.database.nextUuid();
+
+    try {
+      return await this.database.tenantTransaction(context, async (transaction) => {
+        await this.identity.requireActiveUser(transaction, context.userId);
+        await this.authorization.requireCapability(
+          transaction,
+          context.userId,
+          "offering.manage",
+          offeringScope(organizationId, offeringId)
+        );
+
+        const courseRun = await this.delivery.findCourseRun(
+          transaction,
+          organizationId,
+          courseRunId
+        );
+        if (courseRun === null || courseRun.offeringId !== offeringId) {
+          throw new NotFoundException("Course run not found.");
+        }
+        const groupSet = await this.delivery.findGroupSet(
+          transaction,
+          organizationId,
+          groupSetId
+        );
+        if (groupSet === null || groupSet.courseRunId !== courseRunId) {
+          throw new NotFoundException("Group set not found.");
+        }
+        const group = await this.delivery.findGroup(
+          transaction,
+          organizationId,
+          groupId
+        );
+        if (group === null || group.groupSetId !== groupSetId) {
+          throw new NotFoundException("Group not found.");
+        }
+        const enrollment = await this.delivery.findEnrollment(
+          transaction,
+          organizationId,
+          command.enrollmentId
+        );
+        if (enrollment === null) {
+          throw new NotFoundException("Enrollment not found.");
+        }
+        if (enrollment.status !== "active") {
+          throw new ConflictException("Only an active enrollment can join a group.");
+        }
+        if (enrollment.offeringId !== offeringId) {
+          throw new ConflictException(
+            "Group membership requires an enrollment from the same learning offering."
+          );
+        }
+
+        const membership = await this.delivery.createGroupMembership(transaction, {
+          id: membershipId,
+          organizationId,
+          groupSetId,
+          groupId,
+          enrollmentId: command.enrollmentId,
+          assignedByUserId: context.userId
+        });
+
+        await this.outbox.append(transaction, {
+          organizationId,
+          eventName: "group_membership.assigned",
+          eventVersion: 1,
+          aggregateType: "group_membership",
+          aggregateId: membership.id,
+          actorUserId: context.userId,
+          payload: {
+            organizationId,
+            offeringId,
+            courseRunId,
+            groupSetId,
+            groupId,
+            enrollmentId: command.enrollmentId,
+            groupMembershipId: membership.id
+          }
+        });
+
+        return membership;
+      });
+    } catch (error) {
+      if (isUniqueViolation(error)) {
+        throw new ConflictException(
+          "This enrollment already has an active group in the group set."
         );
       }
       throw error;

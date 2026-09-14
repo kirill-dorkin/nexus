@@ -2,8 +2,12 @@ import { describe, expect, it } from "vitest";
 
 import {
   createCourseRequestSchema,
+  createCourseRunRequestSchema,
   createCourseVersionRequestSchema,
+  createDeliveryGroupRequestSchema,
   createEnrollmentRequestSchema,
+  createGroupMembershipRequestSchema,
+  createGroupSetRequestSchema,
   createLearningOfferingRequestSchema
 } from "./index";
 
@@ -69,5 +73,43 @@ describe("learning catalog and delivery contracts", () => {
     expect(createEnrollmentRequestSchema.parse({ userId: id })).toEqual({
       userId: id
     });
+  });
+
+  it("models scheduled course runs and explicit grouping commands", () => {
+    expect(
+      createCourseRunRequestSchema.parse({
+        slug: "fall-2026-a",
+        name: "Fall 2026 A",
+        startsAt: "2026-09-15T09:00:00.000Z",
+        endsAt: "2026-12-15T09:00:00.000Z"
+      })
+    ).toMatchObject({ slug: "fall-2026-a" });
+
+    expect(() =>
+      createCourseRunRequestSchema.parse({
+        slug: "invalid-run",
+        name: "Invalid run",
+        startsAt: "2026-12-15T09:00:00.000Z",
+        endsAt: "2026-09-15T09:00:00.000Z"
+      })
+    ).toThrow();
+
+    expect(
+      createGroupSetRequestSchema.parse({
+        slug: "labs",
+        name: "Lab sections"
+      })
+    ).toEqual({ slug: "labs", name: "Lab sections" });
+
+    expect(
+      createDeliveryGroupRequestSchema.parse({
+        slug: "lab-a",
+        name: "Lab A"
+      })
+    ).toEqual({ slug: "lab-a", name: "Lab A" });
+
+    expect(
+      createGroupMembershipRequestSchema.parse({ enrollmentId: id })
+    ).toEqual({ enrollmentId: id });
   });
 });
