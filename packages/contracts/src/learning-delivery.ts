@@ -27,6 +27,12 @@ export const attendanceStatusSchema = z.enum([
   "late",
   "excused"
 ]);
+export const assignmentAudienceTypeSchema = z.enum([
+  "offering",
+  "course_run",
+  "group",
+  "enrollment"
+]);
 
 const optionalDateTimeSchema = z.string().datetime().nullable();
 const deliveryNameSchema = z.string().trim().min(1).max(160);
@@ -192,6 +198,73 @@ export const correctAttendanceRequestSchema = z.object({
   status: attendanceStatusSchema
 });
 
+const offeringAssignmentAudienceSchema = z
+  .object({
+    type: z.literal("offering")
+  })
+  .strict();
+
+const courseRunAssignmentAudienceSchema = z
+  .object({
+    type: z.literal("course_run"),
+    courseRunId: uuidSchema
+  })
+  .strict();
+
+const groupAssignmentAudienceSchema = z
+  .object({
+    type: z.literal("group"),
+    groupId: uuidSchema
+  })
+  .strict();
+
+const enrollmentAssignmentAudienceSchema = z
+  .object({
+    type: z.literal("enrollment"),
+    enrollmentId: uuidSchema
+  })
+  .strict();
+
+export const assignmentAudienceSchema = z.discriminatedUnion("type", [
+  offeringAssignmentAudienceSchema,
+  courseRunAssignmentAudienceSchema,
+  groupAssignmentAudienceSchema,
+  enrollmentAssignmentAudienceSchema
+]);
+
+export const assignmentSchema = z.object({
+  id: uuidSchema,
+  organizationId: uuidSchema,
+  offeringId: uuidSchema,
+  activityVersionId: uuidSchema,
+  slug: resourceSlugSchema,
+  name: deliveryNameSchema,
+  audience: assignmentAudienceSchema,
+  availableAt: optionalDateTimeSchema,
+  dueAt: optionalDateTimeSchema,
+  cancelledAt: optionalDateTimeSchema
+});
+
+export const createAssignmentRequestSchema = z
+  .object({
+    activityId: uuidSchema,
+    slug: resourceSlugSchema,
+    name: deliveryNameSchema,
+    audience: assignmentAudienceSchema,
+    availableAt: z.string().datetime().optional(),
+    dueAt: z.string().datetime().optional()
+  })
+  .refine(
+    (value) =>
+      value.availableAt === undefined ||
+      value.dueAt === undefined ||
+      new Date(value.dueAt).getTime() > new Date(value.availableAt).getTime(),
+    {
+      message: "dueAt must be later than availableAt",
+      path: ["dueAt"]
+    }
+  );
+
 export type LearningOffering = z.infer<typeof learningOfferingSchema>;
 export type CreateLearningOfferingRequest = z.infer<
   typeof createLearningOfferingRequestSchema
@@ -217,3 +290,6 @@ export type CreateSessionRequest = z.infer<typeof createSessionRequestSchema>;
 export type Attendance = z.infer<typeof attendanceSchema>;
 export type RecordAttendanceRequest = z.infer<typeof recordAttendanceRequestSchema>;
 export type CorrectAttendanceRequest = z.infer<typeof correctAttendanceRequestSchema>;
+export type AssignmentAudience = z.infer<typeof assignmentAudienceSchema>;
+export type Assignment = z.infer<typeof assignmentSchema>;
+export type CreateAssignmentRequest = z.infer<typeof createAssignmentRequestSchema>;
