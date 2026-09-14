@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  correctAttendanceRequestSchema,
   createCourseRequestSchema,
   createCourseRunRequestSchema,
   createCourseVersionRequestSchema,
@@ -8,7 +9,9 @@ import {
   createEnrollmentRequestSchema,
   createGroupMembershipRequestSchema,
   createGroupSetRequestSchema,
-  createLearningOfferingRequestSchema
+  createLearningOfferingRequestSchema,
+  createSessionRequestSchema,
+  recordAttendanceRequestSchema
 } from "./index";
 
 const id = "018f47f1-16ce-7d1f-8f65-c61d8be24a31";
@@ -111,5 +114,56 @@ describe("learning catalog and delivery contracts", () => {
     expect(
       createGroupMembershipRequestSchema.parse({ enrollmentId: id })
     ).toEqual({ enrollmentId: id });
+  });
+
+  it("models sessions separately from attendance and validates both commands", () => {
+    expect(
+      createSessionRequestSchema.parse({
+        slug: "lecture-01",
+        name: "Lecture 01",
+        startsAt: "2099-10-01T09:00:00.000Z",
+        endsAt: "2099-10-01T10:30:00.000Z"
+      })
+    ).toMatchObject({
+      groupId: null,
+      slug: "lecture-01"
+    });
+
+    expect(
+      createSessionRequestSchema.parse({
+        groupId: id,
+        slug: "lab-01",
+        name: "Lab 01",
+        startsAt: "2099-10-01T11:00:00.000Z",
+        endsAt: "2099-10-01T12:00:00.000Z"
+      }).groupId
+    ).toBe(id);
+
+    expect(() =>
+      createSessionRequestSchema.parse({
+        slug: "invalid-session",
+        name: "Invalid session",
+        startsAt: "2099-10-01T12:00:00.000Z",
+        endsAt: "2099-10-01T11:00:00.000Z"
+      })
+    ).toThrow();
+
+    expect(
+      recordAttendanceRequestSchema.parse({
+        enrollmentId: id,
+        status: "late"
+      })
+    ).toEqual({ enrollmentId: id, status: "late" });
+
+    expect(correctAttendanceRequestSchema.parse({ status: "excused" })).toEqual({
+      status: "excused"
+    });
+
+    expect(() =>
+      recordAttendanceRequestSchema.parse({
+        enrollmentId: id,
+        status: "maybe"
+      })
+    ).toThrow();
   });
 });
