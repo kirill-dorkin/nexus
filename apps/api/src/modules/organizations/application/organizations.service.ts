@@ -322,7 +322,7 @@ export class OrganizationsApplicationService {
     );
     if (membership?.status !== "active") {
       throw new ConflictException(
-        "An active organization membership is required for enrollment."
+        "An active organization membership is required."
       );
     }
     return membership;

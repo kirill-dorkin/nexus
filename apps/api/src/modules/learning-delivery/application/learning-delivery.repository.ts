@@ -11,6 +11,7 @@ export type NewLearningOffering = Readonly<{
   slug: string;
   name: string;
   deliveryMode: LearningOffering["deliveryMode"];
+  accessMode: LearningOffering["accessMode"];
   startsAt: string | null;
   endsAt: string | null;
   createdByUserId: string;

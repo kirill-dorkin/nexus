@@ -4,6 +4,7 @@ import { DatabaseModule } from "./database/database.module";
 import { HealthController } from "./health.controller";
 import { AuthenticationModule } from "./modules/authentication/authentication.module";
 import { AuthorizationModule } from "./modules/authorization/authorization.module";
+import { CommerceModule } from "./modules/commerce/commerce.module";
 import { IdentityModule } from "./modules/identity/identity.module";
 import { LearningContentModule } from "./modules/learning-content/learning-content.module";
 import { LearningDeliveryModule } from "./modules/learning-delivery/learning-delivery.module";
@@ -20,6 +21,7 @@ import { RequestContextModule } from "./request-context/request-context.module";
     AuthenticationModule,
     AuthorizationModule,
     OrganizationsModule,
+    CommerceModule,
     LearningContentModule,
     LearningDeliveryModule,
     LearningProgressModule,
