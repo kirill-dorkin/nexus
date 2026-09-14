@@ -62,6 +62,8 @@ A recommendation response identifies the policy key and version that produced th
 
 Policy configuration such as mastery targets belongs to the policy definition or explicit policy configuration. It must not be scattered through controllers or application services.
 
+The fixed mastery target for `ordered-mastery@1` is `0.8`. Changing that target requires an explicit policy/configuration version change rather than a silent implementation edit.
+
 ### ordered-mastery@1
 
 The first policy operates on:
@@ -121,9 +123,9 @@ The sequencing policy itself is implemented as a pure domain function so that it
 
 ### Consistent computation
 
-Recommendation computation should use a consistent transactional view of the required canonical state.
+Recommendation computation uses a consistent transactional view of the required canonical state.
 
-Cross-module application queries used by Recommendations should support the caller's transaction where necessary rather than creating unrelated nested transactions.
+The initial implementation evaluates a recommendation inside one tenant-scoped, read-only `REPEATABLE READ` PostgreSQL transaction. Cross-module application queries receive that caller-owned transaction rather than creating unrelated nested transactions.
 
 Evidence recording and Mastery projection refresh remain responsible for maintaining canonical learning state before a subsequent recommendation is computed.
 
