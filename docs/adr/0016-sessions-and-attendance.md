@@ -25,7 +25,8 @@ The core invariants for this slice are:
 - Attendance references an Enrollment, never a raw User;
 - Attendance never creates enrollment or group membership;
 - one current Attendance exists per `(Session, Enrollment)`;
-- corrections must retain an audit trail.
+- corrections must retain an audit trail;
+- later delivery mutations must not make already-recorded attendance historically impossible.
 
 ## Decision
 
@@ -79,7 +80,7 @@ Attendance uses the explicit states:
 
 A boolean would lose operational meaning and immediately force ambiguous side channels for late or excused learners.
 
-Exactly one current Attendance row is allowed for each `(Session, Enrollment)` pair.
+Exactly one current Attendance row is allowed for each `(Session, Enrollment)` pair. The database uniqueness boundary, not an application pre-check, is authoritative, so concurrent attempts to create the same Attendance cannot both succeed.
 
 ### 6. Corrections preserve audit history
 
@@ -87,15 +88,47 @@ The primary `attendances` row is the current operational state. Correcting its s
 
 A PostgreSQL trigger writes every status transition into append-only `attendance_revisions` with previous status, new status, timestamp, and the application actor when available. The application role can read revision history but cannot insert, update, or delete revision rows directly.
 
+The correction actor must match the transaction principal. Structural Attendance identity (`Session`, `Enrollment`, original recorder, and original recording time) is immutable; a status correction cannot silently turn one attendance fact into another.
+
 The application exposes initial recording and correction as separate commands. This keeps duplicate initial recording distinguishable from a deliberate correction and gives downstream consumers distinct outbox events.
 
-### 7. Authorization remains at the Offering boundary
+### 7. Historical facts remain valid after later delivery mutations
+
+Insert-time validation alone is insufficient because mutable parent rows could otherwise invalidate a fact that was valid when recorded. Therefore PostgreSQL also protects the reverse direction of the invariants.
+
+The stable structural relationships are immutable:
+
+- a LearningOffering cannot be moved to another CourseVersion or delivery mode;
+- a CourseRun cannot be moved to another Offering;
+- a GroupSet cannot be moved to another CourseRun;
+- a Group cannot be moved to another GroupSet;
+- an Enrollment cannot be moved to another Offering or User, nor have its enrollment instant rewritten;
+- a GroupMembership cannot be moved to another Group/Enrollment or have its assignment instant rewritten;
+- a Session cannot be moved to another CourseRun;
+- an Attendance cannot be moved to another Session or Enrollment.
+
+Scheduling fields remain operationally editable where that is useful, but parent/child invariants are rechecked in the reverse direction:
+
+- an Offering window cannot be narrowed so that an existing CourseRun falls outside it;
+- a CourseRun window cannot be narrowed so that an existing Session falls outside it;
+- regrouping or rescheduling a Session cannot make an existing Attendance ineligible;
+- ending a GroupMembership cannot retroactively remove the membership interval required by existing Attendance.
+
+This is preferable to freezing every schedule field after first use: legitimate operational rescheduling remains possible as long as all already-recorded historical facts stay valid.
+
+### 8. Runtime database privileges follow the domain mutation surface
+
+Database triggers remain the final invariant boundary, but `platform_app` also follows least privilege. It does not receive table-wide UPDATE authority over Delivery aggregates.
+
+Runtime UPDATE grants are restricted to lifecycle or presentation columns that the model intentionally permits. Structural identity columns stay migration-owned and are independently protected by triggers. This prevents a future repository method, ad-hoc query, or compromised application path from bypassing aggregate boundaries merely because the SQL role had broad table permissions.
+
+### 9. Authorization remains at the Offering boundary
 
 Session and Attendance operations reuse existing `offering.read` and `offering.manage` capabilities at the parent Offering scope.
 
 No new capability is introduced merely because new entity types exist. If Nexus later supports delegated attendance takers or group-scoped instructors, that concrete policy requirement can justify narrower capabilities and scopes.
 
-### 8. Module boundary, persistence, and events
+### 10. Module boundary, persistence, and events
 
 Session, Attendance, and attendance revision history belong to the existing Learning Delivery bounded context.
 
@@ -113,6 +146,9 @@ Other modules must consume public application/query interfaces or events rather 
 - run-wide and group-specific teaching events share one Session model;
 - Attendance cannot become an alternate access or grouping mechanism;
 - historical group placement determines eligibility for group-scoped attendance deterministically;
+- later rescheduling, regrouping, or membership closure cannot silently falsify existing attendance history;
+- structural Delivery identities cannot drift through broad runtime UPDATE permissions;
+- concurrent duplicate Attendance creation is serialized by PostgreSQL uniqueness;
 - completion, mastery, Attempts, Evidence, and Attendance remain separate concepts;
 - attendance correction is operationally convenient while remaining auditable;
 - the final F3 Assignment slice can later decide explicitly how curriculum Activities are assigned to a run, group, or enrollment without overloading Session.
