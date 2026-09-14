@@ -34,6 +34,7 @@ export class CommerceController {
   }
 
   @Post(":entitlementId/revoke")
+  @HttpCode(HttpStatus.OK)
   revokeOfferingEntitlement(
     @Param("organizationId") organizationId: string,
     @Param("offeringId") offeringId: string,
