@@ -93,12 +93,22 @@ export class ProjectRepositoryConnectService {
         repositoryMappingId: command.repositoryMappingId,
         connectedByUserId: context.userId
       });
-      if (created === null) {
-        throw new ConflictException(
-          "The project or repository was connected concurrently."
-        );
+      if (created !== null) {
+        return connectedProjectView(project, created, reference);
       }
-      return connectedProjectView(project, created, reference);
+
+      const raced = await this.projects.findActiveRepositoryBindingForProject(
+        transaction,
+        organizationId,
+        projectId
+      );
+      if (raced?.repositoryMappingId === command.repositoryMappingId) {
+        return connectedProjectView(project, raced, reference);
+      }
+
+      throw new ConflictException(
+        "The project or repository was connected concurrently."
+      );
     });
   }
 }
