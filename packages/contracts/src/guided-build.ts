@@ -46,6 +46,54 @@ export const guidedBuildProfessionalSolutionDefinitionSchema = z
   })
   .strict();
 
+function validateDefinitionKeys(
+  definition: {
+    activityVersionId?: string;
+    steps: readonly {
+      key: string;
+      hints: readonly { key: string }[];
+    }[];
+    transferActivityVersionId: string | null;
+  },
+  context: z.RefinementCtx
+): void {
+  const stepKeys = new Set<string>();
+  const hintKeys = new Set<string>();
+
+  for (const [stepIndex, step] of definition.steps.entries()) {
+    if (stepKeys.has(step.key)) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Guided Build step keys must be unique.",
+        path: ["steps", stepIndex, "key"]
+      });
+    }
+    stepKeys.add(step.key);
+
+    for (const [hintIndex, hint] of step.hints.entries()) {
+      if (hintKeys.has(hint.key)) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Guided Build hint keys must be unique across the definition.",
+          path: ["steps", stepIndex, "hints", hintIndex, "key"]
+        });
+      }
+      hintKeys.add(hint.key);
+    }
+  }
+
+  if (
+    definition.activityVersionId !== undefined &&
+    definition.transferActivityVersionId === definition.activityVersionId
+  ) {
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "A transfer challenge must reference a different ActivityVersion.",
+      path: ["transferActivityVersionId"]
+    });
+  }
+}
+
 export const guidedBuildDefinitionSchema = z
   .object({
     schemaVersion: z.literal(1),
@@ -55,40 +103,41 @@ export const guidedBuildDefinitionSchema = z
     transferActivityVersionId: uuidSchema.nullable()
   })
   .strict()
-  .superRefine((definition, context) => {
-    const stepKeys = new Set<string>();
-    const hintKeys = new Set<string>();
+  .superRefine(validateDefinitionKeys);
 
-    for (const [stepIndex, step] of definition.steps.entries()) {
-      if (stepKeys.has(step.key)) {
-        context.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Guided Build step keys must be unique.",
-          path: ["steps", stepIndex, "key"]
-        });
-      }
-      stepKeys.add(step.key);
+export const guidedBuildProtectedHintSchema = z
+  .object({
+    key: resourceSlugSchema,
+    content: z.string().trim().min(1).max(20_000)
+  })
+  .strict();
 
-      for (const [hintIndex, hint] of step.hints.entries()) {
-        if (hintKeys.has(hint.key)) {
-          context.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Guided Build hint keys must be unique across the definition.",
-            path: ["steps", stepIndex, "hints", hintIndex, "key"]
-          });
-        }
-        hintKeys.add(hint.key);
-      }
-    }
+export const guidedBuildProtectedStepSchema = z
+  .object({
+    key: resourceSlugSchema,
+    title: z.string().trim().min(1).max(200),
+    instructions: z.string().max(20_000).nullable().optional().default(null),
+    hints: z.array(guidedBuildProtectedHintSchema).max(20)
+  })
+  .strict();
 
-    if (definition.transferActivityVersionId === definition.activityVersionId) {
-      context.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "A transfer challenge must reference a different ActivityVersion.",
-        path: ["transferActivityVersionId"]
-      });
-    }
-  });
+export const guidedBuildProtectedSolutionSchema = z
+  .object({
+    key: resourceSlugSchema,
+    title: z.string().trim().min(1).max(200),
+    content: z.string().trim().min(1).max(100_000)
+  })
+  .strict();
+
+export const createGuidedBuildDefinitionRequestSchema = z
+  .object({
+    schemaVersion: z.literal(1),
+    steps: z.array(guidedBuildProtectedStepSchema).min(1).max(100),
+    professionalSolution: guidedBuildProtectedSolutionSchema,
+    transferActivityVersionId: uuidSchema.nullable().optional().default(null)
+  })
+  .strict()
+  .superRefine(validateDefinitionKeys);
 
 const guidedBuildExposureBaseShape = {
   id: uuidSchema,
@@ -237,24 +286,63 @@ export const guidedBuildLearnerStateSchema = z
     }
   });
 
+const guidanceIdempotencyKeySchema = z.string().trim().min(1).max(200);
+
 export const revealGuidedBuildHintRequestSchema = z
   .object({
-    stepKey: resourceSlugSchema
+    stepKey: resourceSlugSchema,
+    idempotencyKey: guidanceIdempotencyKeySchema
   })
   .strict();
 
-export const revealGuidedBuildSolutionRequestSchema = z.object({}).strict();
+export const revealGuidedBuildSolutionRequestSchema = z
+  .object({
+    idempotencyKey: guidanceIdempotencyKeySchema
+  })
+  .strict();
+
+export const guidedBuildRevealedHintSchema = z
+  .object({
+    exposureId: uuidSchema,
+    stepKey: resourceSlugSchema,
+    hintKey: resourceSlugSchema,
+    content: z.string(),
+    revealedAt: z.string().datetime()
+  })
+  .strict();
+
+export const guidedBuildRevealedSolutionSchema = z
+  .object({
+    exposureId: uuidSchema,
+    solutionKey: resourceSlugSchema,
+    title: z.string(),
+    content: z.string(),
+    revealedAt: z.string().datetime()
+  })
+  .strict();
+
+export const guidedBuildLearnerViewSchema = z
+  .object({
+    state: guidedBuildLearnerStateSchema,
+    revealedHints: z.array(guidedBuildRevealedHintSchema),
+    professionalSolution: guidedBuildRevealedSolutionSchema.nullable()
+  })
+  .strict();
 
 export type GuidedBuildPhase = z.infer<typeof guidedBuildPhaseSchema>;
 export type GuidedBuildWorkAssistance = z.infer<
   typeof guidedBuildWorkAssistanceSchema
 >;
 export type GuidedBuildDefinition = z.infer<typeof guidedBuildDefinitionSchema>;
+export type CreateGuidedBuildDefinitionRequest = z.infer<
+  typeof createGuidedBuildDefinitionRequestSchema
+>;
 export type GuidedBuildExposure = z.infer<typeof guidedBuildExposureSchema>;
 export type GuidedBuildStepState = z.infer<typeof guidedBuildStepStateSchema>;
 export type GuidedBuildLearnerState = z.infer<
   typeof guidedBuildLearnerStateSchema
 >;
+export type GuidedBuildLearnerView = z.infer<typeof guidedBuildLearnerViewSchema>;
 export type RevealGuidedBuildHintRequest = z.infer<
   typeof revealGuidedBuildHintRequestSchema
 >;
