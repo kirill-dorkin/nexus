@@ -8,11 +8,11 @@ It is **not live GitHub telemetry**. Before doing work, always verify the curren
 
 Last maintained: 2026-09-15.
 
-Baseline repository state: includes the F4 validator registry / immutable ValidationResult slice described by ADR-0020. Verify the live `main` head before relying on any SHA or PR number.
+Baseline repository state: includes the F4 trusted ValidationResult -> normalized Evidence slice described by ADR-0021. Verify the live `main` head before relying on any SHA or PR number.
 
-Latest architectural decision at this checkpoint: ADR-0020.
+Latest architectural decision at this checkpoint: ADR-0021.
 
-Latest ordered migration at this checkpoint: `000015_validation_results.sql`.
+Latest ordered migration at this checkpoint: `000016_evidence_validation_provenance.sql`.
 
 The baseline above is an orientation marker, not permission to skip checking the live `main` head.
 
@@ -58,8 +58,15 @@ Landed capabilities include:
 - validation distinguishes completed learner outcomes from `system_error`; infrastructure failure cannot be persisted as learner failure/score;
 - `manual-review@1` proves the authorized-user validation path without executing learner code;
 - `validation.result_recorded` is the canonical transactional outbox event for newly persisted results;
-- raw ValidationResult remains separate from normalized Evidence, and no automated Evidence is generated yet;
+- only `completed` + `trusted` + decisive (`passed` / `failed`) ValidationResults normalize into automated Evidence;
+- automated normalization uses the exact immutable ActivityVersion skill mapping and creates one Evidence record per assessed skill;
+- explicit validator score is preserved; otherwise `passed -> 1` and `failed -> 0` provide deterministic normalized scores;
+- raw validator payload is not copied into Evidence; automated Evidence carries only stable normalized semantics plus exact ValidationResult provenance;
+- Evidence now distinguishes `manual` from `validation_result` provenance, and validation-derived Evidence is unique per `(ValidationResult, skill)` at the PostgreSQL layer;
+- recording a raw ValidationResult commits before normalization; retrying the same idempotent result safely re-attempts missing normalization without duplicating already-created Evidence;
+- `needs_review`, `system_error`, and advisory results do not become automated Evidence;
 - Evidence is append-only normalized learning evidence and requires the exact Submission it evaluates;
+- newly materialized Evidence refreshes Mastery without changing the existing Mastery algorithm, while idempotent replays do not double-count;
 - Mastery is a projection derived from Evidence and supports recomputation from append-only history;
 - recommendation retry counts count submitted attempts rather than abandoned started attempts;
 - lifecycle mutations emit canonical transactional outbox events;
@@ -69,7 +76,7 @@ Landed capabilities include:
 - Assignment timing is exposed as `upcoming`, `available`, or `past_due`, while lateness enforcement remains undecided;
 - starting an Attempt does not globally require an effective Assignment, preserving self-paced and recommendation-driven work.
 
-The current lifecycle target is:
+The current lifecycle is:
 
 ```text
 Assignment / recommendation
@@ -80,7 +87,7 @@ Assignment / recommendation
   -> Mastery projection
 ```
 
-The validation-result slice deliberately does **not** execute learner code, start grader/sandbox jobs, authenticate grader services, generate automated Evidence, change Mastery semantics, decide retry/lateness policy, or add strict Assignment-to-Attempt association.
+The validation/evidence slices deliberately do **not** execute learner code, start grader/sandbox jobs, authenticate grader services, introduce a general outbox worker runtime, change Mastery semantics, decide retry/lateness policy, or add strict Assignment-to-Attempt association.
 
 ### F5–F9 — not the active Foundation frontier
 
@@ -106,6 +113,8 @@ These are high-value reminders, not substitutes for their ADRs.
 - Validator binding is curriculum meaning and is pinned by immutable ActivityVersion configuration; validator registry versions are exact, not floating aliases.
 - `ValidationResult != LearningEvidence`: validation is raw attributable result state; Evidence is normalized learning signal.
 - Evidence evaluates a Submission; Mastery is derived from normalized Evidence rather than raw validator/grader payloads.
+- Automated Evidence pins exact ValidationResult provenance and is idempotent per result/skill; manual Evidence remains an independent explicitly labeled signal.
+- Infrastructure/system failure and non-decisive review state never become negative learner Evidence.
 - Grader/sandbox hardening belongs to the separate security boundary described by ADR-0007 and the F7 roadmap unless an earlier slice needs only a safe application-level contract.
 
 ## Active F4 compatibility windows
@@ -120,30 +129,29 @@ Do not remove these merely because the canonical model has moved on. Each requir
 
 ## Next recommended slice
 
-**F4 automated normalized Evidence generation from trusted ValidationResult.**
+**F4 canonical learner-facing LearningEvent history/read model.**
 
-The goal is to connect the now-established validation boundary to the existing Evidence/Mastery loop without leaking raw validator payloads or infrastructure failures into learner state.
+The goal is to expose a stable chronological learner history from the already-canonical lifecycle without turning raw outbox payloads, validator internals, or mutable projections into the public history contract.
 
-Before implementing it, re-establish the current repository truth and answer from existing code/ADRs rather than assuming policy:
+Before implementing it, re-establish the current repository truth and answer from code/ADRs:
 
-- which `completed` trusted ValidationResult outcomes are eligible to become Evidence and which remain informational/advisory;
-- how validator-specific raw output is normalized into stable Evidence kind/score/payload without coupling Mastery to validator protocols;
-- how one ValidationResult maps idempotently to zero, one, or multiple skill-scoped Evidence records;
-- how the exact ActivityVersion skill mappings constrain generated Evidence targets;
-- whether automated Evidence should be produced synchronously with trusted result recording or by an outbox-driven consumer, with ADR-0006 as the default guidance for deferred consequences;
-- how normalization failures remain operational failures rather than learner failures;
-- how the current manual `evidence.record` path coexists with automated Evidence without ambiguous duplicate meaning.
+- which canonical lifecycle events belong in learner-visible history (`attempt.started`, `submission.submitted`, `validation.result_recorded`, `evidence.recorded`, and any other genuinely learner-facing events) and which operational/integration events stay hidden;
+- whether the read model should derive directly from immutable domain history/outbox or persist a dedicated projection, with explicit rebuild/idempotency semantics if projected;
+- how deprecated compatibility aliases such as `attempt.submitted` are suppressed so one learner action is not shown twice;
+- how event ordering, pagination, and cursor stability work when multiple events share close timestamps;
+- which raw fields must be normalized/redacted so grader payloads, internal authorization details, or infrastructure failures do not leak into the learner-facing contract;
+- how the history query is scoped to the authenticated learner/Enrollment while preserving organization isolation and future instructor read use cases;
+- how existing Submission, ValidationResult, Evidence provenance, and Assignment context are represented without inventing new ownership relationships.
 
-Keep this slice focused on trusted-result normalization into canonical Evidence. Grader/sandbox execution itself remains F7.
+Keep this slice focused on the canonical history/read contract and projection/query semantics. Student skill UI remains a separate final F4 presentation slice.
 
 ## Remaining F4 follow-up frontier
 
-After automated normalized Evidence production, the currently identified F4 work is:
+After canonical learner-facing LearningEvent history/read, the currently identified F4 work is:
 
-- canonical learner-facing LearningEvent history/read model;
 - Student skill UI over the established Mastery projection.
 
-Retry/lateness enforcement and strict assigned-only Attempt association remain explicit policy decisions if product flows require them; they are not prerequisites for automated Evidence.
+Retry/lateness enforcement and strict assigned-only Attempt association remain explicit policy decisions if product flows require them; they are not prerequisites for the remaining F4 read/UI work.
 
 Sandbox execution hardening itself remains F7.
 
@@ -163,6 +171,7 @@ Always inspect the live `docs/adr/` directory; this map is only a starting point
 - Attempt / Submission lifecycle: ADR-0018.
 - Learner runner / effective Assignment policy: ADR-0019.
 - Validator registry / immutable ValidationResult: ADR-0020.
+- Trusted ValidationResult -> normalized Evidence: ADR-0021.
 
 For any new durable decision, add or amend architecture documentation through a new ADR rather than silently encoding policy only in implementation.
 

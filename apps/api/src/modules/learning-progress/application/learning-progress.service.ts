@@ -335,7 +335,9 @@ export class LearningProgressApplicationService {
       kind: command.kind,
       score: command.score ?? null,
       payload: command.payload ?? {},
-      recordedByUserId: actorUserId
+      recordedByUserId: actorUserId,
+      sourceType: "manual",
+      sourceValidationResultId: null
     });
 
     await this.mastery.refreshSkillProjection(
@@ -359,7 +361,9 @@ export class LearningProgressApplicationService {
         submissionId: evidence.submissionId,
         skillId: evidence.skillId,
         kind: evidence.kind,
-        score: evidence.score
+        score: evidence.score,
+        sourceType: evidence.sourceType,
+        sourceValidationResultId: evidence.sourceValidationResultId
       }
     });
 

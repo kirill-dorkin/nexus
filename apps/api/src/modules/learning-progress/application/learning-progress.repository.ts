@@ -1,4 +1,9 @@
-import type { Attempt, Evidence, Submission } from "@platform/contracts";
+import type {
+  Attempt,
+  Evidence,
+  EvidenceSourceType,
+  Submission
+} from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
 import type { ActivityAttemptCount } from "./learning-progress.query";
@@ -28,6 +33,8 @@ export type NewEvidence = Readonly<{
   score: number | null;
   payload: Readonly<Record<string, unknown>>;
   recordedByUserId: string | null;
+  sourceType: EvidenceSourceType;
+  sourceValidationResultId: string | null;
 }>;
 
 export type AttemptContext = Readonly<{
@@ -41,6 +48,11 @@ export type SubmissionContext = Readonly<{
   attempt: Attempt;
   offeringId: string;
   learnerUserId: string;
+}>;
+
+export type CreateValidationEvidenceOutcome = Readonly<{
+  evidence: Evidence;
+  created: boolean;
 }>;
 
 export abstract class LearningProgressRepository {
@@ -83,4 +95,9 @@ export abstract class LearningProgressRepository {
     transaction: DatabaseTransaction,
     evidence: NewEvidence
   ): Promise<Evidence>;
+
+  abstract createOrFindValidationEvidence(
+    transaction: DatabaseTransaction,
+    evidence: NewEvidence
+  ): Promise<CreateValidationEvidenceOutcome>;
 }

@@ -7,6 +7,7 @@ import {
   createEvidenceRequestSchema,
   createSkillRequestSchema,
   createSubmissionRequestSchema,
+  evidenceSchema,
   startAttemptRequestSchema,
   submissionSchema
 } from "./index";
@@ -18,6 +19,8 @@ const activityId = "01994f13-8de0-7a11-8d5f-1e8c5526f004";
 const activityVersionId = "01994f13-8de0-7a11-8d5f-1e8c5526f005";
 const attemptId = "01994f13-8de0-7a11-8d5f-1e8c5526f006";
 const submissionId = "01994f13-8de0-7a11-8d5f-1e8c5526f007";
+const evidenceId = "01994f13-8de0-7a11-8d5f-1e8c5526f008";
+const validationResultId = "01994f13-8de0-7a11-8d5f-1e8c5526f009";
 
 describe("learning loop contracts", () => {
   it("keeps activity types package-extensible instead of hard-coding a curriculum", () => {
@@ -72,7 +75,7 @@ describe("learning loop contracts", () => {
     ).toEqual({ answer: "grid-template-columns" });
   });
 
-  it("accepts scored evidence", () => {
+  it("accepts scored evidence and exposes explicit provenance", () => {
     expect(
       createEvidenceRequestSchema.parse({
         skillId,
@@ -81,6 +84,37 @@ describe("learning loop contracts", () => {
         payload: { note: "Meets the rubric" }
       }).score
     ).toBe(0.85);
+
+    const validationEvidence = {
+      id: evidenceId,
+      organizationId,
+      attemptId,
+      submissionId,
+      skillId,
+      kind: "foundation.structured-practice",
+      score: 0.85,
+      payload: { outcome: "passed" },
+      recordedByUserId: null,
+      sourceType: "validation_result" as const,
+      sourceValidationResultId: validationResultId,
+      createdAt: "2026-09-15T05:00:00.000Z"
+    };
+
+    expect(
+      evidenceSchema.parse(validationEvidence).sourceValidationResultId
+    ).toBe(validationResultId);
+    expect(
+      evidenceSchema.safeParse({
+        ...validationEvidence,
+        recordedByUserId: skillId
+      }).success
+    ).toBe(false);
+    expect(
+      evidenceSchema.safeParse({
+        ...validationEvidence,
+        sourceType: "manual"
+      }).success
+    ).toBe(false);
   });
 
   it("represents the exact immutable activity snapshot used by attempts", () => {

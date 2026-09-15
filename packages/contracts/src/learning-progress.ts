@@ -6,6 +6,7 @@ import { activityTypeSchema } from "./learning-graph";
 const jsonObjectSchema = z.record(z.string(), z.unknown());
 
 export const evidenceKindSchema = activityTypeSchema;
+export const evidenceSourceTypeSchema = z.enum(["manual", "validation_result"]);
 
 export const attemptSchema = z.object({
   id: uuidSchema,
@@ -25,7 +26,7 @@ export const submissionSchema = z.object({
   submittedAt: z.string().datetime()
 });
 
-export const evidenceSchema = z.object({
+const evidenceBaseShape = {
   id: uuidSchema,
   organizationId: uuidSchema,
   attemptId: uuidSchema,
@@ -34,9 +35,23 @@ export const evidenceSchema = z.object({
   kind: evidenceKindSchema,
   score: z.number().min(0).max(1).nullable(),
   payload: jsonObjectSchema,
-  recordedByUserId: uuidSchema.nullable(),
   createdAt: z.string().datetime()
-});
+} as const;
+
+export const evidenceSchema = z.discriminatedUnion("sourceType", [
+  z.object({
+    ...evidenceBaseShape,
+    recordedByUserId: uuidSchema.nullable(),
+    sourceType: z.literal("manual"),
+    sourceValidationResultId: z.null()
+  }),
+  z.object({
+    ...evidenceBaseShape,
+    recordedByUserId: z.null(),
+    sourceType: z.literal("validation_result"),
+    sourceValidationResultId: uuidSchema
+  })
+]);
 
 export const startAttemptRequestSchema = z.object({}).strict();
 
@@ -64,6 +79,7 @@ export const createEvidenceRequestSchema = z.object({
 export type Attempt = z.infer<typeof attemptSchema>;
 export type Submission = z.infer<typeof submissionSchema>;
 export type Evidence = z.infer<typeof evidenceSchema>;
+export type EvidenceSourceType = z.infer<typeof evidenceSourceTypeSchema>;
 export type StartAttemptRequest = z.infer<typeof startAttemptRequestSchema>;
 export type CreateAttemptRequest = z.infer<typeof createAttemptRequestSchema>;
 export type CreateSubmissionRequest = z.infer<typeof createSubmissionRequestSchema>;
