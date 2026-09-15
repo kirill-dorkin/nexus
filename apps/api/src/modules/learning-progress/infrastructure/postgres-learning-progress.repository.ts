@@ -108,7 +108,7 @@ function mapSubmission(row: SubmissionRow): Submission {
 }
 
 function mapEvidence(row: EvidenceRow): Evidence {
-  return {
+  const common = {
     id: row.id,
     organizationId: row.organization_id,
     attemptId: row.attempt_id,
@@ -117,10 +117,34 @@ function mapEvidence(row: EvidenceRow): Evidence {
     kind: row.kind,
     score: row.score === null ? null : Number(row.score),
     payload: row.payload,
-    recordedByUserId: row.recorded_by_user_id,
-    sourceType: row.source_type,
-    sourceValidationResultId: row.source_validation_result_id,
     createdAt: row.created_at.toISOString()
+  };
+
+  if (row.source_type === "validation_result") {
+    if (
+      row.recorded_by_user_id !== null ||
+      row.source_validation_result_id === null
+    ) {
+      throw new Error("PostgreSQL returned invalid validation Evidence provenance.");
+    }
+
+    return {
+      ...common,
+      recordedByUserId: null,
+      sourceType: "validation_result",
+      sourceValidationResultId: row.source_validation_result_id
+    };
+  }
+
+  if (row.source_validation_result_id !== null) {
+    throw new Error("PostgreSQL returned invalid manual Evidence provenance.");
+  }
+
+  return {
+    ...common,
+    recordedByUserId: row.recorded_by_user_id,
+    sourceType: "manual",
+    sourceValidationResultId: null
   };
 }
 
