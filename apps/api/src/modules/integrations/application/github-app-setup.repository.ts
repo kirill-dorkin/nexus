@@ -4,6 +4,13 @@ import type {
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
+export class GitHubIntegrationOwnershipConflictError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "GitHubIntegrationOwnershipConflictError";
+  }
+}
+
 export type GitHubRepositorySnapshot = Readonly<{
   githubRepositoryId: string;
   fullName: string;
