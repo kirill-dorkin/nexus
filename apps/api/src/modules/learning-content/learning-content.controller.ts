@@ -12,15 +12,18 @@ import {
   createCourseRequestSchema,
   createCourseVersionActivityRequestSchema,
   createCourseVersionRequestSchema,
+  createGuidedBuildDefinitionRequestSchema,
   uuidSchema,
   type Course,
   type CourseVersion,
   type CourseVersionActivity,
   type CourseVersionSkill,
-  type CreateCourseResult
+  type CreateCourseResult,
+  type GuidedBuildDefinition
 } from "@platform/contracts";
 
 import { parseRequest } from "../../http/validation";
+import { GuidedBuildContentApplicationService } from "./application/guided-build-content.service";
 import { LearningContentApplicationService } from "./application/learning-content.service";
 import { LearningGraphApplicationService } from "./application/learning-graph.service";
 
@@ -28,7 +31,8 @@ import { LearningGraphApplicationService } from "./application/learning-graph.se
 export class LearningContentController {
   constructor(
     private readonly content: LearningContentApplicationService,
-    private readonly graph: LearningGraphApplicationService
+    private readonly graph: LearningGraphApplicationService,
+    private readonly guidedBuild: GuidedBuildContentApplicationService
   ) {}
 
   @Post()
@@ -97,6 +101,24 @@ export class LearningContentController {
       parseRequest(uuidSchema, courseId),
       parseRequest(uuidSchema, versionId),
       parseRequest(createCourseVersionActivityRequestSchema, body)
+    );
+  }
+
+  @Post(":courseId/versions/:versionId/activities/:activityVersionId/guided-build")
+  @HttpCode(HttpStatus.CREATED)
+  createGuidedBuildDefinition(
+    @Param("organizationId") organizationId: string,
+    @Param("courseId") courseId: string,
+    @Param("versionId") versionId: string,
+    @Param("activityVersionId") activityVersionId: string,
+    @Body() body: unknown
+  ): Promise<GuidedBuildDefinition> {
+    return this.guidedBuild.createDefinition(
+      parseRequest(uuidSchema, organizationId),
+      parseRequest(uuidSchema, courseId),
+      parseRequest(uuidSchema, versionId),
+      parseRequest(uuidSchema, activityVersionId),
+      parseRequest(createGuidedBuildDefinitionRequestSchema, body)
     );
   }
 
