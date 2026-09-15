@@ -26,7 +26,7 @@ export const submissionSchema = z.object({
   submittedAt: z.string().datetime()
 });
 
-export const evidenceSchema = z.object({
+const evidenceBaseShape = {
   id: uuidSchema,
   organizationId: uuidSchema,
   attemptId: uuidSchema,
@@ -35,11 +35,23 @@ export const evidenceSchema = z.object({
   kind: evidenceKindSchema,
   score: z.number().min(0).max(1).nullable(),
   payload: jsonObjectSchema,
-  recordedByUserId: uuidSchema.nullable(),
-  sourceType: evidenceSourceTypeSchema,
-  sourceValidationResultId: uuidSchema.nullable(),
   createdAt: z.string().datetime()
-});
+} as const;
+
+export const evidenceSchema = z.discriminatedUnion("sourceType", [
+  z.object({
+    ...evidenceBaseShape,
+    recordedByUserId: uuidSchema.nullable(),
+    sourceType: z.literal("manual"),
+    sourceValidationResultId: z.null()
+  }),
+  z.object({
+    ...evidenceBaseShape,
+    recordedByUserId: z.null(),
+    sourceType: z.literal("validation_result"),
+    sourceValidationResultId: uuidSchema
+  })
+]);
 
 export const startAttemptRequestSchema = z.object({}).strict();
 
