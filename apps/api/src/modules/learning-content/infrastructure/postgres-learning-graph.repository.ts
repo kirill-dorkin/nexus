@@ -265,6 +265,27 @@ export class PostgresLearningGraphRepository extends LearningGraphRepository {
     return row === undefined ? null : mapActivity(row);
   }
 
+  async findActivityVersionById(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    activityVersionId: string
+  ): Promise<CourseVersionActivity | null> {
+    const result = await transaction.client.query<ActivityRow>(
+      `SELECT ${activitySelect}
+         FROM learning_content.course_version_activities AS activity
+         LEFT JOIN learning_content.activity_skill_mappings AS mapping
+           ON mapping.organization_id = activity.organization_id
+          AND mapping.course_version_id = activity.course_version_id
+          AND mapping.activity_id = activity.activity_id
+        WHERE activity.organization_id = $1
+          AND activity.id = $2
+        GROUP BY activity.id`,
+      [organizationId, activityVersionId]
+    );
+    const row = result.rows[0];
+    return row === undefined ? null : mapActivity(row);
+  }
+
   async listCourseVersionActivities(
     transaction: DatabaseTransaction,
     organizationId: string,
