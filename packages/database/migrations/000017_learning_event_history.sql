@@ -55,19 +55,19 @@ CREATE TABLE learning_history.learning_events (
     ON DELETE RESTRICT,
   FOREIGN KEY (organization_id, attempt_id)
     REFERENCES learning_progress.attempts(organization_id, id)
-    ON DELETE RESTRICT,
+    ON DELETE CASCADE,
   FOREIGN KEY (organization_id, activity_version_id)
     REFERENCES learning_content.course_version_activities(organization_id, id)
     ON DELETE RESTRICT,
   FOREIGN KEY (organization_id, submission_id)
     REFERENCES learning_progress.submissions(organization_id, id)
-    ON DELETE RESTRICT,
+    ON DELETE CASCADE,
   FOREIGN KEY (organization_id, validation_result_id)
     REFERENCES learning_validation.validation_results(organization_id, id)
-    ON DELETE RESTRICT,
+    ON DELETE CASCADE,
   FOREIGN KEY (organization_id, evidence_id)
     REFERENCES learning_progress.evidence(organization_id, id)
-    ON DELETE RESTRICT,
+    ON DELETE CASCADE,
   FOREIGN KEY (organization_id, skill_id)
     REFERENCES learning_content.skills(organization_id, id)
     ON DELETE RESTRICT,
