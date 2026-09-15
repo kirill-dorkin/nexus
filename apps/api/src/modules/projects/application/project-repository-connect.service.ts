@@ -74,6 +74,17 @@ export class ProjectRepositoryConnectService {
         return connectedProjectView(project, existing, reference);
       }
 
+      const repositoryBinding = await this.projects.findActiveRepositoryBindingByMapping(
+        transaction,
+        organizationId,
+        command.repositoryMappingId
+      );
+      if (repositoryBinding !== null) {
+        throw new ConflictException(
+          "This repository is already connected to another project."
+        );
+      }
+
       return disconnectedProjectView(project);
     });
   }
