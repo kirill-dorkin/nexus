@@ -22,6 +22,7 @@ type ClaimRow = {
   routing_status: RoutingStatus;
   organization_id: string | null;
   attempt_count: number;
+  failure_count: number;
 };
 
 type Claim = Readonly<{
@@ -33,6 +34,7 @@ type Claim = Readonly<{
   routingStatus: RoutingStatus;
   organizationId: string | null;
   attemptCount: number;
+  failureCount: number;
 }>;
 
 type RepoSnapshot = Readonly<{
@@ -170,10 +172,11 @@ export class GitHubWebhookLifecycleProcessor {
         return true;
       }
 
-      const terminal = claim.attemptCount >= this.maxAttempts;
+      const nextFailureCount = claim.failureCount + 1;
+      const terminal = nextFailureCount >= this.maxAttempts;
       const delay = Math.min(
         this.retryMaxMs,
-        this.retryBaseMs * 2 ** Math.max(0, Math.min(claim.attemptCount - 1, 10))
+        this.retryBaseMs * 2 ** Math.max(0, Math.min(nextFailureCount - 1, 10))
       );
       await withTransaction(this.pool, (tx) =>
         this.finish(
@@ -200,7 +203,8 @@ export class GitHubWebhookLifecycleProcessor {
          payload,
          routing_status,
          organization_id::text,
-         attempt_count
+         attempt_count,
+         failure_count
        FROM platform_internal.claim_github_webhook_lifecycle($1, $2)`,
       [leaseToken, this.leaseSeconds]
     );
@@ -214,7 +218,8 @@ export class GitHubWebhookLifecycleProcessor {
       payload: object(row.payload, "payload"),
       routingStatus: row.routing_status,
       organizationId: row.organization_id,
-      attemptCount: row.attempt_count
+      attemptCount: row.attempt_count,
+      failureCount: row.failure_count
     };
   }
 
