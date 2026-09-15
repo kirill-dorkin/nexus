@@ -13,7 +13,7 @@ CREATE TABLE learning_validation.validation_results (
   validator_key text NOT NULL
     CHECK (
       char_length(validator_key) BETWEEN 2 AND 80
-      AND validator_key ~ '^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$'
+      AND validator_key ~ '^[a-z][a-z0-9]*([._-][a-z0-9]+)*$'
     ),
   validator_version integer NOT NULL CHECK (validator_version > 0),
   validator_config jsonb NOT NULL DEFAULT '{}'::jsonb
