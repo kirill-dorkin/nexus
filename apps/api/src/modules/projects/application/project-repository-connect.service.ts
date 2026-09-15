@@ -6,7 +6,7 @@ import { RequestContextService } from "../../../request-context/request-context.
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { GitHubRepositoryReferenceQuery } from "../../integrations/application/github-repository-reference.query";
 import { ProjectCommandContext } from "./project-command-context";
-import { connectedProjectView, disconnectedProjectView } from "./project-repository-view";
+import { connectedProjectView } from "./project-repository-view";
 import { ProjectsRepository } from "./projects.repository";
 
 @Injectable()
@@ -26,6 +26,7 @@ export class ProjectRepositoryConnectService {
     command: ConnectProjectRepositoryRequest
   ): Promise<Project> {
     const context = this.requestContext.tenantContext(organizationId);
+    const bindingId = await this.database.nextUuid();
 
     return this.database.tenantTransaction(context, async (transaction) => {
       await this.identity.requireActiveUser(transaction, context.userId);
@@ -85,7 +86,19 @@ export class ProjectRepositoryConnectService {
         );
       }
 
-      return disconnectedProjectView(project);
+      const created = await this.projects.createRepositoryBinding(transaction, {
+        id: bindingId,
+        organizationId,
+        projectId,
+        repositoryMappingId: command.repositoryMappingId,
+        connectedByUserId: context.userId
+      });
+      if (created === null) {
+        throw new ConflictException(
+          "The project or repository was connected concurrently."
+        );
+      }
+      return connectedProjectView(project, created, reference);
     });
   }
 }
