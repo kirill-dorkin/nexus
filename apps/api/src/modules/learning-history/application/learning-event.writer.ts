@@ -2,6 +2,7 @@ import { ConflictException, Injectable } from "@nestjs/common";
 import type {
   Attempt,
   Evidence,
+  GuidedBuildExposure,
   Submission,
   ValidationResult
 } from "@platform/contracts";
@@ -18,6 +19,23 @@ function requireSameOrganization(
     throw new ConflictException("LearningEvent source must remain in one organization.");
   }
 }
+
+const noGuidance = {
+  guidanceExposureId: null,
+  guidanceStepKey: null,
+  guidanceHintKey: null,
+  guidanceSolutionKey: null
+} as const;
+
+const noEvidence = {
+  validationResultId: null,
+  evidenceId: null,
+  skillId: null,
+  outcome: null,
+  score: null,
+  evidenceKind: null,
+  evidenceSourceType: null
+} as const;
 
 @Injectable()
 export class LearningEventWriter extends LearningEventSink {
@@ -39,13 +57,8 @@ export class LearningEventWriter extends LearningEventSink {
       activityVersionId: attempt.activityVersionId,
       attemptNumber: attempt.attemptNumber,
       submissionId: null,
-      validationResultId: null,
-      evidenceId: null,
-      skillId: null,
-      outcome: null,
-      score: null,
-      evidenceKind: null,
-      evidenceSourceType: null,
+      ...noEvidence,
+      ...noGuidance,
       occurredAt: attempt.startedAt
     });
   }
@@ -60,7 +73,6 @@ export class LearningEventWriter extends LearningEventSink {
     if (submission.attemptId !== attempt.id) {
       throw new ConflictException("Submission LearningEvent must match its Attempt.");
     }
-
     return this.events.append(transaction, {
       organizationId: attempt.organizationId,
       learnerUserId,
@@ -70,13 +82,8 @@ export class LearningEventWriter extends LearningEventSink {
       activityVersionId: attempt.activityVersionId,
       attemptNumber: attempt.attemptNumber,
       submissionId: submission.id,
-      validationResultId: null,
-      evidenceId: null,
-      skillId: null,
-      outcome: null,
-      score: null,
-      evidenceKind: null,
-      evidenceSourceType: null,
+      ...noEvidence,
+      ...noGuidance,
       occurredAt: submission.submittedAt
     });
   }
@@ -89,16 +96,11 @@ export class LearningEventWriter extends LearningEventSink {
   ): Promise<void> {
     requireSameOrganization(attempt, result);
     if (result.status !== "completed" || result.outcome === null) {
-      throw new ConflictException(
-        "Only completed ValidationResults are learner LearningEvents."
-      );
+      throw new ConflictException("Only completed ValidationResults are learner LearningEvents.");
     }
     if (result.activityVersionId !== attempt.activityVersionId) {
-      throw new ConflictException(
-        "ValidationResult LearningEvent must match its Attempt ActivityVersion."
-      );
+      throw new ConflictException("ValidationResult LearningEvent must match its Attempt ActivityVersion.");
     }
-
     return this.events.append(transaction, {
       organizationId: attempt.organizationId,
       learnerUserId,
@@ -115,6 +117,7 @@ export class LearningEventWriter extends LearningEventSink {
       score: result.score,
       evidenceKind: null,
       evidenceSourceType: null,
+      ...noGuidance,
       occurredAt: result.recordedAt
     });
   }
@@ -129,7 +132,6 @@ export class LearningEventWriter extends LearningEventSink {
     if (evidence.attemptId !== attempt.id) {
       throw new ConflictException("Evidence LearningEvent must match its Attempt.");
     }
-
     return this.events.append(transaction, {
       organizationId: attempt.organizationId,
       learnerUserId,
@@ -146,7 +148,69 @@ export class LearningEventWriter extends LearningEventSink {
       score: evidence.score,
       evidenceKind: evidence.kind,
       evidenceSourceType: evidence.sourceType,
+      ...noGuidance,
       occurredAt: evidence.createdAt
     });
+  }
+
+  appendGuidanceHintRevealed(
+    transaction: DatabaseTransaction,
+    learnerUserId: string,
+    attempt: Attempt,
+    exposure: Extract<GuidedBuildExposure, { kind: "hint" }>
+  ): Promise<void> {
+    this.requireExposure(attempt, exposure);
+    return this.events.append(transaction, {
+      organizationId: attempt.organizationId,
+      learnerUserId,
+      enrollmentId: attempt.enrollmentId,
+      eventName: "guidance.hint_revealed",
+      attemptId: attempt.id,
+      activityVersionId: attempt.activityVersionId,
+      attemptNumber: attempt.attemptNumber,
+      submissionId: null,
+      ...noEvidence,
+      guidanceExposureId: exposure.id,
+      guidanceStepKey: exposure.stepKey,
+      guidanceHintKey: exposure.hintKey,
+      guidanceSolutionKey: null,
+      occurredAt: exposure.revealedAt
+    });
+  }
+
+  appendGuidanceSolutionRevealed(
+    transaction: DatabaseTransaction,
+    learnerUserId: string,
+    attempt: Attempt,
+    exposure: Extract<GuidedBuildExposure, { kind: "professional_solution" }>
+  ): Promise<void> {
+    this.requireExposure(attempt, exposure);
+    return this.events.append(transaction, {
+      organizationId: attempt.organizationId,
+      learnerUserId,
+      enrollmentId: attempt.enrollmentId,
+      eventName: "guidance.solution_revealed",
+      attemptId: attempt.id,
+      activityVersionId: attempt.activityVersionId,
+      attemptNumber: attempt.attemptNumber,
+      submissionId: null,
+      ...noEvidence,
+      guidanceExposureId: exposure.id,
+      guidanceStepKey: null,
+      guidanceHintKey: null,
+      guidanceSolutionKey: exposure.solutionKey,
+      occurredAt: exposure.revealedAt
+    });
+  }
+
+  private requireExposure(attempt: Attempt, exposure: GuidedBuildExposure): void {
+    requireSameOrganization(attempt, exposure);
+    if (
+      exposure.attemptId !== attempt.id ||
+      exposure.enrollmentId !== attempt.enrollmentId ||
+      exposure.activityVersionId !== attempt.activityVersionId
+    ) {
+      throw new ConflictException("Guidance LearningEvent must match its Attempt.");
+    }
   }
 }
