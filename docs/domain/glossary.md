@@ -13,8 +13,10 @@
 | `Concept` | Термин/идея предметной области; отвечает «что это?». |
 | `Misconception` | Типичная устойчивая неправильная mental model. |
 | `ActivityVersion` | Конкретная версия учебной активности и её validators/policies. |
+| `Validator` | Версионированное определение проверки, выбранное immutable binding внутри `ActivityVersion`; exact key/version задаёт стабильную семантику и trust/recording policy, но не обязан сам исполнять student code внутри API. |
 | `Attempt` | Одна историческая попытка пройти конкретную `ActivityVersion`; начинается до отправки ответа, а retry создаёт новый Attempt. |
 | `Submission` | Immutable artifact/answer, который ученик фиксирует в рамках одного Attempt. Не является самим Attempt. |
+| `ValidationResult` | Immutable raw результат exact Validator version для exact `Submission`/`ActivityVersion`, включая attribution, status и idempotency. Не является `LearningEvidence`; system/infrastructure error не является learner failure. |
 | `LearningEvent` | Append-only значимое учебное событие. Не является telemetry. |
 | `LearningEvidence` | Нормализованное доказательство по конкретному skill и source. |
 | `MasteryModelVersion` | Версия алгоритма/параметров расчёта mastery. |

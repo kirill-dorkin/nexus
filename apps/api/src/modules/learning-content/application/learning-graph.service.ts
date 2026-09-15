@@ -279,6 +279,22 @@ export class LearningGraphApplicationService {
     return activity;
   }
 
+  async requireActivityVersionById(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    activityVersionId: string
+  ): Promise<CourseVersionActivity> {
+    const activity = await this.graph.findActivityVersionById(
+      transaction,
+      organizationId,
+      activityVersionId
+    );
+    if (activity === null) {
+      throw new NotFoundException("Activity version not found.");
+    }
+    return activity;
+  }
+
   async activityAssessesSkill(
     transaction: DatabaseTransaction,
     organizationId: string,

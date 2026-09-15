@@ -69,6 +69,12 @@ export abstract class LearningGraphRepository {
     activityId: string
   ): Promise<CourseVersionActivity | null>;
 
+  abstract findActivityVersionById(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    activityVersionId: string
+  ): Promise<CourseVersionActivity | null>;
+
   abstract listCourseVersionActivities(
     transaction: DatabaseTransaction,
     organizationId: string,

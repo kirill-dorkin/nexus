@@ -30,12 +30,14 @@ function role(roleKey: RoleAssignmentScope["roleKey"]): RoleAssignmentScope {
 describe("learning-loop authorization", () => {
   const policy = new AuthorizationPolicy();
 
-  it("lets an enrolled learner submit attempts but not manufacture evidence", () => {
+  it("lets an enrolled learner submit attempts but not manufacture validation or evidence", () => {
     expect(policy.allows([role("learner")], "attempt.submit", offeringScope)).toBe(true);
+    expect(policy.allows([role("learner")], "validation.record", offeringScope)).toBe(false);
     expect(policy.allows([role("learner")], "evidence.record", offeringScope)).toBe(false);
   });
 
-  it("lets instructors record evidence and manage the learning graph", () => {
+  it("lets instructors record validation and evidence and manage the learning graph", () => {
+    expect(policy.allows([role("instructor")], "validation.record", offeringScope)).toBe(true);
     expect(policy.allows([role("instructor")], "evidence.record", offeringScope)).toBe(true);
     expect(
       policy.allows([role("instructor")], "activity.manage", {
