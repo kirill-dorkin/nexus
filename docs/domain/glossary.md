@@ -20,7 +20,7 @@
 | `LearningEvent` | Canonical append-only нормализованное значимое учебное событие learner lifecycle. Хранится отдельно от integration outbox, не содержит raw learner/validator payload и не является telemetry. |
 | `LearningEvidence` | Append-only нормализованное доказательство по конкретному skill и Submission. Имеет явное provenance (`manual` или exact `ValidationResult`); raw validator payload и infrastructure failure не являются Evidence. |
 | `MasteryModelVersion` | Версия алгоритма/параметров расчёта mastery. |
-| `StudentSkillState` | Derived projection текущего mastery/confidence/review state. |
+| `StudentSkillState` | Derived learner-facing текущее состояние stable `Skill` поверх Mastery projection; CourseVersion задаёт immutable presentation/context, а отсутствие Evidence остаётся явно `unobserved`, а не mastery `0`. |
 | `Enrollment` | Факт участия пользователя в обучении; всегда относится к одному `LearningOffering`. Не покупка и не платеж. |
 | `LearningOffering` | Обязательный universal delivery context. Self-paced — offering с соответствующей effective configuration, а не обход delivery-слоя. |
 | `Assignment` | Durable delivery-инструкция: exact `ActivityVersion` назначена аудитории внутри одного `LearningOffering`. Не является Attempt, Submission, Evidence или способом выдать доступ. |
