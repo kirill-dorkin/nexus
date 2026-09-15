@@ -25,7 +25,6 @@ export class ProjectRepositoryConnectService {
     command: ConnectProjectRepositoryRequest
   ): Promise<Project> {
     const context = this.requestContext.tenantContext(organizationId);
-    void command;
 
     return this.database.tenantTransaction(context, async (transaction) => {
       await this.identity.requireActiveUser(transaction, context.userId);
@@ -44,6 +43,20 @@ export class ProjectRepositoryConnectService {
       if (project === null) throw new NotFoundException("Project not found.");
       if (project.status !== "active") {
         throw new ConflictException("An active project is required.");
+      }
+
+      const reference = await this.githubRepositories.findRepositoryReference(
+        transaction,
+        organizationId,
+        command.repositoryMappingId
+      );
+      if (reference === null) {
+        throw new NotFoundException("Trusted repository mapping not found.");
+      }
+      if (reference.availability !== "active") {
+        throw new ConflictException(
+          "Only an active trusted repository mapping can be connected."
+        );
       }
 
       return {
