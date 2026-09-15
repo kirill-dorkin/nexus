@@ -46,16 +46,20 @@ const validationResultCommandBase = {
 };
 
 export const recordValidationResultRequestSchema = z.discriminatedUnion("status", [
-  z.object({
-    ...validationResultCommandBase,
-    status: z.literal("completed"),
-    outcome: validationOutcomeSchema,
-    score: z.number().min(0).max(1).nullable().optional().default(null)
-  }),
-  z.object({
-    ...validationResultCommandBase,
-    status: z.literal("system_error")
-  })
+  z
+    .object({
+      ...validationResultCommandBase,
+      status: z.literal("completed"),
+      outcome: validationOutcomeSchema,
+      score: z.number().min(0).max(1).nullable().optional().default(null)
+    })
+    .strict(),
+  z
+    .object({
+      ...validationResultCommandBase,
+      status: z.literal("system_error")
+    })
+    .strict()
 ]);
 
 export type ValidatorBinding = z.infer<typeof validatorBindingSchema>;
