@@ -3,7 +3,9 @@ import {
   revealGuidedBuildHintRequestSchema,
   revealGuidedBuildSolutionRequestSchema,
   uuidSchema,
-  type GuidedBuildLearnerView
+  type GuidedBuildCompareView,
+  type GuidedBuildLearnerView,
+  type GuidedBuildTransferHandoff
 } from "@platform/contracts";
 import { parseRequest } from "../../http/validation";
 import { LearningGuidanceApplicationService } from "./application/learning-guidance.service";
@@ -14,6 +16,14 @@ export class LearningGuidanceController {
   @Get()
   getView(@Param("organizationId") organizationId: string, @Param("attemptId") attemptId: string): Promise<GuidedBuildLearnerView> {
     return this.guidance.getLearnerView(parseRequest(uuidSchema, organizationId), parseRequest(uuidSchema, attemptId));
+  }
+  @Get("compare")
+  getCompare(@Param("organizationId") organizationId: string, @Param("attemptId") attemptId: string): Promise<GuidedBuildCompareView> {
+    return this.guidance.getCompare(parseRequest(uuidSchema, organizationId), parseRequest(uuidSchema, attemptId));
+  }
+  @Get("transfer")
+  getTransferHandoff(@Param("organizationId") organizationId: string, @Param("attemptId") attemptId: string): Promise<GuidedBuildTransferHandoff> {
+    return this.guidance.getTransferHandoff(parseRequest(uuidSchema, organizationId), parseRequest(uuidSchema, attemptId));
   }
   @Post("hints")
   @HttpCode(HttpStatus.OK)
