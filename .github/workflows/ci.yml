@@ -108,44 +108,144 @@ jobs:
       - name: Unit tests
         run: pnpm test
 
-      # Temporary diagnostic bisect while GitHub App job logs are unavailable.
-      # Each half runs in one Vitest process so cross-file state remains observable.
-      - name: Integration diagnostics - Guided plus Learning
-        id: integration_guided_learning
+      # Temporary diagnostic run while GitHub App job logs are unavailable.
+      # Run the exact full integration suite in one Vitest process and persist
+      # a machine-readable report so individual file outcomes appear as steps.
+      - name: Integration diagnostics - full suite
         continue-on-error: true
-        run: >-
-          pnpm exec vitest run --config vitest.integration.config.ts
-          apps/api/src/guided-build-guidance-http.integration.test.ts
-          apps/api/src/attempt-submission-http.integration.test.ts
-          apps/api/src/learner-skill-progress-http.integration.test.ts
-          apps/api/src/learning-event-history-http.integration.test.ts
-          apps/api/src/learning-http.integration.test.ts
-          apps/api/src/learning-loop-http.integration.test.ts
-          apps/api/src/mastery-http.integration.test.ts
-          apps/api/src/recommendation-http.integration.test.ts
-          apps/api/src/validation-results-http.integration.test.ts
+        run: |
+          set +e
+          pnpm exec vitest run --config vitest.integration.config.ts --reporter=json --outputFile=/tmp/integration-results.json
+          status=$?
+          echo "$status" > /tmp/integration-exit-code
+          exit "$status"
 
-      - name: Integration diagnostics - Delivery plus Foundation
-        id: integration_delivery_foundation
-        continue-on-error: true
-        run: >-
-          pnpm exec vitest run --config vitest.integration.config.ts
-          apps/api/src/assignments-http.integration.test.ts
-          apps/api/src/commerce-http.integration.test.ts
-          apps/api/src/delivery-history-hardening.integration.test.ts
-          apps/api/src/delivery-runs-http.integration.test.ts
-          apps/api/src/learner-runner-http.integration.test.ts
-          apps/api/src/membership-http.integration.test.ts
-          apps/api/src/sessions-attendance-http.integration.test.ts
-          apps/api/src/api.integration.test.ts
-          apps/api/src/modules/organizations/organizations.integration.test.ts
-          packages/database/src/database.integration.test.ts
-
-      - name: Verify integration diagnostic halves
+      - name: Prepare integration result reader
         if: ${{ always() }}
         run: |
-          test "${{ steps.integration_guided_learning.outcome }}" = "success"
-          test "${{ steps.integration_delivery_foundation.outcome }}" = "success"
+          cat > /tmp/check-integration-result.cjs <<'NODE'
+          const fs = require('node:fs');
+          const target = process.argv[2];
+          const reportPath = '/tmp/integration-results.json';
+          if (!fs.existsSync(reportPath)) {
+            console.error(`Integration report is missing while checking ${target}`);
+            process.exit(2);
+          }
+          const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+          const result = (report.testResults || []).find((item) =>
+            item.name === target || item.name?.endsWith(`/${target}`) || item.name?.endsWith(target),
+          );
+          if (!result) {
+            console.error(`No integration result found for ${target}`);
+            process.exit(2);
+          }
+          const assertionFailed = (result.assertionResults || []).some((item) => item.status === 'failed');
+          if (result.status === 'failed' || assertionFailed) {
+            process.exit(1);
+          }
+          process.exit(0);
+          NODE
+
+      - name: Integration result - api
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/api.integration.test.ts
+
+      - name: Integration result - assignments
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/assignments-http.integration.test.ts
+
+      - name: Integration result - attempt submission
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/attempt-submission-http.integration.test.ts
+
+      - name: Integration result - commerce
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/commerce-http.integration.test.ts
+
+      - name: Integration result - delivery history
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/delivery-history-hardening.integration.test.ts
+
+      - name: Integration result - delivery runs
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/delivery-runs-http.integration.test.ts
+
+      - name: Integration result - guided build guidance
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/guided-build-guidance-http.integration.test.ts
+
+      - name: Integration result - learner runner
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/learner-runner-http.integration.test.ts
+
+      - name: Integration result - learner skill progress
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/learner-skill-progress-http.integration.test.ts
+
+      - name: Integration result - learning event history
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/learning-event-history-http.integration.test.ts
+
+      - name: Integration result - learning
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/learning-http.integration.test.ts
+
+      - name: Integration result - learning loop
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/learning-loop-http.integration.test.ts
+
+      - name: Integration result - mastery
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/mastery-http.integration.test.ts
+
+      - name: Integration result - membership
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/membership-http.integration.test.ts
+
+      - name: Integration result - organizations
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/modules/organizations/organizations.integration.test.ts
+
+      - name: Integration result - recommendation
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/recommendation-http.integration.test.ts
+
+      - name: Integration result - sessions attendance
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/sessions-attendance-http.integration.test.ts
+
+      - name: Integration result - validation results
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs apps/api/src/validation-results-http.integration.test.ts
+
+      - name: Integration result - database
+        if: ${{ always() }}
+        continue-on-error: true
+        run: node /tmp/check-integration-result.cjs packages/database/src/database.integration.test.ts
+
+      - name: Enforce integration result
+        if: ${{ always() }}
+        run: |
+          test -f /tmp/integration-exit-code
+          test "$(cat /tmp/integration-exit-code)" = "0"
 
       - name: Build
         run: pnpm build
