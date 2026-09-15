@@ -8,11 +8,11 @@ It is **not live GitHub telemetry**. Before doing work, always verify the curren
 
 Last maintained: 2026-09-15.
 
-Baseline repository state: includes the completed F5 Guided Build API-level learner vertical and the first F6 GitHub integration ingress slice on top of the completed F4 core learner path. Verify the live `main` head before relying on any SHA or PR number.
+Baseline repository state: includes the completed F5 Guided Build API-level learner vertical plus the F6 GitHub integration ingress and trusted GitHub App setup/mapping foundations on top of the completed F4 core learner path. Verify the live `main` head before relying on any SHA or PR number.
 
-Latest architectural decision at this checkpoint: ADR-0027.
+Latest architectural decision at this checkpoint: ADR-0028.
 
-Latest ordered migration at this checkpoint: `000020_github_webhook_inbox.sql`.
+Latest ordered migration at this checkpoint: `000021_github_app_setup.sql`.
 
 The baseline above is an orientation marker, not permission to skip checking the live `main` head.
 
@@ -145,13 +145,12 @@ Submission
   -> normal F4 learning lifecycle
 ```
 
-### F6 — GitHub projects: integration ingress foundation started
+### F6 — GitHub projects: trusted integration foundation established
 
-The first F6 slice establishes the GitHub trust boundary before project/review intelligence is allowed to depend on GitHub data:
+The first two F6 slices establish the GitHub trust boundary and a safe installation lifecycle before project/review intelligence is allowed to depend on GitHub data:
 
-- `Integrations` owns GitHub App external identity and webhook ingress; `Projects` remains the owner of future Nexus project/team/milestone state;
+- `Integrations` owns GitHub App external identity, setup/mapping management, and webhook ingress; `Projects` remains the owner of future Nexus project/team/milestone state;
 - GitHub installation and repository identifiers are external identities and are not Nexus Project/Team ids;
-- trusted installation/repository mapping tables establish the future tenant-routing model without yet exposing unsafe user-writable mapping endpoints;
 - webhook HMAC-SHA256 is verified against the raw request body before parsed payload content is trusted;
 - only an explicit allowlist of F6-relevant GitHub event families is accepted;
 - accepted deliveries are append-only durable inbox facts keyed by GitHub delivery UUID;
@@ -159,11 +158,34 @@ The first F6 slice establishes the GitHub trust boundary before project/review i
 - inbox rows retain replay/audit payload, payload hash, event/action, external ids, routing result, tenant id where safely resolved, and receive time, but never persist the webhook secret or signature;
 - routing uses exact trusted installation/repository ids and records `mapped`, `unmapped_installation`, `unmapped_repository`, `repository_mismatch`, or `not_applicable` explicitly;
 - a repository mapped to another installation/tenant cannot be silently cross-routed;
-- the API runtime receives no direct cross-tenant grants on Integration mapping/inbox tables; a narrow PostgreSQL ingress function performs exact routing + atomic dedupe;
-- webhook acceptance creates no Project state, LearningEvent, Evidence, Mastery mutation, or redundant outbox event;
-- Redis/BullMQ processing, GitHub API calls, installation setup/token lifecycle, project/team modeling, and PR/check/review evidence remain later F6 slices.
+- the API runtime receives no broad cross-tenant grants on Integration state; narrow PostgreSQL functions perform exact webhook routing/dedupe and callback-state transitions;
+- `integration.manage` is Organization-scoped and granted by default only to `organization_owner` and `organization_admin`;
+- setup initiation creates a cryptographically random ten-minute state, stores only its SHA-256, and binds it to the initiating Nexus user and Organization;
+- the GitHub setup callback treats returned `installation_id` only as a candidate external id; knowing that id is not proof of installation ownership;
+- installation state and the subsequent OAuth state are separate, single-use, user-bound values consumed atomically by narrow `SECURITY DEFINER` functions;
+- the same browser/user then completes GitHub App user authorization; the resulting user access token is ephemeral adapter-only credential state and is never persisted or exposed to Projects/learning modules;
+- the GitHub adapter requires the exact candidate installation to be accessible to that authenticated GitHub user, to belong to the configured GitHub App id, and to provide the minimum current F6 permissions (`Pull requests: read`, `Checks: read`);
+- the adapter enumerates the repositories accessible through that installation and synchronizes mappings only after both Nexus authorization and GitHub authority have been proved;
+- trusted installation/repository mappings are tenant-scoped through RLS and resynchronize idempotently by exact external ids;
+- an external installation/repository already owned by another Nexus Organization cannot be reassigned through setup;
+- repository mappings no longer present in the verified GitHub selection become `removed` rather than being deleted;
+- Nexus-side suspension marks the installation `suspended` and its repositories `removed` without deleting setup history or historical webhook inbox facts;
+- webhook acceptance and setup/mapping changes create no Project state, LearningEvent, Evidence, Mastery mutation, or speculative outbox contract;
+- Redis/BullMQ processing, inbox process/dead-letter state, application of GitHub uninstall/repository-change webhooks, retained-delivery rerouting, installation access-token/private-key GitHub API calls, project/team modeling, and PR/check/review-derived evidence remain later F6 slices.
 
-The current F6 ingress path is:
+The current trusted setup path is:
+
+```text
+Nexus owner/admin
+  -> create short-lived user-bound setup session
+  -> GitHub App installation/update UI with opaque state
+  -> setup callback records only candidate installation id
+  -> GitHub App user authorization with second opaque state
+  -> verify user-accessible installation + required permissions + repositories
+  -> tenant transaction synchronizes trusted installation/repository mappings
+```
+
+The current webhook ingress path remains:
 
 ```text
 GitHub delivery
@@ -213,6 +235,8 @@ These are high-value reminders, not substitutes for their ADRs.
 - Learning Guidance never becomes an alternate Attempt writer; transfer starts through Learning Progress.
 - GitHub is an external integration source, not canonical learning state.
 - GitHub installation/repository ids are external identities; trusted mapping is required before tenant business state may depend on a delivery.
+- GitHub setup-return `installation_id` is an untrusted candidate; trusted mapping requires both current Nexus Organization authorization and GitHub-authenticated user access to the exact installation.
+- GitHub user access tokens used during setup are ephemeral adapter credentials and never become canonical Nexus state, inbox/outbox payload, Project state, or learning data.
 - A verified webhook inbox fact is not Project state, LearningEvent, Evidence, or Mastery. Derivation requires a later idempotent processor and the owning module's public boundary.
 - Grader/sandbox hardening belongs to the separate security boundary described by ADR-0007 and the F7 roadmap unless an earlier slice needs only a safe application-level contract.
 
@@ -228,22 +252,20 @@ Do not remove these merely because the canonical model has moved on. Each requir
 
 ## Next recommended slice
 
-**F6 GitHub App installation lifecycle and trusted mapping management.**
+**F6 idempotent GitHub inbox processor for installation/repository lifecycle and retained-delivery rerouting.**
 
-Build the smallest trusted setup vertical that can create the mapping rows introduced by the webhook-ingress slice without allowing arbitrary user-supplied GitHub ids to claim external resources:
+Build the smallest processing slice that can safely apply trusted Integration-owned consequences from the durable inbox before introducing Nexus Project state:
 
-- define the GitHub App setup/initiation flow for an authenticated Nexus organization admin and bind it to Organization identity with a short-lived, single-use anti-CSRF/state token;
-- accept the GitHub App setup/callback only after verifying the state binding and GitHub-provided installation identity;
-- define the minimum GitHub App permissions/events required for the F6 roadmap and keep credentials/private keys in runtime secret configuration only;
-- add `integration.manage` authorization at Organization scope only when the trusted setup command actually exists; owner/admin should manage the integration, not instructors/mentors/learners by default;
-- create/update installation and repository mappings only through the trusted integration application boundary, never direct Projects/learning writes;
-- model suspend/uninstall/repository removal without deleting historical webhook inbox facts;
-- replay or re-route retained `unmapped_*` deliveries only through an explicit idempotent processor once a trusted mapping exists;
-- keep GitHub API token generation/client calls behind an Integrations port so Projects never imports a GitHub SDK;
-- prove state-token replay rejection, cross-Organization setup isolation, installation ownership binding, uninstall/suspend behavior, and repository mapping idempotency through integration tests;
-- do not yet materialize Nexus Project/Team state or learning Evidence from PR/check/review traffic in this setup slice.
+- add processing/retry/dead-letter metadata separately from immutable `github_webhook_inbox` source facts; never mutate the received payload/audit row into worker state;
+- claim and process inbox deliveries idempotently with crash/retry safety and explicit terminal/error state;
+- apply `installation` and `installation_repositories` lifecycle events to Integration-owned mappings only when the delivery is already tenant-routable and consistent with the trusted mapping;
+- model GitHub-originated uninstall/suspend/repository removal by status transitions rather than deleting mapping or inbox history;
+- after a trusted setup creates mappings, allow retained `unmapped_installation` / `unmapped_repository` deliveries to be explicitly re-evaluated through the processor rather than silently rewriting their original routing facts;
+- keep processing behind an Integrations application port; Redis/BullMQ may schedule execution later but is not the source of truth;
+- prove duplicate delivery, retry-after-failure/crash, uninstall, repository add/remove, wrong-tenant/mismatch rejection, and retained-delivery rerouting behavior through integration tests;
+- do not yet materialize Nexus Project/Team state, derive learning Evidence, or introduce PR/check/review project intelligence in this processor slice.
 
-After the trusted installation lifecycle exists, the next F6 slice can introduce idempotent inbox processing plus the minimal Nexus Project/Team model required for a real repository-backed project vertical.
+After the Integration lifecycle processor is durable, the next F6 slice can introduce the minimal Nexus `Project` / `Team` model and explicit public Integrations query/event ports required for a real repository-backed project vertical.
 
 ## Remaining F4 follow-up frontier
 
@@ -278,6 +300,7 @@ Always inspect the live `docs/adr/` directory; this map is only a starting point
 - Protected Guided Build content and GuidanceExposure persistence: ADR-0025.
 - Guided Build compare and transfer handoff: ADR-0026.
 - GitHub integration ingress and durable webhook inbox: ADR-0027.
+- GitHub App trusted setup and mapping lifecycle: ADR-0028.
 
 For any new durable decision, add or amend architecture documentation through a new ADR rather than silently encoding policy only in implementation.
 
