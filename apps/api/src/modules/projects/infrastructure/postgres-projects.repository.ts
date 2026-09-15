@@ -219,7 +219,7 @@ export class PostgresProjectsRepository extends ProjectsRepository {
   async createRepositoryBinding(
     transaction: DatabaseTransaction,
     input: Parameters<ProjectsRepository["createRepositoryBinding"]>[1]
-  ): Promise<ProjectRepositoryBindingRecord> {
+  ): Promise<ProjectRepositoryBindingRecord | null> {
     const result = await transaction.client.query<BindingRow>(
       `INSERT INTO projects.repository_bindings (
          id,
@@ -228,6 +228,7 @@ export class PostgresProjectsRepository extends ProjectsRepository {
          github_repository_mapping_id,
          connected_by_user_id
        ) VALUES ($1, $2, $3, $4, $5)
+       ON CONFLICT DO NOTHING
        RETURNING
          id::text,
          organization_id::text,
@@ -243,8 +244,7 @@ export class PostgresProjectsRepository extends ProjectsRepository {
       ]
     );
     const row = result.rows[0];
-    if (row === undefined) throw new Error("Project repository binding insert returned no row.");
-    return mapBinding(row);
+    return row === undefined ? null : mapBinding(row);
   }
 
   async disconnectRepositoryBinding(
