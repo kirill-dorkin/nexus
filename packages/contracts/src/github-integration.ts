@@ -11,7 +11,7 @@ export const githubRepositoryMappingSchema = z.object({
   id: z.string().uuid(),
   githubRepositoryId: externalIdSchema,
   fullName: z.string().min(3).max(260),
-  status: z.enum(["active", "removed"])
+  status: z.enum(["active", "suspended", "removed"])
 });
 
 export const githubInstallationMappingSchema = z.object({
