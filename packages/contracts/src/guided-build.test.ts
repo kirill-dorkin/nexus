@@ -2,14 +2,22 @@ import { describe, expect, it } from "vitest";
 import type { GuidedBuildDefinition } from "./guided-build";
 import {
   guidedBuildAuthoringSchema,
+  guidedBuildCompareViewSchema,
   guidedBuildDefinitionSchema,
   guidedBuildLearnerStateSchema,
+  guidedBuildTransferHandoffSchema,
   revealGuidedBuildHintRequestSchema,
   revealGuidedBuildSolutionRequestSchema
 } from "./guided-build";
 
 const activityVersionId = "018f6f8c-2fd0-7a32-8f8b-42b0f5519d11";
 const transferActivityVersionId = "018f6f8c-2fd0-7a32-8f8b-42b0f5519d12";
+const attemptId = "018f6f8c-2fd0-7a32-8f8b-42b0f5519d13";
+const enrollmentId = "018f6f8c-2fd0-7a32-8f8b-42b0f5519d14";
+const submissionId = "018f6f8c-2fd0-7a32-8f8b-42b0f5519d15";
+const exposureId = "018f6f8c-2fd0-7a32-8f8b-42b0f5519d16";
+const activityId = "018f6f8c-2fd0-7a32-8f8b-42b0f5519d17";
+const userId = "018f6f8c-2fd0-7a32-8f8b-42b0f5519d18";
 function definition(): GuidedBuildDefinition {
   return {
     schemaVersion: 1,
@@ -54,5 +62,45 @@ describe("guided build contracts", () => {
   });
   it("rejects contradictory phase and solution state", () => {
     expect(guidedBuildLearnerStateSchema.safeParse({ organizationId: activityVersionId, enrollmentId: activityVersionId, attemptId: activityVersionId, activityVersionId, phase: "working", workAssistance: "unassisted", steps: [], solution: { key: "professional-solution", status: "revealed", canCompare: true }, transfer: null }).success).toBe(false);
+  });
+  it("models compare as immutable submitted work plus an already revealed professional solution", () => {
+    const compare = guidedBuildCompareViewSchema.parse({
+      sourceAttemptId: attemptId,
+      sourceActivityVersionId: activityVersionId,
+      submission: {
+        id: submissionId,
+        organizationId: activityVersionId,
+        attemptId,
+        payload: { answer: "learner work" },
+        submittedByUserId: userId,
+        submittedAt: "2026-09-15T12:00:00.000Z"
+      },
+      professionalSolution: {
+        exposureId,
+        key: "professional-solution",
+        title: "Professional solution",
+        content: { code: "professional work" },
+        revealedAt: "2026-09-15T12:01:00.000Z"
+      }
+    });
+    expect(compare.submission.payload).toEqual({ answer: "learner work" });
+    expect(compare.professionalSolution.content).toEqual({ code: "professional work" });
+  });
+  it("models transfer as a handoff to the normal Activity Attempt lifecycle", () => {
+    expect(guidedBuildTransferHandoffSchema.parse({
+      sourceAttemptId: attemptId,
+      enrollmentId,
+      activityVersionId: transferActivityVersionId,
+      activityId,
+      slug: "transfer-challenge",
+      title: "Transfer challenge"
+    })).toEqual({
+      sourceAttemptId: attemptId,
+      enrollmentId,
+      activityVersionId: transferActivityVersionId,
+      activityId,
+      slug: "transfer-challenge",
+      title: "Transfer challenge"
+    });
   });
 });
