@@ -108,8 +108,58 @@ jobs:
       - name: Unit tests
         run: pnpm test
 
-      - name: Database integration tests
-        run: pnpm test:integration
+      # Temporary diagnostic split while GitHub App job logs are unavailable.
+      # Each shard is allowed to finish so step outcomes identify every failing subset.
+      - name: Integration diagnostics - Guided Build
+        id: integration-guided-build
+        continue-on-error: true
+        run: >-
+          pnpm exec vitest run --config vitest.integration.config.ts
+          apps/api/src/guided-build-guidance-http.integration.test.ts
+
+      - name: Integration diagnostics - Learning progress and history
+        id: integration-learning
+        continue-on-error: true
+        run: >-
+          pnpm exec vitest run --config vitest.integration.config.ts
+          apps/api/src/attempt-submission-http.integration.test.ts
+          apps/api/src/learner-skill-progress-http.integration.test.ts
+          apps/api/src/learning-event-history-http.integration.test.ts
+          apps/api/src/learning-http.integration.test.ts
+          apps/api/src/learning-loop-http.integration.test.ts
+          apps/api/src/mastery-http.integration.test.ts
+          apps/api/src/recommendation-http.integration.test.ts
+          apps/api/src/validation-results-http.integration.test.ts
+
+      - name: Integration diagnostics - Delivery
+        id: integration-delivery
+        continue-on-error: true
+        run: >-
+          pnpm exec vitest run --config vitest.integration.config.ts
+          apps/api/src/assignments-http.integration.test.ts
+          apps/api/src/commerce-http.integration.test.ts
+          apps/api/src/delivery-history-hardening.integration.test.ts
+          apps/api/src/delivery-runs-http.integration.test.ts
+          apps/api/src/learner-runner-http.integration.test.ts
+          apps/api/src/membership-http.integration.test.ts
+          apps/api/src/sessions-attendance-http.integration.test.ts
+
+      - name: Integration diagnostics - Foundation
+        id: integration-foundation
+        continue-on-error: true
+        run: >-
+          pnpm exec vitest run --config vitest.integration.config.ts
+          apps/api/src/api.integration.test.ts
+          apps/api/src/modules/organizations/organizations.integration.test.ts
+          packages/database/src/database.integration.test.ts
+
+      - name: Verify integration diagnostic shards
+        if: ${{ always() }}
+        run: |
+          test "${{ steps.integration-guided-build.outcome }}" = "success"
+          test "${{ steps.integration-learning.outcome }}" = "success"
+          test "${{ steps.integration-delivery.outcome }}" = "success"
+          test "${{ steps.integration-foundation.outcome }}" = "success"
 
       - name: Build
         run: pnpm build
