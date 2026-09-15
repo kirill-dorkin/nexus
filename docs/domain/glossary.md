@@ -13,6 +13,10 @@
 | `Concept` | Термин/идея предметной области; отвечает «что это?». |
 | `Misconception` | Типичная устойчивая неправильная mental model. |
 | `ActivityVersion` | Конкретная версия учебной активности и её validators/policies. |
+| `GuidedBuildDefinition` | Опциональное immutable описание Guided Build для exact `ActivityVersion`: ordered steps/hint ladder, professional-solution identity и optional transfer `ActivityVersion`; protected guidance content не является публичным `ActivityVersion.config`. |
+| `GuidanceExposure` | Append-only Attempt-scoped факт раскрытия конкретного hint или professional solution. Это assistance context, а не `LearningEvidence`. |
+| `ProfessionalSolution` | Защищённый эталонный walkthrough/reference solution для Guided Build, доступный learner только после immutable `Submission` исходного Attempt. |
+| `TransferChallenge` | Отдельная immutable `ActivityVersion`, используемая после исходной практики для переноса навыка; имеет собственный Attempt/Submission/Evidence lifecycle. |
 | `Validator` | Версионированное определение проверки, выбранное immutable binding внутри `ActivityVersion`; exact key/version задаёт стабильную семантику и trust/recording policy, но не обязан сам исполнять student code внутри API. |
 | `Attempt` | Одна историческая попытка пройти конкретную `ActivityVersion`; начинается до отправки ответа, а retry создаёт новый Attempt. |
 | `Submission` | Immutable artifact/answer, который ученик фиксирует в рамках одного Attempt. Не является самим Attempt. |

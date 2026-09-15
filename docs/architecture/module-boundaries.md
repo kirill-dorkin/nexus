@@ -8,11 +8,12 @@
 | Commerce | products, purchases, entitlement grants | learning progress |
 | Catalog/Curriculum | programs/courses/modules/lessons + versions | delivery state |
 | Knowledge | skills, concepts, misconceptions, relations | lesson rendering |
-| Content | authoring drafts, releases, assets, immutable CourseVersion skill presentation snapshots | mastery |
+| Content | authoring drafts, releases, assets, immutable CourseVersion skill presentation snapshots, protected immutable Guided Build definitions | mastery, learner assistance exposure state |
 | Delivery | offerings, runs, enrollments, groups, sessions, assignments | content authoring |
 | Activities | activity definitions/versions, attempts | mastery decisions |
 | Assessment | questions, assessments, rubrics, scoring definitions | delivery scheduling |
 | Validation | versioned validator registry semantics and immutable raw ValidationResult attribution | normalized Evidence, Mastery, untrusted sandbox execution |
+| Learning Guidance | Attempt-scoped Guided Build assistance state and protected-content disclosure policy | immutable curriculum authoring, Evidence, Mastery, grader execution |
 | Learning History | canonical append-only learner LearningEvent journal and history read contract | integration outbox, telemetry, mutable Mastery projections |
 | Mastery | evidence normalization, model versions, organization-wide learner skill projections, learner skill progress composition | raw curriculum content, Delivery context, recommendation policy |
 | Recommendations | next-best actions / reasons | source-of-truth mastery |
