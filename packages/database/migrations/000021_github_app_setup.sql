@@ -1,6 +1,6 @@
 -- F6 GitHub App trusted setup lifecycle.
 -- Mapping rows become tenant-managed only after a short-lived server-side setup
--- session has proven Nexus authorization and GitHub user access to the installation.
+-- session has proven platform authorization and GitHub user access to the installation.
 
 ALTER TABLE integrations.github_installations
   ADD COLUMN github_account_id bigint
@@ -84,8 +84,8 @@ CREATE POLICY github_setup_sessions_app_tenant_policy
     AND initiated_by_user_id = platform_internal.current_user_id()
   );
 
--- GitHub redirects do not carry a Nexus organization id. These narrowly-scoped
--- functions resolve an opaque hashed state together with the authenticated Nexus
+-- GitHub redirects do not carry a platform organization id. These narrowly-scoped
+-- functions resolve an opaque hashed state together with the authenticated platform
 -- user and atomically consume each state transition. They expose no mapping rows.
 CREATE OR REPLACE FUNCTION platform_internal.advance_github_setup_to_oauth(
   p_installation_state_sha256 text,
