@@ -6,6 +6,7 @@ import type { ActivityAttemptCount } from "../application/learning-progress.quer
 import {
   LearningProgressRepository,
   type AttemptContext,
+  type CreateValidationEvidenceOutcome,
   type NewAttempt,
   type NewEvidence,
   type NewSubmission,
@@ -59,6 +60,8 @@ type EvidenceRow = {
   score: string | null;
   payload: Record<string, unknown>;
   recorded_by_user_id: string | null;
+  source_type: "manual" | "validation_result";
+  source_validation_result_id: string | null;
   created_at: Date;
 };
 
@@ -68,6 +71,19 @@ const attemptSelect = `attempt.id::text,
   attempt.activity_version_id::text,
   attempt.attempt_number,
   attempt.created_at`;
+
+const evidenceReturning = `id::text,
+  organization_id::text,
+  attempt_id::text,
+  submission_id::text,
+  skill_id::text,
+  kind,
+  score::text,
+  payload,
+  recorded_by_user_id::text,
+  source_type,
+  source_validation_result_id::text,
+  created_at`;
 
 function mapAttempt(row: AttemptRow): Attempt {
   return {
@@ -102,6 +118,8 @@ function mapEvidence(row: EvidenceRow): Evidence {
     score: row.score === null ? null : Number(row.score),
     payload: row.payload,
     recordedByUserId: row.recorded_by_user_id,
+    sourceType: row.source_type,
+    sourceValidationResultId: row.source_validation_result_id,
     createdAt: row.created_at.toISOString()
   };
 }
@@ -316,18 +334,9 @@ export class PostgresLearningProgressRepository extends LearningProgressReposito
     const result = await transaction.client.query<EvidenceRow>(
       `INSERT INTO learning_progress.evidence
          (id, organization_id, attempt_id, submission_id, skill_id, kind, score,
-          payload, recorded_by_user_id)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8::jsonb, $9)
-       RETURNING id::text,
-                 organization_id::text,
-                 attempt_id::text,
-                 submission_id::text,
-                 skill_id::text,
-                 kind,
-                 score::text,
-                 payload,
-                 recorded_by_user_id::text,
-                 created_at`,
+          payload, recorded_by_user_id, source_type, source_validation_result_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8::jsonb, $9, $10, $11)
+       RETURNING ${evidenceReturning}`,
       [
         evidence.id,
         evidence.organizationId,
@@ -337,7 +346,9 @@ export class PostgresLearningProgressRepository extends LearningProgressReposito
         evidence.kind,
         evidence.score,
         JSON.stringify(evidence.payload),
-        evidence.recordedByUserId
+        evidence.recordedByUserId,
+        evidence.sourceType,
+        evidence.sourceValidationResultId
       ]
     );
     const row = result.rows[0];
@@ -345,5 +356,62 @@ export class PostgresLearningProgressRepository extends LearningProgressReposito
       throw new Error("PostgreSQL did not return the created evidence.");
     }
     return mapEvidence(row);
+  }
+
+  async createOrFindValidationEvidence(
+    transaction: DatabaseTransaction,
+    evidence: NewEvidence
+  ): Promise<CreateValidationEvidenceOutcome> {
+    if (
+      evidence.sourceType !== "validation_result" ||
+      evidence.sourceValidationResultId === null
+    ) {
+      throw new Error("Validation Evidence requires ValidationResult provenance.");
+    }
+
+    const inserted = await transaction.client.query<EvidenceRow>(
+      `INSERT INTO learning_progress.evidence
+         (id, organization_id, attempt_id, submission_id, skill_id, kind, score,
+          payload, recorded_by_user_id, source_type, source_validation_result_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8::jsonb, NULL, 'validation_result', $9)
+       ON CONFLICT (organization_id, source_validation_result_id, skill_id)
+         WHERE source_type = 'validation_result'
+       DO NOTHING
+       RETURNING ${evidenceReturning}`,
+      [
+        evidence.id,
+        evidence.organizationId,
+        evidence.attemptId,
+        evidence.submissionId,
+        evidence.skillId,
+        evidence.kind,
+        evidence.score,
+        JSON.stringify(evidence.payload),
+        evidence.sourceValidationResultId
+      ]
+    );
+    const insertedRow = inserted.rows[0];
+    if (insertedRow !== undefined) {
+      return { evidence: mapEvidence(insertedRow), created: true };
+    }
+
+    const existing = await transaction.client.query<EvidenceRow>(
+      `SELECT ${evidenceReturning}
+         FROM learning_progress.evidence
+        WHERE organization_id = $1
+          AND source_type = 'validation_result'
+          AND source_validation_result_id = $2
+          AND skill_id = $3`,
+      [
+        evidence.organizationId,
+        evidence.sourceValidationResultId,
+        evidence.skillId
+      ]
+    );
+    const existingRow = existing.rows[0];
+    if (existingRow === undefined) {
+      throw new Error("PostgreSQL did not return idempotent validation Evidence.");
+    }
+    return { evidence: mapEvidence(existingRow), created: false };
   }
 }
