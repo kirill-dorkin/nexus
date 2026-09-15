@@ -22,7 +22,10 @@ import { AuthorizationApplicationService } from "../../authorization/application
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { LearningGraphApplicationService } from "../../learning-content/application/learning-graph.service";
 import { LearningDeliveryApplicationService } from "../../learning-delivery/application/learning-delivery.service";
-import type { ActivityAttemptCount } from "./learning-progress.query";
+import type {
+  ActivityAttemptCount,
+  SubmissionValidationContext
+} from "./learning-progress.query";
 import { LearningProgressRepository } from "./learning-progress.repository";
 import { MasteryApplicationService } from "./mastery.service";
 
@@ -268,6 +271,23 @@ export class LearningProgressApplicationService {
       enrollmentId,
       activityVersionIds
     );
+  }
+
+  async requireSubmissionForValidation(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    submissionId: string
+  ): Promise<SubmissionValidationContext> {
+    const submissionContext = await this.progress.findSubmissionContext(
+      transaction,
+      organizationId,
+      submissionId
+    );
+    if (submissionContext === null) {
+      throw new NotFoundException("Submission not found.");
+    }
+
+    return submissionContext;
   }
 
   private async recordEvidenceInTransaction(
