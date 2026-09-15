@@ -29,6 +29,14 @@ export abstract class AssignmentRepository {
     assignmentId: string
   ): Promise<Assignment | null>;
 
+  abstract listApplicableAssignments(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    offeringId: string,
+    enrollmentId: string,
+    at: string
+  ): Promise<readonly Assignment[]>;
+
   abstract cancelAssignment(
     transaction: DatabaseTransaction,
     organizationId: string,
