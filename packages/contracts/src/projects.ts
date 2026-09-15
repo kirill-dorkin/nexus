@@ -1,3 +1,7 @@
 import { z } from "zod";
+import { uuidSchema } from "./common";
 
-export const projectNameSchema = z.string().min(1).max(180);
+export const projectNameSchema = z.string().trim().min(1).max(180);
+export const projectTeamNameSchema = z.string().trim().min(1).max(160);
+export const projectIdSchema = uuidSchema;
+export const projectTeamIdSchema = uuidSchema;
