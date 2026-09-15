@@ -3,6 +3,7 @@ import { Injectable } from "@nestjs/common";
 export const authorizationCapabilities = [
   "organization.read",
   "organization.manage",
+  "integration.manage",
   "authorization.read",
   "authorization.assign_roles",
   "authorization.assign_owner",
@@ -41,7 +42,7 @@ export type RoleAssignmentScope = Readonly<{ organizationId: string; roleKey: Sy
 const roleCapabilities: Readonly<Record<SystemRoleKey, ReadonlySet<AuthorizationCapability>>> = {
   organization_owner: new Set(authorizationCapabilities),
   organization_admin: new Set([
-    "organization.read", "organization.manage", "authorization.read", "authorization.assign_roles",
+    "organization.read", "organization.manage", "integration.manage", "authorization.read", "authorization.assign_roles",
     "course.read", "course.manage", "course.publish", "skill.read", "skill.manage", "activity.read", "activity.manage",
     "offering.read", "offering.manage", "entitlement.manage", "enrollment.manage", "validation.record", "learning_event.read",
     "evidence.read", "evidence.record", "mastery.read", "mastery.read_others", "mastery.recompute", "recommendation.read", "recommendation.read_others"
