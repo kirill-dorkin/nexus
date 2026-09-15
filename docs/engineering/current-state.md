@@ -8,11 +8,11 @@ It is **not live GitHub telemetry**. Before doing work, always verify the curren
 
 Last maintained: 2026-09-15.
 
-Baseline repository state: includes the F5 Guided Build state-machine contract described by ADR-0024 on top of the completed F4 core learner path. Verify the live `main` head before relying on any SHA or PR number.
+Baseline repository state: includes the completed F5 Guided Build API-level learner vertical on top of the completed F4 core learner path. Verify the live `main` head before relying on any SHA or PR number.
 
-Latest architectural decision at this checkpoint: ADR-0024.
+Latest architectural decision at this checkpoint: ADR-0026.
 
-Latest ordered migration at this checkpoint: `000017_learning_event_history.sql`.
+Latest ordered migration at this checkpoint: `000019_guidance_exposure_lock_privilege.sql`.
 
 The baseline above is an orientation marker, not permission to skip checking the live `main` head.
 
@@ -104,29 +104,46 @@ Assignment / recommendation
 
 The F4 slices deliberately do **not** execute learner code, start grader/sandbox jobs, authenticate grader services, introduce a general outbox worker runtime, invent a confidence model, change Mastery semantics merely for UI needs, decide retry/lateness policy, add strict Assignment-to-Attempt association, or add instructor/mentor read-others learner surfaces.
 
-### F5 — Guided Build: state-machine contract established, runtime persistence next
+### F5 — Guided Build: implemented API-level learner vertical
 
-ADR-0024 establishes the first F5 boundary before broad UI/runtime work:
+The F5 foundation now composes Guided Build with the existing immutable curriculum and Attempt/Submission lifecycle rather than creating a parallel learning model:
 
-- Guided Build is optional for an exact immutable `ActivityVersion` and does not replace the normal Attempt/Submission lifecycle;
-- changing Guided Build steps, hint ordering, professional-solution identity, or transfer linkage requires a new immutable ActivityVersion snapshot;
-- protected hints/professional solution content must not be embedded in learner-visible `CourseVersionActivity.config` or the current learner runner payload;
-- Learning Content owns immutable protected Guided Build definitions; Learning Guidance owns Attempt-scoped assistance/disclosure state;
-- the learner state machine is `working -> submitted -> reviewing`;
-- `working` permits only the next ordered hint in each step's ladder;
-- new hints are locked after Submission;
-- professional solution exposure requires the same Attempt to have an immutable Submission but does not require validation success;
-- compare becomes available only after professional solution exposure and is a read/presentation operation, not validation or Evidence;
-- hint exposure is durable assistance context and distinguishes `unassisted` from `hint_assisted` work without creating Evidence or directly changing Mastery;
-- professional solution exposure occurs only after Submission in v1, so it cannot retroactively make already-submitted work solution-assisted;
-- an optional transfer challenge references a different immutable `ActivityVersion` and uses its own normal Attempt/Submission/Evidence lifecycle;
-- transfer becomes eligible after source Submission and does not require professional-solution exposure, preserving an unassisted transfer path;
-- future durable hint/solution exposure mutations should append normalized `guidance.hint_revealed` / `guidance.solution_revealed` LearningEvents without copying protected content into learner history;
-- step browsing, compare-panel opening, scrolling/editor focus/copy actions, and similar UI telemetry are explicitly not canonical LearningEvents;
-- reveal-hint commands identify only the step; the server chooses the next permitted hint rather than accepting an arbitrary client-selected hint key;
-- F5 state-machine semantics do not require grader execution, timers, failed validations, or struggle inference and therefore do not pull F7 sandbox policy forward.
+- Guided Build is optional for an exact immutable `ActivityVersion`;
+- protected steps, hints, professional solution material, and optional transfer linkage are owned by Learning Content and kept outside learner-visible `CourseVersionActivity.config`;
+- protected definitions are immutable with the published ActivityVersion and clone across CourseVersions by stable Activity identity, including remapped transfer ActivityVersion references;
+- Learning Guidance owns append-only Attempt-scoped `GuidanceExposure` facts and disclosure policy;
+- learner state is derived as `working -> submitted -> reviewing`;
+- only the next ordered hint may be revealed and no new hints are allowed after Submission;
+- hint/solution disclosure commands are retry-safe through explicit idempotency keys;
+- professional solution exposure requires the same Attempt to have an immutable Submission and does not require validation success;
+- each new hint/solution exposure appends a normalized `guidance.hint_revealed` / `guidance.solution_revealed` LearningEvent atomically without copying protected content into learner history;
+- GuidanceExposure remains assistance context, not Evidence, and does not directly change Mastery;
+- learner access is own-Attempt only and requires `guidance.use` in Offering scope;
+- PostgreSQL tenant/RLS/source/disclosure invariants defend protected content and append-only exposure state independently of application policy;
+- professional compare is a pure derived read over the immutable Submission plus the already revealed professional solution;
+- opening compare creates no GuidanceExposure, LearningEvent, outbox row, Evidence, or Mastery mutation;
+- an optional transfer challenge becomes available after source Submission without requiring solution exposure, preserving an unassisted transfer path;
+- transfer discovery returns a safe handoff to the exact configured transfer ActivityVersion and stable Activity identity;
+- transfer work starts through the existing Learning Progress Attempt command, preserving one owner for Attempt creation, normal `attempt.started` LearningEvent/outbox semantics, authorization, attempt numbering, and immutable ActivityVersion pinning;
+- transfer work has its own ordinary Submission / ValidationResult / Evidence / Mastery lifecycle rather than becoming hidden state inside the source Guided Build Attempt;
+- F5 v1 does not persist a source-Attempt-to-transfer-Attempt relation because no current product invariant requires one;
+- compare-panel opening, scrolling/editor focus/copy actions, and similar UI telemetry are not canonical LearningEvents;
+- F5 does not execute learner code, infer struggle, weight Mastery by assistance, or pull F7 sandbox/grader policy forward.
 
-This first F5 slice is intentionally contract/domain-only: it adds no migration, no protected-content storage, no learner runtime endpoint, and no grader execution.
+The resulting learner path can support:
+
+```text
+Attempt
+  -> optional ordered hints
+  -> Submission
+  -> professional solution reveal
+  -> compare
+
+Submission
+  -> optional transfer handoff
+  -> separate transfer Attempt
+  -> normal F4 learning lifecycle
+```
 
 ### F6–F9 — upcoming foundations
 
@@ -161,7 +178,9 @@ These are high-value reminders, not substitutes for their ADRs.
 - Student skill UI contracts hide Mastery implementation metadata unless a future product requirement explicitly needs it.
 - Guided Build protected content is immutable curriculum content and must not leak through generic learner Activity config/read models.
 - Guided Build assistance state is Attempt-scoped; hint/solution exposure is not Evidence and must not directly rewrite Mastery.
+- Professional compare is derived read state, not a new canonical learner lifecycle.
 - Professional solution exposure requires an immutable Submission; transfer challenge work uses a separate ActivityVersion/Attempt lifecycle.
+- Learning Guidance never becomes an alternate Attempt writer; transfer starts through Learning Progress.
 - Grader/sandbox hardening belongs to the separate security boundary described by ADR-0007 and the F7 roadmap unless an earlier slice needs only a safe application-level contract.
 
 ## Active F4 compatibility windows
@@ -176,21 +195,21 @@ Do not remove these merely because the canonical model has moved on. Each requir
 
 ## Next recommended slice
 
-**F5 Guided Build protected content + Attempt-scoped exposure persistence.**
+**F6 GitHub projects: integration boundary and durable webhook inbox.**
 
-Implement the smallest runtime vertical slice that realizes ADR-0024 without broad UI or grader work:
+Start F6 with the smallest architecture slice that establishes a trustworthy GitHub integration boundary before project/review intelligence grows around it:
 
-- add immutable protected Guided Build definition storage owned by Learning Content and tied to exact ActivityVersion/CourseVersion draft-publish immutability;
-- keep protected hint/solution payloads out of `CourseVersionActivity.config` and existing learner runner responses;
-- add append-only Attempt-scoped GuidanceExposure persistence owned by Learning Guidance;
-- expose a public Content query that returns protected definition material only to Learning Guidance after disclosure policy authorizes it;
-- implement own-Attempt learner read/reveal commands with ordered next-hint semantics and solution reveal only after Submission;
-- append normalized `guidance.hint_revealed` / `guidance.solution_revealed` LearningEvents atomically with exposure facts, without copying protected content into history;
-- enforce tenant/RLS/source integrity and idempotent repeated reveal requests;
-- prove that arbitrary hint skipping and pre-Submission solution access are rejected;
-- do not add grader execution, automatic struggle inference, UI/editor behavior, or Mastery weighting changes in that slice.
+- define GitHub installation/repository identity ownership and tenant mapping without treating GitHub as canonical learning state;
+- design GitHub App authentication/installation lifecycle and least-privilege permission requirements;
+- introduce a durable idempotent webhook inbox so externally retried GitHub deliveries are persisted before asynchronous processing;
+- authenticate webhook signatures before accepting canonical inbox state and retain enough delivery metadata for replay/audit without storing unnecessary secrets;
+- keep external repository/project identifiers separate from Nexus `Project` / `Team` domain identities;
+- define public integration ports/events rather than allowing Projects or learning modules to call GitHub SDKs directly;
+- align deferred processing with ADR-0006 outbox/inbox rules and keep Redis/BullMQ as execution infrastructure rather than source of truth;
+- prove duplicate webhook delivery, wrong tenant/repository mapping, invalid signatures, and replay behavior through integration tests;
+- do not yet infer learning Evidence from PR/check/review activity until the durable GitHub identity/inbox boundary is established.
 
-After that runtime disclosure foundation is green, F5 can add professional compare and transfer-challenge learner surfaces on top of the same immutable definitions and Attempt lifecycle.
+The next F6 design should inspect current Integrations/Projects scaffolding, security docs, webhook infrastructure, secrets/config handling, and any existing GitHub-related contracts before choosing persistence shapes.
 
 ## Remaining F4 follow-up frontier
 
@@ -222,6 +241,8 @@ Always inspect the live `docs/adr/` directory; this map is only a starting point
 - Canonical learner LearningEvent history/read model: ADR-0022.
 - Student skill progress/read model: ADR-0023.
 - Guided Build state and solution exposure: ADR-0024.
+- Protected Guided Build content and GuidanceExposure persistence: ADR-0025.
+- Guided Build compare and transfer handoff: ADR-0026.
 
 For any new durable decision, add or amend architecture documentation through a new ADR rather than silently encoding policy only in implementation.
 
