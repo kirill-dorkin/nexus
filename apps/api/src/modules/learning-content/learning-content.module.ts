@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
-
 import { OutboxModule } from "../../outbox/outbox.module";
 import { AuthorizationModule } from "../authorization/authorization.module";
 import { IdentityModule } from "../identity/identity.module";
+import { GuidedBuildContentQuery } from "./application/guided-build-content.query";
 import { LearningContentQuery } from "./application/learning-content.query";
 import { LearningContentRepository } from "./application/learning-content.repository";
 import { LearningContentApplicationService } from "./application/learning-content.service";
@@ -19,23 +19,11 @@ import { SkillsController } from "./skills.controller";
   providers: [
     LearningContentApplicationService,
     LearningGraphApplicationService,
-    {
-      provide: LearningContentQuery,
-      useExisting: LearningGraphApplicationService
-    },
-    {
-      provide: LearningContentRepository,
-      useClass: PostgresLearningContentRepository
-    },
-    {
-      provide: LearningGraphRepository,
-      useClass: PostgresLearningGraphRepository
-    }
+    { provide: LearningContentQuery, useExisting: LearningGraphApplicationService },
+    { provide: GuidedBuildContentQuery, useExisting: LearningGraphApplicationService },
+    { provide: LearningContentRepository, useClass: PostgresLearningContentRepository },
+    { provide: LearningGraphRepository, useClass: PostgresLearningGraphRepository }
   ],
-  exports: [
-    LearningContentApplicationService,
-    LearningGraphApplicationService,
-    LearningContentQuery
-  ]
+  exports: [LearningContentApplicationService, LearningGraphApplicationService, LearningContentQuery, GuidedBuildContentQuery]
 })
 export class LearningContentModule {}

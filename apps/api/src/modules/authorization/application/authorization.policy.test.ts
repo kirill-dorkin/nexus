@@ -29,11 +29,7 @@ describe("AuthorizationPolicy", () => {
 
   it("allows organization owners to manage their organization", () => {
     expect(
-      policy.allows(
-        [assignment()],
-        "organization.manage",
-        organizationScope
-      )
+      policy.allows([assignment()], "organization.manage", organizationScope)
     ).toBe(true);
   });
 
@@ -51,98 +47,129 @@ describe("AuthorizationPolicy", () => {
     ).toBe(true);
   });
 
-  it("lets instructors manage and publish learning content", () => {
+  it("lets instructors manage learning content and delivery", () => {
     const instructor = assignment({ roleKey: "instructor" });
     const courseScope: AuthorizationScope = {
       organizationId: "org-a",
       type: "course",
       id: "course-a"
     };
-
-    expect(policy.allows([instructor], "course.manage", courseScope)).toBe(true);
-    expect(policy.allows([instructor], "course.publish", courseScope)).toBe(true);
-    expect(policy.allows([instructor], "offering.manage", {
-      organizationId: "org-a",
-      type: "offering",
-      id: "offering-a"
-    })).toBe(true);
-    expect(policy.allows([instructor], "enrollment.manage", {
-      organizationId: "org-a",
-      type: "offering",
-      id: "offering-a"
-    })).toBe(true);
-  });
-
-  it("keeps commercial entitlement grants away from instructors and learners", () => {
     const offeringScope: AuthorizationScope = {
       organizationId: "org-a",
       type: "offering",
       id: "offering-a"
     };
 
+    expect(policy.allows([instructor], "course.manage", courseScope)).toBe(true);
+    expect(policy.allows([instructor], "course.publish", courseScope)).toBe(true);
+    expect(policy.allows([instructor], "offering.manage", offeringScope)).toBe(true);
+    expect(policy.allows([instructor], "enrollment.manage", offeringScope)).toBe(true);
+  });
+
+  it("keeps commercial entitlement grants away from instructors and learners", () => {
+    const scope: AuthorizationScope = {
+      organizationId: "org-a",
+      type: "offering",
+      id: "offering-a"
+    };
     expect(
       policy.allows(
         [assignment({ roleKey: "organization_admin" })],
         "entitlement.manage",
-        offeringScope
+        scope
       )
     ).toBe(true);
     expect(
       policy.allows(
         [assignment({ roleKey: "instructor" })],
         "entitlement.manage",
-        offeringScope
+        scope
       )
     ).toBe(false);
     expect(
       policy.allows(
         [assignment({ roleKey: "learner" })],
         "entitlement.manage",
-        offeringScope
+        scope
       )
+    ).toBe(false);
+  });
+
+  it("grants Guided Build disclosure capability only to learner-like owner authority", () => {
+    const scope: AuthorizationScope = {
+      organizationId: "org-a",
+      type: "offering",
+      id: "offering-a"
+    };
+    expect(
+      policy.allows([assignment({ roleKey: "learner" })], "guidance.use", scope)
+    ).toBe(true);
+    expect(
+      policy.allows([assignment({ roleKey: "instructor" })], "guidance.use", scope)
+    ).toBe(false);
+    expect(
+      policy.allows([assignment({ roleKey: "mentor" })], "guidance.use", scope)
     ).toBe(false);
   });
 
   it("keeps learners read-only for content and delivery", () => {
     const learner = assignment({ roleKey: "learner" });
-
-    expect(policy.allows([learner], "course.read", {
-      organizationId: "org-a",
-      type: "course",
-      id: "course-a"
-    })).toBe(true);
-    expect(policy.allows([learner], "offering.read", {
-      organizationId: "org-a",
-      type: "offering",
-      id: "offering-a"
-    })).toBe(true);
-    expect(policy.allows([learner], "course.manage", {
-      organizationId: "org-a",
-      type: "course",
-      id: "course-a"
-    })).toBe(false);
-    expect(policy.allows([learner], "enrollment.manage", {
-      organizationId: "org-a",
-      type: "offering",
-      id: "offering-a"
-    })).toBe(false);
+    expect(
+      policy.allows([learner], "course.read", {
+        organizationId: "org-a",
+        type: "course",
+        id: "course-a"
+      })
+    ).toBe(true);
+    expect(
+      policy.allows([learner], "offering.read", {
+        organizationId: "org-a",
+        type: "offering",
+        id: "offering-a"
+      })
+    ).toBe(true);
+    expect(
+      policy.allows([learner], "course.manage", {
+        organizationId: "org-a",
+        type: "course",
+        id: "course-a"
+      })
+    ).toBe(false);
+    expect(
+      policy.allows([learner], "enrollment.manage", {
+        organizationId: "org-a",
+        type: "offering",
+        id: "offering-a"
+      })
+    ).toBe(false);
   });
 
   it("separates recommendation self-read from other-learner visibility", () => {
-    const learner = assignment({ roleKey: "learner" });
-    const mentor = assignment({ roleKey: "mentor" });
-    const offeringScope: AuthorizationScope = {
+    const scope: AuthorizationScope = {
       organizationId: "org-a",
       type: "offering",
       id: "offering-a"
     };
-
-    expect(policy.allows([learner], "recommendation.read", offeringScope)).toBe(true);
     expect(
-      policy.allows([learner], "recommendation.read_others", offeringScope)
+      policy.allows(
+        [assignment({ roleKey: "learner" })],
+        "recommendation.read",
+        scope
+      )
+    ).toBe(true);
+    expect(
+      policy.allows(
+        [assignment({ roleKey: "learner" })],
+        "recommendation.read_others",
+        scope
+      )
     ).toBe(false);
     expect(
-      policy.allows([mentor], "recommendation.read_others", offeringScope)
+      policy.allows(
+        [assignment({ roleKey: "mentor" })],
+        "recommendation.read_others",
+        scope
+      )
     ).toBe(true);
   });
 
@@ -155,24 +182,14 @@ describe("AuthorizationPolicy", () => {
       )
     ).toBe(false);
     expect(
-      policy.allows(
-        [assignment()],
-        "authorization.assign_owner",
-        organizationScope
-      )
+      policy.allows([assignment()], "authorization.assign_owner", organizationScope)
     ).toBe(true);
   });
 
   it("does not let a child-scope assignment escape its exact scope", () => {
     expect(
       policy.allows(
-        [
-          assignment({
-            roleKey: "instructor",
-            type: "course",
-            id: "course-a"
-          })
-        ],
+        [assignment({ roleKey: "instructor", type: "course", id: "course-a" })],
         "course.read",
         {
           organizationId: "org-a",
@@ -185,15 +202,11 @@ describe("AuthorizationPolicy", () => {
 
   it("never lets an assignment cross organization boundaries", () => {
     expect(
-      policy.allows(
-        [assignment()],
-        "organization.read",
-        {
-          organizationId: "org-b",
-          type: "organization",
-          id: "org-b"
-        }
-      )
+      policy.allows([assignment()], "organization.read", {
+        organizationId: "org-b",
+        type: "organization",
+        id: "org-b"
+      })
     ).toBe(false);
   });
 
