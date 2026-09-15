@@ -329,7 +329,7 @@ describe("trusted GitHub App setup lifecycle", () => {
     })).statusCode).toBe(403);
   });
 
-  it("binds install state to one Nexus user and consumes it once", async () => {
+  it("binds install state to one platform user and consumes it once", async () => {
     const state = await startSetup(ownerA.userId, ownerA.organizationId);
     const wrongUser = await app.inject({
       method: "GET",
