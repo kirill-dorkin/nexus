@@ -8,11 +8,11 @@ It is **not live GitHub telemetry**. Before doing work, always verify the curren
 
 Last maintained: 2026-09-15.
 
-Baseline repository state: includes the completed F5 Guided Build API-level learner vertical on top of the completed F4 core learner path. Verify the live `main` head before relying on any SHA or PR number.
+Baseline repository state: includes the completed F5 Guided Build API-level learner vertical and the first F6 GitHub integration ingress slice on top of the completed F4 core learner path. Verify the live `main` head before relying on any SHA or PR number.
 
-Latest architectural decision at this checkpoint: ADR-0026.
+Latest architectural decision at this checkpoint: ADR-0027.
 
-Latest ordered migration at this checkpoint: `000019_guidance_exposure_lock_privilege.sql`.
+Latest ordered migration at this checkpoint: `000020_github_webhook_inbox.sql`.
 
 The baseline above is an orientation marker, not permission to skip checking the live `main` head.
 
@@ -145,9 +145,39 @@ Submission
   -> normal F4 learning lifecycle
 ```
 
-### F6–F9 — upcoming foundations
+### F6 — GitHub projects: integration ingress foundation started
 
-GitHub projects, grader hardening, recommendation/instructor intelligence expansion, and commerce/public-launch work remain later roadmap foundations. Supporting primitives may already exist, but do not pull later-foundation policy into an earlier slice without an explicit architectural reason.
+The first F6 slice establishes the GitHub trust boundary before project/review intelligence is allowed to depend on GitHub data:
+
+- `Integrations` owns GitHub App external identity and webhook ingress; `Projects` remains the owner of future Nexus project/team/milestone state;
+- GitHub installation and repository identifiers are external identities and are not Nexus Project/Team ids;
+- trusted installation/repository mapping tables establish the future tenant-routing model without yet exposing unsafe user-writable mapping endpoints;
+- webhook HMAC-SHA256 is verified against the raw request body before parsed payload content is trusted;
+- only an explicit allowlist of F6-relevant GitHub event families is accepted;
+- accepted deliveries are append-only durable inbox facts keyed by GitHub delivery UUID;
+- identical retries are idempotent while delivery-id reuse with different content is treated as an integrity conflict;
+- inbox rows retain replay/audit payload, payload hash, event/action, external ids, routing result, tenant id where safely resolved, and receive time, but never persist the webhook secret or signature;
+- routing uses exact trusted installation/repository ids and records `mapped`, `unmapped_installation`, `unmapped_repository`, `repository_mismatch`, or `not_applicable` explicitly;
+- a repository mapped to another installation/tenant cannot be silently cross-routed;
+- the API runtime receives no direct cross-tenant grants on Integration mapping/inbox tables; a narrow PostgreSQL ingress function performs exact routing + atomic dedupe;
+- webhook acceptance creates no Project state, LearningEvent, Evidence, Mastery mutation, or redundant outbox event;
+- Redis/BullMQ processing, GitHub API calls, installation setup/token lifecycle, project/team modeling, and PR/check/review evidence remain later F6 slices.
+
+The current F6 ingress path is:
+
+```text
+GitHub delivery
+  -> HMAC verify raw bytes
+  -> validate event/action/identity shape
+  -> exact tenant routing from trusted mappings
+  -> durable idempotent webhook inbox
+  -> 202 response
+  -> future idempotent processor
+```
+
+### F7–F9 — upcoming foundations
+
+Grader hardening, recommendation/instructor intelligence expansion, and commerce/public-launch work remain later roadmap foundations. Supporting primitives may already exist, but do not pull later-foundation policy into an earlier slice without an explicit architectural reason.
 
 ## Durable architecture facts
 
@@ -181,6 +211,9 @@ These are high-value reminders, not substitutes for their ADRs.
 - Professional compare is derived read state, not a new canonical learner lifecycle.
 - Professional solution exposure requires an immutable Submission; transfer challenge work uses a separate ActivityVersion/Attempt lifecycle.
 - Learning Guidance never becomes an alternate Attempt writer; transfer starts through Learning Progress.
+- GitHub is an external integration source, not canonical learning state.
+- GitHub installation/repository ids are external identities; trusted mapping is required before tenant business state may depend on a delivery.
+- A verified webhook inbox fact is not Project state, LearningEvent, Evidence, or Mastery. Derivation requires a later idempotent processor and the owning module's public boundary.
 - Grader/sandbox hardening belongs to the separate security boundary described by ADR-0007 and the F7 roadmap unless an earlier slice needs only a safe application-level contract.
 
 ## Active F4 compatibility windows
@@ -195,21 +228,22 @@ Do not remove these merely because the canonical model has moved on. Each requir
 
 ## Next recommended slice
 
-**F6 GitHub projects: integration boundary and durable webhook inbox.**
+**F6 GitHub App installation lifecycle and trusted mapping management.**
 
-Start F6 with the smallest architecture slice that establishes a trustworthy GitHub integration boundary before project/review intelligence grows around it:
+Build the smallest trusted setup vertical that can create the mapping rows introduced by the webhook-ingress slice without allowing arbitrary user-supplied GitHub ids to claim external resources:
 
-- define GitHub installation/repository identity ownership and tenant mapping without treating GitHub as canonical learning state;
-- design GitHub App authentication/installation lifecycle and least-privilege permission requirements;
-- introduce a durable idempotent webhook inbox so externally retried GitHub deliveries are persisted before asynchronous processing;
-- authenticate webhook signatures before accepting canonical inbox state and retain enough delivery metadata for replay/audit without storing unnecessary secrets;
-- keep external repository/project identifiers separate from Nexus `Project` / `Team` domain identities;
-- define public integration ports/events rather than allowing Projects or learning modules to call GitHub SDKs directly;
-- align deferred processing with ADR-0006 outbox/inbox rules and keep Redis/BullMQ as execution infrastructure rather than source of truth;
-- prove duplicate webhook delivery, wrong tenant/repository mapping, invalid signatures, and replay behavior through integration tests;
-- do not yet infer learning Evidence from PR/check/review activity until the durable GitHub identity/inbox boundary is established.
+- define the GitHub App setup/initiation flow for an authenticated Nexus organization admin and bind it to Organization identity with a short-lived, single-use anti-CSRF/state token;
+- accept the GitHub App setup/callback only after verifying the state binding and GitHub-provided installation identity;
+- define the minimum GitHub App permissions/events required for the F6 roadmap and keep credentials/private keys in runtime secret configuration only;
+- add `integration.manage` authorization at Organization scope only when the trusted setup command actually exists; owner/admin should manage the integration, not instructors/mentors/learners by default;
+- create/update installation and repository mappings only through the trusted integration application boundary, never direct Projects/learning writes;
+- model suspend/uninstall/repository removal without deleting historical webhook inbox facts;
+- replay or re-route retained `unmapped_*` deliveries only through an explicit idempotent processor once a trusted mapping exists;
+- keep GitHub API token generation/client calls behind an Integrations port so Projects never imports a GitHub SDK;
+- prove state-token replay rejection, cross-Organization setup isolation, installation ownership binding, uninstall/suspend behavior, and repository mapping idempotency through integration tests;
+- do not yet materialize Nexus Project/Team state or learning Evidence from PR/check/review traffic in this setup slice.
 
-The next F6 design should inspect current Integrations/Projects scaffolding, security docs, webhook infrastructure, secrets/config handling, and any existing GitHub-related contracts before choosing persistence shapes.
+After the trusted installation lifecycle exists, the next F6 slice can introduce idempotent inbox processing plus the minimal Nexus Project/Team model required for a real repository-backed project vertical.
 
 ## Remaining F4 follow-up frontier
 
@@ -243,6 +277,7 @@ Always inspect the live `docs/adr/` directory; this map is only a starting point
 - Guided Build state and solution exposure: ADR-0024.
 - Protected Guided Build content and GuidanceExposure persistence: ADR-0025.
 - Guided Build compare and transfer handoff: ADR-0026.
+- GitHub integration ingress and durable webhook inbox: ADR-0027.
 
 For any new durable decision, add or amend architecture documentation through a new ADR rather than silently encoding policy only in implementation.
 

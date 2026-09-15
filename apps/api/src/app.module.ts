@@ -6,6 +6,7 @@ import { AuthenticationModule } from "./modules/authentication/authentication.mo
 import { AuthorizationModule } from "./modules/authorization/authorization.module";
 import { CommerceModule } from "./modules/commerce/commerce.module";
 import { IdentityModule } from "./modules/identity/identity.module";
+import { IntegrationsModule } from "./modules/integrations/integrations.module";
 import { LearningContentModule } from "./modules/learning-content/learning-content.module";
 import { LearningDeliveryModule } from "./modules/learning-delivery/learning-delivery.module";
 import { LearningGuidanceModule } from "./modules/learning-guidance/learning-guidance.module";
@@ -25,6 +26,7 @@ import { RequestContextModule } from "./request-context/request-context.module";
     AuthorizationModule,
     OrganizationsModule,
     CommerceModule,
+    IntegrationsModule,
     LearningContentModule,
     LearningDeliveryModule,
     LearningHistoryModule,
