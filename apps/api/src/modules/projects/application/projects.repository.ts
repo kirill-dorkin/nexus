@@ -101,7 +101,7 @@ export abstract class ProjectsRepository {
       repositoryMappingId: string;
       connectedByUserId: string;
     }>
-  ): Promise<ProjectRepositoryBindingRecord>;
+  ): Promise<ProjectRepositoryBindingRecord | null>;
 
   abstract disconnectRepositoryBinding(
     transaction: DatabaseTransaction,
