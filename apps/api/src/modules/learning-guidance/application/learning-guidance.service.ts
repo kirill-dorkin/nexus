@@ -1,9 +1,16 @@
-import { ConflictException, ForbiddenException, Injectable } from "@nestjs/common";
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException
+} from "@nestjs/common";
 import type {
+  GuidedBuildCompareView,
   GuidedBuildDefinition,
   GuidedBuildExposure,
   GuidedBuildLearnerView,
   GuidedBuildProtectedDefinition,
+  GuidedBuildTransferHandoff,
   RevealGuidedBuildHintRequest,
   RevealGuidedBuildSolutionRequest
 } from "@platform/contracts";
@@ -13,6 +20,7 @@ import { RequestContextService } from "../../../request-context/request-context.
 import { AuthorizationApplicationService } from "../../authorization/application/authorization.service";
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { GuidedBuildContentQuery } from "../../learning-content/application/guided-build-content.query";
+import { LearningContentQuery } from "../../learning-content/application/learning-content.query";
 import { LearningEventSink } from "../../learning-history/application/learning-event.sink";
 import { AttemptGuidanceQuery, type AttemptGuidanceContext } from "../../learning-progress/application/attempt-guidance.query";
 import { deriveGuidedBuildLearnerState } from "../domain/guided-build-state";
@@ -37,7 +45,8 @@ export class LearningGuidanceApplicationService {
     private readonly identity: IdentityApplicationService,
     private readonly authorization: AuthorizationApplicationService,
     private readonly attempts: AttemptGuidanceQuery,
-    private readonly content: GuidedBuildContentQuery,
+    private readonly guidedBuildContent: GuidedBuildContentQuery,
+    private readonly learningContent: LearningContentQuery,
     private readonly exposures: GuidanceExposureRepository,
     private readonly learningEvents: LearningEventSink
   ) {}
@@ -47,9 +56,83 @@ export class LearningGuidanceApplicationService {
     return this.database.tenantTransaction(context, async (transaction) => {
       await this.identity.requireActiveUser(transaction, context.userId);
       const attempt = await this.authorizeAttempt(transaction, organizationId, attemptId, context.userId);
-      const definition = await this.content.requireGuidedBuildDefinition(transaction, organizationId, attempt.attempt.activityVersionId);
+      const definition = await this.guidedBuildContent.requireGuidedBuildDefinition(transaction, organizationId, attempt.attempt.activityVersionId);
       const exposures = await this.exposures.listForAttempt(transaction, organizationId, attemptId);
       return this.buildView(organizationId, attempt, definition, exposures);
+    });
+  }
+
+  async getCompare(organizationId: string, attemptId: string): Promise<GuidedBuildCompareView> {
+    const context = this.requestContext.tenantContext(organizationId);
+    return this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+      const attempt = await this.authorizeAttempt(transaction, organizationId, attemptId, context.userId);
+      if (attempt.submission === null) {
+        throw new ConflictException("Guided Build compare requires an immutable Submission for this Attempt.");
+      }
+
+      const definition = await this.guidedBuildContent.requireGuidedBuildDefinition(
+        transaction,
+        organizationId,
+        attempt.attempt.activityVersionId
+      );
+      const exposures = await this.exposures.listForAttempt(transaction, organizationId, attemptId);
+      const view = this.buildView(organizationId, attempt, definition, exposures);
+      if (view.state.solution.status !== "revealed" || view.professionalSolution === null) {
+        throw new ConflictException("Guided Build compare requires the professional solution to be revealed first.");
+      }
+
+      return {
+        sourceAttemptId: attempt.attempt.id,
+        sourceActivityVersionId: attempt.attempt.activityVersionId,
+        submission: attempt.submission,
+        professionalSolution: view.professionalSolution
+      };
+    });
+  }
+
+  async getTransferHandoff(organizationId: string, attemptId: string): Promise<GuidedBuildTransferHandoff> {
+    const context = this.requestContext.tenantContext(organizationId);
+    return this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+      const attempt = await this.authorizeAttempt(transaction, organizationId, attemptId, context.userId);
+      if (attempt.submission === null) {
+        throw new ConflictException("Guided Build transfer requires an immutable Submission for the source Attempt.");
+      }
+
+      const definition = await this.guidedBuildContent.requireGuidedBuildDefinition(
+        transaction,
+        organizationId,
+        attempt.attempt.activityVersionId
+      );
+      if (definition.transferActivityVersionId === null) {
+        throw new NotFoundException("This Guided Build does not define a transfer challenge.");
+      }
+
+      const [sourceActivity, transferActivity] = await Promise.all([
+        this.learningContent.requireActivityVersionById(
+          transaction,
+          organizationId,
+          attempt.attempt.activityVersionId
+        ),
+        this.learningContent.requireActivityVersionById(
+          transaction,
+          organizationId,
+          definition.transferActivityVersionId
+        )
+      ]);
+      if (sourceActivity.courseVersionId !== transferActivity.courseVersionId) {
+        throw new ConflictException("Guided Build transfer must remain inside the source CourseVersion.");
+      }
+
+      return {
+        sourceAttemptId: attempt.attempt.id,
+        enrollmentId: attempt.attempt.enrollmentId,
+        activityVersionId: transferActivity.id,
+        activityId: transferActivity.activityId,
+        slug: transferActivity.slug,
+        title: transferActivity.title
+      };
     });
   }
 
@@ -59,7 +142,7 @@ export class LearningGuidanceApplicationService {
     return this.database.tenantTransaction(context, async (transaction) => {
       await this.identity.requireActiveUser(transaction, context.userId);
       const attempt = await this.authorizeAttempt(transaction, organizationId, attemptId, context.userId);
-      const definition = await this.content.requireGuidedBuildDefinition(transaction, organizationId, attempt.attempt.activityVersionId);
+      const definition = await this.guidedBuildContent.requireGuidedBuildDefinition(transaction, organizationId, attempt.attempt.activityVersionId);
       await this.exposures.lockAttemptScope(transaction, attemptId);
       const existing = await this.exposures.findByIdempotencyKey(transaction, organizationId, attemptId, command.idempotencyKey);
       if (existing !== null) {
@@ -89,7 +172,7 @@ export class LearningGuidanceApplicationService {
     return this.database.tenantTransaction(context, async (transaction) => {
       await this.identity.requireActiveUser(transaction, context.userId);
       const attempt = await this.authorizeAttempt(transaction, organizationId, attemptId, context.userId);
-      const definition = await this.content.requireGuidedBuildDefinition(transaction, organizationId, attempt.attempt.activityVersionId);
+      const definition = await this.guidedBuildContent.requireGuidedBuildDefinition(transaction, organizationId, attempt.attempt.activityVersionId);
       await this.exposures.lockAttemptScope(transaction, attemptId);
       const existing = await this.exposures.findByIdempotencyKey(transaction, organizationId, attemptId, command.idempotencyKey);
       if (existing !== null) {
