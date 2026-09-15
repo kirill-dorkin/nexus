@@ -125,7 +125,33 @@ export const guidedBuildStepStateSchema = z
     nextHintKey: resourceSlugSchema.nullable(),
     canRevealNextHint: z.boolean()
   })
-  .strict();
+  .strict()
+  .superRefine((step, context) => {
+    if (step.revealedHintKeys.length > step.totalHintCount) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Revealed hint count cannot exceed the ladder size.",
+        path: ["revealedHintKeys"]
+      });
+    }
+    if (step.canRevealNextHint && step.nextHintKey === null) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "A revealable next hint requires a nextHintKey.",
+        path: ["nextHintKey"]
+      });
+    }
+    if (
+      step.nextHintKey !== null &&
+      step.revealedHintKeys.includes(step.nextHintKey)
+    ) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "The next hint cannot already be revealed.",
+        path: ["nextHintKey"]
+      });
+    }
+  });
 
 export const guidedBuildSolutionStateSchema = z
   .object({
@@ -154,7 +180,62 @@ export const guidedBuildLearnerStateSchema = z
     solution: guidedBuildSolutionStateSchema,
     transfer: guidedBuildTransferStateSchema.nullable()
   })
-  .strict();
+  .strict()
+  .superRefine((state, context) => {
+    const anyHintRevealable = state.steps.some((step) => step.canRevealNextHint);
+
+    if (state.phase === "working") {
+      if (state.solution.status !== "locked" || state.solution.canCompare) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Working Guided Build state requires a locked solution.",
+          path: ["solution"]
+        });
+      }
+      if (state.transfer?.status === "available") {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Transfer cannot be available before Submission.",
+          path: ["transfer", "status"]
+        });
+      }
+      return;
+    }
+
+    if (anyHintRevealable) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "No new hints can be revealed after Submission.",
+        path: ["steps"]
+      });
+    }
+    if (state.transfer?.status === "locked") {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Configured transfer becomes available after Submission.",
+        path: ["transfer", "status"]
+      });
+    }
+
+    if (state.phase === "submitted") {
+      if (state.solution.status !== "available" || state.solution.canCompare) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Submitted Guided Build state requires an available unrevealed solution.",
+          path: ["solution"]
+        });
+      }
+      return;
+    }
+
+    if (state.solution.status !== "revealed" || !state.solution.canCompare) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Reviewing Guided Build state requires a revealed comparable solution.",
+        path: ["solution"]
+      });
+    }
+  });
 
 export const revealGuidedBuildHintRequestSchema = z
   .object({
