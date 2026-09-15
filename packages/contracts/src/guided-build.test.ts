@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import type { GuidedBuildDefinition } from "./guided-build";
 import {
   guidedBuildDefinitionSchema,
   guidedBuildLearnerStateSchema,
@@ -9,9 +10,9 @@ import {
 const activityVersionId = "018f6f8c-2fd0-7a32-8f8b-42b0f5519d11";
 const transferActivityVersionId = "018f6f8c-2fd0-7a32-8f8b-42b0f5519d12";
 
-function definition() {
+function definition(): GuidedBuildDefinition {
   return {
-    schemaVersion: 1 as const,
+    schemaVersion: 1,
     activityVersionId,
     steps: [
       {
@@ -102,5 +103,25 @@ describe("guided build contracts", () => {
 
     expect(state).not.toHaveProperty("professionalSolution");
     expect(state.steps[0]).not.toHaveProperty("hints");
+  });
+
+  it("rejects contradictory phase and solution state", () => {
+    expect(
+      guidedBuildLearnerStateSchema.safeParse({
+        organizationId: activityVersionId,
+        enrollmentId: activityVersionId,
+        attemptId: activityVersionId,
+        activityVersionId,
+        phase: "working",
+        workAssistance: "unassisted",
+        steps: [],
+        solution: {
+          key: "professional-solution",
+          status: "revealed",
+          canCompare: true
+        },
+        transfer: null
+      }).success
+    ).toBe(false);
   });
 });
