@@ -11,6 +11,7 @@ import { LearningProgressApplicationService } from "./application/learning-progr
 import { MasteryQuery } from "./application/mastery.query";
 import { MasteryRepository } from "./application/mastery.repository";
 import { MasteryApplicationService } from "./application/mastery.service";
+import { TrustedValidationEvidenceSink } from "./application/trusted-validation-evidence.sink";
 import { PostgresLearningProgressRepository } from "./infrastructure/postgres-learning-progress.repository";
 import { PostgresMasteryRepository } from "./infrastructure/postgres-mastery.repository";
 import { LearningProgressController } from "./learning-progress.controller";
@@ -33,6 +34,10 @@ import { MasteryController } from "./mastery.controller";
       useExisting: LearningProgressApplicationService
     },
     {
+      provide: TrustedValidationEvidenceSink,
+      useExisting: LearningProgressApplicationService
+    },
+    {
       provide: MasteryQuery,
       useExisting: MasteryApplicationService
     },
@@ -48,6 +53,7 @@ import { MasteryController } from "./mastery.controller";
   exports: [
     MasteryApplicationService,
     LearningProgressQuery,
+    TrustedValidationEvidenceSink,
     MasteryQuery
   ]
 })
