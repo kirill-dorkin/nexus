@@ -1,5 +1,11 @@
 # Contributing
 
+## Процесс разработки
+
+Канонический процесс архитектурного slice — от проверки актуального `main` и проектирования до Draft PR, CI, локальной проверки, Ready и squash merge — описан в [`docs/engineering/development-workflow.md`](docs/engineering/development-workflow.md).
+
+Coding agents обязаны начинать работу с [`AGENTS.md`](AGENTS.md) и использовать [`docs/engineering/current-state.md`](docs/engineering/current-state.md) только как архитектурный checkpoint, а не как замену проверке актуального состояния GitHub.
+
 ## До кода
 
 Любое изменение фундаментального доменного смысла начинается с обновления glossary/invariants и, если решение долгоживущее, с ADR.
