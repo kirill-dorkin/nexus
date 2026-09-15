@@ -2,7 +2,10 @@ import { randomUUID } from "node:crypto";
 
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import {
+  attemptSchema,
+  guidedBuildCompareViewSchema,
   guidedBuildLearnerViewSchema,
+  guidedBuildTransferHandoffSchema,
   submissionSchema
 } from "@platform/contracts";
 import {
@@ -548,5 +551,148 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       { event_name: "guidance.solution_revealed", guidance_step_key: null, guidance_hint_key: null, guidance_solution_key: "professional-solution" }
     ]);
     expect(JSON.stringify(history.rows)).not.toContain("grid-template-columns");
+  });
+
+  it("exposes compare only from immutable submitted work and the already revealed solution", async () => {
+    const ownerCompare = await app.inject({
+      method: "GET",
+      url: `/v1/organizations/${organizationId}/attempts/${attemptId}/guided-build/compare`,
+      headers: { "x-test-user-id": ownerUserId }
+    });
+    expect(ownerCompare.statusCode).toBe(403);
+
+    const before = await migrationPool.query<{
+      exposures: number;
+      guidance_events: number;
+      guidance_outbox: number;
+    }>(
+      `SELECT
+         (SELECT count(*)::integer FROM learning_guidance.guidance_exposures
+           WHERE organization_id = $1 AND attempt_id = $2) AS exposures,
+         (SELECT count(*)::integer FROM learning_history.learning_events
+           WHERE organization_id = $1 AND attempt_id = $2 AND event_name LIKE 'guidance.%') AS guidance_events,
+         (SELECT count(*)::integer FROM events.outbox
+           WHERE organization_id = $1 AND event_name LIKE 'guidance.%') AS guidance_outbox`,
+      [organizationId, attemptId]
+    );
+
+    const compare = await app.inject({
+      method: "GET",
+      url: `/v1/organizations/${organizationId}/attempts/${attemptId}/guided-build/compare`,
+      headers: { "x-test-user-id": learnerUserId }
+    });
+    expect(compare.statusCode).toBe(200);
+    const view = guidedBuildCompareViewSchema.parse(JSON.parse(compare.body));
+    expect(view).toMatchObject({
+      sourceAttemptId: attemptId,
+      sourceActivityVersionId: activityVersionId,
+      submission: { attemptId, payload: { answer: "learner work" } },
+      professionalSolution: {
+        key: "professional-solution",
+        content: { code: ".layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }" }
+      }
+    });
+
+    const after = await migrationPool.query<{
+      exposures: number;
+      guidance_events: number;
+      guidance_outbox: number;
+    }>(
+      `SELECT
+         (SELECT count(*)::integer FROM learning_guidance.guidance_exposures
+           WHERE organization_id = $1 AND attempt_id = $2) AS exposures,
+         (SELECT count(*)::integer FROM learning_history.learning_events
+           WHERE organization_id = $1 AND attempt_id = $2 AND event_name LIKE 'guidance.%') AS guidance_events,
+         (SELECT count(*)::integer FROM events.outbox
+           WHERE organization_id = $1 AND event_name LIKE 'guidance.%') AS guidance_outbox`,
+      [organizationId, attemptId]
+    );
+    expect(after.rows[0]).toEqual(before.rows[0]);
+  });
+
+  it("keeps transfer available without solution exposure and delegates start to the normal Attempt lifecycle", async () => {
+    const sourceAttemptResponse = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/activities/${activityId}/attempts`,
+      headers: { "x-test-user-id": learnerUserId },
+      payload: {}
+    });
+    expect(sourceAttemptResponse.statusCode).toBe(201);
+    const sourceAttempt = attemptSchema.parse(JSON.parse(sourceAttemptResponse.body));
+
+    const prematureTransfer = await app.inject({
+      method: "GET",
+      url: `/v1/organizations/${organizationId}/attempts/${sourceAttempt.id}/guided-build/transfer`,
+      headers: { "x-test-user-id": learnerUserId }
+    });
+    expect(prematureTransfer.statusCode).toBe(409);
+
+    const submitted = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/attempts/${sourceAttempt.id}/submissions`,
+      headers: { "x-test-user-id": learnerUserId },
+      payload: { payload: { answer: "unassisted transfer source" } }
+    });
+    expect(submitted.statusCode).toBe(201);
+
+    const compareBeforeReveal = await app.inject({
+      method: "GET",
+      url: `/v1/organizations/${organizationId}/attempts/${sourceAttempt.id}/guided-build/compare`,
+      headers: { "x-test-user-id": learnerUserId }
+    });
+    expect(compareBeforeReveal.statusCode).toBe(409);
+
+    const ownerTransfer = await app.inject({
+      method: "GET",
+      url: `/v1/organizations/${organizationId}/attempts/${sourceAttempt.id}/guided-build/transfer`,
+      headers: { "x-test-user-id": ownerUserId }
+    });
+    expect(ownerTransfer.statusCode).toBe(403);
+
+    const transfer = await app.inject({
+      method: "GET",
+      url: `/v1/organizations/${organizationId}/attempts/${sourceAttempt.id}/guided-build/transfer`,
+      headers: { "x-test-user-id": learnerUserId }
+    });
+    expect(transfer.statusCode).toBe(200);
+    const handoff = guidedBuildTransferHandoffSchema.parse(JSON.parse(transfer.body));
+    expect(handoff).toEqual({
+      sourceAttemptId: sourceAttempt.id,
+      enrollmentId,
+      activityVersionId: transferActivityVersionId,
+      activityId: transferActivityId,
+      slug: "guided-build-transfer",
+      title: "Transfer challenge"
+    });
+
+    const guidanceFacts = await migrationPool.query<{ exposures: number; guidance_events: number }>(
+      `SELECT
+         (SELECT count(*)::integer FROM learning_guidance.guidance_exposures
+           WHERE organization_id = $1 AND attempt_id = $2) AS exposures,
+         (SELECT count(*)::integer FROM learning_history.learning_events
+           WHERE organization_id = $1 AND attempt_id = $2 AND event_name LIKE 'guidance.%') AS guidance_events`,
+      [organizationId, sourceAttempt.id]
+    );
+    expect(guidanceFacts.rows[0]).toEqual({ exposures: 0, guidance_events: 0 });
+
+    const transferAttemptResponse = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/enrollments/${handoff.enrollmentId}/activities/${handoff.activityId}/attempts`,
+      headers: { "x-test-user-id": learnerUserId },
+      payload: {}
+    });
+    expect(transferAttemptResponse.statusCode).toBe(201);
+    const transferAttempt = attemptSchema.parse(JSON.parse(transferAttemptResponse.body));
+    expect(transferAttempt.activityVersionId).toBe(transferActivityVersionId);
+
+    const lifecycle = await migrationPool.query<{ history_events: number; outbox_events: number }>(
+      `SELECT
+         (SELECT count(*)::integer FROM learning_history.learning_events
+           WHERE organization_id = $1 AND attempt_id = $2 AND event_name = 'attempt.started') AS history_events,
+         (SELECT count(*)::integer FROM events.outbox
+           WHERE organization_id = $1 AND aggregate_id = $2 AND event_name = 'attempt.started') AS outbox_events`,
+      [organizationId, transferAttempt.id]
+    );
+    expect(lifecycle.rows[0]).toEqual({ history_events: 1, outbox_events: 1 });
   });
 });
