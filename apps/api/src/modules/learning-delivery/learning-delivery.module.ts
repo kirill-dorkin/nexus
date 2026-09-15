@@ -9,6 +9,7 @@ import { OrganizationsModule } from "../organizations/organizations.module";
 import { AssignmentRepository } from "./application/assignment.repository";
 import { AssignmentApplicationService } from "./application/assignment.service";
 import { LearnerRunnerApplicationService } from "./application/learner-runner.service";
+import { LearningDeliveryQueryService } from "./application/learning-delivery-query.service";
 import { LearningDeliveryQuery } from "./application/learning-delivery.query";
 import { LearningDeliveryRepository } from "./application/learning-delivery.repository";
 import { LearningDeliveryApplicationService } from "./application/learning-delivery.service";
@@ -34,11 +35,12 @@ import { LearningDeliveryController } from "./learning-delivery.controller";
   ],
   providers: [
     LearningDeliveryApplicationService,
+    LearningDeliveryQueryService,
     AssignmentApplicationService,
     LearnerRunnerApplicationService,
     {
       provide: LearningDeliveryQuery,
-      useExisting: LearningDeliveryApplicationService
+      useExisting: LearningDeliveryQueryService
     },
     {
       provide: LearningDeliveryRepository,
