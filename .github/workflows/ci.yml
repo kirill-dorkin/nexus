@@ -108,8 +108,34 @@ jobs:
       - name: Unit tests
         run: pnpm test
 
-      - name: Database integration tests
-        run: pnpm test:integration
+      - name: Database integration tests - capture exact output
+        id: integration
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          set -o pipefail
+          pnpm test:integration 2>&1 | tee /tmp/integration.log
+          status=${PIPESTATUS[0]}
+          echo "$status" > /tmp/integration-exit-code
+          exit "$status"
+
+      - name: Upload integration diagnostic log
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: integration-diagnostic-log
+          path: |
+            /tmp/integration.log
+            /tmp/integration-exit-code
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Enforce database integration result
+        if: ${{ always() }}
+        run: |
+          test -f /tmp/integration-exit-code
+          test "$(cat /tmp/integration-exit-code)" = "0"
 
       - name: Build
         run: pnpm build
