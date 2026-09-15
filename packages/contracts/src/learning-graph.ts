@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { resourceSlugSchema, uuidSchema } from "./common";
+import { guidedBuildAuthoringSchema } from "./guided-build";
 
 export const skillStatusSchema = z.enum(["active", "retired"]);
 
@@ -54,23 +55,22 @@ export const attachSkillToCourseVersionRequestSchema = z.object({
   position: z.number().int().min(0).optional()
 });
 
-export const createCourseVersionActivityRequestSchema = z.object({
-  slug: resourceSlugSchema,
-  activityType: activityTypeSchema,
-  title: z.string().trim().min(1).max(200),
-  instructions: z.string().max(20000).optional(),
-  config: z.record(z.string(), z.unknown()).optional(),
-  position: z.number().int().min(0).optional(),
-  skillIds: z.array(uuidSchema).min(1).max(50)
-});
+export const createCourseVersionActivityRequestSchema = z
+  .object({
+    slug: resourceSlugSchema,
+    activityType: activityTypeSchema,
+    title: z.string().trim().min(1).max(200),
+    instructions: z.string().max(20000).optional(),
+    config: z.record(z.string(), z.unknown()).optional(),
+    position: z.number().int().min(0).optional(),
+    skillIds: z.array(uuidSchema).min(1).max(50),
+    guidedBuild: guidedBuildAuthoringSchema.optional()
+  })
+  .strict();
 
 export type Skill = z.infer<typeof skillSchema>;
 export type CourseVersionSkill = z.infer<typeof courseVersionSkillSchema>;
 export type CourseVersionActivity = z.infer<typeof courseVersionActivitySchema>;
 export type CreateSkillRequest = z.infer<typeof createSkillRequestSchema>;
-export type AttachSkillToCourseVersionRequest = z.infer<
-  typeof attachSkillToCourseVersionRequestSchema
->;
-export type CreateCourseVersionActivityRequest = z.infer<
-  typeof createCourseVersionActivityRequestSchema
->;
+export type AttachSkillToCourseVersionRequest = z.infer<typeof attachSkillToCourseVersionRequestSchema>;
+export type CreateCourseVersionActivityRequest = z.infer<typeof createCourseVersionActivityRequestSchema>;
