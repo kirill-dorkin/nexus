@@ -15,4 +15,10 @@ export abstract class LearningContentQuery {
     organizationId: string,
     courseVersionId: string
   ): Promise<PublishedLearningGraph>;
+
+  abstract requireActivityVersionById(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    activityVersionId: string
+  ): Promise<CourseVersionActivity>;
 }
