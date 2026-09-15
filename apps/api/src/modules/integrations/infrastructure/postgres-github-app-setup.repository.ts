@@ -27,7 +27,7 @@ type RepositoryRow = {
   github_installation_id: string;
   github_repository_id: string;
   full_name: string;
-  status: "active" | "removed";
+  status: "active" | "suspended" | "removed";
 };
 
 type SetupCallbackRow = {
