@@ -5,6 +5,7 @@ import { IdentityModule } from "../identity/identity.module";
 import { GitHubAppGateway } from "./application/github-app.gateway";
 import { GitHubAppSetupRepository } from "./application/github-app-setup.repository";
 import { GitHubAppSetupApplicationService } from "./application/github-app-setup.service";
+import { GitHubRepositoryReferenceQuery } from "./application/github-repository-reference.query";
 import { GitHubWebhookInboxRepository } from "./application/github-webhook-inbox.repository";
 import { GitHubWebhookApplicationService } from "./application/github-webhook.service";
 import { GitHubAppSetupController } from "./github-app-setup.controller";
@@ -21,6 +22,7 @@ import { PostgresGitHubWebhookInboxRepository } from "./infrastructure/postgres-
     GitHubWebhookApplicationService,
     GitHubWebhookSignatureVerifier,
     GitHubAppSetupApplicationService,
+    GitHubRepositoryReferenceQuery,
     {
       provide: GitHubAppGateway,
       useClass: GitHubHttpAppGateway
@@ -33,6 +35,7 @@ import { PostgresGitHubWebhookInboxRepository } from "./infrastructure/postgres-
       provide: GitHubWebhookInboxRepository,
       useClass: PostgresGitHubWebhookInboxRepository
     }
-  ]
+  ],
+  exports: [GitHubRepositoryReferenceQuery]
 })
 export class IntegrationsModule {}
