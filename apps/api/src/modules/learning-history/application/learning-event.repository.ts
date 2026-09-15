@@ -23,6 +23,10 @@ export type NewLearningEvent = Readonly<{
   score: number | null;
   evidenceKind: string | null;
   evidenceSourceType: "manual" | "validation_result" | null;
+  guidanceExposureId: string | null;
+  guidanceStepKey: string | null;
+  guidanceHintKey: string | null;
+  guidanceSolutionKey: string | null;
   occurredAt: string;
 }>;
 
