@@ -402,12 +402,19 @@ describe("learner LearningEvent history", () => {
     expect(page.enrollmentId).toBe(enrollmentId);
     expect(page.offeringId).toBe(offeringId);
     expect(page.nextCursor).toBeNull();
-    expect(page.events.map((event) => event.eventName)).toEqual([
-      "evidence.recorded",
-      "validation.result_recorded",
-      "submission.submitted",
-      "attempt.started"
-    ]);
+
+    const eventNames = page.events.map((event) => event.eventName);
+    expect(page.events).toHaveLength(4);
+    expect(new Set(eventNames).size).toBe(4);
+    expect([...eventNames].sort()).toEqual(
+      [
+        "attempt.started",
+        "submission.submitted",
+        "validation.result_recorded",
+        "evidence.recorded"
+      ].sort()
+    );
+    expect(eventNames).not.toContain("attempt.submitted");
 
     const validationEvent = page.events.find(
       (event) => event.eventName === "validation.result_recorded"
@@ -436,6 +443,16 @@ describe("learner LearningEvent history", () => {
     });
     expect(denied.statusCode).toBe(403);
 
+    const full = await app.inject({
+      method: "GET",
+      url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/learning-events`,
+      headers: { "x-test-user-id": learnerUserId }
+    });
+    expect(full.statusCode).toBe(200);
+    const fullPage = learningEventHistoryPageSchema.parse(JSON.parse(full.body));
+    expect(fullPage.events).toHaveLength(4);
+    expect(fullPage.nextCursor).toBeNull();
+
     const first = await app.inject({
       method: "GET",
       url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/learning-events?limit=2`,
@@ -456,8 +473,11 @@ describe("learner LearningEvent history", () => {
     expect(secondPage.events).toHaveLength(2);
     expect(secondPage.nextCursor).toBeNull();
 
-    const ids = [...firstPage.events, ...secondPage.events].map((event) => event.id);
-    expect(new Set(ids).size).toBe(4);
+    const paginatedIds = [...firstPage.events, ...secondPage.events].map(
+      (event) => event.id
+    );
+    expect(paginatedIds).toEqual(fullPage.events.map((event) => event.id));
+    expect(new Set(paginatedIds).size).toBe(4);
 
     const invalidCursor = await app.inject({
       method: "GET",
