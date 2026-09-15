@@ -17,12 +17,13 @@ export class GitHubWebhookSignatureVerifier {
     }
 
     const match = /^sha256=([0-9a-f]{64})$/.exec(signatureHeader ?? "");
-    if (match === null) {
+    const signatureHex = match?.[1];
+    if (signatureHex === undefined) {
       throw new UnauthorizedException("Invalid GitHub webhook signature.");
     }
 
     const expected = createHmac("sha256", secret).update(rawBody).digest();
-    const actual = Buffer.from(match[1], "hex");
+    const actual = Buffer.from(signatureHex, "hex");
 
     if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) {
       throw new UnauthorizedException("Invalid GitHub webhook signature.");
