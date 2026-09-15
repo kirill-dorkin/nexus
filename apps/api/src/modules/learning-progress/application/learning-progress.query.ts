@@ -13,6 +13,13 @@ export type SubmissionValidationContext = Readonly<{
   learnerUserId: string;
 }>;
 
+export type AttemptGuidanceContext = Readonly<{
+  attempt: Attempt;
+  offeringId: string;
+  learnerUserId: string;
+  submissionExists: boolean;
+}>;
+
 export abstract class LearningProgressQuery {
   abstract listActivityAttemptCounts(
     transaction: DatabaseTransaction,
@@ -26,4 +33,10 @@ export abstract class LearningProgressQuery {
     organizationId: string,
     submissionId: string
   ): Promise<SubmissionValidationContext>;
+
+  abstract requireAttemptForGuidance(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    attemptId: string
+  ): Promise<AttemptGuidanceContext>;
 }
