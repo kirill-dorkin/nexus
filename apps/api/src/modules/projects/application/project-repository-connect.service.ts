@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import type { ConnectProjectRepositoryRequest, Project } from "@platform/contracts";
 
 import { DatabaseService } from "../../../database/database.service";
@@ -24,15 +24,36 @@ export class ProjectRepositoryConnectService {
     projectId: string,
     command: ConnectProjectRepositoryRequest
   ): Promise<Project> {
-    void this.database;
-    void this.requestContext;
-    void this.projects;
-    void this.identity;
-    void this.githubRepositories;
-    void this.commandContext;
-    void organizationId;
-    void projectId;
+    const context = this.requestContext.tenantContext(organizationId);
     void command;
-    throw new Error("Not implemented.");
+
+    return this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+      await this.commandContext.requireProject(
+        transaction,
+        organizationId,
+        context.userId,
+        projectId
+      );
+
+      const project = await this.projects.findProject(
+        transaction,
+        organizationId,
+        projectId
+      );
+      if (project === null) throw new NotFoundException("Project not found.");
+      if (project.status !== "active") {
+        throw new ConflictException("An active project is required.");
+      }
+
+      return {
+        id: project.id,
+        name: project.name,
+        status: project.status,
+        teamId: project.teamId,
+        repository: null,
+        createdAt: project.createdAt.toISOString()
+      };
+    });
   }
 }
