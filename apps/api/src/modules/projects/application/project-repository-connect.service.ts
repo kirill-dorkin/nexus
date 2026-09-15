@@ -6,6 +6,7 @@ import { RequestContextService } from "../../../request-context/request-context.
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { GitHubRepositoryReferenceQuery } from "../../integrations/application/github-repository-reference.query";
 import { ProjectCommandContext } from "./project-command-context";
+import { connectedProjectView, disconnectedProjectView } from "./project-repository-view";
 import { ProjectsRepository } from "./projects.repository";
 
 @Injectable()
@@ -59,14 +60,21 @@ export class ProjectRepositoryConnectService {
         );
       }
 
-      return {
-        id: project.id,
-        name: project.name,
-        status: project.status,
-        teamId: project.teamId,
-        repository: null,
-        createdAt: project.createdAt.toISOString()
-      };
+      const existing = await this.projects.findActiveRepositoryBindingForProject(
+        transaction,
+        organizationId,
+        projectId
+      );
+      if (existing !== null) {
+        if (existing.repositoryMappingId !== command.repositoryMappingId) {
+          throw new ConflictException(
+            "This project is already connected to another repository."
+          );
+        }
+        return connectedProjectView(project, existing, reference);
+      }
+
+      return disconnectedProjectView(project);
     });
   }
 }
