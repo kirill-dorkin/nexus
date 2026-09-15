@@ -127,6 +127,62 @@ export class PostgresAssignmentRepository extends AssignmentRepository {
     return row === undefined ? null : mapAssignment(row);
   }
 
+  async listApplicableAssignments(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    offeringId: string,
+    enrollmentId: string,
+    at: string
+  ): Promise<readonly Assignment[]> {
+    const result = await transaction.client.query<AssignmentRow>(
+      `SELECT ${assignmentSelect}
+         FROM learning_delivery.assignments a
+        WHERE a.organization_id = $1
+          AND a.offering_id = $2
+          AND a.cancelled_at IS NULL
+          AND (
+            a.audience_type = 'offering'
+            OR (
+              a.audience_type = 'enrollment'
+              AND a.enrollment_id = $3
+            )
+            OR (
+              a.audience_type = 'group'
+              AND EXISTS (
+                SELECT 1
+                  FROM learning_delivery.group_memberships gm
+                 WHERE gm.organization_id = a.organization_id
+                   AND gm.group_id = a.group_id
+                   AND gm.enrollment_id = $3
+                   AND gm.assigned_at <= $4::timestamptz
+                   AND (gm.ended_at IS NULL OR gm.ended_at > $4::timestamptz)
+              )
+            )
+            OR (
+              a.audience_type = 'course_run'
+              AND EXISTS (
+                SELECT 1
+                  FROM learning_delivery.group_memberships gm
+                  JOIN learning_delivery.group_sets gs
+                    ON gs.organization_id = gm.organization_id
+                   AND gs.id = gm.group_set_id
+                 WHERE gm.organization_id = a.organization_id
+                   AND gm.enrollment_id = $3
+                   AND gs.course_run_id = a.course_run_id
+                   AND gm.assigned_at <= $4::timestamptz
+                   AND (gm.ended_at IS NULL OR gm.ended_at > $4::timestamptz)
+              )
+            )
+          )
+        ORDER BY a.available_at NULLS FIRST,
+                 a.due_at NULLS LAST,
+                 a.created_at,
+                 a.id`,
+      [organizationId, offeringId, enrollmentId, at]
+    );
+    return result.rows.map(mapAssignment);
+  }
+
   async cancelAssignment(
     transaction: DatabaseTransaction,
     organizationId: string,

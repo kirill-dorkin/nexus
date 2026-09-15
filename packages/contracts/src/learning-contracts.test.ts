@@ -12,6 +12,7 @@ import {
   createGroupSetRequestSchema,
   createLearningOfferingRequestSchema,
   createSessionRequestSchema,
+  learnerRunnerReadModelSchema,
   recordAttendanceRequestSchema
 } from "./index";
 
@@ -209,6 +210,58 @@ describe("learning catalog and delivery contracts", () => {
         audience: { type: "enrollment", enrollmentId: id },
         availableAt: "2099-10-08T09:00:00.000Z",
         dueAt: "2099-10-01T09:00:00.000Z"
+      })
+    ).toThrow();
+  });
+
+  it("models an enrollment-scoped runner with immutable activity context and timing", () => {
+    const readModel = learnerRunnerReadModelSchema.parse({
+      enrollmentId: id,
+      offeringId: id,
+      asOf: "2026-09-15T04:30:00.000Z",
+      assignments: [
+        {
+          assignment: {
+            id,
+            organizationId: id,
+            offeringId: id,
+            activityVersionId: id,
+            slug: "runner-homework",
+            name: "Runner homework",
+            audience: { type: "offering" },
+            availableAt: null,
+            dueAt: null,
+            cancelledAt: null
+          },
+          activity: {
+            id,
+            organizationId: id,
+            courseVersionId: id,
+            activityId: id,
+            slug: "responsive-dashboard",
+            activityType: "practice.project",
+            title: "Responsive dashboard",
+            instructions: "Build the dashboard.",
+            config: {},
+            position: 0,
+            skillIds: [id]
+          },
+          timing: "available"
+        }
+      ]
+    });
+
+    expect(readModel.assignments[0]?.timing).toBe("available");
+    expect(readModel.assignments[0]?.activity.activityId).toBe(id);
+    expect(() =>
+      learnerRunnerReadModelSchema.parse({
+        ...readModel,
+        assignments: [
+          {
+            ...readModel.assignments[0],
+            timing: "late_but_allowed"
+          }
+        ]
       })
     ).toThrow();
   });

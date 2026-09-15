@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { resourceSlugSchema, uuidSchema } from "./common";
+import { courseVersionActivitySchema } from "./learning-graph";
 
 export const learningOfferingDeliveryModeSchema = z.enum([
   "self_paced",
@@ -32,6 +33,11 @@ export const assignmentAudienceTypeSchema = z.enum([
   "course_run",
   "group",
   "enrollment"
+]);
+export const learnerAssignmentTimingSchema = z.enum([
+  "upcoming",
+  "available",
+  "past_due"
 ]);
 
 const optionalDateTimeSchema = z.string().datetime().nullable();
@@ -245,6 +251,19 @@ export const assignmentSchema = z.object({
   cancelledAt: optionalDateTimeSchema
 });
 
+export const learnerRunnerAssignmentSchema = z.object({
+  assignment: assignmentSchema,
+  activity: courseVersionActivitySchema,
+  timing: learnerAssignmentTimingSchema
+});
+
+export const learnerRunnerReadModelSchema = z.object({
+  enrollmentId: uuidSchema,
+  offeringId: uuidSchema,
+  asOf: z.string().datetime(),
+  assignments: z.array(learnerRunnerAssignmentSchema)
+});
+
 export const createAssignmentRequestSchema = z
   .object({
     activityId: uuidSchema,
@@ -292,4 +311,7 @@ export type RecordAttendanceRequest = z.infer<typeof recordAttendanceRequestSche
 export type CorrectAttendanceRequest = z.infer<typeof correctAttendanceRequestSchema>;
 export type AssignmentAudience = z.infer<typeof assignmentAudienceSchema>;
 export type Assignment = z.infer<typeof assignmentSchema>;
+export type LearnerAssignmentTiming = z.infer<typeof learnerAssignmentTimingSchema>;
+export type LearnerRunnerAssignment = z.infer<typeof learnerRunnerAssignmentSchema>;
+export type LearnerRunnerReadModel = z.infer<typeof learnerRunnerReadModelSchema>;
 export type CreateAssignmentRequest = z.infer<typeof createAssignmentRequestSchema>;

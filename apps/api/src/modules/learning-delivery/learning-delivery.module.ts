@@ -8,12 +8,14 @@ import { LearningContentModule } from "../learning-content/learning-content.modu
 import { OrganizationsModule } from "../organizations/organizations.module";
 import { AssignmentRepository } from "./application/assignment.repository";
 import { AssignmentApplicationService } from "./application/assignment.service";
+import { LearnerRunnerApplicationService } from "./application/learner-runner.service";
 import { LearningDeliveryQuery } from "./application/learning-delivery.query";
 import { LearningDeliveryRepository } from "./application/learning-delivery.repository";
 import { LearningDeliveryApplicationService } from "./application/learning-delivery.service";
 import { AssignmentController } from "./assignment.controller";
 import { PostgresAssignmentRepository } from "./infrastructure/postgres-assignment.repository";
 import { PostgresLearningDeliveryRepository } from "./infrastructure/postgres-learning-delivery.repository";
+import { LearnerRunnerController } from "./learner-runner.controller";
 import { LearningDeliveryController } from "./learning-delivery.controller";
 
 @Module({
@@ -25,10 +27,15 @@ import { LearningDeliveryController } from "./learning-delivery.controller";
     OrganizationsModule,
     LearningContentModule
   ],
-  controllers: [LearningDeliveryController, AssignmentController],
+  controllers: [
+    LearningDeliveryController,
+    AssignmentController,
+    LearnerRunnerController
+  ],
   providers: [
     LearningDeliveryApplicationService,
     AssignmentApplicationService,
+    LearnerRunnerApplicationService,
     {
       provide: LearningDeliveryQuery,
       useExisting: LearningDeliveryApplicationService

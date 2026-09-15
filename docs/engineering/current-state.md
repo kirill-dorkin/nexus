@@ -8,13 +8,13 @@ It is **not live GitHub telemetry**. Before doing work, always verify the curren
 
 Last maintained: 2026-09-15.
 
-Baseline repository state: `main` immediately after squash merge of PR #25, `feat(f4): split attempts and submissions`, commit `7a05fbf3d4ea72c769a026a0f583f1b4038b9710`.
+Baseline repository state: includes the F4 learner runner / effective Assignment slice described by ADR-0019. Verify the live `main` head before relying on any SHA or PR number.
 
-Latest architectural decision at this checkpoint: ADR-0018.
+Latest architectural decision at this checkpoint: ADR-0019.
 
 Latest ordered migration at this checkpoint: `000014_attempt_submissions.sql`.
 
-The SHA above is an orientation marker, not permission to skip checking the live `main` head.
+The baseline above is an orientation marker, not permission to skip checking the live `main` head.
 
 ## Foundation frontier
 
@@ -55,7 +55,12 @@ Landed capabilities include:
 - Evidence is append-only normalized learning evidence and requires the exact Submission it evaluates;
 - Mastery is a projection derived from Evidence and supports recomputation from append-only history;
 - recommendation retry counts count submitted attempts rather than abandoned started attempts;
-- lifecycle mutations emit canonical transactional outbox events.
+- lifecycle mutations emit canonical transactional outbox events;
+- the learner runner exposes an Enrollment-scoped read model for effective Assignments and their pinned immutable Activities;
+- effective Assignment audiences are resolved for offering, Enrollment, Group, and CourseRun without making Assignment an access grant;
+- CourseRun audience resolution uses explicit time-bounded GroupMembership placement rather than inventing a hidden RunMembership;
+- Assignment timing is exposed as `upcoming`, `available`, or `past_due`, while lateness enforcement remains undecided;
+- starting an Attempt does not globally require an effective Assignment, preserving self-paced and recommendation-driven work.
 
 The current lifecycle target is:
 
@@ -68,7 +73,7 @@ Assignment / recommendation
   -> Mastery projection
 ```
 
-The Attempt/Submission split deliberately did **not** decide Assignment gating, retry policy, lateness, validator configuration, automated scoring, or grader execution.
+The runner slice deliberately did **not** decide retry policy, lateness enforcement, validator configuration, automated scoring, strict Assignment-to-Attempt association for assigned-only flows, or grader execution.
 
 ### F5–F9 — not the active Foundation frontier
 
@@ -106,28 +111,30 @@ Do not remove these merely because the canonical model has moved on. Each requir
 
 ## Next recommended slice
 
-**F4 learner runner read model / effective Assignment policy.**
+**F4 validator registry and validation-result model.**
 
-The goal is to let the learner runner determine what activity work is currently available/effective without collapsing Delivery and Learning Progress or making Assignment itself an access grant.
+The goal is to establish a safe application-level validation boundary between immutable Submission and normalized Evidence without prematurely implementing F7 sandbox/grader hardening.
 
 Before implementing it, re-establish the current repository truth and answer from existing code/ADRs rather than assuming policy:
 
-- how effective Assignments are resolved for offering, course-run, group, and enrollment audiences;
-- how learner Enrollment/entitlement/authorization gates runner access independently from Assignment;
-- whether starting an Attempt requires an effective Assignment for every activity or only for assigned flows;
-- what read model/API the runner needs without introducing premature recommendation or grader policy;
-- how retry/lateness policy should be deferred or represented if not yet decided.
+- where validator identity, version, and configuration belong relative to immutable ActivityVersion configuration;
+- what immutable ValidationResult must pin so a result is attributable to the exact Submission and validator version that produced it;
+- how validation execution/result recording remains idempotent and tenant-scoped;
+- which validation results are trusted enough to become later Evidence inputs, without generating automated Evidence in the same slice unless a hard dependency is proven;
+- which events are canonical for validation lifecycle and how they coexist with the current Submission compatibility window;
+- how the application-level contract remains compatible with the separate grader security boundary in ADR-0007 rather than pulling sandbox execution into F4.
 
-Keep this as a focused F4 slice. Validator registry/results, automated Evidence production, canonical LearningEvent history, and Student skill UI should remain independent follow-up slices unless the design proves a hard dependency.
+Keep this slice focused on registry/result semantics, persistence, authorization, contracts, and tests. Automated normalized Evidence production remains the next independent concern.
 
 ## Remaining F4 follow-up frontier
 
-After the runner/effective-Assignment slice, the currently identified F4 work is:
+After the validator registry/result slice, the currently identified F4 work is:
 
-- validator registry and validation-result model;
 - automated normalized Evidence generation from trusted validation results;
 - canonical learner-facing LearningEvent history/read model;
 - Student skill UI over the established Mastery projection.
+
+Retry/lateness enforcement and strict assigned-only Attempt association remain explicit policy decisions if product flows require them; they are not prerequisites for the validator slice.
 
 Sandbox execution hardening itself remains F7.
 
@@ -145,6 +152,7 @@ Always inspect the live `docs/adr/` directory; this map is only a starting point
 - Sessions and attendance: ADR-0016.
 - Assignments: ADR-0017.
 - Attempt / Submission lifecycle: ADR-0018.
+- Learner runner / effective Assignment policy: ADR-0019.
 
 For any new durable decision, add or amend architecture documentation through a new ADR rather than silently encoding policy only in implementation.
 
