@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { uuidSchema } from "./common";
+import { resourceSlugSchema, uuidSchema } from "./common";
 import { evidenceKindSchema } from "./learning-progress";
 import { validationOutcomeSchema } from "./learning-validation";
 
@@ -8,7 +8,9 @@ export const learningEventNameSchema = z.enum([
   "attempt.started",
   "submission.submitted",
   "validation.result_recorded",
-  "evidence.recorded"
+  "evidence.recorded",
+  "guidance.hint_revealed",
+  "guidance.solution_revealed"
 ]);
 
 const learningEventBaseShape = {
@@ -23,10 +25,7 @@ const learningEventBaseShape = {
 } as const;
 
 const attemptStartedLearningEventSchema = z
-  .object({
-    ...learningEventBaseShape,
-    eventName: z.literal("attempt.started")
-  })
+  .object({ ...learningEventBaseShape, eventName: z.literal("attempt.started") })
   .strict();
 
 const submissionSubmittedLearningEventSchema = z
@@ -71,11 +70,32 @@ const evidenceRecordedLearningEventSchema = z
   })
   .strict();
 
+const guidanceHintRevealedLearningEventSchema = z
+  .object({
+    ...learningEventBaseShape,
+    eventName: z.literal("guidance.hint_revealed"),
+    guidanceExposureId: uuidSchema,
+    stepKey: resourceSlugSchema,
+    hintKey: resourceSlugSchema
+  })
+  .strict();
+
+const guidanceSolutionRevealedLearningEventSchema = z
+  .object({
+    ...learningEventBaseShape,
+    eventName: z.literal("guidance.solution_revealed"),
+    guidanceExposureId: uuidSchema,
+    solutionKey: resourceSlugSchema
+  })
+  .strict();
+
 export const learningEventSchema = z.discriminatedUnion("eventName", [
   attemptStartedLearningEventSchema,
   submissionSubmittedLearningEventSchema,
   validationResultRecordedLearningEventSchema,
-  evidenceRecordedLearningEventSchema
+  evidenceRecordedLearningEventSchema,
+  guidanceHintRevealedLearningEventSchema,
+  guidanceSolutionRevealedLearningEventSchema
 ]);
 
 export const learningEventHistoryQuerySchema = z
