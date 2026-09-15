@@ -3,11 +3,15 @@ import { Module } from "@nestjs/common";
 import { OutboxModule } from "../../outbox/outbox.module";
 import { AuthorizationModule } from "../authorization/authorization.module";
 import { IdentityModule } from "../identity/identity.module";
+import { GuidedBuildContentQuery } from "./application/guided-build-content.query";
+import { GuidedBuildContentRepository } from "./application/guided-build-content.repository";
+import { GuidedBuildContentApplicationService } from "./application/guided-build-content.service";
 import { LearningContentQuery } from "./application/learning-content.query";
 import { LearningContentRepository } from "./application/learning-content.repository";
 import { LearningContentApplicationService } from "./application/learning-content.service";
 import { LearningGraphRepository } from "./application/learning-graph.repository";
 import { LearningGraphApplicationService } from "./application/learning-graph.service";
+import { PostgresGuidedBuildContentRepository } from "./infrastructure/postgres-guided-build-content.repository";
 import { PostgresLearningContentRepository } from "./infrastructure/postgres-learning-content.repository";
 import { PostgresLearningGraphRepository } from "./infrastructure/postgres-learning-graph.repository";
 import { LearningContentController } from "./learning-content.controller";
@@ -19,9 +23,14 @@ import { SkillsController } from "./skills.controller";
   providers: [
     LearningContentApplicationService,
     LearningGraphApplicationService,
+    GuidedBuildContentApplicationService,
     {
       provide: LearningContentQuery,
       useExisting: LearningGraphApplicationService
+    },
+    {
+      provide: GuidedBuildContentQuery,
+      useExisting: GuidedBuildContentApplicationService
     },
     {
       provide: LearningContentRepository,
@@ -30,12 +39,17 @@ import { SkillsController } from "./skills.controller";
     {
       provide: LearningGraphRepository,
       useClass: PostgresLearningGraphRepository
+    },
+    {
+      provide: GuidedBuildContentRepository,
+      useClass: PostgresGuidedBuildContentRepository
     }
   ],
   exports: [
     LearningContentApplicationService,
     LearningGraphApplicationService,
-    LearningContentQuery
+    LearningContentQuery,
+    GuidedBuildContentQuery
   ]
 })
 export class LearningContentModule {}
