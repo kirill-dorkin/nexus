@@ -12,6 +12,7 @@ import { RequestContextService } from "../../../request-context/request-context.
 import { AuthorizationApplicationService } from "../../authorization/application/authorization.service";
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { LearningContentQuery } from "../../learning-content/application/learning-content.query";
+import { LearningEventSink } from "../../learning-history/application/learning-event.sink";
 import { LearningProgressQuery } from "../../learning-progress/application/learning-progress.query";
 import { TrustedValidationEvidenceSink } from "../../learning-progress/application/trusted-validation-evidence.sink";
 import { ValidatorRegistry } from "../domain/validator-registry";
@@ -80,6 +81,7 @@ export class ValidationApplicationService {
     private readonly registry: ValidatorRegistry,
     private readonly validation: ValidationRepository,
     private readonly evidence: TrustedValidationEvidenceSink,
+    private readonly learningEvents: LearningEventSink,
     private readonly outbox: OutboxRepository
   ) {}
 
@@ -158,6 +160,15 @@ export class ValidationApplicationService {
             );
           }
           return { result: persisted.result, activity };
+        }
+
+        if (persisted.result.status === "completed") {
+          await this.learningEvents.appendValidationResultRecorded(
+            transaction,
+            submissionContext.learnerUserId,
+            submissionContext.attempt,
+            persisted.result
+          );
         }
 
         await this.outbox.append(transaction, {

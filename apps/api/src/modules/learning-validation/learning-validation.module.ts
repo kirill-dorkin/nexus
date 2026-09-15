@@ -4,6 +4,7 @@ import { OutboxModule } from "../../outbox/outbox.module";
 import { AuthorizationModule } from "../authorization/authorization.module";
 import { IdentityModule } from "../identity/identity.module";
 import { LearningContentModule } from "../learning-content/learning-content.module";
+import { LearningHistoryModule } from "../learning-history/learning-history.module";
 import { LearningProgressModule } from "../learning-progress/learning-progress.module";
 import { ValidationRepository } from "./application/validation.repository";
 import { ValidationApplicationService } from "./application/validation.service";
@@ -17,6 +18,7 @@ import { LearningValidationController } from "./learning-validation.controller";
     AuthorizationModule,
     OutboxModule,
     LearningContentModule,
+    LearningHistoryModule,
     LearningProgressModule
   ],
   controllers: [LearningValidationController],

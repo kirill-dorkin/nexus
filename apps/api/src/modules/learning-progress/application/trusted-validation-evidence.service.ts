@@ -12,6 +12,7 @@ import type { DatabaseTransaction } from "@platform/database";
 
 import { DatabaseService } from "../../../database/database.service";
 import { OutboxRepository } from "../../../outbox/outbox.repository";
+import { LearningEventSink } from "../../learning-history/application/learning-event.sink";
 import { normalizeTrustedValidationResult } from "../domain/trusted-validation-evidence-normalizer";
 import {
   LearningProgressRepository,
@@ -55,6 +56,7 @@ export class TrustedValidationEvidenceApplicationService extends TrustedValidati
     private readonly database: DatabaseService,
     private readonly progress: LearningProgressRepository,
     private readonly mastery: MasteryApplicationService,
+    private readonly learningEvents: LearningEventSink,
     private readonly outbox: OutboxRepository
   ) {
     super();
@@ -125,6 +127,13 @@ export class TrustedValidationEvidenceApplicationService extends TrustedValidati
       if (!persisted.created) {
         continue;
       }
+
+      await this.learningEvents.appendEvidenceRecorded(
+        transaction,
+        submissionContext.learnerUserId,
+        submissionContext.attempt,
+        persisted.evidence
+      );
 
       await this.mastery.refreshSkillProjection(
         transaction,

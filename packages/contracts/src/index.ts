@@ -21,6 +21,7 @@ export * from "./commerce";
 export * from "./learning-content";
 export * from "./learning-delivery";
 export * from "./learning-graph";
+export * from "./learning-history";
 export * from "./learning-progress";
 export * from "./learning-validation";
 export * from "./mastery";

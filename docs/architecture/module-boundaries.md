@@ -13,6 +13,7 @@
 | Activities | activity definitions/versions, attempts | mastery decisions |
 | Assessment | questions, assessments, rubrics, scoring definitions | delivery scheduling |
 | Validation | versioned validator registry semantics and immutable raw ValidationResult attribution | normalized Evidence, Mastery, untrusted sandbox execution |
+| Learning History | canonical append-only learner LearningEvent journal and history read contract | integration outbox, telemetry, mutable Mastery projections |
 | Mastery | evidence normalization, model versions, skill state, reviews | raw curriculum content |
 | Recommendations | next-best actions / reasons | source-of-truth mastery |
 | Projects | projects, project runs, teams, milestones | Git hosting |

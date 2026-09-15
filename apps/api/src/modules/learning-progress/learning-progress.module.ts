@@ -5,6 +5,7 @@ import { AuthorizationModule } from "../authorization/authorization.module";
 import { IdentityModule } from "../identity/identity.module";
 import { LearningContentModule } from "../learning-content/learning-content.module";
 import { LearningDeliveryModule } from "../learning-delivery/learning-delivery.module";
+import { LearningHistoryModule } from "../learning-history/learning-history.module";
 import { LearningProgressQuery } from "./application/learning-progress.query";
 import { LearningProgressRepository } from "./application/learning-progress.repository";
 import { LearningProgressApplicationService } from "./application/learning-progress.service";
@@ -24,7 +25,8 @@ import { MasteryController } from "./mastery.controller";
     AuthorizationModule,
     OutboxModule,
     LearningContentModule,
-    LearningDeliveryModule
+    LearningDeliveryModule,
+    LearningHistoryModule
   ],
   controllers: [LearningProgressController, MasteryController],
   providers: [
