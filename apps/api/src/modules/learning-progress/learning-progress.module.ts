@@ -7,6 +7,7 @@ import { LearningContentModule } from "../learning-content/learning-content.modu
 import { LearningDeliveryModule } from "../learning-delivery/learning-delivery.module";
 import { LearningHistoryModule } from "../learning-history/learning-history.module";
 import { LearnerSkillProgressApplicationService } from "./application/learner-skill-progress.service";
+import { LearningProgressPublicQueryService } from "./application/learning-progress-public-query.service";
 import { LearningProgressQuery } from "./application/learning-progress.query";
 import { LearningProgressRepository } from "./application/learning-progress.repository";
 import { LearningProgressApplicationService } from "./application/learning-progress.service";
@@ -37,12 +38,13 @@ import { MasteryController } from "./mastery.controller";
   ],
   providers: [
     LearningProgressApplicationService,
+    LearningProgressPublicQueryService,
     MasteryApplicationService,
     LearnerSkillProgressApplicationService,
     TrustedValidationEvidenceApplicationService,
     {
       provide: LearningProgressQuery,
-      useExisting: LearningProgressApplicationService
+      useExisting: LearningProgressPublicQueryService
     },
     {
       provide: TrustedValidationEvidenceSink,
