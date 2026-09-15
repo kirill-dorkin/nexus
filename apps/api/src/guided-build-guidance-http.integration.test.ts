@@ -270,32 +270,79 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
   afterAll(async () => {
     if (app !== undefined) await app.close();
 
-    if (organizationId.length > 0) {
-      await migrationPool.query(`DELETE FROM learning_history.learning_events WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_guidance.guidance_exposures WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM events.outbox WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_progress.evidence WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_progress.submissions WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_progress.attempts WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_progress.mastery_projections WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.learning_offerings WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.guided_build_hints WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.guided_build_steps WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.guided_build_definitions WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.activity_skill_mappings WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.course_version_activities WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.course_version_skills WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.activities WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.skills WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.courses WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM organizations.organizations WHERE id = $1`, [organizationId]);
-    }
+    const cleanupClient = await migrationPool.connect();
+    try {
+      await cleanupClient.query("BEGIN");
 
-    if (createdUserIds.length > 0) {
-      await migrationPool.query(`DELETE FROM identity.users WHERE id = ANY($1::uuid[])`, [createdUserIds]);
+      if (organizationId.length > 0) {
+        await cleanupClient.query(
+          `ALTER TABLE learning_guidance.guidance_exposures
+             DISABLE TRIGGER guidance_exposures_append_only`
+        );
+        await cleanupClient.query(
+          `ALTER TABLE learning_content.guided_build_hints
+             DISABLE TRIGGER guided_build_hints_require_draft`
+        );
+        await cleanupClient.query(
+          `ALTER TABLE learning_content.guided_build_steps
+             DISABLE TRIGGER guided_build_steps_require_draft`
+        );
+        await cleanupClient.query(
+          `ALTER TABLE learning_content.guided_build_definitions
+             DISABLE TRIGGER guided_build_definitions_validate_context`
+        );
+
+        await cleanupClient.query(`DELETE FROM learning_history.learning_events WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM learning_guidance.guidance_exposures WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM events.outbox WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM learning_progress.evidence WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM learning_progress.submissions WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM learning_progress.attempts WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM learning_progress.mastery_projections WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM learning_delivery.learning_offerings WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM learning_content.guided_build_hints WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM learning_content.guided_build_steps WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM learning_content.guided_build_definitions WHERE organization_id = $1`, [organizationId]);
+
+        await cleanupClient.query(
+          `ALTER TABLE learning_guidance.guidance_exposures
+             ENABLE TRIGGER guidance_exposures_append_only`
+        );
+        await cleanupClient.query(
+          `ALTER TABLE learning_content.guided_build_hints
+             ENABLE TRIGGER guided_build_hints_require_draft`
+        );
+        await cleanupClient.query(
+          `ALTER TABLE learning_content.guided_build_steps
+             ENABLE TRIGGER guided_build_steps_require_draft`
+        );
+        await cleanupClient.query(
+          `ALTER TABLE learning_content.guided_build_definitions
+             ENABLE TRIGGER guided_build_definitions_validate_context`
+        );
+
+        await cleanupClient.query(`DELETE FROM learning_content.activity_skill_mappings WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM learning_content.course_version_activities WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM learning_content.course_version_skills WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM learning_content.activities WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM learning_content.skills WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM learning_content.courses WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(`DELETE FROM organizations.organizations WHERE id = $1`, [organizationId]);
+      }
+
+      if (createdUserIds.length > 0) {
+        await cleanupClient.query(`DELETE FROM identity.users WHERE id = ANY($1::uuid[])`, [createdUserIds]);
+      }
+
+      await cleanupClient.query("COMMIT");
+    } catch (error) {
+      await cleanupClient.query("ROLLBACK");
+      throw error;
+    } finally {
+      cleanupClient.release();
+      await migrationPool.end();
     }
-    await migrationPool.end();
   });
 
   it("clones protected content by stable Activity identity and keeps published rows immutable", async () => {
