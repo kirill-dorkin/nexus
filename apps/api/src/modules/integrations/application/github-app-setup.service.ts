@@ -203,12 +203,11 @@ export class GitHubAppSetupApplicationService {
         "integration.manage",
         organizationScope(organizationId)
       );
-      return {
-        installations: await this.setup.listInstallations(
-          transaction,
-          organizationId
-        )
-      };
+      const installations = await this.setup.listInstallations(
+        transaction,
+        organizationId
+      );
+      return { installations: [...installations] };
     });
   }
 
