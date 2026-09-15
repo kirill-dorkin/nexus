@@ -22,6 +22,7 @@ import { AuthorizationApplicationService } from "../../authorization/application
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { LearningGraphApplicationService } from "../../learning-content/application/learning-graph.service";
 import { LearningDeliveryApplicationService } from "../../learning-delivery/application/learning-delivery.service";
+import { LearningEventSink } from "../../learning-history/application/learning-event.sink";
 import type {
   ActivityAttemptCount,
   SubmissionValidationContext
@@ -56,6 +57,7 @@ export class LearningProgressApplicationService {
     private readonly delivery: LearningDeliveryApplicationService,
     private readonly identity: IdentityApplicationService,
     private readonly authorization: AuthorizationApplicationService,
+    private readonly learningEvents: LearningEventSink,
     private readonly outbox: OutboxRepository,
     private readonly mastery: MasteryApplicationService
   ) {}
@@ -103,6 +105,12 @@ export class LearningProgressApplicationService {
         enrollmentId,
         activityVersionId: activity.id
       });
+
+      await this.learningEvents.appendAttemptStarted(
+        transaction,
+        enrollmentContext.enrollment.userId,
+        attempt
+      );
 
       await this.outbox.append(transaction, {
         organizationId,
@@ -340,6 +348,13 @@ export class LearningProgressApplicationService {
       sourceValidationResultId: null
     });
 
+    await this.learningEvents.appendEvidenceRecorded(
+      transaction,
+      submissionContext.learnerUserId,
+      submissionContext.attempt,
+      evidence
+    );
+
     await this.mastery.refreshSkillProjection(
       transaction,
       organizationId,
@@ -378,6 +393,13 @@ export class LearningProgressApplicationService {
     attempt: Attempt,
     submission: Submission
   ): Promise<void> {
+    await this.learningEvents.appendSubmissionSubmitted(
+      transaction,
+      actorUserId,
+      attempt,
+      submission
+    );
+
     await this.outbox.append(transaction, {
       organizationId,
       eventName: "submission.submitted",
