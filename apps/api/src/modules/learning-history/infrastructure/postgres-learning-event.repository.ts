@@ -13,11 +13,7 @@ type LearningEventRow = {
   id: string;
   organization_id: string;
   enrollment_id: string;
-  event_name:
-    | "attempt.started"
-    | "submission.submitted"
-    | "validation.result_recorded"
-    | "evidence.recorded";
+  event_name: LearningEvent["eventName"];
   event_version: 1;
   attempt_id: string;
   activity_version_id: string;
@@ -30,6 +26,10 @@ type LearningEventRow = {
   score: string | null;
   evidence_kind: string | null;
   evidence_source_type: "manual" | "validation_result" | null;
+  guidance_exposure_id: string | null;
+  guidance_step_key: string | null;
+  guidance_hint_key: string | null;
+  guidance_solution_key: string | null;
   occurred_at: Date;
   event_order: number;
 };
@@ -50,13 +50,15 @@ const eventSelect = `id::text,
   score::text,
   evidence_kind,
   evidence_source_type,
+  guidance_exposure_id::text,
+  guidance_step_key,
+  guidance_hint_key,
+  guidance_solution_key,
   occurred_at,
   event_order`;
 
 function required(value: string | null, field: string): string {
-  if (value === null) {
-    throw new Error(`LearningEvent row is missing ${field}.`);
-  }
+  if (value === null) throw new Error(`LearningEvent row is missing ${field}.`);
   return value;
 }
 
@@ -75,19 +77,11 @@ function mapEvent(row: LearningEventRow): LearningEvent {
   if (row.event_name === "attempt.started") {
     return { ...base, eventName: row.event_name };
   }
-
   if (row.event_name === "submission.submitted") {
-    return {
-      ...base,
-      eventName: row.event_name,
-      submissionId: required(row.submission_id, "submission_id")
-    };
+    return { ...base, eventName: row.event_name, submissionId: required(row.submission_id, "submission_id") };
   }
-
   if (row.event_name === "validation.result_recorded") {
-    if (row.outcome === null) {
-      throw new Error("Validation LearningEvent row is missing outcome.");
-    }
+    if (row.outcome === null) throw new Error("Validation LearningEvent row is missing outcome.");
     return {
       ...base,
       eventName: row.event_name,
@@ -97,11 +91,27 @@ function mapEvent(row: LearningEventRow): LearningEvent {
       score: row.score === null ? null : Number(row.score)
     };
   }
+  if (row.event_name === "guidance.hint_revealed") {
+    return {
+      ...base,
+      eventName: row.event_name,
+      guidanceExposureId: required(row.guidance_exposure_id, "guidance_exposure_id"),
+      stepKey: required(row.guidance_step_key, "guidance_step_key"),
+      hintKey: required(row.guidance_hint_key, "guidance_hint_key")
+    };
+  }
+  if (row.event_name === "guidance.solution_revealed") {
+    return {
+      ...base,
+      eventName: row.event_name,
+      guidanceExposureId: required(row.guidance_exposure_id, "guidance_exposure_id"),
+      solutionKey: required(row.guidance_solution_key, "guidance_solution_key")
+    };
+  }
 
   if (row.evidence_source_type === null || row.evidence_kind === null) {
     throw new Error("Evidence LearningEvent row is missing Evidence semantics.");
   }
-
   return {
     ...base,
     eventName: row.event_name,
@@ -115,10 +125,7 @@ function mapEvent(row: LearningEventRow): LearningEvent {
         ? { type: "manual" }
         : {
             type: "validation_result",
-            validationResultId: required(
-              row.validation_result_id,
-              "validation_result_id"
-            )
+            validationResultId: required(row.validation_result_id, "validation_result_id")
           }
   };
 }
@@ -136,18 +143,16 @@ function mapPageRow(row: LearningEventRow): LearningEventPageRow {
 
 @Injectable()
 export class PostgresLearningEventRepository extends LearningEventRepository {
-  async append(
-    transaction: DatabaseTransaction,
-    event: NewLearningEvent
-  ): Promise<void> {
+  async append(transaction: DatabaseTransaction, event: NewLearningEvent): Promise<void> {
     await transaction.client.query(
       `INSERT INTO learning_history.learning_events
          (organization_id, learner_user_id, enrollment_id, event_name,
           attempt_id, activity_version_id, attempt_number, submission_id,
           validation_result_id, evidence_id, skill_id, outcome, score,
-          evidence_kind, evidence_source_type, occurred_at)
+          evidence_kind, evidence_source_type, guidance_exposure_id,
+          guidance_step_key, guidance_hint_key, guidance_solution_key, occurred_at)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13,
-               $14, $15, $16::timestamptz)`,
+               $14, $15, $16, $17, $18, $19, $20::timestamptz)`,
       [
         event.organizationId,
         event.learnerUserId,
@@ -164,6 +169,10 @@ export class PostgresLearningEventRepository extends LearningEventRepository {
         event.score,
         event.evidenceKind,
         event.evidenceSourceType,
+        event.guidanceExposureId,
+        event.guidanceStepKey,
+        event.guidanceHintKey,
+        event.guidanceSolutionKey,
         event.occurredAt
       ]
     );
@@ -181,23 +190,12 @@ export class PostgresLearningEventRepository extends LearningEventRepository {
          FROM learning_history.learning_events
         WHERE organization_id = $1
           AND enrollment_id = $2
-          AND (
-            $3::timestamptz IS NULL
-            OR (occurred_at, event_order, id)
-               < ($3::timestamptz, $4::smallint, $5::uuid)
-          )
+          AND ($3::timestamptz IS NULL
+            OR (occurred_at, event_order, id) < ($3::timestamptz, $4::smallint, $5::uuid))
         ORDER BY occurred_at DESC, event_order DESC, id DESC
         LIMIT $6`,
-      [
-        organizationId,
-        enrollmentId,
-        before?.occurredAt ?? null,
-        before?.eventOrder ?? null,
-        before?.id ?? null,
-        limit
-      ]
+      [organizationId, enrollmentId, before?.occurredAt ?? null, before?.eventOrder ?? null, before?.id ?? null, limit]
     );
-
     return result.rows.map(mapPageRow);
   }
 }
