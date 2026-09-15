@@ -65,6 +65,7 @@ export class GitHubAppSetupController {
   @Post(
     "organizations/:organizationId/integrations/github/installations/:installationMappingId/suspend"
   )
+  @HttpCode(HttpStatus.OK)
   suspendInstallation(
     @Param("organizationId") organizationId: string,
     @Param("installationMappingId") installationMappingId: string
