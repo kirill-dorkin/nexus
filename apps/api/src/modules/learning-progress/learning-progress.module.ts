@@ -6,6 +6,7 @@ import { IdentityModule } from "../identity/identity.module";
 import { LearningContentModule } from "../learning-content/learning-content.module";
 import { LearningDeliveryModule } from "../learning-delivery/learning-delivery.module";
 import { LearningHistoryModule } from "../learning-history/learning-history.module";
+import { LearnerSkillProgressApplicationService } from "./application/learner-skill-progress.service";
 import { LearningProgressQuery } from "./application/learning-progress.query";
 import { LearningProgressRepository } from "./application/learning-progress.repository";
 import { LearningProgressApplicationService } from "./application/learning-progress.service";
@@ -16,6 +17,7 @@ import { TrustedValidationEvidenceSink } from "./application/trusted-validation-
 import { TrustedValidationEvidenceApplicationService } from "./application/trusted-validation-evidence.service";
 import { PostgresLearningProgressRepository } from "./infrastructure/postgres-learning-progress.repository";
 import { PostgresMasteryRepository } from "./infrastructure/postgres-mastery.repository";
+import { LearnerSkillProgressController } from "./learner-skill-progress.controller";
 import { LearningProgressController } from "./learning-progress.controller";
 import { MasteryController } from "./mastery.controller";
 
@@ -28,10 +30,15 @@ import { MasteryController } from "./mastery.controller";
     LearningDeliveryModule,
     LearningHistoryModule
   ],
-  controllers: [LearningProgressController, MasteryController],
+  controllers: [
+    LearningProgressController,
+    MasteryController,
+    LearnerSkillProgressController
+  ],
   providers: [
     LearningProgressApplicationService,
     MasteryApplicationService,
+    LearnerSkillProgressApplicationService,
     TrustedValidationEvidenceApplicationService,
     {
       provide: LearningProgressQuery,
