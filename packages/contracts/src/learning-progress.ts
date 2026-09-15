@@ -6,6 +6,7 @@ import { activityTypeSchema } from "./learning-graph";
 const jsonObjectSchema = z.record(z.string(), z.unknown());
 
 export const evidenceKindSchema = activityTypeSchema;
+export const evidenceSourceTypeSchema = z.enum(["manual", "validation_result"]);
 
 export const attemptSchema = z.object({
   id: uuidSchema,
@@ -35,6 +36,8 @@ export const evidenceSchema = z.object({
   score: z.number().min(0).max(1).nullable(),
   payload: jsonObjectSchema,
   recordedByUserId: uuidSchema.nullable(),
+  sourceType: evidenceSourceTypeSchema,
+  sourceValidationResultId: uuidSchema.nullable(),
   createdAt: z.string().datetime()
 });
 
@@ -64,6 +67,7 @@ export const createEvidenceRequestSchema = z.object({
 export type Attempt = z.infer<typeof attemptSchema>;
 export type Submission = z.infer<typeof submissionSchema>;
 export type Evidence = z.infer<typeof evidenceSchema>;
+export type EvidenceSourceType = z.infer<typeof evidenceSourceTypeSchema>;
 export type StartAttemptRequest = z.infer<typeof startAttemptRequestSchema>;
 export type CreateAttemptRequest = z.infer<typeof createAttemptRequestSchema>;
 export type CreateSubmissionRequest = z.infer<typeof createSubmissionRequestSchema>;
