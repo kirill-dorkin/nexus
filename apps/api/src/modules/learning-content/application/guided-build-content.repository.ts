@@ -28,6 +28,13 @@ export abstract class GuidedBuildContentRepository {
     input: NewGuidedBuildDefinition
   ): Promise<GuidedBuildDefinition>;
 
+  abstract cloneLatestPublishedDefinitions(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseId: string,
+    targetCourseVersionId: string
+  ): Promise<void>;
+
   abstract findDefinition(
     transaction: DatabaseTransaction,
     organizationId: string,
