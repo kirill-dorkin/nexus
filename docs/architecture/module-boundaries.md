@@ -12,6 +12,7 @@
 | Delivery | offerings, runs, enrollments, groups, sessions, assignments | content authoring |
 | Activities | activity definitions/versions, attempts | mastery decisions |
 | Assessment | questions, assessments, rubrics, scoring definitions | delivery scheduling |
+| Validation | versioned validator registry semantics and immutable raw ValidationResult attribution | normalized Evidence, Mastery, untrusted sandbox execution |
 | Mastery | evidence normalization, model versions, skill state, reviews | raw curriculum content |
 | Recommendations | next-best actions / reasons | source-of-truth mastery |
 | Projects | projects, project runs, teams, milestones | Git hosting |
@@ -23,6 +24,8 @@
 ## Dependency rule
 
 `domain` never imports infrastructure. A module never reaches into another module's tables/repositories. Cross-module synchronous calls target a public application interface. Deferred consequences use domain/integration events through outbox.
+
+Database-level foreign keys and integrity triggers may enforce invariants across owned schemas where PostgreSQL must prevent impossible canonical state. That does not grant application modules permission to query foreign tables directly.
 
 ## Internal module shape
 
