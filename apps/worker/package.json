@@ -10,7 +10,6 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@platform/database": "workspace:*",
     "pino": "^9.0.0"
   },
   "devDependencies": {
