@@ -10,19 +10,14 @@ import type {
   Project,
   ProjectTeam
 } from "@platform/contracts";
-import type { DatabaseTransaction } from "@platform/database";
 
 import { DatabaseService } from "../../../database/database.service";
 import { RequestContextService } from "../../../request-context/request-context.service";
 import { IdentityApplicationService } from "../../identity/application/identity.service";
-import { GitHubRepositoryReferenceQuery } from "../../integrations/application/github-repository-reference.query";
 import { OrganizationsApplicationService } from "../../organizations/application/organizations.service";
-import {
-  ProjectsRepository,
-  type ProjectRecord,
-  type ProjectRepositoryBindingRecord,
-  type ProjectTeamRecord
-} from "./projects.repository";
+import { ProjectOperator } from "./project-operator";
+import { ProjectsRepository } from "./projects.repository";
+import { ProjectsViewQuery } from "./projects-view.query";
 
 @Injectable()
 export class ProjectsApplicationService {
@@ -32,7 +27,8 @@ export class ProjectsApplicationService {
     private readonly projects: ProjectsRepository,
     private readonly identity: IdentityApplicationService,
     private readonly organizations: OrganizationsApplicationService,
-    private readonly githubRepositories: GitHubRepositoryReferenceQuery
+    private readonly operator: ProjectOperator,
+    private readonly view: ProjectsViewQuery
   ) {}
 
   async createTeam(
@@ -48,6 +44,13 @@ export class ProjectsApplicationService {
 
     return this.database.tenantTransaction(context, async (transaction) => {
       await this.identity.requireActiveUser(transaction, context.userId);
+      await this.operator.require(
+        transaction,
+        organizationId,
+        context.userId,
+        "organization",
+        organizationId
+      );
 
       for (const memberUserId of command.members) {
         await this.identity.requireActiveUser(transaction, memberUserId);
@@ -64,7 +67,6 @@ export class ProjectsApplicationService {
         name: command.name,
         createdByUserId: context.userId
       });
-
       for (const memberUserId of command.members) {
         await this.projects.addTeamMember(transaction, {
           organizationId,
@@ -73,8 +75,7 @@ export class ProjectsApplicationService {
           addedByUserId: context.userId
         });
       }
-
-      return this.toTeam(transaction, team);
+      return this.view.team(transaction, team);
     });
   }
 
@@ -82,9 +83,16 @@ export class ProjectsApplicationService {
     const context = this.requestContext.tenantContext(organizationId);
     return this.database.tenantTransaction(context, async (transaction) => {
       await this.identity.requireActiveUser(transaction, context.userId);
+      await this.operator.require(
+        transaction,
+        organizationId,
+        context.userId,
+        "team",
+        teamId
+      );
       const team = await this.projects.findTeam(transaction, organizationId, teamId);
       if (team === null) throw new NotFoundException("Project team not found.");
-      return this.toTeam(transaction, team);
+      return this.view.team(transaction, team);
     });
   }
 
@@ -97,6 +105,13 @@ export class ProjectsApplicationService {
 
     return this.database.tenantTransaction(context, async (transaction) => {
       await this.identity.requireActiveUser(transaction, context.userId);
+      await this.operator.require(
+        transaction,
+        organizationId,
+        context.userId,
+        "organization",
+        organizationId
+      );
       const team = await this.projects.findTeam(
         transaction,
         organizationId,
@@ -114,7 +129,7 @@ export class ProjectsApplicationService {
         name: command.name,
         createdByUserId: context.userId
       });
-      return this.toProject(transaction, project);
+      return this.view.project(transaction, project);
     });
   }
 
@@ -122,84 +137,20 @@ export class ProjectsApplicationService {
     const context = this.requestContext.tenantContext(organizationId);
     return this.database.tenantTransaction(context, async (transaction) => {
       await this.identity.requireActiveUser(transaction, context.userId);
+      await this.operator.require(
+        transaction,
+        organizationId,
+        context.userId,
+        "project",
+        projectId
+      );
       const project = await this.projects.findProject(
         transaction,
         organizationId,
         projectId
       );
       if (project === null) throw new NotFoundException("Project not found.");
-      return this.toProject(transaction, project);
+      return this.view.project(transaction, project);
     });
-  }
-
-  private async toTeam(
-    transaction: DatabaseTransaction,
-    team: ProjectTeamRecord
-  ): Promise<ProjectTeam> {
-    const members = await this.projects.listActiveTeamMembers(
-      transaction,
-      team.organizationId,
-      team.id
-    );
-    return {
-      id: team.id,
-      name: team.name,
-      status: team.status,
-      members: members.map((member) => ({
-        userId: member.userId,
-        joinedAt: member.joinedAt.toISOString()
-      })),
-      createdAt: team.createdAt.toISOString()
-    };
-  }
-
-  private async toProject(
-    transaction: DatabaseTransaction,
-    project: ProjectRecord,
-    knownBinding?: ProjectRepositoryBindingRecord
-  ): Promise<Project> {
-    const binding =
-      knownBinding ??
-      await this.projects.findActiveRepositoryBindingForProject(
-        transaction,
-        project.organizationId,
-        project.id
-      );
-
-    if (binding === null) {
-      return {
-        id: project.id,
-        name: project.name,
-        status: project.status,
-        teamId: project.teamId,
-        repository: null,
-        createdAt: project.createdAt.toISOString()
-      };
-    }
-
-    const reference = await this.githubRepositories.findRepositoryReference(
-      transaction,
-      project.organizationId,
-      binding.repositoryMappingId
-    );
-    if (reference === null) {
-      throw new Error("Connected repository mapping could not be resolved.");
-    }
-
-    return {
-      id: project.id,
-      name: project.name,
-      status: project.status,
-      teamId: project.teamId,
-      repository: {
-        bindingId: binding.id,
-        repositoryMappingId: reference.repositoryMappingId,
-        githubRepositoryId: reference.githubRepositoryId,
-        fullName: reference.fullName,
-        availability: reference.availability,
-        connectedAt: binding.connectedAt.toISOString()
-      },
-      createdAt: project.createdAt.toISOString()
-    };
   }
 }
