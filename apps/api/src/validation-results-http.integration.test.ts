@@ -45,8 +45,10 @@ describe("validation result HTTP lifecycle", () => {
   let otherActivityVersionId = "";
   let offeringId = "";
   let enrollmentId = "";
+  let attemptId = "";
   let submissionId = "";
   let validationResultId = "";
+  let needsReviewValidationResultId = "";
   const createdUserIds: string[] = [];
 
   async function createUser(label: string): Promise<string> {
@@ -277,6 +279,7 @@ describe("validation result HTTP lifecycle", () => {
       throw new Error(`Failed to start attempt: ${attemptResponse.body}`);
     }
     const attempt = attemptSchema.parse(JSON.parse(attemptResponse.body));
+    attemptId = attempt.id;
 
     const submissionResponse = await app.inject({
       method: "POST",
@@ -301,11 +304,11 @@ describe("validation result HTTP lifecycle", () => {
         [organizationId]
       );
       await migrationPool.query(
-        `DELETE FROM learning_validation.validation_results WHERE organization_id = $1`,
+        `DELETE FROM learning_progress.evidence WHERE organization_id = $1`,
         [organizationId]
       );
       await migrationPool.query(
-        `DELETE FROM learning_progress.evidence WHERE organization_id = $1`,
+        `DELETE FROM learning_validation.validation_results WHERE organization_id = $1`,
         [organizationId]
       );
       await migrationPool.query(
@@ -369,7 +372,7 @@ describe("validation result HTTP lifecycle", () => {
     await migrationPool.end();
   });
 
-  it("records one immutable result for an exact Submission and validator version", async () => {
+  it("records one immutable result and materializes trusted Evidence exactly once", async () => {
     const idempotencyKey = `manual-review-${randomUUID()}`;
     const command = {
       idempotencyKey,
@@ -404,6 +407,57 @@ describe("validation result HTTP lifecycle", () => {
       recordedByUserId: instructorUserId
     });
 
+    const evidence = await migrationPool.query<{
+      skill_id: string;
+      kind: string;
+      score: string | null;
+      payload: Record<string, unknown>;
+      recorded_by_user_id: string | null;
+      source_type: string;
+      source_validation_result_id: string | null;
+    }>(
+      `SELECT skill_id::text,
+              kind,
+              score::text,
+              payload,
+              recorded_by_user_id::text,
+              source_type,
+              source_validation_result_id::text
+         FROM learning_progress.evidence
+        WHERE organization_id = $1
+          AND source_validation_result_id = $2`,
+      [organizationId, result.id]
+    );
+    expect(evidence.rows).toHaveLength(1);
+    expect(evidence.rows[0]).toMatchObject({
+      skill_id: skillId,
+      kind: "foundation.structured-practice",
+      payload: { outcome: "passed" },
+      recorded_by_user_id: null,
+      source_type: "validation_result",
+      source_validation_result_id: result.id
+    });
+    expect(Number(evidence.rows[0]?.score)).toBe(0.9);
+
+    const mastery = await migrationPool.query<{
+      mastery_score: string | null;
+      evidence_count: number;
+      scored_evidence_count: number;
+    }>(
+      `SELECT mastery_score::text,
+              evidence_count,
+              scored_evidence_count
+         FROM learning_progress.mastery_projections
+        WHERE organization_id = $1
+          AND user_id = $2
+          AND skill_id = $3`,
+      [organizationId, learnerUserId, skillId]
+    );
+    expect(mastery.rows).toHaveLength(1);
+    expect(Number(mastery.rows[0]?.mastery_score)).toBe(0.9);
+    expect(mastery.rows[0]?.evidence_count).toBe(1);
+    expect(mastery.rows[0]?.scored_evidence_count).toBe(1);
+
     const replay = await app.inject({
       method: "POST",
       url: `/v1/organizations/${organizationId}/submissions/${submissionId}/validation-results`,
@@ -425,7 +479,16 @@ describe("validation result HTTP lifecycle", () => {
     );
     expect(persisted.rows[0]?.count).toBe(1);
 
-    const events = await migrationPool.query<{ count: number }>(
+    const evidenceReplay = await migrationPool.query<{ count: number }>(
+      `SELECT count(*)::integer AS count
+         FROM learning_progress.evidence
+        WHERE organization_id = $1
+          AND source_validation_result_id = $2`,
+      [organizationId, result.id]
+    );
+    expect(evidenceReplay.rows[0]?.count).toBe(1);
+
+    const validationEvents = await migrationPool.query<{ count: number }>(
       `SELECT count(*)::integer AS count
          FROM events.outbox
         WHERE organization_id = $1
@@ -434,7 +497,17 @@ describe("validation result HTTP lifecycle", () => {
           AND aggregate_id = $2`,
       [organizationId, result.id]
     );
-    expect(events.rows[0]?.count).toBe(1);
+    expect(validationEvents.rows[0]?.count).toBe(1);
+
+    const evidenceEvents = await migrationPool.query<{ count: number }>(
+      `SELECT count(*)::integer AS count
+         FROM events.outbox
+        WHERE organization_id = $1
+          AND event_name = 'evidence.recorded'
+          AND payload ->> 'sourceValidationResultId' = $2`,
+      [organizationId, result.id]
+    );
+    expect(evidenceEvents.rows[0]?.count).toBe(1);
 
     const conflict = await app.inject({
       method: "POST",
@@ -445,7 +518,7 @@ describe("validation result HTTP lifecycle", () => {
     expect(conflict.statusCode).toBe(409);
   });
 
-  it("does not let learners record validation or encode learner failure as system error", async () => {
+  it("keeps non-decisive and infrastructure outcomes out of Evidence", async () => {
     const denied = await app.inject({
       method: "POST",
       url: `/v1/organizations/${organizationId}/submissions/${submissionId}/validation-results`,
@@ -458,6 +531,46 @@ describe("validation result HTTP lifecycle", () => {
       }
     });
     expect(denied.statusCode).toBe(403);
+
+    const review = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/submissions/${submissionId}/validation-results`,
+      headers: { "x-test-user-id": instructorUserId },
+      payload: {
+        idempotencyKey: `needs-review-${randomUUID()}`,
+        status: "completed",
+        outcome: "needs_review",
+        payload: { note: "Human decision still required" }
+      }
+    });
+    expect(review.statusCode).toBe(201);
+    needsReviewValidationResultId = validationResultSchema.parse(
+      JSON.parse(review.body)
+    ).id;
+
+    const systemError = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/submissions/${submissionId}/validation-results`,
+      headers: { "x-test-user-id": instructorUserId },
+      payload: {
+        idempotencyKey: `system-error-valid-${randomUUID()}`,
+        status: "system_error",
+        payload: { reason: "sandbox unavailable" }
+      }
+    });
+    expect(systemError.statusCode).toBe(201);
+    const systemErrorId = validationResultSchema.parse(
+      JSON.parse(systemError.body)
+    ).id;
+
+    const nonDecisiveEvidence = await migrationPool.query<{ count: number }>(
+      `SELECT count(*)::integer AS count
+         FROM learning_progress.evidence
+        WHERE organization_id = $1
+          AND source_validation_result_id = ANY($2::uuid[])`,
+      [organizationId, [needsReviewValidationResultId, systemErrorId]]
+    );
+    expect(nonDecisiveEvidence.rows[0]?.count).toBe(0);
 
     const contradictory = await app.inject({
       method: "POST",
@@ -474,7 +587,7 @@ describe("validation result HTTP lifecycle", () => {
     expect(contradictory.statusCode).toBe(400);
   });
 
-  it("keeps validation attribution and append-only history enforced in PostgreSQL", async () => {
+  it("keeps validation attribution and Evidence provenance enforced in PostgreSQL", async () => {
     await expect(
       migrationPool.query(
         `INSERT INTO learning_validation.validation_results
@@ -507,6 +620,23 @@ describe("validation result HTTP lifecycle", () => {
           activityVersionId,
           `invalid-system-error-${randomUUID()}`,
           instructorUserId
+        ]
+      )
+    ).rejects.toMatchObject({ code: "23514" });
+
+    await expect(
+      migrationPool.query(
+        `INSERT INTO learning_progress.evidence
+           (organization_id, attempt_id, submission_id, skill_id, kind, score,
+            payload, recorded_by_user_id, source_type, source_validation_result_id)
+         VALUES ($1, $2, $3, $4, 'foundation.structured-practice', 0.5,
+                 '{}'::jsonb, NULL, 'validation_result', $5)`,
+        [
+          organizationId,
+          attemptId,
+          submissionId,
+          skillId,
+          needsReviewValidationResultId
         ]
       )
     ).rejects.toMatchObject({ code: "23514" });
