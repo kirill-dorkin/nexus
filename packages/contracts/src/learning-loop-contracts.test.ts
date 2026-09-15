@@ -85,22 +85,36 @@ describe("learning loop contracts", () => {
       }).score
     ).toBe(0.85);
 
+    const validationEvidence = {
+      id: evidenceId,
+      organizationId,
+      attemptId,
+      submissionId,
+      skillId,
+      kind: "foundation.structured-practice",
+      score: 0.85,
+      payload: { outcome: "passed" },
+      recordedByUserId: null,
+      sourceType: "validation_result" as const,
+      sourceValidationResultId: validationResultId,
+      createdAt: "2026-09-15T05:00:00.000Z"
+    };
+
     expect(
-      evidenceSchema.parse({
-        id: evidenceId,
-        organizationId,
-        attemptId,
-        submissionId,
-        skillId,
-        kind: "foundation.structured-practice",
-        score: 0.85,
-        payload: { outcome: "passed" },
-        recordedByUserId: null,
-        sourceType: "validation_result",
-        sourceValidationResultId: validationResultId,
-        createdAt: "2026-09-15T05:00:00.000Z"
-      }).sourceValidationResultId
+      evidenceSchema.parse(validationEvidence).sourceValidationResultId
     ).toBe(validationResultId);
+    expect(
+      evidenceSchema.safeParse({
+        ...validationEvidence,
+        recordedByUserId: skillId
+      }).success
+    ).toBe(false);
+    expect(
+      evidenceSchema.safeParse({
+        ...validationEvidence,
+        sourceType: "manual"
+      }).success
+    ).toBe(false);
   });
 
   it("represents the exact immutable activity snapshot used by attempts", () => {
