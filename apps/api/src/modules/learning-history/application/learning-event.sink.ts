@@ -1,6 +1,7 @@
 import type {
   Attempt,
   Evidence,
+  GuidedBuildExposure,
   Submission,
   ValidationResult
 } from "@platform/contracts";
@@ -32,5 +33,19 @@ export abstract class LearningEventSink {
     learnerUserId: string,
     attempt: Attempt,
     evidence: Evidence
+  ): Promise<void>;
+
+  abstract appendGuidanceHintRevealed(
+    transaction: DatabaseTransaction,
+    learnerUserId: string,
+    attempt: Attempt,
+    exposure: Extract<GuidedBuildExposure, { kind: "hint" }>
+  ): Promise<void>;
+
+  abstract appendGuidanceSolutionRevealed(
+    transaction: DatabaseTransaction,
+    learnerUserId: string,
+    attempt: Attempt,
+    exposure: Extract<GuidedBuildExposure, { kind: "professional_solution" }>
   ): Promise<void>;
 }
