@@ -12,5 +12,6 @@ export const createProjectRequestSchema = z.object({
 });
 
 export const createProjectTeamRequestSchema = z.object({
-  name: projectTeamNameSchema
+  name: projectTeamNameSchema,
+  members: z.array(uuidSchema).min(1).max(50)
 });
