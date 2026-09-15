@@ -262,10 +262,7 @@ ALTER TABLE learning_history.learning_events
     REFERENCES learning_guidance.guidance_exposures(organization_id, id)
     ON DELETE CASCADE;
 
--- Existing event-specific CHECK from 000017 is replaced so guidance events remain
--- normalized and cannot carry protected content or unrelated lifecycle columns.
-ALTER TABLE learning_history.learning_events
-  DROP CONSTRAINT learning_events_check;
+ALTER TABLE learning_history.learning_events DROP CONSTRAINT learning_events_check;
 ALTER TABLE learning_history.learning_events
   ADD CONSTRAINT learning_events_shape_check CHECK (
     (event_name = 'attempt.started'
@@ -298,8 +295,8 @@ ALTER TABLE learning_history.learning_events
       AND guidance_solution_key IS NULL)
     OR
     (event_name = 'guidance.solution_revealed'
-      AND validation_result_id IS NULL AND evidence_id IS NULL AND skill_id IS NULL
-      AND outcome IS NULL AND score IS NULL AND evidence_kind IS NULL
+      AND submission_id IS NULL AND validation_result_id IS NULL AND evidence_id IS NULL
+      AND skill_id IS NULL AND outcome IS NULL AND score IS NULL AND evidence_kind IS NULL
       AND evidence_source_type IS NULL AND guidance_exposure_id IS NOT NULL
       AND guidance_step_key IS NULL AND guidance_hint_key IS NULL
       AND guidance_solution_key IS NOT NULL)
@@ -309,8 +306,7 @@ CREATE UNIQUE INDEX learning_events_guidance_exposure_uq
   ON learning_history.learning_events (organization_id, guidance_exposure_id)
   WHERE guidance_exposure_id IS NOT NULL;
 
--- Keep deterministic history ordering while placing assistance after Attempt start
--- and solution disclosure after Submission.
+DROP INDEX learning_history.learning_events_enrollment_history_idx;
 ALTER TABLE learning_history.learning_events DROP COLUMN event_order;
 ALTER TABLE learning_history.learning_events ADD COLUMN event_order smallint
   GENERATED ALWAYS AS (
@@ -323,6 +319,9 @@ ALTER TABLE learning_history.learning_events ADD COLUMN event_order smallint
       WHEN 'evidence.recorded' THEN 40
     END
   ) STORED;
+CREATE INDEX learning_events_enrollment_history_idx
+  ON learning_history.learning_events
+    (organization_id, enrollment_id, occurred_at DESC, event_order DESC, id DESC);
 
 CREATE OR REPLACE FUNCTION learning_history.validate_guidance_learning_event()
 RETURNS trigger
