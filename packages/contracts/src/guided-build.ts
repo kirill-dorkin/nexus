@@ -298,6 +298,16 @@ const revealedHintSchema = z
   })
   .strict();
 
+export const guidedBuildRevealedSolutionSchema = z
+  .object({
+    exposureId: uuidSchema,
+    key: resourceSlugSchema,
+    title: z.string().trim().min(1).max(200),
+    content: guidedBuildContentSchema,
+    revealedAt: z.string().datetime()
+  })
+  .strict();
+
 export const guidedBuildLearnerViewSchema = z
   .object({
     state: guidedBuildLearnerStateSchema,
@@ -311,16 +321,38 @@ export const guidedBuildLearnerViewSchema = z
         })
         .strict()
     ),
-    professionalSolution: z
-      .object({
-        exposureId: uuidSchema,
-        key: resourceSlugSchema,
-        title: z.string().trim().min(1).max(200),
-        content: guidedBuildContentSchema,
-        revealedAt: z.string().datetime()
-      })
-      .strict()
-      .nullable()
+    professionalSolution: guidedBuildRevealedSolutionSchema.nullable()
+  })
+  .strict();
+
+const guidedBuildCompareSubmissionSchema = z
+  .object({
+    id: uuidSchema,
+    organizationId: uuidSchema,
+    attemptId: uuidSchema,
+    payload: guidedBuildContentSchema,
+    submittedByUserId: uuidSchema,
+    submittedAt: z.string().datetime()
+  })
+  .strict();
+
+export const guidedBuildCompareViewSchema = z
+  .object({
+    sourceAttemptId: uuidSchema,
+    sourceActivityVersionId: uuidSchema,
+    submission: guidedBuildCompareSubmissionSchema,
+    professionalSolution: guidedBuildRevealedSolutionSchema
+  })
+  .strict();
+
+export const guidedBuildTransferHandoffSchema = z
+  .object({
+    sourceAttemptId: uuidSchema,
+    enrollmentId: uuidSchema,
+    activityVersionId: uuidSchema,
+    activityId: uuidSchema,
+    slug: resourceSlugSchema,
+    title: z.string().trim().min(1).max(200)
   })
   .strict();
 
@@ -333,5 +365,7 @@ export type GuidedBuildExposure = z.infer<typeof guidedBuildExposureSchema>;
 export type GuidedBuildStepState = z.infer<typeof guidedBuildStepStateSchema>;
 export type GuidedBuildLearnerState = z.infer<typeof guidedBuildLearnerStateSchema>;
 export type GuidedBuildLearnerView = z.infer<typeof guidedBuildLearnerViewSchema>;
+export type GuidedBuildCompareView = z.infer<typeof guidedBuildCompareViewSchema>;
+export type GuidedBuildTransferHandoff = z.infer<typeof guidedBuildTransferHandoffSchema>;
 export type RevealGuidedBuildHintRequest = z.infer<typeof revealGuidedBuildHintRequestSchema>;
 export type RevealGuidedBuildSolutionRequest = z.infer<typeof revealGuidedBuildSolutionRequestSchema>;
