@@ -10,7 +10,8 @@ import { AppModule } from "./app.module";
 export async function createApiApplication(): Promise<NestFastifyApplication> {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter()
+    new FastifyAdapter(),
+    { rawBody: true }
   );
   app.setGlobalPrefix("v1");
   app.enableShutdownHooks();
