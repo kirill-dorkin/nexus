@@ -55,6 +55,11 @@ describe("GitHub Project fact processor", () => {
   afterAll(async () => {
     if (deliveryIds.length > 0) {
       await migrationPool.query(
+        `DELETE FROM projects.github_project_facts
+         WHERE source_delivery_id = ANY($1::uuid[])`,
+        [deliveryIds]
+      );
+      await migrationPool.query(
         `DELETE FROM integrations.github_webhook_inbox
          WHERE delivery_id = ANY($1::uuid[])`,
         [deliveryIds]
