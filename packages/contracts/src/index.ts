@@ -27,4 +27,5 @@ export * from "./learning-history";
 export * from "./learning-progress";
 export * from "./learning-validation";
 export * from "./mastery";
+export * from "./projects";
 export * from "./recommendations";

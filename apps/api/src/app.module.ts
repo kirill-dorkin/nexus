@@ -15,6 +15,7 @@ import { LearningProgressModule } from "./modules/learning-progress/learning-pro
 import { LearningRecommendationsModule } from "./modules/learning-recommendations/learning-recommendations.module";
 import { LearningValidationModule } from "./modules/learning-validation/learning-validation.module";
 import { OrganizationsModule } from "./modules/organizations/organizations.module";
+import { ProjectsModule } from "./modules/projects/projects.module";
 import { RequestContextModule } from "./request-context/request-context.module";
 
 @Module({
@@ -27,6 +28,7 @@ import { RequestContextModule } from "./request-context/request-context.module";
     OrganizationsModule,
     CommerceModule,
     IntegrationsModule,
+    ProjectsModule,
     LearningContentModule,
     LearningDeliveryModule,
     LearningHistoryModule,
