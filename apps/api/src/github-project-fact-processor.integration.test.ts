@@ -108,7 +108,7 @@ describe("GitHub Project fact processor", () => {
          organization_id, github_installation_id, github_repository_id, full_name, status
        ) VALUES ($1, $2, $3, $4, 'active')
        RETURNING id::text`,
-      [organizationId, installationId, repositoryId, `nexus-${label}/repository`]
+      [organizationId, installationId, repositoryId, `project-fact-${label}/repository`]
     );
     const repositoryMappingId = repository.rows[0]?.id;
     if (repositoryMappingId === undefined) throw new Error("Failed to create repository mapping.");
