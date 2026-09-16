@@ -1,0 +1,125 @@
+import { timingSafeEqual } from "node:crypto";
+
+import Fastify, { type FastifyInstance } from "fastify";
+
+import {
+  GraderExecutionProfileRegistry,
+  GraderJobResourcePolicyError,
+  enforceJobResourcePolicy
+} from "./execution-profile.js";
+import {
+  GraderProtocolError,
+  graderJobRequestJsonSchema,
+  type GraderJobRequest,
+  type GraderJobResult
+} from "./protocol.js";
+import { SandboxProvider, UnavailableSandboxProvider } from "./sandbox-provider.js";
+
+export type CreateGraderGatewayOptions = Readonly<{
+  serviceToken: string;
+  profileRegistry?: GraderExecutionProfileRegistry;
+  sandboxProvider?: SandboxProvider;
+  logger?: boolean;
+}>;
+
+function tokenMatches(expected: string, authorization: string | undefined): boolean {
+  if (authorization === undefined || !authorization.startsWith("Bearer ")) return false;
+  const candidate = authorization.slice("Bearer ".length);
+  const expectedBytes = Buffer.from(expected, "utf8");
+  const candidateBytes = Buffer.from(candidate, "utf8");
+  return (
+    expectedBytes.length === candidateBytes.length &&
+    timingSafeEqual(expectedBytes, candidateBytes)
+  );
+}
+
+function systemError(jobId: string, code: string): GraderJobResult {
+  return {
+    protocolVersion: 1,
+    jobId,
+    status: "system_error",
+    error: { code, retryable: true }
+  };
+}
+
+export function createGraderGateway(options: CreateGraderGatewayOptions): FastifyInstance {
+  if (Buffer.byteLength(options.serviceToken, "utf8") < 32) {
+    throw new Error("GRADER_GATEWAY_SERVICE_TOKEN must contain at least 32 bytes.");
+  }
+
+  const profiles = options.profileRegistry ?? new GraderExecutionProfileRegistry();
+  const sandbox = options.sandboxProvider ?? new UnavailableSandboxProvider();
+  const app = Fastify({ logger: options.logger ?? false });
+
+  app.get("/health", async () => ({ status: "ok", service: "grader-gateway" }));
+
+  app.post<{ Body: GraderJobRequest }>(
+    "/v1/jobs",
+    {
+      schema: { body: graderJobRequestJsonSchema },
+      preHandler: async (request, reply) => {
+        if (!tokenMatches(options.serviceToken, request.headers.authorization)) {
+          return reply.code(401).send({
+            error: {
+              code: "service_authentication_required",
+              message: "Authenticated service identity is required."
+            }
+          });
+        }
+      }
+    },
+    async (request, reply) => {
+      try {
+        const { validateGraderJobRequest } = await import("./protocol.js");
+        validateGraderJobRequest(request.body);
+
+        const resolved = profiles.find(request.body.profile);
+        if (resolved === null) {
+          return reply.code(422).send({
+            error: {
+              code: "execution_profile_not_found",
+              message: "Requested grader execution profile is not registered."
+            }
+          });
+        }
+        enforceJobResourcePolicy(request.body, resolved.profile);
+
+        try {
+          return await sandbox.execute(request.body, resolved);
+        } catch {
+          return systemError(request.body.jobId, "sandbox_provider_failure");
+        }
+      } catch (error) {
+        if (error instanceof GraderProtocolError || error instanceof GraderJobResourcePolicyError) {
+          return reply.code(422).send({
+            error: {
+              code: error.code,
+              message: error.message
+            }
+          });
+        }
+        throw error;
+      }
+    }
+  );
+
+  app.setErrorHandler((error, _request, reply) => {
+    if (error.validation !== undefined) {
+      return reply.code(400).send({
+        error: {
+          code: "invalid_grader_job_request",
+          message: "Grader job request does not match protocol version 1."
+        }
+      });
+    }
+    app.log.error(error);
+    return reply.code(500).send({
+      error: {
+        code: "grader_gateway_internal_error",
+        message: "Grader Gateway could not process the request."
+      }
+    });
+  });
+
+  return app;
+}
