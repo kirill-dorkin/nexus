@@ -4,6 +4,7 @@ import { posix as posixPath } from "node:path";
 import { z } from "zod";
 
 export const GRADER_PROTOCOL_VERSION = 1 as const;
+export const GRADER_PROFILE_FINGERPRINT_HEADER = "x-grader-profile-fingerprint" as const;
 export const GRADER_MAX_SOURCE_FILES = 64;
 export const GRADER_MAX_SOURCE_BYTES = 1_048_576;
 export const GRADER_MAX_FILE_BYTES = 262_144;
@@ -13,6 +14,7 @@ const profileKeyJsonPattern = "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$";
 const uuidPattern = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$";
 const jobIdPattern = "^sha256:[0-9a-f]{64}$";
 const imageDigestPattern = /^sha256:[0-9a-f]{64}$/;
+const profileFingerprintPattern = /^sha256:[0-9a-f]{64}$/;
 const providerErrorCodePattern = /^[a-z][a-z0-9_]{0,99}$/;
 
 export const graderProfileReferenceSchema = z
@@ -161,6 +163,10 @@ export function buildGraderJobId(spec: GraderJobSpec): string {
 
 export function sourceByteCount(files: readonly GraderSourceFile[]): number {
   return files.reduce((total, file) => total + Buffer.byteLength(file.content, "utf8"), 0);
+}
+
+export function isGraderProfileFingerprint(value: unknown): value is string {
+  return typeof value === "string" && profileFingerprintPattern.test(value);
 }
 
 function validateSourcePath(path: string): void {
