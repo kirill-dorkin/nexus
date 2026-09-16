@@ -10,7 +10,6 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@platform/contracts": "workspace:*",
     "fastify": "^5.0.0",
     "pino": "^9.0.0"
   },
