@@ -4,7 +4,12 @@ import { join } from "node:path";
 
 import { afterEach, describe, expect, it } from "vitest";
 
-import { loadGraderGatewayRuntimeConfig } from "./config.js";
+import {
+  GRADER_GVISOR_RUNTIME_CLASS,
+  GRADER_SANDBOX_NAMESPACE,
+  GRADER_SANDBOX_RUNNER_SERVICE_ACCOUNT,
+  loadGraderGatewayRuntimeConfig
+} from "./config.js";
 
 const serviceToken = "gateway-service-token-that-is-at-least-32-bytes";
 const imageDigest = `sha256:${"a".repeat(64)}`;
@@ -72,8 +77,6 @@ describe("grader gateway runtime config", () => {
       GRADER_EXECUTION_PROFILES_JSON: profileJson(),
       GRADER_SANDBOX_PROVIDER: "kubernetes-gvisor",
       GRADER_KUBERNETES_API_URL: "http://127.0.0.1:6443",
-      GRADER_KUBERNETES_NAMESPACE: "grader-sandbox",
-      GRADER_KUBERNETES_RUNTIME_CLASS: "platform-gvisor",
       GRADER_KUBERNETES_RUNNER_IMAGE_REPOSITORY: "registry.example.com/platform/grader-runner",
       GRADER_KUBERNETES_SERVICE_ACCOUNT_TOKEN_FILE: tokenFile,
       GRADER_KUBERNETES_POD_PIDS_LIMIT: "64",
@@ -84,14 +87,15 @@ describe("grader gateway runtime config", () => {
     if (config.sandboxProvider.kind !== "kubernetes-gvisor") throw new Error("unexpected provider");
     expect(config.sandboxProvider.config).toMatchObject({
       apiUrl: "http://127.0.0.1:6443",
-      namespace: "grader-sandbox",
-      runtimeClassName: "platform-gvisor",
       runnerImageRepository: "registry.example.com/platform/grader-runner",
       serviceAccountTokenFile: tokenFile,
       caCertificate: null,
       podPidsLimit: 64,
       ephemeralStorageMiB: 96
     });
+    expect(GRADER_SANDBOX_NAMESPACE).toBe("platform-grader-sandbox");
+    expect(GRADER_GVISOR_RUNTIME_CLASS).toBe("platform-gvisor");
+    expect(GRADER_SANDBOX_RUNNER_SERVICE_ACCOUNT).toBe("grader-sandbox-runner");
   });
 
   it("requires TLS and a readable CA when kubernetes-gvisor is enabled in production", () => {
@@ -102,8 +106,6 @@ describe("grader gateway runtime config", () => {
         GRADER_GATEWAY_SERVICE_TOKEN: serviceToken,
         GRADER_SANDBOX_PROVIDER: "kubernetes-gvisor",
         GRADER_KUBERNETES_API_URL: "http://127.0.0.1:6443",
-        GRADER_KUBERNETES_NAMESPACE: "grader-sandbox",
-        GRADER_KUBERNETES_RUNTIME_CLASS: "platform-gvisor",
         GRADER_KUBERNETES_RUNNER_IMAGE_REPOSITORY: "registry.example.com/platform/grader-runner",
         GRADER_KUBERNETES_SERVICE_ACCOUNT_TOKEN_FILE: tokenFile,
         GRADER_KUBERNETES_CA_FILE: caFile
@@ -115,8 +117,6 @@ describe("grader gateway runtime config", () => {
       GRADER_GATEWAY_SERVICE_TOKEN: serviceToken,
       GRADER_SANDBOX_PROVIDER: "kubernetes-gvisor",
       GRADER_KUBERNETES_API_URL: "https://kubernetes.default.svc",
-      GRADER_KUBERNETES_NAMESPACE: "grader-sandbox",
-      GRADER_KUBERNETES_RUNTIME_CLASS: "platform-gvisor",
       GRADER_KUBERNETES_RUNNER_IMAGE_REPOSITORY: "registry.example.com/platform/grader-runner",
       GRADER_KUBERNETES_SERVICE_ACCOUNT_TOKEN_FILE: tokenFile,
       GRADER_KUBERNETES_CA_FILE: caFile
@@ -132,8 +132,6 @@ describe("grader gateway runtime config", () => {
       NODE_ENV: "test",
       GRADER_GATEWAY_SERVICE_TOKEN: serviceToken,
       GRADER_SANDBOX_PROVIDER: "kubernetes-gvisor",
-      GRADER_KUBERNETES_NAMESPACE: "grader-sandbox",
-      GRADER_KUBERNETES_RUNTIME_CLASS: "platform-gvisor",
       GRADER_KUBERNETES_RUNNER_IMAGE_REPOSITORY: "registry.example.com/platform/grader-runner",
       GRADER_KUBERNETES_SERVICE_ACCOUNT_TOKEN_FILE: tokenFile
     };
