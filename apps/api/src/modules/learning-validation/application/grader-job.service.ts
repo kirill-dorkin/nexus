@@ -71,6 +71,7 @@ function materiallyMatches(
     existing.job.profile.version === requested.profileVersion &&
     existing.job.profile.fingerprint === requested.profileFingerprint &&
     canonicalJson(existing.validatorConfig) === canonicalJson(requested.validatorConfig) &&
+    existing.evidenceTrust === requested.evidenceTrust &&
     canonicalJson(existing.requestPayload) === canonicalJson(requested.requestPayload) &&
     existing.requestedByUserId === requested.requestedByUserId
   );
@@ -187,6 +188,7 @@ export class GraderJobApplicationService {
         validatorKey: definition.key,
         validatorVersion: definition.version,
         validatorConfig: binding.config,
+        evidenceTrust: definition.evidenceTrust,
         profileKey: resolvedProfile.profile.key,
         profileVersion: resolvedProfile.profile.version,
         profileFingerprint: resolvedProfile.fingerprint,

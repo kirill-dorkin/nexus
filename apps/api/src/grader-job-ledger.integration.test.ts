@@ -159,6 +159,19 @@ describe("durable grader job ledger", () => {
     return submissionSchema.parse(JSON.parse(submissionResponse.body)).id;
   }
 
+  async function scheduleGraderJob(submissionId: string) {
+    const response = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/submissions/${submissionId}/grader-jobs`,
+      headers: { "x-test-user-id": learnerUserId },
+      payload: {}
+    });
+    if (response.statusCode !== 202) {
+      throw new Error(`Failed to schedule grader job: ${response.body}`);
+    }
+    return graderJobSchema.parse(JSON.parse(response.body));
+  }
+
   beforeAll(async () => {
     migrationPool = createDatabasePool(requireEnv("DATABASE_MIGRATION_URL"), {
       applicationName: "grader-job-ledger-integration-fixtures"
@@ -336,11 +349,12 @@ describe("durable grader job ledger", () => {
     if (app !== undefined) await app.close();
 
     if (organizationId.length > 0) {
-      await migrationPool.query(
-        `DELETE FROM learning_validation.grader_jobs WHERE organization_id = $1`,
-        [organizationId]
-      );
+      await migrationPool.query(`DELETE FROM learning_progress.evidence WHERE organization_id = $1`, [organizationId]);
+      await migrationPool.query(`DELETE FROM learning_history.learning_events WHERE organization_id = $1`, [organizationId]);
       await migrationPool.query(`DELETE FROM events.outbox WHERE organization_id = $1`, [organizationId]);
+      await migrationPool.query(`DELETE FROM learning_validation.grader_job_processing WHERE organization_id = $1`, [organizationId]);
+      await migrationPool.query(`DELETE FROM learning_validation.validation_results WHERE organization_id = $1`, [organizationId]);
+      await migrationPool.query(`DELETE FROM learning_validation.grader_jobs WHERE organization_id = $1`, [organizationId]);
       await migrationPool.query(`DELETE FROM learning_progress.submissions WHERE organization_id = $1`, [organizationId]);
       await migrationPool.query(`DELETE FROM learning_progress.attempts WHERE organization_id = $1`, [organizationId]);
       await migrationPool.query(`DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`, [organizationId]);
@@ -530,9 +544,15 @@ describe("durable grader job ledger", () => {
       attempt_count: number;
       last_error_code: string | null;
       lease_token: string | null;
+      validation_result_id: string | null;
       finished_at: Date | null;
     }>(
-      `SELECT status, attempt_count, last_error_code, lease_token::text, finished_at
+      `SELECT status,
+              attempt_count,
+              last_error_code,
+              lease_token::text,
+              validation_result_id::text,
+              finished_at
          FROM learning_validation.grader_job_processing
         WHERE job_id = $1`,
       [first.job_id]
@@ -544,10 +564,287 @@ describe("durable grader job ledger", () => {
       lease_token: null
     });
     expect(processing.rows[0]?.finished_at).toBeInstanceOf(Date);
+    const validationResultId = processing.rows[0]?.validation_result_id;
+    expect(validationResultId).toBeTruthy();
+
+    const result = await migrationPool.query<{
+      id: string;
+      status: string;
+      outcome: string | null;
+      score: string | null;
+      evidence_trust: string;
+      recorded_by_user_id: string | null;
+      payload: Record<string, unknown>;
+    }>(
+      `SELECT id::text,
+              status,
+              outcome,
+              score::text,
+              evidence_trust,
+              recorded_by_user_id::text,
+              payload
+         FROM learning_validation.validation_results
+        WHERE grader_job_id = $1`,
+      [first.job_id]
+    );
+    expect(result.rows).toHaveLength(1);
+    expect(result.rows[0]).toMatchObject({
+      id: validationResultId,
+      status: "system_error",
+      outcome: null,
+      score: null,
+      evidence_trust: "trusted",
+      recorded_by_user_id: null,
+      payload: {
+        graderJobId: first.job_id,
+        protocolVersion: 1,
+        terminalState: "dead_letter",
+        error: { code: "attempt_5_failed", retryable: true }
+      }
+    });
+
+    const outbox = await migrationPool.query<{ count: number }>(
+      `SELECT count(*)::integer AS count
+         FROM events.outbox
+        WHERE aggregate_type = 'validation_result'
+          AND aggregate_id = $1::uuid
+          AND event_name = 'validation.result_recorded'`,
+      [validationResultId]
+    );
+    expect(outbox.rows[0]?.count).toBe(1);
+
+    const learnerEvents = await migrationPool.query<{ count: number }>(
+      `SELECT count(*)::integer AS count
+         FROM learning_history.learning_events
+        WHERE validation_result_id = $1::uuid`,
+      [validationResultId]
+    );
+    expect(learnerEvents.rows[0]?.count).toBe(0);
+
+    const evidence = await migrationPool.query<{ count: number }>(
+      `SELECT count(*)::integer AS count
+         FROM learning_progress.evidence
+        WHERE source_validation_result_id = $1::uuid`,
+      [validationResultId]
+    );
+    expect(evidence.rows[0]?.count).toBe(0);
 
     const noMoreWork = await workerPool.query<ClaimedJobRow>(
       `SELECT * FROM platform_internal.claim_grader_job(30)`
     );
     expect(noMoreWork.rows).toHaveLength(0);
+  });
+
+  it("records one completed system ValidationResult and replays an uncertain commit idempotently", async () => {
+    const submissionId = await createAttemptAndSubmission(executableActivityId, {
+      source: {
+        files: [{ path: "index.ts", content: "export const replaySafe = 99;" }]
+      }
+    });
+    const scheduled = await scheduleGraderJob(submissionId);
+
+    const claimed = await workerPool.query<ClaimedJobRow>(
+      `SELECT * FROM platform_internal.claim_grader_job(30)`
+    );
+    expect(claimed.rows).toHaveLength(1);
+    const job = claimed.rows[0]!;
+    expect(job.job_id).toBe(scheduled.jobId);
+
+    const terminal = {
+      protocolVersion: 1,
+      jobId: job.job_id,
+      status: "completed",
+      outcome: "passed",
+      score: 1,
+      payload: { testsPassed: 4, testsTotal: 4 }
+    };
+
+    const firstAck = await workerPool.query<{ validation_result_id: string | null }>(
+      `SELECT platform_internal.acknowledge_grader_job($1, $2, $3::jsonb)::text AS validation_result_id`,
+      [job.job_id, job.lease_token, JSON.stringify(terminal)]
+    );
+    const validationResultId = firstAck.rows[0]?.validation_result_id;
+    expect(validationResultId).toBeTruthy();
+
+    // Simulates a Worker that received the Gateway response and committed it,
+    // but crashed before learning whether the database acknowledgement succeeded.
+    const replayAck = await workerPool.query<{ validation_result_id: string | null }>(
+      `SELECT platform_internal.acknowledge_grader_job($1, $2, $3::jsonb)::text AS validation_result_id`,
+      [job.job_id, job.lease_token, JSON.stringify(terminal)]
+    );
+    expect(replayAck.rows[0]?.validation_result_id).toBe(validationResultId);
+
+    const persisted = await migrationPool.query<{
+      count: number;
+      status: string;
+      outcome: string | null;
+      score: string | null;
+      evidence_trust: string;
+      recorded_by_user_id: string | null;
+    }>(
+      `SELECT count(*)::integer AS count,
+              min(status) AS status,
+              min(outcome) AS outcome,
+              min(score)::text AS score,
+              min(evidence_trust) AS evidence_trust,
+              min(recorded_by_user_id::text) AS recorded_by_user_id
+         FROM learning_validation.validation_results
+        WHERE grader_job_id = $1`,
+      [job.job_id]
+    );
+    expect(persisted.rows[0]).toEqual({
+      count: 1,
+      status: "completed",
+      outcome: "passed",
+      score: "1.00000",
+      evidence_trust: "trusted",
+      recorded_by_user_id: null
+    });
+
+    const processing = await migrationPool.query<{
+      status: string;
+      validation_result_id: string | null;
+      lease_token: string | null;
+    }>(
+      `SELECT status, validation_result_id::text, lease_token::text
+         FROM learning_validation.grader_job_processing
+        WHERE job_id = $1`,
+      [job.job_id]
+    );
+    expect(processing.rows[0]).toEqual({
+      status: "completed",
+      validation_result_id: validationResultId,
+      lease_token: null
+    });
+
+    const outbox = await migrationPool.query<{ count: number }>(
+      `SELECT count(*)::integer AS count
+         FROM events.outbox
+        WHERE aggregate_type = 'validation_result'
+          AND aggregate_id = $1::uuid
+          AND event_name = 'validation.result_recorded'`,
+      [validationResultId]
+    );
+    expect(outbox.rows[0]?.count).toBe(1);
+
+    const learnerEvents = await migrationPool.query<{ count: number }>(
+      `SELECT count(*)::integer AS count
+         FROM learning_history.learning_events
+        WHERE validation_result_id = $1::uuid
+          AND event_name = 'validation.result_recorded'`,
+      [validationResultId]
+    );
+    expect(learnerEvents.rows[0]?.count).toBe(1);
+
+    const hidden = await withTenantTransaction(
+      appPool,
+      { organizationId: randomUUID(), userId: learnerUserId },
+      async (transaction) =>
+        transaction.client.query<{ count: number }>(
+          `SELECT count(*)::integer AS count
+             FROM learning_validation.validation_results
+            WHERE grader_job_id = $1`,
+          [job.job_id]
+        )
+    );
+    expect(hidden.rows[0]?.count).toBe(0);
+  });
+
+  it("rejects stale and wrong-job terminal acknowledgements before recording needs-review state", async () => {
+    const submissionId = await createAttemptAndSubmission(executableActivityId, {
+      source: {
+        files: [{ path: "index.ts", content: "export const reviewMe = true;" }]
+      }
+    });
+    const scheduled = await scheduleGraderJob(submissionId);
+
+    const firstClaim = await workerPool.query<ClaimedJobRow>(
+      `SELECT * FROM platform_internal.claim_grader_job(30)`
+    );
+    expect(firstClaim.rows).toHaveLength(1);
+    const stale = firstClaim.rows[0]!;
+    expect(stale.job_id).toBe(scheduled.jobId);
+
+    await migrationPool.query(
+      `UPDATE learning_validation.grader_job_processing
+          SET lease_expires_at = now() - interval '1 second'
+        WHERE job_id = $1`,
+      [stale.job_id]
+    );
+
+    const reclaimed = await workerPool.query<ClaimedJobRow>(
+      `SELECT * FROM platform_internal.claim_grader_job(30)`
+    );
+    expect(reclaimed.rows).toHaveLength(1);
+    const current = reclaimed.rows[0]!;
+    expect(current.job_id).toBe(stale.job_id);
+    expect(current.lease_token).not.toBe(stale.lease_token);
+
+    const terminal = {
+      protocolVersion: 1,
+      jobId: current.job_id,
+      status: "completed",
+      outcome: "needs_review",
+      score: null,
+      payload: { reason: "ambiguous_output" }
+    };
+
+    const staleAck = await workerPool.query<{ validation_result_id: string | null }>(
+      `SELECT platform_internal.acknowledge_grader_job($1, $2, $3::jsonb)::text AS validation_result_id`,
+      [stale.job_id, stale.lease_token, JSON.stringify(terminal)]
+    );
+    expect(staleAck.rows[0]?.validation_result_id).toBeNull();
+
+    await expect(
+      workerPool.query(
+        `SELECT platform_internal.acknowledge_grader_job($1, $2, $3::jsonb)`,
+        [
+          current.job_id,
+          current.lease_token,
+          JSON.stringify({ ...terminal, jobId: `sha256:${"f".repeat(64)}` })
+        ]
+      )
+    ).rejects.toMatchObject({ code: "22023" });
+
+    const beforeValidAck = await migrationPool.query<{ count: number }>(
+      `SELECT count(*)::integer AS count
+         FROM learning_validation.validation_results
+        WHERE grader_job_id = $1`,
+      [current.job_id]
+    );
+    expect(beforeValidAck.rows[0]?.count).toBe(0);
+
+    const validAck = await workerPool.query<{ validation_result_id: string | null }>(
+      `SELECT platform_internal.acknowledge_grader_job($1, $2, $3::jsonb)::text AS validation_result_id`,
+      [current.job_id, current.lease_token, JSON.stringify(terminal)]
+    );
+    const validationResultId = validAck.rows[0]?.validation_result_id;
+    expect(validationResultId).toBeTruthy();
+
+    const result = await migrationPool.query<{
+      status: string;
+      outcome: string | null;
+      score: string | null;
+      recorded_by_user_id: string | null;
+    }>(
+      `SELECT status, outcome, score::text, recorded_by_user_id::text
+         FROM learning_validation.validation_results
+        WHERE id = $1::uuid`,
+      [validationResultId]
+    );
+    expect(result.rows[0]).toEqual({
+      status: "completed",
+      outcome: "needs_review",
+      score: null,
+      recorded_by_user_id: null
+    });
+
+    const evidence = await migrationPool.query<{ count: number }>(
+      `SELECT count(*)::integer AS count
+         FROM learning_progress.evidence
+        WHERE source_validation_result_id = $1::uuid`,
+      [validationResultId]
+    );
+    expect(evidence.rows[0]?.count).toBe(0);
   });
 });
