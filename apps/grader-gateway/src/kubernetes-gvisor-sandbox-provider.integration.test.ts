@@ -12,13 +12,18 @@ import {
 } from "@platform/contracts/grader";
 import { afterEach, describe, expect, it } from "vitest";
 
-import type { KubernetesGvisorProviderConfig } from "./config.js";
+import {
+  GRADER_GVISOR_RUNTIME_CLASS,
+  GRADER_SANDBOX_NAMESPACE,
+  GRADER_SANDBOX_RUNNER_SERVICE_ACCOUNT,
+  type KubernetesGvisorProviderConfig
+} from "./config.js";
 import { KubernetesGvisorSandboxProvider } from "./kubernetes-gvisor-sandbox-provider.js";
 
 const imageDigest = `sha256:${"b".repeat(64)}`;
 const initialServiceAccountToken = "kubernetes-service-account-token";
 const rotatedServiceAccountToken = "rotated-kubernetes-service-account-token";
-const namespace = "grader-sandbox";
+const namespace = GRADER_SANDBOX_NAMESPACE;
 const tempDirectories: string[] = [];
 
 function sourceRequest(): GraderJobRequest {
@@ -76,8 +81,6 @@ function serviceAccountTokenFile(): string {
 function config(apiUrl: string, tokenFile: string): KubernetesGvisorProviderConfig {
   return {
     apiUrl,
-    namespace,
-    runtimeClassName: "platform-gvisor",
     runnerImageRepository: "registry.example.com/platform/grader-runner",
     serviceAccountTokenFile: tokenFile,
     caCertificate: null,
@@ -124,6 +127,16 @@ function close(server: Server): Promise<void> {
   return new Promise<void>((resolve, reject) =>
     server.close((error) => (error === undefined ? resolve() : reject(error)))
   );
+}
+
+function jobOwner(name: string, uid: string) {
+  return {
+    apiVersion: "batch/v1",
+    kind: "Job",
+    name,
+    uid,
+    controller: true
+  };
 }
 
 describe("Kubernetes gVisor sandbox provider", () => {
@@ -203,12 +216,13 @@ describe("Kubernetes gVisor sandbox provider", () => {
         return;
       }
       if (incoming.method === "GET" && url.pathname === `/api/v1/namespaces/${namespace}/pods`) {
+        const jobMetadata = object(object(storedJob).metadata);
         json(response, 200, {
           items: [
             {
               metadata: {
                 name: "grader-pod-1",
-                ownerReferences: [{ kind: "Job", uid: "job-uid-1" }]
+                ownerReferences: [jobOwner(String(jobMetadata.name), String(jobMetadata.uid))]
               },
               status: { phase: "Succeeded" }
             }
@@ -240,6 +254,7 @@ describe("Kubernetes gVisor sandbox provider", () => {
     });
 
     const job = object(storedJob);
+    expect(object(job.metadata).namespace).toBe(GRADER_SANDBOX_NAMESPACE);
     const serializedJob = JSON.stringify(job);
     for (const file of request.source.files) expect(serializedJob).not.toContain(file.content);
 
@@ -253,7 +268,8 @@ describe("Kubernetes gVisor sandbox provider", () => {
     });
     const podSpec = object(object(spec.template).spec);
     expect(podSpec).toMatchObject({
-      runtimeClassName: "platform-gvisor",
+      runtimeClassName: GRADER_GVISOR_RUNTIME_CLASS,
+      serviceAccountName: GRADER_SANDBOX_RUNNER_SERVICE_ACCOUNT,
       restartPolicy: "Never",
       terminationGracePeriodSeconds: 1,
       automountServiceAccountToken: false,
@@ -285,8 +301,9 @@ describe("Kubernetes gVisor sandbox provider", () => {
     expect(secrets.size).toBe(2);
     for (const [index, secret] of [...secrets.values()].entries()) {
       const secretMetadata = object(secret.metadata);
+      expect(secretMetadata.namespace).toBe(GRADER_SANDBOX_NAMESPACE);
       expect(secretMetadata.ownerReferences).toEqual([
-        expect.objectContaining({ kind: "Job", name: object(job.metadata).name, uid: "job-uid-1" })
+        jobOwner(String(object(job.metadata).name), "job-uid-1")
       ]);
       expect(Buffer.from(String(object(secret.data).content), "base64").toString("utf8")).toBe(
         request.source.files[index]?.content
@@ -359,6 +376,67 @@ describe("Kubernetes gVisor sandbox provider", () => {
       jobId: request.jobId,
       status: "system_error",
       error: { code: "sandbox_resource_conflict", retryable: false }
+    });
+  });
+
+  it("keeps a disappeared Kubernetes resource retryable instead of recording learner failure", async () => {
+    const tokenFile = serviceAccountTokenFile();
+    const request = sourceRequest();
+    let jobName = "";
+    const server = createServer(async (incoming, response) => {
+      const url = new URL(incoming.url ?? "/", "http://127.0.0.1");
+      const jobsBase = `/apis/batch/v1/namespaces/${namespace}/jobs`;
+      const secretsBase = `/api/v1/namespaces/${namespace}/secrets`;
+      if (incoming.method === "POST" && url.pathname === jobsBase) {
+        const body = object(await readJsonBody(incoming));
+        const metadata = object(body.metadata);
+        jobName = String(metadata.name);
+        json(response, 201, { ...body, metadata: { ...metadata, uid: "job-uid-disappeared" } });
+        return;
+      }
+      if (incoming.method === "POST" && url.pathname === secretsBase) {
+        const body = object(await readJsonBody(incoming));
+        const metadata = object(body.metadata);
+        json(response, 201, { ...body, metadata: { ...metadata, uid: "secret-uid" } });
+        return;
+      }
+      if (incoming.method === "GET" && url.pathname === `${jobsBase}/${jobName}`) {
+        json(response, 404, { message: "job disappeared" });
+        return;
+      }
+      if (incoming.method === "DELETE" && url.pathname === `${jobsBase}/${jobName}`) {
+        json(response, 404, { message: "already gone" });
+        return;
+      }
+      json(response, 404, { message: "not found" });
+    });
+    const apiUrl = await listen(server);
+    cleanup.push(() => close(server));
+
+    const provider = new KubernetesGvisorSandboxProvider(config(apiUrl, tokenFile));
+    await expect(provider.execute(request, resolvedProfile())).resolves.toEqual({
+      protocolVersion: 1,
+      jobId: request.jobId,
+      status: "system_error",
+      error: { code: "sandbox_resource_unavailable", retryable: true }
+    });
+  });
+
+  it("classifies Kubernetes capacity throttling as retryable infrastructure failure", async () => {
+    const tokenFile = serviceAccountTokenFile();
+    const request = sourceRequest();
+    const server = createServer((_incoming, response) => {
+      json(response, 429, { reason: "TooManyRequests", message: "capacity exhausted" });
+    });
+    const apiUrl = await listen(server);
+    cleanup.push(() => close(server));
+
+    const provider = new KubernetesGvisorSandboxProvider(config(apiUrl, tokenFile));
+    await expect(provider.execute(request, resolvedProfile())).resolves.toEqual({
+      protocolVersion: 1,
+      jobId: request.jobId,
+      status: "system_error",
+      error: { code: "sandbox_capacity", retryable: true }
     });
   });
 });
