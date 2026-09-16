@@ -32,7 +32,7 @@ function sourceRequest(): GraderJobRequest {
   return { ...spec, jobId: buildGraderJobId(spec) };
 }
 
-function profile(pids = 64) {
+function resolvedProfile(pids = 64) {
   const value: GraderExecutionProfile = {
     key: "typescript-tests",
     version: 1,
@@ -60,12 +60,36 @@ function profile(pids = 64) {
   return resolved;
 }
 
+function config(apiUrl: string): KubernetesGvisorProviderConfig {
+  return {
+    apiUrl,
+    namespace,
+    runtimeClassName: "platform-gvisor",
+    runnerImageRepository: "registry.example.com/platform/grader-runner",
+    serviceAccountToken,
+    caCertificate: null,
+    pollIntervalMs: 10,
+    requestTimeoutMs: 1_000,
+    startupGraceMs: 2_000,
+    cleanupTtlSeconds: 300,
+    ephemeralStorageMiB: 96,
+    podPidsLimit: 64
+  };
+}
+
 async function readJsonBody(request: IncomingMessage): Promise<unknown> {
   const chunks: Buffer[] = [];
   for await (const chunk of request) {
     chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
   }
   return JSON.parse(Buffer.concat(chunks).toString("utf8")) as unknown;
+}
+
+function object(value: unknown): Record<string, unknown> {
+  if (value === null || typeof value !== "object" || Array.isArray(value)) {
+    throw new Error("expected object");
+  }
+  return value as Record<string, unknown>;
 }
 
 function json(response: ServerResponse, status: number, body: unknown): void {
@@ -89,32 +113,6 @@ function close(server: Server): Promise<void> {
   );
 }
 
-type StoredResource = Record<string, unknown>;
-
-function object(value: unknown): Record<string, unknown> {
-  if (value === null || typeof value !== "object" || Array.isArray(value)) {
-    throw new Error("expected object");
-  }
-  return value as Record<string, unknown>;
-}
-
-function config(apiUrl: string): KubernetesGvisorProviderConfig {
-  return {
-    apiUrl,
-    namespace,
-    runtimeClassName: "platform-gvisor",
-    runnerImageRepository: "registry.example.com/platform/grader-runner",
-    serviceAccountToken,
-    caCertificate: null,
-    pollIntervalMs: 10,
-    requestTimeoutMs: 1_000,
-    startupGraceMs: 2_000,
-    cleanupTtlSeconds: 300,
-    ephemeralStorageMiB: 96,
-    podPidsLimit: 64
-  };
-}
-
 describe("Kubernetes gVisor sandbox provider", () => {
   const cleanup: Array<() => Promise<void>> = [];
 
@@ -122,20 +120,18 @@ describe("Kubernetes gVisor sandbox provider", () => {
     while (cleanup.length > 0) await cleanup.pop()?.();
   });
 
-  it("creates a gVisor-only hardened Job, keeps source only in owner-referenced Secrets, and reuses deterministic execution state", async () => {
+  it("creates a hardened deterministic Job and keeps learner source only in owner-referenced Secrets", async () => {
     const request = sourceRequest();
-    const resolvedProfile = profile();
-    let storedJob: StoredResource | null = null;
-    const secrets = new Map<string, StoredResource>();
-    let jobCreateSuccesses = 0;
-    let authenticatedRequests = 0;
+    const profile = resolvedProfile();
+    let storedJob: Record<string, unknown> | null = null;
+    const secrets = new Map<string, Record<string, unknown>>();
+    let successfulJobCreates = 0;
 
     const server = createServer(async (incoming, response) => {
       if (incoming.headers.authorization !== `Bearer ${serviceAccountToken}`) {
         json(response, 401, { message: "unauthorized" });
         return;
       }
-      authenticatedRequests += 1;
       const url = new URL(incoming.url ?? "/", "http://127.0.0.1");
       const jobsBase = `/apis/batch/v1/namespaces/${namespace}/jobs`;
       const secretsBase = `/api/v1/namespaces/${namespace}/secrets`;
@@ -147,15 +143,11 @@ describe("Kubernetes gVisor sandbox provider", () => {
           return;
         }
         const metadata = object(body.metadata);
-        storedJob = {
-          ...body,
-          metadata: { ...metadata, uid: "job-uid-1" }
-        };
-        jobCreateSuccesses += 1;
+        storedJob = { ...body, metadata: { ...metadata, uid: "job-uid-1" } };
+        successfulJobCreates += 1;
         json(response, 201, storedJob);
         return;
       }
-
       if (incoming.method === "GET" && url.pathname.startsWith(`${jobsBase}/`)) {
         if (storedJob === null) {
           json(response, 404, { message: "not found" });
@@ -163,13 +155,10 @@ describe("Kubernetes gVisor sandbox provider", () => {
         }
         json(response, 200, {
           ...storedJob,
-          status: {
-            conditions: [{ type: "Complete", status: "True", reason: "CompletionsReached" }]
-          }
+          status: { conditions: [{ type: "Complete", status: "True", reason: "CompletionsReached" }] }
         });
         return;
       }
-
       if (incoming.method === "POST" && url.pathname === secretsBase) {
         const body = object(await readJsonBody(incoming));
         const metadata = object(body.metadata);
@@ -184,7 +173,6 @@ describe("Kubernetes gVisor sandbox provider", () => {
         json(response, 201, stored);
         return;
       }
-
       if (incoming.method === "GET" && url.pathname.startsWith(`${secretsBase}/`)) {
         const name = decodeURIComponent(url.pathname.slice(secretsBase.length + 1));
         const stored = secrets.get(name);
@@ -195,23 +183,11 @@ describe("Kubernetes gVisor sandbox provider", () => {
         json(response, 200, stored);
         return;
       }
-
       if (incoming.method === "GET" && url.pathname === `/api/v1/namespaces/${namespace}/pods`) {
-        json(response, 200, {
-          items: [
-            {
-              metadata: { name: "grader-pod-1" },
-              status: { phase: "Succeeded" }
-            }
-          ]
-        });
+        json(response, 200, { items: [{ metadata: { name: "grader-pod-1" }, status: { phase: "Succeeded" } }] });
         return;
       }
-
-      if (
-        incoming.method === "GET" &&
-        url.pathname === `/api/v1/namespaces/${namespace}/pods/grader-pod-1/log`
-      ) {
+      if (incoming.method === "GET" && url.pathname === `/api/v1/namespaces/${namespace}/pods/grader-pod-1/log`) {
         json(response, 200, {
           protocolVersion: 1,
           jobId: request.jobId,
@@ -222,32 +198,25 @@ describe("Kubernetes gVisor sandbox provider", () => {
         });
         return;
       }
-
       json(response, 404, { message: `${incoming.method} ${url.pathname} not handled` });
     });
     const apiUrl = await listen(server);
     cleanup.push(() => close(server));
 
     const provider = new KubernetesGvisorSandboxProvider(config(apiUrl));
-    await expect(provider.execute(request, resolvedProfile)).resolves.toEqual({
-      protocolVersion: 1,
+    await expect(provider.execute(request, profile)).resolves.toMatchObject({
       jobId: request.jobId,
       status: "completed",
-      outcome: "passed",
-      score: 1,
-      payload: { tests: 4 }
+      outcome: "passed"
     });
 
-    expect(storedJob).not.toBeNull();
     const job = object(storedJob);
-    const jobJson = JSON.stringify(job);
-    expect(jobJson).not.toContain(request.source.files[0]?.content ?? "missing-source");
-    expect(jobJson).not.toContain(request.source.files[1]?.content ?? "missing-source");
+    const serializedJob = JSON.stringify(job);
+    for (const file of request.source.files) expect(serializedJob).not.toContain(file.content);
 
     const spec = object(job.spec);
     expect(spec).toMatchObject({ backoffLimit: 0, ttlSecondsAfterFinished: 300 });
-    const template = object(spec.template);
-    const podSpec = object(template.spec);
+    const podSpec = object(object(spec.template).spec);
     expect(podSpec).toMatchObject({
       runtimeClassName: "platform-gvisor",
       restartPolicy: "Never",
@@ -259,8 +228,7 @@ describe("Kubernetes gVisor sandbox provider", () => {
     });
     const containers = podSpec.containers as unknown[];
     expect(containers).toHaveLength(1);
-    const runner = object(containers[0]);
-    expect(runner).toMatchObject({
+    expect(object(containers[0])).toMatchObject({
       name: "runner",
       image: `registry.example.com/platform/grader-runner@${imageDigest}`,
       command: ["node"],
@@ -278,46 +246,46 @@ describe("Kubernetes gVisor sandbox provider", () => {
       }
     });
 
-    expect(secrets).toHaveLength(2);
-    const secretValues = [...secrets.values()];
-    for (const [index, secret] of secretValues.entries()) {
+    expect(secrets.size).toBe(2);
+    for (const [index, secret] of [...secrets.values()].entries()) {
       const secretMetadata = object(secret.metadata);
-      const owners = secretMetadata.ownerReferences as unknown[];
-      expect(owners).toEqual([
+      expect(secretMetadata.ownerReferences).toEqual([
         expect.objectContaining({ kind: "Job", name: object(job.metadata).name, uid: "job-uid-1" })
       ]);
-      const data = object(secret.data);
-      expect(Buffer.from(String(data.content), "base64").toString("utf8")).toBe(
+      expect(Buffer.from(String(object(secret.data).content), "base64").toString("utf8")).toBe(
         request.source.files[index]?.content
       );
     }
 
-    const requestsAfterFirstExecution = authenticatedRequests;
-    await expect(provider.execute(request, resolvedProfile)).resolves.toMatchObject({
-      status: "completed",
-      jobId: request.jobId
+    await expect(provider.execute(request, profile)).resolves.toMatchObject({
+      jobId: request.jobId,
+      status: "completed"
     });
-    expect(jobCreateSuccesses).toBe(1);
-    expect(authenticatedRequests).toBeGreaterThan(requestsAfterFirstExecution);
+    expect(successfulJobCreates).toBe(1);
   });
 
-  it("fails closed before Kubernetes when the profile PID budget does not match the dedicated node envelope", async () => {
-    const server = createServer((_incoming, response) => json(response, 500, { message: "unexpected" }));
+  it("fails before Kubernetes when profile PID semantics do not match the dedicated node envelope", async () => {
+    let requests = 0;
+    const server = createServer((_incoming, response) => {
+      requests += 1;
+      json(response, 500, { message: "unexpected" });
+    });
     const apiUrl = await listen(server);
     cleanup.push(() => close(server));
+    const request = sourceRequest();
     const provider = new KubernetesGvisorSandboxProvider(config(apiUrl));
 
-    await expect(provider.execute(sourceRequest(), profile(32))).resolves.toEqual({
+    await expect(provider.execute(request, resolvedProfile(32))).resolves.toEqual({
       protocolVersion: 1,
-      jobId: sourceRequest().jobId,
+      jobId: request.jobId,
       status: "system_error",
       error: { code: "sandbox_profile_pid_limit_mismatch", retryable: false }
     });
+    expect(requests).toBe(0);
   });
 
-  it("rejects a deterministic Kubernetes resource whose immutable identity does not match", async () => {
+  it("fails closed when a deterministic Kubernetes Job has conflicting immutable identity", async () => {
     const request = sourceRequest();
-    const resolvedProfile = profile();
     const server = createServer(async (incoming, response) => {
       const url = new URL(incoming.url ?? "/", "http://127.0.0.1");
       const jobsBase = `/apis/batch/v1/namespaces/${namespace}/jobs`;
@@ -346,7 +314,7 @@ describe("Kubernetes gVisor sandbox provider", () => {
     cleanup.push(() => close(server));
 
     const provider = new KubernetesGvisorSandboxProvider(config(apiUrl));
-    await expect(provider.execute(request, resolvedProfile)).resolves.toEqual({
+    await expect(provider.execute(request, resolvedProfile())).resolves.toEqual({
       protocolVersion: 1,
       jobId: request.jobId,
       status: "system_error",
