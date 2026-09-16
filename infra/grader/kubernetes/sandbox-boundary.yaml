@@ -1,18 +1,18 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: nexus-grader-control
+  name: grader-control
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: grader-gateway
-  namespace: nexus-grader-control
+  namespace: grader-control
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: nexus-grader-sandbox
+  name: grader-sandbox
   labels:
     pod-security.kubernetes.io/enforce: restricted
     pod-security.kubernetes.io/audit: restricted
@@ -22,14 +22,14 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: grader-sandbox
-  namespace: nexus-grader-sandbox
+  namespace: grader-sandbox
 automountServiceAccountToken: false
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: default-deny-all
-  namespace: nexus-grader-sandbox
+  namespace: grader-sandbox
 spec:
   podSelector: {}
   policyTypes:
@@ -40,7 +40,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: grader-gateway-sandbox-controller
-  namespace: nexus-grader-sandbox
+  namespace: grader-sandbox
 rules:
   - apiGroups:
       - batch
@@ -73,11 +73,11 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: grader-gateway-sandbox-controller
-  namespace: nexus-grader-sandbox
+  namespace: grader-sandbox
 subjects:
   - kind: ServiceAccount
     name: grader-gateway
-    namespace: nexus-grader-control
+    namespace: grader-control
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
