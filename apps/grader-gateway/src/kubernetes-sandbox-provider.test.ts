@@ -17,10 +17,10 @@ import { buildGraderJobId, type GraderJobRequest, type GraderJobSpec } from "./p
 type JsonRecord = Record<string, unknown>;
 
 const config: KubernetesSandboxProviderConfig = {
-  namespace: "nexus-grader-sandbox",
+  namespace: "grader-sandbox",
   runtimeClassName: "gvisor",
   sandboxServiceAccountName: "grader-sandbox",
-  runnerImageRepository: "registry.example.test/nexus/grader-runner",
+  runnerImageRepository: "registry.example.test/platform/grader-runner",
   startupTimeoutMs: 1_000,
   pollIntervalMs: 100,
   resultRetentionSeconds: 300
@@ -145,7 +145,7 @@ describe("Kubernetes gVisor sandbox provider", () => {
             containers: [
               {
                 name: "runner",
-                image: `registry.example.test/nexus/grader-runner@sha256:${"c".repeat(64)}`,
+                image: `registry.example.test/platform/grader-runner@sha256:${"c".repeat(64)}`,
                 command: ["node"],
                 args: ["/runner/entry.mjs"],
                 securityContext: {
@@ -200,7 +200,7 @@ describe("Kubernetes gVisor sandbox provider", () => {
           {
             apiVersion: "batch/v1",
             kind: "Job",
-            name: expect.stringMatching(/^nexus-g-[0-9a-f]{40}$/),
+            name: expect.stringMatching(/^grader-g-[0-9a-f]{40}$/),
             uid: "01994fc0-8e4a-7f5c-8d26-dbe90af34103",
             controller: false,
             blockOwnerDeletion: false
@@ -266,7 +266,7 @@ describe("Kubernetes gVisor sandbox provider", () => {
             uid: "01994fc0-8e4a-7f5c-8d26-dbe90af34104",
             annotations: {
               ...annotations,
-              "nexus.platform.dev/profile-fingerprint": `sha256:${"d".repeat(64)}`
+              "grader.platform.dev/profile-fingerprint": `sha256:${"d".repeat(64)}`
             }
           }
         };
