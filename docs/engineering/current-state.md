@@ -8,11 +8,11 @@ It is **not live GitHub telemetry**. Before doing work, always verify the curren
 
 Last maintained: 2026-09-16.
 
-Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the first F7 Grader Gateway security/admission contract. F7 now has a versioned authenticated job protocol and server-owned execution-profile boundary, but **no production learner-code execution is enabled yet**. Verify the live `main` head before relying on any SHA or PR number.
+Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the first two F7 grader-hardening slices. F7 now has a versioned authenticated Grader Gateway admission/profile boundary and a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, but **no production learner-code execution or Worker -> Gateway dispatch is enabled yet**. Verify the live `main` head before relying on any SHA or PR number.
 
-Latest architectural decision at this checkpoint: ADR-0033.
+Latest architectural decision at this checkpoint: ADR-0034.
 
-Latest ordered migration at this checkpoint: `000026_project_activity_read_model.sql`.
+Latest ordered migration at this checkpoint: `000027_grader_job_ledger.sql`.
 
 The baseline above is an orientation marker, not permission to skip checking the live `main` head.
 
@@ -238,16 +238,17 @@ Project operator
   -> normalized activity page + separately composed current Project repository context
 ```
 
-### F7 — Grader hardening: admission/security contract established
+### F7 — Grader hardening: admission/security and durable job ledger established
 
-The first F7 slice establishes a testable Grader Gateway control-plane contract while intentionally keeping production learner-code execution disabled:
+F7 now has two explicit layers while intentionally keeping production learner-code execution disabled.
+
+The Grader Gateway control-plane boundary establishes:
 
 - ADR-0007 remains the governing security boundary: learner code never executes in Web/API/Worker;
 - Grader Gateway owns versioned grader admission, server-owned executable profiles, and the sandbox-provider control boundary;
 - protocol v1 accepts only protocol version, content-addressed job identity, exact execution-profile reference, immutable Submission/ActivityVersion ids, and bounded untrusted source files;
 - source paths are normalized relative POSIX paths; traversal, duplicate paths, per-file overflow, and aggregate source overflow are rejected before provider interaction;
 - `jobId` is a SHA-256 content address over canonical immutable job material; source-file ordering is normalized for identity;
-- content-addressed job identity gives retries a stable immutable identity but **does not yet provide durable execution de-duplication**;
 - executable profiles are server-owned and exact-versioned; they own language/runtime identity, immutable runner-image digest, argv-only runner strategy, network/filesystem policy, and resource limits;
 - callers cannot supply commands, runner images, network policy, mounts, credentials, provider options, or resource limits;
 - profile admission requires network `off`, ephemeral filesystem, read-only root filesystem, immutable `sha256` image identity, no general-purpose shell entrypoint, and bounded wall time/CPU/memory/process/output/source limits;
@@ -256,11 +257,28 @@ The first F7 slice establishes a testable Grader Gateway control-plane contract 
 - the sandbox provider is an explicit adapter seam; the default provider intentionally executes nothing and returns `system_error`;
 - sandbox-provider exceptions, malformed protocol output, wrong result job identity, and oversized result payload normalize to infrastructure `system_error`, never learner `failed` outcome;
 - provider output is runtime-validated instead of trusted merely because an adapter satisfies a TypeScript interface;
-- no production database credentials, user sessions, domain repositories, Docker socket, host-process runner, or provider-specific execution runtime are introduced;
-- there is no new persistence, outbox, LearningEvent, ValidationResult, Evidence, or Mastery mutation in this slice;
-- production sandbox-provider selection, durable grader jobs, API/Worker dispatch, executable system-validator registration, and system-owned ValidationResult recording remain later F7 work.
+- no production database credentials, user sessions, domain repositories, Docker socket, host-process runner, or provider-specific execution runtime are introduced.
 
-The established F7 control-plane boundary is:
+The durable grader-job layer establishes:
+
+- Learning Validation owns canonical grader-job state because the job evaluates an immutable Submission under the exact validator binding pinned by its ActivityVersion;
+- `code-grader@1` is an exact-version system validator and only becomes schedulable when its immutable validator config resolves an exact server-owned execution profile;
+- learner scheduling is own-Submission only and continues to use existing Organization/Offering authorization plus public Learning Progress and Learning Content application queries rather than reaching into foreign repositories;
+- executable source is accepted only through explicit `Submission.payload.source.files`; arbitrary Submission payload fields are never guessed as source;
+- the learner/API request cannot choose runtime, image, command, network, filesystem, credentials, mounts, provider options, or resource limits;
+- durable admission returns `202 Accepted`; scheduling does not claim that execution occurred;
+- immutable `learning_validation.grader_jobs` records content-addressed job identity plus exact Organization/Submission/ActivityVersion, validator config, profile key/version/fingerprint, canonical request payload, requester, and creation time;
+- mutable `learning_validation.grader_job_processing` is separate from immutable job provenance and owns pending/processing/retry/dead-letter state;
+- repeated scheduling of the same logical Submission/validator returns the existing job only when immutable material still matches; deployment/profile drift under the same profile key/version becomes a conflict instead of silently rewriting provenance;
+- `platform_app` can insert/read tenant-scoped immutable jobs and read processing state under RLS but cannot mutate lease/status state;
+- `platform_worker` cannot update grader tables directly and advances processing only through narrow PostgreSQL security-definer functions;
+- claim uses `FOR UPDATE SKIP LOCKED`, unique lease tokens, expiry-based crash recovery, and bounded attempt count;
+- stale workers cannot fail a newly re-leased job because failure requires the current lease token;
+- five exhausted attempts transition to database-owned `dead_letter` state;
+- PostgreSQL remains canonical asynchronous work state; BullMQ/Redis may later be a wake-up/scheduling adapter but must not become grader-job truth;
+- Gateway dispatch, terminal acknowledgement, system-owned ValidationResult recording, Evidence materialization, and production sandbox execution remain deliberately outside this slice.
+
+The established Gateway control-plane boundary is:
 
 ```text
 trusted service caller
@@ -273,7 +291,18 @@ trusted service caller
   -> completed | system_error protocol result
 ```
 
-At this checkpoint the default provider stops at `system_error`; no learner code is executed.
+The durable scheduling boundary is:
+
+```text
+own learner Submission
+  -> exact ActivityVersion validator binding
+  -> exact server-owned execution profile
+  -> explicit bounded source envelope
+  -> immutable Validation-owned grader job
+  -> separate worker lease/retry/dead-letter processing state
+```
+
+At this checkpoint the worker does not call Grader Gateway and the default Gateway provider executes nothing, so no learner code is executed and no system-owned ValidationResult is recorded.
 
 ### F8–F9 — upcoming foundations
 
@@ -328,13 +357,15 @@ These are high-value reminders, not substitutes for their ADRs.
 - Project activity cursor ordering is deterministic presentation/pagination ordering, not provider causal ordering.
 - Historical Project activity remains historical even when the repository is later suspended, removed, or disconnected.
 - Untrusted learner code never executes in Web/API/Worker; ADR-0007 places it behind the Grader Gateway security boundary.
-- Grader Gateway admission/profiles are a separate security-control boundary; Learning Validation remains the owner of canonical ValidationResult attribution and Learning Progress remains the owner of normalized Evidence.
-- Grader `jobId` is content-addressed immutable identity; **job identity != durable execution de-duplication**. Durable retry/lease/state must be added explicitly before asynchronous production dispatch.
-- Grader execution-profile `(key, version)` semantics are immutable. A material image/runtime/runner/policy/limit change requires a new version rather than rebinding an existing one.
+- Grader Gateway admission/profiles are a separate security-control boundary; Learning Validation owns canonical durable grader-job intent/processing plus ValidationResult attribution, while Learning Progress owns normalized Evidence.
+- Grader `jobId` is content-addressed immutable identity; durable logical scheduling/de-duplication is provided by the Validation-owned grader-job ledger, while safe execution/result de-duplication still requires lease-aware terminal acknowledgement in the next dispatch slice.
+- Grader execution-profile `(key, version)` semantics are immutable. A material image/runtime/runner/policy/limit change requires a new version rather than rebinding an existing one; the persisted profile fingerprint makes drift detectable.
 - Caller-supplied source is hostile data. Commands, image identity, network/mount/credential/provider/resource policy are server-owned and never accepted from learner-controlled input.
+- Grader-job immutable intent/provenance is separate from mutable worker lease/retry/dead-letter state.
+- Worker mutation of grader processing state is function-scoped; `platform_worker` does not receive direct grader-table UPDATE privilege.
 - Sandbox-provider output is untrusted adapter output and must satisfy protocol/runtime/output-size validation before any later ValidationResult writer may consume it.
-- Grader/sandbox infrastructure failure remains `system_error`; it never becomes learner failure merely because a provider failed.
-- Production learner-code execution remains disabled until a hardened provider and durable job lifecycle are explicitly implemented and verified.
+- Grader/sandbox infrastructure failure remains `system_error`; it never becomes learner failure merely because transport or a provider failed.
+- Production learner-code execution remains disabled until authenticated dispatch, lease-aware terminal result recording, and a hardened sandbox provider are explicitly implemented and verified.
 
 ## Active F4 compatibility windows
 
@@ -348,23 +379,22 @@ Do not remove these merely because the canonical model has moved on. Each requir
 
 ## Next recommended slice
 
-**F7 durable grader job lifecycle + system-owned dispatch.**
+**F7 authenticated Worker -> Grader Gateway dispatch + lease-aware terminal ValidationResult recording.**
 
-Build on ADR-0007 and ADR-0033 without selecting a weak execution mechanism merely to make code run:
+Build on ADR-0007, ADR-0033, and ADR-0034 without enabling a weak sandbox merely to make code run:
 
-- decide and document the canonical owner of durable grader-job state at the Validation/execution boundary before adding tables;
-- persist an idempotent grader job keyed by the content-addressed protocol `jobId`, with exact Organization, Submission, ActivityVersion, validator binding, executable-profile identity/fingerprint, and replay/audit provenance;
-- define explicit queued/processing/completed/system-error/retry/dead-letter semantics with leases and bounded retries so crashes cannot create ambiguous execution state;
-- register an executable system validator only when its server-owned configuration can deterministically resolve an exact Grader Gateway profile;
-- make dispatch system-owned: user sessions/learner requests may trigger application intent, but only trusted backend identity may call Grader Gateway;
-- preserve the rule that Web/API/Worker never execute learner source and never receive Docker socket/sandbox-host privileges;
-- derive gateway request material from immutable canonical Submission/ActivityVersion/validator state rather than accepting infrastructure configuration from the learner;
-- on Gateway `system_error`, record infrastructure failure through canonical Validation semantics without creating negative Evidence or learner LearningEvent history;
-- on a valid completed Gateway result, record one idempotent system-owned ValidationResult and let the existing trusted-result -> Evidence path decide whether normalized Evidence is materialized;
-- prove replay/idempotency, crash recovery, lease loss, cross-tenant isolation, exact profile provenance, and `system_error` non-Evidence semantics in integration tests;
-- keep production sandbox-provider selection/execution as a separate hardened step unless the durable lifecycle exposes a concrete provider requirement that can be implemented without weakening ADR-0007.
+- make `apps/worker` claim durable grader jobs through the existing worker-only lease boundary and call Grader Gateway only with trusted service identity;
+- keep learner source opaque/untrusted in Worker: Worker may transport the already persisted protocol request but must never execute it, rewrite its infrastructure policy, or receive sandbox-host/Docker privileges;
+- define service endpoint/credential configuration and transport timeout/retry semantics without logging bearer credentials or learner source;
+- validate every Gateway response against protocol version and exact `jobId` before it can affect canonical Validation state;
+- classify transport/provider retryability explicitly so retryable infrastructure failure returns the job to durable retry state while exhausted/non-retryable infrastructure failure remains canonical `system_error`, never learner `failed`;
+- add a lease-token-protected terminal acknowledgement boundary so a stale worker cannot complete or system-error a re-leased job;
+- record exactly one system-owned ValidationResult with exact Submission/ActivityVersion/validator/profile provenance when terminal Gateway output is accepted, with grader-job terminal state and ValidationResult committed atomically or through an equally strong idempotent invariant;
+- preserve the existing trusted ValidationResult -> Evidence normalization rules: only completed trusted decisive results may become Evidence; `needs_review` and `system_error` remain non-Evidence;
+- prove duplicate Gateway replies, worker crash after remote response, lease loss, retry exhaustion, cross-tenant isolation, wrong-job responses, and `system_error` non-Evidence semantics in integration tests;
+- keep production sandbox-provider selection/execution as a separate hardened step unless dispatch/result work exposes a concrete provider requirement that can be implemented without weakening ADR-0007.
 
-Only after durable dispatch/result recording is safe should Nexus enable a production sandbox provider and end-to-end executable validator profile.
+Only after authenticated durable dispatch/result recording is safe should Nexus enable a production sandbox provider and end-to-end executable validator profile.
 
 ## Remaining F4 follow-up frontier
 
@@ -374,7 +404,7 @@ Instructor/mentor read-others history/skill views should be added only with an e
 
 The active compatibility windows above should be removed only through explicit cleanup slices once callers are proven migrated.
 
-Production sandbox execution remains a later F7 step after the durable job/dispatch boundary is established.
+Production sandbox execution remains a later F7 step after the durable dispatch/result-recording boundary is established.
 
 ## Relevant ADR reading map
 
@@ -405,6 +435,7 @@ Always inspect the live `docs/adr/` directory; this map is only a starting point
 - Normalized GitHub Project facts: ADR-0031.
 - Project activity read model: ADR-0032.
 - Grader Gateway admission/security contract: ADR-0033.
+- Durable Validation-owned grader-job ledger and worker lease state: ADR-0034.
 
 For any new durable decision, add or amend architecture documentation through a new ADR rather than silently encoding policy only in implementation.
 

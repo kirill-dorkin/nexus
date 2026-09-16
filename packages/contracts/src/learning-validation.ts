@@ -62,6 +62,38 @@ export const recordValidationResultRequestSchema = z.discriminatedUnion("status"
     .strict()
 ]);
 
+export const graderJobStatusSchema = z.enum([
+  "pending",
+  "processing",
+  "retryable",
+  "completed",
+  "system_error",
+  "dead_letter"
+]);
+
+export const graderJobSchema = z.object({
+  jobId: z.string().regex(/^sha256:[0-9a-f]{64}$/),
+  organizationId: uuidSchema,
+  submissionId: uuidSchema,
+  activityVersionId: uuidSchema,
+  validatorKey: validatorKeySchema,
+  validatorVersion: z.number().int().positive(),
+  profile: z.object({
+    key: validatorKeySchema,
+    version: z.number().int().positive(),
+    fingerprint: z.string().regex(/^sha256:[0-9a-f]{64}$/)
+  }),
+  status: graderJobStatusSchema,
+  attemptCount: z.number().int().nonnegative(),
+  availableAt: z.string().datetime(),
+  lastErrorCode: z.string().nullable(),
+  finishedAt: z.string().datetime().nullable(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime()
+});
+
+export const scheduleGraderJobRequestSchema = z.object({}).strict();
+
 export type ValidatorBinding = z.infer<typeof validatorBindingSchema>;
 export type ValidationResultStatus = z.infer<typeof validationResultStatusSchema>;
 export type ValidationOutcome = z.infer<typeof validationOutcomeSchema>;
@@ -70,3 +102,6 @@ export type ValidationResult = z.infer<typeof validationResultSchema>;
 export type RecordValidationResultRequest = z.infer<
   typeof recordValidationResultRequestSchema
 >;
+export type GraderJobStatus = z.infer<typeof graderJobStatusSchema>;
+export type GraderJob = z.infer<typeof graderJobSchema>;
+export type ScheduleGraderJobRequest = z.infer<typeof scheduleGraderJobRequestSchema>;

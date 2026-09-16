@@ -4,12 +4,23 @@
   "version": "0.0.0",
   "type": "module",
   "types": "./src/index.ts",
+  "typesVersions": {
+    "*": {
+      "grader": ["src/grader.ts"]
+    }
+  },
   "exports": {
     ".": {
       "types": "./src/index.ts",
       "import": "./src/index.ts",
       "require": "./dist/index.js",
       "default": "./dist/index.js"
+    },
+    "./grader": {
+      "types": "./src/grader.ts",
+      "import": "./src/grader.ts",
+      "require": "./dist/grader.js",
+      "default": "./dist/grader.js"
     }
   },
   "scripts": {
