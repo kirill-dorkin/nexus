@@ -1,4 +1,7 @@
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { createServer, type IncomingMessage, type ServerResponse, type Server } from "node:http";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 import {
   GraderExecutionProfileRegistry,
@@ -13,8 +16,10 @@ import type { KubernetesGvisorProviderConfig } from "./config.js";
 import { KubernetesGvisorSandboxProvider } from "./kubernetes-gvisor-sandbox-provider.js";
 
 const imageDigest = `sha256:${"b".repeat(64)}`;
-const serviceAccountToken = "kubernetes-service-account-token";
+const initialServiceAccountToken = "kubernetes-service-account-token";
+const rotatedServiceAccountToken = "rotated-kubernetes-service-account-token";
 const namespace = "grader-sandbox";
+const tempDirectories: string[] = [];
 
 function sourceRequest(): GraderJobRequest {
   const spec: GraderJobSpec = {
@@ -60,13 +65,21 @@ function resolvedProfile(pids = 64) {
   return resolved;
 }
 
-function config(apiUrl: string): KubernetesGvisorProviderConfig {
+function serviceAccountTokenFile(): string {
+  const directory = mkdtempSync(join(tmpdir(), "grader-k8s-provider-"));
+  tempDirectories.push(directory);
+  const path = join(directory, "token");
+  writeFileSync(path, `${initialServiceAccountToken}\n`, "utf8");
+  return path;
+}
+
+function config(apiUrl: string, tokenFile: string): KubernetesGvisorProviderConfig {
   return {
     apiUrl,
     namespace,
     runtimeClassName: "platform-gvisor",
     runnerImageRepository: "registry.example.com/platform/grader-runner",
-    serviceAccountToken,
+    serviceAccountTokenFile: tokenFile,
     caCertificate: null,
     pollIntervalMs: 10,
     requestTimeoutMs: 1_000,
@@ -118,17 +131,23 @@ describe("Kubernetes gVisor sandbox provider", () => {
 
   afterEach(async () => {
     while (cleanup.length > 0) await cleanup.pop()?.();
+    while (tempDirectories.length > 0) {
+      const directory = tempDirectories.pop();
+      if (directory !== undefined) rmSync(directory, { recursive: true, force: true });
+    }
   });
 
-  it("creates a hardened deterministic Job and keeps learner source only in owner-referenced Secrets", async () => {
+  it("creates a hardened deterministic Job, validates Pod ownership, and reloads rotating credentials", async () => {
     const request = sourceRequest();
     const profile = resolvedProfile();
+    const tokenFile = serviceAccountTokenFile();
+    let acceptedToken = initialServiceAccountToken;
     let storedJob: Record<string, unknown> | null = null;
     const secrets = new Map<string, Record<string, unknown>>();
     let successfulJobCreates = 0;
 
     const server = createServer(async (incoming, response) => {
-      if (incoming.headers.authorization !== `Bearer ${serviceAccountToken}`) {
+      if (incoming.headers.authorization !== `Bearer ${acceptedToken}`) {
         json(response, 401, { message: "unauthorized" });
         return;
       }
@@ -184,7 +203,17 @@ describe("Kubernetes gVisor sandbox provider", () => {
         return;
       }
       if (incoming.method === "GET" && url.pathname === `/api/v1/namespaces/${namespace}/pods`) {
-        json(response, 200, { items: [{ metadata: { name: "grader-pod-1" }, status: { phase: "Succeeded" } }] });
+        json(response, 200, {
+          items: [
+            {
+              metadata: {
+                name: "grader-pod-1",
+                ownerReferences: [{ kind: "Job", uid: "job-uid-1" }]
+              },
+              status: { phase: "Succeeded" }
+            }
+          ]
+        });
         return;
       }
       if (incoming.method === "GET" && url.pathname === `/api/v1/namespaces/${namespace}/pods/grader-pod-1/log`) {
@@ -203,7 +232,7 @@ describe("Kubernetes gVisor sandbox provider", () => {
     const apiUrl = await listen(server);
     cleanup.push(() => close(server));
 
-    const provider = new KubernetesGvisorSandboxProvider(config(apiUrl));
+    const provider = new KubernetesGvisorSandboxProvider(config(apiUrl, tokenFile));
     await expect(provider.execute(request, profile)).resolves.toMatchObject({
       jobId: request.jobId,
       status: "completed",
@@ -215,11 +244,18 @@ describe("Kubernetes gVisor sandbox provider", () => {
     for (const file of request.source.files) expect(serializedJob).not.toContain(file.content);
 
     const spec = object(job.spec);
-    expect(spec).toMatchObject({ backoffLimit: 0, ttlSecondsAfterFinished: 300 });
+    expect(spec).toMatchObject({
+      parallelism: 1,
+      completions: 1,
+      completionMode: "NonIndexed",
+      backoffLimit: 0,
+      ttlSecondsAfterFinished: 300
+    });
     const podSpec = object(object(spec.template).spec);
     expect(podSpec).toMatchObject({
       runtimeClassName: "platform-gvisor",
       restartPolicy: "Never",
+      terminationGracePeriodSeconds: 1,
       automountServiceAccountToken: false,
       enableServiceLinks: false,
       hostNetwork: false,
@@ -234,8 +270,8 @@ describe("Kubernetes gVisor sandbox provider", () => {
       command: ["node"],
       args: ["/runner/entry.mjs"],
       resources: {
-        requests: { cpu: "500m", memory: "256Mi", "ephemeral-storage": "96Mi" },
-        limits: { cpu: "500m", memory: "256Mi", "ephemeral-storage": "96Mi" }
+        requests: { cpu: "1", memory: "256Mi", "ephemeral-storage": "96Mi" },
+        limits: { cpu: "1", memory: "256Mi", "ephemeral-storage": "96Mi" }
       },
       securityContext: {
         privileged: false,
@@ -257,6 +293,8 @@ describe("Kubernetes gVisor sandbox provider", () => {
       );
     }
 
+    writeFileSync(tokenFile, `${rotatedServiceAccountToken}\n`, "utf8");
+    acceptedToken = rotatedServiceAccountToken;
     await expect(provider.execute(request, profile)).resolves.toMatchObject({
       jobId: request.jobId,
       status: "completed"
@@ -265,6 +303,7 @@ describe("Kubernetes gVisor sandbox provider", () => {
   });
 
   it("fails before Kubernetes when profile PID semantics do not match the dedicated node envelope", async () => {
+    const tokenFile = serviceAccountTokenFile();
     let requests = 0;
     const server = createServer((_incoming, response) => {
       requests += 1;
@@ -273,7 +312,7 @@ describe("Kubernetes gVisor sandbox provider", () => {
     const apiUrl = await listen(server);
     cleanup.push(() => close(server));
     const request = sourceRequest();
-    const provider = new KubernetesGvisorSandboxProvider(config(apiUrl));
+    const provider = new KubernetesGvisorSandboxProvider(config(apiUrl, tokenFile));
 
     await expect(provider.execute(request, resolvedProfile(32))).resolves.toEqual({
       protocolVersion: 1,
@@ -285,6 +324,7 @@ describe("Kubernetes gVisor sandbox provider", () => {
   });
 
   it("fails closed when a deterministic Kubernetes Job has conflicting immutable identity", async () => {
+    const tokenFile = serviceAccountTokenFile();
     const request = sourceRequest();
     const server = createServer(async (incoming, response) => {
       const url = new URL(incoming.url ?? "/", "http://127.0.0.1");
@@ -313,7 +353,7 @@ describe("Kubernetes gVisor sandbox provider", () => {
     const apiUrl = await listen(server);
     cleanup.push(() => close(server));
 
-    const provider = new KubernetesGvisorSandboxProvider(config(apiUrl));
+    const provider = new KubernetesGvisorSandboxProvider(config(apiUrl, tokenFile));
     await expect(provider.execute(request, resolvedProfile())).resolves.toEqual({
       protocolVersion: 1,
       jobId: request.jobId,
