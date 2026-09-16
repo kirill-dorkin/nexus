@@ -15,6 +15,8 @@ spec:
       message: "grader sandbox Pods must use the platform-gvisor RuntimeClass"
     - expression: "has(object.spec.automountServiceAccountToken) && object.spec.automountServiceAccountToken == false"
       message: "grader sandbox Pods must not mount ServiceAccount credentials"
+    - expression: "has(object.spec.enableServiceLinks) && object.spec.enableServiceLinks == false"
+      message: "grader sandbox Pods must disable injected service links"
     - expression: "object.spec.restartPolicy == 'Never'"
       message: "grader sandbox Pods must never restart learner execution in place"
     - expression: "(!has(object.spec.hostNetwork) || object.spec.hostNetwork == false) && (!has(object.spec.hostPID) || object.spec.hostPID == false) && (!has(object.spec.hostIPC) || object.spec.hostIPC == false)"
@@ -23,16 +25,18 @@ spec:
       message: "grader sandbox Pods must not share process namespaces"
     - expression: "object.spec.containers.size() == 1 && (!has(object.spec.initContainers) || object.spec.initContainers.size() == 0) && (!has(object.spec.ephemeralContainers) || object.spec.ephemeralContainers.size() == 0)"
       message: "grader sandbox Pods must contain exactly one runner container"
-    - expression: "object.spec.containers.all(c, c.image.matches('^[^@]+@sha256:[0-9a-f]{64}$'))"
-      message: "grader sandbox runner images must be pinned by sha256 digest"
-    - expression: "object.spec.containers.all(c, has(c.securityContext) && c.securityContext.privileged == false && c.securityContext.allowPrivilegeEscalation == false && c.securityContext.readOnlyRootFilesystem == true && c.securityContext.runAsNonRoot == true && has(c.securityContext.capabilities) && c.securityContext.capabilities.drop.exists(x, x == 'ALL'))"
+    - expression: "object.spec.containers.all(c, c.name == 'runner' && c.image.matches('^[^@]+@sha256:[0-9a-f]{64}$'))"
+      message: "grader sandbox must contain one digest-pinned runner container"
+    - expression: "object.spec.containers.all(c, has(c.securityContext) && has(c.securityContext.privileged) && c.securityContext.privileged == false && has(c.securityContext.allowPrivilegeEscalation) && c.securityContext.allowPrivilegeEscalation == false && has(c.securityContext.readOnlyRootFilesystem) && c.securityContext.readOnlyRootFilesystem == true && has(c.securityContext.runAsNonRoot) && c.securityContext.runAsNonRoot == true && has(c.securityContext.capabilities) && has(c.securityContext.capabilities.drop) && c.securityContext.capabilities.drop.exists(x, x == 'ALL'))"
       message: "grader sandbox containers must use the hardened restricted security context"
-    - expression: "object.spec.containers.all(c, has(c.resources) && has(c.resources.limits) && has(c.resources.requests) && has(c.resources.limits.cpu) && has(c.resources.limits.memory) && has(c.resources.limits['ephemeral-storage']) && has(c.resources.requests.cpu) && has(c.resources.requests.memory) && has(c.resources.requests['ephemeral-storage']))"
+    - expression: "object.spec.containers.all(c, has(c.resources) && has(c.resources.limits) && has(c.resources.requests) && 'cpu' in c.resources.limits && 'memory' in c.resources.limits && 'ephemeral-storage' in c.resources.limits && 'cpu' in c.resources.requests && 'memory' in c.resources.requests && 'ephemeral-storage' in c.resources.requests)"
       message: "grader sandbox containers must declare CPU, memory, and ephemeral-storage requests and limits"
-    - expression: "!has(object.spec.volumes) || object.spec.volumes.all(v, has(v.emptyDir) || (has(v.projected) && v.projected.sources.all(s, has(s.secret))))"
-      message: "grader sandbox Pods may use only emptyDir and Secret-only projected volumes"
-    - expression: "object.spec.containers.all(c, has(c.volumeMounts) && c.volumeMounts.exists(m, m.name == 'source' && m.readOnly == true))"
-      message: "grader sandbox source must be mounted read-only"
+    - expression: "has(object.spec.volumes) && object.spec.volumes.size() == 2 && object.spec.volumes.all(v, (v.name == 'source' && has(v.projected) && v.projected.sources.size() > 0 && v.projected.sources.all(s, has(s.secret))) || (v.name == 'scratch' && has(v.emptyDir) && has(v.emptyDir.sizeLimit)))"
+      message: "grader sandbox Pods may use only Secret-projected source and bounded emptyDir scratch volumes"
+    - expression: "object.spec.containers.all(c, has(c.volumeMounts) && c.volumeMounts.size() == 2 && c.volumeMounts.exists(m, m.name == 'source' && m.mountPath == '/workspace/source' && has(m.readOnly) && m.readOnly == true) && c.volumeMounts.exists(m, m.name == 'scratch' && m.mountPath == '/workspace/tmp' && (!has(m.readOnly) || m.readOnly == false)))"
+      message: "grader sandbox volumes must be mounted only at the trusted source and scratch paths"
+    - expression: "object.spec.containers.all(c, !has(c.envFrom) && (!has(c.env) || c.env.all(e, !has(e.valueFrom) && e.name in ['GRADER_JOB_ID', 'GRADER_SOURCE_ROOT', 'GRADER_SCRATCH_ROOT', 'GRADER_WALL_TIME_MS', 'GRADER_CPU_TIME_MS', 'GRADER_PIDS', 'GRADER_OUTPUT_BYTES'])))"
+      message: "grader sandbox environment must contain only literal trusted runner controls"
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingAdmissionPolicyBinding
@@ -40,6 +44,46 @@ metadata:
   name: platform-grader-sandbox-pods
 spec:
   policyName: platform-grader-sandbox-pods
+  validationActions: [Deny]
+  matchResources:
+    namespaceSelector:
+      matchLabels:
+        grader.platform.internal/sandbox: "true"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: platform-grader-sandbox-jobs
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["batch"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["jobs"]
+  validations:
+    - expression: "!has(object.spec.parallelism) || object.spec.parallelism == 1"
+      message: "grader sandbox Jobs may create only one Pod at a time"
+    - expression: "!has(object.spec.completions) || object.spec.completions == 1"
+      message: "grader sandbox Jobs require one completion"
+    - expression: "has(object.spec.backoffLimit) && object.spec.backoffLimit == 0"
+      message: "grader sandbox Jobs must not retry learner execution internally"
+    - expression: "has(object.spec.activeDeadlineSeconds) && object.spec.activeDeadlineSeconds >= 1 && object.spec.activeDeadlineSeconds <= 90"
+      message: "grader sandbox Jobs require a bounded outer execution deadline"
+    - expression: "has(object.spec.ttlSecondsAfterFinished) && object.spec.ttlSecondsAfterFinished >= 60 && object.spec.ttlSecondsAfterFinished <= 3600"
+      message: "grader sandbox Jobs require bounded terminal garbage collection"
+    - expression: "!has(object.spec.suspend) || object.spec.suspend == false"
+      message: "grader sandbox Jobs cannot be suspended indefinitely"
+    - expression: "!has(object.spec.completionMode) || object.spec.completionMode == 'NonIndexed'"
+      message: "grader sandbox Jobs must use the single non-indexed completion model"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: platform-grader-sandbox-jobs
+spec:
+  policyName: platform-grader-sandbox-jobs
   validationActions: [Deny]
   matchResources:
     namespaceSelector:
