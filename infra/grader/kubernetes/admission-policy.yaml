@@ -13,6 +13,8 @@ spec:
   validations:
     - expression: "has(object.spec.runtimeClassName) && object.spec.runtimeClassName == 'platform-gvisor'"
       message: "grader sandbox Pods must use the platform-gvisor RuntimeClass"
+    - expression: "has(object.spec.serviceAccountName) && object.spec.serviceAccountName == 'grader-sandbox-runner'"
+      message: "grader sandbox Pods must use the credential-free grader-sandbox-runner ServiceAccount"
     - expression: "has(object.spec.automountServiceAccountToken) && object.spec.automountServiceAccountToken == false"
       message: "grader sandbox Pods must not mount ServiceAccount credentials"
     - expression: "has(object.spec.enableServiceLinks) && object.spec.enableServiceLinks == false"
@@ -35,7 +37,7 @@ spec:
       message: "grader sandbox containers must use the hardened restricted security context"
     - expression: "object.spec.containers.all(c, has(c.resources) && has(c.resources.limits) && has(c.resources.requests) && 'cpu' in c.resources.limits && 'memory' in c.resources.limits && 'ephemeral-storage' in c.resources.limits && 'cpu' in c.resources.requests && 'memory' in c.resources.requests && 'ephemeral-storage' in c.resources.requests)"
       message: "grader sandbox containers must declare CPU, memory, and ephemeral-storage requests and limits"
-    - expression: "has(object.spec.volumes) && object.spec.volumes.size() == 2 && object.spec.volumes.all(v, (v.name == 'source' && has(v.projected) && v.projected.sources.size() > 0 && v.projected.sources.all(s, has(s.secret))) || (v.name == 'scratch' && has(v.emptyDir) && has(v.emptyDir.sizeLimit)))"
+    - expression: "has(object.spec.volumes) && object.spec.volumes.size() == 2 && object.spec.volumes.all(v, (v.name == 'source' && has(v.projected) && v.projected.sources.size() > 0 && v.projected.sources.all(s, has(s.secret) && !has(s.configMap) && !has(s.downwardAPI) && !has(s.serviceAccountToken))) || (v.name == 'scratch' && has(v.emptyDir) && has(v.emptyDir.sizeLimit)))"
       message: "grader sandbox Pods may use only Secret-projected source and bounded emptyDir scratch volumes"
     - expression: "object.spec.containers.all(c, has(c.volumeMounts) && c.volumeMounts.size() == 2 && c.volumeMounts.exists(m, m.name == 'source' && m.mountPath == '/workspace/source' && has(m.readOnly) && m.readOnly == true) && c.volumeMounts.exists(m, m.name == 'scratch' && m.mountPath == '/workspace/tmp' && (!has(m.readOnly) || m.readOnly == false)))"
       message: "grader sandbox volumes must be mounted only at the trusted source and scratch paths"
@@ -52,7 +54,7 @@ spec:
   matchResources:
     namespaceSelector:
       matchLabels:
-        grader.platform.internal/sandbox: "true"
+        kubernetes.io/metadata.name: platform-grader-sandbox
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingAdmissionPolicy
@@ -92,4 +94,4 @@ spec:
   matchResources:
     namespaceSelector:
       matchLabels:
-        grader.platform.internal/sandbox: "true"
+        kubernetes.io/metadata.name: platform-grader-sandbox
