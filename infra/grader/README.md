@@ -10,8 +10,8 @@ Sandbox baseline: ephemeral, non-root, dropped capabilities, read-only base file
 
 ADR-0036 selects Kubernetes Jobs with an explicitly configured gVisor-class `RuntimeClass` for the first production provider architecture. `kubernetes/sandbox-boundary.yaml` contains the least-privilege namespace/RBAC/network baseline:
 
-- `nexus-grader-control/grader-gateway` is the only service account granted sandbox control-plane permissions;
-- `nexus-grader-sandbox` is labeled for Restricted Pod Security admission;
+- `grader-control/grader-gateway` is the only service account granted sandbox control-plane permissions;
+- `grader-sandbox` is labeled for Restricted Pod Security admission;
 - the sandbox namespace has default-deny ingress and egress with no grader allow-egress policy;
 - the sandbox `grader-sandbox` service account has token automount disabled and receives no RBAC;
 - Gateway RBAC is limited to creating/reading Jobs and source ConfigMaps, listing Pods, and reading bounded Pod logs; it cannot read Secrets or exec/attach into Pods.
