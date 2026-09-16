@@ -1,5 +1,7 @@
 import {
+  GRADER_PROFILE_FINGERPRINT_HEADER,
   GraderProtocolError,
+  isGraderProfileFingerprint,
   validateGraderJobResult,
   type GraderJobRequest,
   type GraderJobResult
@@ -48,7 +50,18 @@ export class GraderGatewayClient {
     this.fetchImpl = options.fetchImpl ?? fetch;
   }
 
-  async dispatch(request: GraderJobRequest): Promise<GraderJobResult> {
+  async dispatch(
+    request: GraderJobRequest,
+    profileFingerprint: string
+  ): Promise<GraderJobResult> {
+    if (!isGraderProfileFingerprint(profileFingerprint)) {
+      throw new GraderGatewayDispatchError(
+        "persisted_profile_fingerprint_invalid",
+        false,
+        "Persisted grader profile fingerprint is invalid."
+      );
+    }
+
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), this.options.timeoutMs);
 
@@ -59,7 +72,8 @@ export class GraderGatewayClient {
           method: "POST",
           headers: {
             authorization: `Bearer ${this.options.serviceToken}`,
-            "content-type": "application/json"
+            "content-type": "application/json",
+            [GRADER_PROFILE_FINGERPRINT_HEADER]: profileFingerprint
           },
           body: JSON.stringify(request),
           signal: controller.signal
