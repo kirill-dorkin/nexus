@@ -64,7 +64,7 @@ A valid learner failure must be represented by the trusted runner as a protocol 
 
 Provider stdout collection is bounded before parsing. Provider-specific Kubernetes objects never become canonical ValidationResult payloads.
 
-### 7. Ambiguous outcomes and capacity fail closed
+### 7. Ambiguous outcomes, cancellation, and capacity fail closed
 
 Retryable Kubernetes API/provider unavailability, throttling, scheduling capacity failure, and an ambiguous control-plane timeout return retryable `system_error`.
 
@@ -72,7 +72,15 @@ Configuration/authentication failure, image identity/pull failure, resource iden
 
 A replay within the Job retention window observes the deterministic existing Job/result. This reduces duplicate physical execution after an ambiguous transport outcome while the Validation ledger still provides the canonical one-result guarantee.
 
-### 8. Production execution remains explicitly gated
+Protocol v1 has no caller-driven sandbox-cancellation command. A Worker/Gateway HTTP disconnect or transport timeout therefore does not cancel the deterministic Job: the Job remains bounded by its server-owned active deadline, and a retry may observe the same execution/result during the retention window. Treating disconnect as cancellation would turn an ambiguous transport outcome into duplicate execution on retry. Any future explicit cancellation contract must be authenticated, idempotent, identity-fenced, and defined separately from connection lifetime.
+
+### 8. Profile rollout is immutable and coordinated
+
+API scheduling and Grader Gateway admission must receive the same immutable exact-version execution-profile catalog from deployment configuration. A profile `(key, version)` must never be rebound to different image/runtime/runner/policy/limit semantics; any material change requires a new version.
+
+The provider records the resolved profile fingerprint on the deterministic Kubernetes Job. A retained Job whose fingerprint does not match the currently resolved exact profile fails closed as an identity conflict rather than being reused.
+
+### 9. Production execution remains explicitly gated
 
 The default provider remains `unavailable`. Enabling `kubernetes-gvisor` requires explicit deployment configuration, the dedicated Kubernetes boundary, and at least one exact server-owned execution profile.
 
