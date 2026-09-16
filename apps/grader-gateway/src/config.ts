@@ -11,7 +11,7 @@ export type KubernetesGvisorProviderConfig = Readonly<{
   namespace: string;
   runtimeClassName: string;
   runnerImageRepository: string;
-  serviceAccountToken: string;
+  serviceAccountTokenFile: string;
   caCertificate: string | null;
   pollIntervalMs: number;
   requestTimeoutMs: number;
@@ -110,6 +110,11 @@ function readCredential(path: string, name: string): string {
   return value;
 }
 
+function readableCredentialPath(path: string, name: string): string {
+  readCredential(path, name);
+  return path;
+}
+
 export function loadGraderGatewayRuntimeConfig(
   env: NodeJS.ProcessEnv = process.env
 ): GraderGatewayRuntimeConfig {
@@ -134,7 +139,10 @@ export function loadGraderGatewayRuntimeConfig(
     required(env, "GRADER_KUBERNETES_API_URL"),
     env.NODE_ENV === "production"
   );
-  const tokenFile = required(env, "GRADER_KUBERNETES_SERVICE_ACCOUNT_TOKEN_FILE");
+  const tokenFile = readableCredentialPath(
+    required(env, "GRADER_KUBERNETES_SERVICE_ACCOUNT_TOKEN_FILE"),
+    "GRADER_KUBERNETES_SERVICE_ACCOUNT_TOKEN_FILE"
+  );
   const caFile = env.GRADER_KUBERNETES_CA_FILE?.trim();
   const caCertificate = apiUrl.startsWith("https:")
     ? readCredential(required(env, "GRADER_KUBERNETES_CA_FILE"), "GRADER_KUBERNETES_CA_FILE")
@@ -166,10 +174,7 @@ export function loadGraderGatewayRuntimeConfig(
         runnerImageRepository: validateImageRepository(
           required(env, "GRADER_KUBERNETES_RUNNER_IMAGE_REPOSITORY")
         ),
-        serviceAccountToken: readCredential(
-          tokenFile,
-          "GRADER_KUBERNETES_SERVICE_ACCOUNT_TOKEN_FILE"
-        ),
+        serviceAccountTokenFile: tokenFile,
         caCertificate,
         pollIntervalMs: integer(env, "GRADER_KUBERNETES_POLL_INTERVAL_MS", 250, 50, 5_000),
         requestTimeoutMs: integer(
