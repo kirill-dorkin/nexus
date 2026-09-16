@@ -1,0 +1,24 @@
+[
+  {
+    "key": "js-sum-v1",
+    "version": 1,
+    "language": {
+      "key": "javascript",
+      "version": "goja@v0.0.0-20260106131823-651366fbe6e3"
+    },
+    "runnerImageDigest": "sha256:340105917cd1f1d258f8344ef1581929fb0a4395bcb06d3fdefe4f75d45bde2d",
+    "argv": ["/grader-runner", "js-sum-v1"],
+    "network": "off",
+    "filesystem": "ephemeral",
+    "readOnlyRootFilesystem": true,
+    "limits": {
+      "wallTimeMs": 2000,
+      "cpuTimeMs": 1000,
+      "memoryMiB": 128,
+      "pids": 64,
+      "outputBytes": 65536,
+      "sourceBytes": 65536,
+      "sourceFiles": 1
+    }
+  }
+]
