@@ -1,1 +1,1 @@
-refresh F7 architectural checkpoint
+refresh F7 architectural checkpoint v2
