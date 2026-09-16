@@ -111,6 +111,9 @@ jobs:
       - name: Worker grader transport integration tests
         run: pnpm exec vitest run apps/worker/src/grader-gateway.integration.test.ts --config vitest.integration.config.ts
 
+      - name: Grader job ledger integration tests
+        run: pnpm exec vitest run apps/api/src/grader-job-ledger.integration.test.ts --config vitest.integration.config.ts
+
       - name: Database integration tests
         run: pnpm test:integration
 
