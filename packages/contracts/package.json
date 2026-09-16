@@ -4,6 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "types": "./src/index.ts",
+  "typesVersions": {
+    "*": {
+      "grader": ["src/grader.ts"]
+    }
+  },
   "exports": {
     ".": {
       "types": "./src/index.ts",
