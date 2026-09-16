@@ -9,6 +9,7 @@ export const GRADER_MAX_FILE_BYTES = 262_144;
 const profileKeyPattern = "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$";
 const uuidPattern = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$";
 const jobIdPattern = "^sha256:[0-9a-f]{64}$";
+const providerErrorCodePattern = /^[a-z][a-z0-9_]{0,99}$/;
 
 export type GraderProfileReference = Readonly<{
   key: string;
@@ -204,4 +205,77 @@ export function validateGraderJobRequest(request: GraderJobRequest): void {
       "The content-addressed job identity does not match the immutable job specification."
     );
   }
+}
+
+function record(value: unknown): Record<string, unknown> | null {
+  return value !== null && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+function hasExactKeys(value: Record<string, unknown>, keys: readonly string[]): boolean {
+  const actual = Object.keys(value).sort();
+  const expected = [...keys].sort();
+  return actual.length === expected.length && actual.every((key, index) => key === expected[index]);
+}
+
+function invalidProviderResult(): never {
+  throw new GraderProtocolError(
+    "invalid_provider_result",
+    "Sandbox provider returned a result that does not match grader protocol version 1."
+  );
+}
+
+export function validateGraderJobResult(
+  value: unknown,
+  expectedJobId: string
+): GraderJobResult {
+  const result = record(value);
+  if (
+    result === null ||
+    result.protocolVersion !== GRADER_PROTOCOL_VERSION ||
+    result.jobId !== expectedJobId ||
+    typeof result.status !== "string"
+  ) {
+    return invalidProviderResult();
+  }
+
+  if (result.status === "completed") {
+    if (!hasExactKeys(result, ["protocolVersion", "jobId", "status", "outcome", "score", "payload"])) {
+      return invalidProviderResult();
+    }
+    if (!(["passed", "failed", "needs_review"] as const).includes(result.outcome as never)) {
+      return invalidProviderResult();
+    }
+    if (
+      result.score !== null &&
+      (typeof result.score !== "number" ||
+        !Number.isFinite(result.score) ||
+        result.score < 0 ||
+        result.score > 1)
+    ) {
+      return invalidProviderResult();
+    }
+    if (record(result.payload) === null) return invalidProviderResult();
+    return result as unknown as CompletedGraderJobResult;
+  }
+
+  if (result.status === "system_error") {
+    if (!hasExactKeys(result, ["protocolVersion", "jobId", "status", "error"])) {
+      return invalidProviderResult();
+    }
+    const error = record(result.error);
+    if (
+      error === null ||
+      !hasExactKeys(error, ["code", "retryable"]) ||
+      typeof error.code !== "string" ||
+      !providerErrorCodePattern.test(error.code) ||
+      typeof error.retryable !== "boolean"
+    ) {
+      return invalidProviderResult();
+    }
+    return result as unknown as SystemErrorGraderJobResult;
+  }
+
+  return invalidProviderResult();
 }
