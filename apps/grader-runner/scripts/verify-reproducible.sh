@@ -59,5 +59,11 @@ image_digest_a="$(oci_manifest_digest "$tmp_dir/grader-runner-a.tar")"
 image_digest_b="$(oci_manifest_digest "$tmp_dir/grader-runner-b.tar")"
 test "$image_digest_a" = "$image_digest_b"
 
-printf 'GRADER_RUNNER_BINARY_SHA256=%s\n' "$binary_digest"
-printf 'GRADER_RUNNER_IMAGE_DIGEST=%s\n' "$image_digest_a"
+evidence="$(printf 'GRADER_RUNNER_BINARY_SHA256=%s\nGRADER_RUNNER_IMAGE_DIGEST=%s\n' \
+  "$binary_digest" "$image_digest_a")"
+printf '%s\n' "$evidence"
+
+if [[ -n "${GRADER_RUNNER_EVIDENCE_FILE:-}" ]]; then
+  mkdir -p "$(dirname "$GRADER_RUNNER_EVIDENCE_FILE")"
+  printf '%s\n' "$evidence" > "$GRADER_RUNNER_EVIDENCE_FILE"
+fi
