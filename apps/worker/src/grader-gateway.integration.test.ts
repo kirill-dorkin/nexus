@@ -1,6 +1,7 @@
 import { createServer, type IncomingMessage, type Server } from "node:http";
 
 import {
+  GRADER_PROFILE_FINGERPRINT_HEADER,
   buildGraderJobId,
   type GraderJobRequest,
   type GraderJobSpec
@@ -13,6 +14,7 @@ import {
 } from "./grader-gateway.client.js";
 
 const serviceToken = "worker-service-token-that-is-at-least-32-bytes-long";
+const profileFingerprint = `sha256:${"a".repeat(64)}`;
 
 function requestFor(content: string): GraderJobRequest {
   const spec: GraderJobSpec = {
@@ -60,7 +62,7 @@ describe("Worker -> Grader Gateway transport", () => {
     }
   });
 
-  it("sends trusted service identity and transports the exact persisted request", async () => {
+  it("sends trusted service identity, persisted profile fingerprint, and exact persisted request", async () => {
     const persisted = requestFor("export const answer = 42;");
     const received: unknown[] = [];
     const server = createServer(async (incoming, response) => {
@@ -72,6 +74,11 @@ describe("Worker -> Grader Gateway transport", () => {
         if (incoming.headers.authorization !== `Bearer ${serviceToken}`) {
           response.writeHead(401, { "content-type": "application/json" });
           response.end(JSON.stringify({ error: { code: "service_authentication_required" } }));
+          return;
+        }
+        if (incoming.headers[GRADER_PROFILE_FINGERPRINT_HEADER] !== profileFingerprint) {
+          response.writeHead(400, { "content-type": "application/json" });
+          response.end(JSON.stringify({ error: { code: "profile_fingerprint_required" } }));
           return;
         }
         const body = await readJsonBody(incoming);
@@ -99,7 +106,7 @@ describe("Worker -> Grader Gateway transport", () => {
       serviceToken,
       timeoutMs: 5_000
     });
-    await expect(client.dispatch(persisted)).resolves.toEqual({
+    await expect(client.dispatch(persisted, profileFingerprint)).resolves.toEqual({
       protocolVersion: 1,
       jobId: persisted.jobId,
       status: "completed",
@@ -114,7 +121,7 @@ describe("Worker -> Grader Gateway transport", () => {
       serviceToken: "wrong-service-token-that-is-still-long-enough",
       timeoutMs: 5_000
     });
-    await expect(untrusted.dispatch(persisted)).rejects.toMatchObject({
+    await expect(untrusted.dispatch(persisted, profileFingerprint)).rejects.toMatchObject({
       name: "GraderGatewayDispatchError",
       code: "gateway_http_401",
       retryable: true
@@ -122,11 +129,35 @@ describe("Worker -> Grader Gateway transport", () => {
     expect(received).toHaveLength(1);
   });
 
+  it("rejects invalid persisted profile metadata before transport", async () => {
+    const persisted = requestFor("export const answer = 5;");
+    let requests = 0;
+    const server = createServer((_incoming, response) => {
+      requests += 1;
+      response.writeHead(500).end();
+    });
+    const baseUrl = await listen(server);
+    cleanup.push(() => close(server));
+
+    const client = new GraderGatewayClient({
+      baseUrl,
+      serviceToken,
+      timeoutMs: 5_000
+    });
+    await expect(client.dispatch(persisted, "not-a-fingerprint")).rejects.toMatchObject({
+      name: "GraderGatewayDispatchError",
+      code: "persisted_profile_fingerprint_invalid",
+      retryable: false
+    });
+    expect(requests).toBe(0);
+  });
+
   it("rejects a successful HTTP response for a different job before canonical state can use it", async () => {
     const persisted = requestFor("export const answer = 7;");
     const server = createServer(async (incoming, response) => {
       try {
         expect(incoming.headers.authorization).toBe(`Bearer ${serviceToken}`);
+        expect(incoming.headers[GRADER_PROFILE_FINGERPRINT_HEADER]).toBe(profileFingerprint);
         expect(await readJsonBody(incoming)).toEqual(persisted);
         response.writeHead(200, { "content-type": "application/json" });
         response.end(
@@ -152,7 +183,7 @@ describe("Worker -> Grader Gateway transport", () => {
       timeoutMs: 5_000
     });
 
-    await expect(client.dispatch(persisted)).rejects.toEqual(
+    await expect(client.dispatch(persisted, profileFingerprint)).rejects.toEqual(
       expect.objectContaining<Partial<GraderGatewayDispatchError>>({
         name: "GraderGatewayDispatchError",
         code: "gateway_protocol_error",
