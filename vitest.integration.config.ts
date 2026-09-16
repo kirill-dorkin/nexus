@@ -11,7 +11,11 @@ if (existsSync(localEnvFile)) {
 export default defineConfig({
   test: {
     environment: "node",
-    include: ["apps/api/src/github-project-fact-processor.integration.test.ts"],
+    include: [
+      "apps/**/*.integration.test.ts",
+      "packages/**/*.integration.test.ts",
+      "tests/**/*.integration.test.ts"
+    ],
     passWithNoTests: false,
     clearMocks: true,
     fileParallelism: false,
