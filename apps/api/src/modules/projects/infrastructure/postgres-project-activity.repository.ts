@@ -11,7 +11,6 @@ type ActivityRow = {
   repository_binding_id: string;
   github_repository_mapping_id: string;
   source_delivery_id: string;
-  source_payload_sha256: string;
   fact_type: ProjectActivityItem["factType"];
   action: string;
   github_repository_id: string;
@@ -63,7 +62,6 @@ export class PostgresProjectActivityRepository extends ProjectActivityRepository
          repository_binding_id::text,
          github_repository_mapping_id::text,
          source_delivery_id::text,
-         source_payload_sha256,
          fact_type,
          action,
          github_repository_id::text,
@@ -114,7 +112,6 @@ export class PostgresProjectActivityRepository extends ProjectActivityRepository
         repositoryBindingId: row.repository_binding_id,
         repositoryMappingId: row.github_repository_mapping_id,
         sourceDeliveryId: row.source_delivery_id,
-        sourcePayloadSha256: row.source_payload_sha256,
         factType: row.fact_type,
         action: row.action,
         githubRepositoryId: row.github_repository_id,
