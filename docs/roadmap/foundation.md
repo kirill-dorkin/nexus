@@ -26,7 +26,7 @@ Hint ladder, solution exposure, professional walkthrough, compare, transfer chal
 
 ## F6 — GitHub projects
 
-GitHub App, durable webhook inbox, project/team model, PR/check/review evidence.
+GitHub App, durable webhook inbox, project/team model, trusted repository binding, normalized PR/review/check Project facts distinct from Learning Evidence.
 
 ## F7 — Grader hardening
 
