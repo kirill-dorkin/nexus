@@ -13,6 +13,7 @@
 | Activities | activity definitions/versions, attempts | mastery decisions |
 | Assessment | questions, assessments, rubrics, scoring definitions | delivery scheduling |
 | Validation | versioned validator registry semantics and immutable raw ValidationResult attribution | normalized Evidence, Mastery, untrusted sandbox execution |
+| Grader Gateway | versioned grader admission protocol, server-owned executable profiles, sandbox-provider control boundary | learner/session authorization, ValidationResult/Evidence/Mastery state, production DB access, direct in-process learner-code execution |
 | Learning Guidance | Attempt-scoped Guided Build assistance state and protected-content disclosure policy | immutable curriculum authoring, Evidence, Mastery, grader execution |
 | Learning History | canonical append-only learner LearningEvent journal and history read contract | integration outbox, telemetry, mutable Mastery projections |
 | Mastery | evidence normalization, model versions, organization-wide learner skill projections, learner skill progress composition | raw curriculum content, Delivery context, recommendation policy |
