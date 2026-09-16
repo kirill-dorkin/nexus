@@ -153,7 +153,7 @@ describe("Projects repository-backed vertical", () => {
     userId: string,
     method: "GET" | "POST" | "PUT" | "DELETE",
     url: string,
-    payload?: unknown
+    payload?: Record<string, unknown>
   ) {
     return app.inject({
       method,
