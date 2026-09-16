@@ -10,6 +10,12 @@
       "import": "./src/index.ts",
       "require": "./dist/index.js",
       "default": "./dist/index.js"
+    },
+    "./grader": {
+      "types": "./src/grader.ts",
+      "import": "./src/grader.ts",
+      "require": "./dist/grader.js",
+      "default": "./dist/grader.js"
     }
   },
   "scripts": {
@@ -20,6 +26,7 @@
     "zod": "^4.1.0"
   },
   "devDependencies": {
+    "@types/node": "^24.0.0",
     "typescript": "^5.9.0"
   }
 }
