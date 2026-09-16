@@ -6,9 +6,7 @@ import {
   type GraderExecutionProfile,
   type GraderJobSpec
 } from "../packages/contracts/src/grader";
-import {
-  graderExecutionProfileFingerprint as gatewayProfileFingerprint
-} from "../apps/grader-gateway/src/execution-profile";
+import { GraderExecutionProfileRegistry } from "../apps/grader-gateway/src/execution-profile";
 import { buildGraderJobId as buildGatewayJobId } from "../apps/grader-gateway/src/protocol";
 
 const profile: GraderExecutionProfile = {
@@ -50,6 +48,12 @@ describe("grader contract compatibility", () => {
   });
 
   it("keeps the shared and Gateway-local execution-profile fingerprint identical", () => {
-    expect(sharedProfileFingerprint(profile)).toBe(gatewayProfileFingerprint(profile));
+    const resolved = new GraderExecutionProfileRegistry([profile]).find({
+      key: profile.key,
+      version: profile.version
+    });
+
+    expect(resolved).not.toBeNull();
+    expect(sharedProfileFingerprint(profile)).toBe(resolved?.fingerprint);
   });
 });
