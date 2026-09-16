@@ -29,35 +29,25 @@ jobs:
           path = Path("docs/engineering/current-state.md")
           text = path.read_text()
 
-          old_baseline = """Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the first three F7 grader-hardening slices. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, and authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording. **Production learner-code execution remains disabled because no hardened production sandbox provider is enabled yet.** Verify the live `main` head before relying on any SHA or PR number."""
-          new_baseline = """Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus four F7 grader-hardening slices. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, and a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes. **Production learner-code execution remains disabled because the trusted grader-runner artifact/image and real-cluster verification gate are still intentionally absent.** Verify the live `main` head before relying on any SHA or PR number."""
+          old_baseline = "Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the first three F7 grader-hardening slices. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, and authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording. **Production learner-code execution remains disabled because no hardened production sandbox provider is enabled yet.** Verify the live `main` head before relying on any SHA or PR number."
+          new_baseline = "Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus four F7 grader-hardening slices. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, and a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes. **Production learner-code execution remains disabled because the trusted grader-runner artifact/image and real-cluster verification gate are still intentionally absent.** Verify the live `main` head before relying on any SHA or PR number."
           if old_baseline not in text:
               raise SystemExit("baseline checkpoint text did not match expected predecessor")
           text = text.replace(old_baseline, new_baseline, 1)
 
-          text = text.replace(
-              "Latest architectural decision at this checkpoint: ADR-0035.",
-              "Latest architectural decision at this checkpoint: ADR-0036.",
-              1,
-          )
-          text = text.replace(
-              "### F7 — Grader hardening: authenticated durable dispatch/result boundary established",
-              "### F7 — Grader hardening: hardened sandbox control plane established; trusted runner still gated",
-              1,
-          )
-          text = text.replace(
-              "F7 now has three explicit layers while intentionally keeping production learner-code execution disabled.",
-              "F7 now has four explicit layers while intentionally keeping production learner-code execution disabled.",
-              1,
-          )
+          text = text.replace("Latest architectural decision at this checkpoint: ADR-0035.", "Latest architectural decision at this checkpoint: ADR-0036.", 1)
+          text = text.replace("### F7 — Grader hardening: authenticated durable dispatch/result boundary established", "### F7 — Grader hardening: hardened sandbox control plane established; trusted runner still gated", 1)
+          text = text.replace("F7 now has three explicit layers while intentionally keeping production learner-code execution disabled.", "F7 now has four explicit layers while intentionally keeping production learner-code execution disabled.", 1)
 
           old_tail_bullet = "- Authenticated dispatch and lease-aware terminal result recording are established, but production learner-code execution remains disabled until a hardened sandbox provider is explicitly implemented and verified as a separate security slice."
-          new_tail_bullets = """- Authenticated dispatch and lease-aware terminal result recording are established.
-- ADR-0036 establishes the first hardened production sandbox control plane: deterministic Kubernetes Jobs in fixed `platform-grader-sandbox`, exact `platform-gvisor` RuntimeClass selection, credential-free `grader-sandbox-runner` Pods, restricted Pod Security, fail-closed admission, default-deny networking, finite namespace capacity, and narrow Gateway RBAC.
-- Worker transports the durable scheduling-time profile fingerprint as trusted dispatch metadata; Gateway refuses provider execution when its locally resolved exact profile fingerprint differs, so recorded provenance cannot silently execute different profile material.
-- Kubernetes control-plane credentials rotate through a reread token file; learner Pods receive no ServiceAccount token or application/database credentials.
-- Provider replay validates deterministic Job/Secret/result-Pod ownership and keeps disappearance, capacity, transport, timeout, and malformed provider behavior in explicit `system_error` semantics.
-- Production learner-code execution remains disabled: this repository still has no trusted grader-runner implementation/reproducible image build, no activated production executable profile, and no real-cluster verification of the gVisor/admission/PID/network/encryption boundary."""
+          new_tail_bullets = "\n".join([
+              "- Authenticated dispatch and lease-aware terminal result recording are established.",
+              "- ADR-0036 establishes the first hardened production sandbox control plane: deterministic Kubernetes Jobs in fixed `platform-grader-sandbox`, exact `platform-gvisor` RuntimeClass selection, credential-free `grader-sandbox-runner` Pods, restricted Pod Security, fail-closed admission, default-deny networking, finite namespace capacity, and narrow Gateway RBAC.",
+              "- Worker transports the durable scheduling-time profile fingerprint as trusted dispatch metadata; Gateway refuses provider execution when its locally resolved exact profile fingerprint differs, so recorded provenance cannot silently execute different profile material.",
+              "- Kubernetes control-plane credentials rotate through a reread token file; learner Pods receive no ServiceAccount token or application/database credentials.",
+              "- Provider replay validates deterministic Job/Secret/result-Pod ownership and keeps disappearance, capacity, transport, timeout, and malformed provider behavior in explicit `system_error` semantics.",
+              "- Production learner-code execution remains disabled: this repository still has no trusted grader-runner implementation/reproducible image build, no activated production executable profile, and no real-cluster verification of the gVisor/admission/PID/network/encryption boundary.",
+          ])
           if old_tail_bullet not in text:
               raise SystemExit("F7 predecessor tail did not match expected text")
           text = text.replace(old_tail_bullet, new_tail_bullets, 1)
@@ -66,24 +56,26 @@ jobs:
           if marker not in text:
               raise SystemExit("next-slice marker missing")
           prefix = text[: text.index(marker)]
-          next_slice = """## Next recommended slice
-
-**F7 trusted grader runner + digest-pinned executable image and real sandbox end-to-end.**
-
-Build on ADR-0007, ADR-0033, ADR-0034, ADR-0035, and ADR-0036 without widening the Gateway/Worker trust boundary:
-
-- implement the trusted runner as a separate executable artifact; learner code must still never execute in Web/API/Worker/Gateway;
-- define a deterministic runner/test-harness contract for the first supported executable profile, including source layout, fixed trusted command, result schema, and validator-owned hidden-test material;
-- enforce exact learner-facing wall-clock, cumulative CPU-time, PID, and output budgets inside the runner while the Kubernetes/gVisor provider remains the outer containment envelope;
-- capture learner stdout/stderr as bounded result data rather than allowing learner output to become the container control log; stdout used by Gateway must contain exactly one bounded protocol-v1 result document;
-- add a reproducible OCI build for the runner and bind the resulting immutable `sha256` digest to a new exact executable profile version; never use mutable tags as canonical provenance;
-- prove passed/failed learner outcomes, compile/test failures, runner crash, timeout, fork/resource abuse, oversized output, malformed result, network attempts, filesystem escape attempts, and provider loss end-to-end without turning infrastructure failure into learner failure;
-- add real-cluster verification for `platform-gvisor -> runsc-nonet`, fixed sandbox nodes/PID limits, ValidatingAdmissionPolicy behavior, restricted Pod Security, default-deny egress, quotas, token rotation, Secret encryption at rest, cleanup, and replay;
-- keep the production provider default-disabled until the trusted runner digest and cluster verification are both green;
-- leave Evidence/Mastery semantics unchanged: only existing trusted decisive completed ValidationResults may normalize into Evidence.
-
-Production learner-code execution should be enabled only after the trusted runner/image slice and real-cluster security verification are independently green.
-"""
+          next_slice = "\n".join([
+              "## Next recommended slice",
+              "",
+              "**F7 trusted grader runner + digest-pinned executable image and real sandbox end-to-end.**",
+              "",
+              "Build on ADR-0007, ADR-0033, ADR-0034, ADR-0035, and ADR-0036 without widening the Gateway/Worker trust boundary:",
+              "",
+              "- implement the trusted runner as a separate executable artifact; learner code must still never execute in Web/API/Worker/Gateway;",
+              "- define a deterministic runner/test-harness contract for the first supported executable profile, including source layout, fixed trusted command, result schema, and validator-owned hidden-test material;",
+              "- enforce exact learner-facing wall-clock, cumulative CPU-time, PID, and output budgets inside the runner while the Kubernetes/gVisor provider remains the outer containment envelope;",
+              "- capture learner stdout/stderr as bounded result data rather than allowing learner output to become the container control log; stdout used by Gateway must contain exactly one bounded protocol-v1 result document;",
+              "- add a reproducible OCI build for the runner and bind the resulting immutable `sha256` digest to a new exact executable profile version; never use mutable tags as canonical provenance;",
+              "- prove passed/failed learner outcomes, compile/test failures, runner crash, timeout, fork/resource abuse, oversized output, malformed result, network attempts, filesystem escape attempts, and provider loss end-to-end without turning infrastructure failure into learner failure;",
+              "- add real-cluster verification for `platform-gvisor -> runsc-nonet`, fixed sandbox nodes/PID limits, ValidatingAdmissionPolicy behavior, restricted Pod Security, default-deny egress, quotas, token rotation, Secret encryption at rest, cleanup, and replay;",
+              "- keep the production provider default-disabled until the trusted runner digest and cluster verification are both green;",
+              "- leave Evidence/Mastery semantics unchanged: only existing trusted decisive completed ValidationResults may normalize into Evidence.",
+              "",
+              "Production learner-code execution should be enabled only after the trusted runner/image slice and real-cluster security verification are independently green.",
+              "",
+          ])
           path.write_text(prefix + next_slice)
           PY
 
