@@ -53,17 +53,17 @@ describe("GitHub Project fact processor", () => {
   });
 
   afterAll(async () => {
-    for (const organizationId of organizationIds) {
-      await migrationPool.query(
-        `DELETE FROM organizations.organizations WHERE id = $1`,
-        [organizationId]
-      );
-    }
     if (deliveryIds.length > 0) {
       await migrationPool.query(
         `DELETE FROM integrations.github_webhook_inbox
          WHERE delivery_id = ANY($1::uuid[])`,
         [deliveryIds]
+      );
+    }
+    for (const organizationId of organizationIds) {
+      await migrationPool.query(
+        `DELETE FROM organizations.organizations WHERE id = $1`,
+        [organizationId]
       );
     }
     await Promise.all([migrationPool?.end(), workerPool?.end()]);
