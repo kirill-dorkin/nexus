@@ -5,7 +5,7 @@ export abstract class SandboxProvider {
   abstract execute(
     request: GraderJobRequest,
     profile: ResolvedGraderExecutionProfile
-  ): Promise<GraderJobResult>;
+  ): Promise<unknown>;
 }
 
 export class UnavailableSandboxProvider extends SandboxProvider {
