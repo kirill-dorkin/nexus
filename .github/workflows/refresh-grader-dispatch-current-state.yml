@@ -1,0 +1,106 @@
+name: Refresh grader dispatch current state
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    if: github.head_ref == 'foundation/grader-worker-dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          persist-credentials: true
+
+      - name: Update maintained checkpoint
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('docs/engineering/current-state.md')
+          text = path.read_text()
+
+          replacements = [
+            (
+              "Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the first two F7 grader-hardening slices. F7 now has a versioned authenticated Grader Gateway admission/profile boundary and a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, but **no production learner-code execution or Worker -> Gateway dispatch is enabled yet**. Verify the live `main` head before relying on any SHA or PR number.",
+              "Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the first three F7 grader-hardening slices. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, and authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording. **Production learner-code execution remains disabled because no hardened production sandbox provider is enabled yet.** Verify the live `main` head before relying on any SHA or PR number."
+            ),
+            (
+              "Latest architectural decision at this checkpoint: ADR-0034.\n\nLatest ordered migration at this checkpoint: `000027_grader_job_ledger.sql`.",
+              "Latest architectural decision at this checkpoint: ADR-0035.\n\nLatest ordered migration at this checkpoint: `000029_grader_result_learning_history.sql`."
+            ),
+            (
+              "### F7 — Grader hardening: admission/security and durable job ledger established\n\nF7 now has two explicit layers while intentionally keeping production learner-code execution disabled.",
+              "### F7 — Grader hardening: authenticated durable dispatch/result boundary established\n\nF7 now has three explicit layers while intentionally keeping production learner-code execution disabled."
+            ),
+            (
+              "- immutable `learning_validation.grader_jobs` records content-addressed job identity plus exact Organization/Submission/ActivityVersion, validator config, profile key/version/fingerprint, canonical request payload, requester, and creation time;",
+              "- immutable `learning_validation.grader_jobs` records content-addressed job identity plus exact Organization/Submission/ActivityVersion, validator config, registry-derived Evidence trust, profile key/version/fingerprint, canonical request payload, requester, and creation time;"
+            ),
+            (
+              "- mutable `learning_validation.grader_job_processing` is separate from immutable job provenance and owns pending/processing/retry/dead-letter state;",
+              "- mutable `learning_validation.grader_job_processing` is separate from immutable job provenance and owns pending/processing/retry/terminal state plus the terminal ValidationResult link;"
+            ),
+            (
+              "- stale workers cannot fail a newly re-leased job because failure requires the current lease token;\n- five exhausted attempts transition to database-owned `dead_letter` state;\n- PostgreSQL remains canonical asynchronous work state; BullMQ/Redis may later be a wake-up/scheduling adapter but must not become grader-job truth;\n- Gateway dispatch, terminal acknowledgement, system-owned ValidationResult recording, Evidence materialization, and production sandbox execution remain deliberately outside this slice.\n\nThe established Gateway control-plane boundary is:",
+              "- stale workers cannot fail or terminally acknowledge a newly re-leased job because both failure and terminal acknowledgement require the current unexpired lease token;\n- five exhausted attempts transition to database-owned `dead_letter` state together with one canonical system-owned `system_error` ValidationResult;\n- PostgreSQL remains canonical asynchronous work state; BullMQ/Redis may later be a wake-up/scheduling adapter but must not become grader-job truth.\n\nThe authenticated Worker dispatch/result layer establishes:\n\n- `apps/worker` claims durable grader jobs only through the worker-only lease function and transports the immutable persisted protocol request without executing, rewriting, or interpreting learner code;\n- Worker receives no Docker socket, sandbox-host privilege, runner image selection, mount, network-policy, or provider credential capability;\n- Gateway endpoint, bearer service identity, transport timeout, lease budget, polling interval, and retry backoff are explicit configuration; production Gateway transport requires HTTPS;\n- Worker sends the ADR-0033 bearer service credential and never logs the credential or learner source;\n- every Gateway response is runtime-validated through the shared protocol implementation against protocol v1 and the exact expected content-addressed `jobId`;\n- transport/HTTP/protocol failures and retryable Gateway `system_error` results return to durable retry state rather than becoming learner failure;\n- terminal acknowledgement is a narrow `platform_worker` SECURITY DEFINER boundary fenced by the current lease token and lease expiry;\n- terminal grader processing state, exactly one system-owned ValidationResult, and its `validation.result_recorded` outbox event commit atomically;\n- a completed system-owned ValidationResult also appends the canonical learner `validation.result_recorded` LearningEvent in that same transaction, while `system_error` remains excluded from learner history;\n- commit-uncertain duplicate terminal acknowledgement is materially checked and returns the existing result, while conflicting replay fails closed;\n- grader ValidationResult provenance is unique per grader job and app-role callers cannot forge grader-job provenance;\n- existing ADR-0021 Evidence semantics remain authoritative: only `completed + trusted + passed|failed` is eligible for normalized Evidence, while `needs_review` and `system_error` are not; Evidence normalization remains a separate idempotent consequence rather than part of the Worker terminal transaction;\n- the default Gateway sandbox provider still executes nothing, so authenticated dispatch alone does not enable learner-code execution.\n\nThe established Gateway control-plane boundary is:"
+            ),
+            (
+              "The durable scheduling boundary is:\n\n```text\nown learner Submission\n  -> exact ActivityVersion validator binding\n  -> exact server-owned execution profile\n  -> explicit bounded source envelope\n  -> immutable Validation-owned grader job\n  -> separate worker lease/retry/dead-letter processing state\n```\n\nAt this checkpoint the worker does not call Grader Gateway and the default Gateway provider executes nothing, so no learner code is executed and no system-owned ValidationResult is recorded.",
+              "The durable scheduling boundary is:\n\n```text\nown learner Submission\n  -> exact ActivityVersion validator binding\n  -> exact server-owned execution profile\n  -> explicit bounded source envelope\n  -> immutable Validation-owned grader job\n  -> separate worker lease/retry/dead-letter processing state\n```\n\nThe authenticated dispatch/result boundary is:\n\n```text\nplatform_worker lease claim\n  -> persisted protocol request\n  -> authenticated Grader Gateway /v1/jobs\n  -> shared runtime validation + exact jobId check\n  -> retryable infrastructure failure -> durable retry\n  -> accepted terminal result -> lease-fenced atomic ValidationResult + terminal state\n  -> completed result -> canonical learner ValidationResult history\n  -> separate existing trusted-result Evidence normalization boundary\n```\n\nAt this checkpoint Worker does call Grader Gateway, but the default Gateway provider still executes nothing. Therefore no production learner code is executed even though durable authenticated dispatch and terminal ValidationResult recording are established."
+            ),
+            (
+              "- Grader `jobId` is content-addressed immutable identity; durable logical scheduling/de-duplication is provided by the Validation-owned grader-job ledger, while safe execution/result de-duplication still requires lease-aware terminal acknowledgement in the next dispatch slice.",
+              "- Grader `jobId` is content-addressed immutable identity; durable logical scheduling/de-duplication is provided by the Validation-owned grader-job ledger, and terminal result de-duplication is lease-fenced plus materially idempotent per grader job."
+            ),
+            (
+              "- Sandbox-provider output is untrusted adapter output and must satisfy protocol/runtime/output-size validation before any later ValidationResult writer may consume it.",
+              "- Sandbox-provider output is untrusted adapter output and must satisfy protocol/runtime/output-size validation plus exact `jobId` matching before the lease-fenced ValidationResult writer may consume it."
+            ),
+            (
+              "- Production learner-code execution remains disabled until authenticated dispatch, lease-aware terminal result recording, and a hardened sandbox provider are explicitly implemented and verified.",
+              "- Authenticated dispatch and lease-aware terminal result recording are established, but production learner-code execution remains disabled until a hardened sandbox provider is explicitly implemented and verified as a separate security slice."
+            ),
+            (
+              "## Next recommended slice\n\n**F7 authenticated Worker -> Grader Gateway dispatch + lease-aware terminal ValidationResult recording.**\n\nBuild on ADR-0007, ADR-0033, and ADR-0034 without enabling a weak sandbox merely to make code run:\n\n- make `apps/worker` claim durable grader jobs through the existing worker-only lease boundary and call Grader Gateway only with trusted service identity;\n- keep learner source opaque/untrusted in Worker: Worker may transport the already persisted protocol request but must never execute it, rewrite its infrastructure policy, or receive sandbox-host/Docker privileges;\n- define service endpoint/credential configuration and transport timeout/retry semantics without logging bearer credentials or learner source;\n- validate every Gateway response against protocol version and exact `jobId` before it can affect canonical Validation state;\n- classify transport/provider retryability explicitly so retryable infrastructure failure returns the job to durable retry state while exhausted/non-retryable infrastructure failure remains canonical `system_error`, never learner `failed`;\n- add a lease-token-protected terminal acknowledgement boundary so a stale worker cannot complete or system-error a re-leased job;\n- record exactly one system-owned ValidationResult with exact Submission/ActivityVersion/validator/profile provenance when terminal Gateway output is accepted, with grader-job terminal state and ValidationResult committed atomically or through an equally strong idempotent invariant;\n- preserve the existing trusted ValidationResult -> Evidence normalization rules: only completed trusted decisive results may become Evidence; `needs_review` and `system_error` remain non-Evidence;\n- prove duplicate Gateway replies, worker crash after remote response, lease loss, retry exhaustion, cross-tenant isolation, wrong-job responses, and `system_error` non-Evidence semantics in integration tests;\n- keep production sandbox-provider selection/execution as a separate hardened step unless dispatch/result work exposes a concrete provider requirement that can be implemented without weakening ADR-0007.\n\nOnly after authenticated durable dispatch/result recording is safe should Nexus enable a production sandbox provider and end-to-end executable validator profile.",
+              "## Next recommended slice\n\n**F7 hardened production sandbox provider + isolated executable runtime.**\n\nBuild on ADR-0007, ADR-0033, ADR-0034, and ADR-0035 without moving sandbox privilege into Web/API/Worker:\n\n- select and document the production sandbox provider/control architecture in a new ADR before enabling learner-code execution;\n- keep all sandbox/provider credentials and execution privileges behind Grader Gateway; Worker remains transport/orchestration-only;\n- require strong process/kernel isolation appropriate for hostile learner code, no host Docker socket exposure to application services, network egress off by default, ephemeral writable state, read-only runtime roots where applicable, and explicit CPU/memory/pid/wall-time/output limits;\n- keep executable images/runtimes immutable and digest-pinned through the existing exact-version server-owned profile contract;\n- define sandbox lifecycle, cleanup, timeout, cancellation, provider-unavailable, capacity, and ambiguous-outcome semantics so infrastructure failure remains `system_error`;\n- pass provider output back only through the existing runtime-validated Gateway protocol; never let provider-specific response shape become canonical Validation state;\n- prove containment/resource/egress controls and end-to-end completed/retryable/system-error behavior with dedicated integration/security tests before enabling any production executable profile;\n- keep Evidence/Mastery semantics unchanged: only the already-established trusted decisive ValidationResult path may create learning signal.\n\nProduction learner-code execution should be enabled only after that provider slice is independently verified."
+            ),
+            (
+              "Production sandbox execution remains a later F7 step after the durable dispatch/result-recording boundary is established.",
+              "Production sandbox execution remains the next separate F7 security step now that the durable dispatch/result-recording boundary is established."
+            ),
+            (
+              "- Durable Validation-owned grader-job ledger and worker lease state: ADR-0034.",
+              "- Durable Validation-owned grader-job ledger and worker lease state: ADR-0034.\n- Authenticated Worker dispatch and lease-aware terminal grader results: ADR-0035."
+            )
+          ]
+
+          for old, new in replacements:
+            count = text.count(old)
+            if count != 1:
+              raise SystemExit(f'expected exactly one checkpoint match, found {count}: {old[:80]!r}')
+            text = text.replace(old, new)
+
+          path.write_text(text)
+          PY
+
+          git diff --check -- docs/engineering/current-state.md
+
+      - name: Commit checkpoint if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- docs/engineering/current-state.md; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/engineering/current-state.md
+          git commit -m "docs(f7): update grader dispatch checkpoint"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
