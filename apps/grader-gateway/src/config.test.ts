@@ -87,7 +87,7 @@ describe("grader gateway runtime config", () => {
       namespace: "grader-sandbox",
       runtimeClassName: "platform-gvisor",
       runnerImageRepository: "registry.example.com/platform/grader-runner",
-      serviceAccountToken: "service-account-token",
+      serviceAccountTokenFile: tokenFile,
       caCertificate: null,
       podPidsLimit: 64,
       ephemeralStorageMiB: 96
@@ -126,7 +126,7 @@ describe("grader gateway runtime config", () => {
     expect(config.sandboxProvider.config.caCertificate).toBe("test-ca-certificate");
   });
 
-  it("rejects unsafe provider locations, image references, and PID budgets", () => {
+  it("rejects unsafe provider locations, image references, PID budgets, and unreadable credentials", () => {
     const { tokenFile } = credentialFiles();
     const base = {
       NODE_ENV: "test",
@@ -161,5 +161,13 @@ describe("grader gateway runtime config", () => {
         GRADER_KUBERNETES_POD_PIDS_LIMIT: "65"
       })
     ).toThrow("between 1 and 64");
+
+    expect(() =>
+      loadGraderGatewayRuntimeConfig({
+        ...base,
+        GRADER_KUBERNETES_API_URL: "http://127.0.0.1:6443",
+        GRADER_KUBERNETES_SERVICE_ACCOUNT_TOKEN_FILE: "/missing/grader-token"
+      })
+    ).toThrow("could not be read");
   });
 });
