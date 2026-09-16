@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { request as httpRequest } from "node:http";
 import { request as httpsRequest } from "node:https";
 
@@ -24,7 +25,7 @@ export class KubernetesApiTransportError extends Error {
 
 export type KubernetesApiClientOptions = Readonly<{
   apiUrl: string;
-  serviceAccountToken: string;
+  serviceAccountTokenFile: string;
   caCertificate: string | null;
   requestTimeoutMs: number;
 }>;
@@ -41,17 +42,38 @@ export class KubernetesApiClient {
     this.baseUrl = new URL(options.apiUrl);
   }
 
+  private serviceAccountToken(): string {
+    try {
+      const token = readFileSync(this.options.serviceAccountTokenFile, "utf8").trim();
+      if (token.length === 0) throw new Error("empty token");
+      return token;
+    } catch {
+      throw new KubernetesApiTransportError(
+        "unreachable",
+        "Kubernetes ServiceAccount credential is unavailable."
+      );
+    }
+  }
+
   private request(
     method: "GET" | "POST" | "DELETE",
     path: string,
     body: string | null,
-    maxResponseBytes: number
+    maxResponseBytes: number,
+    accept: string
   ): Promise<RequestResult> {
     const url = new URL(path, this.baseUrl);
     if (url.origin !== this.baseUrl.origin) {
       return Promise.reject(
         new KubernetesApiTransportError("unreachable", "Kubernetes request escaped configured origin.")
       );
+    }
+
+    let token: string;
+    try {
+      token = this.serviceAccountToken();
+    } catch (error) {
+      return Promise.reject(error);
     }
 
     return new Promise<RequestResult>((resolve, reject) => {
@@ -68,8 +90,8 @@ export class KubernetesApiClient {
       };
 
       const headers: Record<string, string> = {
-        accept: "application/json",
-        authorization: `Bearer ${this.options.serviceAccountToken}`,
+        accept,
+        authorization: `Bearer ${token}`,
         "user-agent": "platform-grader-gateway"
       };
       if (body !== null) {
@@ -115,7 +137,14 @@ export class KubernetesApiClient {
               body: Buffer.concat(chunks).toString("utf8")
             });
           });
-          response.on("error", (error) => finishReject(error));
+          response.on("error", () => {
+            finishReject(
+              new KubernetesApiTransportError(
+                "unreachable",
+                "Kubernetes API response failed before completion."
+              )
+            );
+          });
         }
       );
 
@@ -150,7 +179,7 @@ export class KubernetesApiClient {
 
   async getJson(path: string): Promise<unknown> {
     const result = this.ensureSuccess(
-      await this.request("GET", path, null, MAX_CONTROL_RESPONSE_BYTES),
+      await this.request("GET", path, null, MAX_CONTROL_RESPONSE_BYTES, "application/json"),
       "GET",
       path
     );
@@ -167,7 +196,7 @@ export class KubernetesApiClient {
   async postJson(path: string, body: unknown): Promise<unknown> {
     const serialized = JSON.stringify(body);
     const result = this.ensureSuccess(
-      await this.request("POST", path, serialized, MAX_CONTROL_RESPONSE_BYTES),
+      await this.request("POST", path, serialized, MAX_CONTROL_RESPONSE_BYTES, "application/json"),
       "POST",
       path
     );
@@ -183,14 +212,20 @@ export class KubernetesApiClient {
 
   async getText(path: string, maxResponseBytes: number): Promise<string> {
     return this.ensureSuccess(
-      await this.request("GET", path, null, maxResponseBytes),
+      await this.request("GET", path, null, maxResponseBytes, "text/plain, */*"),
       "GET",
       path
     ).body;
   }
 
   async delete(path: string): Promise<void> {
-    const result = await this.request("DELETE", path, null, MAX_CONTROL_RESPONSE_BYTES);
+    const result = await this.request(
+      "DELETE",
+      path,
+      null,
+      MAX_CONTROL_RESPONSE_BYTES,
+      "application/json"
+    );
     if (result.statusCode === 404) return;
     this.ensureSuccess(result, "DELETE", path);
   }
