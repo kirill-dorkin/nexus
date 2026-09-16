@@ -1,0 +1,47 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: platform-grader-sandbox-pods
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  validations:
+    - expression: "has(object.spec.runtimeClassName) && object.spec.runtimeClassName == 'platform-gvisor'"
+      message: "grader sandbox Pods must use the platform-gvisor RuntimeClass"
+    - expression: "has(object.spec.automountServiceAccountToken) && object.spec.automountServiceAccountToken == false"
+      message: "grader sandbox Pods must not mount ServiceAccount credentials"
+    - expression: "object.spec.restartPolicy == 'Never'"
+      message: "grader sandbox Pods must never restart learner execution in place"
+    - expression: "(!has(object.spec.hostNetwork) || object.spec.hostNetwork == false) && (!has(object.spec.hostPID) || object.spec.hostPID == false) && (!has(object.spec.hostIPC) || object.spec.hostIPC == false)"
+      message: "grader sandbox Pods must not share host namespaces"
+    - expression: "!has(object.spec.shareProcessNamespace) || object.spec.shareProcessNamespace == false"
+      message: "grader sandbox Pods must not share process namespaces"
+    - expression: "object.spec.containers.size() == 1 && (!has(object.spec.initContainers) || object.spec.initContainers.size() == 0) && (!has(object.spec.ephemeralContainers) || object.spec.ephemeralContainers.size() == 0)"
+      message: "grader sandbox Pods must contain exactly one runner container"
+    - expression: "object.spec.containers.all(c, c.image.matches('^[^@]+@sha256:[0-9a-f]{64}$'))"
+      message: "grader sandbox runner images must be pinned by sha256 digest"
+    - expression: "object.spec.containers.all(c, has(c.securityContext) && c.securityContext.privileged == false && c.securityContext.allowPrivilegeEscalation == false && c.securityContext.readOnlyRootFilesystem == true && c.securityContext.runAsNonRoot == true && has(c.securityContext.capabilities) && c.securityContext.capabilities.drop.exists(x, x == 'ALL'))"
+      message: "grader sandbox containers must use the hardened restricted security context"
+    - expression: "object.spec.containers.all(c, has(c.resources) && has(c.resources.limits) && has(c.resources.requests) && has(c.resources.limits.cpu) && has(c.resources.limits.memory) && has(c.resources.limits['ephemeral-storage']) && has(c.resources.requests.cpu) && has(c.resources.requests.memory) && has(c.resources.requests['ephemeral-storage']))"
+      message: "grader sandbox containers must declare CPU, memory, and ephemeral-storage requests and limits"
+    - expression: "!has(object.spec.volumes) || object.spec.volumes.all(v, has(v.emptyDir) || (has(v.projected) && v.projected.sources.all(s, has(s.secret))))"
+      message: "grader sandbox Pods may use only emptyDir and Secret-only projected volumes"
+    - expression: "object.spec.containers.all(c, has(c.volumeMounts) && c.volumeMounts.exists(m, m.name == 'source' && m.readOnly == true))"
+      message: "grader sandbox source must be mounted read-only"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: platform-grader-sandbox-pods
+spec:
+  policyName: platform-grader-sandbox-pods
+  validationActions: [Deny]
+  matchResources:
+    namespaceSelector:
+      matchLabels:
+        grader.platform.internal/sandbox: "true"
