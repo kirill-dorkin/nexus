@@ -76,6 +76,14 @@ jobs:
           GRADER_RUNNER_EVIDENCE_FILE: ${{ runner.temp }}/grader-runner-reproducibility.env
         run: apps/grader-runner/scripts/verify-reproducible.sh
 
+      - name: Publish trusted grader runner reproducibility evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: grader-runner-reproducibility-${{ github.sha }}
+          path: ${{ runner.temp }}/grader-runner-reproducibility.env
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Verify canonical trusted runner profile binding
         env:
           GRADER_RUNNER_EVIDENCE_FILE: ${{ runner.temp }}/grader-runner-reproducibility.env
@@ -85,14 +93,6 @@ jobs:
           actual="$(sed -n 's/^GRADER_RUNNER_IMAGE_DIGEST=//p' "$GRADER_RUNNER_EVIDENCE_FILE")"
           test -n "$actual"
           test "$actual" = "$expected"
-
-      - name: Publish trusted grader runner reproducibility evidence
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: grader-runner-reproducibility-${{ github.sha }}
-          path: ${{ runner.temp }}/grader-runner-reproducibility.env
-          if-no-files-found: error
-          retention-days: 14
 
       - name: Activate repository-pinned pnpm
         run: |

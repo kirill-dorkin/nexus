@@ -12,7 +12,7 @@ mkdir -p dist
 build_binary() {
   local destination="$1"
   CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-    go build -mod=readonly -trimpath -ldflags='-buildid=' \
+    go build -buildvcs=false -mod=readonly -trimpath -ldflags='-buildid=' \
     -o "$destination" ./cmd/grader-runner
 }
 
