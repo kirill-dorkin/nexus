@@ -6,10 +6,12 @@ import {
   type GraderExecutionProfile
 } from "@platform/contracts/grader";
 
+export const GRADER_SANDBOX_NAMESPACE = "platform-grader-sandbox";
+export const GRADER_GVISOR_RUNTIME_CLASS = "platform-gvisor";
+export const GRADER_SANDBOX_RUNNER_SERVICE_ACCOUNT = "grader-sandbox-runner";
+
 export type KubernetesGvisorProviderConfig = Readonly<{
   apiUrl: string;
-  namespace: string;
-  runtimeClassName: string;
   runnerImageRepository: string;
   serviceAccountTokenFile: string;
   caCertificate: string | null;
@@ -30,8 +32,6 @@ export type GraderGatewayRuntimeConfig = Readonly<{
     | Readonly<{ kind: "kubernetes-gvisor"; config: KubernetesGvisorProviderConfig }>;
 }>;
 
-const dnsLabelPattern = /^[a-z0-9](?:[-a-z0-9]*[a-z0-9])?$/;
-const dnsSubdomainPattern = /^[a-z0-9](?:[-a-z0-9.]*[a-z0-9])?$/;
 const imageRepositoryPattern = /^[a-z0-9]+(?:[._-][a-z0-9]+)*(?::[0-9]+)?(?:\/[a-z0-9]+(?:[._-][a-z0-9]+)*)+$/;
 
 function required(env: NodeJS.ProcessEnv, name: string): string {
@@ -74,20 +74,6 @@ function normalizeApiUrl(raw: string, production: boolean): string {
     throw new Error("Non-production HTTP Kubernetes API URLs are allowed only on loopback.");
   }
   return url.origin;
-}
-
-function validateNamespace(value: string): string {
-  if (value.length > 63 || !dnsLabelPattern.test(value)) {
-    throw new Error("GRADER_KUBERNETES_NAMESPACE must be a valid DNS label.");
-  }
-  return value;
-}
-
-function validateRuntimeClass(value: string): string {
-  if (value.length > 253 || !dnsSubdomainPattern.test(value)) {
-    throw new Error("GRADER_KUBERNETES_RUNTIME_CLASS must be a valid DNS subdomain.");
-  }
-  return value;
 }
 
 function validateImageRepository(value: string): string {
@@ -150,15 +136,6 @@ export function loadGraderGatewayRuntimeConfig(
       ? null
       : readCredential(caFile, "GRADER_KUBERNETES_CA_FILE");
 
-  const podPidsLimit = integer(env, "GRADER_KUBERNETES_POD_PIDS_LIMIT", 64, 1, 64);
-  const ephemeralStorageMiB = integer(
-    env,
-    "GRADER_KUBERNETES_EPHEMERAL_STORAGE_MIB",
-    128,
-    16,
-    512
-  );
-
   return {
     port,
     serviceToken,
@@ -167,10 +144,6 @@ export function loadGraderGatewayRuntimeConfig(
       kind: "kubernetes-gvisor",
       config: {
         apiUrl,
-        namespace: validateNamespace(required(env, "GRADER_KUBERNETES_NAMESPACE")),
-        runtimeClassName: validateRuntimeClass(
-          required(env, "GRADER_KUBERNETES_RUNTIME_CLASS")
-        ),
         runnerImageRepository: validateImageRepository(
           required(env, "GRADER_KUBERNETES_RUNNER_IMAGE_REPOSITORY")
         ),
@@ -198,8 +171,14 @@ export function loadGraderGatewayRuntimeConfig(
           60,
           3_600
         ),
-        ephemeralStorageMiB,
-        podPidsLimit
+        ephemeralStorageMiB: integer(
+          env,
+          "GRADER_KUBERNETES_EPHEMERAL_STORAGE_MIB",
+          128,
+          16,
+          512
+        ),
+        podPidsLimit: integer(env, "GRADER_KUBERNETES_POD_PIDS_LIMIT", 64, 1, 64)
       }
     }
   };
