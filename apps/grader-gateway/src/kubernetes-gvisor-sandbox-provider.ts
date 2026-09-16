@@ -6,7 +6,12 @@ import type {
   SystemErrorGraderJobResult
 } from "@platform/contracts/grader";
 
-import type { KubernetesGvisorProviderConfig } from "./config.js";
+import {
+  GRADER_GVISOR_RUNTIME_CLASS,
+  GRADER_SANDBOX_NAMESPACE,
+  GRADER_SANDBOX_RUNNER_SERVICE_ACCOUNT,
+  type KubernetesGvisorProviderConfig
+} from "./config.js";
 import {
   KubernetesApiClient,
   KubernetesApiError,
@@ -114,7 +119,9 @@ function jobIdentity(
   const signature = {
     jobId: request.jobId,
     profileFingerprint: profile.fingerprint,
-    runtimeClassName: config.runtimeClassName,
+    namespace: GRADER_SANDBOX_NAMESPACE,
+    runtimeClassName: GRADER_GVISOR_RUNTIME_CLASS,
+    runnerServiceAccountName: GRADER_SANDBOX_RUNNER_SERVICE_ACCOUNT,
     image: `${config.runnerImageRepository}@${profile.profile.runnerImageDigest}`,
     argv: profile.profile.argv,
     wallTimeMs: profile.profile.limits.wallTimeMs,
@@ -153,7 +160,7 @@ function buildJob(
     kind: "Job",
     metadata: {
       name: identity.name,
-      namespace: config.namespace,
+      namespace: GRADER_SANDBOX_NAMESPACE,
       labels: {
         [MANAGED_LABEL]: "true",
         [JOB_FRAGMENT_LABEL]: request.jobId.slice("sha256:".length, "sha256:".length + 48)
@@ -184,7 +191,8 @@ function buildJob(
           }
         },
         spec: {
-          runtimeClassName: config.runtimeClassName,
+          runtimeClassName: GRADER_GVISOR_RUNTIME_CLASS,
+          serviceAccountName: GRADER_SANDBOX_RUNNER_SERVICE_ACCOUNT,
           restartPolicy: "Never",
           terminationGracePeriodSeconds: TERMINATION_GRACE_SECONDS,
           automountServiceAccountToken: false,
@@ -282,15 +290,14 @@ function buildSourceSecret(
   name: string,
   jobMetadata: KubernetesMetadata,
   request: GraderJobRequest,
-  profile: ResolvedGraderExecutionProfile,
-  config: KubernetesGvisorProviderConfig
+  profile: ResolvedGraderExecutionProfile
 ): unknown {
   return {
     apiVersion: "v1",
     kind: "Secret",
     metadata: {
       name,
-      namespace: config.namespace,
+      namespace: GRADER_SANDBOX_NAMESPACE,
       labels: { [MANAGED_LABEL]: "true" },
       annotations: {
         [JOB_ID_ANNOTATION]: request.jobId,
@@ -301,7 +308,8 @@ function buildSourceSecret(
           apiVersion: "batch/v1",
           kind: "Job",
           name: jobMetadata.name,
-          uid: jobMetadata.uid
+          uid: jobMetadata.uid,
+          controller: true
         }
       ]
     },
@@ -311,22 +319,22 @@ function buildSourceSecret(
   };
 }
 
-function jobApiPath(config: KubernetesGvisorProviderConfig, name?: string): string {
-  const base = `/apis/batch/v1/namespaces/${encodeURIComponent(config.namespace)}/jobs`;
+function jobApiPath(name?: string): string {
+  const base = `/apis/batch/v1/namespaces/${encodeURIComponent(GRADER_SANDBOX_NAMESPACE)}/jobs`;
   return name === undefined ? base : `${base}/${encodeURIComponent(name)}`;
 }
 
-function secretApiPath(config: KubernetesGvisorProviderConfig, name?: string): string {
-  const base = `/api/v1/namespaces/${encodeURIComponent(config.namespace)}/secrets`;
+function secretApiPath(name?: string): string {
+  const base = `/api/v1/namespaces/${encodeURIComponent(GRADER_SANDBOX_NAMESPACE)}/secrets`;
   return name === undefined ? base : `${base}/${encodeURIComponent(name)}`;
 }
 
-function podsApiPath(config: KubernetesGvisorProviderConfig, jobNameValue: string): string {
-  return `/api/v1/namespaces/${encodeURIComponent(config.namespace)}/pods?labelSelector=${encodeURIComponent(`job-name=${jobNameValue}`)}`;
+function podsApiPath(jobNameValue: string): string {
+  return `/api/v1/namespaces/${encodeURIComponent(GRADER_SANDBOX_NAMESPACE)}/pods?labelSelector=${encodeURIComponent(`job-name=${jobNameValue}`)}`;
 }
 
-function podLogPath(config: KubernetesGvisorProviderConfig, podName: string): string {
-  return `/api/v1/namespaces/${encodeURIComponent(config.namespace)}/pods/${encodeURIComponent(podName)}/log?container=${RUNNER_CONTAINER_NAME}`;
+function podLogPath(podName: string): string {
+  return `/api/v1/namespaces/${encodeURIComponent(GRADER_SANDBOX_NAMESPACE)}/pods/${encodeURIComponent(podName)}/log?container=${RUNNER_CONTAINER_NAME}`;
 }
 
 function assertJobIdentity(
@@ -349,9 +357,26 @@ function assertJobIdentity(
   return meta;
 }
 
+function hasExactJobOwner(
+  ownerReferences: unknown,
+  expectedName: string,
+  expectedUid: string
+): boolean {
+  if (!Array.isArray(ownerReferences)) return false;
+  return ownerReferences.map(record).some(
+    (owner) =>
+      owner?.apiVersion === "batch/v1" &&
+      owner.kind === "Job" &&
+      owner.name === expectedName &&
+      owner.uid === expectedUid &&
+      owner.controller === true
+  );
+}
+
 function assertSecretIdentity(
   value: unknown,
   expectedName: string,
+  expectedOwnerName: string,
   expectedOwnerUid: string,
   expectedContentBase64: string,
   request: GraderJobRequest,
@@ -361,14 +386,12 @@ function assertSecretIdentity(
   const meta = object === null ? null : record(object.metadata);
   const annotations = meta === null ? {} : stringRecord(meta.annotations);
   const data = object === null ? null : record(object.data);
-  const owners = meta === null || !Array.isArray(meta.ownerReferences) ? [] : meta.ownerReferences;
-  const owner = owners.map(record).find((candidate) => candidate?.uid === expectedOwnerUid);
   if (
     meta === null ||
     meta.name !== expectedName ||
     annotations[JOB_ID_ANNOTATION] !== request.jobId ||
     annotations[PROFILE_FINGERPRINT_ANNOTATION] !== profile.fingerprint ||
-    owner === undefined ||
+    !hasExactJobOwner(meta.ownerReferences, expectedOwnerName, expectedOwnerUid) ||
     data?.content !== expectedContentBase64
   ) {
     throw new SandboxResourceConflictError(
@@ -399,18 +422,22 @@ function terminalCondition(
   return null;
 }
 
-function succeededPodName(value: unknown, expectedJobUid: string): string | null {
+function succeededPodName(
+  value: unknown,
+  expectedJobName: string,
+  expectedJobUid: string
+): string | null {
   const object = record(value);
   if (object === null || !Array.isArray(object.items)) return null;
   const succeeded = object.items.filter((item) => {
     const pod = record(item);
     const status = pod === null ? null : record(pod.status);
     const meta = pod === null ? null : record(pod.metadata);
-    const owners = meta === null || !Array.isArray(meta.ownerReferences) ? [] : meta.ownerReferences;
-    const ownedByJob = owners
-      .map(record)
-      .some((owner) => owner?.kind === "Job" && owner.uid === expectedJobUid);
-    return status?.phase === "Succeeded" && ownedByJob;
+    return (
+      status?.phase === "Succeeded" &&
+      meta !== null &&
+      hasExactJobOwner(meta.ownerReferences, expectedJobName, expectedJobUid)
+    );
   });
   if (succeeded.length !== 1) return null;
   const pod = record(succeeded[0]);
@@ -429,8 +456,14 @@ function failureFor(error: unknown, jobId: string): SystemErrorGraderJobResult {
     return systemError(jobId, "sandbox_control_plane_unavailable", true);
   }
   if (error instanceof KubernetesApiError) {
-    if (error.statusCode === 401 || error.statusCode === 403) {
+    if (error.statusCode === 401) {
       return systemError(jobId, "sandbox_control_plane_auth", true);
+    }
+    if (error.statusCode === 403) {
+      return systemError(jobId, "sandbox_control_plane_forbidden", true);
+    }
+    if (error.statusCode === 404) {
+      return systemError(jobId, "sandbox_resource_unavailable", true);
     }
     if (error.statusCode === 409) {
       return systemError(jobId, "sandbox_resource_conflict", false);
@@ -438,10 +471,12 @@ function failureFor(error: unknown, jobId: string): SystemErrorGraderJobResult {
     if (error.statusCode === 422) {
       return systemError(jobId, "sandbox_policy_rejected", false);
     }
+    if (error.statusCode === 429) {
+      return systemError(jobId, "sandbox_capacity", true);
+    }
     if (
       error.statusCode === 408 ||
       error.statusCode === 425 ||
-      error.statusCode === 429 ||
       error.statusCode >= 500
     ) {
       return systemError(jobId, "sandbox_control_plane_unavailable", true);
@@ -476,13 +511,13 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
   ): Promise<Readonly<{ metadata: KubernetesMetadata; created: boolean }>> {
     try {
       const created = await this.api.postJson(
-        jobApiPath(this.config),
+        jobApiPath(),
         buildJob(request, profile, identity, this.config)
       );
       return { metadata: assertJobIdentity(created, request, profile, identity), created: true };
     } catch (error) {
       if (!(error instanceof KubernetesApiError) || error.statusCode !== 409) throw error;
-      const existing = await this.api.getJson(jobApiPath(this.config, identity.name));
+      const existing = await this.api.getJson(jobApiPath(identity.name));
       return { metadata: assertJobIdentity(existing, request, profile, identity), created: false };
     }
   }
@@ -498,22 +533,16 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
       if (name === undefined) {
         throw new SandboxResourceConflictError("Source Secret identity was not generated.");
       }
-      const body = buildSourceSecret(
-        file.content,
-        name,
-        jobMetadata,
-        request,
-        profile,
-        this.config
-      );
+      const body = buildSourceSecret(file.content, name, jobMetadata, request, profile);
       try {
-        await this.api.postJson(secretApiPath(this.config), body);
+        await this.api.postJson(secretApiPath(), body);
       } catch (error) {
         if (!(error instanceof KubernetesApiError) || error.statusCode !== 409) throw error;
-        const existing = await this.api.getJson(secretApiPath(this.config, name));
+        const existing = await this.api.getJson(secretApiPath(name));
         assertSecretIdentity(
           existing,
           name,
+          jobMetadata.name,
           jobMetadata.uid,
           Buffer.from(file.content, "utf8").toString("base64"),
           request,
@@ -529,8 +558,8 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
     identity: JobIdentity,
     jobUid: string
   ): Promise<unknown> {
-    const pods = await this.api.getJson(podsApiPath(this.config, identity.name));
-    const podName = succeededPodName(pods, jobUid);
+    const pods = await this.api.getJson(podsApiPath(identity.name));
+    const podName = succeededPodName(pods, identity.name, jobUid);
     if (podName === null) {
       return systemError(request.jobId, "sandbox_result_pod_unavailable", true);
     }
@@ -538,7 +567,7 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
     let text: string;
     try {
       text = await this.api.getText(
-        podLogPath(this.config, podName),
+        podLogPath(podName),
         profile.profile.limits.outputBytes
       );
     } catch (error) {
@@ -570,16 +599,11 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
       this.config.requestTimeoutMs +
       TERMINATION_GRACE_SECONDS * 1_000;
     while (Date.now() <= deadline) {
-      const job = await this.api.getJson(jobApiPath(this.config, identity.name));
+      const job = await this.api.getJson(jobApiPath(identity.name));
       const jobMetadata = assertJobIdentity(job, request, profile, identity);
       const terminal = terminalCondition(job);
       if (terminal?.type === "Complete") {
-        return this.resultFromCompletedJob(
-          request,
-          profile,
-          identity,
-          jobMetadata.uid
-        );
+        return this.resultFromCompletedJob(request, profile, identity, jobMetadata.uid);
       }
       if (terminal?.type === "Failed") {
         if (terminal.reason === "DeadlineExceeded") {
@@ -610,7 +634,7 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
     } catch (error) {
       if (created) {
         try {
-          await this.api.delete(jobApiPath(this.config, identity.name));
+          await this.api.delete(jobApiPath(identity.name));
         } catch {
           // The Job TTL/owner-reference lifecycle remains the cleanup fallback.
         }
