@@ -3,9 +3,15 @@ import { afterEach, describe, expect, it } from "vitest";
 import { createGraderGateway } from "./app.js";
 import {
   GraderExecutionProfileRegistry,
+  graderExecutionProfileFingerprint,
   type GraderExecutionProfile
 } from "./execution-profile.js";
-import { buildGraderJobId, type GraderJobRequest, type GraderJobSpec } from "./protocol.js";
+import {
+  GRADER_PROFILE_FINGERPRINT_HEADER,
+  buildGraderJobId,
+  type GraderJobRequest,
+  type GraderJobSpec
+} from "./protocol.js";
 import { SandboxProvider } from "./sandbox-provider.js";
 
 const token = "grader-service-token-for-tests-0123456789";
@@ -30,6 +36,13 @@ function profile(): GraderExecutionProfile {
       sourceBytes: 512_000,
       sourceFiles: 16
     }
+  };
+}
+
+function authenticatedHeaders(profileValue: GraderExecutionProfile = profile()) {
+  return {
+    authorization: `Bearer ${token}`,
+    [GRADER_PROFILE_FINGERPRINT_HEADER]: graderExecutionProfileFingerprint(profileValue)
   };
 }
 
@@ -84,7 +97,7 @@ describe("Grader Gateway admission", () => {
       serviceToken: token,
       profileRegistry: new GraderExecutionProfileRegistry([profile()])
     });
-    const headers = { authorization: `Bearer ${token}` };
+    const headers = authenticatedHeaders();
 
     const unknown = await gateway.inject({
       method: "POST",
@@ -107,12 +120,68 @@ describe("Grader Gateway admission", () => {
     expect(JSON.parse(identityMismatch.body).error.code).toBe("job_identity_mismatch");
   });
 
+  it("fails closed before provider execution when persisted profile fingerprint is absent or drifted", async () => {
+    class CountingProvider extends SandboxProvider {
+      calls = 0;
+
+      async execute(request: GraderJobRequest): Promise<unknown> {
+        this.calls += 1;
+        return {
+          protocolVersion: 1,
+          jobId: request.jobId,
+          status: "completed",
+          outcome: "passed",
+          score: 1,
+          payload: {}
+        };
+      }
+    }
+
+    const sandboxProvider = new CountingProvider();
+    const gateway = app({
+      serviceToken: token,
+      profileRegistry: new GraderExecutionProfileRegistry([profile()]),
+      sandboxProvider
+    });
+    const payload = job();
+
+    const missing = await gateway.inject({
+      method: "POST",
+      url: "/v1/jobs",
+      headers: { authorization: `Bearer ${token}` },
+      payload
+    });
+    expect(missing.statusCode).toBe(200);
+    expect(JSON.parse(missing.body)).toEqual({
+      protocolVersion: 1,
+      jobId: payload.jobId,
+      status: "system_error",
+      error: { code: "execution_profile_fingerprint_mismatch", retryable: false }
+    });
+
+    const drifted = await gateway.inject({
+      method: "POST",
+      url: "/v1/jobs",
+      headers: {
+        authorization: `Bearer ${token}`,
+        [GRADER_PROFILE_FINGERPRINT_HEADER]: `sha256:${"f".repeat(64)}`
+      },
+      payload
+    });
+    expect(drifted.statusCode).toBe(200);
+    expect(JSON.parse(drifted.body).error).toEqual({
+      code: "execution_profile_fingerprint_mismatch",
+      retryable: false
+    });
+    expect(sandboxProvider.calls).toBe(0);
+  });
+
   it("returns deterministic system_error while no sandbox provider is configured", async () => {
     const gateway = app({
       serviceToken: token,
       profileRegistry: new GraderExecutionProfileRegistry([profile()])
     });
-    const headers = { authorization: `Bearer ${token}` };
+    const headers = authenticatedHeaders();
     const payload = job();
 
     const first = await gateway.inject({ method: "POST", url: "/v1/jobs", headers, payload });
@@ -144,7 +213,7 @@ describe("Grader Gateway admission", () => {
     const response = await gateway.inject({
       method: "POST",
       url: "/v1/jobs",
-      headers: { authorization: `Bearer ${token}` },
+      headers: authenticatedHeaders(),
       payload
     });
 
@@ -173,7 +242,7 @@ describe("Grader Gateway admission", () => {
     const malformed = await malformedGateway.inject({
       method: "POST",
       url: "/v1/jobs",
-      headers: { authorization: `Bearer ${token}` },
+      headers: authenticatedHeaders(),
       payload
     });
     expect(JSON.parse(malformed.body).error.code).toBe("sandbox_provider_invalid_result");
@@ -199,10 +268,11 @@ describe("Grader Gateway admission", () => {
       ]),
       sandboxProvider: new OversizedProvider()
     });
+    const oversizedProfile = { ...restrictive, limits: { ...restrictive.limits, outputBytes: 8 } };
     const oversized = await oversizedGateway.inject({
       method: "POST",
       url: "/v1/jobs",
-      headers: { authorization: `Bearer ${token}` },
+      headers: authenticatedHeaders(oversizedProfile),
       payload
     });
     expect(JSON.parse(oversized.body).error.code).toBe(

@@ -117,7 +117,7 @@ export class GraderJobDispatcher {
 
       let result: GraderJobResult;
       try {
-        result = await this.gateway.dispatch(job.request);
+        result = await this.gateway.dispatch(job.request, job.profileFingerprint);
       } catch (error) {
         if (error instanceof GraderGatewayDispatchError) {
           if (error.retryable) return this.retry(job, error.code);

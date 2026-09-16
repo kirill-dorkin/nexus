@@ -60,6 +60,9 @@ importers:
 
   apps/grader-gateway:
     dependencies:
+      '@platform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
       fastify:
         specifier: ^5.0.0
         version: 5.12.4
