@@ -11,6 +11,7 @@ import {
   GraderProtocolError,
   graderJobRequestJsonSchema,
   validateGraderJobRequest,
+  validateGraderJobResult,
   type GraderJobRequest,
   type GraderJobResult
 } from "./protocol.js";
@@ -93,10 +94,25 @@ export function createGraderGateway(options: CreateGraderGatewayOptions): Fastif
         }
         enforceJobResourcePolicy(request.body, resolved.profile);
 
+        let rawResult: unknown;
         try {
-          return await sandbox.execute(request.body, resolved);
+          rawResult = await sandbox.execute(request.body, resolved);
         } catch {
           return systemError(request.body.jobId, "sandbox_provider_failure");
+        }
+
+        try {
+          const result = validateGraderJobResult(rawResult, request.body.jobId);
+          if (
+            result.status === "completed" &&
+            Buffer.byteLength(JSON.stringify(result.payload), "utf8") >
+              resolved.profile.limits.outputBytes
+          ) {
+            return systemError(request.body.jobId, "sandbox_provider_output_limit_exceeded");
+          }
+          return result;
+        } catch {
+          return systemError(request.body.jobId, "sandbox_provider_invalid_result");
         }
       } catch (error) {
         if (error instanceof GraderProtocolError || error instanceof GraderJobResourcePolicyError) {
