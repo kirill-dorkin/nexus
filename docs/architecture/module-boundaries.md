@@ -17,8 +17,8 @@
 | Learning History | canonical append-only learner LearningEvent journal and history read contract | integration outbox, telemetry, mutable Mastery projections |
 | Mastery | evidence normalization, model versions, organization-wide learner skill projections, learner skill progress composition | raw curriculum content, Delivery context, recommendation policy |
 | Recommendations | next-best actions / reasons | source-of-truth mastery |
-| Projects | projects, project runs, teams, milestones | Git hosting |
-| Integrations | GitHub and future external systems | core learning rules |
+| Projects | projects, project runs, teams, milestones, repository-binding history, normalized immutable external Project activity facts | Git hosting, webhook ingress/routing, provider installation/repository mappings, Learning Evidence |
+| Integrations | GitHub and future external systems, provider mappings, webhook ingress/routing, durable external-delivery processing | core learning rules, Projects-owned normalized activity facts |
 | Notifications | in-app/email/push delivery | business state |
 | Analytics | read models/aggregations | canonical learning history |
 | Audit | privileged/security history | product analytics |
