@@ -39,10 +39,7 @@ function integer(
 }
 
 function kubernetesName(name: string, value: string): string {
-  if (
-    value.length > 63 ||
-    !/^[a-z0-9](?:[-a-z0-9.]*[a-z0-9])?$/.test(value)
-  ) {
+  if (value.length > 63 || !/^[a-z0-9](?:[-a-z0-9.]*[a-z0-9])?$/.test(value)) {
     throw new Error(`${name} must be a valid Kubernetes DNS label/name.`);
   }
   return value;
@@ -87,7 +84,7 @@ function kubernetesProviderConfig(): KubernetesSandboxProviderConfig {
   return {
     namespace: kubernetesName(
       "GRADER_SANDBOX_NAMESPACE",
-      process.env.GRADER_SANDBOX_NAMESPACE?.trim() || "nexus-grader-sandbox"
+      process.env.GRADER_SANDBOX_NAMESPACE?.trim() || "grader-sandbox"
     ),
     runtimeClassName: kubernetesName(
       "GRADER_SANDBOX_RUNTIME_CLASS",
@@ -122,8 +119,9 @@ async function sandboxProvider(): Promise<SandboxProvider> {
     );
   }
 
+  const providerConfig = kubernetesProviderConfig();
   const controlPlane = await InClusterKubernetesSandboxControlPlane.fromEnvironment();
-  return new KubernetesGvisorSandboxProvider(controlPlane, kubernetesProviderConfig());
+  return new KubernetesGvisorSandboxProvider(controlPlane, providerConfig);
 }
 
 export async function loadGraderGatewayRuntimeConfig(): Promise<GraderGatewayRuntimeConfig> {
