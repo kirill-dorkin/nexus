@@ -19,10 +19,14 @@ spec:
       message: "grader sandbox Pods must disable injected service links"
     - expression: "object.spec.restartPolicy == 'Never'"
       message: "grader sandbox Pods must never restart learner execution in place"
+    - expression: "has(object.spec.terminationGracePeriodSeconds) && object.spec.terminationGracePeriodSeconds >= 0 && object.spec.terminationGracePeriodSeconds <= 1"
+      message: "grader sandbox Pods require a bounded termination grace period"
     - expression: "(!has(object.spec.hostNetwork) || object.spec.hostNetwork == false) && (!has(object.spec.hostPID) || object.spec.hostPID == false) && (!has(object.spec.hostIPC) || object.spec.hostIPC == false)"
       message: "grader sandbox Pods must not share host namespaces"
     - expression: "!has(object.spec.shareProcessNamespace) || object.spec.shareProcessNamespace == false"
       message: "grader sandbox Pods must not share process namespaces"
+    - expression: "has(object.spec.securityContext) && has(object.spec.securityContext.seccompProfile) && object.spec.securityContext.seccompProfile.type == 'RuntimeDefault'"
+      message: "grader sandbox Pods must use RuntimeDefault seccomp"
     - expression: "object.spec.containers.size() == 1 && (!has(object.spec.initContainers) || object.spec.initContainers.size() == 0) && (!has(object.spec.ephemeralContainers) || object.spec.ephemeralContainers.size() == 0)"
       message: "grader sandbox Pods must contain exactly one runner container"
     - expression: "object.spec.containers.all(c, c.name == 'runner' && c.image.matches('^[^@]+@sha256:[0-9a-f]{64}$'))"
@@ -63,9 +67,9 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["jobs"]
   validations:
-    - expression: "!has(object.spec.parallelism) || object.spec.parallelism == 1"
+    - expression: "has(object.spec.parallelism) && object.spec.parallelism == 1"
       message: "grader sandbox Jobs may create only one Pod at a time"
-    - expression: "!has(object.spec.completions) || object.spec.completions == 1"
+    - expression: "has(object.spec.completions) && object.spec.completions == 1"
       message: "grader sandbox Jobs require one completion"
     - expression: "has(object.spec.backoffLimit) && object.spec.backoffLimit == 0"
       message: "grader sandbox Jobs must not retry learner execution internally"
@@ -75,7 +79,7 @@ spec:
       message: "grader sandbox Jobs require bounded terminal garbage collection"
     - expression: "!has(object.spec.suspend) || object.spec.suspend == false"
       message: "grader sandbox Jobs cannot be suspended indefinitely"
-    - expression: "!has(object.spec.completionMode) || object.spec.completionMode == 'NonIndexed'"
+    - expression: "has(object.spec.completionMode) && object.spec.completionMode == 'NonIndexed'"
       message: "grader sandbox Jobs must use the single non-indexed completion model"
 ---
 apiVersion: admissionregistration.k8s.io/v1
