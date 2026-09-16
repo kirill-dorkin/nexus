@@ -8,9 +8,9 @@ It is **not live GitHub telemetry**. Before doing work, always verify the curren
 
 Last maintained: 2026-09-16.
 
-Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the first three F7 grader-hardening slices. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, and authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording. **Production learner-code execution remains disabled because no hardened production sandbox provider is enabled yet.** Verify the live `main` head before relying on any SHA or PR number.
+Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus four F7 grader-hardening slices. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, and an explicitly gated Kubernetes + gVisor sandbox-provider control plane with deny-by-default network/RBAC/resource controls. **Production learner-code execution remains disabled because no production runner image/executable profile has yet passed real-cluster containment and resource conformance.** Verify the live `main` head before relying on any SHA or PR number.
 
-Latest architectural decision at this checkpoint: ADR-0035.
+Latest architectural decision at this checkpoint: ADR-0036.
 
 Latest ordered migration at this checkpoint: `000029_grader_result_learning_history.sql`.
 
@@ -238,9 +238,9 @@ Project operator
   -> normalized activity page + separately composed current Project repository context
 ```
 
-### F7 — Grader hardening: authenticated durable dispatch/result boundary established
+### F7 — Grader hardening: isolated production sandbox control plane established
 
-F7 now has three explicit layers while intentionally keeping production learner-code execution disabled.
+F7 now has four explicit layers while intentionally keeping production learner-code execution gated until a trusted runner image/profile passes real-cluster verification.
 
 The Grader Gateway control-plane boundary establishes:
 
@@ -257,7 +257,7 @@ The Grader Gateway control-plane boundary establishes:
 - the sandbox provider is an explicit adapter seam; the default provider intentionally executes nothing and returns `system_error`;
 - sandbox-provider exceptions, malformed protocol output, wrong result job identity, and oversized result payload normalize to infrastructure `system_error`, never learner `failed` outcome;
 - provider output is runtime-validated instead of trusted merely because an adapter satisfies a TypeScript interface;
-- no production database credentials, user sessions, domain repositories, Docker socket, host-process runner, or provider-specific execution runtime are introduced.
+- no production database credentials, user sessions, domain repositories, Docker socket, or host-process runner are introduced.
 
 The durable grader-job layer establishes:
 
@@ -290,10 +290,27 @@ The authenticated Worker dispatch/result layer establishes:
 - a completed system-owned ValidationResult also appends the canonical learner `validation.result_recorded` LearningEvent in that same transaction, while `system_error` remains excluded from learner history;
 - commit-uncertain duplicate terminal acknowledgement is materially checked and returns the existing result, while conflicting replay fails closed;
 - grader ValidationResult provenance is unique per grader job and app-role callers cannot forge grader-job provenance;
-- existing ADR-0021 Evidence semantics remain authoritative: only `completed + trusted + passed|failed` is eligible for normalized Evidence, while `needs_review` and `system_error` are not; Evidence normalization remains a separate idempotent consequence rather than part of the Worker terminal transaction;
-- the default Gateway sandbox provider still executes nothing, so authenticated dispatch alone does not enable learner-code execution.
+- existing ADR-0021 Evidence semantics remain authoritative: only `completed + trusted + passed|failed` is eligible for normalized Evidence, while `needs_review` and `system_error` are not; Evidence normalization remains a separate idempotent consequence rather than part of the Worker terminal transaction.
 
-The established Gateway control-plane boundary is:
+The Kubernetes + gVisor provider-control layer establishes:
+
+- ADR-0036 selects deterministic Kubernetes batch Jobs as the provider control-plane primitive and requires a deployment-owned gVisor/runsc-class `RuntimeClass` with no fallback to ordinary runc/host execution;
+- `GRADER_SANDBOX_PROVIDER` remains `unavailable` by default; `kubernetes-gvisor` must be explicitly enabled;
+- API scheduling and Grader Gateway must receive the same immutable exact-version profile catalog; a material profile change requires a new version rather than rebinding an existing `(key, version)`;
+- every deterministic Job is fenced by the content-addressed grader `jobId` plus the resolved profile fingerprint so retained conflicting material fails closed;
+- runner content is selected only as a deployment-owned OCI repository plus the profile's immutable `sha256` digest;
+- sandbox Pods are non-root, drop all capabilities, forbid privilege escalation, use `RuntimeDefault` seccomp, read-only roots, no host PID/IPC/network namespaces, and no Kubernetes service-account token;
+- learner source is partitioned into immutable ConfigMaps, mounted read-only under `/workspace`, never copied into argv/env/labels/annotations/logs, and garbage-collected with its owning Job;
+- writable execution state is limited to a size-bounded ephemeral `/scratch` volume; Kubernetes also applies memory, CPU, wall-time, and provider hard ephemeral-storage ceilings;
+- the trusted runner image is responsible for applying the exact profile's process-level CPU-time/pid/output limits before learner code starts;
+- a dedicated sandbox namespace is Restricted-Pod-Security labeled and default-deny for ingress and egress; Gateway RBAC can only create/read Jobs and source ConfigMaps, list Pods, and read logs, with no Secrets or exec/attach capability;
+- NetworkPolicy enforcement and the RuntimeClass implementation are production-cluster prerequisites that must be verified independently rather than assumed from manifests;
+- provider output is read through a bounded log path and then still passes the existing Gateway protocol/runtime/exact-jobId validation before any terminal ValidationResult can be acknowledged;
+- capacity/API/throttle/ambiguous control failures remain retryable `system_error`; profile/image/identity/wall/resource failures are fail-closed system errors rather than learner failure;
+- HTTP disconnect/Worker transport timeout is not caller-driven cancellation: the deterministic bounded Job remains available for replay during its TTL retention window;
+- this slice intentionally ships no production exercise/test-suite runner image and therefore does not by itself enable production learner-code execution.
+
+The established Gateway/provider boundary is:
 
 ```text
 trusted service caller
@@ -301,8 +318,10 @@ trusted service caller
   -> verify content-addressed job identity
   -> resolve exact server-owned execution profile
   -> enforce transport/profile resource policy
-  -> sandbox-provider boundary
-  -> runtime-validate provider result
+  -> explicitly configured kubernetes-gvisor provider (or default unavailable)
+  -> deterministic digest-pinned gVisor Job in deny-by-default sandbox namespace
+  -> bounded trusted-runner stdout
+  -> runtime-validate provider result + exact jobId
   -> completed | system_error protocol result
 ```
 
@@ -330,7 +349,7 @@ platform_worker lease claim
   -> separate existing trusted-result Evidence normalization boundary
 ```
 
-At this checkpoint Worker does call Grader Gateway, but the default Gateway provider still executes nothing. Therefore no production learner code is executed even though durable authenticated dispatch and terminal ValidationResult recording are established.
+At this checkpoint Worker calls Grader Gateway and the Gateway contains an explicitly gated Kubernetes + gVisor provider implementation, but the provider still defaults to unavailable and no production runner image/executable profile has passed target-cluster conformance. Production learner-code execution therefore remains disabled.
 
 ### F8–F9 — upcoming foundations
 
@@ -393,7 +412,8 @@ These are high-value reminders, not substitutes for their ADRs.
 - Worker mutation of grader processing state is function-scoped; `platform_worker` does not receive direct grader-table UPDATE privilege.
 - Sandbox-provider output is untrusted adapter output and must satisfy protocol/runtime/output-size validation plus exact `jobId` matching before the lease-fenced ValidationResult writer may consume it.
 - Grader/sandbox infrastructure failure remains `system_error`; it never becomes learner failure merely because transport or a provider failed.
-- Authenticated dispatch and lease-aware terminal result recording are established, but production learner-code execution remains disabled until a hardened sandbox provider is explicitly implemented and verified as a separate security slice.
+- Kubernetes + gVisor is the selected first production sandbox control architecture; there is no fallback to host/runc execution and the sandbox namespace is deny-by-default with least-privilege control RBAC.
+- The provider implementation is present but production learner-code execution remains disabled until a digest-pinned trusted runner/executable profile and actual target-cluster isolation/egress/resource/cleanup behavior are independently verified.
 
 ## Active F4 compatibility windows
 
@@ -407,20 +427,21 @@ Do not remove these merely because the canonical model has moved on. Each requir
 
 ## Next recommended slice
 
-**F7 hardened production sandbox provider + isolated executable runtime.**
+**F7 digest-pinned trusted runner image + executable profile + real-cluster gVisor conformance.**
 
-Build on ADR-0007, ADR-0033, ADR-0034, and ADR-0035 without moving sandbox privilege into Web/API/Worker:
+Build on ADR-0007, ADR-0033, ADR-0034, ADR-0035, and ADR-0036 without moving sandbox privilege into Web/API/Worker:
 
-- select and document the production sandbox provider/control architecture in a new ADR before enabling learner-code execution;
-- keep all sandbox/provider credentials and execution privileges behind Grader Gateway; Worker remains transport/orchestration-only;
-- require strong process/kernel isolation appropriate for hostile learner code, no host Docker socket exposure to application services, network egress off by default, ephemeral writable state, read-only runtime roots where applicable, and explicit CPU/memory/pid/wall-time/output limits;
-- keep executable images/runtimes immutable and digest-pinned through the existing exact-version server-owned profile contract;
-- define sandbox lifecycle, cleanup, timeout, cancellation, provider-unavailable, capacity, and ambiguous-outcome semantics so infrastructure failure remains `system_error`;
-- pass provider output back only through the existing runtime-validated Gateway protocol; never let provider-specific response shape become canonical Validation state;
-- prove containment/resource/egress controls and end-to-end completed/retryable/system-error behavior with dedicated integration/security tests before enabling any production executable profile;
+- build the first minimal trusted runner image/test strategy as immutable infrastructure, without a general-purpose shell control surface and without production credentials;
+- make the runner enforce the exact profile's process-level CPU-time, pid, and output limits before starting learner code and emit exactly one protocol-v1 result on stdout;
+- publish/select runner content only by immutable digest and introduce a new exact execution-profile version for any material runner/runtime/policy/limit semantics;
+- deploy API scheduling and Grader Gateway admission from the same immutable profile catalog so profile key/version cannot drift between admission and execution;
+- prove on the actual target Kubernetes cluster that the configured RuntimeClass is gVisor/runsc-class isolation, Restricted Pod Security is enforced, no service-account token is mounted, default-deny egress is effective under the installed CNI, and source/scratch/root filesystem boundaries behave as designed;
+- prove CPU/memory/pid/wall/output/ephemeral-storage enforcement plus TTL cleanup and deterministic retry/replay behavior;
+- cover completed learner pass/fail plus capacity, image, timeout, provider-unavailable, malformed-output, oversized-output, and ambiguous transport outcomes end to end without converting infrastructure failure into learner failure;
+- keep `GRADER_SANDBOX_PROVIDER=unavailable` and production executable profiles disabled until that conformance suite is independently green;
 - keep Evidence/Mastery semantics unchanged: only the already-established trusted decisive ValidationResult path may create learning signal.
 
-Production learner-code execution should be enabled only after that provider slice is independently verified.
+Production learner-code execution should be enabled only after that runner/profile/conformance slice is independently verified.
 
 ## Remaining F4 follow-up frontier
 
@@ -430,7 +451,7 @@ Instructor/mentor read-others history/skill views should be added only with an e
 
 The active compatibility windows above should be removed only through explicit cleanup slices once callers are proven migrated.
 
-Production sandbox execution remains the next separate F7 security step now that the durable dispatch/result-recording boundary is established.
+Production sandbox execution remains gated on the next F7 runner-image/executable-profile plus target-cluster conformance slice.
 
 ## Relevant ADR reading map
 
@@ -463,6 +484,7 @@ Always inspect the live `docs/adr/` directory; this map is only a starting point
 - Grader Gateway admission/security contract: ADR-0033.
 - Durable Validation-owned grader-job ledger and worker lease state: ADR-0034.
 - Authenticated Worker dispatch and lease-aware terminal grader results: ADR-0035.
+- Kubernetes + gVisor sandbox provider control architecture: ADR-0036.
 
 For any new durable decision, add or amend architecture documentation through a new ADR rather than silently encoding policy only in implementation.
 
