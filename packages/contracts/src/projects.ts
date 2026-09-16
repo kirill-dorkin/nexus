@@ -71,7 +71,6 @@ export const projectActivityItemSchema = z.object({
   repositoryBindingId: uuidSchema,
   repositoryMappingId: uuidSchema,
   sourceDeliveryId: uuidSchema,
-  sourcePayloadSha256: z.string().regex(/^[0-9a-f]{64}$/),
   factType: projectActivityFactTypeSchema,
   action: z.string().regex(/^[a-z][a-z0-9_]{0,99}$/),
   githubRepositoryId: githubExternalIdSchema,
