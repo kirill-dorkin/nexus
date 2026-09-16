@@ -48,6 +48,7 @@ type InClusterClientOptions = Readonly<{
   port: number;
   token: string;
   ca: Buffer;
+  requestTimeoutMs: number;
 }>;
 
 function isRecord(value: unknown): value is JsonRecord {
@@ -87,7 +88,9 @@ async function readResponseBody(
 export class InClusterKubernetesSandboxControlPlane implements KubernetesSandboxControlPlane {
   private constructor(private readonly options: InClusterClientOptions) {}
 
-  static async fromEnvironment(): Promise<InClusterKubernetesSandboxControlPlane> {
+  static async fromEnvironment(
+    requestTimeoutMs: number
+  ): Promise<InClusterKubernetesSandboxControlPlane> {
     const host = process.env.KUBERNETES_SERVICE_HOST?.trim();
     if (host === undefined || host.length === 0) {
       throw new Error("KUBERNETES_SERVICE_HOST is required for kubernetes-gvisor sandboxing.");
@@ -108,7 +111,8 @@ export class InClusterKubernetesSandboxControlPlane implements KubernetesSandbox
       host,
       port: positiveInteger(process.env.KUBERNETES_SERVICE_PORT_HTTPS, 443),
       token: token.trim(),
-      ca
+      ca,
+      requestTimeoutMs
     });
   }
 
@@ -175,6 +179,9 @@ export class InClusterKubernetesSandboxControlPlane implements KubernetesSandbox
         }
       );
       request.once("error", reject);
+      request.setTimeout(this.options.requestTimeoutMs, () => {
+        request.destroy(new Error("Kubernetes API request timed out."));
+      });
       if (encoded !== undefined) request.write(encoded);
       request.end();
     });
@@ -363,7 +370,10 @@ export function buildKubernetesSandboxResources(
     spec: {
       backoffLimit: 0,
       ttlSecondsAfterFinished: config.resultRetentionSeconds,
-      activeDeadlineSeconds: Math.max(1, Math.ceil(profileLimits.wallTimeMs / 1000)),
+      activeDeadlineSeconds: Math.max(
+        1,
+        Math.ceil((config.startupTimeoutMs + profileLimits.wallTimeMs) / 1000)
+      ),
       template: {
         metadata: {
           labels: { [JOB_KEY_LABEL]: jobKey }
@@ -371,6 +381,7 @@ export function buildKubernetesSandboxResources(
         spec: {
           runtimeClassName: config.runtimeClassName,
           restartPolicy: "Never",
+          terminationGracePeriodSeconds: 1,
           serviceAccountName: config.sandboxServiceAccountName,
           automountServiceAccountToken: false,
           enableServiceLinks: false,
@@ -392,6 +403,7 @@ export function buildKubernetesSandboxResources(
                 { name: "PLATFORM_GRADER_JOB_ID", value: request.jobId },
                 { name: "PLATFORM_GRADER_SOURCE_DIR", value: "/workspace" },
                 { name: "PLATFORM_GRADER_SCRATCH_DIR", value: "/scratch" },
+                { name: "PLATFORM_GRADER_WALL_TIME_MS", value: String(profileLimits.wallTimeMs) },
                 { name: "PLATFORM_GRADER_CPU_TIME_MS", value: String(profileLimits.cpuTimeMs) },
                 { name: "PLATFORM_GRADER_PID_LIMIT", value: String(profileLimits.pids) },
                 { name: "PLATFORM_GRADER_OUTPUT_BYTES", value: String(profileLimits.outputBytes) },
@@ -757,7 +769,7 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
 
         if (state === "failed") {
           if (jobFailureReason(job) === "DeadlineExceeded") {
-            return systemError(request.jobId, "sandbox_wall_time_exceeded", false);
+            return systemError(request.jobId, "sandbox_job_deadline_exceeded", false);
           }
           return (
             podFailureResult(request.jobId, lastPod) ??
