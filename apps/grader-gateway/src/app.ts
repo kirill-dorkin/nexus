@@ -10,6 +10,7 @@ import {
 import {
   GraderProtocolError,
   graderJobRequestJsonSchema,
+  validateGraderJobRequest,
   type GraderJobRequest,
   type GraderJobResult
 } from "./protocol.js";
@@ -30,6 +31,15 @@ function tokenMatches(expected: string, authorization: string | undefined): bool
   return (
     expectedBytes.length === candidateBytes.length &&
     timingSafeEqual(expectedBytes, candidateBytes)
+  );
+}
+
+function hasValidationDetails(error: unknown): error is { validation: unknown } {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "validation" in error &&
+    error.validation !== undefined
   );
 }
 
@@ -70,7 +80,6 @@ export function createGraderGateway(options: CreateGraderGatewayOptions): Fastif
     },
     async (request, reply) => {
       try {
-        const { validateGraderJobRequest } = await import("./protocol.js");
         validateGraderJobRequest(request.body);
 
         const resolved = profiles.find(request.body.profile);
@@ -104,7 +113,7 @@ export function createGraderGateway(options: CreateGraderGatewayOptions): Fastif
   );
 
   app.setErrorHandler((error, _request, reply) => {
-    if (error.validation !== undefined) {
+    if (hasValidationDetails(error)) {
       return reply.code(400).send({
         error: {
           code: "invalid_grader_job_request",
