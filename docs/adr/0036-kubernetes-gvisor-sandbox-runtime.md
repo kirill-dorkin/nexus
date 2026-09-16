@@ -1,163 +1,204 @@
-# ADR-0036: Production grader execution uses Kubernetes Jobs behind a dedicated gVisor runtime boundary
+# ADR-0036: Production grader sandbox control uses Kubernetes Jobs behind a dedicated gVisor boundary
 
 - Status: Accepted
 - Date: 2026-09-16
 
 ## Context
 
-ADR-0007 requires hostile learner code to execute outside Web/API/Worker and outside the Grader Gateway process itself. ADR-0033 established exact-version server-owned execution profiles and a sandbox-provider seam. ADR-0034 and ADR-0035 then established durable grader jobs, authenticated Worker -> Gateway dispatch, retry/dead-letter processing, and lease-fenced terminal ValidationResult recording.
+ADR-0007 requires hostile learner code to execute outside Web/API/Worker and outside the Grader Gateway process itself. ADR-0033 established exact-version server-owned execution profiles and a sandbox-provider seam. ADR-0034 and ADR-0035 established durable grader jobs, authenticated Worker -> Gateway dispatch, retry/dead-letter processing, and lease-fenced terminal ValidationResult recording.
 
-The remaining F7 security boundary is real learner-code execution. Nexus needs a production provider that can enforce the existing profile contract without giving application services a Docker/containerd socket, host namespace access, production database credentials, cloud instance credentials, or a general-purpose privileged execution API.
+The next F7 boundary is the production sandbox control plane. Nexus needs a provider that can eventually execute a trusted grader runner without giving application services a Docker/containerd/CRI socket, host namespace access, production database credentials, cloud instance credentials, or a general-purpose privileged execution API.
 
-The repository is not otherwise coupled to a specific cloud or Kubernetes distribution. The provider choice therefore needs to remain behind the existing Grader Gateway abstraction and must not leak provider-specific state into Learning Validation.
+This ADR selects and constrains that provider architecture. It deliberately does **not** declare production learner-code execution enabled: the repository still needs a separately verified trusted runner implementation/image and real-cluster verification before any executable production profile is activated.
 
 ## Decision
 
 ### 1. The first production provider is Kubernetes Job orchestration with a dedicated gVisor RuntimeClass
 
-The Grader Gateway may be configured with a `kubernetes-gvisor` sandbox provider. Each execution is represented by an ephemeral Kubernetes Job whose Pod is required to use a dedicated gVisor RuntimeClass.
+Grader Gateway supports an explicit `kubernetes-gvisor` provider. Each execution is represented by an ephemeral Kubernetes Job whose Pod must use the dedicated `platform-gvisor` RuntimeClass.
 
-Kubernetes/containerd owns the privileged `runsc` integration. The Grader Gateway does **not** receive a Docker socket, containerd socket, CRI socket, KVM device, host PID namespace, host network namespace, or direct `runsc` process capability.
+Kubernetes/containerd owns the privileged `runsc` integration. Grader Gateway does **not** receive a Docker socket, containerd socket, CRI socket, KVM device, host PID/network namespace, or direct `runsc` process capability.
 
-The gVisor runtime handler is configured by cluster operators with networking disabled at the runtime layer. A namespace-level default-deny NetworkPolicy is required as defense-in-depth; NetworkPolicy alone is not treated as the primary `network: off` guarantee.
+Cluster operators configure the RuntimeClass handler `runsc-nonet` so networking is disabled at the gVisor runtime layer. The sandbox namespace also has default-deny ingress and egress NetworkPolicy as defense in depth; NetworkPolicy alone is not treated as the primary `network: off` guarantee.
 
-This is the initial production isolation architecture. A Firecracker-class microVM provider remains a compatible future hardening option if public multi-tenant risk, workload diversity, or scale justifies the additional control-plane and host-operations surface.
+A Firecracker-class microVM provider remains compatible with the provider seam if future public multi-tenant risk, workload diversity, or scale justifies a different isolation boundary.
 
-### 2. Sandbox execution is confined to a dedicated namespace with admission-enforced invariants
+### 2. Sandbox placement is fixed, not deployment-selectable
 
-Production sandbox Jobs run only in a dedicated namespace that enforces Kubernetes `restricted` Pod Security.
+Hostile execution may run only with these compile-time identities:
 
-The namespace also carries fail-closed ValidatingAdmissionPolicy bindings for both grader Jobs and their Pods. Pod admission requires the dedicated gVisor RuntimeClass and rejects specifications that weaken the sandbox contract. Job admission independently prevents parallel fan-out, internal retry, unbounded execution lifetime, and unbounded terminal retention.
+- namespace `platform-grader-sandbox`;
+- RuntimeClass `platform-gvisor`;
+- learner Pod ServiceAccount `grader-sandbox-runner`.
 
-Every grader Pod is created with at least these immutable controls:
+Gateway configuration cannot override those values. This prevents a deployment typo from redirecting learner code to an ordinary namespace or runtime that lacks the required admission/network/security controls.
 
+The namespace enforces Kubernetes `restricted` Pod Security. Fail-closed ValidatingAdmissionPolicy bindings target the immutable Kubernetes namespace-name label `kubernetes.io/metadata.name=platform-grader-sandbox`, so removing a custom operational label cannot silently bypass admission.
+
+Pod admission requires at least:
+
+- exact `platform-gvisor` RuntimeClass;
+- exact credential-free `grader-sandbox-runner` ServiceAccount;
 - `automountServiceAccountToken: false`;
-- no host network, host PID, or host IPC namespace;
-- non-root UID/GID;
-- `allowPrivilegeEscalation: false`;
-- all Linux capabilities dropped;
-- `RuntimeDefault` seccomp;
-- read-only container root filesystem;
-- no `hostPath`, persistent volume, device, or host mount;
-- only read-only projected source input plus bounded ephemeral writable storage;
-- digest-pinned runner image;
-- explicit CPU, memory, ephemeral-storage, and outer wall-clock limits;
-- `restartPolicy: Never`, a one-second maximum termination grace, and no application-level retry inside the Job.
+- no host network/PID/IPC or shared process namespace;
+- one runner container and no init/ephemeral containers;
+- non-root UID/GID, no privilege escalation, all capabilities dropped;
+- `RuntimeDefault` seccomp and read-only root filesystem;
+- digest-pinned image;
+- explicit CPU/memory/ephemeral-storage requests and limits;
+- only read-only Secret-projected source plus bounded `emptyDir` scratch;
+- source projection may not smuggle ServiceAccount token, ConfigMap, or downward-API projections;
+- only literal trusted runner-control environment variables;
+- bounded termination grace.
 
-The dedicated sandbox nodes must configure one consistent kubelet per-Pod PID limit. The provider accepts a production profile only when its declared `pids` value exactly matches that configured sandbox-node limit. This prevents the profile from claiming a PID budget that Kubernetes cannot enforce per Pod.
+Job admission requires exactly one completion/parallelism, `backoffLimit: 0`, bounded outer lifetime and TTL cleanup, no suspension, and non-indexed completion semantics.
 
-The namespace also has finite ResourceQuota and LimitRange envelopes. These are defense-in-depth capacity controls against accidental or compromised control-plane fan-out; they do not replace durable Worker retry/backpressure policy.
+The namespace additionally has finite ResourceQuota and LimitRange envelopes. These are defense-in-depth capacity controls, not substitutes for durable Worker retry/backpressure.
 
-### 3. Gateway Kubernetes credentials are narrow, rotating, and never enter learner execution
+### 3. Gateway Kubernetes credentials are narrow and rotating; learner Pods are credential-free
 
-The Grader Gateway uses a dedicated namespace-scoped Kubernetes ServiceAccount. Its Role is limited to the resource verbs required to create/read/delete grader Jobs and their short-lived input Secrets, observe the resulting Pod, and read the Pod result log.
+Grader Gateway uses a dedicated control-plane ServiceAccount whose namespace-scoped Role is limited to:
 
-The Gateway reads the projected bound ServiceAccount token from its mounted token file for every Kubernetes API request rather than caching the token value at process startup. This preserves normal Kubernetes token rotation and avoids turning token expiry into a hidden Gateway restart requirement.
+- create/get/delete grader Jobs;
+- create/get short-lived source Secrets;
+- get/list resulting Pods;
+- get result logs.
 
-The Gateway ServiceAccount token is never mounted into learner Pods. Learner Pods receive no Kubernetes credentials, production application credentials, cloud instance credentials, database credentials, or application secrets.
+The Kubernetes API client rereads the mounted ServiceAccount token file for every request so normal projected-token rotation does not require Gateway restart.
 
-A compromised Gateway therefore has a constrained Kubernetes API capability rather than a host runtime socket. Cluster admission policy remains an independent defense if the Gateway attempts to submit a weaker or resource-amplifying Job specification.
+That credential is never mounted into learner Pods. The separate `grader-sandbox-runner` ServiceAccount has token automount disabled and receives no RBAC in this slice. Learner Pods receive no production application/database credentials, user sessions, provider secrets, or cloud credentials.
 
-### 4. Source transport is ephemeral, read-only, bounded, and never placed in Pod metadata or logs
+A compromised Gateway therefore has a constrained Kubernetes API capability rather than host-runtime privilege. Admission remains an independent enforcement layer if Gateway attempts to submit a weaker Job/Pod shape.
 
-Learner source stays data, never infrastructure policy.
+### 4. Source transport is ephemeral, read-only, bounded, and data-only
 
-The provider creates one immutable Kubernetes Secret per source file. Each Secret contains only that file's bytes and is owner-referenced to the grader Job. The Job mounts those Secrets through a read-only projected volume at the normalized source paths already accepted by protocol v1.
+Learner source remains data, never infrastructure policy.
 
-This design avoids putting learner source in command arguments, environment variables, labels, annotations, or Pod logging configuration. Because Kubernetes Secrets are persisted by the control plane, production clusters must enable encryption at rest for Kubernetes API data. Job deletion/TTL garbage collection cascades to source Secrets, while provider setup failures also attempt best-effort Job cleanup.
+The provider creates one immutable Secret per source file. Each Secret contains only that file's bytes, is owner-referenced to the exact deterministic Job, and is projected read-only at the already-normalized protocol-v1 path beneath `/workspace/source`.
 
-The existing protocol source-size and file-count limits remain authoritative. One Secret per source file keeps each Kubernetes object below the existing protocol file-size ceiling rather than using Kubernetes object limits to silently widen the accepted source envelope.
+Source is not placed in command arguments, environment variables, labels, annotations, or logging configuration. Production clusters must enable Kubernetes API data encryption at rest because source bytes transit the Kubernetes API/Secret store.
+
+Protocol source-size/file-count limits remain authoritative. Job deletion or TTL garbage collection owns source cleanup; partial setup failure best-effort deletes a newly created Job so owner-referenced Secrets cascade.
 
 ### 5. Scheduling-time profile provenance is fenced at dispatch
 
-The immutable execution profile v1 remains the source of truth for:
+The exact execution profile remains the source of truth for runtime/language identity, runner image digest, trusted argv strategy, network/filesystem policy, and wall/CPU/memory/PID/output/source limits.
 
-- language/runtime identity;
-- runner image digest;
-- trusted argv strategy;
-- network and filesystem policy;
-- wall-clock, CPU, memory, PID, output, source-byte, and source-file limits.
+`runnerImageDigest` is canonical executable-content provenance. The provider combines that digest with a deployment-owned repository location. Changing runner/test/runtime bytes requires a new digest and exact profile version rather than rebinding an existing `(key, version)`.
 
-`runnerImageDigest` remains the canonical image-content identity recorded in the profile fingerprint. The Kubernetes provider combines that digest with a deployment-owned runner image repository; changing registry location without changing image bytes is an infrastructure-routing change, while changing executable bytes requires a new digest and therefore a new profile version.
+Sharing the parser implementation between API and Gateway is necessary but insufficient: two deployments could still be configured with different material under the same profile key/version. Therefore:
 
-Profile image + argv jointly pin trusted grader/test-suite semantics. Any material runner, hidden-test, runtime, command, or existing profile-policy change requires a new exact profile version rather than rebinding an existing one.
+1. Learning Validation persists the scheduling-time profile fingerprint in the durable grader job;
+2. Worker transports that fingerprint in authenticated `x-grader-profile-fingerprint` metadata while preserving the persisted protocol-v1 JSON body unchanged;
+3. Gateway resolves its local exact profile and compares the received fingerprint before calling any provider;
+4. missing, malformed, or mismatched provenance fails closed as non-retryable `system_error` and the sandbox is not started.
 
-Using the same parser implementation in API and Gateway is necessary but insufficient: two deployments could still be configured with different material under the same `(profile key, version)`. Therefore the Worker transports the durable ledger's scheduling-time `profile_fingerprint` in the authenticated `x-grader-profile-fingerprint` HTTP metadata while keeping the persisted protocol-v1 JSON request unchanged. Grader Gateway resolves its local exact profile and refuses provider execution unless that dispatched fingerprint is syntactically valid and exactly equals the resolved profile fingerprint. Missing or mismatched fingerprint is a non-retryable protocol `system_error`, never learner failure.
+Provider-specific outer ephemeral-storage policy is not added retroactively to profile-v1 provenance. If per-profile storage must become canonical later, that requires an explicit profile-contract version decision.
 
-This slice does **not** silently add a new field to the existing profile fingerprint. Already-persisted grader jobs retain the profile semantics and fingerprint under which they were scheduled. Kubernetes ephemeral-storage capacity is therefore a provider-owned outer hard envelope configured by deployment, bounded by the same fail-closed provider configuration and namespace LimitRange. If Nexus later needs a per-profile storage budget as canonical grader provenance, that requires an explicit new profile-contract/version decision rather than retroactively changing profile v1.
+### 6. Kubernetes/gVisor is an outer containment envelope; exact CPU-time semantics belong to the trusted runner
 
-### 6. Resource limits use both runtime/container controls and the trusted runner contract
+The provider enforces an outer envelope:
 
-Kubernetes/gVisor provides the outer containment envelope:
+- memory limit from the exact profile;
+- fixed one-vCPU request/limit;
+- bounded provider-owned ephemeral storage and `emptyDir` scratch;
+- node-level kubelet per-Pod PID limit that must exactly equal the profile's `pids` budget;
+- Job `activeDeadlineSeconds` from profile wall time plus bounded startup allowance;
+- gVisor kernel boundary and runtime-level network off.
 
-- memory through the container cgroup limit derived from the exact profile;
-- CPU through a fixed one-vCPU cgroup ceiling;
-- ephemeral storage through a provider-owned bounded container `ephemeral-storage` limit plus bounded `emptyDir` scratch space;
-- PID exhaustion through the dedicated sandbox-node kubelet per-Pod PID limit, which must equal the profile's declared `pids` budget;
-- outer execution lifetime through Job `activeDeadlineSeconds` derived from profile wall time plus a bounded infrastructure startup allowance;
-- host/kernel isolation through gVisor.
+The fixed one-vCPU ceiling deliberately does not convert `cpuTimeMs / wallTimeMs` into a permanent cgroup throttle. Exact cumulative `cpuTimeMs` semantics remain a trusted-runner responsibility.
 
-The one-vCPU outer ceiling deliberately does not reinterpret profile `cpuTimeMs` as a cgroup quota ratio. The profile already requires `cpuTimeMs <= wallTimeMs`; cumulative CPU-time semantics therefore remain the responsibility of the digest-pinned trusted runner instead of being silently changed into permanent CPU throttling by the provider.
+The future digest-pinned trusted runner must also enforce learner-facing wall/PID/output semantics, capture learner stdout/stderr separately from control output, and emit exactly one bounded protocol-v1 result document. Runner crash, malformed/oversized result, outer timeout, or resource-envelope termination remains infrastructure `system_error`; Gateway never infers learner failure from sandbox infrastructure behavior.
 
-The digest-pinned trusted runner inside the sandbox remains responsible for interpreting the exact profile argv, enforcing learner-facing wall/CPU/PID/output semantics within that outer envelope, capturing learner stdout/stderr rather than streaming it directly as container logs, and emitting exactly one bounded protocol-v1 result document on stdout.
+### 7. Provider lifecycle is deterministic, replay-safe, and fail-closed
 
-If the trusted runner violates that contract, exits without a valid result, exceeds the outer Job deadline/storage envelope, or produces malformed/oversized output, Gateway returns `system_error`; it does not infer learner failure from sandbox infrastructure behavior.
+Kubernetes resource names derive from content-addressed `jobId`. Job metadata records full job id, exact profile fingerprint, and a provider-spec fingerprint that also includes fixed placement/security identities and provider envelope inputs.
 
-### 7. Provider lifecycle is deterministic and fail-closed
+Lifecycle:
 
-Kubernetes resource names derive from the content-addressed grader `jobId`. Resource metadata also records the full job identity, profile fingerprint, and provider-spec fingerprint so a name collision or pre-existing foreign resource fails closed.
+1. create the deterministic Job or verify an existing Job's immutable identity;
+2. create each immutable source Secret or verify its content and exact Job ownerReference;
+3. observe the Job to terminal state or bounded provider deadline;
+4. on completion, accept exactly one succeeded Pod whose ownerReference matches the exact Job name and UID;
+5. read only that Pod's runner log under the profile output-byte ceiling;
+6. return raw JSON to the existing Gateway result validator, including exact `jobId` validation;
+7. rely on bounded Job TTL plus owner references for terminal garbage collection.
 
-Provider behavior is:
+A retry may observe the same running/completed Job rather than start a second execution. If deterministic resources disappear or have been garbage-collected, that condition is retryable infrastructure failure; a later durable retry may recreate the same content-addressed execution.
 
-1. create or materially verify the deterministic Job;
-2. create or materially verify owner-referenced immutable source Secrets;
-3. observe the Job until terminal state or provider deadline;
-4. on completion, identify exactly one succeeded Pod whose ownerReference points to the exact Job UID;
-5. read only that owned sandbox Pod's runner result log under a strict byte limit;
-6. return raw provider output to the existing Gateway runtime validator;
-7. retain a completed Job only for the bounded TTL replay window, after which Kubernetes owner-reference garbage collection removes the Job's Pod and source Secrets.
+Error classes remain infrastructure semantics:
 
-Retrying the same durable grader job may observe an already-running or already-finished deterministic Kubernetes Job instead of starting a second concurrent execution. If Kubernetes resources have already been garbage-collected, a later retry may re-execute the same content-addressed job; runtime-level network-off and ephemeral-storage rules make that execution externally side-effect-free by construction.
+- Kubernetes 401 -> retryable control-plane authentication error;
+- 403 -> retryable control-plane forbidden/authorization-or-policy infrastructure error, without mislabeling every 403 as authentication;
+- 404 for an expected resource -> retryable resource-unavailable/disappeared error;
+- 429 -> retryable sandbox capacity error;
+- timeout/transport/5xx -> retryable control-plane unavailable;
+- admission 422 -> non-retryable sandbox-policy rejection;
+- immutable identity conflict -> non-retryable resource conflict;
+- malformed/missing/oversized runner output -> non-learner `system_error`.
 
-Capacity pressure, scheduling failure, image-pull failure, Kubernetes API failure, ambiguous provider state, and outer timeout are infrastructure failures and remain `system_error`. Retryability is explicit per error classification and is still bounded by the durable Worker retry/dead-letter lifecycle from ADR-0035.
+Retry/dead-letter bounds remain owned by ADR-0035's durable Worker/Validation lifecycle.
 
-### 8. Canonical learning state remains unchanged
+A caller disconnect or Worker retry does not grant cancellation authority over an already-created deterministic Job. The Job remains bounded by its active deadline and can be re-observed by a retry. A future explicit product cancellation command would require its own authorization and durable-state semantics rather than being inferred from transport disconnect.
 
-Kubernetes resource state is provider infrastructure, not canonical learning state.
+### 8. This slice delivers the provider/control plane, not the trusted executable runner
 
-Grader Gateway still returns only protocol-v1 `completed` or `system_error`. Worker still transports the immutable persisted request unchanged and runtime-validates the exact result `jobId`; the additional profile-fingerprint header is trusted orchestration provenance from the durable ledger, not learner-controlled execution policy. Learning Validation still owns the durable grader ledger and ValidationResult. Learning Progress still owns Evidence normalization. No Kubernetes identifier, Pod state, node identity, provider credential, or provider-specific payload becomes canonical Validation/Evidence/Mastery state.
+The repository now contains the Kubernetes/gVisor provider adapter and deployment security manifests, but no trusted grader-runner implementation or reproducible runner image build.
+
+Therefore `GRADER_SANDBOX_PROVIDER` remains `unavailable` by default, and production executable profiles must not be enabled yet.
+
+The next independent slice must provide at least:
+
+- trusted runner implementation;
+- reproducible OCI image build and immutable digest provenance;
+- validator/test-harness execution contract;
+- exact wall/CPU/PID/output enforcement and learner stdout/stderr capture;
+- single bounded protocol-v1 control result;
+- end-to-end tests through the real Gateway provider boundary;
+- real-cluster verification of RuntimeClass/`runsc-nonet`, admission, node PID limits, network isolation, quotas, token behavior, and Secret encryption at rest.
+
+Only after that slice and deployment verification may a production executable profile be activated.
+
+### 9. Canonical learning state remains unchanged
+
+Kubernetes state is provider infrastructure, not canonical learning state.
+
+Worker still transports the immutable persisted request and validates exact result `jobId`. Learning Validation still owns durable grader jobs and ValidationResult. Learning Progress still owns Evidence normalization. No Pod/Job/node/provider credential or provider-specific response becomes canonical Validation/Evidence/Mastery state.
 
 No database migration is required by this slice.
 
 ## Verification requirements
 
-Before a production executable profile is considered enabled, tests and deployment checks must prove at least:
+Before merging this provider/control-plane slice, repository verification must prove:
 
-- Gateway and API use the same shared execution-profile parser/fingerprint implementation;
-- Worker transports the durable scheduling-time profile fingerprint and Gateway refuses provider execution on missing/mismatched fingerprint;
-- production provider configuration fails closed when namespace/runtime/image/PID/storage controls are absent or invalid;
-- projected Kubernetes ServiceAccount token rotation does not require Gateway restart;
-- generated Jobs always use the required gVisor RuntimeClass and hardened Pod security context;
-- Job admission prevents parallel fan-out, internal retries, and unbounded lifetime;
-- ServiceAccount token automount, host namespaces, host mounts, privilege escalation, added capabilities, writable root filesystem, arbitrary volume types, and secret-backed environment injection cannot appear in generated sandbox Pods;
-- source content is present only in owner-referenced Secret data and mounted read-only, not in metadata/env/commands/logging configuration;
-- image references are deployment repository plus exact profile `sha256` digest;
-- memory and outer-deadline limits derive from the exact profile, Kubernetes CPU remains a one-vCPU containment ceiling, exact cumulative `cpuTimeMs` remains runner-enforced, and the deployment-owned ephemeral-storage envelope remains separately bounded;
-- existing-resource replay checks full job/profile/provider identity and fails closed on conflict;
-- result-log selection verifies the succeeded Pod belongs to the exact deterministic Job UID;
-- completed provider output still passes through protocol/runtime validation and exact `jobId` checking;
-- malformed output, timeout, capacity/provider failure, and cleanup ambiguity remain `system_error` rather than learner `failed`;
-- deployment manifests enforce restricted Pod Security, default-deny networking, least-privilege RBAC, finite namespace capacity, and gVisor-only admission.
+- shared profile parser/fingerprint parity between API and Gateway;
+- scheduling-time fingerprint dispatch fence blocks drift before provider invocation;
+- provider configuration is explicit and bounded while sandbox namespace/runtime/runner-SA placement is non-configurable;
+- Kubernetes control-plane token is reread so projected rotation is honored;
+- generated Job/Pod uses fixed protected placement and hardened security/resource shape;
+- deterministic replay verifies Job, Secret, and result-Pod ownership/identity;
+- source exists only in immutable owner-referenced Secret data and read-only projection;
+- disappearing resources and capacity/provider failures are retryable infrastructure errors;
+- malformed/oversized output and policy/identity conflicts remain `system_error`, never learner `failed`;
+- repository tests pin critical namespace/RuntimeClass/ServiceAccount/admission/RBAC/network/capacity manifest invariants.
 
-A real production cluster must additionally verify the configured RuntimeClass resolves to `runsc`, the `runsc` handler has networking disabled, sandbox nodes have the documented per-Pod PID limit, and Kubernetes API data encryption at rest is enabled.
+Before production execution is enabled, operators must additionally prove on a real cluster that:
+
+- the Kubernetes version supports the deployed ValidatingAdmissionPolicy resources;
+- `platform-gvisor` resolves to the intended `runsc-nonet` CRI handler only on dedicated sandbox nodes;
+- gVisor networking is disabled at the runtime layer;
+- sandbox nodes share the documented kubelet per-Pod PID limit;
+- default-deny NetworkPolicy is enforced by the cluster networking implementation;
+- admission actually rejects intentionally weakened Pod/Job fixtures;
+- Kubernetes API data encryption at rest is enabled;
+- the trusted runner slice and exact digest-pinned production profile have independently passed their verification gates.
 
 ## Consequences
 
-- Nexus gains a concrete production sandbox control plane without placing host runtime privilege in Web/API/Worker/Gateway.
-- gVisor provides a materially stronger kernel boundary than ordinary `runc` containers while retaining OCI/Kubernetes operational tooling.
-- Kubernetes becomes an implementation dependency of this provider only; the Grader Gateway provider seam remains capable of supporting a later microVM backend.
-- Dedicated sandbox-node and control-plane policy configuration is part of the security boundary and must be deployed before enabling production profiles.
-- Runner images become security-sensitive build artifacts: their digest and exact profile version are canonical provenance, and runner/test changes require new profile versions.
-- Scheduling-time profile provenance is actively fenced at execution rather than merely assumed from matching profile key/version configuration.
-- Existing profile-v1 fingerprints remain stable; provider-specific outer storage policy is not smuggled into canonical provenance retroactively.
-- Production execution remains fail-closed when the hardened provider or an executable profile is not explicitly configured.
+- Nexus gains a concrete hardened sandbox **control plane/provider** without placing host-runtime privilege in Web/API/Worker/Gateway.
+- Deployment mistakes cannot select an arbitrary namespace or RuntimeClass through Gateway environment configuration.
+- gVisor provides a materially stronger kernel boundary than ordinary `runc` containers while retaining Kubernetes operational tooling.
+- Kubernetes remains an implementation dependency of this provider only; a later microVM backend can use the same Gateway seam.
+- Scheduling-time profile provenance is actively fenced at execution rather than assumed from matching key/version configuration.
+- Runner images become security-sensitive build artifacts whose digest/profile version are canonical provenance.
+- Production learner-code execution remains disabled until the separate trusted-runner and real-cluster verification gate is complete.
