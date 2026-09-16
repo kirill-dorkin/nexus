@@ -8,6 +8,10 @@ export type ValidatorDefinition = Readonly<{
   version: number;
   recordingAuthority: ValidatorRecordingAuthority;
   evidenceTrust: ValidationEvidenceTrust;
+  grader?: Readonly<{
+    protocolVersion: 1;
+    sourceEnvelope: "files_v1";
+  }>;
 }>;
 
 const validatorDefinitions: readonly ValidatorDefinition[] = [
@@ -16,6 +20,16 @@ const validatorDefinitions: readonly ValidatorDefinition[] = [
     version: 1,
     recordingAuthority: "authorized_user",
     evidenceTrust: "trusted"
+  },
+  {
+    key: "code-grader",
+    version: 1,
+    recordingAuthority: "system",
+    evidenceTrust: "trusted",
+    grader: {
+      protocolVersion: 1,
+      sourceEnvelope: "files_v1"
+    }
   }
 ];
 
