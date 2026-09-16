@@ -139,3 +139,39 @@ func TestLearnerRuntimeDoesNotExposeNodeOrHostCapabilities(t *testing.T) {
 		})
 	}
 }
+
+func TestReadSourceRejectsSymlinkEscape(t *testing.T) {
+	sourceRoot := t.TempDir()
+	outsideRoot := t.TempDir()
+	outside := filepath.Join(outsideRoot, "outside.js")
+	if err := os.WriteFile(outside, []byte(`function solve(input) { return input.a + input.b; }`), 0o444); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Symlink(outside, filepath.Join(sourceRoot, mainSourceFilename)); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := readSource(sourceRoot); err == nil {
+		t.Fatal("expected source symlink escape to be rejected")
+	}
+}
+
+func TestLoadConfigRejectsUnknownModeAndInvalidBudgets(t *testing.T) {
+	sourceRoot := t.TempDir()
+	scratchRoot := t.TempDir()
+	env := map[string]string{
+		"GRADER_JOB_ID":       "sha256:" + strings.Repeat("a", 64),
+		"GRADER_SOURCE_ROOT":  sourceRoot,
+		"GRADER_SCRATCH_ROOT": scratchRoot,
+		"GRADER_WALL_TIME_MS": "100",
+		"GRADER_CPU_TIME_MS":  "101",
+		"GRADER_PIDS":         "64",
+		"GRADER_OUTPUT_BYTES": "2048",
+	}
+	getenv := func(key string) string { return env[key] }
+	if _, err := LoadConfig([]string{"unknown"}, getenv); err == nil {
+		t.Fatal("expected unknown mode to fail closed")
+	}
+	if _, err := LoadConfig([]string{modeJSSumV1}, getenv); err == nil {
+		t.Fatal("expected CPU budget above wall budget to fail closed")
+	}
+}

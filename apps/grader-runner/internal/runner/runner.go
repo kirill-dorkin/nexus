@@ -20,6 +20,7 @@ const (
 
 type watchdog struct {
 	done      chan struct{}
+	stopped   chan struct{}
 	once      sync.Once
 	startCPU  time.Duration
 	startedAt time.Time
@@ -34,22 +35,27 @@ func startWatchdog(vm *goja.Runtime, config Config) (*watchdog, error) {
 
 	watch := &watchdog{
 		done:      make(chan struct{}),
+		stopped:   make(chan struct{}),
 		startCPU:  startCPU,
 		startedAt: time.Now(),
 		config:    config,
 	}
-	wallTimer := time.AfterFunc(config.WallTime, func() {
-		vm.Interrupt(interruptWall)
-	})
 	period := watchdogPeriod(config.CPUTime)
 	go func() {
-		ticker := time.NewTicker(period)
-		defer ticker.Stop()
+		defer close(watch.stopped)
+		wallTimer := time.NewTimer(config.WallTime)
+		defer wallTimer.Stop()
+		cpuTicker := time.NewTicker(period)
+		defer cpuTicker.Stop()
+
 		for {
 			select {
 			case <-watch.done:
 				return
-			case <-ticker.C:
+			case <-wallTimer.C:
+				vm.Interrupt(interruptWall)
+				return
+			case <-cpuTicker.C:
 				current, cpuErr := processCPUTime()
 				if cpuErr != nil {
 					vm.Interrupt(cpuErr)
@@ -62,16 +68,12 @@ func startWatchdog(vm *goja.Runtime, config Config) (*watchdog, error) {
 			}
 		}
 	}()
-
-	go func() {
-		<-watch.done
-		wallTimer.Stop()
-	}()
 	return watch, nil
 }
 
 func (watch *watchdog) stop() {
 	watch.once.Do(func() { close(watch.done) })
+	<-watch.stopped
 }
 
 func (watch *watchdog) finalLimitReason() (string, error) {
@@ -172,7 +174,7 @@ func readSource(root string) ([]byte, error) {
 		return nil, err
 	}
 	relative, err := filepath.Rel(rootResolved, resolved)
-	if err != nil || relative == ".." || filepath.IsAbs(relative) || len(relative) >= 3 && relative[:3] == ".."+string(os.PathSeparator) {
+	if err != nil || relative == ".." || filepath.IsAbs(relative) || stringsHasDotDotPrefix(relative) {
 		return nil, errors.New("source path escapes trusted source root")
 	}
 	info, err := os.Stat(resolved)
@@ -180,6 +182,11 @@ func readSource(root string) ([]byte, error) {
 		return nil, errors.New("main.js must be a regular file")
 	}
 	return os.ReadFile(resolved)
+}
+
+func stringsHasDotDotPrefix(relative string) bool {
+	prefix := ".." + string(os.PathSeparator)
+	return len(relative) >= len(prefix) && relative[:len(prefix)] == prefix
 }
 
 func learnerFailure(config Config, reason string, console consolePayload, testsRun int) JobResult {
