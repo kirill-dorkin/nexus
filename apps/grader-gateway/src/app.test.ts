@@ -156,4 +156,57 @@ describe("Grader Gateway admission", () => {
       error: { code: "sandbox_provider_failure", retryable: true }
     });
   });
+
+  it("normalizes malformed or oversized provider output to system_error", async () => {
+    class MalformedProvider extends SandboxProvider {
+      async execute(): Promise<unknown> {
+        return { status: "completed", outcome: "passed" };
+      }
+    }
+
+    const malformedGateway = app({
+      serviceToken: token,
+      profileRegistry: new GraderExecutionProfileRegistry([profile()]),
+      sandboxProvider: new MalformedProvider()
+    });
+    const payload = job();
+    const malformed = await malformedGateway.inject({
+      method: "POST",
+      url: "/v1/jobs",
+      headers: { authorization: `Bearer ${token}` },
+      payload
+    });
+    expect(JSON.parse(malformed.body).error.code).toBe("sandbox_provider_invalid_result");
+
+    class OversizedProvider extends SandboxProvider {
+      async execute(request: GraderJobRequest): Promise<unknown> {
+        return {
+          protocolVersion: 1,
+          jobId: request.jobId,
+          status: "completed",
+          outcome: "passed",
+          score: 1,
+          payload: { detail: "0123456789abcdef" }
+        };
+      }
+    }
+
+    const restrictive = profile();
+    const oversizedGateway = app({
+      serviceToken: token,
+      profileRegistry: new GraderExecutionProfileRegistry([
+        { ...restrictive, limits: { ...restrictive.limits, outputBytes: 8 } }
+      ]),
+      sandboxProvider: new OversizedProvider()
+    });
+    const oversized = await oversizedGateway.inject({
+      method: "POST",
+      url: "/v1/jobs",
+      headers: { authorization: `Bearer ${token}` },
+      payload
+    });
+    expect(JSON.parse(oversized.body).error.code).toBe(
+      "sandbox_provider_output_limit_exceeded"
+    );
+  });
 });
