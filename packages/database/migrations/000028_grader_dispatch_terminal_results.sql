@@ -61,7 +61,7 @@ BEGIN
   END IF;
 
   IF NEW.recorded_by_user_id IS NOT NULL
-     OR NEW.idempotency_key <> 'grader-job:' || NEW.grader_job_id THEN
+     OR NEW.idempotency_key IS DISTINCT FROM 'grader-job:' || NEW.grader_job_id THEN
     RAISE EXCEPTION USING
       ERRCODE = '23514',
       MESSAGE = 'grader validation results must be system-owned with deterministic idempotency';
@@ -113,9 +113,10 @@ DECLARE
   result_score numeric(6,5);
   result_payload jsonb;
 BEGIN
-  IF jsonb_typeof(p_result) <> 'object'
-     OR p_result -> 'protocolVersion' <> '1'::jsonb
-     OR p_result ->> 'jobId' <> p_job_id THEN
+  IF p_result IS NULL
+     OR jsonb_typeof(p_result) IS DISTINCT FROM 'object'
+     OR p_result -> 'protocolVersion' IS DISTINCT FROM '1'::jsonb
+     OR p_result ->> 'jobId' IS DISTINCT FROM p_job_id THEN
     RAISE EXCEPTION USING
       ERRCODE = '22023',
       MESSAGE = 'grader terminal result identity is invalid';
@@ -134,14 +135,19 @@ BEGIN
   result_status := p_result ->> 'status';
 
   IF result_status = 'completed' THEN
-    IF p_terminal_state <> 'completed'
+    IF p_terminal_state IS DISTINCT FROM 'completed'
+       OR jsonb_object_length(p_result) <> 6
+       OR NOT (p_result ?& ARRAY[
+         'protocolVersion', 'jobId', 'status', 'outcome', 'score', 'payload'
+       ])
+       OR p_result ->> 'outcome' IS NULL
        OR p_result ->> 'outcome' NOT IN ('passed', 'failed', 'needs_review')
-       OR jsonb_typeof(p_result -> 'payload') <> 'object'
+       OR jsonb_typeof(p_result -> 'payload') IS DISTINCT FROM 'object'
        OR NOT (p_result ? 'score')
        OR (
-         p_result -> 'score' <> 'null'::jsonb
+         p_result -> 'score' IS DISTINCT FROM 'null'::jsonb
          AND (
-           jsonb_typeof(p_result -> 'score') <> 'number'
+           jsonb_typeof(p_result -> 'score') IS DISTINCT FROM 'number'
            OR (p_result ->> 'score')::numeric < 0
            OR (p_result ->> 'score')::numeric > 1
          )
@@ -168,12 +174,17 @@ BEGIN
       'result', p_result -> 'payload'
     );
   ELSIF result_status = 'system_error' THEN
-    IF p_terminal_state NOT IN ('system_error', 'dead_letter')
-       OR jsonb_typeof(p_result -> 'error') <> 'object'
+    IF p_terminal_state IS NULL
+       OR p_terminal_state NOT IN ('system_error', 'dead_letter')
+       OR jsonb_object_length(p_result) <> 4
+       OR NOT (p_result ?& ARRAY['protocolVersion', 'jobId', 'status', 'error'])
+       OR jsonb_typeof(p_result -> 'error') IS DISTINCT FROM 'object'
+       OR jsonb_object_length(p_result -> 'error') <> 2
+       OR NOT ((p_result -> 'error') ?& ARRAY['code', 'retryable'])
        OR p_result #>> '{error,code}' IS NULL
        OR char_length(p_result #>> '{error,code}') NOT BETWEEN 1 AND 100
        OR (p_result #>> '{error,code}') !~ '^[a-z][a-z0-9_]*$'
-       OR jsonb_typeof(p_result #> '{error,retryable}') <> 'boolean' THEN
+       OR jsonb_typeof(p_result #> '{error,retryable}') IS DISTINCT FROM 'boolean' THEN
       RAISE EXCEPTION USING
         ERRCODE = '22023',
         MESSAGE = 'system_error grader terminal result is invalid';
@@ -203,18 +214,18 @@ BEGIN
    WHERE grader_job_id = p_job_id;
 
   IF FOUND THEN
-    IF existing.organization_id <> job.organization_id
-       OR existing.submission_id <> job.submission_id
-       OR existing.activity_version_id <> job.activity_version_id
-       OR existing.validator_key <> job.validator_key
-       OR existing.validator_version <> job.validator_version
-       OR existing.validator_config <> job.validator_config
-       OR existing.idempotency_key <> 'grader-job:' || job.job_id
-       OR existing.status <> result_status
+    IF existing.organization_id IS DISTINCT FROM job.organization_id
+       OR existing.submission_id IS DISTINCT FROM job.submission_id
+       OR existing.activity_version_id IS DISTINCT FROM job.activity_version_id
+       OR existing.validator_key IS DISTINCT FROM job.validator_key
+       OR existing.validator_version IS DISTINCT FROM job.validator_version
+       OR existing.validator_config IS DISTINCT FROM job.validator_config
+       OR existing.idempotency_key IS DISTINCT FROM 'grader-job:' || job.job_id
+       OR existing.status IS DISTINCT FROM result_status
        OR existing.outcome IS DISTINCT FROM result_outcome
        OR existing.score IS DISTINCT FROM result_score
-       OR existing.evidence_trust <> job.evidence_trust
-       OR existing.payload <> result_payload
+       OR existing.evidence_trust IS DISTINCT FROM job.evidence_trust
+       OR existing.payload IS DISTINCT FROM result_payload
        OR existing.recorded_by_user_id IS NOT NULL THEN
       RAISE EXCEPTION USING
         ERRCODE = '23505',
@@ -344,14 +355,14 @@ BEGIN
   END IF;
 
   next_status := p_result ->> 'status';
-  IF next_status NOT IN ('completed', 'system_error') THEN
+  IF next_status IS NULL OR next_status NOT IN ('completed', 'system_error') THEN
     RAISE EXCEPTION USING
       ERRCODE = '22023',
       MESSAGE = 'grader terminal acknowledgement status is invalid';
   END IF;
 
   IF next_status = 'system_error'
-     AND p_result #> '{error,retryable}' = 'true'::jsonb THEN
+     AND p_result #> '{error,retryable}' IS NOT DISTINCT FROM 'true'::jsonb THEN
     RAISE EXCEPTION USING
       ERRCODE = '22023',
       MESSAGE = 'retryable grader system_error must use the durable failure lifecycle';
@@ -507,7 +518,7 @@ BEGIN
   END IF;
 
   FOR exhausted IN
-    SELECT processing.job_id, processing.last_error_code
+    SELECT processing.job_id
       FROM learning_validation.grader_job_processing AS processing
      WHERE processing.status = 'processing'
        AND processing.lease_expires_at <= now()
@@ -521,7 +532,7 @@ BEGIN
       'jobId', exhausted.job_id,
       'status', 'system_error',
       'error', jsonb_build_object(
-        'code', COALESCE(exhausted.last_error_code, 'lease_expired_attempts_exhausted'),
+        'code', 'lease_expired_attempts_exhausted',
         'retryable', true
       )
     );
