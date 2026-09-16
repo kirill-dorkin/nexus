@@ -8,11 +8,11 @@ It is **not live GitHub telemetry**. Before doing work, always verify the curren
 
 Last maintained: 2026-09-16.
 
-Baseline repository state: includes the completed F5 Guided Build API-level learner vertical plus the F6 GitHub integration ingress, trusted GitHub App setup/mapping, durable installation/repository lifecycle processing, and the first Projects-owned Team/Project repository-binding vertical on top of the completed F4 core learner path. Verify the live `main` head before relying on any SHA or PR number.
+Baseline repository state: includes the completed F5 Guided Build API-level learner vertical plus the F6 GitHub integration ingress, trusted GitHub App setup/mapping, durable installation/repository lifecycle processing, the Projects-owned Team/Project repository-binding vertical, and normalized immutable GitHub PR/review/check Project facts on top of the completed F4 core learner path. Verify the live `main` head before relying on any SHA or PR number.
 
-Latest architectural decision at this checkpoint: ADR-0030.
+Latest architectural decision at this checkpoint: ADR-0031.
 
-Latest ordered migration at this checkpoint: `000024_projects_repository_vertical.sql`.
+Latest ordered migration at this checkpoint: `000025_github_project_facts.sql`.
 
 The baseline above is an orientation marker, not permission to skip checking the live `main` head.
 
@@ -145,12 +145,12 @@ Submission
   -> normal F4 learning lifecycle
 ```
 
-### F6 — GitHub projects: trusted integration + repository-backed Project foundation established
+### F6 — GitHub projects: trusted integration + repository-backed Projects + normalized activity facts established
 
-The first four F6 slices now establish both the GitHub trust boundary and the first Projects-owned collaboration model before PR/review intelligence is materialized:
+The first five F6 slices now establish the GitHub trust boundary, Projects-owned collaboration model, and a durable normalized Project activity layer without turning external repository activity into learning state:
 
-- `Integrations` owns GitHub App external identity, setup/mapping management, webhook ingress, retained-routing projection, and installation/repository lifecycle processing;
-- `Projects` owns Nexus `Team`, `TeamMembership`, `Project`, and repository-binding history;
+- `Integrations` owns GitHub App external identity, setup/mapping management, webhook ingress, retained-routing projection, installation/repository lifecycle processing, and separate durable delivery state for Project-fact normalization;
+- `Projects` owns Nexus `Team`, `TeamMembership`, `Project`, repository-binding history, and immutable normalized GitHub Project facts;
 - GitHub installation/repository identifiers remain external Integration identities and are never reused as Nexus Project/Team ids;
 - webhook HMAC-SHA256 is verified against the raw request body before parsed payload content is trusted;
 - only an explicit allowlist of F6-relevant GitHub event families is accepted;
@@ -162,23 +162,30 @@ The first four F6 slices now establish both the GitHub trust boundary and the fi
 - GitHub setup and OAuth state are short-lived, single-use, user-bound, and persisted only as SHA-256;
 - GitHub user access tokens are ephemeral adapter credentials and are never persisted or exposed outside Integrations;
 - trusted installation/repository mappings are tenant-scoped through RLS, idempotent by exact external id, and cannot be reassigned across Organizations;
-- immutable inbox routing facts are separate from `github_webhook_routing_state` and `github_webhook_lifecycle_processing` mutable projections;
+- immutable inbox routing facts are separate from mutable `github_webhook_routing_state`, lifecycle processing, and Project-fact processing projections;
 - retained `unmapped_installation` / `unmapped_repository` deliveries may be explicitly re-evaluated after trusted mapping changes without rewriting their original inbox routing facts;
-- lifecycle claims use worker-only narrow PostgreSQL functions, `FOR UPDATE SKIP LOCKED`, unique leases, retry/backoff/dead-letter state, and lease expiry for crash recovery;
-- mapping mutation and successful `completed` acknowledgement commit atomically in one PostgreSQL transaction;
+- lifecycle and Project-fact claims use worker-only narrow PostgreSQL functions, `FOR UPDATE SKIP LOCKED`, unique leases, retry/backoff/dead-letter state, and lease expiry for crash recovery;
+- each consumer acknowledges the same immutable webhook independently, so lifecycle work cannot accidentally complete Project-fact work or vice versa;
+- mapping mutation and successful lifecycle `completed` acknowledgement commit atomically in one PostgreSQL transaction;
+- Project-fact insert and successful Project-fact `completed` acknowledgement also commit atomically, while source inbox/delivery uniqueness prevents duplicate committed facts on retry;
 - repository status distinguishes `active`, temporary `suspended`, and durable `removed`;
 - local administrator suspension and GitHub-originated suspension are distinguished internally so an external unsuspend cannot override local administrator intent;
 - Team is explicitly distinct from Learning Delivery Group: Team membership is an Organization-user collaboration relation and never creates or mutates Enrollment/GroupMembership;
 - Team members must be active Organization members when added;
 - the first Project operator policy admits organization owners/admins/instructors through existing Organization or exact Team/Project role assignments; mentor/learner org-wide Project access remains deliberately absent;
 - Projects application code resolves repositories only through the public `GitHubRepositoryReferenceQuery`; it does not query Integration tables/repositories directly;
-- one Project has at most one active repository binding and one trusted repository mapping can belong to at most one active Project, making future GitHub-to-Project attribution unambiguous;
+- one Project has at most one active repository binding and one trusted repository mapping can belong to at most one active Project;
 - repository connect requires current tenant-consistent `active` trusted mapping state and is idempotent for the exact same active binding;
 - PostgreSQL independently guards active binding against foreign, suspended, or removed Integration mappings as defense in depth;
-- repository disconnect is non-destructive and idempotent: it closes binding history without deleting Project, Team, or Integration mapping state;
+- repository disconnect is non-destructive and idempotent: it closes binding history without deleting Project, Team, Integration mapping state, or already attributed historical facts;
 - external repository/installation suspension or removal does not rewrite Project binding history; Project reads compose the stable binding with current Integration availability (`active`, `suspended`, or `removed`);
+- normalized fact families are `pull_request`, `pull_request_review`, `check_run`, and `check_suite`; raw webhook payload remains Integrations-owned and is not copied into Projects;
+- Project attribution is resolved against the repository binding interval that contains immutable webhook `received_at`, so connecting a repository later cannot retroactively claim older GitHub activity and disconnecting later cannot erase activity that was attributable when received;
+- GitHub actor ids/logins remain external actor identity in this slice and are not silently converted into Nexus learner/user identity;
+- Project facts are immutable event snapshots rather than last-write-wins provider state; out-of-order/stale deliveries are preserved with provider timestamps instead of rolling a mutable projection backward;
+- there is no assumed universal monotonic GitHub ordering key across PR/review/check event families;
 - no Project outbox event is introduced yet because there is no downstream asynchronous consumer contract in this slice;
-- no GitHub PR/check/review fact, LearningEvent, Evidence, Mastery mutation, grader/scoring policy, or instructor analytics is introduced by the repository-backed Project vertical;
+- normalized GitHub Project facts are **not** Learning Evidence and create no LearningEvent, Evidence, Mastery mutation, grader/scoring policy, or instructor recommendation;
 - BullMQ/Redis scheduling remains an execution adapter to wire later; PostgreSQL processing/routing state remains canonical.
 
 The trusted integration path remains:
@@ -193,7 +200,7 @@ GitHub delivery
   -> Integration-owned lifecycle mutation + processor acknowledgement atomically
 ```
 
-The first Projects-owned path is now:
+The Projects-owned repository path is:
 
 ```text
 Organization operator
@@ -202,6 +209,17 @@ Organization operator
   -> resolve trusted repository mapping through Integrations public query
   -> one active Project <-> repository binding
   -> current repository availability composed at read time
+```
+
+The normalized Project activity path is:
+
+```text
+trusted GitHub PR/review/check delivery
+  -> independent Integrations Project-fact lease/claim
+  -> validate payload identity against trusted routing
+  -> resolve Project repository binding at webhook received_at
+  -> normalize immutable Projects-owned activity fact
+  -> atomically acknowledge delivery processing
 ```
 
 ### F7–F9 — upcoming foundations
@@ -246,11 +264,14 @@ These are high-value reminders, not substitutes for their ADRs.
 - GitHub user access tokens used during setup are ephemeral adapter credentials and never become canonical Nexus state, inbox/outbox payload, Project state, or learning data.
 - A verified webhook inbox fact is not Project state, LearningEvent, Evidence, or Mastery. Derivation requires an idempotent processor and the owning module's public boundary.
 - Receive-time GitHub routing facts are immutable; retained unroutable deliveries use a separate explicit routing projection rather than rewriting history.
-- GitHub lifecycle worker state is separate from the inbox and uses lease/retry/dead-letter semantics; BullMQ/Redis is not canonical state.
+- GitHub lifecycle worker state and Project-fact worker state are separate from the inbox and from each other; both use lease/retry/dead-letter semantics and BullMQ/Redis is not canonical state.
 - A GitHub-originated unsuspend cannot override an explicit local administrator suspension.
 - Project/Team ids are Nexus identities; GitHub repository ids remain Integration identities.
 - A Project repository binding is stable Project history, while current external repository availability is composed from Integrations at read time.
 - A Project repository binding must not be silently moved between Projects; active repository ownership is one-to-one.
+- `GitHubProjectFact != LearningEvidence`: PR/review/check activity is external Project history until a separate explicit learning policy decides otherwise.
+- GitHub Project attribution uses the repository binding active at immutable webhook receive time; later connect/disconnect must not rewrite historical attribution.
+- Normalized GitHub Project facts are immutable event snapshots; stale or reordered provider deliveries do not overwrite a mutable latest-state row in this slice.
 - Grader/sandbox hardening belongs to the separate security boundary described by ADR-0007 and the F7 roadmap unless an earlier slice needs only a safe application-level contract.
 
 ## Active F4 compatibility windows
@@ -265,20 +286,19 @@ Do not remove these merely because the canonical model has moved on. Each requir
 
 ## Next recommended slice
 
-**F6 normalized GitHub PR/check/review Project facts.**
+**F6 Project activity read model over normalized GitHub facts.**
 
-Build the smallest durable bridge from trusted Integration deliveries into Projects-owned repository activity facts:
+Expose the smallest tenant-safe Project-facing read surface over the durable facts before introducing any learning interpretation:
 
-- define normalized Projects-owned facts for pull requests, pull-request reviews, check runs/suites only where a concrete Project use case requires them;
-- consume only trusted/routable GitHub deliveries whose repository mapping resolves to exactly one active Project binding;
-- keep raw GitHub webhook payloads inside Integrations and pass only normalized, versioned facts across the Integrations -> Projects boundary;
-- make fact materialization idempotent by stable external delivery/entity identity and preserve source provenance needed for replay/audit;
-- define processor state/retry semantics without making Redis/BullMQ canonical;
-- handle repository suspension/removal and Project disconnect without retroactively deleting already materialized historical facts;
-- prove duplicate delivery, reordered update, cross-tenant/project mismatch, disconnected/suspended repository, and crash/retry behavior through integration tests;
-- do not yet convert review/check facts into learning Evidence, scoring, Mastery, grader output, or instructor recommendations.
+- define a Project-scoped query contract over immutable normalized PR/review/check facts with stable cursor ordering;
+- authorize through existing Project operator policy rather than treating GitHub identity or repository possession as access;
+- expose only normalized fields and safe source provenance, never the raw Integrations webhook payload;
+- keep external GitHub actor identity explicit unless a separately trusted identity-linking requirement is designed;
+- preserve historical facts across current repository suspension/removal or Project disconnect while making current repository availability explicit where the product surface needs it;
+- prove cross-tenant/project isolation, stable pagination, out-of-order snapshots, and disconnected/suspended repository reads through integration tests;
+- do not convert Project facts into Learning Evidence, scoring, Mastery, grader output, or instructor recommendations in this read-model slice.
 
-Only after normalized Project facts are durable should a separate policy slice decide which review/check/project outcomes may become learning Evidence and under what attribution/trust rules.
+Only after Project activity is safely queryable should a separate policy slice decide whether any external project outcome qualifies as learning Evidence, with explicit attribution and trust rules rather than implicit GitHub-user matching.
 
 ## Remaining F4 follow-up frontier
 
@@ -316,6 +336,7 @@ Always inspect the live `docs/adr/` directory; this map is only a starting point
 - GitHub App trusted setup and mapping lifecycle: ADR-0028.
 - GitHub webhook lifecycle processing and retained routing: ADR-0029.
 - Project, Team, and trusted repository binding: ADR-0030.
+- Normalized GitHub Project facts: ADR-0031.
 
 For any new durable decision, add or amend architecture documentation through a new ADR rather than silently encoding policy only in implementation.
 
