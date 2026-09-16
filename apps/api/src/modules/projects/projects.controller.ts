@@ -1,14 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import {
   connectProjectRepositoryRequestSchema,
   createProjectRequestSchema,
   createProjectTeamRequestSchema,
+  projectActivityQuerySchema,
   uuidSchema,
   type Project,
+  type ProjectActivityPage,
   type ProjectTeam
 } from "@platform/contracts";
 
 import { parseRequest } from "../../http/validation";
+import { ProjectActivityApplicationService } from "./application/project-activity.service";
 import { ProjectRepositoryConnectService } from "./application/project-repository-connect.service";
 import { ProjectRepositoryDisconnectService } from "./application/project-repository-disconnect.service";
 import { ProjectsApplicationService } from "./application/projects.service";
@@ -17,6 +20,7 @@ import { ProjectsApplicationService } from "./application/projects.service";
 export class ProjectsController {
   constructor(
     private readonly projects: ProjectsApplicationService,
+    private readonly activity: ProjectActivityApplicationService,
     private readonly connect: ProjectRepositoryConnectService,
     private readonly disconnect: ProjectRepositoryDisconnectService
   ) {}
@@ -62,6 +66,19 @@ export class ProjectsController {
     return this.projects.getProject(
       parseRequest(uuidSchema, organizationId),
       parseRequest(uuidSchema, projectId)
+    );
+  }
+
+  @Get("organizations/:organizationId/projects/:projectId/activity")
+  getProjectActivity(
+    @Param("organizationId") organizationId: string,
+    @Param("projectId") projectId: string,
+    @Query() query: unknown
+  ): Promise<ProjectActivityPage> {
+    return this.activity.list(
+      parseRequest(uuidSchema, organizationId),
+      parseRequest(uuidSchema, projectId),
+      parseRequest(projectActivityQuerySchema, query)
     );
   }
 
