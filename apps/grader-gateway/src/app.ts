@@ -8,8 +8,10 @@ import {
   enforceJobResourcePolicy
 } from "./execution-profile.js";
 import {
+  GRADER_PROFILE_FINGERPRINT_HEADER,
   GraderProtocolError,
   graderJobRequestJsonSchema,
+  isGraderProfileFingerprint,
   validateGraderJobRequest,
   validateGraderJobResult,
   type GraderJobRequest,
@@ -44,12 +46,12 @@ function hasValidationDetails(error: unknown): error is { validation: unknown } 
   );
 }
 
-function systemError(jobId: string, code: string): GraderJobResult {
+function systemError(jobId: string, code: string, retryable = true): GraderJobResult {
   return {
     protocolVersion: 1,
     jobId,
     status: "system_error",
-    error: { code, retryable: true }
+    error: { code, retryable }
   };
 }
 
@@ -92,6 +94,19 @@ export function createGraderGateway(options: CreateGraderGatewayOptions): Fastif
             }
           });
         }
+
+        const dispatchedFingerprint = request.headers[GRADER_PROFILE_FINGERPRINT_HEADER];
+        if (
+          !isGraderProfileFingerprint(dispatchedFingerprint) ||
+          dispatchedFingerprint !== resolved.fingerprint
+        ) {
+          return systemError(
+            request.body.jobId,
+            "execution_profile_fingerprint_mismatch",
+            false
+          );
+        }
+
         enforceJobResourcePolicy(request.body, resolved.profile);
 
         let rawResult: unknown;
