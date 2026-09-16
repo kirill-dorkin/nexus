@@ -5,10 +5,10 @@ import type { ResolvedGraderExecutionProfile } from "./execution-profile.js";
 import type { GraderJobRequest, GraderJobResult } from "./protocol.js";
 import { SandboxProvider } from "./sandbox-provider.js";
 
-const JOB_ID_ANNOTATION = "nexus.platform.dev/grader-job-id";
-const PROFILE_FINGERPRINT_ANNOTATION = "nexus.platform.dev/profile-fingerprint";
-const SOURCE_CHUNK_ANNOTATION = "nexus.platform.dev/source-chunk";
-const JOB_KEY_LABEL = "nexus.platform.dev/grader-job-key";
+const JOB_ID_ANNOTATION = "grader.platform.dev/job-id";
+const PROFILE_FINGERPRINT_ANNOTATION = "grader.platform.dev/profile-fingerprint";
+const SOURCE_CHUNK_ANNOTATION = "grader.platform.dev/source-chunk";
+const JOB_KEY_LABEL = "grader.platform.dev/job-key";
 const MAX_CONFIG_MAP_SOURCE_BYTES = 450_000;
 const MAX_KUBERNETES_RESPONSE_BYTES = 2_500_000;
 
@@ -61,14 +61,14 @@ function pathSegment(value: string): string {
 function positiveInteger(value: string | undefined, fallback: number): number {
   if (value === undefined || value.trim().length === 0) return fallback;
   const parsed = Number(value);
-  if (!Number.isInteger(parsed) || parsed <= 0) {
-    throw new Error("Kubernetes service port must be a positive integer.");
+  if (!Number.isInteger(parsed) || parsed <= 0 || parsed > 65_535) {
+    throw new Error("Kubernetes service port must be an integer between 1 and 65535.");
   }
   return parsed;
 }
 
 async function readResponseBody(
-  response: NodeJS.ReadableStream,
+  response: AsyncIterable<string | Buffer | Uint8Array>,
   maxBytes: number
 ): Promise<Buffer> {
   const chunks: Buffer[] = [];
@@ -257,7 +257,7 @@ function digestPart(jobId: string): string {
 }
 
 function jobNameFor(jobId: string): string {
-  return `nexus-g-${digestPart(jobId).slice(0, 40)}`;
+  return `grader-g-${digestPart(jobId).slice(0, 40)}`;
 }
 
 function jobKeyFor(jobId: string): string {
@@ -269,7 +269,12 @@ function utf8Bytes(value: string): number {
 }
 
 function partitionSource(request: GraderJobRequest, jobName: string): readonly SourceChunk[] {
-  const chunks: Array<{ name: string; data: Record<string, string>; items: Array<{ key: string; path: string }>; bytes: number }> = [];
+  const chunks: Array<{
+    name: string;
+    data: Record<string, string>;
+    items: Array<{ key: string; path: string }>;
+    bytes: number;
+  }> = [];
 
   for (const [fileIndex, file] of request.source.files.entries()) {
     const bytes = utf8Bytes(file.content);
@@ -318,6 +323,10 @@ export function buildKubernetesSandboxResources(
   const diskMiB = ephemeralStorageMiB(profile);
   const profileLimits = profile.profile.limits;
   const ownerAnnotations = annotations(request, profile);
+  const entrypoint = profile.profile.argv[0];
+  if (entrypoint === undefined) {
+    throw new Error("Resolved grader execution profile has no runner entrypoint.");
+  }
 
   const sourceConfigMaps = chunks.map((chunk, index) => ({
     apiVersion: "v1",
@@ -377,15 +386,15 @@ export function buildKubernetesSandboxResources(
               name: "runner",
               image: imageReference(config.runnerImageRepository, profile.profile.runnerImageDigest),
               imagePullPolicy: "IfNotPresent",
-              command: [profile.profile.argv[0]],
+              command: [entrypoint],
               args: profile.profile.argv.slice(1),
               env: [
-                { name: "NEXUS_GRADER_JOB_ID", value: request.jobId },
-                { name: "NEXUS_GRADER_SOURCE_DIR", value: "/workspace" },
-                { name: "NEXUS_GRADER_SCRATCH_DIR", value: "/scratch" },
-                { name: "NEXUS_GRADER_CPU_TIME_MS", value: String(profileLimits.cpuTimeMs) },
-                { name: "NEXUS_GRADER_PID_LIMIT", value: String(profileLimits.pids) },
-                { name: "NEXUS_GRADER_OUTPUT_BYTES", value: String(profileLimits.outputBytes) },
+                { name: "PLATFORM_GRADER_JOB_ID", value: request.jobId },
+                { name: "PLATFORM_GRADER_SOURCE_DIR", value: "/workspace" },
+                { name: "PLATFORM_GRADER_SCRATCH_DIR", value: "/scratch" },
+                { name: "PLATFORM_GRADER_CPU_TIME_MS", value: String(profileLimits.cpuTimeMs) },
+                { name: "PLATFORM_GRADER_PID_LIMIT", value: String(profileLimits.pids) },
+                { name: "PLATFORM_GRADER_OUTPUT_BYTES", value: String(profileLimits.outputBytes) },
                 { name: "TMPDIR", value: "/scratch/tmp" },
                 { name: "HOME", value: "/scratch/home" }
               ],
@@ -478,12 +487,12 @@ function canonicalJson(value: unknown): string {
 function desiredContainer(job: JsonRecord): JsonRecord | null {
   const spec = nestedRecord(job, "spec");
   const template = spec === null ? null : nestedRecord(spec, "template");
-  const podSpec = template === null ? null : nestedRecord(template, "spec");
-  const containers = podSpec?.containers;
+  const pod = template === null ? null : nestedRecord(template, "spec");
+  const containers = pod?.containers;
   return Array.isArray(containers) && isRecord(containers[0]) ? containers[0] : null;
 }
 
-function podSpec(job: JsonRecord): JsonRecord | null {
+function desiredPodSpec(job: JsonRecord): JsonRecord | null {
   const spec = nestedRecord(job, "spec");
   const template = spec === null ? null : nestedRecord(spec, "template");
   return template === null ? null : nestedRecord(template, "spec");
@@ -491,8 +500,8 @@ function podSpec(job: JsonRecord): JsonRecord | null {
 
 function sameJobIdentity(existing: JsonRecord, desired: JsonRecord): boolean {
   const desiredAnnotations = objectAnnotations(desired);
-  const existingPod = podSpec(existing);
-  const desiredPod = podSpec(desired);
+  const existingPod = desiredPodSpec(existing);
+  const desiredPod = desiredPodSpec(desired);
   const existingContainer = desiredContainer(existing);
   const wantedContainer = desiredContainer(desired);
   return (
@@ -682,7 +691,13 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
     request: GraderJobRequest,
     profile: ResolvedGraderExecutionProfile
   ): Promise<unknown> {
-    const resources = buildKubernetesSandboxResources(request, profile, this.config);
+    let resources: KubernetesSandboxResources;
+    try {
+      resources = buildKubernetesSandboxResources(request, profile, this.config);
+    } catch {
+      return systemError(request.jobId, "sandbox_profile_invalid", false);
+    }
+
     let job: JsonRecord;
     try {
       job = await ensureJob(
@@ -744,8 +759,10 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
           if (jobFailureReason(job) === "DeadlineExceeded") {
             return systemError(request.jobId, "sandbox_wall_time_exceeded", false);
           }
-          return podFailureResult(request.jobId, lastPod) ??
-            systemError(request.jobId, "sandbox_execution_failed", false);
+          return (
+            podFailureResult(request.jobId, lastPod) ??
+            systemError(request.jobId, "sandbox_execution_failed", false)
+          );
         }
       } catch (error) {
         return providerError(request.jobId, error);
