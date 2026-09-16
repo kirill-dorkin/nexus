@@ -6,6 +6,7 @@ import type {
   AuthorizationScopeType,
   SystemRoleKey
 } from "../../authorization/application/authorization.policy";
+import { OrganizationsApplicationService } from "../../organizations/application/organizations.service";
 
 const operatorRoles: readonly SystemRoleKey[] = [
   "organization_owner",
@@ -15,7 +16,10 @@ const operatorRoles: readonly SystemRoleKey[] = [
 
 @Injectable()
 export class ProjectOperator {
-  constructor(private readonly authorization: AuthorizationApplicationService) {}
+  constructor(
+    private readonly authorization: AuthorizationApplicationService,
+    private readonly organizations: OrganizationsApplicationService
+  ) {}
 
   async require(
     transaction: DatabaseTransaction,
@@ -24,6 +28,12 @@ export class ProjectOperator {
     scopeType: AuthorizationScopeType,
     scopeId: string
   ): Promise<void> {
+    await this.organizations.requireActiveMembership(
+      transaction,
+      organizationId,
+      userId
+    );
+
     for (const role of operatorRoles) {
       if (
         await this.authorization.hasRoleAssignment(
