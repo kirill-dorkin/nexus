@@ -12,7 +12,7 @@
   "dependencies": {
     "@platform/contracts": "workspace:*",
     "@platform/database": "workspace:*",
-    "pino": "^9.0.0"
+    "pino": "^10.3.1"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
