@@ -22,7 +22,7 @@ Trusted control plane for hostile learner-code execution. The gateway accepts on
 
 For `kubernetes-gvisor` configure:
 
-- `GRADER_SANDBOX_NAMESPACE` (default `nexus-grader-sandbox`);
+- `GRADER_SANDBOX_NAMESPACE` (default `grader-sandbox`);
 - `GRADER_SANDBOX_RUNTIME_CLASS` (default `gvisor`, which must resolve to a verified gVisor/runsc-class runtime);
 - `GRADER_SANDBOX_SERVICE_ACCOUNT` (default `grader-sandbox`);
 - `GRADER_SANDBOX_RUNNER_IMAGE_REPOSITORY` (required OCI repository without tag/digest; the exact profile supplies the immutable `sha256` digest);
