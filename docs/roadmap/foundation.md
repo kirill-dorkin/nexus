@@ -30,7 +30,7 @@ GitHub App, durable webhook inbox, project/team model, trusted repository bindin
 
 ## F7 — Grader hardening
 
-Server-side code profiles, sandbox provider, gVisor-class isolation, egress/resource controls, system-failure semantics.
+Versioned fail-closed Grader Gateway admission, server-owned executable profiles, Validation-owned durable grader-job ledger with lease/retry/dead-letter semantics, authenticated system dispatch, system-owned ValidationResult recording, hardened sandbox provider, gVisor-class isolation, egress/resource controls, and strict system-failure semantics.
 
 ## F8 — Recommendations/instructor intelligence
 
