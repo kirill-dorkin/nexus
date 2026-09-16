@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import type { GraderJob } from "@platform/contracts";
+import type { GraderJob, ValidationEvidenceTrust } from "@platform/contracts";
 import type { GraderJobRequest } from "@platform/contracts/grader";
 import type { DatabaseTransaction } from "@platform/database";
 
@@ -18,6 +18,7 @@ type GraderJobRow = {
   validator_key: string;
   validator_version: number;
   validator_config: Record<string, unknown>;
+  evidence_trust: ValidationEvidenceTrust;
   profile_key: string;
   profile_version: number;
   profile_fingerprint: string;
@@ -39,6 +40,7 @@ const graderJobSelect = `job.job_id,
   job.validator_key,
   job.validator_version,
   job.validator_config,
+  job.evidence_trust,
   job.profile_key,
   job.profile_version,
   job.profile_fingerprint,
@@ -76,6 +78,7 @@ function mapGraderJob(row: GraderJobRow): PersistedGraderJob {
     },
     requestPayload: row.request_payload,
     validatorConfig: row.validator_config,
+    evidenceTrust: row.evidence_trust,
     requestedByUserId: row.requested_by_user_id
   };
 }
@@ -95,13 +98,14 @@ export class PostgresGraderJobRepository extends GraderJobRepository {
          validator_key,
          validator_version,
          validator_config,
+         evidence_trust,
          profile_key,
          profile_version,
          profile_fingerprint,
          request_payload,
          requested_by_user_id
        ) VALUES (
-         $1, $2, $3, $4, $5, $6, $7::jsonb, $8, $9, $10, $11::jsonb, $12
+         $1, $2, $3, $4, $5, $6, $7::jsonb, $8, $9, $10, $11, $12::jsonb, $13
        )
        ON CONFLICT (
          organization_id, submission_id, validator_key, validator_version
@@ -115,6 +119,7 @@ export class PostgresGraderJobRepository extends GraderJobRepository {
         input.validatorKey,
         input.validatorVersion,
         JSON.stringify(input.validatorConfig),
+        input.evidenceTrust,
         input.profileKey,
         input.profileVersion,
         input.profileFingerprint,
