@@ -136,7 +136,7 @@ BEGIN
 
   IF result_status = 'completed' THEN
     IF p_terminal_state IS DISTINCT FROM 'completed'
-       OR jsonb_object_length(p_result) <> 6
+       OR p_result - 'protocolVersion' - 'jobId' - 'status' - 'outcome' - 'score' - 'payload' <> '{}'::jsonb
        OR NOT (p_result ?& ARRAY[
          'protocolVersion', 'jobId', 'status', 'outcome', 'score', 'payload'
        ])
@@ -176,10 +176,13 @@ BEGIN
   ELSIF result_status = 'system_error' THEN
     IF p_terminal_state IS NULL
        OR p_terminal_state NOT IN ('system_error', 'dead_letter')
-       OR jsonb_object_length(p_result) <> 4
+       OR p_result - 'protocolVersion' - 'jobId' - 'status' - 'error' <> '{}'::jsonb
        OR NOT (p_result ?& ARRAY['protocolVersion', 'jobId', 'status', 'error'])
        OR jsonb_typeof(p_result -> 'error') IS DISTINCT FROM 'object'
-       OR jsonb_object_length(p_result -> 'error') <> 2
+       OR p_result -> 'error' IS DISTINCT FROM jsonb_build_object(
+         'code', p_result #> '{error,code}',
+         'retryable', p_result #> '{error,retryable}'
+       )
        OR NOT ((p_result -> 'error') ?& ARRAY['code', 'retryable'])
        OR p_result #>> '{error,code}' IS NULL
        OR char_length(p_result #>> '{error,code}') NOT BETWEEN 1 AND 100
