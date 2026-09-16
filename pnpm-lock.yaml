@@ -110,6 +110,12 @@ importers:
 
   apps/worker:
     dependencies:
+      '@platform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@platform/database':
+        specifier: workspace:*
+        version: link:../../packages/database
       pino:
         specifier: ^9.0.0
         version: 9.14.0
