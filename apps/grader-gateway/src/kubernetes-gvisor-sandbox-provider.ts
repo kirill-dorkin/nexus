@@ -2,7 +2,6 @@ import { createHash } from "node:crypto";
 
 import type {
   GraderJobRequest,
-  GraderJobResult,
   ResolvedGraderExecutionProfile,
   SystemErrorGraderJobResult
 } from "@platform/contracts/grader";
@@ -26,6 +25,8 @@ const SCRATCH_VOLUME_NAME = "scratch";
 const SOURCE_MOUNT_PATH = "/workspace/source";
 const SCRATCH_MOUNT_PATH = "/workspace/tmp";
 const SANDBOX_UID = 65_532;
+const OUTER_CPU = "1";
+const TERMINATION_GRACE_SECONDS = 1;
 
 class SandboxResourceConflictError extends Error {
   constructor(message: string) {
@@ -99,11 +100,6 @@ function sourceSecretName(jobNameValue: string, index: number): string {
   return `${jobNameValue}-s${String(index).padStart(2, "0")}`;
 }
 
-function cpuMillicores(profile: ResolvedGraderExecutionProfile): number {
-  const ratio = profile.profile.limits.cpuTimeMs / profile.profile.limits.wallTimeMs;
-  return Math.max(1, Math.floor(ratio * 1_000));
-}
-
 function stableFingerprint(value: unknown): string {
   return `sha256:${createHash("sha256").update(JSON.stringify(value), "utf8").digest("hex")}`;
 }
@@ -123,10 +119,12 @@ function jobIdentity(
     argv: profile.profile.argv,
     wallTimeMs: profile.profile.limits.wallTimeMs,
     cpuTimeMs: profile.profile.limits.cpuTimeMs,
+    cpuEnvelope: OUTER_CPU,
     memoryMiB: profile.profile.limits.memoryMiB,
     pids: profile.profile.limits.pids,
     outputBytes: profile.profile.limits.outputBytes,
     ephemeralStorageMiB: config.ephemeralStorageMiB,
+    terminationGraceSeconds: TERMINATION_GRACE_SECONDS,
     sourceSecretNames
   };
   return { name, sourceSecretNames, specFingerprint: stableFingerprint(signature) };
@@ -141,7 +139,6 @@ function buildJob(
   const activeDeadlineSeconds = Math.ceil(
     (profile.profile.limits.wallTimeMs + config.startupGraceMs) / 1_000
   );
-  const cpu = `${cpuMillicores(profile)}m`;
   const memory = `${profile.profile.limits.memoryMiB}Mi`;
   const ephemeralStorage = `${config.ephemeralStorageMiB}Mi`;
   const projectedSources = request.source.files.map((file, index) => ({
@@ -168,6 +165,9 @@ function buildJob(
       }
     },
     spec: {
+      parallelism: 1,
+      completions: 1,
+      completionMode: "NonIndexed",
       backoffLimit: 0,
       activeDeadlineSeconds,
       ttlSecondsAfterFinished: config.cleanupTtlSeconds,
@@ -186,6 +186,7 @@ function buildJob(
         spec: {
           runtimeClassName: config.runtimeClassName,
           restartPolicy: "Never",
+          terminationGracePeriodSeconds: TERMINATION_GRACE_SECONDS,
           automountServiceAccountToken: false,
           enableServiceLinks: false,
           hostNetwork: false,
@@ -225,12 +226,12 @@ function buildJob(
               ],
               resources: {
                 requests: {
-                  cpu,
+                  cpu: OUTER_CPU,
                   memory,
                   "ephemeral-storage": ephemeralStorage
                 },
                 limits: {
-                  cpu,
+                  cpu: OUTER_CPU,
                   memory,
                   "ephemeral-storage": ephemeralStorage
                 }
@@ -324,10 +325,7 @@ function podsApiPath(config: KubernetesGvisorProviderConfig, jobNameValue: strin
   return `/api/v1/namespaces/${encodeURIComponent(config.namespace)}/pods?labelSelector=${encodeURIComponent(`job-name=${jobNameValue}`)}`;
 }
 
-function podLogPath(
-  config: KubernetesGvisorProviderConfig,
-  podName: string
-): string {
+function podLogPath(config: KubernetesGvisorProviderConfig, podName: string): string {
   return `/api/v1/namespaces/${encodeURIComponent(config.namespace)}/pods/${encodeURIComponent(podName)}/log?container=${RUNNER_CONTAINER_NAME}`;
 }
 
@@ -379,7 +377,9 @@ function assertSecretIdentity(
   }
 }
 
-function terminalCondition(value: unknown): Readonly<{ type: "Complete" | "Failed"; reason: string }> | null {
+function terminalCondition(
+  value: unknown
+): Readonly<{ type: "Complete" | "Failed"; reason: string }> | null {
   const object = record(value);
   const status = object === null ? null : record(object.status);
   const conditions = status === null || !Array.isArray(status.conditions) ? [] : status.conditions;
@@ -399,13 +399,18 @@ function terminalCondition(value: unknown): Readonly<{ type: "Complete" | "Faile
   return null;
 }
 
-function succeededPodName(value: unknown): string | null {
+function succeededPodName(value: unknown, expectedJobUid: string): string | null {
   const object = record(value);
   if (object === null || !Array.isArray(object.items)) return null;
-  const succeeded = object.items.filter((item) => record(item)?.status !== undefined).filter((item) => {
+  const succeeded = object.items.filter((item) => {
     const pod = record(item);
     const status = pod === null ? null : record(pod.status);
-    return status?.phase === "Succeeded";
+    const meta = pod === null ? null : record(pod.metadata);
+    const owners = meta === null || !Array.isArray(meta.ownerReferences) ? [] : meta.ownerReferences;
+    const ownedByJob = owners
+      .map(record)
+      .some((owner) => owner?.kind === "Job" && owner.uid === expectedJobUid);
+    return status?.phase === "Succeeded" && ownedByJob;
   });
   if (succeeded.length !== 1) return null;
   const pod = record(succeeded[0]);
@@ -433,7 +438,12 @@ function failureFor(error: unknown, jobId: string): SystemErrorGraderJobResult {
     if (error.statusCode === 422) {
       return systemError(jobId, "sandbox_policy_rejected", false);
     }
-    if (error.statusCode === 408 || error.statusCode === 425 || error.statusCode === 429 || error.statusCode >= 500) {
+    if (
+      error.statusCode === 408 ||
+      error.statusCode === 425 ||
+      error.statusCode === 429 ||
+      error.statusCode >= 500
+    ) {
       return systemError(jobId, "sandbox_control_plane_unavailable", true);
     }
     return systemError(jobId, "sandbox_control_plane_rejected", false);
@@ -444,13 +454,16 @@ function failureFor(error: unknown, jobId: string): SystemErrorGraderJobResult {
 export class KubernetesGvisorSandboxProvider extends SandboxProvider {
   private readonly api: KubernetesApiClient;
 
-  constructor(private readonly config: KubernetesGvisorProviderConfig, api?: KubernetesApiClient) {
+  constructor(
+    private readonly config: KubernetesGvisorProviderConfig,
+    api?: KubernetesApiClient
+  ) {
     super();
     this.api =
       api ??
       new KubernetesApiClient({
         apiUrl: config.apiUrl,
-        serviceAccountToken: config.serviceAccountToken,
+        serviceAccountTokenFile: config.serviceAccountTokenFile,
         caCertificate: config.caCertificate,
         requestTimeoutMs: config.requestTimeoutMs
       });
@@ -485,7 +498,14 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
       if (name === undefined) {
         throw new SandboxResourceConflictError("Source Secret identity was not generated.");
       }
-      const body = buildSourceSecret(file.content, name, jobMetadata, request, profile, this.config);
+      const body = buildSourceSecret(
+        file.content,
+        name,
+        jobMetadata,
+        request,
+        profile,
+        this.config
+      );
       try {
         await this.api.postJson(secretApiPath(this.config), body);
       } catch (error) {
@@ -506,17 +526,21 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
   private async resultFromCompletedJob(
     request: GraderJobRequest,
     profile: ResolvedGraderExecutionProfile,
-    identity: JobIdentity
+    identity: JobIdentity,
+    jobUid: string
   ): Promise<unknown> {
     const pods = await this.api.getJson(podsApiPath(this.config, identity.name));
-    const podName = succeededPodName(pods);
+    const podName = succeededPodName(pods, jobUid);
     if (podName === null) {
       return systemError(request.jobId, "sandbox_result_pod_unavailable", true);
     }
 
     let text: string;
     try {
-      text = await this.api.getText(podLogPath(this.config, podName), profile.profile.limits.outputBytes);
+      text = await this.api.getText(
+        podLogPath(this.config, podName),
+        profile.profile.limits.outputBytes
+      );
     } catch (error) {
       if (error instanceof KubernetesApiTransportError && error.code === "response_too_large") {
         return systemError(request.jobId, "sandbox_runner_output_limit", false);
@@ -540,13 +564,22 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
     identity: JobIdentity
   ): Promise<unknown> {
     const deadline =
-      Date.now() + profile.profile.limits.wallTimeMs + this.config.startupGraceMs + this.config.requestTimeoutMs;
+      Date.now() +
+      profile.profile.limits.wallTimeMs +
+      this.config.startupGraceMs +
+      this.config.requestTimeoutMs +
+      TERMINATION_GRACE_SECONDS * 1_000;
     while (Date.now() <= deadline) {
       const job = await this.api.getJson(jobApiPath(this.config, identity.name));
-      assertJobIdentity(job, request, profile, identity);
+      const jobMetadata = assertJobIdentity(job, request, profile, identity);
       const terminal = terminalCondition(job);
       if (terminal?.type === "Complete") {
-        return this.resultFromCompletedJob(request, profile, identity);
+        return this.resultFromCompletedJob(
+          request,
+          profile,
+          identity,
+          jobMetadata.uid
+        );
       }
       if (terminal?.type === "Failed") {
         if (terminal.reason === "DeadlineExceeded") {
@@ -562,7 +595,7 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
   async execute(
     request: GraderJobRequest,
     profile: ResolvedGraderExecutionProfile
-  ): Promise<GraderJobResult | unknown> {
+  ): Promise<unknown> {
     if (profile.profile.limits.pids !== this.config.podPidsLimit) {
       return systemError(request.jobId, "sandbox_profile_pid_limit_mismatch", false);
     }
