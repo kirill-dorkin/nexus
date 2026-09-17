@@ -168,9 +168,12 @@ describe("recommendation contracts", () => {
       recommendation: null
     });
 
-    expect(parsed.reason).toMatchObject({
-      code: "no_practice_activity_available",
-      reviewDueAt: "2026-09-08T00:00:00.000Z"
+    expect(parsed).toMatchObject({
+      status: "no_practice_activity_available",
+      reason: {
+        code: "no_practice_activity_available",
+        reviewDueAt: "2026-09-08T00:00:00.000Z"
+      }
     });
   });
 });
