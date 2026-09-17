@@ -1,13 +1,11 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import {
-  GraderExecutionProfileRegistry,
-  parseGraderExecutionProfilesJson
-} from "@platform/contracts/grader";
 import { describe, expect, it } from "vitest";
 
 import { loadGraderGatewayRuntimeConfig } from "../apps/grader-gateway/src/config";
+import { GraderExecutionProfileRegistry } from "../apps/grader-gateway/src/execution-profile";
+import { parseGraderExecutionProfilesJson } from "../packages/contracts/src/grader";
 
 const PROFILE_PATH = resolve("infra/grader/execution-profiles/js-sum-v1-v1.json");
 
