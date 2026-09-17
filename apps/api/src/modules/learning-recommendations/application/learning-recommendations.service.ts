@@ -7,12 +7,19 @@ import { AuthorizationApplicationService } from "../../authorization/application
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { LearningContentQuery } from "../../learning-content/application/learning-content.query";
 import { LearningDeliveryQuery } from "../../learning-delivery/application/learning-delivery.query";
-import { LearningProgressQuery } from "../../learning-progress/application/learning-progress.query";
+import {
+  LearningProgressQuery,
+  TrustedValidationEvidenceQuery
+} from "../../learning-progress/application/learning-progress.query";
 import { MasteryQuery } from "../../learning-progress/application/mastery.query";
 import {
   FIXED_INTERVAL_REVIEW_POLICY,
   orderedMasteryWithFixedReviewV1
 } from "../domain/fixed-interval-review.policy";
+import {
+  REPEATED_TRUSTED_FAILURE_SIGNAL_POLICY,
+  repeatedTrustedFailureSignalsV1
+} from "../domain/misconception-signal.policy";
 import { ORDERED_MASTERY_POLICY } from "../domain/ordered-mastery.policy";
 
 function offeringScope(organizationId: string, offeringId: string) {
@@ -33,6 +40,7 @@ export class LearningRecommendationsApplicationService {
     private readonly delivery: LearningDeliveryQuery,
     private readonly content: LearningContentQuery,
     private readonly progress: LearningProgressQuery,
+    private readonly trustedEvidence: TrustedValidationEvidenceQuery,
     private readonly mastery: MasteryQuery
   ) {}
 
@@ -123,7 +131,8 @@ export class LearningRecommendationsApplicationService {
           offeringId: enrollmentContext.offering.id,
           courseVersionId: enrollmentContext.offering.courseVersionId,
           policy: ORDERED_MASTERY_POLICY,
-          reviewPolicy: FIXED_INTERVAL_REVIEW_POLICY
+          reviewPolicy: FIXED_INTERVAL_REVIEW_POLICY,
+          misconceptionSignalPolicy: REPEATED_TRUSTED_FAILURE_SIGNAL_POLICY
         };
 
         if (decision.status === "mastery_target_met") {
@@ -135,12 +144,22 @@ export class LearningRecommendationsApplicationService {
           };
         }
 
+        const observations = await this.trustedEvidence.listObservations(
+          transaction,
+          organizationId,
+          learnerUserId,
+          [decision.focusSkill.skillId]
+        );
+        const misconceptionSignal =
+          repeatedTrustedFailureSignalsV1(observations)[0] ?? null;
+
         if (decision.status === "no_practice_activity_available") {
           return {
             status: "no_practice_activity_available",
             ...recommendationContext,
             focusSkill: decision.focusSkill,
             reason: decision.reason,
+            misconceptionSignal,
             recommendation: null
           };
         }
@@ -158,7 +177,8 @@ export class LearningRecommendationsApplicationService {
               title: decision.activity.title
             },
             focusSkill: decision.focusSkill,
-            reason: decision.reason
+            reason: decision.reason,
+            misconceptionSignal
           }
         };
       },
