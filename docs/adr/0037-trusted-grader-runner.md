@@ -28,7 +28,7 @@ Add `apps/grader-runner` as a security-sensitive Go executable. It is not linked
 
 The production build is a static Linux binary (`CGO_ENABLED=0`) in a `scratch` OCI image. The image contains only the runner binary plus required third-party license notices. The runner image is immutable and referenced by `sha256` digest from an exact execution profile version.
 
-Go is pinned separately from the Node/pnpm workspace. Production builds use an exact Go patch release and `-trimpath` with an empty build id. OCI construction uses `SOURCE_DATE_EPOCH=0` and disables nondeterministic provenance/SBOM attachment in the reproducibility comparison. CI must build the binary and OCI manifest twice and require identical hashes/digests.
+Go is pinned separately from the Node/pnpm workspace. Production builds use an exact Go patch release, `-buildvcs=false`, `-trimpath`, and an empty build id. VCS stamping is explicitly disabled because the canonical profile digest is checked into the same repository: a commit that binds that digest must not change otherwise identical runner bytes and create a self-referential artifact/profile cycle. OCI construction uses `SOURCE_DATE_EPOCH=0` and disables nondeterministic provenance/SBOM attachment in the reproducibility comparison. CI must build the binary and OCI manifest twice and require identical hashes/digests.
 
 ### 2. The first executable profile is intentionally narrow
 

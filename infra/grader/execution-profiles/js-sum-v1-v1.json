@@ -6,7 +6,7 @@
       "key": "javascript",
       "version": "goja@v0.0.0-20260106131823-651366fbe6e3"
     },
-    "runnerImageDigest": "sha256:340105917cd1f1d258f8344ef1581929fb0a4395bcb06d3fdefe4f75d45bde2d",
+    "runnerImageDigest": "sha256:0d22faa894b6bb73347dddef5c19ec5240c06ac893c6e9d5791fb9621edcb9d5",
     "argv": ["/grader-runner", "js-sum-v1"],
     "network": "off",
     "filesystem": "ephemeral",

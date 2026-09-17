@@ -24,7 +24,7 @@ ADR-0037 defines the trusted runner boundary. `apps/grader-runner` is a separate
 
 The embedded JavaScript runtime is pinned `goja` without the Node compatibility layer. Learner code receives no `process`, `require`, filesystem, network, worker, child-process, shell, timer/event-loop, native-addon, platform credential, or arbitrary host API. gVisor remains the outer OS isolation boundary.
 
-CI proves the Linux binary and OCI image reproducible. The canonical first profile is checked in at `infra/grader/execution-profiles/js-sum-v1-v1.json` and is bound to the CI-proven image digest `sha256:340105917cd1f1d258f8344ef1581929fb0a4395bcb06d3fdefe4f75d45bde2d`. CI rebuilds the image and fails if the fresh reproducible digest differs from the checked-in profile.
+CI proves the Linux binary and OCI image reproducible. The canonical first profile is checked in at `infra/grader/execution-profiles/js-sum-v1-v1.json` and is bound to the CI-proven image digest `sha256:0d22faa894b6bb73347dddef5c19ec5240c06ac893c6e9d5791fb9621edcb9d5`. CI rebuilds the image and fails if the fresh reproducible digest differs from the checked-in profile.
 
 The checked-in profile is **release material, not automatic activation**. `GRADER_SANDBOX_PROVIDER` still defaults to `unavailable`, and the profile is not silently injected into production configuration.
 

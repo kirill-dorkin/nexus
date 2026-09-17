@@ -29,7 +29,7 @@ describe("trusted grader runner security contract", () => {
     expect(profile.key).toBe("js-sum-v1");
     expect(profile.version).toBe(1);
     expect(profile.runnerImageDigest).toBe(
-      "sha256:340105917cd1f1d258f8344ef1581929fb0a4395bcb06d3fdefe4f75d45bde2d"
+      "sha256:0d22faa894b6bb73347dddef5c19ec5240c06ac893c6e9d5791fb9621edcb9d5"
     );
     expect(profile.argv).toEqual(["/grader-runner", "js-sum-v1"]);
     expect(profile.network).toBe("off");
@@ -44,6 +44,9 @@ describe("trusted grader runner security contract", () => {
       sourceBytes: 65536,
       sourceFiles: 1
     });
+
+    const reproducibility = text("apps/grader-runner/scripts/verify-reproducible.sh");
+    expect(reproducibility).toContain("go build -mod=readonly -buildvcs=false -trimpath");
   });
 
   it("keeps profile runtime identity aligned with the pinned capability-minimal Go runtime", () => {
