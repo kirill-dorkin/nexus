@@ -44,7 +44,11 @@ describe("trusted grader runner security contract", () => {
     });
 
     const reproducibility = text("apps/grader-runner/scripts/verify-reproducible.sh");
-    expect(reproducibility).toContain("go build -mod=readonly -buildvcs=false -trimpath");
+    expect(reproducibility).toContain("CGO_ENABLED=0 GOOS=linux GOARCH=amd64");
+    expect(reproducibility).toContain("-buildvcs=false");
+    expect(reproducibility).toContain("-mod=readonly");
+    expect(reproducibility).toContain("-trimpath");
+    expect(reproducibility).toContain("-ldflags='-buildid='");
   });
 
   it("keeps profile runtime identity aligned with the pinned capability-minimal Go runtime", () => {
