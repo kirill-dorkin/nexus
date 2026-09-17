@@ -9,7 +9,10 @@ import { LearningHistoryModule } from "../learning-history/learning-history.modu
 import { AttemptGuidanceQuery } from "./application/attempt-guidance.query";
 import { AttemptGuidanceReader } from "./application/attempt-guidance.reader";
 import { LearnerSkillProgressApplicationService } from "./application/learner-skill-progress.service";
-import { LearningProgressQuery } from "./application/learning-progress.query";
+import {
+  LearningProgressQuery,
+  TrustedValidationEvidenceQuery
+} from "./application/learning-progress.query";
 import { LearningProgressRepository } from "./application/learning-progress.repository";
 import { LearningProgressApplicationService } from "./application/learning-progress.service";
 import { MasteryQuery } from "./application/mastery.query";
@@ -19,6 +22,7 @@ import { TrustedValidationEvidenceSink } from "./application/trusted-validation-
 import { TrustedValidationEvidenceApplicationService } from "./application/trusted-validation-evidence.service";
 import { PostgresLearningProgressRepository } from "./infrastructure/postgres-learning-progress.repository";
 import { PostgresMasteryRepository } from "./infrastructure/postgres-mastery.repository";
+import { PostgresTrustedValidationEvidenceQuery } from "./infrastructure/postgres-trusted-validation-evidence.query";
 import { LearnerSkillProgressController } from "./learner-skill-progress.controller";
 import { LearningProgressController } from "./learning-progress.controller";
 import { MasteryController } from "./mastery.controller";
@@ -35,10 +39,18 @@ import { MasteryController } from "./mastery.controller";
     { provide: LearningProgressQuery, useExisting: LearningProgressApplicationService },
     { provide: AttemptGuidanceQuery, useExisting: AttemptGuidanceReader },
     { provide: TrustedValidationEvidenceSink, useExisting: TrustedValidationEvidenceApplicationService },
+    { provide: TrustedValidationEvidenceQuery, useClass: PostgresTrustedValidationEvidenceQuery },
     { provide: MasteryQuery, useExisting: MasteryApplicationService },
     { provide: LearningProgressRepository, useClass: PostgresLearningProgressRepository },
     { provide: MasteryRepository, useClass: PostgresMasteryRepository }
   ],
-  exports: [MasteryApplicationService, LearningProgressQuery, AttemptGuidanceQuery, TrustedValidationEvidenceSink, MasteryQuery]
+  exports: [
+    MasteryApplicationService,
+    LearningProgressQuery,
+    AttemptGuidanceQuery,
+    TrustedValidationEvidenceSink,
+    TrustedValidationEvidenceQuery,
+    MasteryQuery
+  ]
 })
 export class LearningProgressModule {}
