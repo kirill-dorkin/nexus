@@ -17,6 +17,17 @@ function context() {
   };
 }
 
+function reviewContext() {
+  return {
+    ...context(),
+    reviewPolicy: {
+      key: "fixed-interval-review",
+      version: 1,
+      intervalDays: 7
+    }
+  };
+}
+
 describe("recommendation contracts", () => {
   it("accepts an explainable activity recommendation", () => {
     const parsed = nextLearningRecommendationSchema.parse({
@@ -60,15 +71,60 @@ describe("recommendation contracts", () => {
     });
   });
 
+  it("accepts an explainable due-review recommendation", () => {
+    const parsed = nextLearningRecommendationSchema.parse({
+      status: "recommended",
+      ...reviewContext(),
+      recommendation: {
+        kind: "activity",
+        activity: {
+          activityVersionId: randomUUID(),
+          activityId: randomUUID(),
+          slug: "grid-review",
+          activityType: "pern.code-project",
+          title: "Grid review"
+        },
+        focusSkill: {
+          skillId: randomUUID(),
+          title: "CSS Grid",
+          masteryScore: 1,
+          targetMasteryScore: 0.8
+        },
+        reason: {
+          code: "focus_skill_review_due",
+          attemptCount: 1,
+          lastEvidenceAt: "2026-09-01T00:00:00.000Z",
+          reviewDueAt: "2026-09-08T00:00:00.000Z"
+        }
+      }
+    });
+
+    expect(parsed).toMatchObject({
+      reviewPolicy: {
+        key: "fixed-interval-review",
+        version: 1,
+        intervalDays: 7
+      },
+      recommendation: {
+        reason: {
+          code: "focus_skill_review_due",
+          reviewDueAt: "2026-09-08T00:00:00.000Z"
+        }
+      }
+    });
+  });
+
   it("keeps mastery target met distinct from course completion", () => {
     const parsed = nextLearningRecommendationSchema.parse({
       status: "mastery_target_met",
-      ...context(),
+      ...reviewContext(),
+      nextReviewAt: "2026-09-22T00:00:00.000Z",
       recommendation: null
     });
 
     expect(parsed).toMatchObject({
       status: "mastery_target_met",
+      nextReviewAt: "2026-09-22T00:00:00.000Z",
       recommendation: null
     });
   });
@@ -91,6 +147,30 @@ describe("recommendation contracts", () => {
       status: "no_practice_activity_available",
       reason: { code: "no_practice_activity_available" },
       recommendation: null
+    });
+  });
+
+  it("preserves review timing when a due skill has no practice activity", () => {
+    const parsed = nextLearningRecommendationSchema.parse({
+      status: "no_practice_activity_available",
+      ...reviewContext(),
+      focusSkill: {
+        skillId: randomUUID(),
+        title: "Transactions",
+        masteryScore: 1,
+        targetMasteryScore: 0.8
+      },
+      reason: {
+        code: "no_practice_activity_available",
+        lastEvidenceAt: "2026-09-01T00:00:00.000Z",
+        reviewDueAt: "2026-09-08T00:00:00.000Z"
+      },
+      recommendation: null
+    });
+
+    expect(parsed.reason).toMatchObject({
+      code: "no_practice_activity_available",
+      reviewDueAt: "2026-09-08T00:00:00.000Z"
     });
   });
 });
