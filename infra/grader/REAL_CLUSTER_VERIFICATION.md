@@ -4,7 +4,7 @@ This gate is for an actual target Kubernetes cluster. It must never be replaced 
 
 ## Purpose
 
-Repository tests prove the deterministic Gateway/provider and runner contracts. This procedure independently proves the deployment boundary that the repository cannot infer from source alone: the real RuntimeClass handler, dedicated-node placement, kubelet Pod PID ceiling, admission behavior, cluster network policy resources, credential-free runner ServiceAccount, namespace capacity controls, Secret encryption-at-rest operator evidence, deterministic resource replay behavior, cleanup, and hostile-code execution through the exact digest-pinned runner image.
+Repository tests prove the deterministic Gateway/provider and runner contracts. This procedure independently proves the deployment boundary that the repository cannot infer from source alone: the real RuntimeClass handler, dedicated-node placement, kubelet Pod PID ceiling, fail-closed Pod and Job admission behavior, live default-deny network-policy semantics, live namespace capacity envelopes, credential-free runner ServiceAccount, Secret encryption-at-rest operator evidence, deterministic resource replay behavior, cleanup, and hostile-code execution through the exact digest-pinned runner image.
 
 A green run is release evidence only for the exact Kubernetes context, node pool, profile manifest, runner digest, and operator evidence files used for that run. It does not enable production by itself.
 
@@ -59,9 +59,11 @@ Evidence files must come from the cluster/operator release process, not from thi
 infra/grader/scripts/verify-real-cluster.sh
 ```
 
-The script fails closed. It requires the current context, checks live cluster objects, reads kubelet `configz` for every dedicated sandbox node and requires `podPidsLimit` to equal the canonical profile's `limits.pids`, server-dry-runs a valid hardened Job, proves intentionally weakened Pod/Job variants are rejected by live admission, then actually runs the digest-pinned runner image for pass and hostile-code cases.
+The script fails closed. It requires the current context and validates the live resources semantically rather than merely checking that named objects exist: `default-deny-all` must select every Pod and deny both ingress and egress with no allow rules; `grader-sandbox-capacity` must match the committed finite ResourceQuota envelope; `grader-sandbox-hard-envelope` must match the committed Container min/max LimitRange; and both grader ValidatingAdmissionPolicies must use `failurePolicy: Fail` with bindings that include `Deny`.
 
-The hostile cases prove the image/runtime boundary for unavailable host APIs, CPU exhaustion, and output flooding. The successful Pod is also checked for the exact dedicated-node label and absence of a Kubernetes API token volume. The script verifies create-conflict replay behavior for the same deterministic Job name and explicitly deletes all verification Jobs/Secrets before reporting success.
+It then reads kubelet `configz` for every dedicated sandbox node and requires `podPidsLimit` to equal the canonical profile's `limits.pids`. Admission is probed at both resource boundaries: a hardened standalone Pod and hardened Job must pass server dry-run, weakened Pods with the wrong RuntimeClass or ServiceAccount-token automount must be rejected by the live Pod policy, and a weakened retrying Job must be rejected by the live Job policy.
+
+Finally, the script actually runs the digest-pinned runner image for pass and hostile-code cases. The hostile cases prove the image/runtime boundary for unavailable host APIs, CPU exhaustion, and output flooding. Each successful result Pod is checked for exact dedicated-node placement and absence of a Kubernetes API token volume. The script verifies create-conflict replay behavior for the same deterministic Job name and explicitly deletes and checks the absence of all verification Jobs, Pods, and Secrets before reporting success.
 
 ## Activation rule
 

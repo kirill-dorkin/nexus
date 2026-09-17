@@ -10,7 +10,8 @@ VERIFY_LABEL="grader.platform.internal/verification=${RUN_ID}"
 TMP_DIR="$(mktemp -d)"
 
 cleanup() {
-  kubectl -n "$NAMESPACE" delete jobs,secrets -l "$VERIFY_LABEL" --ignore-not-found --wait=true >/dev/null 2>&1 || true
+  kubectl -n "$NAMESPACE" delete jobs -l "$VERIFY_LABEL" --ignore-not-found --wait=true >/dev/null 2>&1 || true
+  kubectl -n "$NAMESPACE" delete pods,secrets -l "$VERIFY_LABEL" --ignore-not-found --wait=true >/dev/null 2>&1 || true
   rm -rf "$TMP_DIR"
 }
 trap cleanup EXIT
@@ -98,13 +99,63 @@ NODE
 [[ "$(kubectl get runtimeclass "$RUNTIME_CLASS" -o jsonpath='{.scheduling.nodeSelector.grader\.platform\.internal/gvisor}')" == "true" ]] || die "RuntimeClass does not select dedicated gVisor nodes"
 [[ "$(kubectl -n "$NAMESPACE" get serviceaccount "$RUNNER_SERVICE_ACCOUNT" -o jsonpath='{.automountServiceAccountToken}')" == "false" ]] || die "runner ServiceAccount token automount is not disabled"
 
-kubectl -n "$NAMESPACE" get networkpolicy default-deny-all >/dev/null
-kubectl -n "$NAMESPACE" get resourcequota grader-sandbox-capacity >/dev/null
-kubectl -n "$NAMESPACE" get limitrange grader-sandbox-hard-envelope >/dev/null
-kubectl get validatingadmissionpolicy platform-grader-sandbox-pods >/dev/null
-kubectl get validatingadmissionpolicy platform-grader-sandbox-jobs >/dev/null
-kubectl get validatingadmissionpolicybinding platform-grader-sandbox-pods >/dev/null
-kubectl get validatingadmissionpolicybinding platform-grader-sandbox-jobs >/dev/null
+kubectl -n "$NAMESPACE" get networkpolicy default-deny-all -o json | node -e '
+let s="";
+process.stdin.on("data",d=>s+=d).on("end",()=>{
+  const value=JSON.parse(s);
+  const spec=value.spec||{};
+  const selector=spec.podSelector;
+  if (!selector || Object.keys(selector).length !== 0) process.exit(2);
+  const types=[...(spec.policyTypes||[])].sort();
+  if (JSON.stringify(types) !== JSON.stringify(["Egress","Ingress"])) process.exit(3);
+  if ((spec.ingress||[]).length !== 0 || (spec.egress||[]).length !== 0) process.exit(4);
+});
+' || die "default-deny NetworkPolicy is not deny-all for both ingress and egress"
+
+kubectl -n "$NAMESPACE" get resourcequota grader-sandbox-capacity -o json | node -e '
+let s="";
+process.stdin.on("data",d=>s+=d).on("end",()=>{
+  const value=JSON.parse(s);
+  const hard=value.spec?.hard||{};
+  const expected={
+    "count/jobs.batch":"64",
+    "count/pods":"64",
+    "count/secrets":"4096",
+    "requests.cpu":"64",
+    "limits.cpu":"64",
+    "requests.memory":"32Gi",
+    "limits.memory":"32Gi",
+    "requests.ephemeral-storage":"32Gi",
+    "limits.ephemeral-storage":"32Gi"
+  };
+  const keys=Object.keys(expected);
+  if (Object.keys(hard).length !== keys.length || keys.some(k=>hard[k]!==expected[k])) process.exit(2);
+});
+' || die "live ResourceQuota does not match the finite grader sandbox capacity envelope"
+
+kubectl -n "$NAMESPACE" get limitrange grader-sandbox-hard-envelope -o json | node -e '
+let s="";
+process.stdin.on("data",d=>s+=d).on("end",()=>{
+  const value=JSON.parse(s);
+  const limits=value.spec?.limits||[];
+  if (limits.length !== 1 || limits[0]?.type !== "Container") process.exit(2);
+  const limit=limits[0];
+  const expectedMax={cpu:"1",memory:"512Mi","ephemeral-storage":"512Mi"};
+  const expectedMin={cpu:"1m",memory:"16Mi","ephemeral-storage":"16Mi"};
+  const exact=(actual,expected)=>Object.keys(actual||{}).length===Object.keys(expected).length && Object.entries(expected).every(([k,v])=>actual?.[k]===v);
+  if (!exact(limit.max,expectedMax) || !exact(limit.min,expectedMin)) process.exit(3);
+  if (limit.default || limit.defaultRequest || limit.maxLimitRequestRatio) process.exit(4);
+});
+' || die "live LimitRange does not match the grader sandbox hard envelope"
+
+for policy in platform-grader-sandbox-pods platform-grader-sandbox-jobs; do
+  kubectl get validatingadmissionpolicy "$policy" -o json | node -e '
+    let s=""; process.stdin.on("data",d=>s+=d).on("end",()=>{const value=JSON.parse(s); if(value.spec?.failurePolicy!=="Fail") process.exit(2);});
+  ' || die "ValidatingAdmissionPolicy $policy is not fail-closed"
+  kubectl get validatingadmissionpolicybinding "$policy" -o json | node -e '
+    let s=""; process.stdin.on("data",d=>s+=d).on("end",()=>{const value=JSON.parse(s); const actions=value.spec?.validationActions||[]; if(!actions.includes("Deny")) process.exit(2);});
+  ' || die "ValidatingAdmissionPolicyBinding $policy does not deny violations"
+done
 
 mapfile -t SANDBOX_NODES < <(kubectl get nodes -l grader.platform.internal/gvisor=true -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
 [[ "${#SANDBOX_NODES[@]}" -gt 0 ]] || die "no dedicated sandbox nodes carry grader.platform.internal/gvisor=true"
@@ -206,16 +257,49 @@ VALID_FIXTURE="$TMP_DIR/valid-job.yaml"
 make_job_yaml "grader-admission-${RUN_ID}" "grader-admission-source-${RUN_ID}" "sha256:$(printf 'a%.0s' {1..64})" > "$VALID_FIXTURE"
 kubectl apply --dry-run=server -f "$VALID_FIXTURE" >/dev/null || die "live admission rejected the hardened reference Job"
 
-sed 's/runtimeClassName: platform-gvisor/runtimeClassName: runc/' "$VALID_FIXTURE" > "$TMP_DIR/weakened-runtime.yaml"
-if kubectl apply --dry-run=server -f "$TMP_DIR/weakened-runtime.yaml" >/dev/null 2>&1; then
-  die "admission accepted a Job with weakened RuntimeClass"
+VALID_POD_FIXTURE="$TMP_DIR/valid-pod.json"
+kubectl create --dry-run=client --validate=false -f "$VALID_FIXTURE" -o json | node -e '
+let s="";
+const runId=process.argv[1];
+process.stdin.on("data",d=>s+=d).on("end",()=>{
+  const job=JSON.parse(s);
+  const pod={
+    apiVersion:"v1",
+    kind:"Pod",
+    metadata:{
+      name:`grader-pod-admission-${runId}`,
+      namespace:job.metadata.namespace,
+      labels:job.spec.template.metadata?.labels||{}
+    },
+    spec:job.spec.template.spec
+  };
+  process.stdout.write(JSON.stringify(pod,null,2));
+});
+' "$RUN_ID" > "$VALID_POD_FIXTURE"
+kubectl apply --dry-run=server -f "$VALID_POD_FIXTURE" >/dev/null || die "live admission rejected the hardened reference Pod"
+
+node -e '
+const fs=require("node:fs");
+const pod=JSON.parse(fs.readFileSync(process.argv[1],"utf8"));
+pod.spec.runtimeClassName="runc";
+process.stdout.write(JSON.stringify(pod,null,2));
+' "$VALID_POD_FIXTURE" > "$TMP_DIR/weakened-pod-runtime.json"
+if kubectl apply --dry-run=server -f "$TMP_DIR/weakened-pod-runtime.json" >/dev/null 2>&1; then
+  die "admission accepted a Pod with weakened RuntimeClass"
 fi
-sed 's/automountServiceAccountToken: false/automountServiceAccountToken: true/' "$VALID_FIXTURE" > "$TMP_DIR/weakened-token.yaml"
-if kubectl apply --dry-run=server -f "$TMP_DIR/weakened-token.yaml" >/dev/null 2>&1; then
-  die "admission accepted a Job with ServiceAccount token automount"
+
+node -e '
+const fs=require("node:fs");
+const pod=JSON.parse(fs.readFileSync(process.argv[1],"utf8"));
+pod.spec.automountServiceAccountToken=true;
+process.stdout.write(JSON.stringify(pod,null,2));
+' "$VALID_POD_FIXTURE" > "$TMP_DIR/weakened-pod-token.json"
+if kubectl apply --dry-run=server -f "$TMP_DIR/weakened-pod-token.json" >/dev/null 2>&1; then
+  die "admission accepted a Pod with ServiceAccount token automount"
 fi
-sed 's/backoffLimit: 0/backoffLimit: 1/' "$VALID_FIXTURE" > "$TMP_DIR/weakened-retry.yaml"
-if kubectl apply --dry-run=server -f "$TMP_DIR/weakened-retry.yaml" >/dev/null 2>&1; then
+
+sed 's/backoffLimit: 0/backoffLimit: 1/' "$VALID_FIXTURE" > "$TMP_DIR/weakened-job-retry.yaml"
+if kubectl apply --dry-run=server -f "$TMP_DIR/weakened-job-retry.yaml" >/dev/null 2>&1; then
   die "admission accepted a Job with internal retry enabled"
 fi
 
@@ -292,8 +376,9 @@ run_case "host-api" 'function solve(input) { return process.env; }' "failed" "ru
 run_case "cpu-limit" 'function solve(input) { for (;;) {} }' "failed" "cpu_time_exceeded"
 run_case "output-limit" 'function solve(input) { for (var i = 0; i < 100000; i++) console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"); return input.a + input.b; }' "failed" "output_limit_exceeded"
 
-kubectl -n "$NAMESPACE" delete jobs,secrets -l "$VERIFY_LABEL" --ignore-not-found --wait=true >/dev/null
-if kubectl -n "$NAMESPACE" get jobs,secrets -l "$VERIFY_LABEL" -o name | grep -q .; then
+kubectl -n "$NAMESPACE" delete jobs -l "$VERIFY_LABEL" --ignore-not-found --wait=true >/dev/null
+kubectl -n "$NAMESPACE" delete pods,secrets -l "$VERIFY_LABEL" --ignore-not-found --wait=true >/dev/null
+if kubectl -n "$NAMESPACE" get jobs,pods,secrets -l "$VERIFY_LABEL" -o name | grep -q .; then
   die "verification resources remain after cleanup"
 fi
 trap - EXIT

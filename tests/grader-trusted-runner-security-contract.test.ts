@@ -112,7 +112,17 @@ describe("trusted grader runner security contract", () => {
     expect(script).toContain("GRADER_GVISOR_RUNTIME_EVIDENCE_FILE");
     expect(script).toContain("podPidsLimit");
     expect(script).toContain("--dry-run=server");
+    expect(script).toContain("default-deny NetworkPolicy is not deny-all for both ingress and egress");
+    expect(script).toContain("live ResourceQuota does not match the finite grader sandbox capacity envelope");
+    expect(script).toContain("live LimitRange does not match the grader sandbox hard envelope");
+    expect(script).toContain("ValidatingAdmissionPolicy $policy is not fail-closed");
+    expect(script).toContain("ValidatingAdmissionPolicyBinding $policy does not deny violations");
+    expect(script).toContain("live admission rejected the hardened reference Pod");
+    expect(script).toContain("admission accepted a Pod with weakened RuntimeClass");
+    expect(script).toContain("admission accepted a Pod with ServiceAccount token automount");
+    expect(script).toContain("admission accepted a Job with internal retry enabled");
     expect(script).toContain("duplicate Job create unexpectedly succeeded");
+    expect(script).toContain('get jobs,pods,secrets -l "$VERIFY_LABEL"');
     expect(script).toContain("host-api");
     expect(script).toContain("cpu-limit");
     expect(script).toContain("output-limit");
