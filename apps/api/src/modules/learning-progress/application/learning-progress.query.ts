@@ -29,16 +29,18 @@ export abstract class LearningProgressQuery {
     activityVersionIds: readonly string[]
   ): Promise<readonly ActivityAttemptCount[]>;
 
-  abstract listTrustedValidationEvidenceObservations(
-    transaction: DatabaseTransaction,
-    organizationId: string,
-    learnerUserId: string,
-    skillIds: readonly string[]
-  ): Promise<readonly TrustedValidationEvidenceObservation[]>;
-
   abstract requireSubmissionForValidation(
     transaction: DatabaseTransaction,
     organizationId: string,
     submissionId: string
   ): Promise<SubmissionValidationContext>;
+}
+
+export abstract class TrustedValidationEvidenceQuery {
+  abstract listObservations(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    learnerUserId: string,
+    skillIds: readonly string[]
+  ): Promise<readonly TrustedValidationEvidenceObservation[]>;
 }
