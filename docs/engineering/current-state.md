@@ -8,9 +8,9 @@ It is **not live GitHub telemetry**. Before doing work, always verify the curren
 
 Last maintained: 2026-09-17.
 
-Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the completed repository-side F7 grader-hardening foundation. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes, and a separate trusted Go grader runner with a capability-minimal `goja` runtime, bounded result channel, reproducible `scratch` OCI build, CI-proven canonical `js-sum-v1@1` digest, repository security-contract tests, and a fail-closed real-cluster verification harness/runbook. **Production learner-code execution remains disabled:** the checked-in profile is inert, `GRADER_SANDBOX_PROVIDER` still defaults to `unavailable`, and activation still requires publishing the exact runner digest plus green target-cluster verification evidence in a separate deployment change. Verify the live `main` head before relying on any SHA or PR number.
+Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the completed repository-side F7 grader-hardening foundation and the first F8 review-scheduling vertical. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes, and a separate trusted Go grader runner with a capability-minimal `goja` runtime, bounded result channel, reproducible `scratch` OCI build, CI-proven canonical `js-sum-v1@1` digest, repository security-contract tests, and a fail-closed real-cluster verification harness/runbook. **Production learner-code execution remains disabled:** the checked-in profile is inert, `GRADER_SANDBOX_PROVIDER` still defaults to `unavailable`, and activation still requires publishing the exact runner digest plus green target-cluster verification evidence in a separate deployment change. F8 now composes the unchanged `ordered-mastery@1` recommendation policy with derived `fixed-interval-review@1` scheduling based on Mastery-owned `lastEvidenceAt`, without a schedule table, background job, new event, or alternate mastery state. Verify the live `main` head before relying on any SHA or PR number.
 
-Latest architectural decision at this checkpoint: ADR-0037.
+Latest architectural decision at this checkpoint: ADR-0038.
 
 Latest ordered migration at this checkpoint: `000029_grader_result_learning_history.sql`.
 
@@ -367,9 +367,39 @@ Worker durable lease
 
 Production still does not execute learner code by default. The canonical profile is release material only, `GRADER_SANDBOX_PROVIDER` defaults to `unavailable`, and a separate deployment activation must publish the exact digest and produce a green real-cluster verification record for the target context/node pool/runtime configuration before enabling `kubernetes-gvisor`.
 
-### F8–F9 — upcoming foundations
+### F8 — Recommendations / instructor intelligence: first review-scheduling vertical implemented
 
-Recommendation/instructor intelligence expansion and commerce/public-launch work remain later roadmap foundations. Supporting primitives may already exist, but do not pull later-foundation policy into an earlier slice without an explicit architectural reason.
+F8 now begins with an explicit derived review policy layered over the existing recommendation foundation rather than creating a second learning-state model:
+
+- ADR-0013 remains authoritative: Recommendation is derived, explainable state and Mastery remains the learning-state projection;
+- `ordered-mastery@1` remains unchanged with mastery target `0.8` and continues to take precedence while any CourseVersion Skill is unobserved or below target;
+- `fixed-interval-review@1` is a separate versioned policy with a seven-day interval and runs only after the ordered-mastery target is met for all relevant Skills;
+- review timing derives from Mastery-owned `lastEvidenceAt`; Recommendations do not read Learning Progress tables directly and do not persist a duplicate review schedule;
+- one server-owned `evaluatedAt` instant is passed to the pure policy, making a decision deterministic for the same canonical inputs and evaluation time;
+- review candidates order by earliest `reviewDueAt`, then immutable CourseVersion Skill position, then stable Skill id;
+- due review Activities reuse the existing deterministic ordering by Enrollment attempt count, Activity position, and stable Activity id;
+- a due review is explained by machine reason `focus_skill_review_due` with `lastEvidenceAt` and `reviewDueAt`; when nothing is due, `mastery_target_met` remains distinct from completion and exposes the earliest derived `nextReviewAt`;
+- a due Skill without a practice Activity remains `no_practice_activity_available` and carries review timing so the content gap is explainable;
+- the existing Enrollment-scoped endpoint, `recommendation.read` / `recommendation.read_others` capabilities, Offering scope, tenant/RLS boundary, and read-only `REPEATABLE READ` transaction remain unchanged;
+- no database migration, schedule/recommendation table, background worker, outbox event, canonical LearningEvent, notification, intervention, or new instructor visibility policy is introduced by this slice;
+- the v1 timestamp semantic deliberately uses the latest normalized Evidence timestamp already exposed by Mastery; changing to scored-only/retrieval-success/adaptive timing requires a new explicit projection/interface and review policy version.
+
+The first review-scheduling exit path is:
+
+```text
+mastered Skill
+  -> derived nextReviewAt
+  -> review becomes due
+  -> explainable Activity recommendation
+  -> new normalized Evidence refreshes Mastery.lastEvidenceAt
+  -> next derived review moves forward
+```
+
+Adaptive spacing, misconception models, readiness/interventions, instructor intelligence aggregation, recommendation history, reminders/notifications, and learn-vs-review balancing remain separate F8 slices.
+
+### F9 — upcoming foundation
+
+Commerce, public-launch, and growth work remain later roadmap foundations. Supporting primitives may already exist, but do not pull later-foundation policy into an earlier slice without an explicit architectural reason.
 
 ## Durable architecture facts
 
@@ -398,6 +428,10 @@ These are high-value reminders, not substitutes for their ADRs.
 - Mastery is organization-wide by stable Skill identity; CourseVersion/Enrollment scope selects learner presentation context rather than creating a second mastery model.
 - Zero Evidence means `unobserved`, not mastery `0`.
 - Student skill UI contracts hide Mastery implementation metadata unless a future product requirement explicitly needs it.
+- Recommendation is derived explainable state and must not become a second source of truth for learner progress or Mastery.
+- Recommendation and review policies are explicit/versioned; `ordered-mastery@1` remains unchanged while `fixed-interval-review@1` derives seven-day due times from Mastery-owned `lastEvidenceAt` only after the mastery target is met.
+- Review scheduling is recomputable from canonical learning state plus an explicit evaluation instant; no persisted schedule is canonical in the first F8 vertical.
+- A recommendation reason may expose stable machine timing/provenance needed to explain a due review, but presentation prose/LLM output must not silently change the selected action.
 - Guided Build protected content is immutable curriculum content and must not leak through generic learner Activity config/read models.
 - Guided Build assistance state is Attempt-scoped; hint/solution exposure is not Evidence and must not directly rewrite Mastery.
 - Professional compare is derived read state, not a new canonical learner lifecycle.
@@ -450,16 +484,17 @@ Do not remove these merely because the canonical model has moved on. Each requir
 
 ## Next recommended slice
 
-**F8 recommendations / instructor intelligence — start with an architecture audit and the first review-scheduling vertical.**
+**F8 misconception model — perform the architecture audit and define the first trusted misconception-signal vertical.**
 
-Build on the existing Learning Recommendations module, ADR-0013 explainable recommendations, normalized Evidence/Mastery, canonical LearningEvent history, and the established authorization boundaries before adding new persistence or automation:
+Build on normalized Evidence/Mastery and the now explicit recommendation/review policy boundaries without treating a guessed diagnosis as canonical learning truth:
 
-- verify the current recommendation implementation and learner-facing contracts against the live repository before designing new state;
-- define review scheduling inputs, deterministic ordering/idempotency, and explainability before choosing persistence or background scheduling;
-- keep Mastery as derived learning state rather than letting recommendation/intervention state become a second mastery truth;
-- derive misconception/readiness signals only from explicitly trusted normalized learning facts, not raw grader payloads or GitHub Project activity;
-- design instructor/mentor read-others scope and authorization explicitly before exposing learner intelligence across users;
-- keep recommendations/interventions auditable and explainable rather than hiding policy inside opaque runtime behavior;
-- treat F7 production grader activation as a separate deployment/security gate, not as an implicit prerequisite or side effect of F8 application development.
+- verify the live Knowledge/Learning Content, Learning Progress, Mastery, Recommendations, validator-result, and authorization interfaces before assigning ownership to any new misconception state;
+- define the distinction between a curriculum-authored misconception concept, an observed learner signal, a derived learner projection, and a recommendation/intervention consequence before choosing persistence;
+- admit only explicit normalized trusted learning facts as inputs; raw grader payloads, `system_error`, GitHub Project activity, UI telemetry, and LLM inference must not silently become misconception Evidence;
+- make detection semantics deterministic, explainable, and versioned, including source provenance and recomputation/idempotency behavior if a projection is introduced;
+- keep Mastery and misconception state semantically separate rather than encoding one as an undocumented score inside the other;
+- design learner/instructor/mentor visibility and `read_others` scope explicitly before exposing cross-user misconception intelligence;
+- defer intervention automation and persistence until the signal ownership, trust boundary, authorization, and exit criterion are concrete;
+- keep F7 production grader activation as a separate deployment/security gate rather than coupling it to F8 intelligence work.
 
-The first F8 slice should finish a working, measured vertical with explicit exit criteria rather than introducing a broad intelligence subsystem all at once.
+The next F8 slice should prove one narrow end-to-end misconception signal with explicit trusted inputs and observable exit criteria before expanding into readiness or instructor intervention surfaces.

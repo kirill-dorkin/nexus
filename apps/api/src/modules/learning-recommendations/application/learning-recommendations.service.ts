@@ -10,9 +10,10 @@ import { LearningDeliveryQuery } from "../../learning-delivery/application/learn
 import { LearningProgressQuery } from "../../learning-progress/application/learning-progress.query";
 import { MasteryQuery } from "../../learning-progress/application/mastery.query";
 import {
-  ORDERED_MASTERY_POLICY,
-  orderedMasteryV1
-} from "../domain/ordered-mastery.policy";
+  FIXED_INTERVAL_REVIEW_POLICY,
+  orderedMasteryWithFixedReviewV1
+} from "../domain/fixed-interval-review.policy";
+import { ORDERED_MASTERY_POLICY } from "../domain/ordered-mastery.policy";
 
 function offeringScope(organizationId: string, offeringId: string) {
   return {
@@ -83,10 +84,7 @@ export class LearningRecommendationsApplicationService {
         );
 
         const masteryBySkill = new Map(
-          mastery.map((projection) => [
-            projection.skillId,
-            projection.masteryScore
-          ] as const)
+          mastery.map((projection) => [projection.skillId, projection] as const)
         );
         const attemptsByActivityVersion = new Map(
           attemptCounts.map((count) => [
@@ -94,14 +92,20 @@ export class LearningRecommendationsApplicationService {
             count.attemptCount
           ] as const)
         );
+        const evaluatedAt = new Date().toISOString();
 
-        const decision = orderedMasteryV1({
-          skills: graph.skills.map((skill) => ({
-            skillId: skill.skillId,
-            title: skill.title,
-            position: skill.position,
-            masteryScore: masteryBySkill.get(skill.skillId) ?? null
-          })),
+        const decision = orderedMasteryWithFixedReviewV1({
+          evaluatedAt,
+          skills: graph.skills.map((skill) => {
+            const projection = masteryBySkill.get(skill.skillId);
+            return {
+              skillId: skill.skillId,
+              title: skill.title,
+              position: skill.position,
+              masteryScore: projection?.masteryScore ?? null,
+              lastEvidenceAt: projection?.lastEvidenceAt ?? null
+            };
+          }),
           activities: graph.activities.map((activity) => ({
             activityVersionId: activity.id,
             activityId: activity.activityId,
@@ -118,13 +122,15 @@ export class LearningRecommendationsApplicationService {
           enrollmentId,
           offeringId: enrollmentContext.offering.id,
           courseVersionId: enrollmentContext.offering.courseVersionId,
-          policy: ORDERED_MASTERY_POLICY
+          policy: ORDERED_MASTERY_POLICY,
+          reviewPolicy: FIXED_INTERVAL_REVIEW_POLICY
         };
 
         if (decision.status === "mastery_target_met") {
           return {
             status: "mastery_target_met",
             ...recommendationContext,
+            nextReviewAt: decision.nextReviewAt,
             recommendation: null
           };
         }
