@@ -6,6 +6,14 @@ export type ActivityAttemptCount = Readonly<{
   attemptCount: number;
 }>;
 
+export type TrustedValidationEvidenceObservation = Readonly<{
+  evidenceId: string;
+  attemptId: string;
+  skillId: string;
+  outcome: "passed" | "failed";
+  createdAt: string;
+}>;
+
 export type SubmissionValidationContext = Readonly<{
   submission: Submission;
   attempt: Attempt;
@@ -20,6 +28,13 @@ export abstract class LearningProgressQuery {
     enrollmentId: string,
     activityVersionIds: readonly string[]
   ): Promise<readonly ActivityAttemptCount[]>;
+
+  abstract listTrustedValidationEvidenceObservations(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    learnerUserId: string,
+    skillIds: readonly string[]
+  ): Promise<readonly TrustedValidationEvidenceObservation[]>;
 
   abstract requireSubmissionForValidation(
     transaction: DatabaseTransaction,
