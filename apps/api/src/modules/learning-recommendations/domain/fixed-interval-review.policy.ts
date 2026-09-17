@@ -20,8 +20,13 @@ export type ReviewAwareOrderedMasterySkill = OrderedMasterySkill &
     lastEvidenceAt: string | null;
   }>;
 
+type BaselineRecommendationDecision = Exclude<
+  OrderedMasteryDecision,
+  Readonly<{ status: "mastery_target_met" }>
+>;
+
 export type ReviewAwareOrderedMasteryDecision =
-  | OrderedMasteryDecision
+  | BaselineRecommendationDecision
   | Readonly<{
       status: "recommended";
       activity: OrderedMasteryActivity;
