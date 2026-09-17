@@ -15,6 +15,12 @@ export const recommendationPolicySchema = z.object({
   masteryTarget: z.number().min(0).max(1)
 });
 
+export const reviewSchedulingPolicySchema = z.object({
+  key: recommendationPolicyKeySchema,
+  version: z.number().int().positive(),
+  intervalDays: z.number().int().positive()
+});
+
 export const recommendationFocusSkillSchema = z.object({
   skillId: uuidSchema,
   title: z.string().trim().min(1).max(200),
@@ -32,19 +38,35 @@ export const recommendedActivitySchema = z.object({
 
 export const recommendationReasonCodeSchema = z.enum([
   "focus_skill_unobserved",
-  "focus_skill_below_target"
+  "focus_skill_below_target",
+  "focus_skill_review_due"
 ]);
 
-export const recommendationReasonSchema = z.object({
-  code: recommendationReasonCodeSchema,
-  attemptCount: z.number().int().nonnegative()
-});
+const attemptCountSchema = z.number().int().nonnegative();
+
+export const recommendationReasonSchema = z.discriminatedUnion("code", [
+  z.object({
+    code: z.literal("focus_skill_unobserved"),
+    attemptCount: attemptCountSchema
+  }),
+  z.object({
+    code: z.literal("focus_skill_below_target"),
+    attemptCount: attemptCountSchema
+  }),
+  z.object({
+    code: z.literal("focus_skill_review_due"),
+    attemptCount: attemptCountSchema,
+    lastEvidenceAt: z.string().datetime(),
+    reviewDueAt: z.string().datetime()
+  })
+]);
 
 const recommendationContextShape = {
   enrollmentId: uuidSchema,
   offeringId: uuidSchema,
   courseVersionId: uuidSchema,
-  policy: recommendationPolicySchema
+  policy: recommendationPolicySchema,
+  reviewPolicy: reviewSchedulingPolicySchema.optional()
 };
 
 export const recommendedNextLearningActionSchema = z.object({
@@ -61,16 +83,34 @@ export const recommendedNextLearningActionSchema = z.object({
 export const masteryTargetMetRecommendationSchema = z.object({
   status: z.literal("mastery_target_met"),
   ...recommendationContextShape,
+  nextReviewAt: z.string().datetime().nullable().optional(),
   recommendation: z.null()
 });
+
+export const noPracticeActivityReasonSchema = z
+  .object({
+    code: z.literal("no_practice_activity_available"),
+    lastEvidenceAt: z.string().datetime().optional(),
+    reviewDueAt: z.string().datetime().optional()
+  })
+  .superRefine((value, context) => {
+    if (
+      (value.lastEvidenceAt === undefined) !==
+      (value.reviewDueAt === undefined)
+    ) {
+      context.addIssue({
+        code: "custom",
+        message:
+          "lastEvidenceAt and reviewDueAt must either both be present or both be absent"
+      });
+    }
+  });
 
 export const noPracticeActivityRecommendationSchema = z.object({
   status: z.literal("no_practice_activity_available"),
   ...recommendationContextShape,
   focusSkill: recommendationFocusSkillSchema,
-  reason: z.object({
-    code: z.literal("no_practice_activity_available")
-  }),
+  reason: noPracticeActivityReasonSchema,
   recommendation: z.null()
 });
 
@@ -81,6 +121,9 @@ export const nextLearningRecommendationSchema = z.discriminatedUnion("status", [
 ]);
 
 export type RecommendationPolicy = z.infer<typeof recommendationPolicySchema>;
+export type ReviewSchedulingPolicy = z.infer<
+  typeof reviewSchedulingPolicySchema
+>;
 export type RecommendationFocusSkill = z.infer<
   typeof recommendationFocusSkillSchema
 >;
