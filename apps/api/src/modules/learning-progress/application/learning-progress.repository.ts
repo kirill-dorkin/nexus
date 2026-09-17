@@ -6,10 +6,7 @@ import type {
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
-import type {
-  ActivityAttemptCount,
-  TrustedValidationEvidenceObservation
-} from "./learning-progress.query";
+import type { ActivityAttemptCount } from "./learning-progress.query";
 
 export type NewAttempt = Readonly<{
   id: string;
@@ -93,13 +90,6 @@ export abstract class LearningProgressRepository {
     enrollmentId: string,
     activityVersionIds: readonly string[]
   ): Promise<readonly ActivityAttemptCount[]>;
-
-  abstract listTrustedValidationEvidenceObservations(
-    transaction: DatabaseTransaction,
-    organizationId: string,
-    learnerUserId: string,
-    skillIds: readonly string[]
-  ): Promise<readonly TrustedValidationEvidenceObservation[]>;
 
   abstract createEvidence(
     transaction: DatabaseTransaction,
