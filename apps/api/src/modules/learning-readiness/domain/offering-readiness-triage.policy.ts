@@ -33,7 +33,7 @@ function parseInstant(value: string): number {
 
 export function orderOfferingReadinessV1<
   T extends OfferingReadinessTriageCandidate
->(candidates: readonly T[]): readonly T[] {
+>(candidates: readonly T[]): T[] {
   return [...candidates].sort(
     (left, right) =>
       statusRank[left.status] - statusRank[right.status] ||
