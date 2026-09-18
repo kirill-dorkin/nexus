@@ -89,6 +89,17 @@ export class PostgresLearningGraphRepository extends LearningGraphRepository {
     const result = await transaction.client.query<ActivityRow>(`SELECT ${activitySelect} FROM learning_content.course_version_activities AS activity LEFT JOIN learning_content.activity_skill_mappings AS mapping ON mapping.organization_id=activity.organization_id AND mapping.course_version_id=activity.course_version_id AND mapping.activity_id=activity.activity_id WHERE activity.organization_id=$1 AND activity.course_version_id=$2 GROUP BY activity.id ORDER BY activity.position, activity.activity_id`, [organizationId, courseVersionId]);
     return result.rows.map(mapActivity);
   }
+  async lockCourseVersionSkill(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string, skillId: string): Promise<void> {
+    await transaction.client.query(
+      `SELECT skill_id
+         FROM learning_content.course_version_skills
+        WHERE organization_id=$1
+          AND course_version_id=$2
+          AND skill_id=$3
+        FOR UPDATE`,
+      [organizationId, courseVersionId, skillId]
+    );
+  }
   async listCourseVersionSkillRemediations(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string): Promise<readonly CourseVersionSkillRemediation[]> {
     const result = await transaction.client.query<RemediationRow>(`SELECT organization_id::text, course_version_id::text, skill_id::text, activity_id::text, position FROM learning_content.course_version_skill_remediations WHERE organization_id=$1 AND course_version_id=$2 ORDER BY skill_id, position, activity_id`, [organizationId, courseVersionId]);
     return result.rows.map(mapRemediation);
