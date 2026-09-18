@@ -173,6 +173,35 @@ describe("AuthorizationPolicy", () => {
     ).toBe(true);
   });
 
+  it("separates readiness self-read from other-learner visibility", () => {
+    const scope: AuthorizationScope = {
+      organizationId: "org-a",
+      type: "offering",
+      id: "offering-a"
+    };
+    expect(
+      policy.allows(
+        [assignment({ roleKey: "learner" })],
+        "readiness.read",
+        scope
+      )
+    ).toBe(true);
+    expect(
+      policy.allows(
+        [assignment({ roleKey: "learner" })],
+        "readiness.read_others",
+        scope
+      )
+    ).toBe(false);
+    expect(
+      policy.allows(
+        [assignment({ roleKey: "mentor" })],
+        "readiness.read_others",
+        scope
+      )
+    ).toBe(true);
+  });
+
   it("reserves owner assignment for organization owners", () => {
     expect(
       policy.allows(
