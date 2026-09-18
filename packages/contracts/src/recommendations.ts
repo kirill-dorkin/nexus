@@ -136,6 +136,17 @@ export const recommendedNextLearningActionSchema = z
       });
     }
     if (
+      signal !== undefined &&
+      signal !== null &&
+      signal.skillId !== value.recommendation.focusSkill.skillId
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["recommendation", "misconceptionSignal", "skillId"],
+        message: "intervention signal must match the recommendation focus skill"
+      });
+    }
+    if (
       intervention.replacedActivityVersionId ===
       value.recommendation.activity.activityVersionId
     ) {
