@@ -14,6 +14,12 @@ export type TrustedValidationEvidenceObservation = Readonly<{
   createdAt: string;
 }>;
 
+export type ReadinessEvidenceSummary = Readonly<{
+  skillId: string;
+  scoredAttemptCount: number;
+  lastScoredEvidenceAt: string;
+}>;
+
 export type SubmissionValidationContext = Readonly<{
   submission: Submission;
   attempt: Attempt;
@@ -43,4 +49,14 @@ export abstract class TrustedValidationEvidenceQuery {
     learnerUserId: string,
     skillIds: readonly string[]
   ): Promise<readonly TrustedValidationEvidenceObservation[]>;
+}
+
+
+export abstract class ReadinessEvidenceQuery {
+  abstract listScoredAttemptSummaries(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    learnerUserId: string,
+    skillIds: readonly string[]
+  ): Promise<readonly ReadinessEvidenceSummary[]>;
 }
