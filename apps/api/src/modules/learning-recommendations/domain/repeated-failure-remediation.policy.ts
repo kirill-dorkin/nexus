@@ -27,11 +27,13 @@ export type RemediationIntervention = Readonly<{
   remediationPosition: number;
 }>;
 
-export type RemediationAwareRecommendedDecision =
-  BaselineRecommendedDecision &
-    Readonly<{
-      intervention?: RemediationIntervention;
-    }>;
+export type RemediationAwareRecommendedDecision = Readonly<{
+  status: "recommended";
+  activity: OrderedMasteryActivity;
+  focusSkill: BaselineRecommendedDecision["focusSkill"];
+  reason: BaselineRecommendedDecision["reason"];
+  intervention?: RemediationIntervention;
+}>;
 
 export type RepeatedFailureRemediationInput = Readonly<{
   baseline: BaselineRecommendedDecision;
