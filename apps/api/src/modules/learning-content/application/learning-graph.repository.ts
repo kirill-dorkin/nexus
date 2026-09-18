@@ -51,6 +51,7 @@ export abstract class LearningGraphRepository {
   abstract findActivityVersion(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string, activityId: string): Promise<CourseVersionActivity | null>;
   abstract findActivityVersionById(transaction: DatabaseTransaction, organizationId: string, activityVersionId: string): Promise<CourseVersionActivity | null>;
   abstract listCourseVersionActivities(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string): Promise<readonly CourseVersionActivity[]>;
+  abstract lockCourseVersionSkill(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string, skillId: string): Promise<void>;
   abstract listCourseVersionSkillRemediations(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string): Promise<readonly CourseVersionSkillRemediation[]>;
   abstract replaceCourseVersionSkillRemediations(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string, skillId: string, activityIds: readonly string[]): Promise<readonly CourseVersionSkillRemediation[]>;
   abstract activityAssessesSkill(transaction: DatabaseTransaction, organizationId: string, activityVersionId: string, skillId: string): Promise<boolean>;
