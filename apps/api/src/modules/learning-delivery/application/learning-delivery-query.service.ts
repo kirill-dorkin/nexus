@@ -14,6 +14,46 @@ export class LearningDeliveryQueryService extends LearningDeliveryQuery {
     super();
   }
 
+  async requireOffering(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    offeringId: string
+  ) {
+    const offering = await this.delivery.findOffering(
+      transaction,
+      organizationId,
+      offeringId
+    );
+    if (offering === null) {
+      throw new NotFoundException("Learning offering not found.");
+    }
+    return offering;
+  }
+
+  listActiveEnrollmentsForOffering(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    offeringId: string
+  ) {
+    return this.delivery.listActiveEnrollmentsForOffering(
+      transaction,
+      organizationId,
+      offeringId
+    );
+  }
+
+  listEnrollmentsForUsers(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userIds: readonly string[]
+  ) {
+    return this.delivery.listEnrollmentsForUsers(
+      transaction,
+      organizationId,
+      userIds
+    );
+  }
+
   async requireEnrollment(
     transaction: DatabaseTransaction,
     organizationId: string,
@@ -28,14 +68,11 @@ export class LearningDeliveryQueryService extends LearningDeliveryQuery {
       throw new NotFoundException("Enrollment not found.");
     }
 
-    const offering = await this.delivery.findOffering(
+    const offering = await this.requireOffering(
       transaction,
       organizationId,
       enrollment.offeringId
     );
-    if (offering === null) {
-      throw new NotFoundException("Learning offering not found.");
-    }
 
     return { enrollment, offering };
   }
