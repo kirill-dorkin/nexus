@@ -284,6 +284,50 @@ describe("recommendation contracts", () => {
     ).toThrow();
   });
 
+  it("rejects an intervention signal for a different focus skill", () => {
+    const focusSkillId = randomUUID();
+    expect(() =>
+      nextLearningRecommendationSchema.parse({
+        status: "recommended",
+        ...interventionContext(),
+        recommendation: {
+          kind: "activity",
+          activity: {
+            activityVersionId: randomUUID(),
+            activityId: randomUUID(),
+            slug: "grid-remediation",
+            activityType: "pern.code-project",
+            title: "Targeted grid remediation"
+          },
+          focusSkill: {
+            skillId: focusSkillId,
+            title: "CSS Grid",
+            masteryScore: 0,
+            targetMasteryScore: 0.8
+          },
+          reason: {
+            code: "focus_skill_below_target",
+            attemptCount: 0
+          },
+          misconceptionSignal: {
+            status: "suspected",
+            code: "repeated_trusted_failure",
+            skillId: randomUUID(),
+            consecutiveFailureCount: 2,
+            firstObservedAt: "2026-09-10T00:00:00.000Z",
+            lastObservedAt: "2026-09-11T00:00:00.000Z"
+          },
+          intervention: {
+            code: "repeated_trusted_failure_remediation",
+            signalCode: "repeated_trusted_failure",
+            replacedActivityVersionId: randomUUID(),
+            remediationPosition: 0
+          }
+        }
+      })
+    ).toThrow();
+  });
+
   it("rejects a suspected signal below the policy minimum", () => {
     const skillId = randomUUID();
     expect(() =>
