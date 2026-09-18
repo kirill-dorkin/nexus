@@ -98,9 +98,8 @@ export class PostgresLearningGraphRepository extends LearningGraphRepository {
     if (activityIds.length > 0) {
       await transaction.client.query(
         `INSERT INTO learning_content.course_version_skill_remediations (organization_id, course_version_id, skill_id, activity_id, position)
-         SELECT $1, $2, $3, input.activity_id, input.position
-           FROM unnest($4::uuid[]) WITH ORDINALITY AS input(activity_id, ordinal)
-          CROSS JOIN LATERAL (SELECT (input.ordinal - 1)::integer AS position) AS numbered`,
+         SELECT $1, $2, $3, input.activity_id, (input.ordinal - 1)::integer
+           FROM unnest($4::uuid[]) WITH ORDINALITY AS input(activity_id, ordinal)`,
         [organizationId, courseVersionId, skillId, [...activityIds]]
       );
     }
