@@ -55,6 +55,28 @@ export const attachSkillToCourseVersionRequestSchema = z.object({
   position: z.number().int().min(0).optional()
 });
 
+export const replaceSkillRemediationActivitiesRequestSchema = z
+  .object({
+    activityIds: z.array(uuidSchema).max(20)
+  })
+  .strict()
+  .superRefine((value, context) => {
+    if (new Set(value.activityIds).size !== value.activityIds.length) {
+      context.addIssue({
+        code: "custom",
+        path: ["activityIds"],
+        message: "Remediation activityIds must be unique."
+      });
+    }
+  });
+
+export const courseVersionSkillRemediationSetSchema = z.object({
+  organizationId: uuidSchema,
+  courseVersionId: uuidSchema,
+  skillId: uuidSchema,
+  activityIds: z.array(uuidSchema).max(20)
+});
+
 export const createCourseVersionActivityRequestSchema = z
   .object({
     slug: resourceSlugSchema,
@@ -73,4 +95,10 @@ export type CourseVersionSkill = z.infer<typeof courseVersionSkillSchema>;
 export type CourseVersionActivity = z.infer<typeof courseVersionActivitySchema>;
 export type CreateSkillRequest = z.infer<typeof createSkillRequestSchema>;
 export type AttachSkillToCourseVersionRequest = z.infer<typeof attachSkillToCourseVersionRequestSchema>;
+export type ReplaceSkillRemediationActivitiesRequest = z.infer<
+  typeof replaceSkillRemediationActivitiesRequestSchema
+>;
+export type CourseVersionSkillRemediationSet = z.infer<
+  typeof courseVersionSkillRemediationSetSchema
+>;
 export type CreateCourseVersionActivityRequest = z.infer<typeof createCourseVersionActivityRequestSchema>;
