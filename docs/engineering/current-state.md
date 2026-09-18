@@ -8,11 +8,11 @@ It is **not live GitHub telemetry**. Before doing work, always verify the curren
 
 Last maintained: 2026-09-18.
 
-Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the completed repository-side F7 grader-hardening foundation and the first six F8 recommendation/instructor/progression verticals. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes, and a separate trusted Go grader runner with a capability-minimal `goja` runtime, bounded result channel, reproducible `scratch` OCI build, CI-proven canonical `js-sum-v1@1` digest, repository security-contract tests, and a fail-closed real-cluster verification harness/runbook. **Production learner-code execution remains disabled:** the checked-in profile is inert, `GRADER_SANDBOX_PROVIDER` still defaults to `unavailable`, and activation still requires publishing the exact runner digest plus green target-cluster verification evidence in a separate deployment change. F8 now composes the unchanged `ordered-mastery@1` recommendation policy with derived `fixed-interval-review@1` scheduling based on Mastery-owned `lastEvidenceAt`, a conservative `repeated-trusted-failure@1` suspected-misconception signal derived only from normalized trusted validation Evidence, the first explicit `repeated-failure-remediation@1` action-changing policy backed by immutable CourseVersion-authored Skill-to-Activity remediation mappings, derived `course-progression-readiness@1` over distinct scored Attempts, pinned Mastery semantics, scored-Evidence freshness, and the existing repeated-trusted-failure signal, plus Offering-scoped `offering-readiness-triage@1` over active learner readiness decisions for instructor/mentor operational intelligence, and the first enforced `course-readiness-enrollment-completion@1` ProgressionGate protecting explicit learner-requested Enrollment completion. Review/signal/intervention/readiness/overview/gate state remains derived rather than persisted; the only new canonical F8 state after F8.2 is authored curriculum remediation intent. Verify the live `main` head before relying on any SHA or PR number.
+Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the completed repository-side F7 grader-hardening foundation, the completed F8 recommendation/instructor/progression foundation, and the first F9 Commerce catalog vertical. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes, and a separate trusted Go grader runner with a capability-minimal `goja` runtime, bounded result channel, reproducible `scratch` OCI build, CI-proven canonical `js-sum-v1@1` digest, repository security-contract tests, and a fail-closed real-cluster verification harness/runbook. **Production learner-code execution remains disabled:** the checked-in profile is inert, `GRADER_SANDBOX_PROVIDER` still defaults to `unavailable`, and activation still requires publishing the exact runner digest plus green target-cluster verification evidence in a separate deployment change. F8 now composes the unchanged `ordered-mastery@1` recommendation policy with derived `fixed-interval-review@1` scheduling based on Mastery-owned `lastEvidenceAt`, a conservative `repeated-trusted-failure@1` suspected-misconception signal derived only from normalized trusted validation Evidence, the first explicit `repeated-failure-remediation@1` action-changing policy backed by immutable CourseVersion-authored Skill-to-Activity remediation mappings, derived `course-progression-readiness@1` over distinct scored Attempts, pinned Mastery semantics, scored-Evidence freshness, and the existing repeated-trusted-failure signal, plus Offering-scoped `offering-readiness-triage@1` over active learner readiness decisions for instructor/mentor operational intelligence, and the first enforced `course-readiness-enrollment-completion@1` ProgressionGate protecting explicit learner-requested Enrollment completion. Review/signal/intervention/readiness/overview/gate state remains derived rather than persisted; the only new canonical F8 state after F8.2 is authored curriculum remediation intent. A fresh post-F8.6 audit found no concrete staff completion override or durable completion-history product/audit requirement, so F8 is closed without inventing another progression slice. F9 now starts from the existing Entitlement foundation with provider-independent Commerce Product and immutable Price authoring. Verify the live `main` head before relying on any SHA or PR number.
 
-Latest architectural decision at this checkpoint: ADR-0043.
+Latest architectural decision at this checkpoint: ADR-0044.
 
-Latest ordered migration at this checkpoint: `000031_enrollment_terminal_lifecycle.sql`.
+Latest ordered migration at this checkpoint: `000032_commerce_products_prices.sql`.
 
 The baseline above is an orientation marker, not permission to skip checking the live `main` head.
 
@@ -545,9 +545,42 @@ active Enrollment
 
 Adaptive spacing, canonical named misconception taxonomy, readiness history, recommendation/intervention history, reminders/notifications, Group/CourseRun readiness filters, dashboards, reason-specific urgency ranking, bulk instructor actions, automatic completion, staff completion override/audit policy, and learn-vs-review balancing remain separate future slices.
 
-### F9 — upcoming foundation
+### F9 — Commerce/public launch: Product + immutable Price foundation started
 
-Commerce, public-launch, and growth work remain later roadmap foundations. Supporting primitives may already exist, but do not pull later-foundation policy into an earlier slice without an explicit architectural reason.
+F8 is closed. The post-F8.6 architecture audit found no concrete current requirement for staff completion override or a separate durable completion-provenance model. Those remain future product/audit decisions rather than speculative F8 state.
+
+F9 begins from the earlier ADR-0014 Entitlement/access foundation rather than from an empty Commerce module.
+
+The first F9 commercial-catalog layer establishes:
+
+- ADR-0044 introduces provider-independent `CommerceProduct` and `CommercePrice` before Purchase or checkout;
+- Product is a stable Commerce-owned commercial package targeting exactly one existing `LearningOffering` in the first version, while multiple Products may target the same Offering;
+- Commerce does not add a reverse application dependency on Delivery: PostgreSQL owns the tenant-safe Product -> Offering foreign key while Delivery continues to depend only on Commerce's public `EntitlementQuery`;
+- Product lifecycle is one-way `active -> archived`;
+- Price pins positive integer minor units, uppercase three-letter currency, and explicit billing type; F9.1 supports only `one_time`;
+- Price commercial meaning is immutable after creation. The application role cannot UPDATE Product identity/meaning or Price amount/currency/product/billing columns;
+- changing terms requires archiving the active Price and creating a replacement with a new Price identity;
+- a partial unique index permits at most one active Price for one `(Product, currency, billingType)`;
+- Price creation requires an active Product, and Product archival is blocked while any active Price remains; PostgreSQL triggers protect those lifecycle rules and archive state is terminal;
+- new organization-scoped `commerce.manage` is separate from `entitlement.manage`; owner/admin may author catalog state while instructor/mentor/learner may not;
+- Product/Price create/archive mutations emit transactional `commerce.product.created@1`, `commerce.product.archived@1`, `commerce.price.created@1`, and `commerce.price.archived@1` outbox events;
+- no Purchase, payment-provider identity, checkout, provider webhook, refund, subscription, tax, discount, automatic Entitlement grant, or public catalog read model is introduced.
+
+The first F9 authoring path is:
+
+```text
+existing LearningOffering
+  -> commerce.manage
+  -> active Product
+  -> immutable one_time Price
+  -> price-term change requires archive
+  -> replacement Price gets a new identity
+  -> all active Prices archived
+  -> Product may become archived
+  -> no Purchase or Entitlement mutation
+```
+
+Public launch, payment processing, growth surfaces, and production verification remain later F9 slices.
 
 ## Durable architecture facts
 
@@ -563,6 +596,10 @@ These are high-value reminders, not substitutes for their ADRs.
 - Migrations are ordered and append-only. Applied history is not rewritten.
 - Published Curriculum is the immutable **what**; Delivery is the **how / when / to whom**.
 - `Purchase != Entitlement != Enrollment`.
+- Commerce Product is provider-independent commercial packaging; in F9.1 it targets one Offering but does not itself grant access or create an Enrollment.
+- Commerce Price is immutable commercial meaning. Amount/currency/billing terms are never rewritten; a changed offer gets a new Price identity after the previous Price is archived.
+- At most one active Price exists per Product/currency/billing type, and archived Product/Price lifecycle is terminal.
+- `commerce.manage != entitlement.manage`: authoring an offer and manually granting access are separate authorities.
 - `Group != Team`.
 - `Assignment` schedules or targets learner work; it does not itself grant entitlement, enrollment, access, or group membership.
 - `Attempt` is one learner try against an exact `ActivityVersion`.
@@ -637,16 +674,18 @@ Do not remove these merely because the canonical model has moved on. Each requir
 
 ## Next recommended slice
 
-**F8 completion authority/history decision — decide whether staff override or durable completion provenance is actually required; otherwise close F8 and advance to F9.**
+**F9.2 Purchase + payment-provider boundary — introduce durable commercial transaction intent without coupling provider state to Entitlement or Enrollment.**
 
-The platform now has one concrete learner-requested, readiness-gated completion transition. Do not generalize it automatically.
+The platform now has canonical Product and immutable Price terms. The next slice should make one concrete paid transaction safe before building public checkout UI.
 
-Before adding another F8 slice:
+Before coding:
 
-- determine whether instructors/admins have a real product requirement to complete a learner who is `not_ready` or `insufficient_evidence`;
-- if override is required, define a separate capability, explicit reason/provenance, audit requirements, and whether override may bypass only the gate or also terminal lifecycle rules;
-- do not overload `enrollment.manage`, `readiness.read_others`, or organization-owner authority into an implicit pedagogical override;
-- decide whether current `enrollment.completed@1` outbox plus canonical Enrollment state is sufficient provenance, or whether a separate durable completion/override history is required by an actual product/audit use case;
-- keep certificates, Commerce consequences, notifications, Group/CourseRun progression, and automatic completion as separate decisions;
-- if no concrete override/history requirement exists, treat F8 Foundation as closed and start F9 Commerce/public-launch architecture from the live repository state;
+- define Purchase as a separate Commerce aggregate that pins the exact Product and Price plus canonical amount/currency snapshot;
+- decide the minimal Purchase lifecycle and terminal semantics before introducing provider-specific statuses;
+- define a payment-provider application port plus provider identity mapping rather than storing provider objects as the Purchase model;
+- make checkout initiation idempotent and server-priced: caller input may choose an allowed Price identity but must never supply trusted amount/currency;
+- define authenticated, replay-safe provider webhook ingress and durable processing before provider success can mutate canonical Purchase state;
+- decide exactly which successful Purchase transition grants/reactivates Entitlement and keep that consequence atomic/idempotent through an explicit Commerce-owned policy;
+- keep refund/reversal -> Entitlement consequences separate unless the first provider vertical requires them for correctness;
+- do not introduce subscription billing, tax, discounts, public catalog UI, marketing pages, or generic billing abstractions in the first Purchase slice;
 - keep F7 production grader activation as an independent deployment/security gate.
