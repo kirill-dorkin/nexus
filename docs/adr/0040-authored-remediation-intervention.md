@@ -55,7 +55,7 @@ It uses the existing `activity.manage` capability on Course scope. No new author
 
 Before persistence, Learning Content validates that every supplied Activity belongs to the same CourseVersion and assesses the target Skill.
 
-Repeating the exact same ordered set is materially idempotent: it performs no canonical mutation and emits no duplicate integration event.
+Replace-set commands serialize on the CourseVersion Skill row before comparing current state. Repeating the exact same ordered set, including a concurrent retry that observes an earlier writer after the row lock is acquired, is materially idempotent: it performs no canonical mutation and emits no duplicate integration event.
 
 A real mapping change commits atomically with one outbox event:
 
