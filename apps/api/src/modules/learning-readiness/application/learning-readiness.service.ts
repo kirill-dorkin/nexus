@@ -164,7 +164,11 @@ export class LearningReadinessApplicationService {
           courseVersionId: offering.courseVersionId,
           evaluatedAt,
           policy: COURSE_PROGRESSION_READINESS_POLICY,
-          triagePolicy: OFFERING_READINESS_TRIAGE_POLICY,
+          triagePolicy: {
+            key: OFFERING_READINESS_TRIAGE_POLICY.key,
+            version: OFFERING_READINESS_TRIAGE_POLICY.version,
+            statusOrder: [...OFFERING_READINESS_TRIAGE_POLICY.statusOrder]
+          },
           summary: {
             activeEnrollmentCount: learners.length,
             attentionCount: notReadyCount + insufficientEvidenceCount,
