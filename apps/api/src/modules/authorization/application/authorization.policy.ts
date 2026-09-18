@@ -28,7 +28,9 @@ export const authorizationCapabilities = [
   "mastery.read_others",
   "mastery.recompute",
   "recommendation.read",
-  "recommendation.read_others"
+  "recommendation.read_others",
+  "readiness.read",
+  "readiness.read_others"
 ] as const;
 
 export type AuthorizationCapability = (typeof authorizationCapabilities)[number];
@@ -45,20 +47,22 @@ const roleCapabilities: Readonly<Record<SystemRoleKey, ReadonlySet<Authorization
     "organization.read", "organization.manage", "integration.manage", "authorization.read", "authorization.assign_roles",
     "course.read", "course.manage", "course.publish", "skill.read", "skill.manage", "activity.read", "activity.manage",
     "offering.read", "offering.manage", "entitlement.manage", "enrollment.manage", "validation.record", "learning_event.read",
-    "evidence.read", "evidence.record", "mastery.read", "mastery.read_others", "mastery.recompute", "recommendation.read", "recommendation.read_others"
+    "evidence.read", "evidence.record", "mastery.read", "mastery.read_others", "mastery.recompute",
+    "recommendation.read", "recommendation.read_others", "readiness.read", "readiness.read_others"
   ]),
   instructor: new Set([
     "organization.read", "authorization.read", "course.read", "course.manage", "course.publish", "skill.read", "skill.manage",
     "activity.read", "activity.manage", "offering.read", "offering.manage", "enrollment.manage", "validation.record", "learning_event.read",
-    "evidence.read", "evidence.record", "mastery.read", "mastery.read_others", "recommendation.read", "recommendation.read_others"
+    "evidence.read", "evidence.record", "mastery.read", "mastery.read_others",
+    "recommendation.read", "recommendation.read_others", "readiness.read", "readiness.read_others"
   ]),
   mentor: new Set([
     "organization.read", "course.read", "skill.read", "activity.read", "offering.read", "learning_event.read", "evidence.read",
-    "mastery.read", "mastery.read_others", "recommendation.read", "recommendation.read_others"
+    "mastery.read", "mastery.read_others", "recommendation.read", "recommendation.read_others", "readiness.read", "readiness.read_others"
   ]),
   learner: new Set([
     "organization.read", "course.read", "skill.read", "activity.read", "offering.read", "attempt.submit", "guidance.use",
-    "learning_event.read", "evidence.read", "mastery.read", "recommendation.read"
+    "learning_event.read", "evidence.read", "mastery.read", "recommendation.read", "readiness.read"
   ])
 };
 
