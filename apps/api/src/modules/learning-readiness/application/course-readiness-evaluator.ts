@@ -1,8 +1,9 @@
 import { ConflictException, Injectable } from "@nestjs/common";
-import type {
-  CourseReadinessDecision,
-  Enrollment,
-  LearningOffering
+import {
+  courseReadinessDecisionSchema,
+  type CourseReadinessDecision,
+  type Enrollment,
+  type LearningOffering
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
@@ -142,7 +143,7 @@ export class CourseReadinessEvaluator {
         }))
       });
 
-      return {
+      return courseReadinessDecisionSchema.parse({
         organizationId,
         enrollmentId: enrollment.id,
         offeringId: offering.id,
@@ -150,7 +151,7 @@ export class CourseReadinessEvaluator {
         evaluatedAt,
         policy: COURSE_PROGRESSION_READINESS_POLICY,
         ...decision
-      };
+      });
     });
   }
 }
