@@ -19,6 +19,7 @@
 | Mastery | evidence normalization, model versions, organization-wide learner skill projections, learner skill progress composition | raw curriculum content, Delivery context, recommendation policy |
 | Recommendations | next-best actions / reasons, versioned suspected-misconception signal derivation | source-of-truth mastery |
 | Learning Readiness | versioned individual progression-readiness decisions and readiness-specific Offering operational aggregation | Mastery/Evidence ownership, Delivery completion, recommendation action selection, general analytics, progression enforcement |
+| Learning Progression | versioned progression-gate policy and orchestration of protected learner transitions | Readiness calculation, Enrollment persistence, Mastery/Evidence, authorization role storage, certification |
 | Projects | projects, project runs, teams, milestones, repository-binding history, normalized immutable external Project activity facts | Git hosting, webhook ingress/routing, provider installation/repository mappings, Learning Evidence |
 | Integrations | GitHub and future external systems, provider mappings, webhook ingress/routing, durable external-delivery processing | core learning rules, Projects-owned normalized activity facts |
 | Notifications | in-app/email/push delivery | business state |
