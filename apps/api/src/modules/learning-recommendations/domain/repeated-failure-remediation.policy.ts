@@ -95,7 +95,7 @@ export function applyRepeatedFailureRemediationV1(
           `Published remediation activity ${remediation.activityId} is missing from the recommendation graph.`
         );
       }
-      if (!activity.skillIds.includes(signal.skillId ?? "")) {
+      if (!activity.skillIds.includes(signal.skillId)) {
         throw new Error(
           `Published remediation activity ${remediation.activityId} does not assess the signal skill.`
         );
