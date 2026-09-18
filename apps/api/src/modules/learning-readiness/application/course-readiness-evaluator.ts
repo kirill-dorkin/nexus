@@ -101,7 +101,7 @@ export class CourseReadinessEvaluator {
       skillIds
     );
 
-    const masteryByLearner = new Map<string, typeof allMastery[number][]>();
+    const masteryByLearner = new Map<string, (typeof allMastery)[number][]>();
     for (const projection of allMastery) {
       const current = masteryByLearner.get(projection.userId) ?? [];
       current.push(projection);
