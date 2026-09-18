@@ -37,4 +37,5 @@
 | `FeatureFlag` | Временный технический rollout реализации. |
 | `Entitlement` | Право доступа. Не равно Purchase и не равно Enrollment. |
 | `Recommendation` | Объяснимый вычисленный следующий учебный шаг. |
-| `ProgressionGate` | Условие допуска к следующему этапу по skill/assessment/project evidence. |
+| `ReadinessDecision` | Версионированное derived решение о текущей готовности learner к узко определённому переходу; не равно Mastery, completion или самому факту intervention. |
+| `ProgressionGate` | Условие допуска к следующему этапу по skill/assessment/project evidence. Может в будущем использовать ReadinessDecision, но не является самим read model. |

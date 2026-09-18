@@ -11,6 +11,7 @@ import { AttemptGuidanceReader } from "./application/attempt-guidance.reader";
 import { LearnerSkillProgressApplicationService } from "./application/learner-skill-progress.service";
 import {
   LearningProgressQuery,
+  ReadinessEvidenceQuery,
   TrustedValidationEvidenceQuery
 } from "./application/learning-progress.query";
 import { LearningProgressRepository } from "./application/learning-progress.repository";
@@ -22,6 +23,7 @@ import { TrustedValidationEvidenceSink } from "./application/trusted-validation-
 import { TrustedValidationEvidenceApplicationService } from "./application/trusted-validation-evidence.service";
 import { PostgresLearningProgressRepository } from "./infrastructure/postgres-learning-progress.repository";
 import { PostgresMasteryRepository } from "./infrastructure/postgres-mastery.repository";
+import { PostgresReadinessEvidenceQuery } from "./infrastructure/postgres-readiness-evidence.query";
 import { PostgresTrustedValidationEvidenceQuery } from "./infrastructure/postgres-trusted-validation-evidence.query";
 import { LearnerSkillProgressController } from "./learner-skill-progress.controller";
 import { LearningProgressController } from "./learning-progress.controller";
@@ -40,6 +42,7 @@ import { MasteryController } from "./mastery.controller";
     { provide: AttemptGuidanceQuery, useExisting: AttemptGuidanceReader },
     { provide: TrustedValidationEvidenceSink, useExisting: TrustedValidationEvidenceApplicationService },
     { provide: TrustedValidationEvidenceQuery, useClass: PostgresTrustedValidationEvidenceQuery },
+    { provide: ReadinessEvidenceQuery, useClass: PostgresReadinessEvidenceQuery },
     { provide: MasteryQuery, useExisting: MasteryApplicationService },
     { provide: LearningProgressRepository, useClass: PostgresLearningProgressRepository },
     { provide: MasteryRepository, useClass: PostgresMasteryRepository }
@@ -50,6 +53,7 @@ import { MasteryController } from "./mastery.controller";
     AttemptGuidanceQuery,
     TrustedValidationEvidenceSink,
     TrustedValidationEvidenceQuery,
+    ReadinessEvidenceQuery,
     MasteryQuery
   ]
 })
