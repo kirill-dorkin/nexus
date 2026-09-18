@@ -30,7 +30,8 @@ export const authorizationCapabilities = [
   "recommendation.read",
   "recommendation.read_others",
   "readiness.read",
-  "readiness.read_others"
+  "readiness.read_others",
+  "progression.complete"
 ] as const;
 
 export type AuthorizationCapability = (typeof authorizationCapabilities)[number];
@@ -62,7 +63,7 @@ const roleCapabilities: Readonly<Record<SystemRoleKey, ReadonlySet<Authorization
   ]),
   learner: new Set([
     "organization.read", "course.read", "skill.read", "activity.read", "offering.read", "attempt.submit", "guidance.use",
-    "learning_event.read", "evidence.read", "mastery.read", "recommendation.read", "readiness.read"
+    "learning_event.read", "evidence.read", "mastery.read", "recommendation.read", "readiness.read", "progression.complete"
   ])
 };
 

@@ -7,6 +7,8 @@ import { LearningDeliveryModule } from "../learning-delivery/learning-delivery.m
 import { LearningProgressModule } from "../learning-progress/learning-progress.module";
 import { LearningRecommendationsModule } from "../learning-recommendations/learning-recommendations.module";
 import { CourseReadinessEvaluator } from "./application/course-readiness-evaluator";
+import { LearningReadinessQueryService } from "./application/learning-readiness-query.service";
+import { LearningReadinessQuery } from "./application/learning-readiness.query";
 import { LearningReadinessApplicationService } from "./application/learning-readiness.service";
 import {
   LearningReadinessController,
@@ -23,6 +25,15 @@ import {
     LearningRecommendationsModule
   ],
   controllers: [LearningReadinessController, OfferingReadinessController],
-  providers: [CourseReadinessEvaluator, LearningReadinessApplicationService]
+  providers: [
+    CourseReadinessEvaluator,
+    LearningReadinessQueryService,
+    LearningReadinessApplicationService,
+    {
+      provide: LearningReadinessQuery,
+      useExisting: LearningReadinessQueryService
+    }
+  ],
+  exports: [LearningReadinessQuery]
 })
 export class LearningReadinessModule {}

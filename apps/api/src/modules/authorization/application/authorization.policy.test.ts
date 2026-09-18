@@ -202,6 +202,36 @@ describe("AuthorizationPolicy", () => {
     ).toBe(true);
   });
 
+  it("separates learner completion capability from instructor and mentor authority", () => {
+    const scope: AuthorizationScope = {
+      organizationId: "org-a",
+      type: "offering",
+      id: "offering-a"
+    };
+
+    expect(
+      policy.allows(
+        [assignment({ roleKey: "learner" })],
+        "progression.complete",
+        scope
+      )
+    ).toBe(true);
+    expect(
+      policy.allows(
+        [assignment({ roleKey: "instructor" })],
+        "progression.complete",
+        scope
+      )
+    ).toBe(false);
+    expect(
+      policy.allows(
+        [assignment({ roleKey: "mentor" })],
+        "progression.complete",
+        scope
+      )
+    ).toBe(false);
+  });
+
   it("reserves owner assignment for organization owners", () => {
     expect(
       policy.allows(

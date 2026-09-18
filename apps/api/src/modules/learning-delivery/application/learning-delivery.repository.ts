@@ -113,6 +113,13 @@ export abstract class LearningDeliveryRepository {
     enrollmentId: string
   ): Promise<Enrollment | null>;
 
+  abstract completeEnrollment(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    enrollmentId: string,
+    completedAt: string
+  ): Promise<Enrollment | null>;
+
   abstract listActiveEnrollmentsForOffering(
     transaction: DatabaseTransaction,
     organizationId: string,
