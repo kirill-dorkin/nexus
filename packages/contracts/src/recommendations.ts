@@ -21,6 +21,21 @@ export const reviewSchedulingPolicySchema = z.object({
   intervalDays: z.number().int().positive()
 });
 
+export const misconceptionSignalPolicySchema = z.object({
+  key: recommendationPolicyKeySchema,
+  version: z.number().int().positive(),
+  minimumConsecutiveFailures: z.number().int().min(2)
+});
+
+export const misconceptionSignalSchema = z.object({
+  status: z.literal("suspected"),
+  code: z.literal("repeated_trusted_failure"),
+  skillId: uuidSchema,
+  consecutiveFailureCount: z.number().int().min(2),
+  firstObservedAt: z.string().datetime(),
+  lastObservedAt: z.string().datetime()
+});
+
 export const recommendationFocusSkillSchema = z.object({
   skillId: uuidSchema,
   title: z.string().trim().min(1).max(200),
@@ -66,7 +81,8 @@ const recommendationContextShape = {
   offeringId: uuidSchema,
   courseVersionId: uuidSchema,
   policy: recommendationPolicySchema,
-  reviewPolicy: reviewSchedulingPolicySchema.optional()
+  reviewPolicy: reviewSchedulingPolicySchema.optional(),
+  misconceptionSignalPolicy: misconceptionSignalPolicySchema.optional()
 };
 
 export const recommendedNextLearningActionSchema = z.object({
@@ -76,7 +92,8 @@ export const recommendedNextLearningActionSchema = z.object({
     kind: z.literal("activity"),
     activity: recommendedActivitySchema,
     focusSkill: recommendationFocusSkillSchema,
-    reason: recommendationReasonSchema
+    reason: recommendationReasonSchema,
+    misconceptionSignal: misconceptionSignalSchema.nullable().optional()
   })
 });
 
@@ -111,6 +128,7 @@ export const noPracticeActivityRecommendationSchema = z.object({
   ...recommendationContextShape,
   focusSkill: recommendationFocusSkillSchema,
   reason: noPracticeActivityReasonSchema,
+  misconceptionSignal: misconceptionSignalSchema.nullable().optional(),
   recommendation: z.null()
 });
 
@@ -124,6 +142,10 @@ export type RecommendationPolicy = z.infer<typeof recommendationPolicySchema>;
 export type ReviewSchedulingPolicy = z.infer<
   typeof reviewSchedulingPolicySchema
 >;
+export type MisconceptionSignalPolicy = z.infer<
+  typeof misconceptionSignalPolicySchema
+>;
+export type MisconceptionSignal = z.infer<typeof misconceptionSignalSchema>;
 export type RecommendationFocusSkill = z.infer<
   typeof recommendationFocusSkillSchema
 >;

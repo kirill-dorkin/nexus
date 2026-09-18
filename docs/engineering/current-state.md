@@ -8,9 +8,9 @@ It is **not live GitHub telemetry**. Before doing work, always verify the curren
 
 Last maintained: 2026-09-17.
 
-Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the completed repository-side F7 grader-hardening foundation and the first F8 review-scheduling vertical. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes, and a separate trusted Go grader runner with a capability-minimal `goja` runtime, bounded result channel, reproducible `scratch` OCI build, CI-proven canonical `js-sum-v1@1` digest, repository security-contract tests, and a fail-closed real-cluster verification harness/runbook. **Production learner-code execution remains disabled:** the checked-in profile is inert, `GRADER_SANDBOX_PROVIDER` still defaults to `unavailable`, and activation still requires publishing the exact runner digest plus green target-cluster verification evidence in a separate deployment change. F8 now composes the unchanged `ordered-mastery@1` recommendation policy with derived `fixed-interval-review@1` scheduling based on Mastery-owned `lastEvidenceAt`, without a schedule table, background job, new event, or alternate mastery state. Verify the live `main` head before relying on any SHA or PR number.
+Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the completed repository-side F7 grader-hardening foundation and the first two F8 recommendation-intelligence verticals. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes, and a separate trusted Go grader runner with a capability-minimal `goja` runtime, bounded result channel, reproducible `scratch` OCI build, CI-proven canonical `js-sum-v1@1` digest, repository security-contract tests, and a fail-closed real-cluster verification harness/runbook. **Production learner-code execution remains disabled:** the checked-in profile is inert, `GRADER_SANDBOX_PROVIDER` still defaults to `unavailable`, and activation still requires publishing the exact runner digest plus green target-cluster verification evidence in a separate deployment change. F8 now composes the unchanged `ordered-mastery@1` recommendation policy with derived `fixed-interval-review@1` scheduling based on Mastery-owned `lastEvidenceAt`, plus a conservative `repeated-trusted-failure@1` suspected-misconception signal derived only from normalized trusted validation Evidence. Neither vertical creates a schedule/signal table, background job, new event, alternate mastery state, or intervention policy. Verify the live `main` head before relying on any SHA or PR number.
 
-Latest architectural decision at this checkpoint: ADR-0038.
+Latest architectural decision at this checkpoint: ADR-0039.
 
 Latest ordered migration at this checkpoint: `000029_grader_result_learning_history.sql`.
 
@@ -367,9 +367,11 @@ Worker durable lease
 
 Production still does not execute learner code by default. The canonical profile is release material only, `GRADER_SANDBOX_PROVIDER` defaults to `unavailable`, and a separate deployment activation must publish the exact digest and produce a green real-cluster verification record for the target context/node pool/runtime configuration before enabling `kubernetes-gvisor`.
 
-### F8 — Recommendations / instructor intelligence: first review-scheduling vertical implemented
+### F8 — Recommendations / instructor intelligence: review scheduling + first trusted misconception-signal vertical implemented
 
-F8 now begins with an explicit derived review policy layered over the existing recommendation foundation rather than creating a second learning-state model:
+F8 now has two explicit derived intelligence layers over the existing recommendation foundation without creating a second learning-state model.
+
+The review-scheduling layer establishes:
 
 - ADR-0013 remains authoritative: Recommendation is derived, explainable state and Mastery remains the learning-state projection;
 - `ordered-mastery@1` remains unchanged with mastery target `0.8` and continues to take precedence while any CourseVersion Skill is unobserved or below target;
@@ -395,7 +397,37 @@ mastered Skill
   -> next derived review moves forward
 ```
 
-Adaptive spacing, misconception models, readiness/interventions, instructor intelligence aggregation, recommendation history, reminders/notifications, and learn-vs-review balancing remain separate F8 slices.
+The first misconception-signal layer establishes:
+
+- ADR-0039 distinguishes an observed/derived learner signal from a canonical curriculum-authored misconception concept and from a later intervention consequence;
+- `repeated-trusted-failure@1` is an explicit versioned detection policy with minimum two consecutive failed distinct Attempts for the same stable Skill;
+- its output is deliberately `status = suspected` with machine code `repeated_trusted_failure`; it is not a named diagnosis, causal explanation, or confidence probability;
+- the signal consumes only Learning Progress-owned validation-derived Evidence that already passed the existing `completed + trusted + passed|failed` normalization boundary;
+- raw `ValidationResult.payload`, raw grader payload, Submission source, Guided Build exposure, UI telemetry, GitHub Project facts, LLM output, `system_error`, `needs_review`, and advisory validation state are excluded from v1 misconception inputs;
+- Learning Progress exposes a dedicated public `TrustedValidationEvidenceQuery`, so Recommendations does not query foreign tables/repositories or Validation internals;
+- observations are organization-wide by learner + stable Skill, matching Mastery identity, while Recommendation evaluates only its already selected focus Skill;
+- multiple decisive validation-derived Evidence rows for the same `(Skill, Attempt)` collapse to the latest observation at the public read boundary, preventing validation retry/correction from manufacturing a repeated-failure streak;
+- a later trusted `passed` Attempt clears the active consecutive-failure streak;
+- the signal is recomputed inside the existing tenant-scoped read-only `REPEATABLE READ` Recommendation transaction and is not persisted;
+- `ordered-mastery@1` / `fixed-interval-review@1` continue to select the action exactly as before; F8.2 attaches misconception signal metadata only and does not reorder Activities, mutate Mastery, decide readiness, or automate remediation;
+- the existing Enrollment-scoped Recommendation authorization remains authoritative; no new instructor/mentor cross-user intelligence endpoint or capability is introduced;
+- canonical Knowledge-owned misconception taxonomy/entities/relations and any exact diagnostic-code mapping remain later explicit architecture decisions.
+
+The first misconception-signal exit path is:
+
+```text
+trusted failed ValidationResult on Attempt A
+  -> normalized failed Evidence for Skill
+trusted failed ValidationResult on Attempt B
+  -> normalized failed Evidence for same Skill
+  -> repeated-trusted-failure@1 suspected signal
+  -> existing Activity recommendation remains selected and becomes more explainable
+trusted passed ValidationResult on later Attempt C
+  -> normalized passed Evidence
+  -> active repeated-failure signal clears
+```
+
+Adaptive spacing, canonical misconception taxonomy, misconception-aware interventions, readiness, instructor intelligence aggregation, recommendation/signal history, reminders/notifications, and learn-vs-review balancing remain separate F8 slices.
 
 ### F9 — upcoming foundation
 
@@ -432,6 +464,9 @@ These are high-value reminders, not substitutes for their ADRs.
 - Recommendation and review policies are explicit/versioned; `ordered-mastery@1` remains unchanged while `fixed-interval-review@1` derives seven-day due times from Mastery-owned `lastEvidenceAt` only after the mastery target is met.
 - Review scheduling is recomputable from canonical learning state plus an explicit evaluation instant; no persisted schedule is canonical in the first F8 vertical.
 - A recommendation reason may expose stable machine timing/provenance needed to explain a due review, but presentation prose/LLM output must not silently change the selected action.
+- A suspected misconception signal is derived explainability state, not a diagnosis, Mastery mutation, or canonical Knowledge misconception entity.
+- `repeated-trusted-failure@1` uses only normalized trusted decisive validation-derived Evidence and counts distinct Attempts; raw validator/grader payload and assistance/external/LLM telemetry are not signal inputs.
+- Misconception detection and misconception-aware intervention are separate policies: F8.2 does not change the selected Activity merely because a signal is present.
 - Guided Build protected content is immutable curriculum content and must not leak through generic learner Activity config/read models.
 - Guided Build assistance state is Attempt-scoped; hint/solution exposure is not Evidence and must not directly rewrite Mastery.
 - Professional compare is derived read state, not a new canonical learner lifecycle.
@@ -484,17 +519,18 @@ Do not remove these merely because the canonical model has moved on. Each requir
 
 ## Next recommended slice
 
-**F8 misconception model — perform the architecture audit and define the first trusted misconception-signal vertical.**
+**F8 misconception-aware intervention / readiness architecture — define the first action-changing policy before adding instructor aggregation.**
 
-Build on normalized Evidence/Mastery and the now explicit recommendation/review policy boundaries without treating a guessed diagnosis as canonical learning truth:
+Build on the now explicit distinction between canonical Evidence/Mastery, the derived `repeated-trusted-failure@1` suspected signal, and recommendation action selection:
 
-- verify the live Knowledge/Learning Content, Learning Progress, Mastery, Recommendations, validator-result, and authorization interfaces before assigning ownership to any new misconception state;
-- define the distinction between a curriculum-authored misconception concept, an observed learner signal, a derived learner projection, and a recommendation/intervention consequence before choosing persistence;
-- admit only explicit normalized trusted learning facts as inputs; raw grader payloads, `system_error`, GitHub Project activity, UI telemetry, and LLM inference must not silently become misconception Evidence;
-- make detection semantics deterministic, explainable, and versioned, including source provenance and recomputation/idempotency behavior if a projection is introduced;
-- keep Mastery and misconception state semantically separate rather than encoding one as an undocumented score inside the other;
-- design learner/instructor/mentor visibility and `read_others` scope explicitly before exposing cross-user misconception intelligence;
-- defer intervention automation and persistence until the signal ownership, trust boundary, authorization, and exit criterion are concrete;
-- keep F7 production grader activation as a separate deployment/security gate rather than coupling it to F8 intelligence work.
+- audit the live Learning Content/Knowledge, Learning Progress, Mastery, Recommendations, Delivery/Assignment, Guidance, and authorization interfaces before deciding where remediation intent belongs;
+- define an explicit versioned intervention policy that states exactly when a suspected signal may change the selected next action and how ordinary `ordered-mastery@1` / review behavior is composed or overridden;
+- keep signal detection separate from intervention consequence so a detection-policy version change cannot silently rewrite remediation semantics;
+- decide whether v1 intervention can reuse existing published Activities or needs an authored immutable remediation relation in the CourseVersion/Knowledge graph; do not infer remediation Activities from titles, order, raw payloads, or LLM output;
+- preserve deterministic machine-readable reasons and source provenance for every action change;
+- keep readiness/completion distinct from Mastery, misconception signal, and intervention unless a concrete readiness policy is separately specified;
+- design learner versus instructor/mentor visibility and `read_others` scope before introducing any cross-user intervention/readiness surface;
+- avoid persisting intervention state until a real lifecycle invariant requires it; prefer derived computation from canonical learning state plus explicit policy inputs for the first vertical;
+- keep F7 production grader activation as a separate deployment/security gate.
 
-The next F8 slice should prove one narrow end-to-end misconception signal with explicit trusted inputs and observable exit criteria before expanding into readiness or instructor intervention surfaces.
+The next F8 slice should prove one narrow end-to-end action-changing intervention with authored/trusted inputs and an explainable exit criterion before expanding into readiness scoring, instructor dashboards, cohort aggregation, notifications, or automation.

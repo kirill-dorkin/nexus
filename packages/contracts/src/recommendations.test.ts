@@ -28,6 +28,17 @@ function reviewContext() {
   };
 }
 
+function misconceptionContext() {
+  return {
+    ...reviewContext(),
+    misconceptionSignalPolicy: {
+      key: "repeated-trusted-failure",
+      version: 1,
+      minimumConsecutiveFailures: 2
+    }
+  };
+}
+
 describe("recommendation contracts", () => {
   it("accepts an explainable activity recommendation", () => {
     const parsed = nextLearningRecommendationSchema.parse({
@@ -112,6 +123,97 @@ describe("recommendation contracts", () => {
         }
       }
     });
+  });
+
+  it("accepts a suspected repeated-trusted-failure signal without changing the action reason", () => {
+    const skillId = randomUUID();
+    const parsed = nextLearningRecommendationSchema.parse({
+      status: "recommended",
+      ...misconceptionContext(),
+      recommendation: {
+        kind: "activity",
+        activity: {
+          activityVersionId: randomUUID(),
+          activityId: randomUUID(),
+          slug: "grid-retry",
+          activityType: "pern.code-project",
+          title: "Retry grid practice"
+        },
+        focusSkill: {
+          skillId,
+          title: "CSS Grid",
+          masteryScore: 0,
+          targetMasteryScore: 0.8
+        },
+        reason: {
+          code: "focus_skill_below_target",
+          attemptCount: 2
+        },
+        misconceptionSignal: {
+          status: "suspected",
+          code: "repeated_trusted_failure",
+          skillId,
+          consecutiveFailureCount: 2,
+          firstObservedAt: "2026-09-10T00:00:00.000Z",
+          lastObservedAt: "2026-09-11T00:00:00.000Z"
+        }
+      }
+    });
+
+    expect(parsed).toMatchObject({
+      misconceptionSignalPolicy: {
+        key: "repeated-trusted-failure",
+        version: 1,
+        minimumConsecutiveFailures: 2
+      },
+      recommendation: {
+        reason: { code: "focus_skill_below_target" },
+        misconceptionSignal: {
+          status: "suspected",
+          code: "repeated_trusted_failure",
+          skillId,
+          consecutiveFailureCount: 2
+        }
+      }
+    });
+  });
+
+  it("rejects a suspected signal below the policy minimum", () => {
+    const skillId = randomUUID();
+    expect(() =>
+      nextLearningRecommendationSchema.parse({
+        status: "recommended",
+        ...misconceptionContext(),
+        recommendation: {
+          kind: "activity",
+          activity: {
+            activityVersionId: randomUUID(),
+            activityId: randomUUID(),
+            slug: "grid-retry",
+            activityType: "pern.code-project",
+            title: "Retry grid practice"
+          },
+          focusSkill: {
+            skillId,
+            title: "CSS Grid",
+            masteryScore: 0,
+            targetMasteryScore: 0.8
+          },
+          reason: {
+            code: "focus_skill_below_target",
+            attemptCount: 1
+          },
+          misconceptionSignal: {
+            status: "suspected",
+            code: "repeated_trusted_failure",
+            skillId,
+            consecutiveFailureCount: 1,
+            firstObservedAt: "2026-09-10T00:00:00.000Z",
+            lastObservedAt: "2026-09-10T00:00:00.000Z"
+          }
+        }
+      })
+    ).toThrow();
   });
 
   it("keeps mastery target met distinct from course completion", () => {
