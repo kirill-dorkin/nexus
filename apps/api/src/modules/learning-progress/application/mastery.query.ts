@@ -7,4 +7,11 @@ export abstract class MasteryQuery {
     organizationId: string,
     userId: string
   ): Promise<readonly MasteryProjection[]>;
+
+  abstract listUsersMastery(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userIds: readonly string[],
+    skillIds: readonly string[]
+  ): Promise<readonly MasteryProjection[]>;
 }
