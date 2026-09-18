@@ -351,6 +351,27 @@ export class PostgresLearningDeliveryRepository extends LearningDeliveryReposito
     return row === undefined ? null : mapEnrollment(row);
   }
 
+  async completeEnrollment(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    enrollmentId: string,
+    completedAt: string
+  ): Promise<Enrollment | null> {
+    const result = await transaction.client.query<EnrollmentRow>(
+      `UPDATE learning_delivery.enrollments
+          SET status = 'completed',
+              completed_at = $3::timestamptz,
+              updated_at = $3::timestamptz
+        WHERE organization_id = $1
+          AND id = $2
+          AND status = 'active'
+       RETURNING ${enrollmentSelect}`,
+      [organizationId, enrollmentId, completedAt]
+    );
+    const row = result.rows[0];
+    return row === undefined ? null : mapEnrollment(row);
+  }
+
   async listActiveEnrollmentsForOffering(
     transaction: DatabaseTransaction,
     organizationId: string,
