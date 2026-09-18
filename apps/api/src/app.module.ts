@@ -12,6 +12,7 @@ import { LearningDeliveryModule } from "./modules/learning-delivery/learning-del
 import { LearningGuidanceModule } from "./modules/learning-guidance/learning-guidance.module";
 import { LearningHistoryModule } from "./modules/learning-history/learning-history.module";
 import { LearningProgressModule } from "./modules/learning-progress/learning-progress.module";
+import { LearningProgressionModule } from "./modules/learning-progression/learning-progression.module";
 import { LearningReadinessModule } from "./modules/learning-readiness/learning-readiness.module";
 import { LearningRecommendationsModule } from "./modules/learning-recommendations/learning-recommendations.module";
 import { LearningValidationModule } from "./modules/learning-validation/learning-validation.module";
@@ -37,7 +38,8 @@ import { RequestContextModule } from "./request-context/request-context.module";
     LearningGuidanceModule,
     LearningValidationModule,
     LearningRecommendationsModule,
-    LearningReadinessModule
+    LearningReadinessModule,
+    LearningProgressionModule
   ],
   controllers: [HealthController]
 })
