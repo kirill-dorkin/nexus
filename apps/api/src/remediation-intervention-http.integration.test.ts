@@ -255,21 +255,24 @@ describe("authored remediation intervention HTTP lifecycle", () => {
     );
     diagnosticActivityId = diagnostic.activityId;
 
-    const remediationMapping = await app.inject({
-      method: "PUT",
-      url: `/v1/organizations/${organizationId}/courses/${courseId}/versions/${courseVersionId}/skills/${skillId}/remediations`,
-      headers: { "x-test-user-id": ownerUserId },
-      payload: { activityIds: [remediationActivityId] }
-    });
+    const remediationUrl =
+      `/v1/organizations/${organizationId}/courses/${courseId}/versions/${courseVersionId}/skills/${skillId}/remediations`;
+    const [remediationMapping, concurrentRetry] = await Promise.all([
+      app.inject({
+        method: "PUT",
+        url: remediationUrl,
+        headers: { "x-test-user-id": ownerUserId },
+        payload: { activityIds: [remediationActivityId] }
+      }),
+      app.inject({
+        method: "PUT",
+        url: remediationUrl,
+        headers: { "x-test-user-id": ownerUserId },
+        payload: { activityIds: [remediationActivityId] }
+      })
+    ]);
     expect(remediationMapping.statusCode).toBe(200);
-
-    const repeatedMapping = await app.inject({
-      method: "PUT",
-      url: `/v1/organizations/${organizationId}/courses/${courseId}/versions/${courseVersionId}/skills/${skillId}/remediations`,
-      headers: { "x-test-user-id": ownerUserId },
-      payload: { activityIds: [remediationActivityId] }
-    });
-    expect(repeatedMapping.statusCode).toBe(200);
+    expect(concurrentRetry.statusCode).toBe(200);
 
     const published = await app.inject({
       method: "POST",
@@ -379,7 +382,7 @@ describe("authored remediation intervention HTTP lifecycle", () => {
     await migrationPool.end();
   });
 
-  it("authors one idempotent remediation mapping before publication", async () => {
+  it("serializes concurrent identical remediation authoring into one canonical change", async () => {
     const rows = await migrationPool.query<{
       activity_id: string;
       position: number;
