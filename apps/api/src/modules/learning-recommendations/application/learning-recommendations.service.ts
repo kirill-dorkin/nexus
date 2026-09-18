@@ -7,19 +7,14 @@ import { AuthorizationApplicationService } from "../../authorization/application
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { LearningContentQuery } from "../../learning-content/application/learning-content.query";
 import { LearningDeliveryQuery } from "../../learning-delivery/application/learning-delivery.query";
-import {
-  LearningProgressQuery,
-  TrustedValidationEvidenceQuery
-} from "../../learning-progress/application/learning-progress.query";
+import { LearningProgressQuery } from "../../learning-progress/application/learning-progress.query";
 import { MasteryQuery } from "../../learning-progress/application/mastery.query";
 import {
   FIXED_INTERVAL_REVIEW_POLICY,
   orderedMasteryWithFixedReviewV1
 } from "../domain/fixed-interval-review.policy";
-import {
-  REPEATED_TRUSTED_FAILURE_SIGNAL_POLICY,
-  repeatedTrustedFailureSignalsV1
-} from "../domain/misconception-signal.policy";
+import { REPEATED_TRUSTED_FAILURE_SIGNAL_POLICY } from "../domain/misconception-signal.policy";
+import { MisconceptionSignalQuery } from "./misconception-signal.query";
 import { ORDERED_MASTERY_POLICY } from "../domain/ordered-mastery.policy";
 import {
   REPEATED_FAILURE_REMEDIATION_POLICY,
@@ -44,7 +39,7 @@ export class LearningRecommendationsApplicationService {
     private readonly delivery: LearningDeliveryQuery,
     private readonly content: LearningContentQuery,
     private readonly progress: LearningProgressQuery,
-    private readonly trustedEvidence: TrustedValidationEvidenceQuery,
+    private readonly misconceptionSignals: MisconceptionSignalQuery,
     private readonly mastery: MasteryQuery
   ) {}
 
@@ -150,14 +145,15 @@ export class LearningRecommendationsApplicationService {
           };
         }
 
-        const observations = await this.trustedEvidence.listObservations(
-          transaction,
-          organizationId,
-          learnerUserId,
-          [decision.focusSkill.skillId]
-        );
         const misconceptionSignal =
-          repeatedTrustedFailureSignalsV1(observations)[0] ?? null;
+          (
+            await this.misconceptionSignals.listSignals(
+              transaction,
+              organizationId,
+              learnerUserId,
+              [decision.focusSkill.skillId]
+            )
+          )[0] ?? null;
 
         if (decision.status === "no_practice_activity_available") {
           return {
