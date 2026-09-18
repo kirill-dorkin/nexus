@@ -34,6 +34,10 @@ function parseInstant(value: string): number {
 export function orderOfferingReadinessV1<
   T extends OfferingReadinessTriageCandidate
 >(candidates: readonly T[]): T[] {
+  for (const candidate of candidates) {
+    parseInstant(candidate.enrolledAt);
+  }
+
   return [...candidates].sort(
     (left, right) =>
       statusRank[left.status] - statusRank[right.status] ||
