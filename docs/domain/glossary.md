@@ -38,4 +38,5 @@
 | `Entitlement` | Право доступа. Не равно Purchase и не равно Enrollment. |
 | `Recommendation` | Объяснимый вычисленный следующий учебный шаг. |
 | `ReadinessDecision` | Версионированное derived решение о текущей готовности learner к узко определённому переходу; не равно Mastery, completion или самому факту intervention. |
+| `OfferingReadinessOverview` | Derived Offering-scoped operational read model поверх индивидуальных `ReadinessDecision` активных Enrollment; даёт summary и deterministic triage, но не создаёт новую learner state или severity score. |
 | `ProgressionGate` | Условие допуска к следующему этапу по skill/assessment/project evidence. Может в будущем использовать ReadinessDecision, но не является самим read model. |
