@@ -53,7 +53,7 @@ export class MisconceptionSignalApplicationService extends MisconceptionSignalQu
 
     const observationsByLearner = new Map<
       string,
-      typeof observations[number][]
+      (typeof observations)[number][]
     >();
     for (const observation of observations) {
       const current = observationsByLearner.get(observation.learnerUserId) ?? [];
