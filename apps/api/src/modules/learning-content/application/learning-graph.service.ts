@@ -129,6 +129,13 @@ export class LearningGraphApplicationService extends GuidedBuildContentQuery {
         throw new NotFoundException("Skill is not attached to this course version.");
       }
 
+      await this.graph.lockCourseVersionSkill(
+        transaction,
+        organizationId,
+        versionId,
+        skillId
+      );
+
       for (const activityId of command.activityIds) {
         const activity = await this.graph.findActivityVersion(
           transaction,
