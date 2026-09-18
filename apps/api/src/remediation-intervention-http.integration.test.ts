@@ -343,6 +343,31 @@ describe("authored remediation intervention HTTP lifecycle", () => {
         `DELETE FROM learning_delivery.learning_offerings WHERE organization_id = $1`,
         [organizationId]
       );
+
+      const cleanupClient = await migrationPool.connect();
+      try {
+        await cleanupClient.query("BEGIN");
+        await cleanupClient.query(
+          `ALTER TABLE learning_content.course_version_skill_remediations
+             DISABLE TRIGGER course_version_skill_remediations_require_draft`
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_content.course_version_skill_remediations
+            WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `ALTER TABLE learning_content.course_version_skill_remediations
+             ENABLE TRIGGER course_version_skill_remediations_require_draft`
+        );
+        await cleanupClient.query("COMMIT");
+      } catch (error) {
+        await cleanupClient.query("ROLLBACK");
+        throw error;
+      } finally {
+        cleanupClient.release();
+      }
+
       await migrationPool.query(
         `DELETE FROM learning_content.activity_skill_mappings WHERE organization_id = $1`,
         [organizationId]
