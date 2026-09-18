@@ -55,7 +55,7 @@ It uses the existing `activity.manage` capability on Course scope. No new author
 
 Before persistence, Learning Content validates that every supplied Activity belongs to the same CourseVersion and assesses the target Skill.
 
-Replace-set commands serialize on the CourseVersion Skill row before comparing current state. Repeating the exact same ordered set, including a concurrent retry that observes an earlier writer after the row lock is acquired, is materially idempotent: it performs no canonical mutation and emits no duplicate integration event.
+Replace-set commands serialize with a transaction-scoped PostgreSQL advisory lock keyed by Organization + CourseVersion + Skill before comparing current state. This avoids granting `platform_app` UPDATE privilege on immutable curriculum tables merely to acquire a row lock. Repeating the exact same ordered set, including a concurrent retry that observes an earlier writer after the advisory lock is acquired, is materially idempotent: it performs no canonical mutation and emits no duplicate integration event.
 
 A real mapping change commits atomically with one outbox event:
 
