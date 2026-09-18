@@ -143,6 +143,54 @@ describe("offering readiness intelligence HTTP lifecycle", () => {
     expect(evidence.statusCode).toBe(201);
   }
 
+  async function addTrustedOutcome(
+    userId: string,
+    enrollmentId: string,
+    outcome: "passed" | "failed",
+    sequence: number
+  ): Promise<void> {
+    const attempt = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/activities/${activityId}/attempts`,
+      headers: { "x-test-user-id": userId },
+      payload: {
+        submission: {
+          source: `overview-trusted-${userId}-${sequence}`
+        }
+      }
+    });
+    expect(attempt.statusCode).toBe(201);
+    const attemptId = (JSON.parse(attempt.body) as { id: string }).id;
+
+    const submission = await migrationPool.query<IdRow>(
+      `SELECT id::text
+         FROM learning_progress.submissions
+        WHERE organization_id = $1
+          AND attempt_id = $2`,
+      [organizationId, attemptId]
+    );
+    const submissionId = submission.rows[0]?.id;
+    if (submissionId === undefined) {
+      throw new Error("Attempt compatibility submission was not persisted.");
+    }
+
+    const validation = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/submissions/${submissionId}/validation-results`,
+      headers: { "x-test-user-id": ownerUserId },
+      payload: {
+        idempotencyKey: `overview-${sequence}-${outcome}-${userId}`,
+        status: "completed",
+        outcome,
+        score: outcome === "passed" ? 1 : 0,
+        payload: {
+          diagnosticDetail: "must-not-become-an-aggregation-input"
+        }
+      }
+    });
+    expect(validation.statusCode).toBe(201);
+  }
+
   async function readOverview(userId: string) {
     const response = await app.inject({
       method: "GET",
@@ -287,8 +335,26 @@ describe("offering readiness intelligence HTTP lifecycle", () => {
 
     await addScoredAttempt(readyLearnerUserId, readyEnrollmentId, 1, 1);
     await addScoredAttempt(readyLearnerUserId, readyEnrollmentId, 1, 2);
-    await addScoredAttempt(blockedLearnerUserId, blockedEnrollmentId, 0, 1);
-    await addScoredAttempt(blockedLearnerUserId, blockedEnrollmentId, 0, 2);
+    for (let sequence = 1; sequence <= 8; sequence += 1) {
+      await addScoredAttempt(
+        blockedLearnerUserId,
+        blockedEnrollmentId,
+        1,
+        sequence
+      );
+    }
+    await addTrustedOutcome(
+      blockedLearnerUserId,
+      blockedEnrollmentId,
+      "failed",
+      9
+    );
+    await addTrustedOutcome(
+      blockedLearnerUserId,
+      blockedEnrollmentId,
+      "failed",
+      10
+    );
 
     await migrationPool.query(
       `UPDATE learning_delivery.enrollments
@@ -316,6 +382,10 @@ describe("offering readiness intelligence HTTP lifecycle", () => {
       );
       await migrationPool.query(
         `DELETE FROM learning_progress.mastery_projections WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_validation.validation_results WHERE organization_id = $1`,
         [organizationId]
       );
       await migrationPool.query(
@@ -435,13 +505,12 @@ describe("offering readiness intelligence HTTP lifecycle", () => {
     expect(result.body?.learners[0]?.skills[0]).toMatchObject({
       skillId,
       status: "not_ready",
-      masteryScore: 0,
-      scoredAttemptCount: 2,
+      masteryScore: 0.8,
+      scoredAttemptCount: 10,
       reasons: [
         {
-          code: "mastery_below_target",
-          masteryScore: 0,
-          targetMasteryScore: 0.8
+          code: "active_repeated_trusted_failure",
+          consecutiveFailureCount: 2
         }
       ]
     });
