@@ -107,6 +107,20 @@ export class MasteryApplicationService {
     );
   }
 
+  listUsersMastery(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userIds: readonly string[],
+    skillIds: readonly string[]
+  ): Promise<readonly MasteryProjection[]> {
+    return this.mastery.listUserProjectionsForUsers(
+      transaction,
+      organizationId,
+      userIds,
+      skillIds
+    );
+  }
+
   async getUserMastery(
     organizationId: string,
     userId: string
