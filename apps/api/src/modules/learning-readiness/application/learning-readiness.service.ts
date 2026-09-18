@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import type {
   CourseReadinessDecision,
   OfferingReadinessOverview
@@ -10,6 +10,7 @@ import { AuthorizationApplicationService } from "../../authorization/application
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { LearningDeliveryQuery } from "../../learning-delivery/application/learning-delivery.query";
 import { CourseReadinessEvaluator } from "./course-readiness-evaluator";
+import { LearningReadinessQuery } from "./learning-readiness.query";
 import { COURSE_PROGRESSION_READINESS_POLICY } from "../domain/course-readiness.policy";
 import {
   OFFERING_READINESS_TRIAGE_POLICY,
@@ -32,7 +33,8 @@ export class LearningReadinessApplicationService {
     private readonly identity: IdentityApplicationService,
     private readonly authorization: AuthorizationApplicationService,
     private readonly delivery: LearningDeliveryQuery,
-    private readonly evaluator: CourseReadinessEvaluator
+    private readonly evaluator: CourseReadinessEvaluator,
+    private readonly readinessQuery: LearningReadinessQuery
   ) {}
 
   async getCourseReadiness(
@@ -51,11 +53,6 @@ export class LearningReadinessApplicationService {
           organizationId,
           enrollmentId
         );
-        if (enrollmentContext.enrollment.status !== "active") {
-          throw new ConflictException(
-            "Course readiness is defined only for an active Enrollment."
-          );
-        }
 
         const learnerUserId = enrollmentContext.enrollment.userId;
         await this.authorization.requireCapability(
@@ -67,19 +64,12 @@ export class LearningReadinessApplicationService {
           offeringScope(organizationId, enrollmentContext.offering.id)
         );
 
-        const evaluatedAt = new Date().toISOString();
-        const decisions = await this.evaluator.evaluateActiveEnrollments(
+        return this.readinessQuery.evaluateActiveEnrollment(
           transaction,
           organizationId,
-          enrollmentContext.offering,
-          [enrollmentContext.enrollment],
-          evaluatedAt
+          enrollmentId,
+          new Date().toISOString()
         );
-        const decision = decisions[0];
-        if (decision === undefined) {
-          throw new Error("Course readiness evaluator returned no decision.");
-        }
-        return decision;
       },
       {
         isolationLevel: "repeatable_read",
