@@ -4,9 +4,16 @@ import type {
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
+export type PublishedSkillRemediation = Readonly<{
+  skillId: string;
+  activityId: string;
+  position: number;
+}>;
+
 export type PublishedLearningGraph = Readonly<{
   skills: readonly CourseVersionSkill[];
   activities: readonly CourseVersionActivity[];
+  remediations: readonly PublishedSkillRemediation[];
 }>;
 
 export abstract class LearningContentQuery {

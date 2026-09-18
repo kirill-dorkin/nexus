@@ -27,6 +27,11 @@ export const misconceptionSignalPolicySchema = z.object({
   minimumConsecutiveFailures: z.number().int().min(2)
 });
 
+export const interventionPolicySchema = z.object({
+  key: recommendationPolicyKeySchema,
+  version: z.number().int().positive()
+});
+
 export const misconceptionSignalSchema = z.object({
   status: z.literal("suspected"),
   code: z.literal("repeated_trusted_failure"),
@@ -34,6 +39,13 @@ export const misconceptionSignalSchema = z.object({
   consecutiveFailureCount: z.number().int().min(2),
   firstObservedAt: z.string().datetime(),
   lastObservedAt: z.string().datetime()
+});
+
+export const recommendationInterventionSchema = z.object({
+  code: z.literal("repeated_trusted_failure_remediation"),
+  signalCode: z.literal("repeated_trusted_failure"),
+  replacedActivityVersionId: uuidSchema,
+  remediationPosition: z.number().int().nonnegative()
 });
 
 export const recommendationFocusSkillSchema = z.object({
@@ -82,20 +94,69 @@ const recommendationContextShape = {
   courseVersionId: uuidSchema,
   policy: recommendationPolicySchema,
   reviewPolicy: reviewSchedulingPolicySchema.optional(),
-  misconceptionSignalPolicy: misconceptionSignalPolicySchema.optional()
+  misconceptionSignalPolicy: misconceptionSignalPolicySchema.optional(),
+  interventionPolicy: interventionPolicySchema.optional()
 };
 
-export const recommendedNextLearningActionSchema = z.object({
-  status: z.literal("recommended"),
-  ...recommendationContextShape,
-  recommendation: z.object({
-    kind: z.literal("activity"),
-    activity: recommendedActivitySchema,
-    focusSkill: recommendationFocusSkillSchema,
-    reason: recommendationReasonSchema,
-    misconceptionSignal: misconceptionSignalSchema.nullable().optional()
+export const recommendedNextLearningActionSchema = z
+  .object({
+    status: z.literal("recommended"),
+    ...recommendationContextShape,
+    recommendation: z.object({
+      kind: z.literal("activity"),
+      activity: recommendedActivitySchema,
+      focusSkill: recommendationFocusSkillSchema,
+      reason: recommendationReasonSchema,
+      misconceptionSignal: misconceptionSignalSchema.nullable().optional(),
+      intervention: recommendationInterventionSchema.optional()
+    })
   })
-});
+  .superRefine((value, context) => {
+    const intervention = value.recommendation.intervention;
+    if (intervention === undefined) {
+      return;
+    }
+    if (value.interventionPolicy === undefined) {
+      context.addIssue({
+        code: "custom",
+        path: ["interventionPolicy"],
+        message: "interventionPolicy is required when an intervention is present"
+      });
+    }
+    const signal = value.recommendation.misconceptionSignal;
+    if (
+      signal === undefined ||
+      signal === null ||
+      signal.code !== intervention.signalCode
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["recommendation", "misconceptionSignal"],
+        message: "intervention requires its matching active misconception signal"
+      });
+    }
+    if (
+      signal !== undefined &&
+      signal !== null &&
+      signal.skillId !== value.recommendation.focusSkill.skillId
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["recommendation", "misconceptionSignal", "skillId"],
+        message: "intervention signal must match the recommendation focus skill"
+      });
+    }
+    if (
+      intervention.replacedActivityVersionId ===
+      value.recommendation.activity.activityVersionId
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["recommendation", "intervention", "replacedActivityVersionId"],
+        message: "intervention must replace a different ActivityVersion"
+      });
+    }
+  });
 
 export const masteryTargetMetRecommendationSchema = z.object({
   status: z.literal("mastery_target_met"),
@@ -145,7 +206,11 @@ export type ReviewSchedulingPolicy = z.infer<
 export type MisconceptionSignalPolicy = z.infer<
   typeof misconceptionSignalPolicySchema
 >;
+export type InterventionPolicy = z.infer<typeof interventionPolicySchema>;
 export type MisconceptionSignal = z.infer<typeof misconceptionSignalSchema>;
+export type RecommendationIntervention = z.infer<
+  typeof recommendationInterventionSchema
+>;
 export type RecommendationFocusSkill = z.infer<
   typeof recommendationFocusSkillSchema
 >;

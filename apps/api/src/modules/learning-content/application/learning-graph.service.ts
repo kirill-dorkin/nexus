@@ -8,8 +8,10 @@ import type {
   AttachSkillToCourseVersionRequest,
   CourseVersionActivity,
   CourseVersionSkill,
+  CourseVersionSkillRemediationSet,
   CreateCourseVersionActivityRequest,
   CreateSkillRequest,
+  ReplaceSkillRemediationActivitiesRequest,
   GuidedBuildProtectedDefinition,
   Skill
 } from "@platform/contracts";
@@ -93,6 +95,125 @@ export class LearningGraphApplicationService extends GuidedBuildContentQuery {
     }
   }
 
+  async replaceSkillRemediations(
+    organizationId: string,
+    courseId: string,
+    versionId: string,
+    skillId: string,
+    command: ReplaceSkillRemediationActivitiesRequest
+  ): Promise<CourseVersionSkillRemediationSet> {
+    const context = this.requestContext.tenantContext(organizationId);
+
+    return this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+      await this.authorization.requireCapability(
+        transaction,
+        context.userId,
+        "activity.manage",
+        courseScope(organizationId, courseId)
+      );
+      await this.requireDraftVersion(
+        transaction,
+        organizationId,
+        courseId,
+        versionId
+      );
+
+      const attachedSkill = await this.graph.findAttachedSkill(
+        transaction,
+        organizationId,
+        versionId,
+        skillId
+      );
+      if (attachedSkill === null) {
+        throw new NotFoundException("Skill is not attached to this course version.");
+      }
+
+      await this.graph.lockCourseVersionSkill(
+        transaction,
+        organizationId,
+        versionId,
+        skillId
+      );
+
+      for (const activityId of command.activityIds) {
+        const activity = await this.graph.findActivityVersion(
+          transaction,
+          organizationId,
+          versionId,
+          activityId
+        );
+        if (activity === null || !activity.skillIds.includes(skillId)) {
+          throw new BadRequestException(
+            "Every remediation activity must belong to the same course version and assess the target skill."
+          );
+        }
+      }
+
+      const current = (
+        await this.graph.listCourseVersionSkillRemediations(
+          transaction,
+          organizationId,
+          versionId
+        )
+      )
+        .filter((remediation) => remediation.skillId === skillId)
+        .sort(
+          (left, right) =>
+            left.position - right.position ||
+            left.activityId.localeCompare(right.activityId)
+        );
+      const currentActivityIds = current.map(
+        (remediation) => remediation.activityId
+      );
+
+      if (
+        currentActivityIds.length === command.activityIds.length &&
+        currentActivityIds.every(
+          (activityId, index) => activityId === command.activityIds[index]
+        )
+      ) {
+        return {
+          organizationId,
+          courseVersionId: versionId,
+          skillId,
+          activityIds: currentActivityIds
+        };
+      }
+
+      const replaced = await this.graph.replaceCourseVersionSkillRemediations(
+        transaction,
+        organizationId,
+        versionId,
+        skillId,
+        command.activityIds
+      );
+
+      await this.outbox.append(transaction, {
+        organizationId,
+        eventName: "course_version.skill_remediations_replaced",
+        eventVersion: 1,
+        aggregateType: "course_version",
+        aggregateId: versionId,
+        actorUserId: context.userId,
+        payload: {
+          organizationId,
+          courseId,
+          courseVersionId: versionId,
+          skillId,
+          activityIds: [...command.activityIds]
+        }
+      });
+
+      return {
+        organizationId,
+        courseVersionId: versionId,
+        skillId,
+        activityIds: replaced.map((remediation) => remediation.activityId)
+      };
+    });
+  }
+
   async createActivity(organizationId: string, courseId: string, versionId: string, command: CreateCourseVersionActivityRequest): Promise<CourseVersionActivity> {
     const context = this.requestContext.tenantContext(organizationId);
     const activityId = await this.database.nextUuid();
@@ -165,7 +286,20 @@ export class LearningGraphApplicationService extends GuidedBuildContentQuery {
     if (version.status !== "published") throw new ConflictException("Adaptive sequencing requires a published course version.");
     const skills = await this.graph.listCourseVersionSkills(transaction, organizationId, courseVersionId);
     const activities = await this.graph.listCourseVersionActivities(transaction, organizationId, courseVersionId);
-    return { skills, activities };
+    const remediations = await this.graph.listCourseVersionSkillRemediations(
+      transaction,
+      organizationId,
+      courseVersionId
+    );
+    return {
+      skills,
+      activities,
+      remediations: remediations.map((remediation) => ({
+        skillId: remediation.skillId,
+        activityId: remediation.activityId,
+        position: remediation.position
+      }))
+    };
   }
   private async requireDraftVersion(transaction: DatabaseTransaction, organizationId: string, courseId: string, versionId: string): Promise<void> {
     const version = await this.content.findVersion(transaction, organizationId, versionId);
