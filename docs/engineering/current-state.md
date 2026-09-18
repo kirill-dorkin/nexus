@@ -6,13 +6,13 @@ It is **not live GitHub telemetry**. Before doing work, always verify the curren
 
 ## Checkpoint baseline
 
-Last maintained: 2026-09-17.
+Last maintained: 2026-09-18.
 
-Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the completed repository-side F7 grader-hardening foundation and the first two F8 recommendation-intelligence verticals. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes, and a separate trusted Go grader runner with a capability-minimal `goja` runtime, bounded result channel, reproducible `scratch` OCI build, CI-proven canonical `js-sum-v1@1` digest, repository security-contract tests, and a fail-closed real-cluster verification harness/runbook. **Production learner-code execution remains disabled:** the checked-in profile is inert, `GRADER_SANDBOX_PROVIDER` still defaults to `unavailable`, and activation still requires publishing the exact runner digest plus green target-cluster verification evidence in a separate deployment change. F8 now composes the unchanged `ordered-mastery@1` recommendation policy with derived `fixed-interval-review@1` scheduling based on Mastery-owned `lastEvidenceAt`, plus a conservative `repeated-trusted-failure@1` suspected-misconception signal derived only from normalized trusted validation Evidence. Neither vertical creates a schedule/signal table, background job, new event, alternate mastery state, or intervention policy. Verify the live `main` head before relying on any SHA or PR number.
+Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the completed repository-side F7 grader-hardening foundation and the first three F8 recommendation-intelligence verticals. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes, and a separate trusted Go grader runner with a capability-minimal `goja` runtime, bounded result channel, reproducible `scratch` OCI build, CI-proven canonical `js-sum-v1@1` digest, repository security-contract tests, and a fail-closed real-cluster verification harness/runbook. **Production learner-code execution remains disabled:** the checked-in profile is inert, `GRADER_SANDBOX_PROVIDER` still defaults to `unavailable`, and activation still requires publishing the exact runner digest plus green target-cluster verification evidence in a separate deployment change. F8 now composes the unchanged `ordered-mastery@1` recommendation policy with derived `fixed-interval-review@1` scheduling based on Mastery-owned `lastEvidenceAt`, a conservative `repeated-trusted-failure@1` suspected-misconception signal derived only from normalized trusted validation Evidence, and the first explicit `repeated-failure-remediation@1` action-changing policy backed by immutable CourseVersion-authored Skill-to-Activity remediation mappings. Review/signal/intervention state remains derived rather than persisted; the only new canonical F8.3 state is authored curriculum remediation intent. Verify the live `main` head before relying on any SHA or PR number.
 
-Latest architectural decision at this checkpoint: ADR-0039.
+Latest architectural decision at this checkpoint: ADR-0040.
 
-Latest ordered migration at this checkpoint: `000029_grader_result_learning_history.sql`.
+Latest ordered migration at this checkpoint: `000030_course_version_skill_remediations.sql`.
 
 The baseline above is an orientation marker, not permission to skip checking the live `main` head.
 
@@ -367,9 +367,9 @@ Worker durable lease
 
 Production still does not execute learner code by default. The canonical profile is release material only, `GRADER_SANDBOX_PROVIDER` defaults to `unavailable`, and a separate deployment activation must publish the exact digest and produce a green real-cluster verification record for the target context/node pool/runtime configuration before enabling `kubernetes-gvisor`.
 
-### F8 — Recommendations / instructor intelligence: review scheduling + first trusted misconception-signal vertical implemented
+### F8 — Recommendations / instructor intelligence: review scheduling + trusted signal + first remediation intervention implemented
 
-F8 now has two explicit derived intelligence layers over the existing recommendation foundation without creating a second learning-state model.
+F8 now has three explicit intelligence layers over the existing recommendation foundation without creating a second learner-state model: derived review scheduling, derived trusted misconception signals, and one authored-remediation-driven action-changing intervention policy.
 
 The review-scheduling layer establishes:
 
@@ -427,7 +427,36 @@ trusted passed ValidationResult on later Attempt C
   -> active repeated-failure signal clears
 ```
 
-Adaptive spacing, canonical misconception taxonomy, misconception-aware interventions, readiness, instructor intelligence aggregation, recommendation/signal history, reminders/notifications, and learn-vs-review balancing remain separate F8 slices.
+The first action-changing intervention layer establishes:
+
+- ADR-0040 keeps detection and consequence separate: `repeated-trusted-failure@1` remains unchanged while `repeated-failure-remediation@1` owns only the remediation action override;
+- Learning Content owns an immutable CourseVersion-authored `Skill -> ordered stable Activity identities` remediation mapping rather than letting Recommendations infer remediation from titles, positions, raw payloads, source code, telemetry, GitHub activity, or LLM output;
+- every remediation Activity must belong to the same CourseVersion and already assess the target Skill; PostgreSQL enforces that relation against the existing CourseVersion Skill and Activity-Skill graph;
+- remediation mappings are editable only while the CourseVersion is draft, inherit the existing tenant/RLS and published-graph immutability boundary, and clone into the next CourseVersion by stable Activity identity;
+- authoring uses a materially idempotent replace-set command under existing `activity.manage` Course scope; an actual mapping change emits one transactional `course_version.skill_remediations_replaced@1` outbox event while an identical retry is a no-op;
+- ordinary `ordered-mastery@1` / `fixed-interval-review@1` first select the baseline focus Skill and action; intervention composition runs only afterward and never rewrites Mastery, Evidence, the signal, or focus Skill;
+- with an active repeated-failure signal, alternate authored remediation Activities order by lowest Enrollment Attempt count, authored remediation position, then stable Activity id;
+- if no alternate authored remediation exists, or the authored target is already the baseline Activity, the baseline recommendation remains unchanged and no intervention metadata is emitted;
+- when the Activity changes, the existing baseline reason code remains intact, its `attemptCount` reflects the Activity actually returned, and additive structured intervention metadata records the signal code, displaced baseline ActivityVersion, remediation position, and intervention policy version;
+- recommendation computation remains a tenant-scoped read-only `REPEATABLE READ` derivation; there is no persisted learner-intervention state, intervention LearningEvent, learner-state outbox event, queue, notification, or worker;
+- learner/other-learner recommendation authorization remains the existing `recommendation.read` / `recommendation.read_others` Offering-scoped boundary; no instructor dashboard or aggregation surface is added;
+- readiness remains explicitly separate from Mastery, misconception signal, intervention occurrence, and course completion.
+
+The first remediation-intervention exit path is:
+
+```text
+authored CourseVersion Skill -> remediation Activity relation
+  -> two trusted failed Attempts for the Skill
+  -> repeated-trusted-failure@1 suspected signal
+  -> ordinary baseline Activity selected
+  -> repeated-failure-remediation@1 selects authored remediation Activity
+  -> structured intervention explains the displaced baseline action
+  -> later trusted passed Evidence clears the repeated-failure signal
+  -> intervention clears
+  -> ordinary baseline sequencing resumes
+```
+
+Adaptive spacing, canonical named misconception taxonomy, readiness, instructor intelligence aggregation/workflow, recommendation/intervention history, reminders/notifications, and learn-vs-review balancing remain separate F8 slices.
 
 ### F9 — upcoming foundation
 
@@ -466,7 +495,9 @@ These are high-value reminders, not substitutes for their ADRs.
 - A recommendation reason may expose stable machine timing/provenance needed to explain a due review, but presentation prose/LLM output must not silently change the selected action.
 - A suspected misconception signal is derived explainability state, not a diagnosis, Mastery mutation, or canonical Knowledge misconception entity.
 - `repeated-trusted-failure@1` uses only normalized trusted decisive validation-derived Evidence and counts distinct Attempts; raw validator/grader payload and assistance/external/LLM telemetry are not signal inputs.
-- Misconception detection and misconception-aware intervention are separate policies: F8.2 does not change the selected Activity merely because a signal is present.
+- Misconception detection and misconception-aware intervention are separate policies: `repeated-trusted-failure@1` detects a suspected pattern while `repeated-failure-remediation@1` may separately change the Activity only from explicit published remediation intent.
+- CourseVersion remediation mappings are authored Learning Content state, not learner state or named misconception taxonomy; they use stable Activity identity, require the target Activity to assess the Skill, become immutable on publication, and clone with the versioned learning graph.
+- An intervention remains derived recommendation state: it may replace only the baseline Activity, preserves the focus Skill and baseline reason semantics, and exposes structured provenance for the displaced action rather than persisting a learner intervention record.
 - Guided Build protected content is immutable curriculum content and must not leak through generic learner Activity config/read models.
 - Guided Build assistance state is Attempt-scoped; hint/solution exposure is not Evidence and must not directly rewrite Mastery.
 - Professional compare is derived read state, not a new canonical learner lifecycle.
@@ -519,18 +550,17 @@ Do not remove these merely because the canonical model has moved on. Each requir
 
 ## Next recommended slice
 
-**F8 misconception-aware intervention / readiness architecture — define the first action-changing policy before adding instructor aggregation.**
+**F8 readiness architecture — define the first explicit readiness policy before instructor aggregation or automation.**
 
-Build on the now explicit distinction between canonical Evidence/Mastery, the derived `repeated-trusted-failure@1` suspected signal, and recommendation action selection:
+Build on the now separate canonical/derived layers — Evidence/Mastery, review scheduling, repeated-failure signal, and remediation intervention — without treating any one of them as an implicit readiness verdict:
 
-- audit the live Learning Content/Knowledge, Learning Progress, Mastery, Recommendations, Delivery/Assignment, Guidance, and authorization interfaces before deciding where remediation intent belongs;
-- define an explicit versioned intervention policy that states exactly when a suspected signal may change the selected next action and how ordinary `ordered-mastery@1` / review behavior is composed or overridden;
-- keep signal detection separate from intervention consequence so a detection-policy version change cannot silently rewrite remediation semantics;
-- decide whether v1 intervention can reuse existing published Activities or needs an authored immutable remediation relation in the CourseVersion/Knowledge graph; do not infer remediation Activities from titles, order, raw payloads, or LLM output;
-- preserve deterministic machine-readable reasons and source provenance for every action change;
-- keep readiness/completion distinct from Mastery, misconception signal, and intervention unless a concrete readiness policy is separately specified;
-- design learner versus instructor/mentor visibility and `read_others` scope before introducing any cross-user intervention/readiness surface;
-- avoid persisting intervention state until a real lifecycle invariant requires it; prefer derived computation from canonical learning state plus explicit policy inputs for the first vertical;
-- keep F7 production grader activation as a separate deployment/security gate.
+- audit current Mastery, Evidence history, review state, intervention behavior, Delivery/Enrollment lifecycle, Assignments, and authorization before defining readiness inputs;
+- define what readiness means for the first narrow product context (for example a Skill/CourseVersion learning-state decision) and explicitly distinguish it from course completion, current Mastery threshold, “no active misconception signal”, and “intervention cleared”;
+- choose only canonical or explicitly versioned derived inputs with stable provenance; do not infer readiness from raw grader payload, UI telemetry, GitHub Project activity, free-form LLM judgment, or hidden heuristics;
+- make the first readiness policy deterministic, versioned, recomputable, and machine-explainable, including a clear insufficient-evidence state rather than coercing missing observations into failure;
+- decide whether v1 readiness is purely derived on read or whether a real workflow invariant justifies persistence; do not create a readiness table merely for caching;
+- preserve the existing learner versus `read_others` authorization boundary and design any future instructor/mentor aggregation surface separately rather than exposing cohort intelligence accidentally through the learner endpoint;
+- keep remediation intervention and readiness consequence separate: an intervention may provide new Evidence that changes readiness, but the intervention occurrence itself must not silently count as proof of readiness;
+- keep F7 production grader activation as an independent deployment/security gate.
 
-The next F8 slice should prove one narrow end-to-end action-changing intervention with authored/trusted inputs and an explainable exit criterion before expanding into readiness scoring, instructor dashboards, cohort aggregation, notifications, or automation.
+The next F8 slice should prove one narrow readiness decision with explicit trusted inputs, explainable insufficient/ready/not-ready semantics, and a measurable exit criterion before expanding to instructor dashboards, cohort aggregation, assignments/escalations, notifications, or automated intervention workflows.
