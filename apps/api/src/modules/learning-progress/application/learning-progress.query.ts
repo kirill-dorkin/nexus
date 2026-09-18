@@ -6,6 +6,11 @@ export type ActivityAttemptCount = Readonly<{
   attemptCount: number;
 }>;
 
+export type LearnerEnrollmentReference = Readonly<{
+  learnerUserId: string;
+  enrollmentId: string;
+}>;
+
 export type TrustedValidationEvidenceObservation = Readonly<{
   evidenceId: string;
   attemptId: string;
@@ -14,11 +19,23 @@ export type TrustedValidationEvidenceObservation = Readonly<{
   createdAt: string;
 }>;
 
+export type LearnerTrustedValidationEvidenceObservation =
+  TrustedValidationEvidenceObservation &
+    Readonly<{
+      learnerUserId: string;
+    }>;
+
 export type ReadinessEvidenceSummary = Readonly<{
   skillId: string;
   scoredAttemptCount: number;
   lastScoredEvidenceAt: string;
 }>;
+
+export type LearnerReadinessEvidenceSummary =
+  ReadinessEvidenceSummary &
+    Readonly<{
+      learnerUserId: string;
+    }>;
 
 export type SubmissionValidationContext = Readonly<{
   submission: Submission;
@@ -49,8 +66,14 @@ export abstract class TrustedValidationEvidenceQuery {
     learnerUserId: string,
     skillIds: readonly string[]
   ): Promise<readonly TrustedValidationEvidenceObservation[]>;
-}
 
+  abstract listObservationsForEnrollments(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    learnerEnrollments: readonly LearnerEnrollmentReference[],
+    skillIds: readonly string[]
+  ): Promise<readonly LearnerTrustedValidationEvidenceObservation[]>;
+}
 
 export abstract class ReadinessEvidenceQuery {
   abstract listScoredAttemptSummaries(
@@ -59,4 +82,11 @@ export abstract class ReadinessEvidenceQuery {
     learnerUserId: string,
     skillIds: readonly string[]
   ): Promise<readonly ReadinessEvidenceSummary[]>;
+
+  abstract listScoredAttemptSummariesForEnrollments(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    learnerEnrollments: readonly LearnerEnrollmentReference[],
+    skillIds: readonly string[]
+  ): Promise<readonly LearnerReadinessEvidenceSummary[]>;
 }
