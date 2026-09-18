@@ -39,6 +39,16 @@ function misconceptionContext() {
   };
 }
 
+function interventionContext() {
+  return {
+    ...misconceptionContext(),
+    interventionPolicy: {
+      key: "repeated-failure-remediation",
+      version: 1
+    }
+  };
+}
+
 describe("recommendation contracts", () => {
   it("accepts an explainable activity recommendation", () => {
     const parsed = nextLearningRecommendationSchema.parse({
@@ -176,6 +186,102 @@ describe("recommendation contracts", () => {
         }
       }
     });
+  });
+
+  it("accepts an explainable remediation intervention with the active signal", () => {
+    const skillId = randomUUID();
+    const selectedActivityVersionId = randomUUID();
+    const replacedActivityVersionId = randomUUID();
+    const parsed = nextLearningRecommendationSchema.parse({
+      status: "recommended",
+      ...interventionContext(),
+      recommendation: {
+        kind: "activity",
+        activity: {
+          activityVersionId: selectedActivityVersionId,
+          activityId: randomUUID(),
+          slug: "grid-remediation",
+          activityType: "pern.code-project",
+          title: "Targeted grid remediation"
+        },
+        focusSkill: {
+          skillId,
+          title: "CSS Grid",
+          masteryScore: 0,
+          targetMasteryScore: 0.8
+        },
+        reason: {
+          code: "focus_skill_below_target",
+          attemptCount: 0
+        },
+        misconceptionSignal: {
+          status: "suspected",
+          code: "repeated_trusted_failure",
+          skillId,
+          consecutiveFailureCount: 2,
+          firstObservedAt: "2026-09-10T00:00:00.000Z",
+          lastObservedAt: "2026-09-11T00:00:00.000Z"
+        },
+        intervention: {
+          code: "repeated_trusted_failure_remediation",
+          signalCode: "repeated_trusted_failure",
+          replacedActivityVersionId,
+          remediationPosition: 0
+        }
+      }
+    });
+
+    expect(parsed).toMatchObject({
+      interventionPolicy: {
+        key: "repeated-failure-remediation",
+        version: 1
+      },
+      recommendation: {
+        activity: {
+          activityVersionId: selectedActivityVersionId
+        },
+        intervention: {
+          code: "repeated_trusted_failure_remediation",
+          replacedActivityVersionId
+        }
+      }
+    });
+  });
+
+  it("rejects an intervention without its active misconception signal", () => {
+    expect(() =>
+      nextLearningRecommendationSchema.parse({
+        status: "recommended",
+        ...interventionContext(),
+        recommendation: {
+          kind: "activity",
+          activity: {
+            activityVersionId: randomUUID(),
+            activityId: randomUUID(),
+            slug: "grid-remediation",
+            activityType: "pern.code-project",
+            title: "Targeted grid remediation"
+          },
+          focusSkill: {
+            skillId: randomUUID(),
+            title: "CSS Grid",
+            masteryScore: 0,
+            targetMasteryScore: 0.8
+          },
+          reason: {
+            code: "focus_skill_below_target",
+            attemptCount: 0
+          },
+          misconceptionSignal: null,
+          intervention: {
+            code: "repeated_trusted_failure_remediation",
+            signalCode: "repeated_trusted_failure",
+            replacedActivityVersionId: randomUUID(),
+            remediationPosition: 0
+          }
+        }
+      })
+    ).toThrow();
   });
 
   it("rejects a suspected signal below the policy minimum", () => {
