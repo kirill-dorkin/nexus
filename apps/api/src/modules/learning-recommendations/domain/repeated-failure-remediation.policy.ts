@@ -46,6 +46,25 @@ function compareStableId(left: string, right: string): number {
   return 0;
 }
 
+function withAttemptCount(
+  reason: BaselineRecommendedDecision["reason"],
+  attemptCount: number
+): BaselineRecommendedDecision["reason"] {
+  switch (reason.code) {
+    case "focus_skill_unobserved":
+      return { code: reason.code, attemptCount };
+    case "focus_skill_below_target":
+      return { code: reason.code, attemptCount };
+    case "focus_skill_review_due":
+      return {
+        code: reason.code,
+        attemptCount,
+        lastEvidenceAt: reason.lastEvidenceAt,
+        reviewDueAt: reason.reviewDueAt
+      };
+  }
+}
+
 export function applyRepeatedFailureRemediationV1(
   input: RepeatedFailureRemediationInput
 ): RemediationAwareRecommendedDecision {
@@ -53,7 +72,9 @@ export function applyRepeatedFailureRemediationV1(
     return input.baseline;
   }
 
-  if (input.signal.skillId !== input.baseline.focusSkill.skillId) {
+  const signal = input.signal;
+
+  if (signal.skillId !== input.baseline.focusSkill.skillId) {
     throw new Error(
       "Remediation signal skill must match the baseline recommendation focus skill."
     );
@@ -62,7 +83,7 @@ export function applyRepeatedFailureRemediationV1(
   const candidates = input.remediations
     .filter(
       (remediation) =>
-        remediation.skillId === input.signal?.skillId &&
+        remediation.skillId === signal.skillId &&
         remediation.activityId !== input.baseline.activity.activityId
     )
     .map((remediation) => {
@@ -74,7 +95,7 @@ export function applyRepeatedFailureRemediationV1(
           `Published remediation activity ${remediation.activityId} is missing from the recommendation graph.`
         );
       }
-      if (!activity.skillIds.includes(input.signal?.skillId ?? "")) {
+      if (!activity.skillIds.includes(signal.skillId ?? "")) {
         throw new Error(
           `Published remediation activity ${remediation.activityId} does not assess the signal skill.`
         );
@@ -96,13 +117,13 @@ export function applyRepeatedFailureRemediationV1(
   return {
     ...input.baseline,
     activity: selected.activity,
-    reason: {
-      ...input.baseline.reason,
-      attemptCount: selected.activity.attemptCount
-    },
+    reason: withAttemptCount(
+      input.baseline.reason,
+      selected.activity.attemptCount
+    ),
     intervention: {
       code: "repeated_trusted_failure_remediation",
-      signalCode: input.signal.code,
+      signalCode: signal.code,
       replacedActivityVersionId: input.baseline.activity.activityVersionId,
       remediationPosition: selected.remediation.position
     }
