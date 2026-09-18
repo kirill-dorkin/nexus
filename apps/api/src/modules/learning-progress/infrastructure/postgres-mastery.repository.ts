@@ -218,4 +218,26 @@ export class PostgresMasteryRepository extends MasteryRepository {
     );
     return result.rows.map(mapProjection);
   }
+
+  async listUserProjectionsForUsers(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userIds: readonly string[],
+    skillIds: readonly string[]
+  ): Promise<readonly MasteryProjection[]> {
+    if (userIds.length === 0 || skillIds.length === 0) {
+      return [];
+    }
+
+    const result = await transaction.client.query<ProjectionRow>(
+      `SELECT ${projectionReturning}
+         FROM learning_progress.mastery_projections
+        WHERE organization_id = $1
+          AND user_id = ANY($2::uuid[])
+          AND skill_id = ANY($3::uuid[])
+        ORDER BY user_id, skill_id`,
+      [organizationId, [...userIds], [...skillIds]]
+    );
+    return result.rows.map(mapProjection);
+  }
 }
