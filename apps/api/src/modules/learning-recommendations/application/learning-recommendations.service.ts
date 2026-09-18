@@ -21,6 +21,10 @@ import {
   repeatedTrustedFailureSignalsV1
 } from "../domain/misconception-signal.policy";
 import { ORDERED_MASTERY_POLICY } from "../domain/ordered-mastery.policy";
+import {
+  REPEATED_FAILURE_REMEDIATION_POLICY,
+  applyRepeatedFailureRemediationV1
+} from "../domain/repeated-failure-remediation.policy";
 
 function offeringScope(organizationId: string, offeringId: string) {
   return {
@@ -101,6 +105,16 @@ export class LearningRecommendationsApplicationService {
           ] as const)
         );
         const evaluatedAt = new Date().toISOString();
+        const policyActivities = graph.activities.map((activity) => ({
+          activityVersionId: activity.id,
+          activityId: activity.activityId,
+          slug: activity.slug,
+          activityType: activity.activityType,
+          title: activity.title,
+          position: activity.position,
+          skillIds: activity.skillIds,
+          attemptCount: attemptsByActivityVersion.get(activity.id) ?? 0
+        }));
 
         const decision = orderedMasteryWithFixedReviewV1({
           evaluatedAt,
@@ -114,16 +128,7 @@ export class LearningRecommendationsApplicationService {
               lastEvidenceAt: projection?.lastEvidenceAt ?? null
             };
           }),
-          activities: graph.activities.map((activity) => ({
-            activityVersionId: activity.id,
-            activityId: activity.activityId,
-            slug: activity.slug,
-            activityType: activity.activityType,
-            title: activity.title,
-            position: activity.position,
-            skillIds: activity.skillIds,
-            attemptCount: attemptsByActivityVersion.get(activity.id) ?? 0
-          }))
+          activities: policyActivities
         });
 
         const recommendationContext = {
@@ -132,7 +137,8 @@ export class LearningRecommendationsApplicationService {
           courseVersionId: enrollmentContext.offering.courseVersionId,
           policy: ORDERED_MASTERY_POLICY,
           reviewPolicy: FIXED_INTERVAL_REVIEW_POLICY,
-          misconceptionSignalPolicy: REPEATED_TRUSTED_FAILURE_SIGNAL_POLICY
+          misconceptionSignalPolicy: REPEATED_TRUSTED_FAILURE_SIGNAL_POLICY,
+          interventionPolicy: REPEATED_FAILURE_REMEDIATION_POLICY
         };
 
         if (decision.status === "mastery_target_met") {
@@ -164,21 +170,29 @@ export class LearningRecommendationsApplicationService {
           };
         }
 
+        const action = applyRepeatedFailureRemediationV1({
+          baseline: decision,
+          signal: misconceptionSignal,
+          remediations: graph.remediations,
+          activities: policyActivities
+        });
+
         return {
           status: "recommended",
           ...recommendationContext,
           recommendation: {
             kind: "activity",
             activity: {
-              activityVersionId: decision.activity.activityVersionId,
-              activityId: decision.activity.activityId,
-              slug: decision.activity.slug,
-              activityType: decision.activity.activityType,
-              title: decision.activity.title
+              activityVersionId: action.activity.activityVersionId,
+              activityId: action.activity.activityId,
+              slug: action.activity.slug,
+              activityType: action.activity.activityType,
+              title: action.activity.title
             },
-            focusSkill: decision.focusSkill,
-            reason: decision.reason,
-            misconceptionSignal
+            focusSkill: action.focusSkill,
+            reason: action.reason,
+            misconceptionSignal,
+            intervention: action.intervention
           }
         };
       },
