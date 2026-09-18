@@ -91,12 +91,12 @@ export class PostgresLearningGraphRepository extends LearningGraphRepository {
   }
   async lockCourseVersionSkill(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string, skillId: string): Promise<void> {
     await transaction.client.query(
-      `SELECT skill_id
-         FROM learning_content.course_version_skills
-        WHERE organization_id=$1
-          AND course_version_id=$2
-          AND skill_id=$3
-        FOR UPDATE`,
+      `SELECT pg_advisory_xact_lock(
+         hashtextextended(
+           concat_ws(':', 'course-version-skill-remediation', $1::text, $2::text, $3::text),
+           0
+         )
+       )`,
       [organizationId, courseVersionId, skillId]
     );
   }
