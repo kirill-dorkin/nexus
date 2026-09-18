@@ -5,18 +5,21 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  Post
+  Post,
+  Put
 } from "@nestjs/common";
 import {
   attachSkillToCourseVersionRequestSchema,
   createCourseRequestSchema,
   createCourseVersionActivityRequestSchema,
   createCourseVersionRequestSchema,
+  replaceSkillRemediationActivitiesRequestSchema,
   uuidSchema,
   type Course,
   type CourseVersion,
   type CourseVersionActivity,
   type CourseVersionSkill,
+  type CourseVersionSkillRemediationSet,
   type CreateCourseResult
 } from "@platform/contracts";
 
@@ -81,6 +84,24 @@ export class LearningContentController {
       parseRequest(uuidSchema, courseId),
       parseRequest(uuidSchema, versionId),
       parseRequest(attachSkillToCourseVersionRequestSchema, body)
+    );
+  }
+
+  @Put(":courseId/versions/:versionId/skills/:skillId/remediations")
+  @HttpCode(HttpStatus.OK)
+  replaceSkillRemediations(
+    @Param("organizationId") organizationId: string,
+    @Param("courseId") courseId: string,
+    @Param("versionId") versionId: string,
+    @Param("skillId") skillId: string,
+    @Body() body: unknown
+  ): Promise<CourseVersionSkillRemediationSet> {
+    return this.graph.replaceSkillRemediations(
+      parseRequest(uuidSchema, organizationId),
+      parseRequest(uuidSchema, courseId),
+      parseRequest(uuidSchema, versionId),
+      parseRequest(uuidSchema, skillId),
+      parseRequest(replaceSkillRemediationActivitiesRequestSchema, body)
     );
   }
 
