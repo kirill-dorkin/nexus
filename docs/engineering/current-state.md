@@ -8,9 +8,9 @@ It is **not live GitHub telemetry**. Before doing work, always verify the curren
 
 Last maintained: 2026-09-18.
 
-Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the completed repository-side F7 grader-hardening foundation and the first four F8 recommendation-intelligence verticals. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes, and a separate trusted Go grader runner with a capability-minimal `goja` runtime, bounded result channel, reproducible `scratch` OCI build, CI-proven canonical `js-sum-v1@1` digest, repository security-contract tests, and a fail-closed real-cluster verification harness/runbook. **Production learner-code execution remains disabled:** the checked-in profile is inert, `GRADER_SANDBOX_PROVIDER` still defaults to `unavailable`, and activation still requires publishing the exact runner digest plus green target-cluster verification evidence in a separate deployment change. F8 now composes the unchanged `ordered-mastery@1` recommendation policy with derived `fixed-interval-review@1` scheduling based on Mastery-owned `lastEvidenceAt`, a conservative `repeated-trusted-failure@1` suspected-misconception signal derived only from normalized trusted validation Evidence, the first explicit `repeated-failure-remediation@1` action-changing policy backed by immutable CourseVersion-authored Skill-to-Activity remediation mappings, and derived `course-progression-readiness@1` over distinct scored Attempts, pinned Mastery semantics, scored-Evidence freshness, and the existing repeated-trusted-failure signal. Review/signal/intervention/readiness state remains derived rather than persisted; the only new canonical F8 state after F8.2 is authored curriculum remediation intent. Verify the live `main` head before relying on any SHA or PR number.
+Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the completed repository-side F7 grader-hardening foundation and the first five F8 recommendation/instructor-intelligence verticals. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes, and a separate trusted Go grader runner with a capability-minimal `goja` runtime, bounded result channel, reproducible `scratch` OCI build, CI-proven canonical `js-sum-v1@1` digest, repository security-contract tests, and a fail-closed real-cluster verification harness/runbook. **Production learner-code execution remains disabled:** the checked-in profile is inert, `GRADER_SANDBOX_PROVIDER` still defaults to `unavailable`, and activation still requires publishing the exact runner digest plus green target-cluster verification evidence in a separate deployment change. F8 now composes the unchanged `ordered-mastery@1` recommendation policy with derived `fixed-interval-review@1` scheduling based on Mastery-owned `lastEvidenceAt`, a conservative `repeated-trusted-failure@1` suspected-misconception signal derived only from normalized trusted validation Evidence, the first explicit `repeated-failure-remediation@1` action-changing policy backed by immutable CourseVersion-authored Skill-to-Activity remediation mappings, derived `course-progression-readiness@1` over distinct scored Attempts, pinned Mastery semantics, scored-Evidence freshness, and the existing repeated-trusted-failure signal, plus Offering-scoped `offering-readiness-triage@1` over active learner readiness decisions for instructor/mentor operational intelligence. Review/signal/intervention/readiness/overview state remains derived rather than persisted; the only new canonical F8 state after F8.2 is authored curriculum remediation intent. Verify the live `main` head before relying on any SHA or PR number.
 
-Latest architectural decision at this checkpoint: ADR-0041.
+Latest architectural decision at this checkpoint: ADR-0042.
 
 Latest ordered migration at this checkpoint: `000030_course_version_skill_remediations.sql`.
 
@@ -367,9 +367,9 @@ Worker durable lease
 
 Production still does not execute learner code by default. The canonical profile is release material only, `GRADER_SANDBOX_PROVIDER` defaults to `unavailable`, and a separate deployment activation must publish the exact digest and produce a green real-cluster verification record for the target context/node pool/runtime configuration before enabling `kubernetes-gvisor`.
 
-### F8 — Recommendations / instructor intelligence: review, signal, intervention, and readiness implemented
+### F8 — Recommendations / instructor intelligence: review, signal, intervention, readiness, and Offering triage implemented
 
-F8 now has four explicit intelligence layers over the existing recommendation foundation without creating a second learner-state model: derived review scheduling, derived trusted misconception signals, one authored-remediation-driven action-changing intervention policy, and a separate derived CourseVersion progression-readiness decision.
+F8 now has five explicit intelligence layers over the existing recommendation foundation without creating a second learner-state model: derived review scheduling, derived trusted misconception signals, one authored-remediation-driven action-changing intervention policy, a separate derived CourseVersion progression-readiness decision, and an Offering-scoped instructor/mentor readiness overview over active Enrollments.
 
 The review-scheduling layer establishes:
 
@@ -469,7 +469,7 @@ The first progression-readiness layer establishes:
 - `readiness.read` / `readiness.read_others` preserve the existing Offering-scoped self-versus-other learner visibility pattern;
 - Assignment timing, Enrollment completion, intervention occurrence, raw validator/grader payload, Guidance exposure, UI telemetry, GitHub Project activity, and LLM output are not readiness evidence;
 - readiness is evaluated in a tenant-scoped read-only `REPEATABLE READ` transaction with server-owned `evaluatedAt` and is not persisted;
-- no readiness table/projection, learner-state event, outbox record, queue, worker, notification, automatic ProgressionGate, Enrollment completion, or cohort aggregation is introduced.
+- no readiness table/projection, learner-state event, outbox record, queue, worker, notification, automatic ProgressionGate, Enrollment completion, or aggregation is introduced by the individual-readiness slice.
 
 The first readiness exit path is:
 
@@ -485,7 +485,37 @@ active Enrollment + published CourseVersion Skill
   -> Enrollment remains active
 ```
 
-Adaptive spacing, canonical named misconception taxonomy, instructor intelligence aggregation/workflow, readiness history, recommendation/intervention history, reminders/notifications, automatic progression enforcement, and learn-vs-review balancing remain separate F8 slices.
+The first Offering readiness-intelligence layer establishes:
+
+- ADR-0042 keeps readiness-specific operational aggregation inside Learning Readiness rather than prematurely creating a general Analytics module;
+- `GET /v1/organizations/:organizationId/offerings/:offeringId/readiness` evaluates only active Enrollments and requires existing `readiness.read_others` at Offering scope;
+- every learner row is still produced by the unchanged `course-progression-readiness@1` policy; aggregation cannot reinterpret Mastery, Evidence sufficiency, freshness, repeated-failure blockers, or `readyUntil`;
+- one tenant-scoped read-only `REPEATABLE READ` transaction supplies one server-owned `evaluatedAt`, one immutable CourseVersion graph, and one consistent snapshot for the whole Offering;
+- batch public queries replace N+1 endpoint/service composition: Delivery supplies active target Enrollments plus learner-to-Enrollment mappings, Mastery supplies batch learner+Skill projections, Learning Progress supplies enrollment-mapped scored-Evidence/trusted observations, and Recommendations reuses the exact repeated-failure detector in batch;
+- the new readiness batch path does not add another Learning Progress -> Delivery table join; Delivery-owned Enrollment mappings are passed explicitly into Progress queries;
+- cross-module reads on the shared PostgreSQL transaction client are sequential rather than concurrent `Promise.all` calls, avoiding deprecated concurrent client usage;
+- `offering-readiness-triage@1` orders `not_ready -> insufficient_evidence -> ready`; within one status it uses `enrolledAt` then stable Enrollment id, and deliberately does not rank blocker reasons by severity;
+- the overview contract exposes exact readiness/triage policy versions, status counts, attention count, learner/enrollment identity, and existing Skill-level explanations while leaving display-name/email enrichment outside readiness semantics;
+- completed/withdrawn/cancelled Enrollments are excluded from the current-attention population rather than reclassified;
+- Assignment timing, Attendance, UI telemetry, GitHub Project activity, raw grader payload, LLM output, and intervention occurrence remain excluded from readiness evidence and triage ranking;
+- no overview snapshot table, migration, LearningEvent, outbox event, worker, queue, notification, Assignment, bulk intervention, or automatic progression action is introduced.
+
+The first instructor/mentor readiness-intelligence exit path is:
+
+```text
+one LearningOffering
+  -> active Enrollments only
+  -> one consistent course-progression-readiness@1 evaluation instant
+  -> learner A: Mastery 0.8 + two newest trusted failures => not_ready
+  -> learner B: insufficient scored Attempts => insufficient_evidence
+  -> learner C: sufficient fresh evidence => ready
+  -> offering-readiness-triage@1
+  -> not_ready, then insufficient_evidence, then ready
+  -> summary counts match ordered learner rows
+  -> read creates no canonical learner state or outbox event
+```
+
+Adaptive spacing, canonical named misconception taxonomy, readiness history, recommendation/intervention history, reminders/notifications, Group/CourseRun readiness filters, dashboards, reason-specific urgency ranking, bulk instructor actions, automatic progression enforcement, and learn-vs-review balancing remain separate future slices.
 
 ### F9 — upcoming foundation
 
@@ -579,18 +609,19 @@ Do not remove these merely because the canonical model has moved on. Each requir
 
 ## Next recommended slice
 
-**F8 instructor/mentor readiness intelligence — design aggregation separately from the individual readiness decision.**
+**F8 progression-gate architecture — decide whether and where a ReadinessDecision may become an enforced transition rule.**
 
-Build on the now explicit `course-progression-readiness@1` individual decision without turning aggregation into canonical learner state:
+The individual readiness decision and Offering triage are now explicit derived read models. The next architectural question should remain separate from both:
 
-- define one narrow instructor/mentor question before building a dashboard, for example “which active learners need attention now?”;
-- aggregate only authorized individual readiness decisions inside an Offering scope; do not bypass `readiness.read_others` semantics or query learner tables directly from Analytics/UI code;
-- preserve the distinction between `insufficient_evidence` and `not_ready` so instructors can separate lack of observation from known blockers;
-- keep aggregation derived first; do not persist cohort readiness snapshots merely for convenience;
-- define deterministic prioritization only from explicit machine-readable readiness reasons and stable Delivery context;
-- do not turn Assignment timing, attendance, UI telemetry, GitHub Project activity, raw grader payload, or LLM judgment into hidden readiness evidence;
-- keep action consequences (assignment, escalation, notification, intervention workflow) outside the first aggregation slice;
-- keep automatic ProgressionGate enforcement and Enrollment completion as separate later decisions;
+- define one concrete transition that actually needs enforcement before introducing a generic ProgressionGate framework;
+- decide the owner of gate policy and the resource scope it protects rather than letting Learning Readiness mutate Delivery state;
+- preserve `ReadinessDecision != ProgressionGate != Enrollment completion`;
+- make the gate consume an exact versioned readiness policy/result rather than reimplementing Mastery/Evidence logic;
+- define fail-open versus fail-closed behavior for `insufficient_evidence` explicitly;
+- keep authorization separate from pedagogical eligibility: permission to request a transition does not imply readiness, and readiness does not grant authorization;
+- do not make Assignment timing, Attendance, UI telemetry, GitHub Project activity, raw grader payload, or free-form LLM output hidden gate inputs;
+- prefer synchronous derived enforcement first unless a durable lifecycle invariant truly requires persisted gate decisions/history;
+- keep instructor override, escalation, notification, certification, and Enrollment completion as separate decisions unless the chosen transition explicitly requires one;
 - keep F7 production grader activation as an independent deployment/security gate.
 
-The next F8 slice should prove one authorized Offering-scoped instructor/mentor aggregation over individual readiness with deterministic grouping/prioritization and no new canonical learner state before adding dashboards, bulk interventions, alerts, or automation.
+Before coding, audit the actual transition surfaces that could be gated and choose the smallest real vertical. Do not create a universal gate engine without a concrete protected transition and exit criterion.

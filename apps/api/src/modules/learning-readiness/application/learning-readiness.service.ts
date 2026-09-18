@@ -1,18 +1,20 @@
 import { ConflictException, Injectable } from "@nestjs/common";
+import type {
+  CourseReadinessDecision,
+  OfferingReadinessOverview
+} from "@platform/contracts";
 
 import { DatabaseService } from "../../../database/database.service";
 import { RequestContextService } from "../../../request-context/request-context.service";
 import { AuthorizationApplicationService } from "../../authorization/application/authorization.service";
 import { IdentityApplicationService } from "../../identity/application/identity.service";
-import { LearningContentQuery } from "../../learning-content/application/learning-content.query";
 import { LearningDeliveryQuery } from "../../learning-delivery/application/learning-delivery.query";
-import { ReadinessEvidenceQuery } from "../../learning-progress/application/learning-progress.query";
-import { MasteryQuery } from "../../learning-progress/application/mastery.query";
-import { MisconceptionSignalQuery } from "../../learning-recommendations/application/misconception-signal.query";
+import { CourseReadinessEvaluator } from "./course-readiness-evaluator";
+import { COURSE_PROGRESSION_READINESS_POLICY } from "../domain/course-readiness.policy";
 import {
-  COURSE_PROGRESSION_READINESS_POLICY,
-  courseProgressionReadinessV1
-} from "../domain/course-readiness.policy";
+  OFFERING_READINESS_TRIAGE_POLICY,
+  orderOfferingReadinessV1
+} from "../domain/offering-readiness-triage.policy";
 
 function offeringScope(organizationId: string, offeringId: string) {
   return {
@@ -30,16 +32,13 @@ export class LearningReadinessApplicationService {
     private readonly identity: IdentityApplicationService,
     private readonly authorization: AuthorizationApplicationService,
     private readonly delivery: LearningDeliveryQuery,
-    private readonly content: LearningContentQuery,
-    private readonly mastery: MasteryQuery,
-    private readonly evidence: ReadinessEvidenceQuery,
-    private readonly misconceptionSignals: MisconceptionSignalQuery
+    private readonly evaluator: CourseReadinessEvaluator
   ) {}
 
   async getCourseReadiness(
     organizationId: string,
     enrollmentId: string
-  ) {
+  ): Promise<CourseReadinessDecision> {
     const context = this.requestContext.tenantContext(organizationId);
 
     return this.database.tenantTransaction(
@@ -68,73 +67,116 @@ export class LearningReadinessApplicationService {
           offeringScope(organizationId, enrollmentContext.offering.id)
         );
 
-        const graph = await this.content.requirePublishedLearningGraph(
+        const evaluatedAt = new Date().toISOString();
+        const decisions = await this.evaluator.evaluateActiveEnrollments(
           transaction,
           organizationId,
-          enrollmentContext.offering.courseVersionId
+          enrollmentContext.offering,
+          [enrollmentContext.enrollment],
+          evaluatedAt
         );
-        if (graph.skills.length === 0) {
-          throw new ConflictException(
-            "A CourseVersion without Skills cannot be evaluated for readiness."
-          );
+        const decision = decisions[0];
+        if (decision === undefined) {
+          throw new Error("Course readiness evaluator returned no decision.");
         }
+        return decision;
+      },
+      {
+        isolationLevel: "repeatable_read",
+        readOnly: true
+      }
+    );
+  }
 
-        const skillIds = graph.skills.map((skill) => skill.skillId);
-        const skillIdSet = new Set(skillIds);
-        const [allMastery, evidence, signals] = await Promise.all([
-          this.mastery.listUserMastery(
-            transaction,
-            organizationId,
-            learnerUserId
-          ),
-          this.evidence.listScoredAttemptSummaries(
-            transaction,
-            organizationId,
-            learnerUserId,
-            skillIds
-          ),
-          this.misconceptionSignals.listSignals(
-            transaction,
-            organizationId,
-            learnerUserId,
-            skillIds
-          )
-        ]);
+  async getOfferingReadiness(
+    organizationId: string,
+    offeringId: string
+  ): Promise<OfferingReadinessOverview> {
+    const context = this.requestContext.tenantContext(organizationId);
 
+    return this.database.tenantTransaction(
+      context,
+      async (transaction) => {
+        await this.identity.requireActiveUser(transaction, context.userId);
+
+        const offering = await this.delivery.requireOffering(
+          transaction,
+          organizationId,
+          offeringId
+        );
+        await this.authorization.requireCapability(
+          transaction,
+          context.userId,
+          "readiness.read_others",
+          offeringScope(organizationId, offeringId)
+        );
+
+        const activeEnrollments =
+          await this.delivery.listActiveEnrollmentsForOffering(
+            transaction,
+            organizationId,
+            offeringId
+          );
         const evaluatedAt = new Date().toISOString();
-        const decision = courseProgressionReadinessV1({
-          evaluatedAt,
-          skills: graph.skills.map((skill) => ({
-            skillId: skill.skillId,
-            title: skill.title,
-            position: skill.position
-          })),
-          mastery: allMastery
-            .filter((projection) => skillIdSet.has(projection.skillId))
-            .map((projection) => ({
-              skillId: projection.skillId,
-              algorithmKey: projection.algorithmKey,
-              algorithmVersion: projection.algorithmVersion,
-              masteryScore: projection.masteryScore,
-              scoredEvidenceCount: projection.scoredEvidenceCount
-            })),
-          evidence,
-          signals: signals.map((signal) => ({
-            skillId: signal.skillId,
-            consecutiveFailureCount: signal.consecutiveFailureCount,
-            firstObservedAt: signal.firstObservedAt,
-            lastObservedAt: signal.lastObservedAt
-          }))
-        });
+        const decisions = await this.evaluator.evaluateActiveEnrollments(
+          transaction,
+          organizationId,
+          offering,
+          activeEnrollments,
+          evaluatedAt
+        );
+
+        const decisionByEnrollmentId = new Map(
+          decisions.map((decision) => [decision.enrollmentId, decision])
+        );
+        const learners = orderOfferingReadinessV1(
+          activeEnrollments.map((enrollment) => {
+            const decision = decisionByEnrollmentId.get(enrollment.id);
+            if (decision === undefined) {
+              throw new Error(
+                `Missing readiness decision for Enrollment ${enrollment.id}.`
+              );
+            }
+            return {
+              enrollmentId: enrollment.id,
+              learnerUserId: enrollment.userId,
+              enrolledAt: enrollment.enrolledAt,
+              status: decision.status,
+              readyUntil: decision.readyUntil,
+              skills: decision.skills
+            };
+          })
+        );
+
+        const notReadyCount = learners.filter(
+          (learner) => learner.status === "not_ready"
+        ).length;
+        const insufficientEvidenceCount = learners.filter(
+          (learner) => learner.status === "insufficient_evidence"
+        ).length;
+        const readyCount = learners.filter(
+          (learner) => learner.status === "ready"
+        ).length;
 
         return {
           organizationId,
-          enrollmentId,
-          offeringId: enrollmentContext.offering.id,
-          courseVersionId: enrollmentContext.offering.courseVersionId,
+          offeringId,
+          courseVersionId: offering.courseVersionId,
           evaluatedAt,
           policy: COURSE_PROGRESSION_READINESS_POLICY,
-          ...decision
+          triagePolicy: {
+            key: OFFERING_READINESS_TRIAGE_POLICY.key,
+            version: OFFERING_READINESS_TRIAGE_POLICY.version,
+            statusOrder: [...OFFERING_READINESS_TRIAGE_POLICY.statusOrder]
+          },
+          summary: {
+            activeEnrollmentCount: learners.length,
+            attentionCount: notReadyCount + insufficientEvidenceCount,
+            notReadyCount,
+            insufficientEvidenceCount,
+            readyCount
+          },
+          learners
         };
       },
       {

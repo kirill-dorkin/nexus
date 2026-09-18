@@ -6,8 +6,12 @@ import { LearningContentModule } from "../learning-content/learning-content.modu
 import { LearningDeliveryModule } from "../learning-delivery/learning-delivery.module";
 import { LearningProgressModule } from "../learning-progress/learning-progress.module";
 import { LearningRecommendationsModule } from "../learning-recommendations/learning-recommendations.module";
+import { CourseReadinessEvaluator } from "./application/course-readiness-evaluator";
 import { LearningReadinessApplicationService } from "./application/learning-readiness.service";
-import { LearningReadinessController } from "./learning-readiness.controller";
+import {
+  LearningReadinessController,
+  OfferingReadinessController
+} from "./learning-readiness.controller";
 
 @Module({
   imports: [
@@ -18,7 +22,7 @@ import { LearningReadinessController } from "./learning-readiness.controller";
     LearningProgressModule,
     LearningRecommendationsModule
   ],
-  controllers: [LearningReadinessController],
-  providers: [LearningReadinessApplicationService]
+  controllers: [LearningReadinessController, OfferingReadinessController],
+  providers: [CourseReadinessEvaluator, LearningReadinessApplicationService]
 })
 export class LearningReadinessModule {}

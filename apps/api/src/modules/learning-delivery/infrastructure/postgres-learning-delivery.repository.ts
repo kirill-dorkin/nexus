@@ -351,6 +351,43 @@ export class PostgresLearningDeliveryRepository extends LearningDeliveryReposito
     return row === undefined ? null : mapEnrollment(row);
   }
 
+  async listActiveEnrollmentsForOffering(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    offeringId: string
+  ): Promise<readonly Enrollment[]> {
+    const result = await transaction.client.query<EnrollmentRow>(
+      `SELECT ${enrollmentSelect}
+         FROM learning_delivery.enrollments
+        WHERE organization_id = $1
+          AND offering_id = $2
+          AND status = 'active'
+        ORDER BY enrolled_at, id`,
+      [organizationId, offeringId]
+    );
+    return result.rows.map(mapEnrollment);
+  }
+
+  async listEnrollmentsForUsers(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userIds: readonly string[]
+  ): Promise<readonly Enrollment[]> {
+    if (userIds.length === 0) {
+      return [];
+    }
+
+    const result = await transaction.client.query<EnrollmentRow>(
+      `SELECT ${enrollmentSelect}
+         FROM learning_delivery.enrollments
+        WHERE organization_id = $1
+          AND user_id = ANY($2::uuid[])
+        ORDER BY user_id, enrolled_at, id`,
+      [organizationId, [...userIds]]
+    );
+    return result.rows.map(mapEnrollment);
+  }
+
   async createCourseRun(
     transaction: DatabaseTransaction,
     courseRun: NewCourseRun

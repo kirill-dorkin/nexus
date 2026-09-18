@@ -1,8 +1,10 @@
 import { Controller, Get, Param } from "@nestjs/common";
 import {
   courseReadinessDecisionSchema,
+  offeringReadinessOverviewSchema,
   uuidSchema,
-  type CourseReadinessDecision
+  type CourseReadinessDecision,
+  type OfferingReadinessOverview
 } from "@platform/contracts";
 
 import { parseRequest } from "../../http/validation";
@@ -24,5 +26,24 @@ export class LearningReadinessController {
       parseRequest(uuidSchema, enrollmentId)
     );
     return courseReadinessDecisionSchema.parse(decision);
+  }
+}
+
+@Controller("organizations/:organizationId/offerings/:offeringId/readiness")
+export class OfferingReadinessController {
+  constructor(
+    private readonly readiness: LearningReadinessApplicationService
+  ) {}
+
+  @Get()
+  async getOfferingReadiness(
+    @Param("organizationId") organizationId: string,
+    @Param("offeringId") offeringId: string
+  ): Promise<OfferingReadinessOverview> {
+    const overview = await this.readiness.getOfferingReadiness(
+      parseRequest(uuidSchema, organizationId),
+      parseRequest(uuidSchema, offeringId)
+    );
+    return offeringReadinessOverviewSchema.parse(overview);
   }
 }

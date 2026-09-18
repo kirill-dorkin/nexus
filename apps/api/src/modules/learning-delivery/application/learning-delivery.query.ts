@@ -9,6 +9,24 @@ export type EnrollmentContext = Readonly<{
 export type ActiveEnrollmentContext = EnrollmentContext;
 
 export abstract class LearningDeliveryQuery {
+  abstract requireOffering(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    offeringId: string
+  ): Promise<LearningOffering>;
+
+  abstract listActiveEnrollmentsForOffering(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    offeringId: string
+  ): Promise<readonly Enrollment[]>;
+
+  abstract listEnrollmentsForUsers(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userIds: readonly string[]
+  ): Promise<readonly Enrollment[]>;
+
   abstract requireEnrollment(
     transaction: DatabaseTransaction,
     organizationId: string,

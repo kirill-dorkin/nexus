@@ -65,4 +65,11 @@ export abstract class MasteryRepository {
     organizationId: string,
     userId: string
   ): Promise<readonly MasteryProjection[]>;
+
+  abstract listUserProjectionsForUsers(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userIds: readonly string[],
+    skillIds: readonly string[]
+  ): Promise<readonly MasteryProjection[]>;
 }
