@@ -793,15 +793,61 @@ BEGIN
   END IF;
 
   UPDATE integrations.payment_webhook_processing AS processing
-     SET status = p_outcome,
+     SET status = CASE
+           WHEN p_outcome = 'blocked'
+             AND EXISTS (
+               SELECT 1
+                 FROM integrations.payment_webhook_inbox AS inbox
+                 JOIN integrations.payment_checkouts AS checkout
+                   ON checkout.provider_key = inbox.provider_key
+                  AND checkout.external_checkout_id = inbox.external_checkout_id
+                WHERE inbox.id = processing.inbox_id
+             )
+             THEN 'pending'
+           ELSE p_outcome
+         END,
          available_at = CASE
            WHEN p_outcome = 'retryable' THEN COALESCE(p_available_at, now())
+           WHEN p_outcome = 'blocked'
+             AND EXISTS (
+               SELECT 1
+                 FROM integrations.payment_webhook_inbox AS inbox
+                 JOIN integrations.payment_checkouts AS checkout
+                   ON checkout.provider_key = inbox.provider_key
+                  AND checkout.external_checkout_id = inbox.external_checkout_id
+                WHERE inbox.id = processing.inbox_id
+             )
+             THEN now()
            ELSE processing.available_at
          END,
          lease_token = NULL,
          lease_expires_at = NULL,
-         last_error_code = p_error_code,
-         last_error_at = now(),
+         last_error_code = CASE
+           WHEN p_outcome = 'blocked'
+             AND EXISTS (
+               SELECT 1
+                 FROM integrations.payment_webhook_inbox AS inbox
+                 JOIN integrations.payment_checkouts AS checkout
+                   ON checkout.provider_key = inbox.provider_key
+                  AND checkout.external_checkout_id = inbox.external_checkout_id
+                WHERE inbox.id = processing.inbox_id
+             )
+             THEN NULL
+           ELSE p_error_code
+         END,
+         last_error_at = CASE
+           WHEN p_outcome = 'blocked'
+             AND EXISTS (
+               SELECT 1
+                 FROM integrations.payment_webhook_inbox AS inbox
+                 JOIN integrations.payment_checkouts AS checkout
+                   ON checkout.provider_key = inbox.provider_key
+                  AND checkout.external_checkout_id = inbox.external_checkout_id
+                WHERE inbox.id = processing.inbox_id
+             )
+             THEN NULL
+           ELSE now()
+         END,
          finished_at = CASE
            WHEN p_outcome IN ('rejected', 'dead_letter') THEN now()
            ELSE NULL
