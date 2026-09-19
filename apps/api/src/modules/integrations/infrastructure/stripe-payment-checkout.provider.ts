@@ -81,8 +81,8 @@ export class StripePaymentCheckoutProvider extends PaymentCheckoutProvider {
       success_url: successUrl,
       cancel_url: cancelUrl,
       client_reference_id: input.purchaseId,
-      "metadata[nexus_purchase_id]": input.purchaseId,
-      "metadata[nexus_organization_id]": input.organizationId,
+      "metadata[platform_purchase_id]": input.purchaseId,
+      "metadata[platform_organization_id]": input.organizationId,
       "line_items[0][price_data][currency]": input.currency.toLowerCase(),
       "line_items[0][price_data][unit_amount]": String(input.amountMinor),
       "line_items[0][price_data][product_data][name]": input.productName,
@@ -96,7 +96,7 @@ export class StripePaymentCheckoutProvider extends PaymentCheckoutProvider {
         headers: {
           Authorization: `Bearer ${secretKey}`,
           "Content-Type": "application/x-www-form-urlencoded",
-          "Idempotency-Key": `nexus-purchase-${input.purchaseId}`,
+          "Idempotency-Key": `commerce-purchase-${input.purchaseId}`,
           "Stripe-Version": stripeApiVersion
         },
         body
