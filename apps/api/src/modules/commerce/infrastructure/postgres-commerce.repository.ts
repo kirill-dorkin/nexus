@@ -390,27 +390,6 @@ export class PostgresCommerceRepository extends CommerceRepository {
     return row === undefined ? null : mapPurchase(row);
   }
 
-  async markPurchasePaid(
-    transaction: DatabaseTransaction,
-    organizationId: string,
-    purchaseId: string,
-    paidAt: string
-  ): Promise<Purchase | null> {
-    const result = await transaction.client.query<PurchaseRow>(
-      `UPDATE commerce.purchases
-          SET status = 'paid',
-              paid_at = $3::timestamptz,
-              updated_at = $3::timestamptz
-        WHERE organization_id = $1
-          AND id = $2
-          AND status = 'pending'
-       RETURNING ${purchaseSelect}`,
-      [organizationId, purchaseId, paidAt]
-    );
-    const row = result.rows[0];
-    return row === undefined ? null : mapPurchase(row);
-  }
-
   async grantOfferingEntitlement(
     transaction: DatabaseTransaction,
     entitlement: GrantOfferingEntitlement
