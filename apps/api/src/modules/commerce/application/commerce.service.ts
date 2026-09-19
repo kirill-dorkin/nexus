@@ -9,8 +9,10 @@ import type {
   CommerceProduct,
   CreateCommercePriceRequest,
   CreateCommerceProductRequest,
+  CreatePurchaseCheckoutRequest,
   Entitlement,
-  GrantOfferingEntitlementRequest
+  GrantOfferingEntitlementRequest,
+  Purchase
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
@@ -21,6 +23,11 @@ import { AuthorizationApplicationService } from "../../authorization/application
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { OrganizationsApplicationService } from "../../organizations/application/organizations.service";
 import { CommerceRepository } from "./commerce.repository";
+import {
+  PurchaseCommand,
+  type PurchaseCheckoutSpecification,
+  type PurchaseSettlement
+} from "./purchase.command";
 
 function organizationScope(organizationId: string) {
   return {
@@ -47,6 +54,15 @@ function isUniqueViolation(error: unknown): boolean {
   );
 }
 
+function isCheckViolation(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    error.code === "23514"
+  );
+}
+
 function isForeignKeyViolation(error: unknown): boolean {
   return (
     typeof error === "object" &&
@@ -57,7 +73,7 @@ function isForeignKeyViolation(error: unknown): boolean {
 }
 
 @Injectable()
-export class CommerceApplicationService {
+export class CommerceApplicationService implements PurchaseCommand {
   constructor(
     private readonly database: DatabaseService,
     private readonly requestContext: RequestContextService,
@@ -317,6 +333,250 @@ export class CommerceApplicationService {
     });
   }
 
+
+  async openForCheckout(
+    organizationId: string,
+    command: CreatePurchaseCheckoutRequest
+  ): Promise<PurchaseCheckoutSpecification> {
+    const context = this.requestContext.tenantContext(organizationId);
+    const purchaseId = await this.database.nextUuid();
+
+    try {
+      return await this.database.tenantTransaction(context, async (transaction) => {
+        await this.identity.requireActiveUser(transaction, context.userId);
+        await this.organizations.requireActiveMembership(
+          transaction,
+          organizationId,
+          context.userId
+        );
+
+        const existing = await this.commerce.findPurchaseByIdempotencyKey(
+          transaction,
+          organizationId,
+          context.userId,
+          command.idempotencyKey
+        );
+        if (existing !== null) {
+          if (existing.priceId !== command.priceId) {
+            throw new ConflictException(
+              "Purchase idempotency key is already bound to another Price."
+            );
+          }
+          const existingProduct = await this.commerce.findProductById(
+            transaction,
+            organizationId,
+            existing.productId
+          );
+          if (existingProduct === null) {
+            throw new Error("Persisted Purchase references a missing Product.");
+          }
+          return { purchase: existing, productName: existingProduct.name };
+        }
+
+        const price = await this.commerce.findPriceById(
+          transaction,
+          organizationId,
+          command.priceId
+        );
+        if (price === null) {
+          throw new NotFoundException("Commerce Price not found.");
+        }
+        if (price.status !== "active") {
+          throw new ConflictException("Commerce Price is not active.");
+        }
+
+        const product = await this.commerce.findProductById(
+          transaction,
+          organizationId,
+          price.productId
+        );
+        if (product === null) {
+          throw new Error("Commerce Price references a missing Product.");
+        }
+        if (product.status !== "active") {
+          throw new ConflictException("Commerce Product is not active.");
+        }
+
+        const existingEntitlement =
+          await this.commerce.findEffectiveOfferingEntitlement(
+            transaction,
+            organizationId,
+            context.userId,
+            product.offeringId
+          );
+        if (existingEntitlement !== null) {
+          throw new ConflictException(
+            "The purchaser already has an effective entitlement for this offering."
+          );
+        }
+
+        const created = await this.commerce.createPurchase(transaction, {
+          id: purchaseId,
+          organizationId,
+          productId: product.id,
+          priceId: price.id,
+          offeringId: product.offeringId,
+          purchaserUserId: context.userId,
+          amountMinor: price.amountMinor,
+          currency: price.currency,
+          billingType: price.billingType,
+          idempotencyKey: command.idempotencyKey
+        });
+
+        if (created === null) {
+          const raced = await this.commerce.findPurchaseByIdempotencyKey(
+            transaction,
+            organizationId,
+            context.userId,
+            command.idempotencyKey
+          );
+          if (raced === null) {
+            throw new ConflictException("Purchase could not be created.");
+          }
+          if (raced.priceId !== command.priceId) {
+            throw new ConflictException(
+              "Purchase idempotency key is already bound to another Price."
+            );
+          }
+          return { purchase: raced, productName: product.name };
+        }
+
+        await this.outbox.append(transaction, {
+          organizationId,
+          eventName: "purchase.created",
+          eventVersion: 1,
+          aggregateType: "purchase",
+          aggregateId: created.id,
+          actorUserId: context.userId,
+          payload: {
+            organizationId,
+            purchaseId: created.id,
+            productId: created.productId,
+            priceId: created.priceId,
+            offeringId: created.offeringId,
+            purchaserUserId: created.purchaserUserId,
+            amountMinor: created.amountMinor,
+            currency: created.currency,
+            billingType: created.billingType
+          }
+        });
+
+        return { purchase: created, productName: product.name };
+      });
+    } catch (error) {
+      if (isCheckViolation(error)) {
+        throw new ConflictException(
+          "Purchase requires an active Commerce Product and Price."
+        );
+      }
+      throw error;
+    }
+  }
+
+  async settlePaid(settlement: PurchaseSettlement): Promise<Purchase> {
+    const paidAt = new Date().toISOString();
+    const entitlementId = await this.database.nextUuid();
+
+    return this.database.systemTenantTransaction(
+      settlement.organizationId,
+      async (transaction) => {
+        const purchase = await this.commerce.findPurchaseById(
+          transaction,
+          settlement.organizationId,
+          settlement.purchaseId
+        );
+        if (purchase === null) {
+          throw new NotFoundException("Purchase not found.");
+        }
+
+        if (
+          purchase.amountMinor !== settlement.amountMinor ||
+          purchase.currency !== settlement.currency
+        ) {
+          throw new ConflictException(
+            "Provider settlement does not match the canonical Purchase amount and currency."
+          );
+        }
+
+        if (purchase.status === "paid") {
+          return purchase;
+        }
+
+        const paid = await this.commerce.markPurchasePaid(
+          transaction,
+          settlement.organizationId,
+          settlement.purchaseId,
+          paidAt
+        );
+        if (paid === null) {
+          const concurrent = await this.commerce.findPurchaseById(
+            transaction,
+            settlement.organizationId,
+            settlement.purchaseId
+          );
+          if (concurrent?.status === "paid") {
+            return concurrent;
+          }
+          throw new ConflictException("Purchase could not transition to paid.");
+        }
+
+        const entitlement = await this.commerce.grantOfferingEntitlement(
+          transaction,
+          {
+            id: entitlementId,
+            organizationId: paid.organizationId,
+            offeringId: paid.offeringId,
+            userId: paid.purchaserUserId,
+            expiresAt: null,
+            grantedByUserId: null,
+            grantSource: "purchase",
+            sourcePurchaseId: paid.id
+          }
+        );
+
+        await this.outbox.append(transaction, {
+          organizationId: paid.organizationId,
+          eventName: "purchase.paid",
+          eventVersion: 1,
+          aggregateType: "purchase",
+          aggregateId: paid.id,
+          actorUserId: null,
+          payload: {
+            organizationId: paid.organizationId,
+            purchaseId: paid.id,
+            productId: paid.productId,
+            priceId: paid.priceId,
+            offeringId: paid.offeringId,
+            purchaserUserId: paid.purchaserUserId,
+            amountMinor: paid.amountMinor,
+            currency: paid.currency,
+            paidAt: paid.paidAt
+          }
+        });
+
+        await this.outbox.append(transaction, {
+          organizationId: paid.organizationId,
+          eventName: "entitlement.granted",
+          eventVersion: 1,
+          aggregateType: "entitlement",
+          aggregateId: entitlement.id,
+          actorUserId: null,
+          payload: {
+            organizationId: paid.organizationId,
+            entitlementId: entitlement.id,
+            offeringId: entitlement.offeringId,
+            userId: entitlement.userId,
+            expiresAt: entitlement.expiresAt,
+            grantSource: entitlement.grantSource,
+            sourcePurchaseId: entitlement.sourcePurchaseId
+          }
+        });
+
+        return paid;
+      }
+    );
+  }
+
   async grantOfferingEntitlement(
     organizationId: string,
     offeringId: string,
@@ -356,7 +616,9 @@ export class CommerceApplicationService {
             offeringId,
             userId: command.userId,
             expiresAt: command.expiresAt ?? null,
-            grantedByUserId: context.userId
+            grantedByUserId: context.userId,
+            grantSource: "manual",
+            sourcePurchaseId: null
           }
         );
 
@@ -372,7 +634,9 @@ export class CommerceApplicationService {
             entitlementId: entitlement.id,
             offeringId,
             userId: command.userId,
-            expiresAt: entitlement.expiresAt
+            expiresAt: entitlement.expiresAt,
+            grantSource: entitlement.grantSource,
+            sourcePurchaseId: entitlement.sourcePurchaseId
           }
         });
 
