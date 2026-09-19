@@ -547,7 +547,7 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
     expect(inbox.rows[0]?.count).toBe("0");
   });
 
-  it("settles paid webhook atomically into Purchase + purchase-backed Entitlement", async () => {
+  it("accepts a signed paid webhook durably without synchronously mutating Commerce", async () => {
     const eventId = `evt_test_${randomUUID()}`;
     const rawBody = stripeEvent({
       eventId,
@@ -563,80 +563,99 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
           AND id = $2`,
       [organizationId, purchaseAId]
     );
-    expect(purchase.rows[0]?.status).toBe("paid");
-    expect(purchase.rows[0]?.amount_minor).toBe(12900);
-    expect(purchase.rows[0]?.currency).toBe("USD");
-    expect(purchase.rows[0]?.paid_at).toBeInstanceOf(Date);
-
-    const entitlement = await migrationPool.query<EntitlementRow>(
-      `SELECT
-         status,
-         grant_source,
-         source_purchase_id::text,
-         granted_by_user_id::text
-       FROM commerce.entitlements
-       WHERE organization_id = $1
-         AND offering_id = $2
-         AND user_id = $3`,
-      [organizationId, offeringId, learnerAUserId]
-    );
-    expect(entitlement.rows[0]).toEqual({
-      status: "active",
-      grant_source: "purchase",
-      source_purchase_id: purchaseAId,
-      granted_by_user_id: null
+    expect(purchase.rows[0]).toEqual({
+      status: "pending",
+      amount_minor: 12900,
+      currency: "USD",
+      paid_at: null
     });
 
-    const enrollment = await migrationPool.query<{ count: string }>(
+    const entitlement = await migrationPool.query<{ count: string }>(
       `SELECT count(*)::text AS count
-         FROM learning_delivery.enrollments
+         FROM commerce.entitlements
         WHERE organization_id = $1
           AND offering_id = $2
           AND user_id = $3`,
       [organizationId, offeringId, learnerAUserId]
     );
-    expect(enrollment.rows[0]?.count).toBe("0");
+    expect(entitlement.rows[0]?.count).toBe("0");
+
+    const inbox = await migrationPool.query<{
+      routing_status: string;
+      organization_id: string | null;
+      purchase_id: string | null;
+      payment_status: string;
+      amount_minor: number;
+      currency: string;
+      processing_status: string;
+    }>(
+      `SELECT
+         inbox.routing_status,
+         inbox.organization_id::text,
+         inbox.purchase_id::text,
+         inbox.payment_status,
+         inbox.amount_minor,
+         inbox.currency,
+         processing.status AS processing_status
+       FROM integrations.payment_webhook_inbox AS inbox
+       JOIN integrations.payment_webhook_processing AS processing
+         ON processing.inbox_id = inbox.id
+       WHERE inbox.provider_event_id = $1`,
+      [eventId]
+    );
+    expect(inbox.rows[0]).toEqual({
+      routing_status: "mapped",
+      organization_id: organizationId,
+      purchase_id: purchaseAId,
+      payment_status: "paid",
+      amount_minor: 12900,
+      currency: "USD",
+      processing_status: "pending"
+    });
 
     const duplicate = await sendStripeWebhook(rawBody);
     expect(duplicate.statusCode).toBe(202);
 
-    const secondPaidEvent = stripeEvent({
-      eventId: `evt_test_${randomUUID()}`,
-      checkoutId: checkoutA.external_checkout_id,
-      type: "checkout.session.async_payment_succeeded"
-    });
-    const second = await sendStripeWebhook(secondPaidEvent);
-    expect(second.statusCode).toBe(202);
-
-    const events = await migrationPool.query<{ event_name: string }>(
-      `SELECT event_name
-         FROM events.outbox
-        WHERE organization_id = $1
-          AND aggregate_id = $2
-          AND event_name = 'purchase.paid'`,
-      [organizationId, purchaseAId]
-    );
-    expect(events.rows).toHaveLength(1);
-
-    const entitlementEvents = await migrationPool.query<{ count: string }>(
+    const duplicateCount = await migrationPool.query<{ count: string }>(
       `SELECT count(*)::text AS count
-         FROM events.outbox
-        WHERE organization_id = $1
-          AND event_name = 'entitlement.granted'
-          AND payload ->> 'sourcePurchaseId' = $2`,
-      [organizationId, purchaseAId]
+         FROM integrations.payment_webhook_inbox
+        WHERE provider_event_id = $1`,
+      [eventId]
     );
-    expect(entitlementEvents.rows[0]?.count).toBe("1");
+    expect(duplicateCount.rows[0]?.count).toBe("1");
+
+    const changedBody = stripeEvent({
+      eventId,
+      checkoutId: checkoutA.external_checkout_id,
+      amountMinor: 1
+    });
+    const conflict = await sendStripeWebhook(changedBody);
+    expect(conflict.statusCode).toBe(409);
   });
 
-  it("rejects provider amount tampering even after a Purchase is paid", async () => {
+  it("accepts signed settlement data as inbox input without trusting it as Purchase truth", async () => {
+    const eventId = `evt_test_${randomUUID()}`;
     const tampered = stripeEvent({
-      eventId: `evt_test_${randomUUID()}`,
+      eventId,
       checkoutId: checkoutA.external_checkout_id,
       amountMinor: 1
     });
     const response = await sendStripeWebhook(tampered);
-    expect(response.statusCode).toBe(409);
+    expect(response.statusCode).toBe(202);
+
+    const inbox = await migrationPool.query<{
+      amount_minor: number;
+      routing_status: string;
+    }>(
+      `SELECT amount_minor, routing_status
+         FROM integrations.payment_webhook_inbox
+        WHERE provider_event_id = $1`,
+      [eventId]
+    );
+    expect(inbox.rows[0]).toEqual({
+      amount_minor: 1,
+      routing_status: "mapped"
+    });
 
     const purchase = await migrationPool.query<PurchaseRow>(
       `SELECT status, amount_minor, currency, paid_at
@@ -645,15 +664,23 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
           AND id = $2`,
       [organizationId, purchaseAId]
     );
-    expect(purchase.rows[0]?.status).toBe("paid");
+    expect(purchase.rows[0]?.status).toBe("pending");
     expect(purchase.rows[0]?.amount_minor).toBe(12900);
   });
 
   it("refuses a new Purchase when the learner already holds effective access", async () => {
+    const grant = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/offerings/${offeringId}/entitlements`,
+      headers: { "x-test-user-id": ownerUserId },
+      payload: { userId: learnerBUserId }
+    });
+    expect(grant.statusCode).toBe(201);
+
     const response = await app.inject({
       method: "POST",
       url: `/v1/organizations/${organizationId}/commerce/purchases`,
-      headers: { "x-test-user-id": learnerAUserId },
+      headers: { "x-test-user-id": learnerBUserId },
       payload: {
         priceId,
         idempotencyKey: randomUUID()
@@ -662,94 +689,40 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
     expect(response.statusCode).toBe(409);
   });
 
-  it("recovers when a signed webhook arrives before its checkout mapping commits", async () => {
-    const create = await app.inject({
-      method: "POST",
-      url: `/v1/organizations/${organizationId}/commerce/purchases`,
-      headers: { "x-test-user-id": learnerBUserId },
-      payload: {
-        priceId,
-        idempotencyKey: purchaseBIdempotencyKey
-      }
-    });
-    expect(create.statusCode).toBe(201);
-    const purchase = purchaseCheckoutSchema.parse(JSON.parse(create.body));
-    purchaseBId = purchase.purchase.id;
-    checkoutB = await checkoutByPurchase(purchaseBId);
-
-    await migrationPool.query(
-      `DELETE FROM integrations.payment_checkouts
-        WHERE organization_id = $1
-          AND purchase_id = $2`,
-      [organizationId, purchaseBId]
-    );
-
+  it("retains an unmapped signed webhook for asynchronous route recovery", async () => {
     const eventId = `evt_test_${randomUUID()}`;
+    const unknownCheckoutId = `cs_test_unmapped_${randomUUID().replaceAll("-", "")}`;
     const rawBody = stripeEvent({
       eventId,
-      checkoutId: checkoutB.external_checkout_id
+      checkoutId: unknownCheckoutId
     });
-    const early = await sendStripeWebhook(rawBody);
-    expect(early.statusCode).toBe(503);
+
+    const accepted = await sendStripeWebhook(rawBody);
+    expect(accepted.statusCode).toBe(202);
 
     const receiveFact = await migrationPool.query<{
       routing_status: string;
       organization_id: string | null;
       purchase_id: string | null;
+      processing_status: string;
     }>(
-      `SELECT routing_status, organization_id::text, purchase_id::text
-         FROM integrations.payment_webhook_inbox
-        WHERE provider_event_id = $1`,
+      `SELECT
+         inbox.routing_status,
+         inbox.organization_id::text,
+         inbox.purchase_id::text,
+         processing.status AS processing_status
+       FROM integrations.payment_webhook_inbox AS inbox
+       JOIN integrations.payment_webhook_processing AS processing
+         ON processing.inbox_id = inbox.id
+       WHERE inbox.provider_event_id = $1`,
       [eventId]
     );
     expect(receiveFact.rows[0]).toEqual({
       routing_status: "unmapped_checkout",
       organization_id: null,
-      purchase_id: null
+      purchase_id: null,
+      processing_status: "pending"
     });
-
-    await migrationPool.query(
-      `INSERT INTO integrations.payment_checkouts (
-         organization_id,
-         purchase_id,
-         provider_key,
-         external_checkout_id,
-         checkout_url,
-         expires_at
-       )
-       VALUES ($1, $2, 'stripe', $3, $4, $5)`,
-      [
-        organizationId,
-        purchaseBId,
-        checkoutB.external_checkout_id,
-        checkoutB.checkout_url,
-        checkoutB.expires_at
-      ]
-    );
-
-    const retry = await sendStripeWebhook(rawBody);
-    expect(retry.statusCode).toBe(202);
-
-    const settled = await migrationPool.query<PurchaseRow>(
-      `SELECT status, amount_minor, currency, paid_at
-         FROM commerce.purchases
-        WHERE organization_id = $1
-          AND id = $2`,
-      [organizationId, purchaseBId]
-    );
-    expect(settled.rows[0]?.status).toBe("paid");
-
-    const immutableReceiveFact = await migrationPool.query<{
-      routing_status: string;
-    }>(
-      `SELECT routing_status
-         FROM integrations.payment_webhook_inbox
-        WHERE provider_event_id = $1`,
-      [eventId]
-    );
-    expect(immutableReceiveFact.rows[0]?.routing_status).toBe(
-      "unmapped_checkout"
-    );
   });
 
   it("keeps Purchase and payment integration state least-privilege", async () => {
@@ -785,7 +758,7 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
     );
     expect(privileges.rows[0]).toEqual({
       can_update_purchase_amount: false,
-      can_update_purchase_status: true,
+      can_update_purchase_status: false,
       can_delete_purchase: false,
       can_delete_checkout: false,
       can_read_webhook_inbox: false
