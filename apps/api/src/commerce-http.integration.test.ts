@@ -2,6 +2,8 @@ import { randomUUID } from "node:crypto";
 
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import {
+  commercePriceSchema,
+  commerceProductSchema,
   entitlementSchema,
   learningOfferingSchema
 } from "@platform/contracts";
@@ -26,6 +28,12 @@ type IdRow = { id: string };
 type EventRow = { event_name: string };
 type EnrollmentRow = { status: string };
 type PrivilegeRow = { can_delete_entitlements: boolean };
+type CatalogPrivilegeRow = {
+  can_update_amount: boolean;
+  can_update_price_status: boolean;
+  can_delete_prices: boolean;
+  can_delete_products: boolean;
+};
 
 describe("commerce entitlement and enrollment access HTTP lifecycle", () => {
   const migrationPool = createDatabasePool(
@@ -46,6 +54,9 @@ describe("commerce entitlement and enrollment access HTTP lifecycle", () => {
   let learnerEntitlementId = "";
   let secondEntitlementId = "";
   let learnerEnrollmentId = "";
+  let commerceProductId = "";
+  let commercePriceId = "";
+  let replacementCommercePriceId = "";
   const createdUserIds: string[] = [];
 
   async function createUser(label: string): Promise<string> {
@@ -216,6 +227,14 @@ describe("commerce entitlement and enrollment access HTTP lifecycle", () => {
       );
       await migrationPool.query(
         `DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM commerce.prices WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM commerce.products WHERE organization_id = $1`,
         [organizationId]
       );
       await migrationPool.query(
@@ -419,4 +438,230 @@ describe("commerce entitlement and enrollment access HTTP lifecycle", () => {
     );
     expect(privileges.rows[0]?.can_delete_entitlements).toBe(false);
   });
+
+  it("separates commerce catalog management from delivery and entitlement authority", async () => {
+    const forbidden = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/commerce/products`,
+      headers: { "x-test-user-id": instructorUserId },
+      payload: {
+        offeringId: restrictedOfferingId,
+        slug: "javascript-core",
+        name: "JavaScript Core"
+      }
+    });
+    expect(forbidden.statusCode).toBe(403);
+
+    const created = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/commerce/products`,
+      headers: { "x-test-user-id": ownerUserId },
+      payload: {
+        offeringId: restrictedOfferingId,
+        slug: "javascript-core",
+        name: "JavaScript Core"
+      }
+    });
+    expect(created.statusCode).toBe(201);
+    const product = commerceProductSchema.parse(JSON.parse(created.body));
+    commerceProductId = product.id;
+    expect(product).toMatchObject({
+      organizationId,
+      offeringId: restrictedOfferingId,
+      slug: "javascript-core",
+      status: "active",
+      archivedAt: null
+    });
+
+    const duplicate = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/commerce/products`,
+      headers: { "x-test-user-id": ownerUserId },
+      payload: {
+        offeringId: membershipOfferingId,
+        slug: "javascript-core",
+        name: "Duplicate Product"
+      }
+    });
+    expect(duplicate.statusCode).toBe(409);
+  });
+
+  it("creates exactly one active immutable Price per currency and billing type", async () => {
+    const invalidCurrency = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/commerce/products/${commerceProductId}/prices`,
+      headers: { "x-test-user-id": ownerUserId },
+      payload: { amountMinor: 12900, currency: "usd" }
+    });
+    expect(invalidCurrency.statusCode).toBe(400);
+
+    const created = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/commerce/products/${commerceProductId}/prices`,
+      headers: { "x-test-user-id": ownerUserId },
+      payload: { amountMinor: 12900, currency: "USD" }
+    });
+    expect(created.statusCode).toBe(201);
+    const price = commercePriceSchema.parse(JSON.parse(created.body));
+    commercePriceId = price.id;
+    expect(price).toMatchObject({
+      organizationId,
+      productId: commerceProductId,
+      amountMinor: 12900,
+      currency: "USD",
+      billingType: "one_time",
+      status: "active",
+      archivedAt: null
+    });
+
+    const duplicate = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/commerce/products/${commerceProductId}/prices`,
+      headers: { "x-test-user-id": ownerUserId },
+      payload: { amountMinor: 14900, currency: "USD" }
+    });
+    expect(duplicate.statusCode).toBe(409);
+  });
+
+  it("replaces commercial terms by archiving rather than mutating Price", async () => {
+    const archived = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/commerce/products/${commerceProductId}/prices/${commercePriceId}/archive`,
+      headers: { "x-test-user-id": ownerUserId }
+    });
+    expect(archived.statusCode).toBe(200);
+    expect(commercePriceSchema.parse(JSON.parse(archived.body))).toMatchObject({
+      id: commercePriceId,
+      amountMinor: 12900,
+      status: "archived"
+    });
+
+    const replacement = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/commerce/products/${commerceProductId}/prices`,
+      headers: { "x-test-user-id": ownerUserId },
+      payload: { amountMinor: 14900, currency: "USD" }
+    });
+    expect(replacement.statusCode).toBe(201);
+    const replacementPrice = commercePriceSchema.parse(
+      JSON.parse(replacement.body)
+    );
+    replacementCommercePriceId = replacementPrice.id;
+    expect(replacementPrice.id).not.toBe(commercePriceId);
+    expect(replacementPrice.amountMinor).toBe(14900);
+
+    const persisted = await migrationPool.query<{
+      amount_minor: number;
+      status: string;
+    }>(
+      `SELECT amount_minor, status
+         FROM commerce.prices
+        WHERE organization_id = $1
+          AND id = $2`,
+      [organizationId, commercePriceId]
+    );
+    expect(persisted.rows[0]).toEqual({
+      amount_minor: 12900,
+      status: "archived"
+    });
+
+    const privileges = await migrationPool.query<CatalogPrivilegeRow>(
+      `SELECT has_column_privilege(
+                'platform_app',
+                'commerce.prices',
+                'amount_minor',
+                'UPDATE'
+              ) AS can_update_amount,
+              has_column_privilege(
+                'platform_app',
+                'commerce.prices',
+                'status',
+                'UPDATE'
+              ) AS can_update_price_status,
+              has_table_privilege(
+                'platform_app',
+                'commerce.prices',
+                'DELETE'
+              ) AS can_delete_prices,
+              has_table_privilege(
+                'platform_app',
+                'commerce.products',
+                'DELETE'
+              ) AS can_delete_products`
+    );
+    expect(privileges.rows[0]).toEqual({
+      can_update_amount: false,
+      can_update_price_status: true,
+      can_delete_prices: false,
+      can_delete_products: false
+    });
+  });
+
+  it("requires active Prices to be archived before Product archival", async () => {
+    const blocked = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/commerce/products/${commerceProductId}/archive`,
+      headers: { "x-test-user-id": ownerUserId }
+    });
+    expect(blocked.statusCode).toBe(409);
+
+    const archiveReplacement = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/commerce/products/${commerceProductId}/prices/${replacementCommercePriceId}/archive`,
+      headers: { "x-test-user-id": ownerUserId }
+    });
+    expect(archiveReplacement.statusCode).toBe(200);
+
+    const archiveProduct = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/commerce/products/${commerceProductId}/archive`,
+      headers: { "x-test-user-id": ownerUserId }
+    });
+    expect(archiveProduct.statusCode).toBe(200);
+    expect(
+      commerceProductSchema.parse(JSON.parse(archiveProduct.body)).status
+    ).toBe("archived");
+
+    const newPrice = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/commerce/products/${commerceProductId}/prices`,
+      headers: { "x-test-user-id": ownerUserId },
+      payload: { amountMinor: 15900, currency: "USD" }
+    });
+    expect(newPrice.statusCode).toBe(409);
+  });
+
+  it("emits transactional catalog lifecycle events without inventing Purchase state", async () => {
+    const events = await migrationPool.query<EventRow>(
+      `SELECT event_name
+         FROM events.outbox
+        WHERE organization_id = $1
+          AND event_name IN (
+            'commerce.product.created',
+            'commerce.product.archived',
+            'commerce.price.created',
+            'commerce.price.archived'
+          )`,
+      [organizationId]
+    );
+    const names = events.rows.map((row) => row.event_name);
+    expect(
+      names.filter((name) => name === "commerce.product.created")
+    ).toHaveLength(1);
+    expect(
+      names.filter((name) => name === "commerce.product.archived")
+    ).toHaveLength(1);
+    expect(
+      names.filter((name) => name === "commerce.price.created")
+    ).toHaveLength(2);
+    expect(
+      names.filter((name) => name === "commerce.price.archived")
+    ).toHaveLength(2);
+
+    const purchases = await migrationPool.query<{ relation: string | null }>(
+      `SELECT to_regclass('commerce.purchases')::text AS relation`
+    );
+    expect(purchases.rows[0]?.relation).toBeNull();
+  });
+
 });
