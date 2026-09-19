@@ -332,6 +332,31 @@ REVOKE ALL ON FUNCTION platform_internal.ingest_payment_webhook(
   text, text, text, text, text, integer, text, text
 ) FROM PUBLIC;
 
+CREATE OR REPLACE FUNCTION platform_internal.resolve_payment_checkout(
+  p_provider_key text,
+  p_external_checkout_id text
+)
+RETURNS TABLE (
+  organization_id uuid,
+  purchase_id uuid
+)
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = pg_catalog
+AS $
+  SELECT checkout.organization_id, checkout.purchase_id
+    FROM integrations.payment_checkouts AS checkout
+   WHERE checkout.provider_key = p_provider_key
+     AND checkout.external_checkout_id = p_external_checkout_id
+$;
+
+REVOKE ALL ON FUNCTION platform_internal.resolve_payment_checkout(text, text)
+  FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION platform_internal.resolve_payment_checkout(text, text)
+  TO platform_app;
+
+
 GRANT EXECUTE ON FUNCTION platform_internal.ingest_payment_webhook(
   text, text, text, text, text, integer, text, text
 ) TO platform_app;
