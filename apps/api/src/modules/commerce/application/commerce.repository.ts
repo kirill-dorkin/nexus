@@ -110,13 +110,6 @@ export abstract class CommerceRepository {
     idempotencyKey: string
   ): Promise<Purchase | null>;
 
-  abstract markPurchasePaid(
-    transaction: DatabaseTransaction,
-    organizationId: string,
-    purchaseId: string,
-    paidAt: string
-  ): Promise<Purchase | null>;
-
   abstract grantOfferingEntitlement(
     transaction: DatabaseTransaction,
     entitlement: GrantOfferingEntitlement
