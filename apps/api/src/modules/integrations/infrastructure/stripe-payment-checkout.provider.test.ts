@@ -75,7 +75,7 @@ describe("StripePaymentCheckoutProvider", () => {
       Authorization: "Bearer sk_test_example",
       "Content-Type": "application/x-www-form-urlencoded",
       "Idempotency-Key":
-        "nexus-purchase-018f47f1-16ce-7d1f-8f65-c61d8be24a32",
+        "commerce-purchase-018f47f1-16ce-7d1f-8f65-c61d8be24a32",
       "Stripe-Version": "2026-08-26.dahlia"
     });
 
@@ -93,7 +93,7 @@ describe("StripePaymentCheckoutProvider", () => {
     expect(params.get("client_reference_id")).toBe(
       "018f47f1-16ce-7d1f-8f65-c61d8be24a32"
     );
-    expect(params.get("metadata[nexus_purchase_id]")).toBe(
+    expect(params.get("metadata[platform_purchase_id]")).toBe(
       "018f47f1-16ce-7d1f-8f65-c61d8be24a32"
     );
   });
