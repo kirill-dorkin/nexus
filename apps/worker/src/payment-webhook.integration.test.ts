@@ -477,6 +477,54 @@ describe("payment webhook worker processor", () => {
     expect(purchase.rows[0]?.status).toBe("pending");
   });
 
+  it("avoids a lost wakeup when checkout mapping appears after claim but before blocked finish", async () => {
+    const purchaseId = await createPurchase();
+    const checkoutId = `cs_worker_${randomUUID().replaceAll("-", "")}`;
+    const inboxId = await createInbox({ checkoutId });
+    const leaseToken = randomUUID();
+
+    const claimed = await workerPool.query<{ inbox_id: string }>(
+      `SELECT inbox_id::text
+       FROM platform_internal.claim_payment_webhook($1, 30)`,
+      [leaseToken]
+    );
+    expect(claimed.rows[0]?.inbox_id).toBe(inboxId);
+
+    await createCheckout(purchaseId, checkoutId);
+
+    const finished = await workerPool.query<{ finished: boolean }>(
+      `SELECT platform_internal.finish_payment_webhook(
+         $1,
+         $2,
+         'blocked',
+         'checkout_mapping_unavailable',
+         NULL
+       ) AS finished`,
+      [inboxId, leaseToken]
+    );
+    expect(finished.rows[0]?.finished).toBe(true);
+
+    const processing = await migrationPool.query<{
+      status: string;
+      last_error_code: string | null;
+    }>(
+      `SELECT status, last_error_code
+       FROM integrations.payment_webhook_processing
+       WHERE inbox_id = $1`,
+      [inboxId]
+    );
+    expect(processing.rows[0]).toEqual({
+      status: "pending",
+      last_error_code: null
+    });
+
+    await expect(processor.processOne()).resolves.toMatchObject({
+      kind: "completed",
+      inboxId,
+      purchaseId
+    });
+  });
+
   it("blocks an unmapped webhook and reactivates it when the trusted checkout mapping appears", async () => {
     const purchaseId = await createPurchase();
     const checkoutId = `cs_worker_${randomUUID().replaceAll("-", "")}`;
