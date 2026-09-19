@@ -561,9 +561,9 @@ The implemented Commerce foundation now includes:
 - Stripe Checkout is the first payment-provider adapter behind Integrations-owned ports/mappings rather than becoming Commerce domain state;
 - external Checkout Session creation occurs outside PostgreSQL transactions and uses Purchase identity as the provider idempotency anchor;
 - signed Stripe webhook ingress validates raw bytes before trusting payload fields, deduplicates by provider event id, persists only normalized settlement/routing fields plus payload hash, and returns after durable inbox acceptance;
-- payment webhook processing is separate lease/retry/dead-letter worker state; unmapped Checkout deliveries block durably and are reactivated when the exact trusted Checkout mapping appears;
+- payment webhook processing is separate lease/retry/dead-letter worker state, executed by a dedicated payment-worker process entrypoint that does not require grader gateway configuration; unmapped Checkout deliveries block durably and are reactivated when the exact trusted Checkout mapping appears;
 - only normalized `payment_status=paid` can settle Purchase, and provider amount/currency must exactly match canonical Purchase terms;
-- the worker can mutate payment state only through narrow SECURITY DEFINER claim/finish/acknowledge functions, not broad Commerce table privileges;
+- the payment worker can mutate payment state only through narrow SECURITY DEFINER claim/finish/acknowledge functions, not broad Commerce table privileges, and remains runtime-independent from the disabled F7 grader path;
 - the winning paid acknowledgement atomically commits Purchase `paid`, a purchase-backed Offering Entitlement, `purchase.paid@1`, and `entitlement.granted@1`;
 - Entitlement provenance now distinguishes `manual` human grants from `purchase` grants linked to source Purchase;
 - paid settlement never creates Enrollment, preserving `Purchase != Entitlement != Enrollment`;
