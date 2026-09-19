@@ -42,30 +42,6 @@ export class DatabaseService implements OnApplicationShutdown {
     return runTenantTransaction(this.pool, context, operation, options);
   }
 
-  systemTenantTransaction<T>(
-    organizationId: string,
-    operation: (transaction: DatabaseTransaction) => Promise<T>,
-    options?: DatabaseTransactionOptions
-  ): Promise<T> {
-    if (organizationId.trim().length === 0) {
-      throw new Error("organizationId is required for a system tenant transaction.");
-    }
-
-    return runTransaction(
-      this.pool,
-      async (transaction) => {
-        await transaction.client.query(
-          `SELECT
-             set_config('app.organization_id', $1, true),
-             set_config('app.user_id', '', true)`,
-          [organizationId]
-        );
-        return operation(transaction);
-      },
-      options
-    );
-  }
-
   async nextUuid(): Promise<string> {
     const result = await this.pool.query<{ id: string }>(
       "SELECT uuidv7()::text AS id"
