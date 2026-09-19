@@ -1,7 +1,6 @@
 import { Module } from "@nestjs/common";
 
 import { AuthorizationModule } from "../authorization/authorization.module";
-import { CommerceModule } from "../commerce/commerce.module";
 import { IdentityModule } from "../identity/identity.module";
 import { GitHubAppGateway } from "./application/github-app.gateway";
 import { GitHubAppSetupRepository } from "./application/github-app-setup.repository";
@@ -28,7 +27,7 @@ import { StripePaymentCheckoutProvider } from "./infrastructure/stripe-payment-c
 import { StripePaymentWebhookVerifier } from "./infrastructure/stripe-payment-webhook.verifier";
 
 @Module({
-  imports: [IdentityModule, AuthorizationModule, CommerceModule],
+  imports: [IdentityModule, AuthorizationModule],
   controllers: [
     GitHubWebhookController,
     GitHubAppSetupController,
