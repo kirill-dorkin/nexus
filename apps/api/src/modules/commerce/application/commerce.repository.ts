@@ -1,7 +1,8 @@
 import type {
   CommercePrice,
   CommerceProduct,
-  Entitlement
+  Entitlement,
+  Purchase
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
@@ -24,13 +25,28 @@ export type CreateCommercePrice = Readonly<{
   createdByUserId: string;
 }>;
 
+export type CreatePurchase = Readonly<{
+  id: string;
+  organizationId: string;
+  productId: string;
+  priceId: string;
+  offeringId: string;
+  purchaserUserId: string;
+  amountMinor: number;
+  currency: string;
+  billingType: Purchase["billingType"];
+  idempotencyKey: string;
+}>;
+
 export type GrantOfferingEntitlement = Readonly<{
   id: string;
   organizationId: string;
   offeringId: string;
   userId: string;
   expiresAt: string | null;
-  grantedByUserId: string;
+  grantedByUserId: string | null;
+  grantSource: Entitlement["grantSource"];
+  sourcePurchaseId: string | null;
 }>;
 
 export abstract class CommerceRepository {
@@ -75,6 +91,31 @@ export abstract class CommerceRepository {
     priceId: string,
     archivedByUserId: string
   ): Promise<CommercePrice | null>;
+
+  abstract createPurchase(
+    transaction: DatabaseTransaction,
+    purchase: CreatePurchase
+  ): Promise<Purchase | null>;
+
+  abstract findPurchaseById(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    purchaseId: string
+  ): Promise<Purchase | null>;
+
+  abstract findPurchaseByIdempotencyKey(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    purchaserUserId: string,
+    idempotencyKey: string
+  ): Promise<Purchase | null>;
+
+  abstract markPurchasePaid(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    purchaseId: string,
+    paidAt: string
+  ): Promise<Purchase | null>;
 
   abstract grantOfferingEntitlement(
     transaction: DatabaseTransaction,
