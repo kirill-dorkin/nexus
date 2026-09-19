@@ -36,7 +36,7 @@ describe("StripePaymentCheckoutProvider", () => {
     process.env.STRIPE_CHECKOUT_CANCEL_URL =
       "https://example.test/checkout/cancel";
 
-    const fetchMock = vi.fn(async () =>
+    const fetchMock = vi.fn<typeof fetch>(async () =>
       new Response(
         JSON.stringify({
           id: "cs_test_checkout",
