@@ -169,8 +169,8 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
           currency: input.currency ?? "usd",
           metadata: {
             // Metadata is deliberately not used for tenant/Purchase routing.
-            nexus_purchase_id: randomUUID(),
-            nexus_organization_id: randomUUID()
+            platform_purchase_id: randomUUID(),
+            platform_organization_id: randomUUID()
           }
         }
       }
