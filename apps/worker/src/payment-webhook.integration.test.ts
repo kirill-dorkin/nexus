@@ -560,4 +560,34 @@ describe("payment webhook worker processor", () => {
       purchaseId
     });
   });
+  it("does not grant platform_worker direct Commerce write privileges", async () => {
+    const privileges = await migrationPool.query<{
+      update_purchase: boolean;
+      insert_entitlement: boolean;
+      insert_outbox: boolean;
+    }>(
+      `SELECT
+         has_table_privilege(
+           'platform_worker',
+           'commerce.purchases',
+           'UPDATE'
+         ) AS update_purchase,
+         has_table_privilege(
+           'platform_worker',
+           'commerce.entitlements',
+           'INSERT'
+         ) AS insert_entitlement,
+         has_table_privilege(
+           'platform_worker',
+           'events.outbox',
+           'INSERT'
+         ) AS insert_outbox`
+    );
+    expect(privileges.rows[0]).toEqual({
+      update_purchase: false,
+      insert_entitlement: false,
+      insert_outbox: false
+    });
+  });
+
 });
