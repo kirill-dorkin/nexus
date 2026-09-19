@@ -136,7 +136,7 @@ Reuse of the same provider event id with different signed bytes is an integrity 
 
 The application role receives no direct read privilege on the payment webhook inbox.
 
-The HTTP ingress ends after verified normalization, deduplication, inbox persistence, and processing-row initialization. It returns without synchronously changing Purchase or Entitlement. Durable settlement is performed by the existing platform worker through lease/retry/dead-letter processing.
+The HTTP ingress ends after verified normalization, deduplication, inbox persistence, and processing-row initialization. It returns without synchronously changing Purchase or Entitlement. Durable settlement is performed by a dedicated payment-worker process entrypoint in `apps/worker`, using the shared least-privilege `platform_worker` database role and independent payment poll/lease/retry configuration.
 
 ### Tenant routing trusts the persisted Checkout mapping only
 
@@ -176,7 +176,7 @@ For the winning settlement:
 3. `purchase.paid@1` is appended;
 4. `entitlement.granted@1` is appended.
 
-All four consequences commit atomically inside a lease-fenced worker acknowledgement carrying the exact Organization context. `platform_worker` receives only narrow claim/finish/acknowledge function execution; it does not receive general Purchase/Entitlement table mutation privileges.
+All four consequences commit atomically inside a lease-fenced worker acknowledgement carrying the exact Organization context. `platform_worker` receives only narrow claim/finish/acknowledge function execution; it does not receive general Purchase/Entitlement table mutation privileges. The payment worker is a separate runtime entrypoint from the grader worker, so F9 payment processing does not require grader gateway configuration or activate F7 execution.
 
 A later paid delivery for an already-paid Purchase is materially idempotent and emits no duplicate settlement/grant events. Deterministic outbox idempotency keys defend that contract at PostgreSQL level as well.
 
