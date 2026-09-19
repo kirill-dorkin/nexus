@@ -83,10 +83,12 @@ export const createCommercePriceRequestSchema = z.object({
   billingType: commerceBillingTypeSchema.default("one_time")
 });
 
-export const createPurchaseCheckoutRequestSchema = z.object({
-  priceId: uuidSchema,
-  idempotencyKey: uuidSchema
-});
+export const createPurchaseCheckoutRequestSchema = z
+  .object({
+    priceId: uuidSchema,
+    idempotencyKey: uuidSchema
+  })
+  .strict();
 
 export const grantOfferingEntitlementRequestSchema = z.object({
   userId: uuidSchema,
