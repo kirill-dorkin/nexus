@@ -2,7 +2,8 @@ import { Injectable } from "@nestjs/common";
 import type {
   CommercePrice,
   CommerceProduct,
-  Entitlement
+  Entitlement,
+  Purchase
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
@@ -10,6 +11,7 @@ import {
   CommerceRepository,
   type CreateCommercePrice,
   type CreateCommerceProduct,
+  type CreatePurchase,
   type GrantOfferingEntitlement
 } from "../application/commerce.repository";
 
@@ -36,12 +38,30 @@ type CommercePriceRow = {
   archived_at: Date | null;
 };
 
+type PurchaseRow = {
+  id: string;
+  organization_id: string;
+  product_id: string;
+  price_id: string;
+  offering_id: string;
+  purchaser_user_id: string;
+  status: Purchase["status"];
+  amount_minor: number;
+  currency: string;
+  billing_type: Purchase["billingType"];
+  client_idempotency_key: string;
+  created_at: Date;
+  paid_at: Date | null;
+};
+
 type EntitlementRow = {
   id: string;
   organization_id: string;
   offering_id: string;
   user_id: string;
   status: Entitlement["status"];
+  grant_source: Entitlement["grantSource"];
+  source_purchase_id: string | null;
   granted_at: Date;
   expires_at: Date | null;
   revoked_at: Date | null;
@@ -66,11 +86,27 @@ const priceSelect = `id::text,
   created_at,
   archived_at`;
 
+const purchaseSelect = `id::text,
+  organization_id::text,
+  product_id::text,
+  price_id::text,
+  offering_id::text,
+  purchaser_user_id::text,
+  status,
+  amount_minor,
+  currency,
+  billing_type,
+  client_idempotency_key::text,
+  created_at,
+  paid_at`;
+
 const entitlementSelect = `id::text,
   organization_id::text,
   offering_id::text,
   user_id::text,
   status,
+  grant_source,
+  source_purchase_id::text,
   granted_at,
   expires_at,
   revoked_at`;
@@ -102,6 +138,24 @@ function mapPrice(row: CommercePriceRow): CommercePrice {
   };
 }
 
+function mapPurchase(row: PurchaseRow): Purchase {
+  return {
+    id: row.id,
+    organizationId: row.organization_id,
+    productId: row.product_id,
+    priceId: row.price_id,
+    offeringId: row.offering_id,
+    purchaserUserId: row.purchaser_user_id,
+    status: row.status,
+    amountMinor: row.amount_minor,
+    currency: row.currency,
+    billingType: row.billing_type,
+    idempotencyKey: row.client_idempotency_key,
+    createdAt: row.created_at.toISOString(),
+    paidAt: row.paid_at?.toISOString() ?? null
+  };
+}
+
 function mapEntitlement(row: EntitlementRow): Entitlement {
   return {
     id: row.id,
@@ -109,6 +163,8 @@ function mapEntitlement(row: EntitlementRow): Entitlement {
     offeringId: row.offering_id,
     userId: row.user_id,
     status: row.status,
+    grantSource: row.grant_source,
+    sourcePurchaseId: row.source_purchase_id,
     grantedAt: row.granted_at.toISOString(),
     expiresAt: row.expires_at?.toISOString() ?? null,
     revokedAt: row.revoked_at?.toISOString() ?? null
@@ -262,14 +318,115 @@ export class PostgresCommerceRepository extends CommerceRepository {
     return row === undefined ? null : mapPrice(row);
   }
 
+  async createPurchase(
+    transaction: DatabaseTransaction,
+    purchase: CreatePurchase
+  ): Promise<Purchase | null> {
+    const result = await transaction.client.query<PurchaseRow>(
+      `INSERT INTO commerce.purchases (
+         id,
+         organization_id,
+         product_id,
+         price_id,
+         offering_id,
+         purchaser_user_id,
+         amount_minor,
+         currency,
+         billing_type,
+         client_idempotency_key
+       )
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10::uuid)
+       ON CONFLICT (organization_id, purchaser_user_id, client_idempotency_key)
+       DO NOTHING
+       RETURNING ${purchaseSelect}`,
+      [
+        purchase.id,
+        purchase.organizationId,
+        purchase.productId,
+        purchase.priceId,
+        purchase.offeringId,
+        purchase.purchaserUserId,
+        purchase.amountMinor,
+        purchase.currency,
+        purchase.billingType,
+        purchase.idempotencyKey
+      ]
+    );
+    const row = result.rows[0];
+    return row === undefined ? null : mapPurchase(row);
+  }
+
+  async findPurchaseById(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    purchaseId: string
+  ): Promise<Purchase | null> {
+    const result = await transaction.client.query<PurchaseRow>(
+      `SELECT ${purchaseSelect}
+         FROM commerce.purchases
+        WHERE organization_id = $1
+          AND id = $2`,
+      [organizationId, purchaseId]
+    );
+    const row = result.rows[0];
+    return row === undefined ? null : mapPurchase(row);
+  }
+
+  async findPurchaseByIdempotencyKey(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    purchaserUserId: string,
+    idempotencyKey: string
+  ): Promise<Purchase | null> {
+    const result = await transaction.client.query<PurchaseRow>(
+      `SELECT ${purchaseSelect}
+         FROM commerce.purchases
+        WHERE organization_id = $1
+          AND purchaser_user_id = $2
+          AND client_idempotency_key = $3::uuid`,
+      [organizationId, purchaserUserId, idempotencyKey]
+    );
+    const row = result.rows[0];
+    return row === undefined ? null : mapPurchase(row);
+  }
+
+  async markPurchasePaid(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    purchaseId: string,
+    paidAt: string
+  ): Promise<Purchase | null> {
+    const result = await transaction.client.query<PurchaseRow>(
+      `UPDATE commerce.purchases
+          SET status = 'paid',
+              paid_at = $3::timestamptz,
+              updated_at = $3::timestamptz
+        WHERE organization_id = $1
+          AND id = $2
+          AND status = 'pending'
+       RETURNING ${purchaseSelect}`,
+      [organizationId, purchaseId, paidAt]
+    );
+    const row = result.rows[0];
+    return row === undefined ? null : mapPurchase(row);
+  }
+
   async grantOfferingEntitlement(
     transaction: DatabaseTransaction,
     entitlement: GrantOfferingEntitlement
   ): Promise<Entitlement> {
     const result = await transaction.client.query<EntitlementRow>(
-      `INSERT INTO commerce.entitlements
-         (id, organization_id, offering_id, user_id, expires_at, granted_by_user_id)
-       VALUES ($1, $2, $3, $4, $5::timestamptz, $6)
+      `INSERT INTO commerce.entitlements (
+         id,
+         organization_id,
+         offering_id,
+         user_id,
+         expires_at,
+         granted_by_user_id,
+         grant_source,
+         source_purchase_id
+       )
+       VALUES ($1, $2, $3, $4, $5::timestamptz, $6, $7, $8)
        ON CONFLICT (organization_id, offering_id, user_id)
        DO UPDATE SET status = 'active',
                      granted_at = now(),
@@ -277,6 +434,8 @@ export class PostgresCommerceRepository extends CommerceRepository {
                      revoked_at = NULL,
                      granted_by_user_id = EXCLUDED.granted_by_user_id,
                      revoked_by_user_id = NULL,
+                     grant_source = EXCLUDED.grant_source,
+                     source_purchase_id = EXCLUDED.source_purchase_id,
                      updated_at = now()
        RETURNING ${entitlementSelect}`,
       [
@@ -285,7 +444,9 @@ export class PostgresCommerceRepository extends CommerceRepository {
         entitlement.offeringId,
         entitlement.userId,
         entitlement.expiresAt,
-        entitlement.grantedByUserId
+        entitlement.grantedByUserId,
+        entitlement.grantSource,
+        entitlement.sourcePurchaseId
       ]
     );
     const row = result.rows[0];
