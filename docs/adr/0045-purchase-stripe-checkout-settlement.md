@@ -136,6 +136,8 @@ Reuse of the same provider event id with different signed bytes is an integrity 
 
 The application role receives no direct read privilege on the payment webhook inbox.
 
+The HTTP ingress ends after verified normalization, deduplication, inbox persistence, and processing-row initialization. It returns without synchronously changing Purchase or Entitlement. Durable settlement is performed by the existing platform worker through lease/retry/dead-letter processing.
+
 ### Tenant routing trusts the persisted Checkout mapping only
 
 Webhook tenant/Purchase routing uses the exact signed Stripe Checkout Session id and the Nexus-owned Integrations mapping.
@@ -147,15 +149,15 @@ The immutable inbox records receive-time routing as either:
 - `mapped`;
 - `unmapped_checkout`.
 
-### Checkout mapping race fails retryably
+### Checkout mapping race is blocked durably and reactivated by trusted mapping
 
 A valid webhook can arrive after Stripe Session creation but before Nexus commits its provider mapping.
 
-An `unmapped_checkout` receive fact is retained, but Nexus does not acknowledge it as successfully processed.
+The HTTP endpoint still durably accepts the verified delivery and returns promptly. The immutable receive fact records `unmapped_checkout`.
 
-The endpoint returns a retryable failure. Every signed retry re-resolves the exact external Checkout Session id against the current trusted mapping through a narrow cross-tenant PostgreSQL function.
+The worker claims the corresponding processing row and moves it to `blocked` when no trusted Checkout mapping exists. Inserting the exact trusted provider Checkout mapping reactivates blocked processing to `pending`.
 
-When the mapping appears, the same immutable provider event can settle the Purchase without rewriting its original receive-time routing fact.
+The next worker claim resolves the current mapping by exact provider Checkout Session identity. The same immutable receive fact can then settle the Purchase without rewriting its receive-time routing status.
 
 ### Only provider-paid state settles Purchase
 
@@ -174,9 +176,9 @@ For the winning settlement:
 3. `purchase.paid@1` is appended;
 4. `entitlement.granted@1` is appended.
 
-All four consequences commit atomically in one tenant-scoped system transaction.
+All four consequences commit atomically inside a lease-fenced worker acknowledgement carrying the exact Organization context. `platform_worker` receives only narrow claim/finish/acknowledge function execution; it does not receive general Purchase/Entitlement table mutation privileges.
 
-A retry after Purchase is already paid returns existing Purchase and emits no duplicate settlement/grant events.
+A later paid delivery for an already-paid Purchase is materially idempotent and emits no duplicate settlement/grant events. Deterministic outbox idempotency keys defend that contract at PostgreSQL level as well.
 
 Enrollment is never created implicitly.
 
@@ -211,10 +213,12 @@ authenticated active Organization member
   -> canonical pending Purchase with server-owned terms
   -> Stripe hosted Checkout Session outside DB transaction
   -> trusted Purchase <-> Checkout mapping
-  -> signed durable Stripe webhook
-  -> exact current mapping route
+  -> signed durable Stripe webhook inbox
+  -> HTTP 202 after durable acceptance
+  -> lease/retry worker processing
+  -> exact current Checkout mapping route
   -> amount/currency match + payment_status=paid
-  -> Purchase paid + purchase-backed Entitlement atomically
+  -> lease-fenced Purchase paid + purchase-backed Entitlement atomically
   -> no Enrollment
 ```
 
