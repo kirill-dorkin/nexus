@@ -311,6 +311,8 @@ describe("commerce entitlement and enrollment access HTTP lifecycle", () => {
       offeringId: restrictedOfferingId,
       userId: learnerUserId,
       status: "active",
+      grantSource: "manual",
+      sourcePurchaseId: null,
       expiresAt: null,
       revokedAt: null
     });
@@ -631,7 +633,7 @@ describe("commerce entitlement and enrollment access HTTP lifecycle", () => {
     expect(newPrice.statusCode).toBe(409);
   });
 
-  it("emits transactional catalog lifecycle events without inventing Purchase state", async () => {
+  it("keeps catalog lifecycle events independent from Purchase state", async () => {
     const events = await migrationPool.query<EventRow>(
       `SELECT event_name
          FROM events.outbox
@@ -658,10 +660,13 @@ describe("commerce entitlement and enrollment access HTTP lifecycle", () => {
       names.filter((name) => name === "commerce.price.archived")
     ).toHaveLength(2);
 
-    const purchases = await migrationPool.query<{ relation: string | null }>(
-      `SELECT to_regclass('commerce.purchases')::text AS relation`
+    const purchases = await migrationPool.query<{ count: string }>(
+      `SELECT count(*)::text AS count
+         FROM commerce.purchases
+        WHERE organization_id = $1`,
+      [organizationId]
     );
-    expect(purchases.rows[0]?.relation).toBeNull();
+    expect(purchases.rows[0]?.count).toBe("0");
   });
 
 });
