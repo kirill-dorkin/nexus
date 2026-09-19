@@ -44,7 +44,7 @@ export class PaymentCheckoutApplicationService extends PaymentCheckoutGateway {
     }
 
     // External provider calls deliberately occur outside PostgreSQL transactions.
-    // Provider idempotency is anchored to the immutable Nexus Purchase id.
+    // Provider idempotency is anchored to the immutable canonical Purchase id.
     const providerCheckout = await this.provider.createCheckout({
       organizationId: request.organizationId,
       purchaseId: request.purchaseId,
