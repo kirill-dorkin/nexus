@@ -21,20 +21,9 @@ export type AcceptedPaymentWebhook = Readonly<{
   existingPayloadSha256: string | null;
 }>;
 
-export type PaymentCheckoutRoute = Readonly<{
-  organizationId: string;
-  purchaseId: string;
-}>;
-
 export abstract class PaymentWebhookInboxRepository {
   abstract accept(
     transaction: DatabaseTransaction,
     input: PaymentWebhookInput
   ): Promise<AcceptedPaymentWebhook>;
-
-  abstract resolveCheckout(
-    transaction: DatabaseTransaction,
-    providerKey: "stripe",
-    externalCheckoutId: string
-  ): Promise<PaymentCheckoutRoute | null>;
 }
