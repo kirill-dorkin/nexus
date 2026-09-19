@@ -1,6 +1,8 @@
 -- F9.2 Purchase + payment-provider boundary.
 -- Commerce owns canonical Purchase/Entitlement state.
--- Integrations owns external checkout identity and durable provider webhook ingress.
+-- Integrations owns provider checkout identity, durable webhook ingress, and
+-- processing state. platform_worker crosses those boundaries only through
+-- narrow SECURITY DEFINER functions.
 
 ALTER TABLE commerce.products
   ADD CONSTRAINT commerce_products_organization_offering_id_key
@@ -230,6 +232,102 @@ CREATE INDEX payment_webhook_inbox_purchase_idx
   )
   WHERE organization_id IS NOT NULL;
 
+CREATE TABLE integrations.payment_webhook_processing (
+  inbox_id uuid PRIMARY KEY
+    REFERENCES integrations.payment_webhook_inbox(id) ON DELETE CASCADE,
+  status text NOT NULL DEFAULT 'pending'
+    CHECK (status IN (
+      'pending',
+      'processing',
+      'blocked',
+      'retryable',
+      'completed',
+      'rejected',
+      'dead_letter'
+    )),
+  attempt_count integer NOT NULL DEFAULT 0 CHECK (attempt_count >= 0),
+  available_at timestamptz NOT NULL DEFAULT now(),
+  lease_token uuid,
+  lease_expires_at timestamptz,
+  last_error_code text
+    CHECK (
+      last_error_code IS NULL
+      OR last_error_code ~ '^[a-z][a-z0-9_]{0,99}$'
+    ),
+  last_error_at timestamptz,
+  finished_at timestamptz,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now(),
+  CHECK (
+    (status = 'processing' AND lease_token IS NOT NULL AND lease_expires_at IS NOT NULL)
+    OR (status <> 'processing' AND lease_token IS NULL AND lease_expires_at IS NULL)
+  ),
+  CHECK (
+    (status IN ('completed', 'rejected', 'dead_letter') AND finished_at IS NOT NULL)
+    OR (status NOT IN ('completed', 'rejected', 'dead_letter') AND finished_at IS NULL)
+  )
+);
+
+CREATE INDEX payment_webhook_processing_claim_idx
+  ON integrations.payment_webhook_processing (available_at, inbox_id)
+  WHERE status IN ('pending', 'retryable');
+
+CREATE INDEX payment_webhook_processing_lease_idx
+  ON integrations.payment_webhook_processing (lease_expires_at, inbox_id)
+  WHERE status = 'processing';
+
+CREATE OR REPLACE FUNCTION integrations.initialize_payment_webhook_processing()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog
+AS $$
+BEGIN
+  INSERT INTO integrations.payment_webhook_processing (inbox_id, available_at)
+  VALUES (NEW.id, NEW.received_at)
+  ON CONFLICT (inbox_id) DO NOTHING;
+  RETURN NEW;
+END
+$$;
+
+REVOKE ALL ON FUNCTION integrations.initialize_payment_webhook_processing()
+  FROM PUBLIC;
+
+CREATE TRIGGER payment_webhook_processing_initialize
+AFTER INSERT ON integrations.payment_webhook_inbox
+FOR EACH ROW
+EXECUTE FUNCTION integrations.initialize_payment_webhook_processing();
+
+CREATE OR REPLACE FUNCTION integrations.reactivate_payment_webhook_processing()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog
+AS $$
+BEGIN
+  UPDATE integrations.payment_webhook_processing AS processing
+     SET status = 'pending',
+         available_at = now(),
+         last_error_code = NULL,
+         last_error_at = NULL,
+         updated_at = now()
+    FROM integrations.payment_webhook_inbox AS inbox
+   WHERE processing.inbox_id = inbox.id
+     AND processing.status = 'blocked'
+     AND inbox.provider_key = NEW.provider_key
+     AND inbox.external_checkout_id = NEW.external_checkout_id;
+  RETURN NEW;
+END
+$$;
+
+REVOKE ALL ON FUNCTION integrations.reactivate_payment_webhook_processing()
+  FROM PUBLIC;
+
+CREATE TRIGGER payment_checkout_reactivate_webhooks
+AFTER INSERT ON integrations.payment_checkouts
+FOR EACH ROW
+EXECUTE FUNCTION integrations.reactivate_payment_webhook_processing();
+
 CREATE OR REPLACE FUNCTION platform_internal.ingest_payment_webhook(
   p_provider_key text,
   p_provider_event_id text,
@@ -331,45 +429,406 @@ $$;
 REVOKE ALL ON FUNCTION platform_internal.ingest_payment_webhook(
   text, text, text, text, text, integer, text, text
 ) FROM PUBLIC;
-
-CREATE OR REPLACE FUNCTION platform_internal.resolve_payment_checkout(
-  p_provider_key text,
-  p_external_checkout_id text
-)
-RETURNS TABLE (
-  organization_id uuid,
-  purchase_id uuid
-)
-LANGUAGE sql
-STABLE
-SECURITY DEFINER
-SET search_path = pg_catalog
-AS $
-  SELECT checkout.organization_id, checkout.purchase_id
-    FROM integrations.payment_checkouts AS checkout
-   WHERE checkout.provider_key = p_provider_key
-     AND checkout.external_checkout_id = p_external_checkout_id
-$;
-
-REVOKE ALL ON FUNCTION platform_internal.resolve_payment_checkout(text, text)
-  FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION platform_internal.resolve_payment_checkout(text, text)
-  TO platform_app;
-
-
 GRANT EXECUTE ON FUNCTION platform_internal.ingest_payment_webhook(
   text, text, text, text, text, integer, text, text
 ) TO platform_app;
 
-GRANT SELECT, INSERT ON commerce.purchases TO platform_app;
-GRANT UPDATE (status, paid_at, updated_at)
-  ON commerce.purchases TO platform_app;
+CREATE OR REPLACE FUNCTION platform_internal.claim_payment_webhook(
+  p_lease_token uuid,
+  p_lease_seconds integer
+)
+RETURNS TABLE (
+  inbox_id uuid,
+  provider_event_id text,
+  external_checkout_id text,
+  event_type text,
+  payment_status text,
+  amount_minor integer,
+  currency text,
+  organization_id uuid,
+  purchase_id uuid,
+  attempt_count integer
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog
+AS $$
+BEGIN
+  IF p_lease_seconds < 1 OR p_lease_seconds > 900 THEN
+    RAISE EXCEPTION 'payment webhook lease must be between 1 and 900 seconds'
+      USING ERRCODE = '22023';
+  END IF;
 
+  UPDATE integrations.payment_webhook_processing AS exhausted
+     SET status = 'dead_letter',
+         lease_token = NULL,
+         lease_expires_at = NULL,
+         last_error_code = 'lease_expired_attempts_exhausted',
+         last_error_at = now(),
+         finished_at = now(),
+         updated_at = now()
+   WHERE exhausted.status = 'processing'
+     AND exhausted.lease_expires_at <= now()
+     AND exhausted.attempt_count >= 5;
+
+  RETURN QUERY
+  WITH candidate AS (
+    SELECT processing.inbox_id
+      FROM integrations.payment_webhook_processing AS processing
+     WHERE processing.attempt_count < 5
+       AND (
+         (processing.status IN ('pending', 'retryable')
+           AND processing.available_at <= now())
+         OR
+         (processing.status = 'processing'
+           AND processing.lease_expires_at <= now())
+       )
+     ORDER BY processing.available_at, processing.inbox_id
+     FOR UPDATE SKIP LOCKED
+     LIMIT 1
+  ), claimed AS (
+    UPDATE integrations.payment_webhook_processing AS processing
+       SET status = 'processing',
+           attempt_count = processing.attempt_count + 1,
+           lease_token = p_lease_token,
+           lease_expires_at = now() + make_interval(secs => p_lease_seconds),
+           last_error_code = NULL,
+           last_error_at = NULL,
+           updated_at = now()
+      FROM candidate
+     WHERE processing.inbox_id = candidate.inbox_id
+     RETURNING processing.inbox_id, processing.attempt_count
+  )
+  SELECT
+    inbox.id,
+    inbox.provider_event_id,
+    inbox.external_checkout_id,
+    inbox.event_type,
+    inbox.payment_status,
+    inbox.amount_minor,
+    inbox.currency,
+    checkout.organization_id,
+    checkout.purchase_id,
+    claimed.attempt_count
+  FROM claimed
+  JOIN integrations.payment_webhook_inbox AS inbox
+    ON inbox.id = claimed.inbox_id
+  LEFT JOIN integrations.payment_checkouts AS checkout
+    ON checkout.provider_key = inbox.provider_key
+   AND checkout.external_checkout_id = inbox.external_checkout_id;
+END
+$$;
+
+REVOKE ALL ON FUNCTION platform_internal.claim_payment_webhook(uuid, integer)
+  FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION platform_internal.claim_payment_webhook(uuid, integer)
+  TO platform_worker;
+
+CREATE OR REPLACE FUNCTION commerce.settle_paid_purchase(
+  p_organization_id uuid,
+  p_purchase_id uuid,
+  p_amount_minor integer,
+  p_currency text
+)
+RETURNS boolean
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog
+AS $$
+DECLARE
+  purchase commerce.purchases%ROWTYPE;
+  entitlement_id uuid;
+BEGIN
+  IF platform_internal.current_organization_id() IS DISTINCT FROM p_organization_id THEN
+    RAISE EXCEPTION 'paid Purchase settlement requires matching organization context'
+      USING ERRCODE = '42501';
+  END IF;
+
+  SELECT *
+    INTO purchase
+    FROM commerce.purchases
+   WHERE organization_id = p_organization_id
+     AND id = p_purchase_id
+   FOR UPDATE;
+
+  IF NOT FOUND THEN
+    RAISE EXCEPTION 'Purchase does not exist'
+      USING ERRCODE = '23503';
+  END IF;
+
+  IF purchase.amount_minor IS DISTINCT FROM p_amount_minor
+     OR purchase.currency IS DISTINCT FROM p_currency THEN
+    RAISE EXCEPTION 'provider settlement does not match canonical Purchase terms'
+      USING ERRCODE = '23514';
+  END IF;
+
+  IF purchase.status = 'paid' THEN
+    RETURN false;
+  END IF;
+
+  UPDATE commerce.purchases
+     SET status = 'paid',
+         paid_at = now(),
+         updated_at = now()
+   WHERE organization_id = p_organization_id
+     AND id = p_purchase_id;
+
+  INSERT INTO commerce.entitlements (
+    id,
+    organization_id,
+    offering_id,
+    user_id,
+    status,
+    granted_at,
+    expires_at,
+    revoked_at,
+    granted_by_user_id,
+    revoked_by_user_id,
+    created_at,
+    updated_at,
+    grant_source,
+    source_purchase_id
+  )
+  VALUES (
+    uuidv7(),
+    purchase.organization_id,
+    purchase.offering_id,
+    purchase.purchaser_user_id,
+    'active',
+    now(),
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    now(),
+    now(),
+    'purchase',
+    purchase.id
+  )
+  ON CONFLICT (organization_id, offering_id, user_id)
+  DO UPDATE SET
+    status = 'active',
+    granted_at = now(),
+    expires_at = NULL,
+    revoked_at = NULL,
+    granted_by_user_id = NULL,
+    revoked_by_user_id = NULL,
+    updated_at = now(),
+    grant_source = 'purchase',
+    source_purchase_id = purchase.id
+  RETURNING id INTO entitlement_id;
+
+  INSERT INTO events.outbox (
+    organization_id,
+    event_name,
+    event_version,
+    aggregate_type,
+    aggregate_id,
+    actor_user_id,
+    payload,
+    metadata,
+    idempotency_key
+  )
+  VALUES (
+    purchase.organization_id,
+    'purchase.paid',
+    1,
+    'purchase',
+    purchase.id,
+    NULL,
+    jsonb_build_object(
+      'organizationId', purchase.organization_id,
+      'purchaseId', purchase.id,
+      'productId', purchase.product_id,
+      'priceId', purchase.price_id,
+      'offeringId', purchase.offering_id,
+      'purchaserUserId', purchase.purchaser_user_id,
+      'amountMinor', purchase.amount_minor,
+      'currency', purchase.currency,
+      'paidAt', now()
+    ),
+    '{}'::jsonb,
+    'purchase-paid:' || purchase.id::text
+  );
+
+  INSERT INTO events.outbox (
+    organization_id,
+    event_name,
+    event_version,
+    aggregate_type,
+    aggregate_id,
+    actor_user_id,
+    payload,
+    metadata,
+    idempotency_key
+  )
+  VALUES (
+    purchase.organization_id,
+    'entitlement.granted',
+    1,
+    'entitlement',
+    entitlement_id,
+    NULL,
+    jsonb_build_object(
+      'organizationId', purchase.organization_id,
+      'entitlementId', entitlement_id,
+      'offeringId', purchase.offering_id,
+      'userId', purchase.purchaser_user_id,
+      'expiresAt', NULL,
+      'grantSource', 'purchase',
+      'sourcePurchaseId', purchase.id
+    ),
+    '{}'::jsonb,
+    'purchase-entitlement-granted:' || purchase.id::text
+  );
+
+  RETURN true;
+END
+$$;
+
+REVOKE ALL ON FUNCTION commerce.settle_paid_purchase(
+  uuid, uuid, integer, text
+) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION commerce.settle_paid_purchase(
+  uuid, uuid, integer, text
+) TO platform_worker;
+
+CREATE OR REPLACE FUNCTION platform_internal.acknowledge_payment_webhook(
+  p_inbox_id uuid,
+  p_lease_token uuid
+)
+RETURNS boolean
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog
+AS $$
+DECLARE
+  processing integrations.payment_webhook_processing%ROWTYPE;
+  inbox integrations.payment_webhook_inbox%ROWTYPE;
+  checkout integrations.payment_checkouts%ROWTYPE;
+BEGIN
+  SELECT *
+    INTO processing
+    FROM integrations.payment_webhook_processing
+   WHERE inbox_id = p_inbox_id
+   FOR UPDATE;
+
+  IF NOT FOUND
+     OR processing.status <> 'processing'
+     OR processing.lease_token IS DISTINCT FROM p_lease_token
+     OR processing.lease_expires_at <= now() THEN
+    RETURN false;
+  END IF;
+
+  SELECT *
+    INTO inbox
+    FROM integrations.payment_webhook_inbox
+   WHERE id = p_inbox_id;
+
+  SELECT *
+    INTO checkout
+    FROM integrations.payment_checkouts
+   WHERE provider_key = inbox.provider_key
+     AND external_checkout_id = inbox.external_checkout_id;
+
+  IF NOT FOUND THEN
+    RETURN false;
+  END IF;
+
+  IF platform_internal.current_organization_id() IS DISTINCT FROM checkout.organization_id THEN
+    RAISE EXCEPTION 'payment webhook acknowledgement requires matching organization context'
+      USING ERRCODE = '42501';
+  END IF;
+
+  IF inbox.payment_status = 'paid' THEN
+    PERFORM commerce.settle_paid_purchase(
+      checkout.organization_id,
+      checkout.purchase_id,
+      inbox.amount_minor,
+      inbox.currency
+    );
+  END IF;
+
+  UPDATE integrations.payment_webhook_processing
+     SET status = 'completed',
+         lease_token = NULL,
+         lease_expires_at = NULL,
+         last_error_code = NULL,
+         last_error_at = NULL,
+         finished_at = now(),
+         updated_at = now()
+   WHERE inbox_id = p_inbox_id;
+
+  RETURN true;
+END
+$$;
+
+REVOKE ALL ON FUNCTION platform_internal.acknowledge_payment_webhook(uuid, uuid)
+  FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION platform_internal.acknowledge_payment_webhook(uuid, uuid)
+  TO platform_worker;
+
+CREATE OR REPLACE FUNCTION platform_internal.finish_payment_webhook(
+  p_inbox_id uuid,
+  p_lease_token uuid,
+  p_outcome text,
+  p_error_code text,
+  p_available_at timestamptz
+)
+RETURNS boolean
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog
+AS $$
+BEGIN
+  IF p_outcome NOT IN ('blocked', 'retryable', 'rejected', 'dead_letter') THEN
+    RAISE EXCEPTION 'invalid payment webhook processing outcome'
+      USING ERRCODE = '22023';
+  END IF;
+
+  IF p_error_code IS NULL
+     OR p_error_code !~ '^[a-z][a-z0-9_]{0,99}$' THEN
+    RAISE EXCEPTION 'invalid payment webhook processing error code'
+      USING ERRCODE = '22023';
+  END IF;
+
+  UPDATE integrations.payment_webhook_processing AS processing
+     SET status = p_outcome,
+         available_at = CASE
+           WHEN p_outcome = 'retryable' THEN COALESCE(p_available_at, now())
+           ELSE processing.available_at
+         END,
+         lease_token = NULL,
+         lease_expires_at = NULL,
+         last_error_code = p_error_code,
+         last_error_at = now(),
+         finished_at = CASE
+           WHEN p_outcome IN ('rejected', 'dead_letter') THEN now()
+           ELSE NULL
+         END,
+         updated_at = now()
+   WHERE processing.inbox_id = p_inbox_id
+     AND processing.status = 'processing'
+     AND processing.lease_token = p_lease_token;
+
+  RETURN FOUND;
+END
+$$;
+
+REVOKE ALL ON FUNCTION platform_internal.finish_payment_webhook(
+  uuid, uuid, text, text, timestamptz
+) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION platform_internal.finish_payment_webhook(
+  uuid, uuid, text, text, timestamptz
+) TO platform_worker;
+
+GRANT SELECT, INSERT ON commerce.purchases TO platform_app;
 GRANT SELECT, INSERT ON integrations.payment_checkouts TO platform_app;
 
 ALTER TABLE commerce.purchases ENABLE ROW LEVEL SECURITY;
 ALTER TABLE integrations.payment_checkouts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE integrations.payment_webhook_inbox ENABLE ROW LEVEL SECURITY;
+ALTER TABLE integrations.payment_webhook_processing ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY purchases_app_tenant_policy
   ON commerce.purchases
