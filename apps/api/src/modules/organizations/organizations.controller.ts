@@ -5,14 +5,17 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  Post
+  Post,
+  Put
 } from "@nestjs/common";
 import {
   assignRoleRequestSchema,
   createOrganizationRequestSchema,
   inviteOrganizationMemberRequestSchema,
+  updateCustomerEntryPolicyRequestSchema,
   uuidSchema,
   type Organization,
+  type OrganizationCustomerEntryPolicy,
   type OrganizationMembership
 } from "@platform/contracts";
 
@@ -37,6 +40,18 @@ export class OrganizationsController {
   ): Promise<Organization> {
     return this.organizations.getOrganization(
       parseRequest(uuidSchema, organizationId)
+    );
+  }
+
+  @Put(":organizationId/customer-entry-policy")
+  @HttpCode(HttpStatus.OK)
+  updateCustomerEntryPolicy(
+    @Param("organizationId") organizationId: string,
+    @Body() body: unknown
+  ): Promise<OrganizationCustomerEntryPolicy> {
+    return this.organizations.updateCustomerEntryPolicy(
+      parseRequest(uuidSchema, organizationId),
+      parseRequest(updateCustomerEntryPolicyRequestSchema, body)
     );
   }
 
