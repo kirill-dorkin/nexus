@@ -31,6 +31,6 @@ export class PaddlePaymentWebhookController {
         "Raw Paddle webhook body is unavailable."
       );
     }
-    await this.paymentWebhooks.receivePaddle(request.rawBody, signature);
+    await this.paymentWebhooks.receive(request.rawBody, signature);
   }
 }

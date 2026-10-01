@@ -6,6 +6,7 @@ import {
 import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 
 import type { PaymentWebhookInput } from "../application/payment-webhook-inbox.repository";
+import { PaymentWebhookVerifier } from "../application/payment-webhook.verifier";
 
 const signatureToleranceSeconds = 5;
 const maxMinorAmount = 2_147_483_647;
@@ -57,7 +58,7 @@ function parseSignatureHeader(signature: string): {
   return { timestamp: timestamps[0]!, signatures };
 }
 
-export class PaddlePaymentWebhookVerifier {
+export class PaddlePaymentWebhookVerifier extends PaymentWebhookVerifier {
   verify(rawBody: Buffer, signature: string | undefined): PaymentWebhookInput {
     const secret = process.env.PADDLE_WEBHOOK_SECRET;
     if (secret === undefined || secret.trim().length === 0) {

@@ -69,6 +69,8 @@ function requirePaddleTransactionResponse(value: unknown): {
 }
 
 export class PaddlePaymentCheckoutProvider extends PaymentCheckoutProvider {
+  readonly providerKey = "paddle";
+
   async createCheckout(
     input: CreateProviderCheckoutInput
   ): Promise<ProviderCheckout> {
@@ -79,7 +81,6 @@ export class PaddlePaymentCheckoutProvider extends PaymentCheckoutProvider {
         );
       }
       return {
-        providerKey: "paddle",
         externalCheckoutId: `txn_test${input.purchaseId.replaceAll("-", "").slice(0, 22)}`,
         checkoutUrl: `https://checkout.test/${input.purchaseId}`,
         expiresAt: null
@@ -100,7 +101,6 @@ export class PaddlePaymentCheckoutProvider extends PaymentCheckoutProvider {
           quantity: 1,
           price: {
             description: `Nexus purchase ${input.purchaseId}`,
-            name: input.productName,
             billing_cycle: null,
             trial_period: null,
             tax_mode: "external",
@@ -159,7 +159,6 @@ export class PaddlePaymentCheckoutProvider extends PaymentCheckoutProvider {
     }
     const transaction = requirePaddleTransactionResponse(decoded);
     return {
-      providerKey: "paddle",
       externalCheckoutId: transaction.id,
       checkoutUrl: transaction.url,
       expiresAt: null

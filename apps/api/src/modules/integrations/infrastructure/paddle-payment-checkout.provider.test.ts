@@ -47,6 +47,7 @@ describe("PaddlePaymentCheckoutProvider", () => {
     vi.stubGlobal("fetch", fetchMock);
 
     const provider = new PaddlePaymentCheckoutProvider();
+    expect(provider.providerKey).toBe("paddle");
     const result = await provider.createCheckout({
       organizationId: "018f47f1-16ce-7d1f-8f65-c61d8be24a31",
       purchaseId: "018f47f1-16ce-7d1f-8f65-c61d8be24a32",
@@ -56,7 +57,6 @@ describe("PaddlePaymentCheckoutProvider", () => {
     });
 
     expect(result).toEqual({
-      providerKey: "paddle",
       externalCheckoutId: "txn_01h04vsbhqc62t8hmd4z3b578c",
       checkoutUrl: "https://checkout.paddle.test/pay?_ptxn=txn_example",
       expiresAt: null
@@ -79,7 +79,6 @@ describe("PaddlePaymentCheckoutProvider", () => {
           price: {
             description:
               "Nexus purchase 018f47f1-16ce-7d1f-8f65-c61d8be24a32",
-            name: "Professional JavaScript",
             billing_cycle: null,
             trial_period: null,
             tax_mode: "external",

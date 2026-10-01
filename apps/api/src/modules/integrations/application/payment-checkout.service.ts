@@ -10,8 +10,6 @@ import {
 import { PaymentCheckoutProvider } from "./payment-checkout.provider";
 import { PaymentCheckoutRepository } from "./payment-checkout.repository";
 
-const activePaymentProviderKey = "paddle" as const;
-
 @Injectable()
 export class PaymentCheckoutApplicationService extends PaymentCheckoutGateway {
   constructor(
@@ -27,6 +25,7 @@ export class PaymentCheckoutApplicationService extends PaymentCheckoutGateway {
     request: PaymentCheckoutRequest
   ): Promise<PaymentCheckout> {
     const context = this.requestContext.tenantContext(request.organizationId);
+    const providerKey = this.provider.providerKey;
 
     const existing = await this.database.tenantTransaction(
       context,
@@ -35,7 +34,7 @@ export class PaymentCheckoutApplicationService extends PaymentCheckoutGateway {
           transaction,
           request.organizationId,
           request.purchaseId,
-          activePaymentProviderKey
+          providerKey
         )
     );
     if (existing !== null) {
@@ -46,9 +45,8 @@ export class PaymentCheckoutApplicationService extends PaymentCheckoutGateway {
     }
 
     // External provider calls deliberately occur outside PostgreSQL transactions.
-    // Paddle has no arbitrary create-idempotency key. The canonical Purchase and
-    // persisted provider mapping arbitrate retries/concurrency; an ambiguous network
-    // failure may leave an unused external draft transaction, never canonical state.
+    // The canonical Purchase and persisted provider mapping arbitrate application
+    // retries/concurrency even when a provider cannot guarantee exactly-once create.
     const providerCheckout = await this.provider.createCheckout({
       organizationId: request.organizationId,
       purchaseId: request.purchaseId,
@@ -64,7 +62,7 @@ export class PaymentCheckoutApplicationService extends PaymentCheckoutGateway {
           const inserted = await this.checkouts.create(transaction, {
             organizationId: request.organizationId,
             purchaseId: request.purchaseId,
-            providerKey: providerCheckout.providerKey,
+            providerKey,
             externalCheckoutId: providerCheckout.externalCheckoutId,
             checkoutUrl: providerCheckout.checkoutUrl,
             expiresAt: providerCheckout.expiresAt
@@ -75,7 +73,7 @@ export class PaymentCheckoutApplicationService extends PaymentCheckoutGateway {
               transaction,
               request.organizationId,
               request.purchaseId,
-              providerCheckout.providerKey
+              providerKey
             ));
           if (checkout === null) {
             throw new ConflictException(

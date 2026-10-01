@@ -7,13 +7,14 @@ export type CreateProviderCheckoutInput = Readonly<{
 }>;
 
 export type ProviderCheckout = Readonly<{
-  providerKey: "paddle";
   externalCheckoutId: string;
   checkoutUrl: string;
   expiresAt: Date | null;
 }>;
 
 export abstract class PaymentCheckoutProvider {
+  abstract readonly providerKey: string;
+
   abstract createCheckout(
     input: CreateProviderCheckoutInput
   ): Promise<ProviderCheckout>;
