@@ -4,11 +4,27 @@
 -- read-only SECURITY DEFINER functions. Each schema exposes only fields owned by
 -- that module. Cross-module composition remains in the API application layer.
 
+CREATE OR REPLACE FUNCTION organizations.resolve_active_public_organization_id(
+  requested_slug text
+)
+RETURNS uuid
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = pg_catalog
+AS $$
+  SELECT organization.id
+    FROM organizations.organizations AS organization
+   WHERE organization.slug = requested_slug
+     AND organization.status = 'active'
+$$;
+
+REVOKE ALL ON FUNCTION organizations.resolve_active_public_organization_id(text) FROM PUBLIC;
+
 CREATE OR REPLACE FUNCTION organizations.find_public_organization_by_slug(
   requested_slug text
 )
 RETURNS TABLE (
-  id uuid,
   slug text,
   name text
 )
@@ -17,12 +33,12 @@ STABLE
 SECURITY DEFINER
 SET search_path = pg_catalog
 AS $$
-  SELECT organization.id,
-         organization.slug,
+  SELECT organization.slug,
          organization.name
     FROM organizations.organizations AS organization
-   WHERE organization.slug = requested_slug
-     AND organization.status = 'active'
+   WHERE organization.id = organizations.resolve_active_public_organization_id(
+           requested_slug
+         )
 $$;
 
 REVOKE ALL ON FUNCTION organizations.find_public_organization_by_slug(text) FROM PUBLIC;
@@ -55,18 +71,19 @@ AS $$
          price.amount_minor,
          price.currency,
          price.billing_type
-    FROM organizations.find_public_organization_by_slug(
-           requested_organization_slug
-         ) AS public_organization
-    JOIN commerce.products AS product
-      ON product.organization_id = public_organization.id
-     AND product.status = 'active'
+    FROM commerce.products AS product
     JOIN commerce.prices AS price
       ON price.organization_id = product.organization_id
      AND price.product_id = product.id
      AND price.status = 'active'
-   WHERE requested_product_slug IS NULL
-      OR product.slug = requested_product_slug
+   WHERE product.organization_id = organizations.resolve_active_public_organization_id(
+           requested_organization_slug
+         )
+     AND product.status = 'active'
+     AND (
+       requested_product_slug IS NULL
+       OR product.slug = requested_product_slug
+     )
    ORDER BY product.slug, price.currency, price.billing_type, price.id
 $$;
 
@@ -96,11 +113,10 @@ AS $$
          offering.delivery_mode,
          offering.starts_at,
          offering.ends_at
-    FROM organizations.find_public_organization_by_slug(
+    FROM learning_delivery.learning_offerings AS offering
+   WHERE offering.organization_id = organizations.resolve_active_public_organization_id(
            requested_organization_slug
-         ) AS public_organization
-    JOIN learning_delivery.learning_offerings AS offering
-      ON offering.organization_id = public_organization.id
+         )
      AND offering.id = ANY(requested_offering_ids)
      AND offering.status = 'open'
      AND offering.access_mode = 'entitlement_required'
