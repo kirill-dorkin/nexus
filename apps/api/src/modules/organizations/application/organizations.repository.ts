@@ -72,8 +72,7 @@ export abstract class OrganizationsRepository {
 
   abstract joinOpenCustomerOrganization(
     transaction: DatabaseTransaction,
-    organizationSlug: string,
-    userId: string
+    organizationSlug: string
   ): Promise<CustomerMembershipEntryResult>;
 
   abstract findById(
