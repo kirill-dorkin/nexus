@@ -17,6 +17,7 @@ import { LearningReadinessModule } from "./modules/learning-readiness/learning-r
 import { LearningRecommendationsModule } from "./modules/learning-recommendations/learning-recommendations.module";
 import { LearningValidationModule } from "./modules/learning-validation/learning-validation.module";
 import { OrganizationsModule } from "./modules/organizations/organizations.module";
+import { PaymentCheckoutModule } from "./modules/payment-checkout/payment-checkout.module";
 import { ProjectsModule } from "./modules/projects/projects.module";
 import { RequestContextModule } from "./request-context/request-context.module";
 
@@ -30,6 +31,7 @@ import { RequestContextModule } from "./request-context/request-context.module";
     OrganizationsModule,
     CommerceModule,
     IntegrationsModule,
+    PaymentCheckoutModule,
     ProjectsModule,
     LearningContentModule,
     LearningDeliveryModule,

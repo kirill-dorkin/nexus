@@ -5,14 +5,19 @@ import {
   commerceProductSchema,
   createCommercePriceRequestSchema,
   createCommerceProductRequestSchema,
+  createPurchaseCheckoutRequestSchema,
   entitlementSchema,
-  grantOfferingEntitlementRequestSchema
+  grantOfferingEntitlementRequestSchema,
+  purchaseSchema
 } from "./commerce";
 
 const id = "018f47f1-16ce-7d1f-8f65-c61d8be24a31";
 const offeringId = "018f47f1-16ce-7d1f-8f65-c61d8be24a32";
 const userId = "018f47f1-16ce-7d1f-8f65-c61d8be24a33";
 const productId = "018f47f1-16ce-7d1f-8f65-c61d8be24a34";
+const priceId = "018f47f1-16ce-7d1f-8f65-c61d8be24a35";
+const purchaseId = "018f47f1-16ce-7d1f-8f65-c61d8be24a36";
+const idempotencyKey = "018f47f1-16ce-7d1f-8f65-c61d8be24a37";
 
 describe("commerce contracts", () => {
   it("keeps entitlement separate from enrollment and payment state", () => {
@@ -23,11 +28,19 @@ describe("commerce contracts", () => {
         offeringId,
         userId,
         status: "active",
+        grantSource: "manual",
+        sourcePurchaseId: null,
         grantedAt: "2026-09-14T12:00:00.000Z",
         expiresAt: null,
         revokedAt: null
       })
-    ).toMatchObject({ offeringId, userId, status: "active" });
+    ).toMatchObject({
+      offeringId,
+      userId,
+      status: "active",
+      grantSource: "manual",
+      sourcePurchaseId: null
+    });
   });
 
   it("accepts manual offering access with optional expiry", () => {
@@ -76,7 +89,7 @@ describe("commerce contracts", () => {
   it("uses positive minor-unit immutable Price terms with explicit currency", () => {
     expect(
       commercePriceSchema.parse({
-        id,
+        id: priceId,
         organizationId: id,
         productId,
         amountMinor: 12900,
@@ -123,6 +136,52 @@ describe("commerce contracts", () => {
     expect(
       createCommercePriceRequestSchema.safeParse({
         amountMinor: 0,
+        currency: "USD"
+      }).success
+    ).toBe(false);
+  });
+
+  it("pins canonical Purchase terms independently from Entitlement and Enrollment", () => {
+    expect(
+      purchaseSchema.parse({
+        id: purchaseId,
+        organizationId: id,
+        productId,
+        priceId,
+        offeringId,
+        purchaserUserId: userId,
+        status: "pending",
+        amountMinor: 12900,
+        currency: "USD",
+        billingType: "one_time",
+        idempotencyKey,
+        createdAt: "2026-09-19T06:00:00.000Z",
+        paidAt: null
+      })
+    ).toMatchObject({
+      productId,
+      priceId,
+      offeringId,
+      purchaserUserId: userId,
+      amountMinor: 12900,
+      currency: "USD",
+      status: "pending"
+    });
+  });
+
+  it("lets checkout select only an exact Price and idempotency identity", () => {
+    expect(
+      createPurchaseCheckoutRequestSchema.parse({
+        priceId,
+        idempotencyKey
+      })
+    ).toEqual({ priceId, idempotencyKey });
+
+    expect(
+      createPurchaseCheckoutRequestSchema.safeParse({
+        priceId,
+        idempotencyKey,
+        amountMinor: 1,
         currency: "USD"
       }).success
     ).toBe(false);
