@@ -8,7 +8,7 @@ export type PaymentCheckoutRequest = Readonly<{
 
 export type PaymentCheckout = Readonly<{
   checkoutUrl: string;
-  expiresAt: string;
+  expiresAt: string | null;
 }>;
 
 export abstract class PaymentCheckoutGateway {
