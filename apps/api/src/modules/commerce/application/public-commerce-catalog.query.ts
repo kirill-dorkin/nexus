@@ -9,7 +9,6 @@ export type PublicCommercePrice = Readonly<{
 }>;
 
 export type PublicCommerceProductCandidate = Readonly<{
-  id: string;
   offeringId: string;
   slug: string;
   name: string;
@@ -19,7 +18,7 @@ export type PublicCommerceProductCandidate = Readonly<{
 export abstract class PublicCommerceCatalogQuery {
   abstract listActiveProductCandidates(
     transaction: DatabaseTransaction,
-    organizationId: string,
+    organizationSlug: string,
     productSlug?: string
   ): Promise<readonly PublicCommerceProductCandidate[]>;
 }
