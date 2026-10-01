@@ -18,6 +18,7 @@ export * from "./organizations";
 export * from "./authorization";
 export * from "./authentication";
 export * from "./commerce";
+export * from "./public-catalog";
 export * from "./github-integration";
 export * from "./guided-build";
 export * from "./learning-content";
