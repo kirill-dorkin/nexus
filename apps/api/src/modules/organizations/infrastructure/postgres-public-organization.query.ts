@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import type { CustomerEntryPolicy } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
 import {
@@ -10,7 +9,6 @@ import {
 type PublicOrganizationRow = {
   slug: string;
   name: string;
-  customer_entry_policy: CustomerEntryPolicy;
 };
 
 @Injectable()
@@ -20,7 +18,7 @@ export class PostgresPublicOrganizationQuery extends PublicOrganizationQuery {
     slug: string
   ): Promise<PublicOrganization | null> {
     const result = await transaction.client.query<PublicOrganizationRow>(
-      `SELECT slug, name, customer_entry_policy
+      `SELECT slug, name
          FROM organizations.find_public_organization_by_slug($1)`,
       [slug]
     );
@@ -29,8 +27,7 @@ export class PostgresPublicOrganizationQuery extends PublicOrganizationQuery {
       ? null
       : {
           slug: row.slug,
-          name: row.name,
-          customerEntryPolicy: row.customer_entry_policy
+          name: row.name
         };
   }
 }
