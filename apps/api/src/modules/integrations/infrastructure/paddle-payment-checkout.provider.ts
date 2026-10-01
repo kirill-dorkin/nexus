@@ -80,7 +80,7 @@ export class PaddlePaymentCheckoutProvider extends PaymentCheckoutProvider {
       }
       return {
         providerKey: "paddle",
-        externalCheckoutId: `txn_test_${input.purchaseId.replaceAll("-", "")}`,
+        externalCheckoutId: `txn_test${input.purchaseId.replaceAll("-", "").slice(0, 22)}`,
         checkoutUrl: `https://checkout.test/${input.purchaseId}`,
         expiresAt: null
       };
@@ -149,7 +149,15 @@ export class PaddlePaymentCheckoutProvider extends PaymentCheckoutProvider {
       );
     }
 
-    const transaction = requirePaddleTransactionResponse(await response.json());
+    let decoded: unknown;
+    try {
+      decoded = await response.json();
+    } catch {
+      throw new ServiceUnavailableException(
+        "Paddle returned an invalid transaction response."
+      );
+    }
+    const transaction = requirePaddleTransactionResponse(decoded);
     return {
       providerKey: "paddle",
       externalCheckoutId: transaction.id,

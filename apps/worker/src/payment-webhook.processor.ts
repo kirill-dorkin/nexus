@@ -10,9 +10,7 @@ type ClaimRow = {
   inbox_id: string;
   provider_event_id: string;
   external_checkout_id: string;
-  event_type:
-    | "checkout.session.completed"
-    | "checkout.session.async_payment_succeeded";
+  event_type: string;
   payment_status: "paid" | "unpaid" | "no_payment_required";
   amount_minor: number;
   currency: string;
@@ -25,9 +23,7 @@ type Claim = Readonly<{
   inboxId: string;
   providerEventId: string;
   externalCheckoutId: string;
-  eventType:
-    | "checkout.session.completed"
-    | "checkout.session.async_payment_succeeded";
+  eventType: string;
   paymentStatus: "paid" | "unpaid" | "no_payment_required";
   amountMinor: number;
   currency: string;
