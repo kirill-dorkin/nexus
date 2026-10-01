@@ -2,6 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-10-01
+- Supersedes: provider-specific Stripe adapter decisions in ADR-0045; ADR-0045 canonical Purchase/settlement invariants remain in force
 
 ## Context
 
@@ -58,6 +59,8 @@ If the network outcome of transaction creation is ambiguous, an unused orphan Pa
 ### Completed transaction webhook is the settlement ingress
 
 The Paddle endpoint accepts only signed raw-body `transaction.completed` events for automatic-collection transactions. Signature verification occurs before payload fields are trusted. The normalized event keeps only provider event id, transaction id, paid status, normalized commercial amount/currency, routing state, and payload hash.
+
+Paddle API requests are pinned with `Paddle-Version: 1`. The Paddle notification destination must also be configured to webhook API version `1`; notification destinations version webhooks independently from ordinary API requests.
 
 Provider event id deduplicates durable ingress. Repeated external input follows:
 
