@@ -6,6 +6,7 @@
 | Organizations | tenants, memberships, capabilities, policies | curriculum |
 | Authorization | permissions, role bindings, relation checks | authentication |
 | Commerce | products, purchases, entitlement grants | learning progress |
+| Public Catalog | stateless unauthenticated composition of safe Organization + Commerce + Delivery read contracts | canonical Product/Price/Offering state, onboarding, checkout, entitlements, enrollments |
 | Catalog/Curriculum | programs/courses/modules/lessons + versions | delivery state |
 | Knowledge | skills, concepts, misconceptions, relations | lesson rendering |
 | Content | authoring drafts, releases, assets, immutable CourseVersion skill presentation snapshots, protected immutable Guided Build definitions | mastery, learner assistance exposure state |
@@ -31,6 +32,8 @@
 `domain` never imports infrastructure. A module never reaches into another module's tables/repositories. Cross-module synchronous calls target a public application interface. Deferred consequences use domain/integration events through outbox.
 
 Database-level foreign keys and integrity triggers may enforce invariants across owned schemas where PostgreSQL must prevent impossible canonical state. That does not grant application modules permission to query foreign tables directly.
+
+A public/anonymous composition boundary may consume narrow public application query interfaces from owning modules, but it does not gain direct table access or canonical state ownership. Any RLS bypass needed for anonymous reads must be narrowly scoped, read-only, and explicitly granted rather than implemented as a broad public table policy.
 
 ## Internal module shape
 

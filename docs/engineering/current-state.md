@@ -6,13 +6,13 @@ It is **not live GitHub telemetry**. Before doing work, always verify the curren
 
 ## Checkpoint baseline
 
-Last maintained: 2026-09-19.
+Last maintained: 2026-10-01.
 
-Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the completed repository-side F7 grader-hardening foundation, the completed F8 recommendation/instructor/progression foundation, and the first F9 Commerce catalog vertical. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes, and a separate trusted Go grader runner with a capability-minimal `goja` runtime, bounded result channel, reproducible `scratch` OCI build, CI-proven canonical `js-sum-v1@1` digest, repository security-contract tests, and a fail-closed real-cluster verification harness/runbook. **Production learner-code execution remains disabled:** the checked-in profile is inert, `GRADER_SANDBOX_PROVIDER` still defaults to `unavailable`, and activation still requires publishing the exact runner digest plus green target-cluster verification evidence in a separate deployment change. F8 now composes the unchanged `ordered-mastery@1` recommendation policy with derived `fixed-interval-review@1` scheduling based on Mastery-owned `lastEvidenceAt`, a conservative `repeated-trusted-failure@1` suspected-misconception signal derived only from normalized trusted validation Evidence, the first explicit `repeated-failure-remediation@1` action-changing policy backed by immutable CourseVersion-authored Skill-to-Activity remediation mappings, derived `course-progression-readiness@1` over distinct scored Attempts, pinned Mastery semantics, scored-Evidence freshness, and the existing repeated-trusted-failure signal, plus Offering-scoped `offering-readiness-triage@1` over active learner readiness decisions for instructor/mentor operational intelligence, and the first enforced `course-readiness-enrollment-completion@1` ProgressionGate protecting explicit learner-requested Enrollment completion. Review/signal/intervention/readiness/overview/gate state remains derived rather than persisted; the only new canonical F8 state after F8.2 is authored curriculum remediation intent. A fresh post-F8.6 audit found no concrete staff completion override or durable completion-history product/audit requirement, so F8 is closed without inventing another progression slice. F9 now builds on the existing Entitlement foundation with provider-independent Product/immutable Price authoring plus the first canonical Purchase -> Stripe Checkout -> durable webhook -> lease-fenced paid Entitlement settlement vertical. Verify the live `main` head before relying on any SHA or PR number.
+Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the completed repository-side F7 grader-hardening foundation, the completed F8 recommendation/instructor/progression foundation, and the F9 Commerce foundation through Product/immutable Price, canonical paid Purchase settlement, and a safe unauthenticated public sellable-catalog read boundary. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes, and a separate trusted Go grader runner with a capability-minimal `goja` runtime, bounded result channel, reproducible `scratch` OCI build, CI-proven canonical `js-sum-v1@1` digest, repository security-contract tests, and a fail-closed real-cluster verification harness/runbook. **Production learner-code execution remains disabled:** the checked-in profile is inert, `GRADER_SANDBOX_PROVIDER` still defaults to `unavailable`, and activation still requires publishing the exact runner digest plus green target-cluster verification evidence in a separate deployment change. F8 now composes the unchanged `ordered-mastery@1` recommendation policy with derived `fixed-interval-review@1` scheduling based on Mastery-owned `lastEvidenceAt`, a conservative `repeated-trusted-failure@1` suspected-misconception signal derived only from normalized trusted validation Evidence, the first explicit `repeated-failure-remediation@1` action-changing policy backed by immutable CourseVersion-authored Skill-to-Activity remediation mappings, derived `course-progression-readiness@1` over distinct scored Attempts, pinned Mastery semantics, scored-Evidence freshness, and the existing repeated-trusted-failure signal, plus Offering-scoped `offering-readiness-triage@1` over active learner readiness decisions for instructor/mentor operational intelligence, and the first enforced `course-readiness-enrollment-completion@1` ProgressionGate protecting explicit learner-requested Enrollment completion. Review/signal/intervention/readiness/overview/gate state remains derived rather than persisted; the only new canonical F8 state after F8.2 is authored curriculum remediation intent. A fresh post-F8.6 audit found no concrete staff completion override or durable completion-history product/audit requirement, so F8 is closed without inventing another progression slice. F9 now builds on the existing Entitlement foundation with provider-independent Product/immutable Price authoring, the first canonical Purchase -> Stripe Checkout -> durable webhook -> lease-fenced paid Entitlement settlement vertical, and a strict fail-closed public projection derived from current Organization/Product/Price/Offering state without adding a second catalog source of truth. Verify the live `main` head before relying on any SHA or PR number.
 
-Latest architectural decision at this checkpoint: ADR-0045.
+Latest architectural decision at this checkpoint: ADR-0046.
 
-Latest ordered migration at this checkpoint: `000033_purchase_payment_checkout.sql`.
+Latest ordered migration at this checkpoint: `000034_public_catalog_reads.sql`.
 
 The baseline above is an orientation marker, not permission to skip checking the live `main` head.
 
@@ -545,11 +545,11 @@ active Enrollment
 
 Adaptive spacing, canonical named misconception taxonomy, readiness history, recommendation/intervention history, reminders/notifications, Group/CourseRun readiness filters, dashboards, reason-specific urgency ranking, bulk instructor actions, automatic completion, staff completion override/audit policy, and learn-vs-review balancing remain separate future slices.
 
-### F9 — Commerce/public launch: Product/Price + paid Purchase vertical started
+### F9 — Commerce/public launch: Product/Price + Purchase settlement + public catalog implemented
 
-F8 is closed. F9 continues from ADR-0014 Entitlement/access semantics and the F9.1 provider-independent Product + immutable Price catalog foundation.
+F8 is closed. F9 continues from ADR-0014 Entitlement/access semantics through provider-independent commercial terms, paid settlement, and the first unauthenticated discovery boundary.
 
-The implemented Commerce foundation now includes:
+The implemented Commerce/public-launch foundation now includes:
 
 - ADR-0044 provider-independent `CommerceProduct` and immutable `CommercePrice`;
 - Product targets one existing LearningOffering in v1 without creating a Commerce -> Delivery application dependency;
@@ -567,7 +567,17 @@ The implemented Commerce foundation now includes:
 - the winning paid acknowledgement atomically commits Purchase `paid`, a purchase-backed Offering Entitlement, `purchase.paid@1`, and `entitlement.granted@1`;
 - Entitlement provenance now distinguishes `manual` human grants from `purchase` grants linked to source Purchase;
 - paid settlement never creates Enrollment, preserving `Purchase != Entitlement != Enrollment`;
-- public catalog reads, visitor/customer onboarding, checkout UI, refunds/reversals, subscriptions, taxes, discounts, provider customer identity, reconciliation, marketing, and launch hardening remain separate F9 slices.
+- ADR-0046 defines a stateless Public Catalog composition boundary rather than exposing internal Commerce/Delivery DTOs;
+- public routing uses globally unique Organization slug plus Organization-scoped Product slug and never tenant UUID as visitor authority;
+- the public projection exposes only Organization name/slug, Product name/slug, safe Offering presentation fields, and active immutable Price terms plus the exact opaque Price id required by a future checkout command;
+- public sellability is derived fail-closed from active Organization + active Product + at least one active Price + open `entitlement_required` Offering, while membership-only Offerings are deliberately excluded from the current paid vertical;
+- strict public schemas reject accidental Product/Offering/tenant lifecycle, ownership, audit, CourseVersion, Purchase, Entitlement, Enrollment, or provider-field disclosure;
+- Public Catalog owns no canonical table and composes Organizations, Commerce, and Learning Delivery only through public application query ports, avoiding a Commerce -> Delivery dependency cycle;
+- anonymous database access does not add broad table SELECT/RLS policy: narrow schema-owned `STABLE SECURITY DEFINER` functions expose only the fields required for public composition, and the active Organization slug -> tenant UUID resolver is not executable by `platform_app`;
+- public composition runs sequentially inside one read-only `REPEATABLE READ` snapshot;
+- v1 public catalog responses use `Cache-Control: no-store` so archive, suspension, Offering closure, and Price withdrawal are not prolonged by shared-cache staleness;
+- catalog visibility is discovery/presentation only: it is not an access grant or checkout authorization, and any future visitor checkout must revalidate exact current sellability server-side rather than trusting a previously returned document;
+- visitor/customer onboarding, Organization self-join policy, unaffiliated-user checkout, checkout UI, refunds/reversals, subscriptions, taxes, discounts, provider customer identity, reconciliation, marketing, caching optimization, and launch hardening remain separate F9 slices.
 
 The first paid path is:
 
@@ -582,6 +592,17 @@ authenticated active Organization member
   -> paid amount/currency match
   -> Purchase paid + purchase-backed Entitlement atomically
   -> no Enrollment
+```
+
+The first public discovery path is:
+
+```text
+organizationSlug + optional productSlug
+  -> active Organization public identity
+  -> active Product + active immutable Price candidates
+  -> open entitlement_required Offering filter
+  -> strict public projection
+  -> no access grant, membership mutation, Purchase, Entitlement, or Enrollment
 ```
 
 F7 production grader activation remains an independent deployment/security gate.
@@ -608,6 +629,11 @@ These are high-value reminders, not substitutes for their ADRs.
 - Purchase pins immutable server-priced Product/Price terms; provider objects/statuses are Integrations state rather than Purchase semantics.
 - Payment webhook HTTP ingress is verify/dedupe/persist/return; canonical settlement is lease-fenced asynchronous worker processing.
 - A paid Purchase and its purchase-backed Entitlement plus their integration events commit atomically; settlement never auto-enrolls.
+- Public catalog projection is derived presentation state, not canonical Product/Price/Offering state and not a second source of truth.
+- Public sellability is fail-closed current-state composition: active Organization + active Product + active Price + open `entitlement_required` Offering.
+- Public catalog visibility does not grant Organization membership, Entitlement, Enrollment, or checkout authority; a future public checkout must revalidate exact current commercial/Offering state server-side.
+- Organization slug + Product slug is the stable public route identity; opaque Price id selects immutable commercial terms but is never tenant authority.
+- Anonymous read capability must remain narrower than ordinary tenant-table access; targeted SECURITY DEFINER reads do not justify broad public RLS policies.
 - `Group != Team`.
 - `Assignment` schedules or targets learner work; it does not itself grant entitlement, enrollment, access, or group membership.
 - `Attempt` is one learner try against an exact `ActivityVersion`.
@@ -682,18 +708,19 @@ Do not remove these merely because the canonical model has moved on. Each requir
 
 ## Next recommended slice
 
-**F9.3 Public sellable catalog read boundary — expose a safe unauthenticated commercial read model before building customer onboarding or checkout UI.**
+**F9.4 Visitor/customer onboarding and Organization membership entry boundary — define how an unaffiliated visitor becomes an authenticated customer eligible to enter the existing checkout flow without weakening tenant or membership authority.**
 
-F9.2 now proves a real paid transaction for an already-authenticated active Organization member. The next smallest public-launch slice should make sellable offers discoverable without exposing authoring or tenant internals.
+F9.3 makes exact sellable offers discoverable without authentication. The next smallest public-launch slice should establish the identity/membership transition needed before exposing checkout initiation to visitors who are not already active Organization members.
 
 Before coding:
 
-- define exactly which active Product/Price/Offering fields are safe for unauthenticated presentation;
-- derive sellability from canonical Product + Price state rather than persisting a second catalog source of truth;
-- decide the public stable route/slug identity and ambiguity rules across Organizations;
-- ensure archived Product/Price and non-public/non-open Offering state fail closed;
-- keep public read authority separate from `commerce.manage`, `entitlement.manage`, and Delivery enrollment authority;
-- do not yet combine public catalog reads with visitor Organization self-join, account creation, checkout UI, refunds, subscriptions, tax, discounts, or marketing CMS;
-- after the public read boundary is established, separately design visitor -> authenticated customer -> Organization membership entry before exposing checkout to unaffiliated users;
-- keep F7 production grader activation independent.
+- fresh-audit the live F9.3 main plus Identity, Organizations, Authentication, Authorization, Commerce checkout, session/cookie, abuse/rate-limit, and tenant-routing boundaries;
+- decide whether v1 supports account creation, sign-in-only, invitation, explicit Organization self-join, or a combination, and keep Organization membership creation an explicit authoritative transition rather than a side effect of catalog reads;
+- define which Organizations are allowed to accept public customer entry and whether that requires a new explicit Organization policy/configuration rather than inferring from the existence of a Product;
+- distinguish authenticated Nexus user identity from Organization membership and from paid Entitlement; `User != Membership != Purchase != Entitlement != Enrollment`;
+- define duplicate/replay/idempotency semantics for registration and membership entry, including concurrent requests;
+- preserve tenant authority server-side from the public Organization slug; never accept tenant UUID, amount, currency, Product/Offering ids, or membership role from visitor-controlled input;
+- define enumeration/privacy behavior for email/account lookup, session establishment, verification/recovery, CSRF/origin protections, and abuse controls before adding public write endpoints;
+- do not let a stale catalog response authorize checkout: the later public checkout command must revalidate current Organization/Product/Price/Offering sellability and exact immutable Price identity at command time;
+- keep visitor onboarding separate from checkout UI, refunds/subscriptions/tax/discounts/marketing, and F7 production grader activation unless the audit proves a minimal dependency is required for correctness.
 

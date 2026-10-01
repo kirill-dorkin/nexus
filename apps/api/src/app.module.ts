@@ -19,6 +19,7 @@ import { LearningValidationModule } from "./modules/learning-validation/learning
 import { OrganizationsModule } from "./modules/organizations/organizations.module";
 import { PaymentCheckoutModule } from "./modules/payment-checkout/payment-checkout.module";
 import { ProjectsModule } from "./modules/projects/projects.module";
+import { PublicCatalogModule } from "./modules/public-catalog/public-catalog.module";
 import { RequestContextModule } from "./request-context/request-context.module";
 
 @Module({
@@ -32,6 +33,7 @@ import { RequestContextModule } from "./request-context/request-context.module";
     CommerceModule,
     IntegrationsModule,
     PaymentCheckoutModule,
+    PublicCatalogModule,
     ProjectsModule,
     LearningContentModule,
     LearningDeliveryModule,
