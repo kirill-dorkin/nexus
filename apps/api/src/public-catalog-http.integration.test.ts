@@ -53,7 +53,7 @@ describe("public sellable catalog HTTP boundary", () => {
   const courseIds: string[] = [];
 
   async function insertId(sql: string, values: readonly unknown[]): Promise<string> {
-    const result = await migrationPool.query<IdRow>(sql, values);
+    const result = await migrationPool.query<IdRow>(sql, [...values]);
     const id = result.rows[0]?.id;
     if (id === undefined) {
       throw new Error("Fixture insert did not return an id.");
