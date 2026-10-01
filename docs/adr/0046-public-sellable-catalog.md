@@ -68,6 +68,8 @@ Any missing or non-matching state fails closed. Archived Prices are omitted. A P
 
 This decision does not change canonical Product creation or the existing authenticated checkout command. It defines only public visitor sellability; broader Commerce configuration validation can be a later invariant if a concrete product requirement needs it.
 
+Catalog visibility is discovery/presentation state, not an access grant and not checkout authorization. A future unaffiliated-visitor checkout path must revalidate the exact Product/Price/Offering sellability server-side at command time; it must never trust a previously returned catalog document as authority.
+
 ### Composition boundary
 
 A stateless Public Catalog application module composes three public query ports:
@@ -88,7 +90,9 @@ Owning modules expose narrow read-only query implementations. Anonymous reads by
 - expose only the minimum fields required for composition;
 - filter lifecycle state inside the owning schema;
 - revoke execution from `PUBLIC`;
-- grant execution only to `platform_app`.
+- grant only the public presentation functions to `platform_app`.
+
+Organizations keeps the active-slug-to-tenant-UUID resolver private to SECURITY DEFINER composition. `platform_app` can resolve only the public Organization presentation and cannot call the tenant-id resolver directly. Commerce does not expose Product UUID merely for row grouping; the already tenant-scoped unique Product slug is sufficient for application composition.
 
 No broad anonymous table policy is added.
 
