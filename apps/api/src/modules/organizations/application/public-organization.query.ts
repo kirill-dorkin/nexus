@@ -1,7 +1,6 @@
 import type { DatabaseTransaction } from "@platform/database";
 
 export type PublicOrganization = Readonly<{
-  id: string;
   slug: string;
   name: string;
 }>;
