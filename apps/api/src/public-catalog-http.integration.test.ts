@@ -377,9 +377,9 @@ describe("public sellable catalog HTTP boundary", () => {
       publicPriceEurId,
       publicPriceUsdId
     ]);
-    expect(catalog.products[0]?.prices.some((price) => price.id === archivedPriceId)).toBe(
-      false
-    );
+    expect(
+      catalog.products[0]?.prices.some((price) => price.id === archivedPriceId)
+    ).toBe(false);
 
     const serialized = JSON.stringify(catalog);
     expect(serialized).not.toContain(primaryOrganization.id);
@@ -454,30 +454,42 @@ describe("public sellable catalog HTTP boundary", () => {
     expect(publicRows.rows).toHaveLength(0);
   });
 
-  it("keeps direct tenant tables closed while narrow slug-scoped public functions remain callable", async () => {
+  it("keeps direct tenant tables and tenant-id resolver closed while narrow public functions remain callable", async () => {
     const directProducts = await appPool.query<{ id: string }>(
       `SELECT id::text FROM commerce.products WHERE organization_id = $1`,
       [primaryOrganization.id]
     );
     expect(directProducts.rows).toHaveLength(0);
 
-    const publicOrganization = await appPool.query<{ id: string }>(
-      `SELECT id::text
+    const resolverPrivilege = await appPool.query<{ can_resolve_id: boolean }>(
+      `SELECT has_function_privilege(
+         current_user,
+         'organizations.resolve_active_public_organization_id(text)',
+         'EXECUTE'
+       ) AS can_resolve_id`
+    );
+    expect(resolverPrivilege.rows[0]?.can_resolve_id).toBe(false);
+
+    const publicOrganization = await appPool.query<{ slug: string; name: string }>(
+      `SELECT slug, name
          FROM organizations.find_public_organization_by_slug($1)`,
       [primaryOrganization.slug]
     );
-    expect(publicOrganization.rows[0]?.id).toBe(primaryOrganization.id);
+    expect(publicOrganization.rows[0]).toEqual({
+      slug: primaryOrganization.slug,
+      name: "public-catalog-primary organization"
+    });
 
     const publicRows = await appPool.query<{ product_slug: string }>(
       `SELECT product_slug
          FROM commerce.list_public_catalog_offer_rows($1, NULL::text)`,
       [primaryOrganization.slug]
     );
-    expect(publicRows.rows.some((row) => row.product_slug === publicProductSlug)).toBe(
-      true
-    );
-    expect(publicRows.rows.some((row) => row.product_slug === archivedProductSlug)).toBe(
-      false
-    );
+    expect(
+      publicRows.rows.some((row) => row.product_slug === publicProductSlug)
+    ).toBe(true);
+    expect(
+      publicRows.rows.some((row) => row.product_slug === archivedProductSlug)
+    ).toBe(false);
   });
 });
