@@ -207,8 +207,7 @@ export class PostgresOrganizationsRepository extends OrganizationsRepository {
 
   async joinOpenCustomerOrganization(
     transaction: DatabaseTransaction,
-    organizationSlug: string,
-    userId: string
+    organizationSlug: string
   ): Promise<CustomerMembershipEntryResult> {
     const result = await transaction.client.query<CustomerMembershipEntryRow>(
       `SELECT outcome,
@@ -217,8 +216,8 @@ export class PostgresOrganizationsRepository extends OrganizationsRepository {
               user_id::text,
               membership_status,
               joined_at
-         FROM organizations.join_open_customer_organization($1, $2)`,
-      [organizationSlug, userId]
+         FROM organizations.join_open_customer_organization($1)`,
+      [organizationSlug]
     );
     const row = result.rows[0];
     if (row === undefined || row.outcome === "unavailable") {
