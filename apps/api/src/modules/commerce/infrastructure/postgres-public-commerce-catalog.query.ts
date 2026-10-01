@@ -9,7 +9,6 @@ import {
 } from "../application/public-commerce-catalog.query";
 
 type PublicCommerceOfferRow = {
-  product_id: string;
   offering_id: string;
   product_slug: string;
   product_name: string;
@@ -34,8 +33,7 @@ export class PostgresPublicCommerceCatalogQuery extends PublicCommerceCatalogQue
     productSlug?: string
   ): Promise<readonly PublicCommerceProductCandidate[]> {
     const result = await transaction.client.query<PublicCommerceOfferRow>(
-      `SELECT product_id::text,
-              offering_id::text,
+      `SELECT offering_id::text,
               product_slug,
               product_name,
               price_id::text,
@@ -49,7 +47,7 @@ export class PostgresPublicCommerceCatalogQuery extends PublicCommerceCatalogQue
     const products = new Map<string, MutableProduct>();
 
     for (const row of result.rows) {
-      let product = products.get(row.product_id);
+      let product = products.get(row.product_slug);
       if (product === undefined) {
         product = {
           offeringId: row.offering_id,
@@ -57,7 +55,7 @@ export class PostgresPublicCommerceCatalogQuery extends PublicCommerceCatalogQue
           name: row.product_name,
           prices: []
         };
-        products.set(row.product_id, product);
+        products.set(row.product_slug, product);
       }
 
       product.prices.push({
