@@ -177,18 +177,18 @@ export class OrganizationsApplicationService {
         userId
       );
 
-      if (result.outcome === "unavailable") {
-        throw new NotFoundException(
-          "Organization is not available for customer self-entry."
-        );
+      switch (result.outcome) {
+        case "active":
+          return result.membership;
+        case "unavailable":
+          throw new NotFoundException(
+            "Organization is not available for customer self-entry."
+          );
+        case "blocked":
+          throw new ConflictException(
+            "Existing membership state requires an explicit lifecycle operation."
+          );
       }
-      if (result.outcome === "blocked") {
-        throw new ConflictException(
-          "Existing membership state requires an explicit lifecycle operation."
-        );
-      }
-
-      return result.membership;
     });
   }
 
