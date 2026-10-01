@@ -20,7 +20,7 @@ type PublicOfferingRow = {
 export class PostgresPublicLearningOfferingQuery extends PublicLearningOfferingQuery {
   async listSellableByIds(
     transaction: DatabaseTransaction,
-    organizationId: string,
+    organizationSlug: string,
     offeringIds: readonly string[]
   ): Promise<readonly PublicSellableOffering[]> {
     if (offeringIds.length === 0) {
@@ -35,7 +35,7 @@ export class PostgresPublicLearningOfferingQuery extends PublicLearningOfferingQ
               starts_at,
               ends_at
          FROM learning_delivery.list_public_sellable_offerings($1, $2::uuid[])`,
-      [organizationId, [...offeringIds]]
+      [organizationSlug, [...offeringIds]]
     );
 
     return result.rows.map((row) => ({
