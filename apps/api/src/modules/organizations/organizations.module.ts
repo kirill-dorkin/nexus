@@ -9,10 +9,11 @@ import { PublicOrganizationQuery } from "./application/public-organization.query
 import { PostgresOrganizationsRepository } from "./infrastructure/postgres-organizations.repository";
 import { PostgresPublicOrganizationQuery } from "./infrastructure/postgres-public-organization.query";
 import { OrganizationsController } from "./organizations.controller";
+import { PublicOrganizationEntryController } from "./public-organization-entry.controller";
 
 @Module({
   imports: [IdentityModule, AuthorizationModule, OutboxModule],
-  controllers: [OrganizationsController],
+  controllers: [OrganizationsController, PublicOrganizationEntryController],
   providers: [
     OrganizationsApplicationService,
     {
