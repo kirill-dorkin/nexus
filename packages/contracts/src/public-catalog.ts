@@ -1,23 +1,24 @@
 import { z } from "zod";
 
 import { organizationSlugSchema, resourceSlugSchema, uuidSchema } from "./common";
-import { commerceBillingTypeSchema, commerceCurrencySchema } from "./commerce";
+import { commerceBillingTypeSchema } from "./commerce";
 import { learningOfferingDeliveryModeSchema } from "./learning-delivery";
 
 const nullableDateTimeSchema = z.string().datetime().nullable();
+const publicCurrencySchema = z.string().regex(/^[A-Z]{3}$/);
 
 export const publicCatalogOrganizationSchema = z
   .object({
     slug: organizationSlugSchema,
-    name: z.string().min(1).max(160)
+    name: z.string().trim().min(1).max(160)
   })
   .strict();
 
 export const publicCatalogPriceSchema = z
   .object({
     id: uuidSchema,
-    amountMinor: z.number().int().positive(),
-    currency: commerceCurrencySchema,
+    amountMinor: z.number().int().positive().max(2147483647),
+    currency: publicCurrencySchema,
     billingType: commerceBillingTypeSchema
   })
   .strict();
@@ -25,7 +26,7 @@ export const publicCatalogPriceSchema = z
 export const publicCatalogOfferingSchema = z
   .object({
     slug: resourceSlugSchema,
-    name: z.string().min(1).max(160),
+    name: z.string().trim().min(1).max(160),
     deliveryMode: learningOfferingDeliveryModeSchema,
     startsAt: nullableDateTimeSchema,
     endsAt: nullableDateTimeSchema
@@ -35,7 +36,7 @@ export const publicCatalogOfferingSchema = z
 export const publicCatalogProductSchema = z
   .object({
     slug: resourceSlugSchema,
-    name: z.string().min(1).max(160),
+    name: z.string().trim().min(1).max(160),
     offering: publicCatalogOfferingSchema,
     prices: z.array(publicCatalogPriceSchema).min(1)
   })
