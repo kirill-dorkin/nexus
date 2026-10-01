@@ -51,8 +51,7 @@ export class PublicCatalogService {
         return publicCatalogSchema.parse({
           organization: {
             slug: organization.slug,
-            name: organization.name,
-            customerEntryPolicy: organization.customerEntryPolicy
+            name: organization.name
           },
           products: this.composeProducts(candidates, offerings)
         });
@@ -93,8 +92,7 @@ export class PublicCatalogService {
         return publicCatalogProductResponseSchema.parse({
           organization: {
             slug: organization.slug,
-            name: organization.name,
-            customerEntryPolicy: organization.customerEntryPolicy
+            name: organization.name
           },
           product
         });
