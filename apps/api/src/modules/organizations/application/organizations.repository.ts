@@ -1,4 +1,5 @@
 import type {
+  CustomerEntryPolicy,
   Organization,
   OrganizationMembership
 } from "@platform/contracts";
@@ -10,6 +11,16 @@ export type NewOrganization = Readonly<{
   name: string;
   createdByUserId: string;
 }>;
+
+export type CustomerMembershipEntryResult =
+  | Readonly<{
+      outcome: "active";
+      membership: OrganizationMembership;
+    }>
+  | Readonly<{
+      outcome: "blocked" | "unavailable";
+      membership: null;
+    }>;
 
 export abstract class OrganizationsRepository {
   abstract createOrganization(
@@ -52,6 +63,17 @@ export abstract class OrganizationsRepository {
     organizationId: string,
     userId: string
   ): Promise<OrganizationMembership | null>;
+
+  abstract updateCustomerEntryPolicy(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    policy: CustomerEntryPolicy
+  ): Promise<CustomerEntryPolicy | null>;
+
+  abstract joinOpenCustomerOrganization(
+    transaction: DatabaseTransaction,
+    organizationSlug: string
+  ): Promise<CustomerMembershipEntryResult>;
 
   abstract findById(
     transaction: DatabaseTransaction,

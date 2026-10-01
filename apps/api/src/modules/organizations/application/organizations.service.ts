@@ -9,7 +9,9 @@ import type {
   CreateOrganizationRequest,
   InviteOrganizationMemberRequest,
   Organization,
-  OrganizationMembership
+  OrganizationCustomerEntryPolicy,
+  OrganizationMembership,
+  UpdateCustomerEntryPolicyRequest
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
@@ -131,6 +133,61 @@ export class OrganizationsApplicationService {
       }
 
       return organization;
+    });
+  }
+
+  async updateCustomerEntryPolicy(
+    organizationId: string,
+    command: UpdateCustomerEntryPolicyRequest
+  ): Promise<OrganizationCustomerEntryPolicy> {
+    const context = this.requestContext.tenantContext(organizationId);
+
+    return this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+      await this.authorization.requireCapability(
+        transaction,
+        context.userId,
+        "organization.manage",
+        organizationScope(organizationId)
+      );
+
+      const policy = await this.organizations.updateCustomerEntryPolicy(
+        transaction,
+        organizationId,
+        command.policy
+      );
+      if (policy === null) {
+        throw new NotFoundException("Organization not found.");
+      }
+
+      return { policy };
+    });
+  }
+
+  async joinOpenCustomerOrganization(
+    organizationSlug: string
+  ): Promise<OrganizationMembership> {
+    const userId = this.requestContext.requirePrincipal().userId;
+
+    return this.database.userTransaction({ userId }, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, userId);
+      const result = await this.organizations.joinOpenCustomerOrganization(
+        transaction,
+        organizationSlug
+      );
+
+      switch (result.outcome) {
+        case "active":
+          return result.membership;
+        case "unavailable":
+          throw new NotFoundException(
+            "Organization is not available for customer self-entry."
+          );
+        case "blocked":
+          throw new ConflictException(
+            "Existing membership state requires an explicit lifecycle operation."
+          );
+      }
     });
   }
 

@@ -6,6 +6,10 @@ export type DatabaseTransaction = Readonly<{
   db: NodePgDatabase<Record<string, never>>;
 }>;
 
+export type UserTransactionContext = Readonly<{
+  userId: string;
+}>;
+
 export type TenantTransactionContext = Readonly<{
   organizationId: string;
   userId: string;
@@ -59,6 +63,30 @@ export async function withTransaction<T>(
   } finally {
     client.release();
   }
+}
+
+export async function withUserTransaction<T>(
+  pool: Pool,
+  context: UserTransactionContext,
+  operation: (transaction: DatabaseTransaction) => Promise<T>,
+  options?: DatabaseTransactionOptions
+): Promise<T> {
+  if (context.userId.trim().length === 0) {
+    throw new Error("userId is required for a user transaction.");
+  }
+
+  return withTransaction(
+    pool,
+    async (transaction) => {
+      await transaction.client.query(
+        `SELECT set_config('app.user_id', $1, true)`,
+        [context.userId]
+      );
+
+      return operation(transaction);
+    },
+    options
+  );
 }
 
 export async function withTenantTransaction<T>(

@@ -6,9 +6,11 @@ import {
   createDatabasePool,
   withTenantTransaction as runTenantTransaction,
   withTransaction as runTransaction,
+  withUserTransaction as runUserTransaction,
   type DatabaseTransaction,
   type DatabaseTransactionOptions,
-  type TenantTransactionContext
+  type TenantTransactionContext,
+  type UserTransactionContext
 } from "@platform/database";
 
 function requireDatabaseUrl(): string {
@@ -32,6 +34,14 @@ export class DatabaseService implements OnApplicationShutdown {
     options?: DatabaseTransactionOptions
   ): Promise<T> {
     return runTransaction(this.pool, operation, options);
+  }
+
+  userTransaction<T>(
+    context: UserTransactionContext,
+    operation: (transaction: DatabaseTransaction) => Promise<T>,
+    options?: DatabaseTransactionOptions
+  ): Promise<T> {
+    return runUserTransaction(this.pool, context, operation, options);
   }
 
   tenantTransaction<T>(

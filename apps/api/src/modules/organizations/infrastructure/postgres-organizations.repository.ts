@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import type {
+  CustomerEntryPolicy,
   Organization,
   OrganizationMembership,
   OrganizationMembershipStatus
@@ -8,6 +9,7 @@ import type { DatabaseTransaction } from "@platform/database";
 
 import {
   OrganizationsRepository,
+  type CustomerMembershipEntryResult,
   type NewOrganization
 } from "../application/organizations.repository";
 
@@ -23,6 +25,19 @@ type MembershipRow = {
   organization_id: string;
   user_id: string;
   status: OrganizationMembershipStatus;
+  joined_at: Date | null;
+};
+
+type CustomerEntryPolicyRow = {
+  customer_entry_policy: CustomerEntryPolicy;
+};
+
+type CustomerMembershipEntryRow = {
+  outcome: "active" | "blocked" | "unavailable";
+  membership_id: string | null;
+  organization_id: string | null;
+  user_id: string | null;
+  membership_status: OrganizationMembershipStatus | null;
   joined_at: Date | null;
 };
 
@@ -172,6 +187,65 @@ export class PostgresOrganizationsRepository extends OrganizationsRepository {
     );
     const row = result.rows[0];
     return row === undefined ? null : mapMembership(row);
+  }
+
+  async updateCustomerEntryPolicy(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    policy: CustomerEntryPolicy
+  ): Promise<CustomerEntryPolicy | null> {
+    const result = await transaction.client.query<CustomerEntryPolicyRow>(
+      `UPDATE organizations.organizations
+          SET customer_entry_policy = $2,
+              updated_at = now()
+        WHERE id = $1
+       RETURNING customer_entry_policy`,
+      [organizationId, policy]
+    );
+    return result.rows[0]?.customer_entry_policy ?? null;
+  }
+
+  async joinOpenCustomerOrganization(
+    transaction: DatabaseTransaction,
+    organizationSlug: string
+  ): Promise<CustomerMembershipEntryResult> {
+    const result = await transaction.client.query<CustomerMembershipEntryRow>(
+      `SELECT outcome,
+              membership_id::text,
+              organization_id::text,
+              user_id::text,
+              membership_status,
+              joined_at
+         FROM organizations.join_open_customer_organization($1)`,
+      [organizationSlug]
+    );
+    const row = result.rows[0];
+    if (row === undefined || row.outcome === "unavailable") {
+      return { outcome: "unavailable", membership: null };
+    }
+    if (row.outcome === "blocked") {
+      return { outcome: "blocked", membership: null };
+    }
+    if (
+      row.membership_id === null ||
+      row.organization_id === null ||
+      row.user_id === null ||
+      row.membership_status !== "active" ||
+      row.joined_at === null
+    ) {
+      throw new Error("Customer membership entry returned an invalid active membership.");
+    }
+
+    return {
+      outcome: "active",
+      membership: {
+        id: row.membership_id,
+        organizationId: row.organization_id,
+        userId: row.user_id,
+        status: row.membership_status,
+        joinedAt: row.joined_at.toISOString()
+      }
+    };
   }
 
   async findById(
