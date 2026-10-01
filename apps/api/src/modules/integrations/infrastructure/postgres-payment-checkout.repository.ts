@@ -9,10 +9,10 @@ import {
 type CheckoutRow = {
   organization_id: string;
   purchase_id: string;
-  provider_key: "stripe";
+  provider_key: "paddle";
   external_checkout_id: string;
   checkout_url: string;
-  expires_at: Date;
+  expires_at: Date | null;
 };
 
 function mapCheckout(row: CheckoutRow): PersistedPaymentCheckout {
@@ -39,7 +39,7 @@ export class PostgresPaymentCheckoutRepository extends PaymentCheckoutRepository
     transaction: DatabaseTransaction,
     organizationId: string,
     purchaseId: string,
-    providerKey: "stripe"
+    providerKey: "paddle"
   ): Promise<PersistedPaymentCheckout | null> {
     const result = await transaction.client.query<CheckoutRow>(
       `SELECT ${checkoutSelect}

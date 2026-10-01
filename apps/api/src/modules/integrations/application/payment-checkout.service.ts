@@ -10,6 +10,8 @@ import {
 import { PaymentCheckoutProvider } from "./payment-checkout.provider";
 import { PaymentCheckoutRepository } from "./payment-checkout.repository";
 
+const activePaymentProviderKey = "paddle" as const;
+
 @Injectable()
 export class PaymentCheckoutApplicationService extends PaymentCheckoutGateway {
   constructor(
@@ -33,18 +35,20 @@ export class PaymentCheckoutApplicationService extends PaymentCheckoutGateway {
           transaction,
           request.organizationId,
           request.purchaseId,
-          "stripe"
+          activePaymentProviderKey
         )
     );
     if (existing !== null) {
       return {
         checkoutUrl: existing.checkoutUrl,
-        expiresAt: existing.expiresAt.toISOString()
+        expiresAt: existing.expiresAt?.toISOString() ?? null
       };
     }
 
     // External provider calls deliberately occur outside PostgreSQL transactions.
-    // Provider idempotency is anchored to the immutable canonical Purchase id.
+    // Paddle has no arbitrary create-idempotency key. The canonical Purchase and
+    // persisted provider mapping arbitrate retries/concurrency; an ambiguous network
+    // failure may leave an unused external draft transaction, never canonical state.
     const providerCheckout = await this.provider.createCheckout({
       organizationId: request.organizationId,
       purchaseId: request.purchaseId,
@@ -80,7 +84,7 @@ export class PaymentCheckoutApplicationService extends PaymentCheckoutGateway {
           }
           return {
             checkoutUrl: checkout.checkoutUrl,
-            expiresAt: checkout.expiresAt.toISOString()
+            expiresAt: checkout.expiresAt?.toISOString() ?? null
           };
         }
       );
