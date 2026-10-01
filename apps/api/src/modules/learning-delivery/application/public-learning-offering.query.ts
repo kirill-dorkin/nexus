@@ -13,7 +13,7 @@ export type PublicSellableOffering = Readonly<{
 export abstract class PublicLearningOfferingQuery {
   abstract listSellableByIds(
     transaction: DatabaseTransaction,
-    organizationId: string,
+    organizationSlug: string,
     offeringIds: readonly string[]
   ): Promise<readonly PublicSellableOffering[]>;
 }
