@@ -28,21 +28,16 @@ type IdRow = { id: string };
 type CheckoutRow = {
   organization_id: string;
   purchase_id: string;
+  provider_key: string;
   external_checkout_id: string;
   checkout_url: string;
-  expires_at: Date;
+  expires_at: Date | null;
 };
 type PurchaseRow = {
   status: string;
   amount_minor: number;
   currency: string;
   paid_at: Date | null;
-};
-type EntitlementRow = {
-  status: string;
-  grant_source: string;
-  source_purchase_id: string | null;
-  granted_by_user_id: string | null;
 };
 type PrivilegeRow = {
   can_update_purchase_amount: boolean;
@@ -52,8 +47,12 @@ type PrivilegeRow = {
   can_read_webhook_inbox: boolean;
 };
 
-describe("Purchase + Stripe Checkout settlement vertical", () => {
-  const webhookSecret = "test-stripe-webhook-secret-with-sufficient-entropy";
+function paddleId(prefix: "evt" | "txn"): string {
+  return `${prefix}_test${randomUUID().replaceAll("-", "").slice(0, 22)}`;
+}
+
+describe("Purchase + Paddle transaction settlement vertical", () => {
+  const webhookSecret = "test-paddle-webhook-secret-with-sufficient-entropy";
   let previousPaymentProvider: string | undefined;
   let previousWebhookSecret: string | undefined;
   let migrationPool: DatabasePool;
@@ -71,11 +70,8 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
   let alternateProductId = "";
   let alternatePriceId = "";
   let purchaseAId = "";
-  let purchaseBId = "";
   let checkoutA: CheckoutRow;
-  let checkoutB: CheckoutRow;
   const purchaseAIdempotencyKey = randomUUID();
-  const purchaseBIdempotencyKey = randomUUID();
   const createdUserIds: string[] = [];
 
   async function createUser(label: string): Promise<string> {
@@ -133,6 +129,7 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
       `SELECT
          organization_id::text,
          purchase_id::text,
+         provider_key,
          external_checkout_id,
          checkout_url,
          expires_at
@@ -148,53 +145,62 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
     return row;
   }
 
-  function stripeEvent(input: {
+  function paddleEvent(input: Readonly<{
     eventId: string;
-    checkoutId: string;
-    type?:
-      | "checkout.session.completed"
-      | "checkout.session.async_payment_succeeded";
-    paymentStatus?: "paid" | "unpaid";
-    amountMinor?: number;
+    transactionId: string;
+    subtotalMinor?: number;
+    discountMinor?: number;
+    taxMinor?: number;
     currency?: string;
-  }): string {
+  }>): string {
+    const subtotal = input.subtotalMinor ?? 12900;
+    const discount = input.discountMinor ?? 0;
+    const tax = input.taxMinor ?? 0;
     return JSON.stringify({
-      id: input.eventId,
-      type: input.type ?? "checkout.session.completed",
+      event_id: input.eventId,
+      event_type: "transaction.completed",
+      occurred_at: new Date().toISOString(),
       data: {
-        object: {
-          id: input.checkoutId,
-          payment_status: input.paymentStatus ?? "paid",
-          amount_total: input.amountMinor ?? 12900,
-          currency: input.currency ?? "usd",
-          metadata: {
-            // Metadata is deliberately not used for tenant/Purchase routing.
-            platform_purchase_id: randomUUID(),
-            platform_organization_id: randomUUID()
+        id: input.transactionId,
+        status: "completed",
+        collection_mode: "automatic",
+        currency_code: input.currency ?? "USD",
+        custom_data: {
+          // Custom data is deliberately not used for tenant/Purchase routing.
+          nexus_purchase_id: randomUUID(),
+          nexus_organization_id: randomUUID()
+        },
+        details: {
+          totals: {
+            currency_code: input.currency ?? "USD",
+            subtotal: String(subtotal),
+            discount: String(discount),
+            tax: String(tax),
+            total: String(subtotal - discount + tax)
           }
         }
       }
     });
   }
 
-  function stripeSignature(rawBody: string, timestamp?: number): string {
+  function paddleSignature(rawBody: string, timestamp?: number): string {
     const signedAt = timestamp ?? Math.floor(Date.now() / 1000);
     const digest = createHmac("sha256", webhookSecret)
-      .update(`${signedAt}.${rawBody}`)
+      .update(`${signedAt}:${rawBody}`)
       .digest("hex");
-    return `t=${signedAt},v1=${digest}`;
+    return `ts=${signedAt};h1=${digest}`;
   }
 
-  async function sendStripeWebhook(
+  async function sendPaddleWebhook(
     rawBody: string,
-    signature = stripeSignature(rawBody)
+    signature = paddleSignature(rawBody)
   ) {
     return app.inject({
       method: "POST",
-      url: "/v1/integrations/payments/stripe/webhooks",
+      url: "/v1/integrations/payments/paddle/webhooks",
       headers: {
         "content-type": "application/json",
-        "stripe-signature": signature
+        "paddle-signature": signature
       },
       payload: rawBody
     });
@@ -202,9 +208,9 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
 
   beforeAll(async () => {
     previousPaymentProvider = process.env.PAYMENT_PROVIDER;
-    previousWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    previousWebhookSecret = process.env.PADDLE_WEBHOOK_SECRET;
     process.env.PAYMENT_PROVIDER = "test";
-    process.env.STRIPE_WEBHOOK_SECRET = webhookSecret;
+    process.env.PADDLE_WEBHOOK_SECRET = webhookSecret;
 
     migrationPool = createDatabasePool(requireEnv("DATABASE_MIGRATION_URL"), {
       applicationName: "purchase-payment-integration-fixtures"
@@ -352,15 +358,13 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
   });
 
   afterAll(async () => {
-    if (app !== undefined) {
-      await app.close();
-    }
+    if (app !== undefined) await app.close();
 
     if (migrationPool !== undefined && organizationId.length > 0) {
       await migrationPool.query(
         `DELETE FROM integrations.payment_webhook_inbox
           WHERE organization_id = $1
-             OR external_checkout_id LIKE 'cs_test_%'`,
+             OR external_checkout_id LIKE 'txn_test%'`,
         [organizationId]
       );
       await migrationPool.query(
@@ -421,21 +425,18 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
       process.env.PAYMENT_PROVIDER = previousPaymentProvider;
     }
     if (previousWebhookSecret === undefined) {
-      delete process.env.STRIPE_WEBHOOK_SECRET;
+      delete process.env.PADDLE_WEBHOOK_SECRET;
     } else {
-      process.env.STRIPE_WEBHOOK_SECRET = previousWebhookSecret;
+      process.env.PADDLE_WEBHOOK_SECRET = previousWebhookSecret;
     }
   });
 
-  it("creates one server-priced pending Purchase and one idempotent checkout", async () => {
+  it("creates one server-priced pending Purchase and one idempotent Paddle checkout", async () => {
     const first = await app.inject({
       method: "POST",
       url: `/v1/organizations/${organizationId}/commerce/purchases`,
       headers: { "x-test-user-id": learnerAUserId },
-      payload: {
-        priceId,
-        idempotencyKey: purchaseAIdempotencyKey
-      }
+      payload: { priceId, idempotencyKey: purchaseAIdempotencyKey }
     });
     expect(first.statusCode).toBe(201);
     const created = purchaseCheckoutSchema.parse(JSON.parse(first.body));
@@ -453,23 +454,20 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
       idempotencyKey: purchaseAIdempotencyKey,
       paidAt: null
     });
-    expect(created.checkoutUrl).toBe(
-      `https://checkout.test/${purchaseAId}`
-    );
+    expect(created.checkoutUrl).toBe(`https://checkout.test/${purchaseAId}`);
+    expect(created.checkoutExpiresAt).toBeNull();
 
     const retry = await app.inject({
       method: "POST",
       url: `/v1/organizations/${organizationId}/commerce/purchases`,
       headers: { "x-test-user-id": learnerAUserId },
-      payload: {
-        priceId,
-        idempotencyKey: purchaseAIdempotencyKey
-      }
+      payload: { priceId, idempotencyKey: purchaseAIdempotencyKey }
     });
     expect(retry.statusCode).toBe(201);
     const replay = purchaseCheckoutSchema.parse(JSON.parse(retry.body));
     expect(replay.purchase.id).toBe(purchaseAId);
     expect(replay.checkoutUrl).toBe(created.checkoutUrl);
+    expect(replay.checkoutExpiresAt).toBeNull();
 
     const conflict = await app.inject({
       method: "POST",
@@ -496,6 +494,8 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
     expect(callerPriced.statusCode).toBe(400);
 
     checkoutA = await checkoutByPurchase(purchaseAId);
+    expect(checkoutA.provider_key).toBe("paddle");
+    expect(checkoutA.expires_at).toBeNull();
 
     const counts = await migrationPool.query<{
       purchases: string;
@@ -526,15 +526,15 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
     });
   });
 
-  it("rejects an invalid Stripe signature before durable inbox acceptance", async () => {
-    const eventId = `evt_test_${randomUUID()}`;
-    const rawBody = stripeEvent({
+  it("rejects an invalid Paddle signature before durable inbox acceptance", async () => {
+    const eventId = paddleId("evt");
+    const rawBody = paddleEvent({
       eventId,
-      checkoutId: checkoutA.external_checkout_id
+      transactionId: checkoutA.external_checkout_id
     });
-    const response = await sendStripeWebhook(
+    const response = await sendPaddleWebhook(
       rawBody,
-      `t=${Math.floor(Date.now() / 1000)},v1=${"0".repeat(64)}`
+      `ts=${Math.floor(Date.now() / 1000)};h1=${"0".repeat(64)}`
     );
     expect(response.statusCode).toBe(401);
 
@@ -547,14 +547,15 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
     expect(inbox.rows[0]?.count).toBe("0");
   });
 
-  it("accepts a signed paid webhook durably without synchronously mutating Commerce", async () => {
-    const eventId = `evt_test_${randomUUID()}`;
-    const rawBody = stripeEvent({
+  it("accepts signed completed transaction durably without synchronously mutating Commerce", async () => {
+    const eventId = paddleId("evt");
+    const rawBody = paddleEvent({
       eventId,
-      checkoutId: checkoutA.external_checkout_id
+      transactionId: checkoutA.external_checkout_id,
+      taxMinor: 1032
     });
-    const first = await sendStripeWebhook(rawBody);
-    expect(first.statusCode).toBe(202);
+    const first = await sendPaddleWebhook(rawBody);
+    expect(first.statusCode).toBe(200);
 
     const purchase = await migrationPool.query<PurchaseRow>(
       `SELECT status, amount_minor, currency, paid_at
@@ -587,6 +588,7 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
       payment_status: string;
       amount_minor: number;
       currency: string;
+      event_type: string;
       processing_status: string;
     }>(
       `SELECT
@@ -596,6 +598,7 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
          inbox.payment_status,
          inbox.amount_minor,
          inbox.currency,
+         inbox.event_type,
          processing.status AS processing_status
        FROM integrations.payment_webhook_inbox AS inbox
        JOIN integrations.payment_webhook_processing AS processing
@@ -610,11 +613,12 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
       payment_status: "paid",
       amount_minor: 12900,
       currency: "USD",
+      event_type: "transaction.completed",
       processing_status: "pending"
     });
 
-    const duplicate = await sendStripeWebhook(rawBody);
-    expect(duplicate.statusCode).toBe(202);
+    const duplicate = await sendPaddleWebhook(rawBody);
+    expect(duplicate.statusCode).toBe(200);
 
     const duplicateCount = await migrationPool.query<{ count: string }>(
       `SELECT count(*)::text AS count
@@ -624,36 +628,40 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
     );
     expect(duplicateCount.rows[0]?.count).toBe("1");
 
-    const changedBody = stripeEvent({
+    const changedBody = paddleEvent({
       eventId,
-      checkoutId: checkoutA.external_checkout_id,
-      amountMinor: 1
+      transactionId: checkoutA.external_checkout_id,
+      subtotalMinor: 1
     });
-    const conflict = await sendStripeWebhook(changedBody);
+    const conflict = await sendPaddleWebhook(changedBody);
     expect(conflict.statusCode).toBe(409);
   });
 
-  it("accepts signed settlement data as inbox input without trusting it as Purchase truth", async () => {
-    const eventId = `evt_test_${randomUUID()}`;
-    const tampered = stripeEvent({
+  it("normalizes tax outside canonical Price while discounts fail closed against Purchase terms", async () => {
+    const eventId = paddleId("evt");
+    const discounted = paddleEvent({
       eventId,
-      checkoutId: checkoutA.external_checkout_id,
-      amountMinor: 1
+      transactionId: checkoutA.external_checkout_id,
+      subtotalMinor: 12900,
+      discountMinor: 100,
+      taxMinor: 1024
     });
-    const response = await sendStripeWebhook(tampered);
-    expect(response.statusCode).toBe(202);
+    const response = await sendPaddleWebhook(discounted);
+    expect(response.statusCode).toBe(200);
 
     const inbox = await migrationPool.query<{
       amount_minor: number;
+      currency: string;
       routing_status: string;
     }>(
-      `SELECT amount_minor, routing_status
+      `SELECT amount_minor, currency, routing_status
          FROM integrations.payment_webhook_inbox
         WHERE provider_event_id = $1`,
       [eventId]
     );
     expect(inbox.rows[0]).toEqual({
-      amount_minor: 1,
+      amount_minor: 12800,
+      currency: "USD",
       routing_status: "mapped"
     });
 
@@ -664,8 +672,11 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
           AND id = $2`,
       [organizationId, purchaseAId]
     );
-    expect(purchase.rows[0]?.status).toBe("pending");
-    expect(purchase.rows[0]?.amount_minor).toBe(12900);
+    expect(purchase.rows[0]).toMatchObject({
+      status: "pending",
+      amount_minor: 12900,
+      currency: "USD"
+    });
   });
 
   it("refuses a new Purchase when the learner already holds effective access", async () => {
@@ -681,24 +692,21 @@ describe("Purchase + Stripe Checkout settlement vertical", () => {
       method: "POST",
       url: `/v1/organizations/${organizationId}/commerce/purchases`,
       headers: { "x-test-user-id": learnerBUserId },
-      payload: {
-        priceId,
-        idempotencyKey: randomUUID()
-      }
+      payload: { priceId, idempotencyKey: randomUUID() }
     });
     expect(response.statusCode).toBe(409);
   });
 
-  it("retains an unmapped signed webhook for asynchronous route recovery", async () => {
-    const eventId = `evt_test_${randomUUID()}`;
-    const unknownCheckoutId = `cs_test_unmapped_${randomUUID().replaceAll("-", "")}`;
-    const rawBody = stripeEvent({
+  it("retains an unmapped signed Paddle webhook for asynchronous route recovery", async () => {
+    const eventId = paddleId("evt");
+    const unknownTransactionId = paddleId("txn");
+    const rawBody = paddleEvent({
       eventId,
-      checkoutId: unknownCheckoutId
+      transactionId: unknownTransactionId
     });
 
-    const accepted = await sendStripeWebhook(rawBody);
-    expect(accepted.statusCode).toBe(202);
+    const accepted = await sendPaddleWebhook(rawBody);
+    expect(accepted.statusCode).toBe(200);
 
     const receiveFact = await migrationPool.query<{
       routing_status: string;
