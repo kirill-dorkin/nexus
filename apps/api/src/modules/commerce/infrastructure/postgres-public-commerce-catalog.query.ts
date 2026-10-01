@@ -20,7 +20,6 @@ type PublicCommerceOfferRow = {
 };
 
 type MutableProduct = {
-  id: string;
   offeringId: string;
   slug: string;
   name: string;
@@ -31,7 +30,7 @@ type MutableProduct = {
 export class PostgresPublicCommerceCatalogQuery extends PublicCommerceCatalogQuery {
   async listActiveProductCandidates(
     transaction: DatabaseTransaction,
-    organizationId: string,
+    organizationSlug: string,
     productSlug?: string
   ): Promise<readonly PublicCommerceProductCandidate[]> {
     const result = await transaction.client.query<PublicCommerceOfferRow>(
@@ -43,8 +42,8 @@ export class PostgresPublicCommerceCatalogQuery extends PublicCommerceCatalogQue
               amount_minor,
               currency,
               billing_type
-         FROM commerce.list_public_catalog_offer_rows($1, $2)`,
-      [organizationId, productSlug ?? null]
+         FROM commerce.list_public_catalog_offer_rows($1, $2::text)`,
+      [organizationSlug, productSlug ?? null]
     );
 
     const products = new Map<string, MutableProduct>();
@@ -53,7 +52,6 @@ export class PostgresPublicCommerceCatalogQuery extends PublicCommerceCatalogQue
       let product = products.get(row.product_id);
       if (product === undefined) {
         product = {
-          id: row.product_id,
           offeringId: row.offering_id,
           slug: row.product_slug,
           name: row.product_name,
