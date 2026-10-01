@@ -3,6 +3,7 @@ import { z } from "zod";
 import { organizationSlugSchema, resourceSlugSchema, uuidSchema } from "./common";
 import { commerceBillingTypeSchema } from "./commerce";
 import { learningOfferingDeliveryModeSchema } from "./learning-delivery";
+import { customerEntryPolicySchema } from "./organizations";
 
 const nullableDateTimeSchema = z.string().datetime().nullable();
 const publicCurrencySchema = z.string().regex(/^[A-Z]{3}$/);
@@ -10,7 +11,8 @@ const publicCurrencySchema = z.string().regex(/^[A-Z]{3}$/);
 export const publicCatalogOrganizationSchema = z
   .object({
     slug: organizationSlugSchema,
-    name: z.string().trim().min(1).max(160)
+    name: z.string().trim().min(1).max(160),
+    customerEntryPolicy: customerEntryPolicySchema
   })
   .strict();
 
