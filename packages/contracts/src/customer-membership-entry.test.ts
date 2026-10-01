@@ -4,7 +4,6 @@ import {
   organizationCustomerEntryPolicySchema,
   updateCustomerEntryPolicyRequestSchema
 } from "./organizations";
-import { publicCatalogOrganizationSchema } from "./public-catalog";
 
 describe("customer membership entry contracts", () => {
   it("accepts only explicit open or closed entry policies", () => {
@@ -19,25 +18,12 @@ describe("customer membership entry contracts", () => {
     ).toThrow();
   });
 
-  it("keeps the public policy hint inside the strict organization projection", () => {
-    expect(
-      publicCatalogOrganizationSchema.parse({
-        slug: "microstudio",
-        name: "Microstudio",
-        customerEntryPolicy: "open"
-      })
-    ).toEqual({
-      slug: "microstudio",
-      name: "Microstudio",
-      customerEntryPolicy: "open"
-    });
-
+  it("rejects policy payloads with unrelated authority fields", () => {
     expect(() =>
-      publicCatalogOrganizationSchema.parse({
-        slug: "microstudio",
-        name: "Microstudio",
-        customerEntryPolicy: "open",
-        organizationId: "018f0f52-a3b4-7d11-8f56-5d7b0bd02e33"
+      updateCustomerEntryPolicyRequestSchema.parse({
+        policy: "open",
+        organizationId: "018f0f52-a3b4-7d11-8f56-5d7b0bd02e33",
+        role: "organization_owner"
       })
     ).toThrow();
   });
