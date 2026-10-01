@@ -15,9 +15,11 @@ import { LearningDeliveryQueryService } from "./application/learning-delivery-qu
 import { LearningDeliveryQuery } from "./application/learning-delivery.query";
 import { LearningDeliveryRepository } from "./application/learning-delivery.repository";
 import { LearningDeliveryApplicationService } from "./application/learning-delivery.service";
+import { PublicLearningOfferingQuery } from "./application/public-learning-offering.query";
 import { AssignmentController } from "./assignment.controller";
 import { PostgresAssignmentRepository } from "./infrastructure/postgres-assignment.repository";
 import { PostgresLearningDeliveryRepository } from "./infrastructure/postgres-learning-delivery.repository";
+import { PostgresPublicLearningOfferingQuery } from "./infrastructure/postgres-public-learning-offering.query";
 import { LearnerRunnerController } from "./learner-runner.controller";
 import { LearningDeliveryController } from "./learning-delivery.controller";
 
@@ -56,12 +58,17 @@ import { LearningDeliveryController } from "./learning-delivery.controller";
     {
       provide: AssignmentRepository,
       useClass: PostgresAssignmentRepository
+    },
+    {
+      provide: PublicLearningOfferingQuery,
+      useClass: PostgresPublicLearningOfferingQuery
     }
   ],
   exports: [
     LearningDeliveryApplicationService,
     LearningDeliveryCommand,
     LearningDeliveryQuery,
+    PublicLearningOfferingQuery,
     AssignmentApplicationService
   ]
 })
