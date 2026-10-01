@@ -1,8 +1,13 @@
 export { createDatabasePool } from "./pool";
 export type { DatabasePool, DatabasePoolOptions } from "./pool";
-export { withTenantTransaction, withTransaction } from "./transaction";
+export {
+  withTenantTransaction,
+  withTransaction,
+  withUserTransaction
+} from "./transaction";
 export type {
   DatabaseTransaction,
   DatabaseTransactionOptions,
-  TenantTransactionContext
+  TenantTransactionContext,
+  UserTransactionContext
 } from "./transaction";
