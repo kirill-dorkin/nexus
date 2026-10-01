@@ -167,8 +167,8 @@ describe("Purchase + Paddle transaction settlement vertical", () => {
         currency_code: input.currency ?? "USD",
         custom_data: {
           // Custom data is deliberately not used for tenant/Purchase routing.
-          nexus_purchase_id: randomUUID(),
-          nexus_organization_id: randomUUID()
+          platform_purchase_id: randomUUID(),
+          platform_organization_id: randomUUID()
         },
         details: {
           totals: {
