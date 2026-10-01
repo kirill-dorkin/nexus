@@ -49,7 +49,6 @@ CREATE OR REPLACE FUNCTION commerce.list_public_catalog_offer_rows(
   requested_product_slug text DEFAULT NULL
 )
 RETURNS TABLE (
-  product_id uuid,
   offering_id uuid,
   product_slug text,
   product_name text,
@@ -63,8 +62,7 @@ STABLE
 SECURITY DEFINER
 SET search_path = pg_catalog
 AS $$
-  SELECT product.id,
-         product.offering_id,
+  SELECT product.offering_id,
          product.slug,
          product.name,
          price.id,
