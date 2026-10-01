@@ -78,7 +78,7 @@ describe("PaddlePaymentCheckoutProvider", () => {
           quantity: 1,
           price: {
             description:
-              "Nexus purchase 018f47f1-16ce-7d1f-8f65-c61d8be24a32",
+              "Platform purchase 018f47f1-16ce-7d1f-8f65-c61d8be24a32",
             billing_cycle: null,
             trial_period: null,
             tax_mode: "external",
@@ -99,8 +99,8 @@ describe("PaddlePaymentCheckoutProvider", () => {
       ],
       collection_mode: "automatic",
       custom_data: {
-        nexus_purchase_id: "018f47f1-16ce-7d1f-8f65-c61d8be24a32",
-        nexus_organization_id: "018f47f1-16ce-7d1f-8f65-c61d8be24a31"
+        platform_purchase_id: "018f47f1-16ce-7d1f-8f65-c61d8be24a32",
+        platform_organization_id: "018f47f1-16ce-7d1f-8f65-c61d8be24a31"
       }
     });
   });
