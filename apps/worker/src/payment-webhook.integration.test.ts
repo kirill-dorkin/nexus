@@ -166,7 +166,7 @@ describe("payment webhook worker processor", () => {
     if (migrationPool !== undefined && organizationId.length > 0) {
       await migrationPool.query(
         `DELETE FROM integrations.payment_webhook_inbox
-         WHERE external_checkout_id LIKE 'cs_worker_%'`
+         WHERE external_checkout_id LIKE 'txn_worker_%'`
       );
       await migrationPool.query(
         `DELETE FROM integrations.payment_checkouts
@@ -258,7 +258,7 @@ describe("payment webhook worker processor", () => {
          checkout_url,
          expires_at
        )
-       VALUES ($1, $2, 'stripe', $3, $4, now() + interval '30 minutes')`,
+       VALUES ($1, $2, 'paddle', $3, $4, NULL)`,
       [organizationId, purchaseId, checkoutId, `https://checkout.test/${purchaseId}`]
     );
   }
@@ -290,10 +290,10 @@ describe("payment webhook worker processor", () => {
        SELECT
          checkout.organization_id,
          checkout.purchase_id,
-         'stripe',
+         'paddle',
          $1,
          $2,
-         'checkout.session.completed',
+         'transaction.completed',
          $3,
          $4,
          'USD',
@@ -304,7 +304,7 @@ describe("payment webhook worker processor", () => {
          $5
        FROM (VALUES (1)) AS seed(dummy)
        LEFT JOIN integrations.payment_checkouts AS checkout
-         ON checkout.provider_key = 'stripe'
+         ON checkout.provider_key = 'paddle'
         AND checkout.external_checkout_id = $2
        RETURNING id::text`,
       [
@@ -322,7 +322,7 @@ describe("payment webhook worker processor", () => {
 
   it("atomically settles paid Purchase, grants Entitlement, and emits each event once", async () => {
     const purchaseId = await createPurchase();
-    const checkoutId = `cs_worker_${randomUUID().replaceAll("-", "")}`;
+    const checkoutId = `txn_worker_${randomUUID().replaceAll("-", "")}`;
     await createCheckout(purchaseId, checkoutId);
     const inboxId = await createInbox({ checkoutId });
 
@@ -419,7 +419,7 @@ describe("payment webhook worker processor", () => {
 
   it("rejects a paid provider amount that differs from canonical Purchase terms", async () => {
     const purchaseId = await createPurchase();
-    const checkoutId = `cs_worker_${randomUUID().replaceAll("-", "")}`;
+    const checkoutId = `txn_worker_${randomUUID().replaceAll("-", "")}`;
     await createCheckout(purchaseId, checkoutId);
     const inboxId = await createInbox({ checkoutId, amountMinor: 1 });
 
@@ -452,9 +452,9 @@ describe("payment webhook worker processor", () => {
     });
   });
 
-  it("completes an unpaid checkout event without changing Purchase or Entitlement", async () => {
+  it("completes a normalized unpaid event without changing Purchase or Entitlement", async () => {
     const purchaseId = await createPurchase();
-    const checkoutId = `cs_worker_${randomUUID().replaceAll("-", "")}`;
+    const checkoutId = `txn_worker_${randomUUID().replaceAll("-", "")}`;
     await createCheckout(purchaseId, checkoutId);
     const inboxId = await createInbox({
       checkoutId,
@@ -479,7 +479,7 @@ describe("payment webhook worker processor", () => {
 
   it("avoids a lost wakeup when checkout mapping appears after claim but before blocked finish", async () => {
     const purchaseId = await createPurchase();
-    const checkoutId = `cs_worker_${randomUUID().replaceAll("-", "")}`;
+    const checkoutId = `txn_worker_${randomUUID().replaceAll("-", "")}`;
     const inboxId = await createInbox({ checkoutId });
     const leaseToken = randomUUID();
 
@@ -527,7 +527,7 @@ describe("payment webhook worker processor", () => {
 
   it("blocks an unmapped webhook and reactivates it when the trusted checkout mapping appears", async () => {
     const purchaseId = await createPurchase();
-    const checkoutId = `cs_worker_${randomUUID().replaceAll("-", "")}`;
+    const checkoutId = `txn_worker_${randomUUID().replaceAll("-", "")}`;
     const inboxId = await createInbox({ checkoutId });
 
     await expect(processor.processOne()).resolves.toEqual({
@@ -560,6 +560,7 @@ describe("payment webhook worker processor", () => {
       purchaseId
     });
   });
+
   it("does not grant platform_worker direct Commerce write privileges", async () => {
     const privileges = await migrationPool.query<{
       update_purchase: boolean;
@@ -589,5 +590,4 @@ describe("payment webhook worker processor", () => {
       insert_outbox: false
     });
   });
-
 });
