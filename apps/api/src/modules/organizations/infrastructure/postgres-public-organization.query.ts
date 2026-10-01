@@ -7,7 +7,6 @@ import {
 } from "../application/public-organization.query";
 
 type PublicOrganizationRow = {
-  id: string;
   slug: string;
   name: string;
 };
@@ -19,7 +18,7 @@ export class PostgresPublicOrganizationQuery extends PublicOrganizationQuery {
     slug: string
   ): Promise<PublicOrganization | null> {
     const result = await transaction.client.query<PublicOrganizationRow>(
-      `SELECT id::text, slug, name
+      `SELECT slug, name
          FROM organizations.find_public_organization_by_slug($1)`,
       [slug]
     );
@@ -27,7 +26,6 @@ export class PostgresPublicOrganizationQuery extends PublicOrganizationQuery {
     return row === undefined
       ? null
       : {
-          id: row.id,
           slug: row.slug,
           name: row.name
         };
