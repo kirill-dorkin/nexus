@@ -29,7 +29,7 @@ REVOKE ALL ON FUNCTION organizations.find_public_organization_by_slug(text) FROM
 GRANT EXECUTE ON FUNCTION organizations.find_public_organization_by_slug(text) TO platform_app;
 
 CREATE OR REPLACE FUNCTION commerce.list_public_catalog_offer_rows(
-  requested_organization_id uuid,
+  requested_organization_slug text,
   requested_product_slug text DEFAULT NULL
 )
 RETURNS TABLE (
@@ -55,25 +55,26 @@ AS $$
          price.amount_minor,
          price.currency,
          price.billing_type
-    FROM commerce.products AS product
+    FROM organizations.find_public_organization_by_slug(
+           requested_organization_slug
+         ) AS public_organization
+    JOIN commerce.products AS product
+      ON product.organization_id = public_organization.id
+     AND product.status = 'active'
     JOIN commerce.prices AS price
       ON price.organization_id = product.organization_id
      AND price.product_id = product.id
      AND price.status = 'active'
-   WHERE product.organization_id = requested_organization_id
-     AND product.status = 'active'
-     AND (
-       requested_product_slug IS NULL
-       OR product.slug = requested_product_slug
-     )
+   WHERE requested_product_slug IS NULL
+      OR product.slug = requested_product_slug
    ORDER BY product.slug, price.currency, price.billing_type, price.id
 $$;
 
-REVOKE ALL ON FUNCTION commerce.list_public_catalog_offer_rows(uuid, text) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION commerce.list_public_catalog_offer_rows(uuid, text) TO platform_app;
+REVOKE ALL ON FUNCTION commerce.list_public_catalog_offer_rows(text, text) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION commerce.list_public_catalog_offer_rows(text, text) TO platform_app;
 
 CREATE OR REPLACE FUNCTION learning_delivery.list_public_sellable_offerings(
-  requested_organization_id uuid,
+  requested_organization_slug text,
   requested_offering_ids uuid[]
 )
 RETURNS TABLE (
@@ -95,13 +96,16 @@ AS $$
          offering.delivery_mode,
          offering.starts_at,
          offering.ends_at
-    FROM learning_delivery.learning_offerings AS offering
-   WHERE offering.organization_id = requested_organization_id
+    FROM organizations.find_public_organization_by_slug(
+           requested_organization_slug
+         ) AS public_organization
+    JOIN learning_delivery.learning_offerings AS offering
+      ON offering.organization_id = public_organization.id
      AND offering.id = ANY(requested_offering_ids)
      AND offering.status = 'open'
      AND offering.access_mode = 'entitlement_required'
    ORDER BY offering.id
 $$;
 
-REVOKE ALL ON FUNCTION learning_delivery.list_public_sellable_offerings(uuid, uuid[]) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION learning_delivery.list_public_sellable_offerings(uuid, uuid[]) TO platform_app;
+REVOKE ALL ON FUNCTION learning_delivery.list_public_sellable_offerings(text, uuid[]) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION learning_delivery.list_public_sellable_offerings(text, uuid[]) TO platform_app;
