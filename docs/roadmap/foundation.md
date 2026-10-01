@@ -26,7 +26,7 @@ Hint ladder, solution exposure, professional walkthrough, compare, transfer chal
 
 ## F6 — GitHub projects
 
-GitHub App, durable webhook inbox, project/team model, trusted repository binding, normalized PR/review/check Project facts distinct from Learning Evidence, and an authorized Project activity read model over immutable history.
+GitHub App, durable webhook inbox, project/team model, trusted repository binding, normalized immutable external Project activity facts distinct from Learning Evidence, and an authorized Project activity read model over immutable history.
 
 ## F7 — Grader hardening
 
@@ -38,6 +38,8 @@ Review scheduling, misconception model, explainable recommendations, interventio
 
 ## F9 — Commerce/public launch
 
-Products/prices/purchases/entitlements, marketing, production observability, load/accessibility/security verification.
+Products/prices/purchases/entitlements, safe public sellable catalog reads, visitor/customer onboarding, checkout UX, marketing, production observability, load/accessibility/security verification.
+
+The F9 sequence keeps the commercial lifecycles separate: provider-independent Product + immutable Price, then canonical Purchase settlement, then an unauthenticated fail-closed public catalog projection before visitor identity/membership and checkout UX are introduced.
 
 Rule: каждый Foundation должен завершаться работающим вертикальным сценарием и измеримыми exit criteria, а не списком созданных таблиц.
