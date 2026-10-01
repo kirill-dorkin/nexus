@@ -7,10 +7,10 @@ export type CreateProviderCheckoutInput = Readonly<{
 }>;
 
 export type ProviderCheckout = Readonly<{
-  providerKey: "stripe";
+  providerKey: "paddle";
   externalCheckoutId: string;
   checkoutUrl: string;
-  expiresAt: Date;
+  expiresAt: Date | null;
 }>;
 
 export abstract class PaymentCheckoutProvider {
