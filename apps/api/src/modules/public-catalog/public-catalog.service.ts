@@ -40,11 +40,11 @@ export class PublicCatalogService {
 
         const candidates = await this.commerce.listActiveProductCandidates(
           transaction,
-          organization.id
+          organization.slug
         );
         const offerings = await this.delivery.listSellableByIds(
           transaction,
-          organization.id,
+          organization.slug,
           candidates.map((product) => product.offeringId)
         );
 
@@ -76,12 +76,12 @@ export class PublicCatalogService {
 
         const candidates = await this.commerce.listActiveProductCandidates(
           transaction,
-          organization.id,
+          organization.slug,
           productSlug
         );
         const offerings = await this.delivery.listSellableByIds(
           transaction,
-          organization.id,
+          organization.slug,
           candidates.map((product) => product.offeringId)
         );
         const product = this.composeProducts(candidates, offerings)[0];
