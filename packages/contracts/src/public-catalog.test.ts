@@ -33,16 +33,14 @@ describe("public catalog contracts", () => {
       publicCatalogSchema.parse({
         organization: {
           slug: "microstudio",
-          name: "Microstudio",
-          customerEntryPolicy: "closed"
+          name: "Microstudio"
         },
         products: [publicProduct]
       })
     ).toEqual({
       organization: {
         slug: "microstudio",
-        name: "Microstudio",
-        customerEntryPolicy: "closed"
+        name: "Microstudio"
       },
       products: [publicProduct]
     });
