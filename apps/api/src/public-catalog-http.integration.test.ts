@@ -287,6 +287,20 @@ describe("public sellable catalog HTTP boundary", () => {
     );
     await createPrice(secondaryOrganization.id, secondaryProductId, "USD", 7777);
 
+    const suspendedOfferingId = await createOffering(
+      suspendedOrganization,
+      "suspended",
+      "open",
+      "entitlement_required"
+    );
+    const suspendedProductId = await createProduct(
+      suspendedOrganization.id,
+      suspendedOfferingId,
+      `suspended-product-${randomUUID()}`,
+      "Suspended organization product"
+    );
+    await createPrice(suspendedOrganization.id, suspendedProductId, "USD", 8888);
+
     await migrationPool.query(
       `UPDATE organizations.organizations
           SET status = 'suspended'
@@ -431,9 +445,16 @@ describe("public sellable catalog HTTP boundary", () => {
       url: `/v1/public/catalog/${suspendedOrganization.slug}/products`
     });
     expect(response.statusCode).toBe(404);
+
+    const publicRows = await appPool.query<{ product_slug: string }>(
+      `SELECT product_slug
+         FROM commerce.list_public_catalog_offer_rows($1, NULL::text)`,
+      [suspendedOrganization.slug]
+    );
+    expect(publicRows.rows).toHaveLength(0);
   });
 
-  it("keeps direct tenant tables closed while narrow public functions remain callable", async () => {
+  it("keeps direct tenant tables closed while narrow slug-scoped public functions remain callable", async () => {
     const directProducts = await appPool.query<{ id: string }>(
       `SELECT id::text FROM commerce.products WHERE organization_id = $1`,
       [primaryOrganization.id]
@@ -449,8 +470,8 @@ describe("public sellable catalog HTTP boundary", () => {
 
     const publicRows = await appPool.query<{ product_slug: string }>(
       `SELECT product_slug
-         FROM commerce.list_public_catalog_offer_rows($1, NULL)`,
-      [primaryOrganization.id]
+         FROM commerce.list_public_catalog_offer_rows($1, NULL::text)`,
+      [primaryOrganization.slug]
     );
     expect(publicRows.rows.some((row) => row.product_slug === publicProductSlug)).toBe(
       true
