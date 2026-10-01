@@ -100,7 +100,7 @@ export class PaddlePaymentCheckoutProvider extends PaymentCheckoutProvider {
         {
           quantity: 1,
           price: {
-            description: `Nexus purchase ${input.purchaseId}`,
+            description: `Platform purchase ${input.purchaseId}`,
             billing_cycle: null,
             trial_period: null,
             tax_mode: "external",
@@ -121,8 +121,8 @@ export class PaddlePaymentCheckoutProvider extends PaymentCheckoutProvider {
       ],
       collection_mode: "automatic",
       custom_data: {
-        nexus_purchase_id: input.purchaseId,
-        nexus_organization_id: input.organizationId
+        platform_purchase_id: input.purchaseId,
+        platform_organization_id: input.organizationId
       }
     };
 
