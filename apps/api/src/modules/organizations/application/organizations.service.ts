@@ -169,12 +169,11 @@ export class OrganizationsApplicationService {
   ): Promise<OrganizationMembership> {
     const userId = this.requestContext.requirePrincipal().userId;
 
-    return this.database.transaction(async (transaction) => {
+    return this.database.userTransaction({ userId }, async (transaction) => {
       await this.identity.requireActiveUser(transaction, userId);
       const result = await this.organizations.joinOpenCustomerOrganization(
         transaction,
-        organizationSlug,
-        userId
+        organizationSlug
       );
 
       switch (result.outcome) {
