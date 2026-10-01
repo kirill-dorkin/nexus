@@ -14,23 +14,23 @@ type RawBodyRequest = Readonly<{
   rawBody?: Buffer;
 }>;
 
-@Controller("integrations/payments/stripe")
-export class StripePaymentWebhookController {
+@Controller("integrations/payments/paddle")
+export class PaddlePaymentWebhookController {
   constructor(
     private readonly paymentWebhooks: PaymentWebhookApplicationService
   ) {}
 
   @Post("webhooks")
-  @HttpCode(HttpStatus.ACCEPTED)
+  @HttpCode(HttpStatus.OK)
   async receive(
     @Req() request: RawBodyRequest,
-    @Headers("stripe-signature") signature: string | undefined
+    @Headers("paddle-signature") signature: string | undefined
   ): Promise<void> {
     if (request.rawBody === undefined) {
       throw new BadRequestException(
-        "Raw Stripe webhook body is unavailable."
+        "Raw Paddle webhook body is unavailable."
       );
     }
-    await this.paymentWebhooks.receiveStripe(request.rawBody, signature);
+    await this.paymentWebhooks.receivePaddle(request.rawBody, signature);
   }
 }

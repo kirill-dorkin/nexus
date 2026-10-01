@@ -16,22 +16,22 @@ import { GitHubWebhookInboxRepository } from "./application/github-webhook-inbox
 import { GitHubWebhookApplicationService } from "./application/github-webhook.service";
 import { GitHubAppSetupController } from "./github-app-setup.controller";
 import { GitHubWebhookController } from "./github-webhook.controller";
-import { StripePaymentWebhookController } from "./stripe-payment-webhook.controller";
+import { PaddlePaymentWebhookController } from "./paddle-payment-webhook.controller";
 import { GitHubHttpAppGateway } from "./infrastructure/github-http-app.gateway";
 import { PostgresGitHubAppSetupRepository } from "./infrastructure/postgres-github-app-setup.repository";
 import { GitHubWebhookSignatureVerifier } from "./infrastructure/github-webhook-signature.verifier";
+import { PaddlePaymentCheckoutProvider } from "./infrastructure/paddle-payment-checkout.provider";
+import { PaddlePaymentWebhookVerifier } from "./infrastructure/paddle-payment-webhook.verifier";
 import { PostgresGitHubWebhookInboxRepository } from "./infrastructure/postgres-github-webhook-inbox.repository";
 import { PostgresPaymentCheckoutRepository } from "./infrastructure/postgres-payment-checkout.repository";
 import { PostgresPaymentWebhookInboxRepository } from "./infrastructure/postgres-payment-webhook-inbox.repository";
-import { StripePaymentCheckoutProvider } from "./infrastructure/stripe-payment-checkout.provider";
-import { StripePaymentWebhookVerifier } from "./infrastructure/stripe-payment-webhook.verifier";
 
 @Module({
   imports: [IdentityModule, AuthorizationModule],
   controllers: [
     GitHubWebhookController,
     GitHubAppSetupController,
-    StripePaymentWebhookController
+    PaddlePaymentWebhookController
   ],
   providers: [
     GitHubWebhookApplicationService,
@@ -40,15 +40,15 @@ import { StripePaymentWebhookVerifier } from "./infrastructure/stripe-payment-we
     GitHubRepositoryReferenceQuery,
     PaymentCheckoutApplicationService,
     PaymentWebhookApplicationService,
-    StripePaymentCheckoutProvider,
-    StripePaymentWebhookVerifier,
+    PaddlePaymentCheckoutProvider,
+    PaddlePaymentWebhookVerifier,
     {
       provide: PaymentCheckoutGateway,
       useExisting: PaymentCheckoutApplicationService
     },
     {
       provide: PaymentCheckoutProvider,
-      useExisting: StripePaymentCheckoutProvider
+      useExisting: PaddlePaymentCheckoutProvider
     },
     {
       provide: PaymentCheckoutRepository,

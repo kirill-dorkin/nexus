@@ -1,7 +1,7 @@
 import { ConflictException, Injectable } from "@nestjs/common";
 
 import { DatabaseService } from "../../../database/database.service";
-import { StripePaymentWebhookVerifier } from "../infrastructure/stripe-payment-webhook.verifier";
+import { PaddlePaymentWebhookVerifier } from "../infrastructure/paddle-payment-webhook.verifier";
 import { PaymentWebhookInboxRepository } from "./payment-webhook-inbox.repository";
 
 @Injectable()
@@ -9,10 +9,10 @@ export class PaymentWebhookApplicationService {
   constructor(
     private readonly database: DatabaseService,
     private readonly inbox: PaymentWebhookInboxRepository,
-    private readonly verifier: StripePaymentWebhookVerifier
+    private readonly verifier: PaddlePaymentWebhookVerifier
   ) {}
 
-  async receiveStripe(
+  async receivePaddle(
     rawBody: Buffer,
     signature: string | undefined
   ): Promise<void> {
@@ -27,7 +27,7 @@ export class PaymentWebhookApplicationService {
       accepted.existingPayloadSha256 !== event.payloadSha256
     ) {
       throw new ConflictException(
-        "Stripe event id was already accepted with different content."
+        "Paddle event id was already accepted with different content."
       );
     }
   }
