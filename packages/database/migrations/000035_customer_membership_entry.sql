@@ -3,45 +3,14 @@
 -- Public sellability does not imply Organization membership authority. Each
 -- Organization explicitly opts into authenticated customer self-entry, and the
 -- actual entry decision is revalidated atomically inside this schema-owned
--- SECURITY DEFINER capability rather than trusting a previously rendered public
--- catalog response.
+-- SECURITY DEFINER capability rather than trusting prior public read state.
 
 ALTER TABLE organizations.organizations
   ADD COLUMN customer_entry_policy text NOT NULL DEFAULT 'closed'
     CHECK (customer_entry_policy IN ('closed', 'open'));
 
--- The public Organization projection may expose the entry policy as a UX hint.
--- The join capability below remains authoritative and revalidates the policy.
-DROP FUNCTION organizations.find_public_organization_by_slug(text);
-
-CREATE FUNCTION organizations.find_public_organization_by_slug(
-  requested_slug text
-)
-RETURNS TABLE (
-  slug text,
-  name text,
-  customer_entry_policy text
-)
-LANGUAGE sql
-STABLE
-SECURITY DEFINER
-SET search_path = pg_catalog
-AS $$
-  SELECT organization.slug,
-         organization.name,
-         organization.customer_entry_policy
-    FROM organizations.organizations AS organization
-   WHERE organization.id = organizations.resolve_active_public_organization_id(
-           requested_slug
-         )
-$$;
-
-REVOKE ALL ON FUNCTION organizations.find_public_organization_by_slug(text) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION organizations.find_public_organization_by_slug(text) TO platform_app;
-
 CREATE FUNCTION organizations.join_open_customer_organization(
-  requested_slug text,
-  requested_user_id uuid
+  requested_slug text
 )
 RETURNS TABLE (
   outcome text,
@@ -58,8 +27,22 @@ SET search_path = pg_catalog
 AS $$
 DECLARE
   resolved_organization_id uuid;
+  requested_user_id uuid;
   existing_membership_status text;
 BEGIN
+  requested_user_id := NULLIF(current_setting('app.user_id', true), '')::uuid;
+
+  IF requested_user_id IS NULL THEN
+    RETURN QUERY
+      SELECT 'unavailable'::text,
+             NULL::uuid,
+             NULL::uuid,
+             NULL::uuid,
+             NULL::text,
+             NULL::timestamptz;
+    RETURN;
+  END IF;
+
   -- SHARE serializes the entry decision with Organization updates such as
   -- closing customer entry while still allowing concurrent readers.
   SELECT organization.id
@@ -166,5 +149,5 @@ BEGIN
 END
 $$;
 
-REVOKE ALL ON FUNCTION organizations.join_open_customer_organization(text, uuid) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION organizations.join_open_customer_organization(text, uuid) TO platform_app;
+REVOKE ALL ON FUNCTION organizations.join_open_customer_organization(text) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION organizations.join_open_customer_organization(text) TO platform_app;
