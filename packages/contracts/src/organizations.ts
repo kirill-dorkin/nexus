@@ -14,6 +14,20 @@ export const organizationSchema = z.object({
   status: z.enum(["active", "suspended", "archived"])
 });
 
+export const customerEntryPolicySchema = z.enum(["closed", "open"]);
+
+export const updateCustomerEntryPolicyRequestSchema = z
+  .object({
+    policy: customerEntryPolicySchema
+  })
+  .strict();
+
+export const organizationCustomerEntryPolicySchema = z
+  .object({
+    policy: customerEntryPolicySchema
+  })
+  .strict();
+
 export const organizationMembershipStatusSchema = z.enum([
   "invited",
   "active",
@@ -37,6 +51,13 @@ export type CreateOrganizationRequest = z.infer<
   typeof createOrganizationRequestSchema
 >;
 export type Organization = z.infer<typeof organizationSchema>;
+export type CustomerEntryPolicy = z.infer<typeof customerEntryPolicySchema>;
+export type UpdateCustomerEntryPolicyRequest = z.infer<
+  typeof updateCustomerEntryPolicyRequestSchema
+>;
+export type OrganizationCustomerEntryPolicy = z.infer<
+  typeof organizationCustomerEntryPolicySchema
+>;
 export type OrganizationMembershipStatus = z.infer<
   typeof organizationMembershipStatusSchema
 >;
