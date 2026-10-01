@@ -128,7 +128,7 @@ BEGIN
     'active',
     now()
   )
-  ON CONFLICT (organization_id, user_id) DO NOTHING;
+  ON CONFLICT ON CONSTRAINT memberships_organization_id_user_id_key DO NOTHING;
 
   -- ON CONFLICT makes concurrent retries linearize on the unique membership.
   -- Only an active Membership is an idempotent success; another lifecycle state
