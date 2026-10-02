@@ -8,6 +8,7 @@ import {
   createPurchaseCheckoutRequestSchema,
   entitlementSchema,
   grantOfferingEntitlementRequestSchema,
+  publicPurchaseCheckoutSchema,
   purchaseSchema
 } from "./commerce";
 
@@ -185,5 +186,43 @@ describe("commerce contracts", () => {
         currency: "USD"
       }).success
     ).toBe(false);
+  });
+
+  it("keeps the browser checkout response narrower than canonical Purchase", () => {
+    const checkout = publicPurchaseCheckoutSchema.parse({
+      purchase: {
+        id: purchaseId,
+        organizationId: id,
+        productId,
+        priceId,
+        offeringId,
+        purchaserUserId: userId,
+        status: "pending",
+        amountMinor: 12900,
+        currency: "USD",
+        billingType: "one_time",
+        idempotencyKey,
+        createdAt: "2026-09-19T06:00:00.000Z",
+        paidAt: null
+      },
+      checkoutUrl: "https://checkout.example.test/txn",
+      checkoutExpiresAt: null
+    });
+
+    expect(checkout.purchase).toEqual({
+      id: purchaseId,
+      priceId,
+      status: "pending",
+      amountMinor: 12900,
+      currency: "USD",
+      billingType: "one_time",
+      idempotencyKey,
+      createdAt: "2026-09-19T06:00:00.000Z",
+      paidAt: null
+    });
+    expect(checkout.purchase).not.toHaveProperty("organizationId");
+    expect(checkout.purchase).not.toHaveProperty("productId");
+    expect(checkout.purchase).not.toHaveProperty("offeringId");
+    expect(checkout.purchase).not.toHaveProperty("purchaserUserId");
   });
 });
