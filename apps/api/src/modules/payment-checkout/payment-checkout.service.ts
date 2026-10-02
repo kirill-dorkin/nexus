@@ -4,8 +4,10 @@ import {
   NotFoundException
 } from "@nestjs/common";
 import {
+  publicPurchaseCheckoutSchema,
   purchaseCheckoutSchema,
   type CreatePurchaseCheckoutRequest,
+  type PublicPurchaseCheckout,
   type PurchaseCheckout
 } from "@platform/contracts";
 
@@ -47,7 +49,7 @@ export class PurchaseCheckoutApplicationService {
     organizationSlug: string,
     productSlug: string,
     command: CreatePurchaseCheckoutRequest
-  ): Promise<PurchaseCheckout> {
+  ): Promise<PublicPurchaseCheckout> {
     const userId = this.requestContext.requirePrincipal().userId;
     const organization = await this.database.userTransaction(
       { userId },
@@ -115,7 +117,9 @@ export class PurchaseCheckoutApplicationService {
       { isolationLevel: "repeatable_read" }
     );
 
-    return this.createOrGetProviderCheckout(organization.id, specification);
+    return publicPurchaseCheckoutSchema.parse(
+      await this.createOrGetProviderCheckout(organization.id, specification)
+    );
   }
 
   private async createOrGetProviderCheckout(
