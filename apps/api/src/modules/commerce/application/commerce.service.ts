@@ -331,136 +331,150 @@ export class CommerceApplicationService implements PurchaseCommand {
     });
   }
 
-
   async openForCheckout(
     organizationId: string,
     command: CreatePurchaseCheckoutRequest
   ): Promise<PurchaseCheckoutSpecification> {
     const context = this.requestContext.tenantContext(organizationId);
-    const purchaseId = await this.database.nextUuid();
+    return this.database.tenantTransaction(context, (transaction) =>
+      this.openForCheckoutInTransaction(transaction, organizationId, command)
+    );
+  }
+
+  async openForCheckoutInTransaction(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    command: CreatePurchaseCheckoutRequest
+  ): Promise<PurchaseCheckoutSpecification> {
+    const context = this.requestContext.tenantContext(organizationId);
+    const idResult = await transaction.client.query<{ id: string }>(
+      "SELECT uuidv7()::text AS id"
+    );
+    const purchaseId = idResult.rows[0]?.id;
+    if (purchaseId === undefined) {
+      throw new Error("PostgreSQL did not return a Purchase UUID.");
+    }
 
     try {
-      return await this.database.tenantTransaction(context, async (transaction) => {
-        await this.identity.requireActiveUser(transaction, context.userId);
-        await this.organizations.requireActiveMembership(
+      await this.identity.requireActiveUser(transaction, context.userId);
+      await this.organizations.requireActiveMembership(
+        transaction,
+        organizationId,
+        context.userId
+      );
+
+      const existing = await this.commerce.findPurchaseByIdempotencyKey(
+        transaction,
+        organizationId,
+        context.userId,
+        command.idempotencyKey
+      );
+      if (existing !== null) {
+        if (existing.priceId !== command.priceId) {
+          throw new ConflictException(
+            "Purchase idempotency key is already bound to another Price."
+          );
+        }
+        const existingProduct = await this.commerce.findProductById(
           transaction,
           organizationId,
-          context.userId
+          existing.productId
         );
+        if (existingProduct === null) {
+          throw new Error("Persisted Purchase references a missing Product.");
+        }
+        return { purchase: existing, productName: existingProduct.name };
+      }
 
-        const existing = await this.commerce.findPurchaseByIdempotencyKey(
+      const price = await this.commerce.findPriceById(
+        transaction,
+        organizationId,
+        command.priceId
+      );
+      if (price === null) {
+        throw new NotFoundException("Commerce Price not found.");
+      }
+      if (price.status !== "active") {
+        throw new ConflictException("Commerce Price is not active.");
+      }
+
+      const product = await this.commerce.findProductById(
+        transaction,
+        organizationId,
+        price.productId
+      );
+      if (product === null) {
+        throw new Error("Commerce Price references a missing Product.");
+      }
+      if (product.status !== "active") {
+        throw new ConflictException("Commerce Product is not active.");
+      }
+
+      const existingEntitlement =
+        await this.commerce.findEffectiveOfferingEntitlement(
+          transaction,
+          organizationId,
+          context.userId,
+          product.offeringId
+        );
+      if (existingEntitlement !== null) {
+        throw new ConflictException(
+          "The purchaser already has an effective entitlement for this offering."
+        );
+      }
+
+      const created = await this.commerce.createPurchase(transaction, {
+        id: purchaseId,
+        organizationId,
+        productId: product.id,
+        priceId: price.id,
+        offeringId: product.offeringId,
+        purchaserUserId: context.userId,
+        amountMinor: price.amountMinor,
+        currency: price.currency,
+        billingType: price.billingType,
+        idempotencyKey: command.idempotencyKey
+      });
+
+      if (created === null) {
+        const raced = await this.commerce.findPurchaseByIdempotencyKey(
           transaction,
           organizationId,
           context.userId,
           command.idempotencyKey
         );
-        if (existing !== null) {
-          if (existing.priceId !== command.priceId) {
-            throw new ConflictException(
-              "Purchase idempotency key is already bound to another Price."
-            );
-          }
-          const existingProduct = await this.commerce.findProductById(
-            transaction,
-            organizationId,
-            existing.productId
-          );
-          if (existingProduct === null) {
-            throw new Error("Persisted Purchase references a missing Product.");
-          }
-          return { purchase: existing, productName: existingProduct.name };
+        if (raced === null) {
+          throw new ConflictException("Purchase could not be created.");
         }
-
-        const price = await this.commerce.findPriceById(
-          transaction,
-          organizationId,
-          command.priceId
-        );
-        if (price === null) {
-          throw new NotFoundException("Commerce Price not found.");
-        }
-        if (price.status !== "active") {
-          throw new ConflictException("Commerce Price is not active.");
-        }
-
-        const product = await this.commerce.findProductById(
-          transaction,
-          organizationId,
-          price.productId
-        );
-        if (product === null) {
-          throw new Error("Commerce Price references a missing Product.");
-        }
-        if (product.status !== "active") {
-          throw new ConflictException("Commerce Product is not active.");
-        }
-
-        const existingEntitlement =
-          await this.commerce.findEffectiveOfferingEntitlement(
-            transaction,
-            organizationId,
-            context.userId,
-            product.offeringId
-          );
-        if (existingEntitlement !== null) {
+        if (raced.priceId !== command.priceId) {
           throw new ConflictException(
-            "The purchaser already has an effective entitlement for this offering."
+            "Purchase idempotency key is already bound to another Price."
           );
         }
+        return { purchase: raced, productName: product.name };
+      }
 
-        const created = await this.commerce.createPurchase(transaction, {
-          id: purchaseId,
+      await this.outbox.append(transaction, {
+        organizationId,
+        eventName: "purchase.created",
+        eventVersion: 1,
+        aggregateType: "purchase",
+        aggregateId: created.id,
+        actorUserId: context.userId,
+        payload: {
           organizationId,
-          productId: product.id,
-          priceId: price.id,
-          offeringId: product.offeringId,
-          purchaserUserId: context.userId,
-          amountMinor: price.amountMinor,
-          currency: price.currency,
-          billingType: price.billingType,
-          idempotencyKey: command.idempotencyKey
-        });
-
-        if (created === null) {
-          const raced = await this.commerce.findPurchaseByIdempotencyKey(
-            transaction,
-            organizationId,
-            context.userId,
-            command.idempotencyKey
-          );
-          if (raced === null) {
-            throw new ConflictException("Purchase could not be created.");
-          }
-          if (raced.priceId !== command.priceId) {
-            throw new ConflictException(
-              "Purchase idempotency key is already bound to another Price."
-            );
-          }
-          return { purchase: raced, productName: product.name };
+          purchaseId: created.id,
+          productId: created.productId,
+          priceId: created.priceId,
+          offeringId: created.offeringId,
+          purchaserUserId: created.purchaserUserId,
+          amountMinor: created.amountMinor,
+          currency: created.currency,
+          billingType: created.billingType
         }
-
-        await this.outbox.append(transaction, {
-          organizationId,
-          eventName: "purchase.created",
-          eventVersion: 1,
-          aggregateType: "purchase",
-          aggregateId: created.id,
-          actorUserId: context.userId,
-          payload: {
-            organizationId,
-            purchaseId: created.id,
-            productId: created.productId,
-            priceId: created.priceId,
-            offeringId: created.offeringId,
-            purchaserUserId: created.purchaserUserId,
-            amountMinor: created.amountMinor,
-            currency: created.currency,
-            billingType: created.billingType
-          }
-        });
-
-        return { purchase: created, productName: product.name };
       });
+
+      return { purchase: created, productName: product.name };
     } catch (error) {
       if (isCheckViolation(error)) {
         throw new ConflictException(
