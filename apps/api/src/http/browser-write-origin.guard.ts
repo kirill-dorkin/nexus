@@ -12,6 +12,10 @@ type BrowserWriteRequest = PlatformPrincipalCarrier & {
   headers: Readonly<Record<string, string | string[] | undefined>>;
 };
 
+function isHttpProtocol(protocol: string): boolean {
+  return protocol === "http:" || protocol === "https:";
+}
+
 function configuredWebOrigin(): string {
   const configured = process.env.WEB_APP_ORIGIN;
   if (configured === undefined || configured.trim().length === 0) {
@@ -23,6 +27,7 @@ function configuredWebOrigin(): string {
   try {
     const url = new URL(configured.trim());
     if (
+      !isHttpProtocol(url.protocol) ||
       url.username.length > 0 ||
       url.password.length > 0 ||
       url.pathname !== "/" ||
@@ -48,6 +53,7 @@ function requestOrigin(value: string | string[] | undefined): string | null {
     const raw = value.trim();
     const url = new URL(raw);
     if (
+      !isHttpProtocol(url.protocol) ||
       url.origin !== raw ||
       url.username.length > 0 ||
       url.password.length > 0 ||
