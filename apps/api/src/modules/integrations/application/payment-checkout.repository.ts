@@ -3,10 +3,10 @@ import type { DatabaseTransaction } from "@platform/database";
 export type PersistedPaymentCheckout = Readonly<{
   organizationId: string;
   purchaseId: string;
-  providerKey: "stripe";
+  providerKey: string;
   externalCheckoutId: string;
   checkoutUrl: string;
-  expiresAt: Date;
+  expiresAt: Date | null;
 }>;
 
 export abstract class PaymentCheckoutRepository {
@@ -14,7 +14,7 @@ export abstract class PaymentCheckoutRepository {
     transaction: DatabaseTransaction,
     organizationId: string,
     purchaseId: string,
-    providerKey: "stripe"
+    providerKey: string
   ): Promise<PersistedPaymentCheckout | null>;
 
   abstract create(

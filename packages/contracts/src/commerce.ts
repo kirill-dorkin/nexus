@@ -68,7 +68,7 @@ export const purchaseSchema = z.object({
 export const purchaseCheckoutSchema = z.object({
   purchase: purchaseSchema,
   checkoutUrl: z.string().url(),
-  checkoutExpiresAt: z.string().datetime()
+  checkoutExpiresAt: optionalDateTimeSchema
 });
 
 export const createCommerceProductRequestSchema = z.object({

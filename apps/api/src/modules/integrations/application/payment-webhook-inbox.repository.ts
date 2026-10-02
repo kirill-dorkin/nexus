@@ -1,15 +1,14 @@
 import type { DatabaseTransaction } from "@platform/database";
 
 export type PaymentWebhookRoutingStatus = "mapped" | "unmapped_checkout";
+export type NormalizedPaymentStatus = "paid" | "unpaid" | "no_payment_required";
 
 export type PaymentWebhookInput = Readonly<{
-  providerKey: "stripe";
+  providerKey: string;
   providerEventId: string;
   externalCheckoutId: string;
-  eventType:
-    | "checkout.session.completed"
-    | "checkout.session.async_payment_succeeded";
-  paymentStatus: "paid" | "unpaid" | "no_payment_required";
+  eventType: string;
+  paymentStatus: NormalizedPaymentStatus;
   amountMinor: number;
   currency: string;
   payloadSha256: string;

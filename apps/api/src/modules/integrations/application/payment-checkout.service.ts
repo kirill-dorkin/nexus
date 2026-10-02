@@ -25,6 +25,7 @@ export class PaymentCheckoutApplicationService extends PaymentCheckoutGateway {
     request: PaymentCheckoutRequest
   ): Promise<PaymentCheckout> {
     const context = this.requestContext.tenantContext(request.organizationId);
+    const providerKey = this.provider.providerKey;
 
     const existing = await this.database.tenantTransaction(
       context,
@@ -33,18 +34,19 @@ export class PaymentCheckoutApplicationService extends PaymentCheckoutGateway {
           transaction,
           request.organizationId,
           request.purchaseId,
-          "stripe"
+          providerKey
         )
     );
     if (existing !== null) {
       return {
         checkoutUrl: existing.checkoutUrl,
-        expiresAt: existing.expiresAt.toISOString()
+        expiresAt: existing.expiresAt?.toISOString() ?? null
       };
     }
 
     // External provider calls deliberately occur outside PostgreSQL transactions.
-    // Provider idempotency is anchored to the immutable canonical Purchase id.
+    // The canonical Purchase and persisted provider mapping arbitrate application
+    // retries/concurrency even when a provider cannot guarantee exactly-once create.
     const providerCheckout = await this.provider.createCheckout({
       organizationId: request.organizationId,
       purchaseId: request.purchaseId,
@@ -60,7 +62,7 @@ export class PaymentCheckoutApplicationService extends PaymentCheckoutGateway {
           const inserted = await this.checkouts.create(transaction, {
             organizationId: request.organizationId,
             purchaseId: request.purchaseId,
-            providerKey: providerCheckout.providerKey,
+            providerKey,
             externalCheckoutId: providerCheckout.externalCheckoutId,
             checkoutUrl: providerCheckout.checkoutUrl,
             expiresAt: providerCheckout.expiresAt
@@ -71,7 +73,7 @@ export class PaymentCheckoutApplicationService extends PaymentCheckoutGateway {
               transaction,
               request.organizationId,
               request.purchaseId,
-              providerCheckout.providerKey
+              providerKey
             ));
           if (checkout === null) {
             throw new ConflictException(
@@ -80,7 +82,7 @@ export class PaymentCheckoutApplicationService extends PaymentCheckoutGateway {
           }
           return {
             checkoutUrl: checkout.checkoutUrl,
-            expiresAt: checkout.expiresAt.toISOString()
+            expiresAt: checkout.expiresAt?.toISOString() ?? null
           };
         }
       );
