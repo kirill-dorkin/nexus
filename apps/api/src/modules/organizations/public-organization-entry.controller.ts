@@ -3,17 +3,20 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  Post
+  Post,
+  UseGuards
 } from "@nestjs/common";
 import {
   organizationSlugSchema,
   type OrganizationMembership
 } from "@platform/contracts";
 
+import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
 import { parseRequest } from "../../http/validation";
 import { OrganizationsApplicationService } from "./application/organizations.service";
 
 @Controller("public/organizations")
+@UseGuards(BrowserWriteOriginGuard)
 export class PublicOrganizationEntryController {
   constructor(private readonly organizations: OrganizationsApplicationService) {}
 
