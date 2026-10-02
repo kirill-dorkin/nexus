@@ -71,6 +71,24 @@ export const purchaseCheckoutSchema = z.object({
   checkoutExpiresAt: optionalDateTimeSchema
 });
 
+export const publicPurchaseSchema = purchaseSchema.pick({
+  id: true,
+  priceId: true,
+  status: true,
+  amountMinor: true,
+  currency: true,
+  billingType: true,
+  idempotencyKey: true,
+  createdAt: true,
+  paidAt: true
+});
+
+export const publicPurchaseCheckoutSchema = z.object({
+  purchase: publicPurchaseSchema,
+  checkoutUrl: z.string().url(),
+  checkoutExpiresAt: optionalDateTimeSchema
+});
+
 export const createCommerceProductRequestSchema = z.object({
   offeringId: uuidSchema,
   slug: resourceSlugSchema,
@@ -100,6 +118,10 @@ export type CommerceProduct = z.infer<typeof commerceProductSchema>;
 export type CommercePrice = z.infer<typeof commercePriceSchema>;
 export type Purchase = z.infer<typeof purchaseSchema>;
 export type PurchaseCheckout = z.infer<typeof purchaseCheckoutSchema>;
+export type PublicPurchase = z.infer<typeof publicPurchaseSchema>;
+export type PublicPurchaseCheckout = z.infer<
+  typeof publicPurchaseCheckoutSchema
+>;
 export type CreateCommerceProductRequest = z.infer<
   typeof createCommerceProductRequestSchema
 >;
