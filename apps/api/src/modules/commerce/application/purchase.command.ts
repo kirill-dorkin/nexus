@@ -2,6 +2,7 @@ import type {
   CreatePurchaseCheckoutRequest,
   Purchase
 } from "@platform/contracts";
+import type { DatabaseTransaction } from "@platform/database";
 
 export type PurchaseCheckoutSpecification = Readonly<{
   purchase: Purchase;
@@ -10,6 +11,12 @@ export type PurchaseCheckoutSpecification = Readonly<{
 
 export abstract class PurchaseCommand {
   abstract openForCheckout(
+    organizationId: string,
+    command: CreatePurchaseCheckoutRequest
+  ): Promise<PurchaseCheckoutSpecification>;
+
+  abstract openForCheckoutInTransaction(
+    transaction: DatabaseTransaction,
     organizationId: string,
     command: CreatePurchaseCheckoutRequest
   ): Promise<PurchaseCheckoutSpecification>;
