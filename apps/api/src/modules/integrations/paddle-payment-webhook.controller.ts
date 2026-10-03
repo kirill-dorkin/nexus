@@ -8,6 +8,7 @@ import {
   Req
 } from "@nestjs/common";
 
+import { observePublicLaunchHttp } from "../../observability/public-launch-operational-events";
 import { PaymentWebhookApplicationService } from "./application/payment-webhook.service";
 
 type RawBodyRequest = Readonly<{
@@ -26,11 +27,13 @@ export class PaddlePaymentWebhookController {
     @Req() request: RawBodyRequest,
     @Headers("paddle-signature") signature: string | undefined
   ): Promise<void> {
-    if (request.rawBody === undefined) {
-      throw new BadRequestException(
-        "Raw Paddle webhook body is unavailable."
-      );
-    }
-    await this.paymentWebhooks.receive(request.rawBody, signature);
+    await observePublicLaunchHttp("paddle_webhook", HttpStatus.OK, async () => {
+      if (request.rawBody === undefined) {
+        throw new BadRequestException(
+          "Raw Paddle webhook body is unavailable."
+        );
+      }
+      await this.paymentWebhooks.receive(request.rawBody, signature);
+    });
   }
 }

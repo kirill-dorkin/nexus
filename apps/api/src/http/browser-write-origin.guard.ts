@@ -6,6 +6,7 @@ import {
   type ExecutionContext
 } from "@nestjs/common";
 
+import { recordPublicLaunchSecurityEvent } from "../observability/public-launch-operational-events";
 import type { PlatformPrincipalCarrier } from "../request-context/platform-principal";
 import {
   optionalConfiguredWebOrigin,
@@ -49,12 +50,31 @@ export class BrowserWriteOriginGuard implements CanActivate {
       return true;
     }
 
-    const expected = configuredWebOrigin();
+    let expected: string;
+    try {
+      expected = configuredWebOrigin();
+    } catch (error) {
+      recordPublicLaunchSecurityEvent(
+        "misconfigured",
+        "web_origin_unavailable"
+      );
+      throw error;
+    }
+
     const actual = requestOrigin(request.headers.origin);
-    if (actual === null || actual !== expected) {
+    if (actual === null) {
+      recordPublicLaunchSecurityEvent(
+        "rejected",
+        "origin_missing_or_invalid"
+      );
+      throw new ForbiddenException("Browser write origin is not allowed.");
+    }
+    if (actual !== expected) {
+      recordPublicLaunchSecurityEvent("rejected", "origin_mismatch");
       throw new ForbiddenException("Browser write origin is not allowed.");
     }
 
+    recordPublicLaunchSecurityEvent("allowed", "origin_match");
     return true;
   }
 }

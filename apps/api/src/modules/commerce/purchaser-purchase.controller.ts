@@ -1,4 +1,4 @@
-import { Controller, Get, Header, Param } from "@nestjs/common";
+import { Controller, Get, Header, HttpStatus, Param } from "@nestjs/common";
 import {
   publicPurchaseSchema,
   uuidSchema,
@@ -6,6 +6,10 @@ import {
 } from "@platform/contracts";
 
 import { parseRequest } from "../../http/validation";
+import {
+  observePublicLaunchHttp,
+  recordPublicLaunchReconciliation
+} from "../../observability/public-launch-operational-events";
 import { PurchaserPurchaseApplicationService } from "./application/purchaser-purchase.service";
 
 @Controller("me/purchases")
@@ -17,8 +21,22 @@ export class PurchaserPurchaseController {
   async getOwnPurchase(
     @Param("purchaseId") purchaseId: string
   ): Promise<PublicPurchase> {
-    return publicPurchaseSchema.parse(
-      await this.purchases.getOwnPurchase(parseRequest(uuidSchema, purchaseId))
+    return observePublicLaunchHttp(
+      "purchaser_reconciliation",
+      HttpStatus.OK,
+      async () => {
+        const purchase = publicPurchaseSchema.parse(
+          await this.purchases.getOwnPurchase(
+            parseRequest(uuidSchema, purchaseId)
+          )
+        );
+        recordPublicLaunchReconciliation(
+          purchase.status,
+          purchase.createdAt,
+          purchase.paidAt
+        );
+        return purchase;
+      }
     );
   }
 }

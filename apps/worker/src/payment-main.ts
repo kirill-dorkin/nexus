@@ -1,6 +1,11 @@
 import { createDatabasePool } from "@platform/database";
 import pino from "pino";
 
+import {
+  buildPaymentWorkerFailureEvent,
+  buildPaymentWorkerOperationalEvent,
+  safelyWritePaymentWorkerOperationalEvent
+} from "./payment-operational-event.js";
 import { PaymentWebhookProcessor } from "./payment-webhook.processor.js";
 
 const log = pino({ name: "payment-worker" });
@@ -79,17 +84,22 @@ async function main(): Promise<void> {
   for (const signal of ["SIGINT", "SIGTERM"] as const) {
     process.once(signal, () => {
       stopping = true;
-      log.info({ signal }, "payment worker shutdown requested");
+      safelyWritePaymentWorkerOperationalEvent(() =>
+        log.info({ signal }, "payment worker shutdown requested")
+      );
     });
   }
 
-  log.info(
-    { leaseSeconds, pollIntervalMs },
-    "payment webhook processor started"
+  safelyWritePaymentWorkerOperationalEvent(() =>
+    log.info(
+      { leaseSeconds, pollIntervalMs },
+      "payment webhook processor started"
+    )
   );
 
   try {
     while (!stopping) {
+      const startedAt = Date.now();
       try {
         const cycle = await processor.processOne();
 
@@ -98,84 +108,62 @@ async function main(): Promise<void> {
           continue;
         }
 
-        if (cycle.kind === "completed") {
-          log.info(
-            {
-              inboxId: cycle.inboxId,
-              purchaseId: cycle.purchaseId,
-              paymentStatus: cycle.paymentStatus
-            },
-            "payment webhook processing completed"
+        const event = buildPaymentWorkerOperationalEvent(
+          cycle,
+          Date.now() - startedAt
+        );
+        if (
+          cycle.kind === "blocked" ||
+          cycle.kind === "rejected" ||
+          cycle.kind === "lease_lost"
+        ) {
+          safelyWritePaymentWorkerOperationalEvent(() =>
+            log.warn(event, "payment webhook processing outcome")
           );
           continue;
         }
-
-        if (cycle.kind === "blocked") {
-          log.warn(
-            {
-              inboxId: cycle.inboxId,
-              errorCode: cycle.errorCode
-            },
-            "payment webhook blocked pending trusted checkout mapping"
-          );
-          continue;
-        }
-
-        if (cycle.kind === "rejected") {
-          log.warn(
-            {
-              inboxId: cycle.inboxId,
-              errorCode: cycle.errorCode
-            },
-            "payment webhook rejected without changing canonical Purchase state"
-          );
-          continue;
-        }
-
         if (cycle.kind === "retryable" || cycle.kind === "dead_letter") {
-          log.error(
-            {
-              inboxId: cycle.inboxId,
-              errorCode: cycle.errorCode,
-              nextState: cycle.kind
-            },
-            "payment webhook processor failed"
+          safelyWritePaymentWorkerOperationalEvent(() =>
+            log.error(event, "payment webhook processing outcome")
           );
           continue;
         }
-
-        log.warn(
-          { inboxId: cycle.inboxId },
-          "payment webhook lease was lost before canonical state could be changed"
+        safelyWritePaymentWorkerOperationalEvent(() =>
+          log.info(event, "payment webhook processing outcome")
         );
       } catch (error) {
-        log.error(
-          {
-            errorName: error instanceof Error ? error.name : "UnknownError",
-            errorMessage:
-              error instanceof Error
-                ? error.message
-                : "unknown payment worker failure"
-          },
-          "payment webhook processor cycle failed"
+        safelyWritePaymentWorkerOperationalEvent(() =>
+          log.error(
+            buildPaymentWorkerFailureEvent(
+              "cycle_failure",
+              Date.now() - startedAt,
+              error
+            ),
+            "payment webhook processor cycle failed"
+          )
         );
         await sleep(pollIntervalMs);
       }
     }
   } finally {
     await pool.end();
-    log.info("payment webhook processor stopped");
+    safelyWritePaymentWorkerOperationalEvent(() =>
+      log.info("payment webhook processor stopped")
+    );
   }
 }
 
+const processStartedAt = Date.now();
 void main().catch((error: unknown) => {
-  log.fatal(
-    {
-      errorName: error instanceof Error ? error.name : "UnknownError",
-      errorMessage:
-        error instanceof Error ? error.message : "unknown payment worker startup failure"
-    },
-    "payment worker terminated unexpectedly"
+  safelyWritePaymentWorkerOperationalEvent(() =>
+    log.fatal(
+      buildPaymentWorkerFailureEvent(
+        "startup_failure",
+        Date.now() - processStartedAt,
+        error
+      ),
+      "payment worker terminated unexpectedly"
+    )
   );
   process.exitCode = 1;
 });

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Header,
+  HttpStatus,
   Param,
   Post,
   UseGuards
@@ -16,6 +17,7 @@ import {
 
 import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
 import { parseRequest } from "../../http/validation";
+import { observePublicLaunchHttp } from "../../observability/public-launch-operational-events";
 import { PurchaseCheckoutApplicationService } from "./payment-checkout.service";
 
 @Controller("public/catalog/:organizationSlug/products/:productSlug")
@@ -30,11 +32,13 @@ export class PublicPurchaseCheckoutController {
     @Param("productSlug") productSlug: string,
     @Body() body: unknown
   ): Promise<PublicPurchaseCheckout> {
-    return publicPurchaseCheckoutSchema.parse(
-      await this.checkout.createOrGetPublicCheckout(
-        parseRequest(organizationSlugSchema, organizationSlug),
-        parseRequest(resourceSlugSchema, productSlug),
-        parseRequest(createPurchaseCheckoutRequestSchema, body)
+    return observePublicLaunchHttp("checkout", HttpStatus.CREATED, async () =>
+      publicPurchaseCheckoutSchema.parse(
+        await this.checkout.createOrGetPublicCheckout(
+          parseRequest(organizationSlugSchema, organizationSlug),
+          parseRequest(resourceSlugSchema, productSlug),
+          parseRequest(createPurchaseCheckoutRequestSchema, body)
+        )
       )
     );
   }
