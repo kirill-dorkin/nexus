@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  publicCatalogProductResponseSchema,
   publicCatalogProductSchema,
   publicCatalogSchema
 } from "./public-catalog";
@@ -44,6 +45,34 @@ describe("public catalog contracts", () => {
       },
       products: [publicProduct]
     });
+  });
+
+  it("exposes customer entry policy only on the product-detail organization hint", () => {
+    expect(
+      publicCatalogProductResponseSchema.parse({
+        organization: {
+          slug: "microstudio",
+          name: "Microstudio",
+          customerEntryPolicy: "open"
+        },
+        product: publicProduct
+      }).organization
+    ).toEqual({
+      slug: "microstudio",
+      name: "Microstudio",
+      customerEntryPolicy: "open"
+    });
+
+    expect(() =>
+      publicCatalogProductResponseSchema.parse({
+        organization: {
+          slug: "microstudio",
+          name: "Microstudio",
+          customerEntryPolicy: "invite_only"
+        },
+        product: publicProduct
+      })
+    ).toThrow();
   });
 
   it("rejects internal Product, Offering, and tenant fields", () => {

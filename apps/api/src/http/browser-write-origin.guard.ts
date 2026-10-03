@@ -7,66 +7,35 @@ import {
 } from "@nestjs/common";
 
 import type { PlatformPrincipalCarrier } from "../request-context/platform-principal";
+import {
+  optionalConfiguredWebOrigin,
+  parseExactHttpOrigin
+} from "./web-app-origin";
 
 type BrowserWriteRequest = PlatformPrincipalCarrier & {
   headers: Readonly<Record<string, string | string[] | undefined>>;
 };
 
-function isHttpProtocol(protocol: string): boolean {
-  return protocol === "http:" || protocol === "https:";
-}
-
 function configuredWebOrigin(): string {
-  const configured = process.env.WEB_APP_ORIGIN;
-  if (configured === undefined || configured.trim().length === 0) {
-    throw new ServiceUnavailableException(
-      "WEB_APP_ORIGIN is required for authenticated browser writes."
-    );
-  }
-
+  let configured: string | null;
   try {
-    const url = new URL(configured.trim());
-    if (
-      !isHttpProtocol(url.protocol) ||
-      url.username.length > 0 ||
-      url.password.length > 0 ||
-      url.pathname !== "/" ||
-      url.search.length > 0 ||
-      url.hash.length > 0
-    ) {
-      throw new Error("not an origin");
-    }
-    return url.origin;
+    configured = optionalConfiguredWebOrigin();
   } catch {
     throw new ServiceUnavailableException(
       "WEB_APP_ORIGIN must be an absolute HTTP(S) origin."
     );
   }
+
+  if (configured === null) {
+    throw new ServiceUnavailableException(
+      "WEB_APP_ORIGIN is required for authenticated browser writes."
+    );
+  }
+  return configured;
 }
 
 function requestOrigin(value: string | string[] | undefined): string | null {
-  if (typeof value !== "string" || value.trim().length === 0) {
-    return null;
-  }
-
-  try {
-    const raw = value.trim();
-    const url = new URL(raw);
-    if (
-      !isHttpProtocol(url.protocol) ||
-      url.origin !== raw ||
-      url.username.length > 0 ||
-      url.password.length > 0 ||
-      url.pathname !== "/" ||
-      url.search.length > 0 ||
-      url.hash.length > 0
-    ) {
-      return null;
-    }
-    return url.origin;
-  } catch {
-    return null;
-  }
+  return typeof value === "string" ? parseExactHttpOrigin(value) : null;
 }
 
 @Injectable()

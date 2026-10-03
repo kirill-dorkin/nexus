@@ -92,7 +92,8 @@ export class PublicCatalogService {
         return publicCatalogProductResponseSchema.parse({
           organization: {
             slug: organization.slug,
-            name: organization.name
+            name: organization.name,
+            customerEntryPolicy: organization.customerEntryPolicy
           },
           product
         });
