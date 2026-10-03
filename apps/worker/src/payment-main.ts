@@ -84,13 +84,17 @@ async function main(): Promise<void> {
   for (const signal of ["SIGINT", "SIGTERM"] as const) {
     process.once(signal, () => {
       stopping = true;
-      log.info({ signal }, "payment worker shutdown requested");
+      safelyWritePaymentWorkerOperationalEvent(() =>
+        log.info({ signal }, "payment worker shutdown requested")
+      );
     });
   }
 
-  log.info(
-    { leaseSeconds, pollIntervalMs },
-    "payment webhook processor started"
+  safelyWritePaymentWorkerOperationalEvent(() =>
+    log.info(
+      { leaseSeconds, pollIntervalMs },
+      "payment webhook processor started"
+    )
   );
 
   try {
@@ -143,7 +147,9 @@ async function main(): Promise<void> {
     }
   } finally {
     await pool.end();
-    log.info("payment webhook processor stopped");
+    safelyWritePaymentWorkerOperationalEvent(() =>
+      log.info("payment webhook processor stopped")
+    );
   }
 }
 
