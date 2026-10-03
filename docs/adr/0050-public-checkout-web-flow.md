@@ -51,7 +51,7 @@ organizationSlug + productSlug
 
 It renders the existing public catalog Product projection and exact active Price options. No tenant UUID, Product UUID, Offering UUID, purchaser ID, role, provider identity, or canonical internal Purchase fields are introduced into the page contract.
 
-F9.4 already decided that the public Organization projection exposes `customerEntryPolicy` as a presentation hint. The implementation is completed here so the page can distinguish `open` from `closed` customer entry without treating that hint as authorization.
+F9.4 already decided that the public Organization projection exposes `customerEntryPolicy` as a presentation hint. The implementation is completed on the Product-detail projection here so the page can distinguish `open` from `closed` customer entry without expanding the catalog-list response or treating that hint as authorization.
 
 The hint may be stale. Every write still revalidates canonical state server-side.
 
@@ -73,7 +73,7 @@ After authentication and, when applicable, explicit customer entry, the browser 
 organizationSlug + productSlug + exact priceId + idempotencyKey
 ```
 
-The API continues to derive the purchaser from the session and revalidate Organization, Membership, Product, Price, Offering, Entitlement, and Purchase idempotency inside the existing checkout authority boundary.
+The API continues to derive the purchaser from the session and revalidate current Organization membership plus route-scoped Product, Price, Offering, and canonical Purchase idempotency inside the existing checkout authority boundary.
 
 The web page never submits amount or currency as checkout authority. Amount/currency shown to the user come only from the public catalog projection.
 
@@ -81,7 +81,7 @@ The web page never submits amount or currency as checkout authority. Amount/curr
 
 The browser creates one UUID idempotency key when a checkout attempt starts and reuses that key for retries of the same selected Price after ambiguous network or transport failures.
 
-A new key is created only when the user intentionally starts a new checkout attempt or changes the selected Price. This preserves the canonical `(organization, purchaser, idempotencyKey)` semantics from Commerce.
+Selecting a different Price uses that Price's independently scoped attempt key. Repeated submissions for the same route and Price reuse the current attempt key so ambiguous retries cannot manufacture a second canonical Purchase.
 
 ### Hosted provider redirect completes this slice
 
@@ -102,7 +102,7 @@ Success/cancel return UX, purchase-history/reconciliation UI, and post-payment p
 
 ## Compatibility
 
-The public catalog Organization projection gains `customerEntryPolicy`, fulfilling ADR-0047. Existing callers that parse the repository contract receive the new required field together with the corresponding API deployment and migration.
+The public catalog Product-detail Organization projection gains required `customerEntryPolicy`, fulfilling ADR-0047 for the checkout page. The catalog-list Organization projection remains unchanged, avoiding an unnecessary public contract expansion for list callers.
 
 The database change is additive: a new narrow public read capability exposes only the current customer-entry policy for an active Organization slug. Existing public catalog SQL capabilities remain intact for compatibility.
 
