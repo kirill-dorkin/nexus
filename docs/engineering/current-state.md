@@ -6,13 +6,13 @@ It is **not live GitHub telemetry**. Before doing work, always verify the curren
 
 ## Checkpoint baseline
 
-Last maintained: 2026-10-01.
+Last maintained: 2026-10-03.
 
-Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the completed repository-side F7 grader-hardening foundation, the completed F8 recommendation/instructor/progression foundation, and the F9 Commerce/public-launch foundation through provider-independent Product/immutable Price, canonical paid Purchase settlement, a safe unauthenticated public sellable-catalog read boundary, explicit customer Organization membership entry, and the active one-time payment-provider migration from Stripe to Paddle behind the existing Integrations boundary. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes, and a separate trusted Go grader runner with a capability-minimal `goja` runtime, bounded result channel, reproducible `scratch` OCI build, CI-proven canonical `js-sum-v1@1` digest, repository security-contract tests, and a fail-closed real-cluster verification harness/runbook. **Production learner-code execution remains disabled:** the checked-in profile is inert, `GRADER_SANDBOX_PROVIDER` still defaults to `unavailable`, and activation still requires publishing the exact runner digest plus green target-cluster verification evidence in a separate deployment change. F8 now composes the unchanged `ordered-mastery@1` recommendation policy with derived `fixed-interval-review@1` scheduling based on Mastery-owned `lastEvidenceAt`, a conservative `repeated-trusted-failure@1` suspected-misconception signal derived only from normalized trusted validation Evidence, the first explicit `repeated-failure-remediation@1` action-changing policy backed by immutable CourseVersion-authored Skill-to-Activity remediation mappings, derived `course-progression-readiness@1` over distinct scored Attempts, pinned Mastery semantics, scored-Evidence freshness, and the existing repeated-trusted-failure signal, plus Offering-scoped `offering-readiness-triage@1` over active learner readiness decisions for instructor/mentor operational intelligence, and the first enforced `course-readiness-enrollment-completion@1` ProgressionGate protecting explicit learner-requested Enrollment completion. Review/signal/intervention/readiness/overview/gate state remains derived rather than persisted; the only new canonical F8 state after F8.2 is authored curriculum remediation intent. A fresh post-F8.6 audit found no concrete staff completion override or durable completion-history product/audit requirement, so F8 is closed without inventing another progression slice. F9 preserves `Product != Price != Purchase != Entitlement != Enrollment` while moving the active external payment runtime to Paddle transactions; provider identities, tax, webhook state, and transaction state remain Integrations-owned rather than canonical Commerce state. Verify the live `main` head before relying on any SHA or PR number.
+Baseline repository state: includes the completed F4 core learner path, the completed F5 Guided Build API-level learner vertical, an end-to-end F6 GitHub Projects foundation from trusted GitHub ingress through repository-backed Projects, immutable normalized PR/review/check facts, and an authorized Project activity read model, plus the completed repository-side F7 grader-hardening foundation, the completed F8 recommendation/instructor/progression foundation, and the F9 Commerce/public-launch foundation through provider-independent Product/immutable Price, canonical paid Purchase settlement, a safe unauthenticated public sellable-catalog read boundary, explicit customer Organization membership entry, server-authoritative public checkout initiation, and the first browser Product-to-Paddle checkout flow over exact-origin credentialed API transport. F7 now has a versioned authenticated Grader Gateway admission/profile boundary, a Validation-owned durable grader-job ledger with tenant-safe scheduling plus worker lease/retry/dead-letter state, authenticated Worker -> Gateway dispatch with lease-fenced atomic system-owned ValidationResult recording, a hardened Kubernetes/gVisor sandbox control plane/provider with fixed protected placement and admission/RBAC/network/resource envelopes, and a separate trusted Go grader runner with a capability-minimal `goja` runtime, bounded result channel, reproducible `scratch` OCI build, CI-proven canonical `js-sum-v1@1` digest, repository security-contract tests, and a fail-closed real-cluster verification harness/runbook. **Production learner-code execution remains disabled:** the checked-in profile is inert, `GRADER_SANDBOX_PROVIDER` still defaults to `unavailable`, and activation still requires publishing the exact runner digest plus green target-cluster verification evidence in a separate deployment change. F8 now composes the unchanged `ordered-mastery@1` recommendation policy with derived `fixed-interval-review@1` scheduling based on Mastery-owned `lastEvidenceAt`, a conservative `repeated-trusted-failure@1` suspected-misconception signal derived only from normalized trusted validation Evidence, the first explicit `repeated-failure-remediation@1` action-changing policy backed by immutable CourseVersion-authored Skill-to-Activity remediation mappings, derived `course-progression-readiness@1` over distinct scored Attempts, pinned Mastery semantics, scored-Evidence freshness, and the existing repeated-trusted-failure signal, plus Offering-scoped `offering-readiness-triage@1` over active learner readiness decisions for instructor/mentor operational intelligence, and the first enforced `course-readiness-enrollment-completion@1` ProgressionGate protecting explicit learner-requested Enrollment completion. Review/signal/intervention/readiness/overview/gate state remains derived rather than persisted; the only new canonical F8 state after F8.2 is authored curriculum remediation intent. A fresh post-F8.6 audit found no concrete staff completion override or durable completion-history product/audit requirement, so F8 is closed without inventing another progression slice. F9 preserves `Product != Price != Purchase != Entitlement != Enrollment` while moving the active external payment runtime to Paddle transactions; provider identities, tax, webhook state, and transaction state remain Integrations-owned rather than canonical Commerce state. Verify the live `main` head before relying on any SHA or PR number.
 
-Latest architectural decision at this checkpoint: ADR-0048.
+Latest architectural decision at this checkpoint: ADR-0050.
 
-Latest ordered migration at this checkpoint: `000036_paddle_payment_provider.sql`.
+Latest ordered migration at this checkpoint: `000038_public_customer_entry_policy.sql`.
 
 The baseline above is an orientation marker, not permission to skip checking the live `main` head.
 
@@ -545,9 +545,9 @@ active Enrollment
 
 Adaptive spacing, canonical named misconception taxonomy, readiness history, recommendation/intervention history, reminders/notifications, Group/CourseRun readiness filters, dashboards, reason-specific urgency ranking, bulk instructor actions, automatic completion, staff completion override/audit policy, and learn-vs-review balancing remain separate future slices.
 
-### F9 — Commerce/public launch: Product/Price + Paddle Purchase settlement + public catalog + customer entry implemented
+### F9 — Commerce/public launch: Product/Price + Paddle settlement + public discovery/entry + checkout web flow implemented
 
-F8 is closed. F9 continues from ADR-0014 Entitlement/access semantics through provider-independent commercial terms, paid settlement, public discovery, explicit customer entry, and the backend authority required before checkout UI.
+F8 is closed. F9 continues from ADR-0014 Entitlement/access semantics through provider-independent commercial terms, paid settlement, public discovery, explicit customer entry, server-authoritative public checkout, and the first browser handoff to hosted Paddle checkout.
 
 The implemented Commerce/public-launch foundation now includes:
 
@@ -591,7 +591,16 @@ The implemented Commerce/public-launch foundation now includes:
 - open customer entry creates an active role-less Membership only; existing active membership retry is materially idempotent while invited/suspended/left states fail closed rather than being silently rewritten;
 - customer entry is independent from Purchase, Entitlement, and Enrollment and creates none of them as side effects;
 - the customer-entry transaction sets only authenticated `app.user_id`, so tenant identity is established inside the narrow database capability rather than trusted from caller-supplied transaction context;
-- public checkout initiation/authority, checkout UI, success/cancel UX, refunds/reversals, subscriptions, supported discounts/coupons, provider customer synchronization, reconciliation, marketing, caching optimization, and launch hardening remain separate F9 slices.
+- ADR-0049 exposes browser-safe authenticated public checkout by `organizationSlug + productSlug + priceId + idempotencyKey`; tenant UUID, Product/Offering ids, money, membership role, provider identity, and settlement state remain server-owned;
+- public checkout requires an already-active Organization Membership, re-resolves tenant authority from the public Organization slug in user context, then revalidates route-scoped active Product/Price plus an open `entitlement_required` Offering inside the tenant transaction before opening the canonical Purchase;
+- customer self-entry remains a separate explicit Organization command; checkout never creates, repairs, accepts, or reactivates Membership as an implicit purchase side effect;
+- authenticated browser checkout and customer-entry writes require the exact configured `WEB_APP_ORIGIN` through the shared browser-origin boundary; stale catalog data and CORS permission are never authorization;
+- ADR-0050 establishes direct Web -> API browser transport with exact-origin credentialed CORS while retaining the existing host-only secure HttpOnly `SameSite=Strict` session cookie; Web stores no session/bearer token in JavaScript;
+- Product detail now includes current `customerEntryPolicy` only as a non-authoritative presentation hint through the narrow `000038` public Organization read capability; self-entry still revalidates policy at write time;
+- the first Web Product route renders the no-store public offer, supports registration/login through existing Authentication, makes open customer entry explicit, sends only `priceId + idempotencyKey` to public checkout, and redirects to the hosted Paddle URL returned by the Integrations boundary;
+- one browser checkout attempt persists its UUID idempotency key in `sessionStorage` per Organization/Product/Price so reloads and ambiguous transport retries reuse canonical Purchase identity rather than inventing another Purchase;
+- hosted Paddle navigation is not settlement evidence: canonical `pending -> paid` remains exclusively webhook/worker driven, paid settlement still grants Entitlement atomically, and no Enrollment is created;
+- provider return-target configuration, success/cancel/reconciliation UX, purchaser Purchase-status reads, refunds/reversals, subscriptions, supported discounts/coupons, provider customer synchronization, marketing, caching optimization, and broader launch hardening remain separate F9 slices.
 
 The first paid path is now:
 
@@ -627,6 +636,22 @@ authenticated Nexus user + organizationSlug
   -> narrow DB capability resolves Organization internally
   -> create or reuse active role-less Membership
   -> no Purchase, Entitlement, Enrollment, or role side effect
+```
+
+
+The first browser checkout path is:
+
+```text
+public Product route
+  -> no-store public Product detail + customerEntryPolicy presentation hint
+  -> register/login through secure HttpOnly API session when needed
+  -> explicit customer self-entry only when Organization policy is open
+  -> public checkout command with exact priceId + browser-attempt idempotencyKey
+  -> server resolves active member + route-scoped sellable offer + canonical terms
+  -> pending Purchase + hosted Paddle checkout URL
+  -> browser redirects to Paddle
+  -> redirect is navigation only; signed webhook/worker settlement remains payment truth
+  -> paid Purchase grants Entitlement, never Enrollment
 ```
 
 F7 production grader activation remains an independent deployment/security gate.
@@ -665,6 +690,10 @@ These are high-value reminders, not substitutes for their ADRs.
 - Customer Organization entry is an explicit Organization-owned policy transition, not a catalog or checkout side effect; `customerEntryPolicy` defaults closed.
 - Customer entry resolves tenant authority from `organizationSlug` inside a narrow DB capability, creates only an active role-less Membership, and never accepts tenant UUID/role or creates Purchase/Entitlement/Enrollment from the browser request.
 - Existing active customer entry retry is idempotent; invited/suspended/left membership states fail closed rather than being silently reactivated.
+- Browser -> API session transport permits credentials only for the single canonical `WEB_APP_ORIGIN`; wildcard credentialed CORS is not allowed, and the Web application never owns the opaque session token.
+- Public `customerEntryPolicy` is a presentation hint, not authority; self-entry and checkout revalidate their current server-owned preconditions at command time.
+- Browser checkout idempotency is attempt-scoped: ambiguous retries reuse one UUID key for the same public route and Price, while canonical Purchase idempotency remains the server-side source of retry semantics.
+- A hosted payment return/redirect must never mark a Purchase paid; only trusted normalized provider settlement through the existing webhook/worker boundary may do so.
 - `Group != Team`.
 - `Assignment` schedules or targets learner work; it does not itself grant entitlement, enrollment, access, or group membership.
 - `Attempt` is one learner try against an exact `ActivityVersion`.
@@ -739,18 +768,17 @@ Do not remove these merely because the canonical model has moved on. Each requir
 
 ## Next recommended slice
 
-**F9.6 Public checkout initiation authority — expose a browser-safe authenticated checkout command over the completed public catalog + customer-entry + Paddle settlement foundation, without making stale catalog data or client-supplied tenant/commercial fields authoritative.**
+**F9.8 Checkout return + purchaser reconciliation read — finish the hosted Paddle handoff in Nexus without treating a provider redirect as proof of payment.**
 
-F9.3 made exact sellable offers discoverable, F9.4 established explicit authenticated customer Organization entry, and F9.5 establishes the active Paddle-backed one-time checkout/settlement lifecycle. The next smallest coherent public-launch slice is therefore the backend public checkout initiation boundary, not checkout UI.
+F9.7 now takes a visitor from a public Product page through Authentication, explicit customer entry where permitted, server-authoritative Purchase checkout, and redirect to hosted Paddle. The next smallest coherent public-launch slice is the return/reconciliation boundary: get the purchaser back to Nexus and let that authenticated purchaser observe canonical Purchase state while webhook/worker settlement remains the only authority for `paid`.
 
 Before coding:
 
-- fresh-audit the merged F9.3–F9.5 main plus Authentication/session, CSRF/origin protections, Organizations customer entry, Public Catalog, Commerce purchase creation, Integrations checkout gateway, rate-limit/abuse controls, and tenant-routing boundaries;
-- define a public-route command keyed by `organizationSlug` + `productSlug` + exact opaque `priceId` + idempotency key, while resolving tenant authority server-side and never accepting tenant UUID, amount, currency, Offering id, Product id, membership role, or provider identity from the browser;
-- require the authenticated user to hold the active Membership produced by the explicit Organization entry boundary; public checkout must not create or repair Membership implicitly;
-- revalidate current Organization/Product/Price/Offering sellability at command time under one authoritative server-side flow; a previously returned public catalog document is presentation only and cannot authorize Purchase creation;
-- prove that the supplied `priceId` belongs to the route-selected Product/Organization, is still active, and pins the exact immutable commercial terms before delegating to the existing canonical Purchase command;
-- preserve `Purchase != Entitlement != Enrollment` and keep Paddle behind the Integrations checkout port; the public controller must not construct provider transaction fields;
-- retain the existing Purchase idempotency semantics and define replay/conflict behavior for the browser-safe route without inventing provider-side exactly-once guarantees;
-- apply browser write protections and abuse controls appropriate to authenticated session-based checkout initiation before exposing the route publicly;
-- keep success/cancel presentation UI, refunds/adjustments/disputes, subscriptions, supported discount/coupon policy, provider-customer synchronization, marketing, and F7 production grader activation outside this slice unless the audit proves a correctness dependency.
+- fresh-audit the merged F9.5-F9.7 main, current official Paddle hosted-checkout return/redirect capabilities, the Purchase-to-provider checkout mapping, webhook/worker settlement, public Purchase DTO, session/origin protections, and tenant/purchaser authorization boundaries;
+- define server-owned success/cancel return targets rather than accepting arbitrary browser/provider return URLs, and decide how the exact Purchase identity is carried back without making it authorization;
+- add the narrowest authenticated purchaser-safe Purchase status read needed by the return page; authorize the actor server-side and expose only public Purchase fields, never tenant ids, internal Product/Offering ids, Paddle transaction ids, webhook state, or provider secrets;
+- keep `pending` a first-class return state because the browser may arrive before the signed webhook is processed; the UI may refresh/poll boundedly but must not synthesize `paid` from query parameters, Paddle redirect shape, or client claims;
+- treat cancel/close navigation as presentation unless a separate canonical Purchase cancellation lifecycle is explicitly designed; do not silently invent `pending -> cancelled` from a browser return;
+- when canonical Purchase becomes `paid`, show the resulting access outcome without auto-creating Enrollment; `Purchase != Entitlement != Enrollment` remains unchanged;
+- define retry/back-navigation semantics so an existing checkout attempt continues to reuse canonical Purchase/provider mapping rather than creating a new Purchase merely because the user returned to the Product page;
+- keep refunds/adjustments/disputes, subscriptions, discounts/coupons, provider-customer synchronization, email/recovery, marketing/SEO, and F7 production grader activation outside this slice unless the audit proves a correctness dependency.
