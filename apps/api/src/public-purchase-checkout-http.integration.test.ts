@@ -390,11 +390,14 @@ describe("public Purchase checkout authority", () => {
     });
     expect(catalog.statusCode).toBe(200);
 
-    await migrationPool.query(
-      `UPDATE commerce.prices
-          SET status = 'archived', archived_at = now(), updated_at = now()
-        WHERE id = $1`,
-      [priceId]
+    const archive = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/commerce/products/${productId}/prices/${priceId}/archive`,
+      headers: { "x-test-user-id": ownerUserId }
+    });
+    expect(archive.statusCode).toBe(200);
+    expect(commercePriceSchema.parse(JSON.parse(archive.body)).status).toBe(
+      "archived"
     );
 
     const checkout = await app.inject({
