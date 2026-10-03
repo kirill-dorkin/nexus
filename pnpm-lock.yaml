@@ -85,6 +85,9 @@ importers:
       '@platform/brand':
         specifier: workspace:*
         version: link:../../packages/brand
+      '@platform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
       '@platform/design-tokens':
         specifier: workspace:*
         version: link:../../packages/design-tokens
