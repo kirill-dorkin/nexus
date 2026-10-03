@@ -1,0 +1,121 @@
+name: F9 current-state sync
+
+on:
+  push:
+    branches:
+      - foundation/f9-public-checkout-web-flow
+
+permissions:
+  contents: write
+
+jobs:
+  sync-current-state:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: foundation/f9-public-checkout-web-flow
+
+      - name: Update maintained architecture checkpoint
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("docs/engineering/current-state.md")
+          text = path.read_text()
+          if "Last maintained: 2026-10-03." in text:
+              raise SystemExit(0)
+
+          def replace_once(old: str, new: str) -> None:
+              global text
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"expected exactly one match, found {count}: {old[:80]!r}")
+              text = text.replace(old, new, 1)
+
+          replace_once("Last maintained: 2026-10-01.", "Last maintained: 2026-10-03.")
+          replace_once("Latest architectural decision at this checkpoint: ADR-0048.", "Latest architectural decision at this checkpoint: ADR-0050.")
+          replace_once("Latest ordered migration at this checkpoint: `000036_paddle_payment_provider.sql`.", "Latest ordered migration at this checkpoint: `000038_public_customer_entry_policy.sql`.")
+          replace_once(
+              "explicit customer Organization membership entry, and the active one-time payment-provider migration from Stripe to Paddle behind the existing Integrations boundary.",
+              "explicit customer Organization membership entry, server-authoritative public checkout initiation, and the first browser Product-to-Paddle checkout flow over exact-origin credentialed API transport."
+          )
+          replace_once(
+              "### F9 — Commerce/public launch: Product/Price + Paddle Purchase settlement + public catalog + customer entry implemented",
+              "### F9 — Commerce/public launch: Product/Price + Paddle settlement + public discovery/entry + checkout web flow implemented"
+          )
+          replace_once(
+              "F8 is closed. F9 continues from ADR-0014 Entitlement/access semantics through provider-independent commercial terms, paid settlement, public discovery, explicit customer entry, and the backend authority required before checkout UI.",
+              "F8 is closed. F9 continues from ADR-0014 Entitlement/access semantics through provider-independent commercial terms, paid settlement, public discovery, explicit customer entry, server-authoritative public checkout, and the first browser handoff to hosted Paddle checkout."
+          )
+          replace_once(
+              "- public checkout initiation/authority, checkout UI, success/cancel UX, refunds/reversals, subscriptions, supported discounts/coupons, provider customer synchronization, reconciliation, marketing, caching optimization, and launch hardening remain separate F9 slices.",
+              "- ADR-0049 exposes browser-safe authenticated public checkout by `organizationSlug + productSlug + priceId + idempotencyKey`; tenant UUID, Product/Offering ids, money, membership role, provider identity, and settlement state remain server-owned;\n- public checkout requires an already-active Organization Membership, re-resolves tenant authority from the public Organization slug in user context, then revalidates route-scoped active Product/Price plus an open `entitlement_required` Offering inside the tenant transaction before opening the canonical Purchase;\n- customer self-entry remains a separate explicit Organization command; checkout never creates, repairs, accepts, or reactivates Membership as an implicit purchase side effect;\n- authenticated browser checkout and customer-entry writes require the exact configured `WEB_APP_ORIGIN` through the shared browser-origin boundary; stale catalog data and CORS permission are never authorization;\n- ADR-0050 establishes direct Web -> API browser transport with exact-origin credentialed CORS while retaining the existing host-only secure HttpOnly `SameSite=Strict` session cookie; Web stores no session/bearer token in JavaScript;\n- Product detail now includes current `customerEntryPolicy` only as a non-authoritative presentation hint through the narrow `000038` public Organization read capability; self-entry still revalidates policy at write time;\n- the first Web Product route renders the no-store public offer, supports registration/login through existing Authentication, makes open customer entry explicit, sends only `priceId + idempotencyKey` to public checkout, and redirects to the hosted Paddle URL returned by the Integrations boundary;\n- one browser checkout attempt persists its UUID idempotency key in `sessionStorage` per Organization/Product/Price so reloads and ambiguous transport retries reuse canonical Purchase identity rather than inventing another Purchase;\n- hosted Paddle navigation is not settlement evidence: canonical `pending -> paid` remains exclusively webhook/worker driven, paid settlement still grants Entitlement atomically, and no Enrollment is created;\n- provider return-target configuration, success/cancel/reconciliation UX, purchaser Purchase-status reads, refunds/reversals, subscriptions, supported discounts/coupons, provider customer synchronization, marketing, caching optimization, and broader launch hardening remain separate F9 slices."
+          )
+          marker = "\nF7 production grader activation remains an independent deployment/security gate."
+          insert = """
+
+The first browser checkout path is:
+
+```text
+public Product route
+  -> no-store public Product detail + customerEntryPolicy presentation hint
+  -> register/login through secure HttpOnly API session when needed
+  -> explicit customer self-entry only when Organization policy is open
+  -> public checkout command with exact priceId + browser-attempt idempotencyKey
+  -> server resolves active member + route-scoped sellable offer + canonical terms
+  -> pending Purchase + hosted Paddle checkout URL
+  -> browser redirects to Paddle
+  -> redirect is navigation only; signed webhook/worker settlement remains payment truth
+  -> paid Purchase grants Entitlement, never Enrollment
+```
+"""
+          if text.count(marker) != 1:
+              raise SystemExit(f"expected one F7 marker, found {text.count(marker)}")
+          text = text.replace(marker, insert + marker, 1)
+
+          replace_once(
+              "- Existing active customer entry retry is idempotent; invited/suspended/left membership states fail closed rather than being silently reactivated.",
+              "- Existing active customer entry retry is idempotent; invited/suspended/left membership states fail closed rather than being silently reactivated.\n- Browser -> API session transport permits credentials only for the single canonical `WEB_APP_ORIGIN`; wildcard credentialed CORS is not allowed, and the Web application never owns the opaque session token.\n- Public `customerEntryPolicy` is a presentation hint, not authority; self-entry and checkout revalidate their current server-owned preconditions at command time.\n- Browser checkout idempotency is attempt-scoped: ambiguous retries reuse one UUID key for the same public route and Price, while canonical Purchase idempotency remains the server-side source of retry semantics.\n- A hosted payment return/redirect must never mark a Purchase paid; only trusted normalized provider settlement through the existing webhook/worker boundary may do so."
+          )
+
+          next_marker = "## Next recommended slice\n"
+          before, sep, _after = text.partition(next_marker)
+          if not sep:
+              raise SystemExit("next-slice marker not found")
+          next_section = """## Next recommended slice
+
+**F9.8 Checkout return + purchaser reconciliation read — finish the hosted Paddle handoff in Nexus without treating a provider redirect as proof of payment.**
+
+F9.7 now takes a visitor from a public Product page through Authentication, explicit customer entry where permitted, server-authoritative Purchase checkout, and redirect to hosted Paddle. The next smallest coherent public-launch slice is the return/reconciliation boundary: get the purchaser back to Nexus and let that authenticated purchaser observe canonical Purchase state while webhook/worker settlement remains the only authority for `paid`.
+
+Before coding:
+
+- fresh-audit the merged F9.5-F9.7 main, current official Paddle hosted-checkout return/redirect capabilities, the Purchase-to-provider checkout mapping, webhook/worker settlement, public Purchase DTO, session/origin protections, and tenant/purchaser authorization boundaries;
+- define server-owned success/cancel return targets rather than accepting arbitrary browser/provider return URLs, and decide how the exact Purchase identity is carried back without making it authorization;
+- add the narrowest authenticated purchaser-safe Purchase status read needed by the return page; authorize the actor server-side and expose only public Purchase fields, never tenant ids, internal Product/Offering ids, Paddle transaction ids, webhook state, or provider secrets;
+- keep `pending` a first-class return state because the browser may arrive before the signed webhook is processed; the UI may refresh/poll boundedly but must not synthesize `paid` from query parameters, Paddle redirect shape, or client claims;
+- treat cancel/close navigation as presentation unless a separate canonical Purchase cancellation lifecycle is explicitly designed; do not silently invent `pending -> cancelled` from a browser return;
+- when canonical Purchase becomes `paid`, show the resulting access outcome without auto-creating Enrollment; `Purchase != Entitlement != Enrollment` remains unchanged;
+- define retry/back-navigation semantics so an existing checkout attempt continues to reuse canonical Purchase/provider mapping rather than creating a new Purchase merely because the user returned to the Product page;
+- keep refunds/adjustments/disputes, subscriptions, discounts/coupons, provider-customer synchronization, email/recovery, marketing/SEO, and F7 production grader activation outside this slice unless the audit proves a correctness dependency.
+"""
+          text = before + next_section
+          path.write_text(text)
+          PY
+
+          git diff --check -- docs/engineering/current-state.md
+
+      - name: Commit checkpoint if changed
+        shell: bash
+        run: |
+          if git diff --quiet -- docs/engineering/current-state.md; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/engineering/current-state.md
+          git commit -m "docs(architecture): advance checkpoint through F9.7"
+          git push origin HEAD:foundation/f9-public-checkout-web-flow
