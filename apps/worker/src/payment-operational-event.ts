@@ -48,3 +48,13 @@ export function buildPaymentWorkerFailureEvent(
     errorClass: error instanceof Error ? "runtime_error" : "unknown_error"
   };
 }
+
+export function safelyWritePaymentWorkerOperationalEvent(
+  write: () => void
+): void {
+  try {
+    write();
+  } catch {
+    // Operational telemetry is best-effort and must not alter worker state flow.
+  }
+}

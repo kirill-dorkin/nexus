@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 
 import {
   buildPaymentWorkerFailureEvent,
-  buildPaymentWorkerOperationalEvent
+  buildPaymentWorkerOperationalEvent,
+  safelyWritePaymentWorkerOperationalEvent
 } from "./payment-operational-event.js";
 
 const forbiddenKey =
@@ -58,5 +59,13 @@ describe("payment worker operational event", () => {
     expectRedacted(event);
     expect(JSON.stringify(event)).not.toContain("22222222");
     expect(JSON.stringify(event)).not.toContain("TenantSpecificProviderFailure");
+  });
+
+  it("keeps logger failures outside the canonical worker state flow", () => {
+    expect(() =>
+      safelyWritePaymentWorkerOperationalEvent(() => {
+        throw new Error("log transport unavailable");
+      })
+    ).not.toThrow();
   });
 });

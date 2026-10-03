@@ -3,7 +3,8 @@ import pino from "pino";
 
 import {
   buildPaymentWorkerFailureEvent,
-  buildPaymentWorkerOperationalEvent
+  buildPaymentWorkerOperationalEvent,
+  safelyWritePaymentWorkerOperationalEvent
 } from "./payment-operational-event.js";
 import { PaymentWebhookProcessor } from "./payment-webhook.processor.js";
 
@@ -112,22 +113,30 @@ async function main(): Promise<void> {
           cycle.kind === "rejected" ||
           cycle.kind === "lease_lost"
         ) {
-          log.warn(event, "payment webhook processing outcome");
+          safelyWritePaymentWorkerOperationalEvent(() =>
+            log.warn(event, "payment webhook processing outcome")
+          );
           continue;
         }
         if (cycle.kind === "retryable" || cycle.kind === "dead_letter") {
-          log.error(event, "payment webhook processing outcome");
+          safelyWritePaymentWorkerOperationalEvent(() =>
+            log.error(event, "payment webhook processing outcome")
+          );
           continue;
         }
-        log.info(event, "payment webhook processing outcome");
+        safelyWritePaymentWorkerOperationalEvent(() =>
+          log.info(event, "payment webhook processing outcome")
+        );
       } catch (error) {
-        log.error(
-          buildPaymentWorkerFailureEvent(
-            "cycle_failure",
-            Date.now() - startedAt,
-            error
-          ),
-          "payment webhook processor cycle failed"
+        safelyWritePaymentWorkerOperationalEvent(() =>
+          log.error(
+            buildPaymentWorkerFailureEvent(
+              "cycle_failure",
+              Date.now() - startedAt,
+              error
+            ),
+            "payment webhook processor cycle failed"
+          )
         );
         await sleep(pollIntervalMs);
       }
@@ -140,13 +149,15 @@ async function main(): Promise<void> {
 
 const processStartedAt = Date.now();
 void main().catch((error: unknown) => {
-  log.fatal(
-    buildPaymentWorkerFailureEvent(
-      "startup_failure",
-      Date.now() - processStartedAt,
-      error
-    ),
-    "payment worker terminated unexpectedly"
+  safelyWritePaymentWorkerOperationalEvent(() =>
+    log.fatal(
+      buildPaymentWorkerFailureEvent(
+        "startup_failure",
+        Date.now() - processStartedAt,
+        error
+      ),
+      "payment worker terminated unexpectedly"
+    )
   );
   process.exitCode = 1;
 });

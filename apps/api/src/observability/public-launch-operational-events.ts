@@ -63,19 +63,25 @@ function emit(
     | PublicLaunchSecurityEvent
     | PublicLaunchReconciliationEvent
 ): void {
-  const serialized = JSON.stringify(event);
-  if ("outcome" in event && event.outcome === "failed") {
-    logger.error(serialized);
-    return;
+  // Operational telemetry is best-effort derived output. A logging failure must
+  // never change an HTTP/security/business outcome that has already been decided.
+  try {
+    const serialized = JSON.stringify(event);
+    if ("outcome" in event && event.outcome === "failed") {
+      logger.error(serialized);
+      return;
+    }
+    if (
+      "outcome" in event &&
+      (event.outcome === "rejected" || event.outcome === "misconfigured")
+    ) {
+      logger.warn(serialized);
+      return;
+    }
+    logger.log(serialized);
+  } catch {
+    // Fail open for telemetry only. Canonical state and HTTP semantics win.
   }
-  if (
-    "outcome" in event &&
-    (event.outcome === "rejected" || event.outcome === "misconfigured")
-  ) {
-    logger.warn(serialized);
-    return;
-  }
-  logger.log(serialized);
 }
 
 export function buildPublicLaunchHttpEvent(

@@ -1,10 +1,12 @@
-import { describe, expect, it } from "vitest";
+import { Logger } from "@nestjs/common";
+import { describe, expect, it, vi } from "vitest";
 
 import {
   buildPublicLaunchHttpEvent,
   buildPublicLaunchReconciliationEvent,
   buildPublicLaunchSecurityEvent,
-  purchaseReconciliationAgeBucket
+  purchaseReconciliationAgeBucket,
+  recordPublicLaunchSecurityEvent
 } from "./public-launch-operational-events";
 
 const forbiddenKey =
@@ -70,5 +72,18 @@ describe("public launch operational events", () => {
       ageBucket: "lt_30s"
     });
     expectRedacted(event);
+  });
+
+  it("never lets a process logger failure change the protected operation", () => {
+    const log = vi.spyOn(Logger.prototype, "log").mockImplementation(() => {
+      throw new Error("log transport unavailable");
+    });
+    try {
+      expect(() =>
+        recordPublicLaunchSecurityEvent("allowed", "origin_match")
+      ).not.toThrow();
+    } finally {
+      log.mockRestore();
+    }
   });
 });
