@@ -3,6 +3,7 @@ import { z } from "zod";
 import { organizationSlugSchema, resourceSlugSchema, uuidSchema } from "./common";
 import { commerceBillingTypeSchema } from "./commerce";
 import { learningOfferingDeliveryModeSchema } from "./learning-delivery";
+import { customerEntryPolicySchema } from "./organizations";
 
 const nullableDateTimeSchema = z.string().datetime().nullable();
 const publicCurrencySchema = z.string().regex(/^[A-Z]{3}$/);
@@ -13,6 +14,11 @@ export const publicCatalogOrganizationSchema = z
     name: z.string().trim().min(1).max(160)
   })
   .strict();
+
+export const publicCatalogProductOrganizationSchema =
+  publicCatalogOrganizationSchema.extend({
+    customerEntryPolicy: customerEntryPolicySchema
+  });
 
 export const publicCatalogPriceSchema = z
   .object({
@@ -51,13 +57,16 @@ export const publicCatalogSchema = z
 
 export const publicCatalogProductResponseSchema = z
   .object({
-    organization: publicCatalogOrganizationSchema,
+    organization: publicCatalogProductOrganizationSchema,
     product: publicCatalogProductSchema
   })
   .strict();
 
 export type PublicCatalogOrganization = z.infer<
   typeof publicCatalogOrganizationSchema
+>;
+export type PublicCatalogProductOrganization = z.infer<
+  typeof publicCatalogProductOrganizationSchema
 >;
 export type PublicCatalogPrice = z.infer<typeof publicCatalogPriceSchema>;
 export type PublicCatalogOffering = z.infer<typeof publicCatalogOfferingSchema>;
