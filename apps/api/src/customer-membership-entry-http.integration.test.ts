@@ -26,6 +26,8 @@ describe("customer Organization membership entry", () => {
     requireEnv("DATABASE_MIGRATION_URL"),
     { applicationName: "customer-membership-entry-integration-fixtures" }
   );
+  const previousWebOrigin = process.env.WEB_APP_ORIGIN;
+  const webOrigin = "https://web.example.test";
 
   let app: NestFastifyApplication;
   let ownerUserId = "";
@@ -53,10 +55,11 @@ describe("customer Organization membership entry", () => {
   }
 
   function userHeaders(userId: string) {
-    return { "x-test-user-id": userId };
+    return { "x-test-user-id": userId, origin: webOrigin };
   }
 
   beforeAll(async () => {
+    process.env.WEB_APP_ORIGIN = webOrigin;
     ownerUserId = await createUser("customer-entry-owner");
     customerUserId = await createUser("customer-entry-customer");
     invitedUserId = await createUser("customer-entry-invited");
@@ -93,6 +96,8 @@ describe("customer Organization membership entry", () => {
   });
 
   afterAll(async () => {
+    if (previousWebOrigin === undefined) delete process.env.WEB_APP_ORIGIN;
+    else process.env.WEB_APP_ORIGIN = previousWebOrigin;
     if (app !== undefined) {
       await app.close();
     }
@@ -145,6 +150,25 @@ describe("customer Organization membership entry", () => {
       url: `/v1/public/organizations/${organizationSlug}/memberships/me`
     });
     expect(join.statusCode).toBe(401);
+  });
+
+  it("rejects authenticated customer entry without the exact browser origin", async () => {
+    const missing = await app.inject({
+      method: "POST",
+      url: `/v1/public/organizations/${organizationSlug}/memberships/me`,
+      headers: { "x-test-user-id": customerUserId }
+    });
+    expect(missing.statusCode).toBe(403);
+
+    const foreign = await app.inject({
+      method: "POST",
+      url: `/v1/public/organizations/${organizationSlug}/memberships/me`,
+      headers: {
+        "x-test-user-id": customerUserId,
+        origin: "https://other.example.test"
+      }
+    });
+    expect(foreign.statusCode).toBe(403);
   });
 
   it("creates one active Membership by slug without granting a role", async () => {

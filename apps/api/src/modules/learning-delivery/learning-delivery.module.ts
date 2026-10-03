@@ -8,6 +8,7 @@ import { LearningContentModule } from "../learning-content/learning-content.modu
 import { OrganizationsModule } from "../organizations/organizations.module";
 import { AssignmentRepository } from "./application/assignment.repository";
 import { AssignmentApplicationService } from "./application/assignment.service";
+import { CheckoutLearningOfferingQuery } from "./application/checkout-learning-offering.query";
 import { LearnerRunnerApplicationService } from "./application/learner-runner.service";
 import { LearningDeliveryCommandService } from "./application/learning-delivery-command.service";
 import { LearningDeliveryCommand } from "./application/learning-delivery.command";
@@ -18,6 +19,7 @@ import { LearningDeliveryApplicationService } from "./application/learning-deliv
 import { PublicLearningOfferingQuery } from "./application/public-learning-offering.query";
 import { AssignmentController } from "./assignment.controller";
 import { PostgresAssignmentRepository } from "./infrastructure/postgres-assignment.repository";
+import { PostgresCheckoutLearningOfferingQuery } from "./infrastructure/postgres-checkout-learning-offering.query";
 import { PostgresLearningDeliveryRepository } from "./infrastructure/postgres-learning-delivery.repository";
 import { PostgresPublicLearningOfferingQuery } from "./infrastructure/postgres-public-learning-offering.query";
 import { LearnerRunnerController } from "./learner-runner.controller";
@@ -62,6 +64,10 @@ import { LearningDeliveryController } from "./learning-delivery.controller";
     {
       provide: PublicLearningOfferingQuery,
       useClass: PostgresPublicLearningOfferingQuery
+    },
+    {
+      provide: CheckoutLearningOfferingQuery,
+      useClass: PostgresCheckoutLearningOfferingQuery
     }
   ],
   exports: [
@@ -69,6 +75,7 @@ import { LearningDeliveryController } from "./learning-delivery.controller";
     LearningDeliveryCommand,
     LearningDeliveryQuery,
     PublicLearningOfferingQuery,
+    CheckoutLearningOfferingQuery,
     AssignmentApplicationService
   ]
 })
