@@ -9,7 +9,7 @@ export type PaymentWorkerOperationalEvent = Readonly<{
     | "checkout_mapping_unavailable"
     | "settlement_mismatch"
     | "processor_failure";
-  errorName?: string;
+  errorClass?: "runtime_error" | "unknown_error";
 }>;
 
 export function buildPaymentWorkerOperationalEvent(
@@ -45,6 +45,6 @@ export function buildPaymentWorkerFailureEvent(
     event: "public_launch.payment_worker",
     outcome,
     durationMs: Math.max(0, Math.trunc(durationMs)),
-    errorName: error instanceof Error ? error.name : "UnknownError"
+    errorClass: error instanceof Error ? "runtime_error" : "unknown_error"
   };
 }

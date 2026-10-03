@@ -39,19 +39,24 @@ describe("payment worker operational event", () => {
     expect(JSON.stringify(event)).not.toContain("22222222");
   });
 
-  it("keeps worker failures categorical without logging exception messages", () => {
+  it("keeps worker failures categorical without logging exception messages or names", () => {
+    const error = new Error(
+      "purchase 22222222-2222-4222-8222-222222222222 failed"
+    );
+    error.name = "TenantSpecificProviderFailure_22222222";
     const event = buildPaymentWorkerFailureEvent(
       "cycle_failure",
       4,
-      new Error("purchase 22222222-2222-4222-8222-222222222222 failed")
+      error
     );
     expect(event).toEqual({
       event: "public_launch.payment_worker",
       outcome: "cycle_failure",
       durationMs: 4,
-      errorName: "Error"
+      errorClass: "runtime_error"
     });
     expectRedacted(event);
-    expect(JSON.stringify(event)).not.toContain("purchase 22222222");
+    expect(JSON.stringify(event)).not.toContain("22222222");
+    expect(JSON.stringify(event)).not.toContain("TenantSpecificProviderFailure");
   });
 });
