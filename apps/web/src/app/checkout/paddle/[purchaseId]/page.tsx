@@ -18,7 +18,7 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
         <p className={styles.eyebrow}>Защищённая оплата</p>
         <h1>Открываем Paddle Checkout</h1>
         <p className={styles.copy}>
-          Платёж обрабатывает Paddle. Возврат на Nexus не считается подтверждением
+          Платёж обрабатывает Paddle. Возврат на платформу не считается подтверждением
           оплаты: после завершения мы отдельно проверим канонический статус покупки.
         </p>
         <PaddleCheckout purchaseId={parsed.data} />
