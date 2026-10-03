@@ -102,7 +102,7 @@ export function PurchaseStatus({ purchaseId }: Readonly<{ purchaseId: string }>)
     <div className={styles.statusBox} aria-live="polite">
       <p className={purchase.status === "paid" ? styles.success : styles.status}>
         {purchase.status === "paid"
-          ? "Оплата подтверждена Nexus."
+          ? "Оплата подтверждена платформой."
           : "Платёж ещё обрабатывается. Эта страница обновит статус автоматически."}
       </p>
       <dl className={styles.details}>
