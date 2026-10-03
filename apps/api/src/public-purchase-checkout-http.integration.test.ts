@@ -5,7 +5,8 @@ import {
   commercePriceSchema,
   commerceProductSchema,
   learningOfferingSchema,
-  publicPurchaseCheckoutSchema
+  publicPurchaseCheckoutSchema,
+  publicPurchaseSchema
 } from "@platform/contracts";
 import { createDatabasePool, type DatabasePool } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -305,7 +306,7 @@ describe("public Purchase checkout authority", () => {
     expect(purchases.rows[0]?.count).toBe("0");
   });
 
-  it("creates an idempotent Purchase from route-selected current canonical state", async () => {
+  it("creates an idempotent Purchase and exposes it only to its purchaser", async () => {
     const idempotencyKey = randomUUID();
     const first = await app.inject({
       method: "POST",
@@ -358,6 +359,33 @@ describe("public Purchase checkout authority", () => {
       offering_id: offeringId,
       purchaser_user_id: buyerUserId
     });
+
+    const anonymousRead = await app.inject({
+      method: "GET",
+      url: `/v1/me/purchases/${created.purchase.id}`
+    });
+    expect(anonymousRead.statusCode).toBe(401);
+
+    const ownRead = await app.inject({
+      method: "GET",
+      url: `/v1/me/purchases/${created.purchase.id}`,
+      headers: { "x-test-user-id": buyerUserId }
+    });
+    expect(ownRead.statusCode).toBe(200);
+    expect(ownRead.headers["cache-control"]).toBe("no-store");
+    const reconciled = publicPurchaseSchema.parse(JSON.parse(ownRead.body));
+    expect(reconciled).toEqual(created.purchase);
+    expect(reconciled).not.toHaveProperty("organizationId");
+    expect(reconciled).not.toHaveProperty("productId");
+    expect(reconciled).not.toHaveProperty("offeringId");
+    expect(reconciled).not.toHaveProperty("purchaserUserId");
+
+    const foreignRead = await app.inject({
+      method: "GET",
+      url: `/v1/me/purchases/${created.purchase.id}`,
+      headers: { "x-test-user-id": outsiderUserId }
+    });
+    expect(foreignRead.statusCode).toBe(404);
   });
 
   it("fails closed for a mismatched route and rejects caller-owned money", async () => {
