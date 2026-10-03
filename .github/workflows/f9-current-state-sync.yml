@@ -52,56 +52,65 @@ jobs:
           )
           replace_once(
               "- public checkout initiation/authority, checkout UI, success/cancel UX, refunds/reversals, subscriptions, supported discounts/coupons, provider customer synchronization, reconciliation, marketing, caching optimization, and launch hardening remain separate F9 slices.",
-              "- ADR-0049 exposes browser-safe authenticated public checkout by `organizationSlug + productSlug + priceId + idempotencyKey`; tenant UUID, Product/Offering ids, money, membership role, provider identity, and settlement state remain server-owned;\n- public checkout requires an already-active Organization Membership, re-resolves tenant authority from the public Organization slug in user context, then revalidates route-scoped active Product/Price plus an open `entitlement_required` Offering inside the tenant transaction before opening the canonical Purchase;\n- customer self-entry remains a separate explicit Organization command; checkout never creates, repairs, accepts, or reactivates Membership as an implicit purchase side effect;\n- authenticated browser checkout and customer-entry writes require the exact configured `WEB_APP_ORIGIN` through the shared browser-origin boundary; stale catalog data and CORS permission are never authorization;\n- ADR-0050 establishes direct Web -> API browser transport with exact-origin credentialed CORS while retaining the existing host-only secure HttpOnly `SameSite=Strict` session cookie; Web stores no session/bearer token in JavaScript;\n- Product detail now includes current `customerEntryPolicy` only as a non-authoritative presentation hint through the narrow `000038` public Organization read capability; self-entry still revalidates policy at write time;\n- the first Web Product route renders the no-store public offer, supports registration/login through existing Authentication, makes open customer entry explicit, sends only `priceId + idempotencyKey` to public checkout, and redirects to the hosted Paddle URL returned by the Integrations boundary;\n- one browser checkout attempt persists its UUID idempotency key in `sessionStorage` per Organization/Product/Price so reloads and ambiguous transport retries reuse canonical Purchase identity rather than inventing another Purchase;\n- hosted Paddle navigation is not settlement evidence: canonical `pending -> paid` remains exclusively webhook/worker driven, paid settlement still grants Entitlement atomically, and no Enrollment is created;\n- provider return-target configuration, success/cancel/reconciliation UX, purchaser Purchase-status reads, refunds/reversals, subscriptions, supported discounts/coupons, provider customer synchronization, marketing, caching optimization, and broader launch hardening remain separate F9 slices."
+              "- ADR-0049 exposes browser-safe authenticated public checkout by `organizationSlug + productSlug + priceId + idempotencyKey`; tenant UUID, Product/Offering ids, money, membership role, provider identity, and settlement state remain server-owned;\n"
+              "- public checkout requires an already-active Organization Membership, re-resolves tenant authority from the public Organization slug in user context, then revalidates route-scoped active Product/Price plus an open `entitlement_required` Offering inside the tenant transaction before opening the canonical Purchase;\n"
+              "- customer self-entry remains a separate explicit Organization command; checkout never creates, repairs, accepts, or reactivates Membership as an implicit purchase side effect;\n"
+              "- authenticated browser checkout and customer-entry writes require the exact configured `WEB_APP_ORIGIN` through the shared browser-origin boundary; stale catalog data and CORS permission are never authorization;\n"
+              "- ADR-0050 establishes direct Web -> API browser transport with exact-origin credentialed CORS while retaining the existing host-only secure HttpOnly `SameSite=Strict` session cookie; Web stores no session/bearer token in JavaScript;\n"
+              "- Product detail now includes current `customerEntryPolicy` only as a non-authoritative presentation hint through the narrow `000038` public Organization read capability; self-entry still revalidates policy at write time;\n"
+              "- the first Web Product route renders the no-store public offer, supports registration/login through existing Authentication, makes open customer entry explicit, sends only `priceId + idempotencyKey` to public checkout, and redirects to the hosted Paddle URL returned by the Integrations boundary;\n"
+              "- one browser checkout attempt persists its UUID idempotency key in `sessionStorage` per Organization/Product/Price so reloads and ambiguous transport retries reuse canonical Purchase identity rather than inventing another Purchase;\n"
+              "- hosted Paddle navigation is not settlement evidence: canonical `pending -> paid` remains exclusively webhook/worker driven, paid settlement still grants Entitlement atomically, and no Enrollment is created;\n"
+              "- provider return-target configuration, success/cancel/reconciliation UX, purchaser Purchase-status reads, refunds/reversals, subscriptions, supported discounts/coupons, provider customer synchronization, marketing, caching optimization, and broader launch hardening remain separate F9 slices."
           )
+
           marker = "\nF7 production grader activation remains an independent deployment/security gate."
-          insert = """
-
-The first browser checkout path is:
-
-```text
-public Product route
-  -> no-store public Product detail + customerEntryPolicy presentation hint
-  -> register/login through secure HttpOnly API session when needed
-  -> explicit customer self-entry only when Organization policy is open
-  -> public checkout command with exact priceId + browser-attempt idempotencyKey
-  -> server resolves active member + route-scoped sellable offer + canonical terms
-  -> pending Purchase + hosted Paddle checkout URL
-  -> browser redirects to Paddle
-  -> redirect is navigation only; signed webhook/worker settlement remains payment truth
-  -> paid Purchase grants Entitlement, never Enrollment
-```
-"""
+          insert = (
+              "\n\nThe first browser checkout path is:\n\n"
+              "```text\n"
+              "public Product route\n"
+              "  -> no-store public Product detail + customerEntryPolicy presentation hint\n"
+              "  -> register/login through secure HttpOnly API session when needed\n"
+              "  -> explicit customer self-entry only when Organization policy is open\n"
+              "  -> public checkout command with exact priceId + browser-attempt idempotencyKey\n"
+              "  -> server resolves active member + route-scoped sellable offer + canonical terms\n"
+              "  -> pending Purchase + hosted Paddle checkout URL\n"
+              "  -> browser redirects to Paddle\n"
+              "  -> redirect is navigation only; signed webhook/worker settlement remains payment truth\n"
+              "  -> paid Purchase grants Entitlement, never Enrollment\n"
+              "```\n"
+          )
           if text.count(marker) != 1:
               raise SystemExit(f"expected one F7 marker, found {text.count(marker)}")
           text = text.replace(marker, insert + marker, 1)
 
           replace_once(
               "- Existing active customer entry retry is idempotent; invited/suspended/left membership states fail closed rather than being silently reactivated.",
-              "- Existing active customer entry retry is idempotent; invited/suspended/left membership states fail closed rather than being silently reactivated.\n- Browser -> API session transport permits credentials only for the single canonical `WEB_APP_ORIGIN`; wildcard credentialed CORS is not allowed, and the Web application never owns the opaque session token.\n- Public `customerEntryPolicy` is a presentation hint, not authority; self-entry and checkout revalidate their current server-owned preconditions at command time.\n- Browser checkout idempotency is attempt-scoped: ambiguous retries reuse one UUID key for the same public route and Price, while canonical Purchase idempotency remains the server-side source of retry semantics.\n- A hosted payment return/redirect must never mark a Purchase paid; only trusted normalized provider settlement through the existing webhook/worker boundary may do so."
+              "- Existing active customer entry retry is idempotent; invited/suspended/left membership states fail closed rather than being silently reactivated.\n"
+              "- Browser -> API session transport permits credentials only for the single canonical `WEB_APP_ORIGIN`; wildcard credentialed CORS is not allowed, and the Web application never owns the opaque session token.\n"
+              "- Public `customerEntryPolicy` is a presentation hint, not authority; self-entry and checkout revalidate their current server-owned preconditions at command time.\n"
+              "- Browser checkout idempotency is attempt-scoped: ambiguous retries reuse one UUID key for the same public route and Price, while canonical Purchase idempotency remains the server-side source of retry semantics.\n"
+              "- A hosted payment return/redirect must never mark a Purchase paid; only trusted normalized provider settlement through the existing webhook/worker boundary may do so."
           )
 
           next_marker = "## Next recommended slice\n"
           before, sep, _after = text.partition(next_marker)
           if not sep:
               raise SystemExit("next-slice marker not found")
-          next_section = """## Next recommended slice
-
-**F9.8 Checkout return + purchaser reconciliation read — finish the hosted Paddle handoff in Nexus without treating a provider redirect as proof of payment.**
-
-F9.7 now takes a visitor from a public Product page through Authentication, explicit customer entry where permitted, server-authoritative Purchase checkout, and redirect to hosted Paddle. The next smallest coherent public-launch slice is the return/reconciliation boundary: get the purchaser back to Nexus and let that authenticated purchaser observe canonical Purchase state while webhook/worker settlement remains the only authority for `paid`.
-
-Before coding:
-
-- fresh-audit the merged F9.5-F9.7 main, current official Paddle hosted-checkout return/redirect capabilities, the Purchase-to-provider checkout mapping, webhook/worker settlement, public Purchase DTO, session/origin protections, and tenant/purchaser authorization boundaries;
-- define server-owned success/cancel return targets rather than accepting arbitrary browser/provider return URLs, and decide how the exact Purchase identity is carried back without making it authorization;
-- add the narrowest authenticated purchaser-safe Purchase status read needed by the return page; authorize the actor server-side and expose only public Purchase fields, never tenant ids, internal Product/Offering ids, Paddle transaction ids, webhook state, or provider secrets;
-- keep `pending` a first-class return state because the browser may arrive before the signed webhook is processed; the UI may refresh/poll boundedly but must not synthesize `paid` from query parameters, Paddle redirect shape, or client claims;
-- treat cancel/close navigation as presentation unless a separate canonical Purchase cancellation lifecycle is explicitly designed; do not silently invent `pending -> cancelled` from a browser return;
-- when canonical Purchase becomes `paid`, show the resulting access outcome without auto-creating Enrollment; `Purchase != Entitlement != Enrollment` remains unchanged;
-- define retry/back-navigation semantics so an existing checkout attempt continues to reuse canonical Purchase/provider mapping rather than creating a new Purchase merely because the user returned to the Product page;
-- keep refunds/adjustments/disputes, subscriptions, discounts/coupons, provider-customer synchronization, email/recovery, marketing/SEO, and F7 production grader activation outside this slice unless the audit proves a correctness dependency.
-"""
+          next_section = (
+              "## Next recommended slice\n\n"
+              "**F9.8 Checkout return + purchaser reconciliation read — finish the hosted Paddle handoff in Nexus without treating a provider redirect as proof of payment.**\n\n"
+              "F9.7 now takes a visitor from a public Product page through Authentication, explicit customer entry where permitted, server-authoritative Purchase checkout, and redirect to hosted Paddle. The next smallest coherent public-launch slice is the return/reconciliation boundary: get the purchaser back to Nexus and let that authenticated purchaser observe canonical Purchase state while webhook/worker settlement remains the only authority for `paid`.\n\n"
+              "Before coding:\n\n"
+              "- fresh-audit the merged F9.5-F9.7 main, current official Paddle hosted-checkout return/redirect capabilities, the Purchase-to-provider checkout mapping, webhook/worker settlement, public Purchase DTO, session/origin protections, and tenant/purchaser authorization boundaries;\n"
+              "- define server-owned success/cancel return targets rather than accepting arbitrary browser/provider return URLs, and decide how the exact Purchase identity is carried back without making it authorization;\n"
+              "- add the narrowest authenticated purchaser-safe Purchase status read needed by the return page; authorize the actor server-side and expose only public Purchase fields, never tenant ids, internal Product/Offering ids, Paddle transaction ids, webhook state, or provider secrets;\n"
+              "- keep `pending` a first-class return state because the browser may arrive before the signed webhook is processed; the UI may refresh/poll boundedly but must not synthesize `paid` from query parameters, Paddle redirect shape, or client claims;\n"
+              "- treat cancel/close navigation as presentation unless a separate canonical Purchase cancellation lifecycle is explicitly designed; do not silently invent `pending -> cancelled` from a browser return;\n"
+              "- when canonical Purchase becomes `paid`, show the resulting access outcome without auto-creating Enrollment; `Purchase != Entitlement != Enrollment` remains unchanged;\n"
+              "- define retry/back-navigation semantics so an existing checkout attempt continues to reuse canonical Purchase/provider mapping rather than creating a new Purchase merely because the user returned to the Product page;\n"
+              "- keep refunds/adjustments/disputes, subscriptions, discounts/coupons, provider-customer synchronization, email/recovery, marketing/SEO, and F7 production grader activation outside this slice unless the audit proves a correctness dependency.\n"
+          )
           text = before + next_section
           path.write_text(text)
           PY
