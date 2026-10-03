@@ -13,6 +13,7 @@ import {
 
 import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
 import { parseRequest } from "../../http/validation";
+import { observePublicLaunchHttp } from "../../observability/public-launch-operational-events";
 import { OrganizationsApplicationService } from "./application/organizations.service";
 
 @Controller("public/organizations")
@@ -25,8 +26,10 @@ export class PublicOrganizationEntryController {
   joinOpenCustomerOrganization(
     @Param("organizationSlug") organizationSlug: string
   ): Promise<OrganizationMembership> {
-    return this.organizations.joinOpenCustomerOrganization(
-      parseRequest(organizationSlugSchema, organizationSlug)
+    return observePublicLaunchHttp("customer_entry", HttpStatus.OK, () =>
+      this.organizations.joinOpenCustomerOrganization(
+        parseRequest(organizationSlugSchema, organizationSlug)
+      )
     );
   }
 }
