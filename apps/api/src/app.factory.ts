@@ -6,6 +6,7 @@ import {
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 import { AppModule } from "./app.module";
+import { optionalConfiguredWebOrigin } from "./http/web-app-origin";
 
 export async function createApiApplication(): Promise<NestFastifyApplication> {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -15,6 +16,14 @@ export async function createApiApplication(): Promise<NestFastifyApplication> {
   );
   app.setGlobalPrefix("v1");
   app.enableShutdownHooks();
+
+  const webOrigin = optionalConfiguredWebOrigin();
+  if (webOrigin !== null) {
+    app.enableCors({
+      origin: webOrigin,
+      credentials: true
+    });
+  }
 
   const swagger = new DocumentBuilder()
     .setTitle("Learning Platform API")
