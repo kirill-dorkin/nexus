@@ -10,7 +10,7 @@ import {
 } from "./public-launch-operational-events";
 
 const forbiddenKey =
-  /(^|_)(id|email|slug|url|origin|payload|body|signature|cookie|token)$/i;
+  /(id$|email|slug|url|origin|payload|body|signature|cookie|token|message)/i;
 
 function expectRedacted(value: unknown): void {
   if (Array.isArray(value)) {
@@ -72,6 +72,12 @@ describe("public launch operational events", () => {
       ageBucket: "lt_30s"
     });
     expectRedacted(event);
+  });
+
+  it("rejects camelCase identifiers in the redaction guard", () => {
+    expect(() =>
+      expectRedacted({ purchaseId: "22222222-2222-4222-8222-222222222222" })
+    ).toThrow();
   });
 
   it("never lets a process logger failure change the protected operation", () => {

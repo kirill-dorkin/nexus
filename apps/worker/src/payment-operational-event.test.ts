@@ -7,7 +7,7 @@ import {
 } from "./payment-operational-event.js";
 
 const forbiddenKey =
-  /(^|_)(id|email|slug|url|origin|payload|body|signature|cookie|token|message)$/i;
+  /(id$|email|slug|url|origin|payload|body|signature|cookie|token|message)/i;
 
 function expectRedacted(value: unknown): void {
   if (typeof value !== "object" || value === null) return;
@@ -38,6 +38,12 @@ describe("payment worker operational event", () => {
     expectRedacted(event);
     expect(JSON.stringify(event)).not.toContain("11111111");
     expect(JSON.stringify(event)).not.toContain("22222222");
+  });
+
+  it("rejects camelCase identifiers in the redaction guard", () => {
+    expect(() =>
+      expectRedacted({ inboxId: "11111111-1111-4111-8111-111111111111" })
+    ).toThrow();
   });
 
   it("keeps worker failures categorical without logging exception messages or names", () => {
