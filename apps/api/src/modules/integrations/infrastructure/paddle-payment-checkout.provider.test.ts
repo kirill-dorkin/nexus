@@ -25,7 +25,7 @@ describe("PaddlePaymentCheckoutProvider", () => {
     else process.env.WEB_APP_ORIGIN = original.webOrigin;
   });
 
-  it("creates a server-priced transaction pinned to the Nexus payment-link page", async () => {
+  it("creates a server-priced transaction pinned to the configured payment-link page", async () => {
     process.env.PAYMENT_PROVIDER = "paddle";
     process.env.PADDLE_API_KEY = "pdl_sdbx_apikey_test";
     process.env.PADDLE_ENVIRONMENT = "sandbox";
@@ -114,7 +114,7 @@ describe("PaddlePaymentCheckoutProvider", () => {
     });
   });
 
-  it("rejects a provider checkout URL that escapes the configured Nexus page", async () => {
+  it("rejects a provider checkout URL that escapes the configured payment-link page", async () => {
     process.env.PAYMENT_PROVIDER = "paddle";
     process.env.PADDLE_API_KEY = "pdl_sdbx_apikey_test";
     process.env.PADDLE_ENVIRONMENT = "sandbox";
