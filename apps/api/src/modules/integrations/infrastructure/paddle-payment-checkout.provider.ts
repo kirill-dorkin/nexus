@@ -27,7 +27,36 @@ function paddleBaseUrl(): string {
   );
 }
 
-function requirePaddleTransactionResponse(value: unknown): {
+function checkoutBaseUrl(purchaseId: string): string {
+  const configured = requireConfigured("WEB_APP_ORIGIN");
+  let url: URL;
+  try {
+    url = new URL(configured);
+  } catch {
+    throw new ServiceUnavailableException(
+      "WEB_APP_ORIGIN must be an absolute HTTP(S) origin."
+    );
+  }
+  if (
+    (url.protocol !== "http:" && url.protocol !== "https:") ||
+    url.origin !== configured ||
+    url.pathname !== "/" ||
+    url.search.length > 0 ||
+    url.hash.length > 0 ||
+    url.username.length > 0 ||
+    url.password.length > 0
+  ) {
+    throw new ServiceUnavailableException(
+      "WEB_APP_ORIGIN must be an absolute HTTP(S) origin."
+    );
+  }
+  return `${url.origin}/checkout/paddle/${encodeURIComponent(purchaseId)}`;
+}
+
+function requirePaddleTransactionResponse(
+  value: unknown,
+  expectedCheckoutBaseUrl: string
+): {
   id: string;
   url: string;
 } {
@@ -65,7 +94,31 @@ function requirePaddleTransactionResponse(value: unknown): {
       "Paddle returned an incomplete transaction."
     );
   }
-  return { id, url };
+
+  let returned: URL;
+  let expected: URL;
+  try {
+    returned = new URL(url);
+    expected = new URL(expectedCheckoutBaseUrl);
+  } catch {
+    throw new ServiceUnavailableException(
+      "Paddle returned an invalid checkout URL."
+    );
+  }
+  if (
+    returned.origin !== expected.origin ||
+    returned.pathname !== expected.pathname ||
+    returned.searchParams.get("_ptxn") !== id ||
+    returned.username.length > 0 ||
+    returned.password.length > 0 ||
+    returned.hash.length > 0
+  ) {
+    throw new ServiceUnavailableException(
+      "Paddle returned an unexpected checkout URL."
+    );
+  }
+
+  return { id, url: returned.toString() };
 }
 
 export class PaddlePaymentCheckoutProvider extends PaymentCheckoutProvider {
@@ -95,6 +148,7 @@ export class PaddlePaymentCheckoutProvider extends PaymentCheckoutProvider {
 
     const apiKey = requireConfigured("PADDLE_API_KEY");
     const taxCategory = requireConfigured("PADDLE_TAX_CATEGORY");
+    const paymentLinkBaseUrl = checkoutBaseUrl(input.purchaseId);
     const responseBody = {
       items: [
         {
@@ -120,6 +174,9 @@ export class PaddlePaymentCheckoutProvider extends PaymentCheckoutProvider {
         }
       ],
       collection_mode: "automatic",
+      checkout: {
+        url: paymentLinkBaseUrl
+      },
       custom_data: {
         platform_purchase_id: input.purchaseId,
         platform_organization_id: input.organizationId
@@ -157,7 +214,10 @@ export class PaddlePaymentCheckoutProvider extends PaymentCheckoutProvider {
         "Paddle returned an invalid transaction response."
       );
     }
-    const transaction = requirePaddleTransactionResponse(decoded);
+    const transaction = requirePaddleTransactionResponse(
+      decoded,
+      paymentLinkBaseUrl
+    );
     return {
       externalCheckoutId: transaction.id,
       checkoutUrl: transaction.url,
