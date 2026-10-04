@@ -156,7 +156,14 @@ jobs:
         run: pnpm test:integration
 
       - name: Build
+        env:
+          NEXT_PUBLIC_API_ORIGIN: https://127.0.0.1:4443
+          NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: test_browser_verification_token
+          NEXT_PUBLIC_PADDLE_ENVIRONMENT: sandbox
         run: pnpm build
+
+      - name: Public launch browser verification
+        run: pnpm test:browser-launch
 
       - name: API production smoke
         shell: bash
