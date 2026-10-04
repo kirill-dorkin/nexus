@@ -121,6 +121,11 @@
   outline: 1px solid var(--action-primary);
 }
 
+.priceOption:has(input:focus-visible) {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
 .priceOption input {
   width: 1rem;
   height: 1rem;
