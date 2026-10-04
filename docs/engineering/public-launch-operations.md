@@ -100,19 +100,22 @@ The release gate must retain automated proof of:
 9. purchaser reconciliation returning 404 for foreign and unknown Purchase ids;
 10. routine operational events containing no stable business/provider identifiers, PII, secrets, raw payloads, or exception messages.
 
-Existing CI integration/unit suites already exercise items 1-9. ADR-0052 event-shape tests add item 10. A later external/synthetic probe may repeat these checks against a deployed environment without replacing repository-level proof.
+API/database integration and unit suites retain the canonical security proof for items 1-10. F9.10 additionally exercises the exact credentialed CORS boundary and the stored `Secure`/`HttpOnly`/`SameSite=Strict` session behavior from a real browser; it does not replace the lower-level host-only cookie and authority tests. A later external/synthetic probe may repeat these checks against a deployed environment without replacing repository-level proof.
 
 ## Accessibility verification boundary
 
-The current Product/checkout/reconciliation UI already uses native labels/fieldset/buttons plus live status/alert semantics. F9.9 does not introduce a browser-test dependency solely to claim automated accessibility coverage.
+F9.10 adds a deterministic real-Chrome release gate for the Nexus-owned Product/authentication/checkout, Paddle payment-link shell, and purchaser reconciliation surfaces.
 
-Before public production launch, a separate browser verification slice must add keyboard/focus behavior checks and automated accessibility analysis for:
+The browser gate verifies:
 
-- public Product/Authentication/checkout panel;
-- Paddle payment-link loading/error state around the third-party overlay;
-- purchaser pending/paid/error reconciliation states.
+- keyboard traversal and visible focus for launch-critical first-party controls;
+- native label/fieldset/control naming and duplicate-id checks;
+- covered interactive names through Chrome's accessibility tree;
+- first-party live/error state rendering for payment-link and pending/paid/not-found reconciliation states.
 
-That slice must distinguish first-party accessibility assertions from Paddle's third-party overlay behavior.
+The detailed topology and assertions live in `docs/engineering/f9-browser-launch-verification.md`.
+
+This focused automation is not a complete WCAG certification or assistive-technology matrix. The repository also does not own Paddle's third-party overlay internals: CI stubs only the external Paddle script boundary and verifies the Nexus-owned loading/handoff/success-locator behavior. Provider overlay accessibility must not be reported as a Nexus browser-test result.
 
 ## Incident diagnosis
 
