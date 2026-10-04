@@ -1,10 +1,18 @@
 import { spawn } from "node:child_process";
 
 const timeoutMs = 120_000;
-const child = spawn(process.execPath, ["tests/public-launch-browser/verify.mjs"], {
-  detached: process.platform !== "win32",
-  stdio: "inherit"
-});
+const child = spawn(
+  process.execPath,
+  [
+    "--import",
+    "./tests/public-launch-browser/cdp-deadline.mjs",
+    "tests/public-launch-browser/verify.mjs"
+  ],
+  {
+    detached: process.platform !== "win32",
+    stdio: "inherit"
+  }
+);
 
 let finished = false;
 const watchdog = setTimeout(() => {
