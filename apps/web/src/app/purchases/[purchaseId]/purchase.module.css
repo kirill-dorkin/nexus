@@ -75,3 +75,8 @@
   font: inherit;
   cursor: pointer;
 }
+
+.button:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
