@@ -69,6 +69,9 @@ class DeadlineWebSocket extends NativeWebSocket {
       if (typeof event.data !== "string") return;
       try {
         const message = JSON.parse(event.data);
+        if (message.method === "Page.loadEventFired") {
+          console.error("[browser-launch] CDP event Page.loadEventFired");
+        }
         if (typeof message.id !== "number") return;
         const pending = this.#pendingCommands.get(message.id);
         if (pending === undefined) return;
@@ -83,7 +86,10 @@ class DeadlineWebSocket extends NativeWebSocket {
         // The verification client owns protocol parsing. This hook only enforces deadlines.
       }
     });
-    this.addEventListener("close", () => this.#clearPending());
+    this.addEventListener("close", () => {
+      console.error("[browser-launch] DevTools WebSocket closed.");
+      this.#clearPending();
+    });
     this.addEventListener("error", () => this.#clearPending());
   }
 
@@ -134,6 +140,11 @@ class DeadlineWebSocket extends NativeWebSocket {
     }
 
     return super.send(data);
+  }
+
+  close(...args) {
+    console.error("[browser-launch] DevTools WebSocket close requested.");
+    return super.close(...args);
   }
 
   #clearPending() {
