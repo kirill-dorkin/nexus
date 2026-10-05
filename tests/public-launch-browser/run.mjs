@@ -4,13 +4,17 @@ import { dirname } from "node:path";
 
 const timeoutMs = 120_000;
 const diagnosticFile = process.env.PUBLIC_LAUNCH_BROWSER_DIAGNOSTIC_FILE;
+const maxBoundaries = 30;
 let finished = false;
 let timedOut = false;
 let lastBoundary = "no [browser-launch] boundary observed";
+const boundaries = [];
 
 function recordBoundary(line) {
   if (!line.startsWith("[browser-launch]")) return;
   lastBoundary = line.slice(0, 1_000);
+  boundaries.push(lastBoundary);
+  if (boundaries.length > maxBoundaries) boundaries.shift();
 }
 
 function forwardOutput(stream, destination) {
@@ -47,6 +51,7 @@ function writeDiagnostic(outcome, details = {}) {
         {
           outcome,
           lastBoundary,
+          boundaries,
           ...details
         },
         null,
