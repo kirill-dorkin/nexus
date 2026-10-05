@@ -163,6 +163,16 @@ describe("bounded public launch performance verification", () => {
     return userId;
   }
 
+  async function createMembership(userId: string): Promise<void> {
+    await migrationPool.query(
+      `INSERT INTO organizations.memberships (
+         organization_id, user_id, status, joined_at
+       )
+       VALUES ($1, $2, 'active', now())`,
+      [organizationId, userId]
+    );
+  }
+
   function principalHeaders(userId: string, includeOrigin = false) {
     return includeOrigin
       ? { "x-test-user-id": userId, origin: WEB_ORIGIN }
@@ -316,13 +326,7 @@ describe("bounded public launch performance verification", () => {
       [organizationSlug, "Launch performance organization", ownerUserId]
     );
 
-    await migrationPool.query(
-      `INSERT INTO organizations.memberships (
-         organization_id, user_id, status, joined_at
-       )
-       VALUES ($1, $2, 'active', now())`,
-      [organizationId, buyerUserId]
-    );
+    await createMembership(buyerUserId);
 
     courseId = await insertId(
       `INSERT INTO learning_content.courses (
@@ -416,6 +420,7 @@ describe("bounded public launch performance verification", () => {
 
     for (let index = 0; index < WARMUP_SAMPLES + MEASURED_SAMPLES; index += 1) {
       const workerUserId = await createUser(`launch-worker-${index}`);
+      await createMembership(workerUserId);
       const purchaseId = await createPurchase(workerUserId);
       const checkoutId = `txn_perf_worker_${randomUUID().replaceAll("-", "")}`;
       await createPaddleCheckout(purchaseId, checkoutId);
