@@ -8,6 +8,8 @@ const child = spawn(
     "./tests/public-launch-browser/fetch-deadline.mjs",
     "--import",
     "./tests/public-launch-browser/cdp-deadline.mjs",
+    "--import",
+    "./tests/public-launch-browser/lifecycle-deadline.mjs",
     "tests/public-launch-browser/verify.mjs"
   ],
   {
