@@ -144,7 +144,10 @@ describe("bounded public launch performance verification", () => {
     const result = await migrationPool.query<IdRow>(sql, [...values]);
     const id = result.rows[0]?.id;
     if (id === undefined) {
-      throw new Error("Launch performance fixture insert did not return an id.");
+      const fixtureTable = sql.match(/\bINSERT\s+INTO\s+([^\s(]+)/i)?.[1] ?? "unknown";
+      throw new Error(
+        `Launch performance fixture insert did not return an id (${fixtureTable}).`
+      );
     }
     return id;
   }
