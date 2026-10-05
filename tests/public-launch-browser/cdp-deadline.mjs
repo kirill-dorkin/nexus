@@ -4,6 +4,7 @@ if (NativeWebSocket === undefined) {
   throw new Error("Node WebSocket implementation is unavailable.");
 }
 
+const connectionTimeoutMs = 15_000;
 const commandTimeoutMs = 15_000;
 
 class DeadlineWebSocket extends NativeWebSocket {
@@ -11,6 +12,21 @@ class DeadlineWebSocket extends NativeWebSocket {
 
   constructor(...args) {
     super(...args);
+
+    const connectionTimer = setTimeout(() => {
+      console.error(
+        `DevTools WebSocket connection exceeded ${connectionTimeoutMs / 1000}s; rejecting the connection.`
+      );
+      this.dispatchEvent(new Event("error"));
+      this.close(1011, "DevTools connection deadline exceeded");
+    }, connectionTimeoutMs);
+    connectionTimer.unref();
+
+    const clearConnectionTimer = () => clearTimeout(connectionTimer);
+    this.addEventListener("open", clearConnectionTimer, { once: true });
+    this.addEventListener("close", clearConnectionTimer, { once: true });
+    this.addEventListener("error", clearConnectionTimer, { once: true });
+
     this.addEventListener("message", (event) => {
       if (typeof event.data !== "string") return;
       try {
