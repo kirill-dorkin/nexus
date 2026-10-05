@@ -15,7 +15,7 @@ class DeadlineWebSocket extends NativeWebSocket {
 
     const connectionTimer = setTimeout(() => {
       console.error(
-        `DevTools WebSocket connection exceeded ${connectionTimeoutMs / 1000}s; rejecting the connection.`
+        `[browser-launch] DevTools WebSocket connection exceeded ${connectionTimeoutMs / 1000}s; rejecting the connection.`
       );
       this.dispatchEvent(new Event("error"));
       this.close(1011, "DevTools connection deadline exceeded");
@@ -23,7 +23,14 @@ class DeadlineWebSocket extends NativeWebSocket {
     connectionTimer.unref();
 
     const clearConnectionTimer = () => clearTimeout(connectionTimer);
-    this.addEventListener("open", clearConnectionTimer, { once: true });
+    this.addEventListener(
+      "open",
+      () => {
+        clearConnectionTimer();
+        console.error("[browser-launch] DevTools WebSocket connected.");
+      },
+      { once: true }
+    );
     this.addEventListener("close", clearConnectionTimer, { once: true });
     this.addEventListener("error", clearConnectionTimer, { once: true });
 
@@ -52,10 +59,17 @@ class DeadlineWebSocket extends NativeWebSocket {
           typeof command.id === "number" &&
           typeof command.method === "string"
         ) {
+          if (command.method === "Page.navigate") {
+            console.error(
+              `[browser-launch] navigate ${String(command.params?.url ?? "unknown")}`
+            );
+          }
           const timer = setTimeout(() => {
             this.#pendingCommands.delete(command.id);
             const message = `CDP command ${command.method} exceeded ${commandTimeoutMs / 1000}s.`;
-            console.error(`${message} Rejecting the pending command and closing DevTools connection.`);
+            console.error(
+              `[browser-launch] ${message} Rejecting the pending command and closing DevTools connection.`
+            );
             this.dispatchEvent(
               new MessageEvent("message", {
                 data: JSON.stringify({
