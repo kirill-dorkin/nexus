@@ -155,6 +155,9 @@ jobs:
       - name: Database integration tests
         run: pnpm test:integration
 
+      - name: Public launch performance verification
+        run: pnpm test:launch-performance
+
       - name: Build
         env:
           NEXT_PUBLIC_API_ORIGIN: https://127.0.0.1:4443
