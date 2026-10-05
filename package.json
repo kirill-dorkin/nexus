@@ -14,6 +14,7 @@
     "typecheck": "turbo typecheck",
     "test": "vitest run",
     "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:launch-performance": "vitest run --config vitest.launch-performance.config.ts",
     "test:browser-launch": "node tests/public-launch-browser/run.mjs",
     "test:watch": "vitest",
     "check": "pnpm check:brand && pnpm typecheck && pnpm test",
