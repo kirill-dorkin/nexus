@@ -169,7 +169,7 @@ jobs:
         run: pnpm test:browser-launch
 
       - name: Publish public launch browser diagnostic
-        if: ${{ always() && steps.browser-launch.outcome != 'skipped' }}
+        if: ${{ failure() && steps.browser-launch.outcome != 'skipped' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: public-launch-browser-diagnostic-${{ github.sha }}
