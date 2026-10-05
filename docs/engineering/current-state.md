@@ -8,21 +8,22 @@ Detailed historical checkpoints are preserved at:
 
 - `docs/engineering/current-state-2026-10-03-pre-f9.8.md`;
 - `docs/engineering/current-state-2026-10-03-pre-f9.9.md`;
-- `docs/engineering/current-state-2026-10-04-pre-f9.10.md`.
+- `docs/engineering/current-state-2026-10-04-pre-f9.10.md`;
+- `docs/engineering/current-state-2026-10-05-pre-f9.11.md`.
 
 Use this file as the active continuation checkpoint and the archives only when older slice-level detail is needed.
 
 ## Checkpoint baseline
 
-Last maintained: 2026-10-04.
+Last maintained: 2026-10-05.
 
 F0-F8 foundations are established through modular-monolith boundaries, identity/tenancy/authorization, immutable curriculum, Delivery, Attempt/Submission/Validation/Evidence/Mastery, Guided Build, GitHub Projects, repository-side grader hardening, Recommendations/Readiness, and readiness-gated Enrollment completion.
 
-F9 now establishes the first complete public paid path, its production operational contract, and a deterministic real-browser launch gate for first-party accessibility/session/CORS behavior: provider-independent Product/immutable Price, canonical pending/paid Purchase settlement, Paddle one-time payments, safe unauthenticated public catalog reads, explicit customer Organization entry, server-authoritative public checkout, direct exact-origin browser checkout UX, Paddle return plus purchaser-safe canonical reconciliation, low-cardinality redacted operational events, and browser verification of the Nexus-owned Product/auth/payment-link/reconciliation surfaces.
+F9 now establishes the first complete public paid path, its production operational contract, deterministic real-browser launch verification, and bounded repository-level performance acceptance gate: provider-independent Product/immutable Price, canonical pending/paid Purchase settlement, Paddle one-time payments, safe unauthenticated public catalog reads, explicit customer Organization entry, server-authoritative public checkout, direct exact-origin browser checkout UX, Paddle return plus purchaser-safe canonical reconciliation, low-cardinality redacted operational events, browser verification of Nexus-owned Product/auth/payment-link/reconciliation surfaces, and deterministic warm-path p95 regression guards for the launch-critical API/worker boundaries.
 
 Production learner-code execution remains disabled. F7 repository runner/profile/sandbox artifacts do not activate production execution; a separate deployment change still requires the exact production image digest and a green real-cluster verification record.
 
-Latest architectural decision at this checkpoint: ADR-0052. F9.10 adds verification infrastructure and no new domain/security authority decision.
+Latest architectural decision at this checkpoint: ADR-0052. F9.10 and F9.11 add verification infrastructure and no new domain/security authority decision.
 
 Latest ordered migration at this checkpoint: `000039_purchaser_purchase_reconciliation.sql`.
 
@@ -77,7 +78,7 @@ F8 composes versioned derived policies rather than persisting a second learner-s
 
 Readiness/recommendation/signal/intervention remain derived. Enrollment persistence remains Delivery-owned.
 
-### F9 — Commerce/public launch: first paid path + operational/browser launch gates implemented
+### F9 — Commerce/public launch: first paid path + operational/browser/performance launch gates implemented
 
 F9 preserves:
 
@@ -86,6 +87,7 @@ Product != Price != Purchase != Entitlement != Enrollment
 External provider state != canonical Commerce state
 Operational telemetry != canonical business/audit/event state
 Browser verification fixtures != canonical business state
+Performance verification evidence != canonical state or production-capacity proof
 ```
 
 The implemented F9 architecture now includes:
@@ -99,7 +101,8 @@ The implemented F9 architecture now includes:
 - ADR-0050 direct exact-origin credentialed Web -> API transport using the existing secure HttpOnly session and browser-attempt idempotency;
 - ADR-0051 server-owned Paddle payment-link/return boundary plus authenticated purchaser-safe canonical Purchase reconciliation;
 - ADR-0052 a vendor-neutral public-launch operational event contract with explicit redaction/cardinality rules and initial rollout budgets;
-- F9.10 deterministic production-build browser verification using local HTTPS, the real API authentication/session/CORS boundary, Chrome accessibility/focus checks, and a non-canonical provider/business projection seam.
+- F9.10 deterministic production-build browser verification using local HTTPS, the real API authentication/session/CORS boundary, Chrome accessibility/focus checks, and a non-canonical provider/business projection seam;
+- F9.11 deterministic bounded performance verification of the launch-critical HTTP/database/worker boundaries against the existing rollout acceptance budgets without adding a load framework, persistence, provider dependency, or production-capacity claim.
 
 The paid path is:
 
@@ -143,7 +146,7 @@ F9.9 operational invariants remain:
 - no telemetry backend/vendor, monitoring database, migration, canonical event, or business lifecycle change is introduced;
 - initial rollout latency/error budgets and security verification expectations live in `docs/engineering/public-launch-operations.md` and must be tuned after real traffic rather than treated as permanent SLOs.
 
-F9.10 browser launch invariants now established:
+F9.10 browser launch invariants remain:
 
 - browser verification runs against a production Next.js build in a fresh real Chrome/Chromium profile rather than a DOM-only simulator;
 - the real API remains authoritative for browser registration/session/CORS verification, while deterministic test-only projections drive catalog/entry/checkout/reconciliation UX without creating canonical Purchase/provider state;
@@ -155,6 +158,21 @@ F9.10 browser launch invariants now established:
 - pending, paid, and safe not-found purchaser states are rendered and accessibility-audited in the browser;
 - browser verification is not a second source of business truth and cannot settle a canonical Purchase, grant Entitlement, or create Enrollment;
 - no migration, lockfile dependency, new canonical event, or business transaction boundary is introduced.
+
+F9.11 bounded performance invariants now established:
+
+- the gate covers catalog list/detail, first-time authenticated customer entry, public checkout, signed Paddle webhook ingress, purchaser reconciliation, and a non-idle payment-worker settlement cycle using the p95 acceptance thresholds already defined by F9.9;
+- HTTP timing uses the real Nest/Fastify application plus PostgreSQL through `app.inject()` to remove socket/browser scheduling noise; F9.10 remains the separate real-browser HTTPS/CORS/session gate;
+- authenticated fixture identity uses the existing test-only principal hook, while Origin checks, tenant resolution, membership/checkout/purchaser authority, repositories, transactions, RLS and narrow database capabilities remain production paths;
+- public checkout uses the deterministic test payment provider and webhook ingress uses correctly signed raw Paddle-shaped payloads, so CI performs no live provider/network call;
+- worker timing uses the real `PaymentWebhookProcessor.processOne()` claim/lease/settle/ack path with distinct pending Purchase/provider-mapping/inbox fixtures;
+- each boundary gets 3 excluded warm-up operations and 20 sequential measured operations, reporting nearest-rank p50/p95, max and unexpected-operation errors;
+- p95 over the existing rollout budget or any unexpected measured error fails the gate; p99, RPS, concurrency and throughput claims are intentionally absent because the sample is too small and deterministic for those claims;
+- stateful boundaries use fresh fixture state where required so customer entry measures a real membership creation, checkout uses fresh idempotency keys, and worker samples exercise canonical non-idle settlement rather than idempotent/idle no-ops;
+- verification evidence is aggregate and non-canonical, contains no stable user/tenant/Purchase/provider/slug/URL/credential identifiers, and is not persisted to application tables or `events.outbox`;
+- migration-role access exists only for isolated fixture setup/cleanup and provider/worker fixture construction; measured application/worker operations keep their ordinary runtime roles and narrow capabilities;
+- no migration, runtime dependency, canonical event, telemetry backend, production SLO, production-capacity policy, or business transaction boundary is introduced;
+- sustained/concurrent/distributed load, production traffic simulation, deployed cold starts, CDN/region/network behavior, live Paddle timing, external synthetic monitoring, benchmark-history persistence, and capacity planning remain explicitly deferred.
 
 Still deferred from Commerce scope: refunds/adjustments/disputes and Entitlement reversal semantics, subscriptions, supported discounts/coupons, provider-customer synchronization, purchase-history/recovery beyond the exact Purchase, and broader marketing/SEO.
 
@@ -194,6 +212,7 @@ These are continuation guardrails, not substitutes for accepted ADRs.
 - Operational telemetry is not canonical state and must remain fail-open, low-cardinality, and redacted.
 - Routine telemetry must not become a searchable identity ledger; case-specific diagnosis uses authorized canonical/provider support tooling.
 - Browser verification fixtures are non-canonical test seams and must never become an alternate Commerce/Integrations implementation.
+- Performance-verification evidence is a repository acceptance artifact, not canonical state, a permanent SLO, or a production capacity claim.
 - Refund/reversal support requires an explicit canonical Purchase/Entitlement lifecycle decision before provider reversal events may change access.
 
 ## Active F4 compatibility windows
@@ -208,16 +227,22 @@ Do not remove these without an explicit cleanup slice/migration and proven calle
 
 ## Next recommended slice
 
-**F9.11 Launch performance verification — prove the F9.9 rollout budgets under bounded non-canonical load before expanding Commerce or marketing scope.**
+**Fresh frontier selection after F9 public-launch hardening.**
 
-F9.10 closes the repository-level real-browser/accessibility/session-CORS verification gap. The remaining explicit public-launch hardening frontier from the F9 roadmap is measurable load/performance verification against the budgets already defined in `docs/engineering/public-launch-operations.md`.
+F9.11 closes the explicit repository-level F9 launch-hardening sequence currently named by the roadmap: operational evidence/budgets, real-browser accessibility/session/CORS verification, and bounded deterministic performance acceptance verification now complement the canonical paid path.
 
-Before coding:
+Do not automatically treat a deferred Commerce feature as the next slice. Before choosing new architecture work, fresh-audit the actual `main`, roadmap, open PRs/CI, production/deployment gaps, user-facing vertical completeness, and existing deferred items, then select the smallest coherent frontier with measurable exit criteria.
 
-- fresh-audit the launch-critical API/query paths, payment worker cycle, current CI runtime budget, available load tools, and whether verification belongs in normal CI or a separate manually triggered/release workflow;
-- define bounded deterministic scenarios for catalog list/detail, customer entry, public checkout, webhook ingress, purchaser reconciliation, and the non-idle payment-worker cycle without calling live Paddle;
-- keep synthetic traffic from becoming durable production-like business history: use isolated test data/database state and deterministic provider seams;
-- measure latency/error behavior without weakening the existing functional/security assertions or treating expected fail-closed `4xx` outcomes as availability failures;
-- do not invent a permanent SLO from the initial rollout budgets; record them as launch acceptance thresholds to be recalibrated after real traffic;
-- preserve provider/network effects outside canonical PostgreSQL transactions and preserve all current idempotency/RLS/capability boundaries;
-- keep refunds/reversals, subscriptions, discounts/coupons, provider-customer synchronization, broader marketing/SEO, telemetry-vendor selection, and F7 production grader activation outside the slice unless a fresh audit proves a correctness dependency.
+Candidate areas that remain intentionally **unselected** at this checkpoint include:
+
+- refunds/adjustments/disputes plus canonical Entitlement reversal semantics;
+- subscriptions;
+- supported discounts/coupons;
+- provider-customer synchronization;
+- purchase-history/recovery beyond the exact Purchase locator;
+- broader marketing/SEO;
+- production telemetry/backend and external synthetic monitoring choices;
+- production capacity/load planning after deployment assumptions are known;
+- F7 production grader activation, which remains a separate deployment/security gate rather than an implicit continuation of F9.
+
+The next slice must be justified by a fresh architecture audit rather than by list order alone.
