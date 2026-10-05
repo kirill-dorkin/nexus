@@ -1,3 +1,4 @@
+import { ChildProcess } from "node:child_process";
 import { Server as HttpServer } from "node:http";
 import { Server as HttpsServer } from "node:https";
 
@@ -16,19 +17,23 @@ function installBoundedClose(ServerClass, label) {
   });
 
   prototype.close = function boundedClose(callback) {
+    console.error(`[browser-launch] ${label} close requested.`);
     let finished = false;
     let forceTimer;
     let releaseTimer;
 
-    const finish = (...args) => {
+    const finish = (source, ...args) => {
       if (finished) return;
       finished = true;
       clearTimeout(forceTimer);
       clearTimeout(releaseTimer);
+      console.error(
+        `[browser-launch] ${label} close wait complete (${source}).`
+      );
       callback?.(...args);
     };
 
-    const result = nativeClose.call(this, finish);
+    const result = nativeClose.call(this, (...args) => finish("native", ...args));
 
     forceTimer = setTimeout(() => {
       console.error(
@@ -54,7 +59,7 @@ function installBoundedClose(ServerClass, label) {
       } catch {
         // Best-effort teardown only.
       }
-      finish();
+      finish("deadline");
     }, releaseAfterMs);
     releaseTimer.unref();
 
@@ -62,5 +67,32 @@ function installBoundedClose(ServerClass, label) {
   };
 }
 
+function installChildKillTrace() {
+  const prototype = ChildProcess?.prototype;
+  if (!prototype || prototype.__nexusBrowserKillTrace) return;
+
+  const nativeKill = prototype.kill;
+  Object.defineProperty(prototype, "__nexusBrowserKillTrace", {
+    configurable: false,
+    enumerable: false,
+    value: true
+  });
+
+  prototype.kill = function tracedKill(signal) {
+    console.error(
+      `[browser-launch] child process kill requested ${signal ?? "SIGTERM"}.`
+    );
+    return nativeKill.call(this, signal);
+  };
+}
+
 installBoundedClose(HttpServer, "HTTP server");
 installBoundedClose(HttpsServer, "HTTPS server");
+installChildKillTrace();
+
+process.on("beforeExit", (code) => {
+  console.error(`[browser-launch] process beforeExit ${code}.`);
+});
+process.on("exit", (code) => {
+  console.error(`[browser-launch] process exit ${code}.`);
+});
