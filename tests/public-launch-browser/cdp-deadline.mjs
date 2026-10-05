@@ -1,11 +1,42 @@
 const NativeWebSocket = globalThis.WebSocket;
+const nativeFetch = globalThis.fetch;
 
 if (NativeWebSocket === undefined) {
   throw new Error("Node WebSocket implementation is unavailable.");
 }
 
+if (nativeFetch === undefined) {
+  throw new Error("Node fetch implementation is unavailable.");
+}
+
 const connectionTimeoutMs = 15_000;
 const commandTimeoutMs = 15_000;
+let fetchSequence = 0;
+
+function fetchLabel(input) {
+  if (typeof input === "string") return input;
+  if (input instanceof URL) return input.href;
+  if (input && typeof input.url === "string") return input.url;
+  return "unknown";
+}
+
+globalThis.fetch = async (...args) => {
+  const id = ++fetchSequence;
+  const label = fetchLabel(args[0]);
+  console.error(`[browser-launch] fetch #${id} start ${label}`);
+  try {
+    const response = await nativeFetch(...args);
+    console.error(
+      `[browser-launch] fetch #${id} complete ${response.status} ${label}`
+    );
+    return response;
+  } catch (error) {
+    console.error(
+      `[browser-launch] fetch #${id} failed ${label}: ${error instanceof Error ? error.message : String(error)}`
+    );
+    throw error;
+  }
+};
 
 class DeadlineWebSocket extends NativeWebSocket {
   #pendingCommands = new Map();
@@ -43,6 +74,11 @@ class DeadlineWebSocket extends NativeWebSocket {
         if (pending === undefined) return;
         clearTimeout(pending.timer);
         this.#pendingCommands.delete(message.id);
+        if (pending.trace) {
+          console.error(
+            `[browser-launch] CDP complete ${pending.method} #${message.id}`
+          );
+        }
       } catch {
         // The verification client owns protocol parsing. This hook only enforces deadlines.
       }
@@ -59,9 +95,14 @@ class DeadlineWebSocket extends NativeWebSocket {
           typeof command.id === "number" &&
           typeof command.method === "string"
         ) {
+          const trace = command.method !== "Runtime.evaluate";
           if (command.method === "Page.navigate") {
             console.error(
               `[browser-launch] navigate ${String(command.params?.url ?? "unknown")}`
+            );
+          } else if (trace) {
+            console.error(
+              `[browser-launch] CDP start ${command.method} #${command.id}`
             );
           }
           const timer = setTimeout(() => {
@@ -83,7 +124,8 @@ class DeadlineWebSocket extends NativeWebSocket {
           timer.unref();
           this.#pendingCommands.set(command.id, {
             method: command.method,
-            timer
+            timer,
+            trace
           });
         }
       } catch {
