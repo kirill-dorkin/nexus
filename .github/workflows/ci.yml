@@ -77,7 +77,7 @@ jobs:
         run: apps/grader-runner/scripts/verify-reproducible.sh
 
       - name: Publish trusted grader runner reproducibility evidence
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: grader-runner-reproducibility-${{ github.sha }}
           path: ${{ runner.temp }}/grader-runner-reproducibility.env
@@ -170,7 +170,7 @@ jobs:
 
       - name: Publish public launch browser diagnostic
         if: ${{ failure() && steps.browser-launch.outcome != 'skipped' }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: public-launch-browser-diagnostic-${{ github.sha }}
           path: ${{ runner.temp }}/public-launch-browser-diagnostic.json
