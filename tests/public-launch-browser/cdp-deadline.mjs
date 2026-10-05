@@ -38,8 +38,15 @@ class DeadlineWebSocket extends NativeWebSocket {
         ) {
           const timer = setTimeout(() => {
             this.#pendingCommands.delete(command.id);
-            console.error(
-              `CDP command ${command.method} exceeded ${commandTimeoutMs / 1000}s; closing DevTools connection.`
+            const message = `CDP command ${command.method} exceeded ${commandTimeoutMs / 1000}s.`;
+            console.error(`${message} Rejecting the pending command and closing DevTools connection.`);
+            this.dispatchEvent(
+              new MessageEvent("message", {
+                data: JSON.stringify({
+                  id: command.id,
+                  error: { message }
+                })
+              })
             );
             this.close(1011, "CDP command deadline exceeded");
           }, commandTimeoutMs);
