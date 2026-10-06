@@ -49,3 +49,8 @@ ADR-0055 preserves API-owned session authority and exact-Origin writes. Role-les
 
 
 Deterministic free quiz checks (ADR-0056) use principal-owned active Membership/Enrollment relationships and locked current public free gates, never caller outcomes or validation.record grants. Protected Content answers/explanations remain server-only; raw result/Evidence/feedback are explicit allowlists. Attempt keys are immutable retry locators scoped by own exact Enrollment/ActivityVersion, not authority. Separate work/raw/normalization commits preserve operational failure semantics and idempotent recovery. No SQL privileges or grader activation are added.
+
+
+## Studio authoring
+
+ADR-0057 uses current capability-filtered tenant reads and existing manifest import authority. The own Organization locator function is principal-bound and read-only; normal RLS is unchanged. Protected drafts/keys enter only the authorized author browser and explicit JSON downloads, never public HTML, preview markup, outbox or Web storage. New writes require exact Origin. Publication checks the loaded revision under the Content version lock; stale tabs cannot overwrite/publish concurrent changes. Studio login returns only to strict local UUID routes.

@@ -16,6 +16,7 @@ export abstract class CourseManifestRepository {
   abstract replaceDraft(transaction: DatabaseTransaction, organizationId: string, courseId: string, versionId: string, userId: string, manifest: CourseManifestV1): Promise<{ revision: number; createdSkills: { id: string; key: string }[] }>;
   abstract exportVersion(transaction: DatabaseTransaction, organizationId: string, courseId: string, versionId: string): Promise<CourseManifestV1>;
   abstract isManifestVersion(transaction: DatabaseTransaction, organizationId: string, versionId: string): Promise<boolean>;
+  abstract revision(transaction: DatabaseTransaction, organizationId: string, versionId: string): Promise<number | null>;
   abstract lockVersion(transaction: DatabaseTransaction, organizationId: string, versionId: string): Promise<void>;
   abstract cloneLatestPublished(transaction: DatabaseTransaction, organizationId: string, courseId: string, versionId: string): Promise<void>;
 }

@@ -46,9 +46,9 @@ export function LearningAuth({ returnTo }: { returnTo: string }) {
   }
   return (
     <section className={styles.authCard}>
-      <p className={styles.eyebrow}>Сохранённое обучение</p>
+      <p className={styles.eyebrow}>Ваш аккаунт</p>
       <h1>{mode === "login" ? "Вход" : "Регистрация"}</h1>
-      <p>После входа вы вернётесь к выбранному обучению.</p>
+      <p>После входа вы вернётесь на выбранную страницу.</p>
       <form onSubmit={submit} aria-busy={busy}>
         {mode === "register" && (
           <label htmlFor="learning-name">
@@ -105,7 +105,7 @@ export function LearningAuth({ returnTo }: { returnTo: string }) {
       >
         {mode === "login" ? "Создать новый аккаунт" : "У меня уже есть аккаунт"}
       </button>
-      <Link href={safeLearningReturnTo(returnTo)}>Вернуться к материалам</Link>
+      <Link href={safeLearningReturnTo(returnTo)}>Вернуться</Link>
     </section>
   );
 }

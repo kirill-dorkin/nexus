@@ -35,6 +35,19 @@ export class AuthorizationApplicationService {
     }
   }
 
+  async authoringScopes(transaction: DatabaseTransaction, organizationId: string, userId: string) {
+    const assignments = await this.assignments.listAssignments(transaction, organizationId, userId);
+    const scope = (type: "organization" | "course", id: string) => ({ organizationId, type, id });
+    const allows = (capability: AuthorizationCapability, type: "organization" | "course", id: string) => this.policy.allows(assignments, capability, scope(type, id));
+    const canAuthor = (type: "organization" | "course", id: string) => allows("course.manage", type, id) && allows("activity.manage", type, id);
+    return {
+      allCourses: canAuthor("organization", organizationId),
+      courseIds: [...new Set(assignments.filter(a => a.type === "course" && canAuthor("course", a.id)).map(a => a.id))],
+      canApply: allows("skill.manage", "organization", organizationId),
+      canPublish: (courseId: string) => allows("course.publish", "course", courseId)
+    };
+  }
+
   hasRoleAssignment(
     transaction: DatabaseTransaction,
     organizationId: string,

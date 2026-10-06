@@ -1,0 +1,111 @@
+.shell {
+  max-width: 70rem;
+  margin: 0 auto;
+}
+.nav,
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+.nav {
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-default);
+  padding-bottom: 1rem;
+}
+.sections {
+  display: grid;
+  gap: 1rem;
+}
+.card {
+  padding: clamp(0.8rem, 3vw, 1.6rem);
+  border: 1px solid var(--border-default);
+  border-radius: 0.6rem;
+  min-width: 0;
+}
+.shell fieldset {
+  min-width: 0;
+  border: 1px solid var(--border-default);
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0.4rem;
+}
+.shell legend {
+  font-weight: 600;
+}
+.shell label {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.8rem 0;
+}
+.shell input,
+.shell textarea,
+.shell select {
+  width: 100%;
+  min-width: 0;
+  padding: 0.65rem;
+  color: var(--text-primary);
+  background: var(--surface-default);
+  border: 1px solid var(--border-default);
+  border-radius: 0.3rem;
+  font: inherit;
+}
+.shell textarea {
+  resize: vertical;
+}
+.shell .check {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.check input {
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+}
+.shell button {
+  padding: 0.6rem 0.9rem;
+  cursor: pointer;
+  border: 1px solid var(--border-default);
+  border-radius: 0.3rem;
+  color: var(--text-primary);
+  background: var(--surface-default);
+  font: inherit;
+}
+.shell button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.shell :is(button, a, input, textarea, select):focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+.shell .primary {
+  background: var(--action-primary);
+  color: #fff;
+}
+.shell p,
+.shell li,
+.shell h2,
+.shell h3 {
+  overflow-wrap: anywhere;
+}
+.json {
+  min-height: 24rem;
+  font-family: var(--font-mono) !important;
+}
+.video {
+  aspect-ratio: 16/9;
+  margin: 1rem 0;
+}
+.video iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.error {
+  border-left: 3px solid var(--action-primary);
+  padding-left: 1rem;
+}

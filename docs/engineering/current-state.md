@@ -23,9 +23,9 @@ F9 now establishes the first complete public paid path, its production operation
 
 Production learner-code execution remains disabled. F7 repository runner/profile/sandbox artifacts do not activate production execution; a separate deployment change still requires the exact production image digest and a green real-cluster verification record.
 
-Latest architectural decision at this checkpoint: ADR-0056 (deterministic learner-owned quiz checks). F9.10 and F9.11 add verification infrastructure and no new domain/security authority decision.
+Latest architectural decision at this checkpoint: ADR-0057 (Studio canonical draft parity). F9.10 and F9.11 add verification infrastructure and no new domain/security authority decision.
 
-Latest ordered migration at this checkpoint: `000042_free_learner_entry.sql`.
+Latest ordered migration at this checkpoint: `000043_own_organization_discovery.sql`.
 
 The baseline above is an orientation marker, not permission to skip checking the live `main` head.
 
@@ -43,7 +43,9 @@ ADR-0055 adds authenticated role-less self-only free Enrollment after explicit O
 
 ADR-0056 registers three trusted deterministic quiz v1 definitions and adds principal-owned exact-release check authority for role-less free learners. Immutable Attempt/Submission work, computed ValidationResult and normalized Evidence/Mastery commit in their established separate stages; same-key replay repairs incomplete stages, while explicit retry starts a new Attempt. Strict safe feedback exposes no private answers/explanations, and derived task progress refreshes after checking. No migration or grader activation is introduced.
 
-This is public reading, authoring, free learner entry and non-code quiz checking, not a launched learning product. Studio, complete real-session learner browser verification and production deployment remain. The maintained launch sequence is `docs/roadmap/mvp-launch.md`; the next coherent slice is E: Studio manual/JSON parity over the same canonical draft. Production grader activation remains independent.
+ADR-0057 adds authorized Studio forms and JSON file/textarea authoring over the same canonical manifest/draft, safe author preview, saved export, explicit next draft and revision-fenced publication. Protected author reads require current course/activity management; import retains organization skill management. Own Organization discovery is a narrow actor-bound locator capability, with tenant RLS unchanged. Production Chrome now verifies canonical Organization/Content authoring through real registration/session and PostgreSQL.
+
+This is public reading, Studio authoring, free learner entry and non-code quiz checking, not a deployed learning product. Complete canonical learner browser verification and production deployment remain. The maintained launch sequence is `docs/roadmap/mvp-launch.md`; the next coherent slice is F: the full learner browser loop and deployment audit/HTTPS smoke. Production grader activation remains independent.
 
 ### F0-F3 — architecture, tenancy, immutable curriculum, Delivery: established
 
@@ -241,9 +243,9 @@ Do not remove these without an explicit cleanup slice/migration and proven calle
 
 ## Next recommended slice
 
-**Studio authoring parity after deterministic quiz checking.**
+**Complete canonical learner browser verification and deployment.**
 
-The selected product frontier remains the first free public learning launch in `docs/roadmap/mvp-launch.md`. Slice D closes the deterministic quiz loop through canonical Submission, ValidationResult, Evidence and Mastery with protected answer definitions and learner-owned role-less authority. The next coherent slice is E: authorized manual forms, JSON preview/apply/export, course preview and publication over the same canonical draft. Full real-session canonical learner browser verification and deployed HTTPS smoke remain F. Production grader activation remains independently gated.
+The selected product frontier remains the first free public learning launch in `docs/roadmap/mvp-launch.md`. Slice E closes manual/JSON authoring parity, protected preview/export and immutable publication through existing canonical Content. Slice F now verifies the entire anonymous-to-returning learner browser loop with PostgreSQL/session auth, audits deployment infrastructure and performs actual deployed HTTPS smoke or records one concrete external blocker. Production grader activation remains independently gated.
 
 Candidate areas that remain intentionally **unselected** at this checkpoint include:
 
