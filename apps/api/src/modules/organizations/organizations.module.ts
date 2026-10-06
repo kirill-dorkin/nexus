@@ -1,3 +1,5 @@
+import { LearningEntryQuery } from "./application/learning-entry.query";
+import { PostgresLearningEntryQuery } from "./infrastructure/postgres-learning-entry.query";
 import { Module } from "@nestjs/common";
 
 import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
@@ -18,6 +20,7 @@ import { PublicOrganizationEntryController } from "./public-organization-entry.c
   imports: [IdentityModule, AuthorizationModule, OutboxModule],
   controllers: [OrganizationsController, PublicOrganizationEntryController],
   providers: [
+    { provide: LearningEntryQuery, useClass: PostgresLearningEntryQuery },
     OrganizationsApplicationService,
     BrowserWriteOriginGuard,
     {
@@ -34,6 +37,7 @@ import { PublicOrganizationEntryController } from "./public-organization-entry.c
     }
   ],
   exports: [
+    LearningEntryQuery,
     OrganizationsApplicationService,
     PublicOrganizationQuery,
     CheckoutOrganizationQuery

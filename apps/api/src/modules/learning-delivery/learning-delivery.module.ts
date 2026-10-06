@@ -1,3 +1,5 @@
+import { FreeLearningDeliveryPort } from "./application/free-learning-delivery.port";
+import { PostgresFreeLearningDeliveryPort } from "./infrastructure/postgres-free-learning-delivery.port";
 import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
 import { PublicFreeLearningOfferingQuery } from "./application/public-free-learning-offering.query";
 import { PostgresPublicFreeLearningOfferingQuery } from "./infrastructure/postgres-public-free-learning-offering.query";
@@ -43,6 +45,7 @@ import { LearningDeliveryController } from "./learning-delivery.controller";
     LearnerRunnerController
   ],
   providers: [
+    { provide: FreeLearningDeliveryPort, useClass: PostgresFreeLearningDeliveryPort },
     BrowserWriteOriginGuard,
     { provide: PublicFreeLearningOfferingQuery, useClass: PostgresPublicFreeLearningOfferingQuery },
     LearningDeliveryApplicationService,
@@ -76,6 +79,7 @@ import { LearningDeliveryController } from "./learning-delivery.controller";
     }
   ],
   exports: [
+    FreeLearningDeliveryPort,
     PublicFreeLearningOfferingQuery,
     LearningDeliveryApplicationService,
     LearningDeliveryCommand,

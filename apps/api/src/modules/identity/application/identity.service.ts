@@ -42,9 +42,11 @@ export class IdentityApplicationService {
 
   async requireActiveUser(
     transaction: DatabaseTransaction,
-    userId: string
+    userId: string,
+    lock = false
   ): Promise<IdentityUser> {
-    const user = await this.findActiveUser(transaction, userId);
+    const candidate = await this.users.findById(transaction, userId, lock);
+    const user = candidate?.status === "active" ? candidate : null;
 
     if (user === null) {
       throw new ForbiddenException("An active user is required for this operation.");

@@ -39,3 +39,27 @@ pnpm test packages/contracts/src/public-learning.test.ts apps/web/src/components
 ```
 
 The existing `pnpm test:browser-launch` now includes production-build public learning pages with Chrome mobile/keyboard/navigation/Markdown containment and safe empty/404 checks. It uses a deterministic public projection seam; full learner persistence through real sessions/PostgreSQL is the launch slice's separate gate. See ADR-0054 and docs/roadmap/mvp-launch.md.
+
+## Authenticated free learner entry (ADR-0055)
+
+The public curriculum remains readable anonymously. The API's existing opaque HttpOnly session is the sole identity boundary; Web uses the same exact-origin credentialed direct transport. `/login?returnTo=...` accepts only exact local `/learn/:organizationSlug/:offeringSlug[/lessonSlug]` or `/me/learning` paths. Authentication returns to that address without joining or enrolling.
+
+- `GET /v1/me/learning/:organizationSlug/:offeringSlug` returns strict public presentation plus own entry lifecycle hints and nullable derived progress.
+- `POST /v1/public/organizations/:organizationSlug/memberships/me` remains the existing explicit Organization entry command. It grants no role or Enrollment.
+- `POST /v1/me/learning/:organizationSlug/:offeringSlug/enrollment` accepts only `{}` and returns current own course state with HTTP 200, including for an active/completed duplicate. No caller user/tenant/offering/role/outcome is accepted.
+- `GET /v1/me/learning?after=:cursor` returns at most 100 current own active/completed free learning courses and `nextCursor`. Keep following non-null cursors even if a page contains no supported public courses. A cursor is a locator only and cannot select another actor.
+
+An active member can enroll even when new customer entry is closed. Invited/suspended/left membership, withdrawn/cancelled Enrollment and private/closed/paid/cohort/inactive curriculum do not become accessible through retries. Visibility still grants no membership or access right. Administrative enrollment.manage is unchanged. Commands lock the current gates and write canonical enrollment.created atomically only for the first insert; ambiguous retries reuse the canonical unique actor/Offering identity. Concurrent lifecycle deadlocks/serialization conflicts return retryable HTTP 409 rather than bypass a gate.
+
+`required-activity-passes@1` derives counts from the exact own Enrollment and the Offering's pinned immutable Lesson graph. Distinct required ActivityVersions count once per course; normalized validation-derived passing Evidence makes a task passed. Raw/advisory/system-error/review results, manual Evidence and other enrollment/release work do not count. A later failed retry preserves a previous task pass. Informational Lessons do not invent completion, and a zero-required course exposes null percentage. Last action is the last referenced Attempt start; continue targets the first Lesson with remaining required work. All tasks passed does not transition Enrollment.completed and is separate from current Mastery/readiness.
+
+Web exposes explicit entry/enrollment and own progress on course/Lesson pages, plus paginated `/me/learning`, continue and logout. Practice checking remains Slice D. The Chrome UX seam verifies return-to/explicit actions/reload rendering alongside real API sessions; canonical command/progress persistence is proven by PostgreSQL integration tests. The complete canonical learner browser path remains Slice F.
+
+Focused maintainer verification after CI is green:
+
+```bash
+pnpm db:migrate
+pnpm test:integration apps/api/src/free-learner-entry-http.integration.test.ts
+```
+
+The controlled enrollment outbox failure is an intentional rollback assertion.

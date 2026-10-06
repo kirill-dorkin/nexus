@@ -34,3 +34,4 @@ export * from "./readiness";
 export * from "./recommendations";
 
 export * from "./public-learning";
+export * from "./learner-learning";

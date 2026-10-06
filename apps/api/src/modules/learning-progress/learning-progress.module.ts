@@ -1,3 +1,5 @@
+import { CourseActivityProgressQuery } from "./application/course-activity-progress.query";
+import { PostgresCourseActivityProgressQuery } from "./infrastructure/postgres-course-activity-progress.query";
 import { Module } from "@nestjs/common";
 
 import { OutboxModule } from "../../outbox/outbox.module";
@@ -33,6 +35,7 @@ import { MasteryController } from "./mastery.controller";
   imports: [IdentityModule, AuthorizationModule, OutboxModule, LearningContentModule, LearningDeliveryModule, LearningHistoryModule],
   controllers: [LearningProgressController, MasteryController, LearnerSkillProgressController],
   providers: [
+    { provide: CourseActivityProgressQuery, useClass: PostgresCourseActivityProgressQuery },
     LearningProgressApplicationService,
     AttemptGuidanceReader,
     MasteryApplicationService,
@@ -48,6 +51,7 @@ import { MasteryController } from "./mastery.controller";
     { provide: MasteryRepository, useClass: PostgresMasteryRepository }
   ],
   exports: [
+    CourseActivityProgressQuery,
     MasteryApplicationService,
     LearningProgressQuery,
     AttemptGuidanceQuery,
