@@ -227,7 +227,8 @@ export class LearningContentApplicationService {
   async publishCourseVersion(
     organizationId: string,
     courseId: string,
-    versionId: string
+    versionId: string,
+    expectedRevision?: number
   ): Promise<CourseVersion> {
     const context = this.requestContext.tenantContext(organizationId);
 
@@ -251,6 +252,9 @@ export class LearningContentApplicationService {
       }
       if (existing.status !== "draft") {
         throw new ConflictException("Only a draft course version can be published.");
+      }
+      if (expectedRevision !== undefined && await this.manifests.revision(transaction, organizationId, versionId) !== expectedRevision) {
+        throw new ConflictException("The draft changed. Reload and preview it before publication.");
       }
       // Legacy versions remain compatible; manifest-managed versions must be complete.
       if (await this.manifests.isManifestVersion(transaction, organizationId, versionId)) {

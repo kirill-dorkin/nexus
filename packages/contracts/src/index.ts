@@ -37,3 +37,4 @@ export * from "./public-learning";
 export * from "./learner-learning";
 
 export * from "./quiz-check";
+export * from "./studio";

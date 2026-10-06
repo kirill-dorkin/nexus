@@ -23,6 +23,10 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
     return { courseId: course.id, status: course.status, draftVersionId: draft?.id ?? null, revision: draft?.authoring_revision ?? versions.rows[0]?.version_number ?? 0 };
   }
 
+  async revision(tx: DatabaseTransaction, org: string, version: string): Promise<number | null> {
+    return (await tx.client.query<{ authoring_revision: number }>("SELECT authoring_revision FROM learning_content.course_versions WHERE organization_id=$1 AND id=$2",[org,version])).rows[0]?.authoring_revision ?? null;
+  }
+
   async lockVersion(tx: DatabaseTransaction, org: string, version: string): Promise<void> {
     await tx.client.query("SELECT id FROM learning_content.course_versions WHERE organization_id=$1 AND id=$2 FOR UPDATE", [org, version]);
   }

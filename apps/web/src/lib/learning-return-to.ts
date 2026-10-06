@@ -1,6 +1,18 @@
-import { resourceSlugSchema } from "@platform/contracts";
-/** A URL locator is never authority; only exact local learning paths are accepted. */
+import { resourceSlugSchema, uuidSchema } from "@platform/contracts";
+/** A URL locator is never authority; only exact local learning/Studio paths are accepted. */
 export function safeLearningReturnTo(value: unknown): string {
+  if (value === "/studio") return value;
+  if (
+    typeof value === "string" &&
+    /^\/studio\/[^/]+\/(?:new|[^/]+)$/.test(value)
+  ) {
+    const [, , org, course] = value.split("/");
+    if (
+      uuidSchema.safeParse(org).success &&
+      (course === "new" || uuidSchema.safeParse(course).success)
+    )
+      return value;
+  }
   if (value === "/me/learning") return value;
   if (typeof value !== "string" || value.length > 220) return "/me/learning";
   const match = /^\/learn\/([^/]+)\/([^/]+)(?:\/([^/]+))?$/.exec(value);

@@ -494,7 +494,7 @@ async function startTlsProxies(tls) {
   const apiProxy = createHttpsServer(tls, (request, response) => {
     const path = new URL(request.url ?? "/", API_ORIGIN).pathname;
     const useRealApi =
-      path.startsWith("/v1/auth/") || path === "/v1/me" || path === "/v1/health";
+      path.startsWith("/v1/auth/") || path.startsWith("/v1/organizations/") || path === "/v1/me/organizations" || path === "/v1/me" || path === "/v1/health";
     proxyRequest(
       request,
       response,
@@ -703,6 +703,110 @@ async function launchChrome(tempDirectory) {
     { method: "PUT" }
   ).then((response) => response.json());
   return CdpClient.connect(target.webSocketDebuggerUrl);
+}
+
+
+async function fillLabel(cdp, label, value, index = 0) {
+  const changed = await evaluate(cdp, `(() => {
+    const labels=[...document.querySelectorAll("label")].filter(l=>l.firstChild?.textContent?.trim()===${JSON.stringify(label)});
+    const el=labels[${index}]?.querySelector("input,textarea,select");
+    if (!el) return false;
+    const proto=el instanceof HTMLTextAreaElement?HTMLTextAreaElement.prototype:el instanceof HTMLSelectElement?HTMLSelectElement.prototype:HTMLInputElement.prototype;
+    Object.getOwnPropertyDescriptor(proto,"value").set.call(el,${JSON.stringify(String(value))});
+    el.dispatchEvent(new Event("input",{bubbles:true}));el.dispatchEvent(new Event("change",{bubbles:true}));return true;
+  })()`);
+  assert(changed, `Could not fill labelled Studio field: ${label}`);
+}
+async function verifyStudio(cdp) {
+  console.log("[browser-launch] canonical Studio manual/JSON/preview/publication");
+  await navigate(cdp, `${WEB_ORIGIN}/studio`);
+  await waitForExpression(cdp, 'document.body.innerText.includes("Войти в Studio")', "anonymous Studio gate");
+  await navigate(cdp, `${WEB_ORIGIN}/login?returnTo=%2Fstudio`);
+  await clickText(cdp,"Создать новый аккаунт");
+  await fill(cdp,'input[name="email"]',`studio-browser-${Date.now()}@example.test`);
+  await fill(cdp,'input[name="password"]',PASSWORD);
+  await clickText(cdp,"Создать аккаунт");
+  await waitForExpression(cdp,'location.pathname === "/studio" && document.body.innerText.includes("Ваши организации")',"Studio auth return");
+  await evaluate(cdp,'document.querySelector("details").open=true');
+  await fill(cdp,'input[name="name"]',"Browser Studio Academy");
+  await fill(cdp,'input[name="slug"]',`browser-studio-${Date.now()}`);
+  await clickText(cdp,"Создать организацию");
+  await waitForExpression(cdp,'[...document.querySelectorAll("a")].some(a=>a.textContent==="Создать курс")',"explicit canonical organization entry");
+  const createHref=await evaluate(cdp,'[...document.querySelectorAll("a")].find(a=>a.textContent==="Создать курс").getAttribute("href")');
+  await navigate(cdp,`${WEB_ORIGIN}${createHref}`);
+  await waitForExpression(cdp,'document.querySelectorAll("input").length>0',"new manual editor");
+  const slug=`browser-course-${Date.now()}`;
+  await fillLabel(cdp,"Адрес курса (slug)",slug);
+  await fillLabel(cdp,"Название курса","Ручной курс");
+  await fillLabel(cdp,"Описание курса","Описание руками");
+  await clickText(cdp,"Добавить урок");
+  await fillLabel(cdp,"Адрес урока (slug)","introduction");
+  await fillLabel(cdp,"Название урока","Первый урок");
+  await fillLabel(cdp,"Краткое описание урока","Краткое описание");
+  await clickText(cdp,"Добавить конспект");
+  await fillLabel(cdp,"Конспект (Markdown)","## Ручной конспект");
+  await clickText(cdp,"Проверить документ");
+  await waitForExpression(cdp,'document.body.innerText.includes("Проверка пройдена")',"manual validation");
+  await clickText(cdp,"Сохранить черновик");
+  await waitForExpression(cdp,'!location.pathname.endsWith("/new") && document.body.innerText.includes("Ручной курс") && document.body.innerText.includes("версия 1")',"manual canonical creation");
+  const [, ,org,course]=await evaluate(cdp,'location.pathname.split("/")');
+  const apiBase=`${API_ORIGIN}/v1/organizations/${org}`;
+  const canonicalRead=()=>evaluate(cdp,`fetch(${JSON.stringify(`${apiBase}/studio/courses/${course}`)},{credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,body:await r.json()}))`);
+  const created=await canonicalRead();assert(created.status===200&&created.body.manifest.lessons[0].blocks[0].markdown==="## Ручной конспект","Manual editor did not persist canonical Content.");
+  const manifest=JSON.parse(readFileSync("docs/examples/computer-basics.manifest.json","utf8"));manifest.course.slug=slug;
+  manifest.activities[0].validation.explanation="PRIVATE_BROWSER_EXPLANATION";
+  manifest.activities.push({slug:"multi-check",type:"quiz.multiple_choice",title:"Multi",instructions:"Multiple",skillKeys:[manifest.skills[0].key],presentation:{question:"Multi?",options:[{id:"a",text:"A"},{id:"b",text:"B"},{id:"c",text:"C"}]},validation:{correctOptionIds:["a","c"],explanation:"PRIVATE_MULTI"}},{slug:"short-check",type:"quiz.short_text",title:"Short",instructions:"Text",skillKeys:[manifest.skills[0].key],presentation:{question:"Short?"},validation:{acceptedAnswers:["PRIVATE_TEXT","два"],caseSensitive:true,explanation:"PRIVATE_SHORT"}});
+  manifest.lessons.push({slug:"second",title:"Второй урок",summary:"Продолжение",durationMinutes:15,blocks:[{type:"activity",activitySlug:"multi-check",kind:"homework",required:false,title:"Мультивыбор"},{type:"activity",activitySlug:"short-check",kind:"practice",required:true}]});
+  await clickText(cdp,"JSON");
+  const temp=mkdtempSync(join(tmpdir(),"studio-manifest-"));
+  try {
+    const file=join(temp,"course.json");writeFileSync(file,JSON.stringify(manifest));
+    const dom=await cdp.send("DOM.getDocument");const {nodeId}=await cdp.send("DOM.querySelector",{nodeId:dom.root.nodeId,selector:'input[type="file"]'});
+    await cdp.send("DOM.setFileInputFiles",{nodeId,files:[file]});
+    await waitForExpression(cdp,'document.querySelector("textarea").value.includes("PRIVATE_SHORT")',"JSON file upload");
+    await clickText(cdp,"Ручной редактор");
+    await waitForExpression(cdp,'document.body.innerText.includes("Допустимые ответы")',"all imported quiz shapes editable");
+    await fillLabel(cdp,"Название курса","JSON + ручные формы");
+    await fillLabel(cdp,"Описание навыка","Изменённый навык");
+    await fillLabel(cdp,"Название задания","Ручная практика");
+    await fillLabel(cdp,"Инструкция (Markdown)","## Инструкция руками");
+    await fillLabel(cdp,"Допустимый ответ 1","PRIVATE_EDITED_TEXT");
+    await fillLabel(cdp,"Длительность, минут","27",1);
+    await accessibilityAudit(cdp,"Studio all authoring shapes");
+    await clickText(cdp,"Предпросмотр");
+    const preview=await evaluate(cdp,'document.querySelector(\'[aria-label="Предпросмотр курса"]\').innerText');
+    assert(preview.includes("Ручная практика")&&!preview.includes("PRIVATE_"),"Studio preview leaked answer definitions.");
+    await clickText(cdp,"Проверить документ");
+    await waitForExpression(cdp,'document.body.innerText.includes("Проверка пройдена")',"JSON/manual validation");
+    await clickText(cdp,"Сохранить черновик");
+    await waitForExpression(cdp,'document.body.innerText.includes("Черновик сохранён")',"JSON/manual canonical save");
+    const saved=await canonicalRead();assert(saved.body.manifest.course.title==="JSON + ручные формы"&&saved.body.manifest.activities[2].validation.acceptedAnswers[0]==="PRIVATE_EDITED_TEXT"&&saved.body.manifest.lessons[1].durationMinutes===27,"JSON/manual fields diverged from canonical export.");
+    const exported=await evaluate(cdp,`fetch(${JSON.stringify(`${apiBase}/courses/${course}/versions/${saved.body.versionId}/manifest`)},{credentials:"include"}).then(r=>r.json())`);
+    assert(JSON.stringify(exported)===JSON.stringify(saved.body.manifest),"Draft export is not the same canonical document.");
+    await clickText(cdp,"Скачать сохранённый JSON");
+    await waitForExpression(cdp,'document.body.innerText.includes("Скачан сохранённый черновик")',"canonical JSON download");
+    // A concurrent authorized edit must be surfaced before this working copy can apply.
+    await fillLabel(cdp,"Название курса","Моя несохранённая правка");
+    const concurrent=structuredClone(saved.body.manifest);concurrent.course.title="Другой автор";
+    const conflictWrite=await evaluate(cdp,`(async()=>{const manifest=${JSON.stringify(concurrent)};const plan=await fetch(${JSON.stringify(`${apiBase}/courses/manifest/validate`)},{method:"POST",credentials:"include",headers:{"content-type":"application/json"},body:JSON.stringify(manifest)}).then(r=>r.json());return fetch(${JSON.stringify(`${apiBase}/courses/manifest/apply`)},{method:"POST",credentials:"include",headers:{"content-type":"application/json"},body:JSON.stringify({manifest,expectedDraftVersionId:plan.expectedDraftVersionId,expectedRevision:plan.expectedRevision})}).then(r=>r.status);})()`);
+    assert(conflictWrite===200,"Canonical concurrency fixture failed.");
+    await clickText(cdp,"Проверить документ");
+    await waitForExpression(cdp,'document.body.innerText.includes("На сервере уже другой черновик")',"visible revision conflict");
+    assert(await evaluate(cdp,'[...document.querySelectorAll("button")].find(b=>b.textContent==="Сохранить черновик").disabled'),"Stale working copy remains applicable.");
+    await clickText(cdp,"Отбросить изменения и загрузить сохранённое");
+    await waitForExpression(cdp,'document.body.innerText.includes("Загружен актуальный черновик")',"explicit canonical reload");
+    await clickText(cdp,"Предпросмотр");
+    await clickText(cdp,"Опубликовать версию 1");
+    await waitForExpression(cdp,'document.body.innerText.includes("Версия опубликована")',"fenced publication");
+    const release=await canonicalRead();assert(release.body.status==="published"&&release.body.manifest.course.title==="Другой автор","Published an unseen working copy.");
+    await clickText(cdp,"Создать следующий черновик");
+    await waitForExpression(cdp,'document.body.innerText.includes("Создан следующий черновик")',"explicit next draft");
+    const next=await canonicalRead();assert(next.body.versionNumber===2&&next.body.status==="draft"&&JSON.stringify(next.body.manifest)===JSON.stringify(release.body.manifest),"Next draft lost authored fields.");
+    assert(!(await evaluate(cdp,'document.documentElement.scrollWidth>innerWidth')),"Studio overflows mobile.");
+    await accessibilityAudit(cdp,"Studio next draft mobile");
+  } finally {rmSync(temp,{recursive:true,force:true});}
+  await evaluate(cdp,`fetch(${JSON.stringify(`${API_ORIGIN}/v1/auth/logout`)},{method:"POST",credentials:"include"}).then(r=>r.status)`);
+  console.log("[browser-launch] canonical Studio manual/JSON/conflict/export/preview/publication passed");
 }
 
 async function runBrowserVerification(cdp) {
@@ -920,6 +1024,8 @@ async function runBrowserVerification(cdp) {
   await waitForExpression(cdp, `location.pathname === ${JSON.stringify(learningReturn)} && document.body.innerText.includes("Все обязательные задания курса выполнены")`, "login return and retained learner UX");
   await evaluate(cdp, `fetch(${JSON.stringify(`${API_ORIGIN}/v1/auth/logout`)},{method:"POST",credentials:"include"}).then(r=>r.status)`);
   console.log("[browser-launch] free learner auth and explicit entry UX passed");
+
+  await verifyStudio(cdp);
 
   await navigate(cdp, `${WEB_ORIGIN}/catalog/acme/products/course`);
   await waitForExpression(

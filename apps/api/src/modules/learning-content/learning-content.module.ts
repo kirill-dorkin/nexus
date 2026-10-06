@@ -1,3 +1,7 @@
+import { StudioController } from "./studio.controller";
+import { StudioApplicationService } from "./application/studio.service";
+import { StudioRepository } from "./application/studio.repository";
+import { PostgresStudioRepository } from "./infrastructure/postgres-studio.repository";
 import { QuizValidationContentQuery } from "./application/quiz-validation-content.query";
 import { PostgresQuizValidationContentQuery } from "./infrastructure/postgres-quiz-validation-content.query";
 import { LearnerCourseContentQuery } from "./application/learner-course-content.query";
@@ -26,8 +30,10 @@ import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
 
 @Module({
   imports: [IdentityModule, AuthorizationModule, OutboxModule],
-  controllers: [LearningContentController, SkillsController, CourseManifestController],
+  controllers: [LearningContentController, SkillsController, CourseManifestController, StudioController],
   providers: [
+    StudioApplicationService,
+    { provide: StudioRepository, useClass: PostgresStudioRepository },
     { provide: QuizValidationContentQuery, useClass: PostgresQuizValidationContentQuery },
     { provide: LearnerCourseContentQuery, useClass: PostgresLearnerCourseContentQuery },
     { provide: PublicLearningContentQuery, useClass: PostgresPublicLearningContentQuery },

@@ -11,7 +11,7 @@
 | Public Catalog | stateless unauthenticated composition of safe Organization + Commerce + Delivery read contracts | canonical Product/Price/Offering state, onboarding, checkout, entitlements, enrollments |
 | Catalog/Curriculum | programs/courses/modules/lessons + versions | delivery state |
 | Knowledge | skills, concepts, misconceptions, relations | lesson rendering |
-| Content | authoring drafts, releases, assets, stable Lessons and CourseVersion Lesson/block snapshots, manifest import/export, immutable Skill presentation and protected Guided Build/quiz definitions | mastery, learner assistance exposure state, quiz execution/results |
+| Content | authoring drafts, releases, assets, stable Lessons and CourseVersion Lesson/block snapshots, manifest import/export, protected Studio discovery/read/publication, immutable Skill presentation and protected Guided Build/quiz definitions | mastery, learner assistance exposure state, quiz execution/results |
 | Delivery | offerings, runs, enrollments, groups, sessions, assignments | content authoring |
 | Activities | activity definitions/versions, attempts | mastery decisions |
 | Assessment | questions, assessments, rubrics, scoring definitions | delivery scheduling |
