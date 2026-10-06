@@ -28,7 +28,7 @@
     "enabled": false
   },
   "devDependencies": {
-    "@types/node": "^24.0.0",
+    "@types/node": "^26.6.4",
     "turbo": "^2.5.0",
     "typescript": "^5.9.0",
     "vitest": "4.1.11"
