@@ -38,8 +38,8 @@ Review scheduling, misconception model, explainable recommendations, interventio
 
 ## F9 — Commerce/public launch
 
-Products/prices/purchases/entitlements, safe public sellable catalog reads, explicit customer Organization entry, Paddle-backed one-time payment settlement, public checkout UX, marketing, production observability, load/accessibility/security verification.
+Products/prices/purchases/entitlements, safe public sellable catalog reads, explicit customer Organization entry, Paddle-backed one-time payment settlement, public checkout UX, marketing, production observability, and bounded accessibility/security/performance launch verification.
 
-The F9 sequence keeps the commercial lifecycles separate: provider-independent Product + immutable Price, canonical Purchase settlement, an unauthenticated fail-closed public catalog projection, explicit customer membership entry, then the active payment adapter is migrated to Paddle without changing canonical Commerce before public checkout UX is exposed.
+The F9 sequence keeps the commercial lifecycles separate: provider-independent Product + immutable Price, canonical Purchase settlement, an unauthenticated fail-closed public catalog projection, explicit customer membership entry, then the active payment adapter is migrated to Paddle without changing canonical Commerce before public checkout UX is exposed. Launch hardening remains layered rather than becoming a second business model: F9.9 defines redacted operational evidence and acceptance budgets, F9.10 proves the first-party browser/session/CORS/accessibility boundary, and F9.11 applies deterministic bounded performance guardrails to the canonical launch-path operations without claiming production capacity or permanent SLOs.
 
 Rule: каждый Foundation должен завершаться работающим вертикальным сценарием и измеримыми exit criteria, а не списком созданных таблиц.

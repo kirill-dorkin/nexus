@@ -10,6 +10,7 @@ export default defineConfig({
     ],
     exclude: [
       "**/*.integration.test.ts",
+      "**/*.launch-performance.test.ts",
       "**/node_modules/**",
       "**/dist/**",
       "**/.next/**"

@@ -110,12 +110,24 @@ The browser gate verifies:
 
 - keyboard traversal and visible focus for launch-critical first-party controls;
 - native label/fieldset/control naming and duplicate-id checks;
-- covered interactive names through Chrome's accessibility tree;
+- covered interactive names through Chrome's accessibility tree/DOM audit;
 - first-party live/error state rendering for payment-link and pending/paid/not-found reconciliation states.
 
 The detailed topology and assertions live in `docs/engineering/f9-browser-launch-verification.md`.
 
 This focused automation is not a complete WCAG certification or assistive-technology matrix. The repository also does not own Paddle's third-party overlay internals: CI stubs only the external Paddle script boundary and verifies the Nexus-owned loading/handoff/success-locator behavior. Provider overlay accessibility must not be reported as a Nexus browser-test result.
+
+## Performance verification boundary
+
+F9.11 applies the initial rollout p95 durations above as bounded repository-level acceptance guardrails for catalog list/detail, customer entry, checkout, signed Paddle webhook ingress, purchaser reconciliation, and a non-idle payment-worker cycle.
+
+The gate is deliberately deterministic: it measures the real Nest/Fastify application and PostgreSQL paths through Fastify injection plus the real payment-worker processor, with isolated fixtures and deterministic provider seams. F9.10 remains the separate owner of real-browser HTTPS/CORS/session behavior. The F9.11 result therefore detects repository-level latency regressions without pretending to measure Internet, CDN, regional, live-provider, or deployed-infrastructure latency.
+
+Each covered boundary uses a small warm-up followed by bounded sequential samples and records p50/p95/max plus unexpected-operation errors. The result is release evidence only: it is not persisted as canonical state, is not emitted to `events.outbox`, and contains no stable business/provider identifiers.
+
+A green F9.11 run is **not** a production throughput/capacity claim and does not turn the initial rollout thresholds into permanent SLOs. Sustained/concurrent/distributed load, production traffic simulation, external synthetic monitoring, live Paddle performance, and capacity planning remain separate future concerns.
+
+The detailed verification topology and claim limits live in `docs/engineering/f9-launch-performance-verification.md`.
 
 ## Incident diagnosis
 
