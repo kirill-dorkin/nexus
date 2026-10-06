@@ -85,6 +85,12 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
       )
     ).rows[0];
   }
+  async function assignCourseFixture(courseId: string) {
+    await migration.query(
+      "INSERT INTO access_control.role_assignments (organization_id,user_id,role_id,scope_type,scope_id,assigned_by_user_id) SELECT $1,$2,id,'course',$3,$4 FROM access_control.roles WHERE key='instructor' AND is_system=true",
+      [org, instructor, courseId, owner]
+    );
+  }
   beforeAll(async () => {
     process.env.WEB_APP_ORIGIN = origin;
     app = await createApiApplication();
@@ -205,17 +211,9 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
         actor
       );
     }
-    await request(
-      "POST",
-      `organizations/${org}/role-assignments`,
-      {
-        userId: instructor,
-        roleKey: "instructor",
-        scope: { type: "course", id: course }
-      },
-      owner,
-      204
-    );
+    // Course-scoped assignments are supported by persisted authorization policy;
+    // the existing HTTP role-management surface deliberately exposes only org scope.
+    await assignCourseFixture(course);
   });
   afterAll(async () => {
     if (app) await app.close();
@@ -644,17 +642,7 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
     } while (cursor);
     expect(new Set(courses).size).toBe(courses.length);
     expect(courses).toHaveLength(105);
-    await request(
-      "POST",
-      `organizations/${org}/role-assignments`,
-      {
-        userId: instructor,
-        roleKey: "instructor",
-        scope: { type: "course", id: ids[102]! }
-      },
-      owner,
-      204
-    );
+    await assignCourseFixture(ids[102]!);
     const scoped = studioCourseListSchema.parse(
       (
         await request(
