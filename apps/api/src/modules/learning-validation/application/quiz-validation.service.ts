@@ -59,6 +59,7 @@ export class QuizValidationApplicationService {
       !definition ||
       definition.recordingAuthority !== "deterministic_quiz" ||
       definition.version !== 1 ||
+      definition.evidenceTrust !== "trusted" ||
       definition.key !== activity.activityType ||
       Object.keys(binding.config).length !== 0
     )
@@ -72,7 +73,10 @@ export class QuizValidationApplicationService {
       throw new ConflictException(
         "Quiz definition does not match its binding."
       );
-    return validateQuizAnswerV1(protectedDefinition, answer);
+    return {
+      ...validateQuizAnswerV1(protectedDefinition, answer),
+      evidenceTrust: definition.evidenceTrust
+    };
   }
 
   async recordOwn(
@@ -121,7 +125,7 @@ export class QuizValidationApplicationService {
       status: "completed",
       outcome: computed.outcome,
       score: computed.score,
-      evidenceTrust: "trusted",
+      evidenceTrust: computed.evidenceTrust,
       payload: {},
       recordedByUserId: userId
     });
@@ -130,7 +134,7 @@ export class QuizValidationApplicationService {
       r.status !== "completed" ||
       r.outcome !== computed.outcome ||
       r.score !== computed.score ||
-      r.evidenceTrust !== "trusted" ||
+      r.evidenceTrust !== computed.evidenceTrust ||
       r.recordedByUserId !== userId ||
       Object.keys(r.validatorConfig).length ||
       Object.keys(r.payload).length

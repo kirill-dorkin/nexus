@@ -49,6 +49,7 @@ export function LessonBlocks({
             ) : null}
             <SafeMarkdown>{block.activity.question}</SafeMarkdown>
             <QuizForm
+              key={`${organizationSlug}/${offeringSlug}/${lesson.slug}/${block.activity.slug}`}
               activity={block.activity}
               organizationSlug={organizationSlug}
               offeringSlug={offeringSlug}

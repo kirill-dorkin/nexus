@@ -17,7 +17,6 @@ import {
   type PlatformPrincipalCarrier
 } from "./request-context/platform-principal";
 import { OutboxRepository } from "./outbox/outbox.repository";
-import { TrustedValidationEvidenceSink } from "./modules/learning-progress/application/trusted-validation-evidence.sink";
 import { ValidatorRegistry } from "./modules/learning-validation/domain/validator-registry";
 function env(name: string) {
   const v = process.env[name];
@@ -665,10 +664,15 @@ describe("deterministic learner quiz HTTP + PostgreSQL boundary", () => {
   });
   it("normalization failure preserves raw result and same-key replay repairs Evidence", async () => {
     const key = randomUUID(),
-      sink = app.get(TrustedValidationEvidenceSink);
+      outbox = app.get(OutboxRepository),
+      original = outbox.append.bind(outbox);
     const spy = vi
-      .spyOn(sink, "materializeTrustedValidationEvidence")
-      .mockRejectedValueOnce(Error("Controlled quiz Evidence failure"));
+      .spyOn(outbox, "append")
+      .mockImplementation(async (tx, event) => {
+        if (event.eventName === "evidence.recorded")
+          throw Error("Controlled quiz Evidence outbox failure");
+        return original(tx, event);
+      });
     try {
       await check(single(), key, "components-check", base, learner, 500);
     } finally {
