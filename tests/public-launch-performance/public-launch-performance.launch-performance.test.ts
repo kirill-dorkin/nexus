@@ -9,7 +9,7 @@ import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import {
   createDatabasePool,
   type DatabasePool
-} from "@platform/database";
+} from "../../packages/database/src/index";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { createApiApplication } from "../../apps/api/src/app.factory";
