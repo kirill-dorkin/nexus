@@ -36,6 +36,7 @@ describe("free learner entry HTTP + PostgreSQL boundary", () => {
   const origin = "https://learning.example.test",
     oldOrigin = process.env.WEB_APP_ORIGIN;
   const users: string[] = [],
+    organizations: string[] = [],
     fixtures: Fixture[] = [];
   let app: NestFastifyApplication,
     owner: string,
@@ -95,6 +96,7 @@ describe("free learner entry HTTP + PostgreSQL boundary", () => {
         201
       )
     ).json();
+    organizations.push(org.id);
     const manifest = courseManifestV1Schema.parse(
       JSON.parse(
         readFileSync("docs/examples/computer-basics.manifest.json", "utf8")
@@ -139,7 +141,7 @@ describe("free learner entry HTTP + PostgreSQL boundary", () => {
       await request(
         "POST",
         `organizations/${org.id}/courses/manifest/validate`,
-        { manifest },
+        manifest,
         owner
       )
     ).json();
@@ -327,7 +329,7 @@ describe("free learner entry HTTP + PostgreSQL boundary", () => {
   });
   afterAll(async () => {
     if (app) await app.close();
-    for (const f of fixtures) {
+    for (const org of organizations) {
       for (const table of [
         "events.outbox",
         "learning_history.learning_events",
@@ -349,11 +351,11 @@ describe("free learner entry HTTP + PostgreSQL boundary", () => {
         "learning_content.courses"
       ])
         await migration.query(`DELETE FROM ${table} WHERE organization_id=$1`, [
-          f.org
+          org
         ]);
       await migration.query(
         "DELETE FROM organizations.organizations WHERE id=$1",
-        [f.org]
+        [org]
       );
     }
     await migration.query(
@@ -618,6 +620,26 @@ describe("free learner entry HTTP + PostgreSQL boundary", () => {
       foreign
     );
     expect((await state()).json().progress.passedRequired).toBe(0);
+    const manual = await observation(
+      base,
+      base.manifest.activities[0]!.slug,
+      "passed",
+      "trusted",
+      false
+    );
+    await migration.query(
+      `INSERT INTO learning_progress.evidence(organization_id,attempt_id,submission_id,skill_id,kind,score,payload,recorded_by_user_id)
+       VALUES($1,$2,$3,$4,$5,1,'{"outcome":"passed"}'::jsonb,$6)`,
+      [
+        base.org,
+        manual.attempt,
+        manual.submission,
+        manual.a.skill_id,
+        manual.a.activity_type,
+        owner
+      ]
+    );
+    expect((await state()).json().progress.passedRequired).toBe(0);
     await observation(
       base,
       base.manifest.activities[0]!.slug,
@@ -719,7 +741,7 @@ describe("free learner entry HTTP + PostgreSQL boundary", () => {
     await request(
       "POST",
       `organizations/${base.org}/courses/${base.course}/versions`,
-      {},
+      { title: "New private draft" },
       owner,
       201
     );
