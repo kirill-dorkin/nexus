@@ -618,7 +618,7 @@ describe("bounded public launch performance verification", () => {
         const rawBody = paddleWebhookBody(`${ingressEventPrefix}${sampleIndex}`);
         const response = await app.inject({
           method: "POST",
-          url: "/integrations/payments/paddle/webhooks",
+          url: "/v1/integrations/payments/paddle/webhooks",
           headers: {
             "content-type": "application/json",
             "paddle-signature": paddleSignature(rawBody)
