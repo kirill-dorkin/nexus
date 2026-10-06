@@ -124,6 +124,15 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
 
   async exportVersion(tx: DatabaseTransaction, org: string, course: string, version: string): Promise<CourseManifestV1> {
     await this.requireCompatibleDraft(tx, org, version);
+    const ordering = await tx.client.query<{ invalid: boolean }>(
+      `SELECT EXISTS (SELECT 1 FROM (
+         SELECT position,row_number() OVER (ORDER BY position,skill_id)-1 AS expected FROM learning_content.course_version_skills WHERE organization_id=$1 AND course_version_id=$2
+         UNION ALL SELECT position,row_number() OVER (ORDER BY position,activity_id)-1 FROM learning_content.course_version_activities WHERE organization_id=$1 AND course_version_id=$2
+         UNION ALL SELECT position,row_number() OVER (ORDER BY position,lesson_id)-1 FROM learning_content.course_version_lessons WHERE organization_id=$1 AND course_version_id=$2
+         UNION ALL SELECT position,row_number() OVER (PARTITION BY lesson_id ORDER BY position)-1 FROM learning_content.course_version_lesson_blocks WHERE organization_id=$1 AND course_version_id=$2
+       ) ordered WHERE position<>expected) AS invalid`, [org, version]
+    );
+    if (ordering.rows[0]?.invalid) throw new ConflictException("Draft positions must be contiguous, starting at zero, with no duplicates.");
     const meta = (await tx.client.query<{ slug: string; title: string; description: string | null }>("SELECT c.slug,v.title,v.description FROM learning_content.courses c JOIN learning_content.course_versions v ON v.organization_id=c.organization_id AND v.course_id=c.id WHERE c.organization_id=$1 AND c.id=$2 AND v.id=$3", [org, course, version])).rows[0];
     if (!meta) throw new ConflictException("Course version is not exportable.");
     const skills = await tx.client.query<{ key: string; title: string; description: string | null }>("SELECT s.skill_key AS key,v.title,v.description FROM learning_content.course_version_skills v JOIN learning_content.skills s ON s.organization_id=v.organization_id AND s.id=v.skill_id WHERE v.organization_id=$1 AND v.course_version_id=$2 ORDER BY v.position,s.skill_key", [org, version]);

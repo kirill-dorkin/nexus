@@ -235,11 +235,11 @@ Do not remove these without an explicit cleanup slice/migration and proven calle
 
 ## Next recommended slice
 
-**Fresh frontier selection after F9 public-launch hardening.**
+**Public Learning after the post-Foundation course authoring slice.**
 
 F9.11 closes the explicit repository-level F9 launch-hardening sequence currently named by the roadmap: operational evidence/budgets, real-browser accessibility/session/CORS verification, and bounded deterministic performance acceptance verification now complement the canonical paid path.
 
-Do not automatically treat a deferred Commerce feature as the next slice. Before choosing new architecture work, fresh-audit the actual `main`, roadmap, open PRs/CI, production/deployment gaps, user-facing vertical completeness, and existing deferred items, then select the smallest coherent frontier with measurable exit criteria.
+The selected product frontier is the first free public learning launch in `docs/roadmap/mvp-launch.md`. The next coherent slice is B: explicit default-private LearningOffering visibility, narrow public owner-module query interfaces and safe published course/Lesson projections, followed by real homepage/course/Lesson Web surfaces. Draft/protected quiz configuration must fail closed, and visibility must never grant Membership or Enrollment.
 
 Candidate areas that remain intentionally **unselected** at this checkpoint include:
 
@@ -253,4 +253,4 @@ Candidate areas that remain intentionally **unselected** at this checkpoint incl
 - production capacity/load planning after deployment assumptions are known;
 - F7 production grader activation, which remains a separate deployment/security gate rather than an implicit continuation of F9.
 
-The next slice must be justified by a fresh architecture audit rather than by list order alone.
+Before starting that slice, reverify `main`, open PRs/CI and relevant ADRs/code after the current workflow gates pass. Deferred Commerce work and grader activation do not block the free learning path.

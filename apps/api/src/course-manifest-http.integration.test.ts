@@ -4,10 +4,11 @@ import path from "node:path";
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import { courseManifestV1Schema, type CourseManifestV1, type CourseManifestPlan } from "@platform/contracts";
 import { createDatabasePool, withTenantTransaction } from "@platform/database";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 
 import { createApiApplication } from "./app.factory";
 import { attachPlatformPrincipal, type PlatformPrincipalCarrier } from "./request-context/platform-principal";
+import { OutboxRepository } from "./outbox/outbox.repository";
 
 function env(name: string) {
   const value = process.env[name];
@@ -149,6 +150,7 @@ describe("course manifest HTTP + PostgreSQL authoring", () => {
         expect((await tx.client.query(`SELECT count(*)::int AS n FROM learning_content.${table} WHERE organization_id=$1`, [org])).rows[0].n).toBe(0);
       }
     });
+    await expect(withTenantTransaction(runtime, { organizationId: foreignOrg, userId: owner }, (tx) => tx.client.query("INSERT INTO learning_content.lessons (organization_id,course_id,slug,created_by_user_id) VALUES ($1,$2,$3,$4)", [org, course, "foreign-write", owner]))).rejects.toMatchObject({ code: "42501" });
   });
 
   it("replaces the draft, preserves stable identities, and rejects stale previews", async () => {
@@ -166,6 +168,23 @@ describe("course manifest HTTP + PostgreSQL authoring", () => {
     const skill = (await migration.query("SELECT id::text FROM learning_content.skills WHERE organization_id=$1", [org])).rows[0];
     await post(`organizations/${org}/courses/${course}/versions/${version}/activities`, { slug: "unsafe-quiz", activityType: "quiz.single_choice", title: "Unsafe", skillIds: [skill.id], config: { correctOptionId: "PRIVATE_ANSWER_SENTINEL" } }, owner, 400);
     expect(await exportDraft()).toEqual(manifest);
+  });
+
+  it("rolls back the full graph, new Skills and revision if the canonical outbox write fails", async () => {
+    const before = { counts: await counts(), ids: await identities(), plan: await plan(), manifest: await exportDraft() };
+    const changed = structuredClone(manifest);
+    changed.skills.push({ key: `rollback-${randomUUID()}`, title: "Rollback fixture", description: "" });
+    changed.lessons[0]!.title = "Must roll back";
+    const preview = await plan(changed);
+    const outbox = app.get(OutboxRepository);
+    const originalAppend = outbox.append.bind(outbox);
+    const failure = vi.spyOn(outbox, "append").mockImplementation((tx, event) => event.eventName === "course_version.manifest_imported" ? Promise.reject(new Error("Controlled final outbox failure")) : originalAppend(tx, event));
+    try {
+      await post(`organizations/${org}/courses/manifest/apply`, { manifest: changed, expectedDraftVersionId: preview.expectedDraftVersionId, expectedRevision: preview.expectedRevision }, owner, 500);
+    } finally {
+      failure.mockRestore();
+    }
+    expect({ counts: await counts(), ids: await identities(), plan: await plan(), manifest: await exportDraft() }).toEqual(before);
   });
 
   it("rejects invalid protected configuration before publication", async () => {
@@ -223,5 +242,24 @@ describe("course manifest HTTP + PostgreSQL authoring", () => {
     const before = await counts();
     await post(`organizations/${org}/courses/manifest/validate`, { ...manifest, course: { ...manifest.course, slug: legacy.course.slug } }, owner, 409);
     expect(await counts()).toEqual(before);
+  });
+
+  it("serializes concurrent import and publication without altering a published Lesson", async () => {
+    const candidate = structuredClone(manifest);
+    candidate.course.slug = `race-${randomUUID()}`;
+    candidate.lessons[0]!.title = "Before race";
+    const created = await apply(candidate);
+    const preview = await plan(candidate);
+    candidate.lessons[0]!.title = "After race";
+    const [imported, published] = await Promise.all([
+      app.inject({ method: "POST", url: `/v1/organizations/${org}/courses/manifest/apply`, headers: { "x-test-user-id": owner, origin }, payload: { manifest: candidate, expectedDraftVersionId: preview.expectedDraftVersionId, expectedRevision: preview.expectedRevision } }),
+      app.inject({ method: "POST", url: `/v1/organizations/${org}/courses/${created.courseId}/versions/${created.draftVersionId}/publish`, headers: { "x-test-user-id": owner }, payload: {} })
+    ]);
+    expect(published.statusCode, published.body).toBe(200);
+    expect([200, 409]).toContain(imported.statusCode);
+    const snapshot = (await migration.query("SELECT v.status,l.title FROM learning_content.course_versions v JOIN learning_content.course_version_lessons l ON l.organization_id=v.organization_id AND l.course_version_id=v.id WHERE v.id=$1", [created.draftVersionId])).rows[0];
+    expect(snapshot.status).toBe("published");
+    expect(snapshot.title).toBe(imported.statusCode === 200 ? "After race" : "Before race");
+    await expect(withTenantTransaction(runtime, { organizationId: org, userId: owner }, (tx) => tx.client.query("DELETE FROM learning_content.course_version_lessons WHERE course_version_id=$1", [created.draftVersionId]))).rejects.toMatchObject({ code: "55000" });
   });
 });
