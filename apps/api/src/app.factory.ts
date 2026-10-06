@@ -21,7 +21,8 @@ export async function createApiApplication(): Promise<NestFastifyApplication> {
   if (webOrigin !== null) {
     app.enableCors({
       origin: webOrigin,
-      credentials: true
+      credentials: true,
+      methods: ["GET", "HEAD", "POST", "PUT", "PATCH"]
     });
   }
 

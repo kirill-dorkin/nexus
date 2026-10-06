@@ -170,6 +170,7 @@ jobs:
           docker build --file infra/production/Dockerfile --build-arg PUBLIC_ORIGIN=https://deployment.example.test --tag platform-launch:ci .
           PLATFORM_IMAGE=platform-launch:ci PUBLIC_HOST=deployment.example.test docker compose --file infra/production/compose.yml config --quiet
           docker run --rm --entrypoint node platform-launch:ci --check infra/production/entrypoint.mjs
+          docker run --rm --env PUBLIC_HOST=deployment.example.test --mount "type=bind,source=$PWD/infra/production/Caddyfile,target=/etc/caddy/Caddyfile,readonly" caddy:2 validate --config /etc/caddy/Caddyfile
 
       - name: Public launch browser verification
         id: browser-launch
