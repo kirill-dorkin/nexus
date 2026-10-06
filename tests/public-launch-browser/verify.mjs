@@ -139,6 +139,63 @@ async function listen(server, port) {
   servers.push(server);
 }
 
+let learningCatalogEmpty = false;
+const learningCourse = {
+  organization: { slug: "acme", name: "Acme Academy" },
+  offering: { slug: "computer-basics", name: "Computer basics" },
+  course: {
+    title: "Основы компьютера",
+    description: "Видео, конспекты и практика",
+    lessons: [
+      {
+        slug: "introduction",
+        title: "Как устроен компьютер",
+        summary: "Основные компоненты",
+        durationMinutes: 10
+      },
+      {
+        slug: "next-lesson",
+        title: "Следующий урок",
+        summary: "Продолжаем",
+        durationMinutes: 5
+      }
+    ]
+  }
+};
+const learningLesson = {
+  ...learningCourse,
+  lesson: {
+    ...learningCourse.course.lessons[0],
+    blocks: [
+      { type: "youtube", videoId: "aqz-KE-bpKQ" },
+      {
+        type: "markdown",
+        markdown:
+          "## Конспект\n\n**Процессор** выполняет инструкции. [Справка](https://example.test)\n\n[Unsafe](javascript:alert%281%29)\n\n<script>window.__lessonXss=true</script>\n\n<img src=x onerror=alert(1)>\n\n```js\nconst longLine = '" +
+          "long".repeat(100) +
+          "';\n```"
+      },
+      {
+        type: "activity",
+        title: null,
+        kind: "practice",
+        required: true,
+        activity: {
+          slug: "components-check",
+          type: "quiz.single_choice",
+          title: "Закрепите тему",
+          instructions: "Выберите ответ",
+          question: "Что выполняет инструкции?",
+          options: [
+            { id: "cpu", text: "Процессор" },
+            { id: "ram", text: "Память" }
+          ]
+        }
+      }
+    ]
+  }
+};
+
 async function startFakeApi() {
   const catalog = {
     organization: {
@@ -184,6 +241,50 @@ async function startFakeApi() {
         request.url ?? "/",
         `http://127.0.0.1:${FAKE_API_PORT}`
       );
+
+      if (request.method === "GET" && url.pathname === "/v1/public/learning") {
+        sendJson(
+          response,
+          200,
+          { courses: learningCatalogEmpty ? [] : [learningCourse] },
+          origin
+        );
+        return;
+      }
+      if (
+        request.method === "GET" &&
+        url.pathname === "/v1/public/learning/acme/computer-basics"
+      ) {
+        sendJson(response, 200, learningCourse, origin);
+        return;
+      }
+      if (
+        request.method === "GET" &&
+        url.pathname ===
+          "/v1/public/learning/acme/computer-basics/lessons/introduction"
+      ) {
+        sendJson(response, 200, learningLesson, origin);
+        return;
+      }
+      if (
+        request.method === "GET" &&
+        url.pathname ===
+          "/v1/public/learning/acme/computer-basics/lessons/next-lesson"
+      ) {
+        sendJson(
+          response,
+          200,
+          {
+            ...learningCourse,
+            lesson: {
+              ...learningCourse.course.lessons[1],
+              blocks: [{ type: "markdown", markdown: "Второй урок" }]
+            }
+          },
+          origin
+        );
+        return;
+      }
 
       if (
         request.method === "GET" &&
@@ -557,23 +658,148 @@ async function runBrowserVerification(cdp) {
         {
           urlPattern: "https://cdn.paddle.com/*",
           requestStage: "Request"
-        }
+        }, { urlPattern: "https://www.youtube-nocookie.com/*", requestStage: "Request" }
       ]
     })
   ]);
 
   cdp.on("Fetch.requestPaused", (params) => {
-    const script =
+    const isVideo = params.request.url.startsWith("https://www.youtube-nocookie.com/");
+    const script = isVideo ? "<!doctype html><html><body>Video provider stub</body></html>" :
       "window.Paddle={Environment:{set:function(){}},Initialize:function(){},Checkout:{open:function(options){window.__paddleOpenedSuccessUrl=options.settings.successUrl;}}};";
     void cdp.send("Fetch.fulfillRequest", {
       requestId: params.requestId,
       responseCode: 200,
       responseHeaders: [
-        { name: "content-type", value: "application/javascript; charset=utf-8" }
+        { name: "content-type", value: isVideo ? "text/html; charset=utf-8" : "application/javascript; charset=utf-8" }
       ],
       body: Buffer.from(script).toString("base64")
     });
   });
+
+  console.log("[browser-launch] public learning pages and mobile rendering");
+  await cdp.send("Emulation.setDeviceMetricsOverride", {
+    width: 390,
+    height: 844,
+    deviceScaleFactor: 1,
+    mobile: true
+  });
+  await navigate(cdp, WEB_ORIGIN);
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Бесплатные курсы") && document.body.innerText.includes("Основы компьютера")',
+    "learning homepage"
+  );
+  await accessibilityAudit(cdp, "learning homepage");
+  await navigate(cdp, `${WEB_ORIGIN}/courses`);
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Основы компьютера")',
+    "learning catalog"
+  );
+  await accessibilityAudit(cdp, "learning catalog");
+  await navigate(cdp, `${WEB_ORIGIN}/learn/acme/computer-basics`);
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Программа курса")',
+    "public course"
+  );
+  await accessibilityAudit(cdp, "public course");
+  await tabUntil(
+    cdp,
+    'document.activeElement?.textContent === "Начать обучение"',
+    "learning start link"
+  );
+  const courseFocus = await evaluate(
+    cdp,
+    '({ visible: document.activeElement.matches(":focus-visible"), outline: parseFloat(getComputedStyle(document.activeElement).outlineWidth) })'
+  );
+  assert(
+    courseFocus.visible && courseFocus.outline >= 2,
+    "Course start lacks visible keyboard focus."
+  );
+  await cdp.send("Input.dispatchKeyEvent", {
+    type: "keyDown",
+    key: "Enter",
+    code: "Enter",
+    windowsVirtualKeyCode: 13
+  });
+  await cdp.send("Input.dispatchKeyEvent", {
+    type: "keyUp",
+    key: "Enter",
+    code: "Enter",
+    windowsVirtualKeyCode: 13
+  });
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Конспект") && document.body.innerText.includes("Закрепите тему")',
+    "lesson start navigation"
+  );
+  await accessibilityAudit(cdp, "public lesson");
+  const lessonSafety = await evaluate(
+    cdp,
+    `({ xss: window.__lessonXss === true, unsafe: !!document.querySelector('main img,main script,main a[href^="javascript:"],main [onerror]'),
+    video: document.querySelector('iframe')?.getAttribute('src'), overflow: document.documentElement.scrollWidth > innerWidth,
+    code: !!document.querySelector('main pre code'), headings: document.querySelectorAll('main h1').length })`
+  );
+  assert(
+    !lessonSafety.xss && !lessonSafety.unsafe,
+    "Lesson Markdown created executable or tracking markup."
+  );
+  assert(
+    lessonSafety.video === "https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ",
+    "Lesson changed the canonical embed host/ID."
+  );
+  assert(
+    !lessonSafety.overflow && lessonSafety.code && lessonSafety.headings === 1,
+    `Lesson is not contained/readable on mobile: ${JSON.stringify(lessonSafety)}`
+  );
+  await evaluate(
+    cdp,
+    `[...document.querySelectorAll('a')].find(a=>a.textContent === 'Следующий урок →').click()`
+  );
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Второй урок")',
+    "next lesson navigation"
+  );
+  await evaluate(
+    cdp,
+    `[...document.querySelectorAll('a')].find(a=>a.textContent === '← Как устроен компьютер').click()`
+  );
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Конспект")',
+    "previous lesson navigation"
+  );
+  await cdp.send("Emulation.setDeviceMetricsOverride", {
+    width: 1280,
+    height: 900,
+    deviceScaleFactor: 1,
+    mobile: false
+  });
+  assert(
+    !(await evaluate(cdp, "document.documentElement.scrollWidth > innerWidth")),
+    "Lesson overflows desktop viewport."
+  );
+  await navigate(
+    cdp,
+    `${WEB_ORIGIN}/learn/acme/computer-basics/missing-lesson`
+  );
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Курс или урок недоступен")',
+    "safe missing lesson"
+  );
+  learningCatalogEmpty = true;
+  await navigate(cdp, `${WEB_ORIGIN}/courses`);
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Курсы готовятся к открытию")',
+    "empty learning catalog"
+  );
+  learningCatalogEmpty = false;
+  console.log("[browser-launch] public learning pages passed");
 
   await navigate(cdp, `${WEB_ORIGIN}/catalog/acme/products/course`);
   await waitForExpression(

@@ -11,6 +11,13 @@ export const learningOfferingAccessModeSchema = z.enum([
   "membership",
   "entitlement_required"
 ]);
+export const learningOfferingVisibilitySchema = z.enum(["private", "public"]);
+export const updateLearningOfferingVisibilityRequestSchema = z
+  .object({
+    visibility: learningOfferingVisibilitySchema
+  })
+  .strict();
+
 export const learningOfferingStatusSchema = z.enum([
   "open",
   "closed",
@@ -52,6 +59,7 @@ export const learningOfferingSchema = z.object({
   deliveryMode: learningOfferingDeliveryModeSchema,
   accessMode: learningOfferingAccessModeSchema,
   status: learningOfferingStatusSchema,
+  visibility: learningOfferingVisibilitySchema,
   startsAt: optionalDateTimeSchema,
   endsAt: optionalDateTimeSchema
 });
@@ -315,3 +323,7 @@ export type LearnerAssignmentTiming = z.infer<typeof learnerAssignmentTimingSche
 export type LearnerRunnerAssignment = z.infer<typeof learnerRunnerAssignmentSchema>;
 export type LearnerRunnerReadModel = z.infer<typeof learnerRunnerReadModelSchema>;
 export type CreateAssignmentRequest = z.infer<typeof createAssignmentRequestSchema>;
+
+export type UpdateLearningOfferingVisibilityRequest = z.infer<
+  typeof updateLearningOfferingVisibilityRequestSchema
+>;

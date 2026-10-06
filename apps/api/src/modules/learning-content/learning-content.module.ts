@@ -1,3 +1,5 @@
+import { PublicLearningContentQuery } from "./application/public-learning-content.query";
+import { PostgresPublicLearningContentQuery } from "./infrastructure/postgres-public-learning-content.query";
 import { Module } from "@nestjs/common";
 import { OutboxModule } from "../../outbox/outbox.module";
 import { AuthorizationModule } from "../authorization/authorization.module";
@@ -22,6 +24,7 @@ import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
   imports: [IdentityModule, AuthorizationModule, OutboxModule],
   controllers: [LearningContentController, SkillsController, CourseManifestController],
   providers: [
+    { provide: PublicLearningContentQuery, useClass: PostgresPublicLearningContentQuery },
     LearningContentApplicationService,
     CourseManifestApplicationService,
     BrowserWriteOriginGuard,
@@ -32,6 +35,6 @@ import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
     { provide: LearningContentRepository, useClass: PostgresLearningContentRepository },
     { provide: LearningGraphRepository, useClass: PostgresLearningGraphRepository }
   ],
-  exports: [LearningContentApplicationService, LearningGraphApplicationService, LearningContentQuery, GuidedBuildContentQuery]
+  exports: [PublicLearningContentQuery, LearningContentApplicationService, LearningGraphApplicationService, LearningContentQuery, GuidedBuildContentQuery]
 })
 export class LearningContentModule {}
