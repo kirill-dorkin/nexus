@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "course": { "slug": "computer-basics-example", "title": "Пример структуры курса", "description": "Тестовый пример, замените своим материалом." },
+  "skills": [{ "key": "computer-components", "title": "Компоненты компьютера", "description": "Пример навыка" }],
+  "activities": [{
+    "slug": "components-check", "type": "quiz.single_choice", "title": "Пример практики", "instructions": "Выберите ответ",
+    "skillKeys": ["computer-components"],
+    "presentation": { "question": "Что выполняет инструкции программы?", "options": [{ "id": "cpu", "text": "Процессор" }, { "id": "ram", "text": "Оперативная память" }] },
+    "validation": { "correctOptionId": "cpu", "explanation": "Процессор выполняет инструкции программы." }
+  }],
+  "lessons": [{
+    "slug": "computer-introduction", "title": "Пример урока", "summary": "Пример блока видео, текста и задания", "durationMinutes": 10,
+    "blocks": [
+      { "type": "youtube", "videoId": "aqz-KE-bpKQ" },
+      { "type": "markdown", "markdown": "## Пример конспекта\n\nЗамените видео и текст собственным материалом." },
+      { "type": "activity", "activitySlug": "components-check", "kind": "practice", "required": true }
+    ]
+  }]
+}

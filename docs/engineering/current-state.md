@@ -15,7 +15,7 @@ Use this file as the active continuation checkpoint and the archives only when o
 
 ## Checkpoint baseline
 
-Last maintained: 2026-10-05.
+Last maintained: 2026-10-06.
 
 F0-F8 foundations are established through modular-monolith boundaries, identity/tenancy/authorization, immutable curriculum, Delivery, Attempt/Submission/Validation/Evidence/Mastery, Guided Build, GitHub Projects, repository-side grader hardening, Recommendations/Readiness, and readiness-gated Enrollment completion.
 
@@ -23,13 +23,21 @@ F9 now establishes the first complete public paid path, its production operation
 
 Production learner-code execution remains disabled. F7 repository runner/profile/sandbox artifacts do not activate production execution; a separate deployment change still requires the exact production image digest and a green real-cluster verification record.
 
-Latest architectural decision at this checkpoint: ADR-0052. F9.10 and F9.11 add verification infrastructure and no new domain/security authority decision.
+Latest architectural decision at this checkpoint: ADR-0053 (post-Foundation Lesson/manifest/protected quiz authoring). F9.10 and F9.11 add verification infrastructure and no new domain/security authority decision.
 
-Latest ordered migration at this checkpoint: `000039_purchaser_purchase_reconciliation.sql`.
+Latest ordered migration at this checkpoint: `000040_course_manifest_lessons.sql`.
 
 The baseline above is an orientation marker, not permission to skip checking the live `main` head.
 
 ## Foundation frontier
+
+### Post-Foundation MVP — course authoring foundation
+
+ADR-0053 adds Content-owned stable Lessons and ordered YouTube/Markdown/Activity blocks within the existing immutable CourseVersion. Strict manifest v1 is a transport format reconstructed from canonical state, with read-only preview, revision-fenced atomic draft import, protected authoring export, and publication validation. Stable Skills/Activities/Lessons survive new versions; ordinary draft creation clones the full authored graph.
+
+Quiz answer keys and private explanations are separate immutable Content snapshots, never learner-visible Activity.config. Generic Activity creation cannot bypass protected authoring through quiz.*. Import/export use existing capability/session/Origin/RLS boundaries; new draft DELETE grants remain protected by publication-locking immutability triggers, and migration-role operational purge remains possible. Unrepresentable legacy draft features are rejected rather than discarded. Existing legacy version publication remains compatible.
+
+This is authoring infrastructure, not a launched learning product. Quiz execution/registry implementations, public visibility/pages, learner-owned free enrollment, derived course progress, Studio, end-to-end learner browser verification and production deployment are still required. The maintained launch sequence is `docs/roadmap/mvp-launch.md`; the next coherent slice is explicit default-private Public Learning and safe published learner projections. Production grader activation remains independent.
 
 ### F0-F3 — architecture, tenancy, immutable curriculum, Delivery: established
 
@@ -227,11 +235,11 @@ Do not remove these without an explicit cleanup slice/migration and proven calle
 
 ## Next recommended slice
 
-**Fresh frontier selection after F9 public-launch hardening.**
+**Public Learning after the post-Foundation course authoring slice.**
 
 F9.11 closes the explicit repository-level F9 launch-hardening sequence currently named by the roadmap: operational evidence/budgets, real-browser accessibility/session/CORS verification, and bounded deterministic performance acceptance verification now complement the canonical paid path.
 
-Do not automatically treat a deferred Commerce feature as the next slice. Before choosing new architecture work, fresh-audit the actual `main`, roadmap, open PRs/CI, production/deployment gaps, user-facing vertical completeness, and existing deferred items, then select the smallest coherent frontier with measurable exit criteria.
+The selected product frontier is the first free public learning launch in `docs/roadmap/mvp-launch.md`. The next coherent slice is B: explicit default-private LearningOffering visibility, narrow public owner-module query interfaces and safe published course/Lesson projections, followed by real homepage/course/Lesson Web surfaces. Draft/protected quiz configuration must fail closed, and visibility must never grant Membership or Enrollment.
 
 Candidate areas that remain intentionally **unselected** at this checkpoint include:
 
@@ -245,4 +253,4 @@ Candidate areas that remain intentionally **unselected** at this checkpoint incl
 - production capacity/load planning after deployment assumptions are known;
 - F7 production grader activation, which remains a separate deployment/security gate rather than an implicit continuation of F9.
 
-The next slice must be justified by a fresh architecture audit rather than by list order alone.
+Before starting that slice, reverify `main`, open PRs/CI and relevant ADRs/code after the current workflow gates pass. Deferred Commerce work and grader activation do not block the free learning path.

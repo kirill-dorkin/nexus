@@ -12,12 +12,20 @@ import { PostgresLearningContentRepository } from "./infrastructure/postgres-lea
 import { PostgresLearningGraphRepository } from "./infrastructure/postgres-learning-graph.repository";
 import { LearningContentController } from "./learning-content.controller";
 import { SkillsController } from "./skills.controller";
+import { CourseManifestRepository } from "./application/course-manifest.repository";
+import { CourseManifestApplicationService } from "./application/course-manifest.service";
+import { PostgresCourseManifestRepository } from "./infrastructure/postgres-course-manifest.repository";
+import { CourseManifestController } from "./course-manifest.controller";
+import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
 
 @Module({
   imports: [IdentityModule, AuthorizationModule, OutboxModule],
-  controllers: [LearningContentController, SkillsController],
+  controllers: [LearningContentController, SkillsController, CourseManifestController],
   providers: [
     LearningContentApplicationService,
+    CourseManifestApplicationService,
+    BrowserWriteOriginGuard,
+    { provide: CourseManifestRepository, useClass: PostgresCourseManifestRepository },
     LearningGraphApplicationService,
     { provide: LearningContentQuery, useExisting: LearningGraphApplicationService },
     { provide: GuidedBuildContentQuery, useExisting: LearningGraphApplicationService },

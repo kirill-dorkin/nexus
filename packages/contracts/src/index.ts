@@ -22,6 +22,7 @@ export * from "./public-catalog";
 export * from "./github-integration";
 export * from "./guided-build";
 export * from "./learning-content";
+export * from "./course-manifest";
 export * from "./learning-delivery";
 export * from "./learning-graph";
 export * from "./learning-history";

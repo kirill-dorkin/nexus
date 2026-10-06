@@ -19,6 +19,7 @@ import { AuthorizationApplicationService } from "../../authorization/application
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { LearningContentRepository } from "./learning-content.repository";
 import { LearningGraphRepository } from "./learning-graph.repository";
+import { CourseManifestRepository } from "./course-manifest.repository";
 
 function isUniqueViolation(error: unknown): boolean {
   return (
@@ -54,7 +55,8 @@ export class LearningContentApplicationService {
     private readonly graph: LearningGraphRepository,
     private readonly identity: IdentityApplicationService,
     private readonly authorization: AuthorizationApplicationService,
-    private readonly outbox: OutboxRepository
+    private readonly outbox: OutboxRepository,
+    private readonly manifests: CourseManifestRepository
   ) {}
 
   async createCourse(
@@ -192,6 +194,7 @@ export class LearningContentApplicationService {
           courseId,
           version.id
         );
+        await this.manifests.cloneLatestPublished(transaction, organizationId, courseId, version.id);
 
         await this.outbox.append(transaction, {
           organizationId,
@@ -237,6 +240,7 @@ export class LearningContentApplicationService {
         courseScope(organizationId, courseId)
       );
 
+      await this.manifests.lockVersion(transaction, organizationId, versionId);
       const existing = await this.content.findVersion(
         transaction,
         organizationId,
@@ -247,6 +251,10 @@ export class LearningContentApplicationService {
       }
       if (existing.status !== "draft") {
         throw new ConflictException("Only a draft course version can be published.");
+      }
+      // Legacy versions remain compatible; manifest-managed versions must be complete.
+      if (await this.manifests.isManifestVersion(transaction, organizationId, versionId)) {
+        await this.manifests.exportVersion(transaction, organizationId, courseId, versionId);
       }
 
       const published = await this.content.publishDraftVersion(
