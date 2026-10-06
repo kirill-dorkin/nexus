@@ -215,6 +215,9 @@ export class LearningGraphApplicationService extends GuidedBuildContentQuery {
   }
 
   async createActivity(organizationId: string, courseId: string, versionId: string, command: CreateCourseVersionActivityRequest): Promise<CourseVersionActivity> {
+    if (command.activityType.startsWith("quiz.")) {
+      throw new BadRequestException("Quiz activities must use manifest authoring so answer keys never enter learner-visible config.");
+    }
     const context = this.requestContext.tenantContext(organizationId);
     const activityId = await this.database.nextUuid();
     const activityVersionId = await this.database.nextUuid();

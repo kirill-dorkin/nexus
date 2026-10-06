@@ -8,7 +8,9 @@
 | `ProgramVersion` | Опубликованная immutable версия программы, пинящая точные версии курсов. |
 | `Course` | Стабильная identity курса. |
 | `CourseVersion` | Конкретная immutable редакция курса. Не знает о группах/расписании/преподавателе. |
-| `LessonVersion` | Конкретное содержимое урока, собранное из typed blocks. |
+| `Lesson` | Стабильная Content-owned identity урока внутри Course, адресуемая по slug. |
+| `LessonVersion` | Содержимое и ordered typed blocks урока в конкретной CourseVersion; публикуется и становится immutable вместе с ней. |
+| `CourseManifestV1` | Строгий версионированный транспортный формат JSON для canonical draft import/export; не отдельный источник Content state. |
 | `Skill` | Наблюдаемая способность ученика с stable ID. |
 | `Concept` | Термин/идея предметной области; отвечает «что это?». |
 | `Misconception` | Типичная устойчивая неправильная mental model. |
