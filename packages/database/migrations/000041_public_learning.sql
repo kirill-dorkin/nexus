@@ -2,6 +2,8 @@
 ALTER TABLE learning_delivery.learning_offerings
   ADD COLUMN visibility text NOT NULL DEFAULT 'private'
     CHECK (visibility IN ('private','public'));
+-- 000012 restricts UPDATE by column; do not restore broad table mutation rights.
+GRANT UPDATE (visibility) ON learning_delivery.learning_offerings TO platform_app;
 CREATE INDEX learning_offerings_public_learning_idx
   ON learning_delivery.learning_offerings (organization_id, slug)
   WHERE visibility='public' AND status='open'

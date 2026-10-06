@@ -400,8 +400,7 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
     ["visibility", "private"],
     ["status", "closed"],
     ["status", "archived"],
-    ["access_mode", "entitlement_required"],
-    ["delivery_mode", "cohort"]
+    ["access_mode", "entitlement_required"]
   ])("fails closed immediately for %s=%s", async (column, value) => {
     const f = fixtures[0]!;
     const before = (
@@ -438,6 +437,39 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
       );
     }
   });
+  it("a separately created cohort Offering cannot expose public course or lesson material", async () => {
+    const f = fixtures[0]!;
+    const slug = "cohort-computer-basics";
+    const offering = await post(
+      `organizations/${f.org}/offerings`,
+      {
+        courseVersionId: f.version,
+        slug,
+        name: "Cohort learning",
+        deliveryMode: "cohort",
+        accessMode: "membership"
+      },
+      owner,
+      201
+    );
+    await visibility({ ...f, offering: offering.id });
+    for (const suffix of ["", `/lessons/${lessonSlug}`]) {
+      const r = await app.inject({
+        method: "GET",
+        url: `/v1/public/learning/${f.orgSlug}/${slug}${suffix}`
+      });
+      expect(r.statusCode, r.body).toBe(404);
+    }
+    const catalog = publicLearningCatalogSchema.parse(
+      (await app.inject({ method: "GET", url: "/v1/public/learning" })).json()
+    );
+    expect(
+      catalog.courses.some(
+        (c) => c.organization.slug === f.orgSlug && c.offering.slug === slug
+      )
+    ).toBe(false);
+  });
+
   it("inactive Organization and archived Course cannot expose published content", async () => {
     const f = fixtures[0]!;
     try {
@@ -518,6 +550,14 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
       "SELECT has_function_privilege(current_user,'learning_delivery.resolve_public_learning_version(text,text)','EXECUTE') AS delivery,has_function_privilege(current_user,'organizations.find_active_public_organization_slug(uuid)','EXECUTE') AS org"
     );
     expect(privileges.rows[0]).toEqual({ delivery: false, org: false });
+    const updates = await runtime.query(
+      "SELECT has_table_privilege(current_user,'learning_delivery.learning_offerings','UPDATE') AS broad,has_column_privilege(current_user,'learning_delivery.learning_offerings','visibility','UPDATE') AS visibility,has_column_privilege(current_user,'learning_delivery.learning_offerings','delivery_mode','UPDATE') AS identity"
+    );
+    expect(updates.rows[0]).toEqual({
+      broad: false,
+      visibility: true,
+      identity: false
+    });
     const readonly = await app.inject({
       method: "GET",
       url: `/v1/public/learning/${fixtures[0]!.orgSlug}/${offeringSlug}?courseVersionId=${randomUUID()}`
