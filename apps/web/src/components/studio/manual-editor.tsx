@@ -528,6 +528,24 @@ function ActivityEditor({
               );
               next.title = old.title;
               next.instructions = old.instructions;
+              if (
+                old.type !== "quiz.short_text" &&
+                next.type !== "quiz.short_text"
+              ) {
+                next.presentation = structuredClone(old.presentation);
+                if (next.type === "quiz.single_choice")
+                  next.validation.correctOptionId =
+                    old.type === "quiz.single_choice"
+                      ? old.validation.correctOptionId
+                      : (old.validation.correctOptionIds[0] ??
+                        old.presentation.options[0]?.id ??
+                        "");
+                else
+                  next.validation.correctOptionIds =
+                    old.type === "quiz.multiple_choice"
+                      ? [...old.validation.correctOptionIds]
+                      : [old.validation.correctOptionId];
+              }
               next.presentation.question = old.presentation.question;
               next.validation.explanation = old.validation.explanation;
               d.activities[i] = next;

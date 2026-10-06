@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Header, HttpCode, HttpStatus, Param, Post, UseGuards } from "@nestjs/common";
 import { applyCourseManifestRequestSchema, courseManifestV1Schema, uuidSchema } from "@platform/contracts";
 
 import { parseRequest } from "../../http/validation";
@@ -24,6 +24,7 @@ export class CourseManifestController {
   }
 
   @Get(":courseId/versions/:versionId/manifest")
+  @Header("Cache-Control", "no-store")
   exportDraft(@Param("organizationId") organizationId: string, @Param("courseId") courseId: string, @Param("versionId") versionId: string) {
     return this.manifests.exportDraft(parseRequest(uuidSchema, organizationId), parseRequest(uuidSchema, courseId), parseRequest(uuidSchema, versionId));
   }
