@@ -894,7 +894,7 @@ async function runBrowserVerification(cdp) {
   await evaluate(cdp, 'document.querySelector(\'input[value="ram"]\').click()');
   await clickText(cdp, "Проверить и сохранить ответ");
   await waitForExpression(cdp, 'document.body.innerText.includes("Повторить отправку ответа")', "ambiguous quiz retry");
-  assert(await evaluate(cdp, 'document.querySelector(\'input[value="ram"]\').disabled'), "Pending answer can change during ambiguous retry.");
+  assert(await evaluate(cdp, 'document.querySelector(\'input[value="ram"]\').matches(":disabled")'), "Pending answer can change during ambiguous retry.");
   await clickText(cdp, "Повторить отправку ответа");
   await waitForExpression(cdp, 'document.body.innerText.includes("Ответ пока неверный")', "failed quiz feedback");
   assert(quizFixtureRequests[0] === quizFixtureRequests[1], "Ambiguous retry created a different try.");
