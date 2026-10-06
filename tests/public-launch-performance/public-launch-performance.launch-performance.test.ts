@@ -132,8 +132,8 @@ describe("bounded public launch performance verification", () => {
 
   const organizationSlug = `launch-performance-${randomUUID()}`;
   const productSlug = `launch-product-${randomUUID()}`;
-  const ingressEventPrefix = `evt_perf_ingress_${randomUUID().replaceAll("-", "")}_`;
-  const workerEventPrefix = `evt_perf_worker_${randomUUID().replaceAll("-", "")}_`;
+  const ingressEventPrefix = `evt_${randomUUID().replaceAll("-", "").slice(0, 24)}`;
+  const workerEventPrefix = `evt_${randomUUID().replaceAll("-", "").slice(0, 24)}`;
   const createdUserIds: string[] = [];
   const customerEntryUserIds: string[] = [];
 
@@ -233,7 +233,7 @@ describe("bounded public launch performance verification", () => {
     externalCheckoutId: string,
     sampleIndex: number
   ): Promise<void> {
-    const eventId = `${workerEventPrefix}${sampleIndex}`;
+    const eventId = `${workerEventPrefix}${sampleIndex.toString(36).padStart(2, "0")}`;
     const payloadHash = createHash("sha256")
       .update(`${eventId}:${externalCheckoutId}:12900`)
       .digest("hex");
@@ -415,14 +415,14 @@ describe("bounded public launch performance verification", () => {
     }
 
     paddleIngressPurchaseId = await createPurchase(buyerUserId);
-    paddleIngressCheckoutId = `txn_perf_ingress_${randomUUID().replaceAll("-", "")}`;
+    paddleIngressCheckoutId = `txn_${randomUUID().replaceAll("-", "").slice(0, 26)}`;
     await createPaddleCheckout(paddleIngressPurchaseId, paddleIngressCheckoutId);
 
     for (let index = 0; index < WARMUP_SAMPLES + MEASURED_SAMPLES; index += 1) {
       const workerUserId = await createUser(`launch-worker-${index}`);
       await createMembership(workerUserId);
       const purchaseId = await createPurchase(workerUserId);
-      const checkoutId = `txn_perf_worker_${randomUUID().replaceAll("-", "")}`;
+      const checkoutId = `txn_${randomUUID().replaceAll("-", "").slice(0, 26)}`;
       await createPaddleCheckout(purchaseId, checkoutId);
       await createWorkerInbox(purchaseId, checkoutId, index);
     }
@@ -615,7 +615,9 @@ describe("bounded public launch performance verification", () => {
 
     evidence.push(
       await measureBoundary("paddle_webhook", async (sampleIndex) => {
-        const rawBody = paddleWebhookBody(`${ingressEventPrefix}${sampleIndex}`);
+        const rawBody = paddleWebhookBody(
+          `${ingressEventPrefix}${sampleIndex.toString(36).padStart(2, "0")}`
+        );
         const response = await app.inject({
           method: "POST",
           url: "/v1/integrations/payments/paddle/webhooks",
