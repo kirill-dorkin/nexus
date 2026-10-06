@@ -752,7 +752,7 @@ async function runBrowserVerification(cdp) {
   );
   assert(
     !lessonSafety.overflow && lessonSafety.code && lessonSafety.headings === 1,
-    "Lesson is not contained/readable on mobile."
+    `Lesson is not contained/readable on mobile: ${JSON.stringify(lessonSafety)}`
   );
   await evaluate(
     cdp,
