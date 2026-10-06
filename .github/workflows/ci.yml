@@ -165,6 +165,12 @@ jobs:
           NEXT_PUBLIC_PADDLE_ENVIRONMENT: sandbox
         run: pnpm build
 
+      - name: Verify production container build
+        run: |
+          docker build --file infra/production/Dockerfile --build-arg PUBLIC_ORIGIN=https://deployment.example.test --tag platform-launch:ci .
+          PLATFORM_IMAGE=platform-launch:ci PUBLIC_HOST=deployment.example.test docker compose --file infra/production/compose.yml config --quiet
+          docker run --rm --entrypoint node platform-launch:ci --check infra/production/entrypoint.mjs
+
       - name: Public launch browser verification
         id: browser-launch
         env:
@@ -180,31 +186,31 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
-      - name: API production smoke
+      - name: Production container smoke
         shell: bash
+        env:
+          PLATFORM_IMAGE: platform-launch:ci
+          PUBLIC_HOST: deployment.example.test
+          COMPOSE_PROJECT_NAME: launch-ci-${{ github.run_id }}-${{ github.run_attempt }}
+          COMPOSE_FILE: infra/production/compose.yml
         run: |
           set -euo pipefail
-          pnpm --filter @platform/api start > /tmp/platform-api.log 2>&1 &
-          api_pid=$!
+          # Isolated random role credentials, private PostgreSQL and disposable CI volumes.
+          node infra/production/create-secrets.mjs
           cleanup() {
-            kill "$api_pid" 2>/dev/null || true
-            wait "$api_pid" 2>/dev/null || true
+            docker compose --profile migration down --volumes --remove-orphans >/dev/null 2>&1 || true
+            rm -rf infra/production/secrets
           }
           trap cleanup EXIT
-
+          docker compose run --rm migrate
+          docker compose run --rm migrate
+          docker compose up -d api web
           for attempt in {1..30}; do
-            if curl --fail --silent http://127.0.0.1:4000/v1/health > /tmp/platform-api-health.json; then
-              grep -q '"status":"ok"' /tmp/platform-api-health.json
+            if docker compose exec -T api node -e 'fetch("http://127.0.0.1:4000/v1/health").then(async r=>{if(!r.ok||(await r.json()).status!=="ok")process.exit(1)}).catch(()=>process.exit(1))' && docker compose exec -T web node -e 'fetch("http://127.0.0.1:3000/login").then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))'; then
+              docker compose exec -T api node -e 'fetch("http://127.0.0.1:4000/v1/public/learning").then(async r=>{if(!r.ok||!Array.isArray((await r.json()).courses))process.exit(1)}).catch(()=>process.exit(1))'
               exit 0
             fi
-
-            if ! kill -0 "$api_pid" 2>/dev/null; then
-              cat /tmp/platform-api.log
-              exit 1
-            fi
-
             sleep 1
           done
-
-          cat /tmp/platform-api.log
+          docker compose logs --tail=30 api web
           exit 1

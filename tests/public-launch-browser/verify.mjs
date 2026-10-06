@@ -31,6 +31,8 @@ let learningFixturePassed = false;
 const quizFixtureTries = new Map();
 const quizFixtureRequests = [];
 let quizAmbiguousOnce = true;
+// Route only this independently authored fixture to canonical learning APIs.
+let canonicalLearningSlug = null;
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -494,7 +496,14 @@ async function startTlsProxies(tls) {
   const apiProxy = createHttpsServer(tls, (request, response) => {
     const path = new URL(request.url ?? "/", API_ORIGIN).pathname;
     const useRealApi =
-      path.startsWith("/v1/auth/") || path.startsWith("/v1/organizations/") || path === "/v1/me/organizations" || path === "/v1/me" || path === "/v1/health";
+      path.startsWith("/v1/auth/") || path.startsWith("/v1/organizations/") || path === "/v1/me/organizations" || path === "/v1/me" || path === "/v1/health" ||
+      (canonicalLearningSlug !== null && (
+        path === "/v1/me/learning" ||
+        path === "/v1/public/learning" ||
+        path.startsWith(`/v1/public/learning/${canonicalLearningSlug}/`) ||
+        path.startsWith(`/v1/me/learning/${canonicalLearningSlug}/`) ||
+        path === `/v1/public/organizations/${canonicalLearningSlug}/memberships/me`
+      ));
     proxyRequest(
       request,
       response,
@@ -729,7 +738,8 @@ async function verifyStudio(cdp) {
   await waitForExpression(cdp,'location.pathname === "/studio" && document.body.innerText.includes("Ваши организации")',"Studio auth return");
   await evaluate(cdp,'document.querySelector("details").open=true');
   await fill(cdp,'input[name="name"]',"Browser Studio Academy");
-  await fill(cdp,'input[name="slug"]',`browser-studio-${Date.now()}`);
+  const organizationSlug = `browser-studio-${Date.now()}`;
+  await fill(cdp,'input[name="slug"]',organizationSlug);
   await clickText(cdp,"Создать организацию");
   await waitForExpression(cdp,'[...document.querySelectorAll("a")].some(a=>a.textContent==="Создать курс")',"explicit canonical organization entry");
   const createHref=await evaluate(cdp,'[...document.querySelectorAll("a")].find(a=>a.textContent==="Создать курс").getAttribute("href")');
@@ -758,6 +768,7 @@ async function verifyStudio(cdp) {
   manifest.activities.push({slug:"multi-check",type:"quiz.multiple_choice",title:"Multi",instructions:"Multiple",skillKeys:[manifest.skills[0].key],presentation:{question:"Multi?",options:[{id:"a",text:"A"},{id:"b",text:"B"},{id:"c",text:"C"}]},validation:{correctOptionIds:["a","c"],explanation:"PRIVATE_MULTI"}},{slug:"short-check",type:"quiz.short_text",title:"Short",instructions:"Text",skillKeys:[manifest.skills[0].key],presentation:{question:"Short?"},validation:{acceptedAnswers:["PRIVATE_TEXT","два"],caseSensitive:true,explanation:"PRIVATE_SHORT"}});
   manifest.lessons.push({slug:"second",title:"Второй урок",summary:"Продолжение",durationMinutes:15,blocks:[{type:"activity",activitySlug:"multi-check",kind:"homework",required:false,title:"Мультивыбор"},{type:"activity",activitySlug:"short-check",kind:"practice",required:true}]});
   await clickText(cdp,"JSON");
+  let published;
   const temp=mkdtempSync(join(tmpdir(),"studio-manifest-"));
   try {
     const file=join(temp,"course.json");writeFileSync(file,JSON.stringify(manifest));
@@ -798,15 +809,294 @@ async function verifyStudio(cdp) {
     await clickText(cdp,"Предпросмотр");
     await clickText(cdp,"Опубликовать версию 1");
     await waitForExpression(cdp,'document.body.innerText.includes("Версия опубликована")',"fenced publication");
-    const release=await canonicalRead();assert(release.body.status==="published"&&release.body.manifest.course.title==="Другой автор","Published an unseen working copy.");
+    const release=await canonicalRead();published=release.body;assert(release.body.status==="published"&&release.body.manifest.course.title==="Другой автор","Published an unseen working copy.");
     await clickText(cdp,"Создать следующий черновик");
     await waitForExpression(cdp,'document.body.innerText.includes("Создан следующий черновик")',"explicit next draft");
     const next=await canonicalRead();assert(next.body.versionNumber===2&&next.body.status==="draft"&&JSON.stringify(next.body.manifest)===JSON.stringify(release.body.manifest),"Next draft lost authored fields.");
     assert(!(await evaluate(cdp,'document.documentElement.scrollWidth>innerWidth')),"Studio overflows mobile.");
     await accessibilityAudit(cdp,"Studio next draft mobile");
   } finally {rmSync(temp,{recursive:true,force:true});}
+  // Delivery is explicitly configured by the authorized owner, independently of publication.
+  const ownerWrite = (path, method, body) => evaluate(cdp, `fetch(${JSON.stringify(`${apiBase}${path}`)}, {method:${JSON.stringify(method)},credentials:"include",headers:{"content-type":"application/json"},body:${JSON.stringify(JSON.stringify(body))}}).then(async r=>({status:r.status,body:await r.json()}))`);
+  const offering = await ownerWrite("/offerings", "POST", {slug, name:"Canonical browser course",courseVersionId:published.versionId,deliveryMode:"self_paced",accessMode:"membership"});
+  assert(offering.status===201 && offering.body.visibility==="private", "Publication implicitly opened an Offering.");
+  assert((await ownerWrite(`/offerings/${offering.body.id}/visibility`, "PATCH", {visibility:"public"})).status===200, "Owner failed to explicitly open Offering.");
+  assert((await ownerWrite("/customer-entry-policy", "PUT", {policy:"open"})).status===200, "Owner failed to explicitly open Organization entry.");
   await evaluate(cdp,`fetch(${JSON.stringify(`${API_ORIGIN}/v1/auth/logout`)},{method:"POST",credentials:"include"}).then(r=>r.status)`);
   console.log("[browser-launch] canonical Studio manual/JSON/conflict/export/preview/publication passed");
+  return {organizationSlug,offeringSlug:slug,manifest:published.manifest};
+}
+
+async function verifyCanonicalLearner(cdp, authored) {
+  console.log(
+    "[browser-launch] canonical PostgreSQL anonymous-to-returning learner"
+  );
+  canonicalLearningSlug = authored.organizationSlug;
+  const courseRoute = `/learn/${authored.organizationSlug}/${authored.offeringSlug}`;
+  const lessonRoute = `${courseRoute}/${authored.manifest.lessons[0].slug}`;
+  const api = `${API_ORIGIN}/v1/me/learning/${authored.organizationSlug}/${authored.offeringSlug}`;
+  const ownRead = () =>
+    evaluate(
+      cdp,
+      `fetch(${JSON.stringify(api)}, {credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,body:await r.json()}))`
+    );
+  const requests = [];
+  cdp.on("Network.requestWillBeSent", ({ request }) => {
+    if (request.url.startsWith(api) && request.method === "POST")
+      requests.push({ url: request.url, body: JSON.parse(request.postData) });
+  });
+  try {
+    await navigate(cdp, `${WEB_ORIGIN}${lessonRoute}`);
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Войти и сохранить обучение")',
+      "canonical anonymous lesson"
+    );
+    const publicLesson = await evaluate(
+      cdp,
+      `fetch(${JSON.stringify(`${API_ORIGIN}/v1/public/learning/${authored.organizationSlug}/${authored.offeringSlug}/lessons/${authored.manifest.lessons[0].slug}`)}).then(async r=>({status:r.status,raw:await r.text()}))`
+    );
+    assert(
+      publicLesson.status === 200 &&
+        !publicLesson.raw.includes("PRIVATE_") &&
+        !publicLesson.raw.includes("correctOption"),
+      "Canonical public read leaked author keys."
+    );
+    assert(
+      await evaluate(
+        cdp,
+        'document.querySelector("iframe").src.startsWith("https://www.youtube-nocookie.com/embed/")'
+      ),
+      "Canonical video did not use safe renderer."
+    );
+    await accessibilityAudit(cdp, "canonical anonymous lesson");
+    await navigate(
+      cdp,
+      `${WEB_ORIGIN}/login?returnTo=${encodeURIComponent(lessonRoute)}`
+    );
+    await clickText(cdp, "Создать новый аккаунт");
+    const email = `canonical-learner-${Date.now()}@example.test`;
+    await fill(cdp, 'input[name="email"]', email);
+    await fill(cdp, 'input[name="password"]', PASSWORD);
+    await clickText(cdp, "Создать аккаунт");
+    await waitForExpression(
+      cdp,
+      `location.pathname===${JSON.stringify(lessonRoute)} && document.body.innerText.includes("Вступить в организацию")`,
+      "canonical registration return"
+    );
+    let state = await ownRead();
+    assert(
+      state.status === 200 &&
+        state.body.entry.membershipStatus === "none" &&
+        state.body.entry.enrollmentStatus === null &&
+        state.body.progress === null,
+      "Registration implicitly enrolled canonical learner."
+    );
+    await clickText(cdp, "Вступить в организацию");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Записаться на бесплатный курс")',
+      "canonical explicit membership"
+    );
+    state = await ownRead();
+    assert(
+      state.body.entry.membershipStatus === "active" &&
+        state.body.progress === null &&
+        state.body.entry.enrollmentStatus === null,
+      "Membership created implicit Enrollment."
+    );
+    await clickText(cdp, "Записаться на бесплатный курс");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Задания курса: 0 из 2")',
+      "canonical active enrollment"
+    );
+    await evaluate(
+      cdp,
+      "document.querySelector('input[value=\"ram\"]').click()"
+    );
+    await clickText(cdp, "Проверить и сохранить ответ");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Ответ пока неверный")',
+      "canonical wrong single choice"
+    );
+    assert(
+      (await ownRead()).body.progress.passedRequired === 0,
+      "Failed canonical quiz fabricated progress."
+    );
+    await clickText(cdp, "Попробовать ещё раз");
+    await evaluate(
+      cdp,
+      "document.querySelector('input[value=\"cpu\"]').click()"
+    );
+    await clickText(cdp, "Проверить и сохранить ответ");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("✓ Правильно") && document.body.innerText.includes("Задания курса: 1 из 2")',
+      "canonical retry passed"
+    );
+    assert(
+      requests[1].body.attemptKey !== requests[2].body.attemptKey,
+      "Canonical retry reused previous Attempt."
+    );
+    await navigate(cdp, `${WEB_ORIGIN}/me/learning`);
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Задания курса: 1 из 2")',
+      "canonical saved progress after navigation"
+    );
+    const next = await evaluate(
+      cdp,
+      '[...document.querySelectorAll("a")].find(a=>a.textContent==="Продолжить").getAttribute("href")'
+    );
+    assert(
+      next === `${courseRoute}/second`,
+      "Continue ignored exact required-task Evidence."
+    );
+    await navigate(cdp, `${WEB_ORIGIN}${next}`);
+    await waitForExpression(
+      cdp,
+      "document.querySelector('input[type=\"checkbox\"]')!==null",
+      "canonical next lesson"
+    );
+    // Multi-choice exact set: missing C is wrong, then a fresh Attempt passes A+C.
+    await evaluate(cdp, "document.querySelector('input[value=\"a\"]').click()");
+    await clickText(cdp, "Проверить и сохранить ответ");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Ответ пока неверный")',
+      "canonical multi subset rejected"
+    );
+    await clickText(cdp, "Попробовать ещё раз");
+    await evaluate(
+      cdp,
+      "document.querySelector('input[value=\"a\"]').click();document.querySelector('input[value=\"c\"]').click()"
+    );
+    await clickText(cdp, "Проверить и сохранить ответ");
+    await waitForExpression(
+      cdp,
+      'document.querySelectorAll("form")[0].innerText.includes("✓ Правильно")',
+      "canonical exact multi passed"
+    );
+    assert(
+      (await ownRead()).body.progress.passedRequired === 1,
+      "Optional practice fabricated required completion."
+    );
+    await fill(cdp, 'input[autocomplete="off"]', "wrong");
+    await evaluate(
+      cdp,
+      'document.querySelectorAll("form")[1].querySelector(\'button[type="submit"]\').click()'
+    );
+    await waitForExpression(
+      cdp,
+      'document.querySelectorAll("form")[1].innerText.includes("Ответ пока неверный")',
+      "canonical short wrong"
+    );
+    await evaluate(
+      cdp,
+      '[...document.querySelectorAll("form")[1].querySelectorAll("button")].find(b=>b.textContent==="Попробовать ещё раз").click()'
+    );
+    await fill(cdp, 'input[autocomplete="off"]', "  PRIVATE_EDITED_TEXT  ");
+    await evaluate(
+      cdp,
+      'document.querySelectorAll("form")[1].querySelector(\'button[type="submit"]\').click()'
+    );
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Все обязательные задания курса выполнены")',
+      "canonical short pass and Evidence progress"
+    );
+    await accessibilityAudit(cdp, "canonical completed tasks mobile");
+    assert(
+      !(await evaluate(cdp, "document.documentElement.scrollWidth>innerWidth")),
+      "Canonical lesson overflows mobile."
+    );
+    state = await ownRead();
+    assert(
+      state.body.progress.passedRequired === 2 &&
+        state.body.progress.allRequiredPassed &&
+        state.body.entry.enrollmentStatus === "active",
+      "Required passes changed canonical Enrollment lifecycle."
+    );
+    assert(
+      !JSON.stringify(state.body).includes("PRIVATE_"),
+      "Own progress leaked private Content."
+    );
+    assert(
+      requests.every((r) =>
+        r.url.endsWith("/enrollment")
+          ? Object.keys(r.body).length === 0
+          : Object.keys(r.body).sort().join(",") === "answer,attemptKey"
+      ),
+      "Browser supplied actor/result authority."
+    );
+    await navigate(cdp, `${WEB_ORIGIN}/me/learning`);
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Все обязательные задания курса выполнены")',
+      "canonical persisted all-task progress"
+    );
+    await clickText(cdp, "Выйти");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Войдите, чтобы увидеть свои курсы")',
+      "canonical logout"
+    );
+    await navigate(
+      cdp,
+      `${WEB_ORIGIN}/login?returnTo=${encodeURIComponent(lessonRoute)}`
+    );
+    await fill(cdp, 'input[name="email"]', email);
+    await fill(cdp, 'input[name="password"]', PASSWORD);
+    await clickText(cdp, "Войти");
+    await waitForExpression(
+      cdp,
+      `location.pathname===${JSON.stringify(lessonRoute)} && document.body.innerText.includes("Все обязательные задания курса выполнены")`,
+      "canonical retained progress after login"
+    );
+    await evaluate(
+      cdp,
+      `fetch(${JSON.stringify(`${API_ORIGIN}/v1/auth/logout`)},{method:"POST",credentials:"include"}).then(r=>r.status)`
+    );
+    // A different real principal cannot inherit the first learner's course or Evidence.
+    await navigate(
+      cdp,
+      `${WEB_ORIGIN}/login?returnTo=${encodeURIComponent(lessonRoute)}`
+    );
+    await clickText(cdp, "Создать новый аккаунт");
+    await fill(
+      cdp,
+      'input[name="email"]',
+      `other-canonical-${Date.now()}@example.test`
+    );
+    await fill(cdp, 'input[name="password"]', PASSWORD);
+    await clickText(cdp, "Создать аккаунт");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Вступить в организацию")',
+      "canonical other principal"
+    );
+    assert(
+      (await ownRead()).body.progress === null,
+      "Another principal received learner progress."
+    );
+    await navigate(cdp, `${WEB_ORIGIN}/me/learning`);
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Вы пока не записаны")',
+      "canonical other learner empty list"
+    );
+    await evaluate(
+      cdp,
+      `fetch(${JSON.stringify(`${API_ORIGIN}/v1/auth/logout`)},{method:"POST",credentials:"include"}).then(r=>r.status)`
+    );
+    console.log(
+      "[browser-launch] canonical Enrollment/quiz Evidence/progress/relogin/isolation passed"
+    );
+  } finally {
+    canonicalLearningSlug = null;
+  }
 }
 
 async function runBrowserVerification(cdp) {
@@ -1025,7 +1315,8 @@ async function runBrowserVerification(cdp) {
   await evaluate(cdp, `fetch(${JSON.stringify(`${API_ORIGIN}/v1/auth/logout`)},{method:"POST",credentials:"include"}).then(r=>r.status)`);
   console.log("[browser-launch] free learner auth and explicit entry UX passed");
 
-  await verifyStudio(cdp);
+  const authored = await verifyStudio(cdp);
+  await verifyCanonicalLearner(cdp, authored);
 
   await navigate(cdp, `${WEB_ORIGIN}/catalog/acme/products/course`);
   await waitForExpression(

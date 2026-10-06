@@ -17,3 +17,4 @@ next-env.d.ts
 .cache/
 playwright-report/
 test-results/
+infra/production/secrets/

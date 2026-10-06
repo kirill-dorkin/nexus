@@ -1,0 +1,11 @@
+.git
+**/node_modules
+**/.next
+**/dist
+**/.turbo
+**/*.tsbuildinfo
+.env
+.env.*
+**/*.log
+**/coverage
+infra/production/secrets
