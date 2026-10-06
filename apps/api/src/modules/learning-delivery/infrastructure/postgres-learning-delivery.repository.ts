@@ -31,6 +31,7 @@ type OfferingRow = {
   name: string;
   delivery_mode: LearningOffering["deliveryMode"];
   access_mode: LearningOffering["accessMode"];
+  visibility: LearningOffering["visibility"];
   status: LearningOffering["status"];
   starts_at: Date | null;
   ends_at: Date | null;
@@ -113,6 +114,7 @@ function mapOffering(row: OfferingRow): LearningOffering {
     deliveryMode: row.delivery_mode,
     accessMode: row.access_mode,
     status: row.status,
+    visibility: row.visibility,
     startsAt: row.starts_at?.toISOString() ?? null,
     endsAt: row.ends_at?.toISOString() ?? null
   };
@@ -206,6 +208,7 @@ const offeringSelect = `id::text,
   name,
   delivery_mode,
   access_mode,
+  visibility,
   status,
   starts_at,
   ends_at`;
@@ -309,6 +312,20 @@ export class PostgresLearningDeliveryRepository extends LearningDeliveryReposito
     );
     const row = result.rows[0];
     return row === undefined ? null : mapOffering(row);
+  }
+
+  async setOfferingVisibility(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    offeringId: string,
+    visibility: LearningOffering["visibility"]
+  ): Promise<LearningOffering | null> {
+    const result = await transaction.client.query<OfferingRow>(
+      `UPDATE learning_delivery.learning_offerings SET visibility=$3, updated_at=now()
+        WHERE organization_id=$1 AND id=$2 AND visibility<>$3 RETURNING ${offeringSelect}`,
+      [organizationId, offeringId, visibility]
+    );
+    return result.rows[0] ? mapOffering(result.rows[0]) : null;
   }
 
   async createEnrollment(

@@ -1,3 +1,4 @@
+import { PublicLearningModule } from "./modules/public-learning/public-learning.module";
 import { Module } from "@nestjs/common";
 
 import { DatabaseModule } from "./database/database.module";
@@ -34,6 +35,7 @@ import { RequestContextModule } from "./request-context/request-context.module";
     IntegrationsModule,
     PaymentCheckoutModule,
     PublicCatalogModule,
+    PublicLearningModule,
     ProjectsModule,
     LearningContentModule,
     LearningDeliveryModule,

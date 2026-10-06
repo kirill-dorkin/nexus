@@ -42,3 +42,7 @@
 | `ReadinessDecision` | Версионированное derived решение о текущей готовности learner к узко определённому переходу; не равно Mastery, completion или самому факту intervention. |
 | `OfferingReadinessOverview` | Derived Offering-scoped operational read model поверх индивидуальных `ReadinessDecision` активных Enrollment; даёт summary и deterministic triage, но не создаёт новую learner state или severity score. |
 | `ProgressionGate` | Версионированное правило допуска к конкретному переходу. Не является `ReadinessDecision` или самим lifecycle mutation; первый concrete gate допускает только readiness=`ready` к `Enrollment active -> completed`. |
+
+## Public learning visibility
+
+Delivery-owned explicit curriculum presentation policy on LearningOffering (private by default). Public reading requires active Organization/Course plus open self-paced membership Offering and its published manifest release. Visibility grants no Membership, Enrollment or Entitlement and is independent from Commerce Product discovery.

@@ -38,3 +38,7 @@ Verify signature -> validate type/action -> deduplicate delivery -> persist inbo
 ## Grader
 
 Grader has no production DB role. Student execution has no production network path or secrets. Infrastructure failure produces system failure, never negative learning evidence.
+
+## Public curriculum presentation
+
+ADR-0054 public reads require explicit Offering visibility and the active/open/free/self-paced/published gate. Anonymous bypass uses narrow schema-owned read functions; private tenant/version helpers are not runtime capabilities and base-table RLS is unchanged. Public lesson data is an allowlist, never raw Activity.config or protected quiz definitions. Markdown renders without HTML, events, remote images or unsafe links; iframe host/attributes are renderer-owned. Visibility changes and their redacted outbox event commit atomically under manage/session/Origin authority.

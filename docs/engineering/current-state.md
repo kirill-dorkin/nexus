@@ -23,9 +23,9 @@ F9 now establishes the first complete public paid path, its production operation
 
 Production learner-code execution remains disabled. F7 repository runner/profile/sandbox artifacts do not activate production execution; a separate deployment change still requires the exact production image digest and a green real-cluster verification record.
 
-Latest architectural decision at this checkpoint: ADR-0053 (post-Foundation Lesson/manifest/protected quiz authoring). F9.10 and F9.11 add verification infrastructure and no new domain/security authority decision.
+Latest architectural decision at this checkpoint: ADR-0054 (explicit public free learning visibility and safe published reads). F9.10 and F9.11 add verification infrastructure and no new domain/security authority decision.
 
-Latest ordered migration at this checkpoint: `000040_course_manifest_lessons.sql`.
+Latest ordered migration at this checkpoint: `000041_public_learning.sql`.
 
 The baseline above is an orientation marker, not permission to skip checking the live `main` head.
 
@@ -37,7 +37,9 @@ ADR-0053 adds Content-owned stable Lessons and ordered YouTube/Markdown/Activity
 
 Quiz answer keys and private explanations are separate immutable Content snapshots, never learner-visible Activity.config. Generic Activity creation cannot bypass protected authoring through quiz.*. Import/export use existing capability/session/Origin/RLS boundaries; new draft DELETE grants remain protected by publication-locking immutability triggers, and migration-role operational purge remains possible. Unrepresentable legacy draft features are rejected rather than discarded. Existing legacy version publication remains compatible.
 
-This is authoring infrastructure, not a launched learning product. Quiz execution/registry implementations, public visibility/pages, learner-owned free enrollment, derived course progress, Studio, end-to-end learner browser verification and production deployment are still required. The maintained launch sequence is `docs/roadmap/mvp-launch.md`; the next coherent slice is explicit default-private Public Learning and safe published learner projections. Production grader activation remains independent.
+ADR-0054 adds explicit default-private Delivery visibility, safe anonymous published free-learning projections through narrow owner-schema capabilities, and server-rendered homepage/catalog/course/Lesson pages. Open/public/self-paced/membership plus active Organization/Course and exact published manifest release is required. Strict allowlists disclose no answers/bindings/internal UUIDs; Markdown/YouTube rendering and Chrome mobile/keyboard/navigation checks cover public reading. Existing Commerce discovery remains independent.
+
+This is public reading and authoring, not a launched learning product. Quiz execution/registry implementations, learner-owned free enrollment, derived course progress, Studio, complete real-session learner browser verification and production deployment remain. The maintained launch sequence is `docs/roadmap/mvp-launch.md`; the next coherent slice is C: authenticated free learner entry and derived progress. Production grader activation remains independent.
 
 ### F0-F3 — architecture, tenancy, immutable curriculum, Delivery: established
 
@@ -235,11 +237,11 @@ Do not remove these without an explicit cleanup slice/migration and proven calle
 
 ## Next recommended slice
 
-**Public Learning after the post-Foundation course authoring slice.**
+**Free learner entry after public reading.**
 
 F9.11 closes the explicit repository-level F9 launch-hardening sequence currently named by the roadmap: operational evidence/budgets, real-browser accessibility/session/CORS verification, and bounded deterministic performance acceptance verification now complement the canonical paid path.
 
-The selected product frontier is the first free public learning launch in `docs/roadmap/mvp-launch.md`. The next coherent slice is B: explicit default-private LearningOffering visibility, narrow public owner-module query interfaces and safe published course/Lesson projections, followed by real homepage/course/Lesson Web surfaces. Draft/protected quiz configuration must fail closed, and visibility must never grant Membership or Enrollment.
+The selected product frontier is the first free public learning launch in `docs/roadmap/mvp-launch.md`. Slice B establishes explicit default-private LearningOffering visibility, narrow public owner-module reads and safe published course/Lesson Web surfaces. The next coherent slice is C: reuse existing session registration/login and explicit customerEntryPolicy, add idempotent self-only free Enrollment, my learning and derived progress. Server-side commands must revalidate public/open/free state, active identity/membership and tenant context; visibility still grants no Membership or Enrollment.
 
 Candidate areas that remain intentionally **unselected** at this checkpoint include:
 

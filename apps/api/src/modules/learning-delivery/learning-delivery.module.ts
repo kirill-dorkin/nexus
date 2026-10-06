@@ -1,3 +1,6 @@
+import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
+import { PublicFreeLearningOfferingQuery } from "./application/public-free-learning-offering.query";
+import { PostgresPublicFreeLearningOfferingQuery } from "./infrastructure/postgres-public-free-learning-offering.query";
 import { Module } from "@nestjs/common";
 
 import { OutboxModule } from "../../outbox/outbox.module";
@@ -40,6 +43,8 @@ import { LearningDeliveryController } from "./learning-delivery.controller";
     LearnerRunnerController
   ],
   providers: [
+    BrowserWriteOriginGuard,
+    { provide: PublicFreeLearningOfferingQuery, useClass: PostgresPublicFreeLearningOfferingQuery },
     LearningDeliveryApplicationService,
     LearningDeliveryCommandService,
     LearningDeliveryQueryService,
@@ -71,6 +76,7 @@ import { LearningDeliveryController } from "./learning-delivery.controller";
     }
   ],
   exports: [
+    PublicFreeLearningOfferingQuery,
     LearningDeliveryApplicationService,
     LearningDeliveryCommand,
     LearningDeliveryQuery,

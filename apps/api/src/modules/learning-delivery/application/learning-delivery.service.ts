@@ -169,6 +169,49 @@ export class LearningDeliveryApplicationService {
     });
   }
 
+  async setOfferingVisibility(
+    organizationId: string,
+    offeringId: string,
+    visibility: LearningOffering["visibility"]
+  ): Promise<LearningOffering> {
+    const context = this.requestContext.tenantContext(organizationId);
+    return this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+      await this.authorization.requireCapability(
+        transaction,
+        context.userId,
+        "offering.manage",
+        offeringScope(organizationId, offeringId)
+      );
+      const changed = await this.delivery.setOfferingVisibility(
+        transaction,
+        organizationId,
+        offeringId,
+        visibility
+      );
+      if (changed !== null) {
+        await this.outbox.append(transaction, {
+          organizationId,
+          eventName: "learning_offering.visibility_changed",
+          eventVersion: 1,
+          aggregateType: "learning_offering",
+          aggregateId: offeringId,
+          actorUserId: context.userId,
+          payload: { organizationId, offeringId, visibility }
+        });
+        return changed;
+      }
+      const offering = await this.delivery.findOffering(
+        transaction,
+        organizationId,
+        offeringId
+      );
+      if (offering === null)
+        throw new NotFoundException("Learning offering not found.");
+      return offering;
+    });
+  }
+
   async createEnrollment(
     organizationId: string,
     offeringId: string,

@@ -62,3 +62,7 @@ Changing an action requires reviewing its release notes and updating both the SH
 CI explicitly opts out of Turborepo and Next.js anonymous telemetry with their documented environment controls. Swagger UI install analytics are disabled separately through `scarfSettings` and pnpm's denied lifecycle-script policy. These are explicit privacy decisions, not warning suppression.
 
 See ADR `0011-dependency-lifecycle-security.md` and ADR `0037-trusted-grader-runner.md`.
+
+## Public lesson Markdown
+
+react-markdown 10.1.0 is pinned for CommonMark parsing into React elements, without raw HTML plugins or dangerouslySetInnerHTML. Its installed Markdown parsing graph has no preinstall/install/postinstall scripts; existing strictDepBuilds policy and lockfile integrity pinning remain unchanged. The application skips HTML and images, restricts links and tests actual rendered output against script/event/unsafe-URL injection. No build approval is added.

@@ -6,7 +6,8 @@ import {
   HttpStatus,
   Param,
   Patch,
-  Post
+  Post,
+  UseGuards
 } from "@nestjs/common";
 import {
   correctAttendanceRequestSchema,
@@ -19,6 +20,7 @@ import {
   createSessionRequestSchema,
   recordAttendanceRequestSchema,
   uuidSchema,
+  updateLearningOfferingVisibilityRequestSchema,
   type Attendance,
   type CourseRun,
   type DeliveryGroup,
@@ -29,6 +31,7 @@ import {
   type Session
 } from "@platform/contracts";
 
+import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
 import { parseRequest } from "../../http/validation";
 import { LearningDeliveryApplicationService } from "./application/learning-delivery.service";
 
@@ -56,6 +59,21 @@ export class LearningDeliveryController {
     return this.delivery.getOffering(
       parseRequest(uuidSchema, organizationId),
       parseRequest(uuidSchema, offeringId)
+    );
+  }
+
+  @Patch(":offeringId/visibility")
+  @UseGuards(BrowserWriteOriginGuard)
+  setVisibility(
+    @Param("organizationId") organizationId: string,
+    @Param("offeringId") offeringId: string,
+    @Body() body: unknown
+  ): Promise<LearningOffering> {
+    return this.delivery.setOfferingVisibility(
+      parseRequest(uuidSchema, organizationId),
+      parseRequest(uuidSchema, offeringId),
+      parseRequest(updateLearningOfferingVisibilityRequestSchema, body)
+        .visibility
     );
   }
 

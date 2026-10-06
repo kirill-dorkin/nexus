@@ -1,6 +1,8 @@
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
+  // Next preserves JSX for its compiler; unit tests render actual Web components.
+  oxc: { jsx: { runtime: "automatic" } },
   test: {
     environment: "node",
     include: [
