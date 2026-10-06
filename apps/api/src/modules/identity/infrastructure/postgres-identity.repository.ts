@@ -27,12 +27,13 @@ function mapIdentityUser(row: IdentityUserRow): IdentityUser {
 export class PostgresIdentityRepository extends IdentityRepository {
   async findById(
     transaction: DatabaseTransaction,
-    userId: string
+    userId: string,
+    lock = false
   ): Promise<IdentityUser | null> {
     const result = await transaction.client.query<IdentityUserRow>(
       `SELECT id::text, email, display_name, status
          FROM identity.users
-        WHERE id = $1`,
+        WHERE id = $1 ${lock ? "FOR SHARE" : ""}`,
       [userId]
     );
     const row = result.rows[0];

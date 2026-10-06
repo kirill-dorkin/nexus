@@ -1,3 +1,4 @@
+import { LearnerEntry } from "../../../../../components/learning/learner-entry";
 import Link from "next/link";
 import { LearningShell } from "../../../../../components/learning/learning-shell";
 import { LessonBlocks } from "../../../../../components/learning/lesson-blocks";
@@ -43,6 +44,11 @@ export default async function LessonPage({ params }: Props) {
         <p className={styles.lead}>{course.lesson.summary}</p>
       </header>
       <LessonBlocks lesson={course.lesson} />
+      <LearnerEntry
+        organizationSlug={organizationSlug}
+        offeringSlug={offeringSlug}
+        lessonSlug={lessonSlug}
+      />
       <nav className={styles.lessonNav} aria-label="Переход между уроками">
         {previous ? (
           <Link href={lessonUrl(course, previous.slug)}>

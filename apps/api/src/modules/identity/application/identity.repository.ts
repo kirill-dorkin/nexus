@@ -10,7 +10,8 @@ export type NewIdentityUser = Readonly<{
 export abstract class IdentityRepository {
   abstract findById(
     transaction: DatabaseTransaction,
-    userId: string
+    userId: string,
+    lock?: boolean
   ): Promise<IdentityUser | null>;
 
   abstract findByNormalizedEmail(

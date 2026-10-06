@@ -1,3 +1,4 @@
+import { LearnerEntry } from "../../../../components/learning/learner-entry";
 import Link from "next/link";
 import { LearningShell } from "../../../../components/learning/learning-shell";
 import { loadLearningCourse, lessonUrl } from "../../../../lib/public-learning";
@@ -61,8 +62,12 @@ export default async function CoursePage({ params }: Props) {
             className={styles.button}
             href={lessonUrl(course, course.course.lessons[0]!.slug)}
           >
-            Начать обучение
+            Открыть первый урок
           </Link>
+          <LearnerEntry
+            organizationSlug={organizationSlug}
+            offeringSlug={offeringSlug}
+          />
         </aside>
       </div>
     </LearningShell>

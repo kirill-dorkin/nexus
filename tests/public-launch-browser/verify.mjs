@@ -26,6 +26,8 @@ let apiLog = "";
 let webLog = "";
 let purchaseReads = 0;
 let checkoutIdempotencyKey = null;
+const learningActors = new Map();
+let learningFixturePassed = false;
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -241,6 +243,43 @@ async function startFakeApi() {
         request.url ?? "/",
         `http://127.0.0.1:${FAKE_API_PORT}`
       );
+
+      // Non-canonical UX seam, authenticated through the real API session boundary.
+      if (url.pathname.startsWith("/v1/me/learning") ||
+          (request.method === "POST" && url.pathname === "/v1/public/organizations/acme/memberships/me")) {
+        const me = await fetch(`http://127.0.0.1:${API_BACKEND_PORT}/v1/me`, {
+          headers: { cookie: request.headers.cookie ?? "" }
+        });
+        if (!me.ok) { sendJson(response, 401, { message: "Session required" }, origin); return; }
+        const actor = (await me.json()).id;
+        const state = learningActors.get(actor) ?? { member: false, enrolled: false };
+        learningActors.set(actor, state);
+        if (request.method === "POST" && url.pathname.includes("memberships/me")) {
+          state.member = true;
+          sendJson(response, 200, { status: "active" }, origin); return;
+        }
+        if (request.method === "POST" && url.pathname.endsWith("/enrollment")) {
+          assert(state.member, "UX enrolled without explicit Organization entry.");
+          const body = await readJson(request);
+          assert(Object.keys(body).length === 0, "UX supplied actor/tenant/enrollment authority.");
+          state.enrolled = true;
+        }
+        const learning = { ...learningCourse,
+          entry: { customerEntryPolicy: "open", membershipStatus: state.member ? "active" : "none", enrollmentStatus: state.enrolled ? "active" : null },
+          progress: state.enrolled ? {
+            policyKey: "required-activity-passes", policyVersion: 1,
+            passedRequired: learningFixturePassed ? 1 : 0, totalRequired: 1,
+            percentage: learningFixturePassed ? 100 : 0, allRequiredPassed: learningFixturePassed,
+            nextLessonSlug: learningFixturePassed ? null : "introduction", lastActionAt: null,
+            lessons: [
+              {slug: "introduction", passedRequired: learningFixturePassed ? 1 : 0, totalRequired: 1, requiredPassed: learningFixturePassed, activities: [{slug:"components-check",passed:learningFixturePassed}]},
+              {slug:"next-lesson",passedRequired:0,totalRequired:0,requiredPassed:false,activities:[]}
+            ]
+          } : null
+        };
+        sendJson(response, 200, url.pathname === "/v1/me/learning" ? {courses:state.enrolled ? [learning] : [],nextCursor:null} : learning, origin);
+        return;
+      }
 
       if (request.method === "GET" && url.pathname === "/v1/public/learning") {
         sendJson(
@@ -707,7 +746,7 @@ async function runBrowserVerification(cdp) {
   await accessibilityAudit(cdp, "public course");
   await tabUntil(
     cdp,
-    'document.activeElement?.textContent === "Начать обучение"',
+    'document.activeElement?.textContent === "Открыть первый урок"',
     "learning start link"
   );
   const courseFocus = await evaluate(
@@ -800,6 +839,48 @@ async function runBrowserVerification(cdp) {
   );
   learningCatalogEmpty = false;
   console.log("[browser-launch] public learning pages passed");
+
+  console.log("[browser-launch] free learner auth return-to and explicit entry UX");
+  const learningReturn = "/learn/acme/computer-basics/introduction";
+  await navigate(cdp, `${WEB_ORIGIN}${learningReturn}`);
+  await waitForExpression(cdp, 'document.body.innerText.includes("Войти и сохранить обучение")', "anonymous learner entry");
+  const loginHref = await evaluate(cdp, `document.querySelector('a[href^="/login?returnTo="]').getAttribute("href")`);
+  assert(loginHref === `/login?returnTo=${encodeURIComponent(learningReturn)}`, "Auth target lost the selected Lesson.");
+  await navigate(cdp, `${WEB_ORIGIN}${loginHref}`);
+  await clickText(cdp, "Создать новый аккаунт");
+  const learningEmail = `learner-browser-${Date.now()}@example.test`;
+  await fill(cdp, 'input[name="email"]', learningEmail);
+  await fill(cdp, 'input[name="password"]', PASSWORD);
+  await fill(cdp, 'input[name="displayName"]', "Learning Browser");
+  await accessibilityAudit(cdp, "learning registration");
+  await clickText(cdp, "Создать аккаунт");
+  await waitForExpression(cdp, `location.pathname === ${JSON.stringify(learningReturn)} && document.body.innerText.includes("Вступить в организацию")`, "registration return to selected Lesson");
+  assert([...learningActors.values()].every(a => !a.enrolled && !a.member), "Auth created Membership/Enrollment implicitly.");
+  await clickText(cdp, "Вступить в организацию");
+  await waitForExpression(cdp, 'document.body.innerText.includes("Записаться на бесплатный курс")', "separate enrollment action");
+  assert([...learningActors.values()].every(a => !a.enrolled), "Membership implicitly enrolled the learner.");
+  await clickText(cdp, "Записаться на бесплатный курс");
+  await waitForExpression(cdp, 'document.body.innerText.includes("Задания курса: 0 из 1")', "own enrollment zero progress");
+  await accessibilityAudit(cdp, "enrolled Lesson");
+  await navigate(cdp, `${WEB_ORIGIN}/me/learning`);
+  await waitForExpression(cdp, 'document.body.innerText.includes("Основы компьютера") && document.body.innerText.includes("Задания курса: 0 из 1")', "returning learner courses");
+  await accessibilityAudit(cdp, "my learning");
+  const continueHref = await evaluate(cdp, '[...document.querySelectorAll("a")].find(a=>a.textContent === "Продолжить").getAttribute("href")');
+  assert(continueHref === learningReturn, "Continue changed the exact learning address.");
+  learningFixturePassed = true; // Presentation proof only; canonical Evidence is checked in PostgreSQL tests.
+  await navigate(cdp, `${WEB_ORIGIN}/me/learning`);
+  await waitForExpression(cdp, 'document.body.innerText.includes("Все обязательные задания курса выполнены")', "derived progress after reload");
+  assert(!(await evaluate(cdp, 'document.body.innerText.includes("Обучение завершено.")')), "UI fabricated Enrollment.completed from the task percentage.");
+  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "My learning overflows mobile.");
+  await clickText(cdp, "Выйти");
+  await waitForExpression(cdp, 'document.body.innerText.includes("Войдите, чтобы увидеть свои курсы")', "learning logout");
+  await navigate(cdp, `${WEB_ORIGIN}/login?returnTo=${encodeURIComponent(learningReturn)}`);
+  await fill(cdp, 'input[name="email"]', learningEmail);
+  await fill(cdp, 'input[name="password"]', PASSWORD);
+  await clickText(cdp, "Войти");
+  await waitForExpression(cdp, `location.pathname === ${JSON.stringify(learningReturn)} && document.body.innerText.includes("Все обязательные задания курса выполнены")`, "login return and retained learner UX");
+  await evaluate(cdp, `fetch(${JSON.stringify(`${API_ORIGIN}/v1/auth/logout`)},{method:"POST",credentials:"include"}).then(r=>r.status)`);
+  console.log("[browser-launch] free learner auth and explicit entry UX passed");
 
   await navigate(cdp, `${WEB_ORIGIN}/catalog/acme/products/course`);
   await waitForExpression(

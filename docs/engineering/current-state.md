@@ -23,9 +23,9 @@ F9 now establishes the first complete public paid path, its production operation
 
 Production learner-code execution remains disabled. F7 repository runner/profile/sandbox artifacts do not activate production execution; a separate deployment change still requires the exact production image digest and a green real-cluster verification record.
 
-Latest architectural decision at this checkpoint: ADR-0054 (explicit public free learning visibility and safe published reads). F9.10 and F9.11 add verification infrastructure and no new domain/security authority decision.
+Latest architectural decision at this checkpoint: ADR-0055 (self-only free learner entry and derived course progress). F9.10 and F9.11 add verification infrastructure and no new domain/security authority decision.
 
-Latest ordered migration at this checkpoint: `000041_public_learning.sql`.
+Latest ordered migration at this checkpoint: `000042_free_learner_entry.sql`.
 
 The baseline above is an orientation marker, not permission to skip checking the live `main` head.
 
@@ -39,7 +39,9 @@ Quiz answer keys and private explanations are separate immutable Content snapsho
 
 ADR-0054 adds explicit default-private Delivery visibility, safe anonymous published free-learning projections through narrow owner-schema capabilities, and server-rendered homepage/catalog/course/Lesson pages. Open/public/self-paced/membership plus active Organization/Course and exact published manifest release is required. Strict allowlists disclose no answers/bindings/internal UUIDs; Markdown/YouTube rendering and Chrome mobile/keyboard/navigation checks cover public reading. Existing Commerce discovery remains independent.
 
-This is public reading and authoring, not a launched learning product. Quiz execution/registry implementations, learner-owned free enrollment, derived course progress, Studio, complete real-session learner browser verification and production deployment remain. The maintained launch sequence is `docs/roadmap/mvp-launch.md`; the next coherent slice is C: authenticated free learner entry and derived progress. Production grader activation remains independent.
+ADR-0055 adds authenticated role-less self-only free Enrollment after explicit Organization entry, safe auth return-to, paginated my-learning reads and required-activity-passes@1 derived progress from exact own Enrollment/ActivityVersion normalized validation Evidence. Writes revalidate and lock current gates; duplicate entry emits no extra enrollment.created event. A task percentage does not complete Enrollment or alter Mastery/readiness.
+
+This is public reading, authoring and free learner entry, not a launched learning product. Quiz execution/registry implementations, Studio, complete real-session learner browser verification and production deployment remain. The maintained launch sequence is `docs/roadmap/mvp-launch.md`; the next coherent slice is D: versioned deterministic quiz checks through the existing Submission/ValidationResult/Evidence/Mastery loop, including role-less learner-owned authority. Production grader activation remains independent.
 
 ### F0-F3 — architecture, tenancy, immutable curriculum, Delivery: established
 
@@ -237,11 +239,9 @@ Do not remove these without an explicit cleanup slice/migration and proven calle
 
 ## Next recommended slice
 
-**Free learner entry after public reading.**
+**Deterministic non-code checks after free learner entry.**
 
-F9.11 closes the explicit repository-level F9 launch-hardening sequence currently named by the roadmap: operational evidence/budgets, real-browser accessibility/session/CORS verification, and bounded deterministic performance acceptance verification now complement the canonical paid path.
-
-The selected product frontier is the first free public learning launch in `docs/roadmap/mvp-launch.md`. Slice B establishes explicit default-private LearningOffering visibility, narrow public owner-module reads and safe published course/Lesson Web surfaces. The next coherent slice is C: reuse existing session registration/login and explicit customerEntryPolicy, add idempotent self-only free Enrollment, my learning and derived progress. Server-side commands must revalidate public/open/free state, active identity/membership and tenant context; visibility still grants no Membership or Enrollment.
+The selected product frontier remains the first free public learning launch in `docs/roadmap/mvp-launch.md`. Slice C reuses the existing API session and explicit customerEntryPolicy, adds self-only role-less free Enrollment and derived course task progress, with safe local auth return-to and my-learning Web surfaces. Membership, Enrollment and canonical completion remain separate. The next coherent slice is D: versioned deterministic quiz registry implementations and learner-owned Submission checking, including the explicit authority path for these role-less customer members. Caller-owned outcomes, private answer disclosure and production grader activation remain forbidden.
 
 Candidate areas that remain intentionally **unselected** at this checkpoint include:
 

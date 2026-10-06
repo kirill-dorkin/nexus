@@ -14,6 +14,8 @@ export function LearningShell({ children }: { children: ReactNode }) {
         </Link>
         <nav aria-label="Главное меню">
           <Link href="/courses">Курсы</Link>
+          <Link href="/me/learning">Моё обучение</Link>
+          <Link href="/login">Войти</Link>
         </nav>
       </header>
       <main id="learning-main" tabIndex={-1}>

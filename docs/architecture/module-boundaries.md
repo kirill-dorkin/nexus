@@ -6,6 +6,7 @@
 | Organizations | tenants, memberships, capabilities, policies | curriculum |
 | Authorization | permissions, role bindings, relation checks | authentication |
 | Commerce | products, purchases, entitlement grants | learning progress |
+| Learner Learning | stateless authenticated own free-learning composition, derived task completion policy and safe learner contracts | canonical Membership/Enrollment/curriculum, normalized Evidence, Mastery, readiness, quiz execution |
 | Public Learning | stateless anonymous Organization + Delivery + Content composition and strict published free course/Lesson read contracts | canonical curriculum/visibility, Membership, Enrollment, quiz validation, progress |
 | Public Catalog | stateless unauthenticated composition of safe Organization + Commerce + Delivery read contracts | canonical Product/Price/Offering state, onboarding, checkout, entitlements, enrollments |
 | Catalog/Curriculum | programs/courses/modules/lessons + versions | delivery state |

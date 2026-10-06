@@ -46,3 +46,6 @@
 ## Public learning visibility
 
 Delivery-owned explicit curriculum presentation policy on LearningOffering (private by default). Public reading requires active Organization/Course plus open self-paced membership Offering and its published manifest release. Visibility grants no Membership, Enrollment or Entitlement and is independent from Commerce Product discovery.
+
+- **Course task progress**: `required-activity-passes@1`, derived from distinct required ActivityVersions and passed validation-derived Evidence for the exact own Enrollment. It is not Mastery, readiness, watched-video state or Enrollment completion.
+- **Free self Enrollment**: explicit authenticated own enrollment for an active member in an eligible public free Offering, independent of explicit Organization entry and of privileged administrative enrollment.
