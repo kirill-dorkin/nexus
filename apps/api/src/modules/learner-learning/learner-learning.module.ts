@@ -1,3 +1,4 @@
+import { LearningValidationModule } from "../learning-validation/learning-validation.module";
 import { Module } from "@nestjs/common";
 import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
 import { IdentityModule } from "../identity/identity.module";
@@ -9,6 +10,7 @@ import { LearnerLearningController } from "./learner-learning.controller";
 import { LearnerLearningService } from "./learner-learning.service";
 @Module({
   imports: [
+    LearningValidationModule,
     IdentityModule,
     OrganizationsModule,
     LearningContentModule,

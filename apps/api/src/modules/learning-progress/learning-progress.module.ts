@@ -1,3 +1,4 @@
+import { QuizSubmissionCommand } from "./application/quiz-submission.command";
 import { CourseActivityProgressQuery } from "./application/course-activity-progress.query";
 import { PostgresCourseActivityProgressQuery } from "./infrastructure/postgres-course-activity-progress.query";
 import { Module } from "@nestjs/common";
@@ -35,6 +36,7 @@ import { MasteryController } from "./mastery.controller";
   imports: [IdentityModule, AuthorizationModule, OutboxModule, LearningContentModule, LearningDeliveryModule, LearningHistoryModule],
   controllers: [LearningProgressController, MasteryController, LearnerSkillProgressController],
   providers: [
+    { provide: QuizSubmissionCommand, useExisting: LearningProgressApplicationService },
     { provide: CourseActivityProgressQuery, useClass: PostgresCourseActivityProgressQuery },
     LearningProgressApplicationService,
     AttemptGuidanceReader,
@@ -51,6 +53,7 @@ import { MasteryController } from "./mastery.controller";
     { provide: MasteryRepository, useClass: PostgresMasteryRepository }
   ],
   exports: [
+    QuizSubmissionCommand,
     CourseActivityProgressQuery,
     MasteryApplicationService,
     LearningProgressQuery,

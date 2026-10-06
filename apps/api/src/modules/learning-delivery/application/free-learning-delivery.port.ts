@@ -28,7 +28,8 @@ export abstract class FreeLearningDeliveryPort {
   abstract ownEnrollment(
     tx: DatabaseTransaction,
     route: FreeLearningRoute,
-    userId: string
+    userId: string,
+    lock?: boolean
   ): Promise<Enrollment | null>;
   abstract enrollSelf(
     tx: DatabaseTransaction,

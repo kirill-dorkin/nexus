@@ -28,6 +28,12 @@ export function LearnerEntry({
     [reload, setReload] = useState(0),
     [loading, setLoading] = useState(true);
   useEffect(() => {
+    const refresh = () => setReload((x) => x + 1);
+    window.addEventListener("learning-progress-changed", refresh);
+    return () =>
+      window.removeEventListener("learning-progress-changed", refresh);
+  }, []);
+  useEffect(() => {
     const controller = new AbortController();
     setLoading(true);
     setLearning(null);

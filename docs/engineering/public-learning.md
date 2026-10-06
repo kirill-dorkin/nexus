@@ -63,3 +63,13 @@ pnpm test:integration apps/api/src/free-learner-entry-http.integration.test.ts
 ```
 
 The controlled enrollment outbox failure is an intentional rollback assertion.
+
+## Deterministic quiz checks (ADR-0056)
+
+`POST /v1/me/learning/:organizationSlug/:offeringSlug/quiz/:activitySlug/check` uses the existing exact-origin HttpOnly session. The strict body is `{attemptKey: UUID, answer: {type, optionId|optionIds|text}}`; the discriminated answer type must match the exact published ActivityVersion. Active own free Enrollment and current gates are revalidated before work and raw-result commits. The Activity must be referenced by the pinned Lesson structure. An attemptKey is never actor/tenant/outcome authority.
+
+Progress commits a normal immutable Attempt and Submission with existing journal/outbox events. Validation computes quiz.*@1 from a server-only Content definition, commits raw result/event separately, then invokes the existing idempotent normalized Evidence/Mastery sink in a third transaction. Same-key retries preserve immutable work and repair raw/Evidence operational failures; changed answers need a fresh Attempt. Multi-select order is immaterial but duplicate/unknown options are rejected. Short text is NFC → trim → optional locale-independent lowercase. All checks are exact and binary, with no fuzzy matching, learner-code execution or partial credit.
+
+The HTTP result exposes only attemptNumber, passed/failed, score 0/1 and fixed safe guidance. Private answer config and author explanation never enter the result, Evidence, public reads, Web props, HTML, storage or routine logs. Computed authority cannot be invoked through manual result recording. No new grants, tables, migrations or event names are added. Task progress is refreshed by authenticated reads and never completes Enrollment automatically.
+
+Focused verification: `pnpm test:integration apps/api/src/learner-quiz-http.integration.test.ts`. Controlled submission/result outbox and Evidence failures are intentional recovery assertions. Unit contracts cover caller authority and pinned deterministic semantics; production Chrome covers labelled mobile form, focus, safe feedback, same-key ambiguous retry/new learner try and progress refresh through the existing non-canonical UX seam. Slice F will verify the complete canonical PostgreSQL learner path in the browser.

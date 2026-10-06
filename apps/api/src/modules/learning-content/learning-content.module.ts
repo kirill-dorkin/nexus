@@ -1,3 +1,5 @@
+import { QuizValidationContentQuery } from "./application/quiz-validation-content.query";
+import { PostgresQuizValidationContentQuery } from "./infrastructure/postgres-quiz-validation-content.query";
 import { LearnerCourseContentQuery } from "./application/learner-course-content.query";
 import { PostgresLearnerCourseContentQuery } from "./infrastructure/postgres-learner-course-content.query";
 import { PublicLearningContentQuery } from "./application/public-learning-content.query";
@@ -26,6 +28,7 @@ import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
   imports: [IdentityModule, AuthorizationModule, OutboxModule],
   controllers: [LearningContentController, SkillsController, CourseManifestController],
   providers: [
+    { provide: QuizValidationContentQuery, useClass: PostgresQuizValidationContentQuery },
     { provide: LearnerCourseContentQuery, useClass: PostgresLearnerCourseContentQuery },
     { provide: PublicLearningContentQuery, useClass: PostgresPublicLearningContentQuery },
     LearningContentApplicationService,
@@ -39,6 +42,7 @@ import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
     { provide: LearningGraphRepository, useClass: PostgresLearningGraphRepository }
   ],
   exports: [
+    QuizValidationContentQuery,
     LearnerCourseContentQuery,
     PublicLearningContentQuery, LearningContentApplicationService, LearningGraphApplicationService, LearningContentQuery, GuidedBuildContentQuery]
 })

@@ -1,3 +1,4 @@
+import { QuizValidationApplicationService } from "./application/quiz-validation.service";
 import { Module } from "@nestjs/common";
 
 import { OutboxModule } from "../../outbox/outbox.module";
@@ -28,6 +29,7 @@ import { LearningValidationController } from "./learning-validation.controller";
   ],
   controllers: [LearningValidationController, GraderJobController],
   providers: [
+    QuizValidationApplicationService,
     ValidationApplicationService,
     GraderJobApplicationService,
     ValidatorRegistry,
@@ -41,6 +43,6 @@ import { LearningValidationController } from "./learning-validation.controller";
       useClass: PostgresGraderJobRepository
     }
   ],
-  exports: [ValidationApplicationService, GraderJobApplicationService]
+  exports: [QuizValidationApplicationService, ValidationApplicationService, GraderJobApplicationService]
 })
 export class LearningValidationModule {}
