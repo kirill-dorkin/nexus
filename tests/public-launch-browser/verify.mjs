@@ -957,11 +957,13 @@ async function verifyCanonicalLearner(cdp, authored) {
     await navigate(cdp, `${WEB_ORIGIN}${next}`);
     await waitForExpression(
       cdp,
-      "document.querySelector('input[type=\"checkbox\"]')!==null",
+      "document.querySelector('input[type=\"checkbox\"]')!==null && document.body.innerText.includes('Задания курса: 1 из 2')",
       "canonical next lesson"
     );
     // Multi-choice exact set: missing C is wrong, then a fresh Attempt passes A+C.
+    console.log("[browser-launch] canonical single retry and next required Lesson passed");
     await evaluate(cdp, "document.querySelector('input[value=\"a\"]').click()");
+    await waitForExpression(cdp, '!document.querySelectorAll("form")[0].querySelector(\'button[type="submit"]\').disabled', "hydrated multi answer ready");
     await clickText(cdp, "Проверить и сохранить ответ");
     await waitForExpression(
       cdp,
@@ -984,6 +986,7 @@ async function verifyCanonicalLearner(cdp, authored) {
       "Optional practice fabricated required completion."
     );
     await fill(cdp, 'input[autocomplete="off"]', "wrong");
+    await waitForExpression(cdp, '!document.querySelectorAll("form")[1].querySelector(\'button[type="submit"]\').disabled', "short answer ready");
     await evaluate(
       cdp,
       'document.querySelectorAll("form")[1].querySelector(\'button[type="submit"]\').click()'
