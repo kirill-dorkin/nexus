@@ -28,6 +28,9 @@ let purchaseReads = 0;
 let checkoutIdempotencyKey = null;
 const learningActors = new Map();
 let learningFixturePassed = false;
+const quizFixtureTries = new Map();
+const quizFixtureRequests = [];
+let quizAmbiguousOnce = true;
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -263,6 +266,22 @@ async function startFakeApi() {
           const body = await readJson(request);
           assert(Object.keys(body).length === 0, "UX supplied actor/tenant/enrollment authority.");
           state.enrolled = true;
+        }
+        if (request.method === "POST" && url.pathname.endsWith("/quiz/components-check/check")) {
+          assert(state.member && state.enrolled, "Quiz UX bypassed explicit entry.");
+          const body = await readJson(request);
+          assert(Object.keys(body).sort().join(",") === "answer,attemptKey", "Quiz caller supplied result authority.");
+          assert(body.answer.type === "quiz.single_choice" && Object.keys(body.answer).sort().join(",") === "optionId,type", "Quiz answer contains result authority.");
+          quizFixtureRequests.push(body.attemptKey);
+          const key = `${actor}:${body.attemptKey}`;
+          const existing = quizFixtureTries.get(key);
+          if (existing) assert(existing.answer === body.answer.optionId, "Ambiguous retry changed immutable answer.");
+          const attemptNumber = existing?.attemptNumber ?? quizFixtureTries.size + 1;
+          quizFixtureTries.set(key, { answer:body.answer.optionId,attemptNumber });
+          if (quizAmbiguousOnce) { quizAmbiguousOnce=false; sendJson(response,500,{message:"Ambiguous UX fixture result"},origin);return; }
+          const passed = body.answer.optionId === "cpu";
+          learningFixturePassed ||= passed; // Non-canonical presentation seam only.
+          sendJson(response,200,{attemptNumber,outcome:passed?"passed":"failed",score:passed?1:0,feedback:"Проверьте условие задания."},origin);return;
         }
         const learning = { ...learningCourse,
           entry: { customerEntryPolicy: "open", membershipStatus: state.member ? "active" : "none", enrollmentStatus: state.enrolled ? "active" : null },
@@ -867,7 +886,27 @@ async function runBrowserVerification(cdp) {
   await accessibilityAudit(cdp, "my learning");
   const continueHref = await evaluate(cdp, '[...document.querySelectorAll("a")].find(a=>a.textContent === "Продолжить").getAttribute("href")');
   assert(continueHref === learningReturn, "Continue changed the exact learning address.");
-  learningFixturePassed = true; // Presentation proof only; canonical Evidence is checked in PostgreSQL tests.
+  await navigate(cdp, `${WEB_ORIGIN}${learningReturn}`);
+  await waitForExpression(cdp, 'document.querySelector(\'input[value="ram"]\') !== null', "quiz form");
+  await tabUntil(cdp, 'document.activeElement?.matches(\'input[type="radio"]\') === true', "quiz radio", 24);
+  const quizFocus = await evaluate(cdp, '(() => {const s=getComputedStyle(document.activeElement);return document.activeElement.matches(":focus-visible") && parseFloat(s.outlineWidth)>=2;})()');
+  assert(quizFocus, "Quiz radio has no visible keyboard focus.");
+  await evaluate(cdp, 'document.querySelector(\'input[value="ram"]\').click()');
+  await clickText(cdp, "Проверить и сохранить ответ");
+  await waitForExpression(cdp, 'document.body.innerText.includes("Повторить отправку ответа")', "ambiguous quiz retry");
+  assert(await evaluate(cdp, 'document.querySelector(\'input[value="ram"]\').matches(":disabled")'), "Pending answer can change during ambiguous retry.");
+  await clickText(cdp, "Повторить отправку ответа");
+  await waitForExpression(cdp, 'document.body.innerText.includes("Ответ пока неверный")', "failed quiz feedback");
+  assert(quizFixtureRequests[0] === quizFixtureRequests[1], "Ambiguous retry created a different try.");
+  await accessibilityAudit(cdp, "failed quiz feedback");
+  await clickText(cdp, "Попробовать ещё раз");
+  await evaluate(cdp, 'document.querySelector(\'input[value="cpu"]\').click()');
+  await clickText(cdp, "Проверить и сохранить ответ");
+  await waitForExpression(cdp, 'document.body.innerText.includes("✓ Правильно") && document.body.innerText.includes("Все обязательные задания курса выполнены")', "passed quiz and refreshed progress");
+  assert(quizFixtureRequests[2] !== quizFixtureRequests[1] && quizFixtureTries.size === 2, "Explicit retry did not start a new try.");
+  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Quiz overflows mobile.");
+  await accessibilityAudit(cdp, "passed quiz feedback");
+  console.log("[browser-launch] quiz feedback, same-key network retry and new learner try passed");
   await navigate(cdp, `${WEB_ORIGIN}/me/learning`);
   await waitForExpression(cdp, 'document.body.innerText.includes("Все обязательные задания курса выполнены")', "derived progress after reload");
   assert(!(await evaluate(cdp, 'document.body.innerText.includes("Обучение завершено.")')), "UI fabricated Enrollment.completed from the task percentage.");

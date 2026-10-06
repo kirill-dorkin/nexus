@@ -408,3 +408,56 @@ button.button {
   cursor: pointer;
   text-align: left;
 }
+
+.quiz {
+  display: grid;
+  gap: 1rem;
+}
+.quiz fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.quiz legend {
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 0.75rem;
+}
+.quizOption {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.75rem;
+  border: 1px solid var(--border-default);
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+.quizOption input {
+  flex-shrink: 0;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin: 0.15rem 0 0;
+  accent-color: var(--action-primary);
+}
+.quizOption span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.quiz input[type="text"],
+.quiz input:not([type]) {
+  width: 100%;
+  min-width: 0;
+  padding: 0.75rem;
+  font: inherit;
+  border: 1px solid var(--border-default);
+  border-radius: 0.5rem;
+  background: var(--surface-default);
+  color: inherit;
+}
+.quiz input:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}

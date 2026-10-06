@@ -6,7 +6,7 @@
 | Organizations | tenants, memberships, capabilities, policies | curriculum |
 | Authorization | permissions, role bindings, relation checks | authentication |
 | Commerce | products, purchases, entitlement grants | learning progress |
-| Learner Learning | stateless authenticated own free-learning composition, derived task completion policy and safe learner contracts | canonical Membership/Enrollment/curriculum, normalized Evidence, Mastery, readiness, quiz execution |
+| Learner Learning | stateless authenticated own free-learning composition, derived task completion policy, own free quiz orchestration and safe learner contracts | canonical Membership/Enrollment/curriculum, normalized Evidence, Mastery, readiness, validator execution |
 | Public Learning | stateless anonymous Organization + Delivery + Content composition and strict published free course/Lesson read contracts | canonical curriculum/visibility, Membership, Enrollment, quiz validation, progress |
 | Public Catalog | stateless unauthenticated composition of safe Organization + Commerce + Delivery read contracts | canonical Product/Price/Offering state, onboarding, checkout, entitlements, enrollments |
 | Catalog/Curriculum | programs/courses/modules/lessons + versions | delivery state |
@@ -15,7 +15,7 @@
 | Delivery | offerings, runs, enrollments, groups, sessions, assignments | content authoring |
 | Activities | activity definitions/versions, attempts | mastery decisions |
 | Assessment | questions, assessments, rubrics, scoring definitions | delivery scheduling |
-| Validation | versioned validator registry semantics, durable grader-job intent/provenance + processing state, immutable raw ValidationResult attribution | normalized Evidence, Mastery, untrusted sandbox execution |
+| Validation | versioned validator registry and deterministic protected quiz evaluation, durable grader-job intent/provenance + processing state, immutable raw ValidationResult attribution | normalized Evidence, Mastery, untrusted sandbox execution |
 | Grader Gateway | versioned grader admission protocol, server-owned executable profiles, sandbox-provider control boundary | learner/session authorization, durable grader-job/ValidationResult/Evidence/Mastery state, production DB access, direct in-process learner-code execution |
 | Learning Guidance | Attempt-scoped Guided Build assistance state and protected-content disclosure policy | immutable curriculum authoring, Evidence, Mastery, grader execution |
 | Learning History | canonical append-only learner LearningEvent journal and history read contract | integration outbox, telemetry, mutable Mastery projections |

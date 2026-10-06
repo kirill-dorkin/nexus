@@ -46,3 +46,6 @@ ADR-0054 public reads require explicit Offering visibility and the active/open/f
 ## Free learner entry
 
 ADR-0055 preserves API-owned session authority and exact-Origin writes. Role-less own free enrollment consumes only public slugs and an empty strict command, with active identity/membership and locked public/open/self-paced/membership/published gates. It cannot create Membership, RBAC role or Entitlement. Narrow authenticated actor-bound Delivery locator reads do not widen ordinary RLS. Own progress omits private curriculum/result payloads and is derived from exact-enrollment validation Evidence; no percentage grants canonical completion. Learning login return targets are allowlisted local paths, never arbitrary redirects.
+
+
+Deterministic free quiz checks (ADR-0056) use principal-owned active Membership/Enrollment relationships and locked current public free gates, never caller outcomes or validation.record grants. Protected Content answers/explanations remain server-only; raw result/Evidence/feedback are explicit allowlists. Attempt keys are immutable retry locators scoped by own exact Enrollment/ActivityVersion, not authority. Separate work/raw/normalization commits preserve operational failure semantics and idempotent recovery. No SQL privileges or grader activation are added.

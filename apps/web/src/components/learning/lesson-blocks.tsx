@@ -1,10 +1,15 @@
+import { QuizForm } from "./quiz-form";
 import type { PublicLearningLesson } from "@platform/contracts";
 import { SafeMarkdown } from "./safe-markdown";
 import styles from "./learning.module.css";
 export function LessonBlocks({
-  lesson
+  lesson,
+  organizationSlug,
+  offeringSlug
 }: {
   lesson: PublicLearningLesson["lesson"];
+  organizationSlug: string;
+  offeringSlug: string;
 }) {
   return (
     <div className={styles.blocks}>
@@ -43,16 +48,13 @@ export function LessonBlocks({
               <SafeMarkdown>{block.activity.instructions}</SafeMarkdown>
             ) : null}
             <SafeMarkdown>{block.activity.question}</SafeMarkdown>
-            {block.activity.type !== "quiz.short_text" ? (
-              <ul className={styles.options}>
-                {block.activity.options.map((option) => (
-                  <li key={option.id}>{option.text}</li>
-                ))}
-              </ul>
-            ) : null}
-            <p className={styles.muted}>
-              Обдумайте свой ответ. Проверка заданий будет доступна позже.
-            </p>
+            <QuizForm
+              key={`${organizationSlug}/${offeringSlug}/${lesson.slug}/${block.activity.slug}`}
+              activity={block.activity}
+              organizationSlug={organizationSlug}
+              offeringSlug={offeringSlug}
+              lessonSlug={lesson.slug}
+            />
           </section>
         );
       })}

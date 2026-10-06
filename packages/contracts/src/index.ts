@@ -35,3 +35,5 @@ export * from "./recommendations";
 
 export * from "./public-learning";
 export * from "./learner-learning";
+
+export * from "./quiz-check";

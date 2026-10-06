@@ -43,7 +43,11 @@ export default async function LessonPage({ params }: Props) {
         <h1>{course.lesson.title}</h1>
         <p className={styles.lead}>{course.lesson.summary}</p>
       </header>
-      <LessonBlocks lesson={course.lesson} />
+      <LessonBlocks
+        lesson={course.lesson}
+        organizationSlug={organizationSlug}
+        offeringSlug={offeringSlug}
+      />
       <LearnerEntry
         organizationSlug={organizationSlug}
         offeringSlug={offeringSlug}

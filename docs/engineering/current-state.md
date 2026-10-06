@@ -23,7 +23,7 @@ F9 now establishes the first complete public paid path, its production operation
 
 Production learner-code execution remains disabled. F7 repository runner/profile/sandbox artifacts do not activate production execution; a separate deployment change still requires the exact production image digest and a green real-cluster verification record.
 
-Latest architectural decision at this checkpoint: ADR-0055 (self-only free learner entry and derived course progress). F9.10 and F9.11 add verification infrastructure and no new domain/security authority decision.
+Latest architectural decision at this checkpoint: ADR-0056 (deterministic learner-owned quiz checks). F9.10 and F9.11 add verification infrastructure and no new domain/security authority decision.
 
 Latest ordered migration at this checkpoint: `000042_free_learner_entry.sql`.
 
@@ -41,7 +41,9 @@ ADR-0054 adds explicit default-private Delivery visibility, safe anonymous publi
 
 ADR-0055 adds authenticated role-less self-only free Enrollment after explicit Organization entry, safe auth return-to, paginated my-learning reads and required-activity-passes@1 derived progress from exact own Enrollment/ActivityVersion normalized validation Evidence. Writes revalidate and lock current gates; duplicate entry emits no extra enrollment.created event. A task percentage does not complete Enrollment or alter Mastery/readiness.
 
-This is public reading, authoring and free learner entry, not a launched learning product. Quiz execution/registry implementations, Studio, complete real-session learner browser verification and production deployment remain. The maintained launch sequence is `docs/roadmap/mvp-launch.md`; the next coherent slice is D: versioned deterministic quiz checks through the existing Submission/ValidationResult/Evidence/Mastery loop, including role-less learner-owned authority. Production grader activation remains independent.
+ADR-0056 registers three trusted deterministic quiz v1 definitions and adds principal-owned exact-release check authority for role-less free learners. Immutable Attempt/Submission work, computed ValidationResult and normalized Evidence/Mastery commit in their established separate stages; same-key replay repairs incomplete stages, while explicit retry starts a new Attempt. Strict safe feedback exposes no private answers/explanations, and derived task progress refreshes after checking. No migration or grader activation is introduced.
+
+This is public reading, authoring, free learner entry and non-code quiz checking, not a launched learning product. Studio, complete real-session learner browser verification and production deployment remain. The maintained launch sequence is `docs/roadmap/mvp-launch.md`; the next coherent slice is E: Studio manual/JSON parity over the same canonical draft. Production grader activation remains independent.
 
 ### F0-F3 — architecture, tenancy, immutable curriculum, Delivery: established
 
@@ -239,9 +241,9 @@ Do not remove these without an explicit cleanup slice/migration and proven calle
 
 ## Next recommended slice
 
-**Deterministic non-code checks after free learner entry.**
+**Studio authoring parity after deterministic quiz checking.**
 
-The selected product frontier remains the first free public learning launch in `docs/roadmap/mvp-launch.md`. Slice C reuses the existing API session and explicit customerEntryPolicy, adds self-only role-less free Enrollment and derived course task progress, with safe local auth return-to and my-learning Web surfaces. Membership, Enrollment and canonical completion remain separate. The next coherent slice is D: versioned deterministic quiz registry implementations and learner-owned Submission checking, including the explicit authority path for these role-less customer members. Caller-owned outcomes, private answer disclosure and production grader activation remain forbidden.
+The selected product frontier remains the first free public learning launch in `docs/roadmap/mvp-launch.md`. Slice D closes the deterministic quiz loop through canonical Submission, ValidationResult, Evidence and Mastery with protected answer definitions and learner-owned role-less authority. The next coherent slice is E: authorized manual forms, JSON preview/apply/export, course preview and publication over the same canonical draft. Full real-session canonical learner browser verification and deployed HTTPS smoke remain F. Production grader activation remains independently gated.
 
 Candidate areas that remain intentionally **unselected** at this checkpoint include:
 

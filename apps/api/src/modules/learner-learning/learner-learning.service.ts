@@ -6,7 +6,9 @@ import {
 import {
   learnerLearningCourseSchema,
   ownLearningListSchema,
-  type LearnerLearningCourse
+  type LearnerLearningCourse,
+  type CheckQuizRequest,
+  quizCheckResultSchema
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 import { DatabaseService } from "../../database/database.service";
@@ -17,6 +19,9 @@ import { FreeLearningDeliveryPort } from "../learning-delivery/application/free-
 import { PublicLearningContentQuery } from "../learning-content/application/public-learning-content.query";
 import { LearnerCourseContentQuery } from "../learning-content/application/learner-course-content.query";
 import { CourseActivityProgressQuery } from "../learning-progress/application/course-activity-progress.query";
+import { QuizSubmissionCommand } from "../learning-progress/application/quiz-submission.command";
+import { LearningContentQuery } from "../learning-content/application/learning-content.query";
+import { QuizValidationApplicationService } from "../learning-validation/application/quiz-validation.service";
 import { deriveCourseProgress } from "./domain/course-progress.policy";
 const snapshot = { readOnly: true, isolationLevel: "repeatable_read" as const };
 @Injectable()
@@ -29,8 +34,144 @@ export class LearnerLearningService {
     private readonly delivery: FreeLearningDeliveryPort,
     private readonly publicContent: PublicLearningContentQuery,
     private readonly content: LearnerCourseContentQuery,
-    private readonly progress: CourseActivityProgressQuery
+    private readonly progress: CourseActivityProgressQuery,
+    private readonly quizSubmissions: QuizSubmissionCommand,
+    private readonly activityContent: LearningContentQuery,
+    private readonly quiz: QuizValidationApplicationService
   ) {}
+  async checkQuiz(
+    organizationSlug: string,
+    offeringSlug: string,
+    activitySlug: string,
+    command: CheckQuizRequest
+  ) {
+    const { userId } = this.requestContext.requirePrincipal();
+    const answer =
+      command.answer.type === "quiz.multiple_choice"
+        ? { ...command.answer, optionIds: [...command.answer.optionIds].sort() }
+        : command.answer;
+    try {
+      const submission = await this.database.userTransaction(
+        { userId },
+        async (tx) => {
+          const target = await this.quizTarget(
+            tx,
+            userId,
+            organizationSlug,
+            offeringSlug,
+            activitySlug
+          );
+          await this.quiz.validateAnswer(
+            tx,
+            target.route.organizationId,
+            target.activity,
+            answer
+          );
+          return this.quizSubmissions.commitOwn(
+            tx,
+            target.route.organizationId,
+            target.enrollment.id,
+            target.activity,
+            command.attemptKey,
+            answer
+          );
+        }
+      );
+      const recorded = await this.database.userTransaction(
+        { userId },
+        async (tx) => {
+          const target = await this.quizTarget(
+            tx,
+            userId,
+            organizationSlug,
+            offeringSlug,
+            activitySlug
+          );
+          return this.quiz.recordOwn(
+            tx,
+            target.route.organizationId,
+            target.enrollment.id,
+            target.activity.id,
+            submission.id
+          );
+        }
+      );
+      await this.quiz.normalize(recorded);
+      return quizCheckResultSchema.parse({
+        attemptNumber: recorded.attemptNumber,
+        outcome: recorded.result.outcome,
+        score: recorded.result.score,
+        feedback:
+          recorded.result.outcome === "passed"
+            ? "Ответ соответствует условию задания."
+            : "Вернитесь к конспекту и внимательно проверьте условие задания."
+      });
+    } catch (error) {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "code" in error &&
+        ["23505", "40001", "40P01"].includes(String(error.code))
+      )
+        throw new ConflictException(
+          "Attempt key or learning state changed. Retry the same action."
+        );
+      throw error;
+    }
+  }
+  private async quizTarget(
+    tx: DatabaseTransaction,
+    userId: string,
+    organizationSlug: string,
+    offeringSlug: string,
+    activitySlug: string
+  ) {
+    await this.identity.requireActiveUser(tx, userId, true);
+    const route = await this.delivery.resolve(
+      tx,
+      organizationSlug,
+      offeringSlug
+    );
+    if (!route) throw new NotFoundException("Quiz not found.");
+    await tx.client.query("SELECT set_config('app.organization_id',$1,true)", [
+      route.organizationId
+    ]);
+    const org = await this.organizations.read(
+      tx,
+      route.organizationId,
+      userId,
+      true
+    );
+    if (!org) throw new NotFoundException("Quiz not found.");
+    if (org.membershipStatus !== "active")
+      throw new ConflictException("Active membership is required.");
+    if (!(await this.delivery.offering(tx, route, true)))
+      throw new NotFoundException("Quiz not found.");
+    const lessons = await this.content.lessons(
+      tx,
+      route.organizationId,
+      route.courseVersionId,
+      true
+    );
+    const ref = lessons
+      ?.flatMap((l) => l.activities)
+      .find((a) => a.slug === activitySlug);
+    if (!ref) throw new NotFoundException("Quiz not found.");
+    const enrollment = await this.delivery.ownEnrollment(
+      tx,
+      route,
+      userId,
+      true
+    );
+    if (!enrollment || enrollment.status !== "active")
+      throw new ConflictException("Active own enrollment is required.");
+    const activity = await this.activityContent.requireActivityVersionById(
+      tx,
+      route.organizationId,
+      ref.activityVersionId
+    );
+    return { route, enrollment, activity };
+  }
   async course(organizationSlug: string, offeringSlug: string) {
     const { userId } = this.requestContext.requirePrincipal();
     return this.database.userTransaction(
