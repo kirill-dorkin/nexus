@@ -5,10 +5,10 @@ import {
   type PublicLearningCourse
 } from "@platform/contracts";
 import { notFound } from "next/navigation";
-import { publicApiUrl } from "./public-api";
+import { serverApiUrl } from "./server-api";
 
 async function read(path: string) {
-  const response = await fetch(publicApiUrl(path), {
+  const response = await fetch(serverApiUrl(path), {
     cache: "no-store",
     signal: AbortSignal.timeout(10000)
   });

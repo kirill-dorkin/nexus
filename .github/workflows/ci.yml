@@ -127,6 +127,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Verify pinned Vercel CLI installation
+        run: pnpm dlx --allow-build=esbuild vercel@62.7.0 --version
+
       - name: Bootstrap database roles
         run: >-
           docker run --rm --network host

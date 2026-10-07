@@ -4,6 +4,11 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "env": [
+        "NEXT_PUBLIC_API_ORIGIN",
+        "NEXT_PUBLIC_PADDLE_CLIENT_TOKEN",
+        "NEXT_PUBLIC_PADDLE_ENVIRONMENT"
+      ],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "dev": {
