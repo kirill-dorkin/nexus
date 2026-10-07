@@ -31,13 +31,21 @@ const urls = Object.fromEntries(
   })
 );
 const client = new Client({ connectionString: adminUrl.href });
+const providerName = `${prefix}_provider_admin`;
+const providerUrl = new URL(adminUrl);
+providerUrl.username = providerName;
+providerUrl.password = randomBytes(32).toString("base64url");
+const provider = new Client({ connectionString: providerUrl.href });
 let connected = false;
+let providerConnected = false;
 
 afterAll(async () => {
   if (!connected) return;
+  if (providerConnected) await provider.end();
   await client.query(`DROP DATABASE IF EXISTS "${database}" WITH (FORCE)`);
   for (const name of Object.values(roles))
     await client.query(`DROP ROLE IF EXISTS "${name}"`);
+  await client.query(`DROP ROLE IF EXISTS "${providerName}"`);
   await client.end();
 });
 
@@ -45,14 +53,18 @@ describe("one-time managed PostgreSQL role bootstrap", () => {
   it("owns a new database with restricted roles, guards adoption and resumes without credential rotation", async () => {
     await client.connect();
     connected = true;
-    await bootstrapRoles({ client, urls, database, roles });
+    await client.query(`CREATE ROLE "${providerName}" LOGIN PASSWORD '${providerUrl.password}'
+      NOSUPERUSER CREATEDB CREATEROLE INHERIT NOBYPASSRLS NOREPLICATION`);
+    await provider.connect();
+    providerConnected = true;
+    const bootstrap = (resume = false) =>
+      bootstrapRoles({ client: provider, urls, database, roles, resume });
+    await bootstrap();
     expect((await assertRestrictedRoles(client, roles)).sort()).toEqual(
       Object.values(roles).sort()
     );
-    await expect(
-      bootstrapRoles({ client, urls, database, roles })
-    ).rejects.toThrow("already exist");
-    await bootstrapRoles({ client, urls, database, roles, resume: true });
+    await expect(bootstrap()).rejects.toThrow("already exist");
+    await bootstrap(true);
     const migrator = new Client({ connectionString: urls.migrator });
     await migrator.connect();
     try {
@@ -85,8 +97,6 @@ describe("one-time managed PostgreSQL role bootstrap", () => {
     }
     // Checkpoint resumption fails closed if an operator grants a runtime role broader access.
     await client.query(`ALTER ROLE "${roles.app}" CREATEDB`);
-    await expect(
-      bootstrapRoles({ client, urls, database, roles, resume: true })
-    ).rejects.toThrow("Unsafe privileges");
+    await expect(bootstrap(true)).rejects.toThrow("Unsafe privileges");
   });
 });
