@@ -248,6 +248,18 @@ export function Checkbox({
     </label>
   );
 }
+export function Radio({
+  label,
+  className,
+  ...props
+}: Omit<ComponentPropsWithRef<"input">, "type"> & { label: ReactNode }) {
+  return (
+    <label className={cx("ui-choice", className)}>
+      <input {...props} type="radio" />
+      <span>{label}</span>
+    </label>
+  );
+}
 export function RadioGroup({
   legend,
   name,
@@ -265,15 +277,13 @@ export function RadioGroup({
     <fieldset className="ui-radio-group" disabled={disabled}>
       <legend className="ui-label">{legend}</legend>
       {options.map((option) => (
-        <label className="ui-choice" key={option.value}>
-          <input
-            type="radio"
-            name={name}
-            value={option.value}
-            defaultChecked={option.value === defaultValue}
-          />
-          <span>{option.label}</span>
-        </label>
+        <Radio
+          key={option.value}
+          name={name}
+          value={option.value}
+          defaultChecked={option.value === defaultValue}
+          label={option.label}
+        />
       ))}
     </fieldset>
   );

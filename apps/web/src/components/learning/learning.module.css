@@ -246,7 +246,7 @@
   color: var(--text-secondary);
 }
 .markdown a {
-  color: var(--action-primary);
+  color: var(--text-accent);
   text-underline-offset: 3px;
 }
 .options {

@@ -1,3 +1,4 @@
+import { Badge, Heading, Inline, Stack, Surface } from "@platform/ui";
 import { QuizForm } from "./quiz-form";
 import type { PublicLearningLesson } from "@platform/contracts";
 import { SafeMarkdown } from "./safe-markdown";
@@ -38,23 +39,37 @@ export function LessonBlocks({
             </section>
           );
         return (
-          <section key={index} className={styles.practice}>
-            <p className={styles.eyebrow}>
-              {block.kind === "homework" ? "Домашнее задание" : "Практика"} ·{" "}
-              {block.required ? "Обязательное задание" : "Для закрепления"}
-            </p>
-            <h2>{block.title ?? block.activity.title}</h2>
-            {block.activity.instructions ? (
-              <SafeMarkdown>{block.activity.instructions}</SafeMarkdown>
-            ) : null}
-            <SafeMarkdown>{block.activity.question}</SafeMarkdown>
-            <QuizForm
-              key={`${organizationSlug}/${offeringSlug}/${lesson.slug}/${block.activity.slug}`}
-              activity={block.activity}
-              organizationSlug={organizationSlug}
-              offeringSlug={offeringSlug}
-              lessonSlug={lesson.slug}
-            />
+          <section key={index}>
+            <Surface appearance="solid">
+              <Stack gap="lg">
+                <Inline>
+                  <Badge tone="accent">
+                    {block.kind === "homework"
+                      ? "Домашнее задание"
+                      : "Практика"}
+                  </Badge>
+                  <Badge>
+                    {block.required
+                      ? "Обязательное задание"
+                      : "Для закрепления"}
+                  </Badge>
+                </Inline>
+                <Heading level={2} size="card">
+                  {block.title ?? block.activity.title}
+                </Heading>
+                {block.activity.instructions ? (
+                  <SafeMarkdown>{block.activity.instructions}</SafeMarkdown>
+                ) : null}
+                <SafeMarkdown>{block.activity.question}</SafeMarkdown>
+                <QuizForm
+                  key={`${organizationSlug}/${offeringSlug}/${lesson.slug}/${block.activity.slug}`}
+                  activity={block.activity}
+                  organizationSlug={organizationSlug}
+                  offeringSlug={offeringSlug}
+                  lessonSlug={lesson.slug}
+                />
+              </Stack>
+            </Surface>
           </section>
         );
       })}

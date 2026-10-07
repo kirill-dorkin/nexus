@@ -21,6 +21,7 @@ import {
   Inline,
   Input,
   Progress,
+  Radio,
   RadioGroup,
   Select,
   Skeleton,
@@ -264,6 +265,11 @@ export function ComponentGallery() {
                   <Checkbox
                     label="Показывать подсказки"
                     name="hints"
+                    defaultChecked
+                  />
+                  <Radio
+                    label="Отдельный вариант выбора"
+                    name="single-example"
                     defaultChecked
                   />
                   <RadioGroup

@@ -7,7 +7,10 @@ import {
   lessonUrl,
   loadLearningLesson
 } from "../../../../../lib/public-learning";
-import styles from "../../../../../components/learning/learning.module.css";
+import { Heading, Surface } from "@platform/ui";
+import { LearningPageHeading } from "../../../../../components/learning/learning-page-heading";
+import { LessonOutline } from "../../../../../components/learning/lesson-outline";
+import styles from "../../../../../components/learning/flow.module.css";
 export const dynamic = "force-dynamic";
 type Props = {
   params: Promise<{
@@ -35,38 +38,54 @@ export default async function LessonPage({ params }: Props) {
         <Link href={courseUrl(course)}>{course.course.title}</Link>
         <span aria-current="page">Урок {index + 1}</span>
       </nav>
-      <header className={styles.lessonHeading}>
-        <p className={styles.eyebrow}>
-          Урок {index + 1} из {course.course.lessons.length} ·{" "}
-          {course.lesson.durationMinutes} мин
-        </p>
-        <h1>{course.lesson.title}</h1>
-        <p className={styles.lead}>{course.lesson.summary}</p>
-      </header>
-      <LessonBlocks
-        lesson={course.lesson}
-        organizationSlug={organizationSlug}
-        offeringSlug={offeringSlug}
+      <LearningPageHeading
+        eyebrow={`Урок ${index + 1} из ${course.course.lessons.length} · ${course.lesson.durationMinutes} мин`}
+        title={course.lesson.title}
+        description={course.lesson.summary}
       />
-      <LearnerEntry
-        organizationSlug={organizationSlug}
-        offeringSlug={offeringSlug}
-        lessonSlug={lessonSlug}
-      />
-      <nav className={styles.lessonNav} aria-label="Переход между уроками">
-        {previous ? (
-          <Link href={lessonUrl(course, previous.slug)}>
-            ← {previous.title}
-          </Link>
-        ) : (
-          <Link href={courseUrl(course)}>← Программа курса</Link>
-        )}
-        {next ? (
-          <Link href={lessonUrl(course, next.slug)}>{next.title} →</Link>
-        ) : (
-          <Link href={courseUrl(course)}>К программе курса →</Link>
-        )}
-      </nav>
+      <div className={styles.lessonLayout}>
+        <div className={styles.lessonMain}>
+          <LessonBlocks
+            lesson={course.lesson}
+            organizationSlug={organizationSlug}
+            offeringSlug={offeringSlug}
+          />
+          <nav className={styles.lessonNav} aria-label="Переход между уроками">
+            <Link
+              href={
+                previous ? lessonUrl(course, previous.slug) : courseUrl(course)
+              }
+            >
+              <span>← {previous ? "Предыдущий урок" : "Назад к курсу"}</span>
+              <strong>{previous?.title ?? "Программа курса"}</strong>
+            </Link>
+            <Link
+              href={next ? lessonUrl(course, next.slug) : courseUrl(course)}
+            >
+              <span>{next ? "Следующий урок" : "Вернуться к курсу"} →</span>
+              <strong>{next?.title ?? "К программе курса"}</strong>
+            </Link>
+          </nav>
+        </div>
+        <aside
+          className={styles.lessonAside}
+          aria-label="Программа и сохранённое обучение"
+        >
+          <Surface>
+            <Heading level={2} size="card">
+              Программа курса
+            </Heading>
+            <nav aria-label="Уроки курса">
+              <LessonOutline course={course} currentSlug={lessonSlug} />
+            </nav>
+          </Surface>
+          <LearnerEntry
+            organizationSlug={organizationSlug}
+            offeringSlug={offeringSlug}
+            lessonSlug={lessonSlug}
+          />
+        </aside>
+      </div>
     </LearningShell>
   );
 }

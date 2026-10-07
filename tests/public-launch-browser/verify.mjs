@@ -948,7 +948,7 @@ async function verifyCanonicalLearner(cdp, authored) {
     );
     const next = await evaluate(
       cdp,
-      '[...document.querySelectorAll("a")].find(a=>a.textContent==="Продолжить").getAttribute("href")'
+      '[...document.querySelectorAll("a")].find(a=>a.textContent?.trim()==="Продолжить").getAttribute("href")'
     );
     assert(
       next === `${courseRoute}/second`,
@@ -1194,9 +1194,10 @@ async function runBrowserVerification(cdp) {
     "public course"
   );
   await accessibilityAudit(cdp, "public course");
+  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Course outline overflows mobile.");
   await tabUntil(
     cdp,
-    'document.activeElement?.textContent === "Открыть первый урок"',
+    'document.activeElement?.textContent?.trim() === "Открыть первый урок"',
     "learning start link"
   );
   const courseFocus = await evaluate(
@@ -1225,6 +1226,8 @@ async function runBrowserVerification(cdp) {
     "lesson start navigation"
   );
   await accessibilityAudit(cdp, "public lesson");
+  const activeLesson = await evaluate(cdp, `document.querySelector('nav[aria-label="Уроки курса"] a[aria-current="page"]')?.getAttribute("href")`);
+  assert(activeLesson === "/learn/acme/computer-basics/introduction", "Outline lost the current Lesson address.");
   const lessonSafety = await evaluate(
     cdp,
     `({ xss: window.__lessonXss === true, unsafe: !!document.querySelector('main img,main script,main a[href^="javascript:"],main [onerror]'),
@@ -1245,7 +1248,7 @@ async function runBrowserVerification(cdp) {
   );
   await evaluate(
     cdp,
-    `[...document.querySelectorAll('a')].find(a=>a.textContent === 'Следующий урок →').click()`
+    `[...document.querySelectorAll('nav[aria-label="Переход между уроками"] a')].find(a=>a.querySelector('span')?.textContent.includes('Следующий урок')).click()`
   );
   await waitForExpression(
     cdp,
@@ -1254,7 +1257,7 @@ async function runBrowserVerification(cdp) {
   );
   await evaluate(
     cdp,
-    `[...document.querySelectorAll('a')].find(a=>a.textContent === '← Как устроен компьютер').click()`
+    `[...document.querySelectorAll('nav[aria-label="Переход между уроками"] a')].find(a=>a.querySelector('span')?.textContent.includes('Предыдущий урок')).click()`
   );
   await waitForExpression(
     cdp,
@@ -1303,6 +1306,8 @@ async function runBrowserVerification(cdp) {
   await fill(cdp, 'input[name="password"]', PASSWORD);
   await fill(cdp, 'input[name="displayName"]', "Learning Browser");
   await accessibilityAudit(cdp, "learning registration");
+  assert(await evaluate(cdp, `document.querySelector('input[name="password"]').getAttribute("aria-describedby") === "learning-password-hint" && document.querySelector("#learning-password-hint").innerText.includes("15")`), "Registration password hint is disconnected.");
+  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Learning registration overflows desktop.");
   await clickText(cdp, "Создать аккаунт");
   await waitForExpression(cdp, `location.pathname === ${JSON.stringify(learningReturn)} && document.body.innerText.includes("Вступить в организацию")`, "registration return to selected Lesson");
   assert([...learningActors.values()].every(a => !a.enrolled && !a.member), "Auth created Membership/Enrollment implicitly.");
@@ -1315,7 +1320,7 @@ async function runBrowserVerification(cdp) {
   await navigate(cdp, `${WEB_ORIGIN}/me/learning`);
   await waitForExpression(cdp, 'document.body.innerText.includes("Основы компьютера") && document.body.innerText.includes("Задания курса: 0 из 1")', "returning learner courses");
   await accessibilityAudit(cdp, "my learning");
-  const continueHref = await evaluate(cdp, '[...document.querySelectorAll("a")].find(a=>a.textContent === "Продолжить").getAttribute("href")');
+  const continueHref = await evaluate(cdp, '[...document.querySelectorAll("a")].find(a=>a.textContent?.trim() === "Продолжить").getAttribute("href")');
   assert(continueHref === learningReturn, "Continue changed the exact learning address.");
   await navigate(cdp, `${WEB_ORIGIN}${learningReturn}`);
   await waitForExpression(cdp, 'document.querySelector(\'input[value="ram"]\') !== null', "quiz form");

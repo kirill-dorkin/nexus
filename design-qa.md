@@ -1,8 +1,8 @@
 # UI foundation design QA
 
 - Source visual truth: the maintainer's ten supplied magenta/violet glass reference cards, inspected from the authorized attachment downloads. The first cover's sculpture, palette, borders and typography establish art direction; the cards are not application layouts to reproduce pixel-for-pixel.
-- Implementation: Web homepage, shared public shell/catalog and `/ui` component gallery.
-- Intended viewports: desktop 1440 × 900 and mobile 390 × 844, dark homepage; dark/light gallery; anonymous catalog state.
+- Implementation: Web homepage, shared public shell/catalog, `/ui` gallery, registration/login, course/Lesson outline/navigation, explicit entry, own learning and quiz/progress presentation.
+- Intended viewports: desktop 1440 × 900 and mobile 390 × 844; dark product pages, dark/light gallery; anonymous/loading/empty/error plus enrolled quiz/progress states.
 - Implementation screenshot path: unavailable.
 - Density normalization and combined visual comparison: not performed; no browser-rendered implementation capture is available.
 
@@ -20,7 +20,8 @@ Browser navigation to the local implementation was blocked while browser credent
 
 ## Verification scope
 
-Seven UI semantic/contrast tests and the additional catalog failure/empty-state test passed; Web/UI typecheck passed. Production Next build passed before the final preload/config/test adjustment; exact-head CI will validate the final code. The repository browser gate has been extended to cover homepage artwork/keyboard anchor/mobile overflow, gallery accessible controls, light/dark theme selection, native form success/reset, keyboard disclosure, reduced motion and desktop overflow. Automated functional coverage is separate from a human visual comparison.
+Local focused verification includes the seven UI semantic/contrast tests and three course-progress presentation tests: canonical zero, absent/informational progress and all-task passes distinct from Enrollment completion. Web typecheck passed. Exact-head CI must validate the expanded adoption, production build, PostgreSQL integration/performance and fresh-profile Chrome gate. The browser gate covers actual auth/session/Origin and own learner loops, immutable quiz retry, course/Lesson navigation, current outline, associated registration password hint, accessible controls and responsive overflow. Automated functional coverage is separate from human visual comparison.
+
 
 ## Implementation checklist
 

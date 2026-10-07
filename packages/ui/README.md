@@ -17,4 +17,6 @@ Components use native elements, typed native props and React 19 ref props for co
 
 Tokens are semantic CSS custom properties, not hardcoded component palettes. Scope `data-ui-theme="light"` for the alternate theme. Override variables at a host/container to extend the theme. `className` and native props support composition. Do not put domain reads, auth state, canonical progress policy or persistent user preferences in this package.
 
-Live examples are at Web `/ui`; the implementation roadmap is `docs/roadmap/ui-library.md`. Compound overlays, controlled widgets and application patterns are intentionally separate follow-up slices.
+Live examples are at Web `/ui`; the implementation roadmap is `docs/roadmap/ui-library.md`. Compound overlays, controlled compound widgets and application patterns are intentionally separate follow-up slices.
+
+`Checkbox` and `Radio` accept native controlled `checked`/`onChange` props or uncontrolled `defaultChecked`. Both wrap a native input in a label. A radio set must share a name and live inside a labelled fieldset; `RadioGroup` is a convenience for an uncontrolled set. Product answer locking and retry state remain in Web.

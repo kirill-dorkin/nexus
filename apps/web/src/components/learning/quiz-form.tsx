@@ -9,7 +9,17 @@ import {
 } from "@platform/contracts";
 import { browserApiRequest } from "../../lib/public-api";
 import { learningLoginUrl } from "../../lib/learning-return-to";
-import styles from "./learning.module.css";
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Field,
+  Input,
+  Radio,
+  Stack,
+  Text
+} from "@platform/ui";
+import styles from "./flow.module.css";
 
 export function QuizForm({
   activity,
@@ -117,23 +127,24 @@ export function QuizForm({
               : "Введите короткий ответ"}
         </legend>
         {activity.type === "quiz.short_text" ? (
-          <>
-            <label htmlFor={`${id}-answer`}>Ваш ответ</label>
-            <input
+          <Field htmlFor={`${id}-answer`} label="Ваш ответ">
+            <Input
               id={`${id}-answer`}
               value={text}
               maxLength={2000}
               onChange={(event) => setText(event.target.value)}
               autoComplete="off"
             />
-          </>
+          </Field>
         ) : (
-          activity.options.map((option) => (
-            <label key={option.id} className={styles.quizOption}>
-              <input
-                type={
-                  activity.type === "quiz.single_choice" ? "radio" : "checkbox"
-                }
+          activity.options.map((option) => {
+            const Choice =
+              activity.type === "quiz.single_choice" ? Radio : Checkbox;
+            return (
+              <Choice
+                key={option.id}
+                className={styles.quizOption}
+                label={option.text}
                 name={id}
                 value={option.id}
                 checked={selected.includes(option.id)}
@@ -147,47 +158,40 @@ export function QuizForm({
                   )
                 }
               />
-              <span>{option.text}</span>
-            </label>
-          ))
+            );
+          })
         )}
       </fieldset>
       {!result && (
-        <button
-          className={styles.button}
-          disabled={busy || (!pending && !ready)}
-          type="submit"
-        >
+        <Button loading={busy} disabled={!pending && !ready} type="submit">
           {busy
             ? "Проверяем…"
             : pending
               ? "Повторить отправку ответа"
               : "Проверить и сохранить ответ"}
-        </button>
+        </Button>
       )}
       {result && (
-        <div role="status">
-          <p>
-            <strong>
-              {result.outcome === "passed"
+        <Stack>
+          <Alert
+            tone={result.outcome === "passed" ? "success" : "warning"}
+            title={
+              result.outcome === "passed"
                 ? "✓ Правильно"
-                : "Ответ пока неверный"}
-            </strong>
-          </p>
-          <p>{result.feedback}</p>
-          <p className={styles.muted}>
-            Попытка {result.attemptNumber}. Результат сохранён.
-          </p>
-          <button
-            type="button"
-            className={styles.secondaryButton}
-            onClick={retry}
+                : "Ответ пока неверный"
+            }
           >
+            {result.feedback}
+          </Alert>
+          <Text size="sm" muted>
+            Попытка {result.attemptNumber}. Результат сохранён.
+          </Text>
+          <Button variant="secondary" onClick={retry}>
             Попробовать ещё раз
-          </button>
-        </div>
+          </Button>
+        </Stack>
       )}
-      {error && <p role="alert">{error}</p>}
+      {error && <Alert tone="danger">{error}</Alert>}
       {needsLogin && (
         <Link
           href={learningLoginUrl(
