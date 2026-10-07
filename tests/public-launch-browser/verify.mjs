@@ -1169,8 +1169,10 @@ async function runBrowserVerification(cdp) {
   await clickText(cdp, "Сбросить");
   await waitForExpression(cdp, 'document.querySelector("#example-name")?.value === "" && !document.body.innerText.includes("данные никуда не отправлены")', "native demo form reset");
   await tabUntil(cdp, 'document.activeElement?.tagName === "SUMMARY"', "native disclosure", 60);
-  await cdp.send("Input.dispatchKeyEvent", { type: "keyDown", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
-  await cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
+  // Native summary activates on Space keyup. Include text on keydown so CDP
+  // generates the normal keypress sequence rather than a bare raw key event.
+  await cdp.send("Input.dispatchKeyEvent", { type: "keyDown", key: " ", code: "Space", windowsVirtualKeyCode: 32, text: " ", unmodifiedText: " " });
+  await cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: " ", code: "Space", windowsVirtualKeyCode: 32 });
   await waitForExpression(cdp, 'document.querySelector("details")?.open === true', "keyboard disclosure");
   await cdp.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] });
   assert(await evaluate(cdp, 'getComputedStyle(document.querySelector(".ui-skeleton")).animationName === "none"'), "Reduced motion still animates skeleton.");
