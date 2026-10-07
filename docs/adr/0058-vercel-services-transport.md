@@ -1,6 +1,6 @@
 # ADR-0058: Vercel Services transport
 
-- Status: Proposed (deployment topology awaits maintainer confirmation)
+- Status: Accepted (maintainer authorized this deployment topology on 2026-10-07)
 - Date: 2026-10-07
 
 ## Context
@@ -9,7 +9,7 @@ The private repository now belongs to `kirill-dorkin/nexus`. Vercel Services can
 
 ## Decision
 
-Propose two services, `web` and `api`. Public rewrites preserve `/v1` and `/v1/*` for API and send the remaining paths to Web. API's root OpenAPI document is not publicly routed. This includes existing API webhook ingress; it does not activate Commerce or its worker.
+Deploy two services, `web` and `api`. Public rewrites preserve `/v1` and `/v1/*` for API and send the remaining paths to Web. API's root OpenAPI document is not publicly routed. This includes existing API webhook ingress; it does not activate Commerce or its worker.
 
 The Web build explicitly compiles `NEXT_PUBLIC_API_ORIGIN=/`. Browser requests therefore use same-origin `/v1/*` with the existing credentials policy. Authentication remains direct REST at the edge; no Next.js BFF, session forwarding or new identity authority is introduced. API still requires exact `WEB_APP_ORIGIN` and retains its host-only Secure/HttpOnly/SameSite=Strict cookie, endpoint authorization and tenant/actor RLS.
 
@@ -23,4 +23,4 @@ PostgreSQL 18 remains external, with established app/migrator/worker roles. Migr
 
 Transport tests cover browser credentials/path, internal binding selection, binding prefix preservation, standalone compatibility and fail-closed configuration. Vercel local development must start both services and inject the binding; public `/v1/health`, Web pages and an API 404 must route correctly. A real PostgreSQL-backed deployed learner acceptance remains necessary before claiming launch completion.
 
-The maintainer must confirm the service names, public paths, `web -> api` binding and omission of the grader processes. Vercel project environment still needs an app-role database URL and exact HTTPS Web origin; the repository does not provision a production database or automatically determine preview authorization origins.
+The maintainer authorized implementation and deployment of this topology. Vercel project environment still needs an app-role database URL and exact HTTPS Web origin; preview authorization origins are not automatically inferred. An explicit one-time Neon bootstrap command implements the existing role policy and migrations from a trusted maintainer terminal. It is not part of service builds or runtime, and does not itself deploy or prove deployed learner acceptance.

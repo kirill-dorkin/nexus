@@ -21,6 +21,7 @@
     "dev:infra": "docker compose up -d postgres redis",
     "dev:infra:down": "docker compose down",
     "db:migrate": "pnpm --filter @platform/database db:migrate",
+    "db:bootstrap:neon": "node scripts/bootstrap-neon.mjs",
     "rebrand": "node scripts/rebrand.mjs",
     "check:brand": "node scripts/check-brand-leaks.mjs"
   },
