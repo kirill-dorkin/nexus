@@ -22,7 +22,8 @@ const checkpointPath = `${privateDirectory}credentials.json`;
 const projectId = "prj_vAMrHEXEzkQ7vS1hFCWWr27HmUxw";
 const storeId = "store_uujjS67D1HjjHrTs";
 const scope = "bhvgfs-projects";
-const cli = ["dlx", "vercel@62.7.0"];
+// dlx installs in isolation and needs its own explicit lifecycle-script allowlist.
+const cli = ["dlx", "--allow-build=esbuild", "vercel@62.7.0"];
 let adminUrl;
 
 function vercel(args, options = {}) {
@@ -33,7 +34,7 @@ function vercel(args, options = {}) {
   });
   if (result.error || result.status !== 0) {
     throw new Error(
-      "Vercel CLI did not complete. If login is required, run pnpm dlx vercel@62.7.0 login and retry this command."
+      "Vercel CLI did not complete. If login is required, run pnpm dlx --allow-build=esbuild vercel@62.7.0 login and retry this command."
     );
   }
   return result;
