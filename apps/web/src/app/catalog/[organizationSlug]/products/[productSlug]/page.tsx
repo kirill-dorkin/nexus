@@ -4,7 +4,7 @@ import {
 } from "@platform/contracts";
 import { notFound } from "next/navigation";
 
-import { publicApiUrl } from "../../../../../lib/public-api";
+import { serverApiUrl } from "../../../../../lib/server-api";
 import { CheckoutPanel } from "./checkout-panel";
 import styles from "./product.module.css";
 
@@ -22,7 +22,7 @@ async function loadProduct(
   productSlug: string
 ): Promise<PublicCatalogProductResponse> {
   const response = await fetch(
-    publicApiUrl(
+    serverApiUrl(
       `/v1/public/catalog/${encodeURIComponent(organizationSlug)}/products/${encodeURIComponent(productSlug)}`
     ),
     { cache: "no-store" }

@@ -23,7 +23,7 @@ F9 now establishes the first complete public paid path, its production operation
 
 Production learner-code execution remains disabled. F7 repository runner/profile/sandbox artifacts do not activate production execution; a separate deployment change still requires the exact production image digest and a green real-cluster verification record.
 
-Latest architectural decision at this checkpoint: ADR-0057 (Studio canonical draft parity). F9.10 and F9.11 add verification infrastructure and no new domain/security authority decision.
+Latest accepted architectural decision at this checkpoint: ADR-0057 (Studio canonical draft parity). F9.10 and F9.11 add verification infrastructure and no new domain/security authority decision. Proposed ADR-0058 describes the Vercel Services transport; service topology awaits maintainer confirmation.
 
 Latest ordered migration at this checkpoint: `000043_own_organization_discovery.sql`.
 
@@ -45,7 +45,7 @@ ADR-0056 registers three trusted deterministic quiz v1 definitions and adds prin
 
 ADR-0057 adds authorized Studio forms and JSON file/textarea authoring over the same canonical manifest/draft, safe author preview, saved export, explicit next draft and revision-fenced publication. Protected author reads require current course/activity management; import retains organization skill management. Own Organization discovery is a narrow actor-bound locator capability, with tenant RLS unchanged. Production Chrome now verifies canonical Organization/Content authoring through real registration/session and PostgreSQL.
 
-Production Chrome now adds the canonical anonymous-to-returning learner loop over the Studio-published immutable release and real PostgreSQL/session APIs: explicit membership/enrollment, three quiz types, wrong-answer retries, exact required-task Evidence progress, next Lesson, reload/relogin and foreign-principal isolation. Deterministic Commerce/transport fixtures remain separate. A portable production container/HTTPS/PostgreSQL profile and read-only deployed smoke are documented in `docs/engineering/learning-deployment.md`. The connected hosting audit found no Nexus deployment; actual deployment and deployed learner acceptance remain blocked on access to a production Docker host with its provider DNS hostname. The launch is not yet deployed. Production grader activation remains independent.
+Production Chrome now adds the canonical anonymous-to-returning learner loop over the Studio-published immutable release and real PostgreSQL/session APIs: explicit membership/enrollment, three quiz types, wrong-answer retries, exact required-task Evidence progress, next Lesson, reload/relogin and foreign-principal isolation. Deterministic Commerce/transport fixtures remain separate. A portable production container/HTTPS/PostgreSQL profile and read-only deployed smoke are documented in `docs/engineering/learning-deployment.md`. The repository is now owned by `kirill-dorkin/nexus`. The proposed alternate Vercel Services profile in `docs/engineering/vercel-services.md` deploys Web/API together, using same-origin browser REST and an internal Web-to-API binding for anonymous server reads. It still needs topology confirmation, a PostgreSQL 18 target with the established roles/migrations and an exact HTTPS Web origin before deployment and deployed learner acceptance. The older Docker alternative still needs host access. The launch is not yet deployed. Production grader activation remains independent.
 
 ### F0-F3 — architecture, tenancy, immutable curriculum, Delivery: established
 

@@ -23,23 +23,37 @@ function parseApiOrigin(value: string): string | null {
 export function publicApiOrigin(): string {
   const configured = process.env.NEXT_PUBLIC_API_ORIGIN;
   if (configured === undefined || configured.trim().length === 0) {
-    throw new Error("NEXT_PUBLIC_API_ORIGIN is required for the web application.");
+    throw new Error(
+      "NEXT_PUBLIC_API_ORIGIN is required for the web application."
+    );
   }
+
+  // Explicit same-origin mode for a shared Web/API edge such as Vercel Services.
+  if (configured === "/") return "";
 
   const origin = parseApiOrigin(configured);
   if (origin === null) {
     throw new Error(
-      "NEXT_PUBLIC_API_ORIGIN must be an absolute HTTP(S) origin."
+      "NEXT_PUBLIC_API_ORIGIN must be '/' or an absolute HTTP(S) origin."
     );
   }
   return origin;
 }
 
 export function publicApiUrl(path: string): string {
-  if (!path.startsWith("/")) {
-    throw new Error("API path must start with '/'.");
-  }
+  assertApiPath(path);
   return `${publicApiOrigin()}${path}`;
+}
+
+export function assertApiPath(path: string): void {
+  if (
+    !path.startsWith("/") ||
+    path.startsWith("//") ||
+    path.includes("\\") ||
+    /[\u0000-\u0020\u007f]/.test(path)
+  ) {
+    throw new Error("API path must be an absolute path on the configured API.");
+  }
 }
 
 export class PublicApiError extends Error {
@@ -57,7 +71,11 @@ export async function browserApiRequest(
   init: RequestInit = {}
 ): Promise<Response> {
   const headers = new Headers(init.headers);
-  if (init.body !== undefined && init.body !== null && !headers.has("content-type")) {
+  if (
+    init.body !== undefined &&
+    init.body !== null &&
+    !headers.has("content-type")
+  ) {
     headers.set("content-type", "application/json");
   }
 
