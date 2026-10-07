@@ -11,7 +11,7 @@ The application keeps canonical data and existing routes. The design system owns
 - Semantic tokens in `@platform/design-tokens`: surfaces, text, action/status colors, borders, focus, spacing, radii, motion, elevation and blur. Dark default with a scoped light theme contract.
 - `@platform/ui`: Button, ButtonLink, IconButton, Container, Stack, Inline, Grid, Surface, Card, Badge, Eyebrow, Heading, Text, Divider, Input, Textarea, Select, Field, Checkbox, RadioGroup, Alert, EmptyState, Skeleton, Progress, Disclosure and CodeBlock.
 - Native semantic elements; button defaults to non-submit; loading disables repeated actions; explicit labels/error relationships; indeterminate progress is distinct from zero; native details works without JavaScript.
-- Public shell, real catalog cards and homepage cover compose the library. An original generated glass sculpture is stored locally as a small WebP, not a third-party remote dependency.
+- Public shell, real catalog cards and homepage cover compose the library. Streaming keeps the cover visible while the catalog loads; loading, empty and unavailable states remain distinct. An original generated glass sculpture is stored locally as a small WebP, not a third-party remote dependency.
 - `/ui` provides isolated, labelled demo states, theme switching, native form validation, working controls and usage examples. It is excluded from search indexing and does not appear in product navigation.
 - Keyboard focus, reduced motion/transparency, glass fallback, mobile layout and high contrast support are part of the foundation.
 

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Suspense } from "react";
 import {
   ArrowRight,
   BookOpen,
@@ -18,12 +19,13 @@ import {
   Text
 } from "@platform/ui";
 import { LearningShell } from "../components/learning/learning-shell";
-import { CourseList } from "../components/learning/course-list";
-import { loadLearningCatalog } from "../lib/public-learning";
+import {
+  HomeCatalog,
+  CatalogLoading
+} from "../components/learning/home-catalog";
 import styles from "./home.module.css";
 export const dynamic = "force-dynamic";
-export default async function HomePage() {
-  const catalog = await loadLearningCatalog();
+export default function HomePage() {
   return (
     <LearningShell>
       <section className={styles.cover} aria-labelledby="home-title">
@@ -95,7 +97,9 @@ export default async function HomePage() {
             Все курсы <ArrowUpRight size={18} aria-hidden="true" />
           </ButtonLink>
         </div>
-        <CourseList courses={catalog.courses} />
+        <Suspense fallback={<CatalogLoading />}>
+          <HomeCatalog />
+        </Suspense>
       </section>
       <section
         id="how-it-works"

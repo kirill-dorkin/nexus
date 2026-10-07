@@ -20,7 +20,7 @@ Browser navigation to the local implementation was blocked while browser credent
 
 ## Verification scope
 
-UI semantic unit tests and Web/UI typecheck passed. Production Next build passed before the final preload/config/test adjustment; exact-head CI will validate the final code. The repository browser gate has been extended to cover homepage artwork/keyboard anchor/mobile overflow, gallery accessible controls, light/dark theme selection, native form success/reset, keyboard disclosure, reduced motion and desktop overflow. Automated functional coverage is separate from a human visual comparison.
+Seven UI semantic/contrast tests and the additional catalog failure/empty-state test passed; Web/UI typecheck passed. Production Next build passed before the final preload/config/test adjustment; exact-head CI will validate the final code. The repository browser gate has been extended to cover homepage artwork/keyboard anchor/mobile overflow, gallery accessible controls, light/dark theme selection, native form success/reset, keyboard disclosure, reduced motion and desktop overflow. Automated functional coverage is separate from a human visual comparison.
 
 ## Implementation checklist
 
