@@ -4,6 +4,7 @@ import { createServer as createHttpServer, request as httpRequest } from "node:h
 import { createServer as createHttpsServer } from "node:https";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { installProviderStubs } from "./provider-stubs.mjs";
 
 const WEB_ORIGIN = "https://127.0.0.1:3443";
 const OTHER_WEB_ORIGIN = "https://127.0.0.1:3444";
@@ -1118,19 +1119,7 @@ async function runBrowserVerification(cdp) {
     })
   ]);
 
-  cdp.on("Fetch.requestPaused", (params) => {
-    const isVideo = params.request.url.startsWith("https://www.youtube-nocookie.com/");
-    const script = isVideo ? "<!doctype html><html><body>Video provider stub</body></html>" :
-      "window.Paddle={Environment:{set:function(){}},Initialize:function(){},Checkout:{open:function(options){window.__paddleOpenedSuccessUrl=options.settings.successUrl;}}};";
-    void cdp.send("Fetch.fulfillRequest", {
-      requestId: params.requestId,
-      responseCode: 200,
-      responseHeaders: [
-        { name: "content-type", value: isVideo ? "text/html; charset=utf-8" : "application/javascript; charset=utf-8" }
-      ],
-      body: Buffer.from(script).toString("base64")
-    });
-  });
+  const providerStubs = installProviderStubs(cdp);
 
   console.log("[browser-launch] public learning pages and mobile rendering");
   await cdp.send("Emulation.setDeviceMetricsOverride", {
@@ -1527,6 +1516,7 @@ async function runBrowserVerification(cdp) {
     checkoutIdempotencyKey === postCheckoutStorage.values[expectedAttemptKey],
     "The browser did not reuse the same attempt key at the checkout boundary."
   );
+  await providerStubs.assertHealthy();
 }
 
 async function closeServer(server) {
