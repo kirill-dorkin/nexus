@@ -461,3 +461,110 @@ button.button {
   outline: 3px solid var(--focus-ring);
   outline-offset: 3px;
 }
+/* Public shell and cards adopt the shared UI foundation. */
+.shell {
+  max-width: var(--content-width);
+}
+.nav {
+  border-bottom: 0;
+  padding: 0.25rem 0 1.75rem;
+}
+.nav nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.8rem, 2.2vw, 2rem);
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+}
+.nav nav > a {
+  color: var(--text-secondary);
+}
+.nav nav > a:hover {
+  color: var(--text-primary);
+}
+.brand {
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: border-color var(--motion-fast);
+}
+.card:hover {
+  border-color: var(--border-strong);
+}
+.card h3 {
+  margin: 0;
+}
+.card p {
+  margin: 0;
+}
+.card .textLink {
+  margin-top: auto;
+  padding-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-accent);
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 0 1rem;
+  margin-top: 5rem;
+}
+.footer > div {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.footer strong {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+.footer nav {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+}
+.footer a {
+  text-decoration: none;
+}
+.footer a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+@media (max-width: 760px) {
+  .nav {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .nav nav {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.6rem;
+    font-size: 0.75rem;
+  }
+  .footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .footer > div {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}

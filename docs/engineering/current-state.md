@@ -15,7 +15,7 @@ Use this file as the active continuation checkpoint and the archives only when o
 
 ## Checkpoint baseline
 
-Last maintained: 2026-10-06.
+Last maintained: 2026-10-07.
 
 F0-F8 foundations are established through modular-monolith boundaries, identity/tenancy/authorization, immutable curriculum, Delivery, Attempt/Submission/Validation/Evidence/Mastery, Guided Build, GitHub Projects, repository-side grader hardening, Recommendations/Readiness, and readiness-gated Enrollment completion.
 
@@ -45,7 +45,7 @@ ADR-0056 registers three trusted deterministic quiz v1 definitions and adds prin
 
 ADR-0057 adds authorized Studio forms and JSON file/textarea authoring over the same canonical manifest/draft, safe author preview, saved export, explicit next draft and revision-fenced publication. Protected author reads require current course/activity management; import retains organization skill management. Own Organization discovery is a narrow actor-bound locator capability, with tenant RLS unchanged. Production Chrome now verifies canonical Organization/Content authoring through real registration/session and PostgreSQL.
 
-Production Chrome now adds the canonical anonymous-to-returning learner loop over the Studio-published immutable release and real PostgreSQL/session APIs: explicit membership/enrollment, three quiz types, wrong-answer retries, exact required-task Evidence progress, next Lesson, reload/relogin and foreign-principal isolation. Deterministic Commerce/transport fixtures remain separate. A portable production container/HTTPS/PostgreSQL profile and read-only deployed smoke are documented in `docs/engineering/learning-deployment.md`. The repository is now owned by `kirill-dorkin/nexus`. The authorized alternate Vercel Services profile in `docs/engineering/vercel-services.md` deploys Web/API together, using same-origin browser REST and an internal Web-to-API binding for anonymous server reads. The maintainer created the Vercel project and connected a Neon Free resource; read-only SQL verification confirmed PostgreSQL 18.6 and no public application tables. Dedicated role/bootstrap, ordered migrations and deployed learner acceptance remain pending. The runbook includes an explicit one-time trusted-terminal bootstrap because generated owner credentials were connected as Secrets. The older Docker alternative still needs host access. The launch is not yet deployed. Production grader activation remains independent.
+Production Chrome now adds the canonical anonymous-to-returning learner loop over the Studio-published immutable release and real PostgreSQL/session APIs: explicit membership/enrollment, three quiz types, wrong-answer retries, exact required-task Evidence progress, next Lesson, reload/relogin and foreign-principal isolation. Deterministic Commerce/transport fixtures remain separate. A portable production container/HTTPS/PostgreSQL profile and read-only deployed smoke are documented in `docs/engineering/learning-deployment.md`. The repository is now owned by `kirill-dorkin/nexus`. The authorized alternate Vercel Services profile in `docs/engineering/vercel-services.md` deploys Web/API together, using same-origin browser REST and an internal Web-to-API binding for anonymous server reads. The maintainer created the Vercel project and connected a Neon Free resource; read-only SQL verification confirmed PostgreSQL 18.6 and no public application tables. The maintainer completed dedicated-role bootstrap and all 43 migrations on Neon PostgreSQL 18; Production keeps only the pooled app-role database credential after owner integration variables were disconnected. Web/API are deployed on one HTTPS domain. Deployed HTTP acceptance covered real sessions, canonical author publication, explicit membership/enrollment, all three quiz types, derived progress and returning/foreign-principal behavior; the test Offering was made private afterward. Interactive cloud-browser observation of that deployment remained blocked by browser credential protection and is not claimed as verified. The older Docker alternative remains available. Production grader activation remains independent.
 
 ### F0-F3 — architecture, tenancy, immutable curriculum, Delivery: established
 
@@ -243,9 +243,9 @@ Do not remove these without an explicit cleanup slice/migration and proven calle
 
 ## Next recommended slice
 
-**Complete canonical learner browser verification and deployment.**
+**Build the reusable UI foundation and adopt it incrementally.**
 
-The selected product frontier remains the first free public learning launch in `docs/roadmap/mvp-launch.md`. Slice E closes manual/JSON authoring parity, protected preview/export and immutable publication through existing canonical Content. Slice F now verifies the entire anonymous-to-returning learner browser loop with PostgreSQL/session auth, audits deployment infrastructure and performs actual deployed HTTPS smoke or records one concrete external blocker. Production grader activation remains independently gated.
+The maintainer selected dark plum, magenta/violet and translucent glass references for the public interface. The proposed ADR-0059 defines token/UI/Web ownership. The implementation introduces a semantic UI workspace package, an isolated component gallery and a public homepage/catalog presentation over unchanged canonical reads. The complete implementation roadmap lives in `docs/roadmap/ui-library.md`. Subsequent adoption should cover login/self-entry, course/Lesson/progress and then Studio; complex widgets require real consumers and accessible interaction contracts. Browser evidence and the ordinary exact-head CI/maintainer-local gates remain required before release. Production grader activation remains independently gated.
 
 Candidate areas that remain intentionally **unselected** at this checkpoint include:
 

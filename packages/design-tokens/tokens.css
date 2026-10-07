@@ -1,4 +1,5 @@
 :root {
+  color-scheme: dark;
   --space-0: 0;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -11,39 +12,71 @@
   --space-16: 4rem;
   --space-20: 5rem;
   --space-24: 6rem;
-
-  --radius-sm: 0.375rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 0.875rem;
-
-  --surface-default: #ffffff;
-  --surface-subtle: #f7f7f8;
-  --surface-elevated: #ffffff;
-  --text-primary: #111113;
-  --text-secondary: #5f6068;
-  --text-disabled: #8c8d95;
-  --border-default: #dedee3;
-  --border-strong: #b8b9c0;
-  --action-primary: #1f5eff;
-  --status-success: #177245;
-  --status-warning: #8a5b00;
-  --status-danger: #b42318;
-  --status-info: #175cd3;
-  --focus-ring: #5b8cff;
-
-  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-cover: 2.5rem;
+  --radius-pill: 999px;
+  --surface-default: #100a14;
+  --surface-subtle: #1a1221;
+  --surface-elevated: #261a2e;
+  --surface-solid: #201526;
+  --surface-input: #160f1c;
+  --surface-glass: rgb(55 33 64 / 42%);
+  --surface-hover: #35223f;
+  --text-primary: #faf5fc;
+  --text-secondary: #c4b5cc;
+  --text-disabled: #88768f;
+  --text-accent: #ffa1d7;
+  --text-on-action: #ffffff;
+  --border-default: #44334d;
+  --border-strong: #73617e;
+  --border-glass: rgb(228 186 245 / 27%);
+  --border-accent: #845174;
+  --action-primary: #bd216f;
+  --action-hover: #a81961;
+  --action-danger: #b62c45;
+  --action-danger-hover: #a11d37;
+  --accent-subtle: #442036;
+  --status-success: #92e4ba;
+  --status-warning: #f5d08e;
+  --status-danger: #ffabb9;
+  --status-info: #c4b5fd;
+  --focus-ring: #f8b4df;
+  --shadow-surface:
+    inset 0 1px 0 rgb(255 255 255 / 5%), 0 12px 48px rgb(0 0 0 / 12%);
+  --shadow-action: 0 6px 26px rgb(189 33 111 / 20%);
+  --blur-surface: 20px;
+  --motion-fast: 160ms ease;
+  --content-width: 1240px;
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --surface-default: #111113;
-    --surface-subtle: #19191c;
-    --surface-elevated: #202024;
-    --text-primary: #f5f5f6;
-    --text-secondary: #b7b8bf;
-    --text-disabled: #777981;
-    --border-default: #36363d;
-    --border-strong: #52535c;
-  }
+/* A scoped theme contract: components do not own palette values. */
+[data-ui-theme="light"] {
+  color-scheme: light;
+  --surface-default: #faf7fb;
+  --surface-subtle: #f3edf6;
+  --surface-elevated: #ffffff;
+  --surface-solid: #ffffff;
+  --surface-input: #ffffff;
+  --surface-glass: rgb(255 255 255 / 88%);
+  --surface-hover: #eee4f2;
+  --text-primary: #25152d;
+  --text-secondary: #67536f;
+  --text-disabled: #7b6b82;
+  --text-accent: #a51a64;
+  --border-default: #dfd1e6;
+  --border-strong: #96839f;
+  --border-glass: #d9c6e2;
+  --border-accent: #c58aad;
+  --accent-subtle: #fce4f2;
+  --status-success: #17613d;
+  --status-warning: #805800;
+  --status-danger: #a41c36;
+  --status-info: #6040a2;
+  --focus-ring: #a51a64;
 }

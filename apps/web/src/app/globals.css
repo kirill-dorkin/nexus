@@ -1,4 +1,5 @@
 @import "@platform/design-tokens/tokens.css";
+@import "@platform/ui/styles.css";
 
 * {
   box-sizing: border-box;
@@ -14,9 +15,31 @@ body {
 }
 
 body {
-  padding: clamp(1rem, 4vw, 2rem);
+  padding: clamp(1rem, 3vw, 2rem);
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
   color: inherit;
+}
+
+:where(a, button, input, textarea, select, summary):focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 5px;
+}
+::selection {
+  color: var(--text-primary);
+  background: var(--accent-subtle);
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+}
+svg {
+  vertical-align: middle;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }

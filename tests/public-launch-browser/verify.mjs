@@ -1146,6 +1146,38 @@ async function runBrowserVerification(cdp) {
     "learning homepage"
   );
   await accessibilityAudit(cdp, "learning homepage");
+  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Learning homepage overflows mobile.");
+  await waitForExpression(cdp, 'document.querySelector(\'img[alt=""]\')?.naturalWidth > 0', "homepage artwork loaded");
+  await tabUntil(cdp, 'document.activeElement?.getAttribute("href") === "#courses"', "homepage catalog action");
+  assert(await evaluate(cdp, 'document.activeElement.matches(":focus-visible") && parseFloat(getComputedStyle(document.activeElement).outlineWidth) >= 2'), "Homepage action has no keyboard focus.");
+  await cdp.send("Input.dispatchKeyEvent", { type: "keyDown", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
+  await cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
+  await waitForExpression(cdp, 'location.hash === "#courses"', "homepage catalog anchor");
+
+  console.log("[browser-launch] UI gallery native controls and theme contract");
+  await navigate(cdp, `${WEB_ORIGIN}/ui`);
+  await waitForExpression(cdp, 'document.body.innerText.includes("Тема компонентов")', "UI gallery");
+  await accessibilityAudit(cdp, "UI gallery dark");
+  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "UI gallery overflows mobile.");
+  await clickText(cdp, "Светлая");
+  await waitForExpression(cdp, 'document.querySelector("[data-ui-theme]")?.dataset.uiTheme === "light"', "light theme");
+  await accessibilityAudit(cdp, "UI gallery light");
+  await clickText(cdp, "Тёмная");
+  await fill(cdp, '#example-name', 'Пример');
+  await clickText(cdp, "Проверить форму");
+  await waitForExpression(cdp, 'document.body.innerText.includes("данные никуда не отправлены")', "native demo form success");
+  await clickText(cdp, "Сбросить");
+  await waitForExpression(cdp, 'document.querySelector("#example-name")?.value === "" && !document.body.innerText.includes("данные никуда не отправлены")', "native demo form reset");
+  await tabUntil(cdp, 'document.activeElement?.tagName === "SUMMARY"', "native disclosure", 60);
+  await cdp.send("Input.dispatchKeyEvent", { type: "keyDown", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
+  await cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
+  await waitForExpression(cdp, 'document.querySelector("details")?.open === true', "keyboard disclosure");
+  await cdp.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] });
+  assert(await evaluate(cdp, 'getComputedStyle(document.querySelector(".ui-skeleton")).animationName === "none"'), "Reduced motion still animates skeleton.");
+  await cdp.send("Emulation.setEmulatedMedia", { features: [] });
+  await cdp.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
+  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "UI gallery overflows desktop.");
+  await cdp.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   await navigate(cdp, `${WEB_ORIGIN}/courses`);
   await waitForExpression(
     cdp,
