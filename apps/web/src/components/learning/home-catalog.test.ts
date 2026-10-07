@@ -20,7 +20,8 @@ describe("homepage catalog read states", () => {
     );
     const unavailable = renderToStaticMarkup(await HomeCatalog());
     expect(unavailable).toContain("Каталог временно недоступен");
-    expect(unavailable).toContain('href="/#courses"');
+    expect(unavailable).toContain("Попробовать снова");
+    expect(unavailable).toContain('type="button"');
     expect(unavailable).not.toContain("Курсы готовятся к открытию");
     expect(unavailable).not.toContain("private backend detail");
   });

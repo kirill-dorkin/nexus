@@ -1,14 +1,7 @@
-import {
-  Alert,
-  ButtonLink,
-  Card,
-  Grid,
-  Skeleton,
-  Stack,
-  Text
-} from "@platform/ui";
+import { Alert, Card, Grid, Skeleton, Stack, Text } from "@platform/ui";
 import { loadLearningCatalog } from "../../lib/public-learning";
 import { CourseList } from "./course-list";
+import { CatalogRetry } from "./catalog-retry";
 
 export function CatalogLoading() {
   return (
@@ -44,9 +37,7 @@ export async function HomeCatalog() {
           <Text size="sm">
             Не удалось загрузить курсы. Попробуйте ещё раз чуть позже.
           </Text>
-          <ButtonLink href="/#courses" variant="secondary" size="sm">
-            Попробовать снова
-          </ButtonLink>
+          <CatalogRetry />
         </Stack>
       </Alert>
     );
