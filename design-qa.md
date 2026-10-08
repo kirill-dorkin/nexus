@@ -93,3 +93,35 @@ P2: the course had two equally dominant primary actions. The course start remain
 The React review confirmed server-only fetching stays behind Suspense, filtering is derived from current props/query without an effect or extra request, and password visibility is local presentation state. No animation dependency was added. Existing reduced-motion, touch navigation and solid transparency fallbacks remain in place; the homepage/gallery regression is checked separately. Physical iOS/Android, screen readers and feature-disable fallback are still unverified on devices.
 
 Workspace type checking, production Web build, brand boundaries and the 398-test unit suite passed. Persistent CI browser assertions now cover Cyrillic search/reset and password visibility without altering registration/entry or quiz semantics. Exact-head CI and Vercel deployment inspection are separate gates after the push; do not infer their result from local tests. Maintainer visual acceptance remains necessary before merge. Studio and account-synchronized appearance are outside this stage.
+
+
+## Studio continuation — 2026-10-08
+
+**Scope:** authorized organization/course workspace, manual and JSON editor, collection ordering, revision/conflict presentation, author preview and explicit publication confirmation. The existing Content/Organizations APIs, session/Origin/tenant/RLS, manifest validation/apply, exact publication fence and outbox are unchanged. A one-off TypeScript AST comparison confirmed all twelve existing CourseEditor operation handlers are identical to the preceding head. No protected content, example course or author credential is added to public routes, gallery or browser storage.
+
+### Composition and resolved findings
+
+The previous Studio presented nearly every action with equal emphasis and wrapped long nested forms in repeated borders. It had no connection to the shared navigation/appearance, and a failed initial editor read could still show a loading message. The continuation uses an organization rail and open course rows, compact editor title, a sticky desktop mode/save toolbar, native section anchors with actual counts, shared Field/Input/Textarea/Select/Button controls, and solid reading/form surfaces. Nested fieldsets remain semantic groups but use open separators rather than card-within-card framing. Download/reload actions are in a named disclosure; conflicts open it without erasing the working copy.
+
+P2 resolved: an early 52px editor title pushed fields too far down on a long-name mobile course; the working title is now 24–36px with a wider desktop measure. P2 resolved: wrapping the JSON textarea inside a label made exact label targeting include document text; shared Field and explicit control IDs give a concise native relationship. P2 resolved: non-auth initial read errors now show failure/retry without an endless loading indicator. P3: Studio omits the redundant global sign-in action and retains its actual anonymous gate. Final desktop/manual and mobile preview/confirmation captures were inspected for hierarchy, Cyrillic wrapping, surface contrast and action visibility.
+
+### Browser evidence
+
+Capture root: `/workspace/scratch/33e28e12dfa3/studio-verification/`. **All populated Studio captures use labelled local test fixtures. They are neither real protected author data nor published courses. Test endpoints are intercepted only by the external QA script; fixtures were not committed to the product.** Screens are rendered components in the production-built Next.js application, not a separate prototype or concept image.
+
+| Surface | Verification |
+| --- | --- |
+| Organization/course workspace | Actual title/status/version layout with long labels at 320 / 390 / 768 / 1440; separate anonymous, unavailable, empty organization and empty course states; explicit organization disclosure |
+| Manual / JSON / preview | 12 width/mode layout checks, no page-level horizontal overflow, loaded Onest; native labelled controls; new blank course at 320 / 390; mobile menu/Escape |
+| Protected author preview | All three quiz shapes render question/options only; protected test explanations/answers are absent from preview text; existing safe Markdown/YouTube policy retained |
+| Ordering | First Lesson cannot move beyond the start; moving down preserves and swaps actual Lesson content |
+| Invalid JSON | Mode switch retains invalid raw text and stays in JSON until repaired |
+| Permissions | Read-only authorized snapshot disables editing and publication while allowing preview; 403 initial read stops loading |
+| Revision and ambiguous save | Stale validation disables save and retains edits; ambiguous apply retains the copy and locks retry until explicit canonical reload; disabled fields during the pending operation |
+| Publication | Cancel is initial focus; Tab does not reach background controls (native Chrome may focus browser chrome/body between cycles); Escape/cancel return focus and send no request; explicit confirmation sends one unchanged exact version/revision request; next draft preserves manifest/version semantics |
+| Themes | Real appearance control applies light/blue to manual and preview; shared theme/system behavior is reused |
+| Runtime | No local browser page errors; results in `results.json` |
+
+Build, workspace TypeScript (11 tasks), brand boundaries and diff checks passed. The unit suite passed 398 tests / 66 files; focused Studio parity/safe-preview tests also passed after field adoption. The persistent canonical browser test now uses native label.control associations, opens the copy disclosure, and proves opening/cancelling publication leaves the canonical draft intact before its ordinary fenced publish/next-draft flow.
+
+Cloud deployment and exact-head CI remain separate post-push checks. Preview may not have its database configured; do not describe isolated local fixtures as a working deployed authoring backend. Physical iOS/Android, assistive technologies and very large 200-Lesson documents remain further review surfaces. Native section navigation keeps current large forms usable, but focused per-item editing is a separate improvement. No merge, Ready or Production publication is part of this continuation.

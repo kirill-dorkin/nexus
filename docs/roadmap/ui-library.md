@@ -22,7 +22,7 @@ The application keeps canonical data and existing routes. The design system owns
 - Course/Lesson pages share headings and a canonical ordered outline with `aria-current` for the current Lesson. Responsive navigation presents actual previous/next Lesson titles; all destination slugs still come from the public release.
 - Quiz choices use controlled native Radio/Checkbox and short answers use Field/Input. Pending immutable answers remain locked; ambiguous submission reuses the same key and explicit retry starts a new try. Feedback is the same safe server response.
 - Shared Progress displays canonical required-task counts and percentage. Null progress or a zero-task course never fabricates a bar or Enrollment completion. Generic failures, safe unavailable-course state and route loading use shared presentation.
-- No migration, API, session/Origin/RLS, protected content, progress policy or outbox change. Studio/Commerce adoption is still deferred.
+- No migration, API, session/Origin/RLS, protected content, progress policy or outbox change. Commerce adoption is still deferred; the Studio continuation is described below.
 
 ## Approved cover refinement — implemented
 
@@ -39,10 +39,19 @@ The application keeps canonical data and existing routes. The design system owns
 - Own learning uses editorial rows with canonical task progress and a clear continuation action. Quiz attempts, answer locks, ambiguous retries and Enrollment completion semantics remain untouched.
 - Browser snapshots cover 320/390/768/1440, all quiz input types, native form validation, password visibility and error/empty states. Populated local screenshots use clearly labelled test-only fixtures outside product code; CI remains the canonical database/browser gate.
 
+## Studio continuation — implemented
+
+- Common responsive shell, current-route navigation and appearance controls. Studio uses its own explicit login gate instead of a redundant global sign-in action.
+- Organization rail and open course rows with actual status/version; guarded creation and keyset pagination remain the existing commands. Loading, anonymous, failed reads and genuinely empty results are distinct.
+- Compact working title, desktop sticky mode/save toolbar, native section anchors and actual collection counts. Fields, inputs, selects, ordering buttons and JSON import compose the shared library; long forms retain native labels and readable solid surfaces.
+- Manual/JSON parity, plan invalidation, exact revision fences, ambiguous-save locks, explicit reload, saved/working exports and immutable next-draft semantics are unchanged. Protected working copies remain in authorized component memory only.
+- Safe author preview uses calm lesson surfaces and the existing Markdown/YouTube policy; answers are absent from preview. Publication now opens a native modal with Cancel initially focused; only explicit confirmation invokes the unchanged fenced command. Publication still does not open an Offering.
+- Responsive and state screenshots use isolated labelled test fixtures. Canonical authoring, conflict, export, publication/next-draft and learner regression remain covered by the existing CI browser/DB profile.
+
 ## Next slices, in order
 
-1. **Remaining overlays**: add tabs, confirmation, popover and tooltip where actual consumers need them. Auth, catalog, course, lesson, quizzes and own learning now share the approved visual system. Selected navigation, responsive menu and native dialog are already present. Use a reviewed headless primitive when native HTML is insufficient; include focus return, Escape and keyboard navigation.
-2. **Studio**: editor layout, toolbar, field groups, collection reorder controls, validation summaries, revision/conflict states, publication confirmation and preview. Keep protected author content out of public gallery/examples.
+1. **Remaining overlays**: add tabs, confirmation, popover and tooltip where actual consumers need them. Auth, catalog, course, lesson, quizzes, own learning and Studio now share the approved visual system. Selected navigation, responsive menu and native dialog are already present. Use a reviewed headless primitive when native HTML is insufficient; include focus return, Escape and keyboard navigation.
+2. **Studio efficiency**: consider per-item collapse or focused editing for very large documents, field-level error navigation and confirmation for discarding unsaved work. Keep protected author content out of public gallery/examples; extend only over the same canonical manifest and commands.
 3. **Complex data**: table, sortable headers, filters, pagination, search input, segmented control, date/time controls, file picker and upload states. Add only with real product consumers and explicit accessibility contracts.
 4. **Product patterns**: course presentation, lesson blocks, enrollment panels, quiz choices, purchase states and author workflow patterns. These belong to Web, not the neutral UI package; no business authority in primitives.
 5. **System documentation**: component API pages, composition recipes, accessibility notes, theme extension, design tokens/code-to-design mapping and visual regression fixtures for stable states. Extract a separate Storybook only when its maintenance earns its cost.

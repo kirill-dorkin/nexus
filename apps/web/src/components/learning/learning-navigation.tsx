@@ -14,7 +14,11 @@ const destinations = [
   { href: "/studio", label: "Studio" }
 ] as const;
 
-export function LearningNavigation() {
+export function LearningNavigation({
+  showLogin = true
+}: {
+  showLogin?: boolean;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const id = useId();
@@ -40,13 +44,15 @@ export function LearningNavigation() {
         {links()}
       </nav>
       <AppearanceControl />
-      <Link
-        className={`${buttonClass({ variant: "secondary", size: "sm" })} ${styles.login}`}
-        href="/login"
-        aria-current={pathname === "/login" ? "page" : undefined}
-      >
-        Войти
-      </Link>
+      {showLogin && (
+        <Link
+          className={`${buttonClass({ variant: "secondary", size: "sm" })} ${styles.login}`}
+          href="/login"
+          aria-current={pathname === "/login" ? "page" : undefined}
+        >
+          Войти
+        </Link>
+      )}
       <IconButton
         className={styles.menuButton}
         aria-label="Открыть меню"
@@ -72,9 +78,11 @@ export function LearningNavigation() {
         </div>
         <nav aria-label="Главное меню на мобильном экране">
           {links()}
-          <Link href="/login" onClick={() => setOpen(false)}>
-            Войти
-          </Link>
+          {showLogin && (
+            <Link href="/login" onClick={() => setOpen(false)}>
+              Войти
+            </Link>
+          )}
         </nav>
       </Dialog>
     </div>

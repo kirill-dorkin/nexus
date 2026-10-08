@@ -719,7 +719,8 @@ async function launchChrome(tempDirectory) {
 async function fillLabel(cdp, label, value, index = 0) {
   const changed = await evaluate(cdp, `(() => {
     const labels=[...document.querySelectorAll("label")].filter(l=>l.firstChild?.textContent?.trim()===${JSON.stringify(label)});
-    const el=labels[${index}]?.querySelector("input,textarea,select");
+    const label=labels[${index}];
+    const el=label?.control ?? label?.querySelector("input,textarea,select");
     if (!el) return false;
     const proto=el instanceof HTMLTextAreaElement?HTMLTextAreaElement.prototype:el instanceof HTMLSelectElement?HTMLSelectElement.prototype:HTMLInputElement.prototype;
     Object.getOwnPropertyDescriptor(proto,"value").set.call(el,${JSON.stringify(String(value))});
@@ -795,6 +796,7 @@ async function verifyStudio(cdp) {
     const saved=await canonicalRead();assert(saved.body.manifest.course.title==="JSON + ручные формы"&&saved.body.manifest.activities[2].validation.acceptedAnswers[0]==="PRIVATE_EDITED_TEXT"&&saved.body.manifest.lessons[1].durationMinutes===27,"JSON/manual fields diverged from canonical export.");
     const exported=await evaluate(cdp,`fetch(${JSON.stringify(`${apiBase}/courses/${course}/versions/${saved.body.versionId}/manifest`)},{credentials:"include"}).then(r=>r.json())`);
     assert(JSON.stringify(exported)===JSON.stringify(saved.body.manifest),"Draft export is not the same canonical document.");
+    await evaluate(cdp, '[...document.querySelectorAll("summary")].find(s=>s.textContent.includes("Копии и сохранённая версия")).click()');
     await clickText(cdp,"Скачать сохранённый JSON");
     await waitForExpression(cdp,'document.body.innerText.includes("Скачан сохранённый черновик")',"canonical JSON download");
     // A concurrent authorized edit must be surfaced before this working copy can apply.
@@ -809,6 +811,14 @@ async function verifyStudio(cdp) {
     await waitForExpression(cdp,'document.body.innerText.includes("Загружен актуальный черновик")',"explicit canonical reload");
     await clickText(cdp,"Предпросмотр");
     await clickText(cdp,"Опубликовать версию 1");
+    await waitForExpression(cdp, 'document.querySelector(\'dialog[open][aria-labelledby="studio-publish-title"]\') !== null', "publication confirmation");
+    assert((await canonicalRead()).body.status === "draft", "Opening publication confirmation wrote canonical state.");
+    await accessibilityAudit(cdp, "publication confirmation");
+    await clickText(cdp, "Отмена");
+    await waitForExpression(cdp, '!document.querySelector(\'dialog[open][aria-labelledby="studio-publish-title"]\')', "cancel publication");
+    assert((await canonicalRead()).body.status === "draft", "Cancelling publication wrote canonical state.");
+    await clickText(cdp,"Опубликовать версию 1");
+    await clickText(cdp,"Подтвердить публикацию");
     await waitForExpression(cdp,'document.body.innerText.includes("Версия опубликована")',"fenced publication");
     const release=await canonicalRead();published=release.body;assert(release.body.status==="published"&&release.body.manifest.course.title==="Другой автор","Published an unseen working copy.");
     await clickText(cdp,"Создать следующий черновик");
