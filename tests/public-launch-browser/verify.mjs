@@ -717,6 +717,11 @@ async function launchChrome(tempDirectory) {
 
 
 async function fillLabel(cdp, label, value, index = 0) {
+  await waitForExpression(cdp, `(() => {
+    const labels=[...document.querySelectorAll("label")].filter(l=>l.firstChild?.textContent?.trim()===${JSON.stringify(label)});
+    const label=labels[${index}];
+    return Boolean(label?.control ?? label?.querySelector("input,textarea,select"));
+  })()`, `labelled Studio field: ${label}`);
   const changed = await evaluate(cdp, `(() => {
     const labels=[...document.querySelectorAll("label")].filter(l=>l.firstChild?.textContent?.trim()===${JSON.stringify(label)});
     const label=labels[${index}];
