@@ -19,6 +19,7 @@ import type {
   GroupMembership,
   GroupSet,
   LearningOffering,
+  LearningOfferingList,
   RecordAttendanceRequest,
   Session
 } from "@platform/contracts";
@@ -140,6 +141,39 @@ export class LearningDeliveryApplicationService {
       }
       throw error;
     }
+  }
+
+  async listOfferings(
+    organizationId: string,
+    courseVersionId: string,
+    after: string | null
+  ): Promise<LearningOfferingList> {
+    const context = this.requestContext.tenantContext(organizationId);
+    return this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+      const version = await this.content.requirePublishedVersion(
+        transaction,
+        organizationId,
+        courseVersionId
+      );
+      await this.authorization.requireCapability(
+        transaction,
+        context.userId,
+        "offering.manage",
+        courseScope(organizationId, version.courseId)
+      );
+      const rows = await this.delivery.listOfferingsForCourseVersion(
+        transaction,
+        organizationId,
+        courseVersionId,
+        after
+      );
+      const offerings = rows.slice(0, 50);
+      return {
+        offerings,
+        nextCursor: rows.length > 50 ? offerings[49]!.id : null
+      };
+    });
   }
 
   async getOffering(
