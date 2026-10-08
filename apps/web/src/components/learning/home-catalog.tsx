@@ -1,7 +1,8 @@
-import { Alert, Card, Grid, Skeleton, Stack, Text } from "@platform/ui";
+import { Alert, Skeleton, Stack, Text } from "@platform/ui";
 import { loadLearningCatalog } from "../../lib/public-learning";
 import { CourseList } from "./course-list";
 import { CatalogRetry } from "./catalog-retry";
+import styles from "./course-list.module.css";
 
 export function CatalogLoading() {
   return (
@@ -9,28 +10,26 @@ export function CatalogLoading() {
       <Text muted size="sm" role="status">
         Загружаем курсы…
       </Text>
-      <Grid>
+      <ul className={styles.list} aria-hidden="true">
         {[1, 2, 3].map((key) => (
-          <Card key={key} appearance="quiet">
+          <li key={key} className={styles.row}>
+            <Skeleton />
             <Stack>
               <Skeleton />
               <Skeleton />
               <Skeleton />
             </Stack>
-          </Card>
+          </li>
         ))}
-      </Grid>
+      </ul>
     </div>
   );
 }
-
 export async function HomeCatalog() {
   let catalog;
   try {
     catalog = await loadLearningCatalog();
   } catch {
-    // An unavailable API is not an empty catalog. Keep the cover usable and
-    // expose only a generic read failure, never backend details or fixtures.
     return (
       <Alert tone="warning" title="Каталог временно недоступен">
         <Stack gap="sm">
@@ -42,5 +41,5 @@ export async function HomeCatalog() {
       </Alert>
     );
   }
-  return <CourseList courses={catalog.courses} />;
+  return <CourseList courses={catalog.courses.slice(0, 3)} />;
 }

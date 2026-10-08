@@ -11,6 +11,7 @@ import {
   Checkbox,
   CodeBlock,
   Disclosure,
+  Dialog,
   Divider,
   EmptyState,
   Eyebrow,
@@ -31,9 +32,16 @@ import {
   Textarea
 } from "@platform/ui";
 import "./gallery.css";
+import { CourseList } from "../../components/learning/course-list";
+import {
+  accentChoices,
+  type AccentPreference
+} from "../../components/appearance/preferences";
 
 export function ComponentGallery() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [accent, setAccent] = useState<AccentPreference>("rose");
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [buttonFeedback, setButtonFeedback] = useState("");
   const [formFeedback, setFormFeedback] = useState("");
   function submitExample(event: FormEvent<HTMLFormElement>) {
@@ -43,7 +51,7 @@ export function ComponentGallery() {
     );
   }
   return (
-    <div data-ui-theme={theme} className="ui-gallery">
+    <div data-ui-theme={theme} data-ui-accent={accent} className="ui-gallery">
       <Inline className="ui-gallery-toolbar">
         <Text size="sm">Тема компонентов</Text>
         <Button
@@ -62,6 +70,20 @@ export function ComponentGallery() {
         >
           Светлая
         </Button>
+      </Inline>
+      <Inline className="ui-gallery-toolbar" aria-label="Акцент компонентов">
+        <Text size="sm">Цветовой акцент</Text>
+        {accentChoices.map((choice) => (
+          <Button
+            key={choice.value}
+            variant="secondary"
+            size="sm"
+            aria-pressed={accent === choice.value}
+            onClick={() => setAccent(choice.value)}
+          >
+            {choice.label}
+          </Button>
+        ))}
       </Inline>
       <Stack gap="xl">
         <section aria-labelledby="ui-tokens">
@@ -344,6 +366,117 @@ export function ComponentGallery() {
                 'import { Button, Surface } from "@platform/ui";\n\n<Surface appearance="glass">\n  <Button type="submit">Сохранить</Button>\n</Surface>'
               }
             </CodeBlock>
+          </Stack>
+        </section>
+        <section aria-labelledby="ui-dialog">
+          <Stack gap="lg">
+            <Heading level={2} id="ui-dialog">
+              06 / Диалог
+            </Heading>
+            <Text muted>
+              Нативный диалог удерживает фокус, закрывается по Escape и
+              возвращает фокус на кнопку. На узком экране содержимое остаётся
+              доступным.
+            </Text>
+            <Button
+              variant="secondary"
+              aria-haspopup="dialog"
+              aria-expanded={dialogOpen}
+              aria-controls="ui-dialog-example"
+              onClick={() => setDialogOpen(true)}
+            >
+              Открыть пример диалога
+            </Button>
+            <Dialog
+              id="ui-dialog-example"
+              open={dialogOpen}
+              onDismiss={() => setDialogOpen(false)}
+              aria-labelledby="ui-dialog-example-title"
+            >
+              <Stack gap="lg">
+                <Heading level={3} size="card" id="ui-dialog-example-title">
+                  Пример диалога
+                </Heading>
+                <Text muted>
+                  Это демонстрация. Данные никуда не отправляются.
+                </Text>
+                <Field htmlFor="dialog-example-name" label="Проверка фокуса">
+                  <Input
+                    id="dialog-example-name"
+                    placeholder="Попробуйте Tab и Escape"
+                  />
+                </Field>
+                <Button onClick={() => setDialogOpen(false)}>
+                  Закрыть пример
+                </Button>
+              </Stack>
+            </Dialog>
+          </Stack>
+        </section>
+        <section aria-labelledby="ui-course-list">
+          <Stack gap="lg">
+            <Heading level={2} id="ui-course-list">
+              07 / Каталог и длинные названия
+            </Heading>
+            <Text muted>
+              Демонстрационные данные для проверки переносов. Эти курсы не
+              опубликованы; ссылки показывают формат маршрута.
+            </Text>
+            <CourseList
+              courses={[
+                {
+                  organization: {
+                    slug: "ui-example",
+                    name: "Пример учебной организации"
+                  },
+                  offering: { slug: "intro", name: "Пример курса" },
+                  course: {
+                    title: "Основы веб-разработки",
+                    description:
+                      "Пример описания курса: от структуры документа к оформлению и взаимодействию.",
+                    lessons: [
+                      {
+                        slug: "start",
+                        title: "Пример урока",
+                        summary: "",
+                        durationMinutes: 15
+                      }
+                    ]
+                  }
+                },
+                {
+                  organization: {
+                    slug: "ui-example",
+                    name: "Учебная организация с длинным демонстрационным названием"
+                  },
+                  offering: {
+                    slug: "architecture",
+                    name: "Пример длинного курса"
+                  },
+                  course: {
+                    title:
+                      "Архитектура веб-приложений: от первой страницы до взаимодействия клиента и сервера",
+                    description:
+                      "Демонстрационный текст проверяет кириллицу и плотность каталога. Название и описание переносятся полностью, а переход остаётся доступным на узком экране.",
+                    lessons: [
+                      {
+                        slug: "example",
+                        title: "Пример урока",
+                        summary: "",
+                        durationMinutes: 20
+                      },
+                      {
+                        slug: "second-example",
+                        title: "Второй пример",
+                        summary: "",
+                        durationMinutes: 10
+                      }
+                    ]
+                  }
+                }
+              ]}
+            />
+            <CourseList courses={[]} />
           </Stack>
         </section>
       </Stack>

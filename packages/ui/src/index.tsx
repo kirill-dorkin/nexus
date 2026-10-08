@@ -5,6 +5,8 @@ import type {
   ReactNode
 } from "react";
 
+export { Dialog, type DialogProps } from "./dialog";
+
 export type Tone = "neutral" | "accent" | "success" | "warning" | "danger";
 export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 export type ControlSize = "sm" | "md" | "lg";

@@ -3,22 +3,7 @@
   margin: 0 auto;
   line-height: 1.65;
 }
-.nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--border-default);
-  padding: 0 0 1.5rem;
-  gap: 1rem;
-}
-.nav a {
-  text-decoration: none;
-  font-weight: 600;
-}
-.brand {
-  font-size: 1.3rem;
-  letter-spacing: -0.04em;
-}
+
 .skip {
   position: absolute;
   top: 0;
@@ -287,9 +272,7 @@
   .hero {
     padding: 3rem 0 2.5rem;
   }
-  .nav {
-    padding-bottom: 1rem;
-  }
+
   .practice {
     padding: 1.2rem;
   }
@@ -380,17 +363,8 @@
   gap: 1rem;
   margin-top: 2rem;
 }
-.nav nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
+
 @media (max-width: 500px) {
-  .nav {
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
   .authCard {
     margin: 2rem 0;
     padding: 1rem;
@@ -465,27 +439,7 @@ button.button {
 .shell {
   max-width: var(--content-width);
 }
-.nav {
-  border-bottom: 0;
-  padding: 0.25rem 0 1.75rem;
-}
-.nav nav {
-  display: flex;
-  align-items: center;
-  gap: clamp(0.8rem, 2.2vw, 2rem);
-  flex-wrap: wrap;
-  font-size: 0.82rem;
-}
-.nav nav > a {
-  color: var(--text-secondary);
-}
-.nav nav > a:hover {
-  color: var(--text-primary);
-}
-.brand {
-  font-size: 1.45rem;
-  font-weight: 700;
-}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -541,17 +495,6 @@ button.button {
   text-underline-offset: 4px;
 }
 @media (max-width: 760px) {
-  .nav {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .nav nav {
-    width: 100%;
-    justify-content: space-between;
-    gap: 0.6rem;
-    font-size: 0.75rem;
-  }
   .footer {
     align-items: flex-start;
     flex-direction: column;
@@ -566,5 +509,30 @@ button.button {
 @media (prefers-reduced-motion: reduce) {
   .card {
     transition: none;
+  }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1.25rem;
+}
+.nav > a {
+  text-decoration: none;
+}
+.brand {
+  font-size: 1.7rem;
+  letter-spacing: -0.055em;
+  font-weight: 750;
+  line-height: 1.2;
+}
+@media (max-width: 760px) {
+  .nav {
+    padding-block: 0.85rem;
+  }
+  .brand {
+    font-size: 1.45rem;
   }
 }

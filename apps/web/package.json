@@ -9,15 +9,16 @@
     "typecheck": "next typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@fontsource-variable/onest": "5.3.1",
+    "@phosphor-icons/react": "2.1.10",
     "@platform/brand": "workspace:*",
     "@platform/contracts": "workspace:*",
     "@platform/design-tokens": "workspace:*",
+    "@platform/ui": "workspace:*",
     "next": "^16.3.3",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "react-markdown": "10.1.0",
-    "@platform/ui": "workspace:*",
-    "@phosphor-icons/react": "2.1.10"
+    "react-markdown": "10.1.0"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

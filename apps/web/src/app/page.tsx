@@ -1,20 +1,11 @@
 import Image from "next/image";
 import { Suspense } from "react";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import {
-  ArrowRight,
-  BookOpen,
-  CheckCircle,
-  Play,
-  ArrowUpRight
-} from "@phosphor-icons/react/dist/ssr";
-import {
-  Badge,
   ButtonLink,
-  Card,
   Disclosure,
   Eyebrow,
   Heading,
-  Inline,
   Stack,
   Text
 } from "@platform/ui";
@@ -24,78 +15,88 @@ import {
   CatalogLoading
 } from "../components/learning/home-catalog";
 import styles from "./home.module.css";
+
 export const dynamic = "force-dynamic";
 export default function HomePage() {
   return (
     <LearningShell>
       <section className={styles.cover} aria-labelledby="home-title">
-        <Image
-          className={styles.art}
-          src="/images/learning-ribbon.webp"
-          alt=""
-          fill
-          preload
-          sizes="(max-width: 760px) 100vw, 900px"
-        />
         <div className={styles.coverContent}>
-          <Badge tone="accent">Здесь начинается ваше развитие</Badge>
+          <Eyebrow>От первой строки кода к пониманию</Eyebrow>
           <Heading level={1} size="display" id="home-title">
-            От интереса
-            <br />к настоящим
+            Понимать IT.
             <br />
-            <span className={styles.accent}>навыкам.</span>
+            <span className={styles.accent}>Применять знания.</span>
           </Heading>
           <Text muted size="lg">
-            Разбирайтесь в новом, пробуйте на практике и двигайтесь в своём
-            темпе. Видео, конспекты и задания — всё в одном месте.
+            Видео, понятные конспекты и задания — чтобы разбираться в
+            технологиях и учиться в своём темпе.
           </Text>
-          <Inline gap="sm" className={styles.actions}>
+          <div className={styles.actions}>
             <ButtonLink href="#courses" size="lg">
-              Выбрать курс <ArrowRight size={18} aria-hidden="true" />
+              Выбрать курс <ArrowRight size={20} aria-hidden="true" />
             </ButtonLink>
-            <ButtonLink href="/me/learning" variant="secondary" size="lg">
+            <a className={styles.secondary} href="/me/learning">
               Моё обучение
-            </ButtonLink>
-          </Inline>
-          <Text muted size="sm">
-            Бесплатное начало. Пространство для вашего темпа.
-          </Text>
+            </a>
+          </div>
         </div>
-        <div className={styles.artCaption} aria-hidden="true">
-          <span>Любопытство — начало.</span>
-          <strong>Практика — продолжение.</strong>
-        </div>
-        <div className={styles.coverFoot}>
-          <span>
-            <Play size={16} aria-hidden="true" /> Смотрите
-          </span>
-          <span>
-            <BookOpen size={16} aria-hidden="true" /> Разбирайтесь
-          </span>
-          <span>
-            <CheckCircle size={16} aria-hidden="true" /> Пробуйте
-          </span>
-          <span className={styles.coverFootNote}>
-            Обучение, которое остаётся с вами
-          </span>
+        <div className={styles.example}>
+          <Image
+            className={styles.art}
+            src="/images/learning-portal.webp"
+            alt=""
+            width={1099}
+            height={1000}
+            preload
+            unoptimized
+            sizes="(max-width: 760px) 100vw, 650px"
+          />
+          <figure
+            className={styles.lessonExample}
+            aria-labelledby="example-title"
+          >
+            <figcaption>
+              <span>Пример конспекта</span>
+              <h2 id="example-title">HTML: структура страницы</h2>
+            </figcaption>
+            <pre aria-label="Пример HTML-кода">
+              <code>
+                <span className={styles.tag}>{"<html "}</span>
+                <span className={styles.attribute}>lang</span>
+                {"="}
+                <span className={styles.value}>{'"ru"'}</span>
+                <span className={styles.tag}>{">"}</span>
+                {"\n  "}
+                <span className={styles.tag}>{"<body>"}</span>
+                {"\n    "}
+                <span className={styles.tag}>{"<h1>"}</span>
+                {"Привет, мир!"}
+                <span className={styles.tag}>{"</h1>"}</span>
+                {"\n  "}
+                <span className={styles.tag}>{"</body>"}</span>
+                {"\n"}
+                <span className={styles.tag}>{"</html>"}</span>
+              </code>
+            </pre>
+            <p>Небольшой пример — понятная основа.</p>
+          </figure>
         </div>
       </section>
       <section
         id="courses"
-        className={styles.section}
+        className={styles.catalog}
         aria-labelledby="courses-title"
       >
-        <div className={styles.sectionHeading}>
-          <Stack gap="sm">
-            <Eyebrow>Первый шаг — ваше любопытство</Eyebrow>
-            <Heading id="courses-title">Выберите, с чего начать</Heading>
-            <Text muted>
-              Бесплатные курсы. Учитесь без спешки, возвращайтесь когда удобно.
-            </Text>
-          </Stack>
-          <ButtonLink href="/courses" variant="ghost">
-            Все курсы <ArrowUpRight size={18} aria-hidden="true" />
-          </ButtonLink>
+        <div className={styles.catalogHeading}>
+          <Heading id="courses-title">С чего начать</Heading>
+          <Text muted>
+            Открытые курсы.
+            <br />В своём темпе.
+          </Text>
+          <a className={styles.allCourses} href="/courses">
+            Все курсы <ArrowRight size={18} aria-hidden="true" />
+          </a>
         </div>
         <Suspense fallback={<CatalogLoading />}>
           <HomeCatalog />
@@ -103,70 +104,56 @@ export default function HomePage() {
       </section>
       <section
         id="how-it-works"
-        className={styles.section}
+        className={styles.approach}
         aria-labelledby="approach-title"
       >
-        <div className={styles.sectionHeading}>
-          <Stack gap="sm">
-            <Eyebrow>Понятный путь</Eyebrow>
-            <Heading id="approach-title">
-              Меньше барьеров.
-              <br />
-              Больше понимания.
-            </Heading>
-          </Stack>
-          <Text muted className={styles.sectionDescription}>
-            Не просто пройти материал — понять его и проверить себя. Один урок,
-            один следующий шаг.
-          </Text>
+        <div className={styles.approachHeading}>
+          <Eyebrow>Как проходит обучение</Eyebrow>
+          <Heading id="approach-title">
+            Смотреть. Разбираться.
+            <br />
+            <span className={styles.accent}>Пробовать.</span>
+          </Heading>
         </div>
-        <div className={styles.approach}>
-          {[
-            {
-              number: "01",
-              Icon: Play,
-              title: "Погрузитесь в тему",
-              copy: "Короткие видео помогают увидеть главное. Начните с того, что вызывает интерес."
-            },
-            {
-              number: "02",
-              Icon: BookOpen,
-              title: "Разложите по полочкам",
-              copy: "Понятные конспекты остаются под рукой. Возвращайтесь к материалу, когда нужно."
-            },
-            {
-              number: "03",
-              Icon: CheckCircle,
-              title: "Проверьте понимание",
-              copy: "Задания с обратной связью помогают закрепить знания. Можно попробовать ещё раз."
-            }
-          ].map(({ number, Icon, title, copy }) => (
-            <Card
-              key={number}
-              appearance="quiet"
-              className={styles.approachCard}
-            >
-              <Inline className={styles.stepTop}>
-                <Icon size={25} aria-hidden="true" />
-                <span>{number}</span>
-              </Inline>
-              <Heading level={3} size="card">
-                {title}
-              </Heading>
+        <ol className={styles.steps}>
+          <li>
+            <span>01</span>
+            <div>
+              <h3>Увидеть главное</h3>
               <Text muted size="sm">
-                {copy}
+                Видео помогает познакомиться с темой и понять, с чего начать.
               </Text>
-            </Card>
-          ))}
-        </div>
+            </div>
+          </li>
+          <li>
+            <span>02</span>
+            <div>
+              <h3>Понять, как устроено</h3>
+              <Text muted size="sm">
+                Читайте конспекты, разбирайте примеры и возвращайтесь к нужному
+                месту.
+              </Text>
+            </div>
+          </li>
+          <li>
+            <span>03</span>
+            <div>
+              <h3>Проверить себя</h3>
+              <Text muted size="sm">
+                Выполняйте задания, получайте обратную связь и пробуйте снова.
+              </Text>
+            </div>
+          </li>
+        </ol>
       </section>
       <section className={styles.questions} aria-labelledby="questions-title">
         <Stack gap="sm">
           <Eyebrow>Перед началом</Eyebrow>
-          <Heading id="questions-title">Всё просто.</Heading>
+          <Heading id="questions-title">Есть вопрос?</Heading>
+          <Text muted>Несколько ответов, чтобы было проще начать.</Text>
         </Stack>
         <div>
-          <Disclosure summary="Можно сначала посмотреть курс без регистрации?">
+          <Disclosure summary="Можно посмотреть курс без регистрации?">
             Да. Открытые уроки можно читать сразу. Аккаунт понадобится, чтобы
             записаться на курс, выполнять задания и сохранять прогресс.
           </Disclosure>
@@ -177,6 +164,11 @@ export default function HomePage() {
           <Disclosure summary="Что, если ответ на задание неверный?">
             Вы получите обратную связь и сможете попробовать снова. Прогресс
             учитывает успешно выполненные обязательные задания вашего курса.
+          </Disclosure>
+          <Disclosure summary="Можно изменить тему и цвет интерфейса?">
+            Да. Откройте «Оформление» в верхнем меню. Выберите светлую, тёмную
+            или системную тему и свой цветовой акцент. Настройки сохраняются в
+            этом браузере.
           </Disclosure>
         </div>
       </section>

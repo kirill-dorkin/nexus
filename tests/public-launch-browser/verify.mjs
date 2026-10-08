@@ -1131,7 +1131,7 @@ async function runBrowserVerification(cdp) {
   await navigate(cdp, WEB_ORIGIN);
   await waitForExpression(
     cdp,
-    'document.body.innerText.includes("Бесплатные курсы") && document.body.innerText.includes("Основы компьютера")',
+    'document.body.innerText.includes("Открытые курсы") && document.body.innerText.includes("Основы компьютера")',
     "learning homepage"
   );
   await accessibilityAudit(cdp, "learning homepage");
@@ -1149,7 +1149,7 @@ async function runBrowserVerification(cdp) {
   await accessibilityAudit(cdp, "UI gallery dark");
   assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "UI gallery overflows mobile.");
   await clickText(cdp, "Светлая");
-  await waitForExpression(cdp, 'document.querySelector("[data-ui-theme]")?.dataset.uiTheme === "light"', "light theme");
+  await waitForExpression(cdp, 'document.querySelector(".ui-gallery")?.dataset.uiTheme === "light"', "light theme");
   await accessibilityAudit(cdp, "UI gallery light");
   await clickText(cdp, "Тёмная");
   await fill(cdp, '#example-name', 'Пример');

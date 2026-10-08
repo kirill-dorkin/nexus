@@ -8,10 +8,10 @@ The application keeps canonical data and existing routes. The design system owns
 
 ## First coherent slice — implemented
 
-- Semantic tokens in `@platform/design-tokens`: surfaces, text, action/status colors, borders, focus, spacing, radii, motion, elevation and blur. Dark default with a scoped light theme contract.
+- Semantic tokens in `@platform/design-tokens`: surfaces, text, action/status colors, borders, focus, spacing, radii, motion, elevation and blur. Full scoped dark/light themes with five accent presets; Web owns a system-aware device preference and validated before-paint initialization.
 - `@platform/ui`: Button, ButtonLink, IconButton, Container, Stack, Inline, Grid, Surface, Card, Badge, Eyebrow, Heading, Text, Divider, Input, Textarea, Select, Field, Checkbox, Radio, RadioGroup, Alert, EmptyState, Skeleton, Progress, Disclosure and CodeBlock.
 - Native semantic elements; button defaults to non-submit; loading disables repeated actions; explicit labels/error relationships; indeterminate progress is distinct from zero; native details works without JavaScript.
-- Public shell, real catalog cards and homepage cover compose the library. Streaming keeps the cover visible while the catalog loads; loading, empty and unavailable states remain distinct. An original generated glass sculpture is stored locally as a small WebP, not a third-party remote dependency.
+- Public shell, real editorial catalogue rows and homepage cover compose the library. Streaming keeps the cover visible while the catalog loads; loading, empty and unavailable states remain distinct. An original generated glass sculpture is stored locally as a small WebP, not a third-party remote dependency.
 - `/ui` provides isolated, labelled demo states, theme switching, native form validation, working controls and usage examples. It is excluded from search indexing and does not appear in product navigation.
 - Keyboard focus, reduced motion/transparency, glass fallback, mobile layout and high contrast support are part of the foundation.
 
@@ -24,9 +24,16 @@ The application keeps canonical data and existing routes. The design system owns
 - Shared Progress displays canonical required-task counts and percentage. Null progress or a zero-task course never fabricates a bar or Enrollment completion. Generic failures, safe unavailable-course state and route loading use shared presentation.
 - No migration, API, session/Origin/RLS, protected content, progress policy or outbox change. Studio/Commerce adoption is still deferred.
 
+## Approved cover refinement — implemented
+
+- IT lesson excerpt, supporting transparent portal asset, editorial catalogue rows, self-hosted Onest Cyrillic typography and responsive lower sections.
+- Light/dark/system appearance and five contrast-checked accent presets; native radio groups, device-local persistence, cross-tab/system updates and graceful storage failure.
+- Selected route navigation, responsive native-dialog menu, appearance panel and gallery dialogue/accent states.
+- These capabilities are implemented; release verification and visual acceptance remain separate gates. See `docs/engineering/ui-design-brief.md` and `design-qa.md`.
+
 ## Next slices, in order
 
-1. **Navigation and overlays**: selected navigation, breadcrumbs, responsive menu, tabs, accessible dialog/confirmation, popover, tooltip and menu. Use a reviewed headless primitive when native HTML is insufficient; include focus return, Escape and keyboard navigation.
+1. **Learning screen refinement and remaining overlays**: refine auth, course, lesson, quizzes and own learning against the approved visual system; then tabs, confirmation, popover and tooltip where actual consumers need them. Selected navigation, responsive menu and native dialog are already present. Use a reviewed headless primitive when native HTML is insufficient; include focus return, Escape and keyboard navigation.
 2. **Studio**: editor layout, toolbar, field groups, collection reorder controls, validation summaries, revision/conflict states, publication confirmation and preview. Keep protected author content out of public gallery/examples.
 3. **Complex data**: table, sortable headers, filters, pagination, search input, segmented control, date/time controls, file picker and upload states. Add only with real product consumers and explicit accessibility contracts.
 4. **Product patterns**: course presentation, lesson blocks, enrollment panels, quiz choices, purchase states and author workflow patterns. These belong to Web, not the neutral UI package; no business authority in primitives.

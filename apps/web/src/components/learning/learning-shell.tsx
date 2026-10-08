@@ -1,7 +1,8 @@
 import { brand } from "@platform/brand";
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { Container, buttonClass } from "@platform/ui";
+import { Container } from "@platform/ui";
+import { LearningNavigation } from "./learning-navigation";
 import styles from "./learning.module.css";
 export function LearningShell({ children }: { children: ReactNode }) {
   return (
@@ -13,17 +14,7 @@ export function LearningShell({ children }: { children: ReactNode }) {
         <Link className={styles.brand} href="/">
           {brand.name}
         </Link>
-        <nav aria-label="Главное меню">
-          <Link href="/courses">Курсы</Link>
-          <Link href="/me/learning">Моё обучение</Link>
-          <Link href="/studio">Studio</Link>
-          <Link
-            className={buttonClass({ variant: "secondary", size: "sm" })}
-            href="/login"
-          >
-            Войти
-          </Link>
-        </nav>
+        <LearningNavigation />
       </header>
       <main id="learning-main" tabIndex={-1}>
         {children}

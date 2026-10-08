@@ -7,7 +7,7 @@
 
 `@platform/design-tokens` owns semantic visual values. `@platform/ui` owns brand-neutral, typed presentation primitives and its explicitly imported stylesheet. Web owns product composition, route navigation, application state and domain-specific patterns. Branding continues to come from `@platform/brand`; no product name enters component/runtime namespaces.
 
-The maintainer-selected art direction is dark plum with magenta/violet accents, translucent panels, fine borders and strong typography. Dark is deterministic rather than inferred from the device setting. A scoped light theme demonstrates the semantic contract; a theme preference or persistence policy is a later product decision.
+The maintainer-selected art direction is dark plum with selective glass, fine borders and expressive Cyrillic typography. The combined cover direction uses an IT lesson example, supporting portal artwork and a calm editorial catalogue. Web loads the self-hosted Onest Variable font. The maintainer approved separate light/dark/system and rose/violet/blue/teal/amber preferences on 2026-10-08. Web owns the versioned device-local storage, validated before-paint initialization, system-scheme subscription and cross-tab updates. Invalid or unavailable storage is nonfatal. UI/tokens own no storage or account policy; cross-device synchronization is deferred. Semantic status colors stay independent of the selected accent.
 
 Primitives render native HTML and remain usable from React Server Components. They have no hooks, requests, local storage or business authority. Interactivity lives in small calling client components. Native control refs use React 19 props. CSS is imported once by the application root. Next transpiles the workspace UI source. Phosphor icons use its SSR entrypoint where no icon context is required; no full icon provider is introduced.
 
@@ -19,4 +19,4 @@ The first adoption covers the public shell, homepage/catalog, registration/login
 
 ## Consequences
 
-There is no migration, authorization/RLS change, canonical event or outbox change. Web-to-API transport remains ADR-0058. The library can evolve independently of domain policy, while gallery examples and semantic tests make its behavior reviewable. Complex overlays and controlled compound widgets wait for a product consumer and a reviewed accessible primitive rather than speculative custom state machines.
+There is no migration, authorization/RLS change, canonical event or outbox change. Web-to-API transport remains ADR-0058. The library can evolve independently of domain policy, while gallery examples and semantic tests make its behavior reviewable. A controlled native Dialog primitive now serves the actual appearance and mobile-navigation consumers, relying on the browser for inertness, focus containment, Escape and return. More complex overlays and controlled compound widgets still wait for actual consumers and reviewed accessibility contracts.

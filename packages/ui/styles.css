@@ -97,6 +97,7 @@
   font-size: 0.82rem;
 }
 .ui-button--lg {
+  font-size: 1rem;
   min-height: 54px;
   padding: 1rem 1.5rem;
 }
@@ -183,19 +184,19 @@
   text-wrap: balance;
   overflow-wrap: anywhere;
 }
-.ui-heading[data-size="display"] {
+.ui-heading:where([data-size="display"]) {
   font-size: clamp(2.6rem, 6.5vw, 5.8rem);
   letter-spacing: -0.065em;
 }
-.ui-heading[data-size="section"] {
+.ui-heading:where([data-size="section"]) {
   font-size: clamp(1.8rem, 3.5vw, 3rem);
 }
-.ui-heading[data-size="card"] {
+.ui-heading:where([data-size="card"]) {
   font-size: 1.35rem;
   line-height: 1.3;
   letter-spacing: -0.025em;
 }
-.ui-heading[data-size="small"] {
+.ui-heading:where([data-size="small"]) {
   font-size: 1rem;
   line-height: 1.4;
   letter-spacing: -0.015em;
@@ -208,10 +209,10 @@
 .ui-text[data-muted] {
   color: var(--text-secondary);
 }
-.ui-text[data-size="sm"] {
+.ui-text:where([data-size="sm"]) {
   font-size: 0.85rem;
 }
-.ui-text[data-size="lg"] {
+.ui-text:where([data-size="lg"]) {
   font-size: clamp(1rem, 1.5vw, 1.15rem);
 }
 .ui-divider {
@@ -237,7 +238,7 @@
   background: var(--surface-input);
   padding: 0.8rem 1rem;
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--text-primary);
   transition: border-color var(--motion-fast);
 }
@@ -448,5 +449,50 @@
   }
   .ui-button--primary {
     color: ButtonText;
+  }
+}
+
+/* Native dialog supplies focus containment, Escape and top-layer semantics. */
+.ui-dialog {
+  color: var(--text-primary);
+  background: var(--surface-solid);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-surface);
+  padding: 1.5rem;
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  font-family: var(--font-sans);
+}
+.ui-dialog::backdrop {
+  background: rgb(10 6 16 / 35%);
+}
+.ui-dialog[open] {
+  animation: ui-dialog-enter 160ms ease-out;
+}
+@keyframes ui-dialog-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ui-dialog[open] {
+    animation: none;
+  }
+}
+@media (forced-colors: active) {
+  .ui-dialog {
+    border-color: CanvasText;
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .ui-button:not(:disabled):active {
+    transform: translateY(1px);
   }
 }

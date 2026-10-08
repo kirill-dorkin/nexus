@@ -5,16 +5,42 @@ const css = readFileSync(
   new URL("../../design-tokens/tokens.css", import.meta.url),
   "utf8"
 );
-function tokens(section: string) {
-  return Object.fromEntries(
-    [...section.matchAll(/(--[\w-]+):\s*(#[\da-f]{6})/gi)].map((match) => [
-      match[1],
-      match[2]
+// Resolve the public token contract, including aliases and accent scopes.
+// Do not rely on prose comments or a particular ordering of palette rules.
+const rules = [
+  ...css.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/([^{}]+)\{([^{}]*)\}/g)
+].map((match) => ({
+  selectors: match[1]!.split(",").map((selector) => selector.trim()),
+  values: Object.fromEntries(
+    [...match[2]!.matchAll(/(--[\w-]+):\s*([^;]+);/g)].map((value) => [
+      value[1]!,
+      value[2]!.trim()
     ])
+  )
+}));
+function palette(mode: string, accent: string) {
+  const values: Record<string, string> = {};
+  for (const selector of [
+    ":root",
+    `[data-ui-theme="${mode}"]`,
+    `[data-ui-accent="${accent}"]`
+  ]) {
+    for (const rule of rules)
+      if (rule.selectors.includes(selector)) Object.assign(values, rule.values);
+  }
+  function resolve(name: string): string {
+    const value = values[name];
+    if (!value) throw new Error(`Missing semantic token ${name}`);
+    const alias = value.match(/^var\((--[\w-]+)\)$/);
+    if (alias) return resolve(alias[1]!);
+    if (/^#[0-9a-f]{3}$/i.test(value))
+      return "#" + [...value.slice(1)].map((char) => char + char).join("");
+    return value;
+  }
+  return Object.fromEntries(
+    Object.keys(values).map((name) => [name, resolve(name)])
   );
 }
-const dark = tokens(css.split("/* A scoped")[0]!);
-const light = { ...dark, ...tokens(css.split('[data-ui-theme="light"]')[1]!) };
 function luminance(hex: string) {
   const channels = [1, 3, 5]
     .map((offset) => parseInt(hex.slice(offset, offset + 2), 16) / 255)
@@ -28,10 +54,13 @@ function contrast(first: string, second: string) {
     b = luminance(second);
   return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 }
-describe.each([
-  ["dark", dark],
-  ["light", light]
-] as const)("%s semantic contrast", (_, theme) => {
+describe.each(
+  ["dark", "light"].flatMap((mode) =>
+    ["rose", "violet", "blue", "teal", "amber"].map(
+      (accent) => [mode, accent, palette(mode, accent)] as const
+    )
+  )
+)("%s / %s semantic contrast", (_, _accent, theme) => {
   it("keeps normal text and action labels at WCAG AA on named solid surfaces", () => {
     for (const background of [
       "--surface-default",

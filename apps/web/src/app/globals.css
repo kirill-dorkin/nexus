@@ -15,7 +15,7 @@ body {
 }
 
 body {
-  padding: clamp(1rem, 3vw, 2rem);
+  padding: 0 clamp(1.25rem, 5vw, 4.5rem);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -32,8 +32,14 @@ a {
   background: var(--accent-subtle);
 }
 html {
+  scrollbar-gutter: stable;
   scroll-behavior: smooth;
   scroll-padding-top: 2rem;
+}
+@media (max-width: 360px) {
+  body {
+    padding-inline: 1rem;
+  }
 }
 svg {
   vertical-align: middle;
