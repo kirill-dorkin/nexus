@@ -21,6 +21,7 @@ import {
   IconButton,
   Inline,
   Input,
+  PasswordInput,
   Progress,
   Radio,
   RadioGroup,
@@ -270,6 +271,17 @@ export function ComponentGallery() {
                       name="notes"
                       placeholder="Что хотите изучить?"
                       aria-describedby="example-notes-hint"
+                    />
+                  </Field>
+                  <Field
+                    htmlFor="example-password"
+                    label="Пример поля пароля"
+                    hint="Демонстрация показа и скрытия, без отправки."
+                  >
+                    <PasswordInput
+                      id="example-password"
+                      autoComplete="off"
+                      aria-describedby="example-password-hint"
                     />
                   </Field>
                   <Field

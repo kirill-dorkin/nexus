@@ -1,0 +1,109 @@
+.authLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 28rem);
+  gap: clamp(3rem, 8vw, 8rem);
+  max-width: 68rem;
+  margin: clamp(2rem, 6vw, 5rem) auto;
+  align-items: center;
+}
+.authIntro {
+  display: grid;
+  gap: 1.5rem;
+  min-width: 0;
+}
+.authIntro h2 {
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  line-height: 1.15;
+  max-width: 14ch;
+  letter-spacing: -0.045em;
+}
+.authIntro > p {
+  max-width: 38ch;
+  line-height: 1.7;
+}
+.authIntro ol {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+.authIntro li {
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--border-default);
+}
+.authIntro li > span {
+  color: var(--text-accent);
+  font: 0.75rem/1.8 var(--font-mono);
+  padding-top: 0.15rem;
+}
+.authIntro strong {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.authCard {
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  border-radius: var(--radius-xl);
+  box-shadow: none;
+}
+.authCard h1 {
+  font-size: 2rem;
+  letter-spacing: -0.04em;
+}
+.authCard form,
+.authCard fieldset {
+  display: grid;
+  gap: 1.5rem;
+  min-width: 0;
+}
+.authCard fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.authCard :global(.ui-button) {
+  width: 100%;
+  min-height: 48px;
+}
+.authReturn {
+  display: block;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  min-height: 44px;
+  padding: 0.65rem;
+  text-underline-offset: 4px;
+}
+@media (max-width: 900px) {
+  .authLayout {
+    gap: 2.5rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+  }
+  .authIntro h2 {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 760px) {
+  .authLayout {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 30rem;
+    gap: 2.5rem;
+    margin: 1.5rem auto;
+  }
+  .authIntro {
+    order: 2;
+    gap: 1rem;
+  }
+  .authIntro h2 {
+    font-size: 1.65rem;
+    max-width: 22ch;
+  }
+  .authIntro ol {
+    margin: 0;
+  }
+  .authCard {
+    padding: 1.5rem 1.25rem;
+  }
+}

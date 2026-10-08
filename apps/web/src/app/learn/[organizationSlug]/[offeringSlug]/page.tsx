@@ -11,9 +11,10 @@ import {
   Text,
   buttonClass
 } from "@platform/ui";
-import { BookOpen, Clock, ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { LearningPageHeading } from "../../../../components/learning/learning-page-heading";
 import { LessonOutline } from "../../../../components/learning/lesson-outline";
+import { lessonCount } from "../../../../components/learning/learning-labels";
 import styles from "../../../../components/learning/flow.module.css";
 export const dynamic = "force-dynamic";
 type Props = {
@@ -39,14 +40,12 @@ export default async function CoursePage({ params }: Props) {
       >
         <Inline>
           <Badge tone="accent">Бесплатно · В своём темпе</Badge>
-          <Badge>
-            <BookOpen size={15} aria-hidden="true" />
-            {course.course.lessons.length} уроков
-          </Badge>
-          <Badge>
-            <Clock size={15} aria-hidden="true" />
+          <Text muted size="sm">
+            {lessonCount(course.course.lessons.length)}
+          </Text>
+          <Text muted size="sm">
             Около {duration} мин
-          </Badge>
+          </Text>
         </Inline>
       </LearningPageHeading>
       <div className={styles.courseLayout}>
@@ -57,7 +56,7 @@ export default async function CoursePage({ params }: Props) {
           <LessonOutline course={course} />
         </section>
         <aside className={styles.aside} aria-label="Начать курс">
-          <Surface>
+          <Surface appearance="solid">
             <Stack gap="lg">
               <Heading level={2} size="card">
                 В удобном ритме

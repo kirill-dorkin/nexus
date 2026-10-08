@@ -3,13 +3,9 @@ import Link from "next/link";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { EmptyState, Text } from "@platform/ui";
 import { courseUrl } from "../../lib/public-learning-routes";
+import { lessonCount } from "./learning-labels";
 import styles from "./course-list.module.css";
 
-function lessonCount(count: number) {
-  const last = count % 10;
-  const teen = count % 100 >= 11 && count % 100 <= 14;
-  return `${count} ${teen ? "уроков" : last === 1 ? "урок" : last >= 2 && last <= 4 ? "урока" : "уроков"}`;
-}
 export function CourseList({ courses }: { courses: PublicLearningCourse[] }) {
   if (courses.length === 0)
     return (

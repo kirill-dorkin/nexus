@@ -71,7 +71,7 @@ export default async function LessonPage({ params }: Props) {
           className={styles.lessonAside}
           aria-label="Программа и сохранённое обучение"
         >
-          <Surface>
+          <Surface appearance="quiet">
             <Heading level={2} size="card">
               Программа курса
             </Heading>

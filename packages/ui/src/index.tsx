@@ -6,6 +6,7 @@ import type {
 } from "react";
 
 export { Dialog, type DialogProps } from "./dialog";
+export { PasswordInput, type PasswordInputProps } from "./password-input";
 
 export type Tone = "neutral" | "accent" | "success" | "warning" | "danger";
 export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";

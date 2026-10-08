@@ -15,7 +15,7 @@ Use this file as the active continuation checkpoint and the archives only when o
 
 ## Checkpoint baseline
 
-Last maintained: 2026-10-07.
+Last maintained: 2026-10-08.
 
 F0-F8 foundations are established through modular-monolith boundaries, identity/tenancy/authorization, immutable curriculum, Delivery, Attempt/Submission/Validation/Evidence/Mastery, Guided Build, GitHub Projects, repository-side grader hardening, Recommendations/Readiness, and readiness-gated Enrollment completion.
 
@@ -245,7 +245,7 @@ Do not remove these without an explicit cleanup slice/migration and proven calle
 
 **Build the reusable UI foundation and adopt it incrementally.**
 
-The maintainer selected dark plum, magenta/violet and translucent glass references for the public interface. The proposed ADR-0059 defines token/UI/Web ownership. The implementation introduces a semantic UI workspace package, an isolated component gallery and public homepage/catalog plus registration/login, self-entry, own learning, course outline, Lesson navigation and quiz/progress presentation over unchanged canonical reads and commands. The complete implementation roadmap lives in `docs/roadmap/ui-library.md`. The approved cover refinement adds an IT lesson excerpt, editorial course rows, self-hosted Onest, system-aware light/dark themes with five device-local accents, and selected/responsive navigation with native dialogs. Web owns preference persistence; there is no API, auth, progress or outbox change. Subsequent adoption should refine learning layouts and remaining overlays, then Studio; complex widgets require real consumers and accessible interaction contracts. Browser evidence and the ordinary exact-head CI/maintainer-local gates remain required before release. Production grader activation remains independently gated.
+The maintainer selected dark plum, magenta/violet and translucent glass references for the public interface. The proposed ADR-0059 defines token/UI/Web ownership. The implementation introduces a semantic UI workspace package, an isolated component gallery and public homepage/catalog plus registration/login, self-entry, own learning, course outline, Lesson navigation and quiz/progress presentation over unchanged canonical reads and commands. The complete implementation roadmap lives in `docs/roadmap/ui-library.md`. The approved cover refinement adds an IT lesson excerpt, editorial course rows, self-hosted Onest, system-aware light/dark themes with five device-local accents, and selected/responsive navigation with native dialogs. Web owns preference persistence; there is no API, auth, progress or outbox change. The subsequent learning refinement adds a solid auth composition and PasswordInput, streaming catalog with local filtering, open course outlines, solid lesson reading surfaces, restrained entry actions and editorial own-learning rows over unchanged canonical commands and progress. Subsequent adoption should address actual overlay consumers and Studio; complex widgets require real consumers and accessible interaction contracts. Browser evidence and the ordinary exact-head CI/maintainer-local gates remain required before release. Production grader activation remains independently gated.
 
 Candidate areas that remain intentionally **unselected** at this checkpoint include:
 

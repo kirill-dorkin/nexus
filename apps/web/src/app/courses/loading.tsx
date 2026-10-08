@@ -1,12 +1,15 @@
-import { Surface } from "@platform/ui";
 import { LearningShell } from "../../components/learning/learning-shell";
-import { LearningLoading } from "../../components/learning/learning-loading";
+import { CatalogLoading } from "../../components/learning/home-catalog";
+import { LearningPageHeading } from "../../components/learning/learning-page-heading";
 export default function Loading() {
   return (
     <LearningShell>
-      <Surface>
-        <LearningLoading>Загружаем курсы…</LearningLoading>
-      </Surface>
+      <LearningPageHeading
+        eyebrow="Каталог"
+        title="Найдите свою следующую тему."
+        description="Бесплатные курсы с видео, понятными конспектами и заданиями для закрепления."
+      />
+      <CatalogLoading />
     </LearningShell>
   );
 }

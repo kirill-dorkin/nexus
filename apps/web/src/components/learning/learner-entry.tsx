@@ -124,7 +124,7 @@ export function LearnerEntry({
       aria-label="Сохранённое обучение"
       aria-busy={busy || loading}
     >
-      <Surface appearance="quiet">
+      <Surface appearance="quiet" className={styles.entrySurface}>
         <Stack gap="lg">
           <Heading level={2} size="card">
             Ваше обучение
@@ -138,7 +138,10 @@ export function LearnerEntry({
                 Войдите или зарегистрируйтесь, чтобы записаться на курс и
                 сохранять результаты практики.
               </p>
-              <Link className={buttonClass()} href={learningLoginUrl(route)}>
+              <Link
+                className={buttonClass({ variant: "secondary" })}
+                href={learningLoginUrl(route)}
+              >
                 Войти и сохранить обучение
               </Link>
             </>

@@ -12,16 +12,14 @@ import {
   Alert,
   Badge,
   Button,
-  Card,
   EmptyState,
   Eyebrow,
-  Grid,
-  Heading,
   Inline,
   Surface,
+  Text,
   buttonClass
 } from "@platform/ui";
-import { BookOpen, ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { LearningPageHeading } from "../../../components/learning/learning-page-heading";
 import { LearningLoading } from "../../../components/learning/learning-loading";
 import styles from "../../../components/learning/flow.module.css";
@@ -124,7 +122,6 @@ export function MyLearning() {
         <Surface padding="none">
           <EmptyState
             title="Ваше обучение начинается здесь"
-            icon={<BookOpen size={32} />}
             action={
               <Link
                 className={buttonClass()}
@@ -142,7 +139,6 @@ export function MyLearning() {
         <Surface padding="none">
           <EmptyState
             title="Вы пока не записаны на доступные курсы."
-            icon={<BookOpen size={32} />}
             action={
               <Link className={buttonClass()} href="/courses">
                 Выбрать курс <ArrowRight size={18} aria-hidden="true" />
@@ -155,43 +151,50 @@ export function MyLearning() {
         </Surface>
       )}
       {courses.length > 0 && (
-        <Grid className={styles.savedGrid}>
+        <ul className={styles.savedList}>
           {courses.map((c) => {
             const next =
               c.progress?.nextLessonSlug ?? c.course.lessons[0]!.slug;
             return (
-              <Card
+              <li
                 className={styles.savedCard}
                 key={`${c.organization.slug}/${c.offering.slug}`}
               >
-                <Inline>
-                  <Badge tone="accent">Бесплатно</Badge>
-                  {c.entry.enrollmentStatus === "completed" && (
-                    <Badge tone="success">Обучение завершено</Badge>
-                  )}
-                </Inline>
-                <Eyebrow>{c.organization.name}</Eyebrow>
-                <Heading level={2} size="card">
+                <div className={styles.savedDetails}>
+                  <Inline>
+                    <Badge tone="accent">Бесплатно</Badge>
+                    {c.entry.enrollmentStatus === "completed" && (
+                      <Badge tone="success">Обучение завершено</Badge>
+                    )}
+                  </Inline>
+                  <Eyebrow>{c.organization.name}</Eyebrow>
+                  <h2>
+                    <Link
+                      href={`/learn/${c.organization.slug}/${c.offering.slug}`}
+                    >
+                      {c.course.title}
+                    </Link>
+                  </h2>
+                  <Text muted size="sm">
+                    {c.course.description}
+                  </Text>
+                </div>
+                <div className={styles.savedProgress}>
+                  <CourseProgress learning={c} />
                   <Link
-                    href={`/learn/${c.organization.slug}/${c.offering.slug}`}
+                    className={buttonClass()}
+                    href={`/learn/${c.organization.slug}/${c.offering.slug}/${next}`}
                   >
-                    {c.course.title}
+                    {c.progress?.allRequiredPassed
+                      ? "Вернуться к материалам"
+                      : "Продолжить"}
+                    <ArrowRight size={18} aria-hidden="true" />
                   </Link>
-                </Heading>
-                <CourseProgress learning={c} />
-                <Link
-                  className={buttonClass()}
-                  href={`/learn/${c.organization.slug}/${c.offering.slug}/${next}`}
-                >
-                  {c.progress?.allRequiredPassed
-                    ? "Вернуться к материалам"
-                    : "Продолжить"}
-                  <ArrowRight size={18} aria-hidden="true" />
-                </Link>
-              </Card>
+                </div>
+              </li>
             );
           })}
-        </Grid>
+        </ul>
       )}
       {cursor && (
         <Button variant="secondary" loading={busy} onClick={() => void more()}>

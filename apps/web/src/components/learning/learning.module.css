@@ -194,7 +194,25 @@
   border: 0;
 }
 .notes {
-  padding: 0 0.25rem;
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  background: var(--surface-solid);
+  border-radius: var(--radius-lg);
+  min-width: 0;
+}
+.notes .markdown {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  max-width: 68ch;
+  margin-inline: auto;
+}
+.markdown > :first-child {
+  margin-top: 0;
+}
+.markdown > :last-child {
+  margin-bottom: 0;
+}
+.markdown li + li {
+  margin-top: 0.4rem;
 }
 .practice {
   border: 1px solid var(--border-default);

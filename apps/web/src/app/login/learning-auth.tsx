@@ -4,25 +4,20 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { browserApiRequest } from "../../lib/public-api";
 import { safeLearningReturnTo } from "../../lib/learning-return-to";
-import {
-  ArrowRight,
-  BookOpen,
-  CheckCircle,
-  BookmarkSimple
-} from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import {
   Alert,
   Button,
-  Divider,
   Eyebrow,
   Field,
   Heading,
   Input,
+  PasswordInput,
   Stack,
   Surface,
   Text
 } from "@platform/ui";
-import styles from "../../components/learning/flow.module.css";
+import styles from "./auth.module.css";
 export function LearningAuth({ returnTo }: { returnTo: string }) {
   const [mode, setMode] = useState<"login" | "register">("login");
   const [busy, setBusy] = useState(false),
@@ -50,7 +45,9 @@ export function LearningAuth({ returnTo }: { returnTo: string }) {
             ? "Проверьте почту и пароль."
             : response.status === 409
               ? "Аккаунт с такой почтой уже существует. Войдите в него."
-              : "Не удалось войти. Проверьте данные и попробуйте снова."
+              : mode === "login"
+                ? "Не удалось войти. Проверьте данные и попробуйте снова."
+                : "Не удалось создать аккаунт. Проверьте данные и попробуйте снова."
         );
         return;
       }
@@ -65,50 +62,46 @@ export function LearningAuth({ returnTo }: { returnTo: string }) {
   return (
     <div className={styles.authLayout}>
       <aside className={styles.authIntro} aria-label="Обучение с аккаунтом">
-        <Stack gap="lg">
-          <Eyebrow>Ваш следующий шаг</Eyebrow>
-          <Heading level={2} size="section">
-            Учиться. Пробовать.
-            <br />
-            Возвращаться.
-          </Heading>
-          <Text muted>
-            Материалы можно читать без аккаунта. Войдите, когда будете готовы
-            сохранять результаты практики.
-          </Text>
-        </Stack>
-        <ul>
+        <Eyebrow>От понимания к практике</Eyebrow>
+        <Heading level={2} size="section">
+          Продолжайте с того места, где остановились.
+        </Heading>
+        <Text muted>
+          Материалы доступны без аккаунта. Войдите, чтобы записаться на курс и
+          сохранять результаты заданий.
+        </Text>
+        <ol>
           <li>
-            <BookOpen size={24} aria-hidden="true" />
+            <span>01</span>
             <div>
-              <strong>Выбирайте свой темп</strong>
+              <strong>Ваши курсы — рядом</strong>
               <Text muted size="sm">
-                Открывайте уроки и возвращайтесь к нужным темам.
+                Возвращайтесь к ним в «Моём обучении».
               </Text>
             </div>
           </li>
           <li>
-            <CheckCircle size={24} aria-hidden="true" />
+            <span>02</span>
             <div>
-              <strong>Проверяйте себя</strong>
+              <strong>Практика с обратной связью</strong>
               <Text muted size="sm">
-                После записи на курс отправляйте ответы и получайте результат.
+                После записи отправляйте ответы и смотрите результат.
               </Text>
             </div>
           </li>
           <li>
-            <BookmarkSimple size={24} aria-hidden="true" />
+            <span>03</span>
             <div>
-              <strong>Продолжайте с сохранённым прогрессом</strong>
+              <strong>Удобное вам оформление</strong>
               <Text muted size="sm">
-                Ваши курсы и выполненные задания — в «Моём обучении».
+                Светлая или тёмная тема и выбранный цвет на этом устройстве.
               </Text>
             </div>
           </li>
-        </ul>
+        </ol>
       </aside>
       <section aria-labelledby="auth-title">
-        <Surface className={styles.authCard} padding="lg">
+        <Surface appearance="solid" className={styles.authCard} padding="lg">
           <Stack gap="lg">
             <Stack gap="sm">
               <Eyebrow>Ваш аккаунт</Eyebrow>
@@ -116,10 +109,13 @@ export function LearningAuth({ returnTo }: { returnTo: string }) {
                 {mode === "login" ? "Вход" : "Регистрация"}
               </Heading>
               <Text muted size="sm">
-                После входа вы вернётесь на выбранную страницу.
+                {mode === "login"
+                  ? "Рады видеть вас снова. Войдите, чтобы продолжить."
+                  : "Создайте аккаунт и возвращайтесь к своей практике."}
               </Text>
             </Stack>
             <form onSubmit={submit} aria-busy={busy}>
+              {error && <Alert tone="danger">{error}</Alert>}
               <fieldset
                 disabled={busy}
                 aria-label={
@@ -160,10 +156,9 @@ export function LearningAuth({ returnTo }: { returnTo: string }) {
                     mode === "register" ? "Не менее 15 символов." : undefined
                   }
                 >
-                  <Input
+                  <PasswordInput
                     id="learning-password"
                     name="password"
-                    type="password"
                     autoComplete={
                       mode === "login" ? "current-password" : "new-password"
                     }
@@ -176,7 +171,6 @@ export function LearningAuth({ returnTo }: { returnTo: string }) {
                   />
                 </Field>
               </fieldset>
-              {error && <Alert tone="danger">{error}</Alert>}
               <Button loading={busy} type="submit">
                 {busy
                   ? "Подождите…"
@@ -186,9 +180,8 @@ export function LearningAuth({ returnTo }: { returnTo: string }) {
                 {!busy && <ArrowRight size={18} aria-hidden="true" />}
               </Button>
             </form>
-            <Divider />
             <Button
-              variant="secondary"
+              variant="ghost"
               disabled={busy}
               onClick={() => {
                 setMode(mode === "login" ? "register" : "login");

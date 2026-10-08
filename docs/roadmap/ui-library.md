@@ -31,9 +31,17 @@ The application keeps canonical data and existing routes. The design system owns
 - Selected route navigation, responsive native-dialog menu, appearance panel and gallery dialogue/accent states.
 - These capabilities are implemented; release verification and visual acceptance remain separate gates. See `docs/engineering/ui-design-brief.md` and `design-qa.md`.
 
+## Learning screen refinement — implemented
+
+- Solid auth form with a shared PasswordInput, quieter secondary actions and mode-specific error copy; original session transport, return allowlist and password constraints remain intact.
+- Streaming catalog keeps navigation during loading/unavailability. A bounded client search filters only the real returned course list; no API search/pagination policy is added.
+- Calm course metadata, open lesson rows, a solid reading surface and scroll-contained lesson sidebar; self-entry remains a separate explicit action.
+- Own learning uses editorial rows with canonical task progress and a clear continuation action. Quiz attempts, answer locks, ambiguous retries and Enrollment completion semantics remain untouched.
+- Browser snapshots cover 320/390/768/1440, all quiz input types, native form validation, password visibility and error/empty states. Populated local screenshots use clearly labelled test-only fixtures outside product code; CI remains the canonical database/browser gate.
+
 ## Next slices, in order
 
-1. **Learning screen refinement and remaining overlays**: refine auth, course, lesson, quizzes and own learning against the approved visual system; then tabs, confirmation, popover and tooltip where actual consumers need them. Selected navigation, responsive menu and native dialog are already present. Use a reviewed headless primitive when native HTML is insufficient; include focus return, Escape and keyboard navigation.
+1. **Remaining overlays**: add tabs, confirmation, popover and tooltip where actual consumers need them. Auth, catalog, course, lesson, quizzes and own learning now share the approved visual system. Selected navigation, responsive menu and native dialog are already present. Use a reviewed headless primitive when native HTML is insufficient; include focus return, Escape and keyboard navigation.
 2. **Studio**: editor layout, toolbar, field groups, collection reorder controls, validation summaries, revision/conflict states, publication confirmation and preview. Keep protected author content out of public gallery/examples.
 3. **Complex data**: table, sortable headers, filters, pagination, search input, segmented control, date/time controls, file picker and upload states. Add only with real product consumers and explicit accessibility contracts.
 4. **Product patterns**: course presentation, lesson blocks, enrollment panels, quiz choices, purchase states and author workflow patterns. These belong to Web, not the neutral UI package; no business authority in primitives.

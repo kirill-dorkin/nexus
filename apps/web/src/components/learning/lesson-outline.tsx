@@ -1,7 +1,7 @@
 import type { PublicLearningCourse } from "@platform/contracts";
 import Link from "next/link";
 import { Text } from "@platform/ui";
-import { lessonUrl } from "../../lib/public-learning";
+import { lessonUrl } from "../../lib/public-learning-routes";
 import styles from "./flow.module.css";
 
 export function LessonOutline({
@@ -20,7 +20,7 @@ export function LessonOutline({
             href={lessonUrl(course, lesson.slug)}
             aria-current={lesson.slug === currentSlug ? "page" : undefined}
           >
-            <span className={styles.number}>
+            <span className={styles.number} aria-hidden="true">
               {String(index + 1).padStart(2, "0")}
             </span>
             <div>

@@ -934,7 +934,7 @@ async function verifyCanonicalLearner(cdp, authored) {
     await clickText(cdp, "Проверить и сохранить ответ");
     await waitForExpression(
       cdp,
-      'document.body.innerText.includes("✓ Правильно") && document.body.innerText.includes("Задания курса: 1 из 2")',
+      'document.body.innerText.includes("Правильно") && document.body.innerText.includes("Задания курса: 1 из 2")',
       "canonical retry passed"
     );
     assert(
@@ -979,7 +979,7 @@ async function verifyCanonicalLearner(cdp, authored) {
     await clickText(cdp, "Проверить и сохранить ответ");
     await waitForExpression(
       cdp,
-      'document.querySelectorAll("form")[0].innerText.includes("✓ Правильно")',
+      'document.querySelectorAll("form")[0].innerText.includes("Правильно")',
       "canonical exact multi passed"
     );
     assert(
@@ -1176,6 +1176,26 @@ async function runBrowserVerification(cdp) {
     "learning catalog"
   );
   await accessibilityAudit(cdp, "learning catalog");
+  await fill(cdp, "#course-search", "КОМПЬЮТЕРА");
+  assert(
+    await evaluate(
+      cdp,
+      'document.querySelector(\'section[aria-label="Доступные курсы"]\').innerText.includes("Основы компьютера")'
+    ),
+    "Catalog search lost case-insensitive Cyrillic matches."
+  );
+  await fill(cdp, "#course-search", "несуществующая тема");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Ничего не нашлось")',
+    "catalog search empty state"
+  );
+  await clickText(cdp, "Сбросить поиск");
+  await waitForExpression(
+    cdp,
+    'document.querySelector("#course-search").value === "" && document.body.innerText.includes("Основы компьютера")',
+    "catalog search reset"
+  );
   await navigate(cdp, `${WEB_ORIGIN}/learn/acme/computer-basics`);
   await waitForExpression(
     cdp,
@@ -1293,6 +1313,23 @@ async function runBrowserVerification(cdp) {
   const learningEmail = `learner-browser-${Date.now()}@example.test`;
   await fill(cdp, 'input[name="email"]', learningEmail);
   await fill(cdp, 'input[name="password"]', PASSWORD);
+  await clickText(cdp, "Показать");
+  assert(
+    await evaluate(
+      cdp,
+      'document.querySelector(\'input[name="password"]\').type === "text" && document.querySelector(\'input[name="password"]\').value === ' +
+        JSON.stringify(PASSWORD)
+    ),
+    "Password reveal changed the submitted value."
+  );
+  await clickText(cdp, "Скрыть");
+  assert(
+    await evaluate(
+      cdp,
+      'document.querySelector(\'input[name="password"]\').type === "password"'
+    ),
+    "Password cannot be hidden again."
+  );
   await fill(cdp, 'input[name="displayName"]', "Learning Browser");
   await accessibilityAudit(cdp, "learning registration");
   assert(await evaluate(cdp, `document.querySelector('input[name="password"]').getAttribute("aria-describedby") === "learning-password-hint" && document.querySelector("#learning-password-hint").innerText.includes("15")`), "Registration password hint is disconnected.");
@@ -1327,7 +1364,7 @@ async function runBrowserVerification(cdp) {
   await clickText(cdp, "Попробовать ещё раз");
   await evaluate(cdp, 'document.querySelector(\'input[value="cpu"]\').click()');
   await clickText(cdp, "Проверить и сохранить ответ");
-  await waitForExpression(cdp, 'document.body.innerText.includes("✓ Правильно") && document.body.innerText.includes("Все обязательные задания курса выполнены")', "passed quiz and refreshed progress");
+  await waitForExpression(cdp, 'document.body.innerText.includes("Правильно") && document.body.innerText.includes("Все обязательные задания курса выполнены")', "passed quiz and refreshed progress");
   assert(quizFixtureRequests[2] !== quizFixtureRequests[1] && quizFixtureTries.size === 2, "Explicit retry did not start a new try.");
   assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Quiz overflows mobile.");
   await accessibilityAudit(cdp, "passed quiz feedback");

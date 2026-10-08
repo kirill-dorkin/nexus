@@ -4,7 +4,7 @@
 
 final result: passed
 
-The approved combined IT direction has been compared with the real production-built Next.js homepage in Chromium, not a rasterized page or a replacement prototype. This result covers the homepage, appearance panel, responsive public navigation and the gallery examples changed in this slice. It does not declare the subsequent auth/lesson/quiz redesign complete or substitute for maintainer visual acceptance.
+The approved combined IT direction has been compared with the real production-built Next.js homepage in Chromium, not a rasterized page or a replacement prototype. This result covers the homepage, appearance panel, responsive public navigation and the gallery examples changed in this slice. The learning-screen continuation is reviewed separately below. This does not substitute for maintainer visual acceptance.
 
 ## Visual truth and evidence
 
@@ -56,4 +56,40 @@ No actionable P0/P1/P2 findings remain in this slice. The native-dialog gallery 
 - Preserve the Draft PR; inspect exact-head CI and the resulting Vercel preview separately.
 - Maintainer visual review is still required before Ready/merge; no Production publication is part of this slice.
 - P3: compare Onest rendering on physical iOS/Android and tune the subtle light portal if desired.
-- Next coherent visual stage: auth forms, catalog/course, lesson, quiz and own learning; Studio follows separately. Account-synchronized appearance is deferred; this slice saves on the current device.
+- Studio remains a separate agreed stage. Account-synchronized appearance is deferred; this slice saves on the current device.
+
+
+## Learning-screen continuation — 2026-10-08
+
+**Scope:** existing login/registration, public catalog/course, lesson notes/video/navigation, quizzes and own learning. Auth/session, tenant isolation, membership/enrollment commands, immutable quiz retry and canonical progress remain unchanged. No API, persistence, migration or outbox code is modified.
+
+### Composition and materials
+
+- Auth uses a calm solid form alongside an open numbered explanation. Mobile shows the form first. Primary submit, secondary mode switch and return link have distinct emphasis. Password visibility preserves native value, validation, autocomplete and disabled behavior; the control is added to the neutral UI library and labelled gallery.
+- Catalog retains the actual ordered API results. Search filters the returned bounded list by Cyrillic title, description and organization; it makes no claim to search unpublished or unloaded courses. Missing data, failed loading and no matching results are distinct.
+- Course outline uses open separated rows instead of repeated cards. Mobile brings the start action before the program. Anonymous sign-in has secondary emphasis. Enrollment commands and visibility rules are retained.
+- Lesson notes use a solid reading surface, a 68ch measure and 17px text with 1.8 line height. Navigation remains separate; long outlines can scroll inside the desktop sidebar. Existing safe Markdown and video URL handling are unchanged.
+- Own learning uses open rows with actual canonical progress beside course details, stacking on mobile. Quiz options keep native controls, explicit pending/retry, disabled and feedback states.
+
+### Browser evidence and its limits
+
+The final production-built Next.js application was run in Chromium using Playwright. Captures are in `/workspace/scratch/33e28e12dfa3/learning-verification/`. **Populated course, lesson, own-learning and quiz captures use explicitly labelled local test data. These are test projections, not real courses/progress, and were not added to the application or published.** Local authentication errors are intercepted test responses; no real account was created for these captures. The existing CI browser scenario separately checks the learning journey and unchanged command/retry contracts.
+
+| Coverage | Result and evidence |
+| --- | --- |
+| Login, catalog, course, lesson and anonymous own learning at 320 / 390 / 768 / 1440 CSS px | 20 layout checks; no page-level horizontal overflow; actual Onest loaded; `results.json`, corresponding width-labelled captures |
+| Registration and populated own learning at all four widths | Native form and long course titles remain contained; `register-*.png`, `own-learning-*.png` |
+| Password, validation, pending and auth errors | Invalid native form sends no request; reveal/hide preserves value and type; submitting disables the fieldset; visible keyboard focus; error text for login and registration; `login-focus-390.png`, `login-error-390.png`, `register-error-390.png` |
+| Catalog search, reset, empty and unavailable | Cyrillic matching, no results/reset, truly empty and transport error states remain distinct; navigation stays usable; `catalog-search-empty-1440.png`, `catalog-empty-1440.png`, `catalog-error-1440.png` |
+| Own learning anonymous, populated, empty and error | Separate states and existing continue destination; `own-anonymous-*.png`, `own-learning-*.png`, `own-empty-390.png`, `own-error-390.png` |
+| Quiz single choice, multiple choice and text | All answer types contained at 320 / 390; pending immutable answer, same try/body on retry, success then explicit reset; `quiz-pending-390.png`, `quiz-success-390.png`, `quiz-multiple-*.png`, `quiz-text-*.png` |
+| Light / blue reading and forms | Real appearance controls apply the same tokens; `login-light-390.png`, `login-light-1440.png`, `lesson-light-1440.png` |
+| Runtime | No browser `pageerror` events in the local verification |
+
+### Visual critique and fixes
+
+P2: the course had two equally dominant primary actions. The course start remains primary; anonymous sign-in is now secondary and its block uses an open divider. P2: nested surface defaults overrode the intended entry presentation; a scoped selector restores the open treatment. P2: two narrow mobile lesson-navigation columns caused excessive wrapping of long titles; below 500px these actions now stack at full width. P3: own-learning title spacing was unnecessarily loose; details now share a compact vertical rhythm. Final screenshots were inspected for Cyrillic wrapping, hierarchy, reading measure and surface contrast. No actionable P0/P1/P2 findings remain in these reviewed layouts.
+
+The React review confirmed server-only fetching stays behind Suspense, filtering is derived from current props/query without an effect or extra request, and password visibility is local presentation state. No animation dependency was added. Existing reduced-motion, touch navigation and solid transparency fallbacks remain in place; the homepage/gallery regression is checked separately. Physical iOS/Android, screen readers and feature-disable fallback are still unverified on devices.
+
+Workspace type checking, production Web build, brand boundaries and the 398-test unit suite passed. Persistent CI browser assertions now cover Cyrillic search/reset and password visibility without altering registration/entry or quiz semantics. Exact-head CI and Vercel deployment inspection are separate gates after the push; do not infer their result from local tests. Maintainer visual acceptance remains necessary before merge. Studio and account-synchronized appearance are outside this stage.

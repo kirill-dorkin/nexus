@@ -176,9 +176,7 @@ export function QuizForm({
           <Alert
             tone={result.outcome === "passed" ? "success" : "warning"}
             title={
-              result.outcome === "passed"
-                ? "✓ Правильно"
-                : "Ответ пока неверный"
+              result.outcome === "passed" ? "Правильно" : "Ответ пока неверный"
             }
           >
             {result.feedback}
