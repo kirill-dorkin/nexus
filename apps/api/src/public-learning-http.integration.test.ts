@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import {
   courseManifestV1Schema,
+  learningOfferingListSchema,
   publicLearningCatalogSchema,
   publicLearningCourseSchema,
   publicLearningLessonSchema,
@@ -275,6 +276,63 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
     await Promise.all([migration.end(), runtime.end()]);
     if (oldOrigin === undefined) delete process.env.WEB_APP_ORIGIN;
     else process.env.WEB_APP_ORIGIN = oldOrigin;
+  });
+
+  it("lists published-release Offerings only to the authorized course manager", async () => {
+    const f = fixtures[0]!;
+    const another = await post(
+      `organizations/${f.org}/offerings`,
+      {
+        courseVersionId: f.version,
+        slug: `second-offering-${randomUUID()}`,
+        name: "Another private Offering",
+        deliveryMode: "self_paced",
+        accessMode: "membership"
+      },
+      owner,
+      201
+    );
+    const url = `/v1/organizations/${f.org}/offerings?courseVersionId=${f.version}`;
+    const ownerRead = await app.inject({
+      method: "GET",
+      url,
+      headers: { "x-test-user-id": owner }
+    });
+    expect(ownerRead.statusCode, ownerRead.body).toBe(200);
+    expect(ownerRead.headers["cache-control"]).toBe("no-store");
+    const list = learningOfferingListSchema.parse(ownerRead.json());
+    expect(list.nextCursor).toBeNull();
+    expect(list.offerings.map((entry) => entry.id)).toEqual(
+      expect.arrayContaining([f.offering, another.id])
+    );
+    expect(list.offerings.every((entry) =>
+      entry.organizationId === f.org && entry.courseVersionId === f.version
+    )).toBe(true);
+    expect(list.offerings.find((entry) => entry.id === another.id)?.visibility).toBe("private");
+
+    for (const [user, expected] of [["", 401], [learner, 403]] as const) {
+      const response = await app.inject({
+        method: "GET",
+        url,
+        headers: user ? { "x-test-user-id": user } : {}
+      });
+      expect(response.statusCode, response.body).toBe(expected);
+      expect(response.body).not.toContain(another.id);
+    }
+    const foreign = await app.inject({
+      method: "GET",
+      url: `/v1/organizations/${f.org}/offerings?courseVersionId=${fixtures[1]!.version}`,
+      headers: { "x-test-user-id": owner }
+    });
+    expect(foreign.statusCode, foreign.body).toBe(404);
+    for (const suffix of ["?courseVersionId=wrong", `?courseVersionId=${f.version}&extra=true`, `?courseVersionId=${f.version}&after=wrong`]) {
+      const malformed = await app.inject({
+        method: "GET",
+        url: `/v1/organizations/${f.org}/offerings${suffix}`,
+        headers: { "x-test-user-id": owner }
+      });
+      expect(malformed.statusCode, malformed.body).toBe(400);
+    }
   });
 
   it("defaults private and never exposes private content through anonymous functions", async () => {
