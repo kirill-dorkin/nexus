@@ -33,7 +33,7 @@ export function DraftPreview({ document }: { document: CourseManifestV1 }) {
           <Text muted>{l.summary}</Text>
           {l.blocks.map((b, j) =>
             b.type === "youtube" ? (
-              normalizeYouTubeVideoId(b.videoId) ? <YouTubeVideo key={`${j}/${b.videoId}`} videoId={normalizeYouTubeVideoId(b.videoId)!} title={`${l.title} (${j + 1})`} /> : <p key={j}>Добавьте корректную ссылку YouTube, чтобы посмотреть видео.</p>
+              normalizeYouTubeVideoId(b.videoId) ? <YouTubeVideo key={`${j}/${b.videoId}`} videoId={normalizeYouTubeVideoId(b.videoId)!} title={l.title} /> : <p key={j}>Добавьте корректную ссылку YouTube, чтобы посмотреть видео.</p>
             ) : b.type === "markdown" ? (
               <div
                 key={j}

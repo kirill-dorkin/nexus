@@ -1,4 +1,6 @@
 import { LearnerEntry } from "../../../../components/learning/learner-entry";
+import type { Metadata } from "next";
+import { brand } from "@platform/brand";
 import Link from "next/link";
 import Image from "next/image";
 import { courseArtwork } from "../../../../components/learning/course-artwork";
@@ -17,10 +19,27 @@ import { LearningPageHeading } from "../../../../components/learning/learning-pa
 import { LessonOutline } from "../../../../components/learning/lesson-outline";
 import { lessonCount } from "../../../../components/learning/learning-labels";
 import styles from "../../../../components/learning/flow.module.css";
+import { absoluteUrl, jsonLd } from "../../../../lib/site";
 export const dynamic = "force-dynamic";
 type Props = {
   params: Promise<{ organizationSlug: string; offeringSlug: string }>;
 };
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { organizationSlug, offeringSlug } = await params;
+  const course = await loadLearningCourse(organizationSlug, offeringSlug);
+  const path = `/learn/${encodeURIComponent(organizationSlug)}/${encodeURIComponent(offeringSlug)}`;
+  return {
+    title: course.course.title,
+    description: course.course.description,
+    alternates: { canonical: path },
+    openGraph: {
+      type: "website",
+      url: path,
+      title: `${course.course.title} · ${brand.name}`,
+      description: course.course.description
+    }
+  };
+}
 export default async function CoursePage({ params }: Props) {
   const { organizationSlug, offeringSlug } = await params;
   const course = await loadLearningCourse(organizationSlug, offeringSlug);
@@ -29,8 +48,27 @@ export default async function CoursePage({ params }: Props) {
     (sum, lesson) => sum + lesson.durationMinutes,
     0
   );
+  const path = `/learn/${encodeURIComponent(organizationSlug)}/${encodeURIComponent(offeringSlug)}`;
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: course.course.title,
+    description: course.course.description,
+    url: absoluteUrl(path),
+    inLanguage: "ru",
+    provider: {
+      "@type": "Organization",
+      name: course.organization.name
+    },
+    hasCourseInstance: {
+      "@type": "CourseInstance",
+      courseMode: "online",
+      courseWorkload: `PT${duration}M`
+    }
+  };
   return (
     <LearningShell>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }} />
       <nav className={styles.breadcrumbs} aria-label="Навигационная цепочка">
         <Link href="/courses">Все курсы</Link>
         <span aria-current="page">{course.course.title}</span>

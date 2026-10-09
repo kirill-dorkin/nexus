@@ -10,8 +10,9 @@ export const dynamic = "force-dynamic";
 export default async function LoginPage({
   searchParams
 }: {
-  searchParams: Promise<{ returnTo?: string | string[] }>;
+  searchParams: Promise<{ returnTo?: string | string[]; mode?: string | string[] }>;
 }) {
+  const query = await searchParams;
   return (
     <div className={styles.page}>
       <a className={styles.skip} href="#auth-main">
@@ -39,7 +40,8 @@ export default async function LoginPage({
       </header>
       <main id="auth-main" tabIndex={-1} className={styles.main}>
         <LearningAuth
-          returnTo={safeLearningReturnTo((await searchParams).returnTo)}
+          returnTo={safeLearningReturnTo(query.returnTo)}
+          initialMode={query.mode === "register" ? "register" : "login"}
         />
       </main>
     </div>

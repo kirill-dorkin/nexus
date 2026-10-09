@@ -33,16 +33,20 @@ export function YouTubeVideo({ videoId, title }: { videoId: string; title: strin
           />
         ) : (
           <div className={styles.placeholder}>
-            <span className={styles.eyebrow}>ВИДЕО УРОКА · YOUTUBE</span>
-            <Button ref={play} onClick={() => { setLoaded(false); setActive(true); }}>
-              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5 13 8l-9 5.5z" fill="currentColor" /></svg> Смотреть видео
+            <span className={styles.glow} aria-hidden="true" />
+            <div className={styles.posterContent}>
+              <span className={styles.eyebrow}>ВИДЕО УРОКА · YOUTUBE</span>
+              <strong>{title}</strong>
+              <p>Сначала посмотрите объяснение, затем переходите к конспекту.</p>
+            </div>
+            <Button className={styles.play} ref={play} onClick={() => { setLoaded(false); setActive(true); }}>
+              <svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5 13 8l-9 5.5z" fill="currentColor" /></svg> Смотреть видео
             </Button>
-            <p>Плеер загрузится только после нажатия.</p>
           </div>
         )}
       </div>
       <div className={styles.footer}>
-        <p role="status">{active && !loaded ? "Загружаем плеер YouTube…" : "Если видео недоступно здесь, откройте его на YouTube."}</p>
+        <p role="status">{active && !loaded ? "Загружаем плеер YouTube…" : "YouTube не загружается до нажатия. Если встраивание недоступно, откройте видео отдельно."}</p>
         <div className={styles.actions}>
           {active ? <Button ref={close} variant="ghost" size="sm" onClick={() => setActive(false)}>Закрыть плеер</Button> : null}
           <a href={`https://www.youtube.com/watch?v=${videoId}`} target="_blank" rel="noopener noreferrer">Открыть на YouTube <span aria-hidden="true">↗</span><span className={styles.srOnly}> (новая вкладка)</span></a>

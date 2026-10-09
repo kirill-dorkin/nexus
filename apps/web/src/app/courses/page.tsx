@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { brand } from "@platform/brand";
 import { LearningShell } from "../../components/learning/learning-shell";
 import { Suspense } from "react";
 import { CatalogContent } from "../../components/learning/catalog-content";
@@ -6,7 +7,12 @@ import { CatalogLoading } from "../../components/learning/home-catalog";
 import { LearningPageHeading } from "../../components/learning/learning-page-heading";
 import styles from "../../components/learning/flow.module.css";
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Бесплатные курсы" };
+export const metadata: Metadata = {
+  title: "Бесплатные IT-курсы",
+  description: `Открытые курсы ${brand.name} по компьютерной грамотности и цифровым навыкам: программа, видео, конспекты и практика.`,
+  alternates: { canonical: "/courses" },
+  openGraph: { url: "/courses", title: `Бесплатные IT-курсы · ${brand.name}` }
+};
 export default async function CoursesPage() {
   return (
     <LearningShell>

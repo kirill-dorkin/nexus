@@ -201,6 +201,16 @@
   border-top: 1px solid var(--border-default);
   padding-top: 3.5rem;
 }
+.blogCallout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 4rem;
+  padding-block: 3.5rem;
+  border-top: 1px solid var(--border-default);
+}
+.blogCallout h2 { margin-top: 0.85rem; font-size: clamp(1.8rem, 3vw, 2.65rem); line-height: 1.2; }
+.blogCallout p { max-width: 35rem; }
+.blogCallout a { display: inline-flex; align-items: center; gap: 0.6rem; min-height: 44px; margin-top: 1rem; color: var(--text-accent); font-weight: 650; text-underline-offset: 0.3rem; }
 .questions h2 {
   font-size: 2rem;
 }
@@ -229,6 +239,7 @@
     padding-top: 2rem;
     padding-bottom: 1.5rem;
   }
+  .blogCallout { grid-template-columns: 1fr; gap: 1.25rem; }
   .coverContent {
     gap: 1.25rem;
   }

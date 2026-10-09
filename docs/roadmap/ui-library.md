@@ -50,6 +50,15 @@ The application keeps canonical data and existing routes. The design system owns
 - Safe author preview uses calm lesson surfaces and the existing Markdown/YouTube policy; answers are absent from preview. Publication now opens a native modal with Cancel initially focused; only explicit confirmation invokes the unchanged fenced command. Publication still does not open an Offering.
 - Responsive and state screenshots use isolated labelled test fixtures. Canonical authoring, conflict, export, publication/next-draft and learner regression remain covered by the existing CI browser/DB profile.
 
+## Public discovery and editorial entry — implemented
+
+- Anonymous navigation exposes the public catalogue and Blog plus explicit sign-in/registration actions. My learning and Studio enter the primary navigation only after the existing session read succeeds; a failed or anonymous read does not advertise private destinations. The author footer link remains a labelled entry point and retains the existing Studio login gate.
+- `/blog` and its first genuine team-authored computer-literacy article use an editorial list and readable long-form layout rather than a repeated card grid. Article content is static Web-owned editorial copy; it makes no fabricated learner, outcome or traffic claims and links back to the real public catalogue.
+- Root, catalogue, course, Lesson, Blog and article routes now provide route-appropriate titles, descriptions, canonical URLs and Open Graph data. Web also owns `robots.txt`, the public sitemap, web manifest and a local generated social preview. Private/application routes and the component gallery are excluded from crawling; dynamic sitemap entries use only the existing public-learning projection and degrade to the static route list when that read is unavailable.
+- Course, Lesson, Blog and article structured data is assembled only from public canonical content or explicit editorial fields. This is technical discoverability infrastructure, not a ranking or traffic guarantee. Search-console ownership, keyword research, publishing cadence and external distribution remain operational follow-up work.
+- YouTube's consent-first placeholder now has a useful lesson title, IT-oriented graphic field, explicit load action and permanent external fallback. It still performs no YouTube thumbnail, iframe, SDK or preconnect request before activation and unmounts the iframe on close.
+- Production-build browser checks cover the anonymous public path, direct registration mode, canonical/structured metadata, SEO endpoints and course media at 320/390/768/1440 in light and dark themes. Test-only media fixtures remain outside product code and do not claim that a published course contains a video when its canonical blocks do not.
+
 ## Next slices, in order
 
 1. **Remaining overlays**: add tabs, confirmation, popover and tooltip where actual consumers need them. Auth, catalog, course, lesson, quizzes, own learning and Studio now share the approved visual system. Selected navigation, responsive menu and native dialog are already present. Use a reviewed headless primitive when native HTML is insufficient; include focus return, Escape and keyboard navigation.
@@ -57,7 +66,7 @@ The application keeps canonical data and existing routes. The design system owns
 3. **Complex data**: table, sortable headers, filters, pagination, search input, segmented control, date/time controls, file picker and upload states. Add only with real product consumers and explicit accessibility contracts.
 4. **Product patterns**: course presentation, lesson blocks, enrollment panels, quiz choices, purchase states and author workflow patterns. These belong to Web, not the neutral UI package; no business authority in primitives.
 5. **System documentation**: component API pages, composition recipes, accessibility notes, theme extension, design tokens/code-to-design mapping and visual regression fixtures for stable states. Extract a separate Storybook only when its maintenance earns its cost.
-6. **Production polish**: real course cover assets, social preview imagery, metadata, measured font loading and animation, cold-load performance, contrast checks across all migrated surfaces and browser/device coverage.
+6. **Production polish**: measured font loading and animation, cold-load performance, contrast checks across all migrated surfaces, richer route-specific social imagery where warranted and broader browser/device coverage. The first real course cover, global social preview and public metadata foundation are implemented.
 
 ## Lesson media and reviewed course artwork
 

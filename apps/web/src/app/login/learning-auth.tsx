@@ -15,8 +15,8 @@ import {
   Text
 } from "@platform/ui";
 import styles from "./auth.module.css";
-export function LearningAuth({ returnTo }: { returnTo: string }) {
-  const [mode, setMode] = useState<"login" | "register">("login");
+export function LearningAuth({ returnTo, initialMode = "login" }: { returnTo: string; initialMode?: "login" | "register" }) {
+  const [mode, setMode] = useState<"login" | "register">(initialMode);
   const [busy, setBusy] = useState(false),
     [error, setError] = useState<string | null>(null);
   async function submit(event: FormEvent<HTMLFormElement>) {

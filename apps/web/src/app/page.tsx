@@ -1,4 +1,6 @@
 import Image from "next/image";
+import type { Metadata } from "next";
+import { brand } from "@platform/brand";
 import { Suspense } from "react";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import {
@@ -17,6 +19,12 @@ import {
 import styles from "./home.module.css";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  title: "Понятное обучение цифровым навыкам",
+  description: `Открытые IT-курсы ${brand.name}: видео, понятные конспекты и практика в удобном темпе.`,
+  alternates: { canonical: "/" },
+  openGraph: { url: "/" }
+};
 export default function HomePage() {
   return (
     <LearningShell>
@@ -36,8 +44,8 @@ export default function HomePage() {
             <ButtonLink href="#courses" size="lg">
               Выбрать курс <ArrowRight size={20} aria-hidden="true" />
             </ButtonLink>
-            <a className={styles.secondary} href="/me/learning">
-              Моё обучение
+            <a className={styles.secondary} href="/blog">
+              Читать блог
             </a>
           </div>
         </div>
@@ -145,6 +153,21 @@ export default function HomePage() {
             </div>
           </li>
         </ol>
+      </section>
+      <section className={styles.blogCallout} aria-labelledby="blog-title">
+        <div>
+          <Eyebrow>Из блога {brand.name}</Eyebrow>
+          <Heading id="blog-title">Компьютерная грамотность с нуля</Heading>
+        </div>
+        <div>
+          <Text muted>
+            Что изучить в первую очередь: устройство компьютера, файлы,
+            браузер, документы и цифровая безопасность.
+          </Text>
+          <a href="/blog/kompyuternaya-gramotnost-s-nulya">
+            Читать статью <ArrowRight size={18} aria-hidden="true" />
+          </a>
+        </div>
       </section>
       <section className={styles.questions} aria-labelledby="questions-title">
         <Stack gap="sm">

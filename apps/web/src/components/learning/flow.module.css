@@ -59,6 +59,14 @@
   text-underline-offset: 4px;
   overflow-wrap: anywhere;
 }
+.lessonHeader .pageHeading {
+  padding: 1.25rem 0 2.25rem;
+  max-width: 50rem;
+}
+.lessonHeader .pageHeading h1 {
+  font-size: clamp(2rem, 3.5vw, 2.85rem);
+  max-width: 22ch;
+}
 .courseLayout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(18rem, 22rem);

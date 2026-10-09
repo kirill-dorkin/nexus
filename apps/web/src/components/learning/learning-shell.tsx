@@ -26,7 +26,7 @@ export function LearningShell({ children, layout = "page" }: { children: ReactNo
         </div>
         <nav aria-label="Меню внизу страницы">
           <Link href="/courses">Курсы</Link>
-          <Link href="/me/learning">Моё обучение</Link>
+          <Link href="/blog">Блог</Link>
           <Link href="/studio">Для авторов</Link>
         </nav>
       </footer>

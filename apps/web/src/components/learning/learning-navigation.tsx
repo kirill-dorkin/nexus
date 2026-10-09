@@ -2,14 +2,19 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { List, X } from "@phosphor-icons/react/dist/ssr";
 import { Dialog, IconButton, buttonClass } from "@platform/ui";
 import { AppearanceControl } from "../appearance/appearance-control";
+import { browserApiRequest } from "../../lib/public-api";
 import styles from "./navigation.module.css";
 
-const destinations = [
+const publicDestinations = [
   { href: "/courses", label: "Курсы" },
+  { href: "/blog", label: "Блог" }
+] as const;
+
+const privateDestinations = [
   { href: "/me/learning", label: "Моё обучение" },
   { href: "/studio", label: "Studio" }
 ] as const;
@@ -21,8 +26,24 @@ export function LearningNavigation({
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [authenticated, setAuthenticated] = useState(!showLogin);
   const id = useId();
+  useEffect(() => {
+    if (!showLogin) return;
+    let cancelled = false;
+    void browserApiRequest("/v1/me")
+      .then((response) => {
+        if (!cancelled) setAuthenticated(response.ok);
+      })
+      .catch(() => {
+        if (!cancelled) setAuthenticated(false);
+      });
+    return () => { cancelled = true; };
+  }, [showLogin]);
   function links() {
+    const destinations = authenticated
+      ? [...publicDestinations, ...privateDestinations]
+      : publicDestinations;
     return destinations.map((item) => (
       <Link
         key={item.href}
@@ -44,15 +65,12 @@ export function LearningNavigation({
         {links()}
       </nav>
       <AppearanceControl />
-      {showLogin && (
-        <Link
-          className={`${buttonClass({ variant: "secondary", size: "sm" })} ${styles.login}`}
-          href="/login"
-          aria-current={pathname === "/login" ? "page" : undefined}
-        >
-          Войти
-        </Link>
-      )}
+      {showLogin && !authenticated ? (
+        <div className={styles.authActions}>
+          <Link className={`${buttonClass({ variant: "ghost", size: "sm" })} ${styles.login}`} href="/login">Войти</Link>
+          <Link className={`${buttonClass({ size: "sm" })} ${styles.register}`} href="/login?mode=register">Создать аккаунт</Link>
+        </div>
+      ) : null}
       <IconButton
         className={styles.menuButton}
         aria-label="Открыть меню"
@@ -78,11 +96,10 @@ export function LearningNavigation({
         </div>
         <nav aria-label="Главное меню на мобильном экране">
           {links()}
-          {showLogin && (
-            <Link href="/login" onClick={() => setOpen(false)}>
-              Войти
-            </Link>
-          )}
+          {showLogin && !authenticated ? <>
+            <Link href="/login" onClick={() => setOpen(false)}>Войти</Link>
+            <Link href="/login?mode=register" onClick={() => setOpen(false)}>Создать аккаунт</Link>
+          </> : null}
         </nav>
       </Dialog>
     </div>

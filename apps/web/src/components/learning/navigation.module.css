@@ -32,6 +32,11 @@
 .menuButton {
   display: none;
 }
+.authActions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
 .menuHeading {
   display: flex;
   align-items: center;
@@ -72,10 +77,11 @@
   .controls {
     gap: 0.5rem;
   }
+  .register { display: none; }
 }
 @media (max-width: 760px) {
   .desktop,
-  .login {
+  .authActions {
     display: none;
   }
   .menuButton {
