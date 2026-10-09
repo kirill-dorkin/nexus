@@ -11,8 +11,12 @@ export function LearningShell({ children, layout = "page" }: { children: ReactNo
         Перейти к содержимому
       </a>
       <header className={styles.nav}>
-        <Link className={styles.brand} href="/">
-          {brand.name}
+        <Link className={styles.brand} href="/" aria-label={`${brand.name} — на главную`}>
+          <span className={styles.brandMark} aria-hidden="true">N</span>
+          <span className={styles.brandLockup}>
+            <span>{brand.name}</span>
+            <small>учебная среда</small>
+          </span>
         </Link>
         <LearningNavigation />
       </header>

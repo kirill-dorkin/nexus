@@ -12,8 +12,12 @@ export function StudioShell({ children }: { children: ReactNode }) {
         Перейти к содержимому
       </a>
       <header className={layout.nav}>
-        <Link className={layout.brand} href="/">
-          {brand.name}
+        <Link className={layout.brand} href="/" aria-label={`${brand.name} — на главную`}>
+          <span className={layout.brandMark} aria-hidden="true">N</span>
+          <span className={layout.brandLockup}>
+            <span>{brand.name}</span>
+            <small>Studio</small>
+          </span>
         </Link>
         <LearningNavigation showLogin={false} />
       </header>

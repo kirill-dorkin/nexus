@@ -125,7 +125,7 @@
 .accents [data-swatch="amber"] {
   background: #946000;
 }
-@media (max-width: 760px) {
+@media (max-width: 1040px) {
   .trigger {
     width: 44px;
     padding: 0.6rem;
@@ -155,7 +155,7 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
-@media (max-width: 760px) {
+@media (max-width: 860px) {
   .dialog {
     padding: 1.25rem;
     padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
