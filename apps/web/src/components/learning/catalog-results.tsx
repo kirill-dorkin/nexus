@@ -5,6 +5,16 @@ import { Button, EmptyState, Field, Input, Text } from "@platform/ui";
 import { CourseList } from "./course-list";
 import styles from "./flow.module.css";
 
+function formatCourseCount(count: number) {
+  const mod100 = count % 100;
+  const mod10 = count % 10;
+
+  if (mod100 >= 11 && mod100 <= 14) return `${count} доступных курсов`;
+  if (mod10 === 1) return `${count} доступный курс`;
+  if (mod10 >= 2 && mod10 <= 4) return `${count} доступных курса`;
+  return `${count} доступных курсов`;
+}
+
 export function CatalogResults({
   courses
 }: {
@@ -38,7 +48,7 @@ export function CatalogResults({
         <Text size="sm" muted role="status">
           {search
             ? `По запросу найдено: ${matches.length}`
-            : `${courses.length} ${courses.length === 1 ? "доступный курс" : "доступных курса"}`}
+            : formatCourseCount(courses.length)}
         </Text>
       </form>
       {matches.length ? (
