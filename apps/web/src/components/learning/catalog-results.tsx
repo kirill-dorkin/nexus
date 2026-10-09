@@ -25,20 +25,20 @@ export function CatalogResults({
         className={styles.catalogSearch}
         onSubmit={(e) => e.preventDefault()}
       >
-        <Field htmlFor="course-search" label="Найти курс">
+        <Field htmlFor="course-search" label="Поиск по каталогу">
           <Input
             id="course-search"
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Название, тема или организация"
+            placeholder="Название или тема"
             autoComplete="off"
           />
         </Field>
         <Text size="sm" muted role="status">
           {search
-            ? `Найдено: ${matches.length}`
-            : `Доступно курсов: ${courses.length}`}
+            ? `По запросу найдено: ${matches.length}`
+            : `${courses.length} ${courses.length === 1 ? "доступный курс" : "доступных курса"}`}
         </Text>
       </form>
       {matches.length ? (

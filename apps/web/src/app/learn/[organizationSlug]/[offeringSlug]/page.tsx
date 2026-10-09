@@ -9,7 +9,6 @@ import {
   Heading,
   Inline,
   Stack,
-  Surface,
   Text,
   buttonClass
 } from "@platform/ui";
@@ -56,13 +55,18 @@ export default async function CoursePage({ params }: Props) {
       </div>
       <div className={styles.courseLayout}>
         <section aria-labelledby="lessons-title">
-          <Heading level={2} id="lessons-title">
-            Программа курса
-          </Heading>
+          <header className={styles.outlineHeading}>
+            <Heading level={2} id="lessons-title">
+              Программа курса
+            </Heading>
+            <Text muted size="sm">
+              {lessonCount(course.course.lessons.length)} · около {duration} мин
+            </Text>
+          </header>
           <LessonOutline course={course} />
         </section>
         <aside className={styles.aside} aria-label="Начать курс">
-          <Surface appearance="solid">
+          <section className={styles.courseStart}>
             <Stack gap="lg">
               <Heading level={2} size="card">
                 В удобном ритме
@@ -78,7 +82,7 @@ export default async function CoursePage({ params }: Props) {
                 Открыть первый урок <ArrowRight size={18} aria-hidden="true" />
               </Link>
             </Stack>
-          </Surface>
+          </section>
           <LearnerEntry
             organizationSlug={organizationSlug}
             offeringSlug={offeringSlug}

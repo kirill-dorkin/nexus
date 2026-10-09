@@ -1,7 +1,33 @@
 /* Product layouts compose @platform/ui; no domain state belongs in styles. */
 .courseHero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); align-items: center; gap: clamp(2rem, 4vw, 4rem); padding-block: clamp(2rem, 4.5vw, 4rem); }
 .courseHero .pageHeading { padding: 0; }
-.courseCover { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--radius-lg); border: 1px solid var(--border-default); }
+.courseCover { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--radius-xl); border: 1px solid var(--border-default); box-shadow: var(--shadow-surface); }
+.catalogHero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
+  align-items: end;
+  gap: clamp(2rem, 7vw, 7rem);
+  padding-block: clamp(2.5rem, 6vw, 6rem) clamp(2rem, 4vw, 3.5rem);
+}
+.catalogHero .pageHeading {
+  padding: 0;
+}
+.catalogPromise {
+  border-left: 2px solid var(--border-accent);
+  padding: 0.35rem 0 0.35rem 1.5rem;
+  max-width: 28rem;
+}
+.catalogPromise strong {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 0.65rem;
+}
+.catalogPromise p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
 .pageHeading {
   padding: clamp(2rem, 4.5vw, 4rem) 0 2.5rem;
   max-width: 58rem;
@@ -39,10 +65,26 @@
   gap: var(--space-8);
   align-items: start;
 }
+.outlineHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border-default);
+}
 .aside {
   position: sticky;
   top: var(--space-6);
   min-width: 0;
+}
+.courseStart {
+  padding: 1.5rem 0;
+  border-top: 2px solid var(--border-accent);
+  border-bottom: 1px solid var(--border-default);
+}
+.courseStart :global(.ui-button) {
+  width: 100%;
 }
 .outline {
   list-style: none;
@@ -56,7 +98,7 @@
   grid-template-columns: 2.5rem minmax(0, 1fr) auto;
   align-items: start;
   gap: var(--space-4);
-  padding: var(--space-6) 0.5rem;
+  padding: 1.5rem 0;
   border: 0;
   border-bottom: 1px solid var(--border-default);
   border-radius: 0;
@@ -228,12 +270,12 @@
   gap: 2rem;
   align-items: end;
   justify-content: space-between;
-  margin: 0 0 3rem;
+  margin: 0;
   padding-bottom: 2rem;
   border-bottom: 1px solid var(--border-default);
 }
 .catalogSearch > :global(.ui-field) {
-  width: min(100%, 36rem);
+  width: min(100%, 42rem);
 }
 .catalogSearch > p {
   padding-bottom: 0.75rem;
@@ -292,6 +334,10 @@
   width: 60%;
 }
 @media (max-width: 960px) {
+  .catalogHero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
   .courseHero { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }
   .courseCover { aspect-ratio: 16 / 9; }
   .lessonLayout {
@@ -307,6 +353,13 @@
   }
 }
 @media (max-width: 760px) {
+  .catalogHero {
+    padding-block: 2.25rem 1.75rem;
+    gap: var(--space-6);
+  }
+  .catalogPromise {
+    padding-left: 1rem;
+  }
   .courseLayout,
   .lessonAside {
     grid-template-columns: minmax(0, 1fr);
@@ -339,6 +392,11 @@
     grid-template-columns: 1.5rem minmax(0, 1fr);
     padding: var(--space-4);
     gap: var(--space-3);
+  }
+  .outlineHeading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-2);
   }
   .minutes {
     grid-column: 2;

@@ -26,7 +26,7 @@ export function CourseList({ courses }: { courses: PublicLearningCourse[] }) {
               {String(index + 1).padStart(2, "0")}
             </span>}
             <div className={styles.content}>
-              <Text muted size="sm">
+              <Text muted size="sm" className={styles.organization}>
                 {course.organization.name}
               </Text>
               <h3>{course.course.title}</h3>
@@ -35,16 +35,14 @@ export function CourseList({ courses }: { courses: PublicLearningCourse[] }) {
                   {course.course.description}
                 </Text>
               )}
-              <p className={styles.meta}>
-                Бесплатно <span aria-hidden="true">·</span>{" "}
-                {lessonCount(course.course.lessons.length)}{" "}
-                <span aria-hidden="true">·</span>{" "}
-                {course.course.lessons.reduce(
+              <div className={styles.meta}>
+                <span>Бесплатно</span>
+                <span>{lessonCount(course.course.lessons.length)}</span>
+                <span>{course.course.lessons.reduce(
                   (sum, lesson) => sum + lesson.durationMinutes,
                   0
-                )}{" "}
-                мин
-              </p>
+                )} мин</span>
+              </div>
             </div>
             <ArrowRight className={styles.arrow} size={23} aria-hidden="true" />
           </Link>

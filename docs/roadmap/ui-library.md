@@ -34,6 +34,7 @@ The application keeps canonical data and existing routes. The design system owns
 ## Learning screen refinement — implemented
 
 - Authentication follows the selected open editorial composition: a minimal brand/course/appearance header, solid labelled fields in two desktop columns and one mobile column, an original glass ribbon in the empty lower-right margin, and existing theme/accent preferences. Its page frame uses `100dvh` minimum height with a `100vh` fallback; short viewports and errors scroll naturally. Transport, validation and allowlisted return-to remain unchanged.
+- Catalog and course presentation use one editorial system: a composed catalogue introduction, bounded real-data search, image-led course rows, open lesson outline, and an unboxed sticky course-start area. Mobile reflows rows and metadata without hiding canonical titles or actions; no new catalogue policy, fabricated statistics or enrollment shortcut is introduced.
 - Solid auth form with a shared PasswordInput, quieter secondary actions and mode-specific error copy; original session transport, return allowlist and password constraints remain intact.
 - Streaming catalog keeps navigation during loading/unavailability. A bounded client search filters only the real returned course list; no API search/pagination policy is added.
 - Calm course metadata, open lesson rows, a solid reading surface and scroll-contained lesson sidebar; self-entry remains a separate explicit action.
