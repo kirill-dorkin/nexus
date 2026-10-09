@@ -38,7 +38,10 @@ export async function studioRequest(path: string, body?: unknown) {
   return response.json();
 }
 export function downloadManifest(value: unknown, slug: string) {
-  const blob = new Blob([JSON.stringify(value, null, 2) + "\n"], {
+  downloadManifestText(JSON.stringify(value, null, 2) + "\n", slug);
+}
+export function downloadManifestText(text: string, slug: string) {
+  const blob = new Blob([text], {
     type: "application/json"
   });
   const url = URL.createObjectURL(blob),

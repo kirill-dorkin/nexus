@@ -14,7 +14,12 @@ import { learningLoginUrl } from "../../lib/learning-return-to";
 import { blankCourse, parseEditorJson } from "./editor-model";
 import { ManualEditor } from "./manual-editor";
 import { DraftPreview } from "./draft-preview";
-import { downloadManifest, studioRequest, StudioError } from "./studio-api";
+import {
+  downloadManifest,
+  downloadManifestText,
+  studioRequest,
+  StudioError
+} from "./studio-api";
 import {
   Alert,
   Badge,
@@ -58,10 +63,16 @@ export function CourseEditor({
     [login, setLogin] = useState(false),
     [canCreate, setCanCreate] = useState(false),
     [uncertain, setUncertain] = useState(false),
-    [publishOpen, setPublishOpen] = useState(false);
+    [publishOpen, setPublishOpen] = useState(false),
+    [discardOpen, setDiscardOpen] = useState(false),
+    [leaveHref, setLeaveHref] = useState<string | null>(null);
   const inFlight = useRef(false);
   const dirty =
     base !== null && JSON.stringify(document) !== JSON.stringify(base.manifest);
+  const unsaved =
+    dirty ||
+    (mode === "json" && raw !== JSON.stringify(document, null, 2)) ||
+    (isNew && JSON.stringify(document) !== JSON.stringify(blankCourse()));
   const writable =
     ready && (isNew ? canCreate : base?.status === "draft" && base.canApply);
   const changed = () => {
@@ -102,26 +113,44 @@ export function CourseEditor({
     };
   }, [isNew, path, routeCourse]);
   useEffect(() => {
-    if (
-      !dirty &&
-      !(mode === "json" && raw !== JSON.stringify(document, null, 2)) &&
-      !(isNew && (document.course.title || document.lessons.length))
-    )
-      return;
+    if (!unsaved) return;
     const handler = (event: BeforeUnloadEvent) => {
       event.preventDefault();
     };
     window.addEventListener("beforeunload", handler);
     return () => window.removeEventListener("beforeunload", handler);
-  }, [
-    dirty,
-    isNew,
-    document.course.title,
-    document.lessons.length,
-    mode,
-    raw,
-    document
-  ]);
+  }, [unsaved]);
+  useEffect(() => {
+    if (!unsaved || !ready) return;
+    const intercept = (event: MouseEvent) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) return;
+      const anchor = event.target instanceof Element
+        ? event.target.closest<HTMLAnchorElement>("a[href]")
+        : null;
+      if (
+        !anchor || anchor.hasAttribute("download") ||
+        (anchor.target && anchor.target !== "_self")
+      ) return;
+      const destination = new URL(anchor.href, window.location.href);
+      if (
+        destination.origin !== window.location.origin ||
+        (destination.pathname === window.location.pathname &&
+          destination.search === window.location.search)
+      ) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      setLeaveHref(destination.pathname + destination.search + destination.hash);
+    };
+    window.document.addEventListener("click", intercept, true);
+    return () => window.document.removeEventListener("click", intercept, true);
+  }, [unsaved, ready]);
   function edit(change: (d: CourseManifestV1) => void) {
     setDocument((old) => {
       const next = structuredClone(old);
@@ -585,7 +614,10 @@ export function CourseEditor({
                     Скачать рабочую копию
                   </Button>
                   {base && (
-                    <Button variant="ghost" disabled={busy} onClick={reload}>
+                    <Button variant="ghost" disabled={busy} onClick={() => {
+                      if (unsaved || uncertain) setDiscardOpen(true);
+                      else void reload();
+                    }}>
                       {dirty || uncertain || mode === "json"
                         ? "Отбросить изменения и загрузить сохранённое"
                         : "Обновить сохранённое"}
@@ -642,6 +674,38 @@ export function CourseEditor({
               )}
             </div>
           </div>
+          <Dialog
+            open={discardOpen || leaveHref !== null}
+            onDismiss={() => { setDiscardOpen(false); setLeaveHref(null); }}
+            aria-labelledby="studio-discard-title"
+            aria-describedby="studio-discard-description"
+            className={styles.confirmation}
+          >
+            <Eyebrow>Несохранённая работа</Eyebrow>
+            <Heading level={2} size="section" id="studio-discard-title">
+              {leaveHref ? "Выйти из редактора?" : "Отбросить текущие правки?"}
+            </Heading>
+            <Text id="studio-discard-description">
+              Текущая рабочая копия будет потеряна. Перед продолжением можно
+              скачать её; сохранённая версия на сервере останется без изменений.
+            </Text>
+            <div className={styles.actions}>
+              <Button variant="secondary" autoFocus onClick={() => {
+                setDiscardOpen(false); setLeaveHref(null);
+              }}>Остаться в редакторе</Button>
+              <Button variant="ghost" onClick={() => {
+                if (mode === "json") {
+                  downloadManifestText(raw, document.course.slug);
+                } else downloadManifest(document, document.course.slug);
+              }}>Скачать рабочую копию</Button>
+              <Button onClick={() => {
+                const destination = leaveHref;
+                setDiscardOpen(false); setLeaveHref(null);
+                if (destination) router.push(destination);
+                else void reload();
+              }}>{leaveHref ? "Выйти без сохранения" : "Отбросить и загрузить"}</Button>
+            </div>
+          </Dialog>
           <Dialog
             open={publishOpen}
             onDismiss={() => setPublishOpen(false)}
