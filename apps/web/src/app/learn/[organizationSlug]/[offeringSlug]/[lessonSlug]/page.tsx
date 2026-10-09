@@ -65,9 +65,10 @@ export default async function LessonPage({ params }: Props) {
     }
   };
   return (
-    <LearningShell>
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }} />
-      <nav className={styles.breadcrumbs} aria-label="Навигационная цепочка">
+      <LearningShell>
+        <nav className={styles.breadcrumbs} aria-label="Навигационная цепочка">
         <Link href="/courses">Курсы</Link>
         <Link href={courseUrl(course)}>{course.course.title}</Link>
         <span aria-current="page">Урок {index + 1}</span>
@@ -121,7 +122,8 @@ export default async function LessonPage({ params }: Props) {
             lessonSlug={lessonSlug}
           />
         </aside>
-      </div>
-    </LearningShell>
+        </div>
+      </LearningShell>
+    </>
   );
 }

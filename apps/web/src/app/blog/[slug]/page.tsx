@@ -52,12 +52,13 @@ export default async function ArticlePage({ params }: Props) {
   };
 
   return (
-    <LearningShell>
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }}
       />
-      <nav className={styles.breadcrumbs} aria-label="Навигационная цепочка">
+      <LearningShell>
+        <nav className={styles.breadcrumbs} aria-label="Навигационная цепочка">
         <Link href="/">Главная</Link><span aria-hidden="true">/</span>
         <Link href="/blog">Блог</Link>
       </nav>
@@ -86,7 +87,8 @@ export default async function ArticlePage({ params }: Props) {
           <p>Открытый курс ведёт от устройства компьютера до безопасной работы с файлами и документами.</p>
           <Link href="/courses">Перейти к курсам →</Link>
         </aside>
-      </div>
-    </LearningShell>
+        </div>
+      </LearningShell>
+    </>
   );
 }

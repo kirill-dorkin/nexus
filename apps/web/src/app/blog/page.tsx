@@ -32,14 +32,15 @@ export default function BlogPage() {
   };
 
   return (
-    <LearningShell>
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c")
         }}
       />
-      <header className={styles.indexHero}>
+      <LearningShell>
+        <header className={styles.indexHero}>
         <div>
           <Eyebrow>Блог {brand.name}</Eyebrow>
           <h1>Разбираться в технологиях — спокойно и по шагам.</h1>
@@ -72,7 +73,8 @@ export default function BlogPage() {
             <span className={styles.arrow} aria-hidden="true">→</span>
           </Link>
         ))}
-      </section>
-    </LearningShell>
+        </section>
+      </LearningShell>
+    </>
   );
 }
