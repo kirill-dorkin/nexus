@@ -3,12 +3,13 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 28rem);
   gap: clamp(3rem, 8vw, 8rem);
   max-width: 68rem;
-  margin: clamp(2rem, 6vw, 5rem) auto;
+  width: 100%;
+  margin: 0 auto;
   align-items: center;
 }
 .authIntro {
   display: grid;
-  gap: 1.5rem;
+  gap: 1rem;
   min-width: 0;
 }
 .authIntro h2 {
@@ -43,7 +44,7 @@
   font-size: 0.95rem;
   font-weight: 600;
 }
-.authCard {
+.authLayout .authCard[data-padding] {
   padding: clamp(1.25rem, 3vw, 2.5rem);
   border-radius: var(--radius-xl);
   box-shadow: none;
@@ -55,7 +56,7 @@
 .authCard form,
 .authCard fieldset {
   display: grid;
-  gap: 1.5rem;
+  gap: 0.75rem;
   min-width: 0;
 }
 .authCard fieldset {
@@ -78,23 +79,12 @@
 }
 @media (max-width: 900px) {
   .authLayout {
-    gap: 2.5rem;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
-  }
-  .authIntro h2 {
-    font-size: 2rem;
-  }
-}
-@media (max-width: 760px) {
-  .authLayout {
     grid-template-columns: minmax(0, 1fr);
     max-width: 30rem;
-    gap: 2.5rem;
-    margin: 1.5rem auto;
+    gap: 1.5rem;
   }
   .authIntro {
-    order: 2;
-    gap: 1rem;
+    display: none;
   }
   .authIntro h2 {
     font-size: 1.65rem;
@@ -103,7 +93,10 @@
   .authIntro ol {
     margin: 0;
   }
-  .authCard {
-    padding: 1.5rem 1.25rem;
+  .authLayout .authCard[data-padding] {
+    padding: 1.25rem;
+  }
+  .authCard .authContent {
+    gap: 0.75rem;
   }
 }

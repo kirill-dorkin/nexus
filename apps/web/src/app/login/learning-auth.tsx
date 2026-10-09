@@ -102,7 +102,7 @@ export function LearningAuth({ returnTo }: { returnTo: string }) {
       </aside>
       <section aria-labelledby="auth-title">
         <Surface appearance="solid" className={styles.authCard} padding="lg">
-          <Stack gap="lg">
+          <Stack gap="md" className={styles.authContent}>
             <Stack gap="sm">
               <Eyebrow>Ваш аккаунт</Eyebrow>
               <Heading level={1} size="section" id="auth-title">

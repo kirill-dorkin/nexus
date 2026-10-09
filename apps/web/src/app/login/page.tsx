@@ -8,7 +8,7 @@ export default async function LoginPage({
   searchParams: Promise<{ returnTo?: string | string[] }>;
 }) {
   return (
-    <LearningShell>
+    <LearningShell layout="viewport">
       <LearningAuth
         returnTo={safeLearningReturnTo((await searchParams).returnTo)}
       />

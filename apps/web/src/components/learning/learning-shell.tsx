@@ -4,9 +4,9 @@ import Link from "next/link";
 import { Container } from "@platform/ui";
 import { LearningNavigation } from "./learning-navigation";
 import styles from "./learning.module.css";
-export function LearningShell({ children }: { children: ReactNode }) {
+export function LearningShell({ children, layout = "page" }: { children: ReactNode; layout?: "page" | "viewport" }) {
   return (
-    <Container className={styles.shell}>
+    <Container className={`${styles.shell} ${layout === "viewport" ? styles.viewportShell : ""}`}>
       <a className={styles.skip} href="#learning-main">
         Перейти к содержимому
       </a>

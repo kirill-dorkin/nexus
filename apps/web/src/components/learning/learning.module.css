@@ -452,6 +452,34 @@ button.button {
   max-width: var(--content-width);
 }
 
+/* Single-section routes fill the dynamic viewport and grow when content needs it. */
+.viewportShell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+.viewportShell > main {
+  flex: 1;
+  display: grid;
+  align-items: center;
+  min-width: 0;
+  padding-block: clamp(1rem, 2vh, 1.5rem);
+}
+.viewportShell > .footer {
+  margin-top: 0;
+  padding-block: 0.75rem;
+  gap: 1rem;
+}
+@media (max-width: 760px) {
+  .viewportShell > main {
+    padding-block: 1rem;
+  }
+  .viewportShell > .footer > div {
+    display: none;
+  }
+}
+
 .card {
   display: flex;
   flex-direction: column;
