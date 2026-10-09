@@ -1384,7 +1384,7 @@ async function runBrowserVerification(cdp) {
   const continueHref = await evaluate(cdp, '[...document.querySelectorAll("a")].find(a=>a.textContent?.trim() === "Продолжить").getAttribute("href")');
   assert(continueHref === learningReturn, "Continue changed the exact learning address.");
   await navigate(cdp, `${WEB_ORIGIN}${learningReturn}`);
-  await waitForExpression(cdp, 'document.querySelector(\'input[value="ram"]\') !== null', "quiz form");
+  await waitForExpression(cdp, 'document.querySelector(\'input[value="ram"]\')?.matches(":enabled") === true', "ready quiz form");
   await tabUntil(cdp, 'document.activeElement?.matches(\'input[type="radio"]\') === true', "quiz radio", 24);
   const quizFocus = await evaluate(cdp, '(() => {const s=getComputedStyle(document.activeElement);return document.activeElement.matches(":focus-visible") && parseFloat(s.outlineWidth)>=2;})()');
   assert(quizFocus, "Quiz radio has no visible keyboard focus.");
@@ -1502,7 +1502,7 @@ async function runBrowserVerification(cdp) {
   );
   await waitForExpression(
     cdp,
-    `document.body.innerText.includes("Форма оплаты открыта")`,
+    `document.body?.innerText.includes("Форма оплаты открыта") === true`,
     "first-party Paddle loading/open state"
   );
   await accessibilityAudit(cdp, "Paddle payment-link page");
