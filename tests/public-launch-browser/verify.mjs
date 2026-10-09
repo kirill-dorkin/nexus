@@ -889,6 +889,9 @@ async function verifyCanonicalLearner(cdp, authored) {
         !publicLesson.raw.includes("correctOption"),
       "Canonical public read leaked author keys."
     );
+    assert(await evaluate(cdp, 'document.querySelector("iframe") === null'), "Canonical lesson loaded YouTube before play.");
+    await clickText(cdp, "Смотреть видео");
+    await waitForExpression(cdp, 'document.querySelector("iframe") !== null', "explicit canonical player activation");
     assert(
       await evaluate(
         cdp,
@@ -896,6 +899,9 @@ async function verifyCanonicalLearner(cdp, authored) {
       ),
       "Canonical video did not use safe renderer."
     );
+    await clickText(cdp, "Закрыть плеер");
+    await waitForExpression(cdp, 'document.querySelector("iframe") === null', "canonical player dismissal");
+    assert(await evaluate(cdp, 'document.querySelector("iframe") === null && document.activeElement?.textContent.includes("Смотреть видео")'), "Closing video retained iframe or lost keyboard focus.");
     await accessibilityAudit(cdp, "canonical anonymous lesson");
     await navigate(
       cdp,
@@ -1263,6 +1269,9 @@ async function runBrowserVerification(cdp) {
   await accessibilityAudit(cdp, "public lesson");
   const activeLesson = await evaluate(cdp, `document.querySelector('nav[aria-label="Уроки курса"] a[aria-current="page"]')?.getAttribute("href")`);
   assert(activeLesson === "/learn/acme/computer-basics/introduction", "Outline lost the current Lesson address.");
+  assert(await evaluate(cdp, 'document.querySelector("iframe") === null'), "YouTube loaded before explicit activation.");
+  await clickText(cdp, "Смотреть видео");
+  await waitForExpression(cdp, 'document.querySelector("iframe") !== null', "explicit fixture player activation");
   const lessonSafety = await evaluate(
     cdp,
     `({ xss: window.__lessonXss === true, unsafe: !!document.querySelector('main img,main script,main a[href^="javascript:"],main [onerror]'),
@@ -1274,7 +1283,7 @@ async function runBrowserVerification(cdp) {
     "Lesson Markdown created executable or tracking markup."
   );
   assert(
-    lessonSafety.video === "https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ",
+    lessonSafety.video === "https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ?autoplay=1",
     "Lesson changed the canonical embed host/ID."
   );
   assert(

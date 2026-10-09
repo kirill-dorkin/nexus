@@ -57,6 +57,13 @@ The application keeps canonical data and existing routes. The design system owns
 5. **System documentation**: component API pages, composition recipes, accessibility notes, theme extension, design tokens/code-to-design mapping and visual regression fixtures for stable states. Extract a separate Storybook only when its maintenance earns its cost.
 6. **Production polish**: real course cover assets, social preview imagery, metadata, measured font loading and animation, cold-load performance, contrast checks across all migrated surfaces and browser/device coverage.
 
+## Lesson media and reviewed course artwork
+
+- YouTube is click-to-load in both learner lessons and author preview: no iframe, thumbnail request, SDK or preconnect before activation. The fixed youtube-nocookie host receives only the canonical video ID. The iframe can be unmounted to release player resources; a permanent external link remains available when embedding is unavailable. A frame load event is not a claim that playback succeeded.
+- Existing safe Markdown keeps headings, lists, quotations, links and literal code. Inline commands have a readable highlight; fenced code has a keyboard-scrollable area and an explicit copy action with success/failure feedback. No authored HTML, tracking image, arbitrary iframe, code execution or new parser plugin is enabled.
+- The maintainer-requested Computer Literacy Preview course has an original generated photo compressed to a 44 KB local WebP. A Web-owned address registry supplies its course cover and catalog thumbnail. This is a reviewed presentation asset for that explicit Preview address, not an author-upload API or a title-based fallback for unrelated courses. General course-asset authoring requires its own Content-owned schema/storage/Studio slice.
+- No database migration, session/Origin/RLS change, protected-answer disclosure, progress write or outbox change belongs to this media presentation refinement.
+
 ## Acceptance for each component
 
 A component needs a real consumer or a deliberate foundation use, typed native props, named variants, keyboard behavior, visible focus, mobile sizing, disabled/loading/error semantics where relevant, and a gallery example. Refs for native controls use the React 19 prop contract. No hidden persistence, network requests, application permissions or analytics in UI primitives. Tests target meaningful semantics, not every class name.

@@ -1,5 +1,7 @@
 import type { CourseManifestV1 } from "@platform/contracts";
 import { SafeMarkdown } from "../learning/safe-markdown";
+import { YouTubeVideo } from "../learning/youtube-video";
+import { normalizeYouTubeVideoId } from "@platform/contracts";
 import { Badge, EmptyState, Eyebrow, Heading, Text } from "@platform/ui";
 import reading from "../learning/learning.module.css";
 import styles from "./studio.module.css";
@@ -31,15 +33,7 @@ export function DraftPreview({ document }: { document: CourseManifestV1 }) {
           <Text muted>{l.summary}</Text>
           {l.blocks.map((b, j) =>
             b.type === "youtube" ? (
-              <div key={j} className={styles.video}>
-                <iframe
-                  src={`https://www.youtube-nocookie.com/embed/${b.videoId}`}
-                  title={`Видео: ${l.title} (${j + 1})`}
-                  loading="lazy"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                />
-              </div>
+              normalizeYouTubeVideoId(b.videoId) ? <YouTubeVideo key={`${j}/${b.videoId}`} videoId={normalizeYouTubeVideoId(b.videoId)!} title={`${l.title} (${j + 1})`} /> : <p key={j}>Добавьте корректную ссылку YouTube, чтобы посмотреть видео.</p>
             ) : b.type === "markdown" ? (
               <div
                 key={j}

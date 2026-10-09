@@ -18,7 +18,8 @@ function Field({
   onChange,
   multiline = false,
   readOnly = false,
-  maxLength = 50000
+  maxLength = 50000,
+  hint
 }: {
   label: string;
   value: string;
@@ -26,10 +27,11 @@ function Field({
   multiline?: boolean;
   readOnly?: boolean;
   maxLength?: number;
+  hint?: string;
 }) {
   const id = useId();
   return (
-    <ControlField htmlFor={id} label={label}>
+    <ControlField htmlFor={id} label={label} hint={hint}>
       {multiline ? (
         <Textarea
           id={id}
@@ -301,6 +303,7 @@ export function ManualEditor({
                 {block.type === "youtube" && (
                   <Field
                     label="YouTube URL или ID"
+                    hint="Вставьте ссылку youtube.com или youtu.be. Плеер загрузится только по нажатию ученика; при недоступности останется ссылка на YouTube."
                     value={block.videoId}
                     maxLength={2048}
                     onChange={(v) =>
@@ -314,6 +317,7 @@ export function ManualEditor({
                 {block.type === "markdown" && (
                   <Field
                     label="Конспект (Markdown)"
+                    hint="Заголовки ##, списки, **выделение**, цитаты > и блоки кода ``` сохраняют структуру текста. Проверьте оформление во вкладке «Предпросмотр». HTML и внешние изображения отключены."
                     multiline
                     value={block.markdown}
                     onChange={(v) =>

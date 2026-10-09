@@ -2,6 +2,7 @@ import { Badge, Heading, Inline, Stack, Surface } from "@platform/ui";
 import { QuizForm } from "./quiz-form";
 import type { PublicLearningLesson } from "@platform/contracts";
 import { SafeMarkdown } from "./safe-markdown";
+import { YouTubeVideo } from "./youtube-video";
 import styles from "./learning.module.css";
 export function LessonBlocks({
   lesson,
@@ -17,20 +18,7 @@ export function LessonBlocks({
       {lesson.blocks.map((block, index) => {
         if (block.type === "youtube")
           return (
-            <section
-              key={index}
-              aria-label="Видео урока"
-              className={styles.video}
-            >
-              <iframe
-                src={`https://www.youtube-nocookie.com/embed/${block.videoId}`}
-                title={`Видео: ${lesson.title} (${index + 1})`}
-                loading="lazy"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                allowFullScreen
-              />
-            </section>
+            <YouTubeVideo key={`${index}/${block.videoId}`} videoId={block.videoId} title={`${lesson.title} (${index + 1})`} />
           );
         if (block.type === "markdown")
           return (

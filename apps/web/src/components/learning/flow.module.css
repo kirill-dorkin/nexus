@@ -1,4 +1,7 @@
 /* Product layouts compose @platform/ui; no domain state belongs in styles. */
+.courseHero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); align-items: center; gap: clamp(2rem, 4vw, 4rem); padding-block: clamp(2rem, 4.5vw, 4rem); }
+.courseHero .pageHeading { padding: 0; }
+.courseCover { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--radius-lg); border: 1px solid var(--border-default); }
 .pageHeading {
   padding: clamp(2rem, 4.5vw, 4rem) 0 2.5rem;
   max-width: 58rem;
@@ -289,6 +292,8 @@
   width: 60%;
 }
 @media (max-width: 960px) {
+  .courseHero { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }
+  .courseCover { aspect-ratio: 16 / 9; }
   .lessonLayout {
     grid-template-columns: minmax(0, 1fr);
   }

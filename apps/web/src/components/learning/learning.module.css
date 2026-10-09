@@ -182,17 +182,6 @@
   grid-template-columns: minmax(0, 1fr);
   gap: 2rem;
 }
-.video {
-  aspect-ratio: 16/9;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  background: var(--surface-subtle);
-}
-.video iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
 .notes {
   padding: clamp(1.25rem, 3vw, 2.5rem);
   background: var(--surface-solid);
@@ -242,6 +231,11 @@
   font-family: var(--font-mono);
   font-size: 0.9em;
 }
+.markdown :not(pre) > code { background: var(--surface-subtle); border: 1px solid var(--border-default); padding: 0.1em 0.35em; border-radius: 0.3rem; box-decoration-break: clone; }
+.codeSnippet { margin: 1.5rem 0; min-width: 0; border: 1px solid var(--border-default); border-radius: var(--radius-md); overflow: hidden; background: var(--surface-subtle); }
+.codeSnippet figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border-default); font: 0.75rem/1.5 var(--font-mono); color: var(--text-secondary); }
+.codeSnippet pre { margin: 0; border: 0; border-radius: 0; }
+.codeSnippet > p { margin: 0; padding: 0.75rem 1rem; font-size: 0.8rem; line-height: 1.5; }
 .markdown blockquote {
   border-left: 3px solid var(--border-strong);
   margin: 1rem 0;

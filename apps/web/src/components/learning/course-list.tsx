@@ -1,5 +1,7 @@
 import type { PublicLearningCourse } from "@platform/contracts";
 import Link from "next/link";
+import Image from "next/image";
+import { courseArtwork } from "./course-artwork";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { EmptyState, Text } from "@platform/ui";
 import { courseUrl } from "../../lib/public-learning-routes";
@@ -15,12 +17,14 @@ export function CourseList({ courses }: { courses: PublicLearningCourse[] }) {
     );
   return (
     <ul className={styles.list}>
-      {courses.map((course, index) => (
+      {courses.map((course, index) => {
+        const artwork = courseArtwork(course.organization.slug, course.offering.slug);
+        return (
         <li key={`${course.organization.slug}/${course.offering.slug}`}>
-          <Link className={styles.row} href={courseUrl(course)}>
-            <span className={styles.number} aria-hidden="true">
+          <Link className={`${styles.row} ${artwork ? styles.withArtwork : ""}`} href={courseUrl(course)}>
+            {artwork ? <Image className={styles.thumbnail} {...artwork} alt="" sizes="(max-width: 760px) 80px, 192px" /> : <span className={styles.number} aria-hidden="true">
               {String(index + 1).padStart(2, "0")}
-            </span>
+            </span>}
             <div className={styles.content}>
               <Text muted size="sm">
                 {course.organization.name}
@@ -45,7 +49,7 @@ export function CourseList({ courses }: { courses: PublicLearningCourse[] }) {
             <ArrowRight className={styles.arrow} size={23} aria-hidden="true" />
           </Link>
         </li>
-      ))}
+      ); })}
     </ul>
   );
 }

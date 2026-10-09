@@ -70,7 +70,9 @@ describe("Studio document parity and safe author preview", () => {
     expect(html).not.toContain("<script>");
     expect(html).not.toContain('href="javascript:');
     expect(html).not.toContain("<form");
-    expect(html).toContain("youtube-nocookie.com/embed/");
+    expect(html).not.toContain("<iframe");
+    expect(html).toContain("Смотреть видео");
+    expect(html).toContain("https://www.youtube.com/watch?v=aqz-KE-bpKQ");
   });
   it("reports schema paths and never accepts unknown tenant/actor authority", () => {
     expect(parseEditorJson("{").issues[0]).toContain("JSON");

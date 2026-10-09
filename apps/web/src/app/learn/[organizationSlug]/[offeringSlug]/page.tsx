@@ -1,5 +1,7 @@
 import { LearnerEntry } from "../../../../components/learning/learner-entry";
 import Link from "next/link";
+import Image from "next/image";
+import { courseArtwork } from "../../../../components/learning/course-artwork";
 import { LearningShell } from "../../../../components/learning/learning-shell";
 import { loadLearningCourse, lessonUrl } from "../../../../lib/public-learning";
 import {
@@ -23,6 +25,7 @@ type Props = {
 export default async function CoursePage({ params }: Props) {
   const { organizationSlug, offeringSlug } = await params;
   const course = await loadLearningCourse(organizationSlug, offeringSlug);
+  const artwork = courseArtwork(organizationSlug, offeringSlug);
   const duration = course.course.lessons.reduce(
     (sum, lesson) => sum + lesson.durationMinutes,
     0
@@ -33,6 +36,7 @@ export default async function CoursePage({ params }: Props) {
         <Link href="/courses">Все курсы</Link>
         <span aria-current="page">{course.course.title}</span>
       </nav>
+      <div className={artwork ? styles.courseHero : undefined}>
       <LearningPageHeading
         eyebrow={course.organization.name}
         title={course.course.title}
@@ -48,6 +52,8 @@ export default async function CoursePage({ params }: Props) {
           </Text>
         </Inline>
       </LearningPageHeading>
+      {artwork ? <Image className={styles.courseCover} {...artwork} sizes="(max-width: 960px) 100vw, 45vw" /> : null}
+      </div>
       <div className={styles.courseLayout}>
         <section aria-labelledby="lessons-title">
           <Heading level={2} id="lessons-title">
