@@ -33,7 +33,7 @@ The application keeps canonical data and existing routes. The design system owns
 
 ## Learning screen refinement — implemented
 
-- Single-section authentication uses the shared shell's opt-in `viewport` layout: `100dvh` minimum height with a `100vh` fallback, vertically centered content and a compact footer. Mobile/tablet auth presents only the form; short viewports and errors grow naturally with document scrolling instead of clipping controls. Long course, lesson and Studio pages retain their normal flow.
+- Authentication follows the selected open editorial composition: a minimal brand/course/appearance header, solid labelled fields in two desktop columns and one mobile column, an original glass ribbon in the empty lower-right margin, and existing theme/accent preferences. Its page frame uses `100dvh` minimum height with a `100vh` fallback; short viewports and errors scroll naturally. Transport, validation and allowlisted return-to remain unchanged.
 - Solid auth form with a shared PasswordInput, quieter secondary actions and mode-specific error copy; original session transport, return allowlist and password constraints remain intact.
 - Streaming catalog keeps navigation during loading/unavailability. A bounded client search filters only the real returned course list; no API search/pagination policy is added.
 - Calm course metadata, open lesson rows, a solid reading surface and scroll-contained lesson sidebar; self-entry remains a separate explicit action.

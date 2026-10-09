@@ -8,13 +8,10 @@ import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import {
   Alert,
   Button,
-  Eyebrow,
   Field,
   Heading,
   Input,
   PasswordInput,
-  Stack,
-  Surface,
   Text
 } from "@platform/ui";
 import styles from "./auth.module.css";
@@ -59,148 +56,66 @@ export function LearningAuth({ returnTo }: { returnTo: string }) {
       setBusy(false);
     }
   }
+  function changeMode(next: "login" | "register") {
+    if (busy) return;
+    setMode(next);
+    setError(null);
+  }
   return (
-    <div className={styles.authLayout}>
-      <aside className={styles.authIntro} aria-label="Обучение с аккаунтом">
-        <Eyebrow>От понимания к практике</Eyebrow>
-        <Heading level={2} size="section">
-          Продолжайте с того места, где остановились.
+    <section className={styles.authLayout} aria-labelledby="auth-title">
+      <div className={styles.intro}>
+        <Heading level={1} size="section" id="auth-title">
+          {mode === "login" ? "С возвращением." : "Начнём обучение."}
         </Heading>
         <Text muted>
-          Материалы доступны без аккаунта. Войдите, чтобы записаться на курс и
-          сохранять результаты заданий.
+          {mode === "login"
+            ? "Войдите, чтобы продолжить обучение."
+            : "Создайте аккаунт, чтобы сохранять результаты практики."}
         </Text>
-        <ol>
-          <li>
-            <span>01</span>
-            <div>
-              <strong>Ваши курсы — рядом</strong>
-              <Text muted size="sm">
-                Возвращайтесь к ним в «Моём обучении».
-              </Text>
+      </div>
+      <div className={styles.modes} aria-label="Вход или регистрация">
+        <button type="button" aria-pressed={mode === "login"} disabled={busy}
+          onClick={() => changeMode("login")}>Вход</button>
+        <button type="button" aria-pressed={mode === "register"} disabled={busy}
+          onClick={() => changeMode("register")}>Регистрация</button>
+      </div>
+      <form className={styles.authForm} onSubmit={submit} aria-busy={busy}>
+        {error && <Alert tone="danger">{error}</Alert>}
+        <fieldset disabled={busy} aria-label={mode === "login" ? "Данные для входа" : "Данные нового аккаунта"}>
+          {mode === "register" && (
+            <div key="name" className={styles.nameField}>
+              <Field htmlFor="learning-name" label="Имя" hint="Необязательно">
+                <Input id="learning-name" name="displayName" autoComplete="name" maxLength={160}
+                  aria-describedby="learning-name-hint" />
+              </Field>
             </div>
-          </li>
-          <li>
-            <span>02</span>
-            <div>
-              <strong>Практика с обратной связью</strong>
-              <Text muted size="sm">
-                После записи отправляйте ответы и смотрите результат.
-              </Text>
-            </div>
-          </li>
-          <li>
-            <span>03</span>
-            <div>
-              <strong>Удобное вам оформление</strong>
-              <Text muted size="sm">
-                Светлая или тёмная тема и выбранный цвет на этом устройстве.
-              </Text>
-            </div>
-          </li>
-        </ol>
-      </aside>
-      <section aria-labelledby="auth-title">
-        <Surface appearance="solid" className={styles.authCard} padding="lg">
-          <Stack gap="md" className={styles.authContent}>
-            <Stack gap="sm">
-              <Eyebrow>Ваш аккаунт</Eyebrow>
-              <Heading level={1} size="section" id="auth-title">
-                {mode === "login" ? "Вход" : "Регистрация"}
-              </Heading>
-              <Text muted size="sm">
-                {mode === "login"
-                  ? "Рады видеть вас снова. Войдите, чтобы продолжить."
-                  : "Создайте аккаунт и возвращайтесь к своей практике."}
-              </Text>
-            </Stack>
-            <form onSubmit={submit} aria-busy={busy}>
-              {error && <Alert tone="danger">{error}</Alert>}
-              <fieldset
-                disabled={busy}
-                aria-label={
-                  mode === "login"
-                    ? "Данные для входа"
-                    : "Данные нового аккаунта"
-                }
-              >
-                {mode === "register" && (
-                  <Field
-                    htmlFor="learning-name"
-                    label="Имя"
-                    hint="Необязательно"
-                  >
-                    <Input
-                      id="learning-name"
-                      name="displayName"
-                      autoComplete="name"
-                      maxLength={160}
-                      aria-describedby="learning-name-hint"
-                    />
-                  </Field>
-                )}
-                <Field htmlFor="learning-email" label="Электронная почта">
-                  <Input
-                    id="learning-email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    maxLength={320}
-                  />
-                </Field>
-                <Field
-                  htmlFor="learning-password"
-                  label="Пароль"
-                  hint={
-                    mode === "register" ? "Не менее 15 символов." : undefined
-                  }
-                >
-                  <PasswordInput
-                    id="learning-password"
-                    name="password"
-                    autoComplete={
-                      mode === "login" ? "current-password" : "new-password"
-                    }
-                    required
-                    minLength={15}
-                    maxLength={128}
-                    aria-describedby={
-                      mode === "register" ? "learning-password-hint" : undefined
-                    }
-                  />
-                </Field>
-              </fieldset>
-              <Button loading={busy} type="submit">
-                {busy
-                  ? "Подождите…"
-                  : mode === "login"
-                    ? "Войти"
-                    : "Создать аккаунт"}
-                {!busy && <ArrowRight size={18} aria-hidden="true" />}
-              </Button>
-            </form>
-            <Button
-              variant="ghost"
-              disabled={busy}
-              onClick={() => {
-                setMode(mode === "login" ? "register" : "login");
-                setError(null);
-              }}
-            >
-              {mode === "login"
-                ? "Создать новый аккаунт"
-                : "У меня уже есть аккаунт"}
-            </Button>
-            <Link
-              className={styles.authReturn}
-              href={safeLearningReturnTo(returnTo)}
-            >
-              Вернуться
-            </Link>
-          </Stack>
-        </Surface>
-      </section>
-    </div>
+          )}
+          <Field key="email" htmlFor="learning-email" label="Электронная почта">
+            <Input id="learning-email" name="email" type="email" autoComplete="email" required maxLength={320} />
+          </Field>
+          <Field key="password" htmlFor="learning-password" label="Пароль"
+            hint={mode === "register" ? "Не менее 15 символов." : undefined}>
+            <PasswordInput id="learning-password" name="password"
+              autoComplete={mode === "login" ? "current-password" : "new-password"}
+              required minLength={15} maxLength={128}
+              aria-describedby={mode === "register" ? "learning-password-hint" : undefined} />
+          </Field>
+        </fieldset>
+        <div className={styles.actions}>
+          <Button loading={busy} type="submit">
+            {busy ? "Подождите…" : mode === "login" ? "Войти" : "Создать аккаунт"}
+            {!busy && <ArrowRight size={20} aria-hidden="true" />}
+          </Button>
+          <div className={styles.alternative}>
+            <span>{mode === "login" ? "Нет аккаунта?" : "Уже зарегистрированы?"}</span>
+            <button type="button" disabled={busy}
+              onClick={() => changeMode(mode === "login" ? "register" : "login")}>
+              {mode === "login" ? "Создать новый аккаунт" : "У меня уже есть аккаунт"}
+            </button>
+          </div>
+        </div>
+      </form>
+      <Link className={styles.authReturn} href={safeLearningReturnTo(returnTo)}>Вернуться</Link>
+    </section>
   );
 }

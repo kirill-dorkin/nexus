@@ -125,3 +125,31 @@ Capture root: `/workspace/scratch/33e28e12dfa3/studio-verification/`. **All popu
 Build, workspace TypeScript (11 tasks), brand boundaries and diff checks passed. The unit suite passed 398 tests / 66 files; focused Studio parity/safe-preview tests also passed after field adoption. The persistent canonical browser test now uses native label.control associations, opens the copy disclosure, and proves opening/cancelling publication leaves the canonical draft intact before its ordinary fenced publish/next-draft flow.
 
 Cloud deployment and exact-head CI remain separate post-push checks. Preview may not have its database configured; do not describe isolated local fixtures as a working deployed authoring backend. Physical iOS/Android, assistive technologies and very large 200-Lesson documents remain further review surfaces. Native section navigation keeps current large forms usable, but focused per-item editing is a separate improvement. No merge, Ready or Production publication is part of this continuation.
+
+
+## Selected authentication concept — 2026-10-09
+
+**Source visual truth:** user-selected third displayed ImageGen concept, `/workspace/scratch/33e28e12dfa3/generated_images/exec-7359fcac-6b0b-4ee8-b5f7-23f13dcb133f.png`. The first concept was superseded by the user's explicit choice before implementation. This reference is conceptual, not a screenshot of Nexus.
+
+**Implementation:** production-built existing Next.js app `/login`. Capture root `.tmp/nexus-preview-setup/`; final desktop `auth-redesign-desktop-1584-light.png`, alternate dark `auth-redesign-desktop-1584-dark.png`, mobile registration `auth-viewport-mobile.png`. Local Chromium Playwright, deviceScaleFactor 1; light login, blank unauthenticated form. Source and implementation were opened together in one comparison input. Source is 1586×992 pixels; implementation 1584×992 CSS/pixels, a negligible 2px width difference, no device chrome or density scaling. Additional viewport matrix covers 320×568, 390×844, 768×1024, 1440×900, 844×390 and 390×350 in light/dark login/register/error states. Captures represent rendered real components, not page bitmaps or new demo apps.
+
+### Comparison and iteration
+
+- P2 initial: form was narrower than the reference and header excessively inset at the matching desktop width. Expanded the form measure from 68rem to 75rem and removed the extra frame max-width. Post-fix 1584px capture preserves the wide open composition, paired fields and left-aligned primary action.
+- P2 initial: generated ribbon was cropped to a tiny corner. Increased its visible crop by raising it and reducing the right offset. Post-fix capture shows a broad translucent ribbon below/right of the fields, without a panel or animation.
+- P2: larger readable labels made 390×844 registration exceed one screen by 10px. Reduced only mobile main vertical padding; recapture fits while short screens retain natural scrolling and reachable actions.
+- State correction: keyed native field groups preserve email/password when optional registration name is inserted. Submission endpoint/body, constraints, session handling and allowlisted redirect stay unchanged.
+
+### Required fidelity surfaces
+
+Typography: existing self-hosted Cyrillic Onest, expressive single-line desktop heading, smaller mobile heading, solid 16px labels/input text and 54px controls. It follows the reference hierarchy; exact reference font is not specified. Spacing: open 1200px form, paired desktop fields, underlined mode controls, one mobile column, no nested cards. Colors: existing semantic light/plum-dark and five accent tokens; readable solid form backgrounds independent of backdrop blur. Image: one original transparent 134KB WebP, inspected at source and in browser, rose/lilac ribbons, no borrowed logo, CSS art or third-party media. Copy: reference login heading/support retained; registration has product-specific copy and existing real constraints. Return link keeps the actual allowlisted destination rather than falsely always promising courses. Appearance opens the existing functional theme/accent dialog instead of copying decorative two-mode chrome. Focused crops were unnecessary: labels, controls, copy and ribbon edges were readable at full-size combined comparison.
+
+### Interaction evidence and limits
+
+42 viewport/theme/state checks passed without horizontal overflow or browser page errors. Normal 390×844, 768×1024, 1440×900 and 1584×992 login/registration fit the viewport; errors and short screens scroll naturally. Extra local UI checks verify invalid forms send no request, password reveal and mode changes preserve values, pending disables inputs/mode changes, 409 feedback clears after changing mode, keyboard-visible password focus, reduced-motion usability, theme/accent selection and persistence. Auth error/pending checks use intercepted test-only responses; they do not prove deployed database behavior. The persistent canonical CI journey separately verifies registration/login/session/return-to. No authentication or progress business logic was changed.
+
+**Findings:** no actionable P0/P1/P2 visual differences remain. **Follow-up P3:** exact physical Safari/Android keyboard and assistive-technology review remain unverified; the source's raster typography is not reproduced pixel-for-pixel. User visual acceptance remains separate from technical checks. Exact-head CI and Preview are post-push gates.
+
+**Implementation checklist:** selected composition, generated raster, responsive form, real appearance dialog, state checks and recapture completed. No merge or Production publication.
+
+**final result: passed**

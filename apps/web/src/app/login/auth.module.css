@@ -1,102 +1,276 @@
-.authLayout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 28rem);
-  gap: clamp(3rem, 8vw, 8rem);
-  max-width: 68rem;
-  width: 100%;
-  margin: 0 auto;
-  align-items: center;
-}
-.authIntro {
-  display: grid;
-  gap: 1rem;
-  min-width: 0;
-}
-.authIntro h2 {
-  font-size: clamp(2rem, 3.2vw, 3rem);
-  line-height: 1.15;
-  max-width: 14ch;
-  letter-spacing: -0.045em;
-}
-.authIntro > p {
-  max-width: 38ch;
-  line-height: 1.7;
-}
-.authIntro ol {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0 0;
-}
-.authIntro li {
+.page {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
-  gap: 1.25rem;
-  padding: 1.25rem 0;
-  border-top: 1px solid var(--border-default);
+  flex-direction: column;
+  margin: auto;
 }
-.authIntro li > span {
-  color: var(--text-accent);
-  font: 0.75rem/1.8 var(--font-mono);
-  padding-top: 0.15rem;
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1.75rem;
 }
-.authIntro strong {
-  display: block;
-  margin-bottom: 0.4rem;
-  font-size: 0.95rem;
-  font-weight: 600;
+.header nav {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
 }
-.authLayout .authCard[data-padding] {
-  padding: clamp(1.25rem, 3vw, 2.5rem);
-  border-radius: var(--radius-xl);
-  box-shadow: none;
+.brand {
+  font-size: 1.6rem;
+  font-weight: 750;
+  letter-spacing: -.06em;
+  text-decoration: none;
 }
-.authCard h1 {
-  font-size: 2rem;
-  letter-spacing: -0.04em;
+.courses {
+  display: flex;
+  gap: .65rem;
+  align-items: center;
+  border-left: 1px solid var(--border-default);
+  padding-left: 1.75rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  min-height: 44px;
 }
-.authCard form,
-.authCard fieldset {
+.main {
+  flex: 1;
   display: grid;
-  gap: 0.75rem;
+  align-items: center;
+  padding: 3rem 0 6rem;
   min-width: 0;
 }
-.authCard fieldset {
+.authLayout {
+  width: 100%;
+  max-width: 75rem;
+  margin: auto;
+  min-width: 0;
+}
+.intro {
+  margin-bottom: 2.75rem;
+}
+.intro h1 {
+  font-size: clamp(2rem, 3.7vw, 3.5rem);
+  line-height: 1.12;
+  letter-spacing: -.055em;
+  margin-bottom: .75rem;
+}
+.intro p {
+  font-size: clamp(1rem, 1.65vw, 1.5rem);
+  line-height: 1.5;
+  max-width: 48ch;
+}
+.modes {
+  display: flex;
+  gap: 2rem;
+  border-bottom: 1px solid var(--border-default);
+  margin-bottom: 2rem;
+}
+.modes button {
+  font: inherit;
+  font-weight: 550;
+  color: var(--text-secondary);
+  background: none;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  padding: .75rem 0 1rem;
+  cursor: pointer;
+}
+.modes button[aria-pressed="true"] {
+  color: var(--text-primary);
+  border-bottom-color: var(--action-primary);
+}
+.modes button:disabled, .alternative button:disabled {
+  cursor: wait;
+  opacity: .6;
+}
+.authForm {
+  display: grid;
+  gap: 1.75rem;
+  min-width: 0;
+}
+.authForm fieldset {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+  align-items: start;
+  gap: 1.5rem 1.75rem;
   border: 0;
   margin: 0;
   padding: 0;
+  min-width: 0;
 }
-.authCard :global(.ui-button) {
+.nameField {
+  grid-column: 1 / -1;
+  max-width: calc(50% - .875rem);
   width: 100%;
-  min-height: 48px;
+}
+.authForm :global(.ui-field) > label {
+  font-size: 1rem;
+}
+.authForm :global(.ui-control) {
+  min-height: 54px;
+  background: var(--surface-subtle);
+}
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+.actions > :global(.ui-button) {
+  min-height: 54px;
+  width: 38%;
+  font-size: 1.125rem;
+  flex-shrink: 0;
+  box-shadow: none;
+}
+.alternative {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: .3rem .65rem;
+  font-size: .95rem;
+  color: var(--text-secondary);
+}
+.alternative button {
+  background: none;
+  padding: .5rem 0;
+  border: 0;
+  font: inherit;
+  color: var(--text-accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  min-height: 44px;
+}
+.alternative span {
+  align-self: center;
 }
 .authReturn {
-  display: block;
-  text-align: center;
-  color: var(--text-secondary);
-  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
   min-height: 44px;
-  padding: 0.65rem;
+  margin-top: 1.75rem;
+  color: var(--text-secondary);
+  font-size: .9rem;
   text-underline-offset: 4px;
 }
+.art {
+  position: fixed;
+  z-index: -1;
+  right: -8vw;
+  bottom: 0;
+  width: min(70vw, 1000px);
+  pointer-events: none;
+  opacity: .35;
+}
+.art img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+:global([data-ui-theme="light"]) .art {
+  opacity: .55;
+}
+.skip {
+  position: absolute;
+  top: .5rem;
+  left: 0;
+  transform: translateY(-180%);
+  background: var(--surface-solid);
+  padding: .75rem;
+  z-index: 5;
+}
+.skip:focus {
+  transform: none;
+}
 @media (max-width: 900px) {
+  .main {
+    padding-block: 2rem 4rem;
+  }
   .authLayout {
-    grid-template-columns: minmax(0, 1fr);
-    max-width: 30rem;
+    max-width: 40rem;
+  }
+  .intro {
+    margin-bottom: 2rem;
+  }
+  .intro h1 {
+    font-size: clamp(1.85rem, 5vw, 2.75rem);
+  }
+  .actions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: .75rem;
+  }
+  .actions > :global(.ui-button) {
+    width: 100%;
+  }
+  .alternative {
+    justify-content: flex-start;
+  }
+  .art {
+    opacity: .2;
+    bottom: -10rem;
+    right: -12rem;
+    width: 35rem;
+  }
+  :global([data-ui-theme="light"]) .art {
+    opacity: .3;
+  }
+}
+@media (max-width: 600px) {
+  .header {
+    padding-block: 1rem;
+    gap: .5rem;
+  }
+  .header nav {
+    gap: .85rem;
+  }
+  .brand {
+    font-size: 1.35rem;
+  }
+  .courses {
+    padding-left: .85rem;
+    gap: .35rem;
+    font-size: .85rem;
+  }
+  .main {
+    padding-block: 1.25rem 1.5rem;
+  }
+  .intro {
+    margin-bottom: 1.25rem;
+  }
+  .intro p {
+    font-size: 1rem;
+  }
+  .modes {
+    margin-bottom: 1.25rem;
     gap: 1.5rem;
   }
-  .authIntro {
-    display: none;
+  .modes button {
+    padding-block: .5rem .75rem;
   }
-  .authIntro h2 {
-    font-size: 1.65rem;
-    max-width: 22ch;
+  .authForm {
+    gap: 1.25rem;
   }
-  .authIntro ol {
-    margin: 0;
+  .authForm fieldset {
+    grid-template-columns: minmax(0,1fr);
+    gap: .85rem;
   }
-  .authLayout .authCard[data-padding] {
-    padding: 1.25rem;
+  .nameField {
+    max-width: none;
   }
-  .authCard .authContent {
-    gap: 0.75rem;
+  .authReturn {
+    margin-top: .75rem;
+  }
+  .art {
+    bottom: -14rem;
+    right: -18rem;
+    opacity: .12;
+  }
+  :global([data-ui-theme="light"]) .art {
+    opacity: .18;
   }
 }
