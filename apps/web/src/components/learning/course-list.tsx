@@ -22,7 +22,7 @@ export function CourseList({ courses }: { courses: PublicLearningCourse[] }) {
         return (
         <li key={`${course.organization.slug}/${course.offering.slug}`}>
           <Link className={`${styles.row} ${artwork ? styles.withArtwork : ""}`} href={courseUrl(course)}>
-            {artwork ? <Image className={styles.thumbnail} {...artwork} alt="" sizes="(max-width: 760px) 80px, 192px" /> : <span className={styles.number} aria-hidden="true">
+            {artwork ? <Image className={styles.thumbnail} {...artwork} alt="" unoptimized sizes="(max-width: 760px) 80px, 192px" /> : <span className={styles.number} aria-hidden="true">
               {String(index + 1).padStart(2, "0")}
             </span>}
             <div className={styles.content}>

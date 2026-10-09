@@ -52,7 +52,7 @@ export default async function CoursePage({ params }: Props) {
           </Text>
         </Inline>
       </LearningPageHeading>
-      {artwork ? <Image className={styles.courseCover} {...artwork} sizes="(max-width: 960px) 100vw, 45vw" /> : null}
+      {artwork ? <Image className={styles.courseCover} {...artwork} unoptimized sizes="(max-width: 960px) 100vw, 45vw" /> : null}
       </div>
       <div className={styles.courseLayout}>
         <section aria-labelledby="lessons-title">
