@@ -816,11 +816,13 @@ async function verifyStudio(cdp) {
     await waitForExpression(cdp,'document.querySelector("dialog[open]")?.textContent.includes("Отбросить текущие правки?")',"discard confirmation");
     await accessibilityAudit(cdp,"Studio discard confirmation");
     await clickText(cdp,"Остаться в редакторе");
+    await waitForExpression(cdp,'!document.querySelector("dialog[open]")',"discard confirmation close");
     assert(await evaluate(cdp,'[...document.querySelectorAll("label")].find(l=>l.firstChild?.textContent?.trim()==="Название курса")?.control?.value === "Моя несохранённая правка"'),"Cancelling discard lost working copy.");
     await evaluate(cdp,'[...document.querySelectorAll("a")].find(a=>a.textContent?.trim()==="← Все курсы").click()');
     await waitForExpression(cdp,'document.querySelector("dialog[open]")?.textContent.includes("Выйти из редактора?")',"unsaved internal navigation confirmation");
     await accessibilityAudit(cdp,"Studio unsaved navigation confirmation");
     await clickText(cdp,"Остаться в редакторе");
+    await waitForExpression(cdp,'!document.querySelector("dialog[open]")',"unsaved navigation confirmation close");
     assert(await evaluate(cdp,'[...document.querySelectorAll("label")].find(l=>l.firstChild?.textContent?.trim()==="Название курса")?.control?.value === "Моя несохранённая правка"'),"Cancelling navigation lost working copy.");
     await clickText(cdp,"Отбросить изменения и загрузить сохранённое");
     await clickText(cdp,"Отбросить и загрузить");
