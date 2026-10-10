@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 import { ArrowRight, List, X } from "@phosphor-icons/react/dist/ssr";
 import { Dialog, IconButton, buttonClass } from "@platform/ui";
-import { AppearanceControl } from "../appearance/appearance-control";
 import { browserApiRequest } from "../../lib/public-api";
 import styles from "./navigation.module.css";
 
@@ -69,9 +68,6 @@ export function LearningNavigation({
       <nav className={styles.desktop} aria-label="Главное меню">
         {links()}
       </nav>
-      <div className={styles.utilities}>
-        <AppearanceControl />
-      </div>
       {showLogin && authState === "anonymous" ? (
         <div className={styles.authActions}>
           <Link className={`${buttonClass({ variant: "ghost", size: "sm" })} ${styles.login}`} href="/login">Войти</Link>

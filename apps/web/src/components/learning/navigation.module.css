@@ -41,9 +41,6 @@
 .menuButton {
   display: none;
 }
-.utilities {
-  display: flex;
-}
 .authActions {
   display: flex;
   align-items: center;

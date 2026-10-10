@@ -78,7 +78,7 @@ export function AppearanceControl() {
     <>
       <button
         type="button"
-        aria-label="Оформление"
+        aria-label="Изменить тему и цвет"
         className={styles.trigger}
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
@@ -86,7 +86,12 @@ export function AppearanceControl() {
         aria-controls={id}
       >
         <Palette size={20} aria-hidden="true" />
-        <span>Оформление</span>
+        <span>Тема и цвет</span>
+        <i
+          className={styles.currentAccent}
+          data-swatch={appearance.accent}
+          aria-hidden="true"
+        />
       </button>
       <Dialog
         id={id}
@@ -96,7 +101,7 @@ export function AppearanceControl() {
         aria-labelledby={`${id}-title`}
       >
         <div className={styles.heading}>
-          <h2 id={`${id}-title`}>Оформление</h2>
+          <h2 id={`${id}-title`}>Настройте под себя</h2>
           <IconButton
             aria-label="Закрыть настройки оформления"
             onClick={() => setOpen(false)}

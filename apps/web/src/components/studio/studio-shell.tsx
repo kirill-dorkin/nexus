@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { brand } from "@platform/brand";
 import { Container } from "@platform/ui";
+import { AppearanceControl } from "../appearance/appearance-control";
 import { LearningNavigation } from "../learning/learning-navigation";
 import layout from "../learning/learning.module.css";
 import styles from "./studio.module.css";
@@ -21,6 +22,7 @@ export function StudioShell({ children }: { children: ReactNode }) {
         </Link>
         <LearningNavigation showLogin={false} />
       </header>
+      <AppearanceControl />
       <main id="studio-main" tabIndex={-1}>
         {children}
       </main>

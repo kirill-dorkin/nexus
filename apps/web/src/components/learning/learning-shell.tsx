@@ -2,6 +2,7 @@ import { brand } from "@platform/brand";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { Container } from "@platform/ui";
+import { AppearanceControl } from "../appearance/appearance-control";
 import { LearningNavigation } from "./learning-navigation";
 import styles from "./learning.module.css";
 export function LearningShell({ children, layout = "page" }: { children: ReactNode; layout?: "page" | "viewport" }) {
@@ -20,6 +21,7 @@ export function LearningShell({ children, layout = "page" }: { children: ReactNo
         </Link>
         <LearningNavigation />
       </header>
+      <AppearanceControl />
       <main id="learning-main" tabIndex={-1}>
         {children}
       </main>
