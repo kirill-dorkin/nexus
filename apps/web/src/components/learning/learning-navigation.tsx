@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 import { ArrowRight, List, X } from "@phosphor-icons/react/dist/ssr";
+import { brand } from "@platform/brand";
 import { Dialog, IconButton, buttonClass } from "@platform/ui";
 import { browserApiRequest } from "../../lib/public-api";
 import styles from "./navigation.module.css";
@@ -98,7 +99,7 @@ export function LearningNavigation({
       >
         <div className={styles.menuHeading}>
           <div>
-            <span className={styles.menuEyebrow}>Nexus</span>
+            <span className={styles.menuEyebrow}>{brand.name}</span>
             <h2 id={`${id}-title`}>Куда вы хотите перейти?</h2>
           </div>
           <IconButton aria-label="Закрыть меню" onClick={() => setOpen(false)}>
