@@ -573,6 +573,11 @@ button.button {
 .nav > a {
   text-decoration: none;
 }
+.appearanceRow {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.65rem;
+}
 .brand {
   display: inline-flex;
   align-items: center;

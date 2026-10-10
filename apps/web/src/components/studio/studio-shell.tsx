@@ -22,7 +22,9 @@ export function StudioShell({ children }: { children: ReactNode }) {
         </Link>
         <LearningNavigation showLogin={false} />
       </header>
-      <AppearanceControl />
+      <div className={layout.appearanceRow}>
+        <AppearanceControl />
+      </div>
       <main id="studio-main" tabIndex={-1}>
         {children}
       </main>

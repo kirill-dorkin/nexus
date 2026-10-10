@@ -21,7 +21,9 @@ export function LearningShell({ children, layout = "page" }: { children: ReactNo
         </Link>
         <LearningNavigation />
       </header>
-      <AppearanceControl />
+      <div className={styles.appearanceRow}>
+        <AppearanceControl />
+      </div>
       <main id="learning-main" tabIndex={-1}>
         {children}
       </main>
