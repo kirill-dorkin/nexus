@@ -1,10 +1,14 @@
 .cover {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(1rem, 2vw, 2rem);
-  padding: 2.5rem 0;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  min-height: clamp(520px, 66vh, 690px);
+  margin-top: 0.75rem;
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  border-radius: 1.5rem;
+  background: var(--surface-elevated);
+  box-shadow: var(--shadow-surface);
 }
 .coverContent {
   position: relative;
@@ -12,64 +16,79 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1.75rem;
+  justify-content: center;
+  gap: clamp(1.1rem, 2.1vw, 1.8rem);
+  padding: clamp(2.25rem, 5.5vw, 5.25rem);
 }
 .coverContent > h1 {
-  font-size: clamp(2.7rem, 4.45vw, 4rem);
-  line-height: 1.1;
-  letter-spacing: -0.045em;
-  font-weight: 700;
-  text-wrap: initial;
+  max-width: 10.5ch;
+  margin: 0;
+  font-size: clamp(3.05rem, 5.7vw, 5.6rem);
+  line-height: 0.98;
+  letter-spacing: -0.075em;
+  font-weight: 760;
+  text-wrap: balance;
 }
 .coverContent > p {
-  max-width: 31rem;
-  font-size: 1.125rem;
-  line-height: 1.7;
+  max-width: 34rem;
+  margin: 0;
+  font-size: clamp(1rem, 1.25vw, 1.18rem);
+  line-height: 1.65;
 }
 .coverContent > :first-child {
-  color: var(--text-secondary);
-  font-size: 0.68rem;
-  letter-spacing: 0.15em;
-}
-.accent {
   color: var(--text-accent);
+  font-size: 0.67rem;
+  font-weight: 760;
+  letter-spacing: 0.16em;
 }
+.accent { color: var(--text-accent); }
 .actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-top: 0.25rem;
+  gap: 0.75rem 1.35rem;
+  margin-top: 0.2rem;
 }
 .secondary {
-  min-height: 44px;
+  min-height: 46px;
   display: inline-flex;
   align-items: center;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  font-weight: 620;
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.4rem;
-  font-size: 0.95rem;
+  text-underline-offset: 0.38rem;
 }
-.secondary:hover {
-  color: var(--text-accent);
-}
+.secondary:hover { color: var(--text-accent); }
 .example {
   position: relative;
   isolation: isolate;
   display: flex;
   align-items: center;
   min-width: 0;
-  padding: 4rem 0.75rem 2rem 1.5rem;
+  overflow: hidden;
+  padding: clamp(2rem, 4vw, 4.5rem);
+  background: #18182c;
+}
+.example::before {
+  content: "NEXUS / LEARNING LAB";
+  position: absolute;
+  top: 1.6rem;
+  left: 2rem;
+  z-index: 2;
+  color: #aaa9c2;
+  font: 650 0.62rem/1 var(--font-mono);
+  letter-spacing: 0.14em;
 }
 .art {
   position: absolute;
   z-index: -1;
-  width: 115%;
+  width: 112%;
   height: auto;
   max-width: none;
-  top: 50%;
-  left: -6%;
-  transform: translateY(-50%);
-  opacity: var(--art-opacity);
+  right: -18%;
+  bottom: -28%;
+  opacity: 0.72;
   filter: var(--art-filter);
   pointer-events: none;
 }
@@ -77,56 +96,59 @@
   margin: 0;
   min-width: 0;
   width: 100%;
-  padding: clamp(1.2rem, 2.1vw, 1.9rem);
-  border: 1px solid
-    color-mix(in srgb, var(--text-accent) 45%, var(--border-default));
-  border-radius: var(--radius-xl);
-  background: var(--surface-glass);
-  backdrop-filter: blur(var(--blur-surface));
-  box-shadow: var(--shadow-surface);
+  padding: clamp(1.2rem, 2vw, 1.8rem);
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: 1rem;
+  background: rgb(27 26 48 / 88%);
+  color: #f7f5ff;
+  box-shadow: 0 24px 70px rgb(0 0 0 / 28%);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
 }
 .lessonExample figcaption > span {
-  color: var(--text-secondary);
-  font-size: 0.8rem;
+  color: #a9a8bf;
+  font: 600 0.68rem/1.4 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 .lessonExample h2 {
-  font-size: clamp(1.1rem, 1.6vw, 1.45rem);
-  line-height: 1.3;
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  margin: 0.6rem 0 1.2rem;
+  margin: 0.65rem 0 1.25rem;
+  font-size: clamp(1.15rem, 1.55vw, 1.45rem);
+  line-height: 1.28;
+  font-weight: 680;
+  letter-spacing: -0.035em;
   overflow-wrap: anywhere;
 }
 .lessonExample pre {
   margin: 0;
-  padding: 1.1rem;
+  padding: clamp(0.9rem, 1.6vw, 1.25rem);
   overflow-x: auto;
-  background: var(--surface-input);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  font: 1rem/1.85 var(--font-mono);
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 0.75rem;
+  background: #111323;
+  color: #d8dcf1;
+  font: clamp(0.77rem, 1vw, 0.96rem)/1.8 var(--font-mono);
 }
 .lessonExample p {
   margin: 0.9rem 0 0;
+  color: #aaa9bf;
   font-size: 0.75rem;
-  color: var(--text-secondary);
 }
-.tag {
-  color: var(--text-accent);
-}
-.attribute {
-  color: var(--status-warning);
-}
-.value {
-  color: var(--status-info);
+.tag { color: #c7b5ff; }
+.attribute { color: #f0c989; }
+.value { color: #82ddcc; }
+.catalog,
+.approach,
+.blogCallout,
+.questions {
+  border-top: 1px solid var(--border-default);
 }
 .catalog {
-  border-top: 1px solid var(--border-default);
-  padding-block: 3rem;
   display: grid;
-  grid-template-columns: minmax(0, 0.7fr) minmax(0, 2fr);
-  gap: 3rem;
-  scroll-margin-top: 1.5rem;
+  grid-template-columns: minmax(0, 0.68fr) minmax(0, 2fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  padding-block: clamp(3rem, 6vw, 5.5rem);
+  scroll-margin-top: 6rem;
 }
 .catalogHeading {
   display: flex;
@@ -134,210 +156,125 @@
   align-items: flex-start;
   gap: 1rem;
 }
-.catalogHeading h2 {
-  font-size: clamp(1.8rem, 3.1vw, 2.75rem);
+.catalogHeading h2,
+.approachHeading h2,
+.blogCallout h2 {
+  margin: 0;
+  font-size: clamp(2rem, 3.35vw, 3.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.055em;
 }
-.allCourses {
+.allCourses,
+.blogCallout a {
   display: inline-flex;
   gap: 0.65rem;
   align-items: center;
   min-height: 44px;
   color: var(--text-accent);
   font-size: 0.9rem;
+  font-weight: 650;
   text-decoration: none;
 }
-.allCourses:hover {
+.allCourses:hover,
+.blogCallout a:hover {
   text-decoration: underline;
   text-underline-offset: 0.3rem;
 }
 .approach {
-  border-top: 1px solid var(--border-default);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 4rem;
-  padding-block: 3.5rem;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(2rem, 7vw, 6rem);
+  padding-block: clamp(3rem, 6vw, 5.5rem);
 }
 .approachHeading {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 }
-.approachHeading h2 {
-  font-size: clamp(1.8rem, 3.2vw, 2.75rem);
-  line-height: 1.2;
-}
-.steps {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+.steps { list-style: none; padding: 0; margin: 0; }
 .steps li {
-  display: flex;
-  align-items: baseline;
-  gap: 1.25rem;
-  padding-block: 1.2rem;
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  gap: 1rem;
+  padding-block: 1.35rem;
   border-bottom: 1px solid var(--border-default);
 }
-.steps li:first-child {
-  padding-top: 0;
-}
-.steps li:last-child {
-  border-bottom: 0;
-}
+.steps li:first-child { padding-top: 0; }
+.steps li:last-child { border-bottom: 0; }
 .steps li > span {
   color: var(--text-accent);
-  font: 0.8rem var(--font-mono);
+  font: 650 0.72rem/1.8 var(--font-mono);
 }
 .steps h3 {
   margin: 0 0 0.4rem;
-  font-size: 1.1rem;
-  letter-spacing: -0.02em;
-  font-weight: 600;
+  font-size: 1.08rem;
+  letter-spacing: -0.025em;
+  font-weight: 680;
 }
-.questions {
-  display: grid;
-  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
-  gap: 4rem;
-  border-top: 1px solid var(--border-default);
-  padding-top: 3.5rem;
-}
+.steps p { margin: 0; }
 .blogCallout {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: 4rem;
-  padding-block: 3.5rem;
-  border-top: 1px solid var(--border-default);
+  gap: clamp(2rem, 6vw, 5rem);
+  padding-block: clamp(3rem, 5vw, 4.5rem);
 }
-.blogCallout h2 { margin-top: 0.85rem; font-size: clamp(1.8rem, 3vw, 2.65rem); line-height: 1.2; }
-.blogCallout p { max-width: 35rem; }
-.blogCallout a { display: inline-flex; align-items: center; gap: 0.6rem; min-height: 44px; margin-top: 1rem; color: var(--text-accent); font-weight: 650; text-underline-offset: 0.3rem; }
-.questions h2 {
-  font-size: 2rem;
+.blogCallout h2 { margin-top: 0.85rem; }
+.blogCallout p { max-width: 35rem; margin-top: 0; }
+.blogCallout a { margin-top: 0.75rem; }
+.questions {
+  display: grid;
+  grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.35fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  padding-block: clamp(3rem, 5vw, 4.5rem) 0;
 }
+.questions h2 { margin: 0; font-size: clamp(1.9rem, 3vw, 2.75rem); }
 @media (max-width: 1000px) {
-  .coverContent > h1 {
-    font-size: clamp(2.5rem, 4.7vw, 3.2rem);
-  }
-  .coverContent > p {
-    font-size: 1rem;
-  }
-  .example {
-    padding: 5rem 0 2rem;
-  }
-  .lessonExample pre {
-    font-size: 0.78rem;
-    padding: 0.8rem;
-  }
-  .actions {
-    gap: 0.75rem;
-  }
+  .cover { min-height: 540px; }
+  .coverContent { padding: 2.5rem; }
+  .coverContent > h1 { font-size: clamp(2.8rem, 5.9vw, 4.2rem); }
+  .example { padding: 3.5rem 2rem 2rem; }
 }
 @media (max-width: 760px) {
   .cover {
     grid-template-columns: 1fr;
-    gap: 0.75rem;
-    padding-top: 2rem;
-    padding-bottom: 1.5rem;
+    min-height: 0;
+    margin-top: 0.5rem;
+    border-radius: 1.2rem;
   }
-  .blogCallout { grid-template-columns: 1fr; gap: 1.25rem; }
-  .coverContent {
-    gap: 1.25rem;
-  }
-  .coverContent > h1 {
-    font-size: clamp(2.2rem, 8.5vw, 3.25rem);
-    max-width: 36rem;
-  }
-  .coverContent > p {
-    max-width: 34rem;
-    line-height: 1.65;
-  }
-  .actions {
-    width: 100%;
-    gap: 0.5rem 1.25rem;
-  }
-  .example {
-    width: min(100%, 31rem);
-    margin-inline: auto;
-    padding: 3.5rem 0 1rem;
-  }
-  .art {
-    top: 35%;
-    width: 107%;
-    left: -3%;
-  }
-  .lessonExample {
-    padding: 1.15rem;
-  }
-  .lessonExample pre {
-    font-size: 0.8rem;
-    line-height: 1.8;
-  }
+  .coverContent { gap: 1.2rem; padding: clamp(2rem, 8vw, 3rem) clamp(1.25rem, 6vw, 2.5rem); }
+  .coverContent > h1 { max-width: 11ch; font-size: clamp(2.65rem, 12vw, 4.3rem); }
+  .coverContent > p { font-size: 1rem; line-height: 1.6; }
+  .example { min-height: 390px; padding: 4rem clamp(1rem, 5vw, 2.25rem) 2rem; }
+  .example::before { top: 1.4rem; left: 1.25rem; }
+  .art { width: 105%; right: -12%; bottom: -32%; }
+  .lessonExample { max-width: 34rem; margin-inline: auto; }
   .catalog,
   .approach,
-  .questions {
-    grid-template-columns: 1fr;
-    gap: 1.75rem;
-    padding-block: 2rem;
-  }
-  .catalogHeading {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
-    gap: 0.75rem;
-  }
-  .catalogHeading h2 {
-    grid-column: 1;
-  }
-  .catalogHeading p {
-    grid-column: 1;
-    font-size: 0.9rem;
-  }
-  .allCourses {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-  }
-  .approachHeading h2 {
-    font-size: 2rem;
-  }
-  .questions {
-    padding-bottom: 0;
-  }
+  .blogCallout,
+  .questions { grid-template-columns: 1fr; gap: 1.75rem; padding-block: 2.75rem; }
+  .catalogHeading { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 0.75rem; }
+  .catalogHeading h2 { grid-column: 1; }
+  .catalogHeading p { grid-column: 1; font-size: 0.9rem; }
+  .allCourses { grid-column: 2; grid-row: 1 / span 2; }
+  .questions { padding-bottom: 0; }
 }
 @media (max-width: 440px) {
-  .actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .secondary {
-    justify-content: center;
-    min-height: 48px;
-  }
-  .catalogHeading {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .catalogHeading h2 {
-    width: 100%;
-  }
-  .catalogHeading p {
-    flex: 1;
-  }
-  .lessonExample pre {
-    padding: 0.85rem 0.65rem;
-    font-size: 0.75rem;
-  }
+  .cover { margin-inline: -0.25rem; }
+  .coverContent { padding-inline: 1.2rem; }
+  .coverContent > h1 { font-size: clamp(2.45rem, 12.5vw, 3.25rem); }
+  .actions { width: 100%; flex-direction: column; align-items: stretch; }
+  .secondary { justify-content: center; min-height: 48px; }
+  .example { min-height: 350px; padding-inline: 0.9rem; }
+  .lessonExample { padding: 1rem; }
+  .lessonExample pre { padding: 0.8rem 0.65rem; font-size: 0.72rem; }
+  .catalogHeading { display: flex; flex-wrap: wrap; }
+  .catalogHeading h2 { width: 100%; }
+  .catalogHeading p { flex: 1; }
 }
 @supports not (backdrop-filter: blur(1px)) {
-  .lessonExample {
-    background: var(--surface-solid);
-  }
+  .lessonExample { background: #1b1a30; }
 }
 @media (prefers-reduced-transparency: reduce) {
-  .lessonExample {
-    background: var(--surface-solid);
-    backdrop-filter: none;
-  }
-  .art {
-    opacity: 0.4;
-  }
+  .lessonExample { background: #1b1a30; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .art { opacity: 0.42; }
 }
