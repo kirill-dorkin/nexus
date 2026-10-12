@@ -35,19 +35,19 @@
 :root,
 [data-ui-theme="dark"] {
   color-scheme: dark;
-  --surface-default: #130d18;
-  --surface-subtle: #1b1421;
-  --surface-elevated: #2b2132;
-  --surface-solid: #211a28;
-  --surface-input: #18121f;
-  --surface-glass: rgb(34 24 43 / 88%);
-  --surface-hover: #302438;
-  --text-primary: #f7f3f8;
-  --text-secondary: #beb4c8;
+  --surface-default: #100b16;
+  --surface-subtle: #181120;
+  --surface-elevated: #241a2d;
+  --surface-solid: #1d1625;
+  --surface-input: #14101c;
+  --surface-glass: rgb(29 21 38 / 90%);
+  --surface-hover: #2b2035;
+  --text-primary: #f8f5fb;
+  --text-secondary: #b8afc4;
   --text-disabled: #93869f;
   --text-accent: var(--accent-night);
   --text-on-action: #fff;
-  --border-default: #3e3248;
+  --border-default: #382d43;
   --border-strong: #776780;
   --border-glass: #755267;
   --border-accent: var(--accent-night);
@@ -73,21 +73,21 @@
 }
 [data-ui-theme="light"] {
   color-scheme: light;
-  --surface-default: #f8f6fa;
-  --surface-subtle: #f0edf4;
+  --surface-default: #f5f6fa;
+  --surface-subtle: #f8f9fc;
   --surface-elevated: #fff;
   --surface-solid: #fff;
-  --surface-input: #faf8fc;
+  --surface-input: #f7f7fb;
   --surface-glass: rgb(255 255 255 / 90%);
-  --surface-hover: #eae5f0;
-  --text-primary: #241a2e;
-  --text-secondary: #61546d;
-  --text-disabled: #877b91;
+  --surface-hover: #f0edfa;
+  --text-primary: #20213a;
+  --text-secondary: #6f758a;
+  --text-disabled: #969bad;
   --text-accent: var(--accent-day);
   --text-on-action: #fff;
-  --border-default: #ded6e5;
-  --border-strong: #96869f;
-  --border-glass: #d5bed1;
+  --border-default: #e5e7ef;
+  --border-strong: #b3aec2;
+  --border-glass: #d8d3e8;
   --border-accent: var(--accent-day);
   --action-primary: var(--accent-action);
   --action-hover: var(--accent-hover);
@@ -103,7 +103,7 @@
   --status-danger: #a41c36;
   --status-info: #514097;
   --focus-ring: var(--accent-day);
-  --shadow-surface: inset 0 1px 0 #fff, 0 18px 60px rgb(47 24 64 / 8%);
+  --shadow-surface: inset 0 1px 0 #fff, 0 18px 60px rgb(32 33 58 / 8%);
   --shadow-action: 0 5px 20px
     color-mix(in srgb, var(--accent-action) 12%, transparent);
   --art-opacity: 0.58;
