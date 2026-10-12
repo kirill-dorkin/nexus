@@ -178,3 +178,36 @@ React review found no new effect, request waterfall, client persistence or heavy
 **Verification:** production Web build passed; focused unit tests passed (4 tests / 2 files); 24 browser captures passed across catalog/course/lesson × 320/390/768/1440 × light/dark, including loaded local artwork and no page errors. Search/focus/no-results/reset ran in every catalogue case. Exact-head CI and deployed Preview remain post-push gates.
 
 **final result: passed**
+
+
+## Layout Lab visual-language continuation — 2026-10-12
+
+**Source visual truth:** the rendered first screen of `kirill-dorkin/16-10`, captured from the repository files at `/workspace/scratch/33e28e12dfa3/nexus-16-10-qa/reference-16-10-1440.png` (1440 × 1024 px, CSS viewport 1440 × 1024, DPR 1). **Implementation:** the production-built Nexus homepage at `/workspace/scratch/33e28e12dfa3/nexus-16-10-qa/home-light-1440.png` and `home-dark-1440.png` (CSS viewport 1440 × 1024, DPR 1). The equal-size, side-by-side full-view comparison is `comparison-16-10-light.png`. Focused crops were unnecessary because the top bar, hero typography, technical panel, controls and first lower section remain readable in that combined 1440 px sheet.
+
+### Findings and iteration
+
+- P2 resolved: the previous glass capsule header competed with the hero and looked disconnected from the presentation reference. The final header is a quiet sticky top bar with a bottom rule, open navigation and a restrained active underline. Anonymous private destinations remain hidden by the existing session check.
+- P2 resolved: the appearance control could overlap the mobile eyebrow when it floated over the hero. At 860 px and below it now occupies a real row between the header and hero. Final 320/390 measurements prove `appearance.bottom <= hero.top`.
+- P2 resolved: the earlier hero had separate decoration and translucent card layers. It is now one framed learning stage: editorial copy on the left and a fixed dark technical surface on the right. This preserves the selected Nexus palette while matching the reference's composition and information hierarchy.
+- P2 resolved: the first mobile menu screenshot was captured during the 160 ms native-dialog entrance and appeared translucent. The stable-state recapture after 250 ms shows the solid bottom sheet, readable navigation and account actions over the native backdrop.
+- P3 intentional difference: Nexus keeps Onest and its real glass artwork rather than copying the reference logo, Manrope wordmark, Flex/Grid illustration or slide-only footer. The page remains a product homepage with catalogue, Blog and FAQ below the stage.
+
+### Required fidelity surfaces
+
+- **Fonts and typography:** self-hosted Onest Variable retains high-quality Cyrillic. The display heading computes to 40 px at 320, 48.75 px at 390, 45.31 px at 768 and 82.08 px at 1440; deliberate breakpoint rebalancing prevents narrow wraps while preserving the reference's dense display rhythm. Technical captions and code use the existing monospace token.
+- **Spacing and layout:** the hero is a two-track framed stage on desktop and a single ordered flow on mobile. Production-build checks at 320, 390, 768 and 1440 in both themes found no page or body overflow. Mobile header, 44 px appearance control, hero and bottom-sheet menu do not overlap.
+- **Colors and tokens:** the light theme now uses the reference's cool `#f5f6fa` family and deep blue-plum ink; dark surfaces were deepened without turning black. Rose, violet, blue, teal and amber remain user-selectable semantic accents. The technical panel remains dark in both themes for stable code contrast.
+- **Image quality:** the existing transparent Nexus learning artwork remains a real WebP asset, recolored through existing accent filters and cropped behind the technical surface. No copied logo, placeholder image, CSS illustration or fake course data was introduced.
+- **Copy and content:** existing real routes and honest learning copy are unchanged. The CSS lab caption is brand-neutral to satisfy the repository's brand-isolation rule. The FAQ now accurately points to the visible “Тема и цвет” control rather than claiming it is hidden in the menu.
+
+### Verification
+
+- Local production Web build and Web TypeScript passed.
+- Browser-rendered production build: light/dark × 320/390/768/1440 (8 layouts), no horizontal overflow or page errors; actual Onest and artwork loaded.
+- Mobile menu was opened at 320 and 390 in both themes; stable solid sheet, Escape close and at least 44 px menu target verified.
+- Live Vercel Preview was separately inspected at a 1363 px CSS viewport in light/rose and dark/violet. Theme/accent switching, persistence, appearance dialog and real catalogue content were observed. Browser logs contained no application-origin errors; only the cloud-browser extension reported its own metadata errors.
+- Physical Safari/Android rendering, real screen readers and browser zoom above the checked matrix remain device-review items. The Draft PR is not approved, merged or published to Production.
+
+No actionable P0/P1/P2 findings remain in this continuation.
+
+**final result: passed**
