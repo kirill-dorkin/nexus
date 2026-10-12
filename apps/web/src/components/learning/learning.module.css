@@ -628,7 +628,12 @@ button.button {
 }
 @media (max-width: 860px) {
   .nav { min-height: 62px; padding-block: 0.45rem; }
-  .appearanceRow { top: 68px; padding-top: 0.55rem; }
+  .appearanceRow {
+    position: relative;
+    top: auto;
+    height: auto;
+    padding-top: 0.55rem;
+  }
   .brandMark { width: 36px; height: 36px; }
 }
 @media (max-width: 380px) {
