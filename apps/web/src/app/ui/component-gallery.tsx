@@ -34,6 +34,7 @@ import {
 } from "@platform/ui";
 import "./gallery.css";
 import { CourseList } from "../../components/learning/course-list";
+import { YouTubeVideo } from "../../components/learning/youtube-video";
 import {
   accentChoices,
   type AccentPreference
@@ -489,6 +490,22 @@ export function ComponentGallery() {
               ]}
             />
             <CourseList courses={[]} />
+          </Stack>
+        </section>
+        <section aria-labelledby="ui-lesson-video">
+          <Stack gap="lg">
+            <Heading level={2} id="ui-lesson-video">
+              08 / Видео урока
+            </Heading>
+            <Text muted>
+              Демонстрационное состояние. До нажатия Nexus не загружает
+              iframe, превью или SDK YouTube; в настоящем уроке автор задаёт
+              ссылку в Studio.
+            </Text>
+            <YouTubeVideo
+              videoId="aqz-KE-bpKQ"
+              title="Как устроен компьютер: демонстрация видео"
+            />
           </Stack>
         </section>
       </Stack>
