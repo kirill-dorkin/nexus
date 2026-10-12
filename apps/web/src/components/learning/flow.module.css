@@ -257,6 +257,41 @@
   padding: 0;
   margin: 0;
 }
+.learningSummary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) repeat(2, minmax(7rem, 10rem));
+  gap: var(--space-6);
+  align-items: end;
+  padding-block: 1rem 1.5rem;
+  border-top: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-default);
+}
+.learningSummary > span {
+  align-self: start;
+  color: var(--text-accent);
+  font: 0.68rem/1.4 var(--font-mono);
+  letter-spacing: 0.1em;
+}
+.learningSummary p {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+}
+.learningSummary strong {
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+.learningSummary small {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+.learningError[data-appearance="quiet"] {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: start;
+  margin-top: var(--space-6);
+}
 .savedCard {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 23rem);
@@ -321,8 +356,12 @@
 .quiz legend {
   font-weight: 600;
   padding: 0;
-  margin-bottom: var(--space-4);
+  margin-bottom: 0;
   font-size: 0.9rem;
+}
+.quizHint {
+  margin: 0;
+  padding-bottom: var(--space-2);
 }
 .quizOption {
   padding: var(--space-4);
@@ -400,6 +439,11 @@
     gap: 1.5rem;
     padding: 1.5rem 0;
   }
+  .learningSummary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+  .learningSummary > span { grid-column: 1 / -1; }
   .savedProgress > :global(.ui-button) {
     width: 100%;
   }
