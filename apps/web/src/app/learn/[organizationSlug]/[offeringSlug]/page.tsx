@@ -75,21 +75,28 @@ export default async function CoursePage({ params }: Props) {
         <span aria-current="page">{course.course.title}</span>
       </nav>
       <div className={artwork ? styles.courseHero : undefined}>
-      <LearningPageHeading
-        eyebrow={course.organization.name}
-        title={course.course.title}
-        description={course.course.description}
-      >
-        <Inline>
-          <Badge tone="accent">Бесплатно · В своём темпе</Badge>
-          <Text muted size="sm">
-            {lessonCount(course.course.lessons.length)}
-          </Text>
-          <Text muted size="sm">
-            Около {duration} мин
-          </Text>
-        </Inline>
-      </LearningPageHeading>
+      <div className={styles.courseHeroCopy}>
+        <div className={styles.courseSignal} aria-label="Формат курса">
+          <span>OPEN COURSE</span>
+          <span>{String(course.course.lessons.length).padStart(2, "0")} LESSONS</span>
+          <span>{duration} MIN</span>
+        </div>
+        <LearningPageHeading
+          eyebrow={course.organization.name}
+          title={course.course.title}
+          description={course.course.description}
+        >
+          <Inline>
+            <Badge tone="accent">Бесплатно · В своём темпе</Badge>
+            <Text muted size="sm">
+              {lessonCount(course.course.lessons.length)}
+            </Text>
+            <Text muted size="sm">
+              Около {duration} мин
+            </Text>
+          </Inline>
+        </LearningPageHeading>
+      </div>
       {artwork ? <Image className={styles.courseCover} {...artwork} unoptimized sizes="(max-width: 960px) 100vw, 45vw" /> : null}
       </div>
       <div className={styles.courseLayout}>
