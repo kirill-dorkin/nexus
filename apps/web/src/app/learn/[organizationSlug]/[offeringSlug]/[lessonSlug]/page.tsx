@@ -49,6 +49,9 @@ export default async function LessonPage({ params }: Props) {
   );
   const previous = course.course.lessons[index - 1];
   const next = course.course.lessons[index + 1];
+  const lessonProgress = Math.round(
+    ((index + 1) / course.course.lessons.length) * 100
+  );
   const path = lessonUrl(course, lessonSlug);
   const structuredData = {
     "@context": "https://schema.org",
@@ -73,12 +76,28 @@ export default async function LessonPage({ params }: Props) {
         <Link href={courseUrl(course)}>{course.course.title}</Link>
         <span aria-current="page">Урок {index + 1}</span>
       </nav>
-      <div className={styles.lessonHeader}>
-        <LearningPageHeading
-          eyebrow={`Урок ${index + 1} из ${course.course.lessons.length} · ${course.lesson.durationMinutes} мин`}
-          title={course.lesson.title}
-          description={course.lesson.summary}
-        />
+      <div className={styles.lessonIntro}>
+        <div className={styles.lessonSignal}>
+          <span>LEARNING PATH / {String(index + 1).padStart(2, "0")}</span>
+          <span>{lessonProgress}% маршрута</span>
+        </div>
+        <div
+          className={styles.lessonMeter}
+          role="progressbar"
+          aria-label={`Позиция в программе: урок ${index + 1} из ${course.course.lessons.length}`}
+          aria-valuemin={1}
+          aria-valuemax={course.course.lessons.length}
+          aria-valuenow={index + 1}
+        >
+          <span style={{ width: `${lessonProgress}%` }} />
+        </div>
+        <div className={styles.lessonHeader}>
+          <LearningPageHeading
+            eyebrow={`Урок ${index + 1} из ${course.course.lessons.length} · ${course.lesson.durationMinutes} мин`}
+            title={course.lesson.title}
+            description={course.lesson.summary}
+          />
+        </div>
       </div>
       <div className={styles.lessonLayout}>
         <div className={styles.lessonMain}>
@@ -108,7 +127,7 @@ export default async function LessonPage({ params }: Props) {
           className={styles.lessonAside}
           aria-label="Программа и сохранённое обучение"
         >
-          <Surface appearance="quiet">
+          <Surface appearance="quiet" className={styles.lessonOutlineSurface}>
             <Heading level={2} size="card">
               Программа курса
             </Heading>
