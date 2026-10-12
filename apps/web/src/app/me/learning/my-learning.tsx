@@ -31,6 +31,10 @@ export function MyLearning() {
     [busy, setBusy] = useState(false),
     [error, setError] = useState<string | null>(null),
     [reload, setReload] = useState(0);
+  const completedCount = courses.filter(
+    (course) => course.entry.enrollmentStatus === "completed"
+  ).length;
+  const inProgressCount = courses.length - completedCount;
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true);
@@ -151,6 +155,19 @@ export function MyLearning() {
         </Surface>
       )}
       {courses.length > 0 && (
+        <div className={styles.learningSummary} aria-label="Сводка обучения">
+          <span>LEARNING DASHBOARD</span>
+          <p>
+            <strong>{inProgressCount}</strong>
+            <small>в процессе</small>
+          </p>
+          <p>
+            <strong>{completedCount}</strong>
+            <small>завершено</small>
+          </p>
+        </div>
+      )}
+      {courses.length > 0 && (
         <ul className={styles.savedList}>
           {courses.map((c) => {
             const next =
@@ -201,8 +218,21 @@ export function MyLearning() {
           Показать ещё
         </Button>
       )}
-      {error && <Alert tone="danger">{error}</Alert>}
-      {!anonymous && !loading && (
+      {error && (
+        <Surface className={styles.learningError} appearance="quiet">
+          <Alert tone="danger" title="Обучение сейчас недоступно">
+            {error}
+          </Alert>
+          <Button
+            variant="secondary"
+            disabled={busy}
+            onClick={() => setReload((x) => x + 1)}
+          >
+            Повторить загрузку
+          </Button>
+        </Surface>
+      )}
+      {!anonymous && !loading && !error && (
         <Inline gap="sm" className={styles.savedGrid}>
           <Button
             variant="secondary"
