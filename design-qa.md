@@ -157,25 +157,33 @@ Typography: existing self-hosted Cyrillic Onest, expressive single-line desktop 
 **final result: passed**
 
 
-## Catalog and course continuation — 2026-10-09
+## Course and lesson learning rails — 2026-10-12
 
-**Audit scope and user goal:** anonymous learner moves from `/courses` to the real Computer Literacy Preview course, understands what is available before registration, searches the returned catalogue, reviews the curriculum, and opens the first lesson. The existing Git-linked Preview was captured and inspected before the change; the final production-built app was captured under `/workspace/scratch/33e28e12dfa3/course-media-qa/` at 320, 390, 768 and 1440 CSS px in light and dark themes. Representative accepted captures are `catalog-1440-light.png`, `catalog-390-dark.png`, `course-1440-light.png`, and `course-390-light.png`.
+**Source visual truth:** the same rendered `kirill-dorkin/16-10` opening screen used by the approved homepage continuation, `/workspace/scratch/33e28e12dfa3/nexus-16-10-qa/reference-16-10-1440.png`. This is a visual-language reference rather than a literal course-page mock. **Implementation:** exact-head Vercel Preview `e73ecbe42cc110c33113096ba2bd0818835c4ba3`, inspected at `https://nexus-git-ui-glass-foundation-bhvgfs-projects.vercel.app/learn/nexus-preview/computer-literacy-course` and `/computer` in the cloud browser at 1363 × 936 CSS px, DPR 1. The browser provider displayed the full-view captures but did not expose a filesystem screenshot path. Source and implementation were evaluated together for the shared top-rule, editorial/technical split, large type, open surfaces and restrained accent language; a pixel-identical comparison is neither expected nor claimed because the target is a reading product, not a slide.
 
-### Numbered flow and findings
+### Findings and iteration
 
-1. **Catalogue entry — healthy after refinement.** The prior heading and search were visually separate and the single real course read like a thin utility row. The final screen pairs the heading with an honest access explanation, then presents search and the count as one control area. No fabricated popularity, rating or learner counts are shown.
-2. **Catalogue search — healthy.** The native labelled search filters only the loaded real courses. Cyrillic matching, zero results, explicit reset, live result count and keyboard-visible focus passed at all tested widths/themes. The initial long placeholder clipped on mobile; it was shortened to “Название или тема” while the persistent label remains descriptive.
-3. **Course selection — healthy.** The cover now has enough visual weight for a one-course catalogue, while the row retains title, real organization, full desktop description, price, lesson count, duration and one unambiguous destination. At 320/390 px the description yields to the title and metadata; the whole row remains the link.
-4. **Course overview — healthy after refinement.** The previous sticky start action was a bordered card inside the broader course composition. It is now an open section with an accent rule and full-width primary action; the separate authenticated-learning state remains below its own divider. The cover, title, description and actual course metadata preserve their source values.
-5. **Curriculum and first lesson — healthy.** The outline gains a compact real lesson-count/duration summary and keeps every canonical lesson title, summary, duration and URL. YouTube remains click-to-load: no third-party request occurs before Play, Close removes the iframe and restores focus, and code copying remains verified.
+- P2 resolved: the course hero previously read as a conventional marketing split with no technical rhythm. A narrow `OPEN COURSE / lessons / minutes` rail now frames only real course metadata, aligns the copy and artwork, and gives the page the approved `16-10` cadence without copying its logo or slide footer.
+- P2 resolved: the lesson started with a large undifferentiated empty field before abruptly entering a white reading card. The final lesson adds a real numbered learning-path rail and semantic progressbar, tightens the header rhythm, and opens the sidebar with the same accent rule as the course action.
+- P2 checked: dark/violet initially appeared low-contrast while the native appearance dialog backdrop was still active. After the dialog closed, the selected lesson computed to `color(srgb 0.191373 0.124235 0.295216)` against `rgb(248, 245, 251)` text and was visually readable. No token change was needed.
+- P3 content gap: the deployed Preview course currently contains no YouTube block, so no video is fabricated inside its canonical lesson data. `/ui` now includes a labelled demonstration using the same production `YouTubeVideo` component and the repository's existing test video ID. The component still performs no YouTube request before explicit activation, unmounts the iframe on close and keeps the external fallback.
 
-### UX, accessibility and React review
+### Required fidelity surfaces
 
-Strengths: public materials remain discoverable without registration; saving progress is explained before any account prompt; the primary course action is singular; light/dark and learner accent tokens remain shared. Semantic headings, breadcrumb navigation, ordered lesson list, labelled native search, result status, empty recovery, keyboard focus and 48px+ controls were preserved. Responsive reflow had no page-level horizontal overflow in 24 page/width/theme captures. Exact contrast on physical devices, screen-reader announcements and browser zoom above the automated sizes remain verification gaps; this is not a claim of full WCAG conformance.
+- **Fonts and typography:** the existing self-hosted Onest remains the Cyrillic reading face; technical rails use the mono token. The course display remains large but the lesson body stays at a calm reading measure and line height.
+- **Spacing and layout:** desktop course media and copy share height; lesson title, content and 20rem curriculum rail align on one grid. Existing breakpoints collapse the course and lesson grids at 960px and the action/outline flows at 760px; the new rails wrap without fixed-width content.
+- **Colors and tokens:** all surfaces use the approved semantic light/plum-dark tokens and learner-selected accent. No new hard-coded theme color, glass panel or decorative glow was added.
+- **Image quality:** the real reviewed computer-literacy WebP remains the course artwork, with a stable crop and no generated placeholder. The lesson adds no unnecessary raster.
+- **Copy and content:** lesson count, minutes, position and course copy come from the real public projection. English rail labels are small technical metadata; all task copy remains clear Russian. The gallery explicitly labels its video state as a demonstration.
 
-React review found no new effect, request waterfall, client persistence or heavy dependency. Filtering stays derived from current props and query; server catalogue/course reads remain behind the existing Suspense and server-only boundary. No auth, membership, Enrollment, quiz, Evidence, progress, tenant/RLS or outbox behavior changed.
+### Verification
 
-**Verification:** production Web build passed; focused unit tests passed (4 tests / 2 files); 24 browser captures passed across catalog/course/lesson × 320/390/768/1440 × light/dark, including loaded local artwork and no page errors. Search/focus/no-results/reset ran in every catalogue case. Exact-head CI and deployed Preview remain post-push gates.
+- Web TypeScript and production build passed locally; the full unit suite passed 399 tests / 67 files.
+- Exact-head CI run `38269077252` passed brand isolation, TypeScript, unit and database integration tests, performance, production build/container, canonical browser verification and smoke.
+- The exact-head Vercel Preview deployment `dpl_GXcPfeDpZveCmrffxytNZEqzVvmC` reached `READY`; course and lesson were inspected in light/rose and dark/violet. Theme/accent persistence and the appearance dialog worked. Browser logs contained no application-origin errors; only the cloud-browser extension emitted its own metadata errors.
+- The repository's canonical browser suite covers its existing mobile/keyboard/YouTube assertions. This continuation did not obtain new downloadable 320/390/768 capture files from the cloud browser; physical iOS/Android and real screen-reader review remain follow-up device checks.
+
+No actionable P0/P1/P2 findings remain in this continuation. No merge, Ready transition or Production publication was performed.
 
 **final result: passed**
 
@@ -209,5 +217,28 @@ React review found no new effect, request waterfall, client persistence or heavy
 - Physical Safari/Android rendering, real screen readers and browser zoom above the checked matrix remain device-review items. The Draft PR is not approved, merged or published to Production.
 
 No actionable P0/P1/P2 findings remain in this continuation.
+
+**final result: passed**
+
+
+## Catalog and course continuation — 2026-10-09
+
+**Audit scope and user goal:** anonymous learner moves from `/courses` to the real Computer Literacy Preview course, understands what is available before registration, searches the returned catalogue, reviews the curriculum, and opens the first lesson. The existing Git-linked Preview was captured and inspected before the change; the final production-built app was captured under `/workspace/scratch/33e28e12dfa3/course-media-qa/` at 320, 390, 768 and 1440 CSS px in light and dark themes. Representative accepted captures are `catalog-1440-light.png`, `catalog-390-dark.png`, `course-1440-light.png`, and `course-390-light.png`.
+
+### Numbered flow and findings
+
+1. **Catalogue entry — healthy after refinement.** The prior heading and search were visually separate and the single real course read like a thin utility row. The final screen pairs the heading with an honest access explanation, then presents search and the count as one control area. No fabricated popularity, rating or learner counts are shown.
+2. **Catalogue search — healthy.** The native labelled search filters only the loaded real courses. Cyrillic matching, zero results, explicit reset, live result count and keyboard-visible focus passed at all tested widths/themes. The initial long placeholder clipped on mobile; it was shortened to “Название или тема” while the persistent label remains descriptive.
+3. **Course selection — healthy.** The cover now has enough visual weight for a one-course catalogue, while the row retains title, real organization, full desktop description, price, lesson count, duration and one unambiguous destination. At 320/390 px the description yields to the title and metadata; the whole row remains the link.
+4. **Course overview — healthy after refinement.** The previous sticky start action was a bordered card inside the broader course composition. It is now an open section with an accent rule and full-width primary action; the separate authenticated-learning state remains below its own divider. The cover, title, description and actual course metadata preserve their source values.
+5. **Curriculum and first lesson — healthy.** The outline gains a compact real lesson-count/duration summary and keeps every canonical lesson title, summary, duration and URL. YouTube remains click-to-load: no third-party request occurs before Play, Close removes the iframe and restores focus, and code copying remains verified.
+
+### UX, accessibility and React review
+
+Strengths: public materials remain discoverable without registration; saving progress is explained before any account prompt; the primary course action is singular; light/dark and learner accent tokens remain shared. Semantic headings, breadcrumb navigation, ordered lesson list, labelled native search, result status, empty recovery, keyboard focus and 48px+ controls were preserved. Responsive reflow had no page-level horizontal overflow in 24 page/width/theme captures. Exact contrast on physical devices, screen-reader announcements and browser zoom above the automated sizes remain verification gaps; this is not a claim of full WCAG conformance.
+
+React review found no new effect, request waterfall, client persistence or heavy dependency. Filtering stays derived from current props and query; server catalogue/course reads remain behind the existing Suspense and server-only boundary. No auth, membership, Enrollment, quiz, Evidence, progress, tenant/RLS or outbox behavior changed.
+
+**Verification:** production Web build passed; focused unit tests passed (4 tests / 2 files); 24 browser captures passed across catalog/course/lesson × 320/390/768/1440 × light/dark, including loaded local artwork and no page errors. Search/focus/no-results/reset ran in every catalogue case. Exact-head CI and deployed Preview remain post-push gates.
 
 **final result: passed**
