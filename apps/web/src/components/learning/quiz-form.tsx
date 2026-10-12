@@ -17,7 +17,8 @@ import {
   Input,
   Radio,
   Stack,
-  Text
+  Text,
+  buttonClass
 } from "@platform/ui";
 import styles from "./flow.module.css";
 
@@ -126,6 +127,9 @@ export function QuizForm({
               ? "Выберите один вариант"
               : "Введите короткий ответ"}
         </legend>
+        <Text className={styles.quizHint} size="sm" muted>
+          Результат сохраняется в вашем обучении после проверки.
+        </Text>
         {activity.type === "quiz.short_text" ? (
           <Field htmlFor={`${id}-answer`} label="Ваш ответ">
             <Input
@@ -172,7 +176,7 @@ export function QuizForm({
         </Button>
       )}
       {result && (
-        <Stack>
+        <Stack aria-live="polite">
           <Alert
             tone={result.outcome === "passed" ? "success" : "warning"}
             title={
@@ -189,14 +193,17 @@ export function QuizForm({
           </Button>
         </Stack>
       )}
-      {error && <Alert tone="danger">{error}</Alert>}
+      <div aria-live="polite">
+        {error && <Alert tone="danger">{error}</Alert>}
+      </div>
       {needsLogin && (
         <Link
+          className={buttonClass({ size: "md" })}
           href={learningLoginUrl(
             `/learn/${organizationSlug}/${offeringSlug}/${lessonSlug}`
           )}
         >
-          Войти или зарегистрироваться
+          Войти и вернуться к ответу
         </Link>
       )}
     </form>
