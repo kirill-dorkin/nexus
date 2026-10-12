@@ -71,7 +71,7 @@
   background: #18182c;
 }
 .example::before {
-  content: "NEXUS / LEARNING LAB";
+  content: "LEARNING LAB / LIVE";
   position: absolute;
   top: 1.6rem;
   left: 2rem;
