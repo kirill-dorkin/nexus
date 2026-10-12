@@ -81,12 +81,12 @@
   --surface-glass: rgb(255 255 255 / 90%);
   --surface-hover: #f0edfa;
   --text-primary: #20213a;
-  --text-secondary: #6f758a;
+  --text-secondary: #62687d;
   --text-disabled: #969bad;
   --text-accent: var(--accent-day);
   --text-on-action: #fff;
   --border-default: #e5e7ef;
-  --border-strong: #b3aec2;
+  --border-strong: #898a9c;
   --border-glass: #d8d3e8;
   --border-accent: var(--accent-day);
   --action-primary: var(--accent-action);
