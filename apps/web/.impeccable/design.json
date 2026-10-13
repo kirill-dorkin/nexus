@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-13T10:54:53.942248+00:00",
+  "title": "Design System: Nexus — home-lab Preview",
+  "extensions": {
+    "colorMeta": {
+      "rose-action": {
+        "role": "primary",
+        "displayName": "Rose Action"
+      },
+      "violet-action": {
+        "role": "primary",
+        "displayName": "Violet Action"
+      },
+      "blue-action": {
+        "role": "primary",
+        "displayName": "Blue Action"
+      },
+      "teal-action": {
+        "role": "primary",
+        "displayName": "Teal Action"
+      },
+      "amber-action": {
+        "role": "primary",
+        "displayName": "Amber Action"
+      },
+      "light-page": {
+        "role": "neutral",
+        "displayName": "Light Page"
+      },
+      "light-solid": {
+        "role": "neutral",
+        "displayName": "Light Solid"
+      },
+      "light-ink": {
+        "role": "neutral",
+        "displayName": "Light Ink"
+      },
+      "light-muted": {
+        "role": "neutral",
+        "displayName": "Light Muted"
+      },
+      "dark-page": {
+        "role": "neutral",
+        "displayName": "Dark Page"
+      },
+      "dark-solid": {
+        "role": "neutral",
+        "displayName": "Dark Solid"
+      },
+      "dark-ink": {
+        "role": "neutral",
+        "displayName": "Dark Ink"
+      },
+      "dark-muted": {
+        "role": "neutral",
+        "displayName": "Dark Muted"
+      },
+      "scene-bg": {
+        "role": "neutral",
+        "displayName": "Scene Bg"
+      },
+      "scene-ink": {
+        "role": "neutral",
+        "displayName": "Scene Ink"
+      },
+      "scene-muted": {
+        "role": "neutral",
+        "displayName": "Scene Muted"
+      },
+      "scene-field": {
+        "role": "neutral",
+        "displayName": "Scene Field"
+      },
+      "scene-stroke": {
+        "role": "neutral",
+        "displayName": "Scene Stroke"
+      },
+      "syntax-tag": {
+        "role": "neutral",
+        "displayName": "Syntax Tag"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Onest display",
+        "purpose": "Preview thesis heading."
+      },
+      "code": {
+        "displayName": "Source code",
+        "purpose": "Preformatted HTML teaching source."
+      }
+    },
+    "shadows": [
+      {
+        "name": "appearance-dock",
+        "value": "0 6px 24px rgb(14 6 24 / 16%)",
+        "purpose": "Floating opaque appearance control only."
+      }
+    ],
+    "motion": [
+      {
+        "name": "document-change",
+        "value": "160ms ease-out",
+        "purpose": "User-triggered document update; opacity .7 to 1 and translateY 3px to 0; disabled under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "preview-compact",
+        "value": "900px"
+      },
+      {
+        "name": "preview-stack",
+        "value": "640px"
+      },
+      {
+        "name": "shared-navigation-mobile",
+        "value": "860px"
+      }
+    ],
+    "source": {
+      "root": "apps/web",
+      "targets": [
+        "/ui/home-lab",
+        "/ui/home-lab/review"
+      ],
+      "scope": "Isolated noindex Preview. Main /, learning and Studio retain existing visual conventions; no migration or global detector rules are implied.",
+      "files": [
+        "src/app/ui/home-lab/page.tsx",
+        "src/app/ui/home-lab/home-lab.tsx",
+        "src/app/ui/home-lab/home-lab.module.css",
+        "../../packages/design-tokens/tokens.css",
+        "../../packages/ui/styles.css"
+      ],
+      "provenance": "docs/design-assets/computer-literacy-cover.md at kirill-dorkin/nexus@642b624fa1ed54044726a33dc5150fd201b37853",
+      "ramps": "No synthetic tonal ramps: retain existing five selectable accent presets and semantic theme mappings."
+    }
+  },
+  "components": [
+    {
+      "name": "Hero primary action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Large catalog action in the isolated preview.",
+      "html": "<button class=\"ds-primary\">Выбрать курс</button>",
+      "css": ".ds-primary{background:var(--action-primary);color:var(--text-on-action);border:1px solid transparent;border-radius:10px;padding:1rem 1.5rem;min-height:54px;font:650 1rem/1.25 var(--font-sans);cursor:pointer;transition:background var(--motion-fast);}.ds-primary:hover{background:var(--action-hover);}.ds-primary:focus-visible{outline:3px solid var(--focus-ring);outline-offset:4px;}.ds-primary:disabled{opacity:.5;cursor:not-allowed;}"
+    },
+    {
+      "name": "Lesson secondary action",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Shared secondary button retained within the lesson scene.",
+      "html": "<button class=\"ds-secondary\">Проверить ответ</button>",
+      "css": ".ds-secondary{background:var(--surface-glass);color:var(--text-primary);border:1px solid var(--border-strong);border-radius:12px;padding:.8rem 1.25rem;min-height:48px;font:650 .9rem/1.25 var(--font-sans);cursor:pointer;transition:background var(--motion-fast);}.ds-secondary:hover{background:var(--surface-hover);}.ds-secondary:focus-visible{outline:3px solid var(--focus-ring);outline-offset:4px;}.ds-secondary:disabled{opacity:.5;cursor:not-allowed;}"
+    },
+    {
+      "name": "Lesson title field",
+      "kind": "input",
+      "refersTo": "lesson-field",
+      "description": "Opaque plum field, using the shared input structure.",
+      "html": "<label class=\"ds-field-label\">Ваш заголовок<input class=\"ds-field\" value=\"Мой первый сайт\" /></label>",
+      "css": ".ds-field-label{display:grid;gap:.65rem;font:.85rem var(--font-sans);color:var(--text-primary);}.ds-field{min-width:0;min-height:48px;border:1px solid #806991;border-radius:12px;background:#332641;color:#f8f5fb;padding:.8rem 1rem;font:1rem var(--font-sans);}.ds-field:hover{border-color:var(--text-secondary);}.ds-field:focus-visible{outline:3px solid var(--focus-ring);outline-offset:4px;}.ds-field:disabled{opacity:.55;cursor:not-allowed;}"
+    },
+    {
+      "name": "Preview reading panel",
+      "kind": "card",
+      "refersTo": "reading-surface",
+      "description": "Solid document result within the split scene.",
+      "html": "<article class=\"ds-reading\"><h2>Мой первый сайт</h2><p>Я учусь создавать сайты.</p></article>",
+      "css": ".ds-reading{background:var(--surface-solid);color:var(--text-primary);border-radius:16px;padding:1.5rem 2rem;font-family:var(--font-sans);}.ds-reading h2{margin:0 0 1rem;font-size:clamp(1.5rem,2.4vw,2.1rem);font-weight:700;line-height:1.2;letter-spacing:-.03em;overflow-wrap:anywhere;}.ds-reading p{margin:0;font-size:1rem;line-height:1.6;}"
+    },
+    {
+      "name": "Lesson step selector",
+      "kind": "custom",
+      "refersTo": "step-selected",
+      "description": "Selected/unselected actions from the real instructional workbench.",
+      "html": "<div class=\"ds-steps\"><button aria-pressed=\"true\">Разобраться</button><button aria-pressed=\"false\">Попробовать</button></div>",
+      "css": ".ds-steps{display:flex;gap:.35rem;padding:.65rem;background:#21172f;border-radius:16px;}.ds-steps button{min-height:44px;padding:.5rem .75rem;border:0;border-radius:7px;background:transparent;color:#c9bfd7;font:600 .8rem var(--font-sans);cursor:pointer;}.ds-steps button[aria-pressed=\"true\"]{background:var(--accent-action);color:white;}.ds-steps button:hover{color:white;}.ds-steps button:focus-visible{outline:3px solid var(--focus-ring);outline-offset:4px;}"
+    },
+    {
+      "name": "Shared desktop navigation",
+      "kind": "nav",
+      "description": "Incumbent navigation style reused by the preview; routes and session logic stay in code.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Главное меню\"><a href=\"/courses\">Курсы</a><a href=\"/blog\">Блог</a></nav>",
+      "css": ".ds-nav{display:flex;gap:1.65rem;font-family:var(--font-sans);}.ds-nav a{display:inline-flex;align-items:center;min-height:44px;color:var(--text-secondary);font-size:.86rem;font-weight:620;text-decoration:none;}.ds-nav a:hover{color:var(--text-primary);text-decoration:underline;text-decoration-color:var(--action-primary);text-underline-offset:5px;}.ds-nav a:focus-visible{outline:3px solid var(--focus-ring);outline-offset:4px;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Instructional Workbench",
+    "overview": "The instructional workbench carries the String Lab reference into a quiet, readable Nexus surface. Onest gives Cyrillic prose and controls one voice; opaque reading panels sit beside a plum source panel. Colour marks actions and state rather than supplying decorative depth.\n\nThis document records only `/ui/home-lab` and its preview review route. The preview is explicitly labelled and noindex/nofollow; `/` remains the current homepage pending selection. Shared tokens, learning routes and Studio retain their incumbent authority. These values are extracted observations, not new global detector rules.",
+    "keyCharacteristics": [
+      "Onest for Cyrillic headings, prose and controls.",
+      "Five user-selected accents over light, dark or system appearance.",
+      "Opaque reading surfaces and a flat instructional workbench."
+    ],
+    "rules": [
+      {
+        "name": "The Semantic Accent Rule",
+        "body": "Use the active semantic action, text-accent and subtle tokens; the Radix violet prop does not choose the user’s accent.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Font Rule",
+        "body": "Keep display and body typography on the existing Onest stack; reserve the mono stack for code.",
+        "section": "typography"
+      },
+      {
+        "name": "The Solid Reading Rule",
+        "body": "Use the solid surface token beneath document and course reading content. The preview’s source panel remains opaque plum.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do preserve the existing semantic theme and accent mappings, including all five accents.",
+      "Do keep Onest, Cyrillic wrapping, visible focus and reduced-motion behaviour.",
+      "Do reuse reviewed course artwork through the web-owned resolver and its provenance record."
+    ],
+    "donts": [
+      "Don’t treat this preview as approval to replace `/` or restyle learning and Studio.",
+      "Don’t persist the conceptual example’s answer or progress.",
+      "Don’t introduce autoplay motion or blurred reading surfaces into this preview."
+    ]
+  }
+}
