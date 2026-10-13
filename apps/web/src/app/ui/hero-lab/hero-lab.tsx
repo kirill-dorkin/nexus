@@ -106,8 +106,8 @@ function PathHero() {
     <div id="example" className={styles.journey}>
       <p className={styles.articleLabel}>Как устроено обучение / концептуальный пример</p>
       <div className={styles.route} aria-label="Этапы обучения">
-        <svg className={styles.routeLine} viewBox="0 0 1000 140" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M30 70 C160 70 180 15 330 15 S500 125 660 125 S850 70 970 70" />
+        <svg className={styles.routeLine} viewBox="0 0 1000 145" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M83 70 C175 70 250 38 361 38 S500 125 639 125 S800 70 917 70" />
         </svg>
         {stages.map((item, index) => <button key={item.label} type="button"
           className={styles.stop} aria-pressed={stage === index}

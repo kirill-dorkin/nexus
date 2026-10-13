@@ -45,11 +45,10 @@
 .route { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-block: 1rem; isolation: isolate; }
 .routeLine { position: absolute; inset: 0 5% auto; width: 90%; height: 145px; z-index: -1; overflow: visible; }
 .routeLine path { stroke: var(--border-accent); stroke-width: 2; fill: none; opacity: .6; }
-.stop { background: transparent; border: 0; font: inherit; color: var(--text-primary); display: flex; flex-direction: column; align-items: center; cursor: pointer; min-width: 0; min-height: 140px; padding: 0 .5rem; }
-.stop:nth-of-type(2) { padding-top: 0; }
-.stop:nth-of-type(3) { padding-top: 3rem; }
-.stop:nth-of-type(4) { padding-top: 1.5rem; }
-.node { display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: .65rem; background: var(--surface-default); border: 1px solid var(--border-strong); border-radius: 50%; color: var(--text-secondary); }
+.stop { background: transparent; border: 0; font: inherit; color: var(--text-primary); display: flex; flex-direction: column; align-items: center; cursor: pointer; min-width: 0; min-height: 220px; padding: 0 .5rem .5rem; }
+.node { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; margin-top: 2rem; margin-bottom: auto; background: var(--surface-default); border: 1px solid var(--border-strong); border-radius: 50%; color: var(--text-secondary); }
+.stop:nth-of-type(2) .node { margin-top: 0; }
+.stop:nth-of-type(3) .node { margin-top: 5.4375rem; }
 .stop[aria-pressed="true"] .node { border: 2px solid var(--border-accent); color: var(--text-accent); background: var(--accent-subtle); }
 .stop:hover .node { background: var(--surface-hover); }
 .stop:active .node { transform: scale(.97); }
@@ -140,6 +139,7 @@
   .route { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; border-left: 2px solid var(--border-accent); padding: 0 0 0 .75rem; }
   .routeLine { display: none; }
   .stop, .stop:nth-of-type(n) { padding: 0 .25rem .5rem; min-height: 125px; align-items: flex-start; text-align: left; }
+  .stop:nth-of-type(n) .node { margin-top: 0; margin-bottom: .65rem; }
   .stop strong { font-size: .875rem; }
   .stop small { font-size: .6875rem; }
   .journeyDetail { grid-template-columns: 1fr; gap: 1.5rem; margin-top: .75rem; padding: 1.5rem 0; min-height: 345px; }
