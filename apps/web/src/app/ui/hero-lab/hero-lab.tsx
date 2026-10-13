@@ -206,7 +206,8 @@ export function HeroReview() {
   const frameRef = useRef<HTMLIFrameElement>(null);
   function fitFrame(frame: HTMLIFrameElement) {
     const document = frame.contentDocument;
-    const height = document?.querySelector("body > div")?.getBoundingClientRect().height;
+    const height = Math.max(0, ...Array.from(document?.body.children ?? [])
+      .map(node => node.getBoundingClientRect().height));
     if (height) setFrameHeight(Math.max(900, Math.min(5000, height + 40)));
   }
   useEffect(() => {
