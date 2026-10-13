@@ -90,3 +90,52 @@
 - Снимки фиксированных viewport могут быть сняты через масштаб лаборатории, чтобы поместить композицию в cloud browser. Масштаб меняет только просмотр iframe, а не layout viewport. Это следует отличать от device screenshots.
 
 Изменённые продуктовые файлы: `apps/web/src/app/ui/hero-lab/page.tsx`, `hero-lab.tsx`, `hero-lab.module.css`. Документация: этот файл. Backend, session, tenant/RLS, membership, Enrollment, attempts, Evidence, канонический progress и outbox не затронуты. PR остаётся Draft; Production не публикуется.
+
+## Revised direction: String Lab
+
+The maintainer rejected the first three concepts as too dry and supplied
+`kirill-dorkin/15-js-7` as the preferred visual reference. Its current README,
+HTML, CSS and slide source were read, and the deployed cover, quiz and live
+search slides were inspected in the browser. This changes the visual direction,
+not the requirement to keep the real homepage untouched until selection.
+
+Borrowed principles: dense bold Cyrillic hierarchy; quiet rounded paper;
+small pale accent annotations; dark, readable instructional code; a visible
+input → operation → result. Onest and the existing five accent preferences
+remain. The reference logo, Manrope/DM Mono downloads, slide chrome, fixed
+viewport shell, nested glass, glowing artwork and 50/50 cover are not copied.
+These composition decisions are **дизайнерское суждение**; see
+`branding.md › Best practices` and `design-principles.md › Purpose`.
+
+| Concept | Revised composition and signature |
+| --- | --- |
+| Editorial | One paper spread: a large two-line thesis above a marginal lesson note and a dark text processor. `.trim()` visibly removes edge spaces when clicked. CTA follows the introductory copy. |
+| Learning path | One continuous plum scene: centered thesis, a curved route and four accessible selectable stations; the selected operation is explained below. The active station is a tilted solid accent tile, not an extra card. CTA precedes the route. |
+| Product fragment | Compact introductory masthead followed by one lesson: a readable syntax example and an immediately answerable quiz. The original text and result share one dark code surface. CTA sits at the masthead edge on desktop. |
+
+All examples now use a deliberately labelled JavaScript text transformation,
+not a fabricated published course or learner result. The platform copy still
+names courses, video, notes, practice, quizzes and progress. The examples are
+local only; no attempt, Evidence, enrollment or progress write is performed.
+
+Mobile: the editorial spread and lesson become a reading sequence; the path
+becomes four vertical stations. Light theme uses white paper; dark theme uses
+existing plum paper tokens. The path and code remain opaque plum in both themes.
+Accent selection affects CTA, headings, annotations, output and active path
+station; the path highlight is mixed from the chosen accent for dark-surface
+contrast. Status and code syntax colours retain their distinct meaning.
+
+Motion is restricted to a 180 ms selected-stage reveal. Reduced motion removes
+that animation. No hero uses backdrop-filter, so reduced transparency and
+unsupported blur do not change legibility. No raster or graphics dependency
+was introduced. Constant glow, decorative file glyphs, empty paper lines and
+the first iteration's sparse editorial rules were removed.
+
+The generic-SaaS check passes because the signature elements teach an actual
+rule, let the visitor apply it and explain feedback: they cannot describe a
+CRM or analytics product without replacing their core content and interaction.
+This is a **дизайнерское суждение**, not a HIG mandate.
+
+Revision validation is recorded after deployed browser inspection; earlier
+measurements above describe the rejected iteration and must not be treated as
+proof for this revision.
