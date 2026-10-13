@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { brand } from "@platform/brand";
 import { Button, ButtonLink, Radio, Select, buttonClass } from "@platform/ui";
 import { AppearanceControl } from "../../../components/appearance/appearance-control";
@@ -200,7 +200,18 @@ export function HeroLab({ direction }: { direction: HeroDirection }) {
 export function HeroReview() {
   const [direction, setDirection] = useState<HeroDirection | "current">("editorial");
   const [width, setWidth] = useState("responsive");
+  const [scale, setScale] = useState("1");
   const [reload, setReload] = useState(0);
+  const [frameHeight, setFrameHeight] = useState(1500);
+  const frameRef = useRef<HTMLIFrameElement>(null);
+  function fitFrame(frame: HTMLIFrameElement) {
+    const document = frame.contentDocument;
+    const height = document?.querySelector("body > div")?.getBoundingClientRect().height;
+    if (height) setFrameHeight(Math.max(900, Math.min(5000, height + 40)));
+  }
+  useEffect(() => {
+    if (frameRef.current) fitFrame(frameRef.current);
+  }, [width]);
   const source = direction === "current" ? "/" : `/ui/hero-lab?view=${direction}`;
   return <main className={styles.review}>
     <header className={styles.reviewIntro}>
@@ -214,6 +225,9 @@ export function HeroReview() {
         {Object.entries(directionNames).map(([value, name]) => <option value={value} key={value}>{name}</option>)}
         <option value="current">Текущая главная — для аудита</option>
       </Select></label>
+      <label>Масштаб просмотра<Select aria-label="Масштаб просмотра" value={scale} onChange={e => setScale(e.target.value)}>
+        <option value="1">100%</option><option value="0.75">75%</option><option value="0.5">50%</option>
+      </Select></label>
       <label>Ширина примера<Select aria-label="Ширина примера" value={width} onChange={e => setWidth(e.target.value)}>
         <option value="responsive">По ширине окна</option>
         {[320, 390, 768, 1440].map(value => <option value={value} key={value}>{value} px</option>)}
@@ -222,9 +236,14 @@ export function HeroReview() {
       <a href={source} className={buttonClass({ variant: "ghost" })}>Открыть отдельно ↗</a>
     </div>
     <p className={styles.reviewHint}>При фиксированной ширине ниже — настоящий viewport iframe. Широкий пример прокручивается горизонтально только в этой лаборатории.</p>
-    <div className={styles.frameRail}>
-      <iframe key={`${direction}-${reload}`} src={source} title={direction === "current" ? "Текущая главная" : directionNames[direction]}
-        className={styles.frame} style={{ width: width === "responsive" ? "100%" : `${width}px` }} />
+    <div className={styles.frameRail} style={{ height: `${frameHeight * Number(scale)}px` }}>
+      <iframe ref={frameRef} key={`${direction}-${reload}`} src={source} title={direction === "current" ? "Текущая главная" : directionNames[direction]}
+        onLoad={event => {
+          const frame = event.currentTarget;
+          fitFrame(frame);
+          void frame.contentDocument?.fonts.ready.then(() => fitFrame(frame));
+        }}
+        className={styles.frame} style={{ width: width === "responsive" ? "100%" : `${width}px`, height: `${frameHeight}px`, transform: `scale(${scale})` }} />
     </div>
   </main>;
 }

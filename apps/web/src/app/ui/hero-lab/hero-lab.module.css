@@ -94,8 +94,8 @@
 .reviewControls label { display: grid; gap: .5rem; font-size: .8125rem; }
 .reviewControls select { min-width: 200px; }
 .reviewHint { font-size: .75rem; color: var(--text-secondary); line-height: 1.6; }
-.frameRail { overflow: auto; background: var(--surface-subtle); border-top: 1px solid var(--border-default); }
-.frame { display: block; height: 1300px; border: 0; background: var(--surface-default); }
+.frameRail { overflow: auto; background: var(--surface-subtle); border-top: 1px solid var(--border-default); position: relative; }
+.frame { display: block; border: 0; background: var(--surface-default); transform-origin: top left; }
 @keyframes reveal { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 @media (max-width: 1100px) {
   .header { gap: 1rem; }
