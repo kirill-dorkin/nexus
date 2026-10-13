@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "generatedAt": "2026-10-13T10:54:53.942248+00:00",
-  "title": "Design System: Nexus — home-lab Preview",
+  "title": "Design System: Public learning — home-lab Preview",
   "extensions": {
     "colorMeta": {
       "rose-action": {
@@ -133,7 +133,7 @@
         "../../packages/design-tokens/tokens.css",
         "../../packages/ui/styles.css"
       ],
-      "provenance": "docs/design-assets/computer-literacy-cover.md at kirill-dorkin/nexus@642b624fa1ed54044726a33dc5150fd201b37853",
+      "provenance": "docs/design-assets/computer-literacy-cover.md at current repository commit 642b624fa1ed54044726a33dc5150fd201b37853",
       "ramps": "No synthetic tonal ramps: retain existing five selectable accent presets and semantic theme mappings."
     }
   },
@@ -188,7 +188,7 @@
   ],
   "narrative": {
     "northStar": "The Instructional Workbench",
-    "overview": "The instructional workbench carries the String Lab reference into a quiet, readable Nexus surface. Onest gives Cyrillic prose and controls one voice; opaque reading panels sit beside a plum source panel. Colour marks actions and state rather than supplying decorative depth.\n\nThis document records only `/ui/home-lab` and its preview review route. The preview is explicitly labelled and noindex/nofollow; `/` remains the current homepage pending selection. Shared tokens, learning routes and Studio retain their incumbent authority. These values are extracted observations, not new global detector rules.",
+    "overview": "The instructional workbench carries the String Lab reference into a quiet, readable platform surface. Onest gives Cyrillic prose and controls one voice; opaque reading panels sit beside a plum source panel. Colour marks actions and state rather than supplying decorative depth.\n\nThis document records only `/ui/home-lab` and its preview review route. The preview is explicitly labelled and noindex/nofollow; `/` remains the current homepage pending selection. Shared tokens, learning routes and Studio retain their incumbent authority. These values are extracted observations, not new global detector rules.",
     "keyCharacteristics": [
       "Onest for Cyrillic headings, prose and controls.",
       "Five user-selected accents over light, dark or system appearance.",

@@ -26,11 +26,21 @@
   border-radius: 50%;
   box-shadow: 0 0 0 1px var(--border-strong);
 }
-.currentAccent[data-swatch="rose"] { background: #c21e68; }
-.currentAccent[data-swatch="violet"] { background: #7742d3; }
-.currentAccent[data-swatch="blue"] { background: #2455cb; }
-.currentAccent[data-swatch="teal"] { background: #08786f; }
-.currentAccent[data-swatch="amber"] { background: #946000; }
+.currentAccent[data-swatch="rose"] {
+  background: #c21e68;
+}
+.currentAccent[data-swatch="violet"] {
+  background: #7742d3;
+}
+.currentAccent[data-swatch="blue"] {
+  background: #2455cb;
+}
+.currentAccent[data-swatch="teal"] {
+  background: #08786f;
+}
+.currentAccent[data-swatch="amber"] {
+  background: #946000;
+}
 .dialog {
   inset: 7rem max(1rem, calc((100vw - var(--content-width)) / 2)) auto auto;
   margin: 0;
@@ -123,6 +133,28 @@
 .accents input:checked + span {
   outline: 2px solid var(--text-primary);
   outline-offset: 4px;
+}
+.labelledAccents {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem 0.5rem;
+}
+.labelledAccents label {
+  gap: 0.5rem;
+  padding: 0.5rem 0.25rem;
+  border-radius: 10px;
+}
+.labelledAccents label:hover {
+  background: var(--surface-hover);
+}
+.accentName {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+.labelledAccents label:has(input:checked) .accentName {
+  color: var(--text-primary);
+  font-weight: 600;
 }
 .accents [data-swatch="rose"] {
   background: #c21e68;

@@ -9,11 +9,17 @@ import {
   defaultAppearance,
   parseAppearance,
   themeChoices,
-  type Appearance
+  type Appearance,
 } from "./preferences";
 import styles from "./appearance.module.css";
 
-export function AppearanceControl() {
+export function AppearanceControl({
+  showAccentLabels = false,
+  dialogClassName = "",
+}: {
+  showAccentLabels?: boolean;
+  dialogClassName?: string;
+} = {}) {
   const [open, setOpen] = useState(false);
   const [appearance, setAppearance] = useState<Appearance>(defaultAppearance);
   const [saved, setSaved] = useState(true);
@@ -97,7 +103,7 @@ export function AppearanceControl() {
         id={id}
         open={open}
         onDismiss={() => setOpen(false)}
-        className={styles.dialog}
+        className={`${styles.dialog} ${dialogClassName}`}
         aria-labelledby={`${id}-title`}
       >
         <div className={styles.heading}>
@@ -130,7 +136,9 @@ export function AppearanceControl() {
         </fieldset>
         <fieldset className={styles.choices}>
           <legend>Цветовой акцент</legend>
-          <div className={styles.accents}>
+          <div
+            className={`${styles.accents} ${showAccentLabels ? styles.labelledAccents : ""}`}
+          >
             {accentChoices.map((choice) => (
               <label key={choice.value} title={choice.label}>
                 <input
@@ -148,6 +156,9 @@ export function AppearanceControl() {
                     <Check size={19} weight="bold" aria-hidden="true" />
                   )}
                 </span>
+                {showAccentLabels && (
+                  <small className={styles.accentName}>{choice.label}</small>
+                )}
               </label>
             ))}
           </div>
