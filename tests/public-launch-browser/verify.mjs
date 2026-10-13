@@ -604,11 +604,23 @@ async function evaluate(cdp, expression) {
 
 async function waitForExpression(cdp, expression, label, timeoutMs = 20_000) {
   const deadline = Date.now() + timeoutMs;
+  let lastEvaluationError = null;
   while (Date.now() < deadline) {
-    if (await evaluate(cdp, expression)) return;
+    try {
+      if (await evaluate(cdp, expression)) return;
+      lastEvaluationError = null;
+    } catch (error) {
+      // A document may be replaced between Runtime.evaluate and this response.
+      // Retry until the new navigation context is ready; direct evaluate calls
+      // still fail immediately and a persistent expression error is reported.
+      lastEvaluationError = error;
+    }
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
-  throw new Error(`Timed out waiting for ${label}.`);
+  const detail = lastEvaluationError instanceof Error
+    ? ` Last evaluation error: ${lastEvaluationError.message}`
+    : "";
+  throw new Error(`Timed out waiting for ${label}.${detail}`);
 }
 
 async function navigate(cdp, url) {
