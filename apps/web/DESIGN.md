@@ -218,3 +218,7 @@ Source inspection and the remote asset provenance check are complete. Root’s d
 ## Maintainer refinement, 2026-10-13
 
 The maintainer requested the original logo and consistent small details. Reuse the shared mark rather than redraw it. Keep segmented stage controls, at least 12px secondary text, visible radio selection even after submission, labelled accent choices and native disclosure semantics with a restrained CSS chevron. Focus on plum uses the scene-focus colour; forced colours retain Highlight. Existing appearance consumers omit the two optional presentation props and preserve their prior layout. No product claims, auth transport or learning state changed.
+
+## Current composition: compact learning entry
+
+The maintainer found the always-open HTML scene too large and too specific for the homepage. Hero now introduces the whole platform with a compact three-part definition list: material, practice and progress. The course follows immediately. The original workbench is an optional native details disclosure below the course, closed by default; it keeps local interaction and its conceptual label. The secondary hero link targets `#learning-format`, not the HTML demo. `#learning-example` remains a valid anchor to the optional disclosure. Its summary is at least 76px high and has the same native chevron treatment as FAQ. On mobile the short definition list stacks without boxed cards. This supersedes earlier first-viewport workbench descriptions.

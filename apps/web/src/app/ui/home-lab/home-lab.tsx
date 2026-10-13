@@ -28,7 +28,7 @@ function LearningScene() {
   const id = useId();
   const correct = answer === "h1";
   return (
-    <div className={styles.workbench} id="learning-example">
+    <div className={styles.workbench}>
       <div className={styles.workbenchBar}>
         <div
           className={styles.stepControls}
@@ -181,6 +181,20 @@ function LearningScene() {
   );
 }
 
+export function LearningExample() {
+  return (
+    <details className={styles.optionalExample} id="learning-example">
+      <summary>
+        <span>
+          <strong>Посмотреть учебный пример</strong>
+          <small>HTML · концептуальная демонстрация</small>
+        </span>
+      </summary>
+      <LearningScene />
+    </details>
+  );
+}
+
 export function HomeLab({ children }: { children: ReactNode }) {
   return (
     <Theme
@@ -242,16 +256,30 @@ export function HomeLab({ children }: { children: ReactNode }) {
                 <ButtonLink href="/courses" size="lg">
                   Выбрать курс <ArrowRight size={20} aria-hidden="true" />
                 </ButtonLink>
-                <a href="#learning-example" className={styles.textLink}>
-                  Попробовать пример <ArrowDown size={18} aria-hidden="true" />
+                <a href="#learning-format" className={styles.textLink}>
+                  Как устроено обучение{" "}
+                  <ArrowDown size={18} aria-hidden="true" />
                 </a>
               </Flex>
             </div>
-            <LearningScene />
-            <p className={styles.heroFootnote}>
-              Видео и конспект дают основу. Практика и обратная связь помогают
-              её освоить.
-            </p>
+            <dl
+              className={styles.learningFormat}
+              id="learning-format"
+              aria-label="Подход к обучению"
+            >
+              <div>
+                <dt>Разобраться</dt>
+                <dd>Видео и структурированные конспекты.</dd>
+              </div>
+              <div>
+                <dt>Попрактиковаться</dt>
+                <dd>Задания и квизы с обратной связью.</dd>
+              </div>
+              <div>
+                <dt>Продолжить</dt>
+                <dd>Сохранённый прогресс и следующий урок.</dd>
+              </div>
+            </dl>
           </section>
           {children}
         </main>

@@ -355,11 +355,74 @@
   margin: 1.5rem 0 0;
   max-width: 48ch;
 }
-.heroFootnote {
-  margin: 1rem 0 0;
+.learningFormat {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+  padding-block: 1.5rem;
+  margin: 0;
+  border-block: 1px solid var(--border-default);
+  scroll-margin-top: 1.5rem;
+}
+.learningFormat dt {
+  margin-bottom: 0.45rem;
+  font-size: 0.9375rem;
+  font-weight: 650;
+}
+.learningFormat dd {
+  margin: 0;
+  font-size: 0.875rem;
   color: var(--text-secondary);
-  font-size: 0.8125rem;
   line-height: 1.6;
+  max-width: 29ch;
+}
+.optionalExample {
+  margin-top: 1.5rem;
+  scroll-margin-top: 1.5rem;
+}
+.optionalExample > summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 76px;
+  padding: 0.75rem 0;
+  color: var(--text-secondary);
+  list-style: none;
+  cursor: pointer;
+}
+.optionalExample > summary::-webkit-details-marker {
+  display: none;
+}
+.optionalExample > summary strong {
+  display: block;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.optionalExample > summary small {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.75rem;
+}
+.optionalExample > summary::after {
+  content: "";
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  margin-right: 0.4rem;
+}
+.optionalExample[open] > summary::after {
+  transform: rotate(225deg);
+}
+.optionalExample > summary:hover strong {
+  color: var(--text-accent);
+}
+.optionalExample[open] > summary {
+  margin-bottom: 0.5rem;
 }
 .courses {
   padding-top: 4rem;
@@ -819,8 +882,16 @@
   .renderedDocument {
     padding-top: 0.75rem;
   }
-  .heroFootnote {
-    font-size: 0.75rem;
+  .learningFormat {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding-block: 1.25rem;
+  }
+  .learningFormat dt {
+    margin-bottom: 0.2rem;
+  }
+  .learningFormat dd {
+    max-width: none;
   }
   .courses {
     padding-top: 2.75rem;

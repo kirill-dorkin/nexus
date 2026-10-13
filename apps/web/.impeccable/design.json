@@ -147,7 +147,8 @@
       ],
       "provenance": "docs/design-assets/computer-literacy-cover.md at current repository commit 642b624fa1ed54044726a33dc5150fd201b37853",
       "ramps": "No synthetic tonal ramps: retain existing five selectable accent presets and semantic theme mappings.",
-      "refinement": "Original shared brand restored; labelled accents are opt-in presentation. Caption 12px / annotation 13px / control 14px; opaque scene controls, fixed answer area and native FAQ chevrons."
+      "refinement": "Original shared brand restored; labelled accents are opt-in presentation. Caption 12px / annotation 13px / control 14px; opaque scene controls, fixed answer area and native FAQ chevrons.",
+      "composition": "Compact hero definition list for material, practice and progress; real course follows. Local HTML workbench is a native details below course, initially collapsed; original anchor retained."
     }
   },
   "components": [
