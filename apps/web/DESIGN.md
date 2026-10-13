@@ -19,7 +19,7 @@ colors:
   scene-ink: "#f8f5fb"
   scene-muted: "#c9bfd7"
   scene-field: "#332641"
-  scene-stroke: "#806991"
+  scene-stroke: "#907aa1"
   syntax-tag: "#d5b8ff"
   scene-divider: "#4a3d5a"
   scene-hover: "#463450"
