@@ -19,7 +19,7 @@ export function HomeReview() {
   useEffect(() => { fit(); }, [width]);
   useEffect(() => () => observer.current?.disconnect(), []);
   return <main className={styles.review}>
-    <header><div><Link href="/ui/home-lab">Новая главная</Link><h1>Проверка композиции</h1><p>Настоящие ширины iframe. Курс и статья загружаются из существующих источников.</p></div><AppearanceControl /></header>
+    <header><div><Link href="/ui/home-lab">Новая главная</Link><h1>Проверка композиции</h1><p>Настоящие ширины iframe. Курсы загружаются из существующего каталога.</p></div><AppearanceControl /></header>
     <div className={styles.reviewControls}>
       <label>Ширина<Select aria-label="Ширина" value={width} onChange={event => setWidth(event.target.value)}>{[320,390,768,1440].map(value=><option key={value} value={value}>{value} px</option>)}</Select></label>
       <label>Масштаб<Select aria-label="Масштаб" value={scale} onChange={event => setScale(event.target.value)}><option value="1">100%</option><option value="0.75">75%</option><option value="0.5">50%</option></Select></label>

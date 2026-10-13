@@ -3,13 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
-import { Alert, ButtonLink, Disclosure, Skeleton } from "@platform/ui";
+import { Alert, ButtonLink, Skeleton } from "@platform/ui";
 import { loadLearningCatalog, courseUrl } from "../../../lib/public-learning";
-import { blogArticles } from "../../../lib/blog";
 import { courseArtwork } from "../../../components/learning/course-artwork";
 import { lessonCount } from "../../../components/learning/learning-labels";
 import { CatalogRetry } from "../../../components/learning/catalog-retry";
-import { HomeLab, LearningExample } from "./home-lab";
+import { HomeLab } from "./home-lab";
 import styles from "./home-lab.module.css";
 
 export const dynamic = "force-dynamic";
@@ -87,22 +86,18 @@ async function Courses() {
               </Link>
             )}
             <div className={styles.courseCopy}>
-              <p className={styles.courseOrganization}>
-                {course.organization.name}
-              </p>
-              <h3>
+              <h2>
                 <Link href={courseUrl(course)}>{course.course.title}</Link>
-              </h3>
+              </h2>
               {description && (
                 <p className={styles.courseDescription}>{description}</p>
               )}
               <p className={styles.courseMeta}>
                 <span>{lessonCount(course.course.lessons.length)}</span>
                 <span>{minutes} мин</span>
-                <span>Открытые материалы</span>
               </p>
-              <ButtonLink variant="secondary" href={courseUrl(course)}>
-                Посмотреть программу <ArrowRight size={18} aria-hidden="true" />
+              <ButtonLink href={courseUrl(course)}>
+                Открыть курс <ArrowRight size={18} aria-hidden="true" />
               </ButtonLink>
             </div>
           </article>
@@ -113,70 +108,19 @@ async function Courses() {
 }
 
 export default function HomeLabPage() {
-  const article = blogArticles[0];
   return (
     <HomeLab>
       <section
         id="courses"
         className={styles.courses}
-        aria-labelledby="courses-title"
+        aria-label="Доступные курсы"
       >
-        <div className={styles.sectionHeading}>
-          <div>
-            <h2 id="courses-title">Начните с того, что интересно.</h2>
-            <p>Выберите курс и познакомьтесь с первым уроком.</p>
-          </div>
-          <Link className={styles.textLink} href="/courses">
-            Весь каталог <ArrowRight size={18} aria-hidden="true" />
-          </Link>
-        </div>
         <Suspense fallback={<CourseLoading />}>
           <Courses />
         </Suspense>
-      </section>
-      <LearningExample />
-      {article && (
-        <section className={styles.blog} aria-labelledby="blog-title">
-          <div className={styles.blogIntro}>
-            <h2 id="blog-title">
-              Полезное
-              <br /> между уроками.
-            </h2>
-            <Link className={styles.textLink} href="/blog">
-              Блог платформы <ArrowRight size={18} aria-hidden="true" />
-            </Link>
-          </div>
-          <article className={styles.blogArticle}>
-            <p className={styles.articleMeta}>
-              {article.category}
-              <span>{article.readingMinutes} мин чтения</span>
-            </p>
-            <h3>
-              <Link href={`/blog/${article.slug}`}>{article.title}</Link>
-            </h3>
-            <p>{article.description}</p>
-            <Link className={styles.textLink} href={`/blog/${article.slug}`}>
-              Читать статью <ArrowRight size={18} aria-hidden="true" />
-            </Link>
-          </article>
-        </section>
-      )}
-      <section className={styles.questions} aria-labelledby="questions-title">
-        <h2 id="questions-title">Перед первым уроком.</h2>
-        <div>
-          <Disclosure summary="Можно начать без регистрации?">
-            Да. Открытые уроки можно читать сразу. Аккаунт понадобится для
-            записи на курс, выполнения заданий и сохранения прогресса.
-          </Disclosure>
-          <Disclosure summary="Есть расписание или дедлайны?">
-            Открытые курсы рассчитаны на самостоятельное обучение. Проходите
-            уроки в удобном темпе и возвращайтесь к сложным темам.
-          </Disclosure>
-          <Disclosure summary="Что, если ответ неверный?">
-            Вы получите объяснение и сможете попробовать снова. Прогресс
-            учитывает успешно выполненные обязательные задания курса.
-          </Disclosure>
-        </div>
+        <Link className={styles.catalogLink} href="/courses">
+          Все курсы <ArrowRight size={18} aria-hidden="true" />
+        </Link>
       </section>
     </HomeLab>
   );

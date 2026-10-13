@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "generatedAt": "2026-10-13T10:54:53.942248+00:00",
-  "title": "Design System: Public learning — home-lab Preview",
+  "title": "Design System: Minimal course discovery Preview",
   "extensions": {
     "colorMeta": {
       "rose-action": {
@@ -55,54 +55,9 @@
       "dark-muted": {
         "role": "neutral",
         "displayName": "Dark Muted"
-      },
-      "scene-bg": {
-        "role": "neutral",
-        "displayName": "Scene Bg"
-      },
-      "scene-ink": {
-        "role": "neutral",
-        "displayName": "Scene Ink"
-      },
-      "scene-muted": {
-        "role": "neutral",
-        "displayName": "Scene Muted"
-      },
-      "scene-field": {
-        "role": "neutral",
-        "displayName": "Scene Field"
-      },
-      "scene-stroke": {
-        "role": "neutral",
-        "displayName": "Scene Stroke"
-      },
-      "syntax-tag": {
-        "role": "neutral",
-        "displayName": "Syntax Tag"
-      },
-      "scene-divider": {
-        "role": "neutral",
-        "displayName": "Scene Divider"
-      },
-      "scene-hover": {
-        "role": "neutral",
-        "displayName": "Scene Hover"
-      },
-      "scene-focus": {
-        "role": "neutral",
-        "displayName": "Scene Focus"
       }
     },
-    "typographyMeta": {
-      "display": {
-        "displayName": "Onest display",
-        "purpose": "Preview thesis heading."
-      },
-      "code": {
-        "displayName": "Source code",
-        "purpose": "Preformatted HTML teaching source."
-      }
-    },
+    "typographyMeta": {},
     "shadows": [
       {
         "name": "appearance-dock",
@@ -147,62 +102,14 @@
       ],
       "provenance": "docs/design-assets/computer-literacy-cover.md at current repository commit 642b624fa1ed54044726a33dc5150fd201b37853",
       "ramps": "No synthetic tonal ramps: retain existing five selectable accent presets and semantic theme mappings.",
-      "refinement": "Original shared brand restored; labelled accents are opt-in presentation. Caption 12px / annotation 13px / control 14px; opaque scene controls, fixed answer area and native FAQ chevrons.",
-      "composition": "Compact hero definition list for material, practice and progress; real course follows. Local HTML workbench is a native details below course, initially collapsed; original anchor retained."
+      "refinement": "Minimal discovery supersedes scene controls and teaching demo. Caption12px, metadata13px, description15px, body16px; 40px maximum hero, 30px course title.",
+      "composition": "Short heading and sentence, actual course and one primary open-course action. No explanatory strip, example, Blog teaser or FAQ. Shared routes remain reachable."
     }
   },
-  "components": [
-    {
-      "name": "Hero primary action",
-      "kind": "button",
-      "refersTo": "button-primary",
-      "description": "Large catalog action in the isolated preview.",
-      "html": "<button class=\"ds-primary\">Выбрать курс</button>",
-      "css": ".ds-primary{background:var(--action-primary);color:var(--text-on-action);border:1px solid transparent;border-radius:10px;padding:1rem 1.5rem;min-height:54px;font:650 1rem/1.25 var(--font-sans);cursor:pointer;transition:background var(--motion-fast);}.ds-primary:hover{background:var(--action-hover);}.ds-primary:focus-visible{outline:3px solid var(--focus-ring);outline-offset:4px;}.ds-primary:disabled{opacity:.5;cursor:not-allowed;}"
-    },
-    {
-      "name": "Lesson secondary action",
-      "kind": "button",
-      "refersTo": "button-secondary",
-      "description": "Shared secondary button retained within the lesson scene.",
-      "html": "<button class=\"ds-secondary\">Проверить ответ</button>",
-      "css": ".ds-secondary{background:var(--surface-glass);color:var(--text-primary);border:1px solid var(--border-strong);border-radius:12px;padding:.8rem 1.25rem;min-height:48px;font:650 .9rem/1.25 var(--font-sans);cursor:pointer;transition:background var(--motion-fast);}.ds-secondary:hover{background:var(--surface-hover);}.ds-secondary:focus-visible{outline:3px solid var(--focus-ring);outline-offset:4px;}.ds-secondary:disabled{opacity:.5;cursor:not-allowed;}"
-    },
-    {
-      "name": "Lesson title field",
-      "kind": "input",
-      "refersTo": "lesson-field",
-      "description": "Opaque plum field, using the shared input structure.",
-      "html": "<label class=\"ds-field-label\">Ваш заголовок<input class=\"ds-field\" value=\"Мой первый сайт\" /></label>",
-      "css": ".ds-field-label{display:grid;gap:.65rem;font:.85rem var(--font-sans);color:var(--text-primary);}.ds-field{min-width:0;min-height:48px;border:1px solid #806991;border-radius:12px;background:#332641;color:#f8f5fb;padding:.8rem 1rem;font:1rem var(--font-sans);}.ds-field:hover{border-color:var(--text-secondary);}.ds-field:focus-visible{outline:3px solid var(--focus-ring);outline-offset:4px;}.ds-field:disabled{opacity:.55;cursor:not-allowed;}"
-    },
-    {
-      "name": "Preview reading panel",
-      "kind": "card",
-      "refersTo": "reading-surface",
-      "description": "Solid document result within the split scene.",
-      "html": "<article class=\"ds-reading\"><h2>Мой первый сайт</h2><p>Я учусь создавать сайты.</p></article>",
-      "css": ".ds-reading{background:var(--surface-solid);color:var(--text-primary);border-radius:16px;padding:1.5rem 2rem;font-family:var(--font-sans);}.ds-reading h2{margin:0 0 1rem;font-size:clamp(1.5rem,2.4vw,2.1rem);font-weight:700;line-height:1.2;letter-spacing:-.03em;overflow-wrap:anywhere;}.ds-reading p{margin:0;font-size:1rem;line-height:1.6;}"
-    },
-    {
-      "name": "Lesson step selector",
-      "kind": "custom",
-      "refersTo": "step-selected",
-      "description": "Selected/unselected actions from the real instructional workbench.",
-      "html": "<div class=\"ds-steps\"><button aria-pressed=\"true\">Разобраться</button><button aria-pressed=\"false\">Попробовать</button></div>",
-      "css": ".ds-steps{display:flex;gap:.35rem;padding:.65rem;background:#21172f;border-radius:16px;}.ds-steps button{min-height:44px;padding:.5rem .75rem;border:0;border-radius:7px;background:transparent;color:#c9bfd7;font:600 .8rem var(--font-sans);cursor:pointer;}.ds-steps button[aria-pressed=\"true\"]{background:var(--accent-action);color:white;}.ds-steps button:hover{color:white;}.ds-steps button:focus-visible{outline:3px solid var(--focus-ring);outline-offset:4px;}"
-    },
-    {
-      "name": "Shared desktop navigation",
-      "kind": "nav",
-      "description": "Incumbent navigation style reused by the preview; routes and session logic stay in code.",
-      "html": "<nav class=\"ds-nav\" aria-label=\"Главное меню\"><a href=\"/courses\">Курсы</a><a href=\"/blog\">Блог</a></nav>",
-      "css": ".ds-nav{display:flex;gap:1.65rem;font-family:var(--font-sans);}.ds-nav a{display:inline-flex;align-items:center;min-height:44px;color:var(--text-secondary);font-size:.86rem;font-weight:620;text-decoration:none;}.ds-nav a:hover{color:var(--text-primary);text-decoration:underline;text-decoration-color:var(--action-primary);text-underline-offset:5px;}.ds-nav a:focus-visible{outline:3px solid var(--focus-ring);outline-offset:4px;}"
-    }
-  ],
+  "components": [],
   "narrative": {
     "northStar": "The Instructional Workbench",
-    "overview": "The instructional workbench carries the String Lab reference into a quiet, readable platform surface. Onest gives Cyrillic prose and controls one voice; opaque reading panels sit beside a plum source panel. Colour marks actions and state rather than supplying decorative depth.\n\nThis document records only `/ui/home-lab` and its preview review route. The preview is explicitly labelled and noindex/nofollow; `/` remains the current homepage pending selection. Shared tokens, learning routes and Studio retain their incumbent authority. These values are extracted observations, not new global detector rules.",
+    "overview": "Minimal discovery Preview: original logo and semantic themes; real course title, concise description and real metadata lead directly to the existing course route. Current DESIGN.md supersedes earlier workbench observations.",
     "keyCharacteristics": [
       "Onest for Cyrillic headings, prose and controls.",
       "Five user-selected accents over light, dark or system appearance.",
