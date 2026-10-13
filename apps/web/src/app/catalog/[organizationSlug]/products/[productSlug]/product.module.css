@@ -1,0 +1,294 @@
+.page {
+  width: min(72rem, 100%);
+  margin: 0 auto;
+  padding: var(--space-16) var(--space-6) var(--space-24);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-10);
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.title {
+  max-width: 48rem;
+  margin: 0;
+  font-size: clamp(2.25rem, 6vw, 4.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+.lead {
+  max-width: 44rem;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(19rem, 25rem);
+  gap: var(--space-10);
+  align-items: start;
+}
+
+.details {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.detailCard,
+.checkoutCard {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--surface-elevated);
+}
+
+.detailCard {
+  padding: var(--space-8);
+}
+
+.detailCard h2,
+.checkoutCard h2,
+.checkoutCard h3 {
+  margin-top: 0;
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6);
+  margin: 0;
+}
+
+.metaGrid div {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.metaGrid dt {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.metaGrid dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.checkoutCard {
+  position: sticky;
+  top: var(--space-6);
+  display: grid;
+  gap: var(--space-6);
+  padding: var(--space-6);
+}
+
+.priceList {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.priceOption {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.priceOption:has(input:checked) {
+  border-color: var(--action-primary);
+  outline: 1px solid var(--action-primary);
+}
+
+.priceOption:has(input:focus-visible) {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.priceOption input {
+  width: 1rem;
+  height: 1rem;
+}
+
+.priceValue {
+  font-size: 1.125rem;
+  font-weight: 750;
+}
+
+.authBox {
+  display: grid;
+  gap: var(--space-4);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-default);
+}
+
+.authTabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.field {
+  display: grid;
+  gap: var(--space-2);
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.field input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-default);
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.field input:focus-visible,
+.button:focus-visible,
+.secondaryButton:focus-visible,
+.tabButton:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.button,
+.secondaryButton,
+.tabButton {
+  min-height: 2.75rem;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.button {
+  border: 1px solid var(--action-primary);
+  background: var(--action-primary);
+  color: #ffffff;
+  padding: 0 var(--space-4);
+}
+
+.secondaryButton,
+.tabButton {
+  border: 1px solid var(--border-default);
+  background: var(--surface-subtle);
+  color: var(--text-primary);
+  padding: 0 var(--space-4);
+}
+
+.tabButton[aria-pressed="true"] {
+  border-color: var(--border-strong);
+  background: var(--surface-elevated);
+}
+
+.button:disabled,
+.secondaryButton:disabled,
+.tabButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.sessionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.sessionIdentity {
+  min-width: 0;
+}
+
+.sessionIdentity strong,
+.sessionIdentity span {
+  display: block;
+}
+
+.sessionIdentity span,
+.hint,
+.status {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.status {
+  margin: 0;
+}
+
+.error {
+  margin: 0;
+  color: var(--status-danger);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.success {
+  margin: 0;
+  color: var(--status-success);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border-default);
+}
+
+@media (max-width: 52rem) {
+  .page {
+    padding-top: var(--space-10);
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .checkoutCard {
+    position: static;
+  }
+}
+
+@media (max-width: 34rem) {
+  .page {
+    padding-inline: var(--space-4);
+  }
+
+  .metaGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sessionRow {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

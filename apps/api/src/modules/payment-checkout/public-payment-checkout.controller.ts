@@ -1,0 +1,45 @@
+import {
+  Body,
+  Controller,
+  Header,
+  HttpStatus,
+  Param,
+  Post,
+  UseGuards
+} from "@nestjs/common";
+import {
+  createPurchaseCheckoutRequestSchema,
+  organizationSlugSchema,
+  publicPurchaseCheckoutSchema,
+  resourceSlugSchema,
+  type PublicPurchaseCheckout
+} from "@platform/contracts";
+
+import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
+import { parseRequest } from "../../http/validation";
+import { observePublicLaunchHttp } from "../../observability/public-launch-operational-events";
+import { PurchaseCheckoutApplicationService } from "./payment-checkout.service";
+
+@Controller("public/catalog/:organizationSlug/products/:productSlug")
+@UseGuards(BrowserWriteOriginGuard)
+export class PublicPurchaseCheckoutController {
+  constructor(private readonly checkout: PurchaseCheckoutApplicationService) {}
+
+  @Post("checkout")
+  @Header("Cache-Control", "no-store")
+  async createOrGetCheckout(
+    @Param("organizationSlug") organizationSlug: string,
+    @Param("productSlug") productSlug: string,
+    @Body() body: unknown
+  ): Promise<PublicPurchaseCheckout> {
+    return observePublicLaunchHttp("checkout", HttpStatus.CREATED, async () =>
+      publicPurchaseCheckoutSchema.parse(
+        await this.checkout.createOrGetPublicCheckout(
+          parseRequest(organizationSlugSchema, organizationSlug),
+          parseRequest(resourceSlugSchema, productSlug),
+          parseRequest(createPurchaseCheckoutRequestSchema, body)
+        )
+      )
+    );
+  }
+}

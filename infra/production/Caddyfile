@@ -1,0 +1,8 @@
+{$PUBLIC_HOST} {
+  handle /v1/* {
+    reverse_proxy api:4000
+  }
+  handle {
+    reverse_proxy web:3000
+  }
+}
