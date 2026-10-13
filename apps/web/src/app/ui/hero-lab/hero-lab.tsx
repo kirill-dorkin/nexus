@@ -238,6 +238,7 @@ export function HeroReview() {
     </div>
     <p className={styles.reviewHint}>При фиксированной ширине ниже — настоящий viewport iframe. Широкий пример прокручивается горизонтально только в этой лаборатории.</p>
     <div className={styles.frameRail} style={{ height: `${frameHeight * Number(scale)}px` }}>
+      <div className={styles.frameStage} style={{ width: width === "responsive" ? "100%" : `${Number(width) * Number(scale)}px`, height: `${frameHeight * Number(scale)}px` }}>
       <iframe ref={frameRef} key={`${direction}-${reload}`} src={source} title={direction === "current" ? "Текущая главная" : directionNames[direction]}
         onLoad={event => {
           const frame = event.currentTarget;
@@ -245,6 +246,7 @@ export function HeroReview() {
           void frame.contentDocument?.fonts.ready.then(() => fitFrame(frame));
         }}
         className={styles.frame} style={{ width: width === "responsive" ? "100%" : `${width}px`, height: `${frameHeight}px`, transform: `scale(${scale})` }} />
+      </div>
     </div>
   </main>;
 }
