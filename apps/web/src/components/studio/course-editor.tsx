@@ -73,6 +73,7 @@ export function CourseEditor({
     dirty ||
     (mode === "json" && raw !== JSON.stringify(document, null, 2)) ||
     (isNew && JSON.stringify(document) !== JSON.stringify(blankCourse()));
+  const leaveBlocked = unsaved || uncertain;
   const writable =
     ready && (isNew ? canCreate : base?.status === "draft" && base.canApply);
   const changed = () => {
@@ -113,15 +114,15 @@ export function CourseEditor({
     };
   }, [isNew, path, routeCourse]);
   useEffect(() => {
-    if (!unsaved) return;
+    if (!leaveBlocked) return;
     const handler = (event: BeforeUnloadEvent) => {
       event.preventDefault();
     };
     window.addEventListener("beforeunload", handler);
     return () => window.removeEventListener("beforeunload", handler);
-  }, [unsaved]);
+  }, [leaveBlocked]);
   useEffect(() => {
-    if (!unsaved || !ready) return;
+    if (!leaveBlocked || !ready) return;
     const intercept = (event: MouseEvent) => {
       if (
         event.defaultPrevented ||
@@ -150,7 +151,7 @@ export function CourseEditor({
     };
     window.document.addEventListener("click", intercept, true);
     return () => window.document.removeEventListener("click", intercept, true);
-  }, [unsaved, ready]);
+  }, [leaveBlocked, ready]);
   function edit(change: (d: CourseManifestV1) => void) {
     setDocument((old) => {
       const next = structuredClone(old);
@@ -332,7 +333,15 @@ export function CourseEditor({
     busy || !base?.canPublish || dirty || mode !== "preview" || uncertain;
   return (
     <>
-      <Link href="/studio" className={styles.backLink}>
+      <Link
+        href="/studio"
+        className={styles.backLink}
+        onClick={(event) => {
+          if (!leaveBlocked) return;
+          event.preventDefault();
+          setLeaveHref("/studio");
+        }}
+      >
         ← Все курсы
       </Link>
       <header className={`${styles.pageHeading} ${styles.editorHeading}`}>
