@@ -139,3 +139,37 @@ This is a **дизайнерское суждение**, not a HIG mandate.
 Revision validation is recorded after deployed browser inspection; earlier
 measurements above describe the rejected iteration and must not be treated as
 proof for this revision.
+
+### Revised browser verification
+
+- Git-linked Preview inspected at real iframe CSS viewports 320, 390, 768
+  and 1440: all 12 concept/width cases have no horizontal overflow. Headings
+  wrap within the available Cyrillic measure; primary/secondary/interactive
+  actions measure 54/44/48 px or larger. Hero content has zero filtered surfaces.
+- Apply/reset, selected-route transition, wrong answer, retry and correct
+  answer passed in the deployed browser. Existing guest links were observed.
+- Both light and dark themes and all five accent choices were applied through
+  the existing appearance control and confirmed on the iframe root.
+- Opaque scene text contrast is 15.73:1, scene secondary text 9.85:1, and
+  syntax colours 9.1:1–11.84:1 against their actual fixed scene background.
+  Existing CTA token contrasts remain 5.34:1–6.49:1.
+- Six comparison images captured at real 390/1440 iframe widths, displayed at
+  50% and cropped/resized for delivery. The long mobile lesson uses two
+  stitched genuine scroll captures of the same initial state. These are not
+  physical-device captures.
+- Clean production build, TypeScript, brand isolation and whitespace checks
+  passed. A stale local Turbopack cache failed to restore; moving generated
+  cache aside and rebuilding resolved it without code changes.
+- Revision CI initially hit the existing Studio unsaved-navigation timeout
+  at verify.mjs:834, the same failure observed before this isolated lab change.
+  The test, Studio and working homepage have not been altered by this revision.
+
+Still unverified: physical iOS/Android, real signed-in learner, screen reader,
+200% zoom, actual mobile performance/CLS and OS media-preference emulation.
+Reduced motion and opaque transparency fallbacks are source-reviewed. This
+revision adds no API loading or error states; no separate new audit of existing
+backend-driven loading/error/empty states was performed.
+
+The revised **product fragment** is recommended: its code → answer → feedback
+interaction is closest to String Lab's instructional character and demonstrates
+learning directly. This is a **дизайнерское суждение**. Selection is still pending.

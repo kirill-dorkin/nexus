@@ -56,7 +56,7 @@ function EditorialHero() {
       <div className={styles.marginNote}>
         <span className={styles.eyebrow}>Изучить → применить</span>
         <p>Маленькое открытие.<br />Настоящее действие.</p>
-        <small>Концептуальный пример<br />JavaScript · работа с текстом</small>
+        <small>Концептуальный пример <br />JavaScript · работа с текстом</small>
       </div>
       <article className={styles.article}>
         <p className={styles.articleLabel}>Мысль из конспекта</p>
