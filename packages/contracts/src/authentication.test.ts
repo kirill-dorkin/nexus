@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   loginRequestSchema,
+  oauthProvidersResponseSchema,
   registerRequestSchema
 } from "./authentication";
 
@@ -42,6 +43,15 @@ describe("authentication contracts", () => {
         email: "learner@example.test",
         password: `${password}x`
       }).success
+    ).toBe(false);
+  });
+
+  it("accepts only the supported external login providers", () => {
+    expect(
+      oauthProvidersResponseSchema.parse({ providers: ["google", "github"] })
+    ).toEqual({ providers: ["google", "github"] });
+    expect(
+      oauthProvidersResponseSchema.safeParse({ providers: ["facebook"] }).success
     ).toBe(false);
   });
 });

@@ -1,10 +1,14 @@
 "use client";
-import { identityUserSchema } from "@platform/contracts";
-import { useState, type FormEvent } from "react";
+import {
+  identityUserSchema,
+  oauthProvidersResponseSchema,
+  type OAuthProvider
+} from "@platform/contracts";
+import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { browserApiRequest } from "../../lib/public-api";
+import { browserApiRequest, publicApiUrl } from "../../lib/public-api";
 import { safeLearningReturnTo } from "../../lib/learning-return-to";
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, GithubLogo, GoogleLogo } from "@phosphor-icons/react/dist/ssr";
 import {
   Alert,
   Button,
@@ -15,10 +19,42 @@ import {
   Text
 } from "@platform/ui";
 import styles from "./auth.module.css";
-export function LearningAuth({ returnTo, initialMode = "login" }: { returnTo: string; initialMode?: "login" | "register" }) {
+export function LearningAuth({
+  returnTo,
+  initialMode = "login",
+  externalLoginFailed = false
+}: {
+  returnTo: string;
+  initialMode?: "login" | "register";
+  externalLoginFailed?: boolean;
+}) {
   const [mode, setMode] = useState<"login" | "register">(initialMode);
   const [busy, setBusy] = useState(false),
-    [error, setError] = useState<string | null>(null);
+    [error, setError] = useState<string | null>(
+      externalLoginFailed
+        ? "Не удалось завершить вход через выбранный сервис. Попробуйте ещё раз или войдите по почте."
+        : null
+    );
+  const [providers, setProviders] = useState<readonly OAuthProvider[]>([]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    void browserApiRequest("/v1/auth/oauth/providers", {
+      signal: controller.signal
+    }).then(async (response) => {
+      if (!response.ok) return;
+      const result = oauthProvidersResponseSchema.safeParse(await response.json());
+      if (result.success) setProviders(result.data.providers);
+    }).catch(() => {
+      // Password authentication remains available when provider discovery fails.
+    });
+    return () => controller.abort();
+  }, []);
+
+  function providerUrl(provider: OAuthProvider): string {
+    const query = new URLSearchParams({ returnTo: safeLearningReturnTo(returnTo) });
+    return publicApiUrl(`/v1/auth/oauth/${provider}/start?${query.toString()}`);
+  }
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -79,6 +115,25 @@ export function LearningAuth({ returnTo, initialMode = "login" }: { returnTo: st
         <button type="button" aria-pressed={mode === "register"} disabled={busy}
           onClick={() => changeMode("register")}>Регистрация</button>
       </div>
+      {providers.length > 0 && (
+        <div className={styles.external} aria-label="Вход через другой сервис">
+          <div className={styles.providerGrid}>
+            {providers.includes("google") && (
+              <a className={styles.providerButton} href={providerUrl("google")}>
+                <GoogleLogo size={21} weight="bold" aria-hidden="true" />
+                <span>{mode === "login" ? "Войти" : "Продолжить"} через Google</span>
+              </a>
+            )}
+            {providers.includes("github") && (
+              <a className={styles.providerButton} href={providerUrl("github")}>
+                <GithubLogo size={21} weight="fill" aria-hidden="true" />
+                <span>{mode === "login" ? "Войти" : "Продолжить"} через GitHub</span>
+              </a>
+            )}
+          </div>
+          <div className={styles.separator}><span>или по электронной почте</span></div>
+        </div>
+      )}
       <form className={styles.authForm} onSubmit={submit} aria-busy={busy}>
         {error && <Alert tone="danger">{error}</Alert>}
         <fieldset disabled={busy} aria-label={mode === "login" ? "Данные для входа" : "Данные нового аккаунта"}>
