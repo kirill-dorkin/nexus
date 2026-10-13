@@ -1177,17 +1177,19 @@ async function runBrowserVerification(cdp) {
   await navigate(cdp, WEB_ORIGIN);
   await waitForExpression(
     cdp,
-    'document.body.innerText.includes("Открытые курсы") && document.body.innerText.includes("Основы компьютера")',
+    'document.body.innerText.includes("Посмотреть программу") && document.body.innerText.includes("Основы компьютера")',
     "learning homepage"
   );
   await accessibilityAudit(cdp, "learning homepage");
   assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Learning homepage overflows mobile.");
-  await waitForExpression(cdp, 'document.querySelector(\'img[alt=""]\')?.naturalWidth > 0', "homepage artwork loaded");
-  await tabUntil(cdp, 'document.activeElement?.getAttribute("href") === "#courses"', "homepage catalog action");
+  assert(await evaluate(cdp, 'document.querySelectorAll("h1").length === 1 && !document.body.innerText.includes("Дизайн Preview")'), "Public homepage has duplicate heading or lab notice.");
+  // The Acme fixture has no reviewed course artwork. Discovery must work without it.
+  await waitForExpression(cdp, 'document.body.innerText.includes("2 урока") && document.body.innerText.includes("15 мин")', "homepage real metadata");
+  await tabUntil(cdp, 'document.activeElement?.getAttribute("href") === "/learn/acme/computer-basics" && document.activeElement?.classList.contains("ui-button")', "homepage catalog action");
   assert(await evaluate(cdp, 'document.activeElement.matches(":focus-visible") && parseFloat(getComputedStyle(document.activeElement).outlineWidth) >= 2'), "Homepage action has no keyboard focus.");
   await cdp.send("Input.dispatchKeyEvent", { type: "keyDown", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
   await cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
-  await waitForExpression(cdp, 'location.hash === "#courses"', "homepage catalog anchor");
+  await waitForExpression(cdp, 'location.pathname === "/learn/acme/computer-basics" && document.body.innerText.includes("Программа курса")', "homepage course program");
 
   console.log("[browser-launch] UI gallery native controls and theme contract");
   await navigate(cdp, `${WEB_ORIGIN}/ui`);

@@ -1,5 +1,11 @@
 # UI library and public cover roadmap
 
+## Current public homepage — 2026-10-13
+
+The maintainer authorized independent composition selection and promotion from lab to /. Open course discovery replaces the earlier decorative public cover: short platform introduction, real unboxed course spreads, canonical metadata/syllabus preview and direct program actions. The original shared logo, Onest, themes/accents, session-aware navigation and public SEO remain. Appearance is a static utility row below navigation. The alternate editorial layout remains noindex in home-lab.
+
+Catalog remains server-loaded under Suspense with unchanged no-store reads, retry/error/empty and route contracts. No backend, auth, migration, enrollment or canonical learning change. See docs/design/home-redesign-verification.md for acceptance evidence. Older cover directions below are historical implementation records, not the current homepage specification.
+
 ## Direction
 
 The maintainer's references establish a dark plum canvas, magenta/violet light, translucent glass surfaces, fine luminous borders, large white typography and generous rounded corners. They are art-direction references, not screens to copy. Third-party names, logos, installation commands and claims are not product content.

@@ -160,6 +160,7 @@
 .courseAction {
   min-height: 48px;
   gap: 24px;
+  border-color: color-mix(in srgb, var(--action-primary) 90%, var(--text-primary));
   border-radius: 12px;
   box-shadow: none;
   font-size: 0.9375rem;
@@ -216,12 +217,15 @@
 }
 .courseLoading {
   display: grid;
-  grid-template-columns: 1fr 1.03fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.03fr);
+  align-content: start;
+  align-items: start;
   gap: 64px;
   min-height: 420px;
   padding-block: 40px;
 }
-.courseLoading > div {
+.courseLoading > div:first-child {
+  min-width: 0;
   display: grid;
   align-content: start;
   gap: 20px;
@@ -236,6 +240,8 @@
   aspect-ratio: 16/9;
   width: 100%;
   height: auto;
+  min-width: 0;
+  max-width: 100%;
   border-radius: 16px;
 }
 .actionPlaceholder {
@@ -415,10 +421,11 @@
   }
   .discoveryHeading {
     padding-bottom: 12px;
+    column-gap: 12px;
   }
   .course,
   .courseLoading {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 32px;
     padding-block: 24px;
   }

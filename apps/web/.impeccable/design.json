@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-13T10:54:53.942248+00:00",
-  "title": "Design System: Minimal course discovery Preview",
+  "generatedAt": "2026-10-13",
+  "title": "Design System: Open course discovery",
   "extensions": {
     "colorMeta": {
       "rose-action": {
@@ -58,28 +58,16 @@
       }
     },
     "typographyMeta": {},
-    "shadows": [
-      {
-        "name": "appearance-dock",
-        "value": "0 6px 24px rgb(14 6 24 / 16%)",
-        "purpose": "Floating opaque appearance control only."
-      }
-    ],
-    "motion": [
-      {
-        "name": "document-change",
-        "value": "160ms ease-out",
-        "purpose": "User-triggered document update; opacity .7 to 1 and translateY 3px to 0; disabled under reduced motion."
-      }
-    ],
+    "shadows": [],
+    "motion": [],
     "breakpoints": [
       {
-        "name": "preview-compact",
-        "value": "900px"
+        "name": "home-compact",
+        "value": "960px"
       },
       {
-        "name": "preview-stack",
-        "value": "640px"
+        "name": "home-stack",
+        "value": "700px"
       },
       {
         "name": "shared-navigation-mobile",
@@ -89,47 +77,43 @@
     "source": {
       "root": "apps/web",
       "targets": [
+        "/",
         "/ui/home-lab",
         "/ui/home-lab/review"
       ],
-      "scope": "Isolated noindex Preview. Main /, learning and Studio retain existing visual conventions; no migration or global detector rules are implied.",
+      "scope": "Public homepage and noindex composition comparison; other learning/Studio compositions retain established authority.",
       "files": [
+        "src/app/page.tsx",
+        "src/components/learning/home-discovery.tsx",
+        "src/components/learning/home-discovery.module.css",
         "src/app/ui/home-lab/page.tsx",
-        "src/app/ui/home-lab/home-lab.tsx",
-        "src/app/ui/home-lab/home-lab.module.css",
-        "../../packages/design-tokens/tokens.css",
-        "../../packages/ui/styles.css"
+        "../../packages/design-tokens/tokens.css"
       ],
-      "provenance": "docs/design-assets/computer-literacy-cover.md at current repository commit 642b624fa1ed54044726a33dc5150fd201b37853",
+      "provenance": "docs/design-assets/computer-literacy-cover.md; original reviewed asset unchanged.",
       "ramps": "No synthetic tonal ramps: retain existing five selectable accent presets and semantic theme mappings.",
-      "refinement": "Minimal discovery supersedes scene controls and teaching demo. Caption12px, metadata13px, description15px, body16px; 40px maximum hero, 30px course title.",
-      "composition": "Short heading and sentence, actual course and one primary open-course action. No explanatory strip, example, Blog teaser or FAQ. Shared routes remain reachable."
+      "refinement": "14px metadata, 16px body, 44px maximum platform heading, 32px maximum course title. Static appearance utility row. Mobile action before artwork.",
+      "composition": "Short platform introduction, unboxed actual course spread, program action and first three canonical lesson titles."
     }
   },
   "components": [],
   "narrative": {
-    "northStar": "The Instructional Workbench",
-    "overview": "Minimal discovery Preview: original logo and semantic themes; real course title, concise description and real metadata lead directly to the existing course route. Current DESIGN.md supersedes earlier workbench observations.",
+    "northStar": "Open course discovery",
+    "overview": "A quiet educational platform entry leads directly into real course programs. No decorative dashboard or fabricated inventory.",
     "keyCharacteristics": [
-      "Onest for Cyrillic headings, prose and controls.",
-      "Five user-selected accents over light, dark or system appearance.",
-      "Opaque reading surfaces and a flat instructional workbench."
+      "Original shared logo and Onest Cyrillic.",
+      "Light/dark/system and five semantic accents.",
+      "Open actual course spreads and canonical syllabus preview."
     ],
     "rules": [
       {
         "name": "The Semantic Accent Rule",
-        "body": "Use the active semantic action, text-accent and subtle tokens; the Radix violet prop does not choose the user’s accent.",
+        "body": "Use existing active semantic action, text-accent and focus tokens; no independent Radix palette in the homepage.",
         "section": "colors"
       },
       {
         "name": "The One Font Rule",
         "body": "Keep display and body typography on the existing Onest stack; reserve the mono stack for code.",
         "section": "typography"
-      },
-      {
-        "name": "The Solid Reading Rule",
-        "body": "Use the solid surface token beneath document and course reading content. The preview’s source panel remains opaque plum.",
-        "section": "elevation"
       }
     ],
     "dos": [
@@ -138,9 +122,10 @@
       "Do reuse reviewed course artwork through the web-owned resolver and its provenance record."
     ],
     "donts": [
-      "Don’t treat this preview as approval to replace `/` or restyle learning and Studio.",
-      "Don’t persist the conceptual example’s answer or progress.",
-      "Don’t introduce autoplay motion or blurred reading surfaces into this preview."
+      "Do not fabricate inventory, outcomes, ratings or continuation.",
+      "Do not make account entry a prerequisite to public material.",
+      "Do not introduce blur, autoplay or a fixed appearance layer over content."
     ]
   }
 }
+

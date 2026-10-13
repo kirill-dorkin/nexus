@@ -22,8 +22,9 @@ understanding that learning includes doing and checking, not just watching.
 
 Preserve existing Next.js routes, session-aware navigation, catalog projections,
 Blog and SEO. No authorization, RLS, membership, enrollment, quiz attempt,
-Evidence, canonical progress or outbox changes. Keep the working homepage until
-the new preview is selected. Do not merge the Draft PR or promote Production.
+Evidence, canonical progress or outbox changes. The maintainer authorized
+autonomous selection and promotion of the open discovery composition from lab
+to the homepage. Do not merge the Draft PR or promote Production.
 
 ## Brand Commitments
 
@@ -47,3 +48,4 @@ wrapping, reduced motion and opaque transparency fallbacks are required.
 
 No public pricing or future course inventory is invented. Real-device and
 assistive-technology verification remains separate from browser inspection.
+
