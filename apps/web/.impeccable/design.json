@@ -79,6 +79,18 @@
       "syntax-tag": {
         "role": "neutral",
         "displayName": "Syntax Tag"
+      },
+      "scene-divider": {
+        "role": "neutral",
+        "displayName": "Scene Divider"
+      },
+      "scene-hover": {
+        "role": "neutral",
+        "displayName": "Scene Hover"
+      },
+      "scene-focus": {
+        "role": "neutral",
+        "displayName": "Scene Focus"
       }
     },
     "typographyMeta": {
@@ -134,7 +146,8 @@
         "../../packages/ui/styles.css"
       ],
       "provenance": "docs/design-assets/computer-literacy-cover.md at current repository commit 642b624fa1ed54044726a33dc5150fd201b37853",
-      "ramps": "No synthetic tonal ramps: retain existing five selectable accent presets and semantic theme mappings."
+      "ramps": "No synthetic tonal ramps: retain existing five selectable accent presets and semantic theme mappings.",
+      "refinement": "Original shared brand restored; labelled accents are opt-in presentation. Caption 12px / annotation 13px / control 14px; opaque scene controls, fixed answer area and native FAQ chevrons."
     }
   },
   "components": [

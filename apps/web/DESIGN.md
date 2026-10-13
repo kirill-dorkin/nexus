@@ -21,6 +21,9 @@ colors:
   scene-field: "#332641"
   scene-stroke: "#806991"
   syntax-tag: "#d5b8ff"
+  scene-divider: "#4a3d5a"
+  scene-hover: "#463450"
+  scene-focus: "#e0cafa"
 typography:
   display:
     fontFamily: "\"Onest Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
@@ -42,6 +45,26 @@ typography:
     fontFamily: "\"Onest Variable\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
     fontSize: ".875rem"
     fontWeight: 600
+  caption:
+    fontFamily: "Onest Variable"
+    fontSize: ".75rem"
+    lineHeight: 1.6
+  annotation:
+    fontFamily: "Onest Variable"
+    fontSize: ".8125rem"
+    lineHeight: 1.6
+  lesson-title:
+    fontFamily: "Onest Variable"
+    fontSize: "1.15rem"
+    lineHeight: 1.4
+  mobile-article-title:
+    fontFamily: "Onest Variable"
+    fontSize: "1.35rem"
+    lineHeight: 1.35
+  footer-title:
+    fontFamily: "Onest Variable"
+    fontSize: "1.25rem"
+    lineHeight: 1.4
   code:
     fontFamily: "\"SFMono-Regular\", Consolas, \"Liberation Mono\", monospace"
     fontSize: ".875rem"
@@ -66,9 +89,9 @@ components:
     padding: "1rem 1.5rem"
     height: "54px"
   button-secondary:
-    backgroundColor: "var(--surface-glass)"
-    textColor: "var(--text-primary)"
-    rounded: "{rounded.field}"
+    backgroundColor: "{colors.scene-field}"
+    textColor: "{colors.scene-ink}"
+    rounded: "{rounded.action}"
     padding: ".8rem 1.25rem"
     height: "48px"
   lesson-field:
@@ -133,8 +156,8 @@ Onest’s compact shapes and modest negative heading tracking make a continuous 
 - **Display:** the frontmatter display ramp; narrow screens use `clamp(1.75rem, 8.5vw, 2.125rem)` with 1.12 leading and -.03em tracking.
 - **Headline:** the frontmatter headline ramp for section headings. Course titles use `clamp(1.5rem, 2.6vw, 2rem)` and 1.18 leading.
 - **Body:** the frontmatter body role; the lead is capped at 66ch. Course and Blog prose use .9375rem / 1.7.
-- **Labels:** control links use the label role; contextual scene labels use .75rem. Small disclaimer and preview labels remain secondary annotations, not a new display tier.
-- **Code:** the mono role with pre-wrapping and anywhere wrapping; .75rem on narrow screens.
+- **Labels:** control links use the label role; contextual scene labels use .75rem. Disclaimer and preview labels now use the 12px caption role; metadata and footer use the 13px annotation role. These are secondary text, not a new display tier.
+- **Code:** the mono role with pre-wrapping and anywhere wrapping; .8125rem on narrow screens.
 
 **The One Font Rule.** Keep display and body typography on the existing Onest stack; reserve the mono stack for code.
 
@@ -152,13 +175,13 @@ The preview uses tonal layering and dividers for content depth. Workbench, cours
 
 ## Shapes
 
-Large preview containers use gently curved 16px corners and clip their split surfaces. The brand mark and prominent preview actions use 10px corners; the shared lesson input retains 12px. Step buttons use tighter 7px corners. FAQ rows remain square and open, separated by shared disclosure borders rather than additional cards.
+Large preview containers use gently curved 16px corners and clip their split surfaces. The original shared tilted N mark and “учебная среда” lockup are reused unchanged; prominent preview actions use 10px corners; the shared lesson input retains 12px. Step buttons use tighter 7px corners. FAQ rows remain square and open, separated by shared disclosure borders rather than additional cards.
 
 ## Components
 
 ### Buttons
 
-Direct and compact. The hero uses the shared large primary variant with semantic action/hover colours, white action text, 54px minimum height and 10px preview corners. Lesson actions reuse the 48px secondary variant and its existing glass token, strong border and surface hover. These secondary controls do not make reading panels translucent. Disabled shared controls dim and stop interaction. Preview focus is a 3px semantic ring with 4px offset.
+Direct and compact. The hero uses the shared large primary variant with semantic action/hover colours, white action text, 54px minimum height and 10px preview corners. Lesson actions reuse the shared 48px secondary variant with opaque plum field/hover colours, a visible scene border and 10px preview corners. Reading panels remain opaque. Disabled shared controls dim and stop interaction. Preview focus is a 3px semantic ring with 4px offset.
 
 ### Inputs / Fields
 
@@ -166,7 +189,7 @@ The shared input keeps its existing structure, 48px minimum height and 12px corn
 
 ### Navigation
 
-Reuse session-aware LearningNavigation and its routes. Desktop links retain muted ink, active/hover underline and 44px targets. At its existing mobile breakpoint, the menu control opens the shared dialog. The footer uses simple course, Blog and author links. The floating appearance control opens the existing dialog with light/dark/system and rose/violet/blue/teal/amber choices; the default remains system/rose.
+Reuse session-aware LearningNavigation and its routes. Desktop links retain muted ink, active/hover underline and 44px targets. At its existing mobile breakpoint, the menu control opens the shared dialog. The footer uses simple course, Blog and author links. The floating appearance control opens the existing dialog with light/dark/system and rose/violet/blue/teal/amber choices; the Preview opts into visible accent names, arranged in three columns. The desktop panel sits above its trigger and transforms into the existing mobile bottom sheet; the default remains system/rose.
 
 ### Cards / Containers
 
@@ -174,7 +197,7 @@ Course features use solid reading surfaces, source-owned 16px corners and copy p
 
 ### Instructional workbench
 
-Source and result share one clipped scene. Three pressed-state buttons switch between explanation, title editing and a local question. Editing the text updates the rendered document; answer feedback never writes canonical learning state. The conceptual example is explicitly labelled as unsaved. A 160ms ease-out document change fades from .7 opacity and moves 3px; reduced motion removes this animation. The solid appearance dock also supplies the reduced-transparency fallback.
+Source and result share one clipped scene. The explanation/edit/quiz area reserves a consistent 270px height (285px on mobile), reducing jumps between its local states. Three pressed-state buttons switch between explanation, title editing and a local question. Editing the text updates the rendered document; answer feedback never writes canonical learning state. The conceptual example is explicitly labelled as unsaved. A 160ms ease-out document change fades from .7 opacity and moves 3px; reduced motion removes this animation. The solid appearance dock also supplies the reduced-transparency fallback.
 
 ## Do's and Don'ts
 
@@ -191,3 +214,7 @@ Source and result share one clipped scene. Three pressed-state buttons switch be
 - **Don’t** introduce autoplay motion or blurred reading surfaces into this preview.
 
 Source inspection and the remote asset provenance check are complete. Root’s deployed browser inspection confirms actual Onest, dark semantic primary ink and transparent Theme ground; the documenter performed no browser actions. Complete visual review, real-device and assistive-technology checks are separate gates. The inherited mobile-menu brand eyebrow and tiny secondary annotation sizes are recorded observations, not reusable new rules. No pre-existing learning/Studio drift is repaired by this document.
+
+## Maintainer refinement, 2026-10-13
+
+The maintainer requested the original logo and consistent small details. Reuse the shared mark rather than redraw it. Keep segmented stage controls, at least 12px secondary text, visible radio selection even after submission, labelled accent choices and native disclosure semantics with a restrained CSS chevron. Focus on plum uses the scene-focus colour; forced colours retain Highlight. Existing appearance consumers omit the two optional presentation props and preserve their prior layout. No product claims, auth transport or learning state changed.
