@@ -63,7 +63,7 @@ export default function HomeLabPage() {
       <Suspense fallback={<CourseLoading />}><Courses /></Suspense>
     </section>
     {article && <section className={styles.blog} aria-labelledby="blog-title">
-      <div className={styles.blogIntro}><h2 id="blog-title">Полезное<br />между уроками.</h2><Link className={styles.textLink} href="/blog">Блог платформы <ArrowRight size={18} aria-hidden="true" /></Link></div>
+      <div className={styles.blogIntro}><h2 id="blog-title">Полезное<br /> между уроками.</h2><Link className={styles.textLink} href="/blog">Блог платформы <ArrowRight size={18} aria-hidden="true" /></Link></div>
       <article className={styles.blogArticle}><p className={styles.articleMeta}>{article.category}<span>{article.readingMinutes} мин чтения</span></p>
         <h3><Link href={`/blog/${article.slug}`}>{article.title}</Link></h3><p>{article.description}</p>
         <Link className={styles.textLink} href={`/blog/${article.slug}`}>Читать статью <ArrowRight size={18} aria-hidden="true" /></Link>

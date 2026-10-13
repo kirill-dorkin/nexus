@@ -53,7 +53,7 @@ function LearningScene() {
 }
 
 export function HomeLab({ children }: { children: ReactNode }) {
-  return <Theme appearance="inherit" accentColor="violet" radius="large" scaling="100%" panelBackground="solid" className={styles.theme}>
+  return <Theme appearance="inherit" accentColor="violet" radius="large" scaling="100%" panelBackground="solid" hasBackground={false} className={styles.theme}>
     <div className={styles.page} data-home-preview>
       <a className={styles.skip} href="#home-content">Перейти к содержимому</a>
       <header className={styles.header}>

@@ -1,4 +1,4 @@
-.theme {
+.theme[data-radius][data-scaling] {
   --default-font-family: var(--font-sans);
   --heading-font-family: var(--font-sans);
   --gray-12: var(--text-primary);
@@ -6,6 +6,7 @@
   --accent-9: var(--accent-action);
   --accent-11: var(--text-accent);
   --accent-3: var(--accent-subtle);
+  --color-background: var(--surface-default);
   --scene-bg: #21172f;
   --scene-ink: #f8f5fb;
   --scene-secondary: #c9bfd7;
@@ -28,7 +29,7 @@
 .previewNotice a { display:inline-flex; align-items:center; gap:.4rem; min-height:44px; text-decoration:none; }
 .hero { padding-block:2.25rem 0; }
 .heroIntro { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2rem 3rem; align-items:end; margin-bottom:2.25rem; }
-.theme .title { font-size:clamp(2.1rem,4.3vw,3.75rem); font-weight:750; letter-spacing:-.035em; line-height:1.08; margin:0 0 1.25rem; text-wrap:balance; }
+.theme .title { font-family:var(--font-sans); color:var(--text-primary); font-size:clamp(2.1rem,4.3vw,3.75rem); font-weight:750; letter-spacing:-.035em; line-height:1.08; margin:0 0 1.25rem; text-wrap:balance; }
 .title span { color:var(--text-accent); }
 .theme .lead { color:var(--text-secondary); font-size:1rem; line-height:1.7; max-width:66ch; margin:0; text-wrap:pretty; }
 .heroActions { padding-bottom:.35rem; }
