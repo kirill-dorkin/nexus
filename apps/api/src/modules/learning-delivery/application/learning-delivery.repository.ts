@@ -102,6 +102,13 @@ export abstract class LearningDeliveryRepository {
     offeringId: string
   ): Promise<LearningOffering | null>;
 
+  abstract listOfferingsForCourseVersion(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseVersionId: string,
+    after: string | null
+  ): Promise<readonly LearningOffering[]>;
+
   abstract setOfferingVisibility(
     transaction: DatabaseTransaction,
     organizationId: string,

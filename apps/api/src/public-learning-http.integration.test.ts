@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import {
   courseManifestV1Schema,
+  learningOfferingListSchema,
   publicLearningCatalogSchema,
   publicLearningCourseSchema,
   publicLearningLessonSchema,
@@ -275,6 +276,107 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
     await Promise.all([migration.end(), runtime.end()]);
     if (oldOrigin === undefined) delete process.env.WEB_APP_ORIGIN;
     else process.env.WEB_APP_ORIGIN = oldOrigin;
+  });
+
+  it("lists published-release Offerings only to the authorized course manager", async () => {
+    const f = fixtures[0]!;
+    const another = await post(
+      `organizations/${f.org}/offerings`,
+      {
+        courseVersionId: f.version,
+        slug: `second-offering-${randomUUID()}`,
+        name: "Another private Offering",
+        deliveryMode: "self_paced",
+        accessMode: "membership"
+      },
+      owner,
+      201
+    );
+    const url = `/v1/organizations/${f.org}/offerings?courseVersionId=${f.version}`;
+    const ownerRead = await app.inject({
+      method: "GET",
+      url,
+      headers: { "x-test-user-id": owner }
+    });
+    expect(ownerRead.statusCode, ownerRead.body).toBe(200);
+    expect(ownerRead.headers["cache-control"]).toBe("no-store");
+    const list = learningOfferingListSchema.parse(ownerRead.json());
+    expect(list.nextCursor).toBeNull();
+    expect(list.offerings.map((entry) => entry.id)).toEqual(
+      expect.arrayContaining([f.offering, another.id])
+    );
+    expect(list.offerings.every((entry) =>
+      entry.organizationId === f.org && entry.courseVersionId === f.version
+    )).toBe(true);
+    expect(list.offerings.find((entry) => entry.id === another.id)?.visibility).toBe("private");
+
+    for (const [user, expected] of [["", 401], [learner, 403]] as const) {
+      const response = await app.inject({
+        method: "GET",
+        url,
+        headers: user ? { "x-test-user-id": user } : {}
+      });
+      expect(response.statusCode, response.body).toBe(expected);
+      expect(response.body).not.toContain(another.id);
+    }
+    const foreign = await app.inject({
+      method: "GET",
+      url: `/v1/organizations/${f.org}/offerings?courseVersionId=${fixtures[1]!.version}`,
+      headers: { "x-test-user-id": owner }
+    });
+    expect(foreign.statusCode, foreign.body).toBe(404);
+    for (const suffix of ["?courseVersionId=wrong", `?courseVersionId=${f.version}&extra=true`, `?courseVersionId=${f.version}&after=wrong`]) {
+      const malformed = await app.inject({
+        method: "GET",
+        url: `/v1/organizations/${f.org}/offerings${suffix}`,
+        headers: { "x-test-user-id": owner }
+      });
+      expect(malformed.statusCode, malformed.body).toBe(400);
+    }
+  });
+
+  it("paginates the authorized Offering list without truncating or repeating entries", async () => {
+    const f = fixtures[1]!;
+    const expectedIds = new Set<string>([f.offering]);
+    for (let i = 0; i < 50; i++) {
+      const offering = await post(
+        `organizations/${f.org}/offerings`,
+        {
+          courseVersionId: f.version,
+          slug: `paged-offering-${i}-${randomUUID()}`,
+          name: `Private page fixture ${i}`,
+          deliveryMode: "self_paced",
+          accessMode: "membership"
+        },
+        owner,
+        201
+      );
+      expectedIds.add(offering.id);
+    }
+    const base = `/v1/organizations/${f.org}/offerings?courseVersionId=${f.version}`;
+    const fetchPage = async (after?: string) => {
+      const response = await app.inject({
+        method: "GET",
+        url: after ? `${base}&after=${after}` : base,
+        headers: { "x-test-user-id": owner }
+      });
+      expect(response.statusCode, response.body).toBe(200);
+      expect(response.headers["cache-control"]).toBe("no-store");
+      return learningOfferingListSchema.parse(response.json());
+    };
+    const first = await fetchPage();
+    expect(first.offerings).toHaveLength(50);
+    expect(first.nextCursor).toBe(first.offerings.at(-1)!.id);
+    const second = await fetchPage(first.nextCursor!);
+    expect(second.offerings).toHaveLength(1);
+    expect(second.nextCursor).toBeNull();
+    const all = [...first.offerings, ...second.offerings];
+    expect(new Set(all.map((offering) => offering.id))).toEqual(expectedIds);
+    expect(all.every((offering) =>
+      offering.organizationId === f.org &&
+      offering.courseVersionId === f.version &&
+      offering.visibility === "private"
+    )).toBe(true);
   });
 
   it("defaults private and never exposes private content through anonymous functions", async () => {

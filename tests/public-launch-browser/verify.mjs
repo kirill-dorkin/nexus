@@ -607,7 +607,9 @@ async function waitForExpression(cdp, expression, label, timeoutMs = 20_000) {
   let lastEvaluationError = null;
   while (Date.now() < deadline) {
     try {
-      if (await evaluate(cdp, expression)) return;
+      // A hard navigation can temporarily remove document.body. The same
+      // predicate is retried once a new document has been created.
+      if (await evaluate(cdp, `document.body !== null && (${expression})`)) return;
       lastEvaluationError = null;
     } catch (error) {
       // A document may be replaced between Runtime.evaluate and this response.
