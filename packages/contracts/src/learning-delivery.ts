@@ -18,6 +18,14 @@ export const updateLearningOfferingVisibilityRequestSchema = z
   })
   .strict();
 
+/** Studio-only, course-version-scoped listing; pagination locator is never authority. */
+export const listLearningOfferingsQuerySchema = z
+  .object({
+    courseVersionId: uuidSchema,
+    after: uuidSchema.optional()
+  })
+  .strict();
+
 export const learningOfferingStatusSchema = z.enum([
   "open",
   "closed",
@@ -63,6 +71,14 @@ export const learningOfferingSchema = z.object({
   startsAt: optionalDateTimeSchema,
   endsAt: optionalDateTimeSchema
 });
+
+export const learningOfferingListSchema = z
+  .object({
+    offerings: z.array(learningOfferingSchema).max(50),
+    nextCursor: uuidSchema.nullable()
+  })
+  .strict();
+export type LearningOfferingList = z.infer<typeof learningOfferingListSchema>;
 
 export const createLearningOfferingRequestSchema = z
   .object({

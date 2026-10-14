@@ -2,10 +2,12 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   HttpCode,
   HttpStatus,
   Param,
   Patch,
+  Query,
   Post,
   UseGuards
 } from "@nestjs/common";
@@ -17,6 +19,7 @@ import {
   createGroupMembershipRequestSchema,
   createGroupSetRequestSchema,
   createLearningOfferingRequestSchema,
+  listLearningOfferingsQuerySchema,
   createSessionRequestSchema,
   recordAttendanceRequestSchema,
   uuidSchema,
@@ -28,6 +31,7 @@ import {
   type GroupMembership,
   type GroupSet,
   type LearningOffering,
+  type LearningOfferingList,
   type Session
 } from "@platform/contracts";
 
@@ -48,6 +52,20 @@ export class LearningDeliveryController {
     return this.delivery.createOffering(
       parseRequest(uuidSchema, organizationId),
       parseRequest(createLearningOfferingRequestSchema, body)
+    );
+  }
+
+  @Get()
+  @Header("Cache-Control", "no-store")
+  listOfferings(
+    @Param("organizationId") organizationId: string,
+    @Query() query: unknown
+  ): Promise<LearningOfferingList> {
+    const parsed = parseRequest(listLearningOfferingsQuerySchema, query);
+    return this.delivery.listOfferings(
+      parseRequest(uuidSchema, organizationId),
+      parsed.courseVersionId,
+      parsed.after ?? null
     );
   }
 

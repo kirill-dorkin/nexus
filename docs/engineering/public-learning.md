@@ -73,3 +73,16 @@ Progress commits a normal immutable Attempt and Submission with existing journal
 The HTTP result exposes only attemptNumber, passed/failed, score 0/1 and fixed safe guidance. Private answer config and author explanation never enter the result, Evidence, public reads, Web props, HTML, storage or routine logs. Computed authority cannot be invoked through manual result recording. No new grants, tables, migrations or event names are added. Task progress is refreshed by authenticated reads and never completes Enrollment automatically.
 
 Focused verification: `pnpm test:integration apps/api/src/learner-quiz-http.integration.test.ts`. Controlled submission/result outbox and Evidence failures are intentional recovery assertions. Unit contracts cover caller authority and pinned deterministic semantics; production Chrome covers labelled mobile form, focus, safe feedback, same-key ambiguous retry/new learner try and progress refresh through the existing non-canonical UX seam. Slice F will verify the complete canonical PostgreSQL learner path in the browser.
+
+## Authorized author Offering discovery
+
+`GET /v1/organizations/:organizationId/offerings?courseVersionId=:publishedVersionId[&after=:offeringId]`
+returns at most 50 canonical Offerings pinned to the exact published CourseVersion, ordered by UUID with a nullable nextCursor. It is a tenant/session-owned, no-store read: the caller must have `offering.manage` at the corresponding course scope, just as when creating an Offering. This is **not** anonymous course discovery, an Offering activation command, or a cross-tenant search. An unavailable/foreign/unpublished release fails closed; a learner or anonymous caller cannot enumerate author Offerings. The `after` UUID is pagination only and grants no authorization. Existing explicit creation, `visibility=private` default, separate visibility PATCH, outbox and public eligibility rules remain unchanged.
+
+### Studio cursor consumption
+
+Studio should request the first page without `after`, append the returned `offerings`, and request the next page only when `nextCursor` is non-null. The cursor is the **last included Offering ID**, not an offset or a CourseVersion ID. Once `nextCursor` is null, iteration ends; page boundaries must not drop or repeat Offerings. Refreshing after a visibility change requires a new first-page read, since listing is an authorized snapshot rather than a subscription. Do not cache this tenant-scoped response in a public or shared cache.
+
+The UI must not equate “no Offerings yet” with a publish failure: CourseVersion publication and Delivery Offering creation are separate, explicit author actions. An existing private Offering should be managed through its canonical ID instead of creating a duplicate. The return shape never implies that a private Offering is publicly discoverable.
+
+The narrow read API unblocks a subsequent Studio UI slice to manage public entry and copy canonical learner links without duplicating existing Offerings. It introduces no migration, new table or alternate canonical state.
