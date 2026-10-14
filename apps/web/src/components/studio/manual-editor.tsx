@@ -98,11 +98,13 @@ function Order({
 export function ManualEditor({
   document,
   edit,
-  existing
+  existing,
+  disabled = false
 }: {
   document: CourseManifestV1;
   edit: Edit;
   existing: boolean;
+  disabled?: boolean;
 }) {
 
   const [panel, setPanel] = useState<"lesson" | "course" | "bank">("lesson");
@@ -136,7 +138,7 @@ export function ManualEditor({
         <Button
           variant="secondary"
           type="button"
-          disabled={document.lessons.length >= 200}
+          disabled={disabled || document.lessons.length >= 200}
           onClick={() => {
             setSelectedIndex(document.lessons.length);
             setPanel("lesson");
@@ -163,6 +165,8 @@ export function ManualEditor({
         </nav>
       </aside>
       <div className={styles.lessonMain}>
+        <fieldset className={styles.contentFieldset} disabled={disabled}>
+        <legend className={styles.srOnly}>Содержимое курса</legend>
         {panel === "course" ? (
           <div className={styles.sections}>
       <section className={styles.card} id="studio-course" aria-label="Курс">
@@ -582,6 +586,7 @@ export function ManualEditor({
       </section>
           </div>
         )}
+        </fieldset>
       </div>
     </div>
   );
