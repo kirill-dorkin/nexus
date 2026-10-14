@@ -170,6 +170,7 @@
 }
 .courseVisual {
   min-width: 0;
+  align-self: center;
 }
 .courseImage {
   aspect-ratio: 16/9;
@@ -197,28 +198,6 @@
   height: 100%;
   object-fit: cover;
   filter: saturate(0.58) contrast(1.04);
-}
-.syllabus {
-  display: grid;
-  grid-template-columns: 110px minmax(0, 1fr);
-  gap: 16px;
-  margin-top: 20px;
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
-.syllabus p {
-  margin: 0;
-  color: var(--text-secondary);
-}
-.syllabus ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 8px;
-}
-.syllabus li {
-  overflow-wrap: anywhere;
 }
 .withoutArt {
   grid-template-columns: 1fr;
@@ -409,10 +388,6 @@
   .courseLoading {
     gap: 32px;
   }
-  .syllabus {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
 }
 @media (max-width: 700px) {
   .header {
@@ -463,9 +438,6 @@
   }
   .courseImage {
     border-radius: 12px;
-  }
-  .syllabus {
-    margin-top: 16px;
   }
   .courseLoading {
     min-height: 620px;
