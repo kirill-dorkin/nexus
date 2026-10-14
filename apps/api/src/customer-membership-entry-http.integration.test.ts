@@ -127,6 +127,28 @@ describe("customer Organization membership entry", () => {
     );
     expect(result.rows[0]?.customer_entry_policy).toBe("closed");
 
+    const anonymousRead = await app.inject({
+      method: "GET",
+      url: `/v1/organizations/${organizationId}/customer-entry-policy`
+    });
+    expect(anonymousRead.statusCode).toBe(401);
+
+    const ownerRead = await app.inject({
+      method: "GET",
+      url: `/v1/organizations/${organizationId}/customer-entry-policy`,
+      headers: userHeaders(ownerUserId)
+    });
+    expect(ownerRead.statusCode).toBe(200);
+    expect(ownerRead.headers["cache-control"]).toBe("no-store");
+    expect(JSON.parse(ownerRead.body)).toEqual({ policy: "closed" });
+
+    const foreignRead = await app.inject({
+      method: "GET",
+      url: `/v1/organizations/${organizationId}/customer-entry-policy`,
+      headers: userHeaders(customerUserId)
+    });
+    expect(foreignRead.statusCode).toBe(403);
+
     const join = await app.inject({
       method: "POST",
       url: `/v1/public/organizations/${organizationSlug}/memberships/me`,
@@ -144,6 +166,14 @@ describe("customer Organization membership entry", () => {
     });
     expect(open.statusCode).toBe(200);
     expect(JSON.parse(open.body)).toEqual({ policy: "open" });
+
+    const refreshedRead = await app.inject({
+      method: "GET",
+      url: `/v1/organizations/${organizationId}/customer-entry-policy`,
+      headers: userHeaders(ownerUserId)
+    });
+    expect(refreshedRead.statusCode).toBe(200);
+    expect(JSON.parse(refreshedRead.body)).toEqual({ policy: "open" });
 
     const join = await app.inject({
       method: "POST",
@@ -228,6 +258,13 @@ describe("customer Organization membership entry", () => {
       payload: { policy: "closed" }
     });
     expect(response.statusCode).toBe(403);
+
+    const read = await app.inject({
+      method: "GET",
+      url: `/v1/organizations/${organizationId}/customer-entry-policy`,
+      headers: userHeaders(customerUserId)
+    });
+    expect(read.statusCode).toBe(403);
   });
 
   it("does not bypass invited, left, or suspended Membership lifecycle", async () => {
