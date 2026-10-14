@@ -33,7 +33,7 @@
   /* Derived companion colors, never an independently selected second accent. */
   --accent-companion: color-mix(in srgb, var(--accent-action) 65%, var(--accent-night));
   --accent-atmosphere: color-mix(in srgb, var(--accent-companion) 7%, transparent);
-  --art-tint-strength: 0.25;
+  --art-tint-strength: 0.28;
 }
 /* Explicit themes also work inside an isolated component gallery. */
 :root,
@@ -113,6 +113,7 @@
   --art-opacity: 0.58;
 }
 [data-ui-accent="rose"] {
+  --art-tint-strength: 0.22;
   --accent-action: #c21e68;
   --accent-hover: #aa1759;
   --accent-day: #a5195b;
@@ -120,6 +121,7 @@
   --art-filter: saturate(0.85);
 }
 [data-ui-accent="violet"] {
+  --art-tint-strength: 0.68;
   --accent-action: #7742d3;
   --accent-hover: #6634bc;
   --accent-day: #6935bc;
@@ -127,6 +129,7 @@
   --art-filter: grayscale(1) sepia(1) saturate(2) hue-rotate(215deg);
 }
 [data-ui-accent="blue"] {
+  --art-tint-strength: 0.80;
   --accent-action: #2455cb;
   --accent-hover: #1947b7;
   --accent-day: #2455cb;
@@ -134,6 +137,7 @@
   --art-filter: grayscale(1) sepia(1) saturate(2) hue-rotate(180deg);
 }
 [data-ui-accent="teal"] {
+  --art-tint-strength: 0.78;
   --accent-action: #08786f;
   --accent-hover: #06665e;
   --accent-day: #066e65;
@@ -141,6 +145,7 @@
   --art-filter: grayscale(1) sepia(1) saturate(2) hue-rotate(115deg);
 }
 [data-ui-accent="amber"] {
+  --art-tint-strength: 0.74;
   --accent-action: #946000;
   --accent-hover: #805200;
   --accent-day: #805400;
