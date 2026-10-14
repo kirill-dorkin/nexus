@@ -813,17 +813,45 @@ async function verifyStudio(cdp) {
     await clickText(cdp,"Опубликовать версию 1");
     await waitForExpression(cdp,'document.body.innerText.includes("Версия опубликована")',"fenced publication");
     const release=await canonicalRead();published=release.body;assert(release.body.status==="published"&&release.body.manifest.course.title==="Другой автор","Published an unseen working copy.");
+    // Publishing Content does not open Delivery. Use the real Studio controls
+    // against the immutable release and verify private-by-default semantics.
+    await navigate(cdp,`${WEB_ORIGIN}/studio/${org}/${course}/offerings`);
+    await waitForExpression(cdp,
+      'document.body.innerText.includes("Новый доступ") && document.body.innerText.includes("Создать приватный доступ")',
+      "Studio published Offering manager");
+    await accessibilityAudit(cdp,"Studio author-only Offering manager");
+    await clickText(cdp,"Создать приватный доступ");
+    await waitForExpression(cdp,'document.body.innerText.includes("Доступ создан приватным")',"Studio private Offering creation");
+    const offeringPage = await evaluate(cdp,
+      `fetch(${JSON.stringify(`${apiBase}/offerings?courseVersionId=${published.versionId}`)},{credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,body:await r.json()}))`);
+    assert(offeringPage.status===200&&offeringPage.body.offerings.length===1&&offeringPage.body.offerings[0].slug===slug&&offeringPage.body.offerings[0].visibility==="private",
+      "Studio created an unexpected/public/duplicate Offering.");
+    await clickText(cdp,"Открыть публичный доступ");
+    await waitForExpression(cdp,'document.body.innerText.includes("Подтвердите: опубликованный курс")',"explicit Offering publication confirmation");
+    await clickText(cdp,"Подтвердить открытие доступа");
+    await waitForExpression(cdp,'document.body.innerText.includes("Публичный доступ включён.")',"explicit Studio visibility change");
+    const publicHref = await evaluate(cdp,
+      '[...document.querySelectorAll("article a")].find(a=>a.getAttribute("href")?.startsWith("/learn/"))?.href ?? null');
+    assert(publicHref===`${WEB_ORIGIN}/learn/${organizationSlug}/${slug}`,
+      "Studio did not expose the canonical learner link.");
+    await clickText(cdp,"Скрыть публичный доступ");
+    await waitForExpression(cdp,'document.body.innerText.includes("Публичный доступ скрыт.")',"explicit Studio private restoration");
+    assert(await evaluate(cdp,'[...document.querySelectorAll("article a")].every(a=>!a.getAttribute("href")?.startsWith("/learn/"))'),
+      "Private Offering still displayed a public learner link.");
+    await clickText(cdp,"Открыть публичный доступ");
+    await waitForExpression(cdp,'document.body.innerText.includes("Подтвердите: опубликованный курс")',"reopen Offering confirmation");
+    await clickText(cdp,"Подтвердить открытие доступа");
+    await waitForExpression(cdp,'document.body.innerText.includes("Публичный доступ включён.")',"Studio reopen access");
+    await navigate(cdp,`${WEB_ORIGIN}/studio/${org}/${course}`);
+    await waitForExpression(cdp,'document.body.innerText.includes("Создать следующий черновик")',"return to published editor");
     await clickText(cdp,"Создать следующий черновик");
     await waitForExpression(cdp,'document.body.innerText.includes("Создан следующий черновик")',"explicit next draft");
     const next=await canonicalRead();assert(next.body.versionNumber===2&&next.body.status==="draft"&&JSON.stringify(next.body.manifest)===JSON.stringify(release.body.manifest),"Next draft lost authored fields.");
     assert(!(await evaluate(cdp,'document.documentElement.scrollWidth>innerWidth')),"Studio overflows mobile.");
     await accessibilityAudit(cdp,"Studio next draft mobile");
   } finally {rmSync(temp,{recursive:true,force:true});}
-  // Delivery is explicitly configured by the authorized owner, independently of publication.
+  // Organization customer-entry policy remains a separate explicit action.
   const ownerWrite = (path, method, body) => evaluate(cdp, `fetch(${JSON.stringify(`${apiBase}${path}`)}, {method:${JSON.stringify(method)},credentials:"include",headers:{"content-type":"application/json"},body:${JSON.stringify(JSON.stringify(body))}}).then(async r=>({status:r.status,body:await r.json()}))`);
-  const offering = await ownerWrite("/offerings", "POST", {slug, name:"Canonical browser course",courseVersionId:published.versionId,deliveryMode:"self_paced",accessMode:"membership"});
-  assert(offering.status===201 && offering.body.visibility==="private", "Publication implicitly opened an Offering.");
-  assert((await ownerWrite(`/offerings/${offering.body.id}/visibility`, "PATCH", {visibility:"public"})).status===200, "Owner failed to explicitly open Offering.");
   assert((await ownerWrite("/customer-entry-policy", "PUT", {policy:"open"})).status===200, "Owner failed to explicitly open Organization entry.");
   await evaluate(cdp,`fetch(${JSON.stringify(`${API_ORIGIN}/v1/auth/logout`)},{method:"POST",credentials:"include"}).then(r=>r.status)`);
   console.log("[browser-launch] canonical Studio manual/JSON/conflict/export/preview/publication passed");
