@@ -789,7 +789,9 @@ async function verifyStudio(cdp) {
   const closed=await readPolicy();
   assert(closed.status===200&&closed.body.policy==="closed","Studio failed to restore closed customer entry policy.");
   await navigate(cdp,`${WEB_ORIGIN}${createHref}`);
-  await waitForExpression(cdp,'document.querySelectorAll("input").length>0',"new manual editor");
+  await waitForExpression(cdp,
+    '[...document.querySelectorAll("button")].some(b=>b.textContent?.trim()==="Настройки курса и навыки")',
+    "new lesson-first editor ready");
   const slug=`browser-course-${Date.now()}`;
   await clickText(cdp,"Настройки курса и навыки");
   await fillLabel(cdp,"Адрес курса (slug)",slug);
