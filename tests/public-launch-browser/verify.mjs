@@ -604,7 +604,10 @@ async function evaluate(cdp, expression) {
 async function waitForExpression(cdp, expression, label, timeoutMs = 20_000) {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
-    if (await evaluate(cdp, expression)) return;
+    // Next.js can navigate between the click and this poll: document.body is
+    // briefly null during a fresh document load. Treat that as "not ready",
+    // not as an application/runtime assertion failure.
+    if (await evaluate(cdp, `document.body !== null && (${expression})`)) return;
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
   throw new Error(`Timed out waiting for ${label}.`);
