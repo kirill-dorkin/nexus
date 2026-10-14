@@ -136,6 +136,33 @@ export class OrganizationsApplicationService {
     });
   }
 
+  async getCustomerEntryPolicy(
+    organizationId: string
+  ): Promise<OrganizationCustomerEntryPolicy> {
+    const context = this.requestContext.tenantContext(organizationId);
+
+    return this.database.tenantTransaction(
+      context,
+      async (transaction) => {
+        await this.identity.requireActiveUser(transaction, context.userId);
+        // A policy management hint is not a public Organization projection.
+        await this.authorization.requireCapability(
+          transaction,
+          context.userId,
+          "organization.manage",
+          organizationScope(organizationId)
+        );
+        const policy = await this.organizations.getCustomerEntryPolicy(
+          transaction,
+          organizationId
+        );
+        if (policy === null) throw new NotFoundException("Organization not found.");
+        return { policy };
+      },
+      { readOnly: true }
+    );
+  }
+
   async updateCustomerEntryPolicy(
     organizationId: string,
     command: UpdateCustomerEntryPolicyRequest

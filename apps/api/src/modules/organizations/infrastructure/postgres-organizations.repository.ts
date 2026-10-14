@@ -189,6 +189,19 @@ export class PostgresOrganizationsRepository extends OrganizationsRepository {
     return row === undefined ? null : mapMembership(row);
   }
 
+  async getCustomerEntryPolicy(
+    transaction: DatabaseTransaction,
+    organizationId: string
+  ): Promise<CustomerEntryPolicy | null> {
+    const result = await transaction.client.query<CustomerEntryPolicyRow>(
+      `SELECT customer_entry_policy
+         FROM organizations.organizations
+        WHERE id = $1`,
+      [organizationId]
+    );
+    return result.rows[0]?.customer_entry_policy ?? null;
+  }
+
   async updateCustomerEntryPolicy(
     transaction: DatabaseTransaction,
     organizationId: string,

@@ -273,6 +273,11 @@ export function StudioHome() {
                       </Link>
                     )}
                   </div>
+                  <p className={styles.courseManageLink}>
+                    <Link href={`/studio/${selected.id}/entry-policy`}>
+                      Вступление учеников · настройки организации
+                    </Link>
+                  </p>
                   {!courses && !error && (
                     <div role="status" className={styles.loading}>
                       <Text muted>Загружаем курсы…</Text>

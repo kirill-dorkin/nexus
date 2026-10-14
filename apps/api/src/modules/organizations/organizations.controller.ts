@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   HttpCode,
   HttpStatus,
   Param,
@@ -39,6 +40,16 @@ export class OrganizationsController {
     @Param("organizationId") organizationId: string
   ): Promise<Organization> {
     return this.organizations.getOrganization(
+      parseRequest(uuidSchema, organizationId)
+    );
+  }
+
+  @Get(":organizationId/customer-entry-policy")
+  @Header("Cache-Control", "no-store")
+  getCustomerEntryPolicy(
+    @Param("organizationId") organizationId: string
+  ): Promise<OrganizationCustomerEntryPolicy> {
+    return this.organizations.getCustomerEntryPolicy(
       parseRequest(uuidSchema, organizationId)
     );
   }

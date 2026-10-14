@@ -64,6 +64,11 @@ export abstract class OrganizationsRepository {
     userId: string
   ): Promise<OrganizationMembership | null>;
 
+  abstract getCustomerEntryPolicy(
+    transaction: DatabaseTransaction,
+    organizationId: string
+  ): Promise<CustomerEntryPolicy | null>;
+
   abstract updateCustomerEntryPolicy(
     transaction: DatabaseTransaction,
     organizationId: string,
