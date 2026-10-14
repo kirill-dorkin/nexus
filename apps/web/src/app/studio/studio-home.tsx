@@ -153,6 +153,14 @@ export function StudioHome() {
                       </Link>{" "}
                       · {c.status === "draft" ? "Черновик" : "Опубликовано"},
                       версия {c.versionNumber}
+                      {c.status === "published" && (
+                        <>
+                          {" "}·{" "}
+                          <Link href={`/studio/${selected.id}/${c.courseId}/offerings`}>
+                            Доступ и ссылка
+                          </Link>
+                        </>
+                      )}
                     </li>
                   ))}
                 </ul>
