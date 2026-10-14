@@ -44,6 +44,9 @@ export function StudioHome() {
           setOrganizations(data.organizations);
           setCursor(data.nextCursor);
           setReady(true);
+          if (data.organizations.length === 1 && data.nextCursor === null) {
+            void select(data.organizations[0]!);
+          }
         }
       })
       .catch((e) => {

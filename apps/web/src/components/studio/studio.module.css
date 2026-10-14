@@ -551,3 +551,91 @@
   font-weight: 600;
   text-underline-offset: 0.2rem;
 }
+
+/* Lesson-first Studio: the list is navigation, not a second representation of content. */
+.editorLayoutManual { grid-template-columns: minmax(0, 1fr); }
+.lessonWorkspace {
+  display: grid;
+  grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: start;
+}
+.lessonSidebar {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+  position: sticky;
+  top: 6rem;
+  min-width: 0;
+}
+.lessonSidebarHeading h2 { margin: 0 0 .5rem; font-size: 1.3rem; }
+.lessonSidebarHeading p, .lessonNote { margin: .5rem 0 1rem; color: var(--text-secondary); font-size: .9rem; line-height: 1.6; }
+.lessonList { display: grid; gap: .5rem; list-style: none; margin: 0; padding: 0; }
+.lessonList li { min-width: 0; }
+.lessonSelect {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: .3rem .75rem;
+  align-items: center;
+  width: 100%;
+  min-height: 4.5rem;
+  padding: .85rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-solid);
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+.lessonSelect:hover { border-color: var(--border-strong); background: var(--surface-subtle); }
+.lessonSelect[aria-pressed="true"] { border-color: var(--border-accent); background: var(--accent-subtle); }
+.lessonSelect:focus-visible, .lessonOtherNav button:focus-visible, .textAction:focus-visible {
+  outline: 3px solid var(--action-primary);
+  outline-offset: 3px;
+}
+.lessonNumber {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface-subtle);
+  font-weight: 700;
+}
+.lessonName { font-weight: 600; font-size: .9rem; overflow-wrap: anywhere; }
+.lessonCount { color: var(--text-secondary); font-size: .78rem; }
+.lessonOtherNav { display: grid; gap: .25rem; border-top: 1px solid var(--border-default); padding-top: 1rem; }
+.lessonOtherNav button {
+  border: 0;
+  border-radius: var(--radius-sm);
+  text-align: left;
+  min-height: 44px;
+  padding: .65rem .8rem;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font: inherit;
+}
+.lessonOtherNav button[aria-pressed="true"] { background: var(--accent-subtle); color: var(--text-accent); font-weight: 650; }
+.lessonMain { min-width: 0; }
+.lessonMain .sections { gap: 2rem; }
+.lessonMain .card { padding-top: 0; border-top: 0; }
+.lessonEmpty { padding: clamp(2rem, 5vw, 4rem); border: 1px dashed var(--border-strong); border-radius: var(--radius-lg); }
+.lessonEmpty h2 { margin-top: 0; }
+.inlineTask { padding: 1rem 0 0; border-top: 1px solid var(--border-default); }
+.inlineTask details > summary { padding: .9rem .5rem; font-weight: 650; color: var(--text-accent); cursor: pointer; }
+.inlineTask details > fieldset { margin-top: 1rem; }
+.inlineTask .lessonNote { margin-top: .5rem; }
+.textAction { display: inline; border: 0; padding: 0; background: transparent; font: inherit; color: var(--text-accent); font-weight: 650; text-decoration: underline; cursor: pointer; }
+@media (max-width: 900px) {
+  .lessonWorkspace { grid-template-columns: minmax(0, 1fr); }
+  .lessonSidebar { position: static; }
+  .lessonList { display: flex; overflow-x: auto; padding: .15rem .2rem .65rem; scroll-snap-type: x proximity; }
+  .lessonList li { flex: 0 0 min(17rem, 75vw); scroll-snap-align: start; }
+  .lessonOtherNav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 500px) {
+  .lessonOtherNav { grid-template-columns: minmax(0, 1fr); }
+}
