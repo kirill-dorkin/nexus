@@ -25,11 +25,11 @@
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --motion-fast: 160ms ease;
   --blur-surface: 18px;
-  --accent-action: #c21e68;
-  --accent-hover: #aa1759;
-  --accent-day: #a5195b;
-  --accent-night: #f5a0cb;
-  --art-filter: saturate(0.85);
+  --accent-action: #08786f;
+  --accent-hover: #06665e;
+  --accent-day: #066e65;
+  --accent-night: #80dcd0;
+  --art-filter: grayscale(1) sepia(1) saturate(2) hue-rotate(115deg);
   /* Derived companion colors, never an independently selected second accent. */
   --accent-companion: color-mix(in srgb, var(--accent-action) 65%, var(--accent-night));
   --accent-atmosphere: color-mix(in srgb, var(--accent-companion) 7%, transparent);
