@@ -542,3 +542,12 @@
 .shell :global(.ui-field) label {
   margin: 0;
 }
+
+/* The published-course action is separate from the editor card link. */
+.courseManageLink {
+  display: inline-block;
+  margin: 0.25rem 0 1.25rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-underline-offset: 0.2rem;
+}

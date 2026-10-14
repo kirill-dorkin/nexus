@@ -325,6 +325,12 @@ export function StudioHome() {
                             </div>
                             <span aria-hidden="true">↗</span>
                           </Link>
+                          {c.status === "published" && (
+                            <Link className={styles.courseManageLink}
+                              href={`/studio/${selected.id}/${c.courseId}/offerings`}>
+                              Доступ и ссылка
+                            </Link>
+                          )}
                         </li>
                       ))}
                     </ul>
