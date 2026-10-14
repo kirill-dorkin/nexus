@@ -24,5 +24,16 @@ describe("deferred YouTube lesson media", () => {
     expect(html).toContain("Внешний учебный материал");
     expect(html).not.toMatch(/<iframe|<img|youtube-nocookie|<script/);
   });
+
+  it("keeps the initial frame out of the active mobile state", () => {
+    const html = renderToStaticMarkup(
+      createElement(YouTubeVideo, {
+        videoId: "aqz-KE-bpKQ",
+        title: "Урок"
+      })
+    );
+    expect(html).not.toContain("frameActive");
+    expect(html).toContain('aria-live="polite"');
+  });
 });
 

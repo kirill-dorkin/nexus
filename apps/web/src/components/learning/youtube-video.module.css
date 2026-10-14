@@ -15,5 +15,20 @@
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
 .actions a { color: var(--text-accent); font-size: 0.85rem; padding-block: 0.7rem; min-height: 44px; text-underline-offset: 4px; }
 .srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-@media (max-width: 560px) { .frame { aspect-ratio: auto; min-height: 18rem; } .placeholder { grid-template-columns: 1fr; align-content: end; gap: 1.25rem; } .play { justify-self: start; } }
-@media (max-width: 400px) { .frame { min-height: 17rem; } .placeholder { padding: 1.25rem; } .eyebrow { font-size: 0.6rem; } .placeholder p { font-size: 0.75rem; } }
+@media (max-width: 560px) {
+  .frame { aspect-ratio: auto; min-height: 18rem; }
+  .frameActive { aspect-ratio: 16 / 9; min-height: 0; }
+  .placeholder { grid-template-columns: 1fr; align-content: end; gap: 1.25rem; }
+  .play { justify-self: start; }
+  .footer { align-items: flex-start; }
+  .actions { width: 100%; justify-content: space-between; }
+}
+@media (max-width: 400px) {
+  .frame:not(.frameActive) { min-height: 17rem; }
+  .placeholder { padding: 1.25rem; }
+  .eyebrow { font-size: 0.6rem; }
+  .placeholder p { font-size: 0.75rem; }
+  .actions { display: grid; grid-template-columns: 1fr; gap: 0.25rem; }
+  .actions > * { width: 100%; justify-content: center; text-align: center; }
+}
+

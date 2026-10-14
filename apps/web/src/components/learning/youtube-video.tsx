@@ -29,7 +29,9 @@ export function YouTubeVideo({
   }, [active]);
   return (
     <section className={styles.video} aria-label="Видео урока">
-      <div className={styles.frame}>
+      <div
+        className={`${styles.frame} ${active ? styles.frameActive : ""}`}
+      >
         {active ? (
           <iframe
             src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`}
@@ -60,7 +62,13 @@ export function YouTubeVideo({
         )}
       </div>
       <div className={styles.footer}>
-        <p role="status">{active && !loaded ? "Загружаем плеер YouTube…" : "YouTube не загружается до нажатия. Если встраивание недоступно, откройте видео отдельно."}</p>
+        <p role="status" aria-live="polite">
+          {active
+            ? loaded
+              ? "Видео загружено. Если плеер недоступен, откройте ролик отдельно."
+              : "Загружаем плеер YouTube…"
+            : "YouTube не загружается до нажатия. Если встраивание недоступно, откройте видео отдельно."}
+        </p>
         <div className={styles.actions}>
           {active ? <Button ref={close} variant="ghost" size="sm" onClick={() => setActive(false)}>Закрыть плеер</Button> : null}
           <a href={`https://www.youtube.com/watch?v=${videoId}`} target="_blank" rel="noopener noreferrer">Открыть на YouTube <span aria-hidden="true">↗</span><span className={styles.srOnly}> (новая вкладка)</span></a>
