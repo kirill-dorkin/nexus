@@ -1292,6 +1292,7 @@ async function runBrowserVerification(cdp) {
     cdp,
     `({ xss: window.__lessonXss === true, unsafe: !!document.querySelector('main img,main script,main a[href^="javascript:"],main [onerror]'),
     video: document.querySelector('iframe')?.getAttribute('src'), overflow: document.documentElement.scrollWidth > innerWidth,
+    videoRatio: (() => { const frame = document.querySelector('iframe')?.parentElement?.getBoundingClientRect(); return frame ? frame.width / frame.height : 0; })(),
     code: !!document.querySelector('main pre code'), headings: document.querySelectorAll('main h1').length })`
   );
   assert(
@@ -1305,6 +1306,10 @@ async function runBrowserVerification(cdp) {
   assert(
     !lessonSafety.overflow && lessonSafety.code && lessonSafety.headings === 1,
     `Lesson is not contained/readable on mobile: ${JSON.stringify(lessonSafety)}`
+  );
+  assert(
+    lessonSafety.videoRatio > 1.7 && lessonSafety.videoRatio < 1.82,
+    `Lesson video lost its 16:9 mobile ratio: ${JSON.stringify(lessonSafety)}`
   );
   await evaluate(
     cdp,
