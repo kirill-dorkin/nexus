@@ -39,6 +39,9 @@ if (
 const catalog = await read("/v1/public/learning", true);
 if (!Array.isArray(catalog.courses))
   throw new Error("Canonical public learning catalog is unavailable.");
+// A healthy empty catalog does not mean the first course has been published.
+// Emit only a count, never tenant metadata or protected lesson content.
+console.log(`Public learning courses available: ${catalog.courses.length}`);
 await read("/");
 await read("/studio");
 await read("/login");
