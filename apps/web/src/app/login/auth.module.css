@@ -220,16 +220,6 @@
   height: auto;
   filter: var(--art-filter);
 }
-/* Decorative ribbon inherits the user's chosen accent; never a fixed pink asset. */
-.art::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: var(--accent-companion);
-  opacity: 0.54;
-  mix-blend-mode: color;
-}
 :global([data-ui-theme="light"]) .art {
   opacity: .55;
 }
