@@ -1,0 +1,54 @@
+name: Production Web/API/PostgreSQL smoke
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/production-smoke.yml"
+      - "scripts/smoke-production.mjs"
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: "17 6 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify-public-origin:
+    name: Check deployed public learner entry
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    env:
+      PUBLIC_ORIGIN: https://nexus-lake-nine-17.vercel.app
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Check HTTPS Web/API/database public reads
+        shell: bash
+        run: |
+          set -euo pipefail
+          # The Git push can race Vercel's promotion. Poll boundedly instead
+          # of treating a build-in-progress as a permanent outage.
+          for attempt in $(seq 1 10); do
+            echo "Public origin smoke attempt ${attempt}/10"
+            if node scripts/smoke-production.mjs "$PUBLIC_ORIGIN"; then
+              exit 0
+            fi
+            if [ "$attempt" -eq 10 ]; then
+              echo "Production public HTTPS Web/API/PostgreSQL smoke failed." >&2
+              exit 1
+            fi
+            sleep 25
+          done
