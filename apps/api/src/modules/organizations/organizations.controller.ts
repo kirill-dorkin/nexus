@@ -44,6 +44,16 @@ export class OrganizationsController {
     );
   }
 
+  @Get(":organizationId/customer-entry-policy")
+  @Header("Cache-Control", "no-store")
+  getCustomerEntryPolicy(
+    @Param("organizationId") organizationId: string
+  ): Promise<OrganizationCustomerEntryPolicy> {
+    return this.organizations.getCustomerEntryPolicy(
+      parseRequest(uuidSchema, organizationId)
+    );
+  }
+
   @Put(":organizationId/customer-entry-policy")
   @HttpCode(HttpStatus.OK)
   updateCustomerEntryPolicy(
