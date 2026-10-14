@@ -165,22 +165,12 @@ export function DiscoveryRows({
                 <div className={styles.courseImage}>
                   <Image
                     {...artwork}
-                    alt=""
+                    alt={artwork.alt}
                     unoptimized
                     preload={index === 0}
                     sizes="(max-width: 700px) 100vw, 530px"
                   />
                 </div>
-                {course.course.lessons.length > 0 && (
-                  <div className={styles.syllabus}>
-                    <p>В программе</p>
-                    <ul>
-                      {course.course.lessons.slice(0, 3).map((lesson) => (
-                        <li key={lesson.slug}>{lesson.title}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
               </div>
             )}
           </article>
