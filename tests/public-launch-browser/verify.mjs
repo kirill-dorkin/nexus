@@ -831,12 +831,12 @@ async function verifyStudio(cdp) {
     await clickText(cdp,"Подтвердить открытие доступа");
     await waitForExpression(cdp,'document.body.innerText.includes("Публичный доступ включён.")',"explicit Studio visibility change");
     const publicHref = await evaluate(cdp,
-      '[...document.querySelectorAll("article a")].find(a=>a.getAttribute("href")?.startsWith("/learn/"))?.href ?? null');
+      '[...document.querySelectorAll("article a")].find(a=>a.pathname.startsWith("/learn/"))?.href ?? null');
     assert(publicHref===`${WEB_ORIGIN}/learn/${organizationSlug}/${slug}`,
       "Studio did not expose the canonical learner link.");
     await clickText(cdp,"Скрыть публичный доступ");
     await waitForExpression(cdp,'document.body.innerText.includes("Публичный доступ скрыт.")',"explicit Studio private restoration");
-    assert(await evaluate(cdp,'[...document.querySelectorAll("article a")].every(a=>!a.getAttribute("href")?.startsWith("/learn/"))'),
+    assert(await evaluate(cdp,'[...document.querySelectorAll("article a")].every(a=>!a.pathname.startsWith("/learn/"))'),
       "Private Offering still displayed a public learner link.");
     await clickText(cdp,"Открыть публичный доступ");
     await waitForExpression(cdp,'document.body.innerText.includes("Подтвердите: опубликованный курс")',"reopen Offering confirmation");
