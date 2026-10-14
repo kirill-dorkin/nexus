@@ -1183,6 +1183,45 @@ async function runBrowserVerification(cdp) {
   await accessibilityAudit(cdp, "learning homepage");
   assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Learning homepage overflows mobile.");
   assert(await evaluate(cdp, 'document.querySelectorAll("h1").length === 1 && !document.body.innerText.includes("Дизайн Preview")'), "Public homepage has duplicate heading or lab notice.");
+  await evaluate(cdp, 'document.querySelector(\'button[aria-label="Открыть меню"]\')?.click()');
+  await waitForExpression(cdp, 'document.querySelector(\'dialog[open]\')?.innerText.includes("Меню")', "mobile navigation");
+  await accessibilityAudit(cdp, "mobile navigation");
+  assert(await evaluate(cdp, `(() => {
+    const dialog = document.querySelector("dialog[open]");
+    if (!dialog) return false;
+    const rect = dialog.getBoundingClientRect();
+    const controls = [...dialog.querySelectorAll("a, button")];
+    return rect.left >= 11 && innerWidth - rect.right >= 11
+      && rect.top >= 76 && rect.bottom <= innerHeight - 8
+      && controls.length >= 3
+      && controls.every((control) => control.getBoundingClientRect().height >= 44)
+      && dialog.contains(document.activeElement)
+      && !dialog.innerText.includes("Куда вы хотите перейти?")
+      && document.documentElement.scrollWidth <= innerWidth;
+  })()`), "Mobile navigation is clipped, verbose, or has undersized controls at 390px.");
+  await cdp.send("Emulation.setDeviceMetricsOverride", {
+    width: 320,
+    height: 640,
+    deviceScaleFactor: 1,
+    mobile: true
+  });
+  assert(await evaluate(cdp, `(() => {
+    const dialog = document.querySelector("dialog[open]");
+    if (!dialog) return false;
+    const rect = dialog.getBoundingClientRect();
+    return rect.left >= 11 && innerWidth - rect.right >= 11
+      && rect.bottom <= innerHeight - 8
+      && document.documentElement.scrollWidth <= innerWidth;
+  })()`), "Mobile navigation is clipped or overflows at 320px.");
+  await cdp.send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await waitForExpression(cdp, '!document.querySelector("dialog[open]")', "mobile navigation dismissal");
+  await cdp.send("Emulation.setDeviceMetricsOverride", {
+    width: 390,
+    height: 844,
+    deviceScaleFactor: 1,
+    mobile: true
+  });
   // The Acme fixture has no reviewed course artwork. Discovery must work without it.
   await waitForExpression(cdp, 'document.body.innerText.includes("2 урока") && document.body.innerText.includes("15 мин")', "homepage real metadata");
   await tabUntil(cdp, 'document.activeElement?.getAttribute("href") === "/learn/acme/computer-basics" && document.activeElement?.classList.contains("ui-button")', "homepage catalog action");

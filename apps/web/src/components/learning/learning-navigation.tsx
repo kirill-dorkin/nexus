@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
-import { ArrowRight, List, X } from "@phosphor-icons/react/dist/ssr";
-import { brand } from "@platform/brand";
+import { ArrowRight, CaretRight, List, X } from "@phosphor-icons/react/dist/ssr";
 import { Dialog, IconButton, buttonClass } from "@platform/ui";
 import { browserApiRequest } from "../../lib/public-api";
 import styles from "./navigation.module.css";
@@ -64,6 +63,26 @@ export function LearningNavigation({
       </Link>
     ));
   }
+  function mobileLinks() {
+    const destinations = authenticated
+      ? [...publicDestinations, ...privateDestinations]
+      : publicDestinations;
+    return destinations.map((item) => (
+      <Link
+        key={item.href}
+        href={item.href}
+        aria-current={
+          pathname === item.href || pathname.startsWith(`${item.href}/`)
+            ? "page"
+            : undefined
+        }
+        onClick={() => setOpen(false)}
+      >
+        <span>{item.label}</span>
+        <CaretRight size={18} weight="bold" aria-hidden="true" />
+      </Link>
+    ));
+  }
   return (
     <div className={styles.controls}>
       <nav className={styles.desktop} aria-label="Главное меню">
@@ -98,20 +117,16 @@ export function LearningNavigation({
         aria-labelledby={`${id}-title`}
       >
         <div className={styles.menuHeading}>
-          <div>
-            <span className={styles.menuEyebrow}>{brand.name}</span>
-            <h2 id={`${id}-title`}>Куда вы хотите перейти?</h2>
-          </div>
+          <h2 id={`${id}-title`}>Меню</h2>
           <IconButton aria-label="Закрыть меню" onClick={() => setOpen(false)}>
             <X size={22} aria-hidden="true" />
           </IconButton>
         </div>
         <nav className={styles.mobileNav} aria-label="Главное меню на мобильном экране">
-          {links()}
+          {mobileLinks()}
         </nav>
         {showLogin && authState === "anonymous" ? (
           <div className={styles.mobileAuth}>
-            <p>Сохраняйте прогресс и продолжайте обучение с любого устройства.</p>
             <Link
               className={buttonClass({ size: "md" })}
               href="/login?mode=register"
@@ -120,10 +135,17 @@ export function LearningNavigation({
               Создать аккаунт
               <ArrowRight size={18} aria-hidden="true" />
             </Link>
-            <Link href="/login" onClick={() => setOpen(false)}>Уже есть аккаунт? Войти</Link>
+            <Link
+              className={buttonClass({ variant: "ghost", size: "md" })}
+              href="/login"
+              onClick={() => setOpen(false)}
+            >
+              Войти
+            </Link>
           </div>
         ) : null}
       </Dialog>
     </div>
   );
 }
+

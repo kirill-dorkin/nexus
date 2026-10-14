@@ -72,76 +72,74 @@
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 .menuHeading h2 {
-  max-width: 16ch;
-  margin: 0.25rem 0 0;
-  font-size: clamp(1.45rem, 6vw, 2rem);
-  line-height: 1.08;
-  letter-spacing: -0.04em;
-}
-.menuEyebrow {
-  color: var(--text-accent);
-  font-size: 0.7rem;
-  font-weight: 750;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
 }
 .menu {
-  inset: auto 0 0;
+  inset: 84px max(12px, env(safe-area-inset-right)) auto max(12px, env(safe-area-inset-left));
   width: auto;
   margin: 0;
   max-width: none;
-  max-height: min(88dvh, 680px);
-  padding: 1.4rem max(1.25rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(1.25rem, env(safe-area-inset-left));
-  border-radius: 1.5rem 1.5rem 0 0;
+  max-height: calc(100dvh - 96px - env(safe-area-inset-bottom));
+  padding: 1rem;
+  border: 1px solid var(--border-default);
+  border-radius: 1.25rem;
   background: var(--surface-elevated);
+  box-shadow: var(--shadow-surface);
+}
+.menu::backdrop {
+  background: color-mix(in srgb, var(--text-primary) 18%, transparent);
+  backdrop-filter: blur(3px);
 }
 .mobileNav {
   display: grid;
-  gap: 0.25rem;
+  gap: 0.35rem;
 }
 .mobileNav a {
   display: flex;
   align-items: center;
-  min-height: 54px;
-  padding: 0.8rem 0.9rem;
-  font-size: 1.02rem;
-  font-weight: 620;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 56px;
+  padding: 0.8rem 0.95rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 650;
   text-decoration: none;
-  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  border-radius: 0.9rem;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+.mobileNav a svg {
+  color: var(--text-secondary);
 }
 .mobileNav a:hover,
 .mobileNav a[aria-current="page"] {
   background: var(--accent-subtle);
+  border-color: color-mix(in srgb, var(--text-accent) 18%, transparent);
   color: var(--text-accent);
 }
+.mobileNav a:hover svg,
+.mobileNav a[aria-current="page"] svg { color: currentColor; }
 .mobileAuth {
   display: grid;
-  gap: 0.75rem;
-  margin-top: 1.25rem;
-  padding-top: 1.25rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.72fr);
+  gap: 0.6rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
   border-top: 1px solid var(--border-default);
-}
-.mobileAuth p {
-  max-width: 36ch;
-  margin: 0 0 0.25rem;
-  color: var(--text-secondary);
-  font-size: 0.88rem;
-  line-height: 1.55;
 }
 .mobileAuth > a:first-of-type {
   justify-content: space-between;
   width: 100%;
 }
 .mobileAuth > a:last-child {
-  justify-self: center;
-  min-height: 44px;
-  padding: 0.7rem;
-  color: var(--text-secondary);
-  font-size: 0.84rem;
-  text-underline-offset: 4px;
+  width: 100%;
 }
 @media (max-width: 1040px) {
   .controls {
@@ -163,13 +161,25 @@
   .menu {
     left: auto;
     right: 1rem;
-    bottom: 1rem;
+    top: 88px;
+    bottom: auto;
     width: min(430px, calc(100vw - 2rem));
     border-radius: 1.5rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .desktop a {
+  .desktop a,
+  .mobileNav a {
     transition: none;
   }
 }
+@media (max-width: 360px) {
+  .mobileAuth { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .menu::backdrop {
+    background: color-mix(in srgb, var(--text-primary) 32%, var(--surface-solid));
+    backdrop-filter: none;
+  }
+}
+
