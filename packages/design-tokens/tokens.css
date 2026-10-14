@@ -1,4 +1,5 @@
 :root {
+  color-scheme: dark;
   --space-0: 0;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -11,39 +12,148 @@
   --space-16: 4rem;
   --space-20: 5rem;
   --space-24: 6rem;
-
-  --radius-sm: 0.375rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 0.875rem;
-
-  --surface-default: #ffffff;
-  --surface-subtle: #f7f7f8;
-  --surface-elevated: #ffffff;
-  --text-primary: #111113;
-  --text-secondary: #5f6068;
-  --text-disabled: #8c8d95;
-  --border-default: #dedee3;
-  --border-strong: #b8b9c0;
-  --action-primary: #1f5eff;
-  --status-success: #177245;
-  --status-warning: #8a5b00;
-  --status-danger: #b42318;
-  --status-info: #175cd3;
-  --focus-ring: #5b8cff;
-
-  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-cover: 2rem;
+  --radius-pill: 999px;
+  --content-width: 1296px;
+  --font-sans:
+    "Onest Variable", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --motion-fast: 160ms ease;
+  --blur-surface: 18px;
+  --accent-action: #08786f;
+  --accent-hover: #06665e;
+  --accent-day: #066e65;
+  --accent-night: #80dcd0;
+  --art-filter: grayscale(1) sepia(1) saturate(2) hue-rotate(115deg);
+  /* Derived companion colors, never an independently selected second accent. */
+  --accent-companion: color-mix(in srgb, var(--accent-action) 65%, var(--accent-night));
+  --accent-atmosphere: color-mix(in srgb, var(--accent-companion) 7%, transparent);
+  --art-tint-strength: 0.28;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --surface-default: #111113;
-    --surface-subtle: #19191c;
-    --surface-elevated: #202024;
-    --text-primary: #f5f5f6;
-    --text-secondary: #b7b8bf;
-    --text-disabled: #777981;
-    --border-default: #36363d;
-    --border-strong: #52535c;
-  }
+/* Explicit themes also work inside an isolated component gallery. */
+:root,
+[data-ui-theme="dark"] {
+  color-scheme: dark;
+  --surface-default: #15171d;
+  /* Low-chroma page canvas: only a small share of the selected accent. */
+  --page-background: color-mix(in srgb, var(--accent-action) 7%, #15171d);
+  --page-glow: color-mix(in srgb, var(--accent-night) 6%, transparent);
+  --surface-subtle: #181120;
+  --surface-elevated: color-mix(in srgb, var(--accent-action) 7%, #241a2d);
+  --surface-solid: #1d1625;
+  --surface-input: #14101c;
+  --surface-glass: color-mix(in srgb, var(--accent-action) 7%, rgb(29 21 38 / 90%));
+  --surface-hover: color-mix(in srgb, var(--accent-action) 12%, #2b2035);
+  --text-primary: #f8f5fb;
+  --text-secondary: #b8afc4;
+  --text-disabled: #93869f;
+  --text-accent: var(--accent-night);
+  --text-on-action: #fff;
+  --border-default: color-mix(in srgb, var(--accent-action) 9%, #382d43);
+  --border-strong: #776780;
+  --border-glass: color-mix(in srgb, var(--accent-action) 16%, #755267);
+  --border-accent: var(--accent-night);
+  --action-primary: var(--accent-action);
+  --action-hover: var(--accent-hover);
+  --action-danger: #b62c45;
+  --action-danger-hover: #a11d37;
+  --accent-subtle: color-mix(
+    in srgb,
+    var(--accent-action) 22%,
+    var(--surface-solid)
+  );
+  --status-success: #92e4ba;
+  --status-warning: #f5d08e;
+  --status-danger: #ffabb9;
+  --status-info: #bcb8ff;
+  --focus-ring: var(--accent-night);
+  --shadow-surface:
+    inset 0 1px 0 rgb(255 255 255 / 6%), 0 18px 60px rgb(0 0 0 / 16%);
+  --shadow-action: 0 5px 20px
+    color-mix(in srgb, var(--accent-action) 18%, transparent);
+  --art-opacity: 0.82;
+}
+[data-ui-theme="light"] {
+  color-scheme: light;
+  --surface-default: #f5f6fa;
+  --page-background: color-mix(in srgb, var(--accent-action) 3%, #f7f8fa);
+  --page-glow: color-mix(in srgb, var(--accent-action) 4%, transparent);
+  --surface-subtle: #f8f9fc;
+  --surface-elevated: #fff;
+  --surface-solid: #fff;
+  --surface-input: #f7f7fb;
+  --surface-glass: color-mix(in srgb, var(--accent-action) 3%, rgb(255 255 255 / 90%));
+  --surface-hover: color-mix(in srgb, var(--accent-action) 6%, #f0edfa);
+  --text-primary: #20213a;
+  --text-secondary: #62687d;
+  --text-disabled: #969bad;
+  --text-accent: var(--accent-day);
+  --text-on-action: #fff;
+  --border-default: color-mix(in srgb, var(--accent-action) 5%, #e5e7ef);
+  --border-strong: #898a9c;
+  --border-glass: color-mix(in srgb, var(--accent-action) 10%, #d8d3e8);
+  --border-accent: var(--accent-day);
+  --action-primary: var(--accent-action);
+  --action-hover: var(--accent-hover);
+  --action-danger: #b62c45;
+  --action-danger-hover: #a11d37;
+  --accent-subtle: color-mix(
+    in srgb,
+    var(--accent-action) 9%,
+    var(--surface-solid)
+  );
+  --status-success: #17613d;
+  --status-warning: #805800;
+  --status-danger: #a41c36;
+  --status-info: #514097;
+  --focus-ring: var(--accent-day);
+  --shadow-surface: inset 0 1px 0 #fff, 0 18px 60px rgb(32 33 58 / 8%);
+  --shadow-action: 0 5px 20px
+    color-mix(in srgb, var(--accent-action) 12%, transparent);
+  --art-opacity: 0.58;
+}
+[data-ui-accent="rose"] {
+  --art-tint-strength: 0.22;
+  --accent-action: #c21e68;
+  --accent-hover: #aa1759;
+  --accent-day: #a5195b;
+  --accent-night: #f5a0cb;
+  --art-filter: saturate(0.85);
+}
+[data-ui-accent="violet"] {
+  --art-tint-strength: 0.68;
+  --accent-action: #7742d3;
+  --accent-hover: #6634bc;
+  --accent-day: #6935bc;
+  --accent-night: #c8afff;
+  --art-filter: grayscale(1) sepia(1) saturate(2) hue-rotate(215deg);
+}
+[data-ui-accent="blue"] {
+  --art-tint-strength: 0.80;
+  --accent-action: #2455cb;
+  --accent-hover: #1947b7;
+  --accent-day: #2455cb;
+  --accent-night: #a0bcff;
+  --art-filter: grayscale(1) sepia(1) saturate(2) hue-rotate(180deg);
+}
+[data-ui-accent="teal"] {
+  --art-tint-strength: 0.78;
+  --accent-action: #08786f;
+  --accent-hover: #06665e;
+  --accent-day: #066e65;
+  --accent-night: #80dcd0;
+  --art-filter: grayscale(1) sepia(1) saturate(2) hue-rotate(115deg);
+}
+[data-ui-accent="amber"] {
+  --art-tint-strength: 0.74;
+  --accent-action: #946000;
+  --accent-hover: #805200;
+  --accent-day: #805400;
+  --accent-night: #f1ce83;
+  --art-filter: grayscale(1) sepia(1) saturate(2);
 }

@@ -1,24 +1,39 @@
 import type { Metadata } from "next";
+import { brand } from "@platform/brand";
 import { LearningShell } from "../../components/learning/learning-shell";
-import { CourseList } from "../../components/learning/course-list";
-import { loadLearningCatalog } from "../../lib/public-learning";
-import styles from "../../components/learning/learning.module.css";
+import { Suspense } from "react";
+import { CatalogContent } from "../../components/learning/catalog-content";
+import { CatalogLoading } from "../../components/learning/home-catalog";
+import { LearningPageHeading } from "../../components/learning/learning-page-heading";
+import styles from "../../components/learning/flow.module.css";
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Бесплатные курсы" };
+export const metadata: Metadata = {
+  title: "Бесплатные IT-курсы",
+  description: `Открытые курсы ${brand.name} по компьютерной грамотности и цифровым навыкам: программа, видео, конспекты и практика.`,
+  alternates: { canonical: "/courses" },
+  openGraph: { url: "/courses", title: `Бесплатные IT-курсы · ${brand.name}` }
+};
 export default async function CoursesPage() {
-  const catalog = await loadLearningCatalog();
   return (
     <LearningShell>
-      <header className={styles.hero}>
-        <p className={styles.eyebrow}>Каталог</p>
-        <h1>Учитесь в своём темпе</h1>
-        <p className={styles.lead}>
-          Бесплатные курсы с видео, понятными конспектами и заданиями для
-          закрепления.
-        </p>
-      </header>
-      <section className={styles.section} aria-label="Доступные курсы">
-        <CourseList courses={catalog.courses} />
+      <div className={styles.catalogHero}>
+        <LearningPageHeading
+          eyebrow="Каталог"
+          title="Выберите навык, который пригодится на практике."
+          description="Короткие объяснения, видео и задания — в понятной последовательности и без спешки."
+        />
+        <aside className={styles.catalogPromise} aria-label="Как устроено обучение">
+          <strong>Сначала посмотрите программу.</strong>
+          <p>
+            Материалы открыты без регистрации. Аккаунт понадобится, только
+            когда вы захотите сохранять результаты и продолжать с нужного места.
+          </p>
+        </aside>
+      </div>
+      <section aria-label="Доступные курсы">
+        <Suspense fallback={<CatalogLoading />}>
+          <CatalogContent />
+        </Suspense>
       </section>
     </LearningShell>
   );

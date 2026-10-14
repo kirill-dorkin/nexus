@@ -9,9 +9,13 @@
     "typecheck": "next typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@fontsource-variable/onest": "5.3.1",
+    "@phosphor-icons/react": "2.1.10",
     "@platform/brand": "workspace:*",
     "@platform/contracts": "workspace:*",
     "@platform/design-tokens": "workspace:*",
+    "@platform/ui": "workspace:*",
+    "@radix-ui/themes": "3.3.0",
     "next": "^16.3.3",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",

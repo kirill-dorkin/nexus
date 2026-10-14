@@ -8,7 +8,17 @@ import Link from "next/link";
 import { browserApiRequest } from "../../lib/public-api";
 import { learningLoginUrl } from "../../lib/learning-return-to";
 import { CourseProgress } from "./course-progress";
-import styles from "./learning.module.css";
+import {
+  Alert,
+  Button,
+  Heading,
+  Stack,
+  Surface,
+  Text,
+  buttonClass
+} from "@platform/ui";
+import { LearningLoading } from "./learning-loading";
+import styles from "./flow.module.css";
 export function LearnerEntry({
   organizationSlug,
   offeringSlug,
@@ -114,106 +124,121 @@ export function LearnerEntry({
       aria-label="Сохранённое обучение"
       aria-busy={busy || loading}
     >
-      <h2>Ваше обучение</h2>
-      {loading && <p role="status">Проверяем состояние обучения…</p>}
-      {anonymous && (
-        <>
-          <p>
-            Войдите или зарегистрируйтесь, чтобы записаться на курс и сохранять
-            результаты практики.
-          </p>
-          <Link className={styles.button} href={learningLoginUrl(route)}>
-            Войти и сохранить обучение
-          </Link>
-        </>
-      )}
-      {learning && (
-        <>
-          {enrolled ? (
-            <>
-              <CourseProgress learning={learning} />
-              {lessonSlug && (
-                <p className={styles.muted}>
-                  {learning.progress?.lessons.find((l) => l.slug === lessonSlug)
-                    ?.requiredPassed
-                    ? "Обязательные задания этого урока выполнены."
-                    : "Просмотр видео и чтение сами по себе не закрывают обязательные задания."}
-                </p>
-              )}
-              {!lessonSlug && next && (
-                <Link
-                  className={styles.button}
-                  href={`/learn/${organizationSlug}/${offeringSlug}/${next}`}
-                >
-                  {learning.progress?.allRequiredPassed
-                    ? "Вернуться к материалам"
-                    : "Продолжить обучение"}
-                </Link>
-              )}
-              <Link href="/me/learning">Моё обучение</Link>
-            </>
-          ) : learning.entry.membershipStatus === "none" ? (
+      <Surface appearance="quiet" className={styles.entrySurface}>
+        <Stack gap="lg">
+          <Heading level={2} size="card">
+            Ваше обучение
+          </Heading>
+          {loading && (
+            <LearningLoading>Проверяем состояние обучения…</LearningLoading>
+          )}
+          {anonymous && (
             <>
               <p>
-                Для сохранения результатов сначала вступите в организацию «
-                {learning.organization.name}», затем отдельно запишитесь на
-                курс.
-              </p>
-              {learning.entry.customerEntryPolicy === "open" ? (
-                <button
-                  className={styles.button}
-                  disabled={busy}
-                  onClick={() => void action("join")}
-                >
-                  Вступить в организацию
-                </button>
-              ) : (
-                <p>
-                  Самостоятельное вступление закрыто. Обратитесь в организацию
-                  за приглашением.
-                </p>
-              )}
-            </>
-          ) : learning.entry.membershipStatus !== "active" ? (
-            <p>
-              Членство сейчас неактивно. Для доступа обратитесь в организацию.
-            </p>
-          ) : learning.entry.enrollmentStatus === "withdrawn" ||
-            learning.entry.enrollmentStatus === "cancelled" ? (
-            <p>
-              Эта запись на курс закрыта. Для повторного обучения обратитесь в
-              организацию.
-            </p>
-          ) : (
-            <>
-              <p>
-                Вы состоите в организации. Запишитесь на бесплатный курс, чтобы
+                Войдите или зарегистрируйтесь, чтобы записаться на курс и
                 сохранять результаты практики.
               </p>
-              <button
-                className={styles.button}
-                disabled={busy}
-                onClick={() => void action("enroll")}
+              <Link
+                className={buttonClass({ variant: "secondary" })}
+                href={learningLoginUrl(route)}
               >
-                Записаться на бесплатный курс
-              </button>
+                Войти и сохранить обучение
+              </Link>
             </>
           )}
-        </>
-      )}
-      {message && <p role="status">{message}</p>}
-      {error && (
-        <>
-          <p role="alert">{error}</p>
-          <button
-            className={styles.secondaryButton}
-            disabled={busy}
-            onClick={() => setReload((x) => x + 1)}
-          >
-            Обновить состояние
-          </button>
-        </>
-      )}
+          {learning && (
+            <>
+              {enrolled ? (
+                <>
+                  <CourseProgress learning={learning} />
+                  {lessonSlug && (
+                    <Text muted size="sm">
+                      {learning.progress?.lessons.find(
+                        (l) => l.slug === lessonSlug
+                      )?.requiredPassed
+                        ? "Обязательные задания этого урока выполнены."
+                        : "Просмотр видео и чтение сами по себе не закрывают обязательные задания."}
+                    </Text>
+                  )}
+                  <div className={styles.entryActions}>
+                    {!lessonSlug && next && (
+                      <Link
+                        className={buttonClass()}
+                        href={`/learn/${organizationSlug}/${offeringSlug}/${next}`}
+                      >
+                        {learning.progress?.allRequiredPassed
+                          ? "Вернуться к материалам"
+                          : "Продолжить обучение"}
+                      </Link>
+                    )}
+                    <Link
+                      className={buttonClass({
+                        variant: "secondary",
+                        size: "sm"
+                      })}
+                      href="/me/learning"
+                    >
+                      Моё обучение
+                    </Link>
+                  </div>
+                </>
+              ) : learning.entry.membershipStatus === "none" ? (
+                <>
+                  <p>
+                    Для сохранения результатов сначала вступите в организацию «
+                    {learning.organization.name}», затем отдельно запишитесь на
+                    курс.
+                  </p>
+                  {learning.entry.customerEntryPolicy === "open" ? (
+                    <Button loading={busy} onClick={() => void action("join")}>
+                      Вступить в организацию
+                    </Button>
+                  ) : (
+                    <p>
+                      Самостоятельное вступление закрыто. Обратитесь в
+                      организацию за приглашением.
+                    </p>
+                  )}
+                </>
+              ) : learning.entry.membershipStatus !== "active" ? (
+                <p>
+                  Членство сейчас неактивно. Для доступа обратитесь в
+                  организацию.
+                </p>
+              ) : learning.entry.enrollmentStatus === "withdrawn" ||
+                learning.entry.enrollmentStatus === "cancelled" ? (
+                <p>
+                  Эта запись на курс закрыта. Для повторного обучения обратитесь
+                  в организацию.
+                </p>
+              ) : (
+                <>
+                  <p>
+                    Вы состоите в организации. Запишитесь на бесплатный курс,
+                    чтобы сохранять результаты практики.
+                  </p>
+                  <Button loading={busy} onClick={() => void action("enroll")}>
+                    Записаться на бесплатный курс
+                  </Button>
+                </>
+              )}
+            </>
+          )}
+          {message && <Alert tone="success">{message}</Alert>}
+          {error && (
+            <>
+              <Alert tone="danger">{error}</Alert>
+              <Button
+                variant="secondary"
+                disabled={busy || loading}
+                onClick={() => setReload((x) => x + 1)}
+              >
+                Обновить состояние
+              </Button>
+            </>
+          )}
+        </Stack>
+      </Surface>
     </section>
   );
 }

@@ -14,7 +14,29 @@ import { learningLoginUrl } from "../../lib/learning-return-to";
 import { blankCourse, parseEditorJson } from "./editor-model";
 import { ManualEditor } from "./manual-editor";
 import { DraftPreview } from "./draft-preview";
-import { downloadManifest, studioRequest, StudioError } from "./studio-api";
+import {
+  downloadManifest,
+  downloadManifestText,
+  studioRequest,
+  StudioError
+} from "./studio-api";
+import {
+  Alert,
+  Badge,
+  Button,
+  Dialog,
+  Disclosure,
+  EmptyState,
+  Eyebrow,
+  Field,
+  Heading,
+  Input,
+  Skeleton,
+  Stack,
+  Text,
+  Textarea,
+  buttonClass
+} from "@platform/ui";
 import styles from "./studio.module.css";
 type Plan = { document: CourseManifestV1; plan: CourseManifestPlan };
 export function CourseEditor({
@@ -40,10 +62,18 @@ export function CourseEditor({
     [busy, setBusy] = useState(false),
     [login, setLogin] = useState(false),
     [canCreate, setCanCreate] = useState(false),
-    [uncertain, setUncertain] = useState(false);
+    [uncertain, setUncertain] = useState(false),
+    [publishOpen, setPublishOpen] = useState(false),
+    [discardOpen, setDiscardOpen] = useState(false),
+    [leaveHref, setLeaveHref] = useState<string | null>(null);
   const inFlight = useRef(false);
   const dirty =
     base !== null && JSON.stringify(document) !== JSON.stringify(base.manifest);
+  const unsaved =
+    dirty ||
+    (mode === "json" && raw !== JSON.stringify(document, null, 2)) ||
+    (isNew && JSON.stringify(document) !== JSON.stringify(blankCourse()));
+  const leaveBlocked = unsaved || uncertain;
   const writable =
     ready && (isNew ? canCreate : base?.status === "draft" && base.canApply);
   const changed = () => {
@@ -84,26 +114,44 @@ export function CourseEditor({
     };
   }, [isNew, path, routeCourse]);
   useEffect(() => {
-    if (
-      !dirty &&
-      !(mode === "json" && raw !== JSON.stringify(document, null, 2)) &&
-      !(isNew && (document.course.title || document.lessons.length))
-    )
-      return;
+    if (!leaveBlocked) return;
     const handler = (event: BeforeUnloadEvent) => {
       event.preventDefault();
     };
     window.addEventListener("beforeunload", handler);
     return () => window.removeEventListener("beforeunload", handler);
-  }, [
-    dirty,
-    isNew,
-    document.course.title,
-    document.lessons.length,
-    mode,
-    raw,
-    document
-  ]);
+  }, [leaveBlocked]);
+  useEffect(() => {
+    if (!leaveBlocked || !ready) return;
+    const intercept = (event: MouseEvent) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) return;
+      const anchor = event.target instanceof Element
+        ? event.target.closest<HTMLAnchorElement>("a[href]")
+        : null;
+      if (
+        !anchor || anchor.hasAttribute("download") ||
+        (anchor.target && anchor.target !== "_self")
+      ) return;
+      const destination = new URL(anchor.href, window.location.href);
+      if (
+        destination.origin !== window.location.origin ||
+        (destination.pathname === window.location.pathname &&
+          destination.search === window.location.search)
+      ) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      setLeaveHref(destination.pathname + destination.search + destination.hash);
+    };
+    window.document.addEventListener("click", intercept, true);
+    return () => window.document.removeEventListener("click", intercept, true);
+  }, [leaveBlocked, ready]);
   function edit(change: (d: CourseManifestV1) => void) {
     setDocument((old) => {
       const next = structuredClone(old);
@@ -281,180 +329,431 @@ export function CourseEditor({
     setIssues(parsed.issues);
     if (parsed.manifest) setDocument(parsed.manifest);
   }
+  const publishDisabled =
+    busy || !base?.canPublish || dirty || mode !== "preview" || uncertain;
   return (
     <>
-      <Link href="/studio">← Все курсы</Link>
-      <h1>
-        {isNew ? "Новый курс" : base?.manifest.course.title || "Редактор курса"}
-      </h1>
-      {base && (
-        <p>
-          {base.status === "draft" ? "Черновик" : "Опубликованная версия"} ·
-          версия {base.versionNumber}
-          {dirty ? " · есть несохранённые изменения" : ""}
-        </p>
-      )}
-      {error && (
-        <p role="alert" className={styles.error}>
+      <Link
+        href="/studio"
+        className={styles.backLink}
+        onClick={(event) => {
+          if (!leaveBlocked) return;
+          event.preventDefault();
+          setLeaveHref("/studio");
+        }}
+      >
+        ← Все курсы
+      </Link>
+      <header className={`${styles.pageHeading} ${styles.editorHeading}`}>
+        <Eyebrow>{isNew ? "Новый материал" : "Редактор курса"}</Eyebrow>
+        <Heading level={1} size="display">
+          {isNew
+            ? "Новый курс"
+            : base?.manifest.course.title || "Редактор курса"}
+        </Heading>
+        <div className={styles.statusLine}>
+          {base && (
+            <>
+              <Badge tone={base.status === "draft" ? "accent" : "neutral"}>
+                {base.status === "draft" ? "Черновик" : "Опубликованная версия"}{" "}
+                · версия {base.versionNumber}
+              </Badge>
+              <Text muted size="sm">
+                {dirty
+                  ? "Есть несохранённые изменения"
+                  : "Загружена сохранённая версия"}
+              </Text>
+            </>
+          )}
+          {isNew && (
+            <Text muted>
+              Начните с описания, затем добавьте навыки, задания и уроки.
+            </Text>
+          )}
+        </div>
+      </header>
+      {error && !login && (
+        <Alert
+          tone="danger"
+          title={
+            uncertain
+              ? "Проверьте актуальный черновик"
+              : ready
+                ? "Операция не завершена"
+                : "Не удалось открыть курс"
+          }
+          className={styles.notice}
+        >
           {error}
-        </p>
+        </Alert>
       )}
       {issues.length > 0 && (
-        <div role="alert">
-          <p>Исправьте документ:</p>
+        <Alert
+          tone="danger"
+          title="Исправьте документ"
+          className={styles.notice}
+        >
           <ul>
             {issues.map((i, k) => (
               <li key={k}>{i}</li>
             ))}
           </ul>
-        </div>
+        </Alert>
       )}
-      {message && <p role="status">{message}</p>}
+      {message && (
+        <Alert tone="success" role="status" className={styles.notice}>
+          {message}
+        </Alert>
+      )}
       {login ? (
-        <Link href={learningLoginUrl(returnTo)}>Войти в Studio</Link>
+        <EmptyState
+          title="Войдите в авторскую среду"
+          action={
+            <Link className={buttonClass()} href={learningLoginUrl(returnTo)}>
+              Войти в Studio
+            </Link>
+          }
+        >
+          После входа вы вернётесь к этому курсу. Возможность редактирования
+          зависит от ваших прав.
+        </EmptyState>
       ) : !ready ? (
-        <p role="status">Загрузка…</p>
+        error ? (
+          <Button variant="secondary" onClick={() => window.location.reload()}>
+            Повторить загрузку
+          </Button>
+        ) : (
+          <div role="status" className={styles.loading}>
+            <Text muted>Загружаем курс…</Text>
+            <Skeleton style={{ height: "6rem" }} />
+            <Skeleton style={{ height: "12rem" }} />
+          </div>
+        )
       ) : (
         <>
           {!writable && (
-            <p>
+            <Alert tone="neutral" className={styles.notice}>
               {base?.status === "published"
                 ? "Эта версия неизменяема. Создайте следующий черновик для редактирования."
                 : "Для сохранения нужны права управления курсом, заданиями и навыками организации."}
-            </p>
+            </Alert>
           )}
           {base?.status === "published" && base.canApply && (
-            <button disabled={busy} onClick={createDraft}>
+            <Button variant="secondary" disabled={busy} onClick={createDraft}>
               Создать следующий черновик
-            </button>
+            </Button>
           )}
-          <div className={styles.actions} aria-label="Режим редактора">
-            <button
-              disabled={busy}
-              aria-pressed={mode === "manual"}
-              onClick={() => switchMode("manual")}
+          <div className={styles.toolbar} id="studio-editor-actions">
+            <div
+              className={styles.modeGroup}
+              role="group"
+              aria-label="Режим редактора"
             >
-              Ручной редактор
-            </button>
-            <button
-              disabled={busy}
-              aria-pressed={mode === "json"}
-              onClick={() => switchMode("json")}
-            >
-              JSON
-            </button>
-            <button
-              disabled={busy}
-              aria-pressed={mode === "preview"}
-              onClick={() => switchMode("preview")}
-            >
-              Предпросмотр
-            </button>
-          </div>
-          <fieldset disabled={busy || !writable}>
-            <legend>Содержимое курса</legend>
-            {mode === "manual" && (
-              <ManualEditor document={document} edit={edit} existing={!isNew} />
-            )}
-            {mode === "json" && (
-              <>
-                <label>
-                  Manifest JSON
-                  <textarea
-                    className={styles.json}
-                    value={raw}
-                    maxLength={900000}
-                    onChange={(e) => {
-                      setRaw(e.target.value);
-                      changed();
-                    }}
-                    spellCheck={false}
-                  />
-                </label>
-                <label>
-                  Загрузить JSON-файл
-                  <input
-                    type="file"
-                    accept=".json,application/json"
-                    onChange={(e) => {
-                      void uploadJson(e.target.files?.[0]);
-                      e.target.value = "";
-                    }}
-                  />
-                </label>
-              </>
-            )}
-          </fieldset>
-          {mode === "preview" && <DraftPreview document={document} />}
-          <div className={styles.actions}>
-            <button
-              disabled={busy || !writable || uncertain}
-              onClick={validate}
-            >
-              Проверить документ
-            </button>
-            <button
-              className={styles.primary}
-              disabled={busy || !writable || !checked || uncertain}
-              onClick={apply}
-            >
-              Сохранить черновик
-            </button>
-            {base?.status === "draft" && (
-              <button disabled={busy} onClick={exportDraft}>
-                Скачать сохранённый JSON
-              </button>
-            )}
-            <button
-              disabled={busy}
-              onClick={() => {
-                const d = working();
-                if (d) downloadManifest(d, d.course.slug);
-              }}
-            >
-              Скачать рабочую копию
-            </button>
-            {base && (
-              <button disabled={busy} onClick={reload}>
-                {dirty || uncertain || mode === "json"
-                  ? "Отбросить изменения и загрузить сохранённое"
-                  : "Обновить сохранённое"}
-              </button>
-            )}
-          </div>
-          {checked && (
-            <p>
-              План:{" "}
-              {checked.plan.mode === "create_course"
-                ? "создание курса"
-                : "замена текущего черновика"}
-              ; навыков: {checked.plan.counts.skills}, заданий:{" "}
-              {checked.plan.counts.activities}, уроков:{" "}
-              {checked.plan.counts.lessons}.
-            </p>
-          )}
-          {base?.status === "draft" && (
-            <section className={styles.card}>
-              <h2>Публикация</h2>
-              <p>
-                Проверьте предпросмотр сохранённого черновика. Публикация
-                зафиксирует эту версию. Публичное обучение настраивается
-                отдельно.
-              </p>
-              <button
-                disabled={
-                  busy ||
-                  !base.canPublish ||
-                  dirty ||
-                  mode !== "preview" ||
-                  uncertain
-                }
-                onClick={publish}
+              {(
+                [
+                  ["manual", "Ручной редактор"],
+                  ["json", "JSON"],
+                  ["preview", "Предпросмотр"]
+                ] as const
+              ).map(([value, label]) => (
+                <Button
+                  key={value}
+                  variant="ghost"
+                  disabled={busy}
+                  aria-pressed={mode === value}
+                  onClick={() => switchMode(value)}
+                >
+                  {label}
+                </Button>
+              ))}
+            </div>
+            <div className={styles.actions}>
+              <Button
+                variant="secondary"
+                disabled={busy || !writable || uncertain}
+                onClick={validate}
               >
-                Опубликовать версию {base.versionNumber}
-              </button>
-            </section>
-          )}
+                Проверить документ
+              </Button>
+              <Button
+                disabled={busy || !writable || !checked || uncertain}
+                onClick={apply}
+              >
+                Сохранить черновик
+              </Button>
+            </div>
+          </div>
+          <Text muted size="sm" role="status" className={styles.workflowHint}>
+            {busy
+              ? "Выполняем действие…"
+              : uncertain
+                ? "Рабочая копия сохранена в редакторе. Скачайте её перед загрузкой актуального черновика."
+                : checked
+                  ? "Документ проверен. Сохранение применит именно эту проверенную копию."
+                  : "Изменения остаются в редакторе до проверки и сохранения. Автосохранения нет."}
+          </Text>
+          <div className={styles.editorLayout}>
+            <aside className={styles.editorRail}>
+              {mode === "manual" ? (
+                <nav aria-label="Разделы содержимого курса">
+                  <Text muted size="sm">
+                    Содержимое
+                  </Text>
+                  {[
+                    ["course", "Курс", null],
+                    ["skills", "Навыки", document.skills.length],
+                    ["activities", "Задания", document.activities.length],
+                    ["lessons", "Уроки", document.lessons.length]
+                  ].map(([id, label, count]) => (
+                    <a key={id} href={`#studio-${id}`}>
+                      <span>{label}</span>
+                      {count !== null && <span>{count}</span>}
+                    </a>
+                  ))}
+                </nav>
+              ) : (
+                <Stack gap="sm">
+                  <Eyebrow>
+                    {mode === "json" ? "Рабочая копия" : "Взгляд ученика"}
+                  </Eyebrow>
+                  <Text muted size="sm">
+                    {mode === "json"
+                      ? "JSON и ручные поля изменяют один документ. Неверный JSON нужно исправить перед сменой режима."
+                      : "Предпросмотр показывает материалы и вопросы. Защищённые ответы в него не входят."}
+                  </Text>
+                </Stack>
+              )}
+            </aside>
+            <div className={styles.editorBody}>
+              {mode !== "preview" && (
+                <fieldset
+                  disabled={busy || !writable}
+                  className={styles.contentFieldset}
+                >
+                  <legend className={styles.srOnly}>Содержимое курса</legend>
+                  {mode === "manual" && (
+                    <ManualEditor
+                      document={document}
+                      edit={edit}
+                      existing={!isNew}
+                    />
+                  )}
+                  {mode === "json" && (
+                    <section className={styles.jsonEditor}>
+                      <Heading level={2} size="section">
+                        Документ курса
+                      </Heading>
+                      <Field
+                        htmlFor="studio-manifest-json"
+                        label="Manifest JSON"
+                      >
+                        <Textarea
+                          id="studio-manifest-json"
+                          className={styles.json}
+                          value={raw}
+                          maxLength={900000}
+                          onChange={(e) => {
+                            setRaw(e.target.value);
+                            changed();
+                          }}
+                          spellCheck={false}
+                        />
+                      </Field>
+                      <Field
+                        htmlFor="studio-json-file"
+                        label="Загрузить JSON-файл"
+                      >
+                        <Input
+                          id="studio-json-file"
+                          type="file"
+                          accept=".json,application/json"
+                          onChange={(e) => {
+                            void uploadJson(e.target.files?.[0]);
+                            e.target.value = "";
+                          }}
+                        />
+                      </Field>
+                      <Text muted size="sm">
+                        До 900 КБ. Загрузка файла меняет рабочую копию;
+                        сохранение на сервер выполняется отдельно.
+                      </Text>
+                    </section>
+                  )}
+                </fieldset>
+              )}
+              {mode === "preview" && <DraftPreview document={document} />}
+              {checked && (
+                <Alert tone="neutral" className={styles.notice}>
+                  План:{" "}
+                  {checked.plan.mode === "create_course"
+                    ? "создание курса"
+                    : "замена текущего черновика"}
+                  ; навыков: {checked.plan.counts.skills}, заданий:{" "}
+                  {checked.plan.counts.activities}, уроков:{" "}
+                  {checked.plan.counts.lessons}.
+                </Alert>
+              )}
+              <Disclosure
+                summary="Копии и сохранённая версия"
+                className={styles.fileActions ?? ""}
+                {...(uncertain ? { open: true } : {})}
+              >
+                <Text muted size="sm">
+                  Рабочая копия содержит текущие правки. Сохранённый JSON
+                  соответствует загруженной версии на сервере.
+                </Text>
+                <div className={styles.actions}>
+                  {base?.status === "draft" && (
+                    <Button
+                      variant="secondary"
+                      disabled={busy}
+                      onClick={exportDraft}
+                    >
+                      Скачать сохранённый JSON
+                    </Button>
+                  )}
+                  <Button
+                    variant="secondary"
+                    disabled={busy}
+                    onClick={() => {
+                      const d = working();
+                      if (d) downloadManifest(d, d.course.slug);
+                    }}
+                  >
+                    Скачать рабочую копию
+                  </Button>
+                  {base && (
+                    <Button variant="ghost" disabled={busy} onClick={() => {
+                      if (unsaved || uncertain) setDiscardOpen(true);
+                      else void reload();
+                    }}>
+                      {dirty || uncertain || mode === "json"
+                        ? "Отбросить изменения и загрузить сохранённое"
+                        : "Обновить сохранённое"}
+                    </Button>
+                  )}
+                </div>
+              </Disclosure>
+              <a
+                className={styles.returnToActions}
+                href="#studio-editor-actions"
+              >
+                К проверке и сохранению ↑
+              </a>
+              {base?.status === "draft" && (
+                <section
+                  className={styles.publication}
+                  aria-labelledby="studio-publication-title"
+                >
+                  <div>
+                    <Heading
+                      level={2}
+                      size="section"
+                      id="studio-publication-title"
+                    >
+                      Публикация
+                    </Heading>
+                    <Text muted>
+                      Проверьте предпросмотр сохранённого черновика. Публикация
+                      зафиксирует эту версию. Публичное обучение настраивается
+                      отдельно.
+                    </Text>
+                    {publishDisabled && !busy && (
+                      <Text muted size="sm">
+                        {!base.canPublish
+                          ? "У вас нет права публикации этой версии."
+                          : uncertain
+                            ? "Сначала загрузите актуальный черновик."
+                            : dirty
+                              ? "Сначала проверьте и сохраните изменения."
+                              : mode !== "preview"
+                                ? "Откройте предпросмотр, чтобы проверить сохранённую версию."
+                                : "Публикация сейчас недоступна."}
+                      </Text>
+                    )}
+                  </div>
+                  <Button
+                    variant="secondary"
+                    disabled={publishDisabled}
+                    onClick={() => setPublishOpen(true)}
+                  >
+                    Опубликовать версию {base.versionNumber}
+                  </Button>
+                </section>
+              )}
+            </div>
+          </div>
+          <Dialog
+            open={discardOpen || leaveHref !== null}
+            onDismiss={() => { setDiscardOpen(false); setLeaveHref(null); }}
+            aria-labelledby="studio-discard-title"
+            aria-describedby="studio-discard-description"
+            className={styles.confirmation}
+          >
+            <Eyebrow>Несохранённая работа</Eyebrow>
+            <Heading level={2} size="section" id="studio-discard-title">
+              {leaveHref ? "Выйти из редактора?" : "Отбросить текущие правки?"}
+            </Heading>
+            <Text id="studio-discard-description">
+              Текущая рабочая копия будет потеряна. Перед продолжением можно
+              скачать её; сохранённая версия на сервере останется без изменений.
+            </Text>
+            <div className={styles.actions}>
+              <Button variant="secondary" autoFocus onClick={() => {
+                setDiscardOpen(false); setLeaveHref(null);
+              }}>Остаться в редакторе</Button>
+              <Button variant="ghost" onClick={() => {
+                if (mode === "json") {
+                  downloadManifestText(raw, document.course.slug);
+                } else downloadManifest(document, document.course.slug);
+              }}>Скачать рабочую копию</Button>
+              <Button onClick={() => {
+                const destination = leaveHref;
+                setDiscardOpen(false); setLeaveHref(null);
+                if (destination) router.push(destination);
+                else void reload();
+              }}>{leaveHref ? "Выйти без сохранения" : "Отбросить и загрузить"}</Button>
+            </div>
+          </Dialog>
+          <Dialog
+            open={publishOpen}
+            onDismiss={() => setPublishOpen(false)}
+            aria-labelledby="studio-publish-title"
+            aria-describedby="studio-publish-description"
+            className={styles.confirmation}
+          >
+            <Eyebrow>Публикация курса</Eyebrow>
+            <Heading level={2} size="section" id="studio-publish-title">
+              Зафиксировать версию {base?.versionNumber}?
+            </Heading>
+            <Text id="studio-publish-description">
+              Будет опубликован сохранённый черновик «
+              {base?.manifest.course.title}». Эту версию нельзя изменить;
+              дальнейшие правки потребуют нового черновика.
+            </Text>
+            <Text muted size="sm">
+              Это не открывает курс ученикам. Настройка публичного обучения
+              выполняется отдельно.
+            </Text>
+            <div className={styles.actions}>
+              <Button
+                variant="secondary"
+                autoFocus
+                onClick={() => setPublishOpen(false)}
+              >
+                Отмена
+              </Button>
+              <Button
+                disabled={publishDisabled}
+                onClick={() => {
+                  setPublishOpen(false);
+                  void publish();
+                }}
+              >
+                Подтвердить публикацию
+              </Button>
+            </div>
+          </Dialog>
         </>
       )}
     </>

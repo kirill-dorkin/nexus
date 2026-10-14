@@ -1,19 +1,27 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
+  HttpStatus,
+  Param,
   Post,
+  Query,
+  Redirect,
   Req,
   Res
 } from "@nestjs/common";
 import {
   loginRequestSchema,
+  oauthProviderSchema,
   registerRequestSchema,
-  type IdentityUser
+  type IdentityUser,
+  type OAuthProvidersResponse
 } from "@platform/contracts";
 
 import { parseRequest } from "../../http/validation";
 import { AuthenticationApplicationService } from "./application/authentication.service";
+import { OAuthCallbackFailure, OAuthLoginService } from "./application/oauth-login.service";
 import {
   readSessionCookie,
   serializeClearedSessionCookie,
@@ -42,8 +50,71 @@ function setNoStore(response: AuthenticationResponse): void {
 @Controller("auth")
 export class AuthenticationController {
   constructor(
-    private readonly authentication: AuthenticationApplicationService
+    private readonly authentication: AuthenticationApplicationService,
+    private readonly oauth: OAuthLoginService
   ) {}
+
+  @Get("oauth/providers")
+  providers(
+    @Res({ passthrough: true }) response: AuthenticationResponse
+  ): OAuthProvidersResponse {
+    setNoStore(response);
+    return this.oauth.configuredProviders();
+  }
+
+  @Get("oauth/:provider/start")
+  @Redirect(undefined, HttpStatus.FOUND)
+  async startOAuth(
+    @Param("provider") providerValue: string,
+    @Query("returnTo") returnTo: string | undefined
+  ): Promise<{ url: string; statusCode: number }> {
+    const provider = parseRequest(oauthProviderSchema, providerValue);
+    return {
+      url: await this.oauth.start(provider, returnTo),
+      statusCode: HttpStatus.FOUND
+    };
+  }
+
+  @Get("oauth/:provider/callback")
+  @Redirect(undefined, HttpStatus.FOUND)
+  async completeOAuth(
+    @Param("provider") providerValue: string,
+    @Query("state") state: string | undefined,
+    @Query("code") code: string | undefined,
+    @Query("error") providerError: string | undefined,
+    @Req() request: AuthenticationRequest,
+    @Res({ passthrough: true }) response: AuthenticationResponse
+  ): Promise<{ url: string; statusCode: number }> {
+    let returnTo = "/me/learning";
+    try {
+      const provider = parseRequest(oauthProviderSchema, providerValue);
+      const result = await this.oauth.complete({
+        provider,
+        state,
+        code,
+        providerError,
+        currentSessionToken: currentSessionToken(request)
+      });
+      returnTo = result.returnTo;
+      response.header("Set-Cookie", serializeSessionCookie(result.sessionToken));
+      setNoStore(response);
+      return {
+        url: this.oauth.destination(result.returnTo),
+        statusCode: HttpStatus.FOUND
+      };
+    } catch (error) {
+      if (error instanceof OAuthCallbackFailure) returnTo = error.returnTo;
+      setNoStore(response);
+      const query = new URLSearchParams({
+        oauthError: "external_login_failed",
+        returnTo
+      });
+      return {
+        url: `/login?${query.toString()}`,
+        statusCode: HttpStatus.FOUND
+      };
+    }
+  }
 
   @Post("register")
   @HttpCode(201)

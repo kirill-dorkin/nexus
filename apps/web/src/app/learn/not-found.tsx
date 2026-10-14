@@ -1,16 +1,21 @@
 import Link from "next/link";
+import { buttonClass } from "@platform/ui";
 import { LearningShell } from "../../components/learning/learning-shell";
-import styles from "../../components/learning/learning.module.css";
+import { LearningPageHeading } from "../../components/learning/learning-page-heading";
 export default function LearningNotFound() {
   return (
     <LearningShell>
-      <section className={styles.hero}>
-        <h1>Курс или урок недоступен</h1>
-        <p className={styles.lead}>Он мог быть закрыт или ссылка изменилась.</p>
-        <Link className={styles.button} href="/courses">
-          Посмотреть доступные курсы
-        </Link>
-      </section>
+      <LearningPageHeading
+        eyebrow="Доступ к материалам"
+        title="Курс или урок недоступен"
+        description="Он мог быть закрыт или ссылка изменилась."
+      >
+        <div>
+          <Link className={buttonClass()} href="/courses">
+            Посмотреть доступные курсы
+          </Link>
+        </div>
+      </LearningPageHeading>
     </LearningShell>
   );
 }

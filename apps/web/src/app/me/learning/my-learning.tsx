@@ -8,7 +8,21 @@ import Link from "next/link";
 import { browserApiRequest } from "../../../lib/public-api";
 import { learningLoginUrl } from "../../../lib/learning-return-to";
 import { CourseProgress } from "../../../components/learning/course-progress";
-import styles from "../../../components/learning/learning.module.css";
+import {
+  Alert,
+  Badge,
+  Button,
+  EmptyState,
+  Eyebrow,
+  Inline,
+  Surface,
+  Text,
+  buttonClass
+} from "@platform/ui";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { LearningPageHeading } from "../../../components/learning/learning-page-heading";
+import { LearningLoading } from "../../../components/learning/learning-loading";
+import styles from "../../../components/learning/flow.module.css";
 export function MyLearning() {
   const [courses, setCourses] = useState<LearnerLearningCourse[]>([]),
     [cursor, setCursor] = useState<string | null>(null),
@@ -17,6 +31,10 @@ export function MyLearning() {
     [busy, setBusy] = useState(false),
     [error, setError] = useState<string | null>(null),
     [reload, setReload] = useState(0);
+  const completedCount = courses.filter(
+    (course) => course.entry.enrollmentStatus === "completed"
+  ).length;
+  const inProgressCount = courses.length - completedCount;
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true);
@@ -93,82 +111,140 @@ export function MyLearning() {
     }
   }
   return (
-    <section>
-      <header className={styles.hero}>
-        <p className={styles.eyebrow}>Возвращайтесь к практике</p>
-        <h1>Моё обучение</h1>
-        <p className={styles.lead}>
-          Ваши курсы и сохранённые результаты обязательных заданий.
-        </p>
-      </header>
-      {loading && <p role="status">Загружаем обучение…</p>}
+    <section aria-busy={loading || busy}>
+      <LearningPageHeading
+        eyebrow="Возвращайтесь к практике"
+        title="Моё обучение"
+        description="Ваши курсы и сохранённые результаты обязательных заданий."
+      />
+      {loading && (
+        <Surface>
+          <LearningLoading>Загружаем обучение…</LearningLoading>
+        </Surface>
+      )}
       {anonymous && (
-        <>
-          <p>Войдите, чтобы увидеть свои курсы.</p>
-          <Link
-            className={styles.button}
-            href={learningLoginUrl("/me/learning")}
+        <Surface padding="none">
+          <EmptyState
+            title="Ваше обучение начинается здесь"
+            action={
+              <Link
+                className={buttonClass()}
+                href={learningLoginUrl("/me/learning")}
+              >
+                Войти
+              </Link>
+            }
           >
-            Войти
-          </Link>
-        </>
+            Войдите, чтобы увидеть свои курсы.
+          </EmptyState>
+        </Surface>
       )}
       {!loading && !anonymous && !error && !courses.length && (
-        <p>
-          Вы пока не записаны на доступные курсы.{" "}
-          <Link href="/courses">Выбрать курс</Link>
-        </p>
-      )}
-      <div className={styles.cards}>
-        {courses.map((c) => {
-          const next = c.progress?.nextLessonSlug ?? c.course.lessons[0]!.slug;
-          return (
-            <article
-              className={styles.card}
-              key={`${c.organization.slug}/${c.offering.slug}`}
-            >
-              <p className={styles.eyebrow}>{c.organization.name}</p>
-              <h2>{c.course.title}</h2>
-              <CourseProgress learning={c} />
-              <Link
-                className={styles.button}
-                href={`/learn/${c.organization.slug}/${c.offering.slug}/${next}`}
-              >
-                {c.progress?.allRequiredPassed
-                  ? "Вернуться к материалам"
-                  : "Продолжить"}
+        <Surface padding="none">
+          <EmptyState
+            title="Вы пока не записаны на доступные курсы."
+            action={
+              <Link className={buttonClass()} href="/courses">
+                Выбрать курс <ArrowRight size={18} aria-hidden="true" />
               </Link>
-            </article>
-          );
-        })}
-      </div>
-      {cursor && (
-        <button
-          className={styles.secondaryButton}
-          disabled={busy}
-          onClick={() => void more()}
-        >
-          Показать ещё
-        </button>
+            }
+          >
+            Выберите бесплатный курс и запишитесь, чтобы сохранять результаты
+            практики.
+          </EmptyState>
+        </Surface>
       )}
-      {error && <p role="alert">{error}</p>}
-      {!anonymous && !loading && (
-        <div className={styles.actions}>
-          <button
-            className={styles.secondaryButton}
+      {courses.length > 0 && (
+        <div className={styles.learningSummary} aria-label="Сводка обучения">
+          <span>LEARNING DASHBOARD</span>
+          <p>
+            <strong>{inProgressCount}</strong>
+            <small>в процессе</small>
+          </p>
+          <p>
+            <strong>{completedCount}</strong>
+            <small>завершено</small>
+          </p>
+        </div>
+      )}
+      {courses.length > 0 && (
+        <ul className={styles.savedList}>
+          {courses.map((c) => {
+            const next =
+              c.progress?.nextLessonSlug ?? c.course.lessons[0]!.slug;
+            return (
+              <li
+                className={styles.savedCard}
+                key={`${c.organization.slug}/${c.offering.slug}`}
+              >
+                <div className={styles.savedDetails}>
+                  <Inline>
+                    <Badge tone="accent">Бесплатно</Badge>
+                    {c.entry.enrollmentStatus === "completed" && (
+                      <Badge tone="success">Обучение завершено</Badge>
+                    )}
+                  </Inline>
+                  <Eyebrow>{c.organization.name}</Eyebrow>
+                  <h2>
+                    <Link
+                      href={`/learn/${c.organization.slug}/${c.offering.slug}`}
+                    >
+                      {c.course.title}
+                    </Link>
+                  </h2>
+                  <Text muted size="sm">
+                    {c.course.description}
+                  </Text>
+                </div>
+                <div className={styles.savedProgress}>
+                  <CourseProgress learning={c} />
+                  <Link
+                    className={buttonClass()}
+                    href={`/learn/${c.organization.slug}/${c.offering.slug}/${next}`}
+                  >
+                    {c.progress?.allRequiredPassed
+                      ? "Вернуться к материалам"
+                      : "Продолжить"}
+                    <ArrowRight size={18} aria-hidden="true" />
+                  </Link>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      {cursor && (
+        <Button variant="secondary" loading={busy} onClick={() => void more()}>
+          Показать ещё
+        </Button>
+      )}
+      {error && (
+        <Surface className={styles.learningError} appearance="quiet">
+          <Alert tone="danger" title="Обучение сейчас недоступно">
+            {error}
+          </Alert>
+          <Button
+            variant="secondary"
+            disabled={busy}
+            onClick={() => setReload((x) => x + 1)}
+          >
+            Повторить загрузку
+          </Button>
+        </Surface>
+      )}
+      {!anonymous && !loading && !error && (
+        <Inline gap="sm" className={styles.savedGrid}>
+          <Button
+            variant="secondary"
             disabled={busy}
             onClick={() => setReload((x) => x + 1)}
           >
             Обновить обучение
-          </button>
-          <button
-            className={styles.secondaryButton}
-            disabled={busy}
-            onClick={() => void logout()}
-          >
+          </Button>
+          <Button variant="ghost" disabled={busy} onClick={() => void logout()}>
             Выйти
-          </button>
-        </div>
+          </Button>
+        </Inline>
       )}
     </section>
   );

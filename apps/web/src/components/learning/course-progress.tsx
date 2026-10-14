@@ -1,5 +1,6 @@
 import type { LearnerLearningCourse } from "@platform/contracts";
-import styles from "./learning.module.css";
+import { Badge, Progress, Text } from "@platform/ui";
+import styles from "./flow.module.css";
 export function CourseProgress({
   learning
 }: {
@@ -10,36 +11,29 @@ export function CourseProgress({
   return (
     <div className={styles.progress}>
       {p.percentage === null ? (
-        <p>
+        <Text size="sm" muted>
           В этом курсе нет обязательных заданий. Материалы доступны для чтения.
-        </p>
+        </Text>
       ) : (
         <>
-          <label
-            htmlFor={`progress-${learning.organization.slug}-${learning.offering.slug}`}
-          >
-            Задания курса: {p.passedRequired} из {p.totalRequired} ·{" "}
-            {p.percentage}%
-          </label>
-          <progress
-            id={`progress-${learning.organization.slug}-${learning.offering.slug}`}
-            value={p.passedRequired}
-            max={p.totalRequired}
-          >
-            {p.percentage}%
-          </progress>
+          <Progress
+            value={p.percentage}
+            label={`Задания курса: ${p.passedRequired} из ${p.totalRequired}`}
+          />
           {p.allRequiredPassed && (
-            <p>Все обязательные задания курса выполнены.</p>
+            <Badge tone="success">
+              Все обязательные задания курса выполнены.
+            </Badge>
           )}
         </>
       )}
       {learning.entry.enrollmentStatus === "completed" && (
-        <p>Обучение завершено.</p>
+        <Badge tone="success">Обучение завершено.</Badge>
       )}
       {p.lastActionAt && (
-        <p className={styles.muted}>
+        <Text muted size="sm">
           Последняя практика: {new Date(p.lastActionAt).toLocaleString("ru-RU")}
-        </p>
+        </Text>
       )}
     </div>
   );
