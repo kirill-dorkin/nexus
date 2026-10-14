@@ -4,8 +4,16 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@platform/ui";
 import styles from "./youtube-video.module.css";
 
-/** A canonical ID is the only author input. No third-party request before consent. */
-export function YouTubeVideo({ videoId, title }: { videoId: string; title: string }) {
+/** A canonical ID is the only media locator. No third-party request before consent. */
+export function YouTubeVideo({
+  videoId,
+  title,
+  source
+}: {
+  videoId: string;
+  title: string;
+  source?: string;
+}) {
   const [active, setActive] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const play = useRef<HTMLButtonElement>(null);
@@ -35,9 +43,15 @@ export function YouTubeVideo({ videoId, title }: { videoId: string; title: strin
           <div className={styles.placeholder}>
             <span className={styles.glow} aria-hidden="true" />
             <div className={styles.posterContent}>
-              <span className={styles.eyebrow}>ВИДЕО УРОКА · YOUTUBE</span>
+              <span className={styles.eyebrow}>
+                {source ? `ОТКРЫТОЕ ВИДЕО · ${source}` : "ВИДЕО УРОКА · YOUTUBE"}
+              </span>
               <strong>{title}</strong>
-              <p>Сначала посмотрите объяснение, затем переходите к конспекту.</p>
+              <p>
+                {source
+                  ? "Внешний учебный материал. Плеер загрузится только после вашего нажатия."
+                  : "Сначала посмотрите объяснение, затем переходите к конспекту."}
+              </p>
             </div>
             <Button className={styles.play} ref={play} onClick={() => { setLoaded(false); setActive(true); }}>
               <svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5 13 8l-9 5.5z" fill="currentColor" /></svg> Смотреть видео
@@ -55,3 +69,4 @@ export function YouTubeVideo({ videoId, title }: { videoId: string; title: strin
     </section>
   );
 }
+

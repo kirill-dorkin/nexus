@@ -3,6 +3,7 @@ import { QuizForm } from "./quiz-form";
 import type { PublicLearningLesson } from "@platform/contracts";
 import { SafeMarkdown } from "./safe-markdown";
 import { YouTubeVideo } from "./youtube-video";
+import { getPublicLessonVideo } from "./public-lesson-video";
 import styles from "./learning.module.css";
 export function LessonBlocks({
   lesson,
@@ -13,8 +14,19 @@ export function LessonBlocks({
   organizationSlug: string;
   offeringSlug: string;
 }) {
+  const publicVideo = lesson.blocks.some((block) => block.type === "youtube")
+    ? null
+    : getPublicLessonVideo(organizationSlug, offeringSlug, lesson.slug);
+
   return (
     <div className={styles.blocks}>
+      {publicVideo ? (
+        <YouTubeVideo
+          videoId={publicVideo.videoId}
+          title={publicVideo.title}
+          source={publicVideo.source}
+        />
+      ) : null}
       {lesson.blocks.map((block, index) => {
         if (block.type === "youtube")
           return (
@@ -64,3 +76,4 @@ export function LessonBlocks({
     </div>
   );
 }
+

@@ -11,4 +11,18 @@ describe("deferred YouTube lesson media", () => {
     expect(html).toContain('href="https://www.youtube.com/watch?v=aqz-KE-bpKQ"');
     expect(html).toContain('rel="noopener noreferrer"');
   });
+
+  it("labels a reviewed external source without loading third-party media", () => {
+    const html = renderToStaticMarkup(
+      createElement(YouTubeVideo, {
+        videoId: "mLgTnkw558w",
+        title: "Основные части компьютера",
+        source: "LearnFree"
+      })
+    );
+    expect(html).toContain("ОТКРЫТОЕ ВИДЕО · LearnFree");
+    expect(html).toContain("Внешний учебный материал");
+    expect(html).not.toMatch(/<iframe|<img|youtube-nocookie|<script/);
+  });
 });
+
