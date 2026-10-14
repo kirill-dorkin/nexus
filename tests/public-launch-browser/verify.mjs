@@ -1184,15 +1184,15 @@ async function runBrowserVerification(cdp) {
   assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Learning homepage overflows mobile.");
   assert(await evaluate(cdp, 'document.querySelectorAll("h1").length === 1 && !document.body.innerText.includes("Дизайн Preview")'), "Public homepage has duplicate heading or lab notice.");
   await evaluate(cdp, 'document.querySelector(\'button[aria-label="Открыть меню"]\')?.click()');
-  await waitForExpression(cdp, 'document.querySelector(\'dialog[open]\')?.innerText.includes("Меню")', "mobile navigation");
+  await waitForExpression(cdp, `(() => { const dialog = document.querySelector("dialog[open]"); return Boolean(dialog && dialog.querySelector('nav[aria-label="Главное меню на мобильном экране"]') && dialog.innerText.includes("Куда отправимся?")); })()`, "mobile navigation");
   await accessibilityAudit(cdp, "mobile navigation");
   assert(await evaluate(cdp, `(() => {
     const dialog = document.querySelector("dialog[open]");
     if (!dialog) return false;
     const rect = dialog.getBoundingClientRect();
     const controls = [...dialog.querySelectorAll("a, button")];
-    return rect.left >= 11 && innerWidth - rect.right >= 11
-      && rect.top >= 76 && rect.bottom <= innerHeight - 8
+    return rect.left >= -1 && Math.abs(innerWidth - rect.right) <= 2
+      && Math.abs(rect.top) <= 2 && Math.abs(innerHeight - rect.bottom) <= 2
       && controls.length >= 3
       && controls.every((control) => control.getBoundingClientRect().height >= 44)
       && dialog.contains(document.activeElement)
@@ -1209,8 +1209,8 @@ async function runBrowserVerification(cdp) {
     const dialog = document.querySelector("dialog[open]");
     if (!dialog) return false;
     const rect = dialog.getBoundingClientRect();
-    return rect.left >= 11 && innerWidth - rect.right >= 11
-      && rect.bottom <= innerHeight - 8
+    return rect.left >= -1 && Math.abs(innerWidth - rect.right) <= 2
+      && Math.abs(rect.top) <= 2 && Math.abs(innerHeight - rect.bottom) <= 2
       && document.documentElement.scrollWidth <= innerWidth;
   })()`), "Mobile navigation is clipped or overflows at 320px.");
   await cdp.send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
