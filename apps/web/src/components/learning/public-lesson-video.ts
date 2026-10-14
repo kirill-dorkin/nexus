@@ -1,3 +1,5 @@
+import { brand } from "@platform/brand";
+
 type PublicLessonVideo = {
   videoId: string;
   title: string;
@@ -14,7 +16,7 @@ export function getPublicLessonVideo(
   lessonSlug: string
 ): PublicLessonVideo | null {
   if (
-    organizationSlug === "nexus-preview" &&
+    organizationSlug === `${brand.slug}-preview` &&
     offeringSlug === "computer-literacy-course" &&
     lessonSlug === "computer"
   ) {

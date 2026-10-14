@@ -1,3 +1,4 @@
+import { brand } from "@platform/brand";
 import { describe, expect, it } from "vitest";
 import { getPublicLessonVideo } from "./public-lesson-video";
 
@@ -5,7 +6,7 @@ describe("public lesson video supplements", () => {
   it("returns the reviewed video only for the exact Preview lesson", () => {
     expect(
       getPublicLessonVideo(
-        "nexus-preview",
+        `${brand.slug}-preview`,
         "computer-literacy-course",
         "computer"
       )
@@ -24,7 +25,7 @@ describe("public lesson video supplements", () => {
     ).toBeNull();
     expect(
       getPublicLessonVideo(
-        "nexus-preview",
+        `${brand.slug}-preview`,
         "computer-literacy-course",
         "files"
       )
