@@ -39,7 +39,10 @@
 :root,
 [data-ui-theme="dark"] {
   color-scheme: dark;
-  --surface-default: #100b16;
+  --surface-default: #15171d;
+  /* Low-chroma page canvas: only a small share of the selected accent. */
+  --page-background: color-mix(in srgb, var(--accent-action) 7%, #15171d);
+  --page-glow: color-mix(in srgb, var(--accent-night) 6%, transparent);
   --surface-subtle: #181120;
   --surface-elevated: color-mix(in srgb, var(--accent-action) 7%, #241a2d);
   --surface-solid: #1d1625;
@@ -78,6 +81,8 @@
 [data-ui-theme="light"] {
   color-scheme: light;
   --surface-default: #f5f6fa;
+  --page-background: color-mix(in srgb, var(--accent-action) 3%, #f7f8fa);
+  --page-glow: color-mix(in srgb, var(--accent-action) 4%, transparent);
   --surface-subtle: #f8f9fc;
   --surface-elevated: #fff;
   --surface-solid: #fff;
