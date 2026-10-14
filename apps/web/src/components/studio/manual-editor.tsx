@@ -607,6 +607,8 @@ export function ActivityEditor({
   return (
     <fieldset>
       <legend>Задание {i + 1}</legend>
+      <details open={!embedded} className={styles.inlineTechnical}>
+        <summary>Идентификатор задания</summary>
       <Field
         label="Адрес задания (slug)"
         value={activity.slug}
@@ -624,6 +626,7 @@ export function ActivityEditor({
           })
         }
       />
+      </details>
       <Field
         label="Название задания"
         value={activity.title}
@@ -690,6 +693,8 @@ export function ActivityEditor({
           <option value="quiz.short_text">Короткий текст</option>
         </Select>
       </label>
+      <details open={!embedded} className={styles.inlineTechnical}>
+        <summary>Связанные навыки</summary>
       <fieldset>
         <legend>Навыки задания</legend>
         {document.skills.map((s, k) => (
@@ -710,6 +715,7 @@ export function ActivityEditor({
           </label>
         ))}
       </fieldset>
+      </details>
       <Field
         label="Вопрос (Markdown)"
         multiline
@@ -794,6 +800,8 @@ export function ActivityEditor({
           {activity.presentation.options.map((option, j) => (
             <fieldset key={j}>
               <legend>Вариант {j + 1}</legend>
+              <details open={!embedded} className={styles.inlineTechnical}>
+                <summary>Ключ варианта</summary>
               <Field
                 label="Ключ варианта"
                 value={option.id}
@@ -817,6 +825,7 @@ export function ActivityEditor({
                   })
                 }
               />
+              </details>
               <Field
                 label="Текст варианта"
                 multiline
