@@ -12,7 +12,7 @@ describe("device appearance preferences", () => {
     expect(parseAppearance('"dark"')).toEqual(defaultAppearance);
     expect(parseAppearance('{"theme":"dark","accent":"unknown"}')).toEqual({
       theme: "dark",
-      accent: "rose"
+      accent: "teal"
     });
     expect(parseAppearance('{"theme":"unknown","accent":"blue"}')).toEqual({
       theme: "system",
