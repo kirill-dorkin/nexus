@@ -335,6 +335,50 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
     }
   });
 
+  it("paginates the authorized Offering list without truncating or repeating entries", async () => {
+    const f = fixtures[1]!;
+    const expectedIds = new Set<string>([f.offering]);
+    for (let i = 0; i < 50; i++) {
+      const offering = await post(
+        `organizations/${f.org}/offerings`,
+        {
+          courseVersionId: f.version,
+          slug: `paged-offering-${i}-${randomUUID()}`,
+          name: `Private page fixture ${i}`,
+          deliveryMode: "self_paced",
+          accessMode: "membership"
+        },
+        owner,
+        201
+      );
+      expectedIds.add(offering.id);
+    }
+    const base = `/v1/organizations/${f.org}/offerings?courseVersionId=${f.version}`;
+    const fetchPage = async (after?: string) => {
+      const response = await app.inject({
+        method: "GET",
+        url: after ? `${base}&after=${after}` : base,
+        headers: { "x-test-user-id": owner }
+      });
+      expect(response.statusCode, response.body).toBe(200);
+      expect(response.headers["cache-control"]).toBe("no-store");
+      return learningOfferingListSchema.parse(response.json());
+    };
+    const first = await fetchPage();
+    expect(first.offerings).toHaveLength(50);
+    expect(first.nextCursor).toBe(first.offerings.at(-1)!.id);
+    const second = await fetchPage(first.nextCursor!);
+    expect(second.offerings).toHaveLength(1);
+    expect(second.nextCursor).toBeNull();
+    const all = [...first.offerings, ...second.offerings];
+    expect(new Set(all.map((offering) => offering.id))).toEqual(expectedIds);
+    expect(all.every((offering) =>
+      offering.organizationId === f.org &&
+      offering.courseVersionId === f.version &&
+      offering.visibility === "private"
+    )).toBe(true);
+  });
+
   it("defaults private and never exposes private content through anonymous functions", async () => {
     await get(fixtures[0], "", 404);
     await get(fixtures[0], `/lessons/${lessonSlug}`, 404);
