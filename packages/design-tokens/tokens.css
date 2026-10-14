@@ -30,24 +30,28 @@
   --accent-day: #a5195b;
   --accent-night: #f5a0cb;
   --art-filter: saturate(0.85);
+  /* Derived companion colors, never an independently selected second accent. */
+  --accent-companion: color-mix(in srgb, var(--accent-action) 65%, var(--accent-night));
+  --accent-atmosphere: color-mix(in srgb, var(--accent-companion) 7%, transparent);
+  --art-tint-strength: 0.25;
 }
 /* Explicit themes also work inside an isolated component gallery. */
 :root,
 [data-ui-theme="dark"] {
   color-scheme: dark;
   --surface-default: #100b16;
-  --surface-subtle: #181120;
-  --surface-elevated: #241a2d;
-  --surface-solid: #1d1625;
+  --surface-subtle: color-mix(in srgb, var(--accent-action) 5%, #181120);
+  --surface-elevated: color-mix(in srgb, var(--accent-action) 7%, #241a2d);
+  --surface-solid: color-mix(in srgb, var(--accent-action) 4%, #1d1625);
   --surface-input: #14101c;
   --surface-glass: rgb(29 21 38 / 90%);
-  --surface-hover: #2b2035;
+  --surface-hover: color-mix(in srgb, var(--accent-action) 12%, #2b2035);
   --text-primary: #f8f5fb;
   --text-secondary: #b8afc4;
   --text-disabled: #93869f;
   --text-accent: var(--accent-night);
   --text-on-action: #fff;
-  --border-default: #382d43;
+  --border-default: color-mix(in srgb, var(--accent-action) 9%, #382d43);
   --border-strong: #776780;
   --border-glass: #755267;
   --border-accent: var(--accent-night);
@@ -74,18 +78,18 @@
 [data-ui-theme="light"] {
   color-scheme: light;
   --surface-default: #f5f6fa;
-  --surface-subtle: #f8f9fc;
+  --surface-subtle: color-mix(in srgb, var(--accent-action) 3%, #f8f9fc);
   --surface-elevated: #fff;
   --surface-solid: #fff;
   --surface-input: #f7f7fb;
   --surface-glass: rgb(255 255 255 / 90%);
-  --surface-hover: #f0edfa;
+  --surface-hover: color-mix(in srgb, var(--accent-action) 6%, #f0edfa);
   --text-primary: #20213a;
   --text-secondary: #62687d;
   --text-disabled: #969bad;
   --text-accent: var(--accent-day);
   --text-on-action: #fff;
-  --border-default: #e5e7ef;
+  --border-default: color-mix(in srgb, var(--accent-action) 5%, #e5e7ef);
   --border-strong: #898a9c;
   --border-glass: #d8d3e8;
   --border-accent: var(--accent-day);
