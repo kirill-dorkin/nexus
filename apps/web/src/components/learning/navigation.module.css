@@ -183,3 +183,89 @@
   }
 }
 
+
+/* Mobile-first navigation sheet: an anchored drawer rather than a floating popover. */
+@media (max-width: 860px) {
+  .menu {
+    inset: 0 0 0 auto;
+    width: min(100%, 440px);
+    height: 100dvh;
+    max-height: 100dvh;
+    padding: 0;
+    border: 0;
+    border-left: 1px solid var(--border-default);
+    border-radius: 0;
+    box-shadow: -24px 0 80px color-mix(in srgb, var(--text-primary) 14%, transparent);
+    background: var(--surface-elevated);
+    color: var(--text-primary);
+    overflow: hidden;
+    flex-direction: column;
+  }
+  .menu[open] { display: flex; }
+  .menu::backdrop {
+    background: color-mix(in srgb, #101018 60%, transparent);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .menuHeading {
+    flex: none;
+    margin: 0;
+    padding: calc(1.5rem + env(safe-area-inset-top)) max(1.35rem, env(safe-area-inset-right)) 1.3rem 1.35rem;
+    border-bottom: 1px solid var(--border-default);
+  }
+  .menuIdentity { display: grid; gap: 0.55rem; min-width: 0; }
+  .menuEyebrow, .groupLabel {
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    font-weight: 750;
+    color: var(--text-secondary);
+  }
+  .menuHeading h2 {
+    font-size: clamp(1.65rem, 6vw, 2.05rem);
+    line-height: 1.13;
+    font-weight: 760;
+    letter-spacing: -0.045em;
+  }
+  .closeButton { flex-shrink: 0; border: 1px solid var(--border-default); border-radius: 0.8rem; }
+  .menuContent {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1.15rem 1.05rem 2rem;
+  }
+  .mobileNav { gap: 0.28rem; }
+  .groupLabel { padding: 1.2rem 0.85rem 0.45rem; }
+  .groupLabel:first-child { padding-top: 0.2rem; }
+  .mobileNav a {
+    min-height: 60px;
+    display: grid;
+    grid-template-columns: 24px minmax(0,1fr) 20px;
+    gap: 0.95rem;
+    padding: 0.9rem 0.95rem;
+    font-size: 1.03rem;
+    border-radius: 0.95rem;
+  }
+  .mobileNav a > svg:first-child { color: var(--text-accent); }
+  .mobileNav a > svg:last-child { justify-self: end; opacity: 0.6; }
+  .mobileNav a[aria-current="page"] { background: var(--accent-subtle); border-color: var(--border-accent); }
+  .mobileNav a[aria-current="page"] > svg:last-child { opacity: 1; }
+  .menuFooter {
+    flex: none;
+    border-top: 1px solid var(--border-default);
+    padding: 1rem max(1.35rem, env(safe-area-inset-right)) calc(1rem + env(safe-area-inset-bottom)) 1.35rem;
+    background: var(--surface-elevated);
+  }
+  .mobileAuth { margin: 0; padding: 0; border: 0; grid-template-columns: 1fr; gap: 0.55rem; }
+  .mobileAuth a { min-height: 48px; width: 100%; justify-content: center; }
+  .mobileAuth > a:first-of-type { justify-content: center; gap: 0.75rem; }
+  .menuStatus { margin: 0; color: var(--text-secondary); font-size: 0.9rem; }
+}
+@media (min-width: 620px) and (max-width: 860px) {
+  .menu { inset: 0 0 0 auto; width: min(440px, 100%); height: 100dvh; max-height: 100dvh; border-radius: 0; }
+}
+@media (max-width: 360px) {
+  .menuHeading { padding-left: 1rem; }
+  .menuContent { padding-inline: 0.75rem; }
+  .menuFooter { padding-left: 1rem; }
+}
