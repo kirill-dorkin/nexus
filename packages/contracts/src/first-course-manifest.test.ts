@@ -46,8 +46,9 @@ describe("first public computer basics course import", () => {
     const skillKeys = new Set(manifest.skills.map((s) => s.key));
     for (const activity of manifest.activities) {
       expect(activity.skillKeys.every((key) => skillKeys.has(key))).toBe(true);
-      expect(activity.type === "quiz.single_choice" ||
-        activity.type === "quiz.multiple_choice").toBe(true);
+      if (activity.type === "quiz.short_text") {
+        throw new Error("The first course uses only deterministic choice quizzes.");
+      }
       const choices = new Set(activity.presentation.options.map((option) => option.id));
       if (activity.type === "quiz.single_choice")
         expect(choices.has(activity.validation.correctOptionId)).toBe(true);
