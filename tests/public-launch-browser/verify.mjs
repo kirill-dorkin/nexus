@@ -746,6 +746,25 @@ async function verifyStudio(cdp) {
   await clickText(cdp,"Создать организацию");
   await waitForExpression(cdp,'[...document.querySelectorAll("a")].some(a=>a.textContent==="Создать курс")',"explicit canonical organization entry");
   const createHref=await evaluate(cdp,'[...document.querySelectorAll("a")].find(a=>a.textContent==="Создать курс").getAttribute("href")');
+  const organizationId=createHref.split("/")[2];
+  assert(organizationId?.length>0,"Studio Organization id missing.");
+  // Author-only policy read and explicit open/close through real PostgreSQL.
+  await navigate(cdp,`${WEB_ORIGIN}/studio/${organizationId}/entry-policy`);
+  await waitForExpression(cdp,'document.body.innerText.includes("Вступление закрыто")',"Studio customer entry default closed");
+  await accessibilityAudit(cdp,"Studio Organization entry policy");
+  await clickText(cdp,"Разрешить самостоятельное вступление");
+  await waitForExpression(cdp,'document.body.innerText.includes("Подтвердите: все зарегистрированные пользователи")',"explicit customer entry confirmation");
+  await clickText(cdp,"Подтвердить открытие вступления");
+  await waitForExpression(cdp,'document.body.innerText.includes("Вступление открыто")',"Studio opened customer entry");
+  const readPolicy=()=>evaluate(cdp,`fetch(${JSON.stringify(`${API_ORIGIN}/v1/organizations/${organizationId}/customer-entry-policy`)},{credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,body:await r.json()}))`);
+  const opened=await readPolicy();
+  assert(opened.status===200&&opened.body.policy==="open","Studio failed to persist open customer entry policy.");
+  await clickText(cdp,"Закрыть самостоятельное вступление");
+  await waitForExpression(cdp,'document.body.innerText.includes("Подтвердите: новые пользователи")',"explicit close customer entry confirmation");
+  await clickText(cdp,"Подтвердить закрытие вступления");
+  await waitForExpression(cdp,'document.body.innerText.includes("Вступление закрыто")',"Studio closed customer entry");
+  const closed=await readPolicy();
+  assert(closed.status===200&&closed.body.policy==="closed","Studio failed to restore closed customer entry policy.");
   await navigate(cdp,`${WEB_ORIGIN}${createHref}`);
   await waitForExpression(cdp,'document.querySelectorAll("input").length>0',"new manual editor");
   const slug=`browser-course-${Date.now()}`;
