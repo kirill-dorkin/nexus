@@ -44,7 +44,7 @@
   --surface-elevated: color-mix(in srgb, var(--accent-action) 7%, #241a2d);
   --surface-solid: #1d1625;
   --surface-input: #14101c;
-  --surface-glass: rgb(29 21 38 / 90%);
+  --surface-glass: color-mix(in srgb, var(--accent-action) 7%, rgb(29 21 38 / 90%));
   --surface-hover: color-mix(in srgb, var(--accent-action) 12%, #2b2035);
   --text-primary: #f8f5fb;
   --text-secondary: #b8afc4;
@@ -53,7 +53,7 @@
   --text-on-action: #fff;
   --border-default: color-mix(in srgb, var(--accent-action) 9%, #382d43);
   --border-strong: #776780;
-  --border-glass: #755267;
+  --border-glass: color-mix(in srgb, var(--accent-action) 16%, #755267);
   --border-accent: var(--accent-night);
   --action-primary: var(--accent-action);
   --action-hover: var(--accent-hover);
@@ -82,7 +82,7 @@
   --surface-elevated: #fff;
   --surface-solid: #fff;
   --surface-input: #f7f7fb;
-  --surface-glass: rgb(255 255 255 / 90%);
+  --surface-glass: color-mix(in srgb, var(--accent-action) 3%, rgb(255 255 255 / 90%));
   --surface-hover: color-mix(in srgb, var(--accent-action) 6%, #f0edfa);
   --text-primary: #20213a;
   --text-secondary: #62687d;
@@ -91,7 +91,7 @@
   --text-on-action: #fff;
   --border-default: color-mix(in srgb, var(--accent-action) 5%, #e5e7ef);
   --border-strong: #898a9c;
-  --border-glass: #d8d3e8;
+  --border-glass: color-mix(in srgb, var(--accent-action) 10%, #d8d3e8);
   --border-accent: var(--accent-day);
   --action-primary: var(--accent-action);
   --action-hover: var(--accent-hover);
