@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-13",
+  "title": "Design System: Open course discovery",
+  "extensions": {
+    "colorMeta": {
+      "rose-action": {
+        "role": "primary",
+        "displayName": "Rose Action"
+      },
+      "violet-action": {
+        "role": "primary",
+        "displayName": "Violet Action"
+      },
+      "blue-action": {
+        "role": "primary",
+        "displayName": "Blue Action"
+      },
+      "teal-action": {
+        "role": "primary",
+        "displayName": "Teal Action"
+      },
+      "amber-action": {
+        "role": "primary",
+        "displayName": "Amber Action"
+      },
+      "light-page": {
+        "role": "neutral",
+        "displayName": "Light Page"
+      },
+      "light-solid": {
+        "role": "neutral",
+        "displayName": "Light Solid"
+      },
+      "light-ink": {
+        "role": "neutral",
+        "displayName": "Light Ink"
+      },
+      "light-muted": {
+        "role": "neutral",
+        "displayName": "Light Muted"
+      },
+      "dark-page": {
+        "role": "neutral",
+        "displayName": "Dark Page"
+      },
+      "dark-solid": {
+        "role": "neutral",
+        "displayName": "Dark Solid"
+      },
+      "dark-ink": {
+        "role": "neutral",
+        "displayName": "Dark Ink"
+      },
+      "dark-muted": {
+        "role": "neutral",
+        "displayName": "Dark Muted"
+      }
+    },
+    "typographyMeta": {},
+    "shadows": [],
+    "motion": [],
+    "breakpoints": [
+      {
+        "name": "home-compact",
+        "value": "960px"
+      },
+      {
+        "name": "home-stack",
+        "value": "700px"
+      },
+      {
+        "name": "shared-navigation-mobile",
+        "value": "860px"
+      }
+    ],
+    "source": {
+      "root": "apps/web",
+      "targets": [
+        "/",
+        "/ui/home-lab",
+        "/ui/home-lab/review"
+      ],
+      "scope": "Public homepage and noindex composition comparison; other learning/Studio compositions retain established authority.",
+      "files": [
+        "src/app/page.tsx",
+        "src/components/learning/home-discovery.tsx",
+        "src/components/learning/home-discovery.module.css",
+        "src/app/ui/home-lab/page.tsx",
+        "../../packages/design-tokens/tokens.css"
+      ],
+      "provenance": "docs/design-assets/computer-literacy-cover.md; original reviewed asset unchanged.",
+      "ramps": "No synthetic tonal ramps: retain existing five selectable accent presets and semantic theme mappings.",
+      "refinement": "14px metadata, 16px body, 44px maximum platform heading, 32px maximum course title. Static appearance utility row. Mobile action before artwork.",
+      "composition": "Short platform introduction, unboxed actual course spread, program action and first three canonical lesson titles."
+    }
+  },
+  "components": [],
+  "narrative": {
+    "northStar": "Open course discovery",
+    "overview": "A quiet educational platform entry leads directly into real course programs. No decorative dashboard or fabricated inventory.",
+    "keyCharacteristics": [
+      "Original shared logo and Onest Cyrillic.",
+      "Light/dark/system and five semantic accents.",
+      "Open actual course spreads and canonical syllabus preview."
+    ],
+    "rules": [
+      {
+        "name": "The Semantic Accent Rule",
+        "body": "Use existing active semantic action, text-accent and focus tokens; no independent Radix palette in the homepage.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Font Rule",
+        "body": "Keep display and body typography on the existing Onest stack; reserve the mono stack for code.",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "Do preserve the existing semantic theme and accent mappings, including all five accents.",
+      "Do keep Onest, Cyrillic wrapping, visible focus and reduced-motion behaviour.",
+      "Do reuse reviewed course artwork through the web-owned resolver and its provenance record."
+    ],
+    "donts": [
+      "Do not fabricate inventory, outcomes, ratings or continuation.",
+      "Do not make account entry a prerequisite to public material.",
+      "Do not introduce blur, autoplay or a fixed appearance layer over content."
+    ]
+  }
+}
+

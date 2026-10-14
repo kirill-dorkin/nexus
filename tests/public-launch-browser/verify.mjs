@@ -4,6 +4,7 @@ import { createServer as createHttpServer, request as httpRequest } from "node:h
 import { createServer as createHttpsServer } from "node:https";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { installProviderStubs } from "./provider-stubs.mjs";
 
 const WEB_ORIGIN = "https://127.0.0.1:3443";
 const OTHER_WEB_ORIGIN = "https://127.0.0.1:3444";
@@ -603,14 +604,25 @@ async function evaluate(cdp, expression) {
 
 async function waitForExpression(cdp, expression, label, timeoutMs = 20_000) {
   const deadline = Date.now() + timeoutMs;
+  let lastEvaluationError = null;
   while (Date.now() < deadline) {
-    // Next.js can navigate between the click and this poll: document.body is
-    // briefly null during a fresh document load. Treat that as "not ready",
-    // not as an application/runtime assertion failure.
-    if (await evaluate(cdp, `document.body !== null && (${expression})`)) return;
+    try {
+      // A hard navigation can temporarily remove document.body. The same
+      // predicate is retried once a new document has been created.
+      if (await evaluate(cdp, `document.body !== null && (${expression})`)) return;
+      lastEvaluationError = null;
+    } catch (error) {
+      // A document may be replaced between Runtime.evaluate and this response.
+      // Retry until the new navigation context is ready; direct evaluate calls
+      // still fail immediately and a persistent expression error is reported.
+      lastEvaluationError = error;
+    }
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
-  throw new Error(`Timed out waiting for ${label}.`);
+  const detail = lastEvaluationError instanceof Error
+    ? ` Last evaluation error: ${lastEvaluationError.message}`
+    : "";
+  throw new Error(`Timed out waiting for ${label}.${detail}`);
 }
 
 async function navigate(cdp, url) {
@@ -719,9 +731,15 @@ async function launchChrome(tempDirectory) {
 
 
 async function fillLabel(cdp, label, value, index = 0) {
+  await waitForExpression(cdp, `(() => {
+    const labels=[...document.querySelectorAll("label")].filter(l=>l.firstChild?.textContent?.trim()===${JSON.stringify(label)});
+    const label=labels[${index}];
+    return Boolean(label?.control ?? label?.querySelector("input,textarea,select"));
+  })()`, `labelled Studio field: ${label}`);
   const changed = await evaluate(cdp, `(() => {
     const labels=[...document.querySelectorAll("label")].filter(l=>l.firstChild?.textContent?.trim()===${JSON.stringify(label)});
-    const el=labels[${index}]?.querySelector("input,textarea,select");
+    const label=labels[${index}];
+    const el=label?.control ?? label?.querySelector("input,textarea,select");
     if (!el) return false;
     const proto=el instanceof HTMLTextAreaElement?HTMLTextAreaElement.prototype:el instanceof HTMLSelectElement?HTMLSelectElement.prototype:HTMLInputElement.prototype;
     Object.getOwnPropertyDescriptor(proto,"value").set.call(el,${JSON.stringify(String(value))});
@@ -821,6 +839,7 @@ async function verifyStudio(cdp) {
     const saved=await canonicalRead();assert(saved.body.manifest.course.title==="JSON + ручные формы"&&saved.body.manifest.activities[2].validation.acceptedAnswers[0]==="PRIVATE_EDITED_TEXT"&&saved.body.manifest.lessons[1].durationMinutes===27,"JSON/manual fields diverged from canonical export.");
     const exported=await evaluate(cdp,`fetch(${JSON.stringify(`${apiBase}/courses/${course}/versions/${saved.body.versionId}/manifest`)},{credentials:"include"}).then(r=>r.json())`);
     assert(JSON.stringify(exported)===JSON.stringify(saved.body.manifest),"Draft export is not the same canonical document.");
+    await evaluate(cdp, '[...document.querySelectorAll("summary")].find(s=>s.textContent.includes("Копии и сохранённая версия")).click()');
     await clickText(cdp,"Скачать сохранённый JSON");
     await waitForExpression(cdp,'document.body.innerText.includes("Скачан сохранённый черновик")',"canonical JSON download");
     // A concurrent authorized edit must be surfaced before this working copy can apply.
@@ -832,9 +851,30 @@ async function verifyStudio(cdp) {
     await waitForExpression(cdp,'document.body.innerText.includes("На сервере уже другой черновик")',"visible revision conflict");
     assert(await evaluate(cdp,'[...document.querySelectorAll("button")].find(b=>b.textContent==="Сохранить черновик").disabled'),"Stale working copy remains applicable.");
     await clickText(cdp,"Отбросить изменения и загрузить сохранённое");
+    await waitForExpression(cdp,'document.querySelector("dialog[open]")?.textContent.includes("Отбросить текущие правки?")',"discard confirmation");
+    await accessibilityAudit(cdp,"Studio discard confirmation");
+    await clickText(cdp,"Остаться в редакторе");
+    await waitForExpression(cdp,'!document.querySelector("dialog[open]")',"discard confirmation close");
+    assert(await evaluate(cdp,'[...document.querySelectorAll("label")].find(l=>l.firstChild?.textContent?.trim()==="Название курса")?.control?.value === "Моя несохранённая правка"'),"Cancelling discard lost working copy.");
+    await evaluate(cdp,'[...document.querySelectorAll("a")].find(a=>a.textContent?.trim()==="← Все курсы").click()');
+    await waitForExpression(cdp,'document.querySelector("dialog[open]")?.textContent.includes("Выйти из редактора?")',"unsaved internal navigation confirmation");
+    await accessibilityAudit(cdp,"Studio unsaved navigation confirmation");
+    await clickText(cdp,"Остаться в редакторе");
+    await waitForExpression(cdp,'!document.querySelector("dialog[open]")',"unsaved navigation confirmation close");
+    assert(await evaluate(cdp,'[...document.querySelectorAll("label")].find(l=>l.firstChild?.textContent?.trim()==="Название курса")?.control?.value === "Моя несохранённая правка"'),"Cancelling navigation lost working copy.");
+    await clickText(cdp,"Отбросить изменения и загрузить сохранённое");
+    await clickText(cdp,"Отбросить и загрузить");
     await waitForExpression(cdp,'document.body.innerText.includes("Загружен актуальный черновик")',"explicit canonical reload");
     await clickText(cdp,"Предпросмотр");
     await clickText(cdp,"Опубликовать версию 1");
+    await waitForExpression(cdp, 'document.querySelector(\'dialog[open][aria-labelledby="studio-publish-title"]\') !== null', "publication confirmation");
+    assert((await canonicalRead()).body.status === "draft", "Opening publication confirmation wrote canonical state.");
+    await accessibilityAudit(cdp, "publication confirmation");
+    await clickText(cdp, "Отмена");
+    await waitForExpression(cdp, '!document.querySelector(\'dialog[open][aria-labelledby="studio-publish-title"]\')', "cancel publication");
+    assert((await canonicalRead()).body.status === "draft", "Cancelling publication wrote canonical state.");
+    await clickText(cdp,"Опубликовать версию 1");
+    await clickText(cdp,"Подтвердить публикацию");
     await waitForExpression(cdp,'document.body.innerText.includes("Версия опубликована")',"fenced publication");
     const release=await canonicalRead();published=release.body;assert(release.body.status==="published"&&release.body.manifest.course.title==="Другой автор","Published an unseen working copy.");
     // Publishing Content does not open Delivery. Use the real Studio controls
@@ -917,6 +957,9 @@ async function verifyCanonicalLearner(cdp, authored) {
         !publicLesson.raw.includes("correctOption"),
       "Canonical public read leaked author keys."
     );
+    assert(await evaluate(cdp, 'document.querySelector("iframe") === null'), "Canonical lesson loaded YouTube before play.");
+    await clickText(cdp, "Смотреть видео");
+    await waitForExpression(cdp, 'document.querySelector("iframe") !== null', "explicit canonical player activation");
     assert(
       await evaluate(
         cdp,
@@ -924,6 +967,9 @@ async function verifyCanonicalLearner(cdp, authored) {
       ),
       "Canonical video did not use safe renderer."
     );
+    await clickText(cdp, "Закрыть плеер");
+    await waitForExpression(cdp, 'document.querySelector("iframe") === null', "canonical player dismissal");
+    assert(await evaluate(cdp, 'document.querySelector("iframe") === null && document.activeElement?.textContent.includes("Смотреть видео")'), "Closing video retained iframe or lost keyboard focus.");
     await accessibilityAudit(cdp, "canonical anonymous lesson");
     await navigate(
       cdp,
@@ -988,7 +1034,7 @@ async function verifyCanonicalLearner(cdp, authored) {
     await clickText(cdp, "Проверить и сохранить ответ");
     await waitForExpression(
       cdp,
-      'document.body.innerText.includes("✓ Правильно") && document.body.innerText.includes("Задания курса: 1 из 2")',
+      'document.body.innerText.includes("Правильно") && document.body.innerText.includes("Задания курса: 1 из 2")',
       "canonical retry passed"
     );
     assert(
@@ -1003,7 +1049,7 @@ async function verifyCanonicalLearner(cdp, authored) {
     );
     const next = await evaluate(
       cdp,
-      '[...document.querySelectorAll("a")].find(a=>a.textContent==="Продолжить").getAttribute("href")'
+      '[...document.querySelectorAll("a")].find(a=>a.textContent?.trim()==="Продолжить").getAttribute("href")'
     );
     assert(
       next === `${courseRoute}/second`,
@@ -1033,7 +1079,7 @@ async function verifyCanonicalLearner(cdp, authored) {
     await clickText(cdp, "Проверить и сохранить ответ");
     await waitForExpression(
       cdp,
-      'document.querySelectorAll("form")[0].innerText.includes("✓ Правильно")',
+      'document.querySelectorAll("form")[0].innerText.includes("Правильно")',
       "canonical exact multi passed"
     );
     assert(
@@ -1173,19 +1219,7 @@ async function runBrowserVerification(cdp) {
     })
   ]);
 
-  cdp.on("Fetch.requestPaused", (params) => {
-    const isVideo = params.request.url.startsWith("https://www.youtube-nocookie.com/");
-    const script = isVideo ? "<!doctype html><html><body>Video provider stub</body></html>" :
-      "window.Paddle={Environment:{set:function(){}},Initialize:function(){},Checkout:{open:function(options){window.__paddleOpenedSuccessUrl=options.settings.successUrl;}}};";
-    void cdp.send("Fetch.fulfillRequest", {
-      requestId: params.requestId,
-      responseCode: 200,
-      responseHeaders: [
-        { name: "content-type", value: isVideo ? "text/html; charset=utf-8" : "application/javascript; charset=utf-8" }
-      ],
-      body: Buffer.from(script).toString("base64")
-    });
-  });
+  const providerStubs = installProviderStubs(cdp);
 
   console.log("[browser-launch] public learning pages and mobile rendering");
   await cdp.send("Emulation.setDeviceMetricsOverride", {
@@ -1197,10 +1231,85 @@ async function runBrowserVerification(cdp) {
   await navigate(cdp, WEB_ORIGIN);
   await waitForExpression(
     cdp,
-    'document.body.innerText.includes("Бесплатные курсы") && document.body.innerText.includes("Основы компьютера")',
+    'document.body.innerText.includes("Посмотреть программу") && document.body.innerText.includes("Основы компьютера")',
     "learning homepage"
   );
   await accessibilityAudit(cdp, "learning homepage");
+  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Learning homepage overflows mobile.");
+  assert(await evaluate(cdp, 'document.querySelectorAll("h1").length === 1 && !document.body.innerText.includes("Дизайн Preview")'), "Public homepage has duplicate heading or lab notice.");
+  await evaluate(cdp, 'document.querySelector(\'button[aria-label="Открыть меню"]\')?.click()');
+  await waitForExpression(cdp, `(() => { const dialog = document.querySelector("dialog[open]"); return Boolean(dialog && dialog.querySelector('nav[aria-label="Главное меню на мобильном экране"]') && dialog.innerText.includes("Куда отправимся?")); })()`, "mobile navigation");
+  await accessibilityAudit(cdp, "mobile navigation");
+  assert(await evaluate(cdp, `(() => {
+    const dialog = document.querySelector("dialog[open]");
+    if (!dialog) return false;
+    const rect = dialog.getBoundingClientRect();
+    const controls = [...dialog.querySelectorAll("a, button")];
+    return rect.left >= -1 && Math.abs(innerWidth - rect.right) <= 2
+      && Math.abs(rect.top) <= 2 && Math.abs(innerHeight - rect.bottom) <= 2
+      && controls.length >= 3
+      && controls.every((control) => control.getBoundingClientRect().height >= 44)
+      && dialog.contains(document.activeElement)
+      && !dialog.innerText.includes("Куда вы хотите перейти?")
+      && document.documentElement.scrollWidth <= innerWidth;
+  })()`), "Mobile navigation is clipped, verbose, or has undersized controls at 390px.");
+  await cdp.send("Emulation.setDeviceMetricsOverride", {
+    width: 320,
+    height: 640,
+    deviceScaleFactor: 1,
+    mobile: true
+  });
+  assert(await evaluate(cdp, `(() => {
+    const dialog = document.querySelector("dialog[open]");
+    if (!dialog) return false;
+    const rect = dialog.getBoundingClientRect();
+    return rect.left >= -1 && Math.abs(innerWidth - rect.right) <= 2
+      && Math.abs(rect.top) <= 2 && Math.abs(innerHeight - rect.bottom) <= 2
+      && document.documentElement.scrollWidth <= innerWidth;
+  })()`), "Mobile navigation is clipped or overflows at 320px.");
+  await cdp.send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await waitForExpression(cdp, '!document.querySelector("dialog[open]")', "mobile navigation dismissal");
+  await cdp.send("Emulation.setDeviceMetricsOverride", {
+    width: 390,
+    height: 844,
+    deviceScaleFactor: 1,
+    mobile: true
+  });
+  // The Acme fixture has no reviewed course artwork. Discovery must work without it.
+  await waitForExpression(cdp, 'document.body.innerText.includes("2 урока") && document.body.innerText.includes("15 мин")', "homepage real metadata");
+  await tabUntil(cdp, 'document.activeElement?.getAttribute("href") === "/learn/acme/computer-basics" && document.activeElement?.classList.contains("ui-button")', "homepage catalog action");
+  assert(await evaluate(cdp, 'document.activeElement.matches(":focus-visible") && parseFloat(getComputedStyle(document.activeElement).outlineWidth) >= 2'), "Homepage action has no keyboard focus.");
+  await cdp.send("Input.dispatchKeyEvent", { type: "keyDown", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
+  await cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
+  await waitForExpression(cdp, 'location.pathname === "/learn/acme/computer-basics" && document.body.innerText.includes("Программа курса")', "homepage course program");
+
+  console.log("[browser-launch] UI gallery native controls and theme contract");
+  await navigate(cdp, `${WEB_ORIGIN}/ui`);
+  await waitForExpression(cdp, 'document.body.innerText.includes("Тема компонентов")', "UI gallery");
+  await accessibilityAudit(cdp, "UI gallery dark");
+  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "UI gallery overflows mobile.");
+  await clickText(cdp, "Светлая");
+  await waitForExpression(cdp, 'document.querySelector(".ui-gallery")?.dataset.uiTheme === "light"', "light theme");
+  await accessibilityAudit(cdp, "UI gallery light");
+  await clickText(cdp, "Тёмная");
+  await fill(cdp, '#example-name', 'Пример');
+  await clickText(cdp, "Проверить форму");
+  await waitForExpression(cdp, 'document.body.innerText.includes("данные никуда не отправлены")', "native demo form success");
+  await clickText(cdp, "Сбросить");
+  await waitForExpression(cdp, 'document.querySelector("#example-name")?.value === "" && !document.body.innerText.includes("данные никуда не отправлены")', "native demo form reset");
+  await tabUntil(cdp, 'document.activeElement?.tagName === "SUMMARY"', "native disclosure", 60);
+  // Native summary activates on Space keyup. Include text on keydown so CDP
+  // generates the normal keypress sequence rather than a bare raw key event.
+  await cdp.send("Input.dispatchKeyEvent", { type: "keyDown", key: " ", code: "Space", windowsVirtualKeyCode: 32, text: " ", unmodifiedText: " " });
+  await cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: " ", code: "Space", windowsVirtualKeyCode: 32 });
+  await waitForExpression(cdp, 'document.querySelector("details")?.open === true', "keyboard disclosure");
+  await cdp.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] });
+  assert(await evaluate(cdp, 'getComputedStyle(document.querySelector(".ui-skeleton")).animationName === "none"'), "Reduced motion still animates skeleton.");
+  await cdp.send("Emulation.setEmulatedMedia", { features: [] });
+  await cdp.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
+  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "UI gallery overflows desktop.");
+  await cdp.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   await navigate(cdp, `${WEB_ORIGIN}/courses`);
   await waitForExpression(
     cdp,
@@ -1208,6 +1317,26 @@ async function runBrowserVerification(cdp) {
     "learning catalog"
   );
   await accessibilityAudit(cdp, "learning catalog");
+  await fill(cdp, "#course-search", "КОМПЬЮТЕРА");
+  assert(
+    await evaluate(
+      cdp,
+      'document.querySelector(\'section[aria-label="Доступные курсы"]\').innerText.includes("Основы компьютера")'
+    ),
+    "Catalog search lost case-insensitive Cyrillic matches."
+  );
+  await fill(cdp, "#course-search", "несуществующая тема");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Ничего не нашлось")',
+    "catalog search empty state"
+  );
+  await clickText(cdp, "Сбросить поиск");
+  await waitForExpression(
+    cdp,
+    'document.querySelector("#course-search").value === "" && document.body.innerText.includes("Основы компьютера")',
+    "catalog search reset"
+  );
   await navigate(cdp, `${WEB_ORIGIN}/learn/acme/computer-basics`);
   await waitForExpression(
     cdp,
@@ -1215,9 +1344,10 @@ async function runBrowserVerification(cdp) {
     "public course"
   );
   await accessibilityAudit(cdp, "public course");
+  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Course outline overflows mobile.");
   await tabUntil(
     cdp,
-    'document.activeElement?.textContent === "Открыть первый урок"',
+    'document.activeElement?.textContent?.trim() === "Открыть первый урок"',
     "learning start link"
   );
   const courseFocus = await evaluate(
@@ -1246,10 +1376,16 @@ async function runBrowserVerification(cdp) {
     "lesson start navigation"
   );
   await accessibilityAudit(cdp, "public lesson");
+  const activeLesson = await evaluate(cdp, `document.querySelector('nav[aria-label="Уроки курса"] a[aria-current="page"]')?.getAttribute("href")`);
+  assert(activeLesson === "/learn/acme/computer-basics/introduction", "Outline lost the current Lesson address.");
+  assert(await evaluate(cdp, 'document.querySelector("iframe") === null'), "YouTube loaded before explicit activation.");
+  await clickText(cdp, "Смотреть видео");
+  await waitForExpression(cdp, 'document.querySelector("iframe") !== null', "explicit fixture player activation");
   const lessonSafety = await evaluate(
     cdp,
     `({ xss: window.__lessonXss === true, unsafe: !!document.querySelector('main img,main script,main a[href^="javascript:"],main [onerror]'),
     video: document.querySelector('iframe')?.getAttribute('src'), overflow: document.documentElement.scrollWidth > innerWidth,
+    videoRatio: (() => { const frame = document.querySelector('iframe')?.parentElement?.getBoundingClientRect(); return frame ? frame.width / frame.height : 0; })(),
     code: !!document.querySelector('main pre code'), headings: document.querySelectorAll('main h1').length })`
   );
   assert(
@@ -1257,16 +1393,20 @@ async function runBrowserVerification(cdp) {
     "Lesson Markdown created executable or tracking markup."
   );
   assert(
-    lessonSafety.video === "https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ",
+    lessonSafety.video === "https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ?autoplay=1",
     "Lesson changed the canonical embed host/ID."
   );
   assert(
     !lessonSafety.overflow && lessonSafety.code && lessonSafety.headings === 1,
     `Lesson is not contained/readable on mobile: ${JSON.stringify(lessonSafety)}`
   );
+  assert(
+    lessonSafety.videoRatio > 1.7 && lessonSafety.videoRatio < 1.82,
+    `Lesson video lost its 16:9 mobile ratio: ${JSON.stringify(lessonSafety)}`
+  );
   await evaluate(
     cdp,
-    `[...document.querySelectorAll('a')].find(a=>a.textContent === 'Следующий урок →').click()`
+    `[...document.querySelectorAll('nav[aria-label="Переход между уроками"] a')].find(a=>a.querySelector('span')?.textContent.includes('Следующий урок')).click()`
   );
   await waitForExpression(
     cdp,
@@ -1275,7 +1415,7 @@ async function runBrowserVerification(cdp) {
   );
   await evaluate(
     cdp,
-    `[...document.querySelectorAll('a')].find(a=>a.textContent === '← Как устроен компьютер').click()`
+    `[...document.querySelectorAll('nav[aria-label="Переход между уроками"] a')].find(a=>a.querySelector('span')?.textContent.includes('Предыдущий урок')).click()`
   );
   await waitForExpression(
     cdp,
@@ -1322,8 +1462,27 @@ async function runBrowserVerification(cdp) {
   const learningEmail = `learner-browser-${Date.now()}@example.test`;
   await fill(cdp, 'input[name="email"]', learningEmail);
   await fill(cdp, 'input[name="password"]', PASSWORD);
+  await clickText(cdp, "Показать");
+  assert(
+    await evaluate(
+      cdp,
+      'document.querySelector(\'input[name="password"]\').type === "text" && document.querySelector(\'input[name="password"]\').value === ' +
+        JSON.stringify(PASSWORD)
+    ),
+    "Password reveal changed the submitted value."
+  );
+  await clickText(cdp, "Скрыть");
+  assert(
+    await evaluate(
+      cdp,
+      'document.querySelector(\'input[name="password"]\').type === "password"'
+    ),
+    "Password cannot be hidden again."
+  );
   await fill(cdp, 'input[name="displayName"]', "Learning Browser");
   await accessibilityAudit(cdp, "learning registration");
+  assert(await evaluate(cdp, `document.querySelector('input[name="password"]').getAttribute("aria-describedby") === "learning-password-hint" && document.querySelector("#learning-password-hint").innerText.includes("15")`), "Registration password hint is disconnected.");
+  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Learning registration overflows desktop.");
   await clickText(cdp, "Создать аккаунт");
   await waitForExpression(cdp, `location.pathname === ${JSON.stringify(learningReturn)} && document.body.innerText.includes("Вступить в организацию")`, "registration return to selected Lesson");
   assert([...learningActors.values()].every(a => !a.enrolled && !a.member), "Auth created Membership/Enrollment implicitly.");
@@ -1336,10 +1495,10 @@ async function runBrowserVerification(cdp) {
   await navigate(cdp, `${WEB_ORIGIN}/me/learning`);
   await waitForExpression(cdp, 'document.body.innerText.includes("Основы компьютера") && document.body.innerText.includes("Задания курса: 0 из 1")', "returning learner courses");
   await accessibilityAudit(cdp, "my learning");
-  const continueHref = await evaluate(cdp, '[...document.querySelectorAll("a")].find(a=>a.textContent === "Продолжить").getAttribute("href")');
+  const continueHref = await evaluate(cdp, '[...document.querySelectorAll("a")].find(a=>a.textContent?.trim() === "Продолжить").getAttribute("href")');
   assert(continueHref === learningReturn, "Continue changed the exact learning address.");
   await navigate(cdp, `${WEB_ORIGIN}${learningReturn}`);
-  await waitForExpression(cdp, 'document.querySelector(\'input[value="ram"]\') !== null', "quiz form");
+  await waitForExpression(cdp, 'document.querySelector(\'input[value="ram"]\')?.matches(":enabled") === true', "ready quiz form");
   await tabUntil(cdp, 'document.activeElement?.matches(\'input[type="radio"]\') === true', "quiz radio", 24);
   const quizFocus = await evaluate(cdp, '(() => {const s=getComputedStyle(document.activeElement);return document.activeElement.matches(":focus-visible") && parseFloat(s.outlineWidth)>=2;})()');
   assert(quizFocus, "Quiz radio has no visible keyboard focus.");
@@ -1354,7 +1513,7 @@ async function runBrowserVerification(cdp) {
   await clickText(cdp, "Попробовать ещё раз");
   await evaluate(cdp, 'document.querySelector(\'input[value="cpu"]\').click()');
   await clickText(cdp, "Проверить и сохранить ответ");
-  await waitForExpression(cdp, 'document.body.innerText.includes("✓ Правильно") && document.body.innerText.includes("Все обязательные задания курса выполнены")', "passed quiz and refreshed progress");
+  await waitForExpression(cdp, 'document.body.innerText.includes("Правильно") && document.body.innerText.includes("Все обязательные задания курса выполнены")', "passed quiz and refreshed progress");
   assert(quizFixtureRequests[2] !== quizFixtureRequests[1] && quizFixtureTries.size === 2, "Explicit retry did not start a new try.");
   assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Quiz overflows mobile.");
   await accessibilityAudit(cdp, "passed quiz feedback");
@@ -1457,7 +1616,7 @@ async function runBrowserVerification(cdp) {
   );
   await waitForExpression(
     cdp,
-    `document.body.innerText.includes("Форма оплаты открыта")`,
+    `document.body?.innerText.includes("Форма оплаты открыта") === true`,
     "first-party Paddle loading/open state"
   );
   await accessibilityAudit(cdp, "Paddle payment-link page");
@@ -1543,6 +1702,7 @@ async function runBrowserVerification(cdp) {
     checkoutIdempotencyKey === postCheckoutStorage.values[expectedAttemptKey],
     "The browser did not reuse the same attempt key at the checkout boundary."
   );
+  await providerStubs.assertHealthy();
 }
 
 async function closeServer(server) {

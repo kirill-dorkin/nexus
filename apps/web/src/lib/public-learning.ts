@@ -1,11 +1,12 @@
 import {
   publicLearningCatalogSchema,
   publicLearningCourseSchema,
-  publicLearningLessonSchema,
-  type PublicLearningCourse
+  publicLearningLessonSchema
 } from "@platform/contracts";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import { serverApiUrl } from "./server-api";
+export { courseUrl, lessonUrl } from "./public-learning-routes";
 
 async function read(path: string) {
   const response = await fetch(serverApiUrl(path), {
@@ -17,21 +18,10 @@ async function read(path: string) {
     throw new Error("Public learning is temporarily unavailable.");
   return response.json();
 }
-export function courseUrl(
-  course: Pick<PublicLearningCourse, "organization" | "offering">
-) {
-  return `/learn/${encodeURIComponent(course.organization.slug)}/${encodeURIComponent(course.offering.slug)}`;
-}
-export function lessonUrl(
-  course: Pick<PublicLearningCourse, "organization" | "offering">,
-  lessonSlug: string
-) {
-  return `${courseUrl(course)}/${encodeURIComponent(lessonSlug)}`;
-}
-export async function loadLearningCatalog() {
+export const loadLearningCatalog = cache(async function loadLearningCatalog() {
   return publicLearningCatalogSchema.parse(await read("/v1/public/learning"));
-}
-export async function loadLearningCourse(
+});
+export const loadLearningCourse = cache(async function loadLearningCourse(
   organizationSlug: string,
   offeringSlug: string
 ) {
@@ -40,8 +30,8 @@ export async function loadLearningCourse(
       `/v1/public/learning/${encodeURIComponent(organizationSlug)}/${encodeURIComponent(offeringSlug)}`
     )
   );
-}
-export async function loadLearningLesson(
+});
+export const loadLearningLesson = cache(async function loadLearningLesson(
   organizationSlug: string,
   offeringSlug: string,
   lessonSlug: string
@@ -51,4 +41,4 @@ export async function loadLearningLesson(
       `/v1/public/learning/${encodeURIComponent(organizationSlug)}/${encodeURIComponent(offeringSlug)}/lessons/${encodeURIComponent(lessonSlug)}`
     )
   );
-}
+});

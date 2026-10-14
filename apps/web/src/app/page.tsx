@@ -1,37 +1,22 @@
-import Link from "next/link";
-import { LearningShell } from "../components/learning/learning-shell";
-import { CourseList } from "../components/learning/course-list";
-import { loadLearningCatalog } from "../lib/public-learning";
-import styles from "../components/learning/learning.module.css";
+import type { Metadata } from "next";
+import { brand } from "@platform/brand";
+import {
+  HomeDiscoveryShell,
+  CourseDiscovery,
+} from "../components/learning/home-discovery";
+
 export const dynamic = "force-dynamic";
-export default async function HomePage() {
-  const catalog = await loadLearningCatalog();
+export const metadata: Metadata = {
+  title: "Понятное обучение цифровым навыкам",
+  description: `Открытые IT-курсы ${brand.name}: видео, понятные конспекты и практика в удобном темпе.`,
+  alternates: { canonical: "/" },
+  openGraph: { url: "/" },
+};
+
+export default function HomePage() {
   return (
-    <LearningShell>
-      <header className={styles.hero}>
-        <p className={styles.eyebrow}>От любопытства к пониманию</p>
-        <h1>
-          Разберитесь в теме.
-          <br />
-          Примените на практике.
-        </h1>
-        <p className={styles.lead}>
-          Короткие видео, понятные конспекты и задания в одном месте. Начните
-          бесплатно и учитесь в удобном для вас темпе.
-        </p>
-        <Link className={styles.button} href="#courses">
-          Начать обучение
-        </Link>
-      </header>
-      <section
-        id="courses"
-        className={styles.section}
-        aria-labelledby="courses-title"
-      >
-        <p className={styles.eyebrow}>Можно начать прямо сейчас</p>
-        <h2 id="courses-title">Бесплатные курсы</h2>
-        <CourseList courses={catalog.courses} />
-      </section>
-    </LearningShell>
+    <HomeDiscoveryShell>
+      <CourseDiscovery />
+    </HomeDiscoveryShell>
   );
 }

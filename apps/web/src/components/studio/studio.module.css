@@ -1,111 +1,553 @@
 .shell {
-  max-width: 70rem;
-  margin: 0 auto;
+  min-width: 0;
 }
-.nav,
-.actions {
+.shell :is(h1, h2, h3, h4, p, li, label, legend, summary, button, a) {
+  overflow-wrap: anywhere;
+}
+.pageHeading {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(2.25rem, 5vw, 4.5rem) 0 2.75rem;
+}
+.pageHeading h1 {
+  margin: 0;
+  max-width: 26ch;
+  font-size: clamp(2rem, 3.7vw, 3.25rem);
+  line-height: 1.16;
+  letter-spacing: -0.045em;
+}
+.pageHeading p {
+  max-width: 44rem;
+  margin: 0;
+}
+.backLink {
+  display: inline-flex;
+  margin-top: 2rem;
+  min-height: 44px;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-underline-offset: 4px;
+}
+.backLink + .pageHeading {
+  padding-top: 1.5rem;
+}
+.statusLine,
+.actions,
+.courseMeta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.65rem;
-  margin: 1rem 0;
+  gap: 0.75rem;
+  min-width: 0;
 }
-.nav {
+.statusLine p,
+.courseMeta p {
+  margin: 0;
+}
+.homeLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+}
+.organizationRail {
+  display: grid;
+  gap: 1.25rem;
+  align-content: start;
+  min-width: 0;
+}
+.organizationRail h2 {
+  margin: 0;
+}
+.organizationList {
+  display: grid;
+  gap: 0.5rem;
+}
+.organizationChoice:global(.ui-button) {
+  display: grid;
+  justify-content: stretch;
+  justify-items: start;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 1rem;
+  text-align: left;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-subtle);
+}
+.organizationChoice span {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+.organizationChoice[aria-pressed="true"] {
+  border-color: var(--border-accent);
+  background: var(--accent-subtle);
+}
+.createOrganization {
+  border-top: 1px solid var(--border-default);
+  border-radius: 0;
+  padding: 1rem 0;
+  margin-top: 0.5rem;
+}
+.createOrganization form {
+  margin-top: 1.5rem;
+}
+.createOrganization :global(.ui-field) {
+  margin-bottom: 1.25rem;
+}
+.createOrganization button {
+  width: 100%;
+}
+.courseWorkspace {
+  min-width: 0;
+}
+.sectionHeading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
   justify-content: space-between;
-  border-bottom: 1px solid var(--border-default);
-  padding-bottom: 1rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.sectionHeading h2 {
+  font-size: 1.9rem;
+  margin: 0.6rem 0 0;
+}
+.courseList {
+  padding: 0;
+  margin: 0 0 1.5rem;
+  list-style: none;
+}
+.courseRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2rem;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--border-default);
+  text-decoration: none;
+}
+.courseRow h3 {
+  margin: 1rem 0 0;
+  font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+  line-height: 1.3;
+}
+.courseRow > span {
+  font-size: 1.5rem;
+  color: var(--text-accent);
+}
+.courseRow:hover h3 {
+  color: var(--text-accent);
+}
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  background: var(--surface-default);
+  border-block: 1px solid var(--border-default);
+}
+.modeGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-subtle);
+}
+.modeGroup button {
+  font-size: 0.85rem;
+  padding-inline: 0.9rem;
+}
+.modeGroup button[aria-pressed="true"] {
+  color: var(--text-accent);
+  background: var(--accent-subtle);
+  border-color: var(--border-accent);
+}
+.workflowHint {
+  margin: 1rem 0 2rem;
+  max-width: 60rem;
+}
+.editorLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+}
+.editorRail {
+  position: sticky;
+  top: 8rem;
+  align-self: start;
+  min-width: 0;
+}
+.editorRail nav {
+  display: grid;
+  gap: 0.5rem;
+}
+.editorRail nav > p {
+  margin: 0 0 0.5rem;
+}
+.editorRail nav a {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 44px;
+  align-items: center;
+  padding: 0.7rem 0.75rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+}
+.editorRail nav a:hover {
+  background: var(--surface-subtle);
+  color: var(--text-accent);
+}
+.editorRail nav a span:last-child:not(:first-child) {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+.editorBody {
+  min-width: 0;
 }
 .sections {
   display: grid;
-  gap: 1rem;
+  gap: 3rem;
 }
 .card {
-  padding: clamp(0.8rem, 3vw, 1.6rem);
-  border: 1px solid var(--border-default);
-  border-radius: 0.6rem;
   min-width: 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-default);
+  scroll-margin-top: 9rem;
+}
+.card h2,
+.jsonEditor h2 {
+  margin: 0 0 1.5rem;
+  font-size: 1.65rem;
+  line-height: 1.3;
+  letter-spacing: -0.03em;
+}
+.card > p {
+  margin: -0.5rem 0 1.5rem;
+  color: var(--text-secondary);
 }
 .shell fieldset {
   min-width: 0;
+}
+.card > fieldset {
+  margin: 2rem 0;
+  padding: clamp(1rem, 3vw, 2rem);
+  background: var(--surface-solid);
   border: 1px solid var(--border-default);
-  padding: 1rem;
-  margin: 1rem 0;
-  border-radius: 0.4rem;
+  border-radius: var(--radius-lg);
+}
+.card > fieldset fieldset {
+  padding: 1.25rem 0 0;
+  margin: 1.75rem 0;
+  border: 0;
+  border-top: 1px solid var(--border-default);
+  border-radius: 0;
+  background: transparent;
 }
 .shell legend {
-  font-weight: 600;
+  padding-inline: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 650;
+  color: var(--text-secondary);
+}
+.shell .contentFieldset {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 .shell label {
   display: grid;
-  gap: 0.4rem;
-  margin: 0.8rem 0;
-}
-.shell input,
-.shell textarea,
-.shell select {
-  width: 100%;
+  gap: 0.65rem;
+  margin: 1.4rem 0;
   min-width: 0;
-  padding: 0.65rem;
-  color: var(--text-primary);
-  background: var(--surface-default);
-  border: 1px solid var(--border-default);
-  border-radius: 0.3rem;
-  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.shell :is(input, textarea, select) {
+  font-size: 1rem;
+  font-weight: 400;
+}
+.shell :is(input, textarea, select, button, a, summary) {
+  scroll-margin-block: 9rem 2rem;
+}
+.shell :is(input, textarea)[readonly] {
+  background: var(--surface-subtle);
+  color: var(--text-secondary);
 }
 .shell textarea {
+  line-height: 1.65;
+  min-height: 8rem;
   resize: vertical;
 }
 .shell .check {
   display: flex;
-  align-items: center;
-  gap: 0.6rem;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-block: 0.65rem;
+  margin: 0;
+  min-height: 44px;
+  font-weight: 400;
+  cursor: pointer;
 }
-.check input {
+.check input[type="checkbox"] {
   width: 1.2rem;
   height: 1.2rem;
+  min-height: 0;
+  padding: 0;
+  margin: 0.15rem 0 0;
   flex-shrink: 0;
+  accent-color: var(--action-primary);
 }
-.shell button {
-  padding: 0.6rem 0.9rem;
-  cursor: pointer;
-  border: 1px solid var(--border-default);
-  border-radius: 0.3rem;
+.orderActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--border-default);
+  padding-top: 1rem;
+}
+.orderActions .remove {
+  margin-left: auto;
+  color: var(--status-danger);
+}
+.shell .json {
+  min-height: 28rem;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 1.6;
+  tab-size: 2;
+}
+.shell input[type="file"] {
+  padding: 0.65rem;
+  max-width: 100%;
+  font-size: 0.85rem;
+}
+.shell input[type="file"]::file-selector-button {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem;
+  margin-right: 0.65rem;
+  background: var(--surface-solid);
   color: var(--text-primary);
-  background: var(--surface-default);
   font: inherit;
+  cursor: pointer;
 }
-.shell button:disabled {
-  opacity: 0.5;
-  cursor: default;
+.preview {
+  display: grid;
+  gap: 2.5rem;
 }
-.shell :is(button, a, input, textarea, select):focus-visible {
-  outline: 3px solid var(--focus-ring);
-  outline-offset: 3px;
+.previewHeading h2 {
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  line-height: 1.3;
+  margin: 0.75rem 0 1rem;
 }
-.shell .primary {
-  background: var(--action-primary);
-  color: #fff;
+.previewLesson {
+  min-width: 0;
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  border-radius: var(--radius-lg);
+  background: var(--surface-solid);
 }
-.shell p,
-.shell li,
-.shell h2,
-.shell h3 {
-  overflow-wrap: anywhere;
+.previewLesson h3 {
+  margin: 1rem 0;
+  font-size: 1.8rem;
+  line-height: 1.3;
 }
-.json {
-  min-height: 24rem;
-  font-family: var(--font-mono) !important;
+.previewNotes {
+  margin-block: 1.5rem;
+}
+.previewActivity {
+  border-top: 1px solid var(--border-default);
+  margin-top: 2rem;
+  padding-top: 2rem;
+}
+.previewActivity h4 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+.previewActivity li {
+  margin-block: 0.75rem;
 }
 .video {
-  aspect-ratio: 16/9;
-  margin: 1rem 0;
+  aspect-ratio: 16 / 9;
+  margin: 1.5rem 0;
 }
 .video iframe {
   width: 100%;
   height: 100%;
   border: 0;
+  border-radius: var(--radius-sm);
 }
-.error {
-  border-left: 3px solid var(--action-primary);
-  padding-left: 1rem;
+.notice {
+  margin-bottom: 1.5rem;
+  white-space: pre-line;
+}
+.notice ul {
+  padding-left: 1.25rem;
+  margin-block: 0.5rem;
+}
+.loading {
+  display: grid;
+  gap: 1rem;
+}
+.fileActions {
+  padding: 1.5rem 0;
+  border-block: 1px solid var(--border-default);
+  border-radius: 0;
+  margin-top: 3rem;
+}
+.fileActions > p {
+  margin-block: 1rem;
+}
+.publication {
+  display: grid;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  margin-top: 2rem;
+  border-top: 1px solid var(--border-default);
+}
+.publication h2 {
+  margin: 0 0 1rem;
+}
+.publication p {
+  margin: 0 0 0.85rem;
+}
+.publication button {
+  justify-self: start;
+}
+.returnToActions {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-underline-offset: 4px;
+}
+.shell .confirmation {
+  max-width: min(35rem, calc(100vw - 2rem));
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+.confirmation h2 {
+  margin: 1rem 0 1.25rem;
+}
+.confirmation p {
+  margin: 1rem 0;
+}
+.confirmation .actions {
+  margin-top: 1.75rem;
+  justify-content: flex-end;
+}
+@media (max-width: 1050px) {
+  .toolbar {
+    position: static;
+  }
+  .editorRail {
+    top: 1rem;
+  }
+}
+@media (max-width: 900px) {
+  .homeLayout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3rem;
+  }
+  .organizationList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .editorLayout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  .editorRail {
+    position: static;
+  }
+  .editorRail nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.25rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-default);
+  }
+  .editorRail nav > p {
+    grid-column: 1 / -1;
+  }
+  .card,
+  .shell :is(input, textarea, select, button, a, summary) {
+    scroll-margin-top: 1.5rem;
+  }
+  .pageHeading {
+    padding-block: 2rem;
+  }
+}
+@media (max-width: 500px) {
+  .organizationList {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sectionHeading > a,
+  .toolbar > .actions,
+  .toolbar > .actions button {
+    width: 100%;
+  }
+  .modeGroup {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .modeGroup button:first-child {
+    grid-column: 1 / -1;
+  }
+  .modeGroup button {
+    padding-inline: 0.5rem;
+  }
+  .courseRow {
+    gap: 1rem;
+    padding-block: 1.5rem;
+  }
+  .publication button,
+  .confirmation .actions button {
+    width: 100%;
+  }
+}
+
+.editorHeading h1 {
+  max-width: 44ch;
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+}
+.editorHeading {
+  gap: 1rem;
+  padding-bottom: 2rem;
+}
+.shell :global(.ui-field) {
+  margin-block: 1.4rem;
+}
+.shell :global(.ui-field) label {
+  margin: 0;
+}
+
+/* The published-course action is separate from the editor card link. */
+.courseManageLink {
+  display: inline-block;
+  margin: 0.25rem 0 1.25rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-underline-offset: 0.2rem;
 }

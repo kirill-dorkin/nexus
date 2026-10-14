@@ -1,0 +1,505 @@
+.page {
+  max-width: 1140px;
+  margin-inline: auto;
+}
+.page a {
+  text-underline-offset: 5px;
+}
+.page :where(a, button, input, summary):focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+.header {
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  border-bottom: 1px solid var(--border-default);
+}
+.header > div {
+  flex: 1;
+}
+.header > a {
+  text-decoration: none;
+}
+.header :global(.ui-button--primary) {
+  background: var(--surface-solid);
+  color: var(--text-primary);
+  border-color: var(--border-default);
+  box-shadow: none;
+}
+.header :global(.ui-button--primary):hover {
+  background: var(--surface-hover);
+}
+.header :global(.ui-icon-button) {
+  background: var(--surface-solid);
+  border-color: var(--border-default);
+  box-shadow: none;
+}
+.introduction {
+  padding-block: 24px 48px;
+  text-align: center;
+}
+.eyebrow {
+  margin: 0 0 16px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 550;
+}
+.introduction h1 {
+  max-width: 22ch;
+  margin: 0 auto;
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.17;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.introText {
+  margin: 20px auto 0;
+  max-width: 52ch;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.discoveryHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-default);
+}
+.discoveryHeading h2 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.discoveryHeading > a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+.discoveryHeading > a:hover {
+  color: var(--text-accent);
+  text-decoration: underline;
+}
+.courseList {
+  display: grid;
+}
+.course {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.03fr);
+  align-items: start;
+  gap: 64px;
+  padding-block: 40px;
+  border-bottom: 1px solid var(--border-default);
+}
+.course:last-child {
+  border-bottom: 0;
+}
+.courseCopy {
+  min-width: 0;
+  padding-block: 8px;
+}
+.courseLabel {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin: 0 0 12px;
+}
+.courseCopy h3 {
+  margin: 0;
+  max-width: 24ch;
+  font-size: clamp(1.625rem, 2.5vw, 2rem);
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+.courseCopy h3 a {
+  text-decoration: none;
+}
+.courseCopy h3 a:hover {
+  color: var(--text-accent);
+}
+.courseDescription {
+  max-width: 45ch;
+  margin: 20px 0 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.courseMeta {
+  list-style: none;
+  margin: 24px 0;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+.courseMeta li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.courseMeta svg {
+  flex-shrink: 0;
+}
+.courseAction {
+  min-height: 48px;
+  gap: 24px;
+  border-color: color-mix(in srgb, var(--action-primary) 90%, var(--text-primary));
+  border-radius: 12px;
+  box-shadow: none;
+  font-size: 0.9375rem;
+}
+.courseAction:active {
+  background: var(--action-hover);
+}
+.courseVisual {
+  min-width: 0;
+  align-self: center;
+}
+.courseImage {
+  aspect-ratio: 16/9;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--surface-solid);
+  position: relative;
+  isolation: isolate;
+}
+/* Bring editorial artwork into the user's chosen color family without
+   replacing the image or tinting its text/content siblings. */
+.courseImage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--accent-companion);
+  opacity: var(--art-tint-strength);
+  mix-blend-mode: color;
+  transition: opacity 180ms ease, background-color 180ms ease;
+}
+.courseImage img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.58) contrast(1.04);
+}
+.withoutArt {
+  grid-template-columns: 1fr;
+}
+.withoutArt .courseCopy {
+  max-width: 760px;
+}
+.withoutArt .courseCopy h3,
+.withoutArt .courseDescription {
+  max-width: none;
+}
+.courseLoading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.03fr);
+  align-content: start;
+  align-items: start;
+  gap: 64px;
+  min-height: 420px;
+  padding-block: 40px;
+}
+.courseLoading > div:first-child {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 20px;
+  padding-top: 8px;
+}
+.courseLoading p {
+  color: var(--text-secondary);
+  margin: 0 0 20px;
+  font-size: 0.875rem;
+}
+.coverPlaceholder {
+  aspect-ratio: 16/9;
+  width: 100%;
+  height: auto;
+  min-width: 0;
+  max-width: 100%;
+  border-radius: 16px;
+}
+.actionPlaceholder {
+  width: min(260px, 100%);
+  height: 48px;
+  margin-top: 12px;
+}
+.empty {
+  padding-block: 48px;
+}
+.empty h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+.empty p {
+  max-width: 48ch;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+.empty a {
+  color: var(--text-accent);
+}
+.footer {
+  margin-top: 24px;
+  border-top: 1px solid var(--border-default);
+  padding-block: 24px max(40px, env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+.footerCaption {
+  margin-left: 16px;
+}
+.footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: none;
+}
+.footer a:hover {
+  color: var(--text-accent);
+  text-decoration: underline;
+}
+.appearanceDock {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+.appearanceDock > button {
+  min-height: 44px;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-color: transparent;
+  box-shadow: none;
+}
+.appearanceDock > button:hover {
+  background: var(--surface-hover);
+}
+.appearanceDock .appearanceDialog {
+  inset: 144px max(20px, calc((100vw - 1140px) / 2)) auto auto;
+  width: min(360px, calc(100vw - 32px));
+  max-height: calc(100dvh - 164px);
+  padding: 24px;
+  border-radius: 20px;
+  background: var(--surface-elevated);
+}
+.appearanceDialog fieldset {
+  margin-top: 20px;
+}
+.appearanceDock .appearanceDialog fieldset:first-of-type > legend {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip-path: none;
+  white-space: normal;
+}
+.skip {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  padding: 16px;
+  background: var(--surface-solid);
+  z-index: 50;
+}
+.skip:focus {
+  top: 16px;
+}
+.previewNotice {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  padding-block: 8px;
+}
+.previewNotice > div {
+  display: flex;
+  gap: 20px;
+}
+.previewNotice a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.previewNotice a[aria-current] {
+  color: var(--text-accent);
+}
+/* A genuinely different, image-first editorial layout exists only in noindex lab. */
+.page[data-home-layout="editorial"] .course {
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+.page[data-home-layout="editorial"] .courseVisual {
+  grid-row: 1;
+}
+.page[data-home-layout="editorial"] .courseImage {
+  aspect-ratio: 3/1;
+}
+.page[data-home-layout="editorial"] .courseCopy {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 48px;
+}
+.page[data-home-layout="editorial"] .courseLabel {
+  grid-column: 1/-1;
+  margin: 0;
+}
+.page[data-home-layout="editorial"] .courseDescription {
+  margin: 0;
+}
+.page[data-home-layout="editorial"] .courseAction {
+  justify-self: start;
+  align-self: end;
+}
+@media (max-width: 960px) {
+  .course,
+  .courseLoading {
+    gap: 32px;
+  }
+}
+@media (max-width: 700px) {
+  .header {
+    min-height: 76px;
+    gap: 16px;
+  }
+  .introduction {
+    text-align: left;
+    padding-block: 20px 32px;
+  }
+  .introduction h1 {
+    margin-inline: 0;
+    font-size: 2rem;
+    max-width: 18ch;
+  }
+  .eyebrow {
+    margin-bottom: 12px;
+  }
+  .introText {
+    margin-top: 16px;
+  }
+  .discoveryHeading {
+    padding-bottom: 12px;
+    column-gap: 12px;
+  }
+  .course,
+  .courseLoading {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    padding-block: 24px;
+  }
+  .courseCopy {
+    padding: 0;
+  }
+  .courseCopy h3 {
+    font-size: 1.625rem;
+    max-width: none;
+  }
+  .courseDescription {
+    margin-top: 16px;
+  }
+  .courseMeta {
+    margin-block: 20px;
+  }
+  .courseAction {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .courseImage {
+    border-radius: 12px;
+  }
+  .courseLoading {
+    min-height: 620px;
+  }
+  .footer {
+    margin-top: 8px;
+    align-items: start;
+  }
+  .footerCaption {
+    display: none;
+  }
+  .footer nav {
+    gap: 16px;
+  }
+  .appearanceDock {
+    margin-top: 4px;
+  }
+  .appearanceDock .appearanceDialog {
+    inset: auto 0 0;
+    width: 100%;
+    max-height: 85dvh;
+    border-radius: 20px 20px 0 0;
+    padding: 24px 20px max(24px, env(safe-area-inset-bottom));
+  }
+  .page[data-home-layout="editorial"] .courseImage {
+    aspect-ratio: 16/9;
+  }
+  .page[data-home-layout="editorial"] .courseCopy {
+    display: block;
+  }
+  .page[data-home-layout="editorial"] .courseLabel {
+    margin-bottom: 12px;
+  }
+  .page[data-home-layout="editorial"] .courseDescription {
+    margin-top: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page *,
+  .page *::before,
+  .page *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+@media (prefers-contrast: more) {
+  .discoveryHeading,
+  .header,
+  .footer {
+    border-color: var(--border-strong);
+  }
+}
+@media (forced-colors: active) {
+  .courseAction,
+  .appearanceDock > button {
+    border: 1px solid ButtonText;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .courseImage::after { transition: none; }
+}
+@media (forced-colors: active) {
+  .courseImage::after { display: none; }
+}

@@ -1,0 +1,46 @@
+.review {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-block: 24px;
+}
+.review > header {
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+  align-items: start;
+}
+.review h1 {
+  font-size: 1.5rem;
+}
+.review p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 0.875rem;
+}
+.reviewControls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 16px;
+  margin-block: 16px;
+}
+.reviewControls label {
+  display: grid;
+  gap: 8px;
+  font-size: 0.875rem;
+}
+.reviewControls a {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.frameRail {
+  overflow: auto;
+  background: var(--surface-subtle);
+  position: relative;
+}
+.frameRail iframe {
+  display: block;
+  border: 0;
+  transform-origin: top left;
+}

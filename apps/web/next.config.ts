@@ -2,7 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  transpilePackages: ["@platform/brand"]
+  agentRules: false,
+  transpilePackages: ["@platform/brand", "@platform/ui"]
 };
 
 export default nextConfig;

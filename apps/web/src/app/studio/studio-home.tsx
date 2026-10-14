@@ -9,6 +9,20 @@ import {
 } from "@platform/contracts";
 import { learningLoginUrl } from "../../lib/learning-return-to";
 import { studioRequest, StudioError } from "../../components/studio/studio-api";
+import {
+  Alert,
+  Badge,
+  Button,
+  Disclosure,
+  EmptyState,
+  Eyebrow,
+  Field,
+  Heading,
+  Input,
+  Skeleton,
+  Text,
+  buttonClass
+} from "@platform/ui";
 import styles from "../../components/studio/studio.module.css";
 type Org = { id: string; slug: string; name: string };
 export function StudioHome() {
@@ -19,7 +33,8 @@ export function StudioHome() {
     [error, setError] = useState<string | null>(null),
     [busy, setBusy] = useState(false),
     [ready, setReady] = useState(false),
-    [login, setLogin] = useState(false);
+    [login, setLogin] = useState(false),
+    [unavailable, setUnavailable] = useState(false);
   useEffect(() => {
     let cancelled = false;
     studioRequest("me/organizations")
@@ -34,6 +49,7 @@ export function StudioHome() {
       .catch((e) => {
         if (!cancelled) {
           setLogin(e instanceof StudioError && e.status === 401);
+          setUnavailable(!(e instanceof StudioError && e.status === 401));
           setError(e.message);
           setReady(true);
         }
@@ -104,104 +120,251 @@ export function StudioHome() {
   }
   return (
     <>
-      <h1>Studio</h1>
-      <p>Создавайте курс, проверяйте черновик и публикуйте новую версию.</p>
-      {!ready && <p role="status">Загрузка…</p>}
-      {error && <p role="alert">{error}</p>}
+      <header className={styles.pageHeading}>
+        <Eyebrow>Рабочая среда автора</Eyebrow>
+        <Heading level={1} size="display">
+          Studio
+        </Heading>
+        <Text muted>
+          Создавайте курс, проверяйте черновик и публикуйте новую версию.
+        </Text>
+      </header>
+      {!ready && (
+        <div role="status" className={styles.loading}>
+          <Text muted>Загружаем ваши организации…</Text>
+          <Skeleton style={{ height: "5rem" }} />
+        </div>
+      )}
+      {error && !login && (
+        <Alert tone="danger" className={styles.notice}>
+          {error}
+        </Alert>
+      )}
       {login ? (
-        <Link href={learningLoginUrl("/studio")}>Войти в Studio</Link>
+        <EmptyState
+          title="Ваша авторская среда"
+          action={
+            <Link className={buttonClass()} href={learningLoginUrl("/studio")}>
+              Войти в Studio
+            </Link>
+          }
+        >
+          Войдите в аккаунт, чтобы открыть свои организации и курсы. Материалы
+          Studio доступны только авторам с нужными правами.
+        </EmptyState>
+      ) : unavailable ? (
+        <EmptyState
+          title="Studio пока недоступна"
+          action={
+            <Button
+              variant="secondary"
+              onClick={() => window.location.reload()}
+            >
+              Повторить загрузку
+            </Button>
+          }
+        >
+          Не удалось получить ваши организации. Рабочие данные не заменены
+          пустым списком.
+        </EmptyState>
       ) : (
         ready && (
-          <>
-            <section className={styles.card}>
-              <h2>Ваши организации</h2>
-              {organizations.length === 0 && (
-                <p>Создайте организацию, чтобы начать авторинг.</p>
+          <div className={styles.homeLayout}>
+            <aside className={styles.organizationRail}>
+              <Heading level={2} size="small">
+                Ваши организации
+              </Heading>
+              {!organizations.length && (
+                <Text muted size="sm">
+                  Создайте организацию, чтобы начать подготовку курсов.
+                </Text>
               )}
-              <div className={styles.actions}>
+              <div
+                className={styles.organizationList}
+                role="group"
+                aria-label="Выбор организации"
+              >
                 {organizations.map((o) => (
-                  <button
+                  <Button
                     key={o.id}
+                    variant="ghost"
+                    className={styles.organizationChoice}
                     disabled={busy}
+                    aria-label={o.name}
                     aria-pressed={selected?.id === o.id}
                     onClick={() => select(o)}
                   >
-                    {o.name}
-                  </button>
+                    <strong>{o.name}</strong>
+                    <span>{o.slug}</span>
+                  </Button>
                 ))}
               </div>
               {cursor && (
-                <button disabled={busy} onClick={loadOrganizations}>
+                <Button
+                  variant="secondary"
+                  disabled={busy}
+                  onClick={loadOrganizations}
+                >
                   Ещё организации
-                </button>
+                </Button>
+              )}
+              <Disclosure
+                summary="Создать организацию"
+                className={styles.createOrganization ?? ""}
+              >
+                <form onSubmit={createOrganization} aria-busy={busy}>
+                  <fieldset disabled={busy} className={styles.contentFieldset}>
+                    <legend className={styles.srOnly}>Новая организация</legend>
+                    <Field
+                      htmlFor="studio-organization-name"
+                      label="Название организации"
+                    >
+                      <Input
+                        id="studio-organization-name"
+                        name="name"
+                        required
+                        maxLength={160}
+                      />
+                    </Field>
+                    <Field
+                      htmlFor="studio-organization-slug"
+                      label="Адрес организации (slug)"
+                      hint="Латинские буквы, цифры и дефисы."
+                    >
+                      <Input
+                        id="studio-organization-slug"
+                        name="slug"
+                        required
+                        minLength={2}
+                        maxLength={63}
+                        pattern="[a-z0-9]+(-[a-z0-9]+)*"
+                        aria-describedby="studio-organization-slug-hint"
+                        autoCapitalize="none"
+                        spellCheck={false}
+                      />
+                    </Field>
+                    <Button type="submit" disabled={busy}>
+                      Создать организацию
+                    </Button>
+                  </fieldset>
+                </form>
+              </Disclosure>
+            </aside>
+            <section
+              className={styles.courseWorkspace}
+              aria-label="Курсы организации"
+              aria-busy={busy}
+            >
+              {selected ? (
+                <>
+                  <div className={styles.sectionHeading}>
+                    <div>
+                      <Eyebrow>{selected.name}</Eyebrow>
+                      <Heading level={2} size="section">
+                        Курсы
+                      </Heading>
+                    </div>
+                    {courses?.canCreate && (
+                      <Link
+                        className={buttonClass()}
+                        href={`/studio/${selected.id}/new`}
+                      >
+                        Создать курс
+                      </Link>
+                    )}
+                  </div>
+                  <p className={styles.courseManageLink}>
+                    <Link href={`/studio/${selected.id}/entry-policy`}>
+                      Вступление учеников · настройки организации
+                    </Link>
+                  </p>
+                  {!courses && !error && (
+                    <div role="status" className={styles.loading}>
+                      <Text muted>Загружаем курсы…</Text>
+                      <Skeleton style={{ height: "5rem" }} />
+                      <Skeleton style={{ height: "5rem" }} />
+                    </div>
+                  )}
+                  {!courses && error && (
+                    <Button
+                      variant="secondary"
+                      disabled={busy}
+                      onClick={() => select(selected)}
+                    >
+                      Повторить загрузку курсов
+                    </Button>
+                  )}
+                  {courses?.courses.length === 0 && (
+                    <EmptyState title="Пока нет доступных курсов">
+                      {courses.canCreate
+                        ? "Начните с нового курса: добавьте описание, уроки и задания."
+                        : "Доступные вам курсы появятся здесь. Право создания проверяется организацией."}
+                    </EmptyState>
+                  )}
+                  {courses && (
+                    <ul className={styles.courseList}>
+                      {courses.courses.map((c) => (
+                        <li key={c.courseId}>
+                          <Link
+                            className={styles.courseRow}
+                            href={`/studio/${selected.id}/${c.courseId}`}
+                          >
+                            <div>
+                              <div className={styles.courseMeta}>
+                                <Badge
+                                  tone={
+                                    c.status === "draft" ? "accent" : "neutral"
+                                  }
+                                >
+                                  {c.status === "draft"
+                                    ? "Черновик"
+                                    : "Опубликовано"}
+                                </Badge>
+                                <Text muted size="sm">
+                                  Версия {c.versionNumber}
+                                </Text>
+                              </div>
+                              <Heading level={3} size="section">
+                                {c.title}
+                              </Heading>
+                            </div>
+                            <span aria-hidden="true">↗</span>
+                          </Link>
+                          {c.status === "published" && (
+                            <Link className={styles.courseManageLink}
+                              href={`/studio/${selected.id}/${c.courseId}/offerings`}>
+                              Доступ и ссылка
+                            </Link>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {courses?.nextCursor && (
+                    <Button
+                      variant="secondary"
+                      disabled={busy}
+                      onClick={() => select(selected, courses.nextCursor!)}
+                    >
+                      Ещё курсы
+                    </Button>
+                  )}
+                </>
+              ) : (
+                <EmptyState
+                  title={
+                    organizations.length
+                      ? "Выберите организацию"
+                      : "Начните с вашей организации"
+                  }
+                >
+                  {organizations.length
+                    ? "Откройте организацию слева, чтобы увидеть курсы, доступные вам для авторинга."
+                    : "Создайте организацию, затем подготовьте первый курс. Все изменения начинаются с черновика."}
+                </EmptyState>
               )}
             </section>
-            {selected && courses && (
-              <section className={styles.card}>
-                <h2>Курсы · {selected.name}</h2>
-                <p>
-                  <Link href={`/studio/${selected.id}/entry-policy`}>
-                    Вступление учеников · настройки организации
-                  </Link>
-                </p>
-                {courses.canCreate && (
-                  <Link href={`/studio/${selected.id}/new`}>Создать курс</Link>
-                )}
-                {courses.courses.length === 0 && (
-                  <p>Пока нет доступных курсов.</p>
-                )}
-                <ul>
-                  {courses.courses.map((c) => (
-                    <li key={c.courseId}>
-                      <Link href={`/studio/${selected.id}/${c.courseId}`}>
-                        {c.title}
-                      </Link>{" "}
-                      · {c.status === "draft" ? "Черновик" : "Опубликовано"},
-                      версия {c.versionNumber}
-                      {c.status === "published" && (
-                        <>
-                          {" "}·{" "}
-                          <Link href={`/studio/${selected.id}/${c.courseId}/offerings`}>
-                            Доступ и ссылка
-                          </Link>
-                        </>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-                {courses.nextCursor && (
-                  <button
-                    disabled={busy}
-                    onClick={() => select(selected, courses.nextCursor!)}
-                  >
-                    Ещё курсы
-                  </button>
-                )}
-              </section>
-            )}
-            <details className={styles.card}>
-              <summary>Создать организацию</summary>
-              <form onSubmit={createOrganization}>
-                <label>
-                  Название организации
-                  <input name="name" required maxLength={160} />
-                </label>
-                <label>
-                  Адрес организации (slug)
-                  <input
-                    name="slug"
-                    required
-                    minLength={2}
-                    maxLength={63}
-                    pattern="[a-z0-9]+(-[a-z0-9]+)*"
-                  />
-                </label>
-                <button type="submit" disabled={busy}>
-                  Создать организацию
-                </button>
-              </form>
-            </details>
-          </>
+          </div>
         )
       )}
     </>

@@ -2,6 +2,14 @@
 import { useId } from "react";
 import type { CourseManifestV1, ManifestActivity } from "@platform/contracts";
 import { move, newActivity } from "./editor-model";
+import {
+  Button,
+  Field as ControlField,
+  IconButton,
+  Input,
+  Select,
+  Textarea
+} from "@platform/ui";
 import styles from "./studio.module.css";
 type Edit = (change: (document: CourseManifestV1) => void) => void;
 function Field({
@@ -10,7 +18,8 @@ function Field({
   onChange,
   multiline = false,
   readOnly = false,
-  maxLength = 50000
+  maxLength = 50000,
+  hint
 }: {
   label: string;
   value: string;
@@ -18,13 +27,13 @@ function Field({
   multiline?: boolean;
   readOnly?: boolean;
   maxLength?: number;
+  hint?: string;
 }) {
   const id = useId();
   return (
-    <label htmlFor={id}>
-      {label}
+    <ControlField htmlFor={id} label={label} hint={hint}>
       {multiline ? (
-        <textarea
+        <Textarea
           id={id}
           value={value}
           onChange={(e) => onChange(e.target.value)}
@@ -33,7 +42,7 @@ function Field({
           rows={4}
         />
       ) : (
-        <input
+        <Input
           id={id}
           value={value}
           onChange={(e) => onChange(e.target.value)}
@@ -41,7 +50,7 @@ function Field({
           maxLength={maxLength}
         />
       )}
-    </label>
+    </ControlField>
   );
 }
 function Order({
@@ -58,26 +67,31 @@ function Order({
   onRemove: () => void;
 }) {
   return (
-    <div className={styles.actions}>
-      <button
+    <div className={styles.orderActions}>
+      <IconButton
         type="button"
         aria-label={`${label}: вверх`}
         disabled={index === 0}
         onClick={() => onMove(-1)}
       >
         ↑
-      </button>
-      <button
+      </IconButton>
+      <IconButton
         type="button"
         aria-label={`${label}: вниз`}
         disabled={index === count - 1}
         onClick={() => onMove(1)}
       >
         ↓
-      </button>
-      <button type="button" onClick={onRemove}>
+      </IconButton>
+      <Button
+        variant="ghost"
+        className={styles.remove}
+        type="button"
+        onClick={onRemove}
+      >
         Удалить {label.toLowerCase()}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -92,7 +106,7 @@ export function ManualEditor({
 }) {
   return (
     <div className={styles.sections}>
-      <section className={styles.card} aria-label="Курс">
+      <section className={styles.card} id="studio-course" aria-label="Курс">
         <h2>Курс</h2>
         <Field
           label="Адрес курса (slug)"
@@ -127,7 +141,7 @@ export function ManualEditor({
           }
         />
       </section>
-      <section className={styles.card} aria-label="Навыки">
+      <section className={styles.card} id="studio-skills" aria-label="Навыки">
         <h2>Навыки</h2>
         <p>Ключи связывают задания с навыками курса.</p>
         {document.skills.map((skill, i) => (
@@ -181,7 +195,8 @@ export function ManualEditor({
             />
           </fieldset>
         ))}
-        <button
+        <Button
+          variant="secondary"
           type="button"
           onClick={() =>
             edit((d) => {
@@ -190,9 +205,13 @@ export function ManualEditor({
           }
         >
           Добавить навык
-        </button>
+        </Button>
       </section>
-      <section className={styles.card} aria-label="Задания">
+      <section
+        className={styles.card}
+        id="studio-activities"
+        aria-label="Задания"
+      >
         <h2>Задания</h2>
         {document.activities.map((activity, i) => (
           <ActivityEditor
@@ -203,7 +222,8 @@ export function ManualEditor({
             edit={edit}
           />
         ))}
-        <button
+        <Button
+          variant="secondary"
           type="button"
           onClick={() =>
             edit((d) => {
@@ -218,9 +238,9 @@ export function ManualEditor({
           }
         >
           Добавить задание
-        </button>
+        </Button>
       </section>
-      <section className={styles.card} aria-label="Уроки">
+      <section className={styles.card} id="studio-lessons" aria-label="Уроки">
         <h2>Уроки</h2>
         {document.lessons.map((lesson, i) => (
           <fieldset key={i}>
@@ -258,7 +278,7 @@ export function ManualEditor({
             />
             <label>
               Длительность, минут
-              <input
+              <Input
                 type="number"
                 min={1}
                 max={1440}
@@ -283,6 +303,7 @@ export function ManualEditor({
                 {block.type === "youtube" && (
                   <Field
                     label="YouTube URL или ID"
+                    hint="Вставьте ссылку youtube.com или youtu.be. Плеер загрузится только по нажатию ученика; при недоступности останется ссылка на YouTube."
                     value={block.videoId}
                     maxLength={2048}
                     onChange={(v) =>
@@ -296,6 +317,7 @@ export function ManualEditor({
                 {block.type === "markdown" && (
                   <Field
                     label="Конспект (Markdown)"
+                    hint="Заголовки ##, списки, **выделение**, цитаты > и блоки кода ``` сохраняют структуру текста. Проверьте оформление во вкладке «Предпросмотр». HTML и внешние изображения отключены."
                     multiline
                     value={block.markdown}
                     onChange={(v) =>
@@ -310,7 +332,7 @@ export function ManualEditor({
                   <>
                     <label>
                       Задание урока
-                      <select
+                      <Select
                         value={block.activitySlug}
                         onChange={(e) =>
                           edit((d) => {
@@ -326,7 +348,7 @@ export function ManualEditor({
                             {a.title || a.slug || `Задание ${k + 1}`}
                           </option>
                         ))}
-                      </select>
+                      </Select>
                     </label>
                     <Field
                       label="Заголовок блока (необязательно)"
@@ -344,7 +366,7 @@ export function ManualEditor({
                     />
                     <label>
                       Вид задания
-                      <select
+                      <Select
                         value={block.kind}
                         onChange={(e) =>
                           edit((d) => {
@@ -358,7 +380,7 @@ export function ManualEditor({
                       >
                         <option value="practice">Практика</option>
                         <option value="homework">Домашнее задание</option>
-                      </select>
+                      </Select>
                     </label>
                     <label className={styles.check}>
                       <input
@@ -390,7 +412,8 @@ export function ManualEditor({
               </fieldset>
             ))}
             <div className={styles.actions}>
-              <button
+              <Button
+                variant="secondary"
                 type="button"
                 onClick={() =>
                   edit((d) => {
@@ -399,8 +422,9 @@ export function ManualEditor({
                 }
               >
                 Добавить видео
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="secondary"
                 type="button"
                 onClick={() =>
                   edit((d) => {
@@ -412,8 +436,9 @@ export function ManualEditor({
                 }
               >
                 Добавить конспект
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="secondary"
                 type="button"
                 onClick={() =>
                   edit((d) => {
@@ -427,7 +452,7 @@ export function ManualEditor({
                 }
               >
                 Добавить практику
-              </button>
+              </Button>
             </div>
             <Order
               label={`Урок ${i + 1}`}
@@ -442,7 +467,8 @@ export function ManualEditor({
             />
           </fieldset>
         ))}
-        <button
+        <Button
+          variant="secondary"
           type="button"
           onClick={() =>
             edit((d) => {
@@ -457,7 +483,7 @@ export function ManualEditor({
           }
         >
           Добавить урок
-        </button>
+        </Button>
       </section>
     </div>
   );
@@ -516,7 +542,7 @@ function ActivityEditor({
       />
       <label>
         Тип задания
-        <select
+        <Select
           value={activity.type}
           onChange={(e) =>
             edit((d) => {
@@ -557,7 +583,7 @@ function ActivityEditor({
             Несколько правильных вариантов
           </option>
           <option value="quiz.short_text">Короткий текст</option>
-        </select>
+        </Select>
       </label>
       <fieldset>
         <legend>Навыки задания</legend>
@@ -629,7 +655,8 @@ function ActivityEditor({
                 />
               </div>
             ))}
-            <button
+            <Button
+              variant="secondary"
               type="button"
               onClick={() =>
                 edit((d) => {
@@ -640,7 +667,7 @@ function ActivityEditor({
               }
             >
               Добавить допустимый ответ
-            </button>
+            </Button>
           </fieldset>
           <label className={styles.check}>
             <input
@@ -699,7 +726,7 @@ function ActivityEditor({
                 }
               />
               <label className={styles.check}>
-                <input
+                <Input
                   type={
                     activity.type === "quiz.single_choice"
                       ? "radio"
@@ -748,7 +775,8 @@ function ActivityEditor({
               />
             </fieldset>
           ))}
-          <button
+          <Button
+            variant="secondary"
             type="button"
             onClick={() =>
               edit((d) => {
@@ -759,7 +787,7 @@ function ActivityEditor({
             }
           >
             Добавить вариант
-          </button>
+          </Button>
         </>
       )}
       <Field

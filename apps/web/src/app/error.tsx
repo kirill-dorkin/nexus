@@ -1,15 +1,19 @@
 "use client";
-import styles from "../components/learning/learning.module.css";
+import { Button, Container, Stack, Surface, Text, Heading } from "@platform/ui";
 export default function PageError({ reset }: { reset: () => void }) {
   return (
-    <main className={styles.shell}>
-      <section className={styles.hero}>
-        <h1>Не удалось загрузить страницу</h1>
-        <p className={styles.lead}>Попробуйте ещё раз через минуту.</p>
-        <button className={styles.button} type="button" onClick={reset}>
-          Повторить загрузку
-        </button>
-      </section>
+    <main>
+      <Container>
+        <Surface padding="lg">
+          <Stack gap="lg">
+            <Heading level={1}>Не удалось загрузить страницу</Heading>
+            <Text muted>Попробуйте ещё раз через минуту.</Text>
+            <div>
+              <Button onClick={reset}>Повторить загрузку</Button>
+            </div>
+          </Stack>
+        </Surface>
+      </Container>
     </main>
   );
 }
