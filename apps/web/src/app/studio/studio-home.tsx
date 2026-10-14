@@ -139,6 +139,11 @@ export function StudioHome() {
             {selected && courses && (
               <section className={styles.card}>
                 <h2>Курсы · {selected.name}</h2>
+                <p>
+                  <Link href={`/studio/${selected.id}/entry-policy`}>
+                    Вступление учеников · настройки организации
+                  </Link>
+                </p>
                 {courses.canCreate && (
                   <Link href={`/studio/${selected.id}/new`}>Создать курс</Link>
                 )}
