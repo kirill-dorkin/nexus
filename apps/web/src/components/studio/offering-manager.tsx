@@ -53,6 +53,7 @@ export function OfferingManager({
   courseId: string;
 }) {
   const [course, setCourse] = useState<StudioDraft | null>(null);
+  const [browserOrigin, setBrowserOrigin] = useState<string | null>(null);
   const [organizationSlug, setOrganizationSlug] = useState<string | null>(null);
   const [offerings, setOfferings] = useState<LearningOffering[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
@@ -95,6 +96,7 @@ export function OfferingManager({
 
   useEffect(() => {
     let cancelled = false;
+    setBrowserOrigin(window.location.origin);
     // The route changes by remounting this keyed component.
     async function initial() {
       try {
@@ -163,7 +165,8 @@ export function OfferingManager({
       const page = learningOfferingListSchema.parse(
         await studioRequest(`${offeringPath}?courseVersionId=${course.versionId}&after=${after}`)
       );
-      setOfferings((previous) => appendOfferingPage(previous, page, course.versionId));
+      const combined = appendOfferingPage(offerings, page, course.versionId);
+      setOfferings(combined);
       setCursor(page.nextCursor);
     });
   }
@@ -275,8 +278,8 @@ export function OfferingManager({
                 <div className={accessStyles.list}>
                   {offerings.map((offering) => {
                     const shareable = isShareableFreeOffering(offering);
-                    const url = shareable
-                      ? publicOfferingUrl(window.location.origin, organizationSlug, offering.slug)
+                    const url = shareable && browserOrigin
+                      ? publicOfferingUrl(browserOrigin, organizationSlug, offering.slug)
                       : null;
                     return (
                       <article className={accessStyles.item} key={offering.id}>
