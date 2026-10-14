@@ -16,7 +16,7 @@ export type AccentPreference = (typeof accentChoices)[number]["value"];
 export type Appearance = { theme: ThemePreference; accent: AccentPreference };
 export const defaultAppearance: Appearance = {
   theme: "system",
-  accent: "rose"
+  accent: "teal"
 };
 
 export function parseAppearance(raw: string | null): Appearance {
