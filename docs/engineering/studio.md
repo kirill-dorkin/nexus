@@ -31,3 +31,15 @@ pnpm test:integration apps/api/src/studio-http.integration.test.ts
 ```
 
 The full CI browser gate now checks canonical Studio with real registration/session/HTTPS and PostgreSQL. `pnpm test:browser-launch` requires built API/Web, PostgreSQL and Chrome, as documented by the existing browser gate. Slice F still owns the complete canonical learner browser loop plus deployment.
+
+## Managing a published course's learner access
+
+After publishing a course, open its **«Доступ и ссылка»** action from the Studio course list. This is a **Delivery Offering** control, separate from editing/publishing Content. The first version supports the **currently published** Studio version, not historic releases after a newer draft has become current. An Offering still pins its immutable CourseVersion; later drafts and releases never retarget it.
+
+- The list calls `GET /v1/organizations/:org/offerings?courseVersionId=:version`, using the authorized cursor until `nextCursor` is null. It never lists arbitrary Organizations or versions, and the cursor grants no rights.
+- **«Создать приватный доступ»** sends a fixed `self_paced` + `membership` Offering command. Visibility is always server-default `private`, not a field in the creation request. A possibly committed failed request requires reloading canonical list before retrying.
+- **«Открыть публичный доступ»** requires a separate on-screen confirmation and calls `PATCH /v1/organizations/:org/offerings/:id/visibility`. **«Скрыть публичный доступ»** reverses it. Authorization, RLS, visibility eligibility, publication status and event/outbox rules remain API-owned.
+- The copyable address is the canonical `/learn/:organizationSlug/:offeringSlug`, built from the current browser origin and authenticated own-Organization slug. It is only displayed for a public/open/self-paced/membership Offering. This is a locator, not proof of availability: an inactive Organization/Course or changed eligibility can make the public route unavailable.
+- Public content reading does not enroll anyone. New learners still need an explicit Organization-entry policy, active Membership and separate free Enrollment. Studio Offering management **does not** silently open Customer Entry, create Membership, grant a role, or enroll students.
+
+The Web is a thin authenticated adapter. No new database, migration, API, event or access policy is introduced. The applicable ADRs remain 0054, 0055 and 0057. Helper tests cover safe URL construction, visibility eligibility, release-scoped cursor accumulation, duplicate-page prevention and readable public link criteria.
