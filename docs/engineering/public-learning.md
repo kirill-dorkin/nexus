@@ -79,4 +79,10 @@ Focused verification: `pnpm test:integration apps/api/src/learner-quiz-http.inte
 `GET /v1/organizations/:organizationId/offerings?courseVersionId=:publishedVersionId[&after=:offeringId]`
 returns at most 50 canonical Offerings pinned to the exact published CourseVersion, ordered by UUID with a nullable nextCursor. It is a tenant/session-owned, no-store read: the caller must have `offering.manage` at the corresponding course scope, just as when creating an Offering. This is **not** anonymous course discovery, an Offering activation command, or a cross-tenant search. An unavailable/foreign/unpublished release fails closed; a learner or anonymous caller cannot enumerate author Offerings. The `after` UUID is pagination only and grants no authorization. Existing explicit creation, `visibility=private` default, separate visibility PATCH, outbox and public eligibility rules remain unchanged.
 
+### Studio cursor consumption
+
+Studio should request the first page without `after`, append the returned `offerings`, and request the next page only when `nextCursor` is non-null. The cursor is the **last included Offering ID**, not an offset or a CourseVersion ID. Once `nextCursor` is null, iteration ends; page boundaries must not drop or repeat Offerings. Refreshing after a visibility change requires a new first-page read, since listing is an authorized snapshot rather than a subscription. Do not cache this tenant-scoped response in a public or shared cache.
+
+The UI must not equate “no Offerings yet” with a publish failure: CourseVersion publication and Delivery Offering creation are separate, explicit author actions. An existing private Offering should be managed through its canonical ID instead of creating a duplicate. The return shape never implies that a private Offering is publicly discoverable.
+
 The narrow read API unblocks a subsequent Studio UI slice to manage public entry and copy canonical learner links without duplicating existing Offerings. It introduces no migration, new table or alternate canonical state.
