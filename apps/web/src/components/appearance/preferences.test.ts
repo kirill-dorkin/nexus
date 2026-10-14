@@ -45,7 +45,7 @@ describe("device appearance preferences", () => {
         matchMedia: () => ({ matches: dark })
       });
       expect(root.dataset.uiTheme).toBe(dark ? "dark" : "light");
-      expect(root.dataset.uiAccent).toBe("rose");
+      expect(root.dataset.uiAccent).toBe("teal");
     }
   });
 });
