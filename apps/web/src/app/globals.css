@@ -49,3 +49,17 @@ svg {
     scroll-behavior: auto;
   }
 }
+
+/* One ambient hue follows the active accent; all actual text/surfaces retain
+   their contrast-checked semantic tokens. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(ellipse 90% 45% at 100% 0%, var(--accent-atmosphere), transparent 80%);
+}
+@media (forced-colors: active) {
+  body::before { display: none; }
+}
