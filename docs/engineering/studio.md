@@ -43,3 +43,12 @@ After publishing a course, open its **«Доступ и ссылка»** action 
 - Public content reading does not enroll anyone. New learners still need an explicit Organization-entry policy, active Membership and separate free Enrollment. Studio Offering management **does not** silently open Customer Entry, create Membership, grant a role, or enroll students.
 
 The Web is a thin authenticated adapter. No new database, migration, API, event or access policy is introduced. The applicable ADRs remain 0054, 0055 and 0057. Helper tests cover safe URL construction, visibility eligibility, release-scoped cursor accumulation, duplicate-page prevention and readable public link criteria.
+
+
+## Organization customer entry policy
+
+An organization administrator with `organization.manage` can open **«Вступление учеников · настройки организации»** in Studio. The new `/studio/:organizationId/entry-policy` route presents the **current policy** from `GET /v1/organizations/:org/customer-entry-policy` (strict `{policy:"closed"|"open"}`, `Cache-Control: no-store`). The GET runs an existing tenant/RLS transaction, requires an active actor and `organization.manage`, and does not expose Organization IDs or the policy to unaffiliated visitors. The read reuses the Organizations repository; it adds no migration, data copy or denormalized public authority.
+
+Changes continue through the existing `PUT /v1/organizations/:org/customer-entry-policy` command, subject to `organization.manage`, tenant RLS and exact Origin checks. The UI requires a separate confirmation for opening **and** closing. A failed or ambiguous PUT disables further writes until the administrator explicitly reloads canonical state, avoiding incorrect visual claims about a possibly committed request. It never silently opens policy when publishing an Offering.
+
+This is an **Organization-wide** opt-in for future self-entry; it does not create Memberships, grant roles, accept existing invitations, restore suspended/left memberships, create Enrollments or activate paid access. Closing self-entry does not revoke already-active Memberships. Public learning visibility remains Delivery-owned and independent. ADR-0047/0054/0055 apply.
