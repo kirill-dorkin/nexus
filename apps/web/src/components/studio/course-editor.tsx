@@ -508,7 +508,7 @@ export function CourseEditor({
             <div className={styles.editorBody}>
               {mode !== "preview" && (
                 <fieldset
-                  disabled={busy || !writable}
+                  disabled={mode === "json" && (busy || !writable)}
                   className={styles.contentFieldset}
                 >
                   <legend className={styles.srOnly}>Содержимое курса</legend>
@@ -517,6 +517,7 @@ export function CourseEditor({
                       document={document}
                       edit={edit}
                       existing={!isNew}
+                      disabled={busy || !writable}
                     />
                   )}
                   {mode === "json" && (
