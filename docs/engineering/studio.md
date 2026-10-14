@@ -32,6 +32,12 @@ pnpm test:integration apps/api/src/studio-http.integration.test.ts
 
 The full CI browser gate now checks canonical Studio with real registration/session/HTTPS and PostgreSQL. `pnpm test:browser-launch` requires built API/Web, PostgreSQL and Chrome, as documented by the existing browser gate. Slice F still owns the complete canonical learner browser loop plus deployment.
 
+## Быстрый старт с первым учебным курсом
+
+Для первого бесплатного запуска есть полностью редактируемый пример **«Как устроен компьютер — от деталей до программ»**: `docs/examples/computer-basics-first-course.manifest.json`. Он содержит 4 коротких текстовых урока и 8 автоматически проверяемых заданий, без фиктивных YouTube-видео. В Studio выберите «Создать курс» → «JSON» → загрузите файл → «Проверить документ» → «Сохранить черновик» → «Опубликовать». Затем отдельно откройте Offering и при необходимости самостоятельное вступление организации. Подробности и правила приёмки: `docs/examples/README-first-course.md`.
+
+Импорт и merge этого репозитория **не меняют production PostgreSQL** и не публикуют курс автоматически. Новые видео добавляйте с собственными реальными YouTube ID в редакторе (для опубликованного курса потребуется новая версия). Не обещайте ученикам видеокурс, пока собственные ролики не сняты и не добавлены.
+
 ## Managing a published course's learner access
 
 After publishing a course, open its **«Доступ и ссылка»** action from the Studio course list. This is a **Delivery Offering** control, separate from editing/publishing Content. The first version supports the **currently published** Studio version, not historic releases after a newer draft has become current. An Offering still pins its immutable CourseVersion; later drafts and releases never retarget it.
