@@ -639,3 +639,13 @@
 @media (max-width: 500px) {
   .lessonOtherNav { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Advanced author keys stay editable, but do not dominate the inline quiz form. */
+.inlineTechnical { margin: .8rem 0; }
+.inlineTechnical > summary {
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: .86rem;
+  padding: .5rem 0;
+}
+.inlineTechnical[open] > summary { margin-bottom: .5rem; }
