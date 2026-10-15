@@ -26,7 +26,7 @@ Status: baseline (2026-10-15); source: [frontend master spec v1.2](../product/fr
 - `LearningNavigation` currently puts `/studio` inside `privateDestinations` whenever `/v1/me` succeeds: **authenticated != authorized staff**. Replace that rule in Phase 1 only after a canonical permission query exists; no client-inferred role or optimistic Studio link.
 - `LearningShell` currently publishes a Studio footer link to everyone. Remove that global staff advertisement in Phase 1 (authorized workspace launcher belongs in the staff context).
 - Commerce product and purchase screens have separate page shells. Phase 1 will unify presentation without touching checkout settlement.
-- The current `/studio` owner-bootstrap self-create path is inconsistent with the new managed-academy model. Hiding a button alone is not a fix: closing `POST /v1/me/organizations` for ordinary actors needs explicit authorization/owner-bootstrap ADR, migration-safe bootstrap and regression tests. Do not silently change existing accepted ADR-0057 by UI-only patch.
+- The current `/studio` owner-bootstrap self-create path is inconsistent with the new managed-academy model. Hiding a button alone is not a fix: closing both `POST /v1/me/organizations` and `POST /v1/organizations` for ordinary actors needs explicit authorization/owner-bootstrap ADR, migration-safe bootstrap and regression tests. Do not silently change existing accepted ADR-0057 by UI-only patch.
 - PR #97 already changes the Studio editor; Phase 1/2 must not overwrite its lesson-first work.
 
 ## Planned namespaces (not routes to render yet)
