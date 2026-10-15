@@ -203,7 +203,7 @@
     padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
   }
   .dialog::backdrop {
-    background: color-mix(in srgb, var(--text-primary) 28%, transparent);
+    background: var(--overlay-scrim);
   }
 }
 .choices input:focus-visible + span {
