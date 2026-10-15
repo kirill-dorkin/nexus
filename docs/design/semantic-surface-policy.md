@@ -11,9 +11,11 @@ The original dark palette used a neutral `--page-background` but permanently plu
 - Base `--surface-default`, `--surface-subtle`, `--surface-solid`, `--surface-input` and the neutral base used by derived surfaces use hue-neutral graphite/slate (dark) or neutral gray (light).
 - `--surface-elevated`, `--surface-hover`, `--border-default` and related translucent surfaces may derive a **restrained** tint only from the selected `--accent-action`, never a second fixed hue.
 - Functional semantics remain separate: `--text-primary`, `--text-secondary`, `--status-*`, `--focus-ring`, and `--text-on-action` are not overridden to imitate the accent. Contrast is tested for dark/light and all five accents.
-- Product components must reference semantic tokens, not fixed purple or white backgrounds. Native modal scrims derive from `--text-primary` so they adapt to dark and light.
+- Product components must reference semantic tokens, not fixed purple or white backgrounds. Native dialogs and mobile drawers use a neutral theme-specific `--overlay-scrim` (darkening, never a white-tinted overlay on dark mode). The appearance panel uses the same scrim and semantic shadow.
 - Header changes are isolated in PR #100 and must consume these same semantic tokens when both slices land.
 - Artwork can use intentional visual hues; its tint must not set form/control backgrounds. Forced-colors and reduced transparency require contrast-oriented fallbacks, not brand color assumptions.
+
+The same rule applies to purchase and Paddle return panels: semantic card/text/status/action colors, no fixed light-only surfaces or hard-coded black button. They are part of the learner's actual payment and entitlement journey, not a separate visual island.
 
 ## Verification
 
