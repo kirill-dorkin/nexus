@@ -2,8 +2,7 @@ import { brand } from "@platform/brand";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { Container } from "@platform/ui";
-import { AppearanceControl } from "../appearance/appearance-control";
-import { LearningNavigation } from "./learning-navigation";
+import { PublicHeader } from "./public-header";
 import styles from "./learning.module.css";
 export function LearningShell({ children, layout = "page" }: { children: ReactNode; layout?: "page" | "viewport" }) {
   return (
@@ -11,19 +10,7 @@ export function LearningShell({ children, layout = "page" }: { children: ReactNo
       <a className={styles.skip} href="#learning-main">
         Перейти к содержимому
       </a>
-      <header className={styles.nav}>
-        <Link className={styles.brand} href="/" aria-label={`${brand.name} — на главную`}>
-          <span className={styles.brandMark} aria-hidden="true">N</span>
-          <span className={styles.brandLockup}>
-            <span>{brand.name}</span>
-            <small>учебная среда</small>
-          </span>
-        </Link>
-        <LearningNavigation />
-      </header>
-      <div className={styles.appearanceRow}>
-        <AppearanceControl />
-      </div>
+      <PublicHeader />
       <main id="learning-main" tabIndex={-1}>
         {children}
       </main>
@@ -35,7 +22,6 @@ export function LearningShell({ children, layout = "page" }: { children: ReactNo
         <nav aria-label="Меню внизу страницы">
           <Link href="/courses">Курсы</Link>
           <Link href="/blog">Блог</Link>
-          <Link href="/studio">Для авторов</Link>
         </nav>
       </footer>
     </Container>
