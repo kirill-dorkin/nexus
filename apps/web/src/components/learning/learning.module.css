@@ -559,27 +559,25 @@ button.button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.4rem;
-  min-height: 70px;
-  padding: 0.65rem 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--border-default) 82%, transparent);
-  background: color-mix(in srgb, var(--surface-default) 91%, transparent);
-  -webkit-backdrop-filter: blur(16px) saturate(120%);
-  backdrop-filter: blur(16px) saturate(120%);
+  gap: 1.25rem;
+  min-height: 72px;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--border-default);
+  /* Opaque semantic surface, never a route-specific transparent header tint. */
+  background: var(--surface-default);
+  color: var(--text-primary);
 }
 .nav > a { text-decoration: none; }
-.appearanceRow {
-  position: sticky;
-  top: 78px;
-  z-index: 18;
+.headerActions {
+  margin-left: auto;
   display: flex;
+  align-items: center;
   justify-content: flex-end;
-  height: 0;
-  overflow: visible;
-  padding-top: 0.7rem;
-  pointer-events: none;
+  gap: 0.6rem;
+  min-width: 0;
+  flex: 1;
 }
-.appearanceRow > * { pointer-events: auto; }
+
 .brand {
   display: inline-flex;
   align-items: center;
@@ -628,21 +626,8 @@ button.button {
 }
 @media (max-width: 860px) {
   .nav { min-height: 62px; padding-block: 0.45rem; }
-  .appearanceRow {
-    position: relative;
-    top: auto;
-    height: auto;
-    padding-top: 0.55rem;
-  }
   .brandMark { width: 36px; height: 36px; }
 }
 @media (max-width: 380px) {
   .brandLockup small { display: none; }
-}
-@media (prefers-reduced-transparency: reduce) {
-  .nav {
-    background: var(--surface-default);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
 }
