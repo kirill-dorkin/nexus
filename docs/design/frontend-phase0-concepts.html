@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Nexus — Phase 0 / три визуальных направления</title>
+<style>
+*{box-sizing:border-box}html{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}body{margin:0}
+button{font:inherit;cursor:pointer}a{color:inherit}.controls{position:sticky;top:0;z-index:10;background:#131720;color:white;padding:12px 18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;box-shadow:0 4px 16px #0002}
+.controls strong{margin-right:auto;font-size:14px}.controls label{font-size:12px;display:flex;gap:8px;align-items:center}
+.controls select,.controls button{background:#282e3b;color:white;border:1px solid #7a8190;border-radius:9px;padding:8px 12px}
+.controls button:focus-visible,.controls select:focus-visible{outline:3px solid #d4a9ff;outline-offset:3px}
+.notice{font-size:12px;margin:0 auto;padding:12px 22px;max-width:1100px}
+.preview{--bg:#f7f6f2;--fg:#1d2633;--muted:#667181;--line:#d7dce2;--surface:#ffffff;--action:#4c47c4;--soft:#edf0ff;--radius:14px;min-height:760px;color:var(--fg);background:var(--bg);transition:background .1s;color-scheme:light}
+.preview.dark{--bg:#11161d;--fg:#f3f5f7;--muted:#b2bfcc;--line:#44525f;--surface:#1b242d;--action:#b4aaff;--soft:#222c40;color-scheme:dark}
+.frame{max-width:1180px;margin:auto;padding:0 26px 70px}.site-header{height:76px;display:flex;align-items:center;gap:25px;border-bottom:1px solid var(--line)}
+.logo{font-weight:800;letter-spacing:-1px;font-size:24px;text-decoration:none}.logo b{display:inline-grid;place-items:center;background:var(--action);color:var(--bg);border-radius:9px;width:34px;height:34px;margin-right:9px;font-size:22px}.links{display:flex;gap:24px;align-items:center;font-size:14px}.links a{text-decoration:none}.account{margin-left:auto;border:1px solid var(--line);border-radius:40px;padding:10px 17px;font-size:13px}
+.eyebrow{color:var(--action);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin:0 0 18px}
+.h1{font-size:clamp(37px,5vw,68px);font-weight:760;letter-spacing:-.052em;line-height:1.08;margin:0 0 21px;max-width:780px}
+.lead{font-size:clamp(16px,1.9vw,20px);line-height:1.55;color:var(--muted);max-width:660px;margin:0 0 27px}
+.cta{background:var(--action);border:0;border-radius:12px;color:var(--bg);font-weight:750;font-size:15px;padding:15px 23px;min-height:48px}
+.ghost{background:none;border:1px solid var(--line);border-radius:12px;padding:13px 18px;color:var(--fg);font-size:14px}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:40px;padding:7px 11px;font-size:12px;color:var(--muted)}
+.section-title{margin:0 0 16px;font-size:24px;letter-spacing:-.03em}
+.hero{padding:88px 0 80px}.hero-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:45px;align-items:center}
+.art{min-height:250px;background:var(--soft);border:1px solid var(--line);border-radius:var(--radius);display:grid;place-content:center;text-align:center;position:relative;overflow:hidden}
+.art .symbol{font-size:80px;font-weight:800;line-height:1;letter-spacing:-.13em;opacity:.8}.art small{margin-top:12px;color:var(--muted);font-size:12px}
+.real-row{padding:22px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:100px minmax(0,1fr) auto;align-items:center;gap:22px}
+.real-row h3{margin:0 0 7px;font-size:21px;letter-spacing:-.03em}.real-row p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.thumb{height:80px;background:var(--soft);border:1px solid var(--line);border-radius:var(--radius);display:grid;place-items:center;font-weight:700;font-size:28px}
+.row-link{font-size:14px;text-decoration:none;font-weight:700;color:var(--action)}
+.crumb{font-size:13px;color:var(--muted);padding-top:32px}.crumb a{color:var(--muted)}
+.course-heading{padding:52px 0 45px}.facts{display:flex;flex-wrap:wrap;gap:9px;margin:22px 0 30px}
+.course-body{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:50px;align-items:start}
+.lesson-list{list-style:none;padding:0;margin:0}.lesson-item{padding:22px 0;display:grid;grid-template-columns:46px 1fr;gap:16px;border-top:1px solid var(--line)}
+.number{color:var(--muted);font-size:14px}.lesson-item h3{font-size:18px;margin:0 0 5px;letter-spacing:-.02em}.lesson-item p{font-size:14px;color:var(--muted);line-height:1.5;margin:0}
+.aside{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);padding:23px;position:sticky;top:90px}.aside strong{display:block;margin-bottom:12px}.aside p{font-size:14px;color:var(--muted);line-height:1.5}
+.aside .cta{width:100%}.read-layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:75px;padding-top:52px}
+.reading{max-width:730px}.reading h1{font-size:clamp(31px,4.3vw,50px);margin:10px 0 21px;letter-spacing:-.045em;line-height:1.12}
+.reading p{line-height:1.75;color:var(--fg);font-size:17px;margin-bottom:20px}.reading h2{font-size:25px;margin:40px 0 12px;letter-spacing:-.03em}
+.learning-note{border-left:3px solid var(--action);background:var(--soft);padding:16px 20px;margin:22px 0}.learning-note p{margin:0;font-size:15px}
+.practice{border:1px solid var(--line);padding:25px;margin-top:35px;background:var(--surface);border-radius:var(--radius)}
+.practice h3{margin:0 0 12px;font-size:22px}.practice p{font-size:15px;margin:0 0 17px;color:var(--muted)}
+.option{display:block;border:1px solid var(--line);border-radius:9px;margin:9px 0;padding:12px;font-size:15px}.option input{margin-right:10px;accent-color:var(--action)}
+.practice .cta{margin-top:15px}.mini-outline{font-size:13px}.mini-outline ol{padding-left:19px;color:var(--muted);line-height:2.4}.mini-outline li:first-child{color:var(--fg);font-weight:700}
+.screen[hidden]{display:none!important}
+.preview[data-direction="b"]{--bg:#eaf0f2;--fg:#122b34;--muted:#4b6b76;--line:#cad9df;--surface:#fff;--action:#006c77;--soft:#d9eff0;--radius:7px}
+.preview[data-direction="b"].dark{--bg:#10252e;--fg:#f1faf9;--muted:#b1c8d0;--line:#48636b;--surface:#193540;--action:#63e1d8;--soft:#163b42}
+.preview[data-direction="b"] .frame{max-width:1300px;padding-left:95px;position:relative}
+.preview[data-direction="b"] .frame::before{content:"01\A02\A03";white-space:pre;position:absolute;top:110px;left:25px;color:var(--action);line-height:3.5;font-size:12px;font-weight:800;border-right:1px solid var(--line);width:42px;height:180px}
+.preview[data-direction="b"] .h1{font-weight:850;letter-spacing:-.065em}.preview[data-direction="b"] .art{border:2px solid var(--action)}
+.preview[data-direction="b"] .real-row{background:var(--surface);margin:8px 0;border:1px solid var(--line);padding:13px}
+.preview[data-direction="b"] .practice{box-shadow:6px 6px 0 var(--line)}.preview[data-direction="b"] .aside{border-top:5px solid var(--action)}
+.preview[data-direction="c"]{--bg:#1a101f;--fg:#faf2ff;--muted:#cdbbd8;--line:#694671;--surface:#302035;--action:#f0a8ff;--soft:#3d2345;--radius:23px;color-scheme:dark}
+.preview[data-direction="c"].dark{--bg:#1a101f;--fg:#faf2ff;--muted:#cdbbd8;--line:#694671;--surface:#302035;--action:#f0a8ff;--soft:#3d2345}
+.preview[data-direction="c"]:not(.dark){--bg:#f8f0fa;--fg:#2c1231;--muted:#765b7e;--line:#dec8e3;--surface:#fff9ff;--action:#9d368f;--soft:#eed9f1;color-scheme:light}
+.preview[data-direction="c"] .hero{border-radius:25px;background:radial-gradient(ellipse at 85% 12%,var(--soft) 3%,transparent 65%);padding:100px 34px 80px}
+.preview[data-direction="c"] .h1{font-weight:650;letter-spacing:-.05em}.preview[data-direction="c"] .art{border-radius:30px;min-height:310px}
+.preview[data-direction="c"] .art .symbol{font-size:120px;color:var(--action)}.preview[data-direction="c"] .real-row{border-top-color:var(--line)}
+.preview[data-direction="c"] .aside,.preview[data-direction="c"] .practice{box-shadow:0 12px 40px #0002}
+.preview[data-direction="c"] .cta{color:var(--bg);border-radius:999px}
+.prototype-note{padding-top:30px;font-size:13px;color:var(--muted)}
+@media(max-width:750px){
+.controls{position:static}.controls strong{width:100%}.controls label{flex:1}
+.frame,.preview[data-direction="b"] .frame{padding:0 18px 45px}.preview[data-direction="b"] .frame::before{display:none}
+.site-header{height:65px;gap:10px}.logo{font-size:21px}.logo b{width:30px;height:30px}.links{gap:12px;font-size:12px}.links a:last-child{display:none}
+.account{font-size:12px;padding:8px 10px}.hero{padding:51px 0}.hero-grid{display:block}.hero .art{margin-top:33px;min-height:170px}
+.h1{font-size:39px}.lead{font-size:16px}.real-row{grid-template-columns:63px minmax(0,1fr);gap:14px}
+.real-row .thumb{height:63px}.real-row h3{font-size:17px}.real-row p{font-size:12px}.real-row .row-link{grid-column:2}
+.course-heading{padding:32px 0}.course-body,.read-layout{display:block}
+.read-layout{padding-top:32px}.read-layout .aside{display:none}.course-body .aside{position:static;margin-top:25px}
+.reading p{font-size:16px}.practice{padding:20px 15px}.lesson-item{grid-template-columns:28px 1fr}
+.preview[data-direction="c"] .hero{padding:40px 14px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="controls" role="group" aria-label="Настройки визуального прототипа">
+<strong>NEXUS / дизайн-гейт Phase 0 · только прототип, без API</strong>
+<label>Направление <select id="direction"><option value="a">A — спокойная редакционная среда</option><option value="b">B — рабочая навигационная среда</option><option value="c">C — выразительная академия</option></select></label>
+<label>Экран <select id="screen"><option value="home">Главная</option><option value="course">Страница курса</option><option value="lesson">Урок + практика</option></select></label>
+<button type="button" id="theme">Тёмная тема</button>
+</div>
+<div class="preview" id="preview" data-direction="a">
+<div class="frame">
+<header class="site-header"><a class="logo" href="#" aria-label="Nexus — пример логотипа"><b>N</b>Nexus</a><nav class="links" aria-label="Пример главной навигации"><a href="#">Курсы</a><a href="#">Блог</a></nav><div class="account">Войти</div></header>
+<main>
+<section id="home" class="screen">
+<div class="hero hero-grid"><div><p class="eyebrow">Практическое IT-обучение</p><h1 class="h1">Разберитесь в технологиях. Закрепите знания на практике.</h1><p class="lead">Короткие уроки и задания с проверкой. Изучайте программу до регистрации и возвращайтесь к следующему шагу.</p><button class="cta" type="button">Выбрать курс →</button></div><div class="art" aria-hidden="true"><span class="symbol">01 — 04</span><small>четыре последовательных урока</small></div></div>
+<h2 class="section-title">С чего начать</h2>
+<div class="real-row"><div class="thumb" aria-hidden="true">⌘</div><div><h3>Как устроен компьютер — от деталей до программ</h3><p>4 урока · 51 минута · теория и автоматически проверяемые задания · бесплатно</p></div><a class="row-link" href="#">Посмотреть программу →</a></div>
+<p class="prototype-note">Данные курса — из реального Studio-importable manifest. Коммерческие показатели и отзывы не выдуманы.</p>
+</section>
+<section id="course" class="screen" hidden>
+<div class="crumb"><a href="#">Курсы</a> / Как устроен компьютер</div>
+<div class="course-heading"><p class="eyebrow">Курс · первый шаг в цифровые навыки</p><h1 class="h1">Как устроен компьютер — от деталей до программ</h1><p class="lead">Четыре коротких урока: компоненты компьютера, память и файлы, запуск системы и понятная диагностика. После каждого урока — практика.</p><div class="facts"><span class="pill">4 урока</span><span class="pill">51 минута</span><span class="pill">Без предварительных знаний</span><span class="pill">Бесплатно</span></div></div>
+<div class="course-body"><section aria-label="Программа"><h2 class="section-title">Программа курса</h2><ol class="lesson-list"><li class="lesson-item"><span class="number">01</span><div><h3>Из чего состоит компьютер</h3><p>Процессор, оперативная память, SSD, материнская плата и периферия · 12 мин</p></div></li><li class="lesson-item"><span class="number">02</span><div><h3>Почему RAM — не SSD</h3><p>Документы, сохранение файлов и потеря данных · 12 мин</p></div></li><li class="lesson-item"><span class="number">03</span><div><h3>Как запускаются система и приложения</h3><p>Прошивка, загрузчик, ОС, драйверы и приложения · 13 мин</p></div></li><li class="lesson-item"><span class="number">04</span><div><h3>Как всё работает вместе</h3><p>От клика до результата и безопасный поиск причин тормозов · 14 мин</p></div></li></ol></section><aside class="aside"><strong>Начните без регистрации</strong><p>Сначала можно читать уроки. Аккаунт понадобится для сохранения прогресса.</p><button class="cta" type="button">Начать первый урок →</button></aside></div>
+</section>
+<section id="lesson" class="screen" hidden>
+<div class="crumb"><a href="#">Курсы</a> / <a href="#">Как устроен компьютер</a> / Урок 1</div>
+<div class="read-layout"><article class="reading"><p class="eyebrow">Урок 1 из 4 · 12 минут</p><h1>Из чего состоит компьютер</h1><p>Компьютер — это система взаимосвязанных компонентов. Чтобы разобраться в его работе, начнём с того, какую задачу выполняет каждый из них.</p><h2>Что делает процессор</h2><p>Процессор выполняет инструкции программ. Оперативная память помогает быстро хранить данные, с которыми компьютер работает прямо сейчас, а SSD сохраняет файлы после выключения.</p><div class="learning-note"><p>Запомните главное: оперативная память и постоянное хранилище решают разные задачи.</p></div><section class="practice"><p class="eyebrow">Практика · пример интерфейса, без отправки на сервер</p><h3>Кто выполняет инструкции?</h3><p>Выберите один ответ. Проверка в этом прототипе отключена.</p><label class="option"><input type="radio" name="demo">SSD</label><label class="option"><input type="radio" name="demo">Процессор</label><label class="option"><input type="radio" name="demo">Монитор</label><button type="button" class="cta" disabled>Проверить ответ (демо)</button></section></article><aside class="aside mini-outline"><strong>В этом курсе</strong><ol><li>Из чего состоит компьютер</li><li>Почему RAM — не SSD</li><li>Как запускаются система и приложения</li><li>Как всё работает вместе</li></ol></aside></div>
+</section>
+</main>
+</div>
+</div>
+<script>
+const direction=document.getElementById('direction'),screen=document.getElementById('screen'),preview=document.getElementById('preview'),theme=document.getElementById('theme');
+direction.addEventListener('change',()=>preview.dataset.direction=direction.value);
+screen.addEventListener('change',()=>{document.querySelectorAll('.screen').forEach(s=>s.hidden=s.id!==screen.value)});
+theme.addEventListener('click',()=>{preview.classList.toggle('dark');theme.textContent=preview.classList.contains('dark')?'Светлая тема':'Тёмная тема'});
+document.querySelectorAll('a[href="#"]').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
+</script>
+</body>
+</html>

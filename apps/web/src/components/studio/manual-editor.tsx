@@ -1,7 +1,7 @@
 "use client";
-import { useId } from "react";
+import { useId, useState } from "react";
 import type { CourseManifestV1, ManifestActivity } from "@platform/contracts";
-import { move, newActivity } from "./editor-model";
+import { appendLesson, appendQuizToLesson, move, newActivity } from "./editor-model";
 import {
   Button,
   Field as ControlField,
@@ -98,14 +98,77 @@ function Order({
 export function ManualEditor({
   document,
   edit,
-  existing
+  existing,
+  disabled = false
 }: {
   document: CourseManifestV1;
   edit: Edit;
   existing: boolean;
+  disabled?: boolean;
 }) {
+
+  const [panel, setPanel] = useState<"lesson" | "course" | "bank">("lesson");
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const activeIndex = Math.min(selectedIndex, Math.max(0, document.lessons.length - 1));
   return (
-    <div className={styles.sections}>
+    <div className={styles.lessonWorkspace}>
+      <aside className={styles.lessonSidebar} aria-label="Программа курса">
+        <div className={styles.lessonSidebarHeading}>
+          <h2>Программа курса</h2>
+          <p>Выберите урок, чтобы изменить материал и задания.</p>
+        </div>
+        <ol className={styles.lessonList}>
+          {document.lessons.map((lesson, i) => (
+            <li key={i}>
+              <button
+                type="button"
+                className={styles.lessonSelect}
+                aria-pressed={panel === "lesson" && activeIndex === i}
+                onClick={() => { setPanel("lesson"); setSelectedIndex(i); }}
+              >
+                <span className={styles.lessonNumber}>{i + 1}</span>
+                <span className={styles.lessonName}>{lesson.title || "Без названия"}</span>
+                <span className={styles.lessonCount}>
+                  {lesson.blocks.filter((block) => block.type === "activity").length} заданий
+                </span>
+              </button>
+            </li>
+          ))}
+        </ol>
+        <Button
+          variant="secondary"
+          type="button"
+          disabled={disabled || document.lessons.length >= 200}
+          onClick={() => {
+            setSelectedIndex(document.lessons.length);
+            setPanel("lesson");
+            edit((d) => { appendLesson(d); });
+          }}
+        >
+          + Добавить урок
+        </Button>
+        <nav className={styles.lessonOtherNav} aria-label="Дополнительные разделы">
+          <button
+            type="button"
+            aria-pressed={panel === "course"}
+            onClick={() => setPanel("course")}
+          >
+            Настройки курса и навыки
+          </button>
+          <button
+            type="button"
+            aria-pressed={panel === "bank"}
+            onClick={() => setPanel("bank")}
+          >
+            Банк заданий · {document.activities.length}
+          </button>
+        </nav>
+      </aside>
+      <div className={styles.lessonMain}>
+        <fieldset className={styles.contentFieldset} disabled={disabled}>
+        <legend className={styles.srOnly}>Содержимое курса</legend>
+        {panel === "course" ? (
+          <div className={styles.sections}>
       <section className={styles.card} id="studio-course" aria-label="Курс">
         <h2>Курс</h2>
         <Field
@@ -207,6 +270,14 @@ export function ManualEditor({
           Добавить навык
         </Button>
       </section>
+          </div>
+        ) : panel === "bank" ? (
+          <div className={styles.sections}>
+            <p className={styles.lessonNote}>
+              Здесь хранятся все задания курса, в том числе использованные в нескольких уроках
+              или временно не привязанные к программе. Удаление задания может нарушить ссылки,
+              что выявит проверка документа перед сохранением.
+            </p>
       <section
         className={styles.card}
         id="studio-activities"
@@ -240,9 +311,18 @@ export function ManualEditor({
           Добавить задание
         </Button>
       </section>
+          </div>
+        ) : (
+          <div className={styles.sections}>
+            {document.lessons.length === 0 && (
+              <div className={styles.lessonEmpty}>
+                <h2>Начните с первого урока</h2>
+                <p>Добавьте урок, а внутри него — видео, конспект и практику.</p>
+              </div>
+            )}
       <section className={styles.card} id="studio-lessons" aria-label="Уроки">
-        <h2>Уроки</h2>
-        {document.lessons.map((lesson, i) => (
+        <h2>Материалы урока</h2>
+        {document.lessons.map((lesson, i) => i === activeIndex ? (
           <fieldset key={i}>
             <legend>Урок {i + 1}</legend>
             <Field
@@ -398,6 +478,40 @@ export function ManualEditor({
                     </label>
                   </>
                 )}
+                {block.type === "activity" && (
+                  <div className={styles.inlineTask}>
+                    {document.activities.map((activity, activityIndex) =>
+                      activity.slug === block.activitySlug ? (
+                        <details key={activity.slug}>
+                          <summary>Редактировать вопрос и правильные ответы — {activity.title || activity.slug}</summary>
+                          {document.lessons.reduce(
+                            (count, item) => count + item.blocks.filter(
+                              (part) => part.type === "activity" && part.activitySlug === activity.slug
+                            ).length, 0
+                          ) > 1 && (
+                            <p className={styles.lessonNote}>
+                              Это задание используется в нескольких местах курса.
+                              Изменения появятся в каждом из них.
+                            </p>
+                          )}
+                          <ActivityEditor
+                            activity={activity}
+                            index={activityIndex}
+                            document={document}
+                            edit={edit}
+                            embedded
+                          />
+                        </details>
+                      ) : null
+                    )}
+                    {!document.activities.some((activity) => activity.slug === block.activitySlug) && (
+                      <p role="alert">Задание не найдено в документе. Выберите существующее в списке выше.</p>
+                    )}
+                    <p className={styles.lessonNote}>
+                      Удаление блока из урока не удаляет определение задания из банка.
+                    </p>
+                  </div>
+                )}
                 <Order
                   label={`Блок ${j + 1}`}
                   index={j}
@@ -440,68 +554,61 @@ export function ManualEditor({
               <Button
                 variant="secondary"
                 type="button"
-                onClick={() =>
-                  edit((d) => {
-                    d.lessons[i]!.blocks.push({
-                      type: "activity",
-                      activitySlug: d.activities[0]?.slug ?? "",
-                      kind: "practice",
-                      required: true
-                    });
-                  })
-                }
+                disabled={document.skills.length === 0 || document.activities.length >= 1000 || lesson.blocks.length >= 200}
+                onClick={() => edit((d) => { appendQuizToLesson(d, i); })}
               >
-                Добавить практику
+                Добавить задание
               </Button>
             </div>
+            {document.skills.length === 0 && (
+              <p className={styles.lessonNote}>
+                Для проверяемого задания нужен навык.{" "}
+                <button type="button" className={styles.textAction} onClick={() => setPanel("course")}>
+                  Создать навык в настройках курса
+                </button>
+              </p>
+            )}
             <Order
               label={`Урок ${i + 1}`}
               index={i}
               count={document.lessons.length}
-              onMove={(o) => edit((d) => move(d.lessons, i, o))}
-              onRemove={() =>
-                edit((d) => {
-                  d.lessons.splice(i, 1);
-                })
-              }
+              onMove={(offset) => {
+                edit((d) => move(d.lessons, i, offset));
+                setSelectedIndex(i + offset);
+              }}
+              onRemove={() => {
+                edit((d) => { d.lessons.splice(i, 1); });
+                setSelectedIndex(Math.max(0, Math.min(i, document.lessons.length - 2)));
+              }}
             />
           </fieldset>
-        ))}
-        <Button
-          variant="secondary"
-          type="button"
-          onClick={() =>
-            edit((d) => {
-              d.lessons.push({
-                slug: "",
-                title: "",
-                summary: "",
-                durationMinutes: 10,
-                blocks: []
-              });
-            })
-          }
-        >
-          Добавить урок
-        </Button>
+        ) : null)}
       </section>
+          </div>
+        )}
+        </fieldset>
+      </div>
     </div>
   );
 }
-function ActivityEditor({
+export function ActivityEditor({
   activity,
   index: i,
   document,
-  edit
+  edit,
+  embedded = false
 }: {
   activity: ManifestActivity;
   index: number;
   document: CourseManifestV1;
   edit: Edit;
+  embedded?: boolean;
 }) {
   return (
     <fieldset>
       <legend>Задание {i + 1}</legend>
+      <details open={!embedded} className={styles.inlineTechnical}>
+        <summary>Идентификатор задания</summary>
       <Field
         label="Адрес задания (slug)"
         value={activity.slug}
@@ -519,6 +626,7 @@ function ActivityEditor({
           })
         }
       />
+      </details>
       <Field
         label="Название задания"
         value={activity.title}
@@ -585,6 +693,8 @@ function ActivityEditor({
           <option value="quiz.short_text">Короткий текст</option>
         </Select>
       </label>
+      <details open={!embedded} className={styles.inlineTechnical}>
+        <summary>Связанные навыки</summary>
       <fieldset>
         <legend>Навыки задания</legend>
         {document.skills.map((s, k) => (
@@ -605,6 +715,7 @@ function ActivityEditor({
           </label>
         ))}
       </fieldset>
+      </details>
       <Field
         label="Вопрос (Markdown)"
         multiline
@@ -689,6 +800,8 @@ function ActivityEditor({
           {activity.presentation.options.map((option, j) => (
             <fieldset key={j}>
               <legend>Вариант {j + 1}</legend>
+              <details open={!embedded} className={styles.inlineTechnical}>
+                <summary>Ключ варианта</summary>
               <Field
                 label="Ключ варианта"
                 value={option.id}
@@ -712,6 +825,7 @@ function ActivityEditor({
                   })
                 }
               />
+              </details>
               <Field
                 label="Текст варианта"
                 multiline
@@ -801,17 +915,17 @@ function ActivityEditor({
           })
         }
       />
-      <Order
-        label={`Задание ${i + 1}`}
-        index={i}
-        count={document.activities.length}
-        onMove={(o) => edit((d) => move(d.activities, i, o))}
-        onRemove={() =>
-          edit((d) => {
-            d.activities.splice(i, 1);
-          })
-        }
-      />
+      {!embedded && (
+        <Order
+          label={`Задание ${i + 1}`}
+          index={i}
+          count={document.activities.length}
+          onMove={(o) => edit((d) => move(d.activities, i, o))}
+          onRemove={() =>
+            edit((d) => { d.activities.splice(i, 1); })
+          }
+        />
+      )}
     </fieldset>
   );
 }

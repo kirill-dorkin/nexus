@@ -179,7 +179,17 @@ jobs:
         id: browser-launch
         env:
           PUBLIC_LAUNCH_BROWSER_DIAGNOSTIC_FILE: ${{ runner.temp }}/public-launch-browser-diagnostic.json
+          PUBLIC_LAUNCH_THEME_SCREENSHOT_DIR: ${{ runner.temp }}/nexus-theme-screenshots
         run: pnpm test:browser-launch
+
+      - name: Publish anonymous theme screenshot evidence
+        if: ${{ always() && steps.browser-launch.outcome != 'skipped' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: public-theme-screenshots-${{ github.sha }}
+          path: ${{ runner.temp }}/nexus-theme-screenshots/*.png
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Publish public launch browser diagnostic
         if: ${{ failure() && steps.browser-launch.outcome != 'skipped' }}

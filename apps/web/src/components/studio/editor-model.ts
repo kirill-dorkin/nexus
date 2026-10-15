@@ -76,3 +76,37 @@ export function move<T>(items: T[], index: number, offset: number): void {
   if (target < 0 || target >= items.length) return;
   [items[index], items[target]] = [items[target]!, items[index]!];
 }
+
+/** Only changes the in-memory manifest. Server validation and revision-fenced apply stay authoritative. */
+export function appendLesson(document: CourseManifestV1): number {
+  if (document.lessons.length >= 200) throw new Error("Достигнут предел уроков.");
+  const used = new Set(document.lessons.map((lesson) => lesson.slug));
+  let number = 1;
+  while (used.has("urok-" + number)) number++;
+  document.lessons.push({
+    slug: "urok-" + number,
+    title: "Урок " + (document.lessons.length + 1),
+    summary: "",
+    durationMinutes: 10,
+    blocks: []
+  });
+  return document.lessons.length - 1;
+}
+
+/** A new quiz is linked only to the selected Lesson. Existing shared Activities are never deleted. */
+export function appendQuizToLesson(document: CourseManifestV1, lessonIndex: number): string {
+  const lesson = document.lessons[lessonIndex];
+  if (!lesson) throw new Error("Урок не найден.");
+  if (!document.skills[0]) throw new Error("Для проверяемого задания сначала нужен навык.");
+  if (document.activities.length >= 1000 || lesson.blocks.length >= 200)
+    throw new Error("Достигнут предел заданий или блоков.");
+  const used = new Set(document.activities.map((activity) => activity.slug));
+  let number = 1;
+  while (used.has("zadanie-" + number)) number++;
+  const slug = "zadanie-" + number;
+  const quiz = newActivity("quiz.single_choice", slug, [document.skills[0].key]);
+  quiz.title = "Новый вопрос";
+  document.activities.push(quiz);
+  lesson.blocks.push({ type: "activity", activitySlug: slug, kind: "practice", required: true });
+  return slug;
+}

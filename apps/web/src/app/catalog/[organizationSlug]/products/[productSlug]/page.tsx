@@ -69,12 +69,14 @@ export default async function PublicProductPage({ params }: PublicProductPagePro
         <p className={styles.eyebrow}>{catalog.organization.name}</p>
         <h1 className={styles.title}>{catalog.product.name}</h1>
         <p className={styles.lead}>
-          {catalog.product.offering.name}. Актуальная цена и доступность ещё раз
-          проверяются сервером непосредственно перед созданием покупки.
+          {catalog.product.offering.name}. Выберите подходящий вариант оплаты,
+          затем войдите или создайте аккаунт, чтобы продолжить.
         </p>
       </header>
 
       <div className={styles.layout}>
+        <CheckoutPanel catalog={catalog} />
+
         <section className={styles.details} aria-label="Описание предложения">
           <article className={styles.detailCard}>
             <p className={styles.eyebrow}>Учебный формат</p>
@@ -100,17 +102,14 @@ export default async function PublicProductPage({ params }: PublicProductPagePro
           </article>
 
           <article className={styles.detailCard}>
-            <p className={styles.eyebrow}>Безопасность покупки</p>
-            <h2>Платёж начинается только из актуального состояния</h2>
+            <p className={styles.eyebrow}>Условия покупки</p>
+            <h2>Перед оплатой проверим доступность</h2>
             <p className={styles.lead}>
-              Браузер не определяет организацию, стоимость, внутренний продукт или
-              пользователя покупки. Эти данные повторно разрешаются и проверяются
-              API перед переходом к защищённой платёжной странице.
+              Цена и доступность могут измениться. Перед переходом к оплате
+              мы проверим выбранный вариант и возможность покупки.
             </p>
           </article>
         </section>
-
-        <CheckoutPanel catalog={catalog} />
       </div>
     </main>
   );

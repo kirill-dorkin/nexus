@@ -5,6 +5,7 @@ import { createServer as createHttpsServer } from "node:https";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { installProviderStubs } from "./provider-stubs.mjs";
+import { verifyPublicThemeMatrix } from "./theme-matrix.mjs";
 
 const WEB_ORIGIN = "https://127.0.0.1:3443";
 const OTHER_WEB_ORIGIN = "https://127.0.0.1:3444";
@@ -659,11 +660,20 @@ async function fill(cdp, selector, value) {
 }
 
 async function clickText(cdp, text) {
+  // A Next.js route can render a button before its client state has settled.
+  // Clicking a disabled button is a silent no-op; it must never be counted as a
+  // successful browser action (or misreported as a later API timeout).
+  const label = JSON.stringify(text);
+  await waitForExpression(
+    cdp,
+    `[...document.querySelectorAll("button")].some((button)=>button.textContent?.trim()===${label} && !button.disabled)`,
+    `enabled button '${text}'`
+  );
   const clicked = await evaluate(
     cdp,
-    `(() => { const target=[...document.querySelectorAll("button")].find((button)=>button.textContent?.trim()===${JSON.stringify(text)}); if (!(target instanceof HTMLButtonElement)) return false; target.click(); return true; })()`
+    `(() => { const target=[...document.querySelectorAll("button")].find((button)=>button.textContent?.trim()===${label} && !button.disabled); if (!(target instanceof HTMLButtonElement)) return false; target.click(); return true; })()`
   );
-  assert(clicked, `Could not click button '${text}'.`);
+  assert(clicked, `Could not click enabled button '${text}'.`);
 }
 
 async function accessibilityAudit(cdp, label) {
@@ -789,12 +799,15 @@ async function verifyStudio(cdp) {
   const closed=await readPolicy();
   assert(closed.status===200&&closed.body.policy==="closed","Studio failed to restore closed customer entry policy.");
   await navigate(cdp,`${WEB_ORIGIN}${createHref}`);
-  await waitForExpression(cdp,'document.querySelectorAll("input").length>0',"new manual editor");
+  await waitForExpression(cdp,
+    '[...document.querySelectorAll("button")].some(b=>b.textContent?.trim()==="Настройки курса и навыки")',
+    "new lesson-first editor ready");
   const slug=`browser-course-${Date.now()}`;
+  await clickText(cdp,"Настройки курса и навыки");
   await fillLabel(cdp,"Адрес курса (slug)",slug);
   await fillLabel(cdp,"Название курса","Ручной курс");
   await fillLabel(cdp,"Описание курса","Описание руками");
-  await clickText(cdp,"Добавить урок");
+  await clickText(cdp,"+ Добавить урок");
   await fillLabel(cdp,"Адрес урока (slug)","introduction");
   await fillLabel(cdp,"Название урока","Первый урок");
   await fillLabel(cdp,"Краткое описание урока","Краткое описание");
@@ -820,20 +833,35 @@ async function verifyStudio(cdp) {
     const dom=await cdp.send("DOM.getDocument");const {nodeId}=await cdp.send("DOM.querySelector",{nodeId:dom.root.nodeId,selector:'input[type="file"]'});
     await cdp.send("DOM.setFileInputFiles",{nodeId,files:[file]});
     await waitForExpression(cdp,'document.querySelector("textarea").value.includes("PRIVATE_SHORT")',"JSON file upload");
-    await clickText(cdp,"Ручной редактор");
-    await waitForExpression(cdp,'document.body.innerText.includes("Допустимые ответы")',"all imported quiz shapes editable");
+    await clickText(cdp,"Уроки и задания");
+    await waitForExpression(cdp,'document.body.innerText.includes("Программа курса")',"lesson-first navigation");
+    await clickText(cdp,"Настройки курса и навыки");
     await fillLabel(cdp,"Название курса","JSON + ручные формы");
     await fillLabel(cdp,"Описание навыка","Изменённый навык");
+    const bankOpened=await evaluate(cdp,'(() => { const button=[...document.querySelectorAll("button")].find(b=>b.textContent?.includes("Банк заданий")); if (!button) return false; button.click(); return true; })()');
+    assert(bankOpened,"Activity bank is missing from Studio.");
+    await waitForExpression(cdp,'document.body.innerText.includes("Допустимые ответы")',"all imported quiz shapes editable in bank");
     await fillLabel(cdp,"Название задания","Ручная практика");
     await fillLabel(cdp,"Инструкция (Markdown)","## Инструкция руками");
+    const openedLesson=await evaluate(cdp,'(() => { const button=[...document.querySelectorAll("button[aria-pressed]")].find(b=>b.textContent?.includes("Второй урок")); if (!button) return false; button.click(); return true; })()');
+    assert(openedLesson,"Selecting the second Lesson failed.");
+    await waitForExpression(cdp,'document.body.innerText.includes("Материалы урока")',"selected Lesson details");
+    const expandedQuiz=await evaluate(cdp,'(() => { const summary=[...document.querySelectorAll("summary")].find(s=>s.textContent?.includes("Short")); if (!summary) return false; summary.click(); return true; })()');
+    assert(expandedQuiz,"Inline short-text quiz editor was not available.");
     await fillLabel(cdp,"Допустимый ответ 1","PRIVATE_EDITED_TEXT");
-    await fillLabel(cdp,"Длительность, минут","27",1);
-    await accessibilityAudit(cdp,"Studio all authoring shapes");
+    await fillLabel(cdp,"Длительность, минут","27");
+    await accessibilityAudit(cdp,"Studio lesson-first authoring");
     await clickText(cdp,"Предпросмотр");
     const preview=await evaluate(cdp,'document.querySelector(\'[aria-label="Предпросмотр курса"]\').innerText');
     assert(preview.includes("Ручная практика")&&!preview.includes("PRIVATE_"),"Studio preview leaked answer definitions.");
     await clickText(cdp,"Проверить документ");
-    await waitForExpression(cdp,'document.body.innerText.includes("Проверка пройдена")',"JSON/manual validation");
+    await waitForExpression(cdp,
+      'document.body.innerText.includes("Проверка пройдена") || document.querySelector(\'[role="alert"]\') !== null',
+      "JSON/manual validation outcome");
+    const jsonValidation = await evaluate(cdp,
+      '({valid:document.body.innerText.includes("Проверка пройдена"), alert:document.querySelector(\'[role="alert"] strong\')?.textContent ?? null})');
+    assert(jsonValidation.valid,
+      `Studio JSON/manual validation failed: ${jsonValidation.alert ?? "no success confirmation"}`);
     await clickText(cdp,"Сохранить черновик");
     await waitForExpression(cdp,'document.body.innerText.includes("Черновик сохранён")',"JSON/manual canonical save");
     const saved=await canonicalRead();assert(saved.body.manifest.course.title==="JSON + ручные формы"&&saved.body.manifest.activities[2].validation.acceptedAnswers[0]==="PRIVATE_EDITED_TEXT"&&saved.body.manifest.lessons[1].durationMinutes===27,"JSON/manual fields diverged from canonical export.");
@@ -843,6 +871,7 @@ async function verifyStudio(cdp) {
     await clickText(cdp,"Скачать сохранённый JSON");
     await waitForExpression(cdp,'document.body.innerText.includes("Скачан сохранённый черновик")',"canonical JSON download");
     // A concurrent authorized edit must be surfaced before this working copy can apply.
+    await clickText(cdp,"Настройки курса и навыки");
     await fillLabel(cdp,"Название курса","Моя несохранённая правка");
     const concurrent=structuredClone(saved.body.manifest);concurrent.course.title="Другой автор";
     const conflictWrite=await evaluate(cdp,`(async()=>{const manifest=${JSON.stringify(concurrent)};const plan=await fetch(${JSON.stringify(`${apiBase}/courses/manifest/validate`)},{method:"POST",credentials:"include",headers:{"content-type":"application/json"},body:JSON.stringify(manifest)}).then(r=>r.json());return fetch(${JSON.stringify(`${apiBase}/courses/manifest/apply`)},{method:"POST",credentials:"include",headers:{"content-type":"application/json"},body:JSON.stringify({manifest,expectedDraftVersionId:plan.expectedDraftVersionId,expectedRevision:plan.expectedRevision})}).then(r=>r.status);})()`);
@@ -885,7 +914,13 @@ async function verifyStudio(cdp) {
       "Studio published Offering manager");
     await accessibilityAudit(cdp,"Studio author-only Offering manager");
     await clickText(cdp,"Создать приватный доступ");
-    await waitForExpression(cdp,'document.body.innerText.includes("Доступ создан приватным")',"Studio private Offering creation");
+    await waitForExpression(cdp,
+      'document.body.innerText.includes("Доступ создан приватным") || document.querySelector(\'[role="alert"]\') !== null',
+      "Studio private Offering creation outcome");
+    const offeringOutcome = await evaluate(cdp,
+      '({created:document.body.innerText.includes("Доступ создан приватным"), failed:document.querySelector(\'[role="alert"]\')?.textContent?.slice(0,160) ?? null})');
+    assert(offeringOutcome.created,
+      `Studio private Offering creation failed: ${offeringOutcome.failed ?? "no success confirmation"}`);
     const offeringPage = await evaluate(cdp,
       `fetch(${JSON.stringify(`${apiBase}/offerings?courseVersionId=${published.versionId}`)},{credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,body:await r.json()}))`);
     assert(offeringPage.status===200&&offeringPage.body.offerings.length===1&&offeringPage.body.offerings[0].slug===slug&&offeringPage.body.offerings[0].visibility==="private",
@@ -1238,7 +1273,7 @@ async function runBrowserVerification(cdp) {
   assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Learning homepage overflows mobile.");
   assert(await evaluate(cdp, 'document.querySelectorAll("h1").length === 1 && !document.body.innerText.includes("Дизайн Preview")'), "Public homepage has duplicate heading or lab notice.");
   await evaluate(cdp, 'document.querySelector(\'button[aria-label="Открыть меню"]\')?.click()');
-  await waitForExpression(cdp, `(() => { const dialog = document.querySelector("dialog[open]"); return Boolean(dialog && dialog.querySelector('nav[aria-label="Главное меню на мобильном экране"]') && dialog.innerText.includes("Куда отправимся?")); })()`, "mobile navigation");
+  await waitForExpression(cdp, `(() => { const dialog = document.querySelector("dialog[open]"); return Boolean(dialog && dialog.querySelector('nav[aria-label="Главное меню на мобильном экране"]') && dialog.innerText.includes("Меню")); })()`, "mobile navigation");
   await accessibilityAudit(cdp, "mobile navigation");
   assert(await evaluate(cdp, `(() => {
     const dialog = document.querySelector("dialog[open]");
@@ -1542,6 +1577,36 @@ async function runBrowserVerification(cdp) {
     "public Product checkout UI"
   );
   await accessibilityAudit(cdp, "product/authentication state");
+  const productViewport = await evaluate(cdp, '({width:innerWidth,height:innerHeight})');
+  await cdp.send("Emulation.setDeviceMetricsOverride", {
+    width: 390, height: 844, deviceScaleFactor: 1, mobile: true
+  });
+  const productDecision = await evaluate(cdp, `(() => {
+    const checkout = document.querySelector('[aria-labelledby="checkout-heading"]');
+    const details = document.querySelector('[aria-label="Описание предложения"]');
+    const price = checkout?.querySelector('input[name="price"]')?.closest('label');
+    if (!checkout || !details || !price) return null;
+    const rect = price.getBoundingClientRect();
+    return {
+      width: innerWidth,
+      readingOrder: Boolean(checkout.compareDocumentPosition(details) & Node.DOCUMENT_POSITION_FOLLOWING),
+      priceAboveFold: rect.top >= 0 && rect.bottom <= innerHeight,
+      noOverflow: document.documentElement.scrollWidth <= innerWidth
+    };
+  })()`);
+  assert(productDecision?.width === 390 && productDecision.readingOrder &&
+    productDecision.priceAboveFold && productDecision.noOverflow,
+    `Mobile Product does not reveal the price before secondary information: ${JSON.stringify(productDecision)}`);
+  await cdp.send("Emulation.setDeviceMetricsOverride", {
+    width: 320, height: 640, deviceScaleFactor: 1, mobile: true
+  });
+  assert(await evaluate(cdp,
+    'document.documentElement.scrollWidth <= innerWidth && document.querySelector(\'[aria-labelledby="checkout-heading"]\')?.getBoundingClientRect().top < innerHeight'
+  ), "Mobile Product overflows or hides purchase decision at 320px.");
+  await cdp.send("Emulation.setDeviceMetricsOverride", {
+    width: productViewport.width, height: productViewport.height,
+    deviceScaleFactor: 1, mobile: false
+  });
 
   await tabUntil(
     cdp,
@@ -1703,6 +1768,14 @@ async function runBrowserVerification(cdp) {
     "The browser did not reuse the same attempt key at the checkout boundary."
   );
   await providerStubs.assertHealthy();
+  // Only after canonical Commerce/Studio/learner checks: screenshots contain
+  // anonymous public pages, never a logged-in author's private working copy.
+  await verifyPublicThemeMatrix(cdp, {
+    navigate,
+    evaluate,
+    waitForExpression,
+    origin: WEB_ORIGIN
+  });
 }
 
 async function closeServer(server) {

@@ -451,7 +451,7 @@ export function CourseEditor({
             >
               {(
                 [
-                  ["manual", "Ручной редактор"],
+                  ["manual", "Уроки и задания"],
                   ["json", "JSON"],
                   ["preview", "Предпросмотр"]
                 ] as const
@@ -492,42 +492,23 @@ export function CourseEditor({
                   ? "Документ проверен. Сохранение применит именно эту проверенную копию."
                   : "Изменения остаются в редакторе до проверки и сохранения. Автосохранения нет."}
           </Text>
-          <div className={styles.editorLayout}>
-            <aside className={styles.editorRail}>
-              {mode === "manual" ? (
-                <nav aria-label="Разделы содержимого курса">
-                  <Text muted size="sm">
-                    Содержимое
-                  </Text>
-                  {[
-                    ["course", "Курс", null],
-                    ["skills", "Навыки", document.skills.length],
-                    ["activities", "Задания", document.activities.length],
-                    ["lessons", "Уроки", document.lessons.length]
-                  ].map(([id, label, count]) => (
-                    <a key={id} href={`#studio-${id}`}>
-                      <span>{label}</span>
-                      {count !== null && <span>{count}</span>}
-                    </a>
-                  ))}
-                </nav>
-              ) : (
+          <div className={`${styles.editorLayout} ${mode === "manual" ? styles.editorLayoutManual : ""}`}>
+            {mode !== "manual" && (
+              <aside className={styles.editorRail}>
                 <Stack gap="sm">
-                  <Eyebrow>
-                    {mode === "json" ? "Рабочая копия" : "Взгляд ученика"}
-                  </Eyebrow>
+                  <Eyebrow>{mode === "json" ? "Рабочая копия" : "Взгляд ученика"}</Eyebrow>
                   <Text muted size="sm">
                     {mode === "json"
-                      ? "JSON и ручные поля изменяют один документ. Неверный JSON нужно исправить перед сменой режима."
-                      : "Предпросмотр показывает материалы и вопросы. Защищённые ответы в него не входят."}
+                      ? "JSON и ручные поля изменяют один документ. Ошибки JSON нужно исправить перед сменой режима."
+                      : "Предпросмотр показывает материалы и вопросы без защищённых ответов."}
                   </Text>
                 </Stack>
-              )}
-            </aside>
+              </aside>
+            )}
             <div className={styles.editorBody}>
               {mode !== "preview" && (
                 <fieldset
-                  disabled={busy || !writable}
+                  disabled={mode === "json" && (busy || !writable)}
                   className={styles.contentFieldset}
                 >
                   <legend className={styles.srOnly}>Содержимое курса</legend>
@@ -536,6 +517,7 @@ export function CourseEditor({
                       document={document}
                       edit={edit}
                       existing={!isNew}
+                      disabled={busy || !writable}
                     />
                   )}
                   {mode === "json" && (

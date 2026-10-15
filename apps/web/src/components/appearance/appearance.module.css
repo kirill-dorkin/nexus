@@ -12,12 +12,26 @@
   border: 1px solid var(--border-strong);
   border-radius: 999px;
   cursor: pointer;
-  box-shadow: 0 12px 32px rgb(7 3 13 / 18%);
+  box-shadow: var(--shadow-surface);
   -webkit-backdrop-filter: blur(14px) saturate(125%);
   backdrop-filter: blur(14px) saturate(125%);
 }
 .trigger:hover {
   background: var(--surface-hover);
+}
+.compact {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.55rem;
+  gap: 0.35rem;
+  border-color: var(--border-default);
+  background: var(--surface-default);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.compact > span {
+  display: none;
 }
 .currentAccent {
   width: 12px;
@@ -203,7 +217,7 @@
     padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
   }
   .dialog::backdrop {
-    background: rgb(10 6 16 / 35%);
+    background: var(--overlay-scrim);
   }
 }
 .choices input:focus-visible + span {

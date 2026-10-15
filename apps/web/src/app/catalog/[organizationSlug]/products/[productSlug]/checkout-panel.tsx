@@ -287,11 +287,15 @@ export function CheckoutPanel({ catalog }: CheckoutPanelProps) {
     <aside className={styles.checkoutCard} aria-labelledby="checkout-heading">
       <div>
         <p className={styles.eyebrow}>Оплата</p>
-        <h2 id="checkout-heading">Выберите цену</h2>
+        <h2 id="checkout-heading">
+          {catalog.product.prices.length === 1 ? "Стоимость курса" : "Выберите цену"}
+        </h2>
       </div>
 
       <fieldset className={styles.priceList} disabled={busy}>
-        <legend className={styles.eyebrow}>Доступные варианты</legend>
+        <legend className={styles.eyebrow}>
+          {catalog.product.prices.length === 1 ? "Разовая оплата" : "Доступные варианты"}
+        </legend>
         {catalog.product.prices.map((price) => (
           <label className={styles.priceOption} key={price.id}>
             <input
@@ -301,7 +305,7 @@ export function CheckoutPanel({ catalog }: CheckoutPanelProps) {
               checked={selectedPriceId === price.id}
               onChange={() => setSelectedPriceId(price.id)}
             />
-            <span>
+            <span className={styles.priceDetails}>
               <span className={styles.priceValue}>
                 {formatMoney(price.amountMinor, price.currency)}
               </span>

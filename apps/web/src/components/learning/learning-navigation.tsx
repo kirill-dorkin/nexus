@@ -5,19 +5,9 @@ import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 import { ArrowRight, BookOpen, CaretRight, House, List, Notebook, UserCircle, X } from "@phosphor-icons/react/dist/ssr";
 import { Dialog, IconButton, buttonClass } from "@platform/ui";
-import { brand } from "@platform/brand";
 import { browserApiRequest } from "../../lib/public-api";
 import styles from "./navigation.module.css";
-
-const publicDestinations = [
-  { href: "/courses", label: "Курсы" },
-  { href: "/blog", label: "Блог" }
-] as const;
-
-const privateDestinations = [
-  { href: "/me/learning", label: "Моё обучение" },
-  { href: "/studio", label: "Studio" }
-] as const;
+import { publicDestinations, learnerDestinations } from "./public-navigation-links";
 
 export function LearningNavigation({
   showLogin = true
@@ -46,10 +36,7 @@ export function LearningNavigation({
   }, [showLogin]);
   const authenticated = authState === "authenticated";
   function links() {
-    const destinations = authenticated
-      ? [...publicDestinations, ...privateDestinations]
-      : publicDestinations;
-    return destinations.map((item) => (
+    return publicDestinations.map((item) => (
       <Link
         key={item.href}
         href={item.href}
@@ -70,7 +57,11 @@ export function LearningNavigation({
       <nav className={styles.desktop} aria-label="Главное меню">
         {links()}
       </nav>
-      {showLogin && authState === "anonymous" ? (
+      {showLogin && authState === "authenticated" ? (
+        <div className={styles.authActions}>
+          <Link className={`${buttonClass({ variant: "ghost", size: "sm" })} ${styles.login}`} href="/me/learning">Моё обучение</Link>
+        </div>
+      ) : showLogin && authState === "anonymous" ? (
         <div className={styles.authActions}>
           <Link className={`${buttonClass({ variant: "ghost", size: "sm" })} ${styles.login}`} href="/login">Войти</Link>
           <Link className={`${buttonClass({ size: "sm" })} ${styles.register}`} href="/login?mode=register">Создать аккаунт</Link>
@@ -100,8 +91,7 @@ export function LearningNavigation({
       >
         <div className={styles.menuHeading}>
           <div className={styles.menuIdentity}>
-            <span className={styles.menuEyebrow}>{brand.name} / НАВИГАЦИЯ</span>
-            <h2 id={`${id}-title`}>Куда отправимся?</h2>
+            <h2 id={`${id}-title`}>Меню</h2>
           </div>
           <IconButton aria-label="Закрыть меню" onClick={closeMenu} className={styles.closeButton}>
             <X size={22} aria-hidden="true" />
@@ -128,7 +118,7 @@ export function LearningNavigation({
             {authenticated && (
               <>
                 <span className={styles.groupLabel}>ЛИЧНОЕ</span>
-                {privateDestinations.map((item) => (
+                {learnerDestinations.map((item) => (
                   <Link key={item.href} href={item.href}
                     aria-current={pathname === item.href || pathname.startsWith(`${item.href}/`) ? "page" : undefined}
                     onClick={closeMenu}>

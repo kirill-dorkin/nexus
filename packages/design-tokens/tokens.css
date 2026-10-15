@@ -35,6 +35,9 @@
   --accent-atmosphere: color-mix(in srgb, var(--accent-companion) 7%, transparent);
   --art-tint-strength: 0.28;
 }
+/* Shared surfaces use hue-neutral graphite/slate bases; accents belong only to
+   derived semantic interaction colors. Avoid a permanently plum-tinted UI when
+   a user selects teal, blue, rose or amber. */
 /* Explicit themes also work inside an isolated component gallery. */
 :root,
 [data-ui-theme="dark"] {
@@ -43,21 +46,22 @@
   /* Low-chroma page canvas: only a small share of the selected accent. */
   --page-background: color-mix(in srgb, var(--accent-action) 7%, #15171d);
   --page-glow: color-mix(in srgb, var(--accent-night) 6%, transparent);
-  --surface-subtle: #181120;
-  --surface-elevated: color-mix(in srgb, var(--accent-action) 7%, #241a2d);
-  --surface-solid: #1d1625;
-  --surface-input: #14101c;
-  --surface-glass: color-mix(in srgb, var(--accent-action) 7%, rgb(29 21 38 / 90%));
-  --surface-hover: color-mix(in srgb, var(--accent-action) 12%, #2b2035);
-  --text-primary: #f8f5fb;
-  --text-secondary: #b8afc4;
-  --text-disabled: #93869f;
+  --surface-subtle: #1a1d22;
+  --surface-elevated: color-mix(in srgb, var(--accent-action) 5%, #252a32);
+  --surface-solid: #20242b;
+  --surface-input: #12151a;
+  --surface-glass: color-mix(in srgb, var(--accent-action) 5%, rgb(28 32 38 / 90%));
+  --surface-hover: color-mix(in srgb, var(--accent-action) 10%, #303640);
+  --text-primary: #f5f6f8;
+  --text-secondary: #bac2cd;
+  --text-disabled: #8d98a8;
   --text-accent: var(--accent-night);
   --text-on-action: #fff;
-  --border-default: color-mix(in srgb, var(--accent-action) 9%, #382d43);
-  --border-strong: #776780;
-  --border-glass: color-mix(in srgb, var(--accent-action) 16%, #755267);
+  --border-default: color-mix(in srgb, var(--accent-action) 7%, #39424e);
+  --border-strong: #8391a4;
+  --border-glass: color-mix(in srgb, var(--accent-action) 12%, #626f80);
   --border-accent: var(--accent-night);
+  --overlay-scrim: rgb(0 0 0 / 56%);
   --action-primary: var(--accent-action);
   --action-hover: var(--accent-hover);
   --action-danger: #b62c45;
@@ -80,24 +84,25 @@
 }
 [data-ui-theme="light"] {
   color-scheme: light;
-  --surface-default: #f5f6fa;
+  --surface-default: #f5f7fa;
   --page-background: color-mix(in srgb, var(--accent-action) 3%, #f7f8fa);
   --page-glow: color-mix(in srgb, var(--accent-action) 4%, transparent);
-  --surface-subtle: #f8f9fc;
+  --surface-subtle: #f7f9fb;
   --surface-elevated: #fff;
   --surface-solid: #fff;
-  --surface-input: #f7f7fb;
+  --surface-input: #f5f7fa;
   --surface-glass: color-mix(in srgb, var(--accent-action) 3%, rgb(255 255 255 / 90%));
-  --surface-hover: color-mix(in srgb, var(--accent-action) 6%, #f0edfa);
-  --text-primary: #20213a;
-  --text-secondary: #62687d;
-  --text-disabled: #969bad;
+  --surface-hover: color-mix(in srgb, var(--accent-action) 6%, #eef2f6);
+  --text-primary: #202833;
+  --text-secondary: #586271;
+  --text-disabled: #83909f;
   --text-accent: var(--accent-day);
   --text-on-action: #fff;
-  --border-default: color-mix(in srgb, var(--accent-action) 5%, #e5e7ef);
-  --border-strong: #898a9c;
-  --border-glass: color-mix(in srgb, var(--accent-action) 10%, #d8d3e8);
+  --border-default: color-mix(in srgb, var(--accent-action) 5%, #e2e7ee);
+  --border-strong: #808b9b;
+  --border-glass: color-mix(in srgb, var(--accent-action) 10%, #cbd4dd);
   --border-accent: var(--accent-day);
+  --overlay-scrim: rgb(20 24 30 / 36%);
   --action-primary: var(--accent-action);
   --action-hover: var(--accent-hover);
   --action-danger: #b62c45;

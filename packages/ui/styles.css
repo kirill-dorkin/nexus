@@ -466,7 +466,7 @@
   font-family: var(--font-sans);
 }
 .ui-dialog::backdrop {
-  background: rgb(10 6 16 / 35%);
+  background: var(--overlay-scrim);
 }
 .ui-dialog[open] {
   animation: ui-dialog-enter 160ms ease-out;

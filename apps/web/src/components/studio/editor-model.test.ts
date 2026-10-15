@@ -3,9 +3,9 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, it, expect } from "vitest";
 import { courseManifestV1Schema } from "@platform/contracts";
 import { readFileSync } from "node:fs";
-import { ManualEditor } from "./manual-editor";
+import { ActivityEditor, ManualEditor } from "./manual-editor";
 import { DraftPreview } from "./draft-preview";
-import { move, newActivity, parseEditorJson } from "./editor-model";
+import { appendLesson, appendQuizToLesson, move, newActivity, parseEditorJson } from "./editor-model";
 const example = courseManifestV1Schema.parse(
   JSON.parse(
     readFileSync("docs/examples/computer-basics.manifest.json", "utf8")
@@ -40,20 +40,37 @@ describe("Studio document parity and safe author preview", () => {
       })
     );
     for (const label of [
-      "Учитывать регистр",
-      "Допустимый ответ 1",
-      "Правильный вариант 1",
-      "Объяснение автора",
+      "Программа курса",
+      "Настройки курса и навыки",
+      "Банк заданий",
+      "Добавить урок",
       "Длительность, минут",
-      "Заголовок блока",
-      "Обязательное задание",
-      "Ключ навыка",
+      "Вид задания",
+      "Редактировать вопрос и правильные ответы",
       "Краткое описание урока",
-      "Вид задания"
-    ])
-      expect(html).toContain(label);
-    expect(html).toContain("SECRET_TEXT");
-    expect(html).toContain("SECRET_EXPLANATION");
+      "Обязательное задание"
+    ]) expect(html).toContain(label);
+    const shortHtml = renderToStaticMarkup(createElement(ActivityEditor, {
+      activity: text,
+      index: d.activities.length - 1,
+      document: d,
+      edit: () => {},
+      embedded: true
+    }));
+    expect(shortHtml).toContain("Допустимый ответ 1");
+    expect(shortHtml).toContain("SECRET_TEXT");
+    expect(shortHtml).toContain("SECRET_EXPLANATION");
+    expect(shortHtml).toContain("Учитывать регистр");
+    const choicesHtml = renderToStaticMarkup(createElement(ActivityEditor, {
+      activity: multi,
+      index: d.activities.length - 2,
+      document: d,
+      edit: () => {},
+      embedded: true
+    }));
+    expect(choicesHtml).toContain("Правильный вариант 1");
+    expect(choicesHtml).toContain("Объяснение автора");
+    expect(choicesHtml).not.toContain("Удалить задание");
   });
   it("renders no answer keys, executable HTML or learner check controls in preview", () => {
     const d = structuredClone(example);
@@ -104,4 +121,25 @@ describe("Studio document parity and safe author preview", () => {
     move(d.lessons, 0, -1);
     expect(d.lessons[0]!.slug).toBe("other");
   });
+  it("creates lesson-local quiz links without destroying shared course identities", () => {
+    const d = structuredClone(example);
+    const existing = JSON.stringify(d);
+    const i = appendLesson(d);
+    expect(i).toBe(example.lessons.length);
+    expect(d.lessons[i]!.slug).toMatch(/^urok-/);
+    const quizSlug = appendQuizToLesson(d, i);
+    expect(d.lessons[i]!.blocks).toEqual([
+      { type: "activity", activitySlug: quizSlug, kind: "practice", required: true }
+    ]);
+    const quiz = d.activities.find((a) => a.slug === quizSlug)!;
+    expect(quiz.type).toBe("quiz.single_choice");
+    expect(quiz.skillKeys).toEqual([d.skills[0]!.key]);
+    expect(JSON.stringify({ ...d, activities: d.activities.slice(0, -1), lessons: d.lessons.slice(0, -1) })).toBe(existing);
+    // An unlinked quiz stays in the bank: reuse across lessons is never silently erased.
+    d.lessons[i]!.blocks.splice(0, 1);
+    expect(d.activities.some((a) => a.slug === quizSlug)).toBe(true);
+    expect(() => appendQuizToLesson({ ...d, skills: [] }, i)).toThrow(/навык/);
+    expect(parseEditorJson(JSON.stringify(d)).manifest).toBeNull(); // Empty new lesson cannot be published.
+  });
+
 });
