@@ -659,11 +659,20 @@ async function fill(cdp, selector, value) {
 }
 
 async function clickText(cdp, text) {
+  // A Next.js route can render a button before its client state has settled.
+  // Clicking a disabled button is a silent no-op; it must never be counted as a
+  // successful browser action (or misreported as a later API timeout).
+  const label = JSON.stringify(text);
+  await waitForExpression(
+    cdp,
+    `[...document.querySelectorAll("button")].some((button)=>button.textContent?.trim()===${label} && !button.disabled)`,
+    `enabled button '${text}'`
+  );
   const clicked = await evaluate(
     cdp,
-    `(() => { const target=[...document.querySelectorAll("button")].find((button)=>button.textContent?.trim()===${JSON.stringify(text)}); if (!(target instanceof HTMLButtonElement)) return false; target.click(); return true; })()`
+    `(() => { const target=[...document.querySelectorAll("button")].find((button)=>button.textContent?.trim()===${label} && !button.disabled); if (!(target instanceof HTMLButtonElement)) return false; target.click(); return true; })()`
   );
-  assert(clicked, `Could not click button '${text}'.`);
+  assert(clicked, `Could not click enabled button '${text}'.`);
 }
 
 async function accessibilityAudit(cdp, label) {
