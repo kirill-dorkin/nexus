@@ -1542,6 +1542,9 @@ async function runBrowserVerification(cdp) {
     "public Product checkout UI"
   );
   await accessibilityAudit(cdp, "product/authentication state");
+  assert(await evaluate(cdp,
+    'document.querySelector(\'header a[href="/"][aria-label]\') !== null && document.getElementById("catalog-main") !== null'
+  ), "Public Product page is missing the shared theme-safe header or skip destination.");
 
   await tabUntil(
     cdp,
