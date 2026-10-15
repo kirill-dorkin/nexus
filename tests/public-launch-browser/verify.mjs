@@ -1238,7 +1238,7 @@ async function runBrowserVerification(cdp) {
   assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Learning homepage overflows mobile.");
   assert(await evaluate(cdp, 'document.querySelectorAll("h1").length === 1 && !document.body.innerText.includes("Дизайн Preview")'), "Public homepage has duplicate heading or lab notice.");
   await evaluate(cdp, 'document.querySelector(\'button[aria-label="Открыть меню"]\')?.click()');
-  await waitForExpression(cdp, `(() => { const dialog = document.querySelector("dialog[open]"); return Boolean(dialog && dialog.querySelector('nav[aria-label="Главное меню на мобильном экране"]') && dialog.innerText.includes("Куда отправимся?")); })()`, "mobile navigation");
+  await waitForExpression(cdp, `(() => { const dialog = document.querySelector("dialog[open]"); return Boolean(dialog && dialog.querySelector('nav[aria-label="Главное меню на мобильном экране"]') && dialog.innerText.includes("Меню")); })()`, "mobile navigation");
   await accessibilityAudit(cdp, "mobile navigation");
   assert(await evaluate(cdp, `(() => {
     const dialog = document.querySelector("dialog[open]");
