@@ -1542,6 +1542,31 @@ async function runBrowserVerification(cdp) {
     "public Product checkout UI"
   );
   await accessibilityAudit(cdp, "product/authentication state");
+  const productDecision = await evaluate(cdp, `(() => {
+    const checkout = document.querySelector('[aria-labelledby="checkout-heading"]');
+    const details = document.querySelector('[aria-label="Описание предложения"]');
+    const price = checkout?.querySelector('input[name="price"]')?.closest('label');
+    if (!checkout || !details || !price) return null;
+    const rect = price.getBoundingClientRect();
+    return {
+      width: innerWidth,
+      readingOrder: Boolean(checkout.compareDocumentPosition(details) & Node.DOCUMENT_POSITION_FOLLOWING),
+      priceAboveFold: rect.top >= 0 && rect.bottom <= innerHeight,
+      noOverflow: document.documentElement.scrollWidth <= innerWidth
+    };
+  })()`);
+  assert(productDecision?.width === 390 && productDecision.readingOrder &&
+    productDecision.priceAboveFold && productDecision.noOverflow,
+    `Mobile Product does not reveal the price before secondary information: ${JSON.stringify(productDecision)}`);
+  await cdp.send("Emulation.setDeviceMetricsOverride", {
+    width: 320, height: 640, deviceScaleFactor: 1, mobile: true
+  });
+  assert(await evaluate(cdp,
+    'document.documentElement.scrollWidth <= innerWidth && document.querySelector(\'[aria-labelledby="checkout-heading"]\')?.getBoundingClientRect().top < innerHeight'
+  ), "Mobile Product overflows or hides purchase decision at 320px.");
+  await cdp.send("Emulation.setDeviceMetricsOverride", {
+    width: 390, height: 844, deviceScaleFactor: 1, mobile: true
+  });
 
   await tabUntil(
     cdp,
