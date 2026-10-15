@@ -19,6 +19,20 @@
 .trigger:hover {
   background: var(--surface-hover);
 }
+.compact {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.55rem;
+  gap: 0.35rem;
+  border-color: var(--border-default);
+  background: var(--surface-default);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.compact > span {
+  display: none;
+}
 .currentAccent {
   width: 12px;
   height: 12px;
