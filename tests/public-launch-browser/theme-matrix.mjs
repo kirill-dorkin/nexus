@@ -95,6 +95,9 @@ export async function verifyPublicThemeMatrix(cdp, { navigate, evaluate, waitFor
             JSON.stringify(theme) + "," + JSON.stringify(accent) + ")";
           const safeWidth = await evaluate(cdp, update);
           assert(safeWidth, page.slug + ": screenshot viewport overflows " + viewport.width);
+          // Changing CSS variables can animate the CTA and header for 120–220 ms.
+          // Capture the fully settled theme, not a transitional mix of palettes.
+          await new Promise((resolve) => setTimeout(resolve, 450));
           const image = await cdp.send("Page.captureScreenshot", {
             format: "png", fromSurface: true, captureBeyondViewport: false
           });
@@ -102,6 +105,25 @@ export async function verifyPublicThemeMatrix(cdp, { navigate, evaluate, waitFor
             page.slug + ": Chrome returned no screenshot");
           const fileName = [page.slug, String(viewport.width), theme, accent].join("-") + ".png";
           writeFileSync(join(output, fileName), Buffer.from(image.data, "base64"));
+          if (page.slug === "product" && viewport.mobile) {
+            // Keep one full mobile page for evaluating placement of price and
+            // checkout CTA below the first viewport, without clipping evidence.
+            const metrics = await cdp.send("Page.getLayoutMetrics");
+            const height = Math.min(
+              Math.ceil(metrics.cssContentSize?.height ?? viewport.height),
+              4096
+            );
+            const full = await cdp.send("Page.captureScreenshot", {
+              format: "png", fromSurface: true, captureBeyondViewport: true,
+              clip: { x: 0, y: 0, width: viewport.width, height, scale: 1 }
+            });
+            assert(typeof full.data === "string" && full.data.length > 100,
+              "Chrome returned no full-mobile Product screenshot");
+            writeFileSync(
+              join(output, ["product", "390", theme, accent, "full"].join("-") + ".png"),
+              Buffer.from(full.data, "base64")
+            );
+          }
         }
       }
     }
