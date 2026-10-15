@@ -6,7 +6,7 @@ const panel = readFileSync(new URL("./checkout-panel.tsx", import.meta.url), "ut
 const styles = readFileSync(new URL("./product.module.css", import.meta.url), "utf8");
 
 const designTokens = readFileSync(
-  new URL("../../../../../../../packages/design-tokens/tokens.css", import.meta.url),
+  new URL("../../../../../../../../packages/design-tokens/tokens.css", import.meta.url),
   "utf8"
 );
 
