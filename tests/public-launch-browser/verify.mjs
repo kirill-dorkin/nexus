@@ -842,7 +842,13 @@ async function verifyStudio(cdp) {
     const preview=await evaluate(cdp,'document.querySelector(\'[aria-label="Предпросмотр курса"]\').innerText');
     assert(preview.includes("Ручная практика")&&!preview.includes("PRIVATE_"),"Studio preview leaked answer definitions.");
     await clickText(cdp,"Проверить документ");
-    await waitForExpression(cdp,'document.body.innerText.includes("Проверка пройдена")',"JSON/manual validation");
+    await waitForExpression(cdp,
+      'document.body.innerText.includes("Проверка пройдена") || document.querySelector(\'[role="alert"]\') !== null',
+      "JSON/manual validation outcome");
+    const jsonValidation = await evaluate(cdp,
+      '({valid:document.body.innerText.includes("Проверка пройдена"), alert:document.querySelector(\'[role="alert"] strong\')?.textContent ?? null})');
+    assert(jsonValidation.valid,
+      `Studio JSON/manual validation failed: ${jsonValidation.alert ?? "no success confirmation"}`);
     await clickText(cdp,"Сохранить черновик");
     await waitForExpression(cdp,'document.body.innerText.includes("Черновик сохранён")',"JSON/manual canonical save");
     const saved=await canonicalRead();assert(saved.body.manifest.course.title==="JSON + ручные формы"&&saved.body.manifest.activities[2].validation.acceptedAnswers[0]==="PRIVATE_EDITED_TEXT"&&saved.body.manifest.lessons[1].durationMinutes===27,"JSON/manual fields diverged from canonical export.");
@@ -894,7 +900,13 @@ async function verifyStudio(cdp) {
       "Studio published Offering manager");
     await accessibilityAudit(cdp,"Studio author-only Offering manager");
     await clickText(cdp,"Создать приватный доступ");
-    await waitForExpression(cdp,'document.body.innerText.includes("Доступ создан приватным")',"Studio private Offering creation");
+    await waitForExpression(cdp,
+      'document.body.innerText.includes("Доступ создан приватным") || document.querySelector(\'[role="alert"]\') !== null',
+      "Studio private Offering creation outcome");
+    const offeringOutcome = await evaluate(cdp,
+      '({created:document.body.innerText.includes("Доступ создан приватным"), failed:document.querySelector(\'[role="alert"]\')?.textContent?.slice(0,160) ?? null})');
+    assert(offeringOutcome.created,
+      `Studio private Offering creation failed: ${offeringOutcome.failed ?? "no success confirmation"}`);
     const offeringPage = await evaluate(cdp,
       `fetch(${JSON.stringify(`${apiBase}/offerings?courseVersionId=${published.versionId}`)},{credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,body:await r.json()}))`);
     assert(offeringPage.status===200&&offeringPage.body.offerings.length===1&&offeringPage.body.offerings[0].slug===slug&&offeringPage.body.offerings[0].visibility==="private",
