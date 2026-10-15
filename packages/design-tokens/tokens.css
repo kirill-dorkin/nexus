@@ -61,6 +61,7 @@
   --border-strong: #8391a4;
   --border-glass: color-mix(in srgb, var(--accent-action) 12%, #626f80);
   --border-accent: var(--accent-night);
+  --overlay-scrim: rgb(0 0 0 / 56%);
   --action-primary: var(--accent-action);
   --action-hover: var(--accent-hover);
   --action-danger: #b62c45;
@@ -101,6 +102,7 @@
   --border-strong: #808b9b;
   --border-glass: color-mix(in srgb, var(--accent-action) 10%, #cbd4dd);
   --border-accent: var(--accent-day);
+  --overlay-scrim: rgb(20 24 30 / 36%);
   --action-primary: var(--accent-action);
   --action-hover: var(--accent-hover);
   --action-danger: #b62c45;
