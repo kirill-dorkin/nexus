@@ -30,7 +30,7 @@ export function HomeDiscoveryShell({
       <a className={styles.skip} href="#home-content">
         Перейти к содержимому
       </a>
-      <PublicHeader className={styles.header} />
+      <PublicHeader className={styles.header ?? ""} />
       {preview && (
         <nav className={styles.previewNotice} aria-label="Варианты дизайна">
           <span>Дизайн Preview</span>
