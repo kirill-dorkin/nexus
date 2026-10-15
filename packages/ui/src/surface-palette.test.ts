@@ -22,8 +22,12 @@ function value(block: string, name: string) {
 }
 
 function channels(hex: string): number[] {
-  expect(hex).toMatch(/^#[0-9a-f]{6}$/i);
-  return [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16));
+  // Both shorthand #fff and full #ffffff are valid solid CSS surfaces.
+  const normalized = /^#[0-9a-f]{3}$/i.test(hex)
+    ? "#" + [...hex.slice(1)].map((digit) => digit + digit).join("")
+    : hex;
+  expect(normalized).toMatch(/^#[0-9a-f]{6}$/i);
+  return [1, 3, 5].map((offset) => parseInt(normalized.slice(offset, offset + 2), 16));
 }
 
 function expectNeutral(hex: string, context: string) {
