@@ -68,6 +68,16 @@ describe.each(["dark", "light"] as const)(
       }
     });
 
+    it("provides a neutral darkening scrim appropriate to each theme", () => {
+      const scrim = value(colors, "--overlay-scrim");
+      const match = scrim.match(/^rgb\((\d+) (\d+) (\d+) \/ (\d+)%\)$/);
+      expect(match).not.toBeNull();
+      const channels = match!.slice(1, 4).map(Number);
+      expect(Math.max(...channels)).toBeLessThanOrEqual(30);
+      expect(Math.max(...channels) - Math.min(...channels)).toBeLessThanOrEqual(12);
+      expect(Number(match![4])).toBeGreaterThanOrEqual(theme === "dark" ? 45 : 28);
+    });
+
     it("does not use a plum hue underneath selected accents", () => {
       const boundary = value(colors, "--border-default");
       const match = boundary.match(
