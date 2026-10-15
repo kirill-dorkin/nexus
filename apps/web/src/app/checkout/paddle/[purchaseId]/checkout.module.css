@@ -1,5 +1,6 @@
 .page {
   min-height: 100vh;
+  min-height: 100dvh;
   display: grid;
   place-items: center;
   padding: 48px 20px;
@@ -7,16 +8,19 @@
 
 .card {
   width: min(640px, 100%);
-  border: 1px solid #d7dbe2;
-  border-radius: 18px;
-  padding: 32px;
-  background: #fff;
-  box-shadow: 0 18px 50px rgb(15 23 42 / 8%);
+  min-width: 0;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: clamp(20px, 5vw, 32px);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-surface);
+  overflow-wrap: anywhere;
 }
 
 .eyebrow {
   margin: 0 0 8px;
-  color: #5b6472;
+  color: var(--text-secondary);
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -24,17 +28,18 @@
 }
 
 .copy {
-  color: #475569;
+  color: var(--text-secondary);
   line-height: 1.6;
 }
 
 .statusBox {
   margin-top: 24px;
   padding: 16px;
-  border-radius: 12px;
-  background: #f6f7f9;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-subtle);
 }
 
 .error {
-  color: #9f1239;
+  color: var(--status-danger);
 }
