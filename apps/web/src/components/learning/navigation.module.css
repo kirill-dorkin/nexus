@@ -50,11 +50,15 @@
 .authActions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 0.55rem;
+  min-width: 205px;
 }
 .authPlaceholder {
   display: flex;
+  justify-content: flex-end;
   gap: 0.35rem;
+  min-width: 205px;
   opacity: 0.45;
 }
 .authPlaceholder span {
