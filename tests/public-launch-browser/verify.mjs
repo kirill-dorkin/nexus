@@ -885,8 +885,36 @@ async function verifyStudio(cdp) {
     await clickText(cdp,"Остаться в редакторе");
     await waitForExpression(cdp,'!document.querySelector("dialog[open]")',"discard confirmation close");
     assert(await evaluate(cdp,'[...document.querySelectorAll("label")].find(l=>l.firstChild?.textContent?.trim()==="Название курса")?.control?.value === "Моя несохранённая правка"'),"Cancelling discard lost working copy.");
-    await evaluate(cdp,'[...document.querySelectorAll("a")].find(a=>a.textContent?.trim()==="← Все курсы").click()');
-    await waitForExpression(cdp,'document.querySelector("dialog[open]")?.textContent.includes("Выйти из редактора?")',"unsaved internal navigation confirmation");
+    // Use a real pointer interaction after the previous dialog has closed.
+    // A programmatic anchor.click() can race React's delegated navigation guard.
+    await waitForExpression(cdp,
+      'document.body.innerText.includes("Есть несохранённые изменения")',
+      "unsaved Studio dirty state before leaving");
+    const exitLink = await evaluate(cdp,`(() => {
+      const anchor=[...document.querySelectorAll("a")].find(a=>a.textContent?.trim()==="← Все курсы");
+      if (!anchor) return null;
+      anchor.scrollIntoView({behavior:"instant",block:"center"});
+      const rect=anchor.getBoundingClientRect();
+      return {x:rect.left+rect.width/2,y:rect.top+rect.height/2,width:innerWidth,height:innerHeight};
+    })()`);
+    assert(exitLink && exitLink.x>=0 && exitLink.x<exitLink.width && exitLink.y>=0 && exitLink.y<exitLink.height,
+      `Studio back link cannot receive pointer input: ${JSON.stringify(exitLink)}`);
+    await cdp.send("Input.dispatchMouseEvent",{
+      type:"mousePressed",x:exitLink.x,y:exitLink.y,button:"left",clickCount:1
+    });
+    await cdp.send("Input.dispatchMouseEvent",{
+      type:"mouseReleased",x:exitLink.x,y:exitLink.y,button:"left",clickCount:1
+    });
+    await waitForExpression(cdp,
+      'location.pathname === "/studio" || [...document.querySelectorAll("dialog[open]")].some(d=>d.textContent.includes("Выйти из редактора?"))',
+      "unsaved internal navigation resolution");
+    const departure=await evaluate(cdp,`({
+      path:location.pathname,
+      confirmed:[...document.querySelectorAll("dialog[open]")].some(d=>d.textContent.includes("Выйти из редактора?")),
+      dirty:document.body.innerText.includes("Есть несохранённые изменения")
+    })`);
+    assert(departure.confirmed,
+      `Studio navigation bypassed unsaved-changes confirmation: ${JSON.stringify(departure)}`);
     await accessibilityAudit(cdp,"Studio unsaved navigation confirmation");
     await clickText(cdp,"Остаться в редакторе");
     await waitForExpression(cdp,'!document.querySelector("dialog[open]")',"unsaved navigation confirmation close");
