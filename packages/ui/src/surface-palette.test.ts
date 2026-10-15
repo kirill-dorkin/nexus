@@ -82,7 +82,7 @@ describe.each(["dark", "light"] as const)(
 
 it("uses the active theme text token for the shared dialog scrim", () => {
   expect(uiCss).toContain(
-    "background: color-mix(in srgb, var(--text-primary) 28%, transparent);"
+    "background: var(--overlay-scrim);"
   );
   expect(uiCss).not.toContain("rgb(10 6 16 / 35%)");
 });
