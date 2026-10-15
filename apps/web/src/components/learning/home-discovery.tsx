@@ -6,12 +6,10 @@ import { brand } from "@platform/brand";
 import type { PublicLearningCourse } from "@platform/contracts";
 import { Alert, ButtonLink, Skeleton } from "@platform/ui";
 import { loadLearningCatalog, courseUrl } from "../../lib/public-learning";
-import { AppearanceControl } from "../appearance/appearance-control";
-import { LearningNavigation } from "./learning-navigation";
+import { PublicHeader } from "./public-header";
 import { CatalogRetry } from "./catalog-retry";
 import { courseArtwork } from "./course-artwork";
 import { lessonCount } from "./learning-labels";
-import brandStyles from "./learning.module.css";
 import styles from "./home-discovery.module.css";
 
 export function HomeDiscoveryShell({
@@ -32,31 +30,7 @@ export function HomeDiscoveryShell({
       <a className={styles.skip} href="#home-content">
         Перейти к содержимому
       </a>
-      <header className={styles.header}>
-        <Link
-          href="/"
-          className={brandStyles.brand}
-          aria-label={`${brand.name} — на главную`}
-        >
-          <span className={brandStyles.brandMark} aria-hidden="true">
-            N
-          </span>
-          <span className={brandStyles.brandLockup}>
-            <span>{brand.name}</span>
-            <small>учебная среда</small>
-          </span>
-        </Link>
-        <LearningNavigation />
-      </header>
-      <aside
-        className={styles.appearanceDock}
-        aria-label="Оформление интерфейса"
-      >
-        <AppearanceControl
-          showAccentLabels
-          dialogClassName={styles.appearanceDialog ?? ""}
-        />
-      </aside>
+      <PublicHeader className={styles.header} />
       {preview && (
         <nav className={styles.previewNotice} aria-label="Варианты дизайна">
           <span>Дизайн Preview</span>
@@ -94,7 +68,6 @@ export function HomeDiscoveryShell({
         <nav aria-label="Меню внизу страницы">
           <Link href="/courses">Курсы</Link>
           <Link href="/blog">Блог</Link>
-          <Link href="/studio">Для авторов</Link>
         </nav>
       </footer>
     </div>
