@@ -67,7 +67,7 @@ Current ADR-0057 permits owner-bootstrap self-create via an existing Organizatio
 
 - identify every HTTP and internal caller and current grant;
 - define platform-owner identity bootstrap from trusted operational authority, independent of public registration;
-- fail-close ordinary `POST /v1/me/organizations` for authenticated learners (including exact direct HTTP calls);
+- fail-close **both** ordinary `POST /v1/me/organizations` and `POST /v1/organizations` for authenticated learners (including exact direct HTTP calls);
 - preserve migration and operations paths, no accidental tenant deletion/membership or Role changes;
 - add explicit negative tenant/foreign-principal/regression tests and an accepted ADR updating the policy.
 
