@@ -56,7 +56,7 @@ describe.each(["dark", "light"] as const)(
           continue;
         }
         const mix = expression.match(
-          /^color-mix\\(in srgb, var\\(--accent-action\\) (\\d+)%, (#[0-9a-f]{6})\\)$/i
+          /^color-mix\(in srgb, var\(--accent-action\) (\d+)%, (#[0-9a-f]{6})\)$/i
         );
         expect(mix, `${theme} ${name}: expected semantic color-mix`).not.toBeNull();
         expect(Number(mix![1])).toBeLessThanOrEqual(12);
@@ -67,7 +67,7 @@ describe.each(["dark", "light"] as const)(
     it("does not use a plum hue underneath selected accents", () => {
       const boundary = value(colors, "--border-default");
       const match = boundary.match(
-        /^color-mix\\(in srgb, var\\(--accent-action\\) (\\d+)%, (#[0-9a-f]{6})\\)$/i
+        /^color-mix\(in srgb, var\(--accent-action\) (\d+)%, (#[0-9a-f]{6})\)$/i
       );
       expect(match).not.toBeNull();
       expect(Number(match![1])).toBeLessThanOrEqual(12);
