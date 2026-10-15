@@ -25,6 +25,15 @@ describe("shared public/learner header", () => {
     expect(styles).not.toContain(".appearanceRow");
   });
 
+  it("includes the public Product route without nesting a second main landmark", () => {
+    const catalogLayout = here("../../app/catalog/layout.tsx");
+    expect(catalogLayout).toContain("<PublicHeader />");
+    expect(catalogLayout).toContain('href="#catalog-main"');
+    expect(catalogLayout).toContain('id="catalog-main" tabIndex={-1}');
+    expect(catalogLayout).not.toContain("<main");
+    expect(catalogLayout).not.toContain("<LearningShell");
+  });
+
   it("does not put Studio in public footers", () => {
     expect(here("./home-discovery.tsx")).not.toContain('href="/studio"');
     expect(here("./learning-shell.tsx")).not.toContain('href="/studio"');
