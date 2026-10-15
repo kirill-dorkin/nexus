@@ -193,7 +193,7 @@
 .button {
   border: 1px solid var(--action-primary);
   background: var(--action-primary);
-  color: #ffffff;
+  color: var(--text-on-action);
   padding: 0 var(--space-4);
 }
 
