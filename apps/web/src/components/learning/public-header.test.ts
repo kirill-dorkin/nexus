@@ -7,7 +7,7 @@ describe("shared public/learner header", () => {
   it("uses one header component on home and all LearningShell pages", () => {
     const home = here("./home-discovery.tsx");
     const learning = here("./learning-shell.tsx");
-    expect(home).toContain("<PublicHeader className={styles.header} />");
+    expect(home).toContain('<PublicHeader className={styles.header ?? ""} />');
     expect(learning).toContain("<PublicHeader />");
     expect(home).not.toContain("appearanceDock");
     expect(learning).not.toContain("appearanceRow");
