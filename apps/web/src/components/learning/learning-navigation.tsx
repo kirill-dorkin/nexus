@@ -7,15 +7,7 @@ import { ArrowRight, BookOpen, CaretRight, House, List, Notebook, UserCircle, X 
 import { Dialog, IconButton, buttonClass } from "@platform/ui";
 import { browserApiRequest } from "../../lib/public-api";
 import styles from "./navigation.module.css";
-
-const publicDestinations = [
-  { href: "/courses", label: "Курсы" },
-  { href: "/blog", label: "Блог" }
-] as const;
-
-const privateDestinations = [
-  { href: "/me/learning", label: "Моё обучение" }
-] as const;
+import { publicDestinations, learnerDestinations } from "./public-navigation-links";
 
 export function LearningNavigation({
   showLogin = true
@@ -126,7 +118,7 @@ export function LearningNavigation({
             {authenticated && (
               <>
                 <span className={styles.groupLabel}>ЛИЧНОЕ</span>
-                {privateDestinations.map((item) => (
+                {learnerDestinations.map((item) => (
                   <Link key={item.href} href={item.href}
                     aria-current={pathname === item.href || pathname.startsWith(`${item.href}/`) ? "page" : undefined}
                     onClick={closeMenu}>
