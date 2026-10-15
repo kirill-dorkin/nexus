@@ -1542,6 +1542,10 @@ async function runBrowserVerification(cdp) {
     "public Product checkout UI"
   );
   await accessibilityAudit(cdp, "product/authentication state");
+  const productViewport = await evaluate(cdp, '({width:innerWidth,height:innerHeight})');
+  await cdp.send("Emulation.setDeviceMetricsOverride", {
+    width: 390, height: 844, deviceScaleFactor: 1, mobile: true
+  });
   const productDecision = await evaluate(cdp, `(() => {
     const checkout = document.querySelector('[aria-labelledby="checkout-heading"]');
     const details = document.querySelector('[aria-label="Описание предложения"]');
@@ -1565,7 +1569,8 @@ async function runBrowserVerification(cdp) {
     'document.documentElement.scrollWidth <= innerWidth && document.querySelector(\'[aria-labelledby="checkout-heading"]\')?.getBoundingClientRect().top < innerHeight'
   ), "Mobile Product overflows or hides purchase decision at 320px.");
   await cdp.send("Emulation.setDeviceMetricsOverride", {
-    width: 390, height: 844, deviceScaleFactor: 1, mobile: true
+    width: productViewport.width, height: productViewport.height,
+    deviceScaleFactor: 1, mobile: false
   });
 
   await tabUntil(
