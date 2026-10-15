@@ -12,7 +12,7 @@
   border: 1px solid var(--border-strong);
   border-radius: 999px;
   cursor: pointer;
-  box-shadow: 0 12px 32px rgb(7 3 13 / 18%);
+  box-shadow: var(--shadow-surface);
   -webkit-backdrop-filter: blur(14px) saturate(125%);
   backdrop-filter: blur(14px) saturate(125%);
 }
@@ -203,7 +203,7 @@
     padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
   }
   .dialog::backdrop {
-    background: rgb(10 6 16 / 35%);
+    background: color-mix(in srgb, var(--text-primary) 28%, transparent);
   }
 }
 .choices input:focus-visible + span {
