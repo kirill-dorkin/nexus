@@ -16,9 +16,11 @@ import styles from "./appearance.module.css";
 export function AppearanceControl({
   showAccentLabels = false,
   dialogClassName = "",
+  compact = false,
 }: {
   showAccentLabels?: boolean;
   dialogClassName?: string;
+  compact?: boolean;
 } = {}) {
   const [open, setOpen] = useState(false);
   const [appearance, setAppearance] = useState<Appearance>(defaultAppearance);
@@ -85,7 +87,8 @@ export function AppearanceControl({
       <button
         type="button"
         aria-label="Изменить тему и цвет"
-        className={styles.trigger}
+        title="Тема и цвет"
+        className={`${styles.trigger} ${compact ? styles.compact : ""}`}
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
         aria-expanded={open}
