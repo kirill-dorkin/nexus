@@ -22,8 +22,8 @@ describe.each([
     expect(css).toContain("color: var(--status-danger)");
     // Dedicated accent swatches are allowed in the appearance picker but
     // user-facing payment/purchase status panels have no fixed-color exception.
-    expect(css).not.toMatch(/#[0-9a-f]{3,8}\\b/i);
-    expect(css).not.toMatch(/\\brgba?\\(/i);
+    expect(css).not.toMatch(/#[0-9a-f]{3,8}\b/i);
+    expect(css).not.toMatch(/\brgba?\(/i);
   });
 
   it("does not overflow on mobile or narrow zoom viewports", () => {
