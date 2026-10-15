@@ -1546,8 +1546,19 @@ async function runBrowserVerification(cdp) {
   await accessibilityAudit(cdp, "learning registration");
   assert(await evaluate(cdp, `document.querySelector('input[name="password"]').getAttribute("aria-describedby") === "learning-password-hint" && document.querySelector("#learning-password-hint").innerText.includes("15")`), "Registration password hint is disconnected.");
   assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Learning registration overflows desktop.");
+  // Observe native HTML constraint validation and real submit dispatch.
+  // Preserve only input lengths/validity; never log entered credentials.
+  const beforeRegistration = await evaluate(cdp, "(() => {\n  const form=document.querySelector(\"main form\");\n  return {\n    path:location.pathname,\n    formPresent:Boolean(form),\n    valid:form?.checkValidity() ?? false,\n    submitted:window.__nexusRegistrationSubmitCount ?? 0,\n    fields:[...(form?.querySelectorAll(\"input\")??[])].map(input=>({\n      name:input.name, type:input.type, length:input.value.length,\n      required:input.required, valid:input.validity.valid,\n      reason:input.validity.valid ? null : input.validationMessage\n    })),\n    alerts:[...document.querySelectorAll('[role=\"alert\"]')].map(node=>node.textContent?.trim().slice(0,180)),\n    submitDisabled:[...document.querySelectorAll('main button[type=\"submit\"]')].map(button=>button.disabled)\n  };\n})()");
+  assert(beforeRegistration.valid,
+    `Registration form is invalid before submit: ${JSON.stringify(beforeRegistration)}`);
+  await evaluate(cdp, '(() => { const form=document.querySelector("main form"); window.__nexusRegistrationSubmitCount=0; form.addEventListener("submit",()=>{ window.__nexusRegistrationSubmitCount+=1; }, {capture:true}); return true; })()');
   await clickText(cdp, "Создать аккаунт");
-  await waitForExpression(cdp, `location.pathname === ${JSON.stringify(learningReturn)} && document.body.innerText.includes("Вступить в организацию")`, "registration return to selected Lesson");
+  try {
+    await waitForExpression(cdp, `location.pathname === ${JSON.stringify(learningReturn)} && document.body.innerText.includes("Вступить в организацию")`, "registration return to selected Lesson");
+  } catch (error) {
+    const afterRegistration = await evaluate(cdp, "(() => {\n  const form=document.querySelector(\"main form\");\n  return {\n    path:location.pathname,\n    formPresent:Boolean(form),\n    valid:form?.checkValidity() ?? false,\n    submitted:window.__nexusRegistrationSubmitCount ?? 0,\n    fields:[...(form?.querySelectorAll(\"input\")??[])].map(input=>({\n      name:input.name, type:input.type, length:input.value.length,\n      required:input.required, valid:input.validity.valid,\n      reason:input.validity.valid ? null : input.validationMessage\n    })),\n    alerts:[...document.querySelectorAll('[role=\"alert\"]')].map(node=>node.textContent?.trim().slice(0,180)),\n    submitDisabled:[...document.querySelectorAll('main button[type=\"submit\"]')].map(button=>button.disabled)\n  };\n})()");
+    throw new Error(`Registration did not complete: ${JSON.stringify(afterRegistration)}`, {cause:error});
+  }
   assert([...learningActors.values()].every(a => !a.enrolled && !a.member), "Auth created Membership/Enrollment implicitly.");
   await clickText(cdp, "Вступить в организацию");
   await waitForExpression(cdp, 'document.body.innerText.includes("Записаться на бесплатный курс")', "separate enrollment action");
