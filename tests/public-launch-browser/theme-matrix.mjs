@@ -32,7 +32,7 @@ export async function verifyPublicThemeMatrix(cdp, { navigate, evaluate, waitFor
       const probe = document.createElement("span");
       probe.setAttribute("aria-hidden", "true");
       probe.style.cssText =
-        "position:fixed;left:-9999px;background:var(--surface-elevated);color:var(--text-primary);border:1px solid var(--border-default)";
+        "position:fixed;left:-9999px;background:var(--surface-hover);color:var(--text-primary);border:1px solid var(--border-default)";
       document.body.append(probe);
       const output = [];
       for (const theme of ["dark", "light"]) {
@@ -60,14 +60,14 @@ export async function verifyPublicThemeMatrix(cdp, { navigate, evaluate, waitFor
     assert(result.length === 10, page.slug + ": missing theme/accent pairs");
     for (const item of result) {
       assert(item.surface && item.surface !== "rgba(0, 0, 0, 0)",
-        page.slug + ": transparent elevated surface for " + item.theme + "/" + item.accent);
+        page.slug + ": transparent hover surface for " + item.theme + "/" + item.accent);
       assert(item.text && item.border, page.slug + ": unresolved semantic color");
       assert(!item.overflow, page.slug + ": overflow on 390px for " + item.theme + "/" + item.accent);
     }
     for (const theme of themes) {
       const variants = result.filter((item) => item.theme === theme);
       assert(new Set(variants.map((item) => item.surface)).size >= 3,
-        page.slug + ": selected accent does not affect elevated surface in " + theme);
+        page.slug + ": selected accent does not affect hover surface in " + theme);
       assert(new Set(variants.map((item) => item.border)).size >= 3,
         page.slug + ": selected accent does not affect borders in " + theme);
     }
