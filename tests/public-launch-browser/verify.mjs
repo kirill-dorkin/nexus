@@ -879,9 +879,9 @@ async function verifyStudio(cdp) {
       if (!anchor) return null;
       anchor.scrollIntoView({behavior:"instant",block:"center"});
       const rect=anchor.getBoundingClientRect();
-      return {x:rect.left+rect.width/2,y:rect.top+rect.height/2};
+      return {x:rect.left+rect.width/2,y:rect.top+rect.height/2,width:innerWidth,height:innerHeight};
     })()`);
-    assert(exitLink && exitLink.x>=0 && exitLink.x<1280 && exitLink.y>=0,
+    assert(exitLink && exitLink.x>=0 && exitLink.x<exitLink.width && exitLink.y>=0 && exitLink.y<exitLink.height,
       `Studio back link cannot receive pointer input: ${JSON.stringify(exitLink)}`);
     await cdp.send("Input.dispatchMouseEvent",{
       type:"mousePressed",x:exitLink.x,y:exitLink.y,button:"left",clickCount:1
