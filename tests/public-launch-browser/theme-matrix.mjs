@@ -14,6 +14,9 @@ function assert(condition, message) {
  */
 export async function verifyPublicThemeMatrix(cdp, { navigate, evaluate, waitForExpression, origin }) {
   console.log("[browser-launch] rendered theme/accent matrix and anonymous visual evidence");
+  // Previous Commerce tests may have created a test login. Remove every
+  // session cookie before producing screenshots of public-facing surfaces.
+  await cdp.send("Network.clearBrowserCookies");
   const output = process.env.PUBLIC_LAUNCH_THEME_SCREENSHOT_DIR;
   if (output) mkdirSync(output, { recursive: true });
 
