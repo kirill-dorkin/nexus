@@ -9,6 +9,10 @@ const purchase = readFileSync(
   new URL("../../app/purchases/[purchaseId]/purchase.module.css", import.meta.url),
   "utf8"
 );
+const product = readFileSync(
+  new URL("../../app/catalog/[organizationSlug]/products/[productSlug]/product.module.css", import.meta.url),
+  "utf8"
+);
 
 describe.each([
   ["Paddle return", checkout],
@@ -39,4 +43,9 @@ it("keeps canonical purchase action accessible under the selected accent", () =>
   expect(purchase).toContain("min-height: 44px");
   expect(purchase).toContain("outline: 3px solid var(--focus-ring)");
   expect(purchase).toContain("color: var(--status-success)");
+});
+
+it("inherits the selected action's accessible foreground on product checkout", () => {
+  expect(product).toContain("color: var(--text-on-action)");
+  expect(product).not.toContain("color: #ffffff");
 });
