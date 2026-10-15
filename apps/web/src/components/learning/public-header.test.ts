@@ -17,7 +17,7 @@ describe("shared public/learner header", () => {
     const header = here("./public-header.tsx");
     const styles = here("./learning.module.css");
     expect(header).toContain("<AppearanceControl compact />");
-    const block = styles.match(/\\.nav\\s*\\{([^}]+)\\}/)?.[1];
+    const block = styles.match(/\.nav\s*\{([^}]+)\}/)?.[1];
     expect(block).toBeDefined();
     expect(block).toContain("background: var(--surface-default)");
     expect(block).toContain("color: var(--text-primary)");
