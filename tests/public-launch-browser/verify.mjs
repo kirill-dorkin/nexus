@@ -5,6 +5,7 @@ import { createServer as createHttpsServer } from "node:https";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { installProviderStubs } from "./provider-stubs.mjs";
+import { verifyPublicThemeMatrix } from "./theme-matrix.mjs";
 
 const WEB_ORIGIN = "https://127.0.0.1:3443";
 const OTHER_WEB_ORIGIN = "https://127.0.0.1:3444";
@@ -1724,6 +1725,14 @@ async function runBrowserVerification(cdp) {
     "The browser did not reuse the same attempt key at the checkout boundary."
   );
   await providerStubs.assertHealthy();
+  // Only after canonical Commerce/Studio/learner checks: screenshots contain
+  // anonymous public pages, never a logged-in author's private working copy.
+  await verifyPublicThemeMatrix(cdp, {
+    navigate,
+    evaluate,
+    waitForExpression,
+    origin: WEB_ORIGIN
+  });
 }
 
 async function closeServer(server) {
