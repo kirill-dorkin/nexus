@@ -210,7 +210,7 @@
   .menuHeading {
     flex: none;
     margin: 0;
-    padding: calc(1.5rem + env(safe-area-inset-top)) max(1.35rem, env(safe-area-inset-right)) 1.3rem 1.35rem;
+    padding: calc(0.8rem + env(safe-area-inset-top)) max(1.1rem, env(safe-area-inset-right)) 0.8rem 1.1rem;
     border-bottom: 1px solid var(--border-default);
   }
   .menuIdentity { display: grid; gap: 0.55rem; min-width: 0; }
@@ -221,7 +221,7 @@
     color: var(--text-secondary);
   }
   .menuHeading h2 {
-    font-size: clamp(1.65rem, 6vw, 2.05rem);
+    font-size: clamp(1.2rem, 4vw, 1.4rem);
     line-height: 1.13;
     font-weight: 760;
     letter-spacing: -0.045em;
@@ -232,18 +232,18 @@
     min-height: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 1.15rem 1.05rem 2rem;
+    padding: 0.7rem 1.05rem 1rem;
   }
   .mobileNav { gap: 0.28rem; }
-  .groupLabel { padding: 1.2rem 0.85rem 0.45rem; }
+  .groupLabel { padding: 0.85rem 0.85rem 0.35rem; }
   .groupLabel:first-child { padding-top: 0.2rem; }
   .mobileNav a {
-    min-height: 60px;
+    min-height: 52px;
     display: grid;
     grid-template-columns: 24px minmax(0,1fr) 20px;
     gap: 0.95rem;
-    padding: 0.9rem 0.95rem;
-    font-size: 1.03rem;
+    padding: 0.65rem 0.85rem;
+    font-size: 1rem;
     border-radius: 0.95rem;
   }
   .mobileNav a > svg:first-child { color: var(--text-accent); }
