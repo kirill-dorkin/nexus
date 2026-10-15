@@ -13,9 +13,9 @@ const designTokens = readFileSync(
 describe("mobile-first commerce Product decision", () => {
   it("resolves every mobile spacing token from the actual design system", () => {
     const defined = new Set(
-      [...designTokens.matchAll(/--(space-\\d+)\\s*:/g)].map((match) => match[1])
+      [...designTokens.matchAll(/--(space-\d+)\s*:/g)].map((match) => match[1])
     );
-    const used = [...styles.matchAll(/var\\(--(space-\\d+)\\)/g)].map((match) => match[1]);
+    const used = [...styles.matchAll(/var\(--(space-\d+)\)/g)].map((match) => match[1]);
     expect(used.length).toBeGreaterThan(0);
     for (const token of used) {
       expect(defined.has(token), `Undefined spacing token: --${token}`).toBe(true);
