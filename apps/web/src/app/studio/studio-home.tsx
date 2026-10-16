@@ -1,9 +1,8 @@
 "use client";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   ownOrganizationsSchema,
-  organizationSchema,
   studioCourseListSchema,
   type StudioCourseList
 } from "@platform/contracts";
@@ -13,12 +12,9 @@ import {
   Alert,
   Badge,
   Button,
-  Disclosure,
   EmptyState,
   Eyebrow,
-  Field,
   Heading,
-  Input,
   Skeleton,
   Text,
   buttonClass
@@ -96,28 +92,6 @@ export function StudioHome() {
       setBusy(false);
     }
   }
-  async function createOrganization(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setBusy(true);
-    setError(null);
-    const form = event.currentTarget,
-      data = new FormData(form);
-    try {
-      const org = organizationSchema.parse(
-        await studioRequest("me/organizations", {
-          slug: data.get("slug"),
-          name: data.get("name")
-        })
-      );
-      setOrganizations((old) => [org, ...old]);
-      form.reset();
-      await select(org);
-    } catch (e) {
-      setError((e as Error).message);
-    } finally {
-      setBusy(false);
-    }
-  }
   return (
     <>
       <header className={styles.pageHeading}>
@@ -176,7 +150,7 @@ export function StudioHome() {
               </Heading>
               {!organizations.length && (
                 <Text muted size="sm">
-                  Создайте организацию, чтобы начать подготовку курсов.
+                  Организации доступны только назначенным сотрудникам. Если вам нужен доступ, обратитесь к владельцу платформы.
                 </Text>
               )}
               <div
@@ -208,47 +182,6 @@ export function StudioHome() {
                   Ещё организации
                 </Button>
               )}
-              <Disclosure
-                summary="Создать организацию"
-                className={styles.createOrganization ?? ""}
-              >
-                <form onSubmit={createOrganization} aria-busy={busy}>
-                  <fieldset disabled={busy} className={styles.contentFieldset}>
-                    <legend className={styles.srOnly}>Новая организация</legend>
-                    <Field
-                      htmlFor="studio-organization-name"
-                      label="Название организации"
-                    >
-                      <Input
-                        id="studio-organization-name"
-                        name="name"
-                        required
-                        maxLength={160}
-                      />
-                    </Field>
-                    <Field
-                      htmlFor="studio-organization-slug"
-                      label="Адрес организации (slug)"
-                      hint="Латинские буквы, цифры и дефисы."
-                    >
-                      <Input
-                        id="studio-organization-slug"
-                        name="slug"
-                        required
-                        minLength={2}
-                        maxLength={63}
-                        pattern="[a-z0-9]+(-[a-z0-9]+)*"
-                        aria-describedby="studio-organization-slug-hint"
-                        autoCapitalize="none"
-                        spellCheck={false}
-                      />
-                    </Field>
-                    <Button type="submit" disabled={busy}>
-                      Создать организацию
-                    </Button>
-                  </fieldset>
-                </form>
-              </Disclosure>
             </aside>
             <section
               className={styles.courseWorkspace}
@@ -355,12 +288,12 @@ export function StudioHome() {
                   title={
                     organizations.length
                       ? "Выберите организацию"
-                      : "Начните с вашей организации"
+                      : "Нет доступа к Studio"
                   }
                 >
                   {organizations.length
                     ? "Откройте организацию слева, чтобы увидеть курсы, доступные вам для авторинга."
-                    : "Создайте организацию, затем подготовьте первый курс. Все изменения начинаются с черновика."}
+                    : "Рабочее пространство открывается сотрудникам, назначенным владельцем платформы. Ученикам создание организаций недоступно."}
                 </EmptyState>
               )}
             </section>
