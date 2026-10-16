@@ -80,11 +80,11 @@ export async function provisionOwnerOrganization(
     // PostgreSQL unique slug is the concurrency fence. A retry is read-only
     // only when every original owner-provisioning invariant still matches.
     const existing = await client.query<{
-      id: string; name: string; created_by_user_id: string;
+      id: string; name: string; status: string; created_by_user_id: string;
       has_membership: boolean; has_role: boolean; has_event: boolean;
     }>(
       [
-        "SELECT o.id::text, o.name, o.created_by_user_id::text,",
+        "SELECT o.id::text, o.name, o.status, o.created_by_user_id::text,",
         "EXISTS (SELECT 1 FROM organizations.memberships m",
         "  WHERE m.organization_id=o.id AND m.user_id=$2 AND m.status='active') AS has_membership,",
         "EXISTS (SELECT 1 FROM access_control.role_assignments a",
@@ -95,7 +95,10 @@ export async function provisionOwnerOrganization(
         "EXISTS (SELECT 1 FROM events.outbox e",
         "  WHERE e.organization_id=o.id AND e.aggregate_id=o.id",
         "    AND e.event_name='organization.created' AND e.event_version=1",
-        "    AND e.actor_user_id=$2) AS has_event",
+        "    AND e.aggregate_type='organization' AND e.actor_user_id=$2",
+        "    AND e.payload->>'organizationId'=o.id::text",
+        "    AND e.payload->>'createdByUserId'=$2::text",
+        "    AND e.payload->>'slug'=o.slug AND e.payload->>'name'=o.name) AS has_event"
         "FROM organizations.organizations o WHERE o.slug=$1 FOR UPDATE"
       ].join("\n"),
       [slug, ownerUserId]
@@ -103,6 +106,7 @@ export async function provisionOwnerOrganization(
     const already = existing.rows[0];
     if (already) {
       if (
+        already.status !== "active" ||
         already.name !== name ||
         already.created_by_user_id !== ownerUserId ||
         !already.has_membership || !already.has_role || !already.has_event
