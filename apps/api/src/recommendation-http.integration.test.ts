@@ -5,6 +5,7 @@ import { nextLearningRecommendationSchema } from "@platform/contracts";
 import { createDatabasePool } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { createTestOrganization } from "./test-support/create-test-organization";
 import { createApiApplication } from "./app.factory";
 import {
   attachPlatformPrincipal,
@@ -120,21 +121,10 @@ describe("adaptive recommendation HTTP lifecycle", () => {
       });
     await app.init();
 
-    const organization = await app.inject({
-      method: "POST",
-      url: "/v1/organizations",
-      headers: { "x-test-user-id": ownerUserId },
-      payload: {
+    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
         slug: `recommendation-${randomUUID()}`,
         name: "Recommendation integration"
-      }
-    });
-    if (organization.statusCode !== 201) {
-      throw new Error(
-        `Failed to create Recommendation organization: ${organization.body}`
-      );
-    }
-    organizationId = (JSON.parse(organization.body) as { id: string }).id;
+      })).id;
 
     await activateMember(learnerUserId, "learner");
     await activateMember(otherLearnerUserId, "learner");
