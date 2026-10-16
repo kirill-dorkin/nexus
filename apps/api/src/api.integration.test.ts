@@ -4,6 +4,7 @@ import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import { createDatabasePool } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { provisionOwnerOrganization } from "../ops/provision-owner-organization";
 import { createApiApplication } from "./app.factory";
 import {
   attachPlatformPrincipal,
@@ -299,44 +300,43 @@ describe("Foundation 1 HTTP API", () => {
     });
   });
 
-  it("validates organization input at the HTTP boundary", async () => {
-    const response = await app.inject({
-      method: "POST",
-      url: "/v1/organizations",
-      headers: { "x-test-user-id": ownerUserId },
-      payload: {
-        slug: "Invalid Slug",
-        name: "HTTP Learning"
+  it("rejects ordinary and new registered user tenant creation on both HTTP URLs", async () => {
+    const rejectedSlug = `disallowed-${randomUUID()}`;
+    for (const url of ["/v1/organizations", "/v1/me/organizations"]) {
+      const requestPayload = { slug: rejectedSlug, name: "Unauthorized academy" };
+      for (const headers of [
+        { "x-test-user-id": ownerUserId },
+        { "x-test-user-id": outsiderUserId },
+        { cookie: registeredCookie }
+      ]) {
+        const response = await app.inject({
+          method: "POST", url,
+          headers: { ...headers, origin: "https://wrong.example.test" },
+          payload: requestPayload
+        });
+        expect(response.statusCode).toBe(403);
       }
-    });
-
-    expect(response.statusCode).toBe(400);
+      const anonymous = await app.inject({
+        method: "POST", url,
+        payload: requestPayload
+      });
+      expect(anonymous.statusCode).toBe(401);
+    }
+    const persisted = await migrationPool.query<{ count: string }>(
+      "SELECT count(*)::text AS count FROM organizations.organizations WHERE slug=$1",
+      [rejectedSlug]
+    );
+    expect(persisted.rows[0]?.count).toBe("0");
   });
 
-  it("creates and reads an organization for its owner", async () => {
-    const createResponse = await app.inject({
-      method: "POST",
-      url: "/v1/organizations",
-      headers: { "x-test-user-id": ownerUserId },
-      payload: {
-        slug: organizationSlug,
-        name: "HTTP Learning"
-      }
-    });
-
-    expect(createResponse.statusCode).toBe(201);
-    const created = JSON.parse(createResponse.body) as {
-      id: string;
-      slug: string;
-      name: string;
-      status: string;
-    };
-    organizationId = created.id;
-    expect(created).toMatchObject({
+  it("reads an Organization provisioned only through the trusted operator boundary", async () => {
+    const created = await provisionOwnerOrganization(migrationPool, {
+      ownerUserId,
       slug: organizationSlug,
-      name: "HTTP Learning",
-      status: "active"
+      name: "HTTP Learning"
     });
+    expect(created.outcome).toBe("created");
+    organizationId = created.id;
 
     const getResponse = await app.inject({
       method: "GET",
@@ -345,7 +345,12 @@ describe("Foundation 1 HTTP API", () => {
     });
 
     expect(getResponse.statusCode).toBe(200);
-    expect(JSON.parse(getResponse.body)).toEqual(created);
+    expect(JSON.parse(getResponse.body)).toEqual({
+      id: organizationId,
+      slug: organizationSlug,
+      name: "HTTP Learning",
+      status: "active"
+    });
   });
 
   it("rejects an active user without an organization role", async () => {
@@ -358,17 +363,13 @@ describe("Foundation 1 HTTP API", () => {
     expect(response.statusCode).toBe(403);
   });
 
-  it("maps duplicate organization slugs to conflict", async () => {
+  it("rejects an existing slug without revealing ownership or creating duplicates", async () => {
     const response = await app.inject({
       method: "POST",
       url: "/v1/organizations",
-      headers: { "x-test-user-id": ownerUserId },
-      payload: {
-        slug: organizationSlug,
-        name: "Duplicate"
-      }
+      headers: { "x-test-user-id": outsiderUserId },
+      payload: { slug: organizationSlug, name: "Duplicate" }
     });
-
-    expect(response.statusCode).toBe(409);
+    expect(response.statusCode).toBe(403);
   });
 });
