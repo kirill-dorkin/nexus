@@ -15,6 +15,7 @@ import {
   withTenantTransaction
 } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { provisionOwnerOrganization } from "../ops/provision-owner-organization";
 import { createApiApplication } from "./app.factory";
 import { OutboxRepository } from "./outbox/outbox.repository";
 function env(name: string) {
@@ -116,17 +117,14 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
       string,
       string
     ];
+    // Trusted fixture provisioning is outside user-session HTTP authority.
     for (const actor of [owner, foreign]) {
-      const o = (
-        await request(
-          "POST",
-          "me/organizations",
-          { slug: `studio-${randomUUID()}`, name: "Studio academy" },
-          actor,
-          201
-        )
-      ).json();
-      organizations.push(o.id);
+      const provisioned = await provisionOwnerOrganization(migration, {
+        ownerUserId: actor,
+        slug: `studio-${randomUUID()}`,
+        name: "Studio academy"
+      });
+      organizations.push(provisioned.id);
     }
     [org, foreignOrg] = organizations as [string, string];
     manifest = courseManifestV1Schema.parse(
@@ -291,29 +289,34 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
         ).toEqual([])
     );
   });
-  it("uses an explicit strict Origin-guarded organization create and never accepts actor/role fields", async () => {
+  it("denies user-session tenant creation through both legacy URLs even for owners", async () => {
+    const rejectedSlug = `rejected-studio-${randomUUID()}`;
+    for (const path of ["me/organizations", "organizations"]) {
+      for (const actor of [owner, learner, instructor, foreign]) {
+        await request(
+          "POST", path, { slug: rejectedSlug, name: "Unauthorized Academy" },
+          actor, 403
+        );
+      }
+      await request(
+        "POST", path, { slug: rejectedSlug, name: "Unauthorized Academy", userId: foreign },
+        owner, 403
+      );
+      await request(
+        "POST", path, { slug: rejectedSlug, name: "Unauthorized Academy" },
+        "", 401
+      );
+    }
     await request(
-      "POST",
-      "me/organizations",
-      { slug: "unsafe-org", name: "Unsafe", userId: foreign },
-      owner,
-      400
+      "POST", "me/organizations",
+      { slug: rejectedSlug, name: "Unauthorized Academy" },
+      owner, 403, "https://wrong.example.test"
     );
-    await request(
-      "POST",
-      "me/organizations",
-      { slug: "unsafe-org", name: "Unsafe" },
-      owner,
-      403,
-      "https://wrong.example.test"
+    const persisted = await migration.query<{ count: string }>(
+      "SELECT count(*)::text AS count FROM organizations.organizations WHERE slug=$1",
+      [rejectedSlug]
     );
-    await request(
-      "POST",
-      "me/organizations",
-      { slug: "unsafe-org", name: "Unsafe" },
-      "",
-      401
-    );
+    expect(persisted.rows[0]?.count).toBe("0");
   });
   it("filters courses by resource-scoped capabilities without leaking protected material", async () => {
     const own = studioCourseListSchema.parse(
