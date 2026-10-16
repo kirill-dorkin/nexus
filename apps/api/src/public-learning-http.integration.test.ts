@@ -11,6 +11,7 @@ import {
 } from "@platform/contracts";
 import { createDatabasePool, withTenantTransaction } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { createTestOrganization } from "./test-support/create-test-organization";
 import { createApiApplication } from "./app.factory";
 import {
   attachPlatformPrincipal,
@@ -115,12 +116,9 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
       });
     await app.init();
     for (let i = 0; i < 2; i++) {
-      const organization = await post(
-        "organizations",
-        { slug: `public-learn-${randomUUID()}`, name: `Public academy ${i}` },
-        owner,
-        201
-      );
+      const organization = await createTestOrganization(migration, owner, {
+        slug: `public-learn-${randomUUID()}`, name: `Public academy ${i}`
+      });
       organizations.push(organization.id);
       const manifest = courseManifestV1Schema.parse(
         JSON.parse(
