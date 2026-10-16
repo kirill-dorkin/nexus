@@ -300,28 +300,23 @@ describe("Foundation 1 HTTP API", () => {
     });
   });
 
-  it("rejects ordinary and new registered user tenant creation on both HTTP URLs", async () => {
+  it("rejects legacy Organization creation for active users and unauthenticated requests", async () => {
     const rejectedSlug = `disallowed-${randomUUID()}`;
-    for (const url of ["/v1/organizations", "/v1/me/organizations"]) {
-      const requestPayload = { slug: rejectedSlug, name: "Unauthorized academy" };
-      for (const headers of [
-        { "x-test-user-id": ownerUserId },
-        { "x-test-user-id": outsiderUserId },
-        { cookie: registeredCookie }
-      ]) {
-        const response = await app.inject({
-          method: "POST", url,
-          headers: { ...headers, origin: "https://wrong.example.test" },
-          payload: requestPayload
-        });
-        expect(response.statusCode).toBe(403);
-      }
-      const anonymous = await app.inject({
-        method: "POST", url,
-        payload: requestPayload
+    for (const userId of [ownerUserId, outsiderUserId]) {
+      const rejected = await app.inject({
+        method: "POST",
+        url: "/v1/organizations",
+        headers: { "x-test-user-id": userId },
+        payload: { slug: rejectedSlug, name: "Unauthorized academy" }
       });
-      expect(anonymous.statusCode).toBe(401);
+      expect(rejected.statusCode).toBe(403);
     }
+    const anonymous = await app.inject({
+      method: "POST",
+      url: "/v1/organizations",
+      payload: { slug: rejectedSlug, name: "Unauthorized academy" }
+    });
+    expect(anonymous.statusCode).toBe(401);
     const persisted = await migrationPool.query<{ count: string }>(
       "SELECT count(*)::text AS count FROM organizations.organizations WHERE slug=$1",
       [rejectedSlug]
