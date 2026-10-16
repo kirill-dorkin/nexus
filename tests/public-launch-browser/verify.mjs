@@ -757,15 +757,51 @@ async function verifyStudio(cdp) {
   await fill(cdp,'input[name="password"]',PASSWORD);
   await clickText(cdp,"Создать аккаунт");
   await waitForExpression(cdp,'location.pathname === "/studio" && document.body.innerText.includes("Ваши организации")',"Studio auth return");
-  await evaluate(cdp,'document.querySelector("details").open=true');
-  await fill(cdp,'input[name="name"]',"Browser Studio Academy");
+  assert(!(await evaluate(cdp,'document.body.innerText.includes("Создать организацию")')),
+    "Ordinary registration exposed Organization creation in Studio.");
+  const user = await evaluate(cdp,
+    `fetch(${JSON.stringify(`${API_ORIGIN}/v1/me`)},{credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,body:await r.json()}))`);
+  assert(user.status===200 && /^[0-9a-f-]{36}$/.test(user.body.id),
+    "Studio browser fixture needs its own authenticated Identity locator.");
   const organizationSlug = `browser-studio-${Date.now()}`;
-  await fill(cdp,'input[name="slug"]',organizationSlug);
-  await clickText(cdp,"Создать организацию");
-  await waitForExpression(cdp,'[...document.querySelectorAll("a")].some(a=>a.textContent==="Создать курс")',"explicit canonical organization entry");
-  const createHref=await evaluate(cdp,'[...document.querySelectorAll("a")].find(a=>a.textContent==="Создать курс").getAttribute("href")');
-  const organizationId=createHref.split("/")[2];
-  assert(organizationId?.length>0,"Studio Organization id missing.");
+  // A browser session, even one that will later own a provisioned Organization,
+  // never has authority to create a tenant. Check both legacy endpoints.
+  for (const path of ["/v1/me/organizations", "/v1/organizations"]) {
+    const denied = await evaluate(cdp,
+      `fetch(${JSON.stringify(API_ORIGIN)}+${JSON.stringify(path)},{
+        method:"POST",credentials:"include",
+        headers:{"content-type":"application/json"},
+        body:JSON.stringify({slug:${JSON.stringify(organizationSlug)},name:"Browser Studio Academy"})
+      }).then(r=>r.status)`);
+    assert(denied===403, `Registered learner could create Organization through ${path}.`);
+  }
+  // Offline test-runner-only bootstrap. Credentials remain in the Node runner,
+  // never in a browser, public HTTP handler or runtime service.
+  assert(process.env.DATABASE_MIGRATION_URL, "Trusted browser fixture needs migration database credentials.");
+  const provisionOutput = execFileSync("pnpm",[
+    "run","org:bootstrap-owner",
+    "--owner-user-id",user.body.id,
+    "--slug",organizationSlug,
+    "--name","Browser Studio Academy",
+    "--apply"
+  ],{encoding:"utf8",timeout:30_000});
+  const provisioned = JSON.parse(provisionOutput.trim().split("\n").at(-1));
+  assert(provisioned.outcome==="created" && /^[0-9a-f-]{36}$/.test(provisioned.id),
+    "Trusted browser fixture did not provision its Organization.");
+  const organizationId=provisioned.id;
+  await navigate(cdp, `${WEB_ORIGIN}/studio`);
+  await waitForExpression(cdp,
+    'document.querySelector(\'button[aria-label="Browser Studio Academy"]\') !== null',
+    "trusted-provisioned Organization appears in Studio");
+  assert(await evaluate(cdp,
+    'document.querySelector(\'button[aria-label="Browser Studio Academy"]\')?.click() === undefined'),
+    "Studio Organization selector is missing.");
+  await waitForExpression(cdp,
+    '[...document.querySelectorAll("a")].some(a=>a.textContent==="Создать курс")',
+    "authorized course creation after trusted provisioning");
+  const createHref=await evaluate(cdp,
+    '[...document.querySelectorAll("a")].find(a=>a.textContent==="Создать курс")?.getAttribute("href")');
+  assert(createHref === `/studio/${organizationId}/new`, "Studio Organization-scoped route missing.");
   // Verify the UI exposes a real Organization-scoped route, then exercise
   // policy authorization and open/close against canonical PostgreSQL.
   const policyHref=await evaluate(cdp,
