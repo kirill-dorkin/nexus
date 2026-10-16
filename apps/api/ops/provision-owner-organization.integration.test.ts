@@ -101,6 +101,36 @@ describe("operator-only Organization owner provisioning", () => {
     expect(roles.rows[0]?.total).toBe("1");
   });
 
+  it("rejects an archived Organization or corrupted creation-event replay", async () => {
+    const inactiveSlug = "inactive-owner-" + randomUUID();
+    const created = await provisionOwnerOrganization(migration, {
+      ownerUserId: ownerId, slug: inactiveSlug, name: title
+    });
+    try {
+      await migration.query(
+        "UPDATE organizations.organizations SET status='suspended' WHERE id=$1",
+        [created.id]
+      );
+      await expect(provisionOwnerOrganization(migration, {
+        ownerUserId: ownerId, slug: inactiveSlug, name: title
+      })).rejects.toThrow("not an exact");
+      await migration.query(
+        "UPDATE organizations.organizations SET status='active' WHERE id=$1",
+        [created.id]
+      );
+      await migration.query(
+        "UPDATE events.outbox SET payload=jsonb_set(payload,'{slug}',to_jsonb('tampered'::text)) WHERE organization_id=$1 AND event_name='organization.created'",
+        [created.id]
+      );
+      await expect(provisionOwnerOrganization(migration, {
+        ownerUserId: ownerId, slug: inactiveSlug, name: title
+      })).rejects.toThrow("not an exact");
+    } finally {
+      await migration.query("DELETE FROM events.outbox WHERE organization_id=$1", [created.id]);
+      await migration.query("DELETE FROM organizations.organizations WHERE id=$1", [created.id]);
+    }
+  });
+
   it("does not adopt a suspended user or allow the restricted app role", async () => {
     await migration.query("UPDATE identity.users SET status='suspended' WHERE id=$1", [otherId]);
     await expect(provisionOwnerOrganization(migration, {
