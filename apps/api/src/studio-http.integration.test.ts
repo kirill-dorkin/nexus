@@ -290,9 +290,22 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
     );
   });
   it("denies user-session tenant creation through both legacy URLs even for owners", async () => {
+    const registration = await app.inject({
+      method: "POST",
+      url: "/v1/auth/register",
+      headers: { origin },
+      payload: {
+        email: `new-learner-${randomUUID()}@example.test`,
+        password: "StudioIntegration!12345"
+      }
+    });
+    expect(registration.statusCode).toBe(201);
+    const newcomer: string = registration.json().id;
+    users.push(newcomer);
+    actors.set(newcomer, String(registration.headers["set-cookie"]).split(";")[0]!);
     const rejectedSlug = `rejected-studio-${randomUUID()}`;
     for (const path of ["me/organizations", "organizations"]) {
-      for (const actor of [owner, learner, instructor, foreign]) {
+      for (const actor of [owner, learner, instructor, foreign, newcomer]) {
         await request(
           "POST", path, { slug: rejectedSlug, name: "Unauthorized Academy" },
           actor, 403
