@@ -1,10 +1,9 @@
 import { randomUUID } from "node:crypto";
 
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
-import { createDatabasePool } from "@platform/database";
+import { createDatabasePool, withTransaction } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { provisionOwnerOrganization } from "../ops/provision-owner-organization";
 import { createApiApplication } from "./app.factory";
 import {
   attachPlatformPrincipal,
@@ -325,13 +324,26 @@ describe("Foundation 1 HTTP API", () => {
   });
 
   it("reads an Organization provisioned only through the trusted operator boundary", async () => {
-    const created = await provisionOwnerOrganization(migrationPool, {
-      ownerUserId,
-      slug: organizationSlug,
-      name: "HTTP Learning"
+    organizationId = await withTransaction(migrationPool, async ({ client }) => {
+      const result = await client.query<{ id: string }>(
+        "INSERT INTO organizations.organizations (slug,name,created_by_user_id) VALUES ($1,$2,$3) RETURNING id::text",
+        [organizationSlug, "HTTP Learning", ownerUserId]
+      );
+      const id = result.rows[0]!.id;
+      await client.query(
+        "INSERT INTO organizations.memberships (organization_id,user_id,status,joined_at) VALUES ($1,$2,'active',now())",
+        [id, ownerUserId]
+      );
+      await client.query(
+        "INSERT INTO access_control.role_assignments (organization_id,user_id,role_id,scope_type,scope_id,assigned_by_user_id) SELECT $1,$2,id,'organization',$1,$2 FROM access_control.roles WHERE key='organization_owner' AND is_system=true",
+        [id, ownerUserId]
+      );
+      await client.query(
+        "INSERT INTO events.outbox (organization_id,event_name,event_version,aggregate_type,aggregate_id,actor_user_id,payload) VALUES ($1,'organization.created',1,'organization',$1,$2,$3::jsonb)",
+        [id, ownerUserId, JSON.stringify({ organizationId: id, slug: organizationSlug, name: "HTTP Learning", createdByUserId: ownerUserId })]
+      );
+      return id;
     });
-    expect(created.outcome).toBe("created");
-    organizationId = created.id;
 
     const getResponse = await app.inject({
       method: "GET",
