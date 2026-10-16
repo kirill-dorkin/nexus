@@ -6,6 +6,7 @@ import { courseManifestV1Schema, type CourseManifestV1, type CourseManifestPlan 
 import { createDatabasePool, withTenantTransaction } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 
+import { createTestOrganization } from "./test-support/create-test-organization";
 import { createApiApplication } from "./app.factory";
 import { attachPlatformPrincipal, type PlatformPrincipalCarrier } from "./request-context/platform-principal";
 import { OutboxRepository } from "./outbox/outbox.repository";
@@ -71,7 +72,7 @@ describe("course manifest HTTP + PostgreSQL authoring", () => {
     });
     await app.init();
     for (let i = 0; i < 2; i++) {
-      const created = await post("organizations", { slug: `manifest-${randomUUID()}`, name: "Manifest integration" }, owner, 201);
+      const created = await createTestOrganization(migration, owner, { slug: `manifest-${randomUUID()}`, name: "Manifest integration" });
       organizations.push(created.id);
     }
     [org, foreignOrg] = [organizations[0]!, organizations[1]!];
