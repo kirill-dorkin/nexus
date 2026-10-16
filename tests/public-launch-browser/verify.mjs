@@ -956,7 +956,30 @@ async function verifyStudio(cdp) {
     await clickText(cdp,"Открыть публичный доступ");
     await waitForExpression(cdp,'document.body.innerText.includes("Подтвердите: опубликованный курс")',"explicit Offering publication confirmation");
     await clickText(cdp,"Подтвердить открытие доступа");
-    await waitForExpression(cdp,'document.body.innerText.includes("Публичный доступ включён.")',"explicit Studio visibility change");
+    try {
+      await waitForExpression(cdp,
+        'document.body.innerText.includes("Публичный доступ включён.") || document.querySelector(\\'[role="alert"]\\') !== null',
+        "explicit Studio visibility outcome");
+      const outcome = await evaluate(cdp,
+        '({enabled:document.body.innerText.includes("Публичный доступ включён."), error:document.querySelector(\\'[role="alert"]\\')?.textContent?.trim().slice(0,180) ?? null})');
+      assert(outcome.enabled, `Studio visibility request failed: ${outcome.error ?? "no success confirmation"}`);
+    } catch (cause) {
+      // Diagnose a failed/ambiguous public toggle without logging URLs, IDs,
+      // tokens or tenant data. The authorized read is observational only.
+      const ui = await evaluate(cdp, `(() => ({
+        enabled:document.body.innerText.includes("Публичный доступ включён."),
+        private:document.body.innerText.includes("Приватный"),
+        public:document.body.innerText.includes("Публичный"),
+        confirmationVisible:document.body.innerText.includes("Подтвердите: опубликованный курс"),
+        actionButtons:[...document.querySelectorAll("article button")].map(b=>({
+          label:b.textContent?.trim().slice(0,75),disabled:b.disabled
+        })),
+        alerts:[...document.querySelectorAll('[role="alert"]')].map(a=>a.textContent?.trim().slice(0,180))
+      }))()`);
+      const canonical = await evaluate(cdp,
+        `fetch(${JSON.stringify(`${apiBase}/offerings?courseVersionId=${published.versionId}`)},{credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,visibilities:r.ok?(await r.json()).offerings.map(o=>o.visibility):[]})).catch(()=>({status:"network_error"}))`);
+      throw new Error(`Studio visibility diagnostic: ${JSON.stringify({ui,canonical})}`, {cause});
+    }
     const publicHref = await evaluate(cdp,
       '[...document.querySelectorAll("article a")].find(a=>a.pathname.startsWith("/learn/"))?.href ?? null');
     assert(publicHref===`${WEB_ORIGIN}/learn/${organizationSlug}/${slug}`,
@@ -1587,7 +1610,24 @@ async function runBrowserVerification(cdp) {
   await clickText(cdp, "Попробовать ещё раз");
   await evaluate(cdp, 'document.querySelector(\'input[value="cpu"]\').click()');
   await clickText(cdp, "Проверить и сохранить ответ");
-  await waitForExpression(cdp, 'document.body.innerText.includes("Правильно") && document.body.innerText.includes("Все обязательные задания курса выполнены")', "passed quiz and refreshed progress");
+  try {
+    await waitForExpression(cdp, 'document.body.innerText.includes("Правильно") && document.body.innerText.includes("Все обязательные задания курса выполнены")', "passed quiz and refreshed progress");
+  } catch (cause) {
+    // Separate the quiz mutation from derived progress refresh. Never print
+    // answers, idempotency keys, session cookies or learner identifiers.
+    const ui = await evaluate(cdp, `(() => ({
+      passedFeedback:document.body.innerText.includes("Правильно"),
+      failedFeedback:document.body.innerText.includes("Ответ пока неверный"),
+      progressComplete:document.body.innerText.includes("Все обязательные задания курса выполнены"),
+      quizBusy:[...document.querySelectorAll("form[aria-busy]")].some(f=>f.getAttribute("aria-busy")==="true"),
+      submitLabels:[...document.querySelectorAll("button")].filter(b=>b.textContent?.includes("ответ")).map(b=>({label:b.textContent?.trim().slice(0,65),disabled:b.disabled})),
+      alerts:[...document.querySelectorAll('[role="alert"]')].map(a=>a.textContent?.trim().slice(0,120))
+    }))()`);
+    throw new Error(`Quiz result/progress diagnostic: ${JSON.stringify({
+      ui, requestCount:quizFixtureRequests.length, distinctAttempts:quizFixtureTries.size,
+      fixturePassed:learningFixturePassed
+    })}`, {cause});
+  }
   assert(quizFixtureRequests[2] !== quizFixtureRequests[1] && quizFixtureTries.size === 2, "Explicit retry did not start a new try.");
   assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Quiz overflows mobile.");
   await accessibilityAudit(cdp, "passed quiz feedback");
