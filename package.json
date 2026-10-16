@@ -23,7 +23,8 @@
     "db:migrate": "pnpm --filter @platform/database db:migrate",
     "db:bootstrap:neon": "node scripts/bootstrap-neon.mjs",
     "rebrand": "node scripts/rebrand.mjs",
-    "check:brand": "node scripts/check-brand-leaks.mjs"
+    "check:brand": "node scripts/check-brand-leaks.mjs",
+    "org:bootstrap-owner": "pnpm --filter @platform/database exec tsx ../../apps/api/ops/provision-owner-organization.ts"
   },
   "scarfSettings": {
     "enabled": false
