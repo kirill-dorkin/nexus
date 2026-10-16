@@ -153,7 +153,7 @@ async function cli() {
   const input = parseOwnerProvisionArgs(process.argv.slice(2));
   const url = process.env.DATABASE_MIGRATION_URL;
   if (!url) throw new Error("DATABASE_MIGRATION_URL is required (not DATABASE_URL).");
-  const pool = createDatabasePool(url, { applicationName: "nexus-owner-bootstrap", maxConnections: 1 });
+  const pool = createDatabasePool(url, { applicationName: "operator-owner-bootstrap", maxConnections: 1 });
   try {
     const result = await provisionOwnerOrganization(pool, input);
     process.stdout.write(JSON.stringify(result) + "\n");
