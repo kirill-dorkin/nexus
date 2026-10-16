@@ -98,7 +98,7 @@ export async function provisionOwnerOrganization(
         "    AND e.aggregate_type='organization' AND e.actor_user_id=$2",
         "    AND e.payload->>'organizationId'=o.id::text",
         "    AND e.payload->>'createdByUserId'=$2::text",
-        "    AND e.payload->>'slug'=o.slug AND e.payload->>'name'=o.name) AS has_event"
+        "    AND e.payload->>'slug'=o.slug AND e.payload->>'name'=o.name) AS has_event",
         "FROM organizations.organizations o WHERE o.slug=$1 FOR UPDATE"
       ].join("\n"),
       [slug, ownerUserId]
