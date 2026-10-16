@@ -2,7 +2,7 @@
 
 This is a **trusted, offline operational command**, not an account signup or Studio feature. Use it only from an authorized workstation or controlled run environment with the dedicated `platform_migrator` credential.
 
-> **Important:** Until issue #99 Stage B is merged, normal authenticated accounts can still create Organizations through the legacy HTTP routes. This command is a prerequisite for closing those routes; it does **not** by itself enforce the managed-academy policy.
+> **Important:** Both legacy Organization-create HTTP routes now reject ordinary authenticated users with 403 (anonymous: 401). This command is the only currently supported provisioning path for the initial Academy or additional Organizations. Never copy migration credentials into an API/Web/Worker runtime.
 
 ## Prerequisites
 
@@ -42,6 +42,6 @@ The integration test requires both `DATABASE_MIGRATION_URL` and `DATABASE_URL` a
 
 ## Rollout sequence
 
-First merge and verify the operator command. Only then implement issue #99 Stage B in a separate PR: disable both HTTP Organization-create routes, adapt Studio and browser fixtures, add direct negative security tests, and update the Studio UI. A deployed platform without an initial Organization must be provisioned by trusted operations, not by relaxing browser-side authorization.
+The operator command landed in Stage A (#105). Stage B removes the user-session routes and Studio form, with real PostgreSQL HTTP negatives and Chrome fixtures that invoke the operator command only from the test runner. A deployed platform without an initial Organization must be provisioned by trusted operations, not by relaxing browser-side authorization. No HTTP test-only bootstrap exists.
 
 Do not delete existing Organizations merely to retry bootstrap. Record the resulting Organization id through the authorized operational runbook.
