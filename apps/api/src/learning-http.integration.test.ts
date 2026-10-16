@@ -4,6 +4,7 @@ import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import { createDatabasePool } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { createTestOrganization } from "./test-support/create-test-organization";
 import { createApiApplication } from "./app.factory";
 import {
   attachPlatformPrincipal,
@@ -75,16 +76,7 @@ describe("learning catalog, offering, and enrollment HTTP lifecycle", () => {
       });
     await app.init();
 
-    const organizationResponse = await app.inject({
-      method: "POST",
-      url: "/v1/organizations",
-      headers: { "x-test-user-id": ownerUserId },
-      payload: { slug: organizationSlug, name: "Learning domain integration" }
-    });
-    if (organizationResponse.statusCode !== 201) {
-      throw new Error(`Failed to create learning test organization: ${organizationResponse.body}`);
-    }
-    organizationId = (JSON.parse(organizationResponse.body) as { id: string }).id;
+    organizationId = (await createTestOrganization(migrationPool, ownerUserId, { slug: organizationSlug, name: "Learning domain integration" })).id;
 
     const invite = await app.inject({
       method: "POST",
