@@ -12,10 +12,10 @@ import {
 import {
   createDatabasePool,
   withUserTransaction,
-  withTenantTransaction
+  withTenantTransaction,
+  withTransaction
 } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
-import { provisionOwnerOrganization } from "../ops/provision-owner-organization";
 import { createApiApplication } from "./app.factory";
 import { OutboxRepository } from "./outbox/outbox.repository";
 function env(name: string) {
@@ -117,14 +117,30 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
       string,
       string
     ];
-    // Trusted fixture provisioning is outside user-session HTTP authority.
+    // Isolated migration-role fixtures never use user-session Organization writes.
     for (const actor of [owner, foreign]) {
-      const provisioned = await provisionOwnerOrganization(migration, {
-        ownerUserId: actor,
-        slug: `studio-${randomUUID()}`,
-        name: "Studio academy"
+      const slug = `studio-${randomUUID()}`;
+      const id = await withTransaction(migration, async ({ client }) => {
+        const inserted = await client.query<{ id: string }>(
+          "INSERT INTO organizations.organizations (slug,name,created_by_user_id) VALUES ($1,$2,$3) RETURNING id::text",
+          [slug, "Studio academy", actor]
+        );
+        const organizationId = inserted.rows[0]!.id;
+        await client.query(
+          "INSERT INTO organizations.memberships (organization_id,user_id,status,joined_at) VALUES ($1,$2,'active',now())",
+          [organizationId, actor]
+        );
+        await client.query(
+          "INSERT INTO access_control.role_assignments (organization_id,user_id,role_id,scope_type,scope_id,assigned_by_user_id) SELECT $1,$2,id,'organization',$1,$2 FROM access_control.roles WHERE key='organization_owner' AND is_system=true",
+          [organizationId, actor]
+        );
+        await client.query(
+          "INSERT INTO events.outbox (organization_id,event_name,event_version,aggregate_type,aggregate_id,actor_user_id,payload) VALUES ($1,'organization.created',1,'organization',$1,$2,$3::jsonb)",
+          [organizationId, actor, JSON.stringify({ organizationId, slug, name: "Studio academy", createdByUserId: actor })]
+        );
+        return organizationId;
       });
-      organizations.push(provisioned.id);
+      organizations.push(id);
     }
     [org, foreignOrg] = organizations as [string, string];
     manifest = courseManifestV1Schema.parse(
