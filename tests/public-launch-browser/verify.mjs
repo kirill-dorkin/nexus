@@ -958,10 +958,10 @@ async function verifyStudio(cdp) {
     await clickText(cdp,"Подтвердить открытие доступа");
     try {
       await waitForExpression(cdp,
-        'document.body.innerText.includes("Публичный доступ включён.") || document.querySelector(\\'[role="alert"]\\') !== null',
+        'document.body.innerText.includes("Публичный доступ включён.") || document.querySelector(\'[role="alert"]\') !== null',
         "explicit Studio visibility outcome");
       const outcome = await evaluate(cdp,
-        '({enabled:document.body.innerText.includes("Публичный доступ включён."), error:document.querySelector(\\'[role="alert"]\\')?.textContent?.trim().slice(0,180) ?? null})');
+        '({enabled:document.body.innerText.includes("Публичный доступ включён."), error:document.querySelector(\'[role="alert"]\')?.textContent?.trim().slice(0,180) ?? null})');
       assert(outcome.enabled, `Studio visibility request failed: ${outcome.error ?? "no success confirmation"}`);
     } catch (cause) {
       // Diagnose a failed/ambiguous public toggle without logging URLs, IDs,
