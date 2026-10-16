@@ -84,21 +84,6 @@
   border-color: var(--border-accent);
   background: var(--accent-subtle);
 }
-.createOrganization {
-  border-top: 1px solid var(--border-default);
-  border-radius: 0;
-  padding: 1rem 0;
-  margin-top: 0.5rem;
-}
-.createOrganization form {
-  margin-top: 1.5rem;
-}
-.createOrganization :global(.ui-field) {
-  margin-bottom: 1.25rem;
-}
-.createOrganization button {
-  width: 100%;
-}
 .courseWorkspace {
   min-width: 0;
 }
