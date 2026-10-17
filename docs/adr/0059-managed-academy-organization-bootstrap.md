@@ -1,6 +1,6 @@
-# ADR-0059: Managed-academy Organization provisioning (proposed)
+# ADR-0059: Managed-academy Organization provisioning
 
-- Status: **Proposed** (preparatory operator implementation only; not an accepted replacement for ADR-0057)
+- Status: **Accepted** (supersedes only the user-session Organization-creation clause of ADR-0057)
 - Date: 2026-10-16
 - Relates to: issue #99, frontend master spec v1.2 §§2.5, 3.1, 7.4 and Phase 7
 
@@ -12,11 +12,11 @@ The initial Academy and later additional Organizations need a trusted operationa
 
 ## Proposed two-stage transition
 
-**Stage A (this PR):** introduce the offline owner-provisioning operation executed with an existing migration-role database connection. It is not an HTTP endpoint, API/Worker import, signup step or runtime feature flag. The operator selects the *existing active Identity UUID*, desired Organization slug and name, then explicitly confirms with --apply. The operation requires the current database role to equal platform_migrator and writes one Organization, active owner Membership, exact organization-scoped organization_owner assignment and canonical organization.created v1 outbox event atomically. Duplicate exact replay verifies all four existing facts and returns already_provisioned without another event; inconsistent/mismatched state fails closed. Dedicated migrator credentials remain outside persistent runtime services.
+**Stage A (merged in #105):** introduce the offline owner-provisioning operation executed with an existing migration-role database connection. It is not an HTTP endpoint, API/Worker import, signup step or runtime feature flag. The operator selects the *existing active Identity UUID*, desired Organization slug and name, then explicitly confirms with --apply. The operation requires the current database role to equal platform_migrator and writes one Organization, active owner Membership, exact organization-scoped organization_owner assignment and canonical organization.created v1 outbox event atomically. Duplicate exact replay verifies all four existing facts and returns already_provisioned without another event; inconsistent/mismatched state fails closed. Dedicated migrator credentials remain outside persistent runtime services.
 
-**Stage B (separate coherent security PR):** after Stage A verification, disable both user-session-based Organization creation HTTP routes for normal accounts. A platform-owner-only future ability to create additional Organizations must use an independently authenticated operations policy or the same offline operator path; do not implement an email/allowlist/client-supplied UUID bypass. Remove the learner-facing Studio self-create form, adapt Studio and real Chrome fixtures to provision test Organizations via trusted database test setup, and add negative direct HTTP tests covering new learners, members, foreign principals and anonymous requests. No externally accessible test-only bootstrap endpoint is permitted.
+**Stage B (security PR #106):** after Stage A verification, both user-session-based Organization creation HTTP routes unconditionally reject authenticated principals with 403 (anonymous: 401). A platform-owner-only future ability to create additional Organizations must use an independently authenticated operations policy or the same offline operator path; do not implement an email/allowlist/client-supplied UUID bypass. The learner-facing Studio self-create form is removed; Studio and real Chrome fixtures provision test Organizations via trusted operator-only database access; negative direct HTTP tests cover new learners, members, foreign principals and anonymous requests. No externally accessible test-only bootstrap endpoint is permitted.
 
-Stage A **does not make current public Organization creation safe**. Do not ship managed-academy claims or treat issue #99 as fixed until Stage B is merged and verified.
+Stage A by itself did not close public tenant creation. Stage B is the required authorization transition: no normal user-session POST can grant a new Organization or bootstrap owner authority. Retained Nest service implementation is not exposed through a controller; offline operator provisioning remains independent of API runtime.
 
 ## Ownership and invariant boundaries
 
@@ -29,7 +29,7 @@ No schema migration, API response contract, public query, frontend behavior, env
 - CLI argument tests reject missing --apply, invalid UUID/slug/name, duplicates and unknown switches.
 - Real PostgreSQL integration verifies exact role/Membership/outbox atomic result, exact replay, mismatched owner/name rejection, inactive owner rejection and runtime app-role refusal.
 - Operational invocation requires DATABASE_MIGRATION_URL. Never copy migration credentials into Web, API, Worker, CI public variables or logs.
-- Stage B must separately verify **both** HTTP create endpoints fail closed, including their compatibility callers and visual Studio states, before closing issue #99.
+- Stage B must prove **both** HTTP create endpoints fail closed, including their compatibility callers and visual Studio states, before closing issue #99.
 
 ## Rollback
 

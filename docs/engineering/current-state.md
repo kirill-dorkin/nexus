@@ -15,7 +15,7 @@ Use this file as the active continuation checkpoint and the archives only when o
 
 ## Checkpoint baseline
 
-Last maintained: 2026-10-08.
+Last maintained: 2026-10-16.
 
 F0-F8 foundations are established through modular-monolith boundaries, identity/tenancy/authorization, immutable curriculum, Delivery, Attempt/Submission/Validation/Evidence/Mastery, Guided Build, GitHub Projects, repository-side grader hardening, Recommendations/Readiness, and readiness-gated Enrollment completion.
 
@@ -248,6 +248,14 @@ Do not remove these without an explicit cleanup slice/migration and proven calle
 **Build the reusable UI foundation and adopt it incrementally.**
 
 The maintainer selected dark plum, magenta/violet and translucent glass references for the public interface. The proposed ADR-0059 defines token/UI/Web ownership. The implementation introduces a semantic UI workspace package, an isolated component gallery and public homepage/catalog plus registration/login, self-entry, own learning, course outline, Lesson navigation and quiz/progress presentation over unchanged canonical reads and commands. The complete implementation roadmap lives in `docs/roadmap/ui-library.md`. The approved cover refinement adds an IT lesson excerpt, editorial course rows, self-hosted Onest, system-aware light/dark themes with five device-local accents, and selected/responsive navigation with native dialogs. Web owns preference persistence; there is no API, auth, progress or outbox change. The subsequent learning refinement adds a solid auth composition and PasswordInput, streaming catalog with local filtering, open course outlines, solid lesson reading surfaces, restrained entry actions and editorial own-learning rows over unchanged canonical commands and progress. Studio now adopts the same responsive navigation, appearance controls, organization/course workspace, manual/JSON fields, editor actions, conflict feedback and safe reading preview. Publication uses an explicit native confirmation over the existing exact-version/revision command; protected content remains in authorized component memory and no Offering becomes public implicitly. Public discovery now adds an editorial Blog/article path, anonymous-aware primary navigation, canonical/Open Graph metadata, public-only sitemap, crawler exclusions, web manifest, generated social image and public-content structured data. These are Web-only discovery surfaces over existing public projections, not a marketing CMS, indexing guarantee or business-policy change. The next presentation stage should address actual complex-widget/Commerce consumers and Studio efficiency for very large documents, with accessible interaction contracts. Browser evidence and the ordinary exact-head CI/maintainer-local gates remain required before release. Production grader activation remains independently gated.
+
+## Managed academy Organization provisioning and signup boundary
+
+The frontend v1.2 managed-academy product model limits Organization creation to trusted platform operations, **not** ordinary registration. ADR-0059 supersedes the legacy self-create clause of ADR-0057 only. The operator-only `org:bootstrap-owner` command (Stage A) requires dedicated `platform_migrator` credentials, an active existing Identity UUID, explicit `--apply`, and atomically creates the Organization, active owner Membership, `organization_owner` assignment and canonical `organization.created` outbox event. Exact replays are observational and conflicting state fails closed.
+
+Stage B removes both user-session creation rights: `POST /v1/organizations` and `POST /v1/me/organizations` reject authenticated requests with 403 and unauthenticated requests with 401; there is no browser, Web or API runtime bootstrap bypass. Studio no longer offers an Organization-create form. Existing Organization-owned workflows (staff assignment, customer self-entry, free Enrollment, course authoring and publication) retain their established independent authorization rules. Tests use dedicated migration-role fixture provisioning, including the real-session Studio HTTP and Chrome author journey. No migration, capability or HTTP request body grants ownership. New registered users without a trusted-provisioned Organization cannot create tenants by calling either legacy URL.
+
+This restricts **who may create organizations**, not who may register or become a learner. Operations must establish the initial Organization before inviting/assigning staff; free course self-entry remains a separate authorized action. Other frontend UX phases and production grader hardening remain independent.
 
 Candidate areas that remain intentionally **unselected** at this checkpoint include:
 

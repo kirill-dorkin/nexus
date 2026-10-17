@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
-import { createDatabasePool } from "@platform/database";
+import { createDatabasePool, withTransaction } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { createApiApplication } from "./app.factory";
@@ -299,43 +299,50 @@ describe("Foundation 1 HTTP API", () => {
     });
   });
 
-  it("validates organization input at the HTTP boundary", async () => {
-    const response = await app.inject({
+  it("rejects legacy Organization creation for active users and unauthenticated requests", async () => {
+    const rejectedSlug = `disallowed-${randomUUID()}`;
+    for (const userId of [ownerUserId, outsiderUserId]) {
+      const rejected = await app.inject({
+        method: "POST",
+        url: "/v1/organizations",
+        headers: { "x-test-user-id": userId },
+        payload: { slug: rejectedSlug, name: "Unauthorized academy" }
+      });
+      expect(rejected.statusCode).toBe(403);
+    }
+    const anonymous = await app.inject({
       method: "POST",
       url: "/v1/organizations",
-      headers: { "x-test-user-id": ownerUserId },
-      payload: {
-        slug: "Invalid Slug",
-        name: "HTTP Learning"
-      }
+      payload: { slug: rejectedSlug, name: "Unauthorized academy" }
     });
-
-    expect(response.statusCode).toBe(400);
+    expect(anonymous.statusCode).toBe(401);
+    const persisted = await migrationPool.query<{ count: string }>(
+      "SELECT count(*)::text AS count FROM organizations.organizations WHERE slug=$1",
+      [rejectedSlug]
+    );
+    expect(persisted.rows[0]?.count).toBe("0");
   });
 
-  it("creates and reads an organization for its owner", async () => {
-    const createResponse = await app.inject({
-      method: "POST",
-      url: "/v1/organizations",
-      headers: { "x-test-user-id": ownerUserId },
-      payload: {
-        slug: organizationSlug,
-        name: "HTTP Learning"
-      }
-    });
-
-    expect(createResponse.statusCode).toBe(201);
-    const created = JSON.parse(createResponse.body) as {
-      id: string;
-      slug: string;
-      name: string;
-      status: string;
-    };
-    organizationId = created.id;
-    expect(created).toMatchObject({
-      slug: organizationSlug,
-      name: "HTTP Learning",
-      status: "active"
+  it("reads an Organization provisioned only through the trusted operator boundary", async () => {
+    organizationId = await withTransaction(migrationPool, async ({ client }) => {
+      const result = await client.query<{ id: string }>(
+        "INSERT INTO organizations.organizations (slug,name,created_by_user_id) VALUES ($1,$2,$3) RETURNING id::text",
+        [organizationSlug, "HTTP Learning", ownerUserId]
+      );
+      const id = result.rows[0]!.id;
+      await client.query(
+        "INSERT INTO organizations.memberships (organization_id,user_id,status,joined_at) VALUES ($1,$2,'active',now())",
+        [id, ownerUserId]
+      );
+      await client.query(
+        "INSERT INTO access_control.role_assignments (organization_id,user_id,role_id,scope_type,scope_id,assigned_by_user_id) SELECT $1,$2,id,'organization',$1,$2 FROM access_control.roles WHERE key='organization_owner' AND is_system=true",
+        [id, ownerUserId]
+      );
+      await client.query(
+        "INSERT INTO events.outbox (organization_id,event_name,event_version,aggregate_type,aggregate_id,actor_user_id,payload) VALUES ($1,'organization.created',1,'organization',$1,$2,$3::jsonb)",
+        [id, ownerUserId, JSON.stringify({ organizationId: id, slug: organizationSlug, name: "HTTP Learning", createdByUserId: ownerUserId })]
+      );
+      return id;
     });
 
     const getResponse = await app.inject({
@@ -345,7 +352,12 @@ describe("Foundation 1 HTTP API", () => {
     });
 
     expect(getResponse.statusCode).toBe(200);
-    expect(JSON.parse(getResponse.body)).toEqual(created);
+    expect(JSON.parse(getResponse.body)).toEqual({
+      id: organizationId,
+      slug: organizationSlug,
+      name: "HTTP Learning",
+      status: "active"
+    });
   });
 
   it("rejects an active user without an organization role", async () => {
@@ -358,17 +370,13 @@ describe("Foundation 1 HTTP API", () => {
     expect(response.statusCode).toBe(403);
   });
 
-  it("maps duplicate organization slugs to conflict", async () => {
+  it("rejects an existing slug without revealing ownership or creating duplicates", async () => {
     const response = await app.inject({
       method: "POST",
       url: "/v1/organizations",
-      headers: { "x-test-user-id": ownerUserId },
-      payload: {
-        slug: organizationSlug,
-        name: "Duplicate"
-      }
+      headers: { "x-test-user-id": outsiderUserId },
+      payload: { slug: organizationSlug, name: "Duplicate" }
     });
-
-    expect(response.statusCode).toBe(409);
+    expect(response.statusCode).toBe(403);
   });
 });

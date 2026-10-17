@@ -12,7 +12,8 @@ import {
 import {
   createDatabasePool,
   withUserTransaction,
-  withTenantTransaction
+  withTenantTransaction,
+  withTransaction
 } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { createApiApplication } from "./app.factory";
@@ -116,17 +117,30 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
       string,
       string
     ];
+    // Isolated migration-role fixtures never use user-session Organization writes.
     for (const actor of [owner, foreign]) {
-      const o = (
-        await request(
-          "POST",
-          "me/organizations",
-          { slug: `studio-${randomUUID()}`, name: "Studio academy" },
-          actor,
-          201
-        )
-      ).json();
-      organizations.push(o.id);
+      const slug = `studio-${randomUUID()}`;
+      const id = await withTransaction(migration, async ({ client }) => {
+        const inserted = await client.query<{ id: string }>(
+          "INSERT INTO organizations.organizations (slug,name,created_by_user_id) VALUES ($1,$2,$3) RETURNING id::text",
+          [slug, "Studio academy", actor]
+        );
+        const organizationId = inserted.rows[0]!.id;
+        await client.query(
+          "INSERT INTO organizations.memberships (organization_id,user_id,status,joined_at) VALUES ($1,$2,'active',now())",
+          [organizationId, actor]
+        );
+        await client.query(
+          "INSERT INTO access_control.role_assignments (organization_id,user_id,role_id,scope_type,scope_id,assigned_by_user_id) SELECT $1,$2,id,'organization',$1,$2 FROM access_control.roles WHERE key='organization_owner' AND is_system=true",
+          [organizationId, actor]
+        );
+        await client.query(
+          "INSERT INTO events.outbox (organization_id,event_name,event_version,aggregate_type,aggregate_id,actor_user_id,payload) VALUES ($1,'organization.created',1,'organization',$1,$2,$3::jsonb)",
+          [organizationId, actor, JSON.stringify({ organizationId, slug, name: "Studio academy", createdByUserId: actor })]
+        );
+        return organizationId;
+      });
+      organizations.push(id);
     }
     [org, foreignOrg] = organizations as [string, string];
     manifest = courseManifestV1Schema.parse(
@@ -291,29 +305,47 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
         ).toEqual([])
     );
   });
-  it("uses an explicit strict Origin-guarded organization create and never accepts actor/role fields", async () => {
+  it("denies user-session tenant creation through both legacy URLs even for owners", async () => {
+    const registration = await app.inject({
+      method: "POST",
+      url: "/v1/auth/register",
+      headers: { origin },
+      payload: {
+        email: `new-learner-${randomUUID()}@example.test`,
+        password: "StudioIntegration!12345"
+      }
+    });
+    expect(registration.statusCode).toBe(201);
+    const newcomer: string = registration.json().id;
+    users.push(newcomer);
+    actors.set(newcomer, String(registration.headers["set-cookie"]).split(";")[0]!);
+    const rejectedSlug = `rejected-studio-${randomUUID()}`;
+    for (const path of ["me/organizations", "organizations"]) {
+      for (const actor of [owner, learner, instructor, foreign, newcomer]) {
+        await request(
+          "POST", path, { slug: rejectedSlug, name: "Unauthorized Academy" },
+          actor, 403
+        );
+      }
+      await request(
+        "POST", path, { slug: rejectedSlug, name: "Unauthorized Academy", userId: foreign },
+        owner, 403
+      );
+      await request(
+        "POST", path, { slug: rejectedSlug, name: "Unauthorized Academy" },
+        "", 401
+      );
+    }
     await request(
-      "POST",
-      "me/organizations",
-      { slug: "unsafe-org", name: "Unsafe", userId: foreign },
-      owner,
-      400
+      "POST", "me/organizations",
+      { slug: rejectedSlug, name: "Unauthorized Academy" },
+      owner, 403, "https://wrong.example.test"
     );
-    await request(
-      "POST",
-      "me/organizations",
-      { slug: "unsafe-org", name: "Unsafe" },
-      owner,
-      403,
-      "https://wrong.example.test"
+    const persisted = await migration.query<{ count: string }>(
+      "SELECT count(*)::text AS count FROM organizations.organizations WHERE slug=$1",
+      [rejectedSlug]
     );
-    await request(
-      "POST",
-      "me/organizations",
-      { slug: "unsafe-org", name: "Unsafe" },
-      "",
-      401
-    );
+    expect(persisted.rows[0]?.count).toBe("0");
   });
   it("filters courses by resource-scoped capabilities without leaking protected material", async () => {
     const own = studioCourseListSchema.parse(

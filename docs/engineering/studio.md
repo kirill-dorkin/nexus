@@ -1,6 +1,6 @@
 # Studio authoring
 
-Open `/studio`, sign in using the existing account, then select an active Organization. The course list is filtered by current `course.manage` + `activity.manage`; a learner Membership does not grant authoring. An explicit “Создать организацию” action uses the normal owner bootstrap. Creating a course or applying an import also requires organization-level `skill.manage`, as established by manifest authoring.
+Open `/studio` after trusted provisioning and owner/staff access assignment, sign in using the existing account, then select an active Organization. The course list is filtered by current `course.manage` + `activity.manage`; a learner Membership does not grant authoring. Ordinary Studio users cannot create Organizations. An operator first provisions the platform-owned Academy and initial owner with the offline `pnpm run org:bootstrap-owner` command described in `docs/engineering/organization-owner-bootstrap.md`. Staff receive access only through the canonical Membership and Authorization operations. Creating a course or applying an import also requires organization-level `skill.manage`, as established by manifest authoring.
 
 1. Open an available course or choose “Создать курс”. Fill the title/description and stable slug. Add Skills, quiz Activities and Lessons as needed.
 2. Manual fields cover manifest v1 completely. Use ↑/↓ to order Skills, Activities, Lessons, blocks, options and accepted text answers. Blocks accept YouTube URL/ID, Markdown or an Activity reference, including practice/homework, optional title and required flag. Correct answers/explanations are protected author data.
@@ -15,7 +15,7 @@ New authenticated API surfaces (all reads `Cache-Control: no-store`):
 | Route | Meaning |
 |---|---|
 | `GET /v1/me/organizations?after=<uuid>` | At most 100 own active membership Organization locators and next cursor |
-| `POST /v1/me/organizations` | Explicit strict `{slug,name}` create under existing session/Origin/owner-bootstrap rules |
+| `POST /v1/me/organizations` | Legacy compatibility route: always denies session callers (401 anonymous / 403 authenticated). Trusted owner provisioning is offline. |
 | `GET /v1/organizations/:org/studio/courses?after=<uuid>` | Capability-filtered author course metadata, next cursor and create hint |
 | `GET /v1/organizations/:org/studio/courses/:course` | Protected canonical manifest + exact revision/version and apply/publish hints |
 | `POST /v1/organizations/:org/studio/courses/:course/draft` | Strict empty command; explicit revision-fenced next draft |

@@ -5,6 +5,7 @@ import { nextLearningRecommendationSchema } from "@platform/contracts";
 import { createDatabasePool } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { createTestOrganization } from "./test-support/create-test-organization";
 import { createApiApplication } from "./app.factory";
 import {
   attachPlatformPrincipal,
@@ -156,17 +157,10 @@ describe("authored remediation intervention HTTP lifecycle", () => {
       });
     await app.init();
 
-    const organization = await app.inject({
-      method: "POST",
-      url: "/v1/organizations",
-      headers: { "x-test-user-id": ownerUserId },
-      payload: {
+    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
         slug: `remediation-${randomUUID()}`,
         name: "Remediation intervention integration"
-      }
-    });
-    expect(organization.statusCode).toBe(201);
-    organizationId = (JSON.parse(organization.body) as { id: string }).id;
+      })).id;
 
     const invite = await app.inject({
       method: "POST",

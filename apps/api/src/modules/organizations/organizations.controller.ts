@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  ForbiddenException,
   Get,
   Header,
   HttpCode,
@@ -11,7 +12,6 @@ import {
 } from "@nestjs/common";
 import {
   assignRoleRequestSchema,
-  createOrganizationRequestSchema,
   inviteOrganizationMemberRequestSchema,
   updateCustomerEntryPolicyRequestSchema,
   uuidSchema,
@@ -21,17 +21,23 @@ import {
 } from "@platform/contracts";
 
 import { parseRequest } from "../../http/validation";
+import { RequestContextService } from "../../request-context/request-context.service";
 import { OrganizationsApplicationService } from "./application/organizations.service";
 
 @Controller("organizations")
 export class OrganizationsController {
-  constructor(private readonly organizations: OrganizationsApplicationService) {}
+  constructor(
+    private readonly organizations: OrganizationsApplicationService,
+    private readonly requestContext: RequestContextService
+  ) {}
 
+  // Legacy POST remains recognized but never creates tenants from a user session.
   @Post()
-  @HttpCode(HttpStatus.CREATED)
-  createOrganization(@Body() body: unknown): Promise<Organization> {
-    return this.organizations.createOrganization(
-      parseRequest(createOrganizationRequestSchema, body)
+  @Header("Cache-Control", "no-store")
+  createOrganization(): never {
+    this.requestContext.requirePrincipal();
+    throw new ForbiddenException(
+      "Organization creation is available only through trusted operations."
     );
   }
 

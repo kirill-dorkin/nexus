@@ -9,6 +9,7 @@ import {
 import { createDatabasePool, type DatabasePool } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { createTestOrganization } from "./test-support/create-test-organization";
 import { createApiApplication } from "./app.factory";
 import {
   attachPlatformPrincipal,
@@ -298,19 +299,10 @@ describe("learner runner effective assignments", () => {
       });
     await app.init();
 
-    const organization = await app.inject({
-      method: "POST",
-      url: "/v1/organizations",
-      headers: { "x-test-user-id": ownerUserId },
-      payload: {
+    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
         slug: `runner-${randomUUID()}`,
         name: "Learner runner integration"
-      }
-    });
-    if (organization.statusCode !== 201) {
-      throw new Error(`Failed to create runner organization: ${organization.body}`);
-    }
-    organizationId = (JSON.parse(organization.body) as { id: string }).id;
+      })).id;
 
     await activateLearner(learnerUserId);
     await activateLearner(otherLearnerUserId);

@@ -9,6 +9,7 @@ import {
 } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { createTestOrganization } from "./test-support/create-test-organization";
 import { createApiApplication } from "./app.factory";
 import {
   attachPlatformPrincipal,
@@ -319,19 +320,10 @@ describe("assignment HTTP lifecycle", () => {
       });
     await app.init();
 
-    const organization = await app.inject({
-      method: "POST",
-      url: "/v1/organizations",
-      headers: { "x-test-user-id": ownerUserId },
-      payload: {
+    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
         slug: `assignments-${randomUUID()}`,
         name: "Assignment integration"
-      }
-    });
-    if (organization.statusCode !== 201) {
-      throw new Error(`Failed to create assignment organization: ${organization.body}`);
-    }
-    organizationId = (JSON.parse(organization.body) as { id: string }).id;
+      })).id;
 
     await activateLearner(learnerUserId);
     primaryActivity = await createPublishedActivity("primary-assignment");
@@ -352,19 +344,10 @@ describe("assignment HTTP lifecycle", () => {
       "Foreign assignment group"
     );
 
-    const isolation = await app.inject({
-      method: "POST",
-      url: "/v1/organizations",
-      headers: { "x-test-user-id": ownerUserId },
-      payload: {
+    isolationOrganizationId = (await createTestOrganization(migrationPool, ownerUserId, {
         slug: `assignment-isolation-${randomUUID()}`,
         name: "Assignment RLS isolation"
-      }
-    });
-    if (isolation.statusCode !== 201) {
-      throw new Error(`Failed to create isolation organization: ${isolation.body}`);
-    }
-    isolationOrganizationId = (JSON.parse(isolation.body) as { id: string }).id;
+      })).id;
   });
 
   afterAll(async () => {

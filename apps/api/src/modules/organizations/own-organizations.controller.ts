@@ -1,16 +1,14 @@
 import {
-  Body,
   Controller,
   Get,
   Header,
-  HttpCode,
   Post,
+  ForbiddenException,
   Query,
   UseGuards
 } from "@nestjs/common";
 import {
   ownOrganizationsSchema,
-  studioCreateOrganizationSchema,
   studioListQuerySchema
 } from "@platform/contracts";
 import { DatabaseService } from "../../database/database.service";
@@ -18,14 +16,12 @@ import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
 import { parseRequest } from "../../http/validation";
 import { RequestContextService } from "../../request-context/request-context.service";
 import { IdentityApplicationService } from "../identity/application/identity.service";
-import { OrganizationsApplicationService } from "./application/organizations.service";
 @Controller("me/organizations")
 export class OwnOrganizationsController {
   constructor(
     private readonly database: DatabaseService,
     private readonly context: RequestContextService,
-    private readonly identity: IdentityApplicationService,
-    private readonly organizations: OrganizationsApplicationService
+    private readonly identity: IdentityApplicationService
   ) {}
   @Get()
   @Header("Cache-Control", "no-store")
@@ -50,13 +46,15 @@ export class OwnOrganizationsController {
       { readOnly: true }
     );
   }
+  // Retain the old URL only as an explicit fail-closed compatibility boundary.
+  // Session and Origin are not platform-owner provisioning authority.
   @Post()
   @UseGuards(BrowserWriteOriginGuard)
-  @HttpCode(201)
   @Header("Cache-Control", "no-store")
-  create(@Body() body: unknown) {
-    return this.organizations.createOrganization(
-      parseRequest(studioCreateOrganizationSchema, body)
+  create(): never {
+    this.context.requirePrincipal();
+    throw new ForbiddenException(
+      "Organization creation is available only through trusted operations."
     );
   }
 }

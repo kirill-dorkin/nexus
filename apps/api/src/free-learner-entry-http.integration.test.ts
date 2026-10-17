@@ -9,6 +9,7 @@ import {
 } from "@platform/contracts";
 import { createDatabasePool } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { createTestOrganization } from "./test-support/create-test-organization";
 import { createApiApplication } from "./app.factory";
 import {
   attachPlatformPrincipal,
@@ -87,15 +88,9 @@ describe("free learner entry HTTP + PostgreSQL boundary", () => {
     );
   }
   async function fixture(policy = "open", slug = "free-course") {
-    const org = (
-      await request(
-        "POST",
-        "organizations",
-        { slug: `entry-${randomUUID()}`, name: "Learning entry academy" },
-        owner,
-        201
-      )
-    ).json();
+    const org = await createTestOrganization(migration, owner, {
+      slug: `entry-${randomUUID()}`, name: "Learning entry academy"
+    });
     organizations.push(org.id);
     const manifest = courseManifestV1Schema.parse(
       JSON.parse(

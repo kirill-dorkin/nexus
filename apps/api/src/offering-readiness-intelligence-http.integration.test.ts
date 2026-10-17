@@ -8,6 +8,7 @@ import {
 import { createDatabasePool } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { createTestOrganization } from "./test-support/create-test-organization";
 import { createApiApplication } from "./app.factory";
 import {
   attachPlatformPrincipal,
@@ -229,17 +230,10 @@ describe("offering readiness intelligence HTTP lifecycle", () => {
       });
     await app.init();
 
-    const organization = await app.inject({
-      method: "POST",
-      url: "/v1/organizations",
-      headers: { "x-test-user-id": ownerUserId },
-      payload: {
+    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
         slug: `overview-${randomUUID()}`,
         name: "Offering readiness intelligence integration"
-      }
-    });
-    expect(organization.statusCode).toBe(201);
-    organizationId = (JSON.parse(organization.body) as { id: string }).id;
+      })).id;
 
     await activateMember(readyLearnerUserId, "learner");
     await activateMember(insufficientLearnerUserId, "learner");

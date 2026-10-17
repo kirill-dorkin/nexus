@@ -5,6 +5,7 @@ import { enrollmentSchema } from "@platform/contracts";
 import { createDatabasePool } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { createTestOrganization } from "./test-support/create-test-organization";
 import { createApiApplication } from "./app.factory";
 import {
   attachPlatformPrincipal,
@@ -164,17 +165,10 @@ describe("readiness-gated enrollment completion HTTP lifecycle", () => {
       });
     await app.init();
 
-    const organization = await app.inject({
-      method: "POST",
-      url: "/v1/organizations",
-      headers: { "x-test-user-id": ownerUserId },
-      payload: {
+    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
         slug: `progression-${randomUUID()}`,
         name: "Progression completion integration"
-      }
-    });
-    expect(organization.statusCode).toBe(201);
-    organizationId = (JSON.parse(organization.body) as { id: string }).id;
+      })).id;
 
     await activateLearner(learnerUserId);
 

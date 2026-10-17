@@ -4,6 +4,7 @@ import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import { createDatabasePool } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { createTestOrganization } from "./test-support/create-test-organization";
 import { createApiApplication } from "./app.factory";
 import {
   attachPlatformPrincipal,
@@ -80,19 +81,10 @@ describe("customer Organization membership entry", () => {
       });
     await app.init();
 
-    const create = await app.inject({
-      method: "POST",
-      url: "/v1/organizations",
-      headers: userHeaders(ownerUserId),
-      payload: {
+    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
         slug: organizationSlug,
         name: "Customer entry organization"
-      }
-    });
-    if (create.statusCode !== 201) {
-      throw new Error(`Failed to create customer-entry organization: ${create.body}`);
-    }
-    organizationId = (JSON.parse(create.body) as { id: string }).id;
+      })).id;
   });
 
   afterAll(async () => {
