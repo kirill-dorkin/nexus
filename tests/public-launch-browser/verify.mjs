@@ -497,7 +497,7 @@ async function startTlsProxies(tls) {
   const apiProxy = createHttpsServer(tls, (request, response) => {
     const path = new URL(request.url ?? "/", API_ORIGIN).pathname;
     const useRealApi =
-      path.startsWith("/v1/auth/") || path.startsWith("/v1/organizations/") || path === "/v1/me/organizations" || path === "/v1/me" || path === "/v1/health" ||
+      path.startsWith("/v1/auth/") || path === "/v1/organizations" || path.startsWith("/v1/organizations/") || path === "/v1/me/organizations" || path === "/v1/me" || path === "/v1/health" ||
       (canonicalLearningSlug !== null && (
         path === "/v1/me/learning" ||
         path === "/v1/public/learning" ||
