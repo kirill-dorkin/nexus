@@ -9,9 +9,9 @@
 - modular monolith для бизнес-доменов;
 - отдельные process/security boundaries для worker и grader;
 - PostgreSQL — transactional source of truth;
-- Redis + BullMQ за `JobQueue` abstraction;
+- Redis + BullMQ за `JobQueue` abstraction (запланировано; сейчас фоновые задачи идут через PostgreSQL outbox/inbox с lease);
 - transactional outbox/inbox для надёжной асинхронности;
-- S3-compatible object storage для артефактов;
+- S3-compatible object storage для артефактов (запланировано, в коде пока не используется);
 - Next.js/React web, NestJS/Fastify API, TypeScript strict;
 - OpenAPI-first REST + SSE; WebSocket только там, где нужен bidirectional realtime;
 - immutable published content versions;
@@ -30,8 +30,6 @@ pnpm dev:infra
 pnpm dev
 ```
 
-> До первого feature-PR сгенерируйте и закоммитьте `pnpm-lock.yaml`, после чего CI нужно переключить на `--frozen-lockfile`.
-
 ## Смена бренда одной командой
 
 ```bash
@@ -48,12 +46,15 @@ apps/                 deployable applications
   api/                NestJS modular monolith
   worker/             background jobs and projections
   grader-gateway/     trusted control plane for untrusted execution
+  grader-runner/      trusted Go runner inside the sandbox
 packages/             cross-application technical packages only
   brand/              product branding source of truth
   config/             environment/config primitives
   contracts/          public API/process contracts
   events/             canonical event envelopes
+  database/           migrations and database client
   design-tokens/      platform design tokens
+  ui/                 brand-neutral UI primitives
   observability/      telemetry bootstrap
 infra/                local and deployment infrastructure
 scripts/              repository automation
@@ -77,4 +78,6 @@ docs/                 product/domain/architecture/security/ADR docs
 
 ## Статус
 
-Foundation scaffold. Сначала фиксируем доменный язык, invariants, contracts и security boundaries; затем реализуем вертикальные slices.
+Foundation F0–F9, бесплатное публичное обучение и Studio реализованы и развёрнуты (Vercel + managed PostgreSQL). Исполнение кода учеников в production выключено до отдельной активации grader.
+
+Актуальное состояние, правила и следующий шаг: `docs/engineering/current-state.md`.
