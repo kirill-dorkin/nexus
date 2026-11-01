@@ -51,7 +51,7 @@ A visitor understands the page at a glance and reaches the next step in one acti
 - `components/learning/flow.module.css`: catalog, course, lesson, quiz, saved learning.
 - `app/login`: centered auth card. `app/not-found.tsx`: 404.
 
-Studio keeps its existing presentation until its own redesign slice; it still follows the device colour scheme and the appearance control.
+Studio shares the same dark frame (`StudioShell` reuses `site.module.css`, with a Studio badge). Commerce pages (product, checkout, purchase) still follow the device colour scheme until their own slice.
 
 ## Contracts kept
 
