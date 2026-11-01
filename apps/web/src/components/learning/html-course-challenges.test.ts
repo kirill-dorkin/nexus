@@ -2,6 +2,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { parseChallenge, runChecks } from "./challenge";
+import { parseConcept, parseStory } from "./story";
 
 const manifest = JSON.parse(
   // Tests run from the repository root (see vitest.config.ts).
@@ -27,6 +28,19 @@ describe("HTML course challenges", () => {
     expect(challenge!.solution, "a solution is required").toBeTruthy();
     expect(run(challenge!.solution!, challenge!), "the solution must pass every check").not.toContain(false);
     expect(run(challenge!.start, challenge!), "the starting code must not already pass").toContain(false);
+  });
+});
+
+describe("HTML course story blocks", () => {
+  const blocks = (lang: string) => manifest.lessons.flatMap((lesson) =>
+    lesson.blocks.flatMap((block) =>
+      [...(block.markdown ?? "").matchAll(new RegExp("```" + lang + "\\n([\\s\\S]*?)\\n```", "g"))].map((m) => ({ lesson: lesson.slug, source: m[1]! }))
+    )
+  );
+  it("every scene and concept card is valid, so none falls back to raw JSON", () => {
+    expect(blocks("story").filter((b) => !parseStory(b.source)).map((b) => b.lesson)).toEqual([]);
+    expect(blocks("concept").filter((b) => !parseConcept(b.source)).map((b) => b.lesson)).toEqual([]);
+    expect(blocks("story").length).toBeGreaterThan(60);
   });
 });
 
