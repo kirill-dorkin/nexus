@@ -110,6 +110,21 @@
   0%, 60%, 100% { opacity: 0.3; transform: none; }
   30% { opacity: 1; transform: translateY(-3px); }
 }
+.sceneActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.sceneActions:empty {
+  display: none;
+}
+.line[data-speaking] .bubble {
+  border-color: var(--c);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 18%, transparent);
+}
+.line[data-speaking][data-you] .bubble {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-action) 25%, transparent);
+}
 .skip {
   display: inline-flex;
   align-items: center;

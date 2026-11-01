@@ -272,6 +272,11 @@
   display: grid;
   gap: 1.5rem;
 }
+.lessonTools {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: -0.75rem;
+}
 .lessonMeter {
   height: 4px;
   border-radius: var(--radius-pill);
