@@ -203,6 +203,63 @@ export class LearningDeliveryApplicationService {
     });
   }
 
+  /**
+   * ADR-0062: move a free self-paced Offering forward to a newer published version of the same
+   * Course, keeping its address, Enrollments and history. Published curriculum is not modified.
+   */
+  async retargetOffering(
+    organizationId: string,
+    offeringId: string,
+    courseVersionId: string
+  ): Promise<LearningOffering> {
+    const context = this.requestContext.tenantContext(organizationId);
+    return this.database.tenantTransaction(context, async (transaction) => {
+      await this.identity.requireActiveUser(transaction, context.userId);
+      await this.authorization.requireCapability(
+        transaction,
+        context.userId,
+        "offering.manage",
+        offeringScope(organizationId, offeringId)
+      );
+      const current = await this.delivery.findOffering(transaction, organizationId, offeringId);
+      if (current === null) throw new NotFoundException("Learning offering not found.");
+      const target = await this.content.requirePublishedVersion(transaction, organizationId, courseVersionId);
+      const from = await this.content.requirePublishedVersion(transaction, organizationId, current.courseVersionId);
+      if (target.courseId !== from.courseId)
+        throw new ConflictException("An offering can only move to a version of its own course.");
+      if (target.id === from.id) return current;
+      if (target.versionNumber <= from.versionNumber)
+        throw new ConflictException("An offering can only move forward to a newer version.");
+      let moved: LearningOffering | null;
+      try {
+        moved = await this.delivery.retargetOffering(transaction, organizationId, offeringId, courseVersionId);
+      } catch (error) {
+        if ((error as { code?: string }).code === "55000")
+          throw new ConflictException(
+            "Only free self-paced offerings without course runs or assignments can move to a newer version."
+          );
+        throw error;
+      }
+      if (moved === null) return current;
+      await this.outbox.append(transaction, {
+        organizationId,
+        eventName: "learning_offering.retargeted",
+        eventVersion: 1,
+        aggregateType: "learning_offering",
+        aggregateId: offeringId,
+        actorUserId: context.userId,
+        payload: {
+          organizationId,
+          offeringId,
+          courseId: target.courseId,
+          fromCourseVersionId: from.id,
+          toCourseVersionId: target.id
+        }
+      });
+      return moved;
+    });
+  }
+
   async setOfferingVisibility(
     organizationId: string,
     offeringId: string,

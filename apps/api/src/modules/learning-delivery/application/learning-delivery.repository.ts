@@ -109,6 +109,14 @@ export abstract class LearningDeliveryRepository {
     after: string | null
   ): Promise<readonly LearningOffering[]>;
 
+  /** Null when the Offering already uses this version. Database guards enforce the forward-only rule. */
+  abstract retargetOffering(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    offeringId: string,
+    courseVersionId: string
+  ): Promise<LearningOffering | null>;
+
   abstract setOfferingVisibility(
     transaction: DatabaseTransaction,
     organizationId: string,

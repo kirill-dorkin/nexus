@@ -13,7 +13,7 @@ const counts = {
 export const learnerCourseProgressSchema = z
   .object({
     policyKey: z.literal("required-activity-passes"),
-    policyVersion: z.literal(1),
+    policyVersion: z.literal(2),
     ...counts,
     percentage: z.number().int().min(0).max(100).nullable(),
     allRequiredPassed: z.boolean(),

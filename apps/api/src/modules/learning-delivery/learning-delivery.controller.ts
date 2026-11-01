@@ -32,7 +32,8 @@ import {
   type GroupSet,
   type LearningOffering,
   type LearningOfferingList,
-  type Session
+  type Session,
+  retargetLearningOfferingRequestSchema
 } from "@platform/contracts";
 
 import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
@@ -77,6 +78,20 @@ export class LearningDeliveryController {
     return this.delivery.getOffering(
       parseRequest(uuidSchema, organizationId),
       parseRequest(uuidSchema, offeringId)
+    );
+  }
+
+  @Patch(":offeringId/course-version")
+  @UseGuards(BrowserWriteOriginGuard)
+  retarget(
+    @Param("organizationId") organizationId: string,
+    @Param("offeringId") offeringId: string,
+    @Body() body: unknown
+  ): Promise<LearningOffering> {
+    return this.delivery.retargetOffering(
+      parseRequest(uuidSchema, organizationId),
+      parseRequest(uuidSchema, offeringId),
+      parseRequest(retargetLearningOfferingRequestSchema, body).courseVersionId
     );
   }
 

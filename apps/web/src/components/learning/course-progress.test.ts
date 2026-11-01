@@ -22,7 +22,7 @@ const learning: LearnerLearningCourse = {
   },
   progress: {
     policyKey: "required-activity-passes",
-    policyVersion: 1,
+    policyVersion: 2,
     passedRequired: 0,
     totalRequired: 2,
     percentage: 0,

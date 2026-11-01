@@ -24,3 +24,7 @@ Learner links, sitemap entries, structured data and canonical URLs no longer cha
 Enrollment and attempts remain Offering-scoped. A learner enrolled in the Offering for an older version is not moved automatically; the next quiz check enrolls them in the current Offering. Their attempts against the old ActivityVersions remain in history. Carrying course progress across versions (an Offering retarget, or progress keyed by stable Activity identity) is a separate, reviewed change.
 
 If two public Offerings of the same course exist at once, the stable address shows the newest. The catalog may still list both until the older one is hidden.
+
+## Amendment — 2026-11-02: learner continuity
+
+ADR-0062 closes the gap named in the consequences above. Free self-paced Offerings now move forward to the newer version instead of being replaced, so Enrollments and completed tasks carry over. The operator script no longer creates `{course}-v{N}` Offerings for new versions.
