@@ -68,7 +68,15 @@ node scripts/launch-course.mjs --new-version                     # новая в
 ## Звук: озвучка и музыка
 
 - **Музыка «Кофейня»** генерируется прямо в браузере (Web Audio, `apps/web/src/lib/sound/engine.ts`): аккорды, бас, мягкие барабаны и шум винила. Файлов и лицензий нет. Когда говорят герои, музыка приглушается.
-- **Озвучка.** Бро, Лев и Вредный Скрипт — заранее сгенерированные клипы `apps/web/public/voice/html/<id>.mp3`: нейросинтез [Piper](https://github.com/rhasspy/piper) на голосах `ru_RU-dmitri-medium` и `ru_RU-denis-medium` (датасеты CC0). Марта и Ника читаются голосом браузера, пока нет женского голоса с понятной лицензией (`irina` — лицензия неизвестна, `ruslan` и Silero — некоммерческие).
+- **Озвучка ElevenLabs (основная).** Голоса носителей русского из библиотеки ElevenLabs: Марта — Marina, Ника — Nadia, Бро — Dmitry, Лев — Stanislav, Вредный Скрипт — Egor. Скрипт `scripts/voice/elevenlabs.mjs` (ключ только из окружения):
+
+```bash
+ELEVENLABS_API_KEY=sk_… node scripts/voice/elevenlabs.mjs --lessons 10 --dry-run   # сколько символов уйдёт
+ELEVENLABS_API_KEY=sk_… node scripts/voice/elevenlabs.mjs                          # озвучить всё недостающее
+```
+
+  `--force` переозвучивает уже готовые клипы. Сейчас ElevenLabs озвучены первые 10 уроков.
+- **Озвучка Piper (запасная).** Бро, Лев и Вредный Скрипт — заранее сгенерированные клипы `apps/web/public/voice/html/<id>.mp3`: нейросинтез [Piper](https://github.com/rhasspy/piper) на голосах `ru_RU-dmitri-medium` и `ru_RU-denis-medium` (датасеты CC0). Марта и Ника читаются голосом браузера, пока нет женского голоса с понятной лицензией (`irina` — лицензия неизвестна, `ruslan` и Silero — некоммерческие).
 - Плеер сначала ищет клип по `lineId(who, text)`, иначе говорит голосом браузера. Произношение кода и латиницы — `speech-text.ts`, общий для плеера и генератора.
 - После правки реплик Бро/Льва/Скрипта перегенерируйте клипы (существующие не трогаются):
 

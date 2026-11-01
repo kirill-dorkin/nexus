@@ -8,6 +8,9 @@ describe("speech text", () => {
     expect(spokenText("Пиши **HTML** 🤖")).toBe("Пиши эйч-ти-эм-эль");
     expect(spokenText("Атрибут `href=\"/menu\"`")).toBe("Атрибут эйч-реф мену");
   });
+  it("names bare symbols instead of dropping them", () => {
+    expect(spokenText("`>` внутрь, `#` id")).toBe("знак больше внутрь, решётка ай-ди");
+  });
   it("gives every line a stable short id", () => {
     expect(lineId("bro", "Привет")).toBe(lineId("bro", "Привет"));
     expect(lineId("bro", "Привет")).not.toBe(lineId("lev", "Привет"));

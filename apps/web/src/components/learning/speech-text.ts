@@ -49,11 +49,18 @@ function sayLatin(word: string): string {
   return [...lower].map((ch) => TRANSLIT[ch] ?? ch).join("");
 }
 
+/** Code spans that are a bare symbol (Emmet cheatsheet) are named, not dropped. */
+const SYMBOLS: Record<string, string> = {
+  ">": "знак больше", "+": "плюс", "*": "звёздочка", "*3": "звёздочка три", ".": "точка", "#": "решётка",
+  "[]": "квадратные скобки", "{}": "фигурные скобки", "$": "доллар", "!": "восклицательный знак"
+};
+
 /** Markdown-ish story text → plain Russian speech. */
 export function spokenText(text: string): string {
   return text
     .replace(/\*\*([^*]+)\*\*/g, "$1")
     .replace(/`([^`]+)`/g, (_, code: string) =>
+      SYMBOLS[code.trim()] ??
       code
         .replace(/\.(?=[a-z])/gi, " точка ")
         .replace(/<\/?/g, " тег ")
