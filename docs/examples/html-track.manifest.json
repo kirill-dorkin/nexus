@@ -1,0 +1,1092 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "html-s-nulya",
+    "title": "HTML с нуля",
+    "description": "Одиннадцать коротких уроков: от первого тега до своей страницы-визитки. Каждый урок — один навык, живые примеры, которые можно менять прямо в браузере, и задания с мгновенной проверкой."
+  },
+  "skills": [
+    {
+      "key": "html-elements",
+      "title": "Теги, элементы и атрибуты",
+      "description": "Читать и писать HTML-элементы: открывающий и закрывающий тег, содержимое, атрибуты."
+    },
+    {
+      "key": "html-document",
+      "title": "Каркас HTML-документа",
+      "description": "Собирать минимальный корректный документ: doctype, html, head, body, кодировка, заголовок вкладки."
+    },
+    {
+      "key": "html-headings",
+      "title": "Заголовки и абзацы",
+      "description": "Строить иерархию текста заголовками h1–h6 и делить текст на абзацы."
+    },
+    {
+      "key": "html-text",
+      "title": "Смысловое выделение текста",
+      "description": "Использовать strong, em, br и цитаты по смыслу, а не ради вида."
+    },
+    {
+      "key": "html-links",
+      "title": "Ссылки",
+      "description": "Ставить ссылки на другие сайты, страницы своего сайта, почту и места на странице."
+    },
+    {
+      "key": "html-images",
+      "title": "Изображения",
+      "description": "Вставлять картинки с правильным alt, размерами и подписью."
+    },
+    {
+      "key": "html-lists",
+      "title": "Списки",
+      "description": "Размечать маркированные, нумерованные и вложенные списки."
+    },
+    {
+      "key": "html-tables",
+      "title": "Таблицы",
+      "description": "Размечать табличные данные с заголовками и подписью."
+    },
+    {
+      "key": "html-forms",
+      "title": "Формы",
+      "description": "Собирать формы с подписанными полями, типами ввода и кнопкой отправки."
+    },
+    {
+      "key": "html-semantics",
+      "title": "Семантическая структура страницы",
+      "description": "Размечать страницу областями header, nav, main, section, article, footer."
+    },
+    {
+      "key": "html-project-card",
+      "title": "Проект: страница-визитка",
+      "description": "Собрать целую страницу из изученных элементов и проверить её по чек-листу."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "html-elements-closing",
+      "type": "quiz.single_choice",
+      "title": "Закрывающий тег",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-elements"
+      ],
+      "presentation": {
+        "question": "Как правильно закрыть элемент абзаца?",
+        "options": [
+          {
+            "id": "a",
+            "text": "</p>"
+          },
+          {
+            "id": "b",
+            "text": "<p/>"
+          },
+          {
+            "id": "c",
+            "text": "<\\p>"
+          },
+          {
+            "id": "d",
+            "text": "<end p>"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "a",
+        "explanation": "Закрывающий тег повторяет имя открывающего со слешем в начале: </p>."
+      }
+    },
+    {
+      "slug": "html-elements-attribute",
+      "type": "quiz.short_text",
+      "title": "Найдите атрибут",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "html-elements"
+      ],
+      "presentation": {
+        "question": "В коде `<a href=\"/courses\">Курсы</a>` как называется атрибут?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "href"
+        ],
+        "caseSensitive": false,
+        "explanation": "Атрибут — это href: он хранит адрес, на который ведёт ссылка."
+      }
+    },
+    {
+      "slug": "html-document-head",
+      "type": "quiz.single_choice",
+      "title": "Где видимый текст",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-document"
+      ],
+      "presentation": {
+        "question": "В какой части документа размещают текст, который должен увидеть человек?",
+        "options": [
+          {
+            "id": "head",
+            "text": "<head>"
+          },
+          {
+            "id": "body",
+            "text": "<body>"
+          },
+          {
+            "id": "title",
+            "text": "<title>"
+          },
+          {
+            "id": "doctype",
+            "text": "<!doctype>"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "body",
+        "explanation": "Всё видимое на странице находится в <body>. <head> хранит служебную информацию."
+      }
+    },
+    {
+      "slug": "html-document-charset",
+      "type": "quiz.multiple_choice",
+      "title": "Что лежит в head",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "html-document"
+      ],
+      "presentation": {
+        "question": "Какие элементы обычно находятся внутри `<head>`?",
+        "options": [
+          {
+            "id": "meta",
+            "text": "<meta charset=\"utf-8\">"
+          },
+          {
+            "id": "title",
+            "text": "<title>"
+          },
+          {
+            "id": "h1",
+            "text": "<h1>"
+          },
+          {
+            "id": "p",
+            "text": "<p>"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "meta",
+          "title"
+        ],
+        "explanation": "В <head> — служебные элементы: кодировка, заголовок вкладки. Заголовки и абзацы — содержимое страницы, им место в <body>."
+      }
+    },
+    {
+      "slug": "html-headings-main",
+      "type": "quiz.single_choice",
+      "title": "Главный заголовок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-headings"
+      ],
+      "presentation": {
+        "question": "Сколько элементов `<h1>` обычно бывает на странице?",
+        "options": [
+          {
+            "id": "one",
+            "text": "Один"
+          },
+          {
+            "id": "two",
+            "text": "Ровно два"
+          },
+          {
+            "id": "any",
+            "text": "Сколько угодно, это ни на что не влияет"
+          },
+          {
+            "id": "zero",
+            "text": "Ни одного"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "Обычно на странице один h1 — её главная тема. Остальное делится на h2, h3 и ниже."
+      }
+    },
+    {
+      "slug": "html-headings-order",
+      "type": "quiz.single_choice",
+      "title": "Иерархия",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-headings"
+      ],
+      "presentation": {
+        "question": "Какой порядок заголовков правильный для статьи с разделами и подразделами?",
+        "options": [
+          {
+            "id": "a",
+            "text": "h1 → h2 → h3 → h2"
+          },
+          {
+            "id": "b",
+            "text": "h1 → h4 → h2"
+          },
+          {
+            "id": "c",
+            "text": "h3 → h1 → h1"
+          },
+          {
+            "id": "d",
+            "text": "h2 → h6 → h1"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "a",
+        "explanation": "Уровни идут по порядку без пропусков: раздел h2, внутри него подраздел h3, затем следующий раздел h2."
+      }
+    },
+    {
+      "slug": "html-text-strong",
+      "type": "quiz.single_choice",
+      "title": "Важное предупреждение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-text"
+      ],
+      "presentation": {
+        "question": "Какой тег подходит, чтобы отметить важное предупреждение?",
+        "options": [
+          {
+            "id": "strong",
+            "text": "<strong>"
+          },
+          {
+            "id": "b",
+            "text": "<br>"
+          },
+          {
+            "id": "em",
+            "text": "<em>"
+          },
+          {
+            "id": "h1",
+            "text": "<h1>"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "strong",
+        "explanation": "<strong> обозначает важность. <em> — интонационное ударение, <br> — перенос строки."
+      }
+    },
+    {
+      "slug": "html-text-entity",
+      "type": "quiz.short_text",
+      "title": "Спецсимвол",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "html-text"
+      ],
+      "presentation": {
+        "question": "Как в HTML записать символ «<», чтобы он показался как текст? Введите мнемонику целиком, например `&amp;`."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "&lt;",
+          "&lt"
+        ],
+        "caseSensitive": false,
+        "explanation": "Символ «<» записывается как &lt; (less than), «>» — как &gt;."
+      }
+    },
+    {
+      "slug": "html-links-href",
+      "type": "quiz.short_text",
+      "title": "Атрибут адреса",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "html-links"
+      ],
+      "presentation": {
+        "question": "Какой атрибут тега `<a>` хранит адрес ссылки?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "href"
+        ],
+        "caseSensitive": false,
+        "explanation": "Адрес ссылки хранится в атрибуте href."
+      }
+    },
+    {
+      "slug": "html-links-anchor",
+      "type": "quiz.single_choice",
+      "title": "Якорь",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-links"
+      ],
+      "presentation": {
+        "question": "Куда ведёт ссылка `<a href=\"#faq\">Вопросы</a>`?",
+        "options": [
+          {
+            "id": "id",
+            "text": "К элементу с id=\"faq\" на этой же странице"
+          },
+          {
+            "id": "site",
+            "text": "На сайт faq.com"
+          },
+          {
+            "id": "file",
+            "text": "К файлу faq.html"
+          },
+          {
+            "id": "none",
+            "text": "Никуда, это ошибка"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "id",
+        "explanation": "Решётка в начале href означает якорь: переход к элементу с таким id на текущей странице."
+      }
+    },
+    {
+      "slug": "html-links-text",
+      "type": "quiz.single_choice",
+      "title": "Понятный текст",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-links"
+      ],
+      "presentation": {
+        "question": "Какой текст ссылки лучше всего?",
+        "options": [
+          {
+            "id": "good",
+            "text": "Скачать программу курса (PDF)"
+          },
+          {
+            "id": "here",
+            "text": "Здесь"
+          },
+          {
+            "id": "click",
+            "text": "Нажмите сюда"
+          },
+          {
+            "id": "url",
+            "text": "https://example.com/files/program-2026-final-v2.pdf"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "good",
+        "explanation": "Текст ссылки должен сам объяснять, что будет после нажатия. «Здесь» и голый адрес этого не делают."
+      }
+    },
+    {
+      "slug": "html-images-alt",
+      "type": "quiz.single_choice",
+      "title": "Зачем alt",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-images"
+      ],
+      "presentation": {
+        "question": "Для чего нужен атрибут alt у картинки?",
+        "options": [
+          {
+            "id": "text",
+            "text": "Текстовая замена для читалок и на случай, если картинка не загрузится"
+          },
+          {
+            "id": "size",
+            "text": "Задаёт размер картинки"
+          },
+          {
+            "id": "link",
+            "text": "Делает картинку ссылкой"
+          },
+          {
+            "id": "seo",
+            "text": "Только для поисковиков, людям не нужен"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "text",
+        "explanation": "alt — текстовая замена изображения. Его читают экранные читалки и показывает браузер, если картинка недоступна."
+      }
+    },
+    {
+      "slug": "html-images-decor",
+      "type": "quiz.single_choice",
+      "title": "Декоративная картинка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-images"
+      ],
+      "presentation": {
+        "question": "Как правильно оформить чисто декоративную картинку (узор на фоне раздела)?",
+        "options": [
+          {
+            "id": "empty",
+            "text": "alt=\"\" — пустой атрибут"
+          },
+          {
+            "id": "noalt",
+            "text": "Убрать атрибут alt совсем"
+          },
+          {
+            "id": "word",
+            "text": "alt=\"картинка\""
+          },
+          {
+            "id": "file",
+            "text": "alt=\"pattern-final.png\""
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "empty",
+        "explanation": "Пустой alt говорит читалке: эту картинку можно пропустить. Без атрибута читалка может прочитать имя файла."
+      }
+    },
+    {
+      "slug": "html-lists-ordered",
+      "type": "quiz.single_choice",
+      "title": "Шаги инструкции",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-lists"
+      ],
+      "presentation": {
+        "question": "Какой список подходит для пошаговой инструкции?",
+        "options": [
+          {
+            "id": "ol",
+            "text": "<ol>"
+          },
+          {
+            "id": "ul",
+            "text": "<ul>"
+          },
+          {
+            "id": "dl",
+            "text": "Набор <p> с цифрами"
+          },
+          {
+            "id": "br",
+            "text": "Строки через <br>"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ol",
+        "explanation": "Когда важен порядок, используйте нумерованный список <ol>."
+      }
+    },
+    {
+      "slug": "html-lists-nesting",
+      "type": "quiz.single_choice",
+      "title": "Вложенность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-lists"
+      ],
+      "presentation": {
+        "question": "Где правильно разместить вложенный список?",
+        "options": [
+          {
+            "id": "inside",
+            "text": "Внутри элемента <li> родительского пункта"
+          },
+          {
+            "id": "between",
+            "text": "Между двумя <li>, прямо в <ul>"
+          },
+          {
+            "id": "after",
+            "text": "После закрывающего </ul>"
+          },
+          {
+            "id": "head",
+            "text": "В <head>"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "inside",
+        "explanation": "Прямыми детьми ul/ol могут быть только li, поэтому вложенный список кладут внутрь пункта."
+      }
+    },
+    {
+      "slug": "html-tables-header",
+      "type": "quiz.single_choice",
+      "title": "Ячейка-заголовок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-tables"
+      ],
+      "presentation": {
+        "question": "Каким тегом размечают ячейку-заголовок столбца?",
+        "options": [
+          {
+            "id": "th",
+            "text": "<th>"
+          },
+          {
+            "id": "td",
+            "text": "<td>"
+          },
+          {
+            "id": "tr",
+            "text": "<tr>"
+          },
+          {
+            "id": "thead",
+            "text": "<thead> вместо ячейки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "th",
+        "explanation": "<th> — ячейка-заголовок. <td> — обычная ячейка, <tr> — строка."
+      }
+    },
+    {
+      "slug": "html-tables-layout",
+      "type": "quiz.single_choice",
+      "title": "Когда нужна таблица",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-tables"
+      ],
+      "presentation": {
+        "question": "В каком случае таблица — правильный выбор?",
+        "options": [
+          {
+            "id": "data",
+            "text": "Сравнение тарифов по цене и возможностям"
+          },
+          {
+            "id": "layout",
+            "text": "Колонка меню слева и контент справа"
+          },
+          {
+            "id": "center",
+            "text": "Чтобы отцентрировать картинку"
+          },
+          {
+            "id": "footer",
+            "text": "Подвал сайта"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "data",
+        "explanation": "Таблица — для табличных данных. Раскладку страницы делают CSS."
+      }
+    },
+    {
+      "slug": "html-forms-label",
+      "type": "quiz.single_choice",
+      "title": "Связь подписи",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-forms"
+      ],
+      "presentation": {
+        "question": "Как связать `<label>` с полем `<input id=\"phone\">`?",
+        "options": [
+          {
+            "id": "for",
+            "text": "<label for=\"phone\">"
+          },
+          {
+            "id": "name",
+            "text": "<label name=\"phone\">"
+          },
+          {
+            "id": "placeholder",
+            "text": "Достаточно placeholder в поле"
+          },
+          {
+            "id": "id",
+            "text": "<label id=\"phone\">"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "for",
+        "explanation": "Атрибут for у label должен совпадать с id поля."
+      }
+    },
+    {
+      "slug": "html-forms-types",
+      "type": "quiz.multiple_choice",
+      "title": "Типы полей",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "html-forms"
+      ],
+      "presentation": {
+        "question": "Какие значения атрибута type существуют у `<input>`?",
+        "options": [
+          {
+            "id": "email",
+            "text": "email"
+          },
+          {
+            "id": "password",
+            "text": "password"
+          },
+          {
+            "id": "date",
+            "text": "date"
+          },
+          {
+            "id": "paragraph",
+            "text": "paragraph"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "email",
+          "password",
+          "date"
+        ],
+        "explanation": "email, password и date — реальные типы input. Типа paragraph нет."
+      }
+    },
+    {
+      "slug": "html-forms-radio",
+      "type": "quiz.single_choice",
+      "title": "Группа радиокнопок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-forms"
+      ],
+      "presentation": {
+        "question": "Что объединяет радиокнопки в одну группу, где можно выбрать только одну?",
+        "options": [
+          {
+            "id": "name",
+            "text": "Одинаковый атрибут name"
+          },
+          {
+            "id": "id",
+            "text": "Одинаковый id"
+          },
+          {
+            "id": "value",
+            "text": "Одинаковый value"
+          },
+          {
+            "id": "label",
+            "text": "Общий label"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "name",
+        "explanation": "Радиокнопки с одинаковым name образуют группу. id на странице должен быть уникальным."
+      }
+    },
+    {
+      "slug": "html-semantics-main",
+      "type": "quiz.single_choice",
+      "title": "Главное содержимое",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-semantics"
+      ],
+      "presentation": {
+        "question": "Сколько элементов `<main>` должно быть видно на странице?",
+        "options": [
+          {
+            "id": "one",
+            "text": "Один"
+          },
+          {
+            "id": "many",
+            "text": "По одному на каждый раздел"
+          },
+          {
+            "id": "zero",
+            "text": "Ни одного, хватает div"
+          },
+          {
+            "id": "two",
+            "text": "Два: для текста и картинок"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "На странице один видимый <main> — её основное содержимое."
+      }
+    },
+    {
+      "slug": "html-semantics-pick",
+      "type": "quiz.single_choice",
+      "title": "Подходящий тег",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-semantics"
+      ],
+      "presentation": {
+        "question": "Какой тег лучше всего подходит для отдельной карточки товара в каталоге?",
+        "options": [
+          {
+            "id": "article",
+            "text": "<article>"
+          },
+          {
+            "id": "nav",
+            "text": "<nav>"
+          },
+          {
+            "id": "footer",
+            "text": "<footer>"
+          },
+          {
+            "id": "br",
+            "text": "<br>"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "article",
+        "explanation": "Карточка товара — самостоятельный материал, который имеет смысл и сам по себе. Это <article>."
+      }
+    },
+    {
+      "slug": "html-project-checklist",
+      "type": "quiz.multiple_choice",
+      "title": "Проверка проекта",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "html-project-card"
+      ],
+      "presentation": {
+        "question": "Отметьте всё, что обязательно для доступной и корректной страницы-визитки.",
+        "options": [
+          {
+            "id": "h1",
+            "text": "Один h1 и разделы на h2"
+          },
+          {
+            "id": "alt",
+            "text": "Осмысленный alt у картинок"
+          },
+          {
+            "id": "label",
+            "text": "label у каждого поля формы"
+          },
+          {
+            "id": "table",
+            "text": "Раскладка страницы таблицей"
+          },
+          {
+            "id": "br",
+            "text": "Отступы через несколько <br>"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "h1",
+          "alt",
+          "label"
+        ],
+        "explanation": "Иерархия заголовков, alt и подписи полей — основа корректной страницы. Таблицы и <br> для раскладки не используют."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "chto-takoe-html",
+      "title": "Что такое HTML",
+      "durationMinutes": 8,
+      "summary": "Как браузер превращает текст с тегами в страницу. Теги, элементы и атрибуты.",
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## HTML — это разметка, а не программа\n\nHTML (HyperText Markup Language) говорит браузеру, **что** находится на странице: вот заголовок, вот абзац, вот ссылка. Он не считает и не принимает решений — он описывает структуру. Как выглядит страница, решает CSS, а как она реагирует на действия — JavaScript.\n\n## Элемент = тег + содержимое\n\n```html\n<p>Привет! Это абзац текста.</p>\n```\n\n- `<p>` — **открывающий тег**: начало элемента «абзац».\n- `Привет! Это абзац текста.` — **содержимое**.\n- `</p>` — **закрывающий тег**, со слешем.\n\nВсё вместе — это **элемент**. Нажмите «Попробовать» и поменяйте текст: результат обновится сам.\n\n## Атрибуты — настройки элемента\n\nАтрибут пишется внутри открывающего тега: `имя=\"значение\"`.\n\n```html\n<a href=\"https://developer.mozilla.org\">Документация MDN</a>\n```\n\nЗдесь `href` — атрибут ссылки: он говорит, куда вести.\n\n## Пустые элементы\n\nНекоторым элементам содержимое не нужно, у них нет закрывающего тега: например, перенос строки `<br>` или картинка `<img>`.\n\n## Частые ошибки\n\n- Забыть закрывающий тег: `<p>Текст` — браузер «додумает», но не всегда так, как вы хотите.\n- Перепутать слеш: `<p>Текст<p/>` вместо `</p>`.\n- Забыть кавычки в атрибуте с пробелами.\n\n## Практика\n\nОткройте песочницу у примера ниже и добавьте второй абзац о себе.\n\n```html\n<p>Меня зовут Аня.</p>\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-elements-closing",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-elements-attribute",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "karkas-dokumenta",
+      "title": "Каркас HTML-документа",
+      "durationMinutes": 9,
+      "summary": "Doctype, html, head и body: минимальный документ, с которого начинается любая страница.",
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Минимальная страница\n\nЛюбой HTML-документ начинается с одного и того же каркаса:\n\n```html\n<!doctype html>\n<html lang=\"ru\">\n  <head>\n    <meta charset=\"utf-8\">\n    <title>Моя первая страница</title>\n  </head>\n  <body>\n    <h1>Привет!</h1>\n    <p>Это видно на странице.</p>\n  </body>\n</html>\n```\n\n## Что здесь что\n\n- `<!doctype html>` — говорит браузеру: «это современный HTML». Без него браузер включает режим совместимости со старыми страницами.\n- `<html lang=\"ru\">` — корень документа. `lang` помогает экранным читалкам и переводчику.\n- `<head>` — служебная часть: её не видно на странице.\n- `<meta charset=\"utf-8\">` — кодировка. Без неё кириллица может превратиться в «кракозябры».\n- `<title>` — текст на вкладке браузера и в поисковой выдаче.\n- `<body>` — всё, что видит человек.\n\n## Вложенность и отступы\n\nЭлементы вкладываются друг в друга, как матрёшки: `head` и `body` лежат внутри `html`. Отступы браузеру не важны, но людям они помогают видеть структуру. Закрывайте элементы в обратном порядке: последним открыли — первым закрыли.\n\n## Частые ошибки\n\n- Писать видимый текст в `<head>`.\n- Забыть `<meta charset=\"utf-8\">`.\n- Закрыть `</html>` раньше `</body>`.\n\n## Практика\n\nВ песочнице замените заголовок на своё имя и добавьте абзац «Я учу HTML»."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-document-head",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-document-charset",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "zagolovki-i-abzacy",
+      "title": "Заголовки и абзацы",
+      "durationMinutes": 8,
+      "summary": "h1–h6 и p: как сделать текст понятным людям, поисковикам и экранным читалкам.",
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Шесть уровней заголовков\n\n```html\n<h1>Рецепт блинов</h1>\n<h2>Ингредиенты</h2>\n<p>Молоко, яйца, мука, щепотка соли.</p>\n<h2>Приготовление</h2>\n<h3>Тесто</h3>\n<p>Смешайте всё до однородности.</p>\n<h3>Жарка</h3>\n<p>Разогрейте сковороду и жарьте по минуте с каждой стороны.</p>\n```\n\n- `<h1>` — главный заголовок страницы. Обычно он **один**.\n- `<h2>` — разделы, `<h3>` — подразделы, и так до `<h6>`.\n- `<p>` — абзац текста.\n\n## Заголовок — это структура, а не размер шрифта\n\nНе выбирайте `<h3>` только потому, что «он поменьше». Экранные читалки и поисковики строят по заголовкам оглавление страницы. Пропуск уровней (сразу `h1` → `h4`) ломает это оглавление. Размер текста потом меняют в CSS.\n\n## Пробелы и переносы\n\nБраузер схлопывает несколько пробелов и переносов строк в один пробел. Новый абзац — это новый `<p>`, а не пустая строка в коде.\n\n## Практика\n\nСверстайте в песочнице инструкцию «Как заварить чай»: один h1, два раздела h2 и по абзацу в каждом.\n\n```html\n<h1>Как заварить чай</h1>\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-headings-main",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-headings-order",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "vydelenie-teksta",
+      "title": "Выделение текста по смыслу",
+      "durationMinutes": 8,
+      "summary": "strong, em, br, blockquote и code: когда какой тег нужен.",
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Важное и интонация\n\n```html\n<p><strong>Внимание:</strong> не трогайте горячую сковороду.</p>\n<p>Я сказал <em>завтра</em>, а не сегодня.</p>\n```\n\n- `<strong>` — **важность**: предупреждение, ключевая мысль. По умолчанию жирный.\n- `<em>` — **смысловое ударение**, интонация. По умолчанию курсив.\n\nЭкранная читалка может произнести эти места иначе, поэтому выбирайте тег по смыслу. Если нужно просто сделать текст жирным для красоты — это работа CSS.\n\n## Перенос строки внутри абзаца\n\n```html\n<p>ул. Пушкина, д. 10<br>Москва<br>123456</p>\n```\n\n`<br>` уместен там, где перенос — часть содержания: адрес, стихи. Для отступов между блоками он не подходит — используйте отдельные элементы.\n\n## Цитаты и код\n\n```html\n<blockquote>\n  <p>Простота — залог надёжности.</p>\n</blockquote>\n<p>Чтобы создать абзац, используйте тег <code>&lt;p&gt;</code>.</p>\n```\n\nОбратите внимание на `&lt;` и `&gt;`: так пишут символы `<` и `>`, чтобы браузер не принял их за тег.\n\n## Практика\n\nВ песочнице выделите слово «бесплатно» как важное, а слово «сегодня» — интонацией.\n\n```html\n<p>Курс бесплатно доступен сегодня.</p>\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-text-strong",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-text-entity",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "ssylki",
+      "title": "Ссылки",
+      "durationMinutes": 10,
+      "summary": "Тег a и атрибут href: внешние, внутренние, почтовые ссылки и якоря.",
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Ссылка = текст + адрес\n\n```html\n<p>Справочник по HTML — <a href=\"https://developer.mozilla.org/ru/\">MDN</a>.</p>\n```\n\nТекст между тегами — то, на что нажимают. `href` — куда ведёт.\n\n## Абсолютные и относительные адреса\n\n- **Абсолютный** адрес — полный, с протоколом: `https://example.com/about`. Нужен для чужих сайтов.\n- **Относительный** — от текущего места: `about.html`, `/courses`. Удобен для страниц своего сайта.\n\n## Почта, телефон и якорь\n\n```html\n<a href=\"mailto:hello@example.com\">Написать нам</a><br>\n<a href=\"tel:+79990000000\">Позвонить</a><br>\n<a href=\"#contacts\">К контактам</a>\n\n<h2 id=\"contacts\">Контакты</h2>\n<p>Мы отвечаем в течение дня.</p>\n```\n\n`#contacts` ведёт к элементу с `id=\"contacts\"` на той же странице.\n\n## Новая вкладка\n\n```html\n<a href=\"https://example.com\" target=\"_blank\" rel=\"noopener\">Открыть в новой вкладке</a>\n```\n\nНе открывайте всё подряд в новой вкладке — это сбивает. Делайте так только для внешних материалов. `rel=\"noopener\"` защищает вашу страницу от открытой вкладки.\n\n## Текст ссылки должен объяснять, куда она ведёт\n\nПлохо: «нажмите **здесь**». Хорошо: «скачайте **программу курса**». Человек с экранной читалкой часто слушает только список ссылок.\n\n## Практика\n\nСделайте в песочнице мини-меню из трёх ссылок: на MDN, на почту и якорем на раздел ниже."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-links-href",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-links-anchor",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-links-text",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "izobrazheniya",
+      "title": "Изображения",
+      "durationMinutes": 9,
+      "summary": "img, src и alt: как вставить картинку, чтобы её поняли все, даже если она не загрузилась.",
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Тег img\n\n```html\n<img src=\"https://picsum.photos/seed/nexus/320/200\" alt=\"Горное озеро на рассвете\" width=\"320\" height=\"200\">\n```\n\n- `src` — адрес картинки.\n- `alt` — **текстовая замена**: её прочитает экранная читалка и покажет браузер, если картинка не загрузилась.\n- `width` и `height` — размеры в пикселях. Браузер заранее оставит место, и страница не будет «прыгать» при загрузке.\n\nУ `<img>` нет закрывающего тега.\n\n## Как писать alt\n\n- Описывайте **смысл** картинки в этом месте: «График: продажи выросли вдвое», а не «картинка».\n- Не начинайте с «изображение…» — читалка и так скажет, что это картинка.\n- Если картинка чисто декоративная, оставьте `alt=\"\"` пустым — тогда читалка её пропустит. Но сам атрибут нужен всегда.\n\n## Подпись к картинке\n\n```html\n<figure>\n  <img src=\"https://picsum.photos/seed/cat/320/200\" alt=\"Рыжий кот спит на подоконнике\" width=\"320\" height=\"200\">\n  <figcaption>Так выглядит идеальное воскресенье.</figcaption>\n</figure>\n```\n\n## Практика\n\nВ песочнице сломайте адрес картинки (сотрите пару букв в src) — и вы увидите, как браузер показывает alt."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-images-alt",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-images-decor",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "spiski",
+      "title": "Списки",
+      "durationMinutes": 8,
+      "summary": "ul, ol и li: перечисления, шаги инструкции и вложенные списки.",
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Маркированный и нумерованный\n\n```html\n<h2>Купить</h2>\n<ul>\n  <li>Молоко</li>\n  <li>Хлеб</li>\n  <li>Яблоки</li>\n</ul>\n\n<h2>Как включить компьютер</h2>\n<ol>\n  <li>Подключите питание</li>\n  <li>Нажмите кнопку включения</li>\n  <li>Дождитесь рабочего стола</li>\n</ol>\n```\n\n- `<ul>` (unordered) — порядок не важен.\n- `<ol>` (ordered) — порядок важен: шаги, рейтинг.\n- `<li>` — пункт. Внутри `ul` и `ol` могут лежать **только** `li`.\n\n## Вложенный список\n\n```html\n<ul>\n  <li>Фронтенд\n    <ul>\n      <li>HTML</li>\n      <li>CSS</li>\n    </ul>\n  </li>\n  <li>Бэкенд</li>\n</ul>\n```\n\nВложенный список кладут **внутрь** `li`, а не между пунктами.\n\n## Меню — это тоже список\n\nНавигацию сайта обычно размечают списком ссылок: так читалка сразу скажет «список из 4 пунктов».\n\n## Практика\n\nСделайте в песочнице план своего дня нумерованным списком, а в одном из пунктов — вложенный маркированный список дел."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-lists-ordered",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-lists-nesting",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "tablicy",
+      "title": "Таблицы",
+      "durationMinutes": 10,
+      "summary": "table, tr, th, td и caption: данные в строках и столбцах.",
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Таблица для данных\n\n```html\n<table>\n  <caption>Расписание занятий</caption>\n  <thead>\n    <tr>\n      <th>День</th>\n      <th>Тема</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>Понедельник</td>\n      <td>HTML</td>\n    </tr>\n    <tr>\n      <td>Среда</td>\n      <td>CSS</td>\n    </tr>\n  </tbody>\n</table>\n```\n\n- `<table>` — таблица, `<tr>` — строка (table row).\n- `<th>` — ячейка-заголовок, `<td>` — обычная ячейка.\n- `<caption>` — название таблицы.\n- `<thead>` и `<tbody>` — шапка и тело. Помогают читалкам и стилям.\n\n## Объединение ячеек\n\n```html\n<table>\n  <tr><th colspan=\"2\">Итог за неделю</th></tr>\n  <tr><td>Уроков</td><td>5</td></tr>\n</table>\n```\n\n`colspan=\"2\"` растягивает ячейку на два столбца, `rowspan` — на несколько строк.\n\n## Таблица — не для раскладки\n\nРаньше страницы раскладывали таблицами. Сейчас так не делают: для раскладки есть CSS. Таблица — только для данных в строках и столбцах.\n\n## Практика\n\nСделайте в песочнице таблицу с тремя любимыми фильмами: название, год, оценка. Не забудьте caption и th."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-tables-header",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-tables-layout",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "formy",
+      "title": "Формы",
+      "durationMinutes": 12,
+      "summary": "form, label, input, textarea и button: как спросить у человека данные.",
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Поле всегда с подписью\n\n```html\n<form>\n  <label for=\"name\">Имя</label>\n  <input id=\"name\" name=\"name\" type=\"text\" required>\n\n  <label for=\"email\">Почта</label>\n  <input id=\"email\" name=\"email\" type=\"email\" placeholder=\"you@example.com\">\n\n  <button type=\"submit\">Отправить</button>\n</form>\n```\n\n- `<label for=\"name\">` связан с полем `id=\"name\"`. Клик по подписи ставит курсор в поле, а читалка произносит подпись.\n- `name` — имя, под которым значение уйдёт на сервер.\n- `type` меняет поведение: `email`, `password`, `number`, `date`, `checkbox`… На телефоне для `email` откроется клавиатура с «@».\n- `required` — поле обязательно.\n- `placeholder` — подсказка-пример. Он **не заменяет** label: исчезает при вводе.\n\n## Выбор и многострочный текст\n\n```html\n<form>\n  <fieldset>\n    <legend>Уровень</legend>\n    <label><input type=\"radio\" name=\"level\" value=\"new\"> Новичок</label>\n    <label><input type=\"radio\" name=\"level\" value=\"pro\"> Уже пишу код</label>\n  </fieldset>\n\n  <label for=\"msg\">Сообщение</label>\n  <textarea id=\"msg\" name=\"msg\" rows=\"4\"></textarea>\n\n  <label><input type=\"checkbox\" name=\"news\"> Присылать новости</label>\n</form>\n```\n\nРадиокнопки с одинаковым `name` — одна группа: выбрать можно одну. `fieldset` и `legend` подписывают группу целиком.\n\n## Практика\n\nСоберите в песочнице форму записи на курс: имя, почта, выбор курса (радио) и кнопка. У каждого поля — label."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-forms-label",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-forms-types",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-forms-radio",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "semantika",
+      "title": "Семантическая структура",
+      "durationMinutes": 10,
+      "summary": "header, nav, main, section, article и footer: страница, понятная людям, читалкам и поисковикам.",
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Не только div\n\n`<div>` — просто коробка без смысла. Семантические теги говорят, **что** это за часть страницы.\n\n```html\n<header>\n  <a href=\"/\">Nexus</a>\n  <nav>\n    <ul>\n      <li><a href=\"/courses\">Курсы</a></li>\n      <li><a href=\"/blog\">Блог</a></li>\n    </ul>\n  </nav>\n</header>\n\n<main>\n  <article>\n    <h1>Как выучить HTML за неделю</h1>\n    <section>\n      <h2>День 1. Теги</h2>\n      <p>Начните с абзацев и заголовков.</p>\n    </section>\n  </article>\n</main>\n\n<footer>\n  <p>© 2026 Nexus</p>\n</footer>\n```\n\n- `<header>` — шапка: логотип, навигация.\n- `<nav>` — основная навигация.\n- `<main>` — главное содержимое. Один на страницу.\n- `<article>` — самостоятельный материал: статья, карточка товара, пост.\n- `<section>` — раздел со своим заголовком.\n- `<footer>` — подвал: контакты, копирайт.\n\n## Зачем это нужно\n\n- Читалка позволяет прыгнуть сразу к `main` или `nav`.\n- Поисковик лучше понимает, где главное.\n- Код читается проще, чем «суп из div».\n\n## Практика\n\nРазметьте в песочнице страницу блога: шапка с навигацией, main с одной статьёй из двух разделов и подвал."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-semantics-main",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-semantics-pick",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "proekt-vizitka",
+      "title": "Проект: страница-визитка",
+      "durationMinutes": 25,
+      "summary": "Соберите свою первую настоящую страницу и проверьте её по чек-листу.",
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Задача\n\nСделайте страницу-визитку о себе. Это ваш первый проект: его можно сохранить и потом улучшать стилями.\n\n## Требования\n\n1. Корректный каркас: doctype, `lang`, кодировка, title.\n2. Шапка с вашим именем и навигацией по разделам страницы (якорные ссылки).\n3. `main` с разделами «Обо мне», «Навыки» (список), «Опыт» (таблица или список), «Связаться» (форма).\n4. Хотя бы одна картинка с хорошим alt.\n5. Подвал с контактами: ссылка на почту.\n\n## Заготовка\n\nОткройте песочницу и заполните заготовку. Всё, что внутри комментариев `<!-- -->`, браузер не показывает.\n\n```html\n<!doctype html>\n<html lang=\"ru\">\n<head>\n  <meta charset=\"utf-8\">\n  <title>Визитка — Ваше имя</title>\n</head>\n<body>\n  <header>\n    <h1>Ваше имя</h1>\n    <nav>\n      <ul>\n        <li><a href=\"#about\">Обо мне</a></li>\n        <li><a href=\"#skills\">Навыки</a></li>\n        <li><a href=\"#contact\">Связаться</a></li>\n      </ul>\n    </nav>\n  </header>\n\n  <main>\n    <section id=\"about\">\n      <h2>Обо мне</h2>\n      <!-- Абзац о себе и картинка с alt -->\n    </section>\n\n    <section id=\"skills\">\n      <h2>Навыки</h2>\n      <!-- Список навыков -->\n    </section>\n\n    <section id=\"contact\">\n      <h2>Связаться</h2>\n      <!-- Форма: имя, почта, сообщение, кнопка -->\n    </section>\n  </main>\n\n  <footer>\n    <!-- Ссылка на почту -->\n  </footer>\n</body>\n</html>\n```\n\n## Чек-лист самопроверки\n\n- Один `h1`, разделы на `h2`, без пропуска уровней.\n- У каждой картинки есть осмысленный alt.\n- У каждого поля формы есть label, связанный через for/id.\n- Все якоря из навигации ведут на существующие id.\n- Текст ссылок понятен без контекста.\n- Все элементы закрыты, вложенность правильная.\n\n## Что дальше\n\nСледующий трек — CSS: сделаем эту же визитку красивой."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "html-project-checklist",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    }
+  ]
+}
