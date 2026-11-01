@@ -1,4 +1,4 @@
-import { ConceptFence, StoryFence } from "./story";
+import { ConceptFence, RecapFence, StoryFence } from "./story";
 import { ChallengeFence } from "./challenge";
 import Markdown from "react-markdown";
 import { Children, isValidElement } from "react";
@@ -34,6 +34,8 @@ export function SafeMarkdown({ children }: { children: string }) {
             const element = Children.toArray(children).find(isValidElement<{ children?: string; className?: string }>);
             if (!element || !isValidElement<{ children?: string; className?: string }>(element) || typeof element.props.children !== "string") return <pre>{children}</pre>;
             const language = /^language-([a-z0-9-]{1,30})$/i.exec(element.props.className ?? "")?.[1];
+            if (language === "recap")
+              return <RecapFence source={element.props.children} fallback={null} />;
             if (language === "story")
               return <StoryFence source={element.props.children} fallback={<CodeSnippet code={element.props.children} language="json" />} />;
             if (language === "concept")
