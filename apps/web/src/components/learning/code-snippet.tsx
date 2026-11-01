@@ -23,13 +23,18 @@ const LANGUAGE_NAMES: Record<string, string> = {
 };
 
 /** Editable code with live highlighting: a transparent textarea over a highlighted layer. */
-function CodeEditor({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+export function CodeEditor({ value, onChange, autoFocus = true, label = "Редактор HTML. Tab — отступ, Escape и затем Tab — выйти из редактора" }: {
+  value: string;
+  onChange: (value: string) => void;
+  autoFocus?: boolean;
+  label?: string;
+}) {
   const layer = useRef<HTMLPreElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
   const releaseTab = useRef(false);
   useEffect(() => {
-    input.current?.focus({ preventScroll: true });
-  }, []);
+    if (autoFocus) input.current?.focus({ preventScroll: true });
+  }, [autoFocus]);
   const rows = Math.min(Math.max(value.split("\n").length + 1, 4), 24);
   function keyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
     if (event.key === "Escape") {
@@ -59,7 +64,7 @@ function CodeEditor({ value, onChange }: { value: string; onChange: (value: stri
         autoCapitalize="off"
         autoComplete="off"
         autoCorrect="off"
-        aria-label="Редактор HTML. Tab — отступ, Escape и затем Tab — выйти из редактора"
+        aria-label={label}
         onChange={(event) => onChange(event.target.value)}
         onKeyDown={keyDown}
         onScroll={(event) => {
