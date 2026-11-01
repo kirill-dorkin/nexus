@@ -1,19 +1,17 @@
 "use client";
 
 import { brand } from "@platform/brand";
-import { lineId, spokenText } from "../../components/learning/speech-text";
 
 /*
- * Lesson sound: generative "coffee shop" music (Web Audio, no files, no licences) and character
- * voices (pre-rendered CC0 clips when available, the browser's own Russian voice otherwise).
- * A module singleton, so music keeps playing across client-side lesson navigation.
- * Everything is opt-in: browsers block audio without a gesture, and surprise sound is rude.
+ * Lesson music: generative "coffee shop" lo-fi in Web Audio — no files, no licences.
+ * A module singleton, so it keeps playing across client-side lesson navigation.
+ * (Character voice-over was tried and removed; see git history at 9722674 if it ever returns.)
  */
 
-export type SoundSettings = { music: boolean; voice: boolean; musicVolume: number; voiceVolume: number; rate: number };
-// On by default: sound is part of the course. Browsers still need one gesture before any audio,
+export type SoundSettings = { music: boolean; musicVolume: number };
+// On by default. Browsers still need one gesture before any audio,
 // so playback starts on the first click or key press (see unlockSound).
-const DEFAULTS: SoundSettings = { music: true, voice: true, musicVolume: 0.3, voiceVolume: 0.9, rate: 1.1 };
+const DEFAULTS: SoundSettings = { music: true, musicVolume: 0.3 };
 // v2: the old key stored "off" as the former default, which would hide the new default.
 const KEY = `${brand.slug}:sound:v2`;
 
@@ -25,7 +23,8 @@ function load() {
   if (loaded || typeof window === "undefined") return;
   loaded = true;
   try {
-    settings = { ...DEFAULTS, ...(JSON.parse(localStorage.getItem(KEY) ?? "{}") as Partial<SoundSettings>) };
+    const saved = JSON.parse(localStorage.getItem(KEY) ?? "{}") as Partial<SoundSettings>;
+    settings = { music: saved.music ?? DEFAULTS.music, musicVolume: saved.musicVolume ?? DEFAULTS.musicVolume };
   } catch {
     settings = DEFAULTS;
   }
@@ -46,7 +45,6 @@ export function unlockSound() {
   if (unlocked) return;
   unlocked = true;
   music.apply();
-  if (typeof speechSynthesis !== "undefined") speechSynthesis.getVoices();
   for (const listener of listeners) listener();
 }
 let snapshot = { settings: DEFAULTS, unlocked: false };
@@ -68,7 +66,6 @@ export function updateSound(patch: Partial<SoundSettings>) {
     /* storage unavailable: settings last for this page only */
   }
   music.apply();
-  if (!settings.voice) stopSpeech();
   for (const listener of listeners) listener();
 }
 
@@ -89,7 +86,6 @@ class Music {
   private timer: number | null = null;
   private nextStep = 0;
   private step = 0;
-  private ducked = false;
   private vinyl: AudioBufferSourceNode | null = null;
   playing = false;
 
@@ -124,12 +120,8 @@ class Music {
   private level() {
     if (!this.ctx || !this.master) return;
     const s = getSoundSettings();
-    const target = s.music ? s.musicVolume * 0.55 * (this.ducked ? 0.35 : 1) : 0;
+    const target = s.music ? s.musicVolume * 0.55 : 0;
     this.master.gain.setTargetAtTime(target, this.ctx.currentTime, 0.4);
-  }
-  duck(on: boolean) {
-    this.ducked = on;
-    this.level();
   }
   async start() {
     const ctx = this.setup();
@@ -274,87 +266,3 @@ class Music {
 }
 
 export const music = new Music();
-
-/* ------------------------------ Voices ------------------------------ */
-
-type Voice = { pitch: number; rate: number; female: boolean };
-const VOICES: Record<string, Voice> = {
-  marta: { pitch: 0.95, rate: 0.98, female: true },
-  nika: { pitch: 1.12, rate: 1.05, female: true },
-  bro: { pitch: 0.75, rate: 1.0, female: false },
-  lev: { pitch: 0.95, rate: 0.95, female: false },
-  bug: { pitch: 0.6, rate: 0.9, female: false }
-};
-
-let clips: Set<string> | null = null;
-let clipsLoading: Promise<Set<string>> | null = null;
-function loadClips() {
-  clipsLoading ??= fetch("/voice/html/index.json")
-    .then((r) => (r.ok ? (r.json() as Promise<string[]>) : []))
-    .then((ids) => (clips = new Set(ids)))
-    .catch(() => (clips = new Set()));
-  return clipsLoading;
-}
-
-function pickVoice(female: boolean): SpeechSynthesisVoice | null {
-  if (typeof speechSynthesis === "undefined") return null;
-  const russian = speechSynthesis.getVoices().filter((v) => v.lang.toLowerCase().startsWith("ru"));
-  const femaleNames = /milena|irina|svetlana|dariya|alena|anna|katya|google|female|женск/i;
-  const maleNames = /yuri|pavel|dmitr|maxim|male|мужск/i;
-  const ranked = russian.filter((v) => (female ? femaleNames.test(v.name) && !maleNames.test(v.name) : maleNames.test(v.name)));
-  return ranked.find((v) => /premium|enhanced|natural|neural|google/i.test(v.name)) ?? ranked[0] ?? russian[0] ?? null;
-}
-
-let current: { cancel: () => void } | null = null;
-
-export function stopSpeech() {
-  current?.cancel();
-  current = null;
-  if (typeof speechSynthesis !== "undefined") speechSynthesis.cancel();
-  music.duck(false);
-}
-
-/** Says one line in the character's voice. Resolves when it ends or is interrupted. */
-export async function speak(who: string, text: string): Promise<void> {
-  stopSpeech();
-  const s = getSoundSettings();
-  const voice = VOICES[who];
-  if (!voice) return;
-  const id = lineId(who, text);
-  const available = clips ?? (await loadClips());
-  music.duck(true);
-  try {
-    if (available.has(id)) {
-      await new Promise<void>((resolve) => {
-        const audio = new Audio(`/voice/html/${id}.mp3`);
-        audio.volume = s.voiceVolume;
-        audio.playbackRate = s.rate;
-        audio.onended = audio.onerror = () => resolve();
-        current = { cancel: () => { audio.pause(); resolve(); } };
-        audio.play().catch(() => resolve());
-      });
-      return;
-    }
-    if (typeof speechSynthesis === "undefined") return;
-    await new Promise<void>((resolve) => {
-      const utterance = new SpeechSynthesisUtterance(spokenText(text));
-      utterance.lang = "ru-RU";
-      const chosen = pickVoice(voice.female);
-      if (chosen) utterance.voice = chosen;
-      utterance.pitch = voice.pitch;
-      utterance.rate = voice.rate * s.rate;
-      utterance.volume = s.voiceVolume;
-      utterance.onend = utterance.onerror = () => resolve();
-      current = { cancel: () => resolve() };
-      speechSynthesis.speak(utterance);
-    });
-  } finally {
-    music.duck(false);
-  }
-}
-
-/** Voices load asynchronously in some browsers; warm them up early. */
-export function warmUpVoices() {
-  if (typeof speechSynthesis !== "undefined") speechSynthesis.getVoices();
-  void loadClips();
-}

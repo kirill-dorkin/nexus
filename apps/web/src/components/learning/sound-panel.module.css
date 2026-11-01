@@ -157,26 +157,6 @@
   width: 100%;
   accent-color: var(--accent-action);
 }
-.rates {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  padding: 3px;
-  border: 1px solid var(--border-default);
-  border-radius: 999px;
-}
-.rates button {
-  min-height: 28px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--text-secondary);
-  font: 650 0.78rem var(--font-sans);
-  cursor: pointer;
-}
-.rates button[aria-checked="true"] {
-  background: var(--accent-action);
-  color: #0a0c04;
-}
 .note {
   margin: 0.2rem 0.6rem 0.5rem;
   color: var(--text-secondary);

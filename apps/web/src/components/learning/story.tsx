@@ -1,12 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { Bug, Coffee, FastForward, Headphones, Robot, SpeakerHigh, Sparkle, Stop, User } from "@phosphor-icons/react/dist/ssr";
-import { speak, stopSpeech } from "../../lib/sound/engine";
-import { useSoundState } from "./sound-panel";
-
-/** Only one scene speaks at a time: a newly started scene takes the voice over. */
-let activeScene: symbol | null = null;
+import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
+import { Bug, Coffee, FastForward, Headphones, Robot, Sparkle, User } from "@phosphor-icons/react/dist/ssr";
 import { CodeSnippet } from "./code-snippet";
 import styles from "./story.module.css";
 
@@ -93,15 +88,10 @@ function useReducedMotion() {
 
 function StoryScene({ story }: { story: Story }) {
   const reduced = useReducedMotion();
-  const { settings: sound, unlocked } = useSoundState();
   const [node, setNode] = useState<HTMLElement | null>(null);
   const [started, setStarted] = useState(false);
   const [shown, setShown] = useState(1);
-  const [listening, setListening] = useState(false);
-  const [speaking, setSpeaking] = useState(-1);
-  const spoken = useRef(0);
-  const voiced = (sound.voice && unlocked && started) || listening;
-  const all = reduced && !voiced ? story.lines.length : shown;
+  const all = reduced ? story.lines.length : shown;
   useEffect(() => {
     if (!node || started) return;
     if (typeof IntersectionObserver === "undefined") { setStarted(true); return; }
@@ -112,43 +102,12 @@ function StoryScene({ story }: { story: Story }) {
     return () => observer.disconnect();
   }, [node, started]);
   useEffect(() => {
-    if (!started || reduced || voiced || shown >= story.lines.length) return;
+    if (!started || reduced || shown >= story.lines.length) return;
     // Reading time of the previous message, so the scene is paced like a real chat.
     const previous = story.lines[shown - 1]!.text.length;
     const timer = window.setTimeout(() => setShown((n) => n + 1), Math.min(2600, 700 + previous * 18));
     return () => window.clearTimeout(timer);
-  }, [started, reduced, voiced, shown, story.lines]);
-  // Voiced mode: each message appears as its character starts speaking it.
-  useEffect(() => {
-    if (!voiced) return;
-    // Sound unlocked mid-scene: carry on from the message on screen instead of starting over;
-    // a scene already read silently to the end is replayed only on «Слушать».
-    if (!listening) spoken.current = shown >= story.lines.length && spoken.current === 0 ? story.lines.length : Math.max(spoken.current, shown - 1);
-    if (spoken.current >= story.lines.length) return;
-    const me = Symbol("scene");
-    activeScene = me;
-    let alive = true;
-    void (async () => {
-      for (let i = spoken.current; i < story.lines.length; i++) {
-        if (!alive || activeScene !== me) return;
-        const line = story.lines[i]!;
-        setShown((n) => Math.max(n, i + 1));
-        setSpeaking(i);
-        if (line.who === "you") await new Promise((r) => window.setTimeout(r, 350));
-        else await speak(line.who, line.text);
-        await new Promise((r) => window.setTimeout(r, 120));
-        if (!alive || activeScene !== me) return;
-        spoken.current = i + 1;
-      }
-      setSpeaking(-1);
-      setListening(false);
-    })();
-    return () => {
-      alive = false;
-      if (activeScene === me) stopSpeech();
-      setSpeaking(-1);
-    };
-  }, [voiced, story.lines]);
+  }, [started, reduced, shown, story.lines]);
   const typing = !reduced && started && all < story.lines.length ? story.lines[all]!.who : null;
   return (
     <figure ref={setNode} className={styles.scene} data-single={story.lines.length === 1 || undefined}>
@@ -159,9 +118,6 @@ function StoryScene({ story }: { story: Story }) {
           const visible = i < all;
           return (
             <li key={i} className={styles.line} data-you={line.who === "you" || undefined}
-              data-speaking={speaking === i || undefined}
-              onClick={speaking === i ? () => stopSpeech() : undefined}
-              title={speaking === i ? "Нажмите, чтобы пропустить реплику" : undefined}
               data-hidden={!visible || undefined} style={{ "--c": c.color } as CSSProperties}>
               {line.who === "you" ? null : <Avatar who={line.who} />}
               <div className={styles.bubble}>
@@ -177,22 +133,11 @@ function StoryScene({ story }: { story: Story }) {
           <Avatar who={typing} /><span className={styles.dots}><i /><i /><i /></span>
         </div>
       ) : null}
-      <div className={styles.sceneActions}>
-        {voiced && speaking >= 0 ? (
-          <button type="button" className={styles.skip} onClick={() => { activeScene = null; stopSpeech(); setListening(false); setShown(story.lines.length); spoken.current = story.lines.length; }}>
-            <Stop size={14} weight="fill" aria-hidden="true" /> Остановить
-          </button>
-        ) : story.lines.some((l) => l.who !== "you") ? (
-          <button type="button" className={styles.skip} onClick={() => { spoken.current = 0; setShown(1); setStarted(true); setListening(true); }}>
-            <SpeakerHigh size={14} weight="fill" aria-hidden="true" /> Слушать
-          </button>
-        ) : null}
-        {!reduced && !voiced && all < story.lines.length ? (
-          <button type="button" className={styles.skip} onClick={() => { setStarted(true); setShown(story.lines.length); }}>
-            <FastForward size={14} weight="fill" aria-hidden="true" /> Показать всё
-          </button>
-        ) : null}
-      </div>
+      {!reduced && all < story.lines.length ? (
+        <button type="button" className={styles.skip} onClick={() => { setStarted(true); setShown(story.lines.length); }}>
+          <FastForward size={14} weight="fill" aria-hidden="true" /> Показать всё
+        </button>
+      ) : null}
     </figure>
   );
 }
