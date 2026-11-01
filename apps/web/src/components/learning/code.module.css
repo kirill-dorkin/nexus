@@ -212,3 +212,12 @@
     transition: none;
   }
 }
+/* Inner editor layers never draw their own frame; only the outer block does. */
+.snippet .editor,
+.snippet .layer,
+.snippet .input,
+.snippet .code {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}

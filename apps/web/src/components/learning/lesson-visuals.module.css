@@ -592,3 +592,10 @@
   word-break: normal;
   hyphens: auto;
 }
+/* The code area inside the demo window is flat: no border, no radius of its own. */
+.frame .window .editor {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
