@@ -176,3 +176,8 @@
     animation: none;
   }
 }
+/* One outline for the whole workspace instead of an inner editor ring. */
+.challenge .workspace:focus-within {
+  border-color: var(--accent-action);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-action) 22%, transparent);
+}

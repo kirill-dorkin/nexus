@@ -413,7 +413,7 @@
   border-radius: 0 0 0.8rem 0.8rem;
 }
 [data-phase="result"] .progress {
-  opacity: 0.35;
+  opacity: 0;
   transition: opacity 600ms ease 400ms;
 }
 .progress span {
