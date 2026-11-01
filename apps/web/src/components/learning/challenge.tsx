@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { ArrowCounterClockwise, Check, Circle, Eye, Lightbulb, Trophy } from "@phosphor-icons/react/dist/ssr";
+import { brand } from "@platform/brand";
 import { CodeEditor } from "./code-snippet";
 import codeStyles from "./code.module.css";
 import styles from "./challenge.module.css";
@@ -102,7 +103,7 @@ function Inline({ text }: { text: string }): ReactNode {
 function storageKey(challenge: Challenge) {
   let h = 0;
   for (const ch of challenge.title + challenge.start) h = (h * 31 + ch.charCodeAt(0)) | 0;
-  return `nexus:challenge:${(h >>> 0).toString(36)}`;
+  return `${brand.slug}:challenge:${(h >>> 0).toString(36)}`;
 }
 
 export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
