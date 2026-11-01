@@ -1,0 +1,37 @@
+.page {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  padding: clamp(3rem, 10vh, 7rem) 0;
+  text-align: center;
+}
+.code {
+  margin: 0;
+  font-size: clamp(7rem, 24vw, 14rem);
+  font-weight: 800;
+  line-height: 0.85;
+  letter-spacing: -0.08em;
+  background: linear-gradient(180deg, var(--text-accent), color-mix(in srgb, var(--accent-action) 5%, transparent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.page h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4.5vw, 2.75rem);
+  letter-spacing: -0.045em;
+}
+.page > p:not(.code) {
+  max-width: 28rem;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}

@@ -1,22 +1,20 @@
 import type { Metadata } from "next";
 import { brand } from "@platform/brand";
-import {
-  HomeDiscoveryShell,
-  CourseDiscovery,
-} from "../components/learning/home-discovery";
+import { LearningShell } from "../components/learning/learning-shell";
+import { HomeContent } from "../components/learning/home-discovery";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Понятное обучение цифровым навыкам",
-  description: `Открытые IT-курсы ${brand.name}: видео, понятные конспекты и практика в удобном темпе.`,
+  title: "Бесплатные IT-курсы с практикой",
+  description: `Открытые IT-курсы ${brand.name}: короткие видео, понятные конспекты и задания с мгновенной проверкой.`,
   alternates: { canonical: "/" },
-  openGraph: { url: "/" },
+  openGraph: { url: "/" }
 };
 
 export default function HomePage() {
   return (
-    <HomeDiscoveryShell>
-      <CourseDiscovery />
-    </HomeDiscoveryShell>
+    <LearningShell width="full">
+      <HomeContent />
+    </LearningShell>
   );
 }

@@ -156,7 +156,7 @@ export function MyLearning() {
       )}
       {courses.length > 0 && (
         <div className={styles.learningSummary} aria-label="Сводка обучения">
-          <span>LEARNING DASHBOARD</span>
+          <span>Сводка</span>
           <p>
             <strong>{inProgressCount}</strong>
             <small>в процессе</small>

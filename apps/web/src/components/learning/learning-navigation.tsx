@@ -73,7 +73,7 @@ export function LearningNavigation({
       {showLogin && authState === "anonymous" ? (
         <div className={styles.authActions}>
           <Link className={`${buttonClass({ variant: "ghost", size: "sm" })} ${styles.login}`} href="/login">Войти</Link>
-          <Link className={`${buttonClass({ size: "sm" })} ${styles.register}`} href="/login?mode=register">Создать аккаунт</Link>
+          <Link className={`${buttonClass({ size: "sm" })} ${styles.register}`} href="/login?mode=register">Начать бесплатно</Link>
         </div>
       ) : showLogin && authState === "checking" ? (
         <div className={styles.authPlaceholder} aria-hidden="true">
@@ -100,7 +100,7 @@ export function LearningNavigation({
       >
         <div className={styles.menuHeading}>
           <div className={styles.menuIdentity}>
-            <span className={styles.menuEyebrow}>{brand.name} / НАВИГАЦИЯ</span>
+            <span className={styles.menuEyebrow}>{brand.name}</span>
             <h2 id={`${id}-title`}>Куда отправимся?</h2>
           </div>
           <IconButton aria-label="Закрыть меню" onClick={closeMenu} className={styles.closeButton}>
@@ -145,7 +145,7 @@ export function LearningNavigation({
           {showLogin && authState === "anonymous" ? (
             <div className={styles.mobileAuth}>
               <Link className={buttonClass({ size: "md" })} href="/login?mode=register" onClick={closeMenu}>
-                Создать аккаунт <ArrowRight size={19} aria-hidden="true" />
+                Начать бесплатно <ArrowRight size={19} aria-hidden="true" />
               </Link>
               <Link className={buttonClass({ variant: "secondary", size: "md" })} href="/login" onClick={closeMenu}>
                 Уже есть аккаунт? Войти

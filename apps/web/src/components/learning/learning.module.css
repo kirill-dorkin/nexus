@@ -646,3 +646,41 @@ button.button {
     backdrop-filter: none;
   }
 }
+
+/* Learner lesson column (dark redesign): blocks follow the lesson column width. */
+.blocks {
+  max-width: none;
+  margin: 0;
+  gap: 1.5rem;
+}
+.notes {
+  padding: clamp(1.25rem, 3.5vw, 2.25rem);
+  border: 1px solid var(--border-default);
+  border-radius: 1.5rem;
+}
+.notes .markdown {
+  max-width: none;
+  margin: 0;
+  color: color-mix(in srgb, var(--text-primary) 88%, var(--text-secondary));
+}
+.markdown strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+.markdown h2 {
+  font-size: clamp(1.4rem, 3vw, 1.75rem);
+  letter-spacing: -0.035em;
+}
+.markdown h3 {
+  font-size: 1.2rem;
+}
+.markdown ul {
+  padding-left: 1.25rem;
+}
+.markdown li::marker {
+  color: var(--text-accent);
+}
+.blocks > section > :global(.ui-surface) {
+  padding: clamp(1.25rem, 3.5vw, 2rem);
+  border-radius: 1.5rem;
+}

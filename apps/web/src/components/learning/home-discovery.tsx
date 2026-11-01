@@ -1,199 +1,148 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Suspense, type ReactNode } from "react";
-import { ArrowRight, BookOpen, Clock } from "@phosphor-icons/react/dist/ssr";
-import { brand } from "@platform/brand";
+import { Suspense } from "react";
+import { ArrowRight, Check, X } from "@phosphor-icons/react/dist/ssr";
 import type { PublicLearningCourse } from "@platform/contracts";
 import { Alert, ButtonLink, Skeleton } from "@platform/ui";
 import { loadLearningCatalog, courseUrl } from "../../lib/public-learning";
-import { AppearanceControl } from "../appearance/appearance-control";
-import { LearningNavigation } from "./learning-navigation";
 import { CatalogRetry } from "./catalog-retry";
-import { courseArtwork } from "./course-artwork";
-import { lessonCount } from "./learning-labels";
-import brandStyles from "./learning.module.css";
+import { CourseCard, CoursesEmpty } from "./course-list";
 import styles from "./home-discovery.module.css";
 
-export function HomeDiscoveryShell({
-  children,
-  preview = false,
-  layout = "open",
-}: {
-  children: ReactNode;
-  preview?: boolean;
-  layout?: "open" | "editorial";
-}) {
+/** The primary action goes straight to the first real course when one exists. */
+async function HeroActions() {
+  let first: PublicLearningCourse | undefined;
+  try {
+    first = (await loadLearningCatalog()).courses[0];
+  } catch {
+    first = undefined;
+  }
+  return <HeroButtons href={first ? courseUrl(first) : "/courses"} />;
+}
+
+function HeroButtons({ href }: { href: string }) {
   return (
-    <div
-      className={styles.page}
-      data-home-preview={preview || undefined}
-      data-home-layout={layout}
-    >
-      <a className={styles.skip} href="#home-content">
-        Перейти к содержимому
-      </a>
-      <header className={styles.header}>
-        <Link
-          href="/"
-          className={brandStyles.brand}
-          aria-label={`${brand.name} — на главную`}
-        >
-          <span className={brandStyles.brandMark} aria-hidden="true">
-            N
-          </span>
-          <span className={brandStyles.brandLockup}>
-            <span>{brand.name}</span>
-            <small>учебная среда</small>
-          </span>
-        </Link>
-        <LearningNavigation />
-      </header>
-      <aside
-        className={styles.appearanceDock}
-        aria-label="Оформление интерфейса"
-      >
-        <AppearanceControl
-          showAccentLabels
-          dialogClassName={styles.appearanceDialog ?? ""}
-        />
-      </aside>
-      {preview && (
-        <nav className={styles.previewNotice} aria-label="Варианты дизайна">
-          <span>Дизайн Preview</span>
-          <div>
-            <Link
-              href="/ui/home-lab"
-              aria-current={layout === "open" ? "page" : undefined}
-            >
-              Открытый выбор
-            </Link>
-            <Link
-              href="/ui/home-lab?layout=editorial"
-              aria-current={layout === "editorial" ? "page" : undefined}
-            >
-              Редакционный
-            </Link>
-          </div>
-        </nav>
-      )}
-      <main id="home-content" tabIndex={-1}>
-        <section className={styles.introduction} aria-labelledby="home-title">
-          <p className={styles.eyebrow}>Образовательная платформа</p>
-          <h1 id="home-title">Новые навыки — в вашем темпе.</h1>
-          <p className={styles.introText}>
-            Понятные конспекты и практика. Выберите курс и начните разбираться.
-          </p>
-        </section>
-        {children}
-      </main>
-      <footer className={styles.footer}>
-        <span>
-          {brand.name}
-          <span className={styles.footerCaption}>Учебная среда</span>
-        </span>
-        <nav aria-label="Меню внизу страницы">
-          <Link href="/courses">Курсы</Link>
-          <Link href="/blog">Блог</Link>
-          <Link href="/studio">Для авторов</Link>
-        </nav>
-      </footer>
+    <div className={styles.heroActions}>
+      <ButtonLink size="lg" href={href}>
+        Начать первый курс <ArrowRight size={20} aria-hidden="true" />
+      </ButtonLink>
+      <ButtonLink size="lg" variant="secondary" href="#courses">
+        Смотреть все курсы
+      </ButtonLink>
     </div>
   );
 }
 
+/** Decorative product preview: what a lesson looks like, built from markup. */
+function LessonPreview() {
+  return (
+    <div className={styles.preview} aria-hidden="true">
+      <div className={styles.previewCard}>
+        <div className={styles.previewTop}>
+          <span>Урок 2 из 4</span>
+          <span>12 мин</span>
+        </div>
+        <div className={styles.previewBar}><span /></div>
+        <p className={styles.previewTitle}>Оперативная память и файлы</p>
+        <div className={styles.previewVideo}>
+          <span className={styles.previewPlay}>
+            <svg viewBox="0 0 16 16" width="16" height="16"><path d="M4 2.5 13 8l-9 5.5z" fill="currentColor" /></svg>
+          </span>
+        </div>
+        <p className={styles.previewQuestion}>Что хранит данные, пока программа работает?</p>
+        <div className={styles.previewOptions}>
+          <span>Накопитель SSD</span>
+          <span data-correct="">
+            Оперативная память <Check size={16} weight="bold" />
+          </span>
+          <span>Монитор</span>
+        </div>
+      </div>
+      <div className={`${styles.chip} ${styles.chipTop}`}>
+        <span className={styles.chipIcon}><Check size={14} weight="bold" /></span>
+        Правильно · сохранено
+      </div>
+      <div className={`${styles.chip} ${styles.chipBottom}`}>
+        <span className={styles.chipValue}>3/8</span>
+        заданий курса
+      </div>
+    </div>
+  );
+}
+
+function HowItWorks() {
+  return (
+    <section className={styles.section} aria-labelledby="how-title">
+      <div className={styles.sectionHead}>
+        <p className={styles.kicker}>Как это устроено</p>
+        <h2 id="how-title">Всё, чтобы разобраться. Ничего лишнего.</h2>
+      </div>
+      <div className={styles.bento}>
+        <article className={`${styles.tile} ${styles.tileWide}`}>
+          <div className={styles.tileVisualVideo} aria-hidden="true">
+            <span className={styles.previewPlay}>
+              <svg viewBox="0 0 16 16" width="16" height="16"><path d="M4 2.5 13 8l-9 5.5z" fill="currentColor" /></svg>
+            </span>
+            <div className={styles.notesLines}><span /><span /><span /></div>
+          </div>
+          <h3>Видео и конспект</h3>
+          <p>Объяснение на 10–15 минут и текст, к которому удобно вернуться.</p>
+        </article>
+        <article className={styles.tile}>
+          <div className={styles.tileVisualCheck} aria-hidden="true">
+            <span data-ok=""><Check size={18} weight="bold" /></span>
+            <span><X size={18} weight="bold" /></span>
+          </div>
+          <h3>Проверка сразу</h3>
+          <p>Ответили — и тут же видно, верно ли. Ошиблись — попробуйте ещё.</p>
+        </article>
+        <article className={styles.tile}>
+          <div className={styles.tileVisualProgress} aria-hidden="true">
+            <span style={{ width: "62%" }} />
+          </div>
+          <h3>Прогресс сохраняется</h3>
+          <p>Закрыли вкладку — продолжите с того же места.</p>
+        </article>
+        <article className={`${styles.tile} ${styles.tileAccent}`}>
+          <p className={styles.bigValue} aria-hidden="true">0 ₽</p>
+          <h3>Бесплатно</h3>
+          <p>Без пробных периодов и привязки карты.</p>
+        </article>
+      </div>
+    </section>
+  );
+}
+
 export function DiscoveryRows({
-  courses,
+  courses
 }: {
   courses: PublicLearningCourse[];
 }) {
-  if (!courses.length)
-    return (
-      <div className={styles.empty}>
-        <h3>Курсы готовятся к открытию</h3>
-        <p>
-          Здесь появятся доступные материалы. Пока можно почитать{" "}
-          <Link href="/blog">блог</Link>.
-        </p>
-      </div>
-    );
+  if (!courses.length) return <CoursesEmpty />;
   return (
-    <div className={styles.courseList}>
-      {courses.slice(0, 3).map((course, index) => {
-        const artwork = courseArtwork(
-          course.organization.slug,
-          course.offering.slug,
-        );
-        const description = course.course.description.split(/(?<=[.!?])\s+/)[0];
-        const minutes = course.course.lessons.reduce(
-          (sum, lesson) => sum + lesson.durationMinutes,
-          0,
-        );
-        return (
-          <article
-            className={`${styles.course} ${!artwork ? styles.withoutArt : ""}`}
-            key={`${course.organization.slug}/${course.offering.slug}`}
-          >
-            <div className={styles.courseCopy}>
-              <p className={styles.courseLabel}>Курс</p>
-              <h3>
-                <Link href={courseUrl(course)}>{course.course.title}</Link>
-              </h3>
-              {description && (
-                <p className={styles.courseDescription}>{description}</p>
-              )}
-              <ul className={styles.courseMeta} aria-label="Сведения о курсе">
-                <li>
-                  <BookOpen size={18} aria-hidden="true" />
-                  {lessonCount(course.course.lessons.length)}
-                </li>
-                {minutes > 0 && (
-                  <li>
-                    <Clock size={18} aria-hidden="true" />
-                    {minutes} мин
-                  </li>
-                )}
-              </ul>
-              <ButtonLink
-                className={styles.courseAction}
-                href={courseUrl(course)}
-              >
-                Посмотреть программу <ArrowRight size={20} aria-hidden="true" />
-              </ButtonLink>
-            </div>
-            {artwork && (
-              <div className={styles.courseVisual}>
-                <div className={styles.courseImage}>
-                  <Image
-                    {...artwork}
-                    alt={artwork.alt}
-                    unoptimized
-                    preload={index === 0}
-                    sizes="(max-width: 700px) 100vw, 530px"
-                  />
-                </div>
-              </div>
-            )}
-          </article>
-        );
-      })}
+    <div className={styles.courseGrid}>
+      {courses.slice(0, 6).map((course, index) => (
+        <CourseCard
+          key={`${course.organization.slug}/${course.offering.slug}`}
+          course={course}
+          index={index}
+          featured={index === 0}
+        />
+      ))}
     </div>
   );
 }
 
 export function DiscoveryLoading() {
   return (
-    <div
-      className={styles.courseLoading}
-      aria-busy="true"
-      aria-label="Загрузка курсов"
-    >
-      <div>
-        <p role="status">Загружаем курсы…</p>
-        <Skeleton />
-        <Skeleton />
-        <Skeleton className={styles.actionPlaceholder} />
-      </div>
-      <Skeleton className={styles.coverPlaceholder} />
+    <div className={styles.courseGrid} aria-busy="true" aria-label="Загрузка курсов">
+      <p role="status" className={styles.srOnly}>Загружаем курсы…</p>
+      {[0, 1, 2].map((key) => (
+        <div key={key} className={styles.loadingCard}>
+          <Skeleton className={styles.loadingCover} />
+          <Skeleton />
+          <Skeleton />
+        </div>
+      ))}
     </div>
   );
 }
@@ -214,20 +163,57 @@ export async function DiscoveryCourses() {
 
 export function CourseDiscovery() {
   return (
-    <section
-      className={styles.discovery}
-      aria-labelledby="courses-title"
-      id="courses"
-    >
-      <div className={styles.discoveryHeading}>
-        <h2 id="courses-title">Что будете изучать?</h2>
-        <Link href="/courses">
-          Все курсы <ArrowRight size={18} aria-hidden="true" />
+    <section className={styles.section} aria-labelledby="courses-title" id="courses">
+      <div className={styles.sectionHeadRow}>
+        <div className={styles.sectionHead}>
+          <p className={styles.kicker}>Курсы</p>
+          <h2 id="courses-title">С чего начнём?</h2>
+        </div>
+        <Link className={styles.allLink} href="/courses">
+          Весь каталог <ArrowRight size={18} aria-hidden="true" />
         </Link>
       </div>
       <Suspense fallback={<DiscoveryLoading />}>
         <DiscoveryCourses />
       </Suspense>
     </section>
+  );
+}
+
+export function HomeContent() {
+  return (
+    <>
+      <section className={styles.hero} aria-labelledby="home-title">
+        <div className={styles.heroCopy}>
+          <p className={styles.badge}>
+            <span className={styles.badgeDot} aria-hidden="true" />
+            Бесплатно · можно без регистрации
+          </p>
+          <h1 id="home-title">
+            Разберитесь в IT.{" "}
+            <span className={styles.accentText}>По 15 минут в день.</span>
+          </h1>
+          <p className={styles.lead}>
+            Короткие видео, понятные конспекты и задания с мгновенной проверкой.
+            Аккаунт нужен, только чтобы сохранить прогресс.
+          </p>
+          <Suspense fallback={<HeroButtons href="/courses" />}>
+            <HeroActions />
+          </Suspense>
+        </div>
+        <LessonPreview />
+      </section>
+      <div className={styles.container}>
+        <CourseDiscovery />
+        <HowItWorks />
+        <section className={styles.finalCta} aria-labelledby="final-title">
+          <h2 id="final-title">Первый урок — через минуту.</h2>
+          <p>Откройте курс и начните смотреть. Регистрация не нужна.</p>
+          <ButtonLink size="lg" href="/courses">
+            Выбрать курс <ArrowRight size={20} aria-hidden="true" />
+          </ButtonLink>
+        </section>
+      </div>
+    </>
   );
 }

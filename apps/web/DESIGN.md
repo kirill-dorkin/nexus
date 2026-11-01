@@ -1,67 +1,58 @@
 ---
-name: "Nexus — open course discovery"
-description: "Public homepage and isolated comparison lab."
+name: "Nexus — learner interface"
+description: "Dark, bold learner-facing pages: home, catalog, course, lesson, auth, my learning, 404."
 colors:
-  light-page: "#f5f6fa"
-  light-ink: "#20213a"
-  light-muted: "#62687d"
-  dark-page: "#100b16"
-  dark-ink: "#f8f5fb"
-  dark-muted: "#b8afc4"
-  rose-action: "#c21e68"
-  violet-action: "#7742d3"
-  blue-action: "#2455cb"
-  teal-action: "#08786f"
-  amber-action: "#946000"
+  canvas: "#08090b"
+  surface: "#121317"
+  surface-elevated: "#16181c"
+  ink: "#f5f5f4"
+  muted: "#a3a3ad"
+  accent: "#c5f23a"
+  accent-text: "#d4f86a"
+  on-accent: "#0a0c04"
 typography:
   display:
     fontFamily: "Onest Variable"
-    fontSize: "clamp(2rem, 3.5vw, 2.75rem)"
-    fontWeight: 700
-    lineHeight: 1.17
-    letterSpacing: "-.035em"
-  course-title:
+    fontSize: "clamp(2.6rem, 7.2vw, 5.4rem)"
+    fontWeight: 800
+    lineHeight: 0.98
+    letterSpacing: "-.06em"
+  section:
     fontFamily: "Onest Variable"
-    fontSize: "clamp(1.625rem, 2.5vw, 2rem)"
-    fontWeight: 650
-    lineHeight: 1.2
-    letterSpacing: "-.025em"
+    fontSize: "clamp(1.9rem, 4.2vw, 3.1rem)"
+    fontWeight: 750
+    letterSpacing: "-.05em"
   body:
     fontFamily: "Onest Variable"
     fontSize: "1rem"
-    lineHeight: 1.65
-  metadata:
-    fontFamily: "Onest Variable"
-    fontSize: ".875rem"
-    lineHeight: 1.5
-rounded:
-  action: "12px"
-  artwork: "16px"
-spacing:
-  group: "16px"
-  course: "40px"
-  section: "48px"
-  desktop-columns: "64px"
+    lineHeight: 1.6
 ---
 
-# Open discovery
+# Learner interface
 
-The public `/` now uses the selected open composition. A short platform introduction leads directly to real course rows: canonical title, first complete description sentence, actual lesson count/minutes, and “Посмотреть программу”. The course's reviewed cover and first three canonical lesson titles give a concrete preview of what is taught. The page has no fictional results, new course taxonomy, promotional demo, FAQ or benefit grid.
+## Principle
 
-## Composition and identity
+A visitor understands the page at a glance and reaches the next step in one action. Every learner page has exactly one primary action, drawn in the accent colour. Decoration explains the product (a lesson preview, progress, checking) rather than filling space.
 
-The 1140px frame preserves the original shared tilted N mark, dot and brand lockup. Onest is self-hosted by the existing pinned Fontsource dependency, with Cyrillic and Latin. Dark plum and the neutral light surface use existing semantic tokens. The selected accent belongs to the primary course action and focus; registration is quiet.
+## Direction
 
-At regular widths the open course copy and artwork share an unboxed spread. Below 700px title, description, metadata and the 48px program action come before artwork. Course rows remain usable without artwork or description. A small catalog heading/link precedes the rows. The first three lesson titles come from the existing public projection, not editorial promises or a simulated learner dashboard.
+- Always dark on learner pages (`data-learner-scope`, `data-ui-theme="dark"`, `data-ui-accent="lime"` on the page frame), independent of the device colour scheme. There is no appearance picker on learner pages.
+- Neutral near-black canvas; colour comes only from the single electric-lime accent. Accent actions use dark text.
+- Large, heavy, tightly tracked Onest headings; quiet secondary text.
+- Rounded cards (1.5rem), pill buttons, thin borders, soft accent glow behind key surfaces.
+- Bento grid for "how it works"; course cards with a generated cover (lesson list + large index), never stock imagery.
+- Motion is limited to hover lift and two floating preview chips, disabled under `prefers-reduced-motion`.
 
-## Appearance and interaction
+## Structure
 
-“Тема и цвет” occupies an ordinary utility row below navigation, outside the header. It is never fixed over content. The existing native dialog retains named theme/accent radio groups, Escape, inert background, focus return, device persistence, OS-system and cross-tab behavior. The trigger and panel are opaque; no blur or graphics runtime is needed. Original navigation still checks the real session and reveals private destinations only after success.
+- `components/learning/learning-shell.tsx` + `site.module.css`: sticky translucent header, main column, footer.
+- `components/learning/home-discovery.tsx`: hero (offer + direct "start first course" action + lesson preview), courses, bento, final CTA.
+- `components/learning/course-list.tsx`: the one course card used on home and catalog.
+- `components/learning/flow.module.css`: catalog, course, lesson, quiz, saved learning.
+- `app/login`: centered auth card. `app/not-found.tsx`: 404.
 
-Focus is 3px with 4px offset. Responsive controls retain the existing native primitives and Phosphor SSR icons. No new authored motion. Reduced motion removes transitions; high contrast strengthens separators, and forced colors keeps an action boundary.
+Studio keeps its existing presentation until its own redesign slice; it still follows the device colour scheme and the appearance control.
 
-## Streaming and evidence
+## Contracts kept
 
-The catalog remains server-loaded under Suspense using unchanged no-store validated reads. Loading, genuine empty, failed reads and retry remain distinct. Skeleton grid tracks use minmax(0, 1fr) and explicit artwork ratio to prevent narrow-width expansion. Mobile heading/link spacing remains stable while fallback fonts switch to Onest.
-
-The alternate image-first editorial layout remains at `/ui/home-lab?layout=editorial` for comparison. Lab metadata is noindex. Shared learning/Studio compositions and contracts are unchanged. See `docs/design/home-redesign-verification.md` for evidence and limitations; a viewport test is not a physical-device or screen-reader certification.
+Copy, labels, landmarks and form structure asserted by `tests/public-launch-browser/verify.mjs` are part of the interface contract. Change them together with the browser test.

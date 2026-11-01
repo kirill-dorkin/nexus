@@ -64,7 +64,7 @@ describe("quiet accent-aware page canvas", () => {
       expect(strength).toBeLessThanOrEqual(theme === "dark" ? 9 : 5);
       expect(Number(glowMatch![1])).toBeLessThanOrEqual(theme === "dark" ? 8 : 6);
     });
-    for (const accent of ["rose", "violet", "blue", "teal", "amber"]) {
+    for (const accent of ["rose", "violet", "blue", "teal", "amber", "lime"]) {
       it(`preserves readable ${theme} text on the ${accent} canvas`, () => {
         expect(match).not.toBeNull();
         const accentBlock = declarations(`[data-ui-accent="${accent}"]`);

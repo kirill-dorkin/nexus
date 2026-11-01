@@ -56,7 +56,7 @@ function contrast(first: string, second: string) {
 }
 describe.each(
   ["dark", "light"].flatMap((mode) =>
-    ["rose", "violet", "blue", "teal", "amber"].map(
+    ["rose", "violet", "blue", "teal", "amber", "lime"].map(
       (accent) => [mode, accent, palette(mode, accent)] as const
     )
   )

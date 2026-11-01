@@ -1,19 +1,14 @@
 "use client";
-import { Button, Container, Stack, Surface, Text, Heading } from "@platform/ui";
+import { Button, Heading, Stack, Text } from "@platform/ui";
+import { LearningShell } from "../components/learning/learning-shell";
 export default function PageError({ reset }: { reset: () => void }) {
   return (
-    <main>
-      <Container>
-        <Surface padding="lg">
-          <Stack gap="lg">
-            <Heading level={1}>Не удалось загрузить страницу</Heading>
-            <Text muted>Попробуйте ещё раз через минуту.</Text>
-            <div>
-              <Button onClick={reset}>Повторить загрузку</Button>
-            </div>
-          </Stack>
-        </Surface>
-      </Container>
-    </main>
+    <LearningShell>
+      <Stack gap="lg" style={{ maxWidth: "36rem", margin: "4rem auto", textAlign: "center", alignItems: "center" }}>
+        <Heading level={1} size="section">Не удалось загрузить страницу</Heading>
+        <Text muted>Попробуйте ещё раз через минуту.</Text>
+        <Button onClick={reset}>Повторить загрузку</Button>
+      </Stack>
+    </LearningShell>
   );
 }

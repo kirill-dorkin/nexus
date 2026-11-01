@@ -1,340 +1,228 @@
 .page {
   position: relative;
   isolation: isolate;
-  min-height: 100vh;
-  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  margin: auto;
+  min-height: 100dvh;
+  background: var(--page-background);
+  color: var(--text-primary);
+  overflow-x: clip;
 }
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-block: 1.75rem;
+.page::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 45% 40% at 50% 0%, color-mix(in srgb, var(--accent-action) 14%, transparent), transparent 70%),
+    linear-gradient(rgb(255 255 255 / 3.5%) 1px, transparent 1px) 0 0 / 56px 56px,
+    linear-gradient(90deg, rgb(255 255 255 / 3.5%) 1px, transparent 1px) 0 0 / 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, black, transparent 80%);
+}
+.skip {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 10;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--action-primary);
+  color: var(--text-on-action);
+  font-weight: 650;
+  text-decoration: none;
+}
+.skip:focus {
+  top: 0.75rem;
 }
 .header nav {
   display: flex;
   align-items: center;
-  gap: 1.75rem;
-}
-.brand {
-  font-size: 1.6rem;
-  font-weight: 750;
-  letter-spacing: -.06em;
-  text-decoration: none;
+  justify-content: space-between;
+  gap: 1rem;
+  width: min(100%, 1280px);
+  min-height: 68px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
 }
 .courses {
-  display: flex;
-  gap: .65rem;
+  display: inline-flex;
   align-items: center;
-  border-left: 1px solid var(--border-default);
-  padding-left: 1.75rem;
-  color: var(--text-secondary);
-  text-decoration: none;
+  gap: 0.4rem;
   min-height: 44px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.courses:hover {
+  color: var(--text-primary);
 }
 .main {
-  flex: 1;
   display: grid;
-  align-items: center;
-  padding: 3rem 0 6rem;
-  min-width: 0;
+  flex: 1;
+  place-items: start center;
+  padding: clamp(1.5rem, 6vh, 4.5rem) 1rem 4rem;
+  outline: none;
 }
+
 .authLayout {
-  width: 100%;
-  max-width: 75rem;
-  margin: auto;
-  min-width: 0;
+  display: grid;
+  gap: 1.25rem;
+  width: min(100%, 440px);
+  padding: clamp(1.5rem, 5vw, 2.25rem);
+  border: 1px solid var(--border-glass);
+  border-radius: 1.75rem;
+  background: color-mix(in srgb, var(--surface-solid) 88%, transparent);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 40px 120px -40px color-mix(in srgb, var(--accent-action) 25%, transparent), 0 30px 80px -30px rgb(0 0 0 / 70%);
 }
 .intro {
-  margin-bottom: 2.75rem;
+  display: grid;
+  gap: 0.4rem;
+  text-align: center;
 }
-.intro h1 {
-  font-size: clamp(2rem, 3.7vw, 3.5rem);
-  line-height: 1.12;
-  letter-spacing: -.055em;
-  margin-bottom: .75rem;
+.intro :global(.ui-heading) {
+  font-size: clamp(1.7rem, 5vw, 2.1rem);
+  letter-spacing: -0.045em;
 }
-.intro p {
-  font-size: clamp(1rem, 1.65vw, 1.5rem);
+.intro :global(.ui-text) {
+  font-size: 0.95rem;
   line-height: 1.5;
-  max-width: 48ch;
 }
 .modes {
-  display: flex;
-  gap: 2rem;
-  border-bottom: 1px solid var(--border-default);
-  margin-bottom: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  background: var(--surface-input);
 }
 .modes button {
-  font: inherit;
-  font-weight: 550;
-  color: var(--text-secondary);
-  background: none;
+  min-height: 42px;
   border: 0;
-  border-bottom: 3px solid transparent;
-  padding: .75rem 0 1rem;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 650;
   cursor: pointer;
+  transition: background var(--motion-fast), color var(--motion-fast);
 }
 .modes button[aria-pressed="true"] {
+  background: var(--surface-hover);
   color: var(--text-primary);
-  border-bottom-color: var(--action-primary);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 6%);
 }
-.modes button:disabled, .alternative button:disabled {
-  cursor: wait;
-  opacity: .6;
+.modes button:disabled {
+  cursor: not-allowed;
 }
 .external {
   display: grid;
-  gap: 1.5rem;
-  margin-bottom: 1.75rem;
+  gap: 1.1rem;
 }
 .providerGrid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: .85rem;
+  gap: 0.5rem;
 }
 .providerButton {
-  min-height: 54px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: .65rem;
-  padding: .75rem 1rem;
+  gap: 0.6rem;
+  min-height: 48px;
+  padding: 0.7rem 1rem;
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--surface-solid) 82%, transparent);
+  border-radius: var(--radius-pill);
+  background: var(--surface-elevated);
   color: var(--text-primary);
+  font-size: 0.92rem;
   font-weight: 600;
   text-decoration: none;
-  transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+  transition: border-color var(--motion-fast), background var(--motion-fast);
 }
 .providerButton:hover {
-  border-color: color-mix(in srgb, var(--action-primary) 56%, var(--border-default));
-  background: var(--surface-subtle);
-  transform: translateY(-1px);
-}
-.providerButton:focus-visible {
-  outline: 3px solid var(--focus-ring);
-  outline-offset: 3px;
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
 }
 .separator {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
   align-items: center;
-  gap: .9rem;
-  color: var(--text-secondary);
-  font-size: .82rem;
+  gap: 0.75rem;
+  color: var(--text-disabled);
+  font-size: 0.8rem;
 }
-.separator::before, .separator::after {
+.separator::before,
+.separator::after {
   content: "";
+  flex: 1;
   height: 1px;
   background: var(--border-default);
 }
 .authForm {
   display: grid;
-  gap: 1.75rem;
-  min-width: 0;
+  gap: 1rem;
 }
 .authForm fieldset {
   display: grid;
-  grid-template-columns: minmax(0,1fr) minmax(0,1fr);
-  align-items: start;
-  gap: 1.5rem 1.75rem;
-  border: 0;
+  gap: 0.9rem;
+  min-width: 0;
   margin: 0;
   padding: 0;
-  min-width: 0;
-}
-.nameField {
-  grid-column: 1 / -1;
-  max-width: calc(50% - .875rem);
-  width: 100%;
-}
-.authForm :global(.ui-field) > label {
-  font-size: 1rem;
+  border: 0;
 }
 .authForm :global(.ui-control) {
-  min-height: 54px;
-  background: var(--surface-subtle);
+  border-color: var(--border-default);
+  border-radius: 0.9rem;
+}
+.authForm :global(.ui-control):focus {
+  border-color: color-mix(in srgb, var(--accent-action) 60%, transparent);
+}
+.nameField {
+  min-width: 0;
 }
 .actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
+  display: grid;
+  gap: 1rem;
 }
 .actions > :global(.ui-button) {
-  min-height: 54px;
-  width: 38%;
-  font-size: 1.125rem;
-  flex-shrink: 0;
-  box-shadow: none;
+  width: 100%;
+  min-height: 52px;
 }
 .alternative {
   display: flex;
-  justify-content: flex-end;
   flex-wrap: wrap;
-  gap: .3rem .65rem;
-  font-size: .95rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
   color: var(--text-secondary);
+  font-size: 0.88rem;
 }
 .alternative button {
-  background: none;
-  padding: .5rem 0;
-  border: 0;
-  font: inherit;
-  color: var(--text-accent);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  cursor: pointer;
   min-height: 44px;
+  padding: 0 0.25rem;
+  border: 0;
+  background: none;
+  color: var(--text-accent);
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
 }
-.alternative span {
-  align-self: center;
+.alternative button:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .authReturn {
+  justify-self: center;
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  margin-top: 1.75rem;
+  min-height: 40px;
+  color: var(--text-disabled);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+.authReturn:hover {
   color: var(--text-secondary);
-  font-size: .9rem;
-  text-underline-offset: 4px;
-}
-.art {
-  clip-path: inset(35% 0 0);
-  position: fixed;
-  z-index: -1;
-  right: -8vw;
-  bottom: 0;
-  width: min(70vw, 1000px);
-  pointer-events: none;
-  opacity: .35;
-}
-.art img {
-  display: block;
-  width: 100%;
-  height: auto;
-  filter: var(--art-filter);
-}
-:global([data-ui-theme="light"]) .art {
-  opacity: .55;
-}
-.skip {
-  position: absolute;
-  top: .5rem;
-  left: 0;
-  transform: translateY(-180%);
-  background: var(--surface-solid);
-  padding: .75rem;
-  z-index: 5;
-}
-.skip:focus {
-  transform: none;
-}
-@media (max-width: 900px) {
-  .main {
-    padding-block: 2rem 4rem;
-  }
-  .authLayout {
-    max-width: 40rem;
-  }
-  .intro {
-    margin-bottom: 2rem;
-  }
-  .intro h1 {
-    font-size: clamp(1.85rem, 5vw, 2.75rem);
-  }
-  .actions {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: .75rem;
-  }
-  .actions > :global(.ui-button) {
-    width: 100%;
-  }
-  .alternative {
-    justify-content: flex-start;
-  }
-  .art {
-    opacity: .2;
-    bottom: -10rem;
-    right: -12rem;
-    width: 35rem;
-  }
-  :global([data-ui-theme="light"]) .art {
-    opacity: .3;
-  }
-}
-@media (max-width: 600px) {
-  .header {
-    padding-block: 1rem;
-    gap: .5rem;
-  }
-  .header nav {
-    gap: .85rem;
-  }
-  .brand {
-    font-size: 1.35rem;
-  }
-  .courses {
-    padding-left: .85rem;
-    gap: .35rem;
-    font-size: .85rem;
-  }
-  .main {
-    padding-block: 1.25rem 1.5rem;
-  }
-  .intro {
-    margin-bottom: 1.25rem;
-  }
-  .intro p {
-    font-size: 1rem;
-  }
-  .modes {
-    margin-bottom: 1.25rem;
-    gap: 1.5rem;
-  }
-  .modes button {
-    padding-block: .5rem .75rem;
-  }
-  .authForm {
-    gap: 1.25rem;
-  }
-  .external {
-    gap: 1rem;
-    margin-bottom: 1.25rem;
-  }
-  .providerGrid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .authForm fieldset {
-    grid-template-columns: minmax(0,1fr);
-    gap: .85rem;
-  }
-  .nameField {
-    max-width: none;
-  }
-  .authReturn {
-    margin-top: .75rem;
-  }
-  .art {
-    bottom: -14rem;
-    right: -18rem;
-    opacity: .12;
-  }
-  :global([data-ui-theme="light"]) .art {
-    opacity: .18;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .providerButton {
-    transition: none;
-  }
-  .providerButton:hover {
-    transform: none;
-  }
 }
