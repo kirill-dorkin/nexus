@@ -103,9 +103,11 @@ ok("Схема базы актуальна");
 
 step("Вход владельца");
 let auth = null;
-for (let tries = 0; tries < 5 && !auth?.ok; tries++) {
-  const email = await ask("  Почта владельца: ");
-  const password = await ask("  Пароль (не меньше 15 символов): ", { hidden: true });
+// Non-interactive mode: OWNER_EMAIL and OWNER_PASSWORD from the environment.
+const fromEnv = Boolean(process.env.OWNER_EMAIL && process.env.OWNER_PASSWORD);
+for (let tries = 0; tries < (fromEnv ? 1 : 5) && !auth?.ok; tries++) {
+  const email = fromEnv ? process.env.OWNER_EMAIL : await ask("  Почта владельца: ");
+  const password = fromEnv ? process.env.OWNER_PASSWORD : await ask("  Пароль (не меньше 15 символов): ", { hidden: true });
   if (password.length < 15) {
     console.log("  Пароль должен быть не короче 15 символов. Попробуйте ещё раз.");
     continue;
