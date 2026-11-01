@@ -8,6 +8,11 @@
     radial-gradient(circle at 0% 0%, rgb(253 186 116 / 8%), transparent 45%),
     #0c0d10;
 }
+/* A single remark (Nika's rule of thumb) sits lighter than a full scene. */
+.scene[data-single] {
+  padding: 0.8rem 0.9rem;
+  background: #0c0d10;
+}
 .sceneTitle {
   margin-bottom: 0.9rem;
   color: var(--text-secondary);

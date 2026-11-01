@@ -18,5 +18,13 @@ export function safeOAuthReturnTo(value: unknown): string {
       .every((item) => resourceSlugSchema.safeParse(item).success)
   ) return value;
 
+  // Stable course addresses (ADR-0061): /courses/{course} and /courses/{course}/{lesson}.
+  const course = /^\/courses\/([^/]+)(?:\/([^/]+))?$/.exec(value);
+  if (
+    course !== null &&
+    course.slice(1).filter((item) => item !== undefined)
+      .every((item) => resourceSlugSchema.safeParse(item).success)
+  ) return value;
+
   return "/me/learning";
 }

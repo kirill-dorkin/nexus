@@ -8,6 +8,7 @@ import { courseUrl, lessonUrl } from "../../lib/public-learning-routes";
 import { Heading, Surface } from "@platform/ui";
 import { LearningPageHeading } from "./learning-page-heading";
 import { LessonOutline } from "./lesson-outline";
+import { SignupNudge } from "./signup-nudge";
 import styles from "./flow.module.css";
 import { absoluteUrl, jsonLd } from "../../lib/site";
 export function lessonMetadata(course: PublicLearningLesson): Metadata {
@@ -121,6 +122,7 @@ export function LessonPageView({ course }: { course: PublicLearningLesson }) {
             />
           </aside>
         </div>
+        <SignupNudge returnTo={path} />
       </LearningShell>
     </>
   );
