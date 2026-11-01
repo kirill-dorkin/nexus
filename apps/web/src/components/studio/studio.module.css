@@ -536,3 +536,74 @@
   font-weight: 600;
   text-underline-offset: 0.2rem;
 }
+
+/* Dark Studio frame (shares the learner shell). */
+.areaBadge {
+  margin-left: 0.15rem;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--text-accent) 45%, transparent);
+  border-radius: var(--radius-pill);
+  color: var(--text-accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.pageHeading {
+  padding-top: 0.5rem;
+}
+.pageHeading h1 {
+  font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+  font-weight: 750;
+  line-height: 1.05;
+  letter-spacing: -0.055em;
+}
+.toolbar {
+  top: 68px;
+  margin-inline: calc(-1 * var(--gutter, 1rem));
+  padding-inline: var(--gutter, 1rem);
+  border-top: 0;
+  background: color-mix(in srgb, var(--page-background) 80%, transparent);
+  backdrop-filter: blur(16px);
+}
+.editorRail {
+  top: 9.5rem;
+}
+.organizationChoice:global(.ui-button) {
+  border-radius: 1rem;
+  background: var(--surface-solid);
+}
+.courseRow {
+  margin-bottom: 0.75rem;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid var(--border-default);
+  border-radius: 1.25rem;
+  background: var(--surface-solid);
+  transition: border-color var(--motion-fast), background var(--motion-fast);
+}
+.courseRow:hover {
+  border-color: color-mix(in srgb, var(--accent-action) 45%, var(--border-default));
+  background: var(--surface-elevated);
+}
+.courseRow h3 {
+  margin-top: 0.6rem;
+}
+.card {
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border: 1px solid var(--border-default);
+  border-radius: 1.5rem;
+  background: var(--surface-solid);
+}
+.card > fieldset {
+  border-radius: 1.1rem;
+  background: var(--surface-subtle);
+}
+.previewLesson {
+  border: 1px solid var(--border-default);
+  border-radius: 1.25rem;
+}
+.modeGroup {
+  border-radius: var(--radius-pill);
+}
+.modeGroup button {
+  border-radius: var(--radius-pill);
+}
