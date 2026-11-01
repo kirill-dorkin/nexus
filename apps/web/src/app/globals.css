@@ -21,6 +21,17 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Learner-facing pages are always dark and own their full-bleed layout,
+   independent of the device colour scheme used by Studio. */
+html:has([data-learner-scope]) {
+  color-scheme: dark;
+  background: #08090b;
+}
+body:has([data-learner-scope]) {
+  padding: 0;
+  background: #08090b;
+}
+
 a {
   color: inherit;
 }
@@ -30,13 +41,13 @@ a {
   outline-offset: 5px;
 }
 ::selection {
-  color: var(--text-primary);
-  background: var(--accent-subtle);
+  color: var(--text-on-action);
+  background: var(--action-primary);
 }
 html {
   scrollbar-gutter: stable;
   scroll-behavior: smooth;
-  scroll-padding-top: 2rem;
+  scroll-padding-top: 5.5rem;
 }
 @media (max-width: 360px) {
   body {
@@ -51,4 +62,3 @@ svg {
     scroll-behavior: auto;
   }
 }
-

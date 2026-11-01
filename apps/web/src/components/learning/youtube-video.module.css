@@ -3,7 +3,7 @@
 .frame iframe { display: block; width: 100%; height: 100%; border: 0; }
 .placeholder { position: relative; isolation: isolate; height: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 2rem; padding: clamp(1.4rem, 4vw, 3rem); overflow: hidden; background: linear-gradient(135deg, var(--surface-solid), var(--surface-subtle)); }
 .placeholder::before { content: ""; position: absolute; z-index: -2; inset: 0; opacity: 0.55; background-image: linear-gradient(color-mix(in srgb, var(--text-accent) 10%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--text-accent) 10%, transparent) 1px, transparent 1px); background-size: 42px 42px; mask-image: linear-gradient(to right, black, transparent 78%); }
-.glow { position: absolute; z-index: -1; width: 55%; aspect-ratio: 1; right: -10%; top: -45%; border-radius: 50%; background: color-mix(in srgb, var(--text-accent) 30%, transparent); filter: blur(55px); }
+.glow { position: absolute; z-index: -1; width: 55%; aspect-ratio: 1; right: -10%; top: -45%; border-radius: 50%; background: color-mix(in srgb, var(--text-accent) 16%, transparent); filter: blur(70px); }
 .posterContent { max-width: 34rem; }
 .posterContent strong { display: block; margin-top: 0.65rem; font-size: clamp(1.25rem, 3vw, 2.15rem); line-height: 1.18; letter-spacing: -0.035em; text-wrap: balance; }
 .eyebrow { font: 0.7rem/1.5 var(--font-mono); letter-spacing: 0.12em; color: var(--text-secondary); }

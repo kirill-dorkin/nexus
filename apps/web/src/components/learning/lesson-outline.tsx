@@ -6,13 +6,15 @@ import styles from "./flow.module.css";
 
 export function LessonOutline({
   course,
-  currentSlug
+  currentSlug,
+  compact = false
 }: {
   course: PublicLearningCourse;
   currentSlug?: string;
+  compact?: boolean;
 }) {
   return (
-    <ol className={styles.outline}>
+    <ol className={`${styles.outline} ${compact ? styles.outlineCompact : ""}`}>
       {course.course.lessons.map((lesson, index) => (
         <li key={lesson.slug}>
           <Link
@@ -25,9 +27,11 @@ export function LessonOutline({
             </span>
             <div>
               <strong>{lesson.title}</strong>
-              <Text muted size="sm">
-                {lesson.summary}
-              </Text>
+              {!compact && lesson.summary ? (
+                <Text muted size="sm">
+                  {lesson.summary}
+                </Text>
+              ) : null}
             </div>
             <span className={styles.minutes}>{lesson.durationMinutes} мин</span>
           </Link>

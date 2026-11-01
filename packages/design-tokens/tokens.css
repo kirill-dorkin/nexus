@@ -39,24 +39,24 @@
 :root,
 [data-ui-theme="dark"] {
   color-scheme: dark;
-  --surface-default: #15171d;
-  /* Low-chroma page canvas: only a small share of the selected accent. */
-  --page-background: color-mix(in srgb, var(--accent-action) 7%, #15171d);
-  --page-glow: color-mix(in srgb, var(--accent-night) 6%, transparent);
-  --surface-subtle: #181120;
-  --surface-elevated: color-mix(in srgb, var(--accent-action) 7%, #241a2d);
-  --surface-solid: #1d1625;
-  --surface-input: #14101c;
-  --surface-glass: color-mix(in srgb, var(--accent-action) 7%, rgb(29 21 38 / 90%));
-  --surface-hover: color-mix(in srgb, var(--accent-action) 12%, #2b2035);
-  --text-primary: #f8f5fb;
-  --text-secondary: #b8afc4;
-  --text-disabled: #93869f;
+  /* Neutral near-black canvas; colour comes from the single accent only. */
+  --surface-default: #0b0c0e;
+  --page-background: color-mix(in srgb, var(--accent-action) 2%, #08090b);
+  --page-glow: color-mix(in srgb, var(--accent-night) 7%, transparent);
+  --surface-subtle: #0f1013;
+  --surface-elevated: #16181c;
+  --surface-solid: #121317;
+  --surface-input: #0c0d10;
+  --surface-glass: rgb(18 19 23 / 72%);
+  --surface-hover: #1d1f24;
+  --text-primary: #f5f5f4;
+  --text-secondary: #a3a3ad;
+  --text-disabled: #6e6e78;
   --text-accent: var(--accent-night);
   --text-on-action: #fff;
-  --border-default: color-mix(in srgb, var(--accent-action) 9%, #382d43);
-  --border-strong: #776780;
-  --border-glass: color-mix(in srgb, var(--accent-action) 16%, #755267);
+  --border-default: #23252b;
+  --border-strong: #6b6f79;
+  --border-glass: rgb(255 255 255 / 9%);
   --border-accent: var(--accent-night);
   --action-primary: var(--accent-action);
   --action-hover: var(--accent-hover);
@@ -64,18 +64,18 @@
   --action-danger-hover: #a11d37;
   --accent-subtle: color-mix(
     in srgb,
-    var(--accent-action) 22%,
+    var(--accent-action) 14%,
     var(--surface-solid)
   );
-  --status-success: #92e4ba;
-  --status-warning: #f5d08e;
-  --status-danger: #ffabb9;
+  --status-success: #86efac;
+  --status-warning: #fcd34d;
+  --status-danger: #fda4af;
   --status-info: #bcb8ff;
   --focus-ring: var(--accent-night);
   --shadow-surface:
-    inset 0 1px 0 rgb(255 255 255 / 6%), 0 18px 60px rgb(0 0 0 / 16%);
-  --shadow-action: 0 5px 20px
-    color-mix(in srgb, var(--accent-action) 18%, transparent);
+    inset 0 1px 0 rgb(255 255 255 / 4%), 0 24px 70px rgb(0 0 0 / 35%);
+  --shadow-action: 0 8px 28px
+    color-mix(in srgb, var(--accent-action) 28%, transparent);
   --art-opacity: 0.82;
 }
 [data-ui-theme="light"] {
@@ -156,4 +156,17 @@
   --accent-day: #805400;
   --accent-night: #f1ce83;
   --art-filter: grayscale(1) sepia(1) saturate(2);
+}
+/* Learner-facing default: one electric accent with dark text on actions. */
+[data-ui-accent="lime"] {
+  --art-tint-strength: 0.5;
+  --accent-action: #c5f23a;
+  --accent-hover: #d4f86a;
+  --accent-day: #3f6212;
+  --accent-night: #d4f86a;
+  --text-on-action: #0a0c04;
+  /* Dark action labels need a lighter danger fill to stay readable. */
+  --action-danger: #fb7185;
+  --action-danger-hover: #fda4af;
+  --art-filter: grayscale(1) sepia(1) saturate(2.4) hue-rotate(40deg);
 }

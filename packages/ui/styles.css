@@ -47,19 +47,21 @@
   justify-content: center;
   gap: var(--space-2);
   border: 1px solid transparent;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   min-height: 48px;
-  padding: 0.8rem 1.25rem;
+  padding: 0.8rem 1.4rem;
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 650;
+  letter-spacing: -0.01em;
   line-height: 1.25;
   text-decoration: none;
   cursor: pointer;
   transition:
     background var(--motion-fast),
     border-color var(--motion-fast),
-    box-shadow var(--motion-fast);
+    box-shadow var(--motion-fast),
+    transform var(--motion-fast);
 }
 .ui-button--primary {
   color: var(--text-on-action);
@@ -73,6 +75,7 @@
   color: var(--text-primary);
   background: var(--surface-glass);
   border-color: var(--border-strong);
+  backdrop-filter: blur(12px);
 }
 .ui-button--secondary:hover {
   background: var(--surface-hover);
@@ -170,23 +173,25 @@
 .ui-eyebrow {
   margin: 0;
   color: var(--text-accent);
-  font-size: 0.7rem;
-  font-weight: 650;
-  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   line-height: 1.6;
 }
 .ui-heading {
   margin: 0;
-  line-height: 1.1;
-  letter-spacing: -0.045em;
-  font-weight: 650;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  font-weight: 700;
   text-wrap: balance;
   overflow-wrap: anywhere;
 }
 .ui-heading:where([data-size="display"]) {
-  font-size: clamp(2.6rem, 6.5vw, 5.8rem);
-  letter-spacing: -0.065em;
+  font-size: clamp(2.4rem, 6vw, 4.75rem);
+  line-height: 1;
+  letter-spacing: -0.055em;
+  font-weight: 750;
 }
 .ui-heading:where([data-size="section"]) {
   font-size: clamp(1.8rem, 3.5vw, 3rem);
