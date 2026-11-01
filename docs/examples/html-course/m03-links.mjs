@@ -1,5 +1,5 @@
 export default function links(c) {
-  const { html, code, mdn, lesson, single, short } = c;
+  const { html, code, mdn, lesson, single, short, diagram, demo } = c;
 
   lesson({
     slug: "ssylki", title: "Ссылки", minutes: 11,
@@ -59,19 +59,27 @@ export default function links(c) {
     body: [
       `## Сайт — это папка с файлами`,
       `Представим такой сайт:`,
-      code("text", `site/
-├── index.html
-├── about.html
-├── images/
-│   └── logo.png
-└── blog/
-    ├── index.html
-    └── first-post.html`),
+      diagram({ kind: "tree", title: "Структура сайта", items: [
+        { name: "site/", depth: 0, note: "корень сайта" },
+        { name: "index.html", depth: 1, note: "главная страница" },
+        { name: "about.html", depth: 1, note: "страница «О нас»" },
+        { name: "images/", depth: 1, note: "картинки" },
+        { name: "logo.png", depth: 2 },
+        { name: "blog/", depth: 1, note: "раздел блога" },
+        { name: "index.html", depth: 2, note: "список записей" },
+        { name: "first-post.html", depth: 2, note: "запись блога" }
+      ] }),
       `## Три вида адресов`,
       `1. **Абсолютный** — полный, с протоколом и доменом: \`https://example.com/blog/first-post.html\`. Нужен для ссылок на чужие сайты.
 2. **Корневой** — от корня текущего сайта, начинается с \`/\`: \`/images/logo.png\`. Работает одинаково с любой страницы сайта.
 3. **Относительный** — от текущего файла: \`about.html\`, \`images/logo.png\`, \`../index.html\`.`,
       `## Как читать относительный путь`,
+      diagram({ kind: "flow", title: "Путь ../images/logo.png из blog/first-post.html", steps: [
+        { title: "blog/", text: "стартуем в папке текущего файла" },
+        { title: "../", text: "поднимаемся на уровень выше — в site/" },
+        { title: "images/", text: "заходим в папку images" },
+        { title: "logo.png", text: "берём файл" }
+      ] }),
       `Допустим, мы в файле \`blog/first-post.html\`:
 - \`index.html\` → \`blog/index.html\` (та же папка);
 - \`./index.html\` → то же самое, \`./\` значит «текущая папка»;

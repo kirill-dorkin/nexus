@@ -1,6 +1,7 @@
 import Markdown from "react-markdown";
 import { Children, isValidElement } from "react";
 import { CodeSnippet } from "./code-snippet";
+import { VisualBlock } from "./lesson-visuals";
 import styles from "./learning.module.css";
 
 /** No raw HTML, images, plugins or author-selected iframe attributes. */
@@ -31,6 +32,8 @@ export function SafeMarkdown({ children }: { children: string }) {
             const element = Children.toArray(children).find(isValidElement<{ children?: string; className?: string }>);
             if (!element || !isValidElement<{ children?: string; className?: string }>(element) || typeof element.props.children !== "string") return <pre>{children}</pre>;
             const language = /^language-([a-z0-9-]{1,30})$/i.exec(element.props.className ?? "")?.[1];
+            if (language === "diagram" || language === "demo")
+              return <VisualBlock source={element.props.children} fallback={<CodeSnippet code={element.props.children} language="json" />} />;
             return <CodeSnippet code={element.props.children} language={language} />;
           },
           a: ({ children, href }) =>

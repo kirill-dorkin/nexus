@@ -28,3 +28,7 @@ PostgreSQL HTTP coverage proves session/Origin/self ownership, lifecycle gates, 
 The maintainer chose to remove the extra click between Organization entry and free Enrollment. Web may compose both commands behind one explicit "Начать курс" action when the learner has no Membership and the Organization's `customerEntryPolicy` is `open`. The adjacent copy names the Organization the learner joins.
 
 The domain contract is unchanged: entry (ADR-0047) and self-enrollment remain separate server commands with their own authorization, transactions, idempotency and events. Web always sends entry first and enrollment second. If entry succeeds but enrollment fails, the refreshed state offers the existing separate enrollment action. No API combines the two commands, and registration still creates neither Membership nor Enrollment.
+
+## Amendment — 2026-11-01: checking an answer starts the course
+
+If a signed-in learner who is not yet enrolled checks a quiz answer, Web runs the same two commands as "Начать курс" (Organization entry, then free self-enrollment) and retries the same attempt key once. The quiz hint states that checking enrolls the learner in the free course. Closed self-entry still fails with an explanatory message. Anonymous learners see sign-up and sign-in actions that return to the same activity. Domain commands and authorization are unchanged.
