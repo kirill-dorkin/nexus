@@ -50,6 +50,18 @@ export function QuizForm({
     activity.type === "quiz.short_text"
       ? text.trim().length > 0
       : selected.length > 0;
+  async function startCourse() {
+    const join = await browserApiRequest(
+      `/v1/public/organizations/${encodeURIComponent(organizationSlug)}/memberships/me`,
+      { method: "POST", body: "{}" }
+    );
+    if (!join.ok) return false;
+    const enroll = await browserApiRequest(
+      `/v1/me/learning/${encodeURIComponent(organizationSlug)}/${encodeURIComponent(offeringSlug)}/enrollment`,
+      { method: "POST", body: "{}" }
+    );
+    return enroll.ok;
+  }
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (inFlight.current || result || (!attempt.current && !ready)) return;
@@ -68,17 +80,24 @@ export function QuizForm({
     }
     setPending(true);
     try {
-      const response = await browserApiRequest(
-        `/v1/me/learning/${encodeURIComponent(organizationSlug)}/${encodeURIComponent(offeringSlug)}/quiz/${encodeURIComponent(activity.slug)}/check`,
-        { method: "POST", body: JSON.stringify(attempt.current) }
-      );
+      const check = () =>
+        browserApiRequest(
+          `/v1/me/learning/${encodeURIComponent(organizationSlug)}/${encodeURIComponent(offeringSlug)}/quiz/${encodeURIComponent(activity.slug)}/check`,
+          { method: "POST", body: JSON.stringify(attempt.current) }
+        );
+      let response = await check();
+      // Signed in but not enrolled yet: start the free course (entry, then
+      // enrollment — the same two commands as "Начать курс") and retry once.
+      if ([403, 404, 409].includes(response.status) && (await startCourse())) {
+        window.dispatchEvent(new Event("learning-progress-changed"));
+        response = await check();
+      }
       if (!response.ok) {
         if (response.status === 401) {
           setNeedsLogin(true);
-          setError("Войдите, чтобы сохранить и проверить ответ.");
         } else if ([403, 404, 409].includes(response.status))
           setError(
-            "Для проверки нужна активная запись на курс. Проверьте состояние обучения ниже и повторите действие."
+            "Этот курс сейчас закрыт для самостоятельной записи. Обратитесь к организации курса."
           );
         else if (response.status === 400) {
           attempt.current = null;
@@ -128,7 +147,7 @@ export function QuizForm({
               : "Введите короткий ответ"}
         </legend>
         <Text className={styles.quizHint} size="sm" muted>
-          Результат сохраняется в вашем обучении после проверки.
+          Ответ проверится сразу и сохранится в вашем обучении. Если вы ещё не записаны на этот бесплатный курс, проверка запишет вас автоматически.
         </Text>
         {activity.type === "quiz.short_text" ? (
           <Field htmlFor={`${id}-answer`} label="Ваш ответ">
@@ -197,14 +216,24 @@ export function QuizForm({
         {error && <Alert tone="danger">{error}</Alert>}
       </div>
       {needsLogin && (
-        <Link
-          className={buttonClass({ size: "md" })}
-          href={learningLoginUrl(
-            `/learn/${organizationSlug}/${offeringSlug}/${lessonSlug}`
-          )}
-        >
-          Войти и вернуться к ответу
-        </Link>
+        <div className={styles.quizSignup} role="status">
+          <strong>Ответ готов к проверке — осталось войти</strong>
+          <p>Аккаунт бесплатный и создаётся за 20 секунд. После входа вы вернётесь к этому заданию.</p>
+          <div className={styles.quizSignupActions}>
+            <Link
+              className={buttonClass({ size: "md" })}
+              href={`${learningLoginUrl(`/learn/${organizationSlug}/${offeringSlug}/${lessonSlug}`)}&mode=register`}
+            >
+              Создать аккаунт
+            </Link>
+            <Link
+              className={buttonClass({ size: "md", variant: "secondary" })}
+              href={learningLoginUrl(`/learn/${organizationSlug}/${offeringSlug}/${lessonSlug}`)}
+            >
+              Войти
+            </Link>
+          </div>
+        </div>
       )}
     </form>
   );

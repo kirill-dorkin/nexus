@@ -1,5 +1,5 @@
 export function quality(c) {
-  const { html, code, mdn, lesson, single, multi } = c;
+  const { html, code, mdn, lesson, single, multi, diagram, demo } = c;
 
   lesson({
     slug: "kachestvo-koda", title: "Проверка и качество кода", minutes: 10,
@@ -57,7 +57,7 @@ export function quality(c) {
 }
 
 export function projectCard(c) {
-  const { html, code, mdn, lesson, single, multi } = c;
+  const { html, code, mdn, lesson, single, multi, diagram, demo } = c;
 
   lesson({
     slug: "proekt-vizitka", title: "Проект 1: страница-визитка", minutes: 30,
@@ -137,7 +137,7 @@ export function projectCard(c) {
 }
 
 export function projectLanding(c) {
-  const { html, code, mdn, lesson, single, multi } = c;
+  const { html, code, mdn, lesson, single, multi, diagram, demo } = c;
 
   lesson({
     slug: "proekt-lending", title: "Проект 2: лендинг курса", minutes: 40,
@@ -204,7 +204,7 @@ export function projectLanding(c) {
 }
 
 export function projectArticle(c) {
-  const { html, code, mdn, lesson, single, multi } = c;
+  const { html, code, mdn, lesson, single, multi, diagram, demo } = c;
 
   lesson({
     slug: "proekt-statya", title: "Проект 3: статья для блога", minutes: 35,
@@ -268,7 +268,7 @@ export function projectArticle(c) {
 }
 
 export function projectFinal(c) {
-  const { html, code, mdn, lesson, single, multi } = c;
+  const { html, code, mdn, lesson, single, multi, diagram, demo } = c;
 
   lesson({
     slug: "finalnyj-proekt", title: "Финальный проект: сайт-портфолио", minutes: 45,
@@ -278,13 +278,16 @@ export function projectFinal(c) {
       `## Задача`,
       `Соберите сайт-портфолио из трёх страниц. Это итог курса: здесь пригодится всё.`,
       `## Структура файлов`,
-      code("text", `portfolio/
-├── index.html        ← главная: о себе и избранные работы
-├── projects.html     ← все проекты карточками
-├── contact.html      ← форма связи и контакты
-└── images/
-    ├── avatar.webp
-    └── project-1.webp`),
+      diagram({ kind: "tree", title: "Структура портфолио", items: [
+        { name: "portfolio/", depth: 0 },
+        { name: "index.html", depth: 1, note: "главная: о себе и избранные работы" },
+        { name: "projects.html", depth: 1, note: "все проекты карточками" },
+        { name: "contact.html", depth: 1, note: "форма связи и контакты" },
+        { name: "styles.css", depth: 1, note: "появится в курсе CSS" },
+        { name: "images/", depth: 1 },
+        { name: "avatar.webp", depth: 2 },
+        { name: "project-1.webp", depth: 2 }
+      ] }),
       `## Требования`,
       `1. **Общая шапка и подвал** на всех страницах; в меню \`aria-current="page"\` у текущего пункта.
 2. **Пути**: ссылки между страницами и картинки — относительные, работают при открытии файлов с диска.

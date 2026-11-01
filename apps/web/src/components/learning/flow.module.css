@@ -551,3 +551,24 @@
     grid-column: 2;
   }
 }
+
+.quizSignup {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid color-mix(in srgb, var(--accent-action) 40%, var(--border-default));
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--accent-action) 7%, var(--surface-solid));
+}
+.quizSignup p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.quizSignupActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}

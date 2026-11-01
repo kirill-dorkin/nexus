@@ -1,5 +1,5 @@
 export default function forms(c) {
-  const { html, code, mdn, lesson, single, multi, short } = c;
+  const { html, code, mdn, lesson, single, multi, short, diagram, demo } = c;
 
   lesson({
     slug: "kak-rabotayut-formy", title: "Как работают формы", minutes: 12,
@@ -12,6 +12,13 @@ export default function forms(c) {
   <input id="q" name="q" type="search">
   <button>Найти</button>
 </form>`),
+      diagram({ kind: "flow", title: "Что происходит при отправке формы", steps: [
+        { title: "Нажатие", text: "человек нажимает «Найти»" },
+        { title: "Сбор", text: "браузер собирает пары name=значение: q=html" },
+        { title: "Запрос", text: "GET /search?q=html на адрес из action" },
+        { title: "Сервер", text: "программа на сервере ищет и готовит ответ" },
+        { title: "Ответ", text: "браузер показывает новую страницу" }
+      ] }),
       `Когда человек нажимает кнопку, браузер собирает значения всех полей с атрибутом \`name\` и отправляет их по адресу из \`action\`. Для запроса «html» браузер перейдёт на \`/search?q=html\`.`,
       `## name — без него поле не отправится`,
       `Данные уходят парами \`name=значение\`. Поле без \`name\` браузер **не отправит**, даже если человек его заполнил. \`id\` нужен для связи с подписью, \`name\` — для сервера. Часто они совпадают, но это разные вещи.`,

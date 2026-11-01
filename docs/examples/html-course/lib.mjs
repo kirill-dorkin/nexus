@@ -42,8 +42,12 @@ export function createCourse() {
   return {
     html: (code) => `${FENCE}html\n${code.trim()}\n${FENCE}`,
     code: (lang, src) => `${FENCE}${lang}\n${src.trim()}\n${FENCE}`,
-    mdn: (path, label) =>
-      `**Подробнее:** [${label} — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/${path})`,
+    // Lessons are self-contained: no outbound "read more" links.
+    mdn: () => "",
+    /** Coloured diagram rendered by the lesson page (kinds: url, tree, flow, dom). */
+    diagram: (spec) => `${FENCE}diagram\n${JSON.stringify(spec, null, 2)}\n${FENCE}`,
+    /** Silent animation rendered by the lesson page (kind: typing). */
+    demo: (spec) => `${FENCE}demo\n${JSON.stringify(spec, null, 2)}\n${FENCE}`,
     /**
      * lesson({ slug, title, minutes, summary, skill: [key, title, description],
      *          body: [markdown parts], quizzes: [ (key) => slug, ... ] })
@@ -52,7 +56,7 @@ export function createCourse() {
     lesson({ slug, title, minutes, summary, skill, body, quizzes, allRequired = false }) {
       const [key, skillTitle, skillDescription] = skill;
       skills.push({ key, title: skillTitle, description: skillDescription });
-      const blocks = [{ type: "markdown", markdown: body.join("\n\n").trim() }];
+      const blocks = [{ type: "markdown", markdown: body.filter(Boolean).join("\n\n").trim() }];
       quizzes.forEach((make, index) => {
         const activitySlug = make(key);
         const required = allRequired || index === 0;

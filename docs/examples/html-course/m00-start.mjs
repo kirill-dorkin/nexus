@@ -1,5 +1,5 @@
 export default function start(c) {
-  const { html, code, mdn, lesson, single, multi, short } = c;
+  const { html, code, mdn, lesson, single, multi, short, diagram, demo } = c;
 
   lesson({
     slug: "kak-ustroen-veb", title: "Как устроен веб", minutes: 10,
@@ -9,6 +9,13 @@ export default function start(c) {
       `## Сайт — это файлы на чужом компьютере`,
       `Каждый сайт — набор файлов: HTML, CSS, JavaScript, картинки. Они лежат на **сервере** — компьютере, который работает круглосуточно и отдаёт файлы по запросу. Ваш **браузер** (Chrome, Firefox, Safari, Яндекс Браузер) — программа, которая запрашивает эти файлы и превращает их в страницу.`,
       `## Что происходит, когда вы открываете сайт`,
+      diagram({ kind: "flow", title: "Путь от адреса до страницы", steps: [
+        { title: "Адрес", text: "Вы вводите example.com и жмёте Enter" },
+        { title: "DNS", text: "Имя превращается в IP-адрес сервера" },
+        { title: "Запрос", text: "Браузер просит у сервера страницу" },
+        { title: "Ответ", text: "Сервер присылает HTML, CSS, JS, картинки" },
+        { title: "Страница", text: "Браузер собирает и рисует результат" }
+      ] }),
       `1. Вы вводите адрес, например \`https://example.com/about\`.
 2. Браузер узнаёт IP-адрес сервера через **DNS** — «телефонную книгу» интернета: имя \`example.com\` → числовой адрес.
 3. Браузер отправляет серверу **HTTP-запрос**: «дай мне страницу /about».
@@ -18,9 +25,14 @@ export default function start(c) {
 
 Всё это обычно занимает меньше секунды.`,
       `## Из чего состоит адрес`,
-      code("text", `https://example.com:443/blog/post.html?page=2#comments
-└─┬──┘   └────┬────┘ └┬┘ └──────┬──────┘ └──┬──┘ └───┬───┘
-протокол    домен   порт      путь       запрос    якорь`),
+      diagram({ kind: "url", title: "Анатомия адреса", parts: [
+        { text: "https://", label: "протокол" },
+        { text: "example.com", label: "домен" },
+        { text: ":443", label: "порт" },
+        { text: "/blog/post.html", label: "путь" },
+        { text: "?page=2", label: "запрос" },
+        { text: "#comments", label: "якорь" }
+      ] }),
       `- **Протокол** \`https\` — способ общения; \`s\` значит «защищённое соединение».
 - **Домен** — имя сайта.
 - **Путь** — какой файл или страница нужна.
@@ -74,11 +86,14 @@ export default function start(c) {
 - **Prettier** — аккуратно форматирует код.
 - **Russian Language Pack** — если удобнее интерфейс на русском.`,
       `## Emmet за 30 секунд`,
-      code("text", `!                 → каркас HTML-документа
-ul>li*3           → список из трёх пунктов
-p.note            → <p class="note"></p>
-a[href=#]         → <a href="#"></a>`),
-      `Попробуйте в VS Code: напечатайте сокращение и нажмите Tab.`,
+      `Emmet — встроенный в VS Code «ускоритель»: вы пишете короткое сокращение, жмёте **Tab**, и оно разворачивается в готовую разметку. Посмотрите, как это выглядит:`,
+      demo({ kind: "typing", title: "Emmet в редакторе", scenes: [
+        { input: "ul>li*3", key: "Tab", output: "<ul>\n  <li></li>\n  <li></li>\n  <li></li>\n</ul>", caption: "ul>li*3 — список из трёх пунктов" },
+        { input: "p.note", key: "Tab", output: "<p class=\"note\"></p>", caption: "p.note — абзац с классом" },
+        { input: "a[href=#]", key: "Tab", output: "<a href=\"#\"></a>", caption: "a[href=#] — ссылка с атрибутом" },
+        { input: "nav>ul>li*3>a", key: "Tab", output: "<nav>\n  <ul>\n    <li><a href=\"\"></a></li>\n    <li><a href=\"\"></a></li>\n    <li><a href=\"\"></a></li>\n  </ul>\n</nav>", caption: "nav>ul>li*3>a — целое меню одной строкой" }
+      ] }),
+      `Правила сокращений: \`>\` — «внутри», \`*3\` — «повторить три раза», \`.\` — класс, \`#\` — id, \`[…]\` — атрибуты, \`+\` — «рядом». Попробуйте в VS Code: напечатайте сокращение и нажмите Tab.`,
       `## А пока — песочница`,
       `Если установить ничего нельзя (например, вы с телефона), учитесь прямо здесь: у каждого примера есть кнопка «Попробовать». Но для проектов в конце модулей редактор понадобится.`,
       html(`<ul>
@@ -108,7 +123,10 @@ a[href=#]         → <a href="#"></a>`),
       `## Шаг 2. Файл index.html`,
       `В VS Code: **File → Open Folder** → выберите \`my-site\`. Затем **New File** → назовите \`index.html\`. Важно, чтобы расширение было именно \`.html\`, а не \`.html.txt\`: в Windows включите показ расширений файлов в проводнике.`,
       `## Шаг 3. Код`,
-      `Напечатайте \`!\` и Tab (или скопируйте):`,
+      `Напечатайте \`!\` и Tab (или скопируйте код ниже):`,
+      demo({ kind: "typing", title: "Каркас за одно нажатие", scenes: [
+        { input: "!", key: "Tab", output: "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Document</title>\n</head>\n<body>\n  \n</body>\n</html>", caption: "! + Tab — каркас документа. Поменяйте lang на ru и title на свой" }
+      ] }),
       html(`<!doctype html>
 <html lang="ru">
 <head>
