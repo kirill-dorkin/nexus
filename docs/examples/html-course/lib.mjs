@@ -21,7 +21,7 @@ function placeChallenges(markdown, list) {
     sections[i] = `${sections[i].trimEnd()}\n\n${challengeFence(spec)}`;
   }
   if (practice.length) {
-    const block = `## Практика\n\n${practice.map(challengeFence).join("\n\n")}`;
+    const block = `## Ваш ход\n\n${practice.map(challengeFence).join("\n\n")}`;
     const i = sections.findIndex((section) => heading(section) === "Практика");
     if (i >= 0) sections[i] = block;
     else sections.push(block);
@@ -29,7 +29,7 @@ function placeChallenges(markdown, list) {
   return sections.join("\n");
 }
 
-export function createCourse(challenges = {}) {
+export function createCourse(challenges = {}, stories = {}) {
   const skills = [];
   const activities = [];
   const lessons = [];
@@ -87,7 +87,9 @@ export function createCourse(challenges = {}) {
     lesson({ slug, title, minutes, summary, skill, body, quizzes, allRequired = false }) {
       const [key, skillTitle, skillDescription] = skill;
       skills.push({ key, title: skillTitle, description: skillDescription });
-      const markdown = placeChallenges(body.filter(Boolean).join("\n\n").trim(), challenges[slug] ?? []);
+      // A rewritten story body (stories/*.mjs) replaces the original prose of the lesson.
+      const parts = stories[slug] ?? body;
+      const markdown = placeChallenges(parts.filter(Boolean).join("\n\n").trim(), challenges[slug] ?? []);
       const blocks = [{ type: "markdown", markdown }];
       quizzes.forEach((make, index) => {
         const activitySlug = make(key);

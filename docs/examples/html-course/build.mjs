@@ -3,6 +3,7 @@
 import { writeFileSync } from "node:fs";
 import { createCourse } from "./lib.mjs";
 import challenges from "./challenges.mjs";
+import stories from "./stories/index.mjs";
 import start from "./m00-start.mjs";
 import basics from "./m01-basics.mjs";
 import text from "./m02-text.mjs";
@@ -36,7 +37,7 @@ const path = [
   quality, obsolete, newFeatures, referenceSheet, projectFinal // 11. Качество, новинки, справочник, финал
 ];
 
-const course = createCourse(challenges);
+const course = createCourse(challenges, stories);
 for (const part of path) part(course);
 
 const manifest = course.manifest({
