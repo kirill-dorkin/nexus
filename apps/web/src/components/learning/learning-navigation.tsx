@@ -1,5 +1,6 @@
 "use client";
 
+import { SoundPanel } from "./sound-panel";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
@@ -70,6 +71,7 @@ export function LearningNavigation({
       <nav className={styles.desktop} aria-label="Главное меню">
         {links()}
       </nav>
+      <SoundPanel compact />
       {showLogin && authState === "anonymous" ? (
         <div className={styles.authActions}>
           <Link className={`${buttonClass({ variant: "ghost", size: "sm" })} ${styles.login}`} href="/login">Войти</Link>

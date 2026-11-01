@@ -11,8 +11,8 @@ export function useSoundState() {
   return useSyncExternalStore(subscribeSound, getSoundState, getServerSoundState);
 }
 
-/** Compact "Музыка" control on lesson pages: generative coffee-shop music, on by default. */
-export function SoundPanel() {
+/** "Музыка" control in the site header: generative coffee-shop music on every page, on by default. */
+export function SoundPanel({ compact = false }: { compact?: boolean }) {
   const { settings: s, unlocked } = useSoundState();
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
@@ -46,11 +46,12 @@ export function SoundPanel() {
 
   return (
     <div ref={root} className={styles.root}>
-      <button type="button" className={styles.trigger} data-sound-trigger="" data-on={on || undefined}
+      <button type="button" className={styles.trigger} data-sound-trigger="" data-compact={compact || undefined} data-on={on || undefined}
+        aria-label={on && !unlocked ? "Включить музыку" : "Музыка"}
         data-waiting={on && !unlocked || undefined}
         aria-expanded={open} aria-haspopup="dialog" onClick={() => setOpen((v) => !v)}>
         {on ? <SpeakerHigh size={16} weight="fill" aria-hidden="true" /> : <SpeakerSlash size={16} aria-hidden="true" />}
-        {on && !unlocked ? "Включить музыку" : "Музыка"}
+        <span className={styles.label}>{on && !unlocked ? "Включить музыку" : "Музыка"}</span>
         {s.music && unlocked ? <span className={styles.bars} aria-hidden="true"><i /><i /><i /></span> : null}
       </button>
       {open ? (

@@ -9,7 +9,6 @@ import { Heading, Surface } from "@platform/ui";
 import { LearningPageHeading } from "./learning-page-heading";
 import { LessonOutline } from "./lesson-outline";
 import { SignupNudge } from "./signup-nudge";
-import { SoundPanel } from "./sound-panel";
 import styles from "./flow.module.css";
 import { absoluteUrl, jsonLd } from "../../lib/site";
 export function lessonMetadata(course: PublicLearningLesson): Metadata {
@@ -68,9 +67,6 @@ export function LessonPageView({ course }: { course: PublicLearningLesson }) {
                 title={course.lesson.title}
                 description={course.lesson.summary}
               />
-              <div className={styles.lessonTools}>
-                <SoundPanel />
-              </div>
               <div
                 className={styles.lessonMeter}
                 role="progressbar"

@@ -170,3 +170,27 @@
     animation: none;
   }
 }
+
+/* In the header: a calm icon button; the label appears only where there is room. */
+.trigger[data-compact] {
+  min-height: 38px;
+  border-color: var(--border-default);
+}
+@media (max-width: 960px) {
+  .trigger[data-compact] {
+    width: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+  .trigger[data-compact] .label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .trigger[data-compact] .bars {
+    display: none;
+  }
+}
