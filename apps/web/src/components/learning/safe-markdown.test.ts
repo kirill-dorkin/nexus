@@ -30,7 +30,7 @@ describe("untrusted lesson Markdown", () => {
     expect(html).toContain("<h2>Notes</h2>");
     expect(html).toContain("<strong>Useful</strong>");
     expect(html).toContain("<ul>");
-    expect(html).toContain('<pre tabindex="0"');
+    expect(html).toMatch(/<pre[^>]*tabindex="0"/);
     expect(html).toContain("Скопировать код");
     expect(html).toContain('href="https://example.test/"');
     expect(html).not.toMatch(

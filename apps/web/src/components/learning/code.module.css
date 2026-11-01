@@ -1,0 +1,202 @@
+/* Lesson code blocks and the in-place HTML editor. */
+.snippet {
+  --code-bg: #0b0c0f;
+  --code-plain: #e4e4e7;
+  margin: 1.5rem 0;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  border-radius: 1rem;
+  background: var(--code-bg);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.editing {
+  border-color: color-mix(in srgb, var(--accent-action) 45%, var(--border-default));
+  box-shadow: 0 20px 60px -30px color-mix(in srgb, var(--accent-action) 40%, transparent);
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 52px;
+  padding: 0.4rem 0.5rem 0.4rem 1rem;
+  border-bottom: 1px solid var(--border-default);
+  background: color-mix(in srgb, var(--surface-solid) 70%, var(--code-bg));
+}
+.lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font: 600 0.8rem/1 var(--font-sans);
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f97316;
+}
+.mode {
+  color: var(--text-accent);
+  font-weight: 600;
+}
+.actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+}
+.actions :global(.ui-button) {
+  min-height: 36px;
+  padding: 0.35rem 0.85rem;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+}
+
+.snippet pre code {
+  font: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.snippet .code,
+.snippet .layer,
+.snippet .input {
+  margin: 0;
+  padding: 1.1rem 1.25rem;
+  border: 0;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  letter-spacing: normal;
+  white-space: pre;
+  tab-size: 2;
+}
+.snippet .code {
+  overflow-x: auto;
+  border-radius: 0;
+  color: var(--code-plain);
+  background: transparent;
+}
+.code:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.editor {
+  position: relative;
+  background: var(--code-bg);
+}
+.layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--code-plain);
+}
+.input {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 7rem;
+  resize: vertical;
+  overflow: auto;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--text-accent);
+  outline: none;
+}
+.input::selection {
+  background: color-mix(in srgb, var(--accent-action) 28%, transparent);
+  color: transparent;
+}
+.editor:focus-within {
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--focus-ring) 60%, transparent);
+}
+
+/* Token colours. */
+.tag { color: #7dd3fc; }
+.attr { color: #c4b5fd; }
+.string { color: #bef264; }
+.comment { color: #71717a; font-style: italic; }
+.punct { color: #94a3b8; }
+.entity { color: #fda4af; }
+.doctype { color: #a1a1aa; }
+.keyword { color: #f0abfc; }
+.number { color: #fdba74; }
+.property { color: #93c5fd; }
+
+.result {
+  border-top: 1px solid var(--border-default);
+}
+.resultBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  color: var(--text-secondary);
+  font: 600 0.8rem/1.4 var(--font-sans);
+  background: color-mix(in srgb, var(--surface-solid) 70%, var(--code-bg));
+}
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text-accent);
+  font-weight: 500;
+}
+.live span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--action-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-action) 25%, transparent);
+}
+.frameWrap {
+  height: 260px;
+  min-height: 140px;
+  overflow: hidden;
+  resize: vertical;
+  background: #fff;
+}
+.frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fff;
+}
+
+.status {
+  margin: 0;
+  padding: 0.6rem 1rem;
+  border-top: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 520px) {
+  .hideNarrow {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .snippet .code,
+  .snippet .layer,
+  .snippet .input {
+    padding-inline: 1rem;
+    font-size: 0.82rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .snippet {
+    transition: none;
+  }
+}
