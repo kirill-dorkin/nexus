@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { ButtonLink } from "@platform/ui";
 import { courseUrl } from "../../lib/public-learning-routes";
-import { lessonCount } from "./learning-labels";
+import { durationLabel, lessonCount } from "./learning-labels";
 import styles from "./course-list.module.css";
 
 function firstSentence(text: string) {
@@ -59,7 +59,7 @@ export function CourseCard({
         <ul className={styles.meta} aria-label="Сведения о курсе">
           <li>Бесплатно</li>
           <li>{lessonCount(lessons.length)}</li>
-          {minutes > 0 && <li>{minutes} мин</li>}
+          {minutes > 0 && <li>{durationLabel(minutes)}</li>}
         </ul>
         <ButtonLink className={styles.action} href={href} variant={featured ? "primary" : "secondary"}>
           Посмотреть программу <ArrowRight size={18} aria-hidden="true" />
