@@ -110,7 +110,7 @@ function StoryScene({ story }: { story: Story }) {
   }, [started, reduced, shown, story.lines]);
   const typing = !reduced && started && all < story.lines.length ? story.lines[all]!.who : null;
   return (
-    <figure ref={setNode} className={styles.scene}>
+    <figure ref={setNode} className={styles.scene} data-single={story.lines.length === 1 || undefined}>
       {story.title ? <figcaption className={styles.sceneTitle}>{story.title}</figcaption> : null}
       <ol className={styles.lines} aria-live="polite">
         {story.lines.map((line, i) => {

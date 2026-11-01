@@ -7,7 +7,9 @@ describe("learning auth return target", () => {
     "/studio/11111111-1111-4111-8111-111111111111/new",
     "/studio/11111111-1111-4111-8111-111111111111/22222222-2222-4222-8222-222222222222",
     "/learn/academy/course",
-    "/learn/academy/course/lesson"
+    "/learn/academy/course/lesson",
+    "/courses/html",
+    "/courses/html/how-the-web-works"
   ])("preserves %s", (v) => expect(safeLearningReturnTo(v)).toBe(v));
   it.each([
     "https://evil.test/learn/academy/course",
@@ -24,6 +26,10 @@ describe("learning auth return target", () => {
     "/learn/aa/bb/",
     "/learn/aa/bb\n",
     "/catalog/aa/products/bb",
+    "/courses/html/a/b",
+    "/courses/html/../x",
+    "/courses/Html",
+    "/courses/html?x=https://evil.test",
     undefined,
     ["/learn/aa/bb"]
   ])("rejects unsafe or unrelated target %s", (v) =>

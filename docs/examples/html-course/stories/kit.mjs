@@ -13,5 +13,5 @@ export const diagram = (spec) => fence("diagram", spec);
 export const demo = (spec) => fence("demo", spec);
 export const code = (lang, src) => `${FENCE}${lang}\n${src.trim()}\n${FENCE}`;
 export const html = (src) => code("html", src);
-/** Mentor's rule of thumb as a short quote line. */
-export const rule = (text) => `> **Ника:** ${text}`;
+/** Mentor's rule of thumb: one chat message from Nika, styled like every other scene. */
+export const rule = (text) => fence("story", { lines: [["nika", text]] });

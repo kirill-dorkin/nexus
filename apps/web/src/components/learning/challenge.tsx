@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { ArrowCounterClockwise, Check, Circle, Eye, Lightbulb, Trophy } from "@phosphor-icons/react/dist/ssr";
 import { brand } from "@platform/brand";
 import { CodeEditor } from "./code-snippet";
+import { SaveProgressHint } from "./signup-nudge";
 import codeStyles from "./code.module.css";
 import styles from "./challenge.module.css";
 
@@ -176,6 +177,7 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
           <Trophy size={20} weight="fill" aria-hidden="true" /> Готово! Всё работает — идём дальше.
         </p>
       ) : null}
+      {celebrate && done ? <SaveProgressHint /> : null}
       {hint && challenge.hint ? <p className={styles.hint}><Lightbulb size={18} weight="fill" aria-hidden="true" /> <span><Inline text={challenge.hint} /></span></p> : null}
       <div className={styles.actions}>
         {challenge.hint && !hint && !done ? (

@@ -15,6 +15,12 @@ export function safeLearningReturnTo(value: unknown): string {
   }
   if (value === "/me/learning") return value;
   if (typeof value !== "string" || value.length > 220) return "/me/learning";
+  // Stable course addresses (ADR-0061): /courses/{course} and /courses/{course}/{lesson}.
+  const course = /^\/courses\/([^/]+)(?:\/([^/]+))?$/.exec(value);
+  if (course)
+    return course.slice(1).filter((v) => v !== undefined).every((v) => resourceSlugSchema.safeParse(v).success)
+      ? value
+      : "/me/learning";
   const match = /^\/learn\/([^/]+)\/([^/]+)(?:\/([^/]+))?$/.exec(value);
   if (
     !match ||
