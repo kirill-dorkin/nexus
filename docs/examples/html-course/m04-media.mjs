@@ -248,6 +248,7 @@ export default function media(c) {
       code("html", `<iframe src="https://example.com/widget" title="Виджет погоды"
         sandbox="allow-scripts"></iframe>`),
       `Пустой \`sandbox\` запрещает встроенной странице почти всё: скрипты, формы, всплывающие окна, переход вашей страницы на другой адрес. Через пробел разрешаете только нужное: \`allow-scripts\`, \`allow-forms\`, \`allow-popups\`. Кстати, песочница, в которой вы сейчас пробуете код, — это \`iframe\` с пустым \`sandbox\`.`,
+      `Устаревший логический атрибут \`allowfullscreen\` делает то же, что \`allow="fullscreen"\`. Встречается в старых кодах вставки видео; в новом коде пишите \`allow\`.`,
       `## srcdoc — HTML прямо в атрибуте`,
       html(`<iframe title="Мини-страница" width="300" height="120"
         srcdoc="<h1>Привет из iframe</h1><p>Я отдельная страница.</p>"></iframe>`),

@@ -17,6 +17,7 @@ import { divSpan, bidiRuby, projectRecipe } from "./x01-text-extras.mjs";
 import { imageMaps, projectGallery, advancedForms, projectSignup } from "./x02-media-forms-extras.mjs";
 import { styleBaseMeta, security, structuredData, jsBridge, nativeInteractivity, webComponents } from "./x03-head-js-extras.mjs";
 import { obsolete, referenceSheet } from "./x04-reference.mjs";
+import { newFeatures } from "./x05-new-features.mjs";
 
 // Order is the learning path: each project right after the modules it practises.
 const path = [
@@ -31,7 +32,7 @@ const path = [
   head, styleBaseMeta, security, structuredData, projectLanding, // 8. Head + проект 2
   jsBridge, nativeInteractivity, webComponents,     // 9. HTML и JavaScript
   a11y, projectArticle,                             // 10. Доступность + проект 3
-  quality, obsolete, referenceSheet, projectFinal   // 11. Качество, справочник, финал
+  quality, obsolete, newFeatures, referenceSheet, projectFinal // 11. Качество, новинки, справочник, финал
 ];
 
 const course = createCourse();
