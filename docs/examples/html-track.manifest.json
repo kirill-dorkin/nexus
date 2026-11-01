@@ -2,10 +2,30 @@
   "schemaVersion": 1,
   "course": {
     "slug": "html",
-    "title": "HTML: полный курс",
-    "description": "Все возможности HTML с нуля: текст, ссылки, медиа, таблицы, формы, семантика, метаданные и доступность. Короткие уроки, живые примеры, которые можно менять прямо в браузере, задания с мгновенной проверкой и четыре проекта — от визитки до многостраничного портфолио."
+    "title": "HTML с нуля: полный курс",
+    "description": "Буквально с нуля до уверенного владения всем HTML: как устроен веб, первая страница на своём компьютере, текст, ссылки, медиа, таблицы, формы, семантика, метаданные, безопасность, связь с JavaScript, веб-компоненты и доступность. Короткие уроки, живые примеры, которые можно менять прямо в браузере, задания с мгновенной проверкой и семь проектов."
   },
   "skills": [
+    {
+      "key": "web-how-it-works",
+      "title": "Как работает веб",
+      "description": "Объяснять путь от адреса до страницы: браузер, DNS, сервер, HTTP, HTML, CSS и JavaScript."
+    },
+    {
+      "key": "web-tools",
+      "title": "Рабочие инструменты",
+      "description": "Настроить рабочее место: браузер с DevTools, редактор кода с подсветкой, автодополнением и живым просмотром."
+    },
+    {
+      "key": "web-first-page",
+      "title": "Первая страница",
+      "description": "Создать папку проекта и HTML-файл, сохранить его в правильной кодировке и открыть в браузере."
+    },
+    {
+      "key": "web-learning",
+      "title": "Самостоятельный поиск ответов",
+      "description": "Находить ответы в документации, проверять код инструментами и формулировать вопросы."
+    },
     {
       "key": "html-elements",
       "title": "Теги, элементы и атрибуты",
@@ -37,6 +57,11 @@
       "description": "Применять id, class, title, lang, dir, hidden и data-* к любым элементам по назначению."
     },
     {
+      "key": "html-block-inline",
+      "title": "Блочные и строчные элементы",
+      "description": "Различать блочные и строчные элементы и использовать div и span как контейнеры без смысла."
+    },
+    {
       "key": "html-text-emphasis",
       "title": "Смысловое выделение текста",
       "description": "Выбирать strong, em, b, i, u, s, mark и small по смыслу, а не по внешнему виду."
@@ -65,6 +90,16 @@
       "key": "html-description-lists",
       "title": "Списки определений",
       "description": "Размечать пары «термин — описание» элементами dl, dt и dd."
+    },
+    {
+      "key": "html-i18n-text",
+      "title": "Многоязычный текст",
+      "description": "Размечать фрагменты на других языках, текст справа налево и подписи произношения ruby."
+    },
+    {
+      "key": "html-project-recipe",
+      "title": "Мини-проект: рецепт",
+      "description": "Сверстать текстовую страницу, используя заголовки, списки, строчную семантику и списки определений."
     },
     {
       "key": "html-links",
@@ -120,6 +155,16 @@
       "key": "html-scripting",
       "title": "Элементы для скриптов",
       "description": "Подключать скрипты, давать запасной контент и использовать template и canvas по назначению."
+    },
+    {
+      "key": "html-image-maps",
+      "title": "Карты-изображения и object",
+      "description": "Делать кликабельные области на картинке через map и area и встраивать документы через object с запасным содержимым."
+    },
+    {
+      "key": "html-project-gallery",
+      "title": "Мини-проект: галерея",
+      "description": "Собрать медиастраницу с адаптивными изображениями, подписями, видео и доступными иконками."
     },
     {
       "key": "html-tables",
@@ -182,6 +227,16 @@
       "description": "Показывать результат вычисления, ход процесса и измеряемые значения правильным элементом."
     },
     {
+      "key": "html-form-advanced",
+      "title": "Продвинутые формы",
+      "description": "Связывать поля с формой на расстоянии, переопределять поведение кнопок и блокировать группы полей."
+    },
+    {
+      "key": "html-project-signup",
+      "title": "Мини-проект: регистрация",
+      "description": "Собрать доступную форму регистрации с подходящими типами полей, проверкой и автозаполнением."
+    },
+    {
       "key": "html-semantics",
       "title": "Семантическая структура",
       "description": "Размечать области страницы элементами header, nav, main и footer."
@@ -202,6 +257,11 @@
       "description": "Строить всплывающие элементы через popover и dialog и понимать, когда нужен модальный режим."
     },
     {
+      "key": "html-project-card",
+      "title": "Проект: визитка",
+      "description": "Собрать целую страницу из базовых элементов и проверить её по чек-листу."
+    },
+    {
       "key": "html-meta",
       "title": "Метаданные страницы",
       "description": "Заполнять head: кодировка, viewport, title, description, robots и canonical."
@@ -215,6 +275,41 @@
       "key": "html-resources",
       "title": "Подключение ресурсов",
       "description": "Подключать CSS, JavaScript и шрифты так, чтобы страница показывалась быстро."
+    },
+    {
+      "key": "html-head-misc",
+      "title": "Служебные элементы head",
+      "description": "Применять элемент style, атрибут style, base и служебные meta по назначению."
+    },
+    {
+      "key": "html-security",
+      "title": "Безопасность разметки",
+      "description": "Защищать страницу средствами HTML: CSP, проверка целостности внешних файлов, изоляция фреймов и ссылок."
+    },
+    {
+      "key": "html-structured-data",
+      "title": "Структурированные данные",
+      "description": "Описывать сущности страницы словарём Schema.org через JSON-LD и микроданные."
+    },
+    {
+      "key": "html-project-landing",
+      "title": "Проект: лендинг",
+      "description": "Спроектировать и сверстать семантичный лендинг с медиа, таблицей тарифов, FAQ и формой."
+    },
+    {
+      "key": "html-js-bridge",
+      "title": "Связь HTML и JavaScript",
+      "description": "Понимать, как скрипт находит элементы и реагирует на события, и готовить для этого разметку."
+    },
+    {
+      "key": "html-native-interactivity",
+      "title": "Встроенная интерактивность",
+      "description": "Включать редактирование, проверку орфографии, перетаскивание и находимый скрытый текст атрибутами HTML."
+    },
+    {
+      "key": "html-web-components",
+      "title": "Веб-компоненты",
+      "description": "Понимать пользовательские элементы, слоты и Shadow DOM и распознавать их в разметке."
     },
     {
       "key": "html-a11y-basics",
@@ -232,24 +327,24 @@
       "description": "Применять ARIA-атрибуты там, где HTML не хватает, и не применять там, где хватает."
     },
     {
+      "key": "html-project-article",
+      "title": "Проект: статья",
+      "description": "Сверстать длинную статью с оглавлением, богатой текстовой семантикой, медиа и метаданными."
+    },
+    {
       "key": "html-quality",
       "title": "Качество разметки",
       "description": "Проверять разметку валидатором и инструментами и находить частые ошибки."
     },
     {
-      "key": "html-project-card",
-      "title": "Проект: визитка",
-      "description": "Собрать целую страницу из базовых элементов и проверить её по чек-листу."
+      "key": "html-obsolete",
+      "title": "Устаревшие элементы",
+      "description": "Распознавать устаревшие элементы и атрибуты в старом коде и заменять их современными решениями."
     },
     {
-      "key": "html-project-landing",
-      "title": "Проект: лендинг",
-      "description": "Спроектировать и сверстать семантичный лендинг с медиа, таблицей тарифов, FAQ и формой."
-    },
-    {
-      "key": "html-project-article",
-      "title": "Проект: статья",
-      "description": "Сверстать длинную статью с оглавлением, богатой текстовой семантикой, медиа и метаданными."
+      "key": "html-reference",
+      "title": "Карта всех элементов",
+      "description": "Ориентироваться во всех актуальных элементах HTML и выбирать подходящий по задаче."
     },
     {
       "key": "html-project-portfolio",
@@ -258,6 +353,316 @@
     }
   ],
   "activities": [
+    {
+      "slug": "web-browser",
+      "type": "quiz.single_choice",
+      "title": "Роль браузера",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "web-how-it-works"
+      ],
+      "presentation": {
+        "question": "Что делает браузер?",
+        "options": [
+          {
+            "id": "render",
+            "text": "Запрашивает файлы сайта у сервера и превращает их в страницу"
+          },
+          {
+            "id": "store",
+            "text": "Хранит все сайты интернета"
+          },
+          {
+            "id": "write",
+            "text": "Пишет HTML за вас"
+          },
+          {
+            "id": "dns",
+            "text": "Выдаёт домены сайтам"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "render",
+        "explanation": "Браузер — клиент: он запрашивает HTML, CSS, JavaScript и картинки и рисует из них страницу."
+      }
+    },
+    {
+      "slug": "web-dns",
+      "type": "quiz.single_choice",
+      "title": "DNS",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "web-how-it-works"
+      ],
+      "presentation": {
+        "question": "Зачем нужен DNS?",
+        "options": [
+          {
+            "id": "ip",
+            "text": "Чтобы по имени домена узнать IP-адрес сервера"
+          },
+          {
+            "id": "speed",
+            "text": "Чтобы ускорить интернет"
+          },
+          {
+            "id": "secure",
+            "text": "Чтобы шифровать соединение"
+          },
+          {
+            "id": "html",
+            "text": "Чтобы проверять HTML на ошибки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ip",
+        "explanation": "DNS переводит имя вроде example.com в числовой адрес сервера."
+      }
+    },
+    {
+      "slug": "web-languages",
+      "type": "quiz.multiple_choice",
+      "title": "Три языка",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "web-how-it-works"
+      ],
+      "presentation": {
+        "question": "Какие языки работают в браузере и составляют фронтенд?",
+        "options": [
+          {
+            "id": "html",
+            "text": "HTML"
+          },
+          {
+            "id": "css",
+            "text": "CSS"
+          },
+          {
+            "id": "js",
+            "text": "JavaScript"
+          },
+          {
+            "id": "sql",
+            "text": "SQL"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "html",
+          "css",
+          "js"
+        ],
+        "explanation": "HTML, CSS и JavaScript — языки браузера. SQL — язык баз данных на сервере."
+      }
+    },
+    {
+      "slug": "tools-emmet",
+      "type": "quiz.single_choice",
+      "title": "Сокращение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "web-tools"
+      ],
+      "presentation": {
+        "question": "Что получится в VS Code, если в пустом .html-файле ввести ! и нажать Tab?",
+        "options": [
+          {
+            "id": "skeleton",
+            "text": "Полный каркас HTML-документа"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка"
+          },
+          {
+            "id": "comment",
+            "text": "Комментарий"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "skeleton",
+        "explanation": "Встроенный Emmet разворачивает ! в стандартный каркас страницы."
+      }
+    },
+    {
+      "slug": "tools-live",
+      "type": "quiz.single_choice",
+      "title": "Автообновление",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "web-tools"
+      ],
+      "presentation": {
+        "question": "Какое расширение VS Code обновляет страницу в браузере при каждом сохранении файла?",
+        "options": [
+          {
+            "id": "live",
+            "text": "Live Server"
+          },
+          {
+            "id": "prettier",
+            "text": "Prettier"
+          },
+          {
+            "id": "git",
+            "text": "GitLens"
+          },
+          {
+            "id": "lang",
+            "text": "Russian Language Pack"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "live",
+        "explanation": "Live Server запускает локальный сервер и перезагружает страницу после сохранения."
+      }
+    },
+    {
+      "slug": "first-extension",
+      "type": "quiz.single_choice",
+      "title": "Расширение файла",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "web-first-page"
+      ],
+      "presentation": {
+        "question": "Какое имя файла правильное для главной страницы сайта?",
+        "options": [
+          {
+            "id": "index",
+            "text": "index.html"
+          },
+          {
+            "id": "txt",
+            "text": "index.html.txt"
+          },
+          {
+            "id": "doc",
+            "text": "index.docx"
+          },
+          {
+            "id": "upper",
+            "text": "Главная.HTML"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "index",
+        "explanation": "Главная страница — index.html: сервер отдаёт её по адресу папки."
+      }
+    },
+    {
+      "slug": "first-mojibake",
+      "type": "quiz.single_choice",
+      "title": "Кракозябры",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "web-first-page"
+      ],
+      "presentation": {
+        "question": "Вместо русского текста на странице непонятные символы. Что проверить первым делом?",
+        "options": [
+          {
+            "id": "charset",
+            "text": "<meta charset=\"utf-8\"> и кодировку файла UTF-8"
+          },
+          {
+            "id": "browser",
+            "text": "Сменить браузер"
+          },
+          {
+            "id": "font",
+            "text": "Установить русский шрифт"
+          },
+          {
+            "id": "lang",
+            "text": "Удалить атрибут lang"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "charset",
+        "explanation": "Кракозябры почти всегда означают несовпадение кодировки. Нужен UTF-8 и в файле, и в meta."
+      }
+    },
+    {
+      "slug": "learning-mdn",
+      "type": "quiz.single_choice",
+      "title": "Справочник",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "web-learning"
+      ],
+      "presentation": {
+        "question": "Где лучше всего уточнить, какие атрибуты есть у тега?",
+        "options": [
+          {
+            "id": "mdn",
+            "text": "MDN Web Docs"
+          },
+          {
+            "id": "memory",
+            "text": "Нужно выучить всё наизусть"
+          },
+          {
+            "id": "forum",
+            "text": "Только на форумах"
+          },
+          {
+            "id": "ai",
+            "text": "Только у ИИ-помощника, не проверяя"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mdn",
+        "explanation": "MDN — подробный справочник по каждому элементу. ИИ и форумы полезны, но их ответы стоит сверять с документацией."
+      }
+    },
+    {
+      "slug": "learning-minimal",
+      "type": "quiz.single_choice",
+      "title": "Минимальный пример",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "web-learning"
+      ],
+      "presentation": {
+        "question": "Как быстрее всего найти причину ошибки в большой странице?",
+        "options": [
+          {
+            "id": "reduce",
+            "text": "Убирать лишний код, пока ошибка не исчезнет, и так найти виновника"
+          },
+          {
+            "id": "rewrite",
+            "text": "Переписать всё с нуля"
+          },
+          {
+            "id": "wait",
+            "text": "Подождать, вдруг само исправится"
+          },
+          {
+            "id": "browser",
+            "text": "Поменять браузер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "reduce",
+        "explanation": "Минимальный пример изолирует проблему — это главный приём отладки."
+      }
+    },
     {
       "slug": "elements-closing",
       "type": "quiz.single_choice",
@@ -824,6 +1229,82 @@
       }
     },
     {
+      "slug": "block-which",
+      "type": "quiz.multiple_choice",
+      "title": "Блочные элементы",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "html-block-inline"
+      ],
+      "presentation": {
+        "question": "Какие элементы по умолчанию блочные?",
+        "options": [
+          {
+            "id": "p",
+            "text": "<p>"
+          },
+          {
+            "id": "div",
+            "text": "<div>"
+          },
+          {
+            "id": "ul",
+            "text": "<ul>"
+          },
+          {
+            "id": "a",
+            "text": "<a>"
+          },
+          {
+            "id": "span",
+            "text": "<span>"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "p",
+          "div",
+          "ul"
+        ],
+        "explanation": "p, div и ul начинаются с новой строки. a и span — строчные."
+      }
+    },
+    {
+      "slug": "block-div",
+      "type": "quiz.single_choice",
+      "title": "Когда div",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-block-inline"
+      ],
+      "presentation": {
+        "question": "В каком случае div — правильный выбор?",
+        "options": [
+          {
+            "id": "layout",
+            "text": "Обёртка двух колонок только ради раскладки"
+          },
+          {
+            "id": "nav",
+            "text": "Главное меню сайта"
+          },
+          {
+            "id": "article",
+            "text": "Отдельная статья блога"
+          },
+          {
+            "id": "important",
+            "text": "Важное предупреждение в тексте"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "layout",
+        "explanation": "div — для группировки без смысла. Для меню есть nav, для статьи — article, для важного — strong."
+      }
+    },
+    {
       "slug": "emphasis-strong",
       "type": "quiz.single_choice",
       "title": "Важное предупреждение",
@@ -1350,6 +1831,116 @@
       "validation": {
         "correctOptionId": "table",
         "explanation": "У данных два измерения — тарифы и параметры. Это таблица. dl подходит для пар название — значение."
+      }
+    },
+    {
+      "slug": "i18n-dir",
+      "type": "quiz.single_choice",
+      "title": "Направление",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-i18n-text"
+      ],
+      "presentation": {
+        "question": "Какой атрибут переключает направление текста справа налево?",
+        "options": [
+          {
+            "id": "dir",
+            "text": "dir=\"rtl\""
+          },
+          {
+            "id": "lang",
+            "text": "lang=\"rtl\""
+          },
+          {
+            "id": "align",
+            "text": "align=\"right\""
+          },
+          {
+            "id": "rtl",
+            "text": "rtl=\"true\""
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dir",
+        "explanation": "Направление задаётся атрибутом dir: rtl, ltr или auto."
+      }
+    },
+    {
+      "slug": "i18n-ruby",
+      "type": "quiz.single_choice",
+      "title": "Подпись чтения",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-i18n-text"
+      ],
+      "presentation": {
+        "question": "Каким элементом внутри ruby задают подпись произношения?",
+        "options": [
+          {
+            "id": "rt",
+            "text": "<rt>"
+          },
+          {
+            "id": "rp",
+            "text": "<rp>"
+          },
+          {
+            "id": "sup",
+            "text": "<sup>"
+          },
+          {
+            "id": "small",
+            "text": "<small>"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rt",
+        "explanation": "rt — текст подписи, rp — запасные скобки."
+      }
+    },
+    {
+      "slug": "recipe-check",
+      "type": "quiz.multiple_choice",
+      "title": "Проверка рецепта",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "html-project-recipe"
+      ],
+      "presentation": {
+        "question": "Какие решения правильные для страницы рецепта?",
+        "options": [
+          {
+            "id": "ol",
+            "text": "Шаги приготовления — нумерованный список ol"
+          },
+          {
+            "id": "dl",
+            "text": "Время и порции — список определений dl"
+          },
+          {
+            "id": "nbsp",
+            "text": "Неразрывный пробел между числом и «г»"
+          },
+          {
+            "id": "br",
+            "text": "Ингредиенты через <br> в одном абзаце"
+          },
+          {
+            "id": "h3",
+            "text": "Название блюда в h3, чтобы было поменьше"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "ol",
+          "dl",
+          "nbsp"
+        ],
+        "explanation": "Порядок шагов важен — ol; пары название-значение — dl; число и единица не разрываются. Список через br и неверный уровень заголовка — ошибки."
       }
     },
     {
@@ -2420,6 +3011,116 @@
       }
     },
     {
+      "slug": "maps-link",
+      "type": "quiz.single_choice",
+      "title": "Связь карты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-image-maps"
+      ],
+      "presentation": {
+        "question": "Как связать картинку с элементом `<map name=\"plan\">`?",
+        "options": [
+          {
+            "id": "usemap",
+            "text": "usemap=\"#plan\" у img"
+          },
+          {
+            "id": "map",
+            "text": "map=\"plan\" у img"
+          },
+          {
+            "id": "href",
+            "text": "href=\"#plan\" у img"
+          },
+          {
+            "id": "for",
+            "text": "for=\"plan\" у img"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "usemap",
+        "explanation": "Атрибут usemap с решёткой указывает имя карты."
+      }
+    },
+    {
+      "slug": "maps-object-fallback",
+      "type": "quiz.single_choice",
+      "title": "Запасной вариант",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-image-maps"
+      ],
+      "presentation": {
+        "question": "Зачем писать содержимое внутри `<object>`?",
+        "options": [
+          {
+            "id": "fallback",
+            "text": "Это запасной вариант, если браузер не может показать файл"
+          },
+          {
+            "id": "title",
+            "text": "Это подпись над документом"
+          },
+          {
+            "id": "required",
+            "text": "Без него object не работает"
+          },
+          {
+            "id": "nothing",
+            "text": "Оно никогда не отображается"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fallback",
+        "explanation": "Содержимое object показывается, только если встроить ресурс не удалось."
+      }
+    },
+    {
+      "slug": "gallery-check",
+      "type": "quiz.multiple_choice",
+      "title": "Проверка галереи",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "html-project-gallery"
+      ],
+      "presentation": {
+        "question": "Что правильно для галереи?",
+        "options": [
+          {
+            "id": "alt",
+            "text": "Осмысленный alt у каждого фото"
+          },
+          {
+            "id": "lazy",
+            "text": "loading=\"lazy\" у фото ниже первого экрана"
+          },
+          {
+            "id": "size",
+            "text": "width и height у каждой картинки"
+          },
+          {
+            "id": "autoplay",
+            "text": "Видео с автозапуском и звуком"
+          },
+          {
+            "id": "lazyfirst",
+            "text": "loading=\"lazy\" у самой первой картинки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "alt",
+          "lazy",
+          "size"
+        ],
+        "explanation": "alt, размеры и ленивая загрузка ниже первого экрана — правильно. Автозапуск со звуком и lazy у первой картинки вредят."
+      }
+    },
+    {
       "slug": "tables-th",
       "type": "quiz.single_choice",
       "title": "Ячейка-заголовок",
@@ -3441,6 +4142,116 @@
       }
     },
     {
+      "slug": "forms-adv-attr",
+      "type": "quiz.single_choice",
+      "title": "Кнопка вне формы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-form-advanced"
+      ],
+      "presentation": {
+        "question": "Кнопка находится вне `<form id=\"order\">`. Как связать её с формой?",
+        "options": [
+          {
+            "id": "form",
+            "text": "form=\"order\" у кнопки"
+          },
+          {
+            "id": "for",
+            "text": "for=\"order\" у кнопки"
+          },
+          {
+            "id": "target",
+            "text": "target=\"order\""
+          },
+          {
+            "id": "nest",
+            "text": "Вложить вторую форму"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "form",
+        "explanation": "Атрибут form со значением id формы связывает элемент с ней на расстоянии."
+      }
+    },
+    {
+      "slug": "forms-adv-fieldset",
+      "type": "quiz.single_choice",
+      "title": "Группа полей",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-form-advanced"
+      ],
+      "presentation": {
+        "question": "Как одним атрибутом отключить все поля адреса?",
+        "options": [
+          {
+            "id": "fieldset",
+            "text": "disabled у их общего fieldset"
+          },
+          {
+            "id": "form",
+            "text": "disabled у form"
+          },
+          {
+            "id": "hidden",
+            "text": "hidden у каждого поля"
+          },
+          {
+            "id": "readonly",
+            "text": "readonly у legend"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fieldset",
+        "explanation": "disabled у fieldset отключает все элементы внутри группы."
+      }
+    },
+    {
+      "slug": "signup-check",
+      "type": "quiz.multiple_choice",
+      "title": "Проверка регистрации",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "html-project-signup"
+      ],
+      "presentation": {
+        "question": "Что обязательно для доступной формы регистрации?",
+        "options": [
+          {
+            "id": "label",
+            "text": "label у каждого поля"
+          },
+          {
+            "id": "legend",
+            "text": "fieldset и legend у групп переключателей"
+          },
+          {
+            "id": "autocomplete",
+            "text": "autocomplete у имени, почты и пароля"
+          },
+          {
+            "id": "placeholder",
+            "text": "placeholder вместо подписей ради минимализма"
+          },
+          {
+            "id": "reset",
+            "text": "Кнопка «Сбросить» рядом с отправкой"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "label",
+          "legend",
+          "autocomplete"
+        ],
+        "explanation": "Подписи, группы с legend и автозаполнение — основа удобной формы. placeholder вместо label и кнопка сброса вредят."
+      }
+    },
+    {
       "slug": "semantics-main",
       "type": "quiz.single_choice",
       "title": "Главное содержимое",
@@ -3815,6 +4626,48 @@
       }
     },
     {
+      "slug": "project-card-check",
+      "type": "quiz.multiple_choice",
+      "title": "Проверка визитки",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "html-project-card"
+      ],
+      "presentation": {
+        "question": "Отметьте всё, что обязательно для корректной и доступной визитки.",
+        "options": [
+          {
+            "id": "h1",
+            "text": "Один h1 и разделы на h2"
+          },
+          {
+            "id": "alt",
+            "text": "Осмысленный alt у фото"
+          },
+          {
+            "id": "label",
+            "text": "label у каждого поля формы"
+          },
+          {
+            "id": "table",
+            "text": "Раскладка страницы таблицей"
+          },
+          {
+            "id": "br",
+            "text": "Отступы через несколько <br>"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "h1",
+          "alt",
+          "label"
+        ],
+        "explanation": "Иерархия заголовков, alt и подписи полей — основа корректной страницы. Таблицы и br для раскладки не используют."
+      }
+    },
+    {
       "slug": "meta-viewport",
       "type": "quiz.single_choice",
       "title": "Мобильная вёрстка",
@@ -4103,6 +4956,493 @@
       "validation": {
         "correctOptionId": "preload",
         "explanation": "preload с as=\"font\" повышает приоритет загрузки шрифта."
+      }
+    },
+    {
+      "slug": "head-misc-css",
+      "type": "quiz.single_choice",
+      "title": "Основной способ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-head-misc"
+      ],
+      "presentation": {
+        "question": "Как правильно подключить стили, общие для всех страниц сайта?",
+        "options": [
+          {
+            "id": "link",
+            "text": "Внешним файлом через <link rel=\"stylesheet\">"
+          },
+          {
+            "id": "style-attr",
+            "text": "Атрибутом style у каждого элемента"
+          },
+          {
+            "id": "style-el",
+            "text": "Копировать <style> на каждую страницу"
+          },
+          {
+            "id": "base",
+            "text": "Через <base>"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "link",
+        "explanation": "Внешний файл подключается одной строкой, кэшируется и меняется в одном месте."
+      }
+    },
+    {
+      "slug": "head-misc-base",
+      "type": "quiz.single_choice",
+      "title": "Элемент base",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-head-misc"
+      ],
+      "presentation": {
+        "question": "Что делает `<base href=\"…\">`?",
+        "options": [
+          {
+            "id": "relative",
+            "text": "Меняет точку отсчёта для всех относительных адресов на странице"
+          },
+          {
+            "id": "redirect",
+            "text": "Перенаправляет на другой сайт"
+          },
+          {
+            "id": "font",
+            "text": "Задаёт базовый шрифт"
+          },
+          {
+            "id": "db",
+            "text": "Подключает базу данных"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "relative",
+        "explanation": "base задаёт базовый URL для всех относительных ссылок и ресурсов."
+      }
+    },
+    {
+      "slug": "security-xss",
+      "type": "quiz.single_choice",
+      "title": "Пользовательский текст",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-security"
+      ],
+      "presentation": {
+        "question": "Как безопасно вывести на странице комментарий пользователя?",
+        "options": [
+          {
+            "id": "text",
+            "text": "Как текст, без интерпретации HTML"
+          },
+          {
+            "id": "html",
+            "text": "Вставить как HTML, чтобы сохранить оформление"
+          },
+          {
+            "id": "script",
+            "text": "Обернуть в script"
+          },
+          {
+            "id": "comment",
+            "text": "Поместить в HTML-комментарий"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "text",
+        "explanation": "Вывод пользовательского ввода как HTML открывает дорогу XSS. Выводите как текст."
+      }
+    },
+    {
+      "slug": "security-integrity",
+      "type": "quiz.single_choice",
+      "title": "Подмена файла",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-security"
+      ],
+      "presentation": {
+        "question": "Какой атрибут не даст выполнить скрипт с CDN, если файл подменили?",
+        "options": [
+          {
+            "id": "integrity",
+            "text": "integrity"
+          },
+          {
+            "id": "defer",
+            "text": "defer"
+          },
+          {
+            "id": "async",
+            "text": "async"
+          },
+          {
+            "id": "nonce",
+            "text": "type=\"module\""
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "integrity",
+        "explanation": "integrity сравнивает хеш скачанного файла с ожидаемым."
+      }
+    },
+    {
+      "slug": "security-mistakes",
+      "type": "quiz.multiple_choice",
+      "title": "Ошибки",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "html-security"
+      ],
+      "presentation": {
+        "question": "Что из этого — ошибки безопасности?",
+        "options": [
+          {
+            "id": "key",
+            "text": "Ключ API в HTML-комментарии"
+          },
+          {
+            "id": "get",
+            "text": "Форма входа с method=\"get\""
+          },
+          {
+            "id": "noopener",
+            "text": "rel=\"noopener\" у внешней ссылки"
+          },
+          {
+            "id": "sandbox",
+            "text": "sandbox у чужого iframe"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "key",
+          "get"
+        ],
+        "explanation": "Секреты в коде страницы видны всем, а GET кладёт пароль в адрес. noopener и sandbox — защитные меры."
+      }
+    },
+    {
+      "slug": "structured-jsonld",
+      "type": "quiz.single_choice",
+      "title": "Рекомендуемый формат",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-structured-data"
+      ],
+      "presentation": {
+        "question": "Какой способ описания структурированных данных рекомендуют поисковики?",
+        "options": [
+          {
+            "id": "jsonld",
+            "text": "JSON-LD в <script type=\"application/ld+json\">"
+          },
+          {
+            "id": "meta",
+            "text": "Мета-тег keywords"
+          },
+          {
+            "id": "class",
+            "text": "Классы CSS с названиями сущностей"
+          },
+          {
+            "id": "comment",
+            "text": "HTML-комментарии"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "jsonld",
+        "explanation": "JSON-LD отделён от разметки и проще в поддержке."
+      }
+    },
+    {
+      "slug": "structured-itemprop",
+      "type": "quiz.single_choice",
+      "title": "Свойство",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-structured-data"
+      ],
+      "presentation": {
+        "question": "Какой атрибут микроданных задаёт свойство сущности?",
+        "options": [
+          {
+            "id": "itemprop",
+            "text": "itemprop"
+          },
+          {
+            "id": "itemscope",
+            "text": "itemscope"
+          },
+          {
+            "id": "itemtype",
+            "text": "itemtype"
+          },
+          {
+            "id": "property",
+            "text": "property"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "itemprop",
+        "explanation": "itemscope начинает сущность, itemtype задаёт тип, itemprop — свойства."
+      }
+    },
+    {
+      "slug": "project-landing-check",
+      "type": "quiz.multiple_choice",
+      "title": "Проверка лендинга",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "html-project-landing"
+      ],
+      "presentation": {
+        "question": "Что обязательно должно быть в форме записи лендинга?",
+        "options": [
+          {
+            "id": "label",
+            "text": "label у каждого поля"
+          },
+          {
+            "id": "types",
+            "text": "Подходящие type: email, tel"
+          },
+          {
+            "id": "autocomplete",
+            "text": "autocomplete для имени, почты и телефона"
+          },
+          {
+            "id": "placeholder",
+            "text": "placeholder вместо подписей"
+          },
+          {
+            "id": "reset",
+            "text": "Кнопка «Очистить» рядом с «Отправить»"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "label",
+          "types",
+          "autocomplete"
+        ],
+        "explanation": "Подписи, правильные типы и автозаполнение делают форму быстрой и доступной. placeholder вместо label и кнопка сброса вредят."
+      }
+    },
+    {
+      "slug": "js-listener",
+      "type": "quiz.single_choice",
+      "title": "Подписка на событие",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-js-bridge"
+      ],
+      "presentation": {
+        "question": "Как в современном коде подписаться на клик по кнопке?",
+        "options": [
+          {
+            "id": "listener",
+            "text": "button.addEventListener(\"click\", …) в скрипте"
+          },
+          {
+            "id": "onclick",
+            "text": "Только атрибутом onclick в HTML"
+          },
+          {
+            "id": "href",
+            "text": "Атрибутом href=\"javascript:…\""
+          },
+          {
+            "id": "css",
+            "text": "Через CSS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "listener",
+        "explanation": "addEventListener отделяет логику от разметки и работает с CSP."
+      }
+    },
+    {
+      "slug": "js-dataset",
+      "type": "quiz.single_choice",
+      "title": "data-атрибуты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-js-bridge"
+      ],
+      "presentation": {
+        "question": "Как скрипт прочитает значение атрибута data-price у элемента el?",
+        "options": [
+          {
+            "id": "dataset",
+            "text": "el.dataset.price"
+          },
+          {
+            "id": "data",
+            "text": "el.data.price"
+          },
+          {
+            "id": "attr",
+            "text": "el.price"
+          },
+          {
+            "id": "style",
+            "text": "el.style.price"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dataset",
+        "explanation": "Атрибуты data-* доступны через свойство dataset."
+      }
+    },
+    {
+      "slug": "native-editable",
+      "type": "quiz.single_choice",
+      "title": "Редактор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-native-interactivity"
+      ],
+      "presentation": {
+        "question": "Какой атрибут делает абзац редактируемым прямо на странице?",
+        "options": [
+          {
+            "id": "contenteditable",
+            "text": "contenteditable"
+          },
+          {
+            "id": "editable",
+            "text": "editable"
+          },
+          {
+            "id": "draggable",
+            "text": "draggable"
+          },
+          {
+            "id": "spellcheck",
+            "text": "spellcheck"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "contenteditable",
+        "explanation": "contenteditable включает редактирование содержимого элемента."
+      }
+    },
+    {
+      "slug": "native-drag",
+      "type": "quiz.single_choice",
+      "title": "Доступность перетаскивания",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-native-interactivity"
+      ],
+      "presentation": {
+        "question": "Как сделать список с перетаскиванием доступным?",
+        "options": [
+          {
+            "id": "alt",
+            "text": "Дать альтернативу: кнопки «Вверх» и «Вниз», доступные с клавиатуры"
+          },
+          {
+            "id": "only",
+            "text": "Достаточно draggable"
+          },
+          {
+            "id": "hide",
+            "text": "Скрыть список от читалок"
+          },
+          {
+            "id": "mouse",
+            "text": "Попросить пользоваться мышью"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "alt",
+        "explanation": "Перетаскивание не должно быть единственным способом выполнить действие."
+      }
+    },
+    {
+      "slug": "components-name",
+      "type": "quiz.single_choice",
+      "title": "Имя тега",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-web-components"
+      ],
+      "presentation": {
+        "question": "Какое имя подходит для пользовательского элемента?",
+        "options": [
+          {
+            "id": "dash",
+            "text": "user-card"
+          },
+          {
+            "id": "single",
+            "text": "usercard"
+          },
+          {
+            "id": "upper",
+            "text": "UserCard"
+          },
+          {
+            "id": "std",
+            "text": "card"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dash",
+        "explanation": "В имени пользовательского элемента обязательно должен быть дефис."
+      }
+    },
+    {
+      "slug": "components-slot",
+      "type": "quiz.single_choice",
+      "title": "Слот",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-web-components"
+      ],
+      "presentation": {
+        "question": "Что делает элемент `<slot>` внутри Shadow DOM?",
+        "options": [
+          {
+            "id": "window",
+            "text": "Показывает внутри компонента содержимое, переданное снаружи"
+          },
+          {
+            "id": "style",
+            "text": "Подключает стили"
+          },
+          {
+            "id": "script",
+            "text": "Запускает скрипт"
+          },
+          {
+            "id": "hide",
+            "text": "Скрывает компонент"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "window",
+        "explanation": "slot — место, куда попадает обычное содержимое пользовательского элемента."
       }
     },
     {
@@ -4405,6 +5745,40 @@
       }
     },
     {
+      "slug": "project-article-toc",
+      "type": "quiz.single_choice",
+      "title": "Оглавление",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-project-article"
+      ],
+      "presentation": {
+        "question": "Как правильно разметить оглавление статьи?",
+        "options": [
+          {
+            "id": "nav",
+            "text": "nav с подписью и списком ссылок на id разделов"
+          },
+          {
+            "id": "aside",
+            "text": "aside со списком без ссылок"
+          },
+          {
+            "id": "table",
+            "text": "Таблица разделов"
+          },
+          {
+            "id": "p",
+            "text": "Абзац с перечислением через запятую"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "nav",
+        "explanation": "Оглавление — навигация по документу: nav со списком якорных ссылок."
+      }
+    },
+    {
       "slug": "quality-id",
       "type": "quiz.single_choice",
       "title": "Повторяющийся id",
@@ -4477,121 +5851,155 @@
       }
     },
     {
-      "slug": "project-card-check",
-      "type": "quiz.multiple_choice",
-      "title": "Проверка визитки",
-      "instructions": "Выберите все подходящие варианты.",
-      "skillKeys": [
-        "html-project-card"
-      ],
-      "presentation": {
-        "question": "Отметьте всё, что обязательно для корректной и доступной визитки.",
-        "options": [
-          {
-            "id": "h1",
-            "text": "Один h1 и разделы на h2"
-          },
-          {
-            "id": "alt",
-            "text": "Осмысленный alt у фото"
-          },
-          {
-            "id": "label",
-            "text": "label у каждого поля формы"
-          },
-          {
-            "id": "table",
-            "text": "Раскладка страницы таблицей"
-          },
-          {
-            "id": "br",
-            "text": "Отступы через несколько <br>"
-          }
-        ]
-      },
-      "validation": {
-        "correctOptionIds": [
-          "h1",
-          "alt",
-          "label"
-        ],
-        "explanation": "Иерархия заголовков, alt и подписи полей — основа корректной страницы. Таблицы и br для раскладки не используют."
-      }
-    },
-    {
-      "slug": "project-landing-check",
-      "type": "quiz.multiple_choice",
-      "title": "Проверка лендинга",
-      "instructions": "Выберите все подходящие варианты.",
-      "skillKeys": [
-        "html-project-landing"
-      ],
-      "presentation": {
-        "question": "Что обязательно должно быть в форме записи лендинга?",
-        "options": [
-          {
-            "id": "label",
-            "text": "label у каждого поля"
-          },
-          {
-            "id": "types",
-            "text": "Подходящие type: email, tel"
-          },
-          {
-            "id": "autocomplete",
-            "text": "autocomplete для имени, почты и телефона"
-          },
-          {
-            "id": "placeholder",
-            "text": "placeholder вместо подписей"
-          },
-          {
-            "id": "reset",
-            "text": "Кнопка «Очистить» рядом с «Отправить»"
-          }
-        ]
-      },
-      "validation": {
-        "correctOptionIds": [
-          "label",
-          "types",
-          "autocomplete"
-        ],
-        "explanation": "Подписи, правильные типы и автозаполнение делают форму быстрой и доступной. placeholder вместо label и кнопка сброса вредят."
-      }
-    },
-    {
-      "slug": "project-article-toc",
+      "slug": "obsolete-center",
       "type": "quiz.single_choice",
-      "title": "Оглавление",
+      "title": "Центрирование",
       "instructions": "Выберите один ответ.",
       "skillKeys": [
-        "html-project-article"
+        "html-obsolete"
       ],
       "presentation": {
-        "question": "Как правильно разметить оглавление статьи?",
+        "question": "Чем заменить устаревший `<center>`?",
         "options": [
           {
-            "id": "nav",
-            "text": "nav с подписью и списком ссылок на id разделов"
+            "id": "css",
+            "text": "CSS: text-align, margin, flex или grid"
           },
           {
-            "id": "aside",
-            "text": "aside со списком без ссылок"
+            "id": "div",
+            "text": "<div align=\"center\">"
           },
           {
             "id": "table",
-            "text": "Таблица разделов"
+            "text": "Таблицей"
           },
           {
             "id": "p",
-            "text": "Абзац с перечислением через запятую"
+            "text": "Абзацем с пробелами"
           }
         ]
       },
       "validation": {
-        "correctOptionId": "nav",
-        "explanation": "Оглавление — навигация по документу: nav со списком якорных ссылок."
+        "correctOptionId": "css",
+        "explanation": "Оформление и расположение — задача CSS."
+      }
+    },
+    {
+      "slug": "obsolete-which",
+      "type": "quiz.multiple_choice",
+      "title": "Устаревшее",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "html-obsolete"
+      ],
+      "presentation": {
+        "question": "Какие элементы устарели и не должны использоваться в новом коде?",
+        "options": [
+          {
+            "id": "font",
+            "text": "<font>"
+          },
+          {
+            "id": "marquee",
+            "text": "<marquee>"
+          },
+          {
+            "id": "frameset",
+            "text": "<frameset>"
+          },
+          {
+            "id": "small",
+            "text": "<small>"
+          },
+          {
+            "id": "b",
+            "text": "<b>"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "font",
+          "marquee",
+          "frameset"
+        ],
+        "explanation": "font, marquee и frameset устарели. small и b остались в стандарте с новым смыслом."
+      }
+    },
+    {
+      "slug": "reference-quote",
+      "type": "quiz.single_choice",
+      "title": "Подбор элемента",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "html-reference"
+      ],
+      "presentation": {
+        "question": "Какое сочетание подходит для цитаты с указанием автора?",
+        "options": [
+          {
+            "id": "figure",
+            "text": "figure + blockquote + figcaption"
+          },
+          {
+            "id": "div",
+            "text": "div + p + span"
+          },
+          {
+            "id": "q",
+            "text": "q внутри h2"
+          },
+          {
+            "id": "table",
+            "text": "Таблица из одной ячейки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "figure",
+        "explanation": "figure связывает цитату и подпись, blockquote — сама цитата, figcaption — автор."
+      }
+    },
+    {
+      "slug": "reference-forms",
+      "type": "quiz.multiple_choice",
+      "title": "Элементы форм",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "html-reference"
+      ],
+      "presentation": {
+        "question": "Какие элементы относятся к формам?",
+        "options": [
+          {
+            "id": "datalist",
+            "text": "<datalist>"
+          },
+          {
+            "id": "output",
+            "text": "<output>"
+          },
+          {
+            "id": "fieldset",
+            "text": "<fieldset>"
+          },
+          {
+            "id": "figcaption",
+            "text": "<figcaption>"
+          },
+          {
+            "id": "track",
+            "text": "<track>"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "datalist",
+          "output",
+          "fieldset"
+        ],
+        "explanation": "datalist, output и fieldset — элементы форм. figcaption — подпись иллюстрации, track — субтитры."
       }
     },
     {
@@ -4664,6 +6072,108 @@
     }
   ],
   "lessons": [
+    {
+      "slug": "kak-ustroen-veb",
+      "title": "Как устроен веб",
+      "summary": "Что происходит между нажатием Enter в адресной строке и появлением страницы: браузер, сервер, адрес и файлы.",
+      "durationMinutes": 10,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Сайт — это файлы на чужом компьютере\n\nКаждый сайт — набор файлов: HTML, CSS, JavaScript, картинки. Они лежат на **сервере** — компьютере, который работает круглосуточно и отдаёт файлы по запросу. Ваш **браузер** (Chrome, Firefox, Safari, Яндекс Браузер) — программа, которая запрашивает эти файлы и превращает их в страницу.\n\n## Что происходит, когда вы открываете сайт\n\n1. Вы вводите адрес, например `https://example.com/about`.\n2. Браузер узнаёт IP-адрес сервера через **DNS** — «телефонную книгу» интернета: имя `example.com` → числовой адрес.\n3. Браузер отправляет серверу **HTTP-запрос**: «дай мне страницу /about».\n4. Сервер отвечает HTML-файлом.\n5. Браузер читает HTML и видит, что нужны ещё CSS, JavaScript и картинки, — и запрашивает их.\n6. Браузер собирает всё вместе и рисует страницу.\n\nВсё это обычно занимает меньше секунды.\n\n## Из чего состоит адрес\n\n```text\nhttps://example.com:443/blog/post.html?page=2#comments\n└─┬──┘   └────┬────┘ └┬┘ └──────┬──────┘ └──┬──┘ └───┬───┘\nпротокол    домен   порт      путь       запрос    якорь\n```\n\n- **Протокол** `https` — способ общения; `s` значит «защищённое соединение».\n- **Домен** — имя сайта.\n- **Путь** — какой файл или страница нужна.\n- **Запрос** (`?page=2`) — дополнительные параметры.\n- **Якорь** (`#comments`) — место на странице. Его браузер не отправляет на сервер.\n\n## Три языка фронтенда\n\n- **HTML** — содержимое и структура: что есть на странице.\n- **CSS** — внешний вид: цвета, шрифты, расположение.\n- **JavaScript** — поведение: реакция на действия, загрузка данных.\n\nЭтот курс — про HTML. Это фундамент: CSS и JavaScript работают с тем, что описано в HTML.\n\n## Как выглядит HTML\n\nВот целая страница. Нажмите «Попробовать» и поменяйте текст — вы уже пишете HTML.\n\n```html\n<h1>Моя первая страница</h1>\n<p>Привет! Я учу HTML.</p>\n```\n\n## Фронтенд и бэкенд\n\n**Фронтенд** — всё, что работает в браузере: HTML, CSS, JavaScript. **Бэкенд** — программы на сервере: базы данных, логины, оплата. Эта платформа, например, хранит ваш прогресс на бэкенде.\n\n**Подробнее:** [Как работает веб — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/../../Learn/Getting_started_with_the_web/How_the_Web_works)"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "web-browser",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "web-dns",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "web-languages",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "instrumenty",
+      "title": "Инструменты: браузер и редактор кода",
+      "summary": "Что установить, чтобы писать HTML: браузер с инструментами разработчика, VS Code и пара полезных расширений.",
+      "durationMinutes": 10,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Что нужно\n\nДля HTML не нужно ничего покупать и почти ничего устанавливать:\n1. **Браузер** — лучше Chrome или Firefox: у них самые удобные инструменты разработчика.\n2. **Редактор кода** — программа, где вы пишете HTML. Блокнот подойдёт, но редактор кода в разы удобнее.\n\n## Редактор VS Code\n\n**Visual Studio Code** — бесплатный и самый популярный редактор. Скачайте с сайта **code.visualstudio.com** для своей системы и установите как обычную программу. Что он даёт:\n- **подсветку синтаксиса** — теги, атрибуты и текст разными цветами, ошибки видно сразу;\n- **автодополнение** — начните печатать `<ul` и нажмите Enter: редактор закроет тег сам;\n- **Emmet** — встроенные сокращения: введите `!` в пустом .html-файле и нажмите Tab — появится весь каркас страницы;\n- **форматирование** — правая кнопка → «Форматировать документ» расставит отступы.\n\n## Полезные расширения\n\nРасширения ставятся во вкладке Extensions (значок с квадратиками слева):\n- **Live Server** — открывает страницу в браузере и обновляет её автоматически при каждом сохранении.\n- **Prettier** — аккуратно форматирует код.\n- **Russian Language Pack** — если удобнее интерфейс на русском.\n\n## Emmet за 30 секунд\n\n```text\n!                 → каркас HTML-документа\nul>li*3           → список из трёх пунктов\np.note            → <p class=\"note\"></p>\na[href=#]         → <a href=\"#\"></a>\n```\n\nПопробуйте в VS Code: напечатайте сокращение и нажмите Tab.\n\n## А пока — песочница\n\nЕсли установить ничего нельзя (например, вы с телефона), учитесь прямо здесь: у каждого примера есть кнопка «Попробовать». Но для проектов в конце модулей редактор понадобится.\n\n```html\n<ul>\n  <li>Браузер с DevTools</li>\n  <li>VS Code</li>\n  <li>Live Server</li>\n</ul>\n```\n\n**Подробнее:** [Установка базового ПО — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/../../Learn/Getting_started_with_the_web/Installing_basic_software)"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tools-emmet",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tools-live",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "pervaya-stranica",
+      "title": "Первая страница на своём компьютере",
+      "summary": "Создаём папку проекта, файл index.html, открываем в браузере и учимся видеть изменения.",
+      "durationMinutes": 10,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Шаг 1. Папка проекта\n\nСоздайте папку `my-site` там, где легко найти (например, в «Документах»). Один сайт — одна папка: в ней будут все его файлы.\n\n## Шаг 2. Файл index.html\n\nВ VS Code: **File → Open Folder** → выберите `my-site`. Затем **New File** → назовите `index.html`. Важно, чтобы расширение было именно `.html`, а не `.html.txt`: в Windows включите показ расширений файлов в проводнике.\n\n## Шаг 3. Код\n\nНапечатайте `!` и Tab (или скопируйте):\n\n```html\n<!doctype html>\n<html lang=\"ru\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Мой первый сайт</title>\n</head>\n<body>\n  <h1>Привет, мир!</h1>\n  <p>Эту страницу я сделал сам.</p>\n</body>\n</html>\n```\n\nКаждую строку мы подробно разберём в следующих уроках — пока просто сохраните файл: **Ctrl+S** (на Mac — ⌘S).\n\n## Шаг 4. Открыть в браузере\n\nДважды щёлкните `index.html` в проводнике — файл откроется в браузере. В адресной строке будет что-то вроде `file:///C:/Users/…/my-site/index.html`: страница открыта прямо с диска.\n\nС Live Server: правой кнопкой по файлу в VS Code → **Open with Live Server**. Адрес будет `http://127.0.0.1:5500`, и страница обновится сама после сохранения.\n\n## Цикл работы\n\nИзменили код → сохранили → посмотрели в браузере (F5, если без Live Server). Так вы будете работать всегда.\n\n## Если что-то не так\n\n- Видите текст с тегами вместо страницы — файл сохранён как `.txt`.\n- Вместо русских букв «кракозябры» — проверьте `<meta charset=\"utf-8\">` и кодировку файла (в VS Code внизу справа должно быть UTF-8).\n- Изменения не видны — забыли сохранить или обновить страницу.\n\n**Подробнее:** [Работа с файлами — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/../../Learn/Getting_started_with_the_web/Dealing_with_files)"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "first-extension",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "first-mojibake",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "kak-uchitsya",
+      "title": "Как учиться и где искать ответы",
+      "summary": "MDN, инструменты разработчика, валидатор и правильные вопросы: как не застревать.",
+      "durationMinutes": 8,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Никто не помнит всё\n\nРазработчики постоянно заглядывают в документацию. Важно не помнить каждый атрибут, а знать, что он существует и где о нём прочитать. Этот курс даёт карту всех возможностей HTML — детали всегда можно уточнить.\n\n## Главные источники\n\n- **MDN Web Docs** (developer.mozilla.org) — справочник по каждому тегу и атрибуту с примерами. В конце каждого урока есть ссылка на нужную страницу.\n- **HTML Living Standard** (html.spec.whatwg.org) — официальная спецификация. Самый точный источник, но написан сложно.\n- **Can I use** (caniuse.com) — поддерживают ли браузеры новую возможность.\n\n## Как искать\n\nПишите в поиске **«MDN» + тег или задача**: «MDN input date», «MDN как сделать выпадающий список». Английские запросы дают больше результатов.\n\n## Проверяйте себя инструментами\n\n- **DevTools** (F12) — что браузер построил из вашего кода.\n- **Валидатор** validator.w3.org — ошибки в разметке.\n- **Песочница** этого курса — быстро проверить идею.\n\n## Если застряли\n\n1. Сведите проблему к минимальному примеру — удалите всё лишнее, пока ошибка не исчезнет.\n2. Прочитайте сообщение об ошибке целиком.\n3. Задайте вопрос с кодом, описанием ожидаемого и фактического результата.\n\nИИ-помощники тоже полезны, но проверяйте их ответы по MDN: они иногда уверенно ошибаются.\n\n## Практика\n\nНайдите на MDN страницу элемента `<mark>` и посмотрите его пример. Затем повторите его в песочнице:\n\n```html\n<p>Главное слово — <mark>практика</mark>.</p>\n```\n\n**Подробнее:** [Справочник HTML — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/)"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "learning-mdn",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "learning-minimal",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
     {
       "slug": "chto-takoe-html",
       "title": "Что такое HTML",
@@ -4845,6 +6355,30 @@
       ]
     },
     {
+      "slug": "blochnye-i-strochnye",
+      "title": "Блочные и строчные элементы: div и span",
+      "summary": "Почему одни элементы встают с новой строки, а другие — нет, и зачем нужны «пустые» div и span.",
+      "durationMinutes": 10,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Два поведения по умолчанию\n\n```html\n<p>Абзац занимает всю ширину.</p>\n<p>Следующий абзац — с новой строки.</p>\n<p>А <strong>strong</strong>, <a href=\"#\">ссылка</a> и <em>em</em> стоят внутри строки.</p>\n```\n\n- **Блочные** элементы (`p`, `h1`–`h6`, `ul`, `li`, `div`, `section`, `table`, `form`) начинаются с новой строки и растягиваются на всю ширину.\n- **Строчные** (`a`, `strong`, `em`, `span`, `img`, `code`, `input`) встают в поток текста, как слова.\n\nЭто поведение задаёт CSS-свойство `display`, и его можно поменять: например, сделать ссылки меню блочными. Но **смысл** элемента от этого не меняется.\n\n## div — блочный контейнер без смысла\n\n```html\n<div class=\"card\">\n  <h3>Курс HTML</h3>\n  <p>50 уроков с практикой.</p>\n</div>\n<div class=\"card\">\n  <h3>Курс CSS</h3>\n  <p>Скоро.</p>\n</div>\n```\n\n`div` группирует элементы, чтобы их оформить или разместить: карточка, колонка, обёртка. Он ничего не сообщает читалкам и поисковикам.\n\n## span — строчный контейнер без смысла\n\n```html\n<p>Осталось <span class=\"count\">3</span> места.</p>\n```\n\n`span` выделяет часть текста для оформления или скрипта.\n\n## Сначала смысл, потом div\n\nПрежде чем написать `div`, спросите: нет ли подходящего элемента? Шапка — `header`, навигация — `nav`, статья — `article`, список карточек — `ul` с `li`, важный текст — `strong`. `div` и `span` — для случаев, когда смысла действительно нет. Страница из одних `div` («div-суп») работает, но недоступна и плохо читается.\n\n## Практика\n\nСверстайте в песочнице три карточки тарифов: оберните каждую в `div class=\"plan\"`, внутри — заголовок, цена (`span class=\"price\"`) и список возможностей. Подумайте: не подойдёт ли вместо `div` элемент `article` или `li`?\n\n**Подробнее:** [Элемент div — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/Element/div)"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "block-which",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "block-div",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
       "slug": "vydelenie-teksta",
       "title": "Выделение текста по смыслу",
       "summary": "strong, em, b, i, u, s, mark и small: восемь способов выделить текст, и у каждого свой смысл.",
@@ -5009,6 +6543,48 @@
           "activitySlug": "dl-vs-table",
           "kind": "homework",
           "required": false
+        }
+      ]
+    },
+    {
+      "slug": "yazyki-i-napravlenie",
+      "title": "Языки, направление текста и ruby",
+      "summary": "lang, dir, bdi, bdo и ruby: текст на разных языках, справа налево и подписи произношения.",
+      "durationMinutes": 9,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Язык фрагмента\n\n```html\n<p>Слово <span lang=\"en\">deadline</span> прочно вошло в офисный язык.</p>\n<blockquote lang=\"de\"><p>Übung macht den Meister.</p></blockquote>\n```\n\n`lang` у фрагмента помогает читалке переключить произношение, браузеру — правильно расставить переносы и кавычки, переводчику — понять, что переводить.\n\n## Справа налево: dir\n\n```html\n<p dir=\"rtl\" lang=\"he\">שלום עולם</p>\n<p dir=\"auto\">مرحبا — направление определится автоматически</p>\n```\n\nИврит, арабский и персидский пишутся справа налево. `dir=\"rtl\"` переворачивает направление блока, `dir=\"auto\"` угадывает по первым символам — удобно для текста, который вводят пользователи.\n\n## bdi — изолировать неизвестный текст\n\n```html\n<ul>\n  <li>Пользователь <bdi>إيان</bdi>: 3 комментария</li>\n  <li>Пользователь <bdi>Анна</bdi>: 5 комментариев</li>\n</ul>\n```\n\nЕсли в строку попадает имя на арабском, соседние цифры и знаки могут «перескочить» не на своё место. `bdi` изолирует фрагмент, чтобы он не ломал направление окружающего текста. `bdo dir=\"rtl\"` — наоборот, принудительно переворачивает текст.\n\n## ruby — подписи произношения\n\n```html\n<p>\n  <ruby>漢<rp>(</rp><rt>kan</rt><rp>)</rp>字<rp>(</rp><rt>ji</rt><rp>)</rp></ruby> — японские иероглифы.\n</p>\n<p><ruby>Москва<rt>Moskva</rt></ruby></p>\n```\n\n`ruby` выводит маленькую подпись над текстом — так в японском и китайском показывают чтение иероглифов. `rt` — подпись, `rp` — скобки для браузеров без поддержки ruby. Можно использовать и для транслитерации или ударений в учебных текстах.\n\n## Практика\n\nСделайте в песочнице мини-словарь: русское слово, рядом английское в `span lang=\"en\"` и японское с подписью чтения через `ruby`.\n\n**Подробнее:** [Элемент ruby — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/Element/ruby)"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "i18n-dir",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "i18n-ruby",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "mini-proekt-recept",
+      "title": "Мини-проект: страница рецепта",
+      "summary": "Соберите полноценную текстовую страницу: заголовки, списки, выделения, время, термины и характеристики.",
+      "durationMinutes": 20,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Задача\n\nСверстайте страницу любимого рецепта. Проект закрепляет модули «Основы» и «Текст» — без картинок и стилей, только смысловая разметка.\n\n## Требования\n\n1. Каркас документа с `lang`, кодировкой и `title`.\n2. `h1` — название блюда, абзац-описание с одним `strong` (что важно) и одним `em`.\n3. Характеристики в `dl`: время готовки в `time` с `datetime` (например `PT45M`), сложность, порции.\n4. «Ингредиенты» — `h2` и маркированный список с количеством; граммы через неразрывный пробел (`200&nbsp;г`).\n5. «Приготовление» — `h2` и нумерованный список шагов; на одном шаге — сочетание клавиш таймера в `kbd` (шутки ради) или температура `180&nbsp;°C`.\n6. «Совет шефа» — цитата `blockquote` с источником в `figure` и `figcaption`.\n7. Внизу — `small` с примечанием и `abbr` для «ст. л.».\n\n## Заготовка\n\n```html\n<!doctype html>\n<html lang=\"ru\">\n<head>\n  <meta charset=\"utf-8\">\n  <title>Сырники — рецепт</title>\n</head>\n<body>\n  <h1>Сырники</h1>\n  <p><!-- Описание со strong и em --></p>\n\n  <dl>\n    <dt>Время</dt>\n    <dd><time datetime=\"PT30M\">30 минут</time></dd>\n    <!-- Сложность и порции -->\n  </dl>\n\n  <h2>Ингредиенты</h2>\n  <ul>\n    <li>Творог — 400&nbsp;г</li>\n  </ul>\n\n  <h2>Приготовление</h2>\n  <ol>\n    <li>Смешайте творог с яйцом.</li>\n  </ol>\n</body>\n</html>\n```\n\n## Чек-лист\n\n- Один `h1`, разделы на `h2`.\n- Ингредиенты — `ul`, шаги — `ol`.\n- Каждый тег выделения выбран по смыслу.\n- Число и единица измерения не разрываются.\n- Код без ошибок в валидаторе."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "recipe-check",
+          "kind": "practice",
+          "required": true
         }
       ]
     },
@@ -5343,6 +6919,48 @@
       ]
     },
     {
+      "slug": "karty-izobrazhenij",
+      "title": "Карты-изображения и object",
+      "summary": "map и area: кликабельные области на картинке. object: встраивание PDF и других документов.",
+      "durationMinutes": 9,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Кликабельные области: map и area\n\n```html\n<img src=\"https://picsum.photos/seed/map/400/200\" alt=\"План этажа\" width=\"400\" height=\"200\" usemap=\"#floor\">\n<map name=\"floor\">\n  <area shape=\"rect\" coords=\"0,0,200,200\" href=\"#hall\" alt=\"Холл\">\n  <area shape=\"circle\" coords=\"300,100,60\" href=\"#kitchen\" alt=\"Кухня\">\n</map>\n<p id=\"hall\">Холл</p>\n<p id=\"kitchen\">Кухня</p>\n```\n\n- `usemap=\"#floor\"` у картинки связывает её с `map name=\"floor\"`.\n- `area` — область-ссылка: `shape` (`rect`, `circle`, `poly`), `coords` — координаты в пикселях исходной картинки, `href` — куда ведёт, `alt` — **обязательный** текст области.\n\n## Ограничения\n\nКоординаты привязаны к реальному размеру картинки: если CSS растянет её, области съедут. Поэтому сегодня карты-изображения используют редко — для схем, планов и инфографики с фиксированным размером. Чаще те же задачи решают кнопками поверх картинки или интерактивным SVG.\n\n## object — встроить документ\n\n```html\n<object data=\"/files/program.pdf\" type=\"application/pdf\" width=\"600\" height=\"400\">\n  <p>Не удалось показать PDF. <a href=\"/files/program.pdf\">Скачайте программу курса</a>.</p>\n</object>\n```\n\n`object` встраивает внешний ресурс: PDF, SVG, другую страницу. Содержимое внутри — запасной вариант, если браузер не может показать файл (например, на телефоне PDF часто не встраивается). Для PDF надёжнее дать ссылку на скачивание или открыть в `iframe`.\n\n## embed\n\n`<embed src=\"file.pdf\" type=\"application/pdf\">` — пустой элемент для того же, но без запасного содержимого. Остался со времён плагинов вроде Flash. В новом коде используйте `iframe`, `object` или просто ссылку.\n\n## Практика\n\nСделайте в песочнице картинку с двумя областями `area`, которые ведут на якоря ниже. Проверьте, что у каждой области есть `alt`.\n\n**Подробнее:** [Элемент map — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/Element/map)"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "maps-link",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "maps-object-fallback",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "mini-proekt-galereya",
+      "title": "Мини-проект: фотогалерея",
+      "summary": "Галерея путешествия: адаптивные картинки с подписями, ленивая загрузка, видео с субтитрами и иконки SVG.",
+      "durationMinutes": 25,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Задача\n\nСделайте страницу «Моё путешествие» — фотогалерея и видео. Проект закрепляет модули «Ссылки» и «Медиа».\n\n## Требования\n\n1. `h1` и вступительный абзац; ссылка на карту места (внешняя, в новой вкладке, с правильным `rel`).\n2. Минимум 6 фото, каждое в `figure` с `figcaption`; список фото — `ul` с `li`.\n3. У каждой картинки: осмысленный `alt`, `width` и `height`, `srcset` минимум из двух размеров и `sizes`.\n4. Первая картинка грузится сразу, остальные — `loading=\"lazy\"`.\n5. Одна картинка через `picture` с отдельным кадрированием для телефона.\n6. Видео с `poster`, `controls` и `preload=\"metadata\"`.\n7. Иконка «камера» в SVG рядом с текстом — скрыта от читалок.\n\n## Заготовка\n\n```html\n<h1>Алтай за неделю</h1>\n<p>Горы, озёра и <a href=\"https://www.openstreetmap.org\" target=\"_blank\" rel=\"noopener\">карта маршрута</a>.</p>\n\n<ul>\n  <li>\n    <figure>\n      <img src=\"https://picsum.photos/seed/altai1/800/533\"\n           srcset=\"https://picsum.photos/seed/altai1/400/267 400w, https://picsum.photos/seed/altai1/800/533 800w\"\n           sizes=\"(max-width: 600px) 100vw, 400px\"\n           alt=\"Бирюзовое озеро между заснеженными вершинами\" width=\"800\" height=\"533\">\n      <figcaption>Кучерлинское озеро, день 3.</figcaption>\n    </figure>\n  </li>\n  <!-- Ещё 5 фото с loading=\"lazy\" -->\n</ul>\n\n<p>\n  <svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><circle cx=\"8\" cy=\"9\" r=\"4\" fill=\"currentColor\"/></svg>\n  Все фото сняты на телефон.\n</p>\n```\n\n## Чек-лист\n\n- У всех картинок alt описывает, что на фото, а figcaption дополняет, а не повторяет.\n- Ленивая загрузка не стоит на первой картинке.\n- Видео можно поставить на паузу и включить звук только по желанию.\n- Нет горизонтальной прокрутки на телефоне."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gallery-check",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
       "slug": "tablicy",
       "title": "Таблицы",
       "summary": "table, tr, th, td и caption: данные в строках и столбцах.",
@@ -5673,6 +7291,48 @@
       ]
     },
     {
+      "slug": "prodvinutye-formy",
+      "title": "Продвинутые возможности форм",
+      "summary": "Атрибут form, formtarget, fieldset disabled, input image, dirname и несколько форм на странице.",
+      "durationMinutes": 11,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Поле вне формы: атрибут form\n\n```html\n<form id=\"search\" action=\"/search\">\n  <label for=\"q\">Поиск</label>\n  <input id=\"q\" name=\"q\">\n</form>\n\n<p>… другая часть страницы …</p>\n\n<button form=\"search\">Найти</button>\n<input type=\"hidden\" name=\"source\" value=\"footer\" form=\"search\">\n```\n\nАтрибут `form=\"id\"` привязывает поле или кнопку к форме, даже если они находятся в другом месте разметки. Удобно, когда дизайн разносит кнопку и поля по разным блокам. Внутри одной формы нельзя вложить другую — `form` в `form` запрещено, а атрибут `form` решает задачу без вложения.\n\n## Отключить группу полей\n\n```html\n<form>\n  <label><input type=\"checkbox\" name=\"delivery\"> Нужна доставка</label>\n  <fieldset disabled>\n    <legend>Адрес доставки</legend>\n    <label>Улица <input name=\"street\"></label>\n    <label>Дом <input name=\"house\"></label>\n  </fieldset>\n</form>\n```\n\n`disabled` у `fieldset` отключает сразу все поля внутри. Скрипт включит группу, когда человек отметит флажок.\n\n## Где открыть ответ: target и formtarget\n\n```html\n<form action=\"/preview\" target=\"_blank\">…</form>\n<button formaction=\"/print\" formtarget=\"_blank\">Версия для печати</button>\n```\n\n`target` у формы и `formtarget` у кнопки открывают результат отправки в новой вкладке. Вместе с `formaction`, `formmethod`, `formenctype` и `formnovalidate` у одной формы может быть несколько кнопок с разным поведением.\n\n## Кнопка-картинка\n\n```html\n<input type=\"image\" src=\"/img/send.png\" alt=\"Отправить\" width=\"120\" height=\"40\">\n```\n\nРаботает как кнопка отправки и вдобавок передаёт координаты клика. Используется редко; `alt` обязателен — это текст кнопки. Обычно лучше `button` с картинкой внутри.\n\n## Направление введённого текста: dirname\n\n```html\n<input name=\"comment\" dir=\"auto\" dirname=\"comment.dir\">\n```\n\nВместе со значением отправится направление текста (`ltr` или `rtl`) — пригодится многоязычным сайтам.\n\n## Имя формы и отключение автозаполнения\n\n`name` у формы позволяет обратиться к ней из скрипта; `autocomplete=\"off\"` у формы или поля просит браузер не подсказывать сохранённые значения. Для полей логина и пароля его лучше не выключать: менеджеры паролей помогают людям.\n\n## Практика\n\nВ песочнице сделайте форму заказа, где кнопка «Оформить» вынесена в отдельный блок ниже и связана атрибутом `form`, а группа «Адрес» отключена через `fieldset disabled`.\n\n**Подробнее:** [Атрибут form — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/Element/input#form)"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "forms-adv-attr",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "forms-adv-fieldset",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "mini-proekt-registraciya",
+      "title": "Мини-проект: форма регистрации",
+      "summary": "Регистрация на онлайн-мероприятие: все типы полей, группы, проверка, автозаполнение и понятные подсказки.",
+      "durationMinutes": 25,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Задача\n\nСверстайте форму регистрации на онлайн-конференцию. Проект закрепляет модули «Таблицы» и «Формы».\n\n## Требования\n\n1. Личные данные: имя (`autocomplete=\"name\"`), почта (`type=\"email\"`, `required`), телефон (`type=\"tel\"`, `autocomplete=\"tel\"`).\n2. Пароль: `type=\"password\"`, `minlength=\"12\"`, `autocomplete=\"new-password\"`, подсказка через `aria-describedby`.\n3. Дата рождения (`type=\"date\"`, `max` — сегодня).\n4. Формат участия: `fieldset` + `legend` и радиокнопки (онлайн, офлайн).\n5. Интересующие секции: флажки в отдельном `fieldset`.\n6. Город: `input` с `datalist`.\n7. Аватар: `type=\"file\"` с `accept=\"image/*\"`; у формы `method=\"post\"` и `enctype=\"multipart/form-data\"`.\n8. Промокод: `pattern` из 8 латинских букв или цифр с понятным описанием формата.\n9. Согласие с правилами — обязательный флажок со ссылкой на правила.\n10. Под формой — таблица тарифов (`caption`, `thead`, `scope`).\n\n## Заготовка\n\n```html\n<form action=\"/register\" method=\"post\" enctype=\"multipart/form-data\">\n  <fieldset>\n    <legend>О вас</legend>\n    <label for=\"name\">Имя</label>\n    <input id=\"name\" name=\"name\" autocomplete=\"name\" required>\n    <!-- почта, телефон, пароль, дата рождения -->\n  </fieldset>\n\n  <fieldset>\n    <legend>Формат участия</legend>\n    <label><input type=\"radio\" name=\"format\" value=\"online\" checked> Онлайн</label>\n    <label><input type=\"radio\" name=\"format\" value=\"offline\"> В зале</label>\n  </fieldset>\n\n  <label><input type=\"checkbox\" name=\"rules\" required> Я принимаю <a href=\"#rules\">правила</a></label>\n  <button>Зарегистрироваться</button>\n</form>\n```\n\n## Чек-лист\n\n- Пройдите форму только клавиатурой — всё доступно.\n- Нажмите «Зарегистрироваться» с пустыми полями — сообщения понятны.\n- Каждое поле подписано `label`, группы — `legend`.\n- Ни одного placeholder вместо подписи."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "signup-check",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
       "slug": "semantika",
       "title": "Семантическая структура страницы",
       "summary": "header, nav, main и footer: каркас страницы, понятный людям, читалкам и поисковикам.",
@@ -5787,6 +7447,24 @@
       ]
     },
     {
+      "slug": "proekt-vizitka",
+      "title": "Проект 1: страница-визитка",
+      "summary": "Соберите свою первую настоящую страницу из всего, что изучили в основах.",
+      "durationMinutes": 30,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Задача\n\nСделайте страницу-визитку о себе. Это ваш первый проект: сохраните его — в курсе CSS мы сделаем его красивым.\n\n## Требования\n\n1. Корректный каркас: doctype, `lang`, кодировка, viewport, title.\n2. Шапка с вашим именем и навигацией по разделам (якорные ссылки).\n3. `main` с разделами «Обо мне» (абзацы и фото), «Навыки» (список), «Опыт» (список определений или таблица), «Связаться» (форма).\n4. Хотя бы одна картинка с хорошим alt.\n5. Подвал с контактами в `address`.\n\n## Заготовка\n\nОткройте песочницу и заполните заготовку. Всё, что внутри комментариев, браузер не показывает.\n\n```html\n<!doctype html>\n<html lang=\"ru\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Ваше имя — визитка</title>\n</head>\n<body>\n  <header>\n    <h1>Ваше имя</h1>\n    <nav aria-label=\"Разделы страницы\">\n      <ul>\n        <li><a href=\"#about\">Обо мне</a></li>\n        <li><a href=\"#skills\">Навыки</a></li>\n        <li><a href=\"#contact\">Связаться</a></li>\n      </ul>\n    </nav>\n  </header>\n\n  <main>\n    <section id=\"about\">\n      <h2>Обо мне</h2>\n      <!-- Абзац о себе и фото с alt -->\n    </section>\n\n    <section id=\"skills\">\n      <h2>Навыки</h2>\n      <!-- Список навыков -->\n    </section>\n\n    <section id=\"experience\">\n      <h2>Опыт</h2>\n      <!-- dl: годы — чем занимались -->\n    </section>\n\n    <section id=\"contact\">\n      <h2>Связаться</h2>\n      <!-- Форма: имя, почта, сообщение, кнопка -->\n    </section>\n  </main>\n\n  <footer>\n    <address><!-- Почта и мессенджер --></address>\n  </footer>\n</body>\n</html>\n```\n\n## Чек-лист самопроверки\n\n- Один `h1`, разделы на `h2`, без пропуска уровней.\n- У каждой картинки осмысленный alt.\n- У каждого поля формы связанный label.\n- Все якоря из навигации ведут на существующие `id`.\n- Текст ссылок понятен без контекста.\n- Валидатор не находит ошибок."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "project-card-check",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
       "slug": "metadannye",
       "title": "Метаданные страницы",
       "summary": "title, description, viewport, charset и robots: что страница рассказывает о себе браузеру и поисковикам.",
@@ -5871,6 +7549,174 @@
         {
           "type": "activity",
           "activitySlug": "resources-preload",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "style-base-meta",
+      "title": "style, base и служебные meta",
+      "summary": "Встроенные стили, атрибут style, базовый адрес base и meta для обновления и реферера.",
+      "durationMinutes": 10,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Три способа подключить CSS\n\n```html\n<style>\n  .note { padding: 12px; border-left: 4px solid #c5f23a; background: #f4f9e3; }\n</style>\n<p class=\"note\">Стиль из элемента style.</p>\n<p style=\"color: crimson\">Стиль из атрибута style.</p>\n```\n\n1. **Внешний файл** `<link rel=\"stylesheet\" href=\"styles.css\">` — основной способ: один файл для всех страниц, браузер его кэширует.\n2. **Элемент `<style>`** в `head` — стили только для этой страницы. Подходит для небольших страниц и критичных стилей первого экрана.\n3. **Атрибут `style`** — стиль одного элемента. Удобно для быстрых проверок и значений, которые подставляет скрипт; в обычной вёрстке не используйте — такие стили трудно менять.\n\n## base — базовый адрес\n\n```html\n<head>\n  <base href=\"https://example.com/docs/\" target=\"_blank\">\n</head>\n<body>\n  <a href=\"intro.html\">Введение</a>  <!-- → https://example.com/docs/intro.html -->\n</body>\n```\n\n`base` меняет точку отсчёта для **всех** относительных адресов на странице, а `target` — поведение всех ссылок. Элемент один на страницу и стоит в начале `head`. Используется редко: легко сломать якоря и пути. Знайте, что он существует, чтобы распознать его в чужом коде.\n\n## Служебные meta\n\n```html\n<!-- Перенаправить через 5 секунд (лучше делать на сервере) -->\n<meta http-equiv=\"refresh\" content=\"5; url=https://example.com/new\">\n\n<!-- Какую часть адреса страницы передавать другим сайтам -->\n<meta name=\"referrer\" content=\"strict-origin-when-cross-origin\">\n\n<!-- Цветовые схемы, которые поддерживает страница -->\n<meta name=\"color-scheme\" content=\"light dark\">\n\n<!-- Автор и программа, сделавшая страницу -->\n<meta name=\"author\" content=\"Анна Петрова\">\n<meta name=\"generator\" content=\"Nexus Studio\">\n```\n\n- `http-equiv=\"refresh\"` — автообновление или переход. Внезапная перезагрузка сбивает людей и читалки; перенаправления делают на сервере.\n- `referrer` — политика передачи адреса при переходах.\n- `color-scheme` — браузер нарисует поля форм и полосы прокрутки в светлой или тёмной теме.\n\n## Практика\n\nВ песочнице добавьте элемент `style` и оформите им класс `.warning`. Затем добавьте `meta name=\"color-scheme\" content=\"dark\"` и посмотрите, как изменятся поля формы.\n\n**Подробнее:** [Элемент style — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/Element/style)"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "head-misc-css",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "head-misc-base",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "bezopasnost-v-html",
+      "title": "Безопасность в HTML",
+      "summary": "CSP, integrity, crossorigin, rel=noopener, sandbox и почему нельзя вставлять чужой HTML как есть.",
+      "durationMinutes": 11,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Главная угроза — чужой код на вашей странице\n\n**XSS** (межсайтовый скриптинг) — когда злоумышленник вставляет свой `<script>` на ваш сайт: например, в комментарий. Если сайт выводит комментарий как HTML, скрипт выполнится у каждого читателя и сможет украсть данные. Поэтому **никогда не вставляйте пользовательский текст в страницу как HTML** — только как текст. Эта платформа, например, вырезает HTML из Markdown уроков.\n\n## Content Security Policy\n\n```html\n<meta http-equiv=\"Content-Security-Policy\"\n      content=\"default-src 'self'; img-src 'self' https://images.example.com; script-src 'self'\">\n```\n\nCSP — список разрешённых источников: откуда можно грузить скрипты, стили, картинки, фреймы. Даже если злоумышленник вставит `<script src=\"https://evil.example\">`, браузер его не загрузит. Обычно CSP отдаёт сервер заголовком, но можно и через `meta`.\n\n## integrity — файл не подменили\n\n```html\n<script src=\"https://cdn.example.com/lib@1.2.3/lib.min.js\"\n        integrity=\"sha384-…хеш файла…\"\n        crossorigin=\"anonymous\"></script>\n```\n\n**Subresource Integrity**: браузер посчитает хеш скачанного файла и не выполнит его, если хеш не совпадёт. Защищает, если взломают CDN. Хеш выдаёт сам CDN или генерируют утилитой.\n\n## crossorigin\n\nАтрибут `crossorigin` у `script`, `link`, `img`, `audio`, `video` говорит, как запрашивать файл с другого домена: `anonymous` — без cookies, `use-credentials` — с ними. Нужен для `integrity`, шрифтов с других доменов и чтения пикселей картинки на `canvas`.\n\n## Изоляция ссылок и фреймов\n\n```html\n<a href=\"https://example.com\" target=\"_blank\" rel=\"noopener noreferrer\">Внешняя ссылка</a>\n<iframe title=\"Виджет\" sandbox srcdoc=\"<p>Без скриптов и навигации</p>\"></iframe>\n```\n\n- `rel=\"noopener\"` — открытая вкладка не получит доступ к вашей странице.\n- `sandbox` у `iframe` — минимум прав для встроенного кода.\n- `referrerpolicy` — не передавать лишнее о своих адресах.\n\n## Формы и секреты\n\n- Пароли — только `type=\"password\"` и `method=\"post\"`, только по HTTPS.\n- Не храните токены, ключи и пароли в HTML, `hidden`-полях и комментариях: код страницы видит каждый.\n- Проверка данных — всегда на сервере.\n\n## Практика\n\nНайдите в песочнице две проблемы безопасности в коде ниже.\n\n```html\n<a href=\"https://partner.example\" target=\"_blank\">Партнёр</a>\n<!-- api_key: sk_live_123456 -->\n<form method=\"get\" action=\"/login\">\n  <input type=\"password\" name=\"password\">\n</form>\n```\n\n**Подробнее:** [Content Security Policy — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/../Security/Practical_implementation_guides/CSP)"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "security-xss",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "security-integrity",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "security-mistakes",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "strukturirovannye-dannye",
+      "title": "Структурированные данные",
+      "summary": "JSON-LD и микроданные: как объяснить поисковикам, что на странице курс, рецепт, товар или статья.",
+      "durationMinutes": 10,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Зачем\n\nПоисковики умеют показывать **расширенные сниппеты**: звёзды рейтинга, цену, время приготовления, хлебные крошки, вопросы и ответы. Для этого им нужно точно знать, что описано на странице. Общий словарь таких описаний — **Schema.org**.\n\n## JSON-LD — рекомендуемый способ\n\n```html\n<script type=\"application/ld+json\">\n{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"Course\",\n  \"name\": \"HTML: полный курс\",\n  \"description\": \"Все возможности HTML с нуля.\",\n  \"inLanguage\": \"ru\",\n  \"provider\": { \"@type\": \"Organization\", \"name\": \"Nexus\" }\n}\n</script>\n```\n\nЭто `script` с данными, а не с кодом: браузер его не выполняет, а поисковик читает. Описание живёт отдельно от разметки, и его легко поддерживать. Кстати, страницы курсов этой платформы уже содержат такой блок — посмотрите в исходном коде.\n\n## Микроданные — прямо в разметке\n\n```html\n<article itemscope itemtype=\"https://schema.org/Recipe\">\n  <h2 itemprop=\"name\">Сырники</h2>\n  <p>Время: <time itemprop=\"totalTime\" datetime=\"PT30M\">30 минут</time></p>\n  <p itemprop=\"recipeYield\">4 порции</p>\n</article>\n```\n\n- `itemscope` — здесь начинается описание сущности.\n- `itemtype` — её тип из Schema.org.\n- `itemprop` — свойство; значение берётся из текста элемента или из `datetime`, `href`, `src`, `content`.\n\n## Популярные типы\n\n`Article`, `Product` (с `Offer` и ценой), `Recipe`, `Course`, `Event`, `FAQPage`, `BreadcrumbList`, `Organization`, `Person`. У каждого типа на schema.org есть список свойств.\n\n## Проверка\n\nИнструменты «Проверка расширенных результатов» Google и валидатор schema.org покажут, что поисковик понял из страницы. Описывайте только то, что действительно есть на странице: выдуманные отзывы и рейтинги поисковики наказывают.\n\n## Практика\n\nДобавьте в песочнице микроданные к рецепту: название, время и количество порций. Затем напишите для себя тот же рецепт в JSON-LD.\n\n**Подробнее:** [JSON-LD — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/../../Glossary/JSON-LD)"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "structured-jsonld",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "structured-itemprop",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "proekt-lending",
+      "title": "Проект 2: лендинг курса",
+      "summary": "Одностраничный сайт для онлайн-курса: оффер, программа, видео, тарифы, FAQ и форма записи.",
+      "durationMinutes": 40,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Задача\n\nСверстайте лендинг для выдуманного онлайн-курса, например «Фотография на смартфон». Задача лендинга — за один экран объяснить, что это, и привести человека к записи.\n\n## Структура\n\n1. **header** — логотип, навигация по якорям, кнопка «Записаться» (ссылка на форму).\n2. **Первый экран** — `h1` с обещанием результата, абзац-пояснение, главная кнопка, картинка через `picture` с WebP.\n3. **Для кого** — `section` со списком.\n4. **Программа** — нумерованный список модулей или аккордеон `details` с `name`.\n5. **Видео-презентация** — `video` с `poster`, `controls` и `track` субтитров (или `iframe` с YouTube, с `title` и `loading=\"lazy\"`).\n6. **Тарифы** — таблица сравнения с `caption`, `thead` и `scope`.\n7. **Отзывы** — `figure` с `blockquote` и `figcaption`.\n8. **FAQ** — `details` и `summary`.\n9. **Форма записи** — имя, почта, телефон с правильными `type` и `autocomplete`, выбор тарифа (radio в `fieldset`), согласие (checkbox, `required`).\n10. **footer** — контакты в `address`, ссылки на соцсети.\n\n## Head\n\n`title` и `description`, Open Graph для красивой ссылки в мессенджере, иконка.\n\n## Начните с каркаса\n\n```html\n<!doctype html>\n<html lang=\"ru\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Фото на смартфон — онлайн-курс</title>\n  <meta name=\"description\" content=\"Научитесь снимать красиво на телефон за 4 недели.\">\n</head>\n<body>\n  <a href=\"#main\">Перейти к содержимому</a>\n  <header><!-- логотип и навигация --></header>\n  <main id=\"main\">\n    <section aria-labelledby=\"hero-title\">\n      <h1 id=\"hero-title\">Снимайте на телефон как профи за 4 недели</h1>\n      <p><!-- пояснение --></p>\n      <a href=\"#signup\">Записаться бесплатно</a>\n    </section>\n    <!-- остальные разделы -->\n    <section id=\"signup\" aria-labelledby=\"signup-title\">\n      <h2 id=\"signup-title\">Запись на курс</h2>\n      <!-- форма -->\n    </section>\n  </main>\n  <footer><!-- контакты --></footer>\n</body>\n</html>\n```\n\n## Чек-лист\n\n- Один `h1` на первом экране, понятный за 5 секунд.\n- Все разделы — `section` с заголовками.\n- Таблица тарифов с `caption` и `scope`.\n- Форма: label у каждого поля, правильные type, autocomplete, проверка required.\n- Медиа: alt, poster, субтитры или title у iframe.\n- Ссылка «Перейти к содержимому».\n- Ни одной ошибки в валидаторе, Lighthouse Accessibility — 100."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "project-landing-check",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "html-i-javascript",
+      "title": "HTML и JavaScript: события и DOM",
+      "summary": "Как HTML связан со скриптами: атрибуты событий, id и data-*, почему addEventListener лучше onclick.",
+      "durationMinutes": 11,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## HTML — интерфейс для скриптов\n\nJavaScript работает с DOM: находит элементы, читает и меняет их, реагирует на действия. Хорошая разметка облегчает ему работу: понятные `id`, классы, `data-*` атрибуты, правильные элементы.\n\n## Атрибуты событий\n\n```html\n<button onclick=\"alert('Привет!')\">Нажми меня</button>\n```\n\nУ элементов есть атрибуты `onclick`, `oninput`, `onsubmit`, `onload` и десятки других — они запускают код при событии. Так работает, но смешивает разметку с логикой и не дружит с CSP. В современном коде события вешают из скрипта:\n\n```html\n<button id=\"greet\" type=\"button\" data-name=\"Аня\">Поздороваться</button>\n<output id=\"result\"></output>\n\n<script>\n  const button = document.querySelector(\"#greet\");\n  button.addEventListener(\"click\", () => {\n    document.querySelector(\"#result\").textContent = \"Привет, \" + button.dataset.name + \"!\";\n  });\n</script>\n```\n\n- `document.querySelector(\"#greet\")` находит элемент по `id` (или любому CSS-селектору).\n- `addEventListener(\"click\", …)` подписывается на клик.\n- `dataset.name` читает атрибут `data-name`.\n- `textContent` меняет текст безопасно — без интерпретации HTML.\n\n## Самые частые события\n\n`click` — нажатие (и Enter или пробел на кнопке), `input` — изменение поля, `change` — значение подтверждено, `submit` — отправка формы, `keydown` — клавиша, `focus`/`blur` — фокус, `load` — загрузка картинки или страницы, `DOMContentLoaded` — HTML разобран.\n\n## Разметка, которая помогает скриптам\n\n- Интерактивное — только на `button`, `a`, полях форм: они сами получают фокус и клавиатурные события.\n- Формы оставляйте настоящими `form` с `name` у полей — даже если отправку перехватывает скрипт.\n- Страница должна быть понятна и без JavaScript: содержимое в HTML, а скрипт лишь улучшает.\n\n## В песочнице скрипты выключены\n\nЭто сделано ради безопасности: код из урока не может ничего сделать с вашей страницей. Поэтому примеры здесь — для чтения. Попробуйте их в своём `index.html`.\n\n```html\n<button type=\"button\" data-action=\"like\">Нравится</button>\n<p>Кнопка готова к подключению скрипта через data-action.</p>\n```\n\n**Подробнее:** [addEventListener — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/../API/EventTarget/addEventListener)"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-listener",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-dataset",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "redaktirovanie-i-peretaskivanie",
+      "title": "Редактирование и перетаскивание",
+      "summary": "contenteditable, spellcheck, draggable, autocapitalize и hidden=until-found: встроенные возможности браузера.",
+      "durationMinutes": 9,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Редактируемый текст\n\n```html\n<div contenteditable=\"true\" spellcheck=\"true\" style=\"border:1px solid #ccc; padding:8px\">\n  Кликните и печатайте. Ошибки в словах подчеркнутся: превет, мир.\n</div>\n<p contenteditable=\"plaintext-only\">Здесь можно вставить только текст без оформления.</p>\n```\n\n`contenteditable` превращает любой элемент в редактор — на этом построены визуальные редакторы статей. `plaintext-only` запрещает вставку оформления. `spellcheck` включает или выключает проверку орфографии (у полей паролей и кода её стоит выключать).\n\n## Подсказки клавиатуре телефона\n\n```html\n<label>Имя <input autocapitalize=\"words\"></label>\n<label>Ник <input autocapitalize=\"none\" autocorrect=\"off\" spellcheck=\"false\"></label>\n```\n\n`autocapitalize` — делать ли заглавные буквы: `words`, `sentences`, `characters`, `none`. `autocorrect` — автоисправление (поддерживается Safari и частью браузеров).\n\n## Перетаскивание\n\n```html\n<p draggable=\"true\" style=\"padding:8px; background:#eef\">Перетащите этот блок</p>\n<p>Ссылки и картинки перетаскиваются по умолчанию — попробуйте с картинкой:</p>\n<img src=\"https://picsum.photos/seed/drag/160/100\" alt=\"Пример картинки\" width=\"160\" height=\"100\">\n```\n\n`draggable=\"true\"` разрешает перетаскивать элемент. Куда он упадёт и что произойдёт — обрабатывает JavaScript (события `dragstart`, `dragover`, `drop`). Не делайте перетаскивание единственным способом действия: людям с клавиатурой и на телефонах нужна альтернатива — кнопки «Вверх» и «Вниз».\n\n## Скрыто, но находится поиском\n\n```html\n<p>Нажмите Ctrl+F и найдите слово «секрет».</p>\n<div hidden=\"until-found\">Это секрет, который браузер покажет, когда вы его найдёте.</div>\n```\n\n`hidden=\"until-found\"` прячет блок, но поиск по странице его находит и раскрывает. Полезно для свёрнутых разделов. Поддерживается не всеми браузерами: где поддержки нет, блок просто скрыт. Проверяйте актуальное состояние на caniuse.com.\n\n## Практика\n\nСделайте в песочнице «записку»: заголовок и редактируемый абзац с проверкой орфографии, а поле «Ник» — без заглавных и автоисправления.\n\n**Подробнее:** [Атрибут contenteditable — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/Global_attributes/contenteditable)"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "native-editable",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "native-drag",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "svoi-elementy",
+      "title": "Свои элементы и Shadow DOM",
+      "summary": "Custom elements, template, slot и декларативный Shadow DOM: как создают переиспользуемые компоненты на чистом HTML.",
+      "durationMinutes": 11,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Свой тег\n\n```html\n<user-card name=\"Анна\" role=\"Автор курса\"></user-card>\n\n<script>\n  customElements.define(\"user-card\", class extends HTMLElement {\n    connectedCallback() {\n      this.innerHTML = \"<strong></strong> — <span></span>\";\n      this.querySelector(\"strong\").textContent = this.getAttribute(\"name\");\n      this.querySelector(\"span\").textContent = this.getAttribute(\"role\");\n    }\n  });\n</script>\n```\n\n**Пользовательские элементы** — свои теги с поведением на JavaScript. Правило: в имени обязательно дефис (`user-card`, `nx-button`), чтобы не столкнуться с будущими стандартными тегами. Пока скрипт не загрузился, браузер показывает элемент как обычный строчный контейнер.\n\n## Shadow DOM — изолированное содержимое\n\nКомпонент может спрятать внутреннюю разметку и стили в **теневое дерево**: стили страницы не ломают компонент, а его стили не протекают наружу. Так устроены, например, встроенные `video` и `input type=\"date\"`: внутри у них кнопки и календарь, которых нет в вашем DOM.\n\n## Декларативный Shadow DOM — без JavaScript\n\n```html\n<div>\n  <template shadowrootmode=\"open\">\n    <style>p { color: crimson; font-weight: bold; }</style>\n    <p>Я внутри Shadow DOM: мой стиль не влияет на страницу.</p>\n    <slot></slot>\n  </template>\n  <p>А я — обычный абзац из страницы, показанный через slot.</p>\n</div>\n```\n\n`template shadowrootmode=\"open\"` прямо в HTML создаёт теневое дерево. `slot` — «окно», куда попадает обычное содержимое элемента. Стиль `p` внутри не красит абзацы снаружи. Поддерживается всеми современными браузерами.\n\n## Именованные слоты\n\n```html\n<template shadowrootmode=\"open\">\n  <header><slot name=\"title\">Без названия</slot></header>\n  <slot></slot>\n</template>\n<h3 slot=\"title\">Карточка курса</h3>\n<p>Описание попадёт в слот по умолчанию.</p>\n```\n\nАтрибут `slot=\"title\"` отправляет элемент в слот с этим именем; текст внутри `slot` показывается, если ничего не передали. Атрибуты `part` и `exportparts` позволяют стилизовать отдельные части компонента снаружи.\n\n## Когда это нужно\n\nВеб-компоненты — основа дизайн-систем, которые работают в любом фреймворке. Для обычного сайта они не обязательны, но вы будете встречать их в чужом коде и библиотеках — теперь вы знаете, что это.\n\n## Практика\n\nВ песочнице поменяйте текст и стиль внутри `template` из примера и убедитесь, что абзацы вне компонента не окрашиваются.\n\n**Подробнее:** [Веб-компоненты — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/../API/Web_components)"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "components-name",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "components-slot",
           "kind": "homework",
           "required": false
         }
@@ -5967,6 +7813,24 @@
       ]
     },
     {
+      "slug": "proekt-statya",
+      "title": "Проект 3: статья для блога",
+      "summary": "Длинная статья с оглавлением, медиа, кодом, таблицей, цитатами и метаданными.",
+      "durationMinutes": 35,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Задача\n\nСверстайте статью «Как я выучил HTML за месяц» (или на любую свою тему) объёмом 1500–2000 слов. Цель — использовать как можно больше текстовой семантики к месту.\n\n## Что должно быть\n\n1. `article` с `header`: заголовок, подзаголовок в `hgroup`, автор, дата в `time`.\n2. **Оглавление** в `nav` со ссылками-якорями на разделы.\n3. Разделы — `section` с `h2` и `h3`.\n4. Текстовая семантика: `strong`, `em`, `abbr`, `q`, `cite`, `mark`, `kbd`, `code`.\n5. Блок кода в `pre` и `code`.\n6. Иллюстрация в `figure` с `figcaption`, адаптивная через `srcset` и `sizes`, с `loading=\"lazy\"`.\n7. Таблица (например, план обучения по неделям).\n8. Врезка `aside` «Совет».\n9. `blockquote` с источником.\n10. `footer` статьи: теги и блок об авторе в `address`.\n11. Head: `title`, `description`, Open Graph с типом `article`.\n\n## Каркас\n\n```html\n<article>\n  <header>\n    <hgroup>\n      <h1>Как я выучил HTML за месяц</h1>\n      <p>Личный опыт и план, который сработал</p>\n    </hgroup>\n    <p>Автор: Анна Петрова · <time datetime=\"2026-11-01\">1 ноября 2026</time> · 8 минут чтения</p>\n  </header>\n\n  <nav aria-label=\"Оглавление\">\n    <h2>Содержание</h2>\n    <ol>\n      <li><a href=\"#week-1\">Неделя 1: основы</a></li>\n      <li><a href=\"#week-2\">Неделя 2: формы</a></li>\n    </ol>\n  </nav>\n\n  <section id=\"week-1\">\n    <h2>Неделя 1: основы</h2>\n    <p>…</p>\n  </section>\n\n  <footer>\n    <p>Теги: <a href=\"/tag/html\">HTML</a></p>\n  </footer>\n</article>\n```\n\n## Чек-лист\n\n- Оглавление ведёт на существующие `id`.\n- Каждый текстовый тег использован по смыслу, а не ради вида.\n- У картинки alt и подпись не дублируют друг друга.\n- Таблица с `caption` и `th`.\n- Валидатор без ошибок."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "project-article-toc",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
       "slug": "kachestvo-koda",
       "title": "Проверка и качество кода",
       "summary": "Валидатор W3C, DevTools, Lighthouse и самые частые ошибки начинающих.",
@@ -5991,56 +7855,50 @@
       ]
     },
     {
-      "slug": "proekt-vizitka",
-      "title": "Проект 1: страница-визитка",
-      "summary": "Соберите свою первую настоящую страницу из всего, что изучили в основах.",
-      "durationMinutes": 30,
+      "slug": "ustarevshie-elementy",
+      "title": "Устаревшие элементы и атрибуты",
+      "summary": "font, center, marquee, frameset, align, bgcolor и другие: что встретится в старом коде и чем это заменить.",
+      "durationMinutes": 8,
       "blocks": [
         {
           "type": "markdown",
-          "markdown": "## Задача\n\nСделайте страницу-визитку о себе. Это ваш первый проект: сохраните его — в курсе CSS мы сделаем его красивым.\n\n## Требования\n\n1. Корректный каркас: doctype, `lang`, кодировка, viewport, title.\n2. Шапка с вашим именем и навигацией по разделам (якорные ссылки).\n3. `main` с разделами «Обо мне» (абзацы и фото), «Навыки» (список), «Опыт» (список определений или таблица), «Связаться» (форма).\n4. Хотя бы одна картинка с хорошим alt.\n5. Подвал с контактами в `address`.\n\n## Заготовка\n\nОткройте песочницу и заполните заготовку. Всё, что внутри комментариев, браузер не показывает.\n\n```html\n<!doctype html>\n<html lang=\"ru\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Ваше имя — визитка</title>\n</head>\n<body>\n  <header>\n    <h1>Ваше имя</h1>\n    <nav aria-label=\"Разделы страницы\">\n      <ul>\n        <li><a href=\"#about\">Обо мне</a></li>\n        <li><a href=\"#skills\">Навыки</a></li>\n        <li><a href=\"#contact\">Связаться</a></li>\n      </ul>\n    </nav>\n  </header>\n\n  <main>\n    <section id=\"about\">\n      <h2>Обо мне</h2>\n      <!-- Абзац о себе и фото с alt -->\n    </section>\n\n    <section id=\"skills\">\n      <h2>Навыки</h2>\n      <!-- Список навыков -->\n    </section>\n\n    <section id=\"experience\">\n      <h2>Опыт</h2>\n      <!-- dl: годы — чем занимались -->\n    </section>\n\n    <section id=\"contact\">\n      <h2>Связаться</h2>\n      <!-- Форма: имя, почта, сообщение, кнопка -->\n    </section>\n  </main>\n\n  <footer>\n    <address><!-- Почта и мессенджер --></address>\n  </footer>\n</body>\n</html>\n```\n\n## Чек-лист самопроверки\n\n- Один `h1`, разделы на `h2`, без пропуска уровней.\n- У каждой картинки осмысленный alt.\n- У каждого поля формы связанный label.\n- Все якоря из навигации ведут на существующие `id`.\n- Текст ссылок понятен без контекста.\n- Валидатор не находит ошибок."
+          "markdown": "## Зачем знать устаревшее\n\nВ интернете много старых страниц, писем и шаблонов. Браузеры до сих пор показывают их, но новые проекты так не пишут: эти элементы смешивают оформление со структурой или плохо работают с доступностью.\n\n## Оформление в HTML — устарело\n\n```html\n<!-- Так писали в 1999 году -->\n<center><font color=\"red\" size=\"5\">Скидка!</font></center>\n<table bgcolor=\"#eeeeee\" width=\"100%\" border=\"1\" align=\"center\"></table>\n```\n\n- `font`, `center`, `big`, `tt`, `strike` → CSS (`color`, `font-size`, `text-align`) и семантические теги.\n- Атрибуты `align`, `bgcolor`, `border` у таблиц, `width` у ячеек, `color` → CSS.\n\n## Бегущая строка и мигание\n\n`marquee` и `blink` двигают и мигают текстом. Это отвлекает и опасно для людей с эпилепсией. Если анимация действительно нужна — CSS с учётом `prefers-reduced-motion`.\n\n## Фреймы\n\n`frameset` и `frame` делили окно на несколько страниц. Ломали закладки, кнопку «Назад» и поиск. Заменены обычными страницами и, где нужно встроить чужое, `iframe`.\n\n## Прочее\n\n- `acronym` → `abbr`.\n- `applet` (Java), `embed` для Flash → больше не работают.\n- `name` у `a` для якорей → `id` у любого элемента.\n- Раскладка таблицами → CSS Grid и Flexbox.\n- `dir` (элемент), `menuitem`, `keygen`, `noembed` → удалены из стандарта.\n\n## Что НЕ устарело, хотя кажется\n\n`b`, `i`, `u`, `s`, `small` остались в стандарте — но с новым смыслом (урок «Выделение текста»). `br` и `hr` тоже актуальны, если используются по смыслу.\n\n## Практика\n\nПерепишите в песочнице старый код из примера выше на современный: только смысловые теги, оформление вынесите в элемент `style`.\n\n**Подробнее:** [Устаревшие элементы — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/Element#obsolete_and_deprecated_elements)"
         },
         {
           "type": "activity",
-          "activitySlug": "project-card-check",
+          "activitySlug": "obsolete-center",
           "kind": "practice",
           "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "obsolete-which",
+          "kind": "homework",
+          "required": false
         }
       ]
     },
     {
-      "slug": "proekt-lending",
-      "title": "Проект 2: лендинг курса",
-      "summary": "Одностраничный сайт для онлайн-курса: оффер, программа, видео, тарифы, FAQ и форма записи.",
-      "durationMinutes": 40,
+      "slug": "spravochnik-elementov",
+      "title": "Справочник: все элементы HTML",
+      "summary": "Каждый актуальный элемент HTML в одном месте, сгруппированный по назначению, со ссылкой на урок.",
+      "durationMinutes": 15,
       "blocks": [
         {
           "type": "markdown",
-          "markdown": "## Задача\n\nСверстайте лендинг для выдуманного онлайн-курса, например «Фотография на смартфон». Задача лендинга — за один экран объяснить, что это, и привести человека к записи.\n\n## Структура\n\n1. **header** — логотип, навигация по якорям, кнопка «Записаться» (ссылка на форму).\n2. **Первый экран** — `h1` с обещанием результата, абзац-пояснение, главная кнопка, картинка через `picture` с WebP.\n3. **Для кого** — `section` со списком.\n4. **Программа** — нумерованный список модулей или аккордеон `details` с `name`.\n5. **Видео-презентация** — `video` с `poster`, `controls` и `track` субтитров (или `iframe` с YouTube, с `title` и `loading=\"lazy\"`).\n6. **Тарифы** — таблица сравнения с `caption`, `thead` и `scope`.\n7. **Отзывы** — `figure` с `blockquote` и `figcaption`.\n8. **FAQ** — `details` и `summary`.\n9. **Форма записи** — имя, почта, телефон с правильными `type` и `autocomplete`, выбор тарифа (radio в `fieldset`), согласие (checkbox, `required`).\n10. **footer** — контакты в `address`, ссылки на соцсети.\n\n## Head\n\n`title` и `description`, Open Graph для красивой ссылки в мессенджере, иконка.\n\n## Начните с каркаса\n\n```html\n<!doctype html>\n<html lang=\"ru\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Фото на смартфон — онлайн-курс</title>\n  <meta name=\"description\" content=\"Научитесь снимать красиво на телефон за 4 недели.\">\n</head>\n<body>\n  <a href=\"#main\">Перейти к содержимому</a>\n  <header><!-- логотип и навигация --></header>\n  <main id=\"main\">\n    <section aria-labelledby=\"hero-title\">\n      <h1 id=\"hero-title\">Снимайте на телефон как профи за 4 недели</h1>\n      <p><!-- пояснение --></p>\n      <a href=\"#signup\">Записаться бесплатно</a>\n    </section>\n    <!-- остальные разделы -->\n    <section id=\"signup\" aria-labelledby=\"signup-title\">\n      <h2 id=\"signup-title\">Запись на курс</h2>\n      <!-- форма -->\n    </section>\n  </main>\n  <footer><!-- контакты --></footer>\n</body>\n</html>\n```\n\n## Чек-лист\n\n- Один `h1` на первом экране, понятный за 5 секунд.\n- Все разделы — `section` с заголовками.\n- Таблица тарифов с `caption` и `scope`.\n- Форма: label у каждого поля, правильные type, autocomplete, проверка required.\n- Медиа: alt, poster, субтитры или title у iframe.\n- Ссылка «Перейти к содержимому».\n- Ни одной ошибки в валидаторе, Lighthouse Accessibility — 100."
+          "markdown": "## Вся карта HTML\n\nЭто шпаргалка ко всему курсу: здесь каждый элемент актуального стандарта. Если вы понимаете, зачем нужен каждый из них, — вы знаете HTML целиком.\n\n### Документ и метаданные\n\n- `html` — корень документа\n- `head` — служебная часть\n- `title` — заголовок вкладки\n- `meta` — метаданные: кодировка, viewport, описание\n- `link` — связанные ресурсы: стили, иконки, предзагрузка\n- `style` — встроенные стили\n- `base` — базовый адрес ссылок\n- `body` — видимое содержимое\n\n### Структура страницы\n\n- `header` — шапка страницы или раздела\n- `nav` — основная навигация\n- `main` — главное содержимое\n- `article` — самостоятельный материал\n- `section` — тематический раздел\n- `aside` — побочное содержимое\n- `footer` — подвал\n- `search` — область поиска\n- `address` — контакты\n- `hgroup` — заголовок с подзаголовком\n- `h1–h6` — заголовки\n\n### Группировка содержимого\n\n- `p` — абзац\n- `div` — блочный контейнер без смысла\n- `hr` — тематический разрыв\n- `pre` — текст с сохранёнными пробелами\n- `blockquote` — блочная цитата\n- `ol / ul / li` — списки\n- `menu` — список команд (как ul для панели инструментов)\n- `dl / dt / dd` — список определений\n- `figure / figcaption` — иллюстрация с подписью\n\n### Строчная семантика\n\n- `a` — ссылка\n- `strong / em` — важность / ударение\n- `b / i / u / s` — внимание / другой голос / пометка / неактуально\n- `mark` — подсветка\n- `small` — примечание\n- `abbr` — сокращение\n- `dfn` — определяемый термин\n- `q / cite` — цитата / название произведения\n- `code / kbd / samp / var` — код / ввод / вывод / переменная\n- `time / data` — дата / машинное значение\n- `sub / sup` — индексы\n- `span` — строчный контейнер без смысла\n- `br / wbr` — перенос / возможный перенос\n- `bdi / bdo` — изоляция / переворот направления\n- `ruby / rt / rp` — подписи произношения\n- `ins / del` — правки\n\n### Медиа и встраивание\n\n- `img` — изображение\n- `picture / source` — варианты изображения\n- `video / audio` — видео и звук\n- `track` — субтитры\n- `iframe` — встроенная страница\n- `embed / object` — внешние ресурсы\n- `map / area` — кликабельные области\n- `svg` — векторная графика\n- `math` — формулы MathML\n- `canvas` — холст для рисования скриптом\n\n### Таблицы\n\n- `table` — таблица\n- `caption` — название\n- `thead / tbody / tfoot` — группы строк\n- `tr` — строка\n- `th / td` — заголовок / ячейка\n- `colgroup / col` — группы столбцов\n\n### Формы\n\n- `form` — форма\n- `label` — подпись\n- `input` — поле (десятки типов)\n- `button` — кнопка\n- `select / option / optgroup` — выпадающий список\n- `datalist` — подсказки ввода\n- `textarea` — многострочный текст\n- `fieldset / legend` — группа полей\n- `output` — результат вычисления\n- `progress / meter` — ход процесса / измерение\n\n### Интерактивность и скрипты\n\n- `details / summary` — раскрывающийся блок\n- `dialog` — диалоговое окно\n- `script / noscript` — скрипт / запасной вариант\n- `template / slot` — шаблон / слот компонента\n\n## Как пользоваться\n\nНужно что-то разметить — найдите группу по назначению и выберите самый точный элемент. Если подходящего нет — `div` или `span`. Подробности о любом элементе — на MDN.\n\n```html\n<p>Проверьте себя: какие элементы нужны для <mark>цитаты с автором</mark>?</p>\n<!-- Ответ: figure + blockquote + figcaption -->\n```\n\n**Подробнее:** [Справочник элементов — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/Element)"
         },
         {
           "type": "activity",
-          "activitySlug": "project-landing-check",
+          "activitySlug": "reference-quote",
           "kind": "practice",
           "required": true
-        }
-      ]
-    },
-    {
-      "slug": "proekt-statya",
-      "title": "Проект 3: статья для блога",
-      "summary": "Длинная статья с оглавлением, медиа, кодом, таблицей, цитатами и метаданными.",
-      "durationMinutes": 35,
-      "blocks": [
-        {
-          "type": "markdown",
-          "markdown": "## Задача\n\nСверстайте статью «Как я выучил HTML за месяц» (или на любую свою тему) объёмом 1500–2000 слов. Цель — использовать как можно больше текстовой семантики к месту.\n\n## Что должно быть\n\n1. `article` с `header`: заголовок, подзаголовок в `hgroup`, автор, дата в `time`.\n2. **Оглавление** в `nav` со ссылками-якорями на разделы.\n3. Разделы — `section` с `h2` и `h3`.\n4. Текстовая семантика: `strong`, `em`, `abbr`, `q`, `cite`, `mark`, `kbd`, `code`.\n5. Блок кода в `pre` и `code`.\n6. Иллюстрация в `figure` с `figcaption`, адаптивная через `srcset` и `sizes`, с `loading=\"lazy\"`.\n7. Таблица (например, план обучения по неделям).\n8. Врезка `aside` «Совет».\n9. `blockquote` с источником.\n10. `footer` статьи: теги и блок об авторе в `address`.\n11. Head: `title`, `description`, Open Graph с типом `article`.\n\n## Каркас\n\n```html\n<article>\n  <header>\n    <hgroup>\n      <h1>Как я выучил HTML за месяц</h1>\n      <p>Личный опыт и план, который сработал</p>\n    </hgroup>\n    <p>Автор: Анна Петрова · <time datetime=\"2026-11-01\">1 ноября 2026</time> · 8 минут чтения</p>\n  </header>\n\n  <nav aria-label=\"Оглавление\">\n    <h2>Содержание</h2>\n    <ol>\n      <li><a href=\"#week-1\">Неделя 1: основы</a></li>\n      <li><a href=\"#week-2\">Неделя 2: формы</a></li>\n    </ol>\n  </nav>\n\n  <section id=\"week-1\">\n    <h2>Неделя 1: основы</h2>\n    <p>…</p>\n  </section>\n\n  <footer>\n    <p>Теги: <a href=\"/tag/html\">HTML</a></p>\n  </footer>\n</article>\n```\n\n## Чек-лист\n\n- Оглавление ведёт на существующие `id`.\n- Каждый текстовый тег использован по смыслу, а не ради вида.\n- У картинки alt и подпись не дублируют друг друга.\n- Таблица с `caption` и `th`.\n- Валидатор без ошибок."
         },
         {
           "type": "activity",
-          "activitySlug": "project-article-toc",
-          "kind": "practice",
-          "required": true
+          "activitySlug": "reference-forms",
+          "kind": "homework",
+          "required": false
         }
       ]
     },
