@@ -85,7 +85,10 @@ export function createCourse(challenges = {}, stories = {}, recaps = {}) {
   };
   const options = (list) => list.map(([id, text]) => ({ id, text }));
 
+  let currentChapter;
   return {
+    /** Lessons declared after this call belong to the named chapter. */
+    chapter: (name) => { currentChapter = name; },
     html: (code) => `${FENCE}html\n${code.trim()}\n${FENCE}`,
     code: (lang, src) => `${FENCE}${lang}\n${src.trim()}\n${FENCE}`,
     // Lessons are self-contained: no outbound "read more" links.
@@ -118,7 +121,7 @@ export function createCourse(challenges = {}, stories = {}, recaps = {}) {
       });
       // `minutes` from the module sources is only a fallback for lessons without hands-on content.
       const estimated = estimateMinutes(markdown, quizzes.length);
-      lessons.push({ slug, title, summary, durationMinutes: markdown.includes("```challenge") ? estimated : minutes, blocks });
+      lessons.push({ slug, title, summary, ...(currentChapter ? { chapter: currentChapter } : {}), durationMinutes: markdown.includes("```challenge") ? estimated : minutes, blocks });
     },
     single: (slug, title, question, list, correct, explanation) => (skillKey) =>
       add("quiz.single_choice", slug, skillKey, title, question, (question) => ({

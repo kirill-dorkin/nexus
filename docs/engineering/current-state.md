@@ -33,6 +33,7 @@ Each row is implemented on `main`. The ADRs hold the details; the backend areas 
 | F8 Recommendations | Versioned derived policies: ordered mastery, review scheduling, misconception signals, remediation, readiness, readiness-gated completion | 0013, 0038–0043 |
 | F9 Commerce | Product + immutable Price, Purchase settlement via Paddle webhook, public catalog, customer entry, checkout + return reconciliation, operational/browser/performance launch gates | 0044–0052 |
 | MVP free learning | Lessons + YouTube/Markdown/quiz blocks, strict manifest v1, public course/lesson pages, free self-enrollment, deterministic quiz checks with retries, derived task progress | 0053–0056 |
+| Lesson chapters | Optional `chapter` per manifest lesson; course page and lesson sidebar group the program by chapter | 0063 |
 | Offering retarget | Free self-paced Offerings move forward to a newer published version of the same Course; Enrollments and progress carry over (`required-activity-passes@2` by stable Activity identity) | 0062 |
 | Stable course addresses | Home-organization courses live at `/courses/{course}` (course slug, survives new versions); Delivery resolves the newest public Offering; old Offering addresses redirect permanently | 0061 |
 | Studio | Manual and JSON authoring over the same draft, preview, export, publication, Offering visibility, Organization customer-entry policy | 0057 |

@@ -277,6 +277,21 @@ export function ManualEditor({
               }
             />
             <label>
+              Глава (необязательно)
+              <Input
+                value={lesson.chapter ?? ""}
+                maxLength={80}
+                placeholder="Например: Формы"
+                onChange={(e) =>
+                  edit((d) => {
+                    const value = e.target.value;
+                    if (value.trim()) d.lessons[i]!.chapter = value;
+                    else delete d.lessons[i]!.chapter;
+                  })
+                }
+              />
+            </label>
+            <label>
               Длительность, минут
               <Input
                 type="number"

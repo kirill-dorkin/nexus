@@ -80,6 +80,8 @@ describe("course manifest HTTP + PostgreSQL authoring", () => {
     await post(`organizations/${org}/memberships/me/accept`, {}, learner);
     await post(`organizations/${org}/role-assignments`, { userId: learner, roleKey: "learner", scope: { type: "organization", id: org } }, owner, 204);
     manifest = courseManifestV1Schema.parse(JSON.parse(readFileSync(path.resolve("docs/examples/computer-basics.manifest.json"), "utf8")));
+    // Chapters round-trip through import, export and cloning (ADR-0063).
+    manifest.lessons[0]!.chapter = "Введение";
     manifest.course.slug = `example-${randomUUID()}`;
     manifest.activities[0]!.validation.explanation = "PRIVATE_EXPLANATION_SENTINEL";
   });

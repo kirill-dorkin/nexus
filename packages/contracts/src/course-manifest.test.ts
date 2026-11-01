@@ -41,6 +41,15 @@ describe("course manifest v1", () => {
     if (!result.success) expect(result.error.issues.map((i) => i.path.join("."))).toContain(path);
   });
 
+  it("accepts an optional lesson chapter and rejects an empty or too long one", () => {
+    const base = example();
+    base.lessons[0].chapter = "  Формы  ";
+    expect(courseManifestV1Schema.parse(base).lessons[0]?.chapter).toBe("Формы");
+    for (const chapter of ["", "   ", "x".repeat(81)]) {
+      base.lessons[0].chapter = chapter;
+      expect(courseManifestV1Schema.safeParse(base).success).toBe(false);
+    }
+  });
   it("validates multiple choice exact-set configuration", () => {
     const m = example();
     m.activities[0].type = "quiz.multiple_choice";

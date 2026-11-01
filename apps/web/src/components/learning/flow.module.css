@@ -572,3 +572,71 @@
   gap: 0.5rem;
   margin-top: 0.35rem;
 }
+
+/* Program grouped by chapter. */
+.chapters {
+  display: grid;
+  gap: 1.75rem;
+}
+.chapterHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.chapterIndex {
+  color: var(--text-accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.chapterHead h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.15rem;
+  font-weight: 750;
+}
+.chapterMeta {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+.chapters .chapterCompact + .chapterCompact {
+  border-top: 1px solid var(--border-default);
+}
+.chapterCompact summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.6rem 0.25rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+.chapterCompact summary::-webkit-details-marker {
+  display: none;
+}
+.chapterCompact summary::after {
+  content: "›";
+  color: var(--text-secondary);
+  transition: transform 160ms ease;
+}
+.chapterCompact[open] summary::after {
+  transform: rotate(90deg);
+}
+.chapterCompact summary small {
+  margin-left: auto;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.chapterCompact > ol {
+  padding-bottom: 0.5rem;
+}
+.chaptersCompact {
+  gap: 0;
+}

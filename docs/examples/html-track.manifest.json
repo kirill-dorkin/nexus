@@ -6186,6 +6186,7 @@
       "slug": "how-the-web-works",
       "title": "Как устроен веб",
       "summary": "Что происходит между нажатием Enter в адресной строке и появлением страницы: браузер, сервер, адрес и файлы.",
+      "chapter": "Старт",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -6216,6 +6217,7 @@
       "slug": "tools",
       "title": "Инструменты: браузер и редактор кода",
       "summary": "Что установить, чтобы писать HTML: браузер с инструментами разработчика, VS Code и пара полезных расширений.",
+      "chapter": "Старт",
       "durationMinutes": 8,
       "blocks": [
         {
@@ -6240,6 +6242,7 @@
       "slug": "first-page",
       "title": "Первая страница на своём компьютере",
       "summary": "Создаём папку проекта, файл index.html, открываем в браузере и учимся видеть изменения.",
+      "chapter": "Старт",
       "durationMinutes": 8,
       "blocks": [
         {
@@ -6264,6 +6267,7 @@
       "slug": "how-to-learn",
       "title": "Как учиться и где искать ответы",
       "summary": "MDN, инструменты разработчика, валидатор и правильные вопросы: как не застревать.",
+      "chapter": "Старт",
       "durationMinutes": 8,
       "blocks": [
         {
@@ -6288,6 +6292,7 @@
       "slug": "what-is-html",
       "title": "Что такое HTML",
       "summary": "Как браузер превращает текст с тегами в страницу. Теги, элементы и атрибуты.",
+      "chapter": "Основы HTML",
       "durationMinutes": 13,
       "blocks": [
         {
@@ -6318,6 +6323,7 @@
       "slug": "document-skeleton",
       "title": "Каркас HTML-документа",
       "summary": "Doctype, html, head и body: минимальный корректный документ, с которого начинается любая страница.",
+      "chapter": "Основы HTML",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -6348,6 +6354,7 @@
       "slug": "how-browsers-read-html",
       "title": "Как браузер читает HTML",
       "summary": "DOM, исправление ошибок, комментарии и инструменты разработчика: как увидеть страницу глазами браузера.",
+      "chapter": "Основы HTML",
       "durationMinutes": 9,
       "blocks": [
         {
@@ -6378,6 +6385,7 @@
       "slug": "headings-and-paragraphs",
       "title": "Заголовки и абзацы",
       "summary": "h1–h6 и p: иерархия текста, понятная людям, поисковикам и экранным читалкам.",
+      "chapter": "Основы HTML",
       "durationMinutes": 11,
       "blocks": [
         {
@@ -6408,6 +6416,7 @@
       "slug": "whitespace-and-entities",
       "title": "Пробелы, переносы и спецсимволы",
       "summary": "Как браузер обращается с пробелами, когда нужны br, wbr и hr, и как вставить символы <, &, неразрывный пробел и ©.",
+      "chapter": "Основы HTML",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -6438,6 +6447,7 @@
       "slug": "global-attributes",
       "title": "Глобальные атрибуты",
       "summary": "id, class, title, lang, dir, hidden, data-* и другие атрибуты, которые есть у любого элемента.",
+      "chapter": "Основы HTML",
       "durationMinutes": 12,
       "blocks": [
         {
@@ -6468,6 +6478,7 @@
       "slug": "block-and-inline",
       "title": "Блочные и строчные элементы: div и span",
       "summary": "Почему одни элементы встают с новой строки, а другие — нет, и зачем нужны «пустые» div и span.",
+      "chapter": "Основы HTML",
       "durationMinutes": 8,
       "blocks": [
         {
@@ -6492,6 +6503,7 @@
       "slug": "text-emphasis",
       "title": "Выделение текста по смыслу",
       "summary": "strong, em, b, i, u, s, mark и small: восемь способов выделить текст, и у каждого свой смысл.",
+      "chapter": "Текст",
       "durationMinutes": 12,
       "blocks": [
         {
@@ -6522,6 +6534,7 @@
       "slug": "inline-semantics",
       "title": "Строчная семантика",
       "summary": "abbr, dfn, time, data, sub, sup, ins, del и span: теги, которые объясняют машинам смысл слов.",
+      "chapter": "Текст",
       "durationMinutes": 16,
       "blocks": [
         {
@@ -6552,6 +6565,7 @@
       "slug": "code-in-text",
       "title": "Код, клавиши и вывод программ",
       "summary": "code, pre, kbd, samp и var: как показывать код и технический текст.",
+      "chapter": "Текст",
       "durationMinutes": 9,
       "blocks": [
         {
@@ -6576,6 +6590,7 @@
       "slug": "quotes-and-addresses",
       "title": "Цитаты, подписи и адреса",
       "summary": "blockquote, q, cite, figure, figcaption и address: цитаты с источником и контактная информация.",
+      "chapter": "Текст",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -6606,6 +6621,7 @@
       "slug": "lists",
       "title": "Списки",
       "summary": "ul, ol и li: перечисления, шаги, вложенные списки, нумерация с любого числа и в обратном порядке.",
+      "chapter": "Текст",
       "durationMinutes": 12,
       "blocks": [
         {
@@ -6636,6 +6652,7 @@
       "slug": "description-lists",
       "title": "Списки определений",
       "summary": "dl, dt и dd: словари, FAQ, характеристики товара и пары «название — значение».",
+      "chapter": "Текст",
       "durationMinutes": 8,
       "blocks": [
         {
@@ -6660,6 +6677,7 @@
       "slug": "language-and-direction",
       "title": "Языки, направление текста и ruby",
       "summary": "lang, dir, bdi, bdo и ruby: текст на разных языках, справа налево и подписи произношения.",
+      "chapter": "Текст",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -6684,6 +6702,7 @@
       "slug": "project-recipe",
       "title": "Мини-проект: страница рецепта",
       "summary": "Соберите полноценную текстовую страницу: заголовки, списки, выделения, время, термины и характеристики.",
+      "chapter": "Текст",
       "durationMinutes": 14,
       "blocks": [
         {
@@ -6702,6 +6721,7 @@
       "slug": "links",
       "title": "Ссылки",
       "summary": "Тег a и атрибут href: ссылки на сайты, страницы, почту, телефон и места на странице.",
+      "chapter": "Ссылки и пути",
       "durationMinutes": 12,
       "blocks": [
         {
@@ -6738,6 +6758,7 @@
       "slug": "file-paths",
       "title": "Пути к файлам и структура сайта",
       "summary": "Абсолютные и относительные адреса, ./ и ../, корень сайта и index.html.",
+      "chapter": "Ссылки и пути",
       "durationMinutes": 9,
       "blocks": [
         {
@@ -6768,6 +6789,7 @@
       "slug": "link-features",
       "title": "Возможности ссылок",
       "summary": "download, rel, hreflang и type: скачивание файлов и подсказки браузеру и поисковикам.",
+      "chapter": "Ссылки и пути",
       "durationMinutes": 11,
       "blocks": [
         {
@@ -6798,6 +6820,7 @@
       "slug": "images",
       "title": "Изображения",
       "summary": "img, src, alt, width и height: картинка, которую поймут все, даже если она не загрузилась.",
+      "chapter": "Картинки, видео и встраивание",
       "durationMinutes": 12,
       "blocks": [
         {
@@ -6828,6 +6851,7 @@
       "slug": "image-formats",
       "title": "Форматы изображений",
       "summary": "JPEG, PNG, GIF, WebP, AVIF и SVG: какой формат выбрать, чтобы было чётко и быстро.",
+      "chapter": "Картинки, видео и встраивание",
       "durationMinutes": 9,
       "blocks": [
         {
@@ -6858,6 +6882,7 @@
       "slug": "responsive-images",
       "title": "Адаптивные изображения",
       "summary": "srcset, sizes, picture и loading: каждому экрану — картинка подходящего размера и формата.",
+      "chapter": "Картинки, видео и встраивание",
       "durationMinutes": 14,
       "blocks": [
         {
@@ -6888,6 +6913,7 @@
       "slug": "video",
       "title": "Видео",
       "summary": "video, source, poster и атрибуты воспроизведения: своё видео на странице без сторонних плееров.",
+      "chapter": "Картинки, видео и встраивание",
       "durationMinutes": 13,
       "blocks": [
         {
@@ -6918,6 +6944,7 @@
       "slug": "audio-and-captions",
       "title": "Аудио и субтитры",
       "summary": "audio, track и формат WebVTT: звук на странице и субтитры для видео.",
+      "chapter": "Картинки, видео и встраивание",
       "durationMinutes": 9,
       "blocks": [
         {
@@ -6942,6 +6969,7 @@
       "slug": "iframe-embeds",
       "title": "Встраивание: iframe",
       "summary": "iframe, title, sandbox, allow и loading: карты, видео с YouTube и чужие страницы внутри вашей — безопасно.",
+      "chapter": "Картинки, видео и встраивание",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -6972,6 +7000,7 @@
       "slug": "svg-and-mathml",
       "title": "SVG и формулы в HTML",
       "summary": "Встроенный SVG: фигуры, viewBox и доступные иконки. MathML для математических формул.",
+      "chapter": "Картинки, видео и встраивание",
       "durationMinutes": 9,
       "blocks": [
         {
@@ -7002,6 +7031,7 @@
       "slug": "script-elements",
       "title": "script, noscript, template и canvas",
       "summary": "Элементы, через которые HTML работает с JavaScript: подключение скриптов, шаблоны и холст для рисования.",
+      "chapter": "Картинки, видео и встраивание",
       "durationMinutes": 11,
       "blocks": [
         {
@@ -7032,6 +7062,7 @@
       "slug": "image-maps",
       "title": "Карты-изображения и object",
       "summary": "map и area: кликабельные области на картинке. object: встраивание PDF и других документов.",
+      "chapter": "Картинки, видео и встраивание",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -7056,6 +7087,7 @@
       "slug": "project-gallery",
       "title": "Мини-проект: фотогалерея",
       "summary": "Галерея путешествия: адаптивные картинки с подписями, ленивая загрузка, видео с субтитрами и иконки SVG.",
+      "chapter": "Картинки, видео и встраивание",
       "durationMinutes": 13,
       "blocks": [
         {
@@ -7074,6 +7106,7 @@
       "slug": "tables",
       "title": "Таблицы",
       "summary": "table, tr, th, td и caption: данные в строках и столбцах.",
+      "chapter": "Таблицы",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -7104,6 +7137,7 @@
       "slug": "complex-tables",
       "title": "Сложные таблицы",
       "summary": "thead, tbody, tfoot, scope, colspan, rowspan, headers и colgroup: таблицы, понятные и людям, и читалкам.",
+      "chapter": "Таблицы",
       "durationMinutes": 12,
       "blocks": [
         {
@@ -7134,6 +7168,7 @@
       "slug": "how-forms-work",
       "title": "Как работают формы",
       "summary": "form, action, method и name: что происходит, когда человек нажимает «Отправить».",
+      "chapter": "Формы",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -7164,6 +7199,7 @@
       "slug": "fields-and-labels",
       "title": "Поля и подписи",
       "summary": "input и label: каждое поле с подписью, placeholder как подсказка, а не замена.",
+      "chapter": "Формы",
       "durationMinutes": 9,
       "blocks": [
         {
@@ -7188,6 +7224,7 @@
       "slug": "input-types",
       "title": "Типы полей input",
       "summary": "text, email, tel, url, password, number, range, date, time, color, search, hidden: правильный тип — удобная клавиатура и проверка бесплатно.",
+      "chapter": "Формы",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -7218,6 +7255,7 @@
       "slug": "checkboxes-and-radios",
       "title": "Флажки и переключатели",
       "summary": "checkbox, radio, fieldset и legend: выбор одного или нескольких вариантов.",
+      "chapter": "Формы",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -7248,6 +7286,7 @@
       "slug": "select-lists",
       "title": "Списки выбора",
       "summary": "select, option, optgroup, multiple и datalist: выпадающие списки и подсказки при вводе.",
+      "chapter": "Формы",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -7272,6 +7311,7 @@
       "slug": "textarea-and-buttons",
       "title": "Многострочный текст и кнопки",
       "summary": "textarea, button и его типы: отправка, сброс и кнопки для скриптов.",
+      "chapter": "Формы",
       "durationMinutes": 12,
       "blocks": [
         {
@@ -7296,6 +7336,7 @@
       "slug": "file-uploads",
       "title": "Загрузка файлов",
       "summary": "input type=file, accept, multiple, capture и enctype: как принять от человека фото и документы.",
+      "chapter": "Формы",
       "durationMinutes": 8,
       "blocks": [
         {
@@ -7320,6 +7361,7 @@
       "slug": "form-validation",
       "title": "Встроенная проверка форм",
       "summary": "required, minlength, maxlength, min, max, step, pattern и novalidate: браузер проверит форму без JavaScript.",
+      "chapter": "Формы",
       "durationMinutes": 9,
       "blocks": [
         {
@@ -7350,6 +7392,7 @@
       "slug": "usable-forms",
       "title": "Удобные формы",
       "summary": "autocomplete, inputmode, enterkeyhint, autofocus, disabled и readonly: формы, которые заполняются за секунды.",
+      "chapter": "Формы",
       "durationMinutes": 12,
       "blocks": [
         {
@@ -7380,6 +7423,7 @@
       "slug": "output-progress-meter",
       "title": "output, progress и meter",
       "summary": "Элементы для результатов вычислений, хода выполнения и измерений.",
+      "chapter": "Формы",
       "durationMinutes": 9,
       "blocks": [
         {
@@ -7404,6 +7448,7 @@
       "slug": "advanced-forms",
       "title": "Продвинутые возможности форм",
       "summary": "Атрибут form, formtarget, fieldset disabled, input image, dirname и несколько форм на странице.",
+      "chapter": "Формы",
       "durationMinutes": 9,
       "blocks": [
         {
@@ -7428,6 +7473,7 @@
       "slug": "project-signup",
       "title": "Мини-проект: форма регистрации",
       "summary": "Регистрация на онлайн-мероприятие: все типы полей, группы, проверка, автозаполнение и понятные подсказки.",
+      "chapter": "Формы",
       "durationMinutes": 12,
       "blocks": [
         {
@@ -7446,6 +7492,7 @@
       "slug": "semantics",
       "title": "Семантическая структура страницы",
       "summary": "header, nav, main и footer: каркас страницы, понятный людям, читалкам и поисковикам.",
+      "chapter": "Структура страницы",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -7476,6 +7523,7 @@
       "slug": "page-sections",
       "title": "article, section, aside и search",
       "summary": "Как делить содержимое на разделы: когда article, когда section, когда aside, а когда просто div.",
+      "chapter": "Структура страницы",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -7506,6 +7554,7 @@
       "slug": "details-summary",
       "title": "Раскрывающиеся блоки: details и summary",
       "summary": "Аккордеоны, FAQ и спойлеры без единой строчки JavaScript.",
+      "chapter": "Структура страницы",
       "durationMinutes": 8,
       "blocks": [
         {
@@ -7530,6 +7579,7 @@
       "slug": "dialog-and-popover",
       "title": "Диалоги и всплывающие окна",
       "summary": "dialog, popover и inert: модальные окна, меню и подсказки, которые браузер делает доступными сам.",
+      "chapter": "Структура страницы",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -7560,6 +7610,7 @@
       "slug": "project-business-card",
       "title": "Проект 1: страница-визитка",
       "summary": "Соберите свою первую настоящую страницу из всего, что изучили в основах.",
+      "chapter": "Структура страницы",
       "durationMinutes": 12,
       "blocks": [
         {
@@ -7578,6 +7629,7 @@
       "slug": "metadata",
       "title": "Метаданные страницы",
       "summary": "title, description, viewport, charset и robots: что страница рассказывает о себе браузеру и поисковикам.",
+      "chapter": "Head, поиск и безопасность",
       "durationMinutes": 12,
       "blocks": [
         {
@@ -7608,6 +7660,7 @@
       "slug": "social-and-icons",
       "title": "Превью в соцсетях и иконки",
       "summary": "Open Graph, favicon, apple-touch-icon и web manifest: как сайт выглядит в мессенджерах, вкладках и на главном экране.",
+      "chapter": "Head, поиск и безопасность",
       "durationMinutes": 9,
       "blocks": [
         {
@@ -7638,6 +7691,7 @@
       "slug": "linking-resources",
       "title": "Подключение стилей, скриптов и шрифтов",
       "summary": "link rel=stylesheet, preload, preconnect, script defer и async: порядок загрузки, от которого зависит скорость сайта.",
+      "chapter": "Head, поиск и безопасность",
       "durationMinutes": 11,
       "blocks": [
         {
@@ -7668,6 +7722,7 @@
       "slug": "style-base-meta",
       "title": "style, base и служебные meta",
       "summary": "Встроенные стили, атрибут style, базовый адрес base и meta для обновления и реферера.",
+      "chapter": "Head, поиск и безопасность",
       "durationMinutes": 9,
       "blocks": [
         {
@@ -7692,6 +7747,7 @@
       "slug": "security",
       "title": "Безопасность в HTML",
       "summary": "CSP, integrity, crossorigin, rel=noopener, sandbox и почему нельзя вставлять чужой HTML как есть.",
+      "chapter": "Head, поиск и безопасность",
       "durationMinutes": 11,
       "blocks": [
         {
@@ -7722,6 +7778,7 @@
       "slug": "structured-data",
       "title": "Структурированные данные",
       "summary": "JSON-LD и микроданные: как объяснить поисковикам, что на странице курс, рецепт, товар или статья.",
+      "chapter": "Head, поиск и безопасность",
       "durationMinutes": 9,
       "blocks": [
         {
@@ -7746,6 +7803,7 @@
       "slug": "project-landing",
       "title": "Проект 2: лендинг курса",
       "summary": "Одностраничный сайт для онлайн-курса: оффер, программа, видео, тарифы, FAQ и форма записи.",
+      "chapter": "Head, поиск и безопасность",
       "durationMinutes": 12,
       "blocks": [
         {
@@ -7764,6 +7822,7 @@
       "slug": "html-and-javascript",
       "title": "HTML и JavaScript: события и DOM",
       "summary": "Как HTML связан со скриптами: атрибуты событий, id и data-*, почему addEventListener лучше onclick.",
+      "chapter": "HTML и JavaScript",
       "durationMinutes": 8,
       "blocks": [
         {
@@ -7788,6 +7847,7 @@
       "slug": "editing-and-drag-and-drop",
       "title": "Редактирование и перетаскивание",
       "summary": "contenteditable, spellcheck, draggable, autocapitalize и hidden=until-found: встроенные возможности браузера.",
+      "chapter": "HTML и JavaScript",
       "durationMinutes": 8,
       "blocks": [
         {
@@ -7812,6 +7872,7 @@
       "slug": "custom-elements",
       "title": "Свои элементы и Shadow DOM",
       "summary": "Custom elements, template, slot и декларативный Shadow DOM: как создают переиспользуемые компоненты на чистом HTML.",
+      "chapter": "HTML и JavaScript",
       "durationMinutes": 11,
       "blocks": [
         {
@@ -7836,6 +7897,7 @@
       "slug": "accessibility-basics",
       "title": "Доступность: основы",
       "summary": "Кто пользуется сайтом иначе, чем вы, и как правильный HTML решает большинство проблем бесплатно.",
+      "chapter": "Доступность",
       "durationMinutes": 9,
       "blocks": [
         {
@@ -7866,6 +7928,7 @@
       "slug": "keyboard-and-focus",
       "title": "Клавиатура и фокус",
       "summary": "Порядок табуляции, tabindex, видимый фокус и ловушки: сайт, которым можно пользоваться без мыши.",
+      "chapter": "Доступность",
       "durationMinutes": 9,
       "blocks": [
         {
@@ -7896,6 +7959,7 @@
       "slug": "aria",
       "title": "ARIA: когда нужна и когда нет",
       "summary": "role, aria-label, aria-labelledby, aria-describedby, aria-expanded, aria-live и главное правило ARIA.",
+      "chapter": "Доступность",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -7926,6 +7990,7 @@
       "slug": "project-article",
       "title": "Проект 3: статья для блога",
       "summary": "Длинная статья с оглавлением, медиа, кодом, таблицей, цитатами и метаданными.",
+      "chapter": "Доступность",
       "durationMinutes": 12,
       "blocks": [
         {
@@ -7944,6 +8009,7 @@
       "slug": "code-quality",
       "title": "Проверка и качество кода",
       "summary": "Валидатор W3C, DevTools, Lighthouse и самые частые ошибки начинающих.",
+      "chapter": "Качество и финал",
       "durationMinutes": 8,
       "blocks": [
         {
@@ -7968,6 +8034,7 @@
       "slug": "obsolete-elements",
       "title": "Устаревшие элементы и атрибуты",
       "summary": "font, center, marquee, frameset, align, bgcolor и другие: что встретится в старом коде и чем это заменить.",
+      "chapter": "Качество и финал",
       "durationMinutes": 8,
       "blocks": [
         {
@@ -7992,6 +8059,7 @@
       "slug": "whats-new",
       "title": "Новинки HTML 2024–2025",
       "summary": "Кнопки-команды commandfor, closedby у диалогов, настраиваемый select, прозрачность в выборе цвета, headingoffset и writingsuggestions.",
+      "chapter": "Качество и финал",
       "durationMinutes": 12,
       "blocks": [
         {
@@ -8022,6 +8090,7 @@
       "slug": "element-reference",
       "title": "Справочник: все элементы HTML",
       "summary": "Каждый актуальный элемент HTML в одном месте, сгруппированный по назначению, со ссылкой на урок.",
+      "chapter": "Качество и финал",
       "durationMinutes": 10,
       "blocks": [
         {
@@ -8046,6 +8115,7 @@
       "slug": "final-project",
       "title": "Финальный проект: сайт-портфолио",
       "summary": "Многостраничный сайт из трёх страниц с общей навигацией, формами, медиа и полной проверкой качества.",
+      "chapter": "Качество и финал",
       "durationMinutes": 18,
       "blocks": [
         {
