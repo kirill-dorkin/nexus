@@ -23,23 +23,27 @@ import { obsolete, referenceSheet } from "./x04-reference.mjs";
 import { newFeatures } from "./x05-new-features.mjs";
 
 // Order is the learning path: each project right after the modules it practises.
-const path = [
-  start,                                            // 0. Старт с нуля
-  basics, divSpan,                                  // 1. Основы
-  text, bidiRuby, projectRecipe,                    // 2. Текст + мини-проект
-  links,                                            // 3. Ссылки
-  media, imageMaps, projectGallery,                 // 4. Медиа + мини-проект
-  tables,                                           // 5. Таблицы
-  forms, advancedForms, projectSignup,              // 6. Формы + мини-проект
-  structure, projectCard,                           // 7. Структура + проект 1
-  head, styleBaseMeta, security, structuredData, projectLanding, // 8. Head + проект 2
-  jsBridge, nativeInteractivity, webComponents,     // 9. HTML и JavaScript
-  a11y, projectArticle,                             // 10. Доступность + проект 3
-  quality, obsolete, newFeatures, referenceSheet, projectFinal // 11. Качество, новинки, справочник, финал
+// Each chapter is a section of the program on the course page.
+const chapters = [
+  ["Старт", [start]],
+  ["Основы HTML", [basics, divSpan]],
+  ["Текст", [text, bidiRuby, projectRecipe]],
+  ["Ссылки и пути", [links]],
+  ["Картинки, видео и встраивание", [media, imageMaps, projectGallery]],
+  ["Таблицы", [tables]],
+  ["Формы", [forms, advancedForms, projectSignup]],
+  ["Структура страницы", [structure, projectCard]],
+  ["Head, поиск и безопасность", [head, styleBaseMeta, security, structuredData, projectLanding]],
+  ["HTML и JavaScript", [jsBridge, nativeInteractivity, webComponents]],
+  ["Доступность", [a11y, projectArticle]],
+  ["Качество и финал", [quality, obsolete, newFeatures, referenceSheet, projectFinal]]
 ];
 
 const course = createCourse(challenges, stories, recaps);
-for (const part of path) part(course);
+for (const [chapter, parts] of chapters) {
+  course.chapter(chapter);
+  for (const part of parts) part(course);
+}
 
 const manifest = course.manifest({
   slug: "html",

@@ -49,6 +49,8 @@ export const lessonBlockSchema = z.discriminatedUnion("type", [
 
 export const manifestLessonSchema = z.object({
   slug: resourceSlugSchema, title, summary: z.string().max(5000).default(""),
+  /** Optional section name; consecutive lessons with the same chapter are shown as one group. */
+  chapter: z.string().trim().min(1).max(80).optional(),
   durationMinutes: z.number().int().min(1).max(1440),
   blocks: z.array(lessonBlockSchema).min(1).max(200)
 }).strict();

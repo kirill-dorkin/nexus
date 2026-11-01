@@ -19,6 +19,7 @@ export const publicLessonSummarySchema = z
     slug: resourceSlugSchema,
     title,
     summary: z.string().max(5000),
+    chapter: z.string().min(1).max(80).optional(),
     durationMinutes: z.number().int().min(1).max(1440)
   })
   .strict();

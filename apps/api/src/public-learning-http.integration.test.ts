@@ -126,6 +126,7 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
         )
       );
       manifest.course.title = `Public course ${i}`;
+      manifest.lessons[0]!.chapter = "Введение";
       manifest.activities[0]!.validation.explanation =
         "PRIVATE_EXPLANATION_SENTINEL";
       manifest.activities.push(
@@ -430,6 +431,8 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
       lessonSlug,
       "second-lesson"
     ]);
+    // Chapter is projected when set and absent otherwise (ADR-0063).
+    expect(course.course.lessons.map((l) => l.chapter)).toEqual(["Введение", undefined]);
     const lesson = publicLearningLessonSchema.parse(
       (await get(fixtures[0], `/lessons/${lessonSlug}`)).json()
     );
