@@ -102,16 +102,26 @@ if (migrate.status !== 0) fail(`Миграции не применились:\n$
 ok("Схема базы актуальна");
 
 step("Вход владельца");
-const email = await ask("  Почта владельца: ");
-const password = await ask("  Пароль (не меньше 15 символов): ", { hidden: true });
-if (password.length < 15) fail("Пароль должен быть не короче 15 символов.");
-let auth = await api("POST", "auth/login", { email, password });
-if (auth.status === 401) {
-  console.log("  Аккаунта нет или пароль другой — пробую зарегистрировать.");
-  auth = await api("POST", "auth/register", { email, password });
-  if (auth.status === 409) fail("Аккаунт с этой почтой уже есть, но пароль не подошёл.");
+let auth = null;
+for (let tries = 0; tries < 5 && !auth?.ok; tries++) {
+  const email = await ask("  Почта владельца: ");
+  const password = await ask("  Пароль (не меньше 15 символов): ", { hidden: true });
+  if (password.length < 15) {
+    console.log("  Пароль должен быть не короче 15 символов. Попробуйте ещё раз.");
+    continue;
+  }
+  auth = await api("POST", "auth/login", { email, password });
+  if (auth.status === 401) {
+    auth = await api("POST", "auth/register", { email, password });
+    if (auth.ok) console.log("  Создан новый аккаунт.");
+    else if (auth.status === 409) {
+      console.log("  Аккаунт с этой почтой уже есть, но пароль не подошёл.");
+      console.log("  Введите правильный пароль или другую почту — для неё создадим новый аккаунт.");
+    }
+  }
+  if (!auth.ok && auth.status !== 409) fail(`Не удалось войти: HTTP ${auth.status}`);
 }
-if (!auth.ok) fail(`Не удалось войти: HTTP ${auth.status}`);
+if (!auth?.ok) fail("Не удалось войти за 5 попыток.");
 const me = await must("Чтение профиля", api("GET", "me"));
 const ownerId = me.id ?? me.user?.id;
 if (!ownerId) fail("API не вернул id пользователя.");
