@@ -2,7 +2,7 @@ export default function links(c) {
   const { html, code, mdn, lesson, single, short, diagram, demo } = c;
 
   lesson({
-    slug: "ssylki", title: "Ссылки", minutes: 11,
+    slug: "links", title: "Ссылки", minutes: 11,
     summary: "Тег a и атрибут href: ссылки на сайты, страницы, почту, телефон и места на странице.",
     skill: ["html-links", "Ссылки", "Ставить ссылки на другие сайты, страницы, почту, телефон и якоря с понятным текстом."],
     body: [
@@ -53,7 +53,7 @@ export default function links(c) {
   });
 
   lesson({
-    slug: "puti-k-fajlam", title: "Пути к файлам и структура сайта", minutes: 11,
+    slug: "file-paths", title: "Пути к файлам и структура сайта", minutes: 11,
     summary: "Абсолютные и относительные адреса, ./ и ../, корень сайта и index.html.",
     skill: ["html-paths", "Пути к файлам", "Составлять абсолютные, относительные и корневые адреса к страницам и файлам сайта."],
     body: [
@@ -115,7 +115,7 @@ export default function links(c) {
   });
 
   lesson({
-    slug: "vozmozhnosti-ssylok", title: "Возможности ссылок", minutes: 9,
+    slug: "link-features", title: "Возможности ссылок", minutes: 9,
     summary: "download, rel, hreflang и type: скачивание файлов и подсказки браузеру и поисковикам.",
     skill: ["html-link-attributes", "Атрибуты ссылок", "Использовать download, rel, hreflang и type по назначению."],
     body: [

@@ -2,7 +2,7 @@ export default function forms(c) {
   const { html, code, mdn, lesson, single, multi, short, diagram, demo } = c;
 
   lesson({
-    slug: "kak-rabotayut-formy", title: "Как работают формы", minutes: 12,
+    slug: "how-forms-work", title: "Как работают формы", minutes: 12,
     summary: "form, action, method и name: что происходит, когда человек нажимает «Отправить».",
     skill: ["html-form-basics", "Отправка форм", "Понимать, как форма отправляет данные: action, method GET и POST, имена полей."],
     body: [
@@ -55,7 +55,7 @@ export default function forms(c) {
   });
 
   lesson({
-    slug: "polya-i-podpisi", title: "Поля и подписи", minutes: 10,
+    slug: "fields-and-labels", title: "Поля и подписи", minutes: 10,
     summary: "input и label: каждое поле с подписью, placeholder как подсказка, а не замена.",
     skill: ["html-form-labels", "Подписи полей", "Связывать каждое поле с подписью и использовать placeholder и подсказки правильно."],
     body: [
@@ -102,7 +102,7 @@ export default function forms(c) {
   });
 
   lesson({
-    slug: "tipy-input", title: "Типы полей input", minutes: 13,
+    slug: "input-types", title: "Типы полей input", minutes: 13,
     summary: "text, email, tel, url, password, number, range, date, time, color, search, hidden: правильный тип — удобная клавиатура и проверка бесплатно.",
     skill: ["html-input-types", "Типы полей", "Выбирать тип input под данные, чтобы получить подходящую клавиатуру, виджет и проверку."],
     body: [
@@ -162,7 +162,7 @@ export default function forms(c) {
   });
 
   lesson({
-    slug: "flazhki-i-pereklyuchateli", title: "Флажки и переключатели", minutes: 10,
+    slug: "checkboxes-and-radios", title: "Флажки и переключатели", minutes: 10,
     summary: "checkbox, radio, fieldset и legend: выбор одного или нескольких вариантов.",
     skill: ["html-form-choices", "Флажки и переключатели", "Строить группы выбора из checkbox и radio и подписывать их через fieldset и legend."],
     body: [
@@ -214,7 +214,7 @@ export default function forms(c) {
   });
 
   lesson({
-    slug: "spiski-vybora", title: "Списки выбора", minutes: 10,
+    slug: "select-lists", title: "Списки выбора", minutes: 10,
     summary: "select, option, optgroup, multiple и datalist: выпадающие списки и подсказки при вводе.",
     skill: ["html-form-select", "Списки выбора", "Строить выпадающие списки с группами и подсказки ввода через datalist."],
     body: [
@@ -282,7 +282,7 @@ export default function forms(c) {
   });
 
   lesson({
-    slug: "textarea-i-knopki", title: "Многострочный текст и кнопки", minutes: 10,
+    slug: "textarea-and-buttons", title: "Многострочный текст и кнопки", minutes: 10,
     summary: "textarea, button и его типы: отправка, сброс и кнопки для скриптов.",
     skill: ["html-form-buttons", "Текстовые области и кнопки", "Использовать textarea и кнопки с правильным type: submit, reset и button."],
     body: [
@@ -336,7 +336,7 @@ export default function forms(c) {
   });
 
   lesson({
-    slug: "zagruzka-fajlov", title: "Загрузка файлов", minutes: 9,
+    slug: "file-uploads", title: "Загрузка файлов", minutes: 9,
     summary: "input type=file, accept, multiple, capture и enctype: как принять от человека фото и документы.",
     skill: ["html-file-upload", "Загрузка файлов", "Принимать файлы через input file с ограничением типов и правильной кодировкой формы."],
     body: [
@@ -379,7 +379,7 @@ export default function forms(c) {
   });
 
   lesson({
-    slug: "validaciya-form", title: "Встроенная проверка форм", minutes: 13,
+    slug: "form-validation", title: "Встроенная проверка форм", minutes: 13,
     summary: "required, minlength, maxlength, min, max, step, pattern и novalidate: браузер проверит форму без JavaScript.",
     skill: ["html-form-validation", "Встроенная проверка форм", "Задавать ограничения полей атрибутами проверки и понимать их пределы."],
     body: [
@@ -438,7 +438,7 @@ export default function forms(c) {
   });
 
   lesson({
-    slug: "udobnye-formy", title: "Удобные формы", minutes: 11,
+    slug: "usable-forms", title: "Удобные формы", minutes: 11,
     summary: "autocomplete, inputmode, enterkeyhint, autofocus, disabled и readonly: формы, которые заполняются за секунды.",
     skill: ["html-form-ux", "Удобство форм", "Ускорять заполнение форм автозаполнением, правильной клавиатурой и состояниями полей."],
     body: [

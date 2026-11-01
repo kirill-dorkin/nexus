@@ -1,7 +1,7 @@
 export function divSpan(c) {
   const { html, mdn, lesson, single, multi } = c;
   lesson({
-    slug: "blochnye-i-strochnye", title: "Блочные и строчные элементы: div и span", minutes: 10,
+    slug: "block-and-inline", title: "Блочные и строчные элементы: div и span", minutes: 10,
     summary: "Почему одни элементы встают с новой строки, а другие — нет, и зачем нужны «пустые» div и span.",
     skill: ["html-block-inline", "Блочные и строчные элементы", "Различать блочные и строчные элементы и использовать div и span как контейнеры без смысла."],
     body: [
@@ -46,7 +46,7 @@ export function divSpan(c) {
 export function bidiRuby(c) {
   const { html, mdn, lesson, single } = c;
   lesson({
-    slug: "yazyki-i-napravlenie", title: "Языки, направление текста и ruby", minutes: 9,
+    slug: "language-and-direction", title: "Языки, направление текста и ruby", minutes: 9,
     summary: "lang, dir, bdi, bdo и ruby: текст на разных языках, справа налево и подписи произношения.",
     skill: ["html-i18n-text", "Многоязычный текст", "Размечать фрагменты на других языках, текст справа налево и подписи произношения ruby."],
     body: [
@@ -89,7 +89,7 @@ export function bidiRuby(c) {
 export function projectRecipe(c) {
   const { html, lesson, multi } = c;
   lesson({
-    slug: "mini-proekt-recept", title: "Мини-проект: страница рецепта", minutes: 20,
+    slug: "project-recipe", title: "Мини-проект: страница рецепта", minutes: 20,
     summary: "Соберите полноценную текстовую страницу: заголовки, списки, выделения, время, термины и характеристики.",
     skill: ["html-project-recipe", "Мини-проект: рецепт", "Сверстать текстовую страницу, используя заголовки, списки, строчную семантику и списки определений."],
     body: [

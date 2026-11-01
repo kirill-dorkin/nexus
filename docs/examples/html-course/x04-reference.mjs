@@ -1,7 +1,7 @@
 export function obsolete(c) {
   const { html, mdn, lesson, single, multi } = c;
   lesson({
-    slug: "ustarevshie-elementy", title: "Устаревшие элементы и атрибуты", minutes: 8,
+    slug: "obsolete-elements", title: "Устаревшие элементы и атрибуты", minutes: 8,
     summary: "font, center, marquee, frameset, align, bgcolor и другие: что встретится в старом коде и чем это заменить.",
     skill: ["html-obsolete", "Устаревшие элементы", "Распознавать устаревшие элементы и атрибуты в старом коде и заменять их современными решениями."],
     body: [
@@ -44,7 +44,7 @@ export function referenceSheet(c) {
   const { html, mdn, lesson, single, multi } = c;
   const group = (title, items) => `### ${title}\n\n${items.map(([tag, text]) => `- \`${tag}\` — ${text}`).join("\n")}`;
   lesson({
-    slug: "spravochnik-elementov", title: "Справочник: все элементы HTML", minutes: 15,
+    slug: "element-reference", title: "Справочник: все элементы HTML", minutes: 15,
     summary: "Каждый актуальный элемент HTML в одном месте, сгруппированный по назначению, со ссылкой на урок.",
     skill: ["html-reference", "Карта всех элементов", "Ориентироваться во всех актуальных элементах HTML и выбирать подходящий по задаче."],
     body: [

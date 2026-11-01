@@ -2,7 +2,7 @@ export default function start(c) {
   const { html, code, mdn, lesson, single, multi, short, diagram, demo } = c;
 
   lesson({
-    slug: "kak-ustroen-veb", title: "Как устроен веб", minutes: 10,
+    slug: "how-the-web-works", title: "Как устроен веб", minutes: 10,
     summary: "Что происходит между нажатием Enter в адресной строке и появлением страницы: браузер, сервер, адрес и файлы.",
     skill: ["web-how-it-works", "Как работает веб", "Объяснять путь от адреса до страницы: браузер, DNS, сервер, HTTP, HTML, CSS и JavaScript."],
     body: [
@@ -66,7 +66,7 @@ export default function start(c) {
   });
 
   lesson({
-    slug: "instrumenty", title: "Инструменты: браузер и редактор кода", minutes: 10,
+    slug: "tools", title: "Инструменты: браузер и редактор кода", minutes: 10,
     summary: "Что установить, чтобы писать HTML: браузер с инструментами разработчика, VS Code и пара полезных расширений.",
     skill: ["web-tools", "Рабочие инструменты", "Настроить рабочее место: браузер с DevTools, редактор кода с подсветкой, автодополнением и живым просмотром."],
     body: [
@@ -85,15 +85,56 @@ export default function start(c) {
 - **Live Server** — открывает страницу в браузере и обновляет её автоматически при каждом сохранении.
 - **Prettier** — аккуратно форматирует код.
 - **Russian Language Pack** — если удобнее интерфейс на русском.`,
-      `## Emmet за 30 секунд`,
-      `Emmet — встроенный в VS Code «ускоритель»: вы пишете короткое сокращение, жмёте **Tab**, и оно разворачивается в готовую разметку. Посмотрите, как это выглядит:`,
-      demo({ kind: "typing", title: "Emmet в редакторе", scenes: [
-        { input: "ul>li*3", key: "Tab", output: "<ul>\n  <li></li>\n  <li></li>\n  <li></li>\n</ul>", caption: "ul>li*3 — список из трёх пунктов" },
-        { input: "p.note", key: "Tab", output: "<p class=\"note\"></p>", caption: "p.note — абзац с классом" },
-        { input: "a[href=#]", key: "Tab", output: "<a href=\"#\"></a>", caption: "a[href=#] — ссылка с атрибутом" },
-        { input: "nav>ul>li*3>a", key: "Tab", output: "<nav>\n  <ul>\n    <li><a href=\"\"></a></li>\n    <li><a href=\"\"></a></li>\n    <li><a href=\"\"></a></li>\n  </ul>\n</nav>", caption: "nav>ul>li*3>a — целое меню одной строкой" }
-      ] }),
-      `Правила сокращений: \`>\` — «внутри», \`*3\` — «повторить три раза», \`.\` — класс, \`#\` — id, \`[…]\` — атрибуты, \`+\` — «рядом». Попробуйте в VS Code: напечатайте сокращение и нажмите Tab.`,
+      `## Emmet: разметка из коротких сокращений`,
+      `Emmet встроен в VS Code. Вы пишете короткое сокращение, жмёте **Tab**, и оно разворачивается в готовую разметку. Курсор сам встаёт туда, где нужно печатать дальше. Ниже каждое правило показано отдельно: досмотрите анимацию до конца, а потом повторите то же самое в редакторе.`,
+      `### Вложенность и повтор`,
+      `Знак \`>\` значит «внутрь», а \`*3\` — «повторить три раза». Так одной строкой получается список:`,
+      demo({ kind: "typing", title: "Список из трёх пунктов",
+        input: "ul>li*3", key: "Tab",
+        parts: [{ text: "ul", label: "список" }, { text: ">", label: "внутрь" }, { text: "li", label: "пункт" }, { text: "*3", label: "три раза" }],
+        output: "<ul>\n  <li></li>\n  <li></li>\n  <li></li>\n</ul>",
+        caption: "Курсор уже стоит в первом пункте — можно сразу печатать текст" }),
+      `### Класс и id`,
+      `Точка добавляет класс, решётка — id. Это те же обозначения, что потом встретятся в CSS:`,
+      demo({ kind: "typing", title: "Абзац с классом",
+        input: "p.note", key: "Tab",
+        parts: [{ text: "p", label: "абзац" }, { text: ".note", label: "класс note" }],
+        output: "<p class=\"note\"></p>",
+        caption: ".имя → class=\"имя\"" }),
+      demo({ kind: "typing", title: "Раздел с id",
+        input: "section#about", key: "Tab",
+        parts: [{ text: "section", label: "раздел" }, { text: "#about", label: "id about" }],
+        output: "<section id=\"about\"></section>",
+        caption: "#имя → id=\"имя\"" }),
+      `### Атрибуты и текст`,
+      `Квадратные скобки задают любые атрибуты, фигурные — текст внутри элемента:`,
+      demo({ kind: "typing", title: "Ссылка с адресом и текстом",
+        input: "a[href=/about]{О нас}", key: "Tab",
+        parts: [{ text: "a", label: "ссылка" }, { text: "[href=/about]", label: "атрибут" }, { text: "{О нас}", label: "текст" }],
+        output: "<a href=\"/about\">О нас</a>",
+        caption: "[атрибут=значение] и {текст}" }),
+      `### Рядом, а не внутри`,
+      `Плюс ставит элементы друг за другом на одном уровне:`,
+      demo({ kind: "typing", title: "Заголовок и абзац",
+        input: "h1+p", key: "Tab",
+        parts: [{ text: "h1", label: "заголовок" }, { text: "+", label: "рядом" }, { text: "p", label: "абзац" }],
+        output: "<h1></h1>\n<p></p>",
+        caption: "+ — следующий элемент того же уровня" }),
+      `### Нумерация`,
+      `Знак \`$\` при повторе заменяется номером: 1, 2, 3…`,
+      demo({ kind: "typing", title: "Пронумерованные классы",
+        input: "ul>li.item$*3", key: "Tab",
+        parts: [{ text: "ul", label: "список" }, { text: ">", label: "внутрь" }, { text: "li", label: "пункт" }, { text: ".item$", label: "класс с номером" }, { text: "*3", label: "три раза" }],
+        output: "<ul>\n  <li class=\"item1\"></li>\n  <li class=\"item2\"></li>\n  <li class=\"item3\"></li>\n</ul>",
+        caption: "$ превращается в номер повтора" }),
+      `### Всё вместе`,
+      `Правила комбинируются. Целое меню навигации — одна строка:`,
+      demo({ kind: "typing", title: "Меню одной строкой",
+        input: "nav>ul>li*3>a", key: "Tab",
+        parts: [{ text: "nav", label: "навигация" }, { text: ">", label: "внутрь" }, { text: "ul", label: "список" }, { text: ">", label: "внутрь" }, { text: "li", label: "пункт" }, { text: "*3", label: "три раза" }, { text: ">", label: "внутрь" }, { text: "a", label: "ссылка" }],
+        output: "<nav>\n  <ul>\n    <li><a href=\"\"></a></li>\n    <li><a href=\"\"></a></li>\n    <li><a href=\"\"></a></li>\n  </ul>\n</nav>",
+        caption: "Курсор встал в первый href — впишите адрес и жмите Tab к следующему месту" }),
+      `Шпаргалка: \`>\` — внутрь, \`+\` — рядом, \`*N\` — повторить, \`.\` — класс, \`#\` — id, \`[…]\` — атрибуты, \`{…}\` — текст, \`$\` — номер.`,
       `## А пока — песочница`,
       `Если установить ничего нельзя (например, вы с телефона), учитесь прямо здесь: у каждого примера есть кнопка «Попробовать». Но для проектов в конце модулей редактор понадобится.`,
       html(`<ul>
@@ -114,7 +155,7 @@ export default function start(c) {
   });
 
   lesson({
-    slug: "pervaya-stranica", title: "Первая страница на своём компьютере", minutes: 10,
+    slug: "first-page", title: "Первая страница на своём компьютере", minutes: 10,
     summary: "Создаём папку проекта, файл index.html, открываем в браузере и учимся видеть изменения.",
     skill: ["web-first-page", "Первая страница", "Создать папку проекта и HTML-файл, сохранить его в правильной кодировке и открыть в браузере."],
     body: [
@@ -124,9 +165,11 @@ export default function start(c) {
       `В VS Code: **File → Open Folder** → выберите \`my-site\`. Затем **New File** → назовите \`index.html\`. Важно, чтобы расширение было именно \`.html\`, а не \`.html.txt\`: в Windows включите показ расширений файлов в проводнике.`,
       `## Шаг 3. Код`,
       `Напечатайте \`!\` и Tab (или скопируйте код ниже):`,
-      demo({ kind: "typing", title: "Каркас за одно нажатие", scenes: [
-        { input: "!", key: "Tab", output: "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Document</title>\n</head>\n<body>\n  \n</body>\n</html>", caption: "! + Tab — каркас документа. Поменяйте lang на ru и title на свой" }
-      ] }),
+      demo({ kind: "typing", title: "Каркас за одно нажатие",
+        input: "!", key: "Tab",
+        parts: [{ text: "!", label: "каркас HTML-документа" }],
+        output: "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Document</title>\n</head>\n<body>\n  \n</body>\n</html>",
+        caption: "Поменяйте lang на ru и Document на своё название" }),
       html(`<!doctype html>
 <html lang="ru">
 <head>
@@ -163,7 +206,7 @@ export default function start(c) {
   });
 
   lesson({
-    slug: "kak-uchitsya", title: "Как учиться и где искать ответы", minutes: 8,
+    slug: "how-to-learn", title: "Как учиться и где искать ответы", minutes: 8,
     summary: "MDN, инструменты разработчика, валидатор и правильные вопросы: как не застревать.",
     skill: ["web-learning", "Самостоятельный поиск ответов", "Находить ответы в документации, проверять код инструментами и формулировать вопросы."],
     body: [

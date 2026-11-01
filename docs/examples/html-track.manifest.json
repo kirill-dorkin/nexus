@@ -6183,7 +6183,7 @@
   ],
   "lessons": [
     {
-      "slug": "kak-ustroen-veb",
+      "slug": "how-the-web-works",
       "title": "Как устроен веб",
       "summary": "Что происходит между нажатием Enter в адресной строке и появлением страницы: браузер, сервер, адрес и файлы.",
       "durationMinutes": 10,
@@ -6213,14 +6213,14 @@
       ]
     },
     {
-      "slug": "instrumenty",
+      "slug": "tools",
       "title": "Инструменты: браузер и редактор кода",
       "summary": "Что установить, чтобы писать HTML: браузер с инструментами разработчика, VS Code и пара полезных расширений.",
       "durationMinutes": 10,
       "blocks": [
         {
           "type": "markdown",
-          "markdown": "## Что нужно\n\nДля HTML не нужно ничего покупать и почти ничего устанавливать:\n1. **Браузер** — лучше Chrome или Firefox: у них самые удобные инструменты разработчика.\n2. **Редактор кода** — программа, где вы пишете HTML. Блокнот подойдёт, но редактор кода в разы удобнее.\n\n## Редактор VS Code\n\n**Visual Studio Code** — бесплатный и самый популярный редактор. Скачайте с сайта **code.visualstudio.com** для своей системы и установите как обычную программу. Что он даёт:\n- **подсветку синтаксиса** — теги, атрибуты и текст разными цветами, ошибки видно сразу;\n- **автодополнение** — начните печатать `<ul` и нажмите Enter: редактор закроет тег сам;\n- **Emmet** — встроенные сокращения: введите `!` в пустом .html-файле и нажмите Tab — появится весь каркас страницы;\n- **форматирование** — правая кнопка → «Форматировать документ» расставит отступы.\n\n## Полезные расширения\n\nРасширения ставятся во вкладке Extensions (значок с квадратиками слева):\n- **Live Server** — открывает страницу в браузере и обновляет её автоматически при каждом сохранении.\n- **Prettier** — аккуратно форматирует код.\n- **Russian Language Pack** — если удобнее интерфейс на русском.\n\n## Emmet за 30 секунд\n\nEmmet — встроенный в VS Code «ускоритель»: вы пишете короткое сокращение, жмёте **Tab**, и оно разворачивается в готовую разметку. Посмотрите, как это выглядит:\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Emmet в редакторе\",\n  \"scenes\": [\n    {\n      \"input\": \"ul>li*3\",\n      \"key\": \"Tab\",\n      \"output\": \"<ul>\\n  <li></li>\\n  <li></li>\\n  <li></li>\\n</ul>\",\n      \"caption\": \"ul>li*3 — список из трёх пунктов\"\n    },\n    {\n      \"input\": \"p.note\",\n      \"key\": \"Tab\",\n      \"output\": \"<p class=\\\"note\\\"></p>\",\n      \"caption\": \"p.note — абзац с классом\"\n    },\n    {\n      \"input\": \"a[href=#]\",\n      \"key\": \"Tab\",\n      \"output\": \"<a href=\\\"#\\\"></a>\",\n      \"caption\": \"a[href=#] — ссылка с атрибутом\"\n    },\n    {\n      \"input\": \"nav>ul>li*3>a\",\n      \"key\": \"Tab\",\n      \"output\": \"<nav>\\n  <ul>\\n    <li><a href=\\\"\\\"></a></li>\\n    <li><a href=\\\"\\\"></a></li>\\n    <li><a href=\\\"\\\"></a></li>\\n  </ul>\\n</nav>\",\n      \"caption\": \"nav>ul>li*3>a — целое меню одной строкой\"\n    }\n  ]\n}\n```\n\nПравила сокращений: `>` — «внутри», `*3` — «повторить три раза», `.` — класс, `#` — id, `[…]` — атрибуты, `+` — «рядом». Попробуйте в VS Code: напечатайте сокращение и нажмите Tab.\n\n## А пока — песочница\n\nЕсли установить ничего нельзя (например, вы с телефона), учитесь прямо здесь: у каждого примера есть кнопка «Попробовать». Но для проектов в конце модулей редактор понадобится.\n\n```html\n<ul>\n  <li>Браузер с DevTools</li>\n  <li>VS Code</li>\n  <li>Live Server</li>\n</ul>\n```"
+          "markdown": "## Что нужно\n\nДля HTML не нужно ничего покупать и почти ничего устанавливать:\n1. **Браузер** — лучше Chrome или Firefox: у них самые удобные инструменты разработчика.\n2. **Редактор кода** — программа, где вы пишете HTML. Блокнот подойдёт, но редактор кода в разы удобнее.\n\n## Редактор VS Code\n\n**Visual Studio Code** — бесплатный и самый популярный редактор. Скачайте с сайта **code.visualstudio.com** для своей системы и установите как обычную программу. Что он даёт:\n- **подсветку синтаксиса** — теги, атрибуты и текст разными цветами, ошибки видно сразу;\n- **автодополнение** — начните печатать `<ul` и нажмите Enter: редактор закроет тег сам;\n- **Emmet** — встроенные сокращения: введите `!` в пустом .html-файле и нажмите Tab — появится весь каркас страницы;\n- **форматирование** — правая кнопка → «Форматировать документ» расставит отступы.\n\n## Полезные расширения\n\nРасширения ставятся во вкладке Extensions (значок с квадратиками слева):\n- **Live Server** — открывает страницу в браузере и обновляет её автоматически при каждом сохранении.\n- **Prettier** — аккуратно форматирует код.\n- **Russian Language Pack** — если удобнее интерфейс на русском.\n\n## Emmet: разметка из коротких сокращений\n\nEmmet встроен в VS Code. Вы пишете короткое сокращение, жмёте **Tab**, и оно разворачивается в готовую разметку. Курсор сам встаёт туда, где нужно печатать дальше. Ниже каждое правило показано отдельно: досмотрите анимацию до конца, а потом повторите то же самое в редакторе.\n\n### Вложенность и повтор\n\nЗнак `>` значит «внутрь», а `*3` — «повторить три раза». Так одной строкой получается список:\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Список из трёх пунктов\",\n  \"input\": \"ul>li*3\",\n  \"key\": \"Tab\",\n  \"parts\": [\n    {\n      \"text\": \"ul\",\n      \"label\": \"список\"\n    },\n    {\n      \"text\": \">\",\n      \"label\": \"внутрь\"\n    },\n    {\n      \"text\": \"li\",\n      \"label\": \"пункт\"\n    },\n    {\n      \"text\": \"*3\",\n      \"label\": \"три раза\"\n    }\n  ],\n  \"output\": \"<ul>\\n  <li></li>\\n  <li></li>\\n  <li></li>\\n</ul>\",\n  \"caption\": \"Курсор уже стоит в первом пункте — можно сразу печатать текст\"\n}\n```\n\n### Класс и id\n\nТочка добавляет класс, решётка — id. Это те же обозначения, что потом встретятся в CSS:\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Абзац с классом\",\n  \"input\": \"p.note\",\n  \"key\": \"Tab\",\n  \"parts\": [\n    {\n      \"text\": \"p\",\n      \"label\": \"абзац\"\n    },\n    {\n      \"text\": \".note\",\n      \"label\": \"класс note\"\n    }\n  ],\n  \"output\": \"<p class=\\\"note\\\"></p>\",\n  \"caption\": \".имя → class=\\\"имя\\\"\"\n}\n```\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Раздел с id\",\n  \"input\": \"section#about\",\n  \"key\": \"Tab\",\n  \"parts\": [\n    {\n      \"text\": \"section\",\n      \"label\": \"раздел\"\n    },\n    {\n      \"text\": \"#about\",\n      \"label\": \"id about\"\n    }\n  ],\n  \"output\": \"<section id=\\\"about\\\"></section>\",\n  \"caption\": \"#имя → id=\\\"имя\\\"\"\n}\n```\n\n### Атрибуты и текст\n\nКвадратные скобки задают любые атрибуты, фигурные — текст внутри элемента:\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Ссылка с адресом и текстом\",\n  \"input\": \"a[href=/about]{О нас}\",\n  \"key\": \"Tab\",\n  \"parts\": [\n    {\n      \"text\": \"a\",\n      \"label\": \"ссылка\"\n    },\n    {\n      \"text\": \"[href=/about]\",\n      \"label\": \"атрибут\"\n    },\n    {\n      \"text\": \"{О нас}\",\n      \"label\": \"текст\"\n    }\n  ],\n  \"output\": \"<a href=\\\"/about\\\">О нас</a>\",\n  \"caption\": \"[атрибут=значение] и {текст}\"\n}\n```\n\n### Рядом, а не внутри\n\nПлюс ставит элементы друг за другом на одном уровне:\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Заголовок и абзац\",\n  \"input\": \"h1+p\",\n  \"key\": \"Tab\",\n  \"parts\": [\n    {\n      \"text\": \"h1\",\n      \"label\": \"заголовок\"\n    },\n    {\n      \"text\": \"+\",\n      \"label\": \"рядом\"\n    },\n    {\n      \"text\": \"p\",\n      \"label\": \"абзац\"\n    }\n  ],\n  \"output\": \"<h1></h1>\\n<p></p>\",\n  \"caption\": \"+ — следующий элемент того же уровня\"\n}\n```\n\n### Нумерация\n\nЗнак `$` при повторе заменяется номером: 1, 2, 3…\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Пронумерованные классы\",\n  \"input\": \"ul>li.item$*3\",\n  \"key\": \"Tab\",\n  \"parts\": [\n    {\n      \"text\": \"ul\",\n      \"label\": \"список\"\n    },\n    {\n      \"text\": \">\",\n      \"label\": \"внутрь\"\n    },\n    {\n      \"text\": \"li\",\n      \"label\": \"пункт\"\n    },\n    {\n      \"text\": \".item$\",\n      \"label\": \"класс с номером\"\n    },\n    {\n      \"text\": \"*3\",\n      \"label\": \"три раза\"\n    }\n  ],\n  \"output\": \"<ul>\\n  <li class=\\\"item1\\\"></li>\\n  <li class=\\\"item2\\\"></li>\\n  <li class=\\\"item3\\\"></li>\\n</ul>\",\n  \"caption\": \"$ превращается в номер повтора\"\n}\n```\n\n### Всё вместе\n\nПравила комбинируются. Целое меню навигации — одна строка:\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Меню одной строкой\",\n  \"input\": \"nav>ul>li*3>a\",\n  \"key\": \"Tab\",\n  \"parts\": [\n    {\n      \"text\": \"nav\",\n      \"label\": \"навигация\"\n    },\n    {\n      \"text\": \">\",\n      \"label\": \"внутрь\"\n    },\n    {\n      \"text\": \"ul\",\n      \"label\": \"список\"\n    },\n    {\n      \"text\": \">\",\n      \"label\": \"внутрь\"\n    },\n    {\n      \"text\": \"li\",\n      \"label\": \"пункт\"\n    },\n    {\n      \"text\": \"*3\",\n      \"label\": \"три раза\"\n    },\n    {\n      \"text\": \">\",\n      \"label\": \"внутрь\"\n    },\n    {\n      \"text\": \"a\",\n      \"label\": \"ссылка\"\n    }\n  ],\n  \"output\": \"<nav>\\n  <ul>\\n    <li><a href=\\\"\\\"></a></li>\\n    <li><a href=\\\"\\\"></a></li>\\n    <li><a href=\\\"\\\"></a></li>\\n  </ul>\\n</nav>\",\n  \"caption\": \"Курсор встал в первый href — впишите адрес и жмите Tab к следующему месту\"\n}\n```\n\nШпаргалка: `>` — внутрь, `+` — рядом, `*N` — повторить, `.` — класс, `#` — id, `[…]` — атрибуты, `{…}` — текст, `$` — номер.\n\n## А пока — песочница\n\nЕсли установить ничего нельзя (например, вы с телефона), учитесь прямо здесь: у каждого примера есть кнопка «Попробовать». Но для проектов в конце модулей редактор понадобится.\n\n```html\n<ul>\n  <li>Браузер с DevTools</li>\n  <li>VS Code</li>\n  <li>Live Server</li>\n</ul>\n```"
         },
         {
           "type": "activity",
@@ -6237,14 +6237,14 @@
       ]
     },
     {
-      "slug": "pervaya-stranica",
+      "slug": "first-page",
       "title": "Первая страница на своём компьютере",
       "summary": "Создаём папку проекта, файл index.html, открываем в браузере и учимся видеть изменения.",
       "durationMinutes": 10,
       "blocks": [
         {
           "type": "markdown",
-          "markdown": "## Шаг 1. Папка проекта\n\nСоздайте папку `my-site` там, где легко найти (например, в «Документах»). Один сайт — одна папка: в ней будут все его файлы.\n\n## Шаг 2. Файл index.html\n\nВ VS Code: **File → Open Folder** → выберите `my-site`. Затем **New File** → назовите `index.html`. Важно, чтобы расширение было именно `.html`, а не `.html.txt`: в Windows включите показ расширений файлов в проводнике.\n\n## Шаг 3. Код\n\nНапечатайте `!` и Tab (или скопируйте код ниже):\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Каркас за одно нажатие\",\n  \"scenes\": [\n    {\n      \"input\": \"!\",\n      \"key\": \"Tab\",\n      \"output\": \"<!DOCTYPE html>\\n<html lang=\\\"en\\\">\\n<head>\\n  <meta charset=\\\"UTF-8\\\">\\n  <meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1.0\\\">\\n  <title>Document</title>\\n</head>\\n<body>\\n  \\n</body>\\n</html>\",\n      \"caption\": \"! + Tab — каркас документа. Поменяйте lang на ru и title на свой\"\n    }\n  ]\n}\n```\n\n```html\n<!doctype html>\n<html lang=\"ru\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Мой первый сайт</title>\n</head>\n<body>\n  <h1>Привет, мир!</h1>\n  <p>Эту страницу я сделал сам.</p>\n</body>\n</html>\n```\n\nКаждую строку мы подробно разберём в следующих уроках — пока просто сохраните файл: **Ctrl+S** (на Mac — ⌘S).\n\n## Шаг 4. Открыть в браузере\n\nДважды щёлкните `index.html` в проводнике — файл откроется в браузере. В адресной строке будет что-то вроде `file:///C:/Users/…/my-site/index.html`: страница открыта прямо с диска.\n\nС Live Server: правой кнопкой по файлу в VS Code → **Open with Live Server**. Адрес будет `http://127.0.0.1:5500`, и страница обновится сама после сохранения.\n\n## Цикл работы\n\nИзменили код → сохранили → посмотрели в браузере (F5, если без Live Server). Так вы будете работать всегда.\n\n## Если что-то не так\n\n- Видите текст с тегами вместо страницы — файл сохранён как `.txt`.\n- Вместо русских букв «кракозябры» — проверьте `<meta charset=\"utf-8\">` и кодировку файла (в VS Code внизу справа должно быть UTF-8).\n- Изменения не видны — забыли сохранить или обновить страницу."
+          "markdown": "## Шаг 1. Папка проекта\n\nСоздайте папку `my-site` там, где легко найти (например, в «Документах»). Один сайт — одна папка: в ней будут все его файлы.\n\n## Шаг 2. Файл index.html\n\nВ VS Code: **File → Open Folder** → выберите `my-site`. Затем **New File** → назовите `index.html`. Важно, чтобы расширение было именно `.html`, а не `.html.txt`: в Windows включите показ расширений файлов в проводнике.\n\n## Шаг 3. Код\n\nНапечатайте `!` и Tab (или скопируйте код ниже):\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Каркас за одно нажатие\",\n  \"input\": \"!\",\n  \"key\": \"Tab\",\n  \"parts\": [\n    {\n      \"text\": \"!\",\n      \"label\": \"каркас HTML-документа\"\n    }\n  ],\n  \"output\": \"<!DOCTYPE html>\\n<html lang=\\\"en\\\">\\n<head>\\n  <meta charset=\\\"UTF-8\\\">\\n  <meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1.0\\\">\\n  <title>Document</title>\\n</head>\\n<body>\\n  \\n</body>\\n</html>\",\n  \"caption\": \"Поменяйте lang на ru и Document на своё название\"\n}\n```\n\n```html\n<!doctype html>\n<html lang=\"ru\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Мой первый сайт</title>\n</head>\n<body>\n  <h1>Привет, мир!</h1>\n  <p>Эту страницу я сделал сам.</p>\n</body>\n</html>\n```\n\nКаждую строку мы подробно разберём в следующих уроках — пока просто сохраните файл: **Ctrl+S** (на Mac — ⌘S).\n\n## Шаг 4. Открыть в браузере\n\nДважды щёлкните `index.html` в проводнике — файл откроется в браузере. В адресной строке будет что-то вроде `file:///C:/Users/…/my-site/index.html`: страница открыта прямо с диска.\n\nС Live Server: правой кнопкой по файлу в VS Code → **Open with Live Server**. Адрес будет `http://127.0.0.1:5500`, и страница обновится сама после сохранения.\n\n## Цикл работы\n\nИзменили код → сохранили → посмотрели в браузере (F5, если без Live Server). Так вы будете работать всегда.\n\n## Если что-то не так\n\n- Видите текст с тегами вместо страницы — файл сохранён как `.txt`.\n- Вместо русских букв «кракозябры» — проверьте `<meta charset=\"utf-8\">` и кодировку файла (в VS Code внизу справа должно быть UTF-8).\n- Изменения не видны — забыли сохранить или обновить страницу."
         },
         {
           "type": "activity",
@@ -6261,7 +6261,7 @@
       ]
     },
     {
-      "slug": "kak-uchitsya",
+      "slug": "how-to-learn",
       "title": "Как учиться и где искать ответы",
       "summary": "MDN, инструменты разработчика, валидатор и правильные вопросы: как не застревать.",
       "durationMinutes": 8,
@@ -6285,7 +6285,7 @@
       ]
     },
     {
-      "slug": "chto-takoe-html",
+      "slug": "what-is-html",
       "title": "Что такое HTML",
       "summary": "Как браузер превращает текст с тегами в страницу. Теги, элементы и атрибуты.",
       "durationMinutes": 9,
@@ -6315,7 +6315,7 @@
       ]
     },
     {
-      "slug": "karkas-dokumenta",
+      "slug": "document-skeleton",
       "title": "Каркас HTML-документа",
       "summary": "Doctype, html, head и body: минимальный корректный документ, с которого начинается любая страница.",
       "durationMinutes": 10,
@@ -6345,7 +6345,7 @@
       ]
     },
     {
-      "slug": "kak-brauzer-chitaet-html",
+      "slug": "how-browsers-read-html",
       "title": "Как браузер читает HTML",
       "summary": "DOM, исправление ошибок, комментарии и инструменты разработчика: как увидеть страницу глазами браузера.",
       "durationMinutes": 11,
@@ -6375,7 +6375,7 @@
       ]
     },
     {
-      "slug": "zagolovki-i-abzacy",
+      "slug": "headings-and-paragraphs",
       "title": "Заголовки и абзацы",
       "summary": "h1–h6 и p: иерархия текста, понятная людям, поисковикам и экранным читалкам.",
       "durationMinutes": 9,
@@ -6405,7 +6405,7 @@
       ]
     },
     {
-      "slug": "probely-i-specsimvoly",
+      "slug": "whitespace-and-entities",
       "title": "Пробелы, переносы и спецсимволы",
       "summary": "Как браузер обращается с пробелами, когда нужны br, wbr и hr, и как вставить символы <, &, неразрывный пробел и ©.",
       "durationMinutes": 10,
@@ -6435,7 +6435,7 @@
       ]
     },
     {
-      "slug": "globalnye-atributy",
+      "slug": "global-attributes",
       "title": "Глобальные атрибуты",
       "summary": "id, class, title, lang, dir, hidden, data-* и другие атрибуты, которые есть у любого элемента.",
       "durationMinutes": 11,
@@ -6465,7 +6465,7 @@
       ]
     },
     {
-      "slug": "blochnye-i-strochnye",
+      "slug": "block-and-inline",
       "title": "Блочные и строчные элементы: div и span",
       "summary": "Почему одни элементы встают с новой строки, а другие — нет, и зачем нужны «пустые» div и span.",
       "durationMinutes": 10,
@@ -6489,7 +6489,7 @@
       ]
     },
     {
-      "slug": "vydelenie-teksta",
+      "slug": "text-emphasis",
       "title": "Выделение текста по смыслу",
       "summary": "strong, em, b, i, u, s, mark и small: восемь способов выделить текст, и у каждого свой смысл.",
       "durationMinutes": 10,
@@ -6519,7 +6519,7 @@
       ]
     },
     {
-      "slug": "strochnaya-semantika",
+      "slug": "inline-semantics",
       "title": "Строчная семантика",
       "summary": "abbr, dfn, time, data, sub, sup, ins, del и span: теги, которые объясняют машинам смысл слов.",
       "durationMinutes": 11,
@@ -6549,7 +6549,7 @@
       ]
     },
     {
-      "slug": "kod-v-tekste",
+      "slug": "code-in-text",
       "title": "Код, клавиши и вывод программ",
       "summary": "code, pre, kbd, samp и var: как показывать код и технический текст.",
       "durationMinutes": 9,
@@ -6573,7 +6573,7 @@
       ]
     },
     {
-      "slug": "citaty-i-adresa",
+      "slug": "quotes-and-addresses",
       "title": "Цитаты, подписи и адреса",
       "summary": "blockquote, q, cite, figure, figcaption и address: цитаты с источником и контактная информация.",
       "durationMinutes": 10,
@@ -6603,7 +6603,7 @@
       ]
     },
     {
-      "slug": "spiski",
+      "slug": "lists",
       "title": "Списки",
       "summary": "ul, ol и li: перечисления, шаги, вложенные списки, нумерация с любого числа и в обратном порядке.",
       "durationMinutes": 10,
@@ -6633,7 +6633,7 @@
       ]
     },
     {
-      "slug": "spiski-opredelenij",
+      "slug": "description-lists",
       "title": "Списки определений",
       "summary": "dl, dt и dd: словари, FAQ, характеристики товара и пары «название — значение».",
       "durationMinutes": 8,
@@ -6657,7 +6657,7 @@
       ]
     },
     {
-      "slug": "yazyki-i-napravlenie",
+      "slug": "language-and-direction",
       "title": "Языки, направление текста и ruby",
       "summary": "lang, dir, bdi, bdo и ruby: текст на разных языках, справа налево и подписи произношения.",
       "durationMinutes": 9,
@@ -6681,7 +6681,7 @@
       ]
     },
     {
-      "slug": "mini-proekt-recept",
+      "slug": "project-recipe",
       "title": "Мини-проект: страница рецепта",
       "summary": "Соберите полноценную текстовую страницу: заголовки, списки, выделения, время, термины и характеристики.",
       "durationMinutes": 20,
@@ -6699,7 +6699,7 @@
       ]
     },
     {
-      "slug": "ssylki",
+      "slug": "links",
       "title": "Ссылки",
       "summary": "Тег a и атрибут href: ссылки на сайты, страницы, почту, телефон и места на странице.",
       "durationMinutes": 11,
@@ -6735,7 +6735,7 @@
       ]
     },
     {
-      "slug": "puti-k-fajlam",
+      "slug": "file-paths",
       "title": "Пути к файлам и структура сайта",
       "summary": "Абсолютные и относительные адреса, ./ и ../, корень сайта и index.html.",
       "durationMinutes": 11,
@@ -6765,7 +6765,7 @@
       ]
     },
     {
-      "slug": "vozmozhnosti-ssylok",
+      "slug": "link-features",
       "title": "Возможности ссылок",
       "summary": "download, rel, hreflang и type: скачивание файлов и подсказки браузеру и поисковикам.",
       "durationMinutes": 9,
@@ -6795,7 +6795,7 @@
       ]
     },
     {
-      "slug": "izobrazheniya",
+      "slug": "images",
       "title": "Изображения",
       "summary": "img, src, alt, width и height: картинка, которую поймут все, даже если она не загрузилась.",
       "durationMinutes": 10,
@@ -6825,7 +6825,7 @@
       ]
     },
     {
-      "slug": "formaty-izobrazhenij",
+      "slug": "image-formats",
       "title": "Форматы изображений",
       "summary": "JPEG, PNG, GIF, WebP, AVIF и SVG: какой формат выбрать, чтобы было чётко и быстро.",
       "durationMinutes": 9,
@@ -6855,7 +6855,7 @@
       ]
     },
     {
-      "slug": "adaptivnye-izobrazheniya",
+      "slug": "responsive-images",
       "title": "Адаптивные изображения",
       "summary": "srcset, sizes, picture и loading: каждому экрану — картинка подходящего размера и формата.",
       "durationMinutes": 13,
@@ -6915,7 +6915,7 @@
       ]
     },
     {
-      "slug": "audio-i-subtitry",
+      "slug": "audio-and-captions",
       "title": "Аудио и субтитры",
       "summary": "audio, track и формат WebVTT: звук на странице и субтитры для видео.",
       "durationMinutes": 10,
@@ -6939,7 +6939,7 @@
       ]
     },
     {
-      "slug": "vstraivanie-iframe",
+      "slug": "iframe-embeds",
       "title": "Встраивание: iframe",
       "summary": "iframe, title, sandbox, allow и loading: карты, видео с YouTube и чужие страницы внутри вашей — безопасно.",
       "durationMinutes": 11,
@@ -6969,7 +6969,7 @@
       ]
     },
     {
-      "slug": "svg-i-mathml",
+      "slug": "svg-and-mathml",
       "title": "SVG и формулы в HTML",
       "summary": "Встроенный SVG: фигуры, viewBox и доступные иконки. MathML для математических формул.",
       "durationMinutes": 11,
@@ -6999,7 +6999,7 @@
       ]
     },
     {
-      "slug": "elementy-dlya-skriptov",
+      "slug": "script-elements",
       "title": "script, noscript, template и canvas",
       "summary": "Элементы, через которые HTML работает с JavaScript: подключение скриптов, шаблоны и холст для рисования.",
       "durationMinutes": 10,
@@ -7029,7 +7029,7 @@
       ]
     },
     {
-      "slug": "karty-izobrazhenij",
+      "slug": "image-maps",
       "title": "Карты-изображения и object",
       "summary": "map и area: кликабельные области на картинке. object: встраивание PDF и других документов.",
       "durationMinutes": 9,
@@ -7053,7 +7053,7 @@
       ]
     },
     {
-      "slug": "mini-proekt-galereya",
+      "slug": "project-gallery",
       "title": "Мини-проект: фотогалерея",
       "summary": "Галерея путешествия: адаптивные картинки с подписями, ленивая загрузка, видео с субтитрами и иконки SVG.",
       "durationMinutes": 25,
@@ -7071,7 +7071,7 @@
       ]
     },
     {
-      "slug": "tablicy",
+      "slug": "tables",
       "title": "Таблицы",
       "summary": "table, tr, th, td и caption: данные в строках и столбцах.",
       "durationMinutes": 11,
@@ -7101,7 +7101,7 @@
       ]
     },
     {
-      "slug": "slozhnye-tablicy",
+      "slug": "complex-tables",
       "title": "Сложные таблицы",
       "summary": "thead, tbody, tfoot, scope, colspan, rowspan, headers и colgroup: таблицы, понятные и людям, и читалкам.",
       "durationMinutes": 12,
@@ -7131,7 +7131,7 @@
       ]
     },
     {
-      "slug": "kak-rabotayut-formy",
+      "slug": "how-forms-work",
       "title": "Как работают формы",
       "summary": "form, action, method и name: что происходит, когда человек нажимает «Отправить».",
       "durationMinutes": 12,
@@ -7161,7 +7161,7 @@
       ]
     },
     {
-      "slug": "polya-i-podpisi",
+      "slug": "fields-and-labels",
       "title": "Поля и подписи",
       "summary": "input и label: каждое поле с подписью, placeholder как подсказка, а не замена.",
       "durationMinutes": 10,
@@ -7185,7 +7185,7 @@
       ]
     },
     {
-      "slug": "tipy-input",
+      "slug": "input-types",
       "title": "Типы полей input",
       "summary": "text, email, tel, url, password, number, range, date, time, color, search, hidden: правильный тип — удобная клавиатура и проверка бесплатно.",
       "durationMinutes": 13,
@@ -7215,7 +7215,7 @@
       ]
     },
     {
-      "slug": "flazhki-i-pereklyuchateli",
+      "slug": "checkboxes-and-radios",
       "title": "Флажки и переключатели",
       "summary": "checkbox, radio, fieldset и legend: выбор одного или нескольких вариантов.",
       "durationMinutes": 10,
@@ -7245,7 +7245,7 @@
       ]
     },
     {
-      "slug": "spiski-vybora",
+      "slug": "select-lists",
       "title": "Списки выбора",
       "summary": "select, option, optgroup, multiple и datalist: выпадающие списки и подсказки при вводе.",
       "durationMinutes": 10,
@@ -7269,7 +7269,7 @@
       ]
     },
     {
-      "slug": "textarea-i-knopki",
+      "slug": "textarea-and-buttons",
       "title": "Многострочный текст и кнопки",
       "summary": "textarea, button и его типы: отправка, сброс и кнопки для скриптов.",
       "durationMinutes": 10,
@@ -7293,7 +7293,7 @@
       ]
     },
     {
-      "slug": "zagruzka-fajlov",
+      "slug": "file-uploads",
       "title": "Загрузка файлов",
       "summary": "input type=file, accept, multiple, capture и enctype: как принять от человека фото и документы.",
       "durationMinutes": 9,
@@ -7317,7 +7317,7 @@
       ]
     },
     {
-      "slug": "validaciya-form",
+      "slug": "form-validation",
       "title": "Встроенная проверка форм",
       "summary": "required, minlength, maxlength, min, max, step, pattern и novalidate: браузер проверит форму без JavaScript.",
       "durationMinutes": 13,
@@ -7347,7 +7347,7 @@
       ]
     },
     {
-      "slug": "udobnye-formy",
+      "slug": "usable-forms",
       "title": "Удобные формы",
       "summary": "autocomplete, inputmode, enterkeyhint, autofocus, disabled и readonly: формы, которые заполняются за секунды.",
       "durationMinutes": 11,
@@ -7401,7 +7401,7 @@
       ]
     },
     {
-      "slug": "prodvinutye-formy",
+      "slug": "advanced-forms",
       "title": "Продвинутые возможности форм",
       "summary": "Атрибут form, formtarget, fieldset disabled, input image, dirname и несколько форм на странице.",
       "durationMinutes": 11,
@@ -7425,7 +7425,7 @@
       ]
     },
     {
-      "slug": "mini-proekt-registraciya",
+      "slug": "project-signup",
       "title": "Мини-проект: форма регистрации",
       "summary": "Регистрация на онлайн-мероприятие: все типы полей, группы, проверка, автозаполнение и понятные подсказки.",
       "durationMinutes": 25,
@@ -7443,7 +7443,7 @@
       ]
     },
     {
-      "slug": "semantika",
+      "slug": "semantics",
       "title": "Семантическая структура страницы",
       "summary": "header, nav, main и footer: каркас страницы, понятный людям, читалкам и поисковикам.",
       "durationMinutes": 11,
@@ -7473,7 +7473,7 @@
       ]
     },
     {
-      "slug": "razdely-stranicy",
+      "slug": "page-sections",
       "title": "article, section, aside и search",
       "summary": "Как делить содержимое на разделы: когда article, когда section, когда aside, а когда просто div.",
       "durationMinutes": 12,
@@ -7527,7 +7527,7 @@
       ]
     },
     {
-      "slug": "dialog-i-popover",
+      "slug": "dialog-and-popover",
       "title": "Диалоги и всплывающие окна",
       "summary": "dialog, popover и inert: модальные окна, меню и подсказки, которые браузер делает доступными сам.",
       "durationMinutes": 13,
@@ -7557,7 +7557,7 @@
       ]
     },
     {
-      "slug": "proekt-vizitka",
+      "slug": "project-business-card",
       "title": "Проект 1: страница-визитка",
       "summary": "Соберите свою первую настоящую страницу из всего, что изучили в основах.",
       "durationMinutes": 30,
@@ -7575,7 +7575,7 @@
       ]
     },
     {
-      "slug": "metadannye",
+      "slug": "metadata",
       "title": "Метаданные страницы",
       "summary": "title, description, viewport, charset и robots: что страница рассказывает о себе браузеру и поисковикам.",
       "durationMinutes": 11,
@@ -7605,7 +7605,7 @@
       ]
     },
     {
-      "slug": "socseti-i-ikonki",
+      "slug": "social-and-icons",
       "title": "Превью в соцсетях и иконки",
       "summary": "Open Graph, favicon, apple-touch-icon и web manifest: как сайт выглядит в мессенджерах, вкладках и на главном экране.",
       "durationMinutes": 10,
@@ -7635,7 +7635,7 @@
       ]
     },
     {
-      "slug": "podklyuchenie-resursov",
+      "slug": "linking-resources",
       "title": "Подключение стилей, скриптов и шрифтов",
       "summary": "link rel=stylesheet, preload, preconnect, script defer и async: порядок загрузки, от которого зависит скорость сайта.",
       "durationMinutes": 12,
@@ -7689,7 +7689,7 @@
       ]
     },
     {
-      "slug": "bezopasnost-v-html",
+      "slug": "security",
       "title": "Безопасность в HTML",
       "summary": "CSP, integrity, crossorigin, rel=noopener, sandbox и почему нельзя вставлять чужой HTML как есть.",
       "durationMinutes": 11,
@@ -7719,7 +7719,7 @@
       ]
     },
     {
-      "slug": "strukturirovannye-dannye",
+      "slug": "structured-data",
       "title": "Структурированные данные",
       "summary": "JSON-LD и микроданные: как объяснить поисковикам, что на странице курс, рецепт, товар или статья.",
       "durationMinutes": 10,
@@ -7743,7 +7743,7 @@
       ]
     },
     {
-      "slug": "proekt-lending",
+      "slug": "project-landing",
       "title": "Проект 2: лендинг курса",
       "summary": "Одностраничный сайт для онлайн-курса: оффер, программа, видео, тарифы, FAQ и форма записи.",
       "durationMinutes": 40,
@@ -7761,7 +7761,7 @@
       ]
     },
     {
-      "slug": "html-i-javascript",
+      "slug": "html-and-javascript",
       "title": "HTML и JavaScript: события и DOM",
       "summary": "Как HTML связан со скриптами: атрибуты событий, id и data-*, почему addEventListener лучше onclick.",
       "durationMinutes": 11,
@@ -7785,7 +7785,7 @@
       ]
     },
     {
-      "slug": "redaktirovanie-i-peretaskivanie",
+      "slug": "editing-and-drag-and-drop",
       "title": "Редактирование и перетаскивание",
       "summary": "contenteditable, spellcheck, draggable, autocapitalize и hidden=until-found: встроенные возможности браузера.",
       "durationMinutes": 9,
@@ -7809,7 +7809,7 @@
       ]
     },
     {
-      "slug": "svoi-elementy",
+      "slug": "custom-elements",
       "title": "Свои элементы и Shadow DOM",
       "summary": "Custom elements, template, slot и декларативный Shadow DOM: как создают переиспользуемые компоненты на чистом HTML.",
       "durationMinutes": 11,
@@ -7833,7 +7833,7 @@
       ]
     },
     {
-      "slug": "dostupnost-osnovy",
+      "slug": "accessibility-basics",
       "title": "Доступность: основы",
       "summary": "Кто пользуется сайтом иначе, чем вы, и как правильный HTML решает большинство проблем бесплатно.",
       "durationMinutes": 12,
@@ -7863,7 +7863,7 @@
       ]
     },
     {
-      "slug": "klaviatura-i-fokus",
+      "slug": "keyboard-and-focus",
       "title": "Клавиатура и фокус",
       "summary": "Порядок табуляции, tabindex, видимый фокус и ловушки: сайт, которым можно пользоваться без мыши.",
       "durationMinutes": 11,
@@ -7923,7 +7923,7 @@
       ]
     },
     {
-      "slug": "proekt-statya",
+      "slug": "project-article",
       "title": "Проект 3: статья для блога",
       "summary": "Длинная статья с оглавлением, медиа, кодом, таблицей, цитатами и метаданными.",
       "durationMinutes": 35,
@@ -7941,7 +7941,7 @@
       ]
     },
     {
-      "slug": "kachestvo-koda",
+      "slug": "code-quality",
       "title": "Проверка и качество кода",
       "summary": "Валидатор W3C, DevTools, Lighthouse и самые частые ошибки начинающих.",
       "durationMinutes": 10,
@@ -7965,7 +7965,7 @@
       ]
     },
     {
-      "slug": "ustarevshie-elementy",
+      "slug": "obsolete-elements",
       "title": "Устаревшие элементы и атрибуты",
       "summary": "font, center, marquee, frameset, align, bgcolor и другие: что встретится в старом коде и чем это заменить.",
       "durationMinutes": 8,
@@ -7989,7 +7989,7 @@
       ]
     },
     {
-      "slug": "novinki-html",
+      "slug": "whats-new",
       "title": "Новинки HTML 2024–2025",
       "summary": "Кнопки-команды commandfor, closedby у диалогов, настраиваемый select, прозрачность в выборе цвета, headingoffset и writingsuggestions.",
       "durationMinutes": 13,
@@ -8019,7 +8019,7 @@
       ]
     },
     {
-      "slug": "spravochnik-elementov",
+      "slug": "element-reference",
       "title": "Справочник: все элементы HTML",
       "summary": "Каждый актуальный элемент HTML в одном месте, сгруппированный по назначению, со ссылкой на урок.",
       "durationMinutes": 15,
@@ -8043,7 +8043,7 @@
       ]
     },
     {
-      "slug": "finalnyj-proekt",
+      "slug": "final-project",
       "title": "Финальный проект: сайт-портфолио",
       "summary": "Многостраничный сайт из трёх страниц с общей навигацией, формами, медиа и полной проверкой качества.",
       "durationMinutes": 45,

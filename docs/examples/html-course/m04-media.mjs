@@ -6,7 +6,7 @@ export default function media(c) {
   const { html, code, mdn, lesson, single, multi, short } = c;
 
   lesson({
-    slug: "izobrazheniya", title: "Изображения", minutes: 10,
+    slug: "images", title: "Изображения", minutes: 10,
     summary: "img, src, alt, width и height: картинка, которую поймут все, даже если она не загрузилась.",
     skill: ["html-images", "Изображения", "Вставлять картинки с осмысленным alt, размерами и подписью."],
     body: [
@@ -48,7 +48,7 @@ export default function media(c) {
   });
 
   lesson({
-    slug: "formaty-izobrazhenij", title: "Форматы изображений", minutes: 9,
+    slug: "image-formats", title: "Форматы изображений", minutes: 9,
     summary: "JPEG, PNG, GIF, WebP, AVIF и SVG: какой формат выбрать, чтобы было чётко и быстро.",
     skill: ["html-image-formats", "Форматы изображений", "Выбирать формат изображения по содержимому: фото, графика, прозрачность, анимация, векторы."],
     body: [
@@ -85,7 +85,7 @@ export default function media(c) {
   });
 
   lesson({
-    slug: "adaptivnye-izobrazheniya", title: "Адаптивные изображения", minutes: 13,
+    slug: "responsive-images", title: "Адаптивные изображения", minutes: 13,
     summary: "srcset, sizes, picture и loading: каждому экрану — картинка подходящего размера и формата.",
     skill: ["html-responsive-images", "Адаптивные изображения", "Подключать несколько размеров и форматов картинки через srcset, sizes и picture и откладывать загрузку."],
     body: [
@@ -183,7 +183,7 @@ export default function media(c) {
   });
 
   lesson({
-    slug: "audio-i-subtitry", title: "Аудио и субтитры", minutes: 10,
+    slug: "audio-and-captions", title: "Аудио и субтитры", minutes: 10,
     summary: "audio, track и формат WebVTT: звук на странице и субтитры для видео.",
     skill: ["html-audio-tracks", "Аудио и субтитры", "Встраивать аудио и добавлять к видео субтитры и подписи через track и WebVTT."],
     body: [
@@ -226,7 +226,7 @@ export default function media(c) {
   });
 
   lesson({
-    slug: "vstraivanie-iframe", title: "Встраивание: iframe", minutes: 11,
+    slug: "iframe-embeds", title: "Встраивание: iframe", minutes: 11,
     summary: "iframe, title, sandbox, allow и loading: карты, видео с YouTube и чужие страницы внутри вашей — безопасно.",
     skill: ["html-iframe", "Встраивание через iframe", "Встраивать сторонние страницы через iframe с title, ограничениями sandbox и allow и ленивой загрузкой."],
     body: [
@@ -274,7 +274,7 @@ export default function media(c) {
   });
 
   lesson({
-    slug: "svg-i-mathml", title: "SVG и формулы в HTML", minutes: 11,
+    slug: "svg-and-mathml", title: "SVG и формулы в HTML", minutes: 11,
     summary: "Встроенный SVG: фигуры, viewBox и доступные иконки. MathML для математических формул.",
     skill: ["html-svg-mathml", "Встроенный SVG и MathML", "Вставлять векторную графику прямо в HTML, делать её доступной и размечать формулы MathML."],
     body: [
@@ -333,7 +333,7 @@ export default function media(c) {
   });
 
   lesson({
-    slug: "elementy-dlya-skriptov", title: "script, noscript, template и canvas", minutes: 10,
+    slug: "script-elements", title: "script, noscript, template и canvas", minutes: 10,
     summary: "Элементы, через которые HTML работает с JavaScript: подключение скриптов, шаблоны и холст для рисования.",
     skill: ["html-scripting", "Элементы для скриптов", "Подключать скрипты, давать запасной контент и использовать template и canvas по назначению."],
     body: [
