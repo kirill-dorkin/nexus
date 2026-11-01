@@ -45,7 +45,7 @@ export function CourseCard({
           {lessons.slice(0, featured ? 4 : 3).map((lesson, i) => (
             <li key={lesson.slug}>
               <span>{i + 1}</span>
-              {lesson.title}
+              <span className={styles.lessonTitle}>{lesson.title}</span>
             </li>
           ))}
         </ol>

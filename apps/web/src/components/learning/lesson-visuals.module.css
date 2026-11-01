@@ -105,58 +105,66 @@
   font-size: 0.85rem;
 }
 
-/* Flow */
+/* Flow: a vertical timeline — never squeezed, never hyphenated. */
 .flow {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
-  gap: 1.5rem;
+  gap: 0;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.flow li {
+.frame .flow li {
   position: relative;
   display: grid;
-  align-content: start;
-  gap: 0.35rem;
-  padding: 0.9rem;
-  border: 1px solid color-mix(in srgb, var(--c) 40%, transparent);
-  border-radius: 0.9rem;
-  background: color-mix(in srgb, var(--c) 8%, transparent);
-  animation: flowPulse 6s ease-in-out infinite;
-  animation-delay: calc(var(--i) * 0.8s);
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0 0 1.1rem;
 }
-.flow strong {
-  color: var(--c);
-  font-size: 0.95rem;
+.flow li:last-child {
+  padding-bottom: 0;
 }
-.flow li > span:not(.flowIndex) {
-  color: var(--text-secondary);
-  font-size: 0.82rem;
-  line-height: 1.45;
+.flow li:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 2.1rem;
+  bottom: 0.2rem;
+  left: calc(1rem - 1px);
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(var(--c), color-mix(in srgb, var(--c) 15%, transparent));
 }
 .flowIndex {
   display: inline-grid;
   place-items: center;
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   background: var(--c);
   color: #0a0c04;
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   font-weight: 800;
+  animation: flowPulse 6s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.8s);
 }
-.flowArrow {
-  position: absolute;
-  top: 50%;
-  right: -1.35rem;
-  color: var(--text-disabled);
-  transform: translateY(-50%);
+.flowBody {
+  display: grid;
+  gap: 0.15rem;
+  padding-top: 0.2rem;
+}
+.flow strong {
+  color: var(--c);
+  font-size: 1rem;
+  line-height: 1.35;
+}
+.flowBody > span {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 @keyframes flowPulse {
-  0%, 20%, 100% { box-shadow: none; }
-  8% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 35%, transparent); }
+  0%, 20%, 100% { box-shadow: 0 0 0 0 transparent; }
+  8% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--c) 30%, transparent); }
 }
 
 /* DOM tree */
@@ -228,65 +236,71 @@
   gap: 0.9rem;
 }
 .stages {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem;
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
   margin: 0;
-  padding: 0;
+  padding: 3px;
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 3%);
   list-style: none;
   counter-reset: stage;
 }
-.stages li {
-  display: inline-flex;
+.frame .stages li {
+  display: flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.3rem 0.7rem 0.3rem 0.35rem;
-  border: 1px solid var(--border-default);
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0.4rem 0.6rem;
   border-radius: 999px;
   color: var(--text-secondary);
   font-size: 0.8rem;
   font-weight: 650;
+  line-height: 1.2;
+  white-space: nowrap;
   counter-increment: stage;
-  transition: color 200ms ease, border-color 200ms ease, background 200ms ease;
+  transition: color 200ms ease, background 200ms ease;
 }
 .stages li::before {
   content: counter(stage);
   display: inline-grid;
+  flex: none;
   place-items: center;
-  width: 1.3rem;
-  height: 1.3rem;
+  width: 1.25rem;
+  height: 1.25rem;
   border-radius: 50%;
   background: rgb(255 255 255 / 8%);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 800;
-}
-.stages li[data-state="active"] {
-  border-color: color-mix(in srgb, var(--accent-action) 60%, transparent);
-  background: color-mix(in srgb, var(--accent-action) 12%, transparent);
-  color: var(--text-primary);
-}
-.stages li[data-state="active"]::before,
-.stages li[data-state="done"]::before {
-  background: var(--accent-action);
-  color: #0a0c04;
 }
 .stages li[data-state="done"] {
   color: var(--text-primary);
 }
-.stages li:not(:last-child)::after {
-  content: "";
-  width: 0.9rem;
-  height: 1px;
-  margin-left: 0.35rem;
-  margin-right: -0.75rem;
-  background: var(--border-strong);
+.stages li[data-state="done"]::before {
+  background: color-mix(in srgb, var(--accent-action) 25%, transparent);
+  color: var(--text-accent);
+}
+.stages li[data-state="active"] {
+  background: var(--accent-action);
+  color: #0a0c04;
+}
+.stages li[data-state="active"]::before {
+  background: rgb(0 0 0 / 15%);
+  color: #0a0c04;
 }
 .stages .key {
   min-width: 0;
-  padding: 0.05rem 0.4rem;
+  padding: 0 0.35rem;
+  border-width: 1px;
   border-bottom-width: 2px;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
+}
+.stages li[data-state="active"] .key {
+  border-color: rgb(0 0 0 / 30%);
+  background: rgb(0 0 0 / 12%);
+  color: #0a0c04;
 }
 .stage {
   position: relative;
@@ -466,6 +480,14 @@
   justify-content: space-between;
   gap: 1rem;
 }
+.caption :global(code),
+.caption code {
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.35rem;
+  background: rgb(255 255 255 / 8%);
+  color: #bef264;
+  font: 600 0.88em var(--font-mono);
+}
 .caption {
   color: var(--text-primary);
   font-size: 0.92rem;
@@ -510,28 +532,15 @@
 }
 
 @media (max-width: 720px) {
-  .flow {
-    grid-auto-flow: row;
-    gap: 1.2rem;
-  }
-  .flowArrow {
-    top: auto;
-    right: auto;
-    bottom: -1.2rem;
-    left: 1rem;
-    transform: rotate(90deg);
-  }
   .dom {
     grid-template-columns: minmax(0, 1fr);
   }
-  .stages {
+  .frame .stages li {
     gap: 0.3rem;
+    padding: 0.4rem 0.25rem;
+    font-size: 0.74rem;
   }
-  .stages li {
-    padding-right: 0.55rem;
-    font-size: 0.75rem;
-  }
-  .stages li:not(:last-child)::after {
+  .stages .key {
     display: none;
   }
   .typingFooter {
@@ -545,7 +554,7 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .flow li,
+  .flowIndex,
   .caret,
   .expanded,
   .line,
@@ -568,8 +577,7 @@
   background: color-mix(in srgb, var(--c) 14%, transparent);
   color: var(--c);
 }
-.frame .parts li,
-.frame .stages li {
+.frame .parts li {
   margin: 0;
   line-height: 1.3;
 }
@@ -584,13 +592,6 @@
   border: 0;
   background: none;
   color: var(--c);
-}
-.frame .flow li,
-.frame .flow strong,
-.frame .flow span {
-  overflow-wrap: normal;
-  word-break: normal;
-  hyphens: auto;
 }
 /* The code area inside the demo window is flat: no border, no radius of its own. */
 .frame .window .editor {

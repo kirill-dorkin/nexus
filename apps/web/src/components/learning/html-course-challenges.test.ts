@@ -2,7 +2,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { parseChallenge, runChecks } from "./challenge";
-import { parseConcept, parseStory } from "./story";
+import { parseConcept, parseRecap, parseStory } from "./story";
 
 const manifest = JSON.parse(
   // Tests run from the repository root (see vitest.config.ts).
@@ -41,6 +41,10 @@ describe("HTML course story blocks", () => {
     expect(blocks("story").filter((b) => !parseStory(b.source)).map((b) => b.lesson)).toEqual([]);
     expect(blocks("concept").filter((b) => !parseConcept(b.source)).map((b) => b.lesson)).toEqual([]);
     expect(blocks("story").length).toBeGreaterThan(60);
+    // Every lesson opens with the story context, so it works on its own.
+    const recaps = blocks("recap");
+    expect(recaps.filter((b) => !parseRecap(b.source)).map((b) => b.lesson)).toEqual([]);
+    expect(manifest.lessons.filter((l) => !recaps.some((r) => r.lesson === l.slug)).map((l) => l.slug)).toEqual([]);
   });
 });
 

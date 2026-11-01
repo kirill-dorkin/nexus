@@ -4,6 +4,7 @@ import { writeFileSync } from "node:fs";
 import { createCourse } from "./lib.mjs";
 import challenges from "./challenges.mjs";
 import stories from "./stories/index.mjs";
+import recaps from "./stories/recaps.mjs";
 import start from "./m00-start.mjs";
 import basics from "./m01-basics.mjs";
 import text from "./m02-text.mjs";
@@ -37,14 +38,14 @@ const path = [
   quality, obsolete, newFeatures, referenceSheet, projectFinal // 11. Качество, новинки, справочник, финал
 ];
 
-const course = createCourse(challenges, stories);
+const course = createCourse(challenges, stories, recaps);
 for (const part of path) part(course);
 
 const manifest = course.manifest({
   slug: "html",
   title: "HTML с нуля: полный курс",
   description:
-    "Буквально с нуля до уверенного владения всем HTML: как устроен веб, первая страница на своём компьютере, текст, ссылки, медиа, таблицы, формы, семантика, метаданные, безопасность, связь с JavaScript, веб-компоненты и доступность. Короткие уроки, живые примеры, которые можно менять прямо в браузере, задания с мгновенной проверкой и семь проектов."
+    "Курс-история: вы с нуля делаете сайт для кофейни «Зерно». Хозяйка Марта приносит задачи, браузер Бро показывает, как он читает ваш код, наставница Ника подсказывает, а гость Лев проверяет сайт скринридером. По пути — весь HTML: каждый тег и атрибут с живым примером, задания с мгновенной проверкой и семь проектов."
 });
 const out = new URL("../html-track.manifest.json", import.meta.url);
 writeFileSync(out, JSON.stringify(manifest, null, 2) + "\n");

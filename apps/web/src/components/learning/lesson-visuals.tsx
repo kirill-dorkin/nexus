@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { ArrowCounterClockwise, ArrowRight, File, Folder, Pause, Play } from "@phosphor-icons/react/dist/ssr";
 import { highlight, type Token } from "./code-highlight";
+import { Rich } from "./story";
 import styles from "./lesson-visuals.module.css";
 import codeStyles from "./code.module.css";
 
@@ -132,9 +133,10 @@ function FlowDiagram({ steps }: { steps: FlowStep[] }) {
       {steps.map((step, i) => (
         <li key={i} style={{ "--i": i, "--c": PALETTE[i % PALETTE.length] } as CSSProperties}>
           <span className={styles.flowIndex} aria-hidden="true">{i + 1}</span>
-          <strong>{step.title}</strong>
-          {step.text ? <span>{step.text}</span> : null}
-          {i < steps.length - 1 ? <ArrowRight className={styles.flowArrow} size={20} aria-hidden="true" /> : null}
+          <span className={styles.flowBody}>
+            <strong>{step.title}</strong>
+            {step.text ? <span>{step.text}</span> : null}
+          </span>
         </li>
       ))}
     </ol>
@@ -410,7 +412,7 @@ function TypingDemo({ scene, file }: { scene: Scene; file: string }) {
       </div>
       {parts ? <AbbreviationParts parts={parts} typed={frame.typed} done={finished} /> : null}
       <div className={styles.typingFooter}>
-        <span className={styles.caption} data-shown={finished || undefined}>{scene.caption}</span>
+        <span className={styles.caption} data-shown={finished || undefined}>{scene.caption ? <Rich text={scene.caption} /> : null}</span>
         {reduced ? null : finished ? (
           <button type="button" className={styles.replay}
             onClick={() => { setIndex(0); setPaused(false); setRun((r) => r + 1); }}>

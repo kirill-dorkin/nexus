@@ -142,39 +142,90 @@ function StoryScene({ story }: { story: Story }) {
   );
 }
 
+/** What a card is about: a tag (`<p>`), an attribute (`href`) or a plain idea (Сервер). */
+export function conceptKind(name: string): "tag" | "attr" | "idea" {
+  if (name.startsWith("<")) return "tag";
+  if (/^[a-z][a-z0-9-]*(?:[=:*\s·]|$)/.test(name)) return "attr";
+  return "idea";
+}
+const KIND_LABEL = { tag: "Тег", attr: "Атрибут", idea: "Понятие" } as const;
+
 function ConceptCard({ concept }: { concept: Concept }) {
+  const kind = conceptKind(concept.name);
   return (
-    <section className={styles.concept} aria-label={`${concept.name}: ${concept.title}`}>
+    <section className={styles.concept} data-kind={kind} aria-label={`${concept.name}: ${concept.title}`}>
       <header className={styles.conceptHead}>
-        <code className={styles.tag}>{concept.name}</code>
-        <h3>{concept.title}</h3>
-      </header>
-      <dl className={styles.facts}>
-        <div><dt>Что это</dt><dd><Rich text={concept.what} /></dd></div>
-        <div><dt>Зачем</dt><dd><Rich text={concept.why} /></dd></div>
-      </dl>
-      {concept.how ? (
-        <div className={styles.how}>
-          <span className={styles.howLabel}>Как</span>
-          <div className={styles.howGrid} data-preview={concept.show ? "" : undefined}>
-            <CodeSnippet code={concept.how} language={concept.lang ?? "html"} />
-            {concept.show ? (
-              <div className={styles.preview}>
-                <span>Так это выглядит</span>
-                <iframe title={`Пример: ${concept.title}`} sandbox="" referrerPolicy="no-referrer" loading="lazy"
-                  srcDoc={concept.how} style={{ height: concept.show }} />
-              </div>
-            ) : null}
-          </div>
+        <span className={styles.kind}>{KIND_LABEL[kind]}</span>
+        <div className={styles.nameRow}>
+          {kind === "idea" ? <span className={styles.name}>{concept.name}</span> : <code className={styles.name}>{concept.name}</code>}
+          <h3 className={styles.conceptTitle}>{concept.title}</h3>
         </div>
-      ) : null}
-      {concept.bro ? (
-        <p className={styles.bro} style={{ "--c": CHARACTERS.bro.color } as CSSProperties}>
-          <Avatar who="bro" /><span><strong>Бро:</strong> <Rich text={concept.bro} /></span>
-        </p>
-      ) : null}
+      </header>
+      <dl className={styles.rows}>
+        <div className={styles.row} data-row="what"><dt>Что это</dt><dd><Rich text={concept.what} /></dd></div>
+        <div className={styles.row} data-row="why"><dt>Зачем</dt><dd><Rich text={concept.why} /></dd></div>
+        {concept.how ? (
+          <div className={styles.row} data-row="how">
+            <dt>Как</dt>
+            <dd>
+              <div className={styles.howGrid} data-preview={concept.show ? "" : undefined}>
+                <CodeSnippet code={concept.how} language={concept.lang ?? "html"} />
+                {concept.show ? (
+                  <div className={styles.preview}>
+                    <span>Так это выглядит</span>
+                    <iframe title={`Пример: ${concept.title}`} sandbox="" referrerPolicy="no-referrer" loading="lazy"
+                      srcDoc={concept.how} style={{ height: concept.show }} />
+                  </div>
+                ) : null}
+              </div>
+            </dd>
+          </div>
+        ) : null}
+        {concept.bro ? (
+          <div className={styles.row} data-row="bro" style={{ "--c": CHARACTERS.bro.color } as CSSProperties}>
+            <dt>Бро</dt>
+            <dd className={styles.broLine}><Avatar who="bro" /><span><Rich text={concept.bro} /></span></dd>
+          </div>
+        ) : null}
+      </dl>
     </section>
   );
+}
+
+type Recap = { now: string };
+export function parseRecap(source: string): Recap | null {
+  const v = json(source);
+  return v && str(v.now, 300) ? { now: v.now } : null;
+}
+const CAST: Who[] = ["marta", "bro", "nika", "lev"];
+
+/** Top-of-lesson story context, so a learner who lands mid-course knows who is who and where we are. */
+function RecapBanner({ recap }: { recap: Recap }) {
+  return (
+    <aside className={styles.recap} aria-label="Сюжет курса">
+      <div className={styles.recapTop}>
+        <span className={styles.cast} aria-hidden="true">{CAST.map((who) => <Avatar key={who} who={who} />)}</span>
+        <p className={styles.premise}>Курс-история: вы делаете сайт кофейни «Зерно»</p>
+      </div>
+      <p className={styles.now}><span>Сейчас</span> <Rich text={recap.now} /></p>
+      <details className={styles.who}>
+        <summary>Кто есть кто</summary>
+        <ul>
+          {(Object.keys(CHARACTERS) as Who[]).filter((w) => w !== "you").map((who) => (
+            <li key={who} style={{ "--c": CHARACTERS[who].color } as CSSProperties}>
+              <Avatar who={who} /><span><strong>{CHARACTERS[who].name}</strong> — {CHARACTERS[who].role}</span>
+            </li>
+          ))}
+        </ul>
+        <p>Каждый урок — отдельная задача для сайта. Начать можно с любого: всё нужное объясняется прямо в уроке.</p>
+      </details>
+    </aside>
+  );
+}
+
+export function RecapFence({ source, fallback }: { source: string; fallback: ReactNode }) {
+  const recap = useMemo(() => parseRecap(source), [source]);
+  return recap ? <RecapBanner recap={recap} /> : <>{fallback}</>;
 }
 
 export function StoryFence({ source, fallback }: { source: string; fallback: ReactNode }) {

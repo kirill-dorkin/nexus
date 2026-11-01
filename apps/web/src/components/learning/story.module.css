@@ -120,75 +120,171 @@
 }
 .skip:hover { color: var(--text-primary); }
 
-/* Concept card: what / why / how */
-.concept {
-  margin: 1.5rem 0;
-  padding: 1.15rem 1.2rem;
-  border: 1px solid var(--border-default);
-  border-radius: 1.2rem;
-  background: #0d0e11;
+/* Story context at the top of a lesson. */
+.recap {
+  margin: 0 0 1.75rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid rgb(253 186 116 / 28%);
+  border-radius: 1.1rem;
+  background: linear-gradient(120deg, rgb(253 186 116 / 9%), transparent 60%), #0d0e11;
 }
-.conceptHead {
+.recapTop {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.6rem 0.8rem;
 }
-.concept .tag {
-  padding: 0.3rem 0.65rem;
-  border: 1px solid rgb(125 211 252 / 40%);
-  border-radius: 0.6rem;
-  background: rgb(125 211 252 / 10%);
-  color: #7dd3fc;
-  font: 700 0.95rem var(--font-mono);
+.cast {
+  display: inline-flex;
+  padding-right: 0.45rem;
 }
-.concept h3 {
+.cast .avatar {
+  width: 1.9rem;
+  height: 1.9rem;
+  margin-right: -0.45rem;
+  box-shadow: 0 0 0 2px #0d0e11, inset 0 0 0 1px color-mix(in srgb, var(--c) 45%, transparent);
+}
+.recap .premise {
   margin: 0;
   color: var(--text-primary);
-  font-size: 1.15rem;
-  font-weight: 750;
+  font-size: 0.95rem;
+  font-weight: 700;
 }
-.concept .facts {
+.recap .now {
+  margin: 0.7rem 0 0;
+  color: var(--text-primary);
+  font-size: 0.97rem;
+  line-height: 1.5;
+}
+.now > span {
+  margin-right: 0.35rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: rgb(253 186 116 / 16%);
+  color: #fdba74;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.who {
+  margin-top: 0.7rem;
+}
+.who summary {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+.who summary:hover { color: var(--text-primary); }
+.recap .who ul {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.recap .who li {
+  display: flex;
+  align-items: center;
   gap: 0.6rem;
-  margin: 0.95rem 0 0;
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 0.92rem;
 }
-.facts > div {
-  padding: 0.7rem 0.85rem;
-  border-radius: 0.8rem;
-  background: rgb(255 255 255 / 3.5%);
+.who li .avatar { width: 1.8rem; height: 1.8rem; }
+.who li strong { color: var(--c); }
+.recap .who p {
+  margin: 0.7rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
 }
-.concept dt,
-.howLabel {
-  margin-bottom: 0.25rem;
+
+/* Concept card: one flat table — name on top, then rows "what / why / how". */
+.concept {
+  margin: 1.5rem 0;
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  border-radius: 1.1rem;
+  background: #0d0e11;
+}
+.conceptHead {
+  display: grid;
+  gap: 0.4rem;
+  padding: 1.1rem 1.25rem 1rem;
+}
+.kind {
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.nameRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.85rem;
+}
+.concept .name {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-primary);
+  font: 750 1.35rem/1.2 var(--font-sans);
+  letter-spacing: -0.02em;
+}
+.concept code.name {
+  color: #7dd3fc;
+  font: 700 1.25rem/1.2 var(--font-mono);
+  letter-spacing: 0;
+}
+.concept[data-kind="attr"] code.name {
+  color: #c4b5fd;
+}
+.concept .conceptTitle {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+.concept .rows {
+  margin: 0;
+}
+.row {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  border-top: 1px solid var(--border-default);
+}
+.row dt {
+  padding-top: 0.2rem;
   color: var(--text-accent);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
-.facts > div:nth-child(2) dt { color: #fdba74; }
-.concept dd {
+.row[data-row="why"] dt { color: #fdba74; }
+.row[data-row="how"] dt { color: #7dd3fc; }
+.row[data-row="bro"] dt { color: var(--c); }
+.concept .row dd {
+  min-width: 0;
   margin: 0;
   color: var(--text-primary);
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: 0.97rem;
+  line-height: 1.55;
 }
-.how {
-  margin-top: 0.9rem;
-}
-.howLabel {
-  display: block;
-  color: #7dd3fc;
-}
+/* Code on top, live result right under it: one column reads as one piece. */
 .howGrid[data-preview] {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.6rem;
-  align-items: stretch;
 }
-.howGrid > figure {
+.concept .howGrid > figure {
   margin: 0;
 }
 .preview {
@@ -209,29 +305,25 @@
 }
 .preview iframe {
   display: block;
-  flex: 1;
+  flex: none;
   width: 100%;
   border: 0;
   background: #fff;
 }
-.bro {
+.broLine {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  margin: 0.9rem 0 0;
-  padding: 0.6rem 0.8rem;
-  border-radius: 0.8rem;
-  background: rgb(125 211 252 / 7%);
-  color: var(--text-primary);
-  font-size: 0.92rem;
-  line-height: 1.45;
 }
-.bro .avatar {
+.broLine .avatar {
   width: 1.9rem;
   height: 1.9rem;
 }
 @media (max-width: 720px) {
-  .concept .facts,
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.35rem;
+  }
   .howGrid[data-preview] {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -244,4 +336,7 @@
   .dots i {
     animation: none;
   }
+}
+.concept .row dd :not(pre) > code {
+  white-space: nowrap;
 }
