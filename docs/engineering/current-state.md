@@ -1,198 +1,54 @@
 # Nexus current state
 
-This document is the maintained architectural checkpoint for continuing development across chats, agents, and work sessions. It summarizes what has landed, the durable architecture facts that must not drift, and the next coherent frontier.
+The maintained checkpoint for continuing work across sessions and agents: what exists, which rules must not drift, and what to do next.
 
-It is **not live GitHub telemetry**. Before doing work, always verify the current `main`, open PRs, CI, migrations, tests, and implementation through GitHub as required by `AGENTS.md`.
+It is **not live telemetry**. Before working, check the current `main`, open PRs, CI, migrations and code as `AGENTS.md` requires. Older, more detailed checkpoints are in git history (`git log -- docs/engineering/current-state*.md`).
 
-Detailed historical checkpoints are preserved at:
+## Snapshot
 
-- `docs/engineering/current-state-2026-10-03-pre-f9.8.md`;
-- `docs/engineering/current-state-2026-10-03-pre-f9.9.md`;
-- `docs/engineering/current-state-2026-10-04-pre-f9.10.md`;
-- `docs/engineering/current-state-2026-10-05-pre-f9.11.md`.
+Last maintained: 2026-10-31.
 
-Use this file as the active continuation checkpoint and the archives only when older slice-level detail is needed.
+| | |
+|---|---|
+| `main` head | `181b4e1` — #106, disable ordinary Organization self-creation (2026-10-17) |
+| Latest migration | `000044_external_login_identities.sql` |
+| Latest ADR | ADR-0060 external login identities (Proposed, implemented) |
+| Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058); daily GitHub-hosted read-only smoke against the production domain |
+| Learner-code execution | **Disabled in production.** Grader artifacts exist in the repository but need a separate activation (exact image digest + green real-cluster verification). |
+| First real content | `docs/examples/computer-basics-first-course.manifest.json`: a four-lesson Russian course with quizzes. Video blocks still need to be added in Studio. Check Studio to see whether it is published in production. |
 
-## Checkpoint baseline
+## What is built
 
-Last maintained: 2026-10-16.
+Each row is implemented on `main`. The ADRs hold the details; the backend areas are covered by HTTP + PostgreSQL integration tests in `apps/api/src/*.integration.test.ts`.
 
-F0-F8 foundations are established through modular-monolith boundaries, identity/tenancy/authorization, immutable curriculum, Delivery, Attempt/Submission/Validation/Evidence/Mastery, Guided Build, GitHub Projects, repository-side grader hardening, Recommendations/Readiness, and readiness-gated Enrollment completion.
+| Area | What exists | ADRs |
+|---|---|---|
+| F0–F1 Foundation | Modular monolith, users/sessions, Organizations/Memberships, roles and scopes, tenant context, RLS | 0001, 0004, 0008, 0009, 0012 |
+| F2 Curriculum | Stable Course/Lesson/Skill/Activity identities, immutable published versions | 0002, 0003, 0053 |
+| F3 Delivery | LearningOffering, Enrollment, CourseRun, Group, Session/Attendance, Assignment | 0010, 0014–0017 |
+| F4 Learner vertical | Attempt → immutable Submission → ValidationResult → normalized Evidence → Mastery projection; LearningEvent history | 0005, 0018–0023 |
+| F5 Guided Build | Protected hints/solutions, Attempt-scoped assistance exposure, compare, transfer | 0024–0026 |
+| F6 GitHub Projects | GitHub App, webhook inbox, Team/Project/repository binding, immutable PR/review/check facts | 0027–0032 |
+| F7 Grader | Gateway admission, durable job ledger, authenticated dispatch, Kubernetes/gVisor sandbox, trusted Go runner. Repository only, not active | 0007, 0033–0037 |
+| F8 Recommendations | Versioned derived policies: ordered mastery, review scheduling, misconception signals, remediation, readiness, readiness-gated completion | 0013, 0038–0043 |
+| F9 Commerce | Product + immutable Price, Purchase settlement via Paddle webhook, public catalog, customer entry, checkout + return reconciliation, operational/browser/performance launch gates | 0044–0052 |
+| MVP free learning | Lessons + YouTube/Markdown/quiz blocks, strict manifest v1, public course/lesson pages, free self-enrollment, deterministic quiz checks with retries, derived task progress | 0053–0056 |
+| Studio | Manual and JSON authoring over the same draft, preview, export, publication, Offering visibility, Organization customer-entry policy | 0057 |
+| Web UI | `@platform/ui` + design tokens, light/dark themes with accents, public shell, Blog/SEO surfaces, `/ui` gallery | 0059 (Proposed) |
+| Sign-in | Password, optional Google/GitHub OAuth (PKCE) on the same Nexus session | 0060 (Proposed) |
+| Organization provisioning | Organizations are created only by the offline operator command `org:bootstrap-owner` (`platform_migrator` role, `--apply`). Both HTTP create routes return 403/401. | 0059 |
 
-F9 now establishes the first complete public paid path, its production operational contract, deterministic real-browser launch verification, and bounded repository-level performance acceptance gate: provider-independent Product/immutable Price, canonical pending/paid Purchase settlement, Paddle one-time payments, safe unauthenticated public catalog reads, explicit customer Organization entry, server-authoritative public checkout, direct exact-origin browser checkout UX, Paddle return plus purchaser-safe canonical reconciliation, low-cardinality redacted operational events, browser verification of Nexus-owned Product/auth/payment-link/reconciliation surfaces, and deterministic warm-path p95 regression guards for the launch-critical API/worker boundaries.
-
-Production learner-code execution remains disabled. F7 repository runner/profile/sandbox artifacts do not activate production execution; a separate deployment change still requires the exact production image digest and a green real-cluster verification record.
-
-Latest accepted architectural decision at this checkpoint: ADR-0058 (Vercel Services transport, authorized by the maintainer on 2026-10-07). F9.10 and F9.11 add verification infrastructure and no new domain/security authority decision.
-
-Latest ordered migration at this checkpoint: `000043_own_organization_discovery.sql`.
-
-The baseline above is an orientation marker, not permission to skip checking the live `main` head.
-
-## Foundation frontier
-
-### Post-Foundation MVP — course authoring foundation
-
-ADR-0053 adds Content-owned stable Lessons and ordered YouTube/Markdown/Activity blocks within the existing immutable CourseVersion. Strict manifest v1 is a transport format reconstructed from canonical state, with read-only preview, revision-fenced atomic draft import, protected authoring export, and publication validation. Stable Skills/Activities/Lessons survive new versions; ordinary draft creation clones the full authored graph.
-
-Quiz answer keys and private explanations are separate immutable Content snapshots, never learner-visible Activity.config. Generic Activity creation cannot bypass protected authoring through quiz.\*. Import/export use existing capability/session/Origin/RLS boundaries; new draft DELETE grants remain protected by publication-locking immutability triggers, and migration-role operational purge remains possible. Unrepresentable legacy draft features are rejected rather than discarded. Existing legacy version publication remains compatible.
-
-ADR-0054 adds explicit default-private Delivery visibility, safe anonymous published free-learning projections through narrow owner-schema capabilities, and server-rendered homepage/catalog/course/Lesson pages. Open/public/self-paced/membership plus active Organization/Course and exact published manifest release is required. Strict allowlists disclose no answers/bindings/internal UUIDs; Markdown/YouTube rendering and Chrome mobile/keyboard/navigation checks cover public reading. Existing Commerce discovery remains independent.
-
-ADR-0055 adds authenticated role-less self-only free Enrollment after explicit Organization entry, safe auth return-to, paginated my-learning reads and required-activity-passes@1 derived progress from exact own Enrollment/ActivityVersion normalized validation Evidence. Writes revalidate and lock current gates; duplicate entry emits no extra enrollment.created event. A task percentage does not complete Enrollment or alter Mastery/readiness.
-
-ADR-0056 registers three trusted deterministic quiz v1 definitions and adds principal-owned exact-release check authority for role-less free learners. Immutable Attempt/Submission work, computed ValidationResult and normalized Evidence/Mastery commit in their established separate stages; same-key replay repairs incomplete stages, while explicit retry starts a new Attempt. Strict safe feedback exposes no private answers/explanations, and derived task progress refreshes after checking. No migration or grader activation is introduced.
-
-ADR-0057 adds authorized Studio forms and JSON file/textarea authoring over the same canonical manifest/draft, safe author preview, saved export, explicit next draft and revision-fenced publication. Protected author reads require current course/activity management; import retains organization skill management. Own Organization discovery is a narrow actor-bound locator capability, with tenant RLS unchanged. Production Chrome now verifies canonical Organization/Content authoring through real registration/session and PostgreSQL.
-
-Studio now also exposes a narrow author-only Offering management surface for the **currently published** CourseVersion: list exact-release Offerings through Delivery's authorized cursor read, create a default-private self-paced membership Offering, separately confirm public visibility, and copy a canonical learner URL. This is presentation over existing Delivery commands, with no new authority, migration, outbox event, customer-entry policy change, Enrollment or paid access. Historical-version Offering management remains deferred. Studio additionally offers an authorized, no-store Organization customer-entry policy read and explicit confirmed open/close commands; public Offering visibility and customer entry remain independent. The API remains responsible for all tenant authorization and public eligibility; enabling a public link is not a deployment or automatic Enrollment.
-
-Production Chrome now adds the canonical anonymous-to-returning learner loop over the Studio-published immutable release and real PostgreSQL/session APIs: explicit membership/enrollment, three quiz types, wrong-answer retries, exact required-task Evidence progress, next Lesson, reload/relogin and foreign-principal isolation. Deterministic Commerce/transport fixtures remain separate. A portable production container/HTTPS/PostgreSQL profile and read-only deployed smoke are documented in `docs/engineering/learning-deployment.md`. The repository is now owned by `kirill-dorkin/nexus`. The authorized alternate Vercel Services profile in `docs/engineering/vercel-services.md` deploys Web/API together, using same-origin browser REST and an internal Web-to-API binding for anonymous server reads. The maintainer created the Vercel project and connected a Neon Free resource; read-only SQL verification confirmed PostgreSQL 18.6 and no public application tables. The maintainer completed dedicated-role bootstrap and all 43 migrations on Neon PostgreSQL 18; Production keeps only the pooled app-role database credential after owner integration variables were disconnected. Web/API are deployed on one HTTPS domain. Deployed HTTP acceptance covered real sessions, canonical author publication, explicit membership/enrollment, all three quiz types, derived progress and returning/foreign-principal behavior; the test Offering was made private afterward. Interactive cloud-browser observation of that deployment remained blocked by browser credential protection and is not claimed as verified. The older Docker alternative remains available. Production grader activation remains independent.
-
-### F0-F3 — architecture, tenancy, immutable curriculum, Delivery: established
-
-The modular-monolith constitution, ADR process, PostgreSQL/RLS tenancy, users/sessions/memberships/authorization, immutable published curriculum, and LearningOffering/Enrollment/CourseRun/Group/Session/Attendance/Assignment delivery model are established.
-
-### F4 — Activity / Attempt / Evidence learner vertical: implemented
-
-The canonical learner lifecycle remains:
+The paid path (F9) for reference:
 
 ```text
-Assignment / recommendation
-  -> Attempt started
-  -> immutable Submission
-  -> ValidationResult
-  -> normalized Evidence
-  -> Mastery projection
-  -> learner-facing skill state
+public Product → login/registration → explicit customer entry → public checkout
+  → pending Purchase (server-owned terms) → Paddle transaction (outside DB tx)
+  → Paddle.js checkout → /purchases/:id return (pending is normal)
+  → signed webhook → lease-fenced worker settlement
+  → Purchase paid + Entitlement atomically → no automatic Enrollment
 ```
 
-`ValidationResult != Evidence`; only completed trusted decisive validation may normalize into automated Evidence. Infrastructure `system_error` and non-decisive review state never become negative learner Evidence. Mastery remains organization-wide by stable Skill identity. LearningEvent is a separate append-only learner history from the integration outbox.
-
-### F5 — Guided Build: implemented API-level learner vertical
-
-Guided Build composes with the ordinary Attempt/Submission lifecycle. Protected hints/solutions are immutable curriculum state; assistance exposure is Attempt-scoped and not Evidence. Professional compare is derived read state. Transfer work starts a separate normal Attempt rather than a parallel learner-state model.
-
-### F6 — GitHub Projects: implemented Project activity vertical
-
-Integrations owns GitHub external identity, trusted mapping and webhook processing. Projects owns Team/Project/repository-binding history plus normalized immutable PR/review/check facts. External GitHub activity is not Learning Evidence, and historical attribution uses immutable webhook receive time plus the binding active at that time.
-
-### F7 — Grader hardening: repository-side foundation complete; production activation still gated
-
-The repository contains authenticated/versioned Grader Gateway admission, Validation-owned durable grader jobs and lease/retry/dead-letter state, authenticated Worker dispatch, lease-fenced ValidationResult recording, hardened Kubernetes/gVisor controls, a separate trusted Go runner, reproducible digest-pinned artifacts, security-contract tests, and real-cluster verification tooling.
-
-Production learner-code execution remains off until a separate deployment activation proves the exact runtime/node/admission/network/resource/security envelope.
-
-### F8 — Recommendations / readiness / progression: implemented foundation
-
-F8 composes versioned derived policies rather than persisting a second learner-state model:
-
-- `ordered-mastery@1` + `fixed-interval-review@1`;
-- `repeated-trusted-failure@1` suspected signal;
-- authored Skill-to-Activity remediation + `repeated-failure-remediation@1`;
-- `course-progression-readiness@1`;
-- `offering-readiness-triage@1`;
-- `course-readiness-enrollment-completion@1`.
-
-Readiness/recommendation/signal/intervention remain derived. Enrollment persistence remains Delivery-owned.
-
-### F9 — Commerce/public launch: first paid path + operational/browser/performance launch gates implemented
-
-F9 preserves:
-
-```text
-Product != Price != Purchase != Entitlement != Enrollment
-External provider state != canonical Commerce state
-Operational telemetry != canonical business/audit/event state
-Browser verification fixtures != canonical business state
-Performance verification evidence != canonical state or production-capacity proof
-```
-
-The implemented F9 architecture now includes:
-
-- ADR-0044 provider-independent `CommerceProduct` and immutable `CommercePrice`;
-- ADR-0045 canonical Commerce-owned Purchase with `pending -> paid` and purchase-backed Entitlement settlement;
-- ADR-0046 fail-closed stateless Public Catalog composition;
-- ADR-0047 explicit Organization-owned `customerEntryPolicy` plus authenticated role-less self-entry;
-- ADR-0048 Paddle one-time transaction adapter, trusted Purchase-to-provider mapping, signed durable webhook ingress, and lease-fenced worker settlement;
-- ADR-0049 browser-safe public checkout by `organizationSlug + productSlug + exact priceId + idempotencyKey` with server-owned tenant/internal identity, money, provider, and settlement authority;
-- ADR-0050 direct exact-origin credentialed Web -> API transport using the existing secure HttpOnly session and browser-attempt idempotency;
-- ADR-0051 server-owned Paddle payment-link/return boundary plus authenticated purchaser-safe canonical Purchase reconciliation;
-- ADR-0052 a vendor-neutral public-launch operational event contract with explicit redaction/cardinality rules and initial rollout budgets;
-- F9.10 deterministic production-build browser verification using local HTTPS, the real API authentication/session/CORS boundary, Chrome accessibility/focus checks, and a non-canonical provider/business projection seam;
-- F9.11 deterministic bounded performance verification of the launch-critical HTTP/database/worker boundaries against the existing rollout acceptance budgets without adding a load framework, persistence, provider dependency, or production-capacity claim.
-
-The paid path is:
-
-```text
-public Product route
-  -> optional registration/login through HttpOnly session
-  -> explicit customer entry when policy is open
-  -> exact-origin public checkout
-  -> pending canonical Purchase with server-owned terms
-  -> Paddle transaction outside DB transaction
-  -> trusted provider mapping
-  -> application payment-link page + exact _ptxn
-  -> Paddle.js checkout
-  -> /purchases/:purchaseId return
-  -> authenticated canonical reconciliation (pending is normal)
-  -> signed transaction.completed webhook
-  -> lease-fenced amount/currency-verified worker settlement
-  -> Purchase paid + purchase-backed Entitlement atomically
-  -> no Enrollment
-```
-
-F9.8 return/reconciliation invariants remain:
-
-- payment-link URL and `_ptxn` are provider UX state, never payment evidence;
-- only signed durable webhook/worker settlement may perform canonical `pending -> paid`;
-- `GET /v1/me/purchases/:purchaseId` returns only the safe PublicPurchase projection;
-- Purchase id is a locator, not tenant/payment authority;
-- `000039` provides only the narrow purchaser-bound Organization resolver needed to establish tenant context, followed by normal tenant/RLS revalidation;
-- foreign and unknown Purchase ids fail closed as the same not-found outcome;
-- own historical Purchase reconciliation does not depend on current Organization Membership.
-
-F9.9 operational invariants remain:
-
-- operational signals are derived process output, not `events.outbox`, LearningEvent, Audit state, Commerce state, Integrations state, or a monitoring source of truth;
-- API launch events expose only bounded operation/outcome/status plus duration measurement;
-- browser-write security events expose only categorical allow/reject/misconfiguration reason and never the configured/supplied Origin;
-- purchaser reconciliation adds only canonical `pending|paid` plus a coarse age bucket; no Purchase id/timestamp enters the event;
-- payment-worker events expose only bounded outcome/error/payment-status/duration fields and no inbox/Purchase/provider ids;
-- routine launch telemetry excludes business/provider identifiers, slugs, URLs/origins, purchaser PII, cookies/tokens/credentials/signatures, raw request/provider payloads, and exception messages/names;
-- operational log emission is fail-open/best-effort and cannot change an already-decided HTTP/security/business or worker state outcome;
-- no telemetry backend/vendor, monitoring database, migration, canonical event, or business lifecycle change is introduced;
-- initial rollout latency/error budgets and security verification expectations live in `docs/engineering/public-launch-operations.md` and must be tuned after real traffic rather than treated as permanent SLOs.
-
-F9.10 browser launch invariants remain:
-
-- browser verification runs against a production Next.js build in a fresh real Chrome/Chromium profile rather than a DOM-only simulator;
-- the real API remains authoritative for browser registration/session/CORS verification, while deterministic test-only projections drive catalog/entry/checkout/reconciliation UX without creating canonical Purchase/provider state;
-- exact-origin credentialed `/v1/me` succeeds in the browser and a mismatched browser Origin cannot read the credentialed response;
-- the browser-retained session remains `Secure`, `HttpOnly`, `SameSite=Strict` and is not readable through `document.cookie` or copied into token-like Web storage;
-- the selected Price and reconciliation refresh controls expose visible keyboard focus; covered first-party controls remain labelled/named in the Chrome accessibility tree/DOM audit;
-- the browser keeps exactly one attempt-scoped UUID for the selected Price and sends that same UUID at the deterministic checkout seam;
-- Paddle CDN access is replaced by a local deterministic stub that verifies only the Nexus-owned payment-link/success-locator handoff; no claim is made about accessibility internals owned by Paddle;
-- pending, paid, and safe not-found purchaser states are rendered and accessibility-audited in the browser;
-- browser verification is not a second source of business truth and cannot settle a canonical Purchase, grant Entitlement, or create Enrollment;
-- no migration, lockfile dependency, new canonical event, or business transaction boundary is introduced.
-
-F9.11 bounded performance invariants now established:
-
-- the gate covers catalog list/detail, first-time authenticated customer entry, public checkout, signed Paddle webhook ingress, purchaser reconciliation, and a non-idle payment-worker settlement cycle using the p95 acceptance thresholds already defined by F9.9;
-- HTTP timing uses the real Nest/Fastify application plus PostgreSQL through `app.inject()` to remove socket/browser scheduling noise; F9.10 remains the separate real-browser HTTPS/CORS/session gate;
-- authenticated fixture identity uses the existing test-only principal hook, while Origin checks, tenant resolution, membership/checkout/purchaser authority, repositories, transactions, RLS and narrow database capabilities remain production paths;
-- public checkout uses the deterministic test payment provider and webhook ingress uses correctly signed raw Paddle-shaped payloads, so CI performs no live provider/network call;
-- worker timing uses the real `PaymentWebhookProcessor.processOne()` claim/lease/settle/ack path with distinct pending Purchase/provider-mapping/inbox fixtures;
-- each boundary gets 3 excluded warm-up operations and 20 sequential measured operations, reporting nearest-rank p50/p95, max and unexpected-operation errors;
-- p95 over the existing rollout budget or any unexpected measured error fails the gate; p99, RPS, concurrency and throughput claims are intentionally absent because the sample is too small and deterministic for those claims;
-- stateful boundaries use fresh fixture state where required so customer entry measures a real membership creation, checkout uses fresh idempotency keys, and worker samples exercise canonical non-idle settlement rather than idempotent/idle no-ops;
-- verification evidence is aggregate and non-canonical, contains no stable user/tenant/Purchase/provider/slug/URL/credential identifiers, and is not persisted to application tables or `events.outbox`;
-- migration-role access exists only for isolated fixture setup/cleanup and provider/worker fixture construction; measured application/worker operations keep their ordinary runtime roles and narrow capabilities;
-- no migration, runtime dependency, canonical event, telemetry backend, production SLO, production-capacity policy, or business transaction boundary is introduced;
-- sustained/concurrent/distributed load, production traffic simulation, deployed cold starts, CDN/region/network behavior, live Paddle timing, external synthetic monitoring, benchmark-history persistence, and capacity planning remain explicitly deferred.
-
-Still deferred from Commerce scope: refunds/adjustments/disputes and Entitlement reversal semantics, subscriptions, supported discounts/coupons, provider-customer synchronization, purchase-history/recovery beyond the exact Purchase, and broader marketing/SEO.
+Deliberately not built: refunds/disputes and Entitlement reversal, subscriptions, coupons, provider-customer sync, purchase history, account unlinking/SSO, production telemetry backend, load/capacity planning.
 
 ## Durable architecture facts
 
@@ -209,6 +65,9 @@ These are continuation guardrails, not substitutes for accepted ADRs.
 - Mastery is organization-wide by stable Skill identity; learner/course context does not create a second mastery source of truth.
 - Guided Build assistance is not Evidence and does not directly rewrite Mastery.
 - Recommendation/readiness/intervention are versioned derived decisions, not canonical progress state.
+- Derived task progress (percentage) never completes Enrollment or changes Mastery/readiness.
+- Quiz answer keys and private explanations are protected Content, never learner-visible Activity config or feedback.
+- Public Offerings are default-private; public learning pages expose only allowlisted published fields.
 - `Group != Team`; GitHub Project facts are not Learning Evidence.
 - GitHub external ids remain Integration identities; Project ids remain platform identities.
 - Untrusted learner code never executes in Web/API/Worker; only the separately gated Grader boundary may execute it.
@@ -221,7 +80,9 @@ These are continuation guardrails, not substitutes for accepted ADRs.
 - Paid Purchase + purchase-backed Entitlement + their outbox events commit atomically; settlement never auto-enrolls.
 - Public catalog state is presentation/discovery, never membership/access/checkout authority.
 - Customer entry is explicit Organization policy, creates only role-less active Membership, and never creates Purchase/Entitlement/Enrollment.
+- Organization creation is a trusted offline operation, not a user/session capability.
 - Browser credentials are allowed only for exact configured `WEB_APP_ORIGIN`; Web never owns the opaque session token.
+- External OAuth login issues the same Nexus session; provider tokens are never persisted or returned to Web, and auto-linking requires a provider-verified email.
 - Public checkout revalidates current server-owned Organization/Product/Price/Offering/Membership/Entitlement conditions.
 - Browser checkout idempotency is attempt-scoped and reuses one UUID for ambiguous retries of the same route/Price.
 - Payment return navigation is not payment evidence.
@@ -231,6 +92,7 @@ These are continuation guardrails, not substitutes for accepted ADRs.
 - Routine telemetry must not become a searchable identity ledger; case-specific diagnosis uses authorized canonical/provider support tooling.
 - Browser verification fixtures are non-canonical test seams and must never become an alternate Commerce/Integrations implementation.
 - Performance-verification evidence is a repository acceptance artifact, not canonical state, a permanent SLO, or a production capacity claim.
+- UI primitives own presentation only; no primitive owns requests, storage or business authority.
 - Refund/reversal support requires an explicit canonical Purchase/Entitlement lifecycle decision before provider reversal events may change access.
 
 ## Active F4 compatibility windows
@@ -243,30 +105,24 @@ Do not remove these without an explicit cleanup slice/migration and proven calle
 4. Evidence-by-Submission is canonical API direction; Evidence-by-Attempt remains temporarily for compatibility.
 5. Historical outbox rows are immutable and must not be rewritten to imitate LearningEvent history.
 
+Nexus has no external API clients yet, so a cleanup slice could close these windows cheaply before launch.
+
+## Open work on GitHub (as of 2026-10-31)
+
+- **UI stack, Draft since 2026-10-15:** #97 (lesson-first Studio editor, conflicting), #98 (frontend spec docs), #100 (shared header), #101 (semantic surfaces), #103 (mobile Product pricing). #104 is a temporary integration harness for these and must never be merged.
+- **#46** (gVisor provider): superseded by #45, which is merged.
+- **Dependabot:** patch/minor bumps with green CI, plus NestJS 12 (#80, #82, #83: red CI), TypeScript 7 (#12: red CI), pino 10, @types/node 26, upload-artifact 7.
+- Issue #99 (managed-academy provisioning): Stages A and B landed in #105/#106.
+
 ## Next recommended slice
 
-**Build the reusable UI foundation and adopt it incrementally.**
+**Get the first course in front of real learners. Freeze new domain capabilities until then.**
 
-The maintainer selected dark plum, magenta/violet and translucent glass references for the public interface. The proposed ADR-0059 defines token/UI/Web ownership. The implementation introduces a semantic UI workspace package, an isolated component gallery and public homepage/catalog plus registration/login, self-entry, own learning, course outline, Lesson navigation and quiz/progress presentation over unchanged canonical reads and commands. The complete implementation roadmap lives in `docs/roadmap/ui-library.md`. The approved cover refinement adds an IT lesson excerpt, editorial course rows, self-hosted Onest, system-aware light/dark themes with five device-local accents, and selected/responsive navigation with native dialogs. Web owns preference persistence; there is no API, auth, progress or outbox change. The subsequent learning refinement adds a solid auth composition and PasswordInput, streaming catalog with local filtering, open course outlines, solid lesson reading surfaces, restrained entry actions and editorial own-learning rows over unchanged canonical commands and progress. Studio now adopts the same responsive navigation, appearance controls, organization/course workspace, manual/JSON fields, editor actions, conflict feedback and safe reading preview. Publication uses an explicit native confirmation over the existing exact-version/revision command; protected content remains in authorized component memory and no Offering becomes public implicitly. Public discovery now adds an editorial Blog/article path, anonymous-aware primary navigation, canonical/Open Graph metadata, public-only sitemap, crawler exclusions, web manifest, generated social image and public-content structured data. These are Web-only discovery surfaces over existing public projections, not a marketing CMS, indexing guarantee or business-policy change. The next presentation stage should address actual complex-widget/Commerce consumers and Studio efficiency for very large documents, with accessible interaction contracts. Browser evidence and the ordinary exact-head CI/maintainer-local gates remain required before release. Production grader activation remains independently gated.
+The foundation (F0–F9, free learning, Studio) is enough for a free public course. The open risk is product, not architecture: production has no learners yet. In order:
 
-## Managed academy Organization provisioning and signup boundary
+1. Land or close the UI Draft stack (#97–#103) and close #104.
+2. Provision the production Organization with `org:bootstrap-owner`, import the computer-basics manifest in Studio, add real videos, publish, and make the Offering public.
+3. Walk the full anonymous → returning learner flow on the production domain by hand.
+4. Share the course and collect real usage and feedback before choosing the next capability.
 
-The frontend v1.2 managed-academy product model limits Organization creation to trusted platform operations, **not** ordinary registration. ADR-0059 supersedes the legacy self-create clause of ADR-0057 only. The operator-only `org:bootstrap-owner` command (Stage A) requires dedicated `platform_migrator` credentials, an active existing Identity UUID, explicit `--apply`, and atomically creates the Organization, active owner Membership, `organization_owner` assignment and canonical `organization.created` outbox event. Exact replays are observational and conflicting state fails closed.
-
-Stage B removes both user-session creation rights: `POST /v1/organizations` and `POST /v1/me/organizations` reject authenticated requests with 403 and unauthenticated requests with 401; there is no browser, Web or API runtime bootstrap bypass. Studio no longer offers an Organization-create form. Existing Organization-owned workflows (staff assignment, customer self-entry, free Enrollment, course authoring and publication) retain their established independent authorization rules. Tests use dedicated migration-role fixture provisioning, including the real-session Studio HTTP and Chrome author journey. No migration, capability or HTTP request body grants ownership. New registered users without a trusted-provisioned Organization cannot create tenants by calling either legacy URL.
-
-This restricts **who may create organizations**, not who may register or become a learner. Operations must establish the initial Organization before inviting/assigning staff; free course self-entry remains a separate authorized action. Other frontend UX phases and production grader hardening remain independent.
-
-Candidate areas that remain intentionally **unselected** at this checkpoint include:
-
-- refunds/adjustments/disputes plus canonical Entitlement reversal semantics;
-- subscriptions;
-- supported discounts/coupons;
-- provider-customer synchronization;
-- purchase-history/recovery beyond the exact Purchase locator;
-- marketing CMS, search-console operations, content research/cadence and external distribution beyond the implemented Web technical-SEO foundation;
-- production telemetry/backend and external synthetic monitoring choices;
-- production capacity/load planning after deployment assumptions are known;
-- F7 production grader activation, which remains a separate deployment/security gate rather than an implicit continuation of F9.
-
-Before starting that slice, reverify `main`, open PRs/CI and relevant ADRs/code after the current workflow gates pass. Deferred Commerce work and grader activation do not block the free learning path.
+Not selected (do not start without an explicit decision): grader production activation, refunds/subscriptions/coupons, more recommendation policies, telemetry backend, load planning.
