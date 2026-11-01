@@ -29,6 +29,26 @@ function placeChallenges(markdown, list) {
   return sections.join("\n");
 }
 
+/**
+ * Honest lesson length from what is actually in it: reading (~130 words a minute for
+ * scenes, cards and prose), a short look at each card's example, each hands-on task and quiz.
+ */
+function estimateMinutes(markdown, quizzes) {
+  let words = markdown.replace(/```[\s\S]*?```/g, "").split(/\s+/).filter(Boolean).length;
+  let cards = 0;
+  let tasks = 0;
+  for (const [, lang, body] of markdown.matchAll(/```(\w+)\n([\s\S]*?)\n```/g)) {
+    if (lang === "story") words += JSON.parse(body).lines.map((line) => line[1]).join(" ").split(/\s+/).length;
+    if (lang === "concept") {
+      const card = JSON.parse(body);
+      words += `${card.what} ${card.why}`.split(/\s+/).length;
+      cards += 1;
+    }
+    if (lang === "challenge") tasks += 1;
+  }
+  return Math.max(5, Math.round(words / 130 + cards * 0.5 + tasks * 3.5 + quizzes));
+}
+
 export function createCourse(challenges = {}, stories = {}, recaps = {}) {
   const skills = [];
   const activities = [];
@@ -96,7 +116,9 @@ export function createCourse(challenges = {}, stories = {}, recaps = {}) {
         const required = allRequired || index === 0;
         blocks.push({ type: "activity", activitySlug, kind: required ? "practice" : "homework", required });
       });
-      lessons.push({ slug, title, summary, durationMinutes: minutes, blocks });
+      // `minutes` from the module sources is only a fallback for lessons without hands-on content.
+      const estimated = estimateMinutes(markdown, quizzes.length);
+      lessons.push({ slug, title, summary, durationMinutes: markdown.includes("```challenge") ? estimated : minutes, blocks });
     },
     single: (slug, title, question, list, correct, explanation) => (skillKey) =>
       add("quiz.single_choice", slug, skillKey, title, question, (question) => ({
