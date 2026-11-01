@@ -6,7 +6,7 @@ Usage:
 
 Voices (rhasspy/piper-voices, CC0 datasets): ru_RU-dmitri-medium, ru_RU-denis-medium.
 Each character gets a light ffmpeg treatment so the cast is recognisable by ear.
-Existing clips are kept; index.json lists every clip id the site may play.
+Existing clips are kept (delete them to re-render); index.json lists every clip id the site may play.
 """
 import json
 import subprocess
@@ -15,7 +15,13 @@ import tempfile
 import wave
 from pathlib import Path
 
-from piper import PiperVoice
+from piper import PiperVoice, SynthesisConfig
+
+# Brisk, lively delivery: a touch faster than the model default, with less monotone.
+SYNTHESIS = SynthesisConfig(length_scale=0.86, noise_scale=0.7, noise_w_scale=0.85)
+# Trim silence at both ends so lines follow each other without dead air.
+TRIM = ("silenceremove=start_periods=1:start_threshold=-45dB,areverse,"
+        "silenceremove=start_periods=1:start_threshold=-45dB,areverse")
 
 FILTERS = {
     # Bro the browser: a slightly metallic, bright robot.
@@ -39,10 +45,10 @@ def main(lines_path: str, voices_dir: str, out_dir: str) -> None:
         voice = loaded.setdefault(line["voice"], PiperVoice.load(str(Path(voices_dir) / f"ru_RU-{line['voice']}-medium.onnx")))
         with tempfile.NamedTemporaryFile(suffix=".wav") as tmp:
             with wave.open(tmp.name, "wb") as wav:
-                voice.synthesize_wav(line["text"], wav)
+                voice.synthesize_wav(line["text"], wav, syn_config=SYNTHESIS)
             subprocess.run(
                 ["ffmpeg", "-loglevel", "error", "-y", "-i", tmp.name,
-                 "-af", f"{FILTERS[line['who']]},loudnorm=I=-17:TP=-1.5",
+                 "-af", f"{TRIM},{FILTERS[line['who']]},loudnorm=I=-17:TP=-1.5",
                  "-ac", "1", "-ar", "22050", "-b:a", "48k", str(target)],
                 check=True,
             )

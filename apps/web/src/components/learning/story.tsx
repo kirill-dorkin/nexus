@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Bug, Coffee, FastForward, Headphones, Robot, SpeakerHigh, Sparkle, Stop, User } from "@phosphor-icons/react/dist/ssr";
 import { speak, stopSpeech } from "../../lib/sound/engine";
-import { useSoundSettings } from "./sound-panel";
+import { useSoundState } from "./sound-panel";
 
 /** Only one scene speaks at a time: a newly started scene takes the voice over. */
 let activeScene: symbol | null = null;
@@ -93,14 +93,14 @@ function useReducedMotion() {
 
 function StoryScene({ story }: { story: Story }) {
   const reduced = useReducedMotion();
-  const sound = useSoundSettings();
+  const { settings: sound, unlocked } = useSoundState();
   const [node, setNode] = useState<HTMLElement | null>(null);
   const [started, setStarted] = useState(false);
   const [shown, setShown] = useState(1);
   const [listening, setListening] = useState(false);
   const [speaking, setSpeaking] = useState(-1);
   const spoken = useRef(0);
-  const voiced = (sound.voice && started) || listening;
+  const voiced = (sound.voice && unlocked && started) || listening;
   const all = reduced && !voiced ? story.lines.length : shown;
   useEffect(() => {
     if (!node || started) return;
@@ -120,7 +120,11 @@ function StoryScene({ story }: { story: Story }) {
   }, [started, reduced, voiced, shown, story.lines]);
   // Voiced mode: each message appears as its character starts speaking it.
   useEffect(() => {
-    if (!voiced || spoken.current >= story.lines.length) return;
+    if (!voiced) return;
+    // Sound unlocked mid-scene: carry on from the message on screen instead of starting over;
+    // a scene already read silently to the end is replayed only on «Слушать».
+    if (!listening) spoken.current = shown >= story.lines.length && spoken.current === 0 ? story.lines.length : Math.max(spoken.current, shown - 1);
+    if (spoken.current >= story.lines.length) return;
     const me = Symbol("scene");
     activeScene = me;
     let alive = true;
@@ -130,8 +134,9 @@ function StoryScene({ story }: { story: Story }) {
         const line = story.lines[i]!;
         setShown((n) => Math.max(n, i + 1));
         setSpeaking(i);
-        if (line.who === "you") await new Promise((r) => window.setTimeout(r, 700));
+        if (line.who === "you") await new Promise((r) => window.setTimeout(r, 350));
         else await speak(line.who, line.text);
+        await new Promise((r) => window.setTimeout(r, 120));
         if (!alive || activeScene !== me) return;
         spoken.current = i + 1;
       }
@@ -155,6 +160,8 @@ function StoryScene({ story }: { story: Story }) {
           return (
             <li key={i} className={styles.line} data-you={line.who === "you" || undefined}
               data-speaking={speaking === i || undefined}
+              onClick={speaking === i ? () => stopSpeech() : undefined}
+              title={speaking === i ? "Нажмите, чтобы пропустить реплику" : undefined}
               data-hidden={!visible || undefined} style={{ "--c": c.color } as CSSProperties}>
               {line.who === "you" ? null : <Avatar who={line.who} />}
               <div className={styles.bubble}>

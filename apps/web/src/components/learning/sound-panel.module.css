@@ -22,6 +22,14 @@
   border-color: color-mix(in srgb, var(--accent-action) 55%, transparent);
   background: color-mix(in srgb, var(--accent-action) 10%, transparent);
 }
+/* Sound is on but waiting for the first gesture: invite, gently. */
+.trigger[data-waiting] {
+  animation: invite 2.4s ease-in-out infinite;
+}
+@keyframes invite {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent-action) 22%, transparent); }
+}
 .trigger:focus-visible {
   outline: 2px solid var(--focus-ring, var(--accent-action));
   outline-offset: 2px;
@@ -177,6 +185,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .bars i,
+  .trigger[data-waiting],
   .panel {
     animation: none;
   }

@@ -11,8 +11,11 @@ import { lineId, spokenText } from "../../components/learning/speech-text";
  */
 
 export type SoundSettings = { music: boolean; voice: boolean; musicVolume: number; voiceVolume: number; rate: number };
-const DEFAULTS: SoundSettings = { music: false, voice: false, musicVolume: 0.35, voiceVolume: 0.9, rate: 1 };
-const KEY = `${brand.slug}:sound`;
+// On by default: sound is part of the course. Browsers still need one gesture before any audio,
+// so playback starts on the first click or key press (see unlockSound).
+const DEFAULTS: SoundSettings = { music: true, voice: true, musicVolume: 0.3, voiceVolume: 0.9, rate: 1.1 };
+// v2: the old key stored "off" as the former default, which would hide the new default.
+const KEY = `${brand.slug}:sound:v2`;
 
 let settings: SoundSettings = DEFAULTS;
 let loaded = false;
@@ -36,6 +39,26 @@ export function subscribeSound(listener: () => void) {
   listeners.add(listener);
   return () => listeners.delete(listener);
 }
+/* Browsers allow audio only after a user gesture on the page. */
+let unlocked = false;
+export const isSoundUnlocked = () => unlocked;
+export function unlockSound() {
+  if (unlocked) return;
+  unlocked = true;
+  music.apply();
+  if (typeof speechSynthesis !== "undefined") speechSynthesis.getVoices();
+  for (const listener of listeners) listener();
+}
+let snapshot = { settings: DEFAULTS, unlocked: false };
+/** Settings plus the unlock state, as one stable snapshot for useSyncExternalStore. */
+export function getSoundState() {
+  const current = getSoundSettings();
+  if (snapshot.settings !== current || snapshot.unlocked !== unlocked) snapshot = { settings: current, unlocked };
+  return snapshot;
+}
+const serverState = { settings: DEFAULTS, unlocked: false };
+export const getServerSoundState = () => serverState;
+
 export function updateSound(patch: Partial<SoundSettings>) {
   load();
   settings = { ...settings, ...patch };
@@ -92,6 +115,7 @@ class Music {
 
   /** Follows the settings: starts, stops or changes volume. Must first run inside a user gesture. */
   apply() {
+    if (!unlocked) return;
     const s = getSoundSettings();
     if (s.music) void this.start();
     else this.stop();
