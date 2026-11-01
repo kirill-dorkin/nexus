@@ -51,6 +51,30 @@ const manifest = course.manifest({
   description:
     "Курс-история: ты с нуля делаешь сайт для кофейни «Зерно». Хозяйка Марта приносит задачи, браузер Бро показывает, как он читает твой код, наставница Ника подсказывает, а гость Лев проверяет сайт скринридером. По пути — весь HTML: каждый тег и атрибут с живым примером, задания с мгновенной проверкой и семь проектов."
 });
+// The element reference links every element to the lesson whose own concept card explains it.
+{
+  const home = new Map();
+  for (const lesson of manifest.lessons)
+    for (const block of lesson.blocks)
+      for (const [, body] of (block.markdown ?? "").matchAll(/```concept\n([\s\S]*?)\n```/g)) {
+        const name = JSON.parse(body).name;
+        // Exact tag cards (`<link>`) win over variants (`<link rel="icon">`); plain ideas never count.
+        const exact = /^<([a-z][a-z0-9-]*)>$/.exec(name);
+        const variant = /^<([a-z][a-z0-9-]*)[\s>]/.exec(name);
+        if (exact && !home.get(exact[1])?.exact) home.set(exact[1], { slug: lesson.slug, exact: true });
+        else if (variant && !home.get(variant[1])) home.set(variant[1], { slug: lesson.slug, exact: false });
+      }
+  const link = (tag) => (home.has(tag) ? `[\`${tag}\`](/courses/${manifest.course.slug}/${home.get(tag).slug})` : `\`${tag}\``);
+  const reference = manifest.lessons.find((lesson) => lesson.slug === "element-reference");
+  const block = reference?.blocks.find((b) => b.type === "markdown");
+  if (block)
+    block.markdown = block.markdown.replace(/^- `([^`]+)` — /gm, (_, names) => {
+      const range = /^h(\d)–h(\d)$/.exec(names);
+      const tags = range ? Array.from({ length: +range[2] - +range[1] + 1 }, (_, i) => `h${+range[1] + i}`) : names.split(/\s*\/\s*/);
+      return `- ${tags.map(link).join(" · ")} — `;
+    });
+}
+
 const out = new URL("../html-track.manifest.json", import.meta.url);
 writeFileSync(out, JSON.stringify(manifest, null, 2) + "\n");
 const minutes = manifest.lessons.reduce((sum, lesson) => sum + lesson.durationMinutes, 0);
