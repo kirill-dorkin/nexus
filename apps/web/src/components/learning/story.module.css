@@ -136,6 +136,7 @@
 }
 .cast {
   display: inline-flex;
+  padding-right: 0.45rem;
 }
 .cast .avatar {
   width: 1.9rem;
@@ -144,7 +145,7 @@
   box-shadow: 0 0 0 2px #0d0e11, inset 0 0 0 1px color-mix(in srgb, var(--c) 45%, transparent);
 }
 .recap .premise {
-  margin: 0 0 0 0.45rem;
+  margin: 0;
   color: var(--text-primary);
   font-size: 0.95rem;
   font-weight: 700;
