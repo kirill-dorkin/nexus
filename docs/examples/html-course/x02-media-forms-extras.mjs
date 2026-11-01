@@ -1,7 +1,7 @@
 export function imageMaps(c) {
   const { html, code, mdn, lesson, single } = c;
   lesson({
-    slug: "karty-izobrazhenij", title: "Карты-изображения и object", minutes: 9,
+    slug: "image-maps", title: "Карты-изображения и object", minutes: 9,
     summary: "map и area: кликабельные области на картинке. object: встраивание PDF и других документов.",
     skill: ["html-image-maps", "Карты-изображения и object", "Делать кликабельные области на картинке через map и area и встраивать документы через object с запасным содержимым."],
     body: [
@@ -45,7 +45,7 @@ export function imageMaps(c) {
 export function projectGallery(c) {
   const { html, lesson, multi } = c;
   lesson({
-    slug: "mini-proekt-galereya", title: "Мини-проект: фотогалерея", minutes: 25,
+    slug: "project-gallery", title: "Мини-проект: фотогалерея", minutes: 25,
     summary: "Галерея путешествия: адаптивные картинки с подписями, ленивая загрузка, видео с субтитрами и иконки SVG.",
     skill: ["html-project-gallery", "Мини-проект: галерея", "Собрать медиастраницу с адаптивными изображениями, подписями, видео и доступными иконками."],
     body: [
@@ -97,7 +97,7 @@ export function projectGallery(c) {
 export function advancedForms(c) {
   const { html, code, mdn, lesson, single } = c;
   lesson({
-    slug: "prodvinutye-formy", title: "Продвинутые возможности форм", minutes: 11,
+    slug: "advanced-forms", title: "Продвинутые возможности форм", minutes: 11,
     summary: "Атрибут form, formtarget, fieldset disabled, input image, dirname и несколько форм на странице.",
     skill: ["html-form-advanced", "Продвинутые формы", "Связывать поля с формой на расстоянии, переопределять поведение кнопок и блокировать группы полей."],
     body: [
@@ -152,7 +152,7 @@ export function advancedForms(c) {
 export function projectSignup(c) {
   const { html, lesson, multi } = c;
   lesson({
-    slug: "mini-proekt-registraciya", title: "Мини-проект: форма регистрации", minutes: 25,
+    slug: "project-signup", title: "Мини-проект: форма регистрации", minutes: 25,
     summary: "Регистрация на онлайн-мероприятие: все типы полей, группы, проверка, автозаполнение и понятные подсказки.",
     skill: ["html-project-signup", "Мини-проект: регистрация", "Собрать доступную форму регистрации с подходящими типами полей, проверкой и автозаполнением."],
     body: [

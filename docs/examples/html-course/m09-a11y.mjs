@@ -2,7 +2,7 @@ export default function a11y(c) {
   const { html, code, mdn, lesson, single, multi, short } = c;
 
   lesson({
-    slug: "dostupnost-osnovy", title: "Доступность: основы", minutes: 12,
+    slug: "accessibility-basics", title: "Доступность: основы", minutes: 12,
     summary: "Кто пользуется сайтом иначе, чем вы, и как правильный HTML решает большинство проблем бесплатно.",
     skill: ["html-a11y-basics", "Основы доступности", "Проверять страницу на базовую доступность: семантика, альтернативный текст, заголовки, подписи, язык."],
     body: [
@@ -58,7 +58,7 @@ export default function a11y(c) {
   });
 
   lesson({
-    slug: "klaviatura-i-fokus", title: "Клавиатура и фокус", minutes: 11,
+    slug: "keyboard-and-focus", title: "Клавиатура и фокус", minutes: 11,
     summary: "Порядок табуляции, tabindex, видимый фокус и ловушки: сайт, которым можно пользоваться без мыши.",
     skill: ["html-keyboard", "Клавиатура и фокус", "Обеспечивать логичный порядок фокуса, видимый индикатор и управление без мыши."],
     body: [

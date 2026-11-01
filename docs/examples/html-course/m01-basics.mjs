@@ -2,7 +2,7 @@ export default function basics(c) {
   const { html, mdn, lesson, single, multi, short, diagram, demo } = c;
 
   lesson({
-    slug: "chto-takoe-html", title: "Что такое HTML", minutes: 9,
+    slug: "what-is-html", title: "Что такое HTML", minutes: 9,
     summary: "Как браузер превращает текст с тегами в страницу. Теги, элементы и атрибуты.",
     skill: ["html-elements", "Теги, элементы и атрибуты", "Читать и писать HTML-элементы: открывающий и закрывающий тег, содержимое, атрибуты, пустые элементы."],
     body: [
@@ -61,7 +61,7 @@ export default function basics(c) {
   });
 
   lesson({
-    slug: "karkas-dokumenta", title: "Каркас HTML-документа", minutes: 10,
+    slug: "document-skeleton", title: "Каркас HTML-документа", minutes: 10,
     summary: "Doctype, html, head и body: минимальный корректный документ, с которого начинается любая страница.",
     skill: ["html-document", "Каркас HTML-документа", "Собирать минимальный корректный документ: doctype, html с lang, head, кодировка, title, body."],
     body: [
@@ -115,7 +115,7 @@ export default function basics(c) {
   });
 
   lesson({
-    slug: "kak-brauzer-chitaet-html", title: "Как браузер читает HTML", minutes: 11,
+    slug: "how-browsers-read-html", title: "Как браузер читает HTML", minutes: 11,
     summary: "DOM, исправление ошибок, комментарии и инструменты разработчика: как увидеть страницу глазами браузера.",
     skill: ["html-parsing", "DOM и инструменты разработчика", "Понимать, как HTML превращается в DOM, читать его в DevTools и не полагаться на автоисправление ошибок."],
     body: [
@@ -166,7 +166,7 @@ export default function basics(c) {
   });
 
   lesson({
-    slug: "zagolovki-i-abzacy", title: "Заголовки и абзацы", minutes: 9,
+    slug: "headings-and-paragraphs", title: "Заголовки и абзацы", minutes: 9,
     summary: "h1–h6 и p: иерархия текста, понятная людям, поисковикам и экранным читалкам.",
     skill: ["html-headings", "Заголовки и абзацы", "Строить иерархию текста заголовками h1–h6 без пропусков уровней и делить текст на абзацы."],
     body: [
@@ -211,7 +211,7 @@ export default function basics(c) {
   });
 
   lesson({
-    slug: "probely-i-specsimvoly", title: "Пробелы, переносы и спецсимволы", minutes: 10,
+    slug: "whitespace-and-entities", title: "Пробелы, переносы и спецсимволы", minutes: 10,
     summary: "Как браузер обращается с пробелами, когда нужны br, wbr и hr, и как вставить символы <, &, неразрывный пробел и ©.",
     skill: ["html-whitespace", "Пробелы и спецсимволы", "Управлять переносами (br, wbr), разделителями (hr) и записывать спецсимволы мнемониками."],
     body: [
@@ -259,7 +259,7 @@ export default function basics(c) {
   });
 
   lesson({
-    slug: "globalnye-atributy", title: "Глобальные атрибуты", minutes: 11,
+    slug: "global-attributes", title: "Глобальные атрибуты", minutes: 11,
     summary: "id, class, title, lang, dir, hidden, data-* и другие атрибуты, которые есть у любого элемента.",
     skill: ["html-global-attributes", "Глобальные атрибуты", "Применять id, class, title, lang, dir, hidden и data-* к любым элементам по назначению."],
     body: [

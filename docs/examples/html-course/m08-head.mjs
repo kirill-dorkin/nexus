@@ -2,7 +2,7 @@ export default function head(c) {
   const { code, mdn, lesson, single, multi, short } = c;
 
   lesson({
-    slug: "metadannye", title: "Метаданные страницы", minutes: 11,
+    slug: "metadata", title: "Метаданные страницы", minutes: 11,
     summary: "title, description, viewport, charset и robots: что страница рассказывает о себе браузеру и поисковикам.",
     skill: ["html-meta", "Метаданные страницы", "Заполнять head: кодировка, viewport, title, description, robots и canonical."],
     body: [
@@ -49,7 +49,7 @@ export default function head(c) {
   });
 
   lesson({
-    slug: "socseti-i-ikonki", title: "Превью в соцсетях и иконки", minutes: 10,
+    slug: "social-and-icons", title: "Превью в соцсетях и иконки", minutes: 10,
     summary: "Open Graph, favicon, apple-touch-icon и web manifest: как сайт выглядит в мессенджерах, вкладках и на главном экране.",
     skill: ["html-social-icons", "Превью и иконки сайта", "Настраивать превью ссылок в мессенджерах и иконки сайта для вкладок и устройств."],
     body: [
@@ -105,7 +105,7 @@ export default function head(c) {
   });
 
   lesson({
-    slug: "podklyuchenie-resursov", title: "Подключение стилей, скриптов и шрифтов", minutes: 12,
+    slug: "linking-resources", title: "Подключение стилей, скриптов и шрифтов", minutes: 12,
     summary: "link rel=stylesheet, preload, preconnect, script defer и async: порядок загрузки, от которого зависит скорость сайта.",
     skill: ["html-resources", "Подключение ресурсов", "Подключать CSS, JavaScript и шрифты так, чтобы страница показывалась быстро."],
     body: [

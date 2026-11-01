@@ -2,7 +2,7 @@ export default function text(c) {
   const { html, mdn, lesson, single, multi, short } = c;
 
   lesson({
-    slug: "vydelenie-teksta", title: "Выделение текста по смыслу", minutes: 10,
+    slug: "text-emphasis", title: "Выделение текста по смыслу", minutes: 10,
     summary: "strong, em, b, i, u, s, mark и small: восемь способов выделить текст, и у каждого свой смысл.",
     skill: ["html-text-emphasis", "Смысловое выделение текста", "Выбирать strong, em, b, i, u, s, mark и small по смыслу, а не по внешнему виду."],
     body: [
@@ -58,7 +58,7 @@ export default function text(c) {
   });
 
   lesson({
-    slug: "strochnaya-semantika", title: "Строчная семантика", minutes: 11,
+    slug: "inline-semantics", title: "Строчная семантика", minutes: 11,
     summary: "abbr, dfn, time, data, sub, sup, ins, del и span: теги, которые объясняют машинам смысл слов.",
     skill: ["html-inline-semantics", "Строчная семантика", "Размечать сокращения, термины, даты, значения, индексы и правки строчными элементами."],
     body: [
@@ -104,7 +104,7 @@ export default function text(c) {
   });
 
   lesson({
-    slug: "kod-v-tekste", title: "Код, клавиши и вывод программ", minutes: 9,
+    slug: "code-in-text", title: "Код, клавиши и вывод программ", minutes: 9,
     summary: "code, pre, kbd, samp и var: как показывать код и технический текст.",
     skill: ["html-code", "Код и технический текст", "Размечать фрагменты кода, блоки с сохранёнными пробелами, клавиши, вывод программ и переменные."],
     body: [
@@ -141,7 +141,7 @@ export default function text(c) {
   });
 
   lesson({
-    slug: "citaty-i-adresa", title: "Цитаты, подписи и адреса", minutes: 10,
+    slug: "quotes-and-addresses", title: "Цитаты, подписи и адреса", minutes: 10,
     summary: "blockquote, q, cite, figure, figcaption и address: цитаты с источником и контактная информация.",
     skill: ["html-quotes", "Цитаты, подписи и контакты", "Размечать блочные и строчные цитаты с источником, иллюстрации с подписью и контакты автора."],
     body: [
@@ -190,7 +190,7 @@ export default function text(c) {
   });
 
   lesson({
-    slug: "spiski", title: "Списки", minutes: 10,
+    slug: "lists", title: "Списки", minutes: 10,
     summary: "ul, ol и li: перечисления, шаги, вложенные списки, нумерация с любого числа и в обратном порядке.",
     skill: ["html-lists", "Списки", "Размечать маркированные, нумерованные и вложенные списки, управлять нумерацией."],
     body: [
@@ -264,7 +264,7 @@ export default function text(c) {
   });
 
   lesson({
-    slug: "spiski-opredelenij", title: "Списки определений", minutes: 8,
+    slug: "description-lists", title: "Списки определений", minutes: 8,
     summary: "dl, dt и dd: словари, FAQ, характеристики товара и пары «название — значение».",
     skill: ["html-description-lists", "Списки определений", "Размечать пары «термин — описание» элементами dl, dt и dd."],
     body: [

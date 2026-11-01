@@ -2,7 +2,7 @@ export default function structure(c) {
   const { html, code, mdn, lesson, single, multi, short } = c;
 
   lesson({
-    slug: "semantika", title: "Семантическая структура страницы", minutes: 11,
+    slug: "semantics", title: "Семантическая структура страницы", minutes: 11,
     summary: "header, nav, main и footer: каркас страницы, понятный людям, читалкам и поисковикам.",
     skill: ["html-semantics", "Семантическая структура", "Размечать области страницы элементами header, nav, main и footer."],
     body: [
@@ -57,7 +57,7 @@ export default function structure(c) {
   });
 
   lesson({
-    slug: "razdely-stranicy", title: "article, section, aside и search", minutes: 12,
+    slug: "page-sections", title: "article, section, aside и search", minutes: 12,
     summary: "Как делить содержимое на разделы: когда article, когда section, когда aside, а когда просто div.",
     skill: ["html-sectioning", "Разделы содержимого", "Выбирать между article, section, aside, search и div по смыслу содержимого."],
     body: [
@@ -187,7 +187,7 @@ export default function structure(c) {
   });
 
   lesson({
-    slug: "dialog-i-popover", title: "Диалоги и всплывающие окна", minutes: 13,
+    slug: "dialog-and-popover", title: "Диалоги и всплывающие окна", minutes: 13,
     summary: "dialog, popover и inert: модальные окна, меню и подсказки, которые браузер делает доступными сам.",
     skill: ["html-dialog-popover", "Диалоги и всплывающие окна", "Строить всплывающие элементы через popover и dialog и понимать, когда нужен модальный режим."],
     body: [

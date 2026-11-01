@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
-import { ArrowRight, File, Folder, Pause, Play } from "@phosphor-icons/react/dist/ssr";
+import { ArrowCounterClockwise, ArrowRight, File, Folder, Pause, Play } from "@phosphor-icons/react/dist/ssr";
 import { highlight, type Token } from "./code-highlight";
 import styles from "./lesson-visuals.module.css";
 import codeStyles from "./code.module.css";
@@ -15,14 +15,14 @@ import codeStyles from "./code.module.css";
 type UrlPart = { text: string; label: string };
 type TreeItem = { name: string; depth: number; note?: string };
 type FlowStep = { title: string; text?: string };
-type Scene = { input: string; key?: string; output?: string; caption?: string };
+type Scene = { input: string; key?: string; output?: string; caption?: string; parts?: UrlPart[] };
 
 export type Visual =
   | { kind: "url"; title?: string | undefined; parts: UrlPart[] }
   | { kind: "tree"; title?: string | undefined; items: TreeItem[] }
   | { kind: "flow"; title?: string | undefined; steps: FlowStep[] }
   | { kind: "dom"; title?: string | undefined; html: string }
-  | { kind: "typing"; title?: string | undefined; scenes: Scene[] };
+  | { kind: "typing"; title?: string | undefined; file?: string | undefined; scenes: Scene[] };
 
 const str = (v: unknown, max = 2000): v is string => typeof v === "string" && v.length <= max;
 
@@ -55,10 +55,17 @@ export function parseVisual(source: string): Visual | null {
     case "dom":
       return str(v.html, 4000) ? { kind: "dom", title, html: v.html } : null;
     case "typing": {
-      const scenes = list(v.scenes, 10)?.filter((s): s is Scene =>
-        str(s?.input, 400) && (s.key === undefined || str(s.key, 20)) && (s.output === undefined || str(s.output, 2000)) &&
-        (s.caption === undefined || str(s.caption, 200)));
-      return scenes?.length ? { kind: "typing", title, scenes } : null;
+      // One animation per block: { input, key, output, caption, parts }. `scenes` is still accepted.
+      const isScene = (s: unknown): s is Scene => {
+        const c = s as Record<string, unknown> | null;
+        return !!c && str(c.input, 400) && (c.key === undefined || str(c.key, 20)) &&
+          (c.output === undefined || str(c.output, 2000)) && (c.caption === undefined || str(c.caption, 200)) &&
+          (c.parts === undefined || (Array.isArray(c.parts) && c.parts.length <= 12 &&
+            c.parts.every((p) => str(p?.text, 60) && str(p?.label, 60))));
+      };
+      const scenes = (Array.isArray(v.scenes) ? list(v.scenes, 10) : [v])?.filter(isScene);
+      const file = str(v.file, 60) ? v.file : undefined;
+      return scenes?.length ? { kind: "typing", title, file, scenes } : null;
     }
     default:
       return null;
@@ -204,75 +211,219 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
-type Step = { text: string; key: string | null; output: boolean; caption: string; scene: number };
+/** Where Emmet leaves the caret after expanding: the first empty attribute or element. */
+export function caretOffset(output: string) {
+  const blank = /\n( *)\n/.exec(output);
+  const candidates = [output.indexOf('""') + 1, output.indexOf("></") + 1, blank ? blank.index + 1 + blank[1]!.length : 0]
+    .filter((i) => i > 0);
+  return candidates.length ? Math.min(...candidates) : output.length;
+}
 
-/** Precomputes every animation frame: typing, key press, expansion, pause. */
-function timeline(scenes: Scene[]) {
-  const frames: { frame: Step; ms: number }[] = [];
-  scenes.forEach((scene, n) => {
-    const base = { key: null, output: false, caption: scene.caption ?? "", scene: n };
-    for (let i = 1; i <= scene.input.length; i++) frames.push({ frame: { ...base, text: scene.input.slice(0, i) }, ms: 70 });
-    frames.push({ frame: { ...base, text: scene.input }, ms: 500 });
-    if (scene.key) frames.push({ frame: { ...base, text: scene.input, key: scene.key }, ms: 700 });
-    if (scene.output !== undefined) frames.push({ frame: { ...base, text: scene.output, output: true }, ms: 2600 });
-    else frames.push({ frame: { ...base, text: scene.input }, ms: 1600 });
-  });
+/** Splits highlighted tokens into lines, inserting a caret marker at a character offset. */
+function tokenLines(tokens: Token[], caretAt: number) {
+  const lines: (Token | "caret")[][] = [[]];
+  let offset = 0;
+  for (const token of tokens) {
+    let text = token.text;
+    let start = offset;
+    while (text.length) {
+      const breakAt = text.indexOf("\n");
+      const chunkEnd = breakAt < 0 ? text.length : breakAt;
+      let chunk = text.slice(0, chunkEnd);
+      if (caretAt >= start && caretAt < start + chunk.length) {
+        const before = chunk.slice(0, caretAt - start);
+        if (before) lines.at(-1)!.push({ kind: token.kind, text: before });
+        lines.at(-1)!.push("caret");
+        chunk = chunk.slice(before.length);
+        start += before.length;
+        caretAt = -1;
+      }
+      if (chunk) lines.at(-1)!.push({ kind: token.kind, text: chunk });
+      start += chunk.length;
+      if (breakAt < 0) break;
+      if (caretAt === start) { lines.at(-1)!.push("caret"); caretAt = -1; }
+      lines.push([]);
+      start += 1;
+      text = text.slice(chunkEnd + 1);
+    }
+    offset += token.text.length;
+  }
+  if (caretAt >= offset) lines.at(-1)!.push("caret");
+  return lines;
+}
+
+type Phase = "ready" | "typing" | "key" | "result";
+type Tick = { phase: Phase; typed: number; ms: number };
+
+/** One scene as a list of timed frames: a short wait, human-paced typing, the key, the result. */
+function sceneFrames(scene: Scene): Tick[] {
+  const frames: Tick[] = [{ phase: "ready", typed: 0, ms: 650 }];
+  for (let i = 1; i <= scene.input.length; i++) {
+    const ch = scene.input[i - 1]!;
+    // Symbols take a moment longer than letters, like a real person typing.
+    frames.push({ phase: "typing", typed: i, ms: /[a-z0-9]/i.test(ch) ? 95 : 190 });
+  }
+  frames.push({ phase: "typing", typed: scene.input.length, ms: 650 });
+  if (scene.key) frames.push({ phase: "key", typed: scene.input.length, ms: 650 });
+  frames.push({ phase: "result", typed: scene.input.length, ms: 0 });
   return frames;
 }
 
-function TypingDemo({ scenes }: { scenes: Scene[] }) {
-  const frames = useMemo(() => timeline(scenes), [scenes]);
-  const reduced = usePrefersReducedMotion();
-  const [index, setIndex] = useState(0);
-  const [playing, setPlaying] = useState(true);
-  useEffect(() => {
-    if (reduced || !playing) return;
-    const timer = window.setTimeout(() => setIndex((i) => (i + 1) % frames.length), frames[index]!.ms);
-    return () => window.clearTimeout(timer);
-  }, [index, playing, reduced, frames]);
-  if (reduced) {
-    return (
-      <ol className={styles.staticScenes}>
-        {scenes.map((scene, i) => (
-          <li key={i}>
-            <code>{scene.input}</code>
-            {scene.key ? <kbd className={styles.key}>{scene.key}</kbd> : null}
-            {scene.output ? <pre><code><Tokens tokens={highlight(scene.output, "html")} /></code></pre> : null}
-            {scene.caption ? <span>{scene.caption}</span> : null}
-          </li>
-        ))}
-      </ol>
-    );
-  }
-  const { frame } = frames[index]!;
+function KeyCap({ label, pressed }: { label: string; pressed?: boolean }) {
+  return <kbd className={`${styles.key} ${pressed ? styles.keyDown : ""}`}>{label}</kbd>;
+}
+
+function AbbreviationParts({ parts, typed, done }: { parts: UrlPart[]; typed: number; done: boolean }) {
+  let end = 0;
   return (
-    <div className={styles.typing}>
-      <div className={styles.window}>
-        <div className={styles.windowBar} aria-hidden="true">
-          <span /><span /><span />
-          <em>index.html</em>
-        </div>
-        <pre className={`${styles.editor} ${frame.output ? styles.expanded : ""}`} aria-hidden="true">
-          <code>
-            <Tokens tokens={highlight(frame.text, frame.output ? "html" : "text")} />
-            {!frame.output ? <span className={styles.caret} /> : null}
-          </code>
-        </pre>
-        {frame.key ? <kbd className={`${styles.key} ${styles.keyPop}`} aria-hidden="true">{frame.key}</kbd> : null}
+    <ol className={styles.parts} aria-hidden="true">
+      {parts.map((part, i) => {
+        const startAt = end;
+        end += part.text.length;
+        const state = done || typed >= end ? "done" : typed > startAt ? "active" : "idle";
+        return (
+          <li key={i} data-state={state} style={{ "--c": PALETTE[i % PALETTE.length] } as CSSProperties}>
+            <code>{part.text}</code>
+            <span>{part.label}</span>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+const STAGES: { phase: Phase[]; label: string }[] = [
+  { phase: ["ready", "typing"], label: "Печатаем" },
+  { phase: ["key"], label: "Жмём" },
+  { phase: ["result"], label: "Результат" }
+];
+
+function useVisibleOnce<T extends Element>() {
+  const [element, setElement] = useState<T | null>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    if (!element || visible) return;
+    if (typeof IntersectionObserver === "undefined") { setVisible(true); return; }
+    const observer = new IntersectionObserver(
+      (entries) => { if (entries.some((e) => e.isIntersecting)) setVisible(true); },
+      { threshold: 0.6 }
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [element, visible]);
+  return [setElement, visible] as const;
+}
+
+function EditorWindow({ file, children, flash, lines }: { file: string; children: ReactNode; flash?: boolean; lines: number }) {
+  return (
+    <div className={styles.window}>
+      <div className={styles.windowBar} aria-hidden="true">
+        <span /><span /><span />
+        <em>{file}</em>
       </div>
-      <div className={styles.typingFooter}>
-        <span className={styles.caption} aria-live="off">{frame.caption}</span>
-        <span className={styles.controls}>
-          {scenes.length > 1 ? <span className={styles.counter}>{frame.scene + 1} / {scenes.length}</span> : null}
-          <button type="button" className={styles.play} onClick={() => setPlaying((p) => !p)}
-            aria-label={playing ? "Пауза анимации" : "Продолжить анимацию"}>
-            {playing ? <Pause size={16} weight="fill" aria-hidden="true" /> : <Play size={16} weight="fill" aria-hidden="true" />}
-          </button>
+      <pre className={`${styles.editor} ${flash ? styles.expanded : ""}`} style={{ "--lines": lines } as CSSProperties} aria-hidden="true">
+        <code>{children}</code>
+      </pre>
+    </div>
+  );
+}
+
+function ResultLines({ output }: { output: string }) {
+  const lines = tokenLines(highlight(output, "html"), caretOffset(output));
+  return (
+    <>
+      {lines.map((line, i) => (
+        <span key={i} className={styles.line} style={{ "--line": i } as CSSProperties}>
+          {line.map((part, j) =>
+            part === "caret" ? <span key={j} className={styles.caret} /> :
+              part.kind === "plain" ? part.text : <span key={j} className={codeStyles[part.kind]}>{part.text}</span>
+          )}
+          {"\n"}
         </span>
+      ))}
+    </>
+  );
+}
+
+/** The abbreviation typed so far, each part in the colour of its legend chip. */
+function TypedInput({ input, typed, parts }: { input: string; typed: number; parts: UrlPart[] | undefined }) {
+  if (!parts) return <>{input.slice(0, typed)}</>;
+  let start = 0;
+  return (
+    <>
+      {parts.map((part, i) => {
+        const text = input.slice(start, Math.min(start + part.text.length, typed));
+        start += part.text.length;
+        return text ? <span key={i} style={{ color: PALETTE[i % PALETTE.length] }}>{text}</span> : null;
+      })}
+    </>
+  );
+}
+
+function TypingDemo({ scene, file }: { scene: Scene; file: string }) {
+  const frames = useMemo(() => sceneFrames(scene), [scene]);
+  const reduced = usePrefersReducedMotion();
+  const [ref, visible] = useVisibleOnce<HTMLDivElement>();
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [run, setRun] = useState(0);
+  const last = frames.length - 1;
+  useEffect(() => {
+    if (reduced || !visible || paused || index >= last) return;
+    const timer = window.setTimeout(() => setIndex((i) => Math.min(i + 1, last)), frames[index]!.ms);
+    return () => window.clearTimeout(timer);
+  }, [index, paused, reduced, visible, frames, last, run]);
+  const frame = reduced ? frames[last]! : frames[index]!;
+  const finished = frame.phase === "result";
+  const parts = scene.parts && scene.parts.map((p) => p.text).join("") === scene.input ? scene.parts : undefined;
+  const stage = STAGES.findIndex((s) => s.phase.includes(frame.phase));
+  const description = `${scene.caption ? `${scene.caption}. ` : ""}Ввод «${scene.input}»${scene.key ? `, затем клавиша ${scene.key}` : ""}${scene.output ? `. Результат: ${scene.output}` : ""}`;
+  return (
+    <div ref={ref} className={styles.typing} data-phase={frame.phase}>
+      <ol className={styles.stages} aria-hidden="true">
+        {STAGES.filter((s) => scene.key || s.label !== "Жмём").map((s) => {
+          const i = STAGES.indexOf(s);
+          return (
+            <li key={s.label} data-state={i < stage ? "done" : i === stage ? "active" : "idle"}>
+              {s.label === "Жмём" && scene.key ? <>Жмём <KeyCap label={scene.key} /></> : s.label}
+            </li>
+          );
+        })}
+      </ol>
+      <div className={styles.stage}>
+        <EditorWindow file={file} flash={finished && !reduced} lines={(scene.output ?? scene.input).split("\n").length}>
+          {finished && scene.output !== undefined ? (
+            <ResultLines key={run} output={scene.output} />
+          ) : (
+            <>
+              <TypedInput input={scene.input} typed={frame.typed} parts={parts} />
+              <span className={styles.caret} />
+            </>
+          )}
+        </EditorWindow>
+        {frame.phase === "key" && scene.key ? (
+          <div className={styles.keyPop} aria-hidden="true"><KeyCap label={scene.key} pressed /></div>
+        ) : null}
+        <div className={styles.progress} aria-hidden="true">
+          <span style={{ width: `${Math.round((reduced ? 1 : index / last) * 100)}%` }} />
+        </div>
       </div>
-      <p className={styles.srOnly}>
-        {scenes.map((s) => `${s.caption ?? ""}: ввод «${s.input}»${s.key ? `, клавиша ${s.key}` : ""}${s.output ? `, результат: ${s.output}` : ""}`).join(". ")}
-      </p>
+      {parts ? <AbbreviationParts parts={parts} typed={frame.typed} done={finished} /> : null}
+      <div className={styles.typingFooter}>
+        <span className={styles.caption} data-shown={finished || undefined}>{scene.caption}</span>
+        {reduced ? null : finished ? (
+          <button type="button" className={styles.replay}
+            onClick={() => { setIndex(0); setPaused(false); setRun((r) => r + 1); }}>
+            <ArrowCounterClockwise size={16} weight="bold" aria-hidden="true" /> Повторить
+          </button>
+        ) : (
+          <button type="button" className={styles.play} onClick={() => setPaused((p) => !p)}
+            aria-label={paused ? "Продолжить анимацию" : "Пауза анимации"}>
+            {paused ? <Play size={16} weight="fill" aria-hidden="true" /> : <Pause size={16} weight="fill" aria-hidden="true" />}
+          </button>
+        )}
+      </div>
+      <p className={styles.srOnly}>{description}</p>
     </div>
   );
 }
@@ -288,7 +439,16 @@ export function LessonVisual({ visual }: { visual: Visual }) {
     case "dom":
       return <Frame title={visual.title} kind="dom"><DomDiagram html={visual.html} /></Frame>;
     case "typing":
-      return <Frame title={visual.title} kind="typing"><TypingDemo scenes={visual.scenes} /></Frame>;
+      // Every scene is its own animation; a legacy multi-scene block becomes a stack of them.
+      return (
+        <>
+          {visual.scenes.map((scene, i) => (
+            <Frame key={i} title={visual.scenes.length > 1 ? scene.caption ?? visual.title : visual.title} kind="typing">
+              <TypingDemo scene={scene} file={visual.file ?? "index.html"} />
+            </Frame>
+          ))}
+        </>
+      );
   }
 }
 

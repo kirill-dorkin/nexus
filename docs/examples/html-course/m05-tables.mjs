@@ -2,7 +2,7 @@ export default function tables(c) {
   const { html, mdn, lesson, single, multi, short } = c;
 
   lesson({
-    slug: "tablicy", title: "Таблицы", minutes: 11,
+    slug: "tables", title: "Таблицы", minutes: 11,
     summary: "table, tr, th, td и caption: данные в строках и столбцах.",
     skill: ["html-tables", "Таблицы", "Размечать табличные данные со строкой заголовков и подписью."],
     body: [
@@ -53,7 +53,7 @@ export default function tables(c) {
   });
 
   lesson({
-    slug: "slozhnye-tablicy", title: "Сложные таблицы", minutes: 12,
+    slug: "complex-tables", title: "Сложные таблицы", minutes: 12,
     summary: "thead, tbody, tfoot, scope, colspan, rowspan, headers и colgroup: таблицы, понятные и людям, и читалкам.",
     skill: ["html-tables-advanced", "Сложные таблицы", "Группировать строки, объединять ячейки и явно связывать ячейки с заголовками строк и столбцов."],
     body: [

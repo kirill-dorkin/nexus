@@ -2,7 +2,7 @@ export function quality(c) {
   const { html, code, mdn, lesson, single, multi, diagram, demo } = c;
 
   lesson({
-    slug: "kachestvo-koda", title: "Проверка и качество кода", minutes: 10,
+    slug: "code-quality", title: "Проверка и качество кода", minutes: 10,
     summary: "Валидатор W3C, DevTools, Lighthouse и самые частые ошибки начинающих.",
     skill: ["html-quality", "Качество разметки", "Проверять разметку валидатором и инструментами и находить частые ошибки."],
     body: [
@@ -60,7 +60,7 @@ export function projectCard(c) {
   const { html, code, mdn, lesson, single, multi, diagram, demo } = c;
 
   lesson({
-    slug: "proekt-vizitka", title: "Проект 1: страница-визитка", minutes: 30,
+    slug: "project-business-card", title: "Проект 1: страница-визитка", minutes: 30,
     summary: "Соберите свою первую настоящую страницу из всего, что изучили в основах.",
     skill: ["html-project-card", "Проект: визитка", "Собрать целую страницу из базовых элементов и проверить её по чек-листу."],
     body: [
@@ -140,7 +140,7 @@ export function projectLanding(c) {
   const { html, code, mdn, lesson, single, multi, diagram, demo } = c;
 
   lesson({
-    slug: "proekt-lending", title: "Проект 2: лендинг курса", minutes: 40,
+    slug: "project-landing", title: "Проект 2: лендинг курса", minutes: 40,
     summary: "Одностраничный сайт для онлайн-курса: оффер, программа, видео, тарифы, FAQ и форма записи.",
     skill: ["html-project-landing", "Проект: лендинг", "Спроектировать и сверстать семантичный лендинг с медиа, таблицей тарифов, FAQ и формой."],
     body: [
@@ -207,7 +207,7 @@ export function projectArticle(c) {
   const { html, code, mdn, lesson, single, multi, diagram, demo } = c;
 
   lesson({
-    slug: "proekt-statya", title: "Проект 3: статья для блога", minutes: 35,
+    slug: "project-article", title: "Проект 3: статья для блога", minutes: 35,
     summary: "Длинная статья с оглавлением, медиа, кодом, таблицей, цитатами и метаданными.",
     skill: ["html-project-article", "Проект: статья", "Сверстать длинную статью с оглавлением, богатой текстовой семантикой, медиа и метаданными."],
     body: [
@@ -271,7 +271,7 @@ export function projectFinal(c) {
   const { html, code, mdn, lesson, single, multi, diagram, demo } = c;
 
   lesson({
-    slug: "finalnyj-proekt", title: "Финальный проект: сайт-портфолио", minutes: 45,
+    slug: "final-project", title: "Финальный проект: сайт-портфолио", minutes: 45,
     summary: "Многостраничный сайт из трёх страниц с общей навигацией, формами, медиа и полной проверкой качества.",
     skill: ["html-project-portfolio", "Финальный проект: портфолио", "Собрать многостраничный сайт с общей структурой, правильными путями, метаданными и проверкой доступности."],
     body: [

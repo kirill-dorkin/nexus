@@ -56,7 +56,7 @@ export function styleBaseMeta(c) {
 export function security(c) {
   const { code, html, mdn, lesson, single, multi } = c;
   lesson({
-    slug: "bezopasnost-v-html", title: "Безопасность в HTML", minutes: 11,
+    slug: "security", title: "Безопасность в HTML", minutes: 11,
     summary: "CSP, integrity, crossorigin, rel=noopener, sandbox и почему нельзя вставлять чужой HTML как есть.",
     skill: ["html-security", "Безопасность разметки", "Защищать страницу средствами HTML: CSP, проверка целостности внешних файлов, изоляция фреймов и ссылок."],
     body: [
@@ -109,7 +109,7 @@ export function security(c) {
 export function structuredData(c) {
   const { code, html, mdn, lesson, single } = c;
   lesson({
-    slug: "strukturirovannye-dannye", title: "Структурированные данные", minutes: 10,
+    slug: "structured-data", title: "Структурированные данные", minutes: 10,
     summary: "JSON-LD и микроданные: как объяснить поисковикам, что на странице курс, рецепт, товар или статья.",
     skill: ["html-structured-data", "Структурированные данные", "Описывать сущности страницы словарём Schema.org через JSON-LD и микроданные."],
     body: [
@@ -165,7 +165,7 @@ export function structuredData(c) {
 export function jsBridge(c) {
   const { html, code, mdn, lesson, single } = c;
   lesson({
-    slug: "html-i-javascript", title: "HTML и JavaScript: события и DOM", minutes: 11,
+    slug: "html-and-javascript", title: "HTML и JavaScript: события и DOM", minutes: 11,
     summary: "Как HTML связан со скриптами: атрибуты событий, id и data-*, почему addEventListener лучше onclick.",
     skill: ["html-js-bridge", "Связь HTML и JavaScript", "Понимать, как скрипт находит элементы и реагирует на события, и готовить для этого разметку."],
     body: [
@@ -213,7 +213,7 @@ export function jsBridge(c) {
 export function nativeInteractivity(c) {
   const { html, mdn, lesson, single } = c;
   lesson({
-    slug: "redaktirovanie-i-peretaskivanie", title: "Редактирование и перетаскивание", minutes: 9,
+    slug: "editing-and-drag-and-drop", title: "Редактирование и перетаскивание", minutes: 9,
     summary: "contenteditable, spellcheck, draggable, autocapitalize и hidden=until-found: встроенные возможности браузера.",
     skill: ["html-native-interactivity", "Встроенная интерактивность", "Включать редактирование, проверку орфографии, перетаскивание и находимый скрытый текст атрибутами HTML."],
     body: [
@@ -254,7 +254,7 @@ export function nativeInteractivity(c) {
 export function webComponents(c) {
   const { html, code, mdn, lesson, single } = c;
   lesson({
-    slug: "svoi-elementy", title: "Свои элементы и Shadow DOM", minutes: 11,
+    slug: "custom-elements", title: "Свои элементы и Shadow DOM", minutes: 11,
     summary: "Custom elements, template, slot и декларативный Shadow DOM: как создают переиспользуемые компоненты на чистом HTML.",
     skill: ["html-web-components", "Веб-компоненты", "Понимать пользовательские элементы, слоты и Shadow DOM и распознавать их в разметке."],
     body: [
