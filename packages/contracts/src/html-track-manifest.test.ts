@@ -9,23 +9,23 @@ function htmlTrack() {
   return courseManifestV1Schema.parse(raw);
 }
 
-describe("HTML from zero track import", () => {
+describe("HTML full course import", () => {
   it("passes the strict Studio manifest schema without tenant identities", () => {
     const manifest = htmlTrack();
-    expect(manifest.course.slug).toBe("html-s-nulya");
+    expect(manifest.course.slug).toBe("html");
     expect(JSON.stringify(manifest)).not.toMatch(/"organizationId"|"userId"|"enrollmentId"/);
   });
 
   it("keeps one atomic skill per lesson with required graded practice", () => {
     const manifest = htmlTrack();
     const activities = new Map(manifest.activities.map((a) => [a.slug, a]));
-    expect(manifest.lessons.length).toBeGreaterThanOrEqual(10);
+    expect(manifest.lessons.length).toBeGreaterThanOrEqual(45);
     for (const lesson of manifest.lessons) {
       const used = lesson.blocks.flatMap((b) => (b.type === "activity" ? [b] : []));
       expect(used.some((b) => b.required), lesson.slug).toBe(true);
       const lessonSkills = new Set(used.flatMap((b) => activities.get(b.activitySlug)!.skillKeys));
       expect(lessonSkills.size, lesson.slug).toBe(1);
-      expect(lesson.durationMinutes).toBeLessThanOrEqual(25);
+      expect(lesson.durationMinutes).toBeLessThanOrEqual(45);
     }
   });
 
@@ -33,6 +33,17 @@ describe("HTML from zero track import", () => {
     for (const lesson of htmlTrack().lessons) {
       const text = lesson.blocks.flatMap((b) => (b.type === "markdown" ? [b.markdown] : [])).join("\n");
       expect(text, lesson.slug).toContain("```html\n");
+    }
+  });
+
+  it("avoids Markdown the lesson renderer does not support (no GFM tables or task lists)", () => {
+    for (const lesson of htmlTrack().lessons) {
+      for (const block of lesson.blocks) {
+        if (block.type !== "markdown") continue;
+        const prose = block.markdown.replace(/```[\s\S]*?```/g, "");
+        expect(prose, lesson.slug).not.toMatch(/^\s*\|.*\|\s*$/m);
+        expect(prose, lesson.slug).not.toMatch(/^\s*- \[[ x]\]/m);
+      }
     }
   });
 
