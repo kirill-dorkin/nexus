@@ -599,6 +599,28 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
       );
     }
   });
+  it("a stable course address resolves the Offering that publicly serves the course slug", async () => {
+    const f = fixtures[0]!;
+    const base = `/v1/public/learning/${f.orgSlug}/courses/${f.manifest.course.slug}`;
+    const course = await app.inject({ method: "GET", url: base });
+    expect(course.statusCode, course.body).toBe(200);
+    expect(course.headers["cache-control"]).toBe("no-store");
+    const parsed = publicLearningCourseSchema.parse(course.json());
+    expect(parsed.course.slug).toBe(f.manifest.course.slug);
+    expect(parsed.offering.slug).toBe(offeringSlug);
+    const lesson = await app.inject({ method: "GET", url: `${base}/lessons/${lessonSlug}` });
+    expect(lesson.statusCode, lesson.body).toBe(200);
+    expect(publicLearningLessonSchema.parse(lesson.json()).lesson.slug).toBe(lessonSlug);
+    for (const url of [
+      `/v1/public/learning/${f.orgSlug}/courses/missing-course`,
+      `${base}/lessons/missing-lesson`
+    ])
+      expect((await app.inject({ method: "GET", url })).statusCode).toBe(404);
+    const privileges = await runtime.query(
+      "SELECT has_function_privilege(current_user,'learning_content.find_public_course_version_ids(uuid,text)','EXECUTE') AS content,has_function_privilege(current_user,'learning_delivery.resolve_public_course_offering(text,text)','EXECUTE') AS delivery"
+    );
+    expect(privileges.rows[0]).toEqual({ content: false, delivery: true });
+  });
   it("a newer draft cannot replace the release pinned by the public Offering", async () => {
     const f = fixtures[0]!;
     const draft = structuredClone(f.manifest);
@@ -623,6 +645,11 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
     const publicLesson = await get(f, `/lessons/${lessonSlug}`);
     expect(publicLesson.body).not.toContain("PRIVATE_DRAFT");
     expect(publicLesson.json().course.title).toBe("Public course 0");
+    const stable = await app.inject({
+      method: "GET",
+      url: `/v1/public/learning/${f.orgSlug}/courses/${f.manifest.course.slug}`
+    });
+    expect(stable.json().course.title).toBe("Public course 0");
   });
   it("ordinary RLS remains closed and private resolver functions are not API capabilities", async () => {
     expect(
@@ -682,5 +709,10 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
     await visibility(fixtures[0], "private");
     await get(fixtures[0], "", 404);
     await get(fixtures[0], `/lessons/${lessonSlug}`, 404);
+    const stable = await app.inject({
+      method: "GET",
+      url: `/v1/public/learning/${fixtures[0]!.orgSlug}/courses/${fixtures[0]!.manifest.course.slug}`
+    });
+    expect(stable.statusCode).toBe(404);
   });
 });

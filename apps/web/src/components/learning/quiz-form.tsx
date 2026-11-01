@@ -9,6 +9,7 @@ import {
 } from "@platform/contracts";
 import { browserApiRequest } from "../../lib/public-api";
 import { learningLoginUrl } from "../../lib/learning-return-to";
+import { lessonUrl } from "../../lib/public-learning-routes";
 import {
   Alert,
   Button,
@@ -26,14 +27,24 @@ export function QuizForm({
   activity,
   organizationSlug,
   offeringSlug,
+  courseSlug,
   lessonSlug
 }: {
   activity: PublicQuizActivity;
   organizationSlug: string;
   offeringSlug: string;
+  courseSlug: string;
   lessonSlug: string;
 }) {
   const id = useId();
+  const returnTo = lessonUrl(
+    {
+      organization: { slug: organizationSlug },
+      offering: { slug: offeringSlug },
+      course: { slug: courseSlug }
+    },
+    lessonSlug
+  );
   const [selected, setSelected] = useState<string[]>([]),
     [text, setText] = useState("");
   const [busy, setBusy] = useState(false),
@@ -222,13 +233,13 @@ export function QuizForm({
           <div className={styles.quizSignupActions}>
             <Link
               className={buttonClass({ size: "md" })}
-              href={`${learningLoginUrl(`/learn/${organizationSlug}/${offeringSlug}/${lessonSlug}`)}&mode=register`}
+              href={`${learningLoginUrl(returnTo)}&mode=register`}
             >
               Создать аккаунт
             </Link>
             <Link
               className={buttonClass({ size: "md", variant: "secondary" })}
-              href={learningLoginUrl(`/learn/${organizationSlug}/${offeringSlug}/${lessonSlug}`)}
+              href={learningLoginUrl(returnTo)}
             >
               Войти
             </Link>

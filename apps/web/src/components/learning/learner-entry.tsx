@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { browserApiRequest } from "../../lib/public-api";
 import { learningLoginUrl } from "../../lib/learning-return-to";
+import { courseUrl, lessonUrl } from "../../lib/public-learning-routes";
 import { CourseProgress } from "./course-progress";
 import {
   Alert,
@@ -22,13 +23,20 @@ import styles from "./flow.module.css";
 export function LearnerEntry({
   organizationSlug,
   offeringSlug,
+  courseSlug,
   lessonSlug
 }: {
   organizationSlug: string;
   offeringSlug: string;
+  courseSlug: string;
   lessonSlug?: string;
 }) {
-  const route = `/learn/${organizationSlug}/${offeringSlug}${lessonSlug ? `/${lessonSlug}` : ""}`;
+  const address = {
+    organization: { slug: organizationSlug },
+    offering: { slug: offeringSlug },
+    course: { slug: courseSlug }
+  };
+  const route = lessonSlug ? lessonUrl(address, lessonSlug) : courseUrl(address);
   const api = `/v1/me/learning/${encodeURIComponent(organizationSlug)}/${encodeURIComponent(offeringSlug)}`;
   const [learning, setLearning] = useState<LearnerLearningCourse | null>(null),
     [anonymous, setAnonymous] = useState(false);
@@ -176,7 +184,7 @@ export function LearnerEntry({
                     {!lessonSlug && next && (
                       <Link
                         className={buttonClass()}
-                        href={`/learn/${organizationSlug}/${offeringSlug}/${next}`}
+                        href={lessonUrl(address, next)}
                       >
                         {learning.progress?.allRequiredPassed
                           ? "Вернуться к материалам"

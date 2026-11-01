@@ -13,4 +13,10 @@ export abstract class PublicFreeLearningOfferingQuery {
     organizationSlug: string,
     offeringSlug: string
   ): Promise<{ slug: string; name: string } | null>;
+  /** The Offering slug that publicly delivers the course with this stable slug now, if any. */
+  abstract resolveCourseOffering(
+    tx: DatabaseTransaction,
+    organizationSlug: string,
+    courseSlug: string
+  ): Promise<string | null>;
 }

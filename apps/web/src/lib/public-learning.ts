@@ -42,3 +42,25 @@ export const loadLearningLesson = cache(async function loadLearningLesson(
     )
   );
 });
+/** Stable course address: the API resolves whichever Offering serves the course right now. */
+export const loadLearningCourseBySlug = cache(async function loadLearningCourseBySlug(
+  organizationSlug: string,
+  courseSlug: string
+) {
+  return publicLearningCourseSchema.parse(
+    await read(
+      `/v1/public/learning/${encodeURIComponent(organizationSlug)}/courses/${encodeURIComponent(courseSlug)}`
+    )
+  );
+});
+export const loadLearningLessonBySlug = cache(async function loadLearningLessonBySlug(
+  organizationSlug: string,
+  courseSlug: string,
+  lessonSlug: string
+) {
+  return publicLearningLessonSchema.parse(
+    await read(
+      `/v1/public/learning/${encodeURIComponent(organizationSlug)}/courses/${encodeURIComponent(courseSlug)}/lessons/${encodeURIComponent(lessonSlug)}`
+    )
+  );
+});

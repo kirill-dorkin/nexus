@@ -8,6 +8,7 @@ const learning: LearnerLearningCourse = {
   organization: { slug: "academy", name: "Academy" },
   offering: { slug: "basics", name: "Basics" },
   course: {
+    slug: "basics",
     title: "Basics",
     description: "",
     lessons: [

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { browserApiRequest } from "../../../lib/public-api";
 import { learningLoginUrl } from "../../../lib/learning-return-to";
+import { courseUrl, lessonUrl } from "../../../lib/public-learning-routes";
 import { CourseProgress } from "../../../components/learning/course-progress";
 import {
   Alert,
@@ -187,7 +188,7 @@ export function MyLearning() {
                   <Eyebrow>{c.organization.name}</Eyebrow>
                   <h2>
                     <Link
-                      href={`/learn/${c.organization.slug}/${c.offering.slug}`}
+                      href={courseUrl(c)}
                     >
                       {c.course.title}
                     </Link>
@@ -200,7 +201,7 @@ export function MyLearning() {
                   <CourseProgress learning={c} />
                   <Link
                     className={buttonClass()}
-                    href={`/learn/${c.organization.slug}/${c.offering.slug}/${next}`}
+                    href={lessonUrl(c, next)}
                   >
                     {c.progress?.allRequiredPassed
                       ? "Вернуться к материалам"
