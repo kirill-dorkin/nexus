@@ -59,9 +59,9 @@ export default {
     scene("Сайт из 2005-го",
       ["marta", "У меня есть старый сайт, его делал племянник в 2005-м. Там бегущая строка! Можно оставить?"],
       ["nika", "Нельзя 😄 Это устаревшие теги. Узнавать — да, писать — нет."]),
-    card("<center> · <font> · <big> · <tt>", "Оформление в HTML", "Раньше внешний вид задавали тегами.", "Теперь это CSS: `text-align`, `color`, `font-size`."),
-    card("<marquee> · <blink>", "Бегущая строка", "Движущийся и мигающий текст.", "Раздражает и мешает людям с эпилепсией и СДВГ."),
-    card("<frameset> · <frame>", "Фреймы", "Страница из нескольких окон.", "Ломали ссылки и закладки. Есть `iframe`."),
+    card("<center> · <font> · <big> · <tt>", "Оформление в HTML", "Раньше внешний вид задавали тегами: центр, шрифт, размер.", "Теперь это CSS: выравнивание — `text-align`, `margin` или `flex`/`grid`, цвет — `color`, размер — `font-size`.", "<!-- 2005 -->\n<center><font color=\"red\" size=\"5\">Скидки!</font></center>\n<!-- сейчас -->\n<p class=\"sale\">Скидки!</p>"),
+    card("<marquee> · <blink>", "Бегущая строка", "Движущийся и мигающий текст.", "Раздражает и мешает людям с эпилепсией и СДВГ. Не используй.", "<!-- так больше не делают -->\n<marquee>Скидки на раф!</marquee>"),
+    card("<frameset> · <frame>", "Фреймы", "Страница, собранная из нескольких окон.", "Ломали ссылки, закладки и поиск. Для встраивания есть `iframe`.", "<!-- устарело -->\n<frameset cols=\"30%,70%\">\n  <frame src=\"menu.html\">\n  <frame src=\"main.html\">\n</frameset>"),
     card("Не устарело", "Хотя кажется", "`b`, `i`, `u`, `s`, `small` получили новый смысл и живы.", "Не путай с `font` и `center`.")
   ],
 
@@ -72,7 +72,7 @@ export default {
     card("commandfor", "Чем управляет кнопка", "У `button`: `id` элемента, которым она управляет.", "Связь «кнопка → диалог» без JavaScript.", "<button commandfor=\"d\" command=\"show-modal\">Открыть</button>\n<dialog id=\"d\">Привет!</dialog>"),
     card("command", "Какую команду выполнить", "`show-modal`, `close`, `request-close`, `show-popover`, `hide-popover`, `toggle-popover`.", "Открыть и закрыть окно одной разметкой.", "<button commandfor=\"d\" command=\"close\">Закрыть</button>"),
     card("closedby", "Как закрыть диалог", "`any` — Escape и клик вне окна, `closerequest` — только Escape, `none` — только кнопкой.", "Важное окно не закроется случайно."),
-    card("<selectedcontent>", "Настраиваемый select", "Можно стилизовать `select` полностью, выбранное повторяется в `selectedcontent`.", "Список напитков с картинками."),
+    card("<selectedcontent>", "Настраиваемый select", "Внутри кнопки `select` повторяет выбранный вариант; сам `select` можно стилизовать полностью.", "Список напитков с картинками вместо скучного системного.", "<select>\n  <button><selectedcontent></selectedcontent></button>\n  <option>☕ Раф</option>\n  <option>🥛 Латте</option>\n</select>"),
     card("alpha", "Цвет с прозрачностью", "У `input type=\"color\"`: можно выбрать прозрачность.", "Полупрозрачная плашка на фото.", "<input type=\"color\" alpha>", { show: 50 }),
     card("colorspace", "Цветовое пространство", "У `input type=\"color\"`: `limited-srgb` или `display-p3`.", "Яркие цвета на современных экранах.", "<input type=\"color\" colorspace=\"display-p3\">", { show: 50 }),
     card("headingoffset", "Сдвинуть уровни заголовков", "Глобальный: заголовки внутри считаются на N уровней ниже.", "Вставленный компонент с `h1` станет `h3` и не сломает структуру.", "<section headingoffset=\"2\">\n  <h1>Отзывы</h1>\n</section>"),

@@ -142,6 +142,23 @@ function StoryScene({ story }: { story: Story }) {
   );
 }
 
+/**
+ * Live preview of trusted course HTML. Scripts stay disabled; same-origin is allowed only so the
+ * frame can be measured and sized to its content instead of clipping or leaving empty space.
+ */
+function AutoHeightPreview({ title, html, initial }: { title: string; html: string; initial: number }) {
+  const [height, setHeight] = useState(initial);
+  return (
+    <iframe title={title} sandbox="allow-same-origin" referrerPolicy="no-referrer" loading="lazy" srcDoc={html}
+      style={{ height }}
+      onLoad={(event) => {
+        const doc = event.currentTarget.contentDocument;
+        const measured = doc ? Math.max(doc.documentElement.scrollHeight, doc.body?.scrollHeight ?? 0) : 0;
+        if (measured > 0) setHeight(Math.min(Math.max(measured, 40), 480));
+      }} />
+  );
+}
+
 /** What a card is about: a tag (`<p>`), an attribute (`href`) or a plain idea (Сервер). */
 export function conceptKind(name: string): "tag" | "attr" | "idea" {
   if (name.startsWith("<")) return "tag";
@@ -173,8 +190,7 @@ function ConceptCard({ concept }: { concept: Concept }) {
                 {concept.show ? (
                   <div className={styles.preview}>
                     <span>Так это выглядит</span>
-                    <iframe title={`Пример: ${concept.title}`} sandbox="" referrerPolicy="no-referrer" loading="lazy"
-                      srcDoc={concept.how} style={{ height: concept.show }} />
+                    <AutoHeightPreview title={`Пример: ${concept.title}`} html={concept.how} initial={concept.show} />
                   </div>
                 ) : null}
               </div>
@@ -205,7 +221,7 @@ function RecapBanner({ recap }: { recap: Recap }) {
     <aside className={styles.recap} aria-label="Сюжет курса">
       <div className={styles.recapTop}>
         <span className={styles.cast} aria-hidden="true">{CAST.map((who) => <Avatar key={who} who={who} />)}</span>
-        <p className={styles.premise}>Курс-история: вы делаете сайт кофейни «Зерно»</p>
+        <p className={styles.premise}>Курс-история: ты делаешь сайт кофейни «Зерно»</p>
       </div>
       <p className={styles.now}><span>Сейчас</span> <Rich text={recap.now} /></p>
       <details className={styles.who}>

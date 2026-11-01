@@ -122,7 +122,7 @@ export function SaveProgressHint() {
   if (viewer !== "anonymous") return null;
   return (
     <p className={styles.hint}>
-      Решения хранятся только в этом браузере. <Link href={`${learningLoginUrl(returnTo)}&mode=register`}>Создайте аккаунт</Link>, чтобы не потерять прогресс.
+      Решения хранятся только в этом браузере. <Link href={`${learningLoginUrl(returnTo)}&mode=register`}>Создай аккаунт</Link>, чтобы не потерять прогресс.
     </p>
   );
 }

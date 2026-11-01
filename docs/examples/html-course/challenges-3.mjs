@@ -8,7 +8,7 @@ const task = (title, text, { start, checks, solution, hint, at }) => ({
 export default {
   /* ---------- 7. Структура ---------- */
   semantics: [
-    task("Каркас сайта кофейни", "Чтобы Лев мог прыгать по сайту, замените безликие `div` на семантические: шапку — на `header`, меню — на `nav`, основное содержимое — на `main`, подвал — на `footer`.", {
+    task("Каркас сайта кофейни", "Чтобы Лев мог прыгать по сайту, замени безликие `div` на семантические: шапку — на `header`, меню — на `nav`, основное содержимое — на `main`, подвал — на `footer`.", {
       start: "<div class=\"header\">\n  <div class=\"nav\"><a href=\"/\">Главная</a> <a href=\"/menu\">Меню</a></div>\n</div>\n<div class=\"main\">\n  <h1>Кофейня «Зерно»</h1>\n</div>\n<div class=\"footer\">© 2026</div>",
       checks: [
         el("header nav", "Меню `nav` внутри `header`"),
@@ -20,7 +20,7 @@ export default {
     })
   ],
   "page-sections": [
-    task("Пост в блог кофейни", "Оформите пост «Кофе из Эфиопии»: всё в `article`, внутри два раздела `section` с заголовками `h2`, а заметка «Кстати» — в `aside`.", {
+    task("Пост в блог кофейни", "Оформи пост «Кофе из Эфиопии»: всё в `article`, внутри два раздела `section` с заголовками `h2`, а заметка «Кстати» — в `aside`.", {
       start: "<h1>Кофе из Эфиопии</h1>\n<h2>Вкус</h2>\n<p>Ягоды и цветы.</p>\n<h2>Как заваривать</h2>\n<p>Лучше в воронке.</p>\n<p>Кстати: кофе нашёл эфиопский пастух.</p>",
       checks: [
         el("article h1", "Пост в `article`"),
@@ -31,7 +31,7 @@ export default {
     })
   ],
   "details-summary": [
-    task("FAQ кофейни", "Гости спрашивают одно и то же. Сделайте три вопроса FAQ через `details` и `summary`. Все три с одинаковым `name=\"faq\"`, чтобы открывался только один, а первый открыт сразу (`open`). Нажмите на вопросы в результате.", {
+    task("FAQ кофейни", "Гости спрашивают одно и то же. Сделай три вопроса FAQ через `details` и `summary`. Все три с одинаковым `name=\"faq\"`, чтобы открывался только один, а первый открыт сразу (`open`). Нажми на вопросы в результате.", {
       start: "<h2>Частые вопросы</h2>\n",
       checks: [
         el("details summary", "Три вопроса с `summary`", { count: 3 }),
@@ -42,7 +42,7 @@ export default {
     })
   ],
   "dialog-and-popover": [
-    task("Подсказка «Состав»", "Сделайте кнопку «Что такое раф?», которая открывает `popover`: у кнопки `popovertarget=\"tip\"`, у блока — `id=\"tip\"` и атрибут `popover`.", {
+    task("Подсказка «Состав»", "Сделай кнопку «Что такое раф?», которая открывает `popover`: у кнопки `popovertarget=\"tip\"`, у блока — `id=\"tip\"` и атрибут `popover`.", {
       start: "<button>Что такое раф?</button>\n<div>Эспрессо, сливки и ваниль.</div>",
       checks: [
         el("button[popovertarget=\"tip\"]", "Кнопка с `popovertarget=\"tip\"`"),
@@ -54,7 +54,7 @@ export default {
 
   /* ---------- 8. head ---------- */
   metadata: [
-    task("Витрина в поиске", "Вместо «Document» в Яндексе — заполните `head` кофейни: кодировка, `viewport` для телефонов, понятный `title` и описание `meta name=\"description\"`.", {
+    task("Витрина в поиске", "Вместо «Document» в Яндексе — заполни `head` кофейни: кодировка, `viewport` для телефонов, понятный `title` и описание `meta name=\"description\"`.", {
       start: "<!doctype html>\n<html lang=\"ru\">\n<head>\n</head>\n<body><h1>Кофейня «Зерно»</h1></body>\n</html>",
       checks: [
         el("meta[charset]", "Кодировка"),
@@ -66,7 +66,7 @@ export default {
     })
   ],
   "social-and-icons": [
-    task("Превью в мессенджере", "Чтобы ссылка на «Зерно» приходила с картинкой, добавьте Open Graph: `og:title`, `og:description`, `og:image`, а ещё иконку сайта `link rel=\"icon\"`.", {
+    task("Превью в мессенджере", "Чтобы ссылка на «Зерно» приходила с картинкой, добавь Open Graph: `og:title`, `og:description`, `og:image`, а ещё иконку сайта `link rel=\"icon\"`.", {
       start: "<head>\n  <title>Кофейня «Зерно»</title>\n</head>",
       checks: [
         el("meta[property=\"og:title\"][content]", "`og:title`"),
@@ -78,7 +78,7 @@ export default {
     })
   ],
   "linking-resources": [
-    task("Фирменный стиль", "Дизайнер прислал файлы. Подключите в `head` стили `style.css`, скрипт `app.js` с `defer` и предварительное соединение `preconnect` с `https://fonts.gstatic.com`.", {
+    task("Фирменный стиль", "Дизайнер прислал файлы. Подключи в `head` стили `style.css`, скрипт `app.js` с `defer` и предварительное соединение `preconnect` с `https://fonts.gstatic.com`.", {
       start: "<head>\n  <title>Сайт</title>\n</head>",
       checks: [
         el("link[rel=\"stylesheet\"][href=\"style.css\"]", "Стили `style.css`"),
@@ -89,7 +89,7 @@ export default {
     })
   ],
   "style-base-meta": [
-    task("Красная распродажа", "Марта хочет красный заголовок акции — сделайте его тремя строчками CSS: добавьте в `head` элемент `style` с правилом для `h1`, а в `head` — `base` с адресом `https://example.com/`.", {
+    task("Красная распродажа", "Марта хочет красный заголовок акции — сделай его тремя строчками CSS: добавь в `head` элемент `style` с правилом для `h1`, а в `head` — `base` с адресом `https://example.com/`.", {
       start: "<head>\n</head>\n<h1>Распродажа</h1>",
       checks: [
         el("head style", "Есть `style` в `head`"),
@@ -101,7 +101,7 @@ export default {
     })
   ],
   security: [
-    task("Защита от Вредного Скрипта", "Вредный Скрипт может подменить файл на CDN. Подключите скрипт безопасно: укажите `integrity` с хешем и `crossorigin=\"anonymous\"`, а ссылку в новой вкладке защитите `rel=\"noopener noreferrer\"`.", {
+    task("Защита от Вредного Скрипта", "Вредный Скрипт может подменить файл на CDN. Подключи скрипт безопасно: укажи `integrity` с хешем и `crossorigin=\"anonymous\"`, а ссылку в новой вкладке защити `rel=\"noopener noreferrer\"`.", {
       start: "<script src=\"https://cdn.example.com/lib.js\"></script>\n<a href=\"https://partner.example\" target=\"_blank\">Партнёр</a>",
       checks: [
         el("script[integrity^=\"sha\"]", "Есть `integrity` с хешем"),
@@ -112,7 +112,7 @@ export default {
     })
   ],
   "structured-data": [
-    task("Мастер-класс в поиске", "Чтобы мастер-класс по латте-арту появился в поиске, разметьте событие микроданными: у блока `itemscope` и `itemtype=\"https://schema.org/Event\"`, у названия `itemprop=\"name\"`, у даты — `time` с `itemprop=\"startDate\"`.", {
+    task("Мастер-класс в поиске", "Чтобы мастер-класс по латте-арту появился в поиске, разметь событие микроданными: у блока `itemscope` и `itemtype=\"https://schema.org/Event\"`, у названия `itemprop=\"name\"`, у даты — `time` с `itemprop=\"startDate\"`.", {
       start: "<div>\n  <h2>Мастер-класс по латте-арту</h2>\n  <p>15 декабря в 19:00</p>\n</div>",
       checks: [
         el("[itemscope][itemtype=\"https://schema.org/Event\"]", "Блок — `Event` с `itemscope`"),
@@ -125,7 +125,7 @@ export default {
 
   /* ---------- 9. Доступность ---------- */
   "accessibility-basics": [
-    task("Лев проверяет сайт", "Скринридер Льва споткнулся четыре раза. Исправьте: у страницы нет языка, у картинки нет `alt`, поле без подписи, а «кнопка» сделана из `div`.", {
+    task("Лев проверяет сайт", "Скринридер Льва споткнулся четыре раза. Исправь: у страницы нет языка, у картинки нет `alt`, поле без подписи, а «кнопка» сделана из `div`.", {
       start: "<html>\n<body>\n  <img src=\"chart.png\">\n  <input id=\"q\" placeholder=\"Поиск\">\n  <div onclick=\"search()\">Найти</div>\n</body>\n</html>",
       checks: [
         el("html[lang]", "У `html` есть `lang`"),
@@ -138,7 +138,7 @@ export default {
     })
   ],
   "keyboard-and-focus": [
-    task("Без мыши", "Лев ходит клавишей Tab. Добавьте первой на странице ссылку `href=\"#main\"` с текстом «Перейти к содержимому», а основному блоку `main` — `id=\"main\"`. Уберите положительный `tabindex`, ломающий порядок.", {
+    task("Без мыши", "Лев ходит клавишей Tab. Добавь первой на странице ссылку `href=\"#main\"` с текстом «Перейти к содержимому», а основному блоку `main` — `id=\"main\"`. Убери положительный `tabindex`, ломающий порядок.", {
       start: "<nav><a href=\"/\">Главная</a> <a href=\"/blog\" tabindex=\"5\">Блог</a></nav>\n<main>\n  <h1>Статья</h1>\n</main>",
       checks: [
         el("body > a[href=\"#main\"]:first-child", "Первая ссылка ведёт на `#main`"),
@@ -149,20 +149,20 @@ export default {
     })
   ],
   aria: [
-    task("Чтобы Лев понял", "В форме брони у кнопки только иконка ✕ — дайте ей имя `aria-label=\"Закрыть\"`. Свяжите поле с текстом ошибки через `aria-describedby` и отметьте его `aria-invalid=\"true\"`.", {
-      start: "<button>✕</button>\n<label for=\"mail\">Email</label>\n<input id=\"mail\" type=\"email\">\n<p id=\"mail-error\">Укажите почту с @</p>",
+    task("Чтобы Лев понял", "В форме брони у кнопки только иконка ✕ — дай ей имя `aria-label=\"Закрыть\"`. Свяжи поле с текстом ошибки через `aria-describedby` и отметь его `aria-invalid=\"true\"`.", {
+      start: "<button>✕</button>\n<label for=\"mail\">Email</label>\n<input id=\"mail\" type=\"email\">\n<p id=\"mail-error\">Укажи почту с @</p>",
       checks: [
         el("button[aria-label=\"Закрыть\"]", "У кнопки есть имя «Закрыть»"),
         el("input[aria-describedby=\"mail-error\"]", "Поле ссылается на ошибку"),
         el("input[aria-invalid=\"true\"]", "Поле помечено как ошибочное")
       ],
-      solution: "<button aria-label=\"Закрыть\">✕</button>\n<label for=\"mail\">Email</label>\n<input id=\"mail\" type=\"email\" aria-describedby=\"mail-error\" aria-invalid=\"true\">\n<p id=\"mail-error\">Укажите почту с @</p>"
+      solution: "<button aria-label=\"Закрыть\">✕</button>\n<label for=\"mail\">Email</label>\n<input id=\"mail\" type=\"email\" aria-describedby=\"mail-error\" aria-invalid=\"true\">\n<p id=\"mail-error\">Укажи почту с @</p>"
     })
   ],
 
   /* ---------- JavaScript и интерактивность ---------- */
   "html-and-javascript": [
-    task("Лайки под напитками", "Марта хочет сердечко под рафом. Подготовьте разметку, с которой скрипту будет удобно работать: кнопке — `id=\"like\"` и `type=\"button\"`, счётчику — `data-count=\"0\"`, а обработчик клика подключите атрибутом `onclick`.", {
+    task("Лайки под напитками", "Марта хочет сердечко под рафом. Подготовь разметку, с которой скрипту будет удобно работать: кнопке — `id=\"like\"` и `type=\"button\"`, счётчику — `data-count=\"0\"`, а обработчик клика подключи атрибутом `onclick`.", {
       start: "<button>♥ Нравится</button>\n<span>0</span>",
       checks: [
         el("button#like[type=\"button\"]", "Кнопка `id=\"like\"` с `type=\"button\"`"),
@@ -174,18 +174,18 @@ export default {
     })
   ],
   "editing-and-drag-and-drop": [
-    task("Доска заказов", "Для бариста: сделайте заметку редактируемой (`contenteditable`), карточку — перетаскиваемой (`draggable=\"true\"`), а скрытую подсказку — находимой поиском (`hidden=\"until-found\"`).", {
-      start: "<p>Кликните и напишите заметку</p>\n<div>Заказ №12: раф</div>\n<div>Пароль Wi-Fi: zerno2026</div>",
+    task("Доска заказов", "Для бариста: сделай заметку редактируемой (`contenteditable`), карточку — перетаскиваемой (`draggable=\"true\"`), а скрытую подсказку — находимой поиском (`hidden=\"until-found\"`).", {
+      start: "<p>Кликни и напиши заметку</p>\n<div>Заказ №12: раф</div>\n<div>Пароль Wi-Fi: zerno2026</div>",
       checks: [
         el("p[contenteditable]", "Абзац редактируемый"),
         el("[draggable=\"true\"]", "Карточка перетаскиваемая"),
         el("[hidden=\"until-found\"]", "Подсказка скрыта до поиска")
       ],
-      solution: "<p contenteditable>Кликните и напишите заметку</p>\n<div draggable=\"true\">Заказ №12: раф</div>\n<div hidden=\"until-found\">Пароль Wi-Fi: zerno2026</div>"
+      solution: "<p contenteditable>Кликни и напиши заметку</p>\n<div draggable=\"true\">Заказ №12: раф</div>\n<div hidden=\"until-found\">Пароль Wi-Fi: zerno2026</div>"
     })
   ],
   "custom-elements": [
-    task("Свой тег для карточки", "Карточка повторяется 30 раз. Создайте свой элемент `user-card` (в имени обязательно дефис) с декларативным Shadow DOM: внутри `template shadowrootmode=\"open\"` со `slot name=\"name\"`, а снаружи — `span slot=\"name\"` с именем.", {
+    task("Свой тег для карточки", "Карточка повторяется 30 раз. Создай свой элемент `user-card` (в имени обязательно дефис) с декларативным Shadow DOM: внутри `template shadowrootmode=\"open\"` со `slot name=\"name\"`, а снаружи — `span slot=\"name\"` с именем.", {
       start: "<usercard>Раф</usercard>",
       checks: [
         el("user-card", "Есть элемент `user-card`"),
@@ -198,46 +198,8 @@ export default {
   ],
 
   /* ---------- Проекты и качество ---------- */
-  "project-business-card": [
-    task("Визитка бариста Тимура", "Тимур едет на чемпионат бариста. Соберите ему визитку: `header` с фото (с `alt`) и именем в `h1`, `main` с разделом «Обо мне» и списком навыков (не меньше трёх), `footer` со ссылкой на почту.", {
-      start: "<!doctype html>\n<html lang=\"ru\">\n<head>\n  <meta charset=\"utf-8\">\n  <title>Визитка</title>\n</head>\n<body>\n\n</body>\n</html>",
-      checks: [
-        el("header img[alt]", "Фото с `alt` в шапке"),
-        el("header h1", "Имя в `h1`"),
-        el("main h2", "Раздел «Обо мне»", { text: "Обо мне" }),
-        el("main ul li", "Минимум три навыка", { count: 3 }),
-        el("footer a[href^=\"mailto:\"]", "Почта в подвале")
-      ],
-      solution: "<!doctype html>\n<html lang=\"ru\">\n<head>\n  <meta charset=\"utf-8\">\n  <title>Визитка</title>\n</head>\n<body>\n  <header>\n    <img src=\"https://picsum.photos/id/64/160/160\" alt=\"Тимур с питчером у кофемашины\" width=\"160\" height=\"160\">\n    <h1>Тимур Галиев</h1>\n  </header>\n  <main>\n    <h2>Обо мне</h2>\n    <p>Бариста кофейни «Зерно», 5 лет за стойкой.</p>\n    <ul>\n      <li>Латте-арт</li>\n      <li>Обжарка</li>\n      <li>Альтернативное заваривание</li>\n    </ul>\n  </main>\n  <footer><a href=\"mailto:timur@zerno.ru\">timur@zerno.ru</a></footer>\n</body>\n</html>"
-    })
-  ],
-  "project-landing": [
-    task("Лендинг мастер-класса", "Мастер-класс по латте-арту! Сделайте первый экран: `header` с `nav`, `main` с `h1`, абзацем-обещанием и кнопкой-ссылкой «Записаться» на `#signup`, и раздел `section id=\"signup\"` ниже.", {
-      start: "<body>\n\n</body>",
-      checks: [
-        el("header nav a", "Меню в шапке"),
-        el("main h1", "Главный заголовок в `main`"),
-        el("main a[href=\"#signup\"]", "Кнопка «Записаться» ведёт на `#signup`", { text: "Записаться" }),
-        el("section#signup", "Раздел `#signup`")
-      ],
-      solution: "<body>\n  <header><nav><a href=\"#program\">Программа</a> <a href=\"#signup\">Запись</a></nav></header>\n  <main>\n    <h1>Латте-арт за один вечер</h1>\n    <p>Нарисуете сердце и розетту, даже если никогда не держали питчер.</p>\n    <a href=\"#signup\">Записаться</a>\n    <section id=\"signup\"><h2>Запись</h2></section>\n  </main>\n</body>"
-    })
-  ],
-  "project-article": [
-    task("Как мы обжариваем кофе", "Сверстайте статью в блог кофейни: `article` с `header` (заголовок `h1` и дата в `time`), минимум два раздела с `h2`, цитатой `blockquote` и картинкой в `figure`.", {
-      start: "<main>\n\n</main>",
-      checks: [
-        el("article header h1", "Заголовок статьи в `header`"),
-        el("article header time[datetime]", "Дата в `time`"),
-        el("article h2", "Минимум два раздела", { count: 2 }),
-        el("article blockquote", "Есть цитата"),
-        el("article figure img[alt]", "Картинка в `figure`")
-      ],
-      solution: "<main>\n  <article>\n    <header>\n      <h1>Как мы обжариваем кофе</h1>\n      <time datetime=\"2026-11-01\">1 ноября 2026</time>\n    </header>\n    <h2>Зелёное зерно</h2>\n    <p>Везём из Эфиопии и Бразилии.</p>\n    <blockquote><p>Обжарка — как стейк: секунды решают всё.</p></blockquote>\n    <h2>Ростер</h2>\n    <figure><img src=\"https://picsum.photos/600/300\" alt=\"Ростер с горячим зерном\"><figcaption>Наш ростер</figcaption></figure>\n  </article>\n</main>"
-    })
-  ],
   "code-quality": [
-    task("Код-ревью от Ники", "Ника нашла четыре ошибки: два одинаковых `id`, картинку без `alt`, незакрытый `li` внутри `p` и `h1` после `h3`. Исправьте их.", {
+    task("Код-ревью от Ники", "Ника нашла четыре ошибки: два одинаковых `id`, картинку без `alt`, незакрытый `li` внутри `p` и `h1` после `h3`. Исправь их.", {
       start: "<h3 id=\"top\">Зерно</h3>\n<h1 id=\"top\">Меню</h1>\n<img src=\"raf.jpg\">\n<p>Напитки: <ul><li>Раф</ul></p>",
       checks: [
         el("[id=\"top\"]", "`id=\"top\"` не повторяется", { count: 1, max: 1 }),
@@ -249,7 +211,7 @@ export default {
     })
   ],
   "obsolete-elements": [
-    task("Старый сайт Марты", "Перепишите кусок сайта, который племянник Марты сделал в 2005-м: `center` и `font` устарели. Замените `center` на `div`, а `font` уберите, оставив текст в `strong`.", {
+    task("Старый сайт Марты", "Перепиши кусок сайта, который племянник Марты сделал в 2005-м: `center` и `font` устарели. Замени `center` на `div`, а `font` убери, оставив текст в `strong`.", {
       start: "<center><font color=\"red\"><b>Скидки!</b></font></center>",
       checks: [
         el("center", "Нет `center`", { absent: true }),
@@ -260,7 +222,7 @@ export default {
     })
   ],
   "whats-new": [
-    task("Отменить бронь?", "Без JavaScript: дайте кнопке `command=\"show-modal\"` и `commandfor=\"hello\"`, а диалогу — `id=\"hello\"` и `closedby=\"any\"`, чтобы он закрывался кликом мимо.", {
+    task("Отменить бронь?", "Без JavaScript: дай кнопке `command=\"show-modal\"` и `commandfor=\"hello\"`, а диалогу — `id=\"hello\"` и `closedby=\"any\"`, чтобы он закрывался кликом мимо.", {
       start: "<button>Отменить бронь</button>\n<dialog>\n  <p>Точно отменить бронь?</p>\n</dialog>",
       checks: [
         el("button[command=\"show-modal\"][commandfor=\"hello\"]", "Кнопка с `command` и `commandfor`"),
@@ -271,7 +233,7 @@ export default {
     })
   ],
   "element-reference": [
-    task("Проверка перед запуском", "Соберите главную кофейни, где встречаются 10 разных элементов из справочника: `header`, `nav`, `main`, `h1`, `p`, `a`, `ul`, `li`, `img` и `footer`.", {
+    task("Проверка перед запуском", "Собери главную кофейни, где встречаются 10 разных элементов из справочника: `header`, `nav`, `main`, `h1`, `p`, `a`, `ul`, `li`, `img` и `footer`.", {
       start: "",
       checks: [
         el("header nav", "`header` и `nav`"),
@@ -282,21 +244,6 @@ export default {
         el("footer", "`footer`")
       ],
       solution: "<header><nav><a href=\"/\">Главная</a></nav></header>\n<main>\n  <h1>Справочник</h1>\n  <p>Вся карта — на <a href=\"#map\">одной странице</a>.</p>\n  <ul><li>Элементы</li><li>Атрибуты</li></ul>\n  <img src=\"map.png\" alt=\"Карта элементов HTML\">\n</main>\n<footer>© 2026</footer>"
-    })
-  ],
-  "final-project": [
-    task("Запуск сайта «Зерна»", "Завтра открытие сезона. Соберите главную кофейни: полный документ с `lang`, `viewport` и `description`, ссылка «Перейти к содержимому», шапка с меню, где текущая страница отмечена `aria-current=\"page\"`, `main` с `h1` и минимум двумя работами в `article`, подвал.", {
-      start: "<!doctype html>\n",
-      checks: [
-        el("html[lang]", "`lang` у `html`"),
-        el("meta[name=\"viewport\"]", "`viewport`"),
-        el("meta[name=\"description\"]", "`description`"),
-        el("a[href=\"#main\"]", "Ссылка «Перейти к содержимому»"),
-        el("nav a[aria-current=\"page\"]", "Текущая страница отмечена `aria-current`"),
-        el("main#main article h2", "Минимум две работы в `article`", { count: 2 }),
-        el("footer", "Подвал")
-      ],
-      solution: "<!doctype html>\n<html lang=\"ru\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <meta name=\"description\" content=\"Кофейня «Зерно» в Казани: своя обжарка, завтраки, бронь столиков\">\n  <title>Кофейня «Зерно»</title>\n</head>\n<body>\n  <a href=\"#main\">Перейти к содержимому</a>\n  <header><nav><a href=\"/\" aria-current=\"page\">Главная</a> <a href=\"/menu.html\">Меню</a></nav></header>\n  <main id=\"main\">\n    <h1>Кофейня «Зерно»</h1>\n    <article><h2>Раф</h2><p>Фирменный, с ванилью.</p></article>\n    <article><h2>Чизкейк</h2><p>Печём каждое утро.</p></article>\n  </main>\n  <footer>© 2026 Зерно</footer>\n</body>\n</html>"
     })
   ]
 };
