@@ -8,7 +8,7 @@ import { Heading, Text, buttonClass } from "@platform/ui";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { LearningPageHeading } from "../../../../components/learning/learning-page-heading";
 import { LessonOutline } from "../../../../components/learning/lesson-outline";
-import { lessonCount } from "../../../../components/learning/learning-labels";
+import { durationLabel, lessonCount } from "../../../../components/learning/learning-labels";
 import styles from "../../../../components/learning/flow.module.css";
 import { absoluteUrl, jsonLd } from "../../../../lib/site";
 export const dynamic = "force-dynamic";
@@ -74,7 +74,7 @@ export default async function CoursePage({ params }: Props) {
               <ul className={styles.metaPills} aria-label="Формат курса">
                 <li data-accent="">Бесплатно</li>
                 <li>{lessonCount(course.course.lessons.length)}</li>
-                <li>Около {duration} мин</li>
+                <li>{durationLabel(duration)}</li>
                 <li>В своём темпе</li>
               </ul>
             </LearningPageHeading>
@@ -106,7 +106,7 @@ export default async function CoursePage({ params }: Props) {
                 Программа курса
               </Heading>
               <Text muted size="sm">
-                {lessonCount(course.course.lessons.length)} · около {duration} мин
+                {lessonCount(course.course.lessons.length)} · {durationLabel(duration)}
               </Text>
             </header>
             <LessonOutline course={course} />
