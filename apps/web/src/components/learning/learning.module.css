@@ -684,3 +684,13 @@ button.button {
   padding: clamp(1.25rem, 3.5vw, 2rem);
   border-radius: 1.5rem;
 }
+.codeActions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+.codeSnippet figcaption :global(.ui-button--primary) {
+  min-height: 36px;
+  padding: 0.4rem 0.9rem;
+}
