@@ -30,7 +30,8 @@ export default {
     scene("Частые вопросы",
       ["marta", "Нас вечно спрашивают: «Есть ли Wi-Fi?», «Можно с собакой?» Хочу раскрывающийся FAQ."],
       ["bro", "Сделаю без единой строчки JavaScript. Это я умею сам 💪"]),
-    card("<details> <summary>", "Раскрывашка", "`summary` всегда виден, клик раскрывает остальное.", "FAQ, спойлеры, подробности.", "<details>\n  <summary>Можно с собакой?</summary>\n  <p>Да! Даже миска с водой есть.</p>\n</details>", { show: 80 }),
+    card("<details>", "Раскрывающийся блок", "Свёрнутый блок, раскрывается по клику — без JavaScript.", "FAQ, подробности, спойлеры.", "<details>\n  <summary>Можно с собакой?</summary>\n  <p>Да! Даже миска с водой есть.</p>\n</details>", { show: 80 }),
+    card("<summary>", "Заголовок раскрывашки", "Первый элемент `details`: всегда виден, клик раскрывает.", "Вопрос в FAQ. Читалка называет его кнопкой.", "<details>\n  <summary>Есть Wi-Fi?</summary>\n  <p>Да, пароль на чеке.</p>\n</details>", { show: 80 }),
     card("open", "Открыто сразу", "Атрибут `open` раскрывает блок по умолчанию.", "Самый частый вопрос — сразу открыт."),
     card("name", "Аккордеон", "Одинаковый `name` у нескольких `details` — открыт только один.", "FAQ, где не всё раскрыто разом.", "<details name=\"faq\"><summary>Wi-Fi?</summary><p>Есть.</p></details>\n<details name=\"faq\"><summary>Розетки?</summary><p>У каждого стола.</p></details>", { show: 90 })
   ],
@@ -40,7 +41,8 @@ export default {
       ["marta", "Хочу: нажал «Состав» — появилась подсказка. И окно «Точно отменить бронь?»"],
       ["nika", "Подсказка — `popover`. Важный вопрос, блокирующий страницу, — модальный `dialog`."]),
     card("popover", "Всплывающее окно", "Атрибут `popover` у блока и `popovertarget` у кнопки. Закрывается кликом мимо и Escape.", "Подсказки, меню — без JavaScript.", "<button popovertarget=\"info\">Состав</button>\n<div id=\"info\" popover>Эспрессо, сливки, ваниль</div>", { show: 60 }),
-    card("popovertargetaction · manual", "Управление", "`popovertargetaction=\"show|hide|toggle\"`; `popover=\"manual\"` — закрывается только явно.", "Уведомление, которое не исчезнет от случайного клика."),
+    card("popovertarget", "Кнопка открывает popover", "У кнопки: `id` всплывающего элемента.", "Связь «кнопка → подсказка» без JavaScript.", "<button popovertarget=\"tip\">Что такое раф?</button>\n<div id=\"tip\" popover>Кофе со сливками и ванилью</div>", { show: 70 }),
+    card("popovertargetaction", "Что сделать", "`toggle` (по умолчанию), `show` или `hide`.", "Отдельная кнопка «Закрыть» внутри подсказки.", "<button popovertarget=\"tip\" popovertargetaction=\"hide\">Закрыть</button>"),
     card("<dialog>", "Диалоговое окно", "Окно поверх страницы. Модальное (`showModal()`) блокирует страницу до ответа.", "«Отменить бронь?» — нельзя кликать мимо.", "<dialog open>\n  <form method=\"dialog\">\n    <p>Отменить бронь?</p>\n    <button value=\"yes\">Да</button>\n  </form>\n</dialog>", { show: 110 }),
     card("method=\"dialog\"", "Закрыть без JS", "Кнопка в форме с `method=\"dialog\"` закрывает окно.", "Простое «ОК» без скриптов."),
     card("inert", "Сделать неактивным", "Область нельзя кликнуть, сфокусировать и прочитать.", "Фон под своим окном.")
@@ -62,7 +64,9 @@ export default {
     card("viewport", "Мобильная вёрстка", "`<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">`.", "Без неё телефон рисует страницу шириной ~980 px и уменьшает. Масштабирование не запрещай: людям со слабым зрением нужно увеличивать."),
     card("robots · canonical", "Для поисковиков", "`<meta name=\"robots\" content=\"noindex\">` — не индексировать. `<link rel=\"canonical\">` — главный адрес страницы.", "Черновики не попадут в поиск, дубли не размоют выдачу."),
     card("theme-color", "Цвет браузера", "`<meta name=\"theme-color\" content=\"#6b3e26\">`.", "Строка браузера на телефоне в цвет кофейни."),
-    card("<meta>", "Прочие метаданные", "`name` и `content`, `http-equiv`, `charset`, а ещё `media` для разных тем.", "Информация о странице для машин.")
+    card("<meta>", "Метаданные", "Пустой элемент в `head`: информация о странице для машин.", "Кодировка, описание, viewport, цвет темы.", "<meta name=\"description\" content=\"Кофейня в Казани\">"),
+    card("charset", "Кодировка", "У `meta`: `utf-8`. Должна быть в первых 1024 байтах документа.", "Иначе кириллица превратится в кракозябры.", "<meta charset=\"utf-8\">"),
+    card("content", "Значение meta", "Значение для `name` или `http-equiv`.", "Сам текст описания, сама настройка viewport.", "<meta name=\"theme-color\" content=\"#6b3e26\">"),
   ],
 
   "social-and-icons": [
@@ -71,7 +75,8 @@ export default {
       ["nika", "Это Open Graph. Пять строчек — и красивое превью."]),
     card("og:*", "Превью ссылки", "Мета-теги с атрибутом `property`: `og:title`, `og:description`, `og:image` (абсолютный адрес!), `og:url`.", "Красивая карточка в Telegram и соцсетях.", "<meta property=\"og:title\" content=\"Кофейня «Зерно»\">\n<meta property=\"og:image\" content=\"https://zerno.ru/og.jpg\">"),
     card("<link rel=\"icon\">", "Иконка вкладки", "Favicon. Лучше SVG, плюс `apple-touch-icon` для iPhone.", "Сайт узнаётся среди 30 вкладок.", "<link rel=\"icon\" href=\"/favicon.svg\" type=\"image/svg+xml\">\n<link rel=\"apple-touch-icon\" href=\"/apple-touch-icon.png\">"),
-    card("manifest", "Как приложение", "`<link rel=\"manifest\">` — файл с названием, иконками и цветами.", "Сайт можно «установить» на телефон.")
+    card("manifest", "Как приложение", "`<link rel=\"manifest\">` — файл с названием, иконками и цветами.", "Сайт можно «установить» на телефон."),
+    card("color", "Цвет иконки", "Атрибут `link rel=\"mask-icon\"`: цвет одноцветной иконки в Safari.", "Иконка кофейни в фирменном коричневом.", "<link rel=\"mask-icon\" href=\"/icon.svg\" color=\"#6b3e26\">"),
   ],
 
   "linking-resources": [
@@ -80,8 +85,11 @@ export default {
       ["bro", "Стили — в `head`, чтобы я рисовал сразу красиво. Скрипты — с `defer`, чтобы не тормозили меня."]),
     card("<link rel=\"stylesheet\">", "Подключить CSS", "В `head`, файл общий для всех страниц.", "Один файл — весь сайт в фирменном стиле.", "<link rel=\"stylesheet\" href=\"/style.css\">"),
     card("defer · async", "Скрипты без тормозов", "`defer` — по порядку после разбора HTML; `async` — сразу как скачался, порядок не важен.", "Аналитика — `async`, основной скрипт — `defer`."),
-    card("preload · preconnect · prefetch", "Подсказки браузеру", "`preload` — грузи сейчас (главный шрифт, `as=\"font\"`), `preconnect` — заранее соединись с сервером, `prefetch`/`modulepreload` — на потом, `dns-prefetch` — узнать адрес заранее.", "Шрифт появляется сразу, без мигания. Для картинок в `preload` есть `imagesrcset` и `imagesizes`.", "<link rel=\"preload\" href=\"/fonts/brand.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>"),
-    card("blocking · fetchpriority", "Приоритеты", "`fetchpriority` — что важнее, `blocking=\"render\"` — не рисовать до загрузки.", "Тонкая настройка скорости.")
+    card("preload · preconnect · prefetch", "Подсказки браузеру", "`preload` — грузи сейчас, `preconnect` — заранее соединись с сервером, `prefetch`/`modulepreload` — на потом, `dns-prefetch` — узнай адрес заранее.", "Шрифт появляется сразу, без мигания.", "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>"),
+    card("as", "Что именно предзагрузить", "Обязателен у `preload`: `font`, `image`, `style`, `script`.", "Браузер поставит правильный приоритет.", "<link rel=\"preload\" href=\"/fonts/brand.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>"),
+    card("imagesrcset", "srcset для предзагрузки", "Атрибут `link rel=\"preload\" as=\"image\"`: варианты картинки, как `srcset`.", "Предзагрузить именно ту версию фото, которая подойдёт экрану.", "<link rel=\"preload\" as=\"image\" imagesrcset=\"hero-400.jpg 400w, hero-800.jpg 800w\" imagesizes=\"100vw\">"),
+    card("imagesizes", "sizes для предзагрузки", "Пара к `imagesrcset` — как `sizes` у `img`.", "Без него браузер не поймёт, какой файл брать.", "<link rel=\"preload\" as=\"image\" imagesrcset=\"a.jpg 400w, b.jpg 800w\" imagesizes=\"50vw\">"),
+    card("blocking", "Не рисовать до загрузки", "`blocking=\"render\"` у `link`, `script`, `style`.", "Избежать мигания, пока не загрузился критичный CSS.", "<link rel=\"stylesheet\" href=\"/critical.css\" blocking=\"render\">"),
   ],
 
   "style-base-meta": [
@@ -103,7 +111,9 @@ export default {
       ["nika", "Сейчас разберём пять правил — и не будет страшно."]),
     card("XSS", "Чужой код на странице", "Главная угроза: ввод пользователя выполняется как HTML/JS.", "Комментарии и отзывы выводим как текст, без интерпретации HTML."),
     card("CSP", "Список разрешённых источников", "Content Security Policy: заголовок или `<meta http-equiv=\"Content-Security-Policy\">`. Скриптам — `nonce`.", "Даже если Скрипт пролезет — браузер его не выполнит."),
-    card("integrity · crossorigin", "Файл не подменили", "Хеш файла в `integrity`: подменённый скрипт с CDN не выполнится.", "Защита от взлома чужого CDN.", "<script src=\"https://cdn.example/lib.js\" integrity=\"sha384-…\" crossorigin=\"anonymous\"></script>"),
+    card("integrity", "Файл не подменили", "Хеш файла у `script` и `link`. Не совпал — файл не выполнится.", "Взломанный CDN не подсунет вредный код.", "<script src=\"https://cdn.example/lib.js\" integrity=\"sha384-…\" crossorigin=\"anonymous\"></script>"),
+    card("crossorigin", "Запрос с другого сайта", "`anonymous` — без кук, `use-credentials` — с ними. У `script`, `link`, `img`, `audio`, `video`.", "Нужен для `integrity` и шрифтов с CDN.", "<img src=\"https://cdn.example/raf.jpg\" crossorigin=\"anonymous\" alt=\"Раф\">"),
+    card("nonce", "Пропуск для скрипта", "Глобальный: одноразовый токен, который разрешает этот `script` или `style` по правилам CSP.", "Свой встроенный скрипт работает, внедрённый Вредным Скриптом — нет.", "<script nonce=\"r4nd0m\">init()</script>"),
     card("noopener · sandbox", "Изоляция", "`rel=\"noopener\"` для новых вкладок, `sandbox` для `iframe`.", "Чужая страница не дотянется до вашей."),
     card("Секреты", "Нигде в HTML", "Ключи API, пароли в комментариях — видны любому. Пароль — только `method=\"post\"`.", "Исходный код читает кто угодно.")
   ],
@@ -113,7 +123,11 @@ export default {
       ["marta", "У конкурентов в поиске видно рейтинг, часы работы и адрес. Как?"],
       ["nika", "Структурированные данные. Ты описываешь кофейню на языке, который понимают поисковики."]),
     card("JSON-LD", "Рекомендуемый способ", "`<script type=\"application/ld+json\">` с описанием по словарю schema.org.", "Поисковики любят его больше всего.", "<script type=\"application/ld+json\">\n{\"@context\": \"https://schema.org\", \"@type\": \"CafeOrCoffeeShop\", \"name\": \"Зерно\"}\n</script>"),
-    card("itemscope · itemtype · itemprop", "Микроданные", "Разметка прямо в HTML: сущность, её тип, свойства. Ещё `itemid` и `itemref`.", "Когда данные уже есть на странице.", "<div itemscope itemtype=\"https://schema.org/CafeOrCoffeeShop\">\n  <h1 itemprop=\"name\">Зерно</h1>\n</div>")
+    card("itemscope", "Здесь сущность", "Глобальный: элемент описывает отдельную сущность.", "Начало описания кофейни.", "<div itemscope itemtype=\"https://schema.org/CafeOrCoffeeShop\">…</div>"),
+    card("itemtype", "Тип сущности", "Адрес словаря schema.org.", "Поисковик поймёт, что это именно кофейня.", "<div itemscope itemtype=\"https://schema.org/CafeOrCoffeeShop\">…</div>"),
+    card("itemprop", "Свойство", "Глобальный: какое свойство хранит элемент.", "Название, адрес, телефон.", "<h1 itemprop=\"name\">Зерно</h1>\n<span itemprop=\"telephone\">+7 843 123-45-67</span>"),
+    card("itemid", "Уникальный идентификатор", "Глобальный адрес сущности.", "Связать одну кофейню на разных страницах.", "<div itemscope itemtype=\"https://schema.org/Book\" itemid=\"urn:isbn:9785000000000\">…</div>"),
+    card("itemref", "Свойства из других мест", "Список `id` элементов вне `itemscope`, которые тоже относятся к сущности.", "Адрес в подвале — часть описания кофейни.", "<div itemscope itemtype=\"https://schema.org/CafeOrCoffeeShop\" itemref=\"addr\">…</div>\n<p id=\"addr\" itemprop=\"address\">ул. Баумана, 12</p>"),
   ],
 
   "project-landing": [
@@ -148,7 +162,12 @@ export default {
       ["you", "Карточка напитка повторяется 30 раз. Можно сделать свой тег `<drink-card>`?"],
       ["bro", "Можно! Только с дефисом в имени — так я пойму, что он твой, а не мой."]),
     card("Свой элемент", "Имя с дефисом", "`user-card`, `drink-card` — регистрируются скриптом.", "Своя библиотека компонентов.", "<drink-card>Раф</drink-card>"),
-    card("<template shadowrootmode>", "Декларативный Shadow DOM", "Изолированное содержимое компонента прямо в HTML. Ещё `shadowrootdelegatesfocus`, `shadowrootclonable`, `shadowrootserializable`, `shadowrootslotassignment`, `shadowrootcustomelementregistry`.", "Стили компонента не протекают наружу."),
+    card("shadowrootmode", "Декларативный Shadow DOM", "У `template`: `open` или `closed` — превращает шаблон в изолированное содержимое элемента.", "Стили компонента не протекают наружу, без JavaScript.", "<drink-card>\n  <template shadowrootmode=\"open\">\n    <p>Изолированная карточка</p>\n  </template>\n</drink-card>", { show: 40 }),
+    card("shadowrootdelegatesfocus", "Передать фокус внутрь", "Клик по компоненту ставит фокус в первое поле внутри.", "Свой компонент-поле ведёт себя как настоящее поле.", "<template shadowrootmode=\"open\" shadowrootdelegatesfocus>…</template>"),
+    card("shadowrootclonable", "Можно клонировать", "Shadow DOM копируется вместе с элементом через `cloneNode`.", "Шаблоны карточек размножаются правильно.", "<template shadowrootmode=\"open\" shadowrootclonable>…</template>"),
+    card("shadowrootserializable", "Можно сериализовать", "Shadow DOM попадёт в `getHTML()`.", "Сохранить или отправить разметку компонента целиком.", "<template shadowrootmode=\"open\" shadowrootserializable>…</template>"),
+    card("shadowrootslotassignment", "Как раскладывать по слотам", "`named` — по атрибуту `slot` (по умолчанию), `manual` — скриптом.", "Тонкое управление содержимым компонента.", "<template shadowrootmode=\"open\" shadowrootslotassignment=\"manual\">…</template>"),
+    card("shadowrootcustomelementregistry", "Свой реестр элементов", "Shadow DOM получает отдельный реестр пользовательских элементов.", "Два компонента с одинаковыми именами внутри не конфликтуют.", "<template shadowrootmode=\"open\" shadowrootcustomelementregistry>…</template>"),
     card("<slot>", "Дырка для содержимого", "Показывает внутри компонента то, что передали снаружи. Именованный слот — `name`, снаружи — атрибут `slot`.", "Один шаблон — разные названия напитков.", "<drink-card>\n  <template shadowrootmode=\"open\">\n    <p>Напиток: <slot name=\"title\"></slot></p>\n  </template>\n  <span slot=\"title\">Раф</span>\n</drink-card>", { show: 50 }),
     card("is", "Расширить встроенный", "`<button is=\"like-button\">` — встроенная кнопка с поведением.", "Сохраняется вся доступность настоящей кнопки.")
   ]

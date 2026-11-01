@@ -64,10 +64,30 @@ describe("HTML full course import", () => {
       (name) => !new RegExp(`<${name}[\\s>/]|\x60${name}\x60`).test(text)
     );
     const missingAttributes = index.attributes.filter(
-      (name) => !new RegExp(`[\\s"\x60(]${name}(=|\x60|[\\s"),])`).test(text)
+      (name) => !new RegExp(`[\\s"\x60(]${name}(=|\x60|[\\s"),>/])`).test(text)
     );
     expect(missingElements, "elements not taught").toEqual([]);
     expect(missingAttributes, "attributes not taught").toEqual([]);
+  });
+
+  it("explains every element and attribute with its own concept card", () => {
+    // A concept card is a ```concept fence; its `name` may list several items (`<b> · <i>`),
+    // but every element and attribute must also have a card that is about it alone.
+    const index = JSON.parse(
+      readFileSync(new URL("../../../docs/examples/html-course/spec-index.json", import.meta.url), "utf8")
+    ) as { elements: string[]; attributes: string[] };
+    const own = new Set<string>();
+    for (const lesson of htmlTrack().lessons)
+      for (const block of lesson.blocks) {
+        if (block.type !== "markdown") continue;
+        for (const [, body] of block.markdown.matchAll(/```concept\n([\s\S]*?)\n```/g)) {
+          const name = (JSON.parse(body!) as { name: string }).name;
+          const parts = name.split(/\s*(?:·|\+|,)\s*|\s+(?=<)/).filter(Boolean);
+          if (parts.length === 1) own.add(parts[0]!.replace(/^<|>$/g, "").split(/[\s=]/)[0]!.toLowerCase());
+        }
+      }
+    expect(index.elements.filter((name) => !own.has(name)), "elements without their own card").toEqual([]);
+    expect(index.attributes.filter((name) => !own.has(name)), "attributes without their own card").toEqual([]);
   });
 
   it("keeps quiz answer keys coherent", () => {

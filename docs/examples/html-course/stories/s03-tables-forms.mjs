@@ -6,7 +6,9 @@ export default {
     scene("Цены по объёмам",
       ["marta", "Каждый напиток бывает 250, 350 и 450 мл. Три цены на каждый! Как показать?"],
       ["nika", "Строки — напитки, столбцы — объёмы. Это таблица данных."]),
-    card("<table> <tr> <td>", "Таблица по строкам", "`table` — таблица, `tr` — строка, `td` — ячейка.", "Сравнить много позиций по нескольким параметрам.", "<table border=\"1\">\n  <tr><td>Латте</td><td>220</td><td>270</td></tr>\n  <tr><td>Раф</td><td>290</td><td>340</td></tr>\n</table>", { show: 70 }),
+    card("<table>", "Таблица", "Контейнер таблицы данных.", "Сравнить много позиций по нескольким параметрам.", "<table border=\"1\">\n  <tr><td>Латте</td><td>220 ₽</td></tr>\n</table>", { show: 50 }),
+    card("<tr>", "Строка", "Одна строка таблицы — внутри ячейки.", "Таблица строится по строкам, не по столбцам.", "<table border=\"1\">\n  <tr><td>Латте</td><td>220</td></tr>\n  <tr><td>Раф</td><td>290</td></tr>\n</table>", { show: 70 }),
+    card("<td>", "Ячейка данных", "Обычная ячейка внутри `tr`.", "Сами значения: цены, объёмы.", "<table border=\"1\">\n  <tr><td>Раф</td><td>290 ₽</td><td>350 мл</td></tr>\n</table>", { show: 50 }),
     card("<th>", "Заголовок", "Ячейка-заголовок столбца или строки.", "Читалка Льва перед каждой ценой скажет «350 мл».", "<table border=\"1\">\n  <tr><th>Напиток</th><th>250 мл</th><th>350 мл</th></tr>\n  <tr><td>Латте</td><td>220</td><td>270</td></tr>\n</table>", { show: 70 }),
     card("<caption>", "Название таблицы", "Подпись, первая внутри `table`.", "Сразу ясно, о чём таблица.", "<table border=\"1\">\n  <caption>Цены, ₽</caption>\n  <tr><th>Латте</th><td>220</td></tr>\n</table>", { show: 70 }),
     rule("Таблица — для данных. Раскладывать ею страницу на колонки нельзя: для этого есть CSS.")
@@ -16,11 +18,15 @@ export default {
     scene("Отчёт для бухгалтера",
       ["marta", "Бухгалтер просит таблицу продаж за неделю: по дням, по напиткам, и итог внизу."],
       ["lev", "Большие таблицы для меня — ад, если в них нет заголовков и групп. Сделайте правильно, пожалуйста."]),
-    card("<thead> <tbody> <tfoot>", "Шапка, тело, итог", "Группы строк: заголовки, данные, итоги.", "Итог всегда внизу, шапку можно повторять при печати.", "<table border=\"1\">\n  <thead><tr><th>День</th><th>Чашек</th></tr></thead>\n  <tbody><tr><td>Пн</td><td>120</td></tr></tbody>\n  <tfoot><tr><td>Итого</td><td>120</td></tr></tfoot>\n</table>", { show: 100 }),
+    card("<thead>", "Шапка таблицы", "Группа строк с заголовками столбцов.", "При печати шапка повторяется на каждой странице.", "<table border=\"1\">\n  <thead><tr><th>День</th><th>Чашек</th></tr></thead>\n</table>", { show: 50 }),
+    card("<tbody>", "Тело таблицы", "Основные строки данных.", "Отделяет данные от шапки и итогов.", "<table border=\"1\">\n  <tbody><tr><td>Пн</td><td>120</td></tr></tbody>\n</table>", { show: 50 }),
+    card("<tfoot>", "Итоги", "Группа строк с итогами.", "Итого за неделю — всегда внизу.", "<table border=\"1\">\n  <tbody><tr><td>Пн</td><td>120</td></tr></tbody>\n  <tfoot><tr><td>Итого</td><td>120</td></tr></tfoot>\n</table>", { show: 70 }),
     card("scope", "Чей заголовок", "`scope=\"col\"` — заголовок столбца, `scope=\"row\"` — строки.", "Читалка правильно свяжет ячейки с заголовками.", "<tr><th scope=\"row\">Понедельник</th><td>120</td></tr>"),
-    card("colspan · rowspan", "Объединить ячейки", "`colspan=\"3\"` — ячейка шириной в три столбца, `rowspan` — в несколько строк.", "Ячейка «Итого» на два столбца.", "<table border=\"1\">\n  <tr><td colspan=\"2\">Итого за неделю</td></tr>\n  <tr><td>Кофе</td><td>Чай</td></tr>\n</table>", { show: 70 }),
-    card("headers · abbr", "Для очень сложных таблиц", "`headers` у ячейки перечисляет `id` её заголовков. `abbr` у `th` — короткое имя для читалки.", "Когда `scope` не хватает."),
-    card("<colgroup> <col>", "Группы столбцов", "`col` с `span` описывает столбцы.", "Покрасить целый столбец, например «Итого».", "<colgroup><col span=\"2\"><col class=\"total\"></colgroup>")
+    card("colspan", "Ячейка на несколько столбцов", "Растянуть ячейку вправо на N столбцов.", "«Итого» на два столбца.", "<table border=\"1\">\n  <tr><td colspan=\"2\">Итого</td></tr>\n  <tr><td>Кофе</td><td>Чай</td></tr>\n</table>", { show: 70 }),
+    card("rowspan", "Ячейка на несколько строк", "Растянуть ячейку вниз на N строк.", "«Выходные» на две строки: сб и вс.", "<table border=\"1\">\n  <tr><td rowspan=\"2\">Выходные</td><td>Сб</td></tr>\n  <tr><td>Вс</td></tr>\n</table>", { show: 70 }),
+    card("headers", "Свои заголовки ячейки", "У `td`: список `id` заголовков, к которым она относится.", "Для очень сложных таблиц, где `scope` не хватает.", "<th id=\"mon\">Пн</th><th id=\"coffee\">Кофе</th>\n<td headers=\"mon coffee\">120</td>"),
+    card("<colgroup>", "Группа столбцов", "Описывает столбцы таблицы, идёт сразу после `caption`.", "Оформить столбцы целиком.", "<table border=\"1\">\n  <colgroup><col><col style=\"background:#fde68a\"></colgroup>\n  <tr><td>Пн</td><td>120</td></tr>\n</table>", { show: 50 }),
+    card("<col>", "Один столбец", "Пустой элемент внутри `colgroup`. `span` — сколько столбцов охватывает.", "Покрасить столбец «Итого».", "<table border=\"1\">\n  <colgroup><col span=\"2\"><col style=\"background:#bbf7d0\"></colgroup>\n  <tr><td>Кофе</td><td>Чай</td><td>Итого</td></tr>\n</table>", { show: 50 }),
   ],
 
   "how-forms-work": [
@@ -39,7 +45,8 @@ export default {
     card("<form>", "Форма", "Контейнер полей. `action` — куда отправлять, `method` — как.", "Без формы поля никуда не уйдут.", "<form action=\"/booking\" method=\"post\">\n  <input name=\"guest\">\n  <button>Забронировать</button>\n</form>", { show: 60 }),
     card("name", "Имя поля", "Ключ, под которым значение уйдёт на сервер.", "Нет `name` — поле не отправится, даже если заполнено."),
     card("GET · POST", "Метод", "`get` — данные в адресе (поиск), `post` — в теле запроса (пароли, заказы).", "Пароль в адресной строке — плохая идея."),
-    card("accept-charset · novalidate", "Ещё атрибуты формы", "`accept-charset` — кодировка отправки (почти всегда UTF-8), `novalidate` — отключить встроенную проверку.", "Редко нужны, но полезно узнать."),
+    card("action", "Куда отправить", "Адрес обработчика формы.", "Без `action` форма отправится на текущую страницу.", "<form action=\"/booking\" method=\"post\">…</form>"),
+    card("accept-charset", "Кодировка отправки", "В какой кодировке отправить данные. Сегодня почти всегда UTF-8 — и это по умолчанию.", "Знать, чтобы узнать в старом коде.", "<form action=\"/booking\" accept-charset=\"utf-8\">…</form>"),
     rule("Проверка в браузере — для удобства. Защита — только на сервере.")
   ],
 
@@ -49,6 +56,7 @@ export default {
       ["nika", "Им забыли `label`. У нас так не будет."]),
     card("<input>", "Поле ввода", "Пустой элемент, тип задаёт `type`.", "Основа любой формы.", "<input name=\"guest\">", { show: 50 }),
     card("<label>", "Подпись", "`for` указывает на `id` поля. Клик по подписи ставит курсор в поле.", "Лев услышит «Имя, поле ввода». И попасть пальцем проще.", "<label for=\"guest\">Ваше имя</label>\n<input id=\"guest\" name=\"guest\">", { show: 60 }),
+    card("for", "Связь подписи с полем", "Атрибут `label` (и `output`): `id` поля.", "Клик по подписи ставит курсор в поле, читалка называет поле.", "<label for=\"tel\">Телефон</label>\n<input id=\"tel\" type=\"tel\">", { show: 50 }),
     card("placeholder", "Пример, а не подпись", "Серый текст-пример внутри поля.", "Не замена `label`: исчезает при вводе, бледный и не всегда читается.", "<input placeholder=\"Например, Анна\">", { show: 50 }),
     card("value", "Начальное значение", "Что уже стоит в поле.", "Подставить «2 гостя» по умолчанию.", "<input name=\"guests\" value=\"2\">", { show: 50 })
   ],
@@ -58,7 +66,9 @@ export default {
       ["marta", "Люди жалуются: на телефоне в поле телефона открывается клавиатура с буквами 😤"],
       ["bro", "Скажи мне `type=\"tel\"` — открою цифры. Я всё умею, просто скажи."]),
     card("type", "Тип поля", "`text`, `email`, `tel`, `url`, `password`, `search`, `number`, `range`, `date`, `time`, `datetime-local`, `month`, `week`, `color`, `checkbox`, `radio`, `file`, `hidden`, `submit`, `reset`, `button`, `image`.", "Правильная клавиатура, проверка формата, удобный выбор даты.", "<input type=\"email\">\n<input type=\"tel\">\n<input type=\"date\">\n<input type=\"color\">", { show: 120 }),
-    card("min · max · step", "Числа и даты", "Границы и шаг для `number`, `range`, `date`.", "Гостей от 1 до 8, время с шагом 30 минут.", "<input type=\"number\" min=\"1\" max=\"8\">\n<input type=\"range\" min=\"0\" max=\"10\" step=\"1\">", { show: 70 }),
+    card("min", "Минимум", "Наименьшее число или дата.", "Нельзя забронировать на вчера.", "<input type=\"date\" min=\"2026-11-01\">", { show: 50 }),
+    card("max", "Максимум", "Наибольшее число или дата.", "Не больше 8 гостей.", "<input type=\"number\" min=\"1\" max=\"8\" value=\"2\">", { show: 50 }),
+    card("step", "Шаг", "С каким шагом меняется значение.", "Время брони — каждые 30 минут (1800 секунд).", "<input type=\"time\" step=\"1800\" value=\"10:00\">", { show: 50 }),
     card("Номер карты", "Не number!", "Номер карты — `type=\"text\"` с `inputmode=\"numeric\"`.", "`number` уберёт ведущие нули и покажет стрелочки."),
     card("hidden", "Скрытое поле", "Не видно, но отправляется.", "Передать id акции вместе с бронью.", "<input type=\"hidden\" name=\"promo\" value=\"autumn\">")
   ],
@@ -68,17 +78,24 @@ export default {
       ["marta", "В брони: зал или веранда (одно из двух) и пожелания: «детский стул», «у окна» (можно несколько)."],
       ["nika", "Одно из нескольких — радиокнопки. Несколько — флажки."]),
     card("radio", "Один из нескольких", "Группа с одинаковым `name` — выбрать можно только одну. `checked` — выбрано заранее.", "Зал или веранда.", "<label><input type=\"radio\" name=\"place\" value=\"hall\" checked> Зал</label>\n<label><input type=\"radio\" name=\"place\" value=\"terrace\"> Веранда</label>", { show: 50 }),
+    card("checked", "Выбрано заранее", "У `radio` и `checkbox` — отмечен по умолчанию.", "Самый частый вариант уже выбран — минус клик.", "<label><input type=\"checkbox\" checked> Напомнить по СМС</label>", { show: 40 }),
     card("checkbox", "Да/нет, несколько", "Каждый флажок сам по себе.", "Пожелания: можно отметить все.", "<label><input type=\"checkbox\" name=\"wish\" value=\"window\"> У окна</label>\n<label><input type=\"checkbox\" name=\"wish\" value=\"kids\"> Детский стул</label>", { show: 50 }),
-    card("<fieldset> <legend>", "Группа с названием", "`fieldset` объединяет поля, `legend` — его подпись.", "Лев услышит «Где сидеть: Зал, переключатель».", "<fieldset>\n  <legend>Где сидеть</legend>\n  <label><input type=\"radio\" name=\"p\"> Зал</label>\n</fieldset>", { show: 90 })
+    card("<fieldset>", "Группа полей", "Объединяет связанные поля в рамку.", "Отделить «Контакты» от «Пожеланий».", "<fieldset>\n  <label><input type=\"radio\" name=\"p\"> Зал</label>\n</fieldset>", { show: 70 }),
+    card("<legend>", "Название группы", "Первый элемент внутри `fieldset` — подпись группы.", "Лев услышит «Где сидеть, Зал, переключатель».", "<fieldset>\n  <legend>Где сидеть</legend>\n  <label><input type=\"radio\" name=\"p\"> Зал</label>\n  <label><input type=\"radio\" name=\"p\"> Веранда</label>\n</fieldset>", { show: 90 }),
   ],
 
   "select-lists": [
     scene("Время",
       ["marta", "Время брони — из списка: 10:00, 10:30… И любимый напиток, можно свой вариант."],
       ["nika", "Выпадающий список. А для «можно своё» — подсказки datalist."]),
-    card("<select> <option>", "Выпадающий список", "`select` — список, `option` — вариант, `selected` — выбран заранее, `multiple` — можно несколько, `size` — сколько строк видно.", "Время, город, количество.", "<select name=\"time\">\n  <option>10:00</option>\n  <option selected>10:30</option>\n</select>", { show: 50 }),
+    card("<select>", "Выпадающий список", "Выбор из готовых вариантов.", "Время брони, количество гостей.", "<select name=\"time\">\n  <option>10:00</option>\n  <option>10:30</option>\n</select>", { show: 50 }),
+    card("<option>", "Вариант", "Один вариант в `select` или `datalist`. `value` — что отправится.", "Показать «Утро», а отправить `morning`.", "<select>\n  <option value=\"morning\">Утро</option>\n  <option value=\"evening\">Вечер</option>\n</select>", { show: 50 }),
+    card("selected", "Выбран по умолчанию", "У `option` — выбран изначально.", "Подставить самое частое время.", "<select>\n  <option>10:00</option>\n  <option selected>19:00</option>\n</select>", { show: 50 }),
+    card("multiple", "Несколько значений", "У `select` — выбрать несколько; у `input type=\"file\"` и `email` — несколько файлов или адресов.", "Отметить сразу несколько любимых напитков.", "<select multiple>\n  <option>Раф</option>\n  <option>Латте</option>\n  <option>Флэт уайт</option>\n</select>", { show: 80 }),
+    card("size", "Сколько строк видно", "У `select` — высота списка в строках; у `input` — ширина в символах.", "Показать список сразу, без раскрытия.", "<select size=\"3\">\n  <option>Раф</option>\n  <option>Латте</option>\n  <option>Какао</option>\n</select>", { show: 80 }),
     card("<optgroup>", "Разделы", "Группа вариантов с подписью `label`.", "Утро / день / вечер.", "<select>\n  <optgroup label=\"Утро\"><option>9:00</option></optgroup>\n  <optgroup label=\"Вечер\"><option>19:00</option></optgroup>\n</select>", { show: 50 }),
-    card("<datalist>", "Подсказки + свой ввод", "Связан с `input` через `list`.", "Подсказать популярные напитки, но разрешить свой.", "<input list=\"drinks\" name=\"drink\">\n<datalist id=\"drinks\">\n  <option value=\"Раф\">\n  <option value=\"Латте\">\n</datalist>", { show: 50 })
+    card("<datalist>", "Подсказки + свой ввод", "Связан с `input` через `list`.", "Подсказать популярные напитки, но разрешить свой.", "<input list=\"drinks\" name=\"drink\">\n<datalist id=\"drinks\">\n  <option value=\"Раф\">\n  <option value=\"Латте\">\n</datalist>", { show: 50 }),
+    card("list", "Связать с подсказками", "Атрибут `input`: `id` элемента `datalist`.", "Поле получит выпадающие подсказки.", "<input list=\"d\">\n<datalist id=\"d\"><option value=\"Раф\"></datalist>", { show: 50 }),
   ],
 
   "textarea-and-buttons": [
@@ -86,9 +103,16 @@ export default {
       ["marta", "Добавь поле «Комментарий» — люди пишут про день рождения, аллергии."],
       ["nika", "Многострочное поле. И правильная кнопка."]),
     card("<textarea>", "Многострочный текст", "`rows` и `cols` — размер. Начальный текст — между тегами, не в `value`.", "Комментарии, отзывы.", "<textarea name=\"comment\" rows=\"3\">У нас день рождения!</textarea>", { show: 80 }),
-    card("wrap · maxlength", "Перенос и лимит", "`wrap=\"hard\"` отправит переносы строк, `maxlength` — ограничит длину.", "Чтобы комментарий не был романом."),
+    card("rows", "Высота textarea", "Сколько строк видно.", "Комментарий на 3 строки — не узкая щель.", "<textarea rows=\"4\"></textarea>", { show: 100 }),
+    card("cols", "Ширина textarea", "Ширина в символах.", "Обычно ширину задаёт CSS, но атрибут тоже работает.", "<textarea cols=\"20\" rows=\"2\"></textarea>", { show: 60 }),
+    card("wrap", "Перенос строк при отправке", "`soft` — переносы только визуально, `hard` — отправятся (нужен `cols`).", "Для писем фиксированной ширины.", "<textarea wrap=\"hard\" cols=\"30\"></textarea>", { show: 60 }),
+    card("maxlength", "Максимальная длина", "Не больше N символов в `input` или `textarea`.", "Комментарий не превратится в роман.", "<textarea maxlength=\"200\" rows=\"2\"></textarea>", { show: 60 }),
     card("<button>", "Кнопка", "Внутри формы по умолчанию `type=\"submit\"`. Ещё: `reset` (очистить), `button` (для скриптов).", "Кнопка-ссылка — не кнопка. Кнопка что-то делает.", "<button type=\"submit\">Забронировать</button>\n<button type=\"reset\">Очистить</button>", { show: 50 }),
-    card("formaction · formmethod", "Другое действие", "Кнопка может отправить ту же форму в другое место: `formaction`, `formmethod`, `formenctype`, `formnovalidate`.", "«Сохранить черновик» без проверки."),
+    card("formaction", "Другой адрес для кнопки", "У кнопки отправки: заменяет `action` формы.", "«Сохранить черновик» уходит в другое место.", "<button formaction=\"/draft\">Сохранить черновик</button>", { show: 40 }),
+    card("formmethod", "Другой метод для кнопки", "Заменяет `method` формы.", "Предпросмотр по GET, отправка — по POST.", "<button formmethod=\"get\" formaction=\"/preview\">Предпросмотр</button>", { show: 40 }),
+    card("formenctype", "Другая упаковка", "Заменяет `enctype` формы.", "Одна кнопка шлёт файлы, другая — только текст.", "<button formenctype=\"multipart/form-data\">Отправить с фото</button>", { show: 40 }),
+    card("formnovalidate", "Без проверки", "Кнопка отправит форму, пропустив встроенную проверку.", "«Сохранить черновик» с незаполненными полями.", "<button formnovalidate>Сохранить черновик</button>", { show: 40 }),
+    card("formtarget", "Где открыть ответ", "Заменяет `target` формы: `_blank`, имя `iframe`.", "Показать результат в новой вкладке.", "<button formtarget=\"_blank\">Открыть чек</button>", { show: 40 }),
     rule("Текст кнопки — глагол: «Забронировать», а не «ОК».")
   ],
 
@@ -97,7 +121,8 @@ export default {
       ["marta", "Хочу, чтобы к отзыву можно было прикрепить фото."],
       ["bug", "Отлично, загружу им вирус под видом котика 🐱💣"],
       ["nika", "`accept` — только подсказка. Проверять тип файла будет сервер."]),
-    card("type=\"file\"", "Выбор файла", "`accept` — какие типы предложить, `multiple` — несколько файлов, `capture` — сразу камера на телефоне.", "Фото к отзыву.", "<input type=\"file\" name=\"photo\" accept=\"image/*\" multiple>", { show: 50 }),
+    card("type=\"file\"", "Выбор файла", "Поле выбора файлов с диска или камеры.", "Фото к отзыву.", "<input type=\"file\" name=\"photo\">", { show: 50 }),
+    card("accept", "Какие файлы предложить", "`image/*`, `.pdf`, `audio/*`. Это подсказка окну выбора, а не защита.", "Окно выбора сразу покажет только фото. Проверять всё равно должен сервер.", "<input type=\"file\" accept=\"image/*\">", { show: 50 }),
     card("enctype", "Упаковка файлов", "Форме нужны `method=\"post\"` и `enctype=\"multipart/form-data\"`.", "Иначе уйдёт только имя файла.", "<form action=\"/review\" method=\"post\" enctype=\"multipart/form-data\">…</form>"),
     rule("Пиши ограничения заранее: «JPG или PNG, до 5 МБ».")
   ],
@@ -107,9 +132,9 @@ export default {
       ["marta", "Приходят брони без телефона! Как я позвоню?"],
       ["bro", "Скажи `required` — я не дам отправить пустое поле. Сам, без JavaScript."]),
     card("required", "Обязательно", "Без значения форма не отправится.", "Телефон обязателен.", "<form><input required><button>OK</button></form>", { show: 50 }),
-    card("minlength · maxlength · min · max", "Границы", "Длина текста и диапазон чисел/дат.", "Имя от 2 символов, гостей до 8."),
+    card("minlength", "Минимальная длина", "Не меньше N символов.", "Имя хотя бы из 2 букв.", "<form><input minlength=\"2\" value=\"А\"><button>OK</button></form>", { show: 50 }),
     card("pattern", "Свой формат", "Регулярное выражение: `[0-9]{6}` — ровно 6 цифр.", "Индекс, код из СМС.", "<input pattern=\"[0-9]{6}\" title=\"6 цифр\">"),
-    card("novalidate", "Отключить проверку", "У формы — вся проверка выключена.", "Когда проверяешь своим скриптом."),
+    card("novalidate", "Отключить проверку", "Атрибут `novalidate` у формы выключает всю встроенную проверку.", "Когда проверяешь своим скриптом."),
     rule("Встроенную проверку легко обойти. Сервер проверяет всегда.")
   ],
 
@@ -120,8 +145,12 @@ export default {
     card("autocomplete", "Автозаполнение", "`name`, `email`, `tel`, `new-password`, `one-time-code`…", "Браузер подставит данные, менеджер паролей сгенерирует пароль.", "<input name=\"email\" type=\"email\" autocomplete=\"email\">"),
     card("inputmode", "Какая клавиатура", "`numeric` — только цифры, `decimal`, `tel`, `email`, `url`, `search`.", "Код из СМС — цифровая клавиатура."),
     card("enterkeyhint", "Подпись клавиши Enter", "`go`, `next`, `send`, `search`, `done`.", "На телефоне вместо «↵» будет «Далее»."),
-    card("readonly · disabled", "Нельзя изменить", "`readonly` — значение отправится, `disabled` — нет и поле серое.", "Цена брони — `readonly`."),
-    card("autofocus · spellcheck · autocapitalize", "Мелочи удобства", "Курсор сразу в поле (`autofocus`), проверка орфографии (`spellcheck`), заглавная буква в имени (`autocapitalize`), автоисправление (`autocorrect`).", "Каждая мелочь — минус одно действие гостя.")
+    card("readonly", "Только чтение", "Значение нельзя изменить, но оно отправится с формой.", "Цена брони видна и уходит на сервер.", "<input value=\"300 ₽\" readonly>", { show: 50 }),
+    card("disabled", "Отключено", "Поле или кнопка неактивны, значение не отправится.", "Кнопка «Забронировать», пока не выбрано время.", "<button disabled>Забронировать</button>", { show: 50 }),
+    card("autofocus", "Курсор сразу здесь", "Глобальный: элемент получит фокус при загрузке.", "Поиск, где сразу печатают. Не злоупотреблять: сбивает читалку.", "<input autofocus placeholder=\"Поиск по меню\">", { show: 50 }),
+    card("spellcheck", "Проверка орфографии", "Глобальный: `true` или `false`.", "Отключить в поле промокода, включить в отзыве.", "<textarea spellcheck=\"true\">Очень вкусныйй раф</textarea>", { show: 60 }),
+    card("autocapitalize", "Заглавные буквы", "Глобальный: `words`, `sentences`, `characters`, `none` — для экранной клавиатуры.", "Имя начнётся с заглавной на телефоне.", "<input autocapitalize=\"words\" placeholder=\"Имя и фамилия\">", { show: 50 }),
+    card("autocorrect", "Автоисправление", "Глобальный: `on` или `off` — исправлять ли слова при вводе.", "Не «исправлять» логины и промокоды.", "<input autocorrect=\"off\" placeholder=\"Промокод\">", { show: 50 }),
   ],
 
   "output-progress-meter": [
@@ -130,6 +159,9 @@ export default {
       ["nika", "Ход процесса — `progress`. Измерение в диапазоне — `meter`."]),
     card("<progress>", "Ход выполнения", "`value` и `max`. Без `value` — «крутится, неизвестно сколько».", "Загрузка фото.", "<progress value=\"70\" max=\"100\">70%</progress>\n<progress></progress>", { show: 50 }),
     card("<meter>", "Измерение", "Значение в диапазоне: `min`, `max`, `low`, `high`, `optimum`.", "Заряд, заполненность зала.", "<meter value=\"3\" min=\"0\" max=\"10\" low=\"2\" high=\"8\" optimum=\"10\">3 из 10</meter>", { show: 40 }),
+    card("low", "Порог «мало»", "Атрибут `meter`: ниже — плохо.", "Свободных столиков меньше 2 — жёлтым.", "<meter value=\"1\" max=\"10\" low=\"2\" high=\"8\" optimum=\"10\"></meter>", { show: 40 }),
+    card("high", "Порог «много»", "Атрибут `meter`: выше — отдельная зона.", "Зал заполнен больше чем на 80%.", "<meter value=\"9\" max=\"10\" low=\"2\" high=\"8\" optimum=\"5\"></meter>", { show: 40 }),
+    card("optimum", "Лучшее значение", "Атрибут `meter`: какое значение хорошее. От него зависит цвет.", "Для заряда хорошо много, для загрузки зала — середина.", "<meter value=\"5\" max=\"10\" low=\"2\" high=\"8\" optimum=\"5\"></meter>", { show: 40 }),
     card("<output>", "Результат вычисления", "Связан с полями через `for`.", "Итог: «гостей × 300 ₽».", "<output name=\"total\" for=\"guests\">900 ₽</output>", { show: 40 })
   ],
 
@@ -139,8 +171,8 @@ export default {
       ["nika", "Сработает, если связать атрибутом `form`."]),
     card("form", "Поле вне формы", "У кнопки или поля `form=\"id-формы\"`.", "Кнопка в подвале отправит форму брони.", "<form id=\"booking\">…</form>\n<button form=\"booking\">Забронировать</button>"),
     card("fieldset disabled", "Отключить группу", "`disabled` у `fieldset` отключает все поля внутри.", "Блок «Доставка» неактивен при самовывозе."),
-    card("target · formtarget", "Где открыть ответ", "`_blank`, `_self` или имя `iframe`.", "Показать результат в отдельном окне."),
-    card("type=\"image\" · dirname", "Редкие", "Кнопка-картинка; `dirname` отправит направление текста.", "Знать, чтобы узнать в чужом коде."),
+    card("target", "Где открыть", "У `a` и `form`: `_self`, `_blank`, `_parent`, `_top` или имя окна/`iframe`.", "Документ — в новой вкладке, ответ формы — в iframe.", "<form action=\"/check\" target=\"_blank\">…</form>"),
+    card("dirname", "Отправить направление текста", "У `input` и `textarea`: вместе со значением уйдёт `ltr` или `rtl`.", "Сервер правильно покажет отзыв на арабском.", "<input name=\"review\" dirname=\"review.dir\">", { show: 50 }),
     card("autocomplete=\"off\" · name", "Имя формы", "Отключить автозаполнение формы целиком, дать форме имя.", "Для полей, где подсказки мешают.")
   ],
 
