@@ -28,4 +28,15 @@ export class PostgresPublicFreeLearningOfferingQuery extends PublicFreeLearningO
     );
     return result.rows[0] ?? null;
   }
+  async resolveCourseOffering(
+    tx: DatabaseTransaction,
+    organizationSlug: string,
+    courseSlug: string
+  ) {
+    const result = await tx.client.query<{ slug: string | null }>(
+      "SELECT learning_delivery.resolve_public_course_offering($1,$2) AS slug",
+      [organizationSlug, courseSlug]
+    );
+    return result.rows[0]?.slug ?? null;
+  }
 }

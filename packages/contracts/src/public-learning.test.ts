@@ -66,6 +66,7 @@ describe("strict public learning disclosure contracts", () => {
       organization: { slug: "academy", name: "Academy" },
       offering: { slug: "course", name: "Course" },
       course: {
+        slug: "course",
         title: "Course",
         description: "",
         lessons: [

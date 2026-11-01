@@ -152,6 +152,7 @@ const learningCourse = {
   organization: { slug: "acme", name: "Acme Academy" },
   offering: { slug: "computer-basics", name: "Computer basics" },
   course: {
+    slug: "computer-basics",
     title: "Основы компьютера",
     description: "Видео, конспекты и практика",
     lessons: [

@@ -71,6 +71,37 @@ export class PublicLearningService {
       return publicLearningLessonSchema.parse({ ...course, lesson });
     }, snapshot);
   }
+  /** Stable course address: Delivery resolves the Offering that serves the course slug right now. */
+  async courseBySlug(organizationSlug: string, courseSlug: string) {
+    return this.database.transaction(async (tx) => {
+      const offeringSlug = await this.delivery.resolveCourseOffering(
+        tx,
+        organizationSlug,
+        courseSlug
+      );
+      const course =
+        offeringSlug === null
+          ? null
+          : await this.composeCourse(tx, organizationSlug, offeringSlug);
+      if (course === null)
+        throw new NotFoundException("Public learning course not found.");
+      return course;
+    }, snapshot);
+  }
+  async lessonBySlug(
+    organizationSlug: string,
+    courseSlug: string,
+    lessonSlug: string
+  ) {
+    const offeringSlug = await this.database.transaction(
+      (tx) =>
+        this.delivery.resolveCourseOffering(tx, organizationSlug, courseSlug),
+      snapshot
+    );
+    if (offeringSlug === null)
+      throw new NotFoundException("Public learning lesson not found.");
+    return this.lesson(organizationSlug, offeringSlug, lessonSlug);
+  }
   private async composeCourse(
     tx: DatabaseTransaction,
     organizationSlug: string,

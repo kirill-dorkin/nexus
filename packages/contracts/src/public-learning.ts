@@ -24,6 +24,8 @@ export const publicLessonSummarySchema = z
   .strict();
 export const publicCourseContentSchema = z
   .object({
+    /** Stable curriculum identity; survives new course versions and Offerings. */
+    slug: resourceSlugSchema,
     title,
     description: z.string().max(5000),
     lessons: z.array(publicLessonSummarySchema).min(1).max(200)

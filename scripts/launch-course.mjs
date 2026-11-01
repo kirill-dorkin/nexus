@@ -27,8 +27,10 @@ const ORG_SLUG = flag("--org-slug", "nexus");
 const ORG_NAME = flag("--org-name", "Nexus");
 const OFFERING_SLUG = flag("--offering-slug", null);
 // --new-version publishes the manifest as the next version of an already published
-// course. Offerings pin an exact version, so the new version gets its own Offering
-// (--offering-slug) and the course's older public Offerings are made private.
+// course. Offerings pin an exact version, so the new version gets its own internal Offering
+// (default `<course>-v<N>`, override with --offering-slug) and the course's older public
+// Offerings are made private. Learners never see the Offering slug: the stable address is
+// /courses/<course>, which always serves the newest public version (ADR-0061).
 const NEW_VERSION = args.includes("--new-version") ? (args.splice(args.indexOf("--new-version"), 1), true) : false;
 const MANIFEST_PATH = args[0] ?? "docs/examples/html-track.manifest.json";
 
@@ -168,9 +170,8 @@ async function importAndPublish(courseIdHint) {
   ok(`Опубликована версия ${draft.versionNumber}`);
 }
 if (summary?.status === "published" && !NEW_VERSION) {
-  ok(`Курс уже опубликован (версия ${summary.versionNumber}) — пропускаю импорт. Для обновления: --new-version --offering-slug <адрес>`);
+  ok(`Курс уже опубликован (версия ${summary.versionNumber}) — пропускаю импорт. Для обновления: --new-version`);
 } else if (summary?.status === "published") {
-  if (!OFFERING_SLUG) fail("Для новой версии нужен новый адрес доступа: --offering-slug <адрес>.");
   await must("Создание следующего черновика", api("POST", `${orgPath}/studio/courses/${summary.courseId}/draft`, {}));
   await importAndPublish(summary.courseId);
 } else {
@@ -180,7 +181,9 @@ summary = (await must("Курсы Studio", api("GET", `${orgPath}/studio/courses
 const published = await must("Чтение курса", api("GET", `${orgPath}/studio/courses/${summary.courseId}`));
 
 step("Публичный доступ");
-const offeringSlug = OFFERING_SLUG ?? manifest.course.slug;
+const offeringSlug = OFFERING_SLUG ?? (published.versionNumber > 1
+  ? `${manifest.course.slug}-v${published.versionNumber}`
+  : manifest.course.slug);
 const offerings = (await must("Список доступов", api("GET", `${orgPath}/offerings?courseVersionId=${published.versionId}`))).offerings;
 let offering = offerings.find((o) => o.slug === offeringSlug);
 if (!offering) {
@@ -208,6 +211,9 @@ step("Самостоятельное вступление учеников");
 await must("Политика вступления", api("PUT", `${orgPath}/customer-entry-policy`, { policy: "open" }));
 ok("Ученики начинают курс одной кнопкой");
 
-const url = `${ORIGIN}/learn/${org.slug}/${offeringSlug}`;
-const check = await fetch(`${ORIGIN}/v1/public/learning/${org.slug}/${offeringSlug}`);
+// The site's own organization gets the stable course address; others keep the Offering address.
+const url = org.slug === "nexus"
+  ? `${ORIGIN}/courses/${manifest.course.slug}`
+  : `${ORIGIN}/learn/${org.slug}/${offeringSlug}`;
+const check = await fetch(`${ORIGIN}/v1/public/learning/${org.slug}/courses/${manifest.course.slug}`);
 console.log(`\n${check.ok ? "Готово" : "Опубликовано, но публичная страница пока не отвечает"}:\n  Курс:   ${url}\n  Studio: ${ORIGIN}/studio\n`);

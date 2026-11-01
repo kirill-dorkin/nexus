@@ -1,0 +1,127 @@
+import { LearnerEntry } from "./learner-entry";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { LearningShell } from "./learning-shell";
+import { LessonBlocks } from "./lesson-blocks";
+import type { PublicLearningLesson } from "@platform/contracts";
+import { courseUrl, lessonUrl } from "../../lib/public-learning-routes";
+import { Heading, Surface } from "@platform/ui";
+import { LearningPageHeading } from "./learning-page-heading";
+import { LessonOutline } from "./lesson-outline";
+import styles from "./flow.module.css";
+import { absoluteUrl, jsonLd } from "../../lib/site";
+export function lessonMetadata(course: PublicLearningLesson): Metadata {
+  const path = lessonUrl(course, course.lesson.slug);
+  return {
+    title: `${course.lesson.title} — ${course.course.title}`,
+    description: course.lesson.summary,
+    alternates: { canonical: path },
+    openGraph: {
+      type: "article",
+      url: path,
+      title: course.lesson.title,
+      description: course.lesson.summary
+    }
+  };
+}
+export function LessonPageView({ course }: { course: PublicLearningLesson }) {
+  const lessonSlug = course.lesson.slug;
+  const index = course.course.lessons.findIndex(
+    (lesson) => lesson.slug === course.lesson.slug
+  );
+  const previous = course.course.lessons[index - 1];
+  const next = course.course.lessons[index + 1];
+  const lessonProgress = Math.round(
+    ((index + 1) / course.course.lessons.length) * 100
+  );
+  const path = lessonUrl(course, lessonSlug);
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "LearningResource",
+    name: course.lesson.title,
+    description: course.lesson.summary,
+    url: absoluteUrl(path),
+    inLanguage: "ru",
+    timeRequired: `PT${course.lesson.durationMinutes}M`,
+    isPartOf: {
+      "@type": "Course",
+      name: course.course.title,
+      url: absoluteUrl(courseUrl(course))
+    }
+  };
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }} />
+      <LearningShell>
+        <nav className={styles.breadcrumbs} aria-label="Навигационная цепочка">
+          <Link href="/courses">Курсы</Link>
+          <Link href={courseUrl(course)}>{course.course.title}</Link>
+          <span aria-current="page">Урок {index + 1}</span>
+        </nav>
+        <div className={styles.lessonLayout}>
+          <div className={styles.lessonMain}>
+            <div className={styles.lessonIntro}>
+              <LearningPageHeading
+                eyebrow={`Урок ${index + 1} из ${course.course.lessons.length} · ${course.lesson.durationMinutes} мин`}
+                title={course.lesson.title}
+                description={course.lesson.summary}
+              />
+              <div
+                className={styles.lessonMeter}
+                role="progressbar"
+                aria-label={`Позиция в программе: урок ${index + 1} из ${course.course.lessons.length}`}
+                aria-valuemin={1}
+                aria-valuemax={course.course.lessons.length}
+                aria-valuenow={index + 1}
+              >
+                <span style={{ width: `${lessonProgress}%` }} />
+              </div>
+            </div>
+            <LessonBlocks
+              lesson={course.lesson}
+              organizationSlug={course.organization.slug}
+              offeringSlug={course.offering.slug}
+              courseSlug={course.course.slug}
+            />
+            <nav className={styles.lessonNav} aria-label="Переход между уроками">
+              <Link
+                href={
+                  previous ? lessonUrl(course, previous.slug) : courseUrl(course)
+                }
+              >
+                <span>← {previous ? "Предыдущий урок" : "Назад к курсу"}</span>
+                <strong>{previous?.title ?? "Программа курса"}</strong>
+              </Link>
+              <Link
+                data-next=""
+                href={next ? lessonUrl(course, next.slug) : courseUrl(course)}
+              >
+                <span>{next ? "Следующий урок" : "Вернуться к курсу"} →</span>
+                <strong>{next?.title ?? "К программе курса"}</strong>
+              </Link>
+            </nav>
+          </div>
+          <aside
+            className={styles.lessonAside}
+            aria-label="Программа и сохранённое обучение"
+          >
+            <Surface appearance="quiet" className={styles.lessonOutlineSurface}>
+              <Heading level={2} size="small">
+                Программа курса
+              </Heading>
+              <nav aria-label="Уроки курса">
+                <LessonOutline course={course} currentSlug={lessonSlug} compact />
+              </nav>
+            </Surface>
+            <LearnerEntry
+              organizationSlug={course.organization.slug}
+              offeringSlug={course.offering.slug}
+              courseSlug={course.course.slug}
+              lessonSlug={lessonSlug}
+            />
+          </aside>
+        </div>
+      </LearningShell>
+    </>
+  );
+}

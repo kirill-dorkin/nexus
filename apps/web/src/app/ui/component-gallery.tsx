@@ -444,6 +444,7 @@ export function ComponentGallery() {
                   },
                   offering: { slug: "intro", name: "Пример курса" },
                   course: {
+                    slug: "web-basics",
                     title: "Основы веб-разработки",
                     description:
                       "Пример описания курса: от структуры документа к оформлению и взаимодействию.",
@@ -467,6 +468,7 @@ export function ComponentGallery() {
                     name: "Пример длинного курса"
                   },
                   course: {
+                    slug: "web-architecture",
                     title:
                       "Архитектура веб-приложений: от первой страницы до взаимодействия клиента и сервера",
                     description:

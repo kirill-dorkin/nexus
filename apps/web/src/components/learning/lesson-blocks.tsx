@@ -8,11 +8,13 @@ import styles from "./learning.module.css";
 export function LessonBlocks({
   lesson,
   organizationSlug,
-  offeringSlug
+  offeringSlug,
+  courseSlug
 }: {
   lesson: PublicLearningLesson["lesson"];
   organizationSlug: string;
   offeringSlug: string;
+  courseSlug: string;
 }) {
   const publicVideo = lesson.blocks.some((block) => block.type === "youtube")
     ? null
@@ -66,6 +68,7 @@ export function LessonBlocks({
                   activity={block.activity}
                   organizationSlug={organizationSlug}
                   offeringSlug={offeringSlug}
+                  courseSlug={courseSlug}
                   lessonSlug={lesson.slug}
                 />
               </Stack>

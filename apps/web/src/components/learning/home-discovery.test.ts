@@ -17,6 +17,7 @@ const course: PublicLearningCourse = {
   organization: { slug: "test-only", name: "Тестовые материалы" },
   offering: { slug: "course", name: "Тестовый курс" },
   course: {
+    slug: "test-course",
     title: "Длинное название тестового курса",
     description: "Первая цельная фраза. Подробности в программе.",
     lessons: [
