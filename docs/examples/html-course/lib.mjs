@@ -1,0 +1,80 @@
+// Authoring helpers for the "HTML: полный курс" manifest.
+// Lessons are Markdown; ```html fences become runnable in the learner sandbox.
+
+const FENCE = "```";
+
+export function createCourse() {
+  const skills = [];
+  const activities = [];
+  const lessons = [];
+
+  /** Question Markdown strips raw HTML, so tags in questions render as inline code. */
+  const q = (text) =>
+    text
+      .split(/(`[^`]*`)/)
+      .map((part) =>
+        part.startsWith("`")
+          ? part
+          : part
+              .replace(/<([a-z][a-z0-9-]*)\b[^>]*>(?:[^<]*<\/\1>)?/gi, (m) => "`" + m + "`")
+              .replace(/&[a-z]+;/gi, (m) => "`" + m + "`")
+      )
+      .join("");
+
+  const add = (type, slug, skillKey, title, question, extra) => {
+    activities.push({
+      slug,
+      type,
+      title,
+      instructions:
+        type === "quiz.single_choice"
+          ? "Выберите один ответ."
+          : type === "quiz.multiple_choice"
+            ? "Выберите все подходящие варианты."
+            : "Введите короткий ответ без лишних пробелов.",
+      skillKeys: [skillKey],
+      ...extra(q(question))
+    });
+    return slug;
+  };
+  const options = (list) => list.map(([id, text]) => ({ id, text }));
+
+  return {
+    html: (code) => `${FENCE}html\n${code.trim()}\n${FENCE}`,
+    code: (lang, src) => `${FENCE}${lang}\n${src.trim()}\n${FENCE}`,
+    mdn: (path, label) =>
+      `**Подробнее:** [${label} — MDN](https://developer.mozilla.org/ru/docs/Web/HTML/${path})`,
+    /**
+     * lesson({ slug, title, minutes, summary, skill: [key, title, description],
+     *          body: [markdown parts], quizzes: [ (key) => slug, ... ] })
+     * The first quiz is required practice; the rest are optional homework.
+     */
+    lesson({ slug, title, minutes, summary, skill, body, quizzes, allRequired = false }) {
+      const [key, skillTitle, skillDescription] = skill;
+      skills.push({ key, title: skillTitle, description: skillDescription });
+      const blocks = [{ type: "markdown", markdown: body.join("\n\n").trim() }];
+      quizzes.forEach((make, index) => {
+        const activitySlug = make(key);
+        const required = allRequired || index === 0;
+        blocks.push({ type: "activity", activitySlug, kind: required ? "practice" : "homework", required });
+      });
+      lessons.push({ slug, title, summary, durationMinutes: minutes, blocks });
+    },
+    single: (slug, title, question, list, correct, explanation) => (skillKey) =>
+      add("quiz.single_choice", slug, skillKey, title, question, (question) => ({
+        presentation: { question, options: options(list) },
+        validation: { correctOptionId: correct, explanation }
+      })),
+    multi: (slug, title, question, list, correct, explanation) => (skillKey) =>
+      add("quiz.multiple_choice", slug, skillKey, title, question, (question) => ({
+        presentation: { question, options: options(list) },
+        validation: { correctOptionIds: correct, explanation }
+      })),
+    short: (slug, title, question, answers, explanation) => (skillKey) =>
+      add("quiz.short_text", slug, skillKey, title, question, (question) => ({
+        presentation: { question },
+        validation: { acceptedAnswers: answers, caseSensitive: false, explanation }
+      })),
+    manifest: (course) => ({ schemaVersion: 1, course, skills, activities, lessons })
+  };
+}
