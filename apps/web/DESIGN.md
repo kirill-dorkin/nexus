@@ -49,6 +49,8 @@ A visitor understands the page at a glance and reaches the next step in one acti
 - `components/learning/home-discovery.tsx`: hero (offer + direct "start first course" action + lesson preview), courses, bento, final CTA.
 - `components/learning/course-list.tsx`: the one course card used on home and catalog.
 - `components/learning/flow.module.css`: catalog, course, lesson, quiz, saved learning.
+- `components/learning/challenge.tsx`: hands-on lesson tasks (```` ```challenge ```` fences). The learner edits HTML; declarative checks run against an inert `DOMParser` document in the browser and light up live; a solved task is remembered in `localStorage` only. This is practice, not progress: official progress still comes from server-checked quizzes.
+- `components/learning/lesson-visuals.tsx`: coloured diagrams and one-animation-per-block typing demos.
 - `app/login`: centered auth card. `app/not-found.tsx`: 404.
 
 Studio shares the same dark frame (`StudioShell` reuses `site.module.css`, with a Studio badge). Commerce pages (product, checkout, purchase) still follow the device colour scheme until their own slice.

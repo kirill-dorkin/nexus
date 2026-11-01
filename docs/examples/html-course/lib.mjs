@@ -3,7 +3,33 @@
 
 const FENCE = "```";
 
-export function createCourse() {
+const challengeFence = (spec) => `${FENCE}challenge\n${JSON.stringify(spec, null, 2)}\n${FENCE}`;
+
+/**
+ * Puts hands-on challenges into a lesson. A challenge with `at` goes to the end of that
+ * "## " section; the rest replace the unchecked "## Практика" section (or close the lesson).
+ */
+function placeChallenges(markdown, list) {
+  if (!list.length) return markdown;
+  const sections = markdown.split(/\n(?=## )/);
+  const heading = (section) => section.split("\n", 1)[0].replace(/^## /, "").trim();
+  const practice = [];
+  for (const { at, ...spec } of list) {
+    if (!at) { practice.push(spec); continue; }
+    const i = sections.findIndex((section) => heading(section) === at);
+    if (i < 0) throw new Error(`Challenge "${spec.title}": no section "${at}"`);
+    sections[i] = `${sections[i].trimEnd()}\n\n${challengeFence(spec)}`;
+  }
+  if (practice.length) {
+    const block = `## Практика\n\n${practice.map(challengeFence).join("\n\n")}`;
+    const i = sections.findIndex((section) => heading(section) === "Практика");
+    if (i >= 0) sections[i] = block;
+    else sections.push(block);
+  }
+  return sections.join("\n");
+}
+
+export function createCourse(challenges = {}) {
   const skills = [];
   const activities = [];
   const lessons = [];
@@ -46,6 +72,11 @@ export function createCourse() {
     mdn: () => "",
     /** Coloured diagram rendered by the lesson page (kinds: url, tree, flow, dom). */
     diagram: (spec) => `${FENCE}diagram\n${JSON.stringify(spec, null, 2)}\n${FENCE}`,
+    /**
+     * Hands-on task checked live in the browser:
+     * challenge({ title, task, start, checks: [{ label, selector | contains, text?, attr?, value?, count?, absent? }], hint?, solution? })
+     */
+    challenge: challengeFence,
     /** Silent animation rendered by the lesson page (kind: typing). */
     demo: (spec) => `${FENCE}demo\n${JSON.stringify(spec, null, 2)}\n${FENCE}`,
     /**
@@ -56,7 +87,8 @@ export function createCourse() {
     lesson({ slug, title, minutes, summary, skill, body, quizzes, allRequired = false }) {
       const [key, skillTitle, skillDescription] = skill;
       skills.push({ key, title: skillTitle, description: skillDescription });
-      const blocks = [{ type: "markdown", markdown: body.filter(Boolean).join("\n\n").trim() }];
+      const markdown = placeChallenges(body.filter(Boolean).join("\n\n").trim(), challenges[slug] ?? []);
+      const blocks = [{ type: "markdown", markdown }];
       quizzes.forEach((make, index) => {
         const activitySlug = make(key);
         const required = allRequired || index === 0;

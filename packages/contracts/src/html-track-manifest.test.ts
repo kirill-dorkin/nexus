@@ -29,10 +29,10 @@ describe("HTML full course import", () => {
     }
   });
 
-  it("gives every lesson runnable HTML examples for the local sandbox", () => {
+  it("gives every lesson runnable HTML: an example or a hands-on challenge", () => {
     for (const lesson of htmlTrack().lessons) {
       const text = lesson.blocks.flatMap((b) => (b.type === "markdown" ? [b.markdown] : [])).join("\n");
-      expect(text, lesson.slug).toContain("```html\n");
+      expect(/```(html|challenge)\n/.test(text), lesson.slug).toBe(true);
     }
   });
 
