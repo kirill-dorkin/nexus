@@ -1,4 +1,4 @@
-export default function projects(c) {
+export function quality(c) {
   const { html, code, mdn, lesson, single, multi } = c;
 
   lesson({
@@ -54,6 +54,10 @@ export default function projects(c) {
         "div нельзя в p, в ul только li, интерактивное нельзя в интерактивном. strong внутри p — правильно.")
     ]
   });
+}
+
+export function projectCard(c) {
+  const { html, code, mdn, lesson, single, multi } = c;
 
   lesson({
     slug: "proekt-vizitka", title: "Проект 1: страница-визитка", minutes: 30,
@@ -130,6 +134,10 @@ export default function projects(c) {
         "Иерархия заголовков, alt и подписи полей — основа корректной страницы. Таблицы и br для раскладки не используют.")
     ]
   });
+}
+
+export function projectLanding(c) {
+  const { html, code, mdn, lesson, single, multi } = c;
 
   lesson({
     slug: "proekt-lending", title: "Проект 2: лендинг курса", minutes: 40,
@@ -193,6 +201,10 @@ export default function projects(c) {
         "Подписи, правильные типы и автозаполнение делают форму быстрой и доступной. placeholder вместо label и кнопка сброса вредят.")
     ]
   });
+}
+
+export function projectArticle(c) {
+  const { html, code, mdn, lesson, single, multi } = c;
 
   lesson({
     slug: "proekt-statya", title: "Проект 3: статья для блога", minutes: 35,
@@ -253,6 +265,10 @@ export default function projects(c) {
         "Оглавление — навигация по документу: nav со списком якорных ссылок.")
     ]
   });
+}
+
+export function projectFinal(c) {
+  const { html, code, mdn, lesson, single, multi } = c;
 
   lesson({
     slug: "finalnyj-proekt", title: "Финальный проект: сайт-портфолио", minutes: 45,

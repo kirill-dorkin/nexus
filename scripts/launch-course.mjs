@@ -25,6 +25,11 @@ const flag = (name, fallback) => {
 const ORIGIN = flag("--origin", "https://nexus-lake-nine-17.vercel.app").replace(/\/$/, "");
 const ORG_SLUG = flag("--org-slug", "nexus");
 const ORG_NAME = flag("--org-name", "Nexus");
+const OFFERING_SLUG = flag("--offering-slug", null);
+// --new-version publishes the manifest as the next version of an already published
+// course. Offerings pin an exact version, so the new version gets its own Offering
+// (--offering-slug) and the course's older public Offerings are made private.
+const NEW_VERSION = args.includes("--new-version") ? (args.splice(args.indexOf("--new-version"), 1), true) : false;
 const MANIFEST_PATH = args[0] ?? "docs/examples/html-track.manifest.json";
 
 const step = (text) => console.log(`\n▸ ${text}`);
@@ -145,29 +150,37 @@ const orgPath = `organizations/${org.id}`;
 step("Импорт курса");
 const list = await must("Курсы Studio", api("GET", `${orgPath}/studio/courses`));
 let summary = list.courses.find((c) => c.slug === manifest.course.slug);
-if (summary?.status === "published") {
-  ok(`Курс уже опубликован (версия ${summary.versionNumber}) — пропускаю импорт`);
-} else {
+const previousVersionId = summary?.status === "published" ? summary.versionId : null;
+async function importAndPublish(courseIdHint) {
   const plan = await must("Проверка документа", api("POST", `${orgPath}/courses/manifest/validate`, manifest));
   const applied = await must("Сохранение черновика", api("POST", `${orgPath}/courses/manifest/apply`, {
     manifest,
     expectedDraftVersionId: plan.expectedDraftVersionId,
     expectedRevision: plan.expectedRevision
   }));
-  const courseId = applied.courseId ?? plan.courseId ?? summary?.courseId;
+  const courseId = applied.courseId ?? plan.courseId ?? courseIdHint;
   const draft = await must("Чтение черновика", api("GET", `${orgPath}/studio/courses/${courseId}`));
   ok(`Черновик сохранён: ${plan.counts.lessons} уроков, ${plan.counts.activities} заданий`);
   await must("Публикация", api("POST", `${orgPath}/studio/courses/${courseId}/publish`, {
     draftVersionId: draft.versionId,
     expectedRevision: draft.revision
   }));
-  ok("Курс опубликован");
+  ok(`Опубликована версия ${draft.versionNumber}`);
+}
+if (summary?.status === "published" && !NEW_VERSION) {
+  ok(`Курс уже опубликован (версия ${summary.versionNumber}) — пропускаю импорт. Для обновления: --new-version --offering-slug <адрес>`);
+} else if (summary?.status === "published") {
+  if (!OFFERING_SLUG) fail("Для новой версии нужен новый адрес доступа: --offering-slug <адрес>.");
+  await must("Создание следующего черновика", api("POST", `${orgPath}/studio/courses/${summary.courseId}/draft`, {}));
+  await importAndPublish(summary.courseId);
+} else {
+  await importAndPublish(summary?.courseId);
 }
 summary = (await must("Курсы Studio", api("GET", `${orgPath}/studio/courses`))).courses.find((c) => c.slug === manifest.course.slug);
 const published = await must("Чтение курса", api("GET", `${orgPath}/studio/courses/${summary.courseId}`));
 
 step("Публичный доступ");
-const offeringSlug = manifest.course.slug;
+const offeringSlug = OFFERING_SLUG ?? manifest.course.slug;
 const offerings = (await must("Список доступов", api("GET", `${orgPath}/offerings?courseVersionId=${published.versionId}`))).offerings;
 let offering = offerings.find((o) => o.slug === offeringSlug);
 if (!offering) {
@@ -183,6 +196,13 @@ if (offering.visibility !== "public") {
   await must("Открытие доступа", api("PATCH", `${orgPath}/offerings/${offering.id}/visibility`, { visibility: "public" }));
 }
 ok("Курс виден всем");
+if (previousVersionId && previousVersionId !== published.versionId) {
+  const old = (await must("Старые доступы", api("GET", `${orgPath}/offerings?courseVersionId=${previousVersionId}`))).offerings;
+  for (const item of old.filter((o) => o.visibility === "public")) {
+    await must("Скрытие старого доступа", api("PATCH", `${orgPath}/offerings/${item.id}/visibility`, { visibility: "private" }));
+    ok(`Старый доступ /${item.slug} скрыт`);
+  }
+}
 
 step("Самостоятельное вступление учеников");
 await must("Политика вступления", api("PUT", `${orgPath}/customer-entry-policy`, { policy: "open" }));
