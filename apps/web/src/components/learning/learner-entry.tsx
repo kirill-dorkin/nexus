@@ -69,43 +69,55 @@ export function LearnerEntry({
     })();
     return () => controller.abort();
   }, [api, reload]);
-  async function action(kind: "join" | "enroll") {
+  /** Sends one existing domain command; null means the caller must stop. */
+  async function post(kind: "join" | "enroll"): Promise<Response | null> {
+    const response = await browserApiRequest(
+      kind === "join"
+        ? `/v1/public/organizations/${encodeURIComponent(organizationSlug)}/memberships/me`
+        : `${api}/enrollment`,
+      { method: "POST", body: "{}" }
+    );
+    if (response.status === 401) {
+      setLearning(null);
+      setAnonymous(true);
+      return null;
+    }
+    if (!response.ok) {
+      setError(
+        response.status === 409 ||
+          response.status === 403 ||
+          response.status === 404
+          ? "Доступ изменился. Обновите состояние обучения или обратитесь в организацию."
+          : "Не удалось выполнить действие. Можно безопасно повторить его."
+      );
+      return null;
+    }
+    return response;
+  }
+  async function enroll() {
+    const response = await post("enroll");
+    if (!response) return false;
+    setLearning(learnerLearningCourseSchema.parse(await response.json()));
+    setMessage("Вы записаны на курс. Результаты практики будут сохраняться.");
+    return true;
+  }
+  /**
+   * One learner gesture, two separate domain commands: explicit Organization
+   * entry first, then free self-enrollment. Each keeps its own transaction,
+   * idempotency and event; a failed second step leaves a visible retry.
+   */
+  async function action(kind: "start" | "enroll") {
     setBusy(true);
     setError(null);
     setMessage(null);
     try {
-      const response = await browserApiRequest(
-        kind === "join"
-          ? `/v1/public/organizations/${encodeURIComponent(organizationSlug)}/memberships/me`
-          : `${api}/enrollment`,
-        { method: "POST", body: "{}" }
-      );
-      if (response.status === 401) {
-        setLearning(null);
-        setAnonymous(true);
+      if (kind === "start") {
+        const joined = await post("join");
+        if (!joined) return;
+        if (!(await enroll())) setReload((x) => x + 1);
         return;
       }
-      if (!response.ok) {
-        setError(
-          response.status === 409 ||
-            response.status === 403 ||
-            response.status === 404
-            ? "Доступ изменился. Обновите состояние обучения или обратитесь в организацию."
-            : "Не удалось выполнить действие. Можно безопасно повторить его."
-        );
-        return;
-      }
-      if (kind === "enroll") {
-        setLearning(learnerLearningCourseSchema.parse(await response.json()));
-        setMessage(
-          "Вы записаны на курс. Результаты практики будут сохраняться."
-        );
-      } else {
-        setMessage(
-          "Вы вступили в организацию. Теперь можно записаться на курс."
-        );
-        setReload((x) => x + 1);
-      }
+      await enroll();
     } catch {
       setError(
         "Не удалось связаться с сервером. Можно безопасно повторить действие."
@@ -183,23 +195,23 @@ export function LearnerEntry({
                   </div>
                 </>
               ) : learning.entry.membershipStatus === "none" ? (
-                <>
-                  <p>
-                    Для сохранения результатов сначала вступите в организацию «
-                    {learning.organization.name}», затем отдельно запишитесь на
-                    курс.
-                  </p>
-                  {learning.entry.customerEntryPolicy === "open" ? (
-                    <Button loading={busy} onClick={() => void action("join")}>
-                      Вступить в организацию
-                    </Button>
-                  ) : (
+                learning.entry.customerEntryPolicy === "open" ? (
+                  <>
                     <p>
-                      Самостоятельное вступление закрыто. Обратитесь в
-                      организацию за приглашением.
+                      Курс бесплатный. Нажимая кнопку, вы вступаете в
+                      организацию «{learning.organization.name}» и записываетесь
+                      на курс, чтобы сохранять результаты практики.
                     </p>
-                  )}
-                </>
+                    <Button loading={busy} onClick={() => void action("start")}>
+                      Начать курс
+                    </Button>
+                  </>
+                ) : (
+                  <p>
+                    Самостоятельное вступление закрыто. Обратитесь в
+                    организацию «{learning.organization.name}» за приглашением.
+                  </p>
+                )
               ) : learning.entry.membershipStatus !== "active" ? (
                 <p>
                   Членство сейчас неактивно. Для доступа обратитесь в

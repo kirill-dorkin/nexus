@@ -22,3 +22,9 @@ No progress table, watched-video state, mutable completion flag, completion even
 ## Verification
 
 PostgreSQL HTTP coverage proves session/Origin/self ownership, lifecycle gates, idempotency/concurrency/rollback, role-less entry without privilege escalation, pagination/tenant isolation, normalized Evidence attribution and unchanged terminal completion. Production browser verification covers auth return-to and explicit entry/enrollment/returning learner UX through non-canonical read/write projections alongside the existing real session/CORS boundary; this does not substitute for the Slice F canonical browser path.
+
+## Amendment — 2026-11-01: one learner gesture for course start
+
+The maintainer chose to remove the extra click between Organization entry and free Enrollment. Web may compose both commands behind one explicit "Начать курс" action when the learner has no Membership and the Organization's `customerEntryPolicy` is `open`. The adjacent copy names the Organization the learner joins.
+
+The domain contract is unchanged: entry (ADR-0047) and self-enrollment remain separate server commands with their own authorization, transactions, idempotency and events. Web always sends entry first and enrollment second. If entry succeeds but enrollment fails, the refreshed state offers the existing separate enrollment action. No API combines the two commands, and registration still creates neither Membership nor Enrollment.

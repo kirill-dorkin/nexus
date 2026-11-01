@@ -101,7 +101,7 @@ export function CustomerEntryManager({ organizationId }: { organizationId: strin
       setPolicy(result.policy);
       setConfirm(null);
       setNotice(next === "open"
-        ? "Самостоятельное вступление разрешено. Ученики всё ещё должны вступить и записаться отдельно."
+        ? "Самостоятельное вступление разрешено. Ученик начинает бесплатный курс одной кнопкой: она по очереди оформляет вступление и запись."
         : "Самостоятельное вступление закрыто. Уже активные участники не исключаются.");
     } catch (e) {
       // PUT may have committed even if the response was lost.
