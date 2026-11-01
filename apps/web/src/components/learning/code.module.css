@@ -68,6 +68,7 @@
   margin: 0;
   padding: 1.1rem 1.25rem;
   border: 0;
+  border-radius: 0;
   font-family: var(--font-mono);
   font-size: 0.88rem;
   line-height: 1.7;
@@ -102,7 +103,7 @@
   display: block;
   width: 100%;
   min-height: 7rem;
-  resize: vertical;
+  resize: none;
   overflow: auto;
   background: transparent;
   color: transparent;
@@ -113,8 +114,19 @@
   background: color-mix(in srgb, var(--accent-action) 28%, transparent);
   color: transparent;
 }
+/* Focus is shown on the whole block (see .editing), not as an inner outline. */
 .editor:focus-within {
-  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--focus-ring) 60%, transparent);
+  box-shadow: none;
+}
+.editing:focus-within {
+  border-color: var(--accent-action);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-action) 22%, transparent), 0 20px 60px -30px color-mix(in srgb, var(--accent-action) 40%, transparent);
+}
+@keyframes resultIn {
+  from { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .frameWrap { animation: none; }
 }
 
 /* Token colours. */
@@ -157,10 +169,10 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-action) 25%, transparent);
 }
 .frameWrap {
-  height: 260px;
+  height: 240px;
   min-height: 140px;
   overflow: hidden;
-  resize: vertical;
+  animation: resultIn 260ms ease-out;
   background: #fff;
 }
 .frame {
@@ -199,4 +211,13 @@
   .snippet {
     transition: none;
   }
+}
+/* Inner editor layers never draw their own frame; only the outer block does. */
+.snippet .editor,
+.snippet .layer,
+.snippet .input,
+.snippet .code {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }

@@ -219,7 +219,8 @@
   margin: 1.6em 0 0.7em;
   letter-spacing: -0.02em;
 }
-.markdown pre {
+/* Only bare Markdown pre: code editors, demos and diagrams style their own pre. */
+.markdown pre:not([class]) {
   overflow-x: auto;
   max-width: 100%;
   background: var(--surface-subtle);

@@ -413,7 +413,7 @@
   border-radius: 0 0 0.8rem 0.8rem;
 }
 [data-phase="result"] .progress {
-  opacity: 0.35;
+  opacity: 0;
   transition: opacity 600ms ease 400ms;
 }
 .progress span {
@@ -591,4 +591,11 @@
   overflow-wrap: normal;
   word-break: normal;
   hyphens: auto;
+}
+/* The code area inside the demo window is flat: no border, no radius of its own. */
+.frame .window .editor {
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
 }
