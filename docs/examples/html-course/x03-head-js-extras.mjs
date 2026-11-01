@@ -136,6 +136,13 @@ export function structuredData(c) {
       `- \`itemscope\` — здесь начинается описание сущности.
 - \`itemtype\` — её тип из Schema.org.
 - \`itemprop\` — свойство; значение берётся из текста элемента или из \`datetime\`, \`href\`, \`src\`, \`content\`.`,
+      `## itemid и itemref`,
+      html(`<div itemscope itemtype="https://schema.org/Book" itemid="urn:isbn:978-5-17-123456-7" itemref="book-author">
+  <p itemprop="name">Мастер и Маргарита</p>
+</div>
+<p id="book-author">Автор: <span itemprop="author">Михаил Булгаков</span></p>`),
+      `- \`itemid\` — глобальный идентификатор сущности (ISBN, URL), чтобы поисковик понял, что разные страницы описывают одно и то же.
+- \`itemref\` — список \`id\` элементов вне блока, свойства которых тоже относятся к этой сущности.`,
       `## Популярные типы`,
       `\`Article\`, \`Product\` (с \`Offer\` и ценой), \`Recipe\`, \`Course\`, \`Event\`, \`FAQPage\`, \`BreadcrumbList\`, \`Organization\`, \`Person\`. У каждого типа на schema.org есть список свойств.`,
       `## Проверка`,
@@ -284,6 +291,25 @@ export function webComponents(c) {
 <h3 slot="title">Карточка курса</h3>
 <p>Описание попадёт в слот по умолчанию.</p>`),
       `Атрибут \`slot="title"\` отправляет элемент в слот с этим именем; текст внутри \`slot\` показывается, если ничего не передали. Атрибуты \`part\` и \`exportparts\` позволяют стилизовать отдельные части компонента снаружи.`,
+      `## Расширение встроенных элементов: is`,
+      code("html", `<button is="copy-button" data-text="Привет">Скопировать</button>
+<script>
+  customElements.define("copy-button", class extends HTMLButtonElement {}, { extends: "button" });
+</script>`),
+      `Атрибут \`is\` превращает обычный \`button\` в расширенную версию, сохраняя всю встроенную доступность. Поддерживается не во всех браузерах (Safari отказался), поэтому чаще делают отдельный пользовательский элемент.`,
+      `## Настройки декларативного Shadow DOM`,
+      code("html", `<template shadowrootmode="open"
+          shadowrootdelegatesfocus
+          shadowrootclonable
+          shadowrootserializable
+          shadowrootslotassignment="manual">
+  …
+</template>`),
+      `- \`shadowrootdelegatesfocus\` — клик по компоненту передаёт фокус первому фокусируемому элементу внутри.
+- \`shadowrootclonable\` — теневое дерево копируется вместе с элементом при \`cloneNode\`.
+- \`shadowrootserializable\` — содержимое попадёт в HTML при сериализации (\`getHTML\`).
+- \`shadowrootslotassignment="manual"\` — скрипт сам решает, что попадёт в какой слот.
+- \`shadowrootcustomelementregistry\` — компонент может иметь собственный реестр пользовательских элементов (новая возможность).`,
       `## Когда это нужно`,
       `Веб-компоненты — основа дизайн-систем, которые работают в любом фреймворке. Для обычного сайта они не обязательны, но вы будете встречать их в чужом коде и библиотеках — теперь вы знаете, что это.`,
       `## Практика`,

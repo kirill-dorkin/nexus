@@ -128,6 +128,9 @@ export default function links(c) {
       html(`<a href="/en/" hreflang="en" lang="en">English version</a>
 <a href="/files/data.csv" type="text/csv" download>Данные в CSV</a>`),
       `\`hreflang\` сообщает язык страницы по ссылке, \`type\` — тип файла. Браузер их не проверяет, это подсказки для поисковиков и программ.`,
+      `## ping — уведомление о переходе`,
+      code("html", `<a href="https://example.com" ping="https://stats.example.com/click">Партнёр</a>`),
+      `\`ping\` перечисляет адреса, на которые браузер отправит короткий запрос при переходе по ссылке, — так считают клики без промежуточных редиректов. Некоторые браузеры отключают \`ping\` ради приватности, поэтому полагаться на него для статистики нельзя.`,
       `## Ссылка-картинка`,
       html(`<a href="/">
   <img src="https://picsum.photos/seed/logo/80/80" alt="Nexus — на главную" width="80" height="80">

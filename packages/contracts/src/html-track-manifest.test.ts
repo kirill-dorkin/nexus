@@ -54,6 +54,22 @@ describe("HTML full course import", () => {
     }
   });
 
+  it("teaches every element and attribute of the HTML Living Standard index", () => {
+    // Refresh with: node docs/examples/html-course/update-spec-index.mjs
+    const index = JSON.parse(
+      readFileSync(new URL("../../../docs/examples/html-course/spec-index.json", import.meta.url), "utf8")
+    ) as { elements: string[]; attributes: string[] };
+    const text = JSON.stringify(htmlTrack()).toLowerCase();
+    const missingElements = index.elements.filter(
+      (name) => !new RegExp(`<${name}[\\s>/]|\x60${name}\x60`).test(text)
+    );
+    const missingAttributes = index.attributes.filter(
+      (name) => !new RegExp(`[\\s"\x60(]${name}(=|\x60|[\\s"),])`).test(text)
+    );
+    expect(missingElements, "elements not taught").toEqual([]);
+    expect(missingAttributes, "attributes not taught").toEqual([]);
+  });
+
   it("keeps quiz answer keys coherent", () => {
     for (const activity of htmlTrack().activities) {
       if (activity.type === "quiz.short_text") {
