@@ -5,20 +5,20 @@ const structure = [
   {
     slug: "practice",
     activities: [
-      { slug: "one", activityVersionId: "v1", required: true },
-      { slug: "optional", activityVersionId: "v2", required: false },
-      { slug: "one", activityVersionId: "v1", required: true }
+      { slug: "one", activityId: "v1", activityVersionId: "v1", required: true },
+      { slug: "optional", activityId: "v2", activityVersionId: "v2", required: false },
+      { slug: "one", activityId: "v1", activityVersionId: "v1", required: true }
     ]
   },
   {
     slug: "next",
     activities: [
-      { slug: "one", activityVersionId: "v1", required: true },
-      { slug: "three", activityVersionId: "v3", required: true }
+      { slug: "one", activityId: "v1", activityVersionId: "v1", required: true },
+      { slug: "three", activityId: "v3", activityVersionId: "v3", required: true }
     ]
   }
 ];
-describe("required-activity-passes@1", () => {
+describe("required-activity-passes@2", () => {
   it("deduplicates shared required references and skips informational Lessons", () => {
     const p = deriveCourseProgress(structure, []);
     expect(p.totalRequired).toBe(2);
@@ -66,5 +66,26 @@ describe("required-activity-passes@1", () => {
     expect(p.allRequiredPassed).toBe(true);
     expect(p.nextLessonSlug).toBeNull();
     expect(p.lessons[0]!.requiredPassed).toBe(false);
+  });
+  it("keeps work done on an earlier published version of the same Activity (ADR-0062)", () => {
+    const republished = [
+      { slug: "practice", activities: [{ slug: "one", activityId: "a1", activityVersionId: "v9", required: true }] }
+    ];
+    const lineage = new Map([["v1", "a1"], ["v9", "a1"]]);
+    const p = deriveCourseProgress(
+      republished,
+      [{ activityVersionId: "v1", passed: true, lastActionAt: "2026-11-01T10:00:00.000Z" }],
+      lineage
+    );
+    expect(p.policyVersion).toBe(2);
+    expect(p.passedRequired).toBe(1);
+    expect(p.allRequiredPassed).toBe(true);
+    expect(p.lessons[0]!.activities).toEqual([{ slug: "one", passed: true }]);
+    const unrelated = deriveCourseProgress(
+      republished,
+      [{ activityVersionId: "v7", passed: true, lastActionAt: "2026-11-01T10:00:00.000Z" }],
+      lineage
+    );
+    expect(unrelated.passedRequired).toBe(0);
   });
 });

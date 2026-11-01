@@ -333,6 +333,20 @@ export class PostgresLearningDeliveryRepository extends LearningDeliveryReposito
     return result.rows.map(mapOffering);
   }
 
+  async retargetOffering(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    offeringId: string,
+    courseVersionId: string
+  ): Promise<LearningOffering | null> {
+    const result = await transaction.client.query<OfferingRow>(
+      `UPDATE learning_delivery.learning_offerings SET course_version_id=$3, updated_at=now()
+        WHERE organization_id=$1 AND id=$2 AND course_version_id<>$3 RETURNING ${offeringSelect}`,
+      [organizationId, offeringId, courseVersionId]
+    );
+    return result.rows[0] ? mapOffering(result.rows[0]) : null;
+  }
+
   async setOfferingVisibility(
     transaction: DatabaseTransaction,
     organizationId: string,

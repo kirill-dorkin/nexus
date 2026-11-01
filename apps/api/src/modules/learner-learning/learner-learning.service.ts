@@ -291,10 +291,17 @@ export class LearnerLearningService {
       enrollment &&
       (enrollment.status === "active" || enrollment.status === "completed")
     ) {
+      // Work on any published version of the same Activities counts (ADR-0062).
+      const lineage = await this.content.activityLineage(
+        tx,
+        route.organizationId,
+        [...new Set(structure.flatMap((l) => l.activities.map((a) => a.activityId)))]
+      );
       const ids = [
-        ...new Set(
-          structure.flatMap((l) => l.activities.map((a) => a.activityVersionId))
-        )
+        ...new Set([
+          ...structure.flatMap((l) => l.activities.map((a) => a.activityVersionId)),
+          ...lineage.keys()
+        ])
       ];
       progress = deriveCourseProgress(
         structure,
@@ -303,7 +310,8 @@ export class LearnerLearningService {
           route.organizationId,
           enrollment.id,
           ids
-        )
+        ),
+        lineage
       );
     }
     return learnerLearningCourseSchema.parse({

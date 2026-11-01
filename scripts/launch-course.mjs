@@ -26,11 +26,9 @@ const ORIGIN = flag("--origin", "https://nexus-lake-nine-17.vercel.app").replace
 const ORG_SLUG = flag("--org-slug", "nexus");
 const ORG_NAME = flag("--org-name", "Nexus");
 const OFFERING_SLUG = flag("--offering-slug", null);
-// --new-version publishes the manifest as the next version of an already published
-// course. Offerings pin an exact version, so the new version gets its own internal Offering
-// (default `<course>-v<N>`, override with --offering-slug) and the course's older public
-// Offerings are made private. Learners never see the Offering slug: the stable address is
-// /courses/<course>, which always serves the newest public version (ADR-0061).
+// --new-version publishes the manifest as the next version of an already published course and
+// moves the existing public Offering forward to it (ADR-0062), keeping learners' Enrollments and
+// progress. The stable address /courses/<course> never changes (ADR-0061).
 const NEW_VERSION = args.includes("--new-version") ? (args.splice(args.indexOf("--new-version"), 1), true) : false;
 const MANIFEST_PATH = args[0] ?? "docs/examples/html-track.manifest.json";
 
@@ -181,13 +179,31 @@ summary = (await must("Курсы Studio", api("GET", `${orgPath}/studio/courses
 const published = await must("Чтение курса", api("GET", `${orgPath}/studio/courses/${summary.courseId}`));
 
 step("Публичный доступ");
-const offeringSlug = OFFERING_SLUG ?? (published.versionNumber > 1
-  ? `${manifest.course.slug}-v${published.versionNumber}`
-  : manifest.course.slug);
-const offerings = (await must("Список доступов", api("GET", `${orgPath}/offerings?courseVersionId=${published.versionId}`))).offerings;
-let offering = offerings.find((o) => o.slug === offeringSlug);
+// ADR-0062: a new version moves the existing public Offering forward, so learners keep their
+// Enrollment and progress. A brand-new Offering is created only for the first publication or when
+// the old one cannot move (for example, a cohort Offering).
+let offering = null;
+let offeringSlug = OFFERING_SLUG ?? manifest.course.slug;
+if (previousVersionId && previousVersionId !== published.versionId) {
+  const old = (await must("Текущие доступы", api("GET", `${orgPath}/offerings?courseVersionId=${previousVersionId}`))).offerings;
+  for (const item of old.filter((o) => o.visibility === "public")) {
+    const moved = await api("PATCH", `${orgPath}/offerings/${item.id}/course-version`, { courseVersionId: published.versionId });
+    if (moved.ok && !offering) {
+      offering = moved.data;
+      offeringSlug = offering.slug;
+      ok(`Доступ /${offering.slug} переведён на версию ${published.versionNumber} — ученики сохраняют прогресс`);
+    } else if (!moved.ok) {
+      await must("Скрытие старого доступа", api("PATCH", `${orgPath}/offerings/${item.id}/visibility`, { visibility: "private" }));
+      ok(`Старый доступ /${item.slug} нельзя перевести (HTTP ${moved.status}) — скрыт`);
+    }
+  }
+}
 if (!offering) {
-  offering = await must("Создание доступа", api("POST", `${orgPath}/offerings`, {
+  offeringSlug = OFFERING_SLUG ?? (published.versionNumber > 1
+    ? `${manifest.course.slug}-v${published.versionNumber}`
+    : manifest.course.slug);
+  const current = (await must("Список доступов", api("GET", `${orgPath}/offerings?courseVersionId=${published.versionId}`))).offerings;
+  offering = current.find((o) => o.slug === offeringSlug) ?? await must("Создание доступа", api("POST", `${orgPath}/offerings`, {
     courseVersionId: published.versionId,
     name: manifest.course.title,
     slug: offeringSlug,
@@ -199,13 +215,6 @@ if (offering.visibility !== "public") {
   await must("Открытие доступа", api("PATCH", `${orgPath}/offerings/${offering.id}/visibility`, { visibility: "public" }));
 }
 ok("Курс виден всем");
-if (previousVersionId && previousVersionId !== published.versionId) {
-  const old = (await must("Старые доступы", api("GET", `${orgPath}/offerings?courseVersionId=${previousVersionId}`))).offerings;
-  for (const item of old.filter((o) => o.visibility === "public")) {
-    await must("Скрытие старого доступа", api("PATCH", `${orgPath}/offerings/${item.id}/visibility`, { visibility: "private" }));
-    ok(`Старый доступ /${item.slug} скрыт`);
-  }
-}
 
 step("Самостоятельное вступление учеников");
 await must("Политика вступления", api("PUT", `${orgPath}/customer-entry-policy`, { policy: "open" }));

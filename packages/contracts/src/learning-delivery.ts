@@ -17,6 +17,12 @@ export const updateLearningOfferingVisibilityRequestSchema = z
     visibility: learningOfferingVisibilitySchema
   })
   .strict();
+/** Moves a free self-paced Offering forward to a newer published version of the same Course (ADR-0062). */
+export const retargetLearningOfferingRequestSchema = z
+  .object({
+    courseVersionId: uuidSchema
+  })
+  .strict();
 
 /** Studio-only, course-version-scoped listing; pagination locator is never authority. */
 export const listLearningOfferingsQuerySchema = z

@@ -32,3 +32,7 @@ The domain contract is unchanged: entry (ADR-0047) and self-enrollment remain se
 ## Amendment — 2026-11-01: checking an answer starts the course
 
 If a signed-in learner who is not yet enrolled checks a quiz answer, Web runs the same two commands as "Начать курс" (Organization entry, then free self-enrollment) and retries the same attempt key once. The quiz hint states that checking enrolls the learner in the free course. Closed self-entry still fails with an explanatory message. Anonymous learners see sign-up and sign-in actions that return to the same activity. Domain commands and authorization are unchanged.
+
+## Amendment — 2026-11-02: progress across course versions
+
+`required-activity-passes@1` is superseded by `@2` (ADR-0062). A required task now counts as passed when the learner's own Enrollment passed **any published version of the same stable Activity**, so a free Offering that moves forward to a newer course version keeps the learner's completed work. All other rules of this ADR are unchanged.

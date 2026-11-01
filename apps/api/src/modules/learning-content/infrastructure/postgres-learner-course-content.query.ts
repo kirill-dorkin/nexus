@@ -24,7 +24,7 @@ export class PostgresLearnerCourseContentQuery extends LearnerCourseContentQuery
       slug: string;
       activities: LearnerLessonStructure["activities"];
     }>(
-      `SELECT l.slug, coalesce((SELECT jsonb_agg(jsonb_build_object('slug',a.slug,'activityVersionId',a.id,'required',b.required) ORDER BY b.position)
+      `SELECT l.slug, coalesce((SELECT jsonb_agg(jsonb_build_object('slug',a.slug,'activityId',a.activity_id,'activityVersionId',a.id,'required',b.required) ORDER BY b.position)
          FROM learning_content.course_version_lesson_blocks b JOIN learning_content.course_version_activities a
            ON a.organization_id=b.organization_id AND a.course_version_id=b.course_version_id AND a.activity_id=b.activity_id
         WHERE b.organization_id=vl.organization_id AND b.course_version_id=vl.course_version_id AND b.lesson_id=vl.lesson_id AND b.block_type='activity'), '[]'::jsonb) AS activities
@@ -33,5 +33,15 @@ export class PostgresLearnerCourseContentQuery extends LearnerCourseContentQuery
       [organizationId, versionId]
     );
     return result.rows.length ? result.rows : null;
+  }
+  async activityLineage(tx: DatabaseTransaction, organizationId: string, activityIds: readonly string[]) {
+    if (!activityIds.length) return new Map<string, string>();
+    const result = await tx.client.query<{ id: string; activity_id: string }>(
+      `SELECT a.id, a.activity_id FROM learning_content.course_version_activities a
+         JOIN learning_content.course_versions v ON v.organization_id=a.organization_id AND v.id=a.course_version_id
+        WHERE a.organization_id=$1 AND a.activity_id=ANY($2::uuid[]) AND v.status='published'`,
+      [organizationId, [...activityIds]]
+    );
+    return new Map(result.rows.map((r) => [r.id, r.activity_id]));
   }
 }

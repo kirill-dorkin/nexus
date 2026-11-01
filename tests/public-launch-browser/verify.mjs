@@ -290,7 +290,7 @@ async function startFakeApi() {
         const learning = { ...learningCourse,
           entry: { customerEntryPolicy: "open", membershipStatus: state.member ? "active" : "none", enrollmentStatus: state.enrolled ? "active" : null },
           progress: state.enrolled ? {
-            policyKey: "required-activity-passes", policyVersion: 1,
+            policyKey: "required-activity-passes", policyVersion: 2,
             passedRequired: learningFixturePassed ? 1 : 0, totalRequired: 1,
             percentage: learningFixturePassed ? 100 : 0, allRequiredPassed: learningFixturePassed,
             nextLessonSlug: learningFixturePassed ? null : "introduction", lastActionAt: null,
