@@ -3,33 +3,38 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Headphones, MusicNotes, SpeakerHigh, SpeakerSlash } from "@phosphor-icons/react/dist/ssr";
 import {
-  getServerSoundSettings, getSoundSettings, music, subscribeSound, updateSound, warmUpVoices
+  getServerSoundState, getSoundState, subscribeSound, unlockSound, updateSound, warmUpVoices
 } from "../../lib/sound/engine";
 import styles from "./sound-panel.module.css";
 
+export function useSoundState() {
+  return useSyncExternalStore(subscribeSound, getSoundState, getServerSoundState);
+}
 export function useSoundSettings() {
-  return useSyncExternalStore(subscribeSound, getSoundSettings, getServerSoundSettings);
+  return useSoundState().settings;
 }
 
 const RATES = [0.9, 1, 1.15, 1.3];
 
 /** Compact "Звук" control on lesson pages: character voices and coffee-shop music, both opt-in. */
 export function SoundPanel() {
-  const s = useSoundSettings();
+  const { settings: s, unlocked } = useSoundState();
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const on = s.music || s.voice;
 
-  // A saved "music on" can only start after the first gesture on this page (browser autoplay rules).
+  // Sound is on by default but browsers allow audio only after a gesture: the first click,
+  // tap or key press anywhere on the page starts it.
   useEffect(() => {
     warmUpVoices();
-    if (!getSoundSettings().music) return;
-    const resume = () => music.apply();
-    window.addEventListener("pointerdown", resume, { once: true });
-    window.addEventListener("keydown", resume, { once: true });
+    const events = ["pointerdown", "keydown", "touchstart"] as const;
+    const unlock = () => {
+      unlockSound();
+      for (const e of events) window.removeEventListener(e, unlock);
+    };
+    for (const e of events) window.addEventListener(e, unlock, { passive: true });
     return () => {
-      window.removeEventListener("pointerdown", resume);
-      window.removeEventListener("keydown", resume);
+      for (const e of events) window.removeEventListener(e, unlock);
     };
   }, []);
   useEffect(() => {
@@ -48,10 +53,11 @@ export function SoundPanel() {
   return (
     <div ref={root} className={styles.root}>
       <button type="button" className={styles.trigger} data-sound-trigger="" data-on={on || undefined}
+        data-waiting={on && !unlocked || undefined}
         aria-expanded={open} aria-haspopup="dialog" onClick={() => setOpen((v) => !v)}>
         {on ? <SpeakerHigh size={16} weight="fill" aria-hidden="true" /> : <SpeakerSlash size={16} aria-hidden="true" />}
-        Звук
-        {s.music ? <span className={styles.bars} aria-hidden="true"><i /><i /><i /></span> : null}
+        {on && !unlocked ? "Включить звук" : "Звук"}
+        {s.music && unlocked ? <span className={styles.bars} aria-hidden="true"><i /><i /><i /></span> : null}
       </button>
       {open ? (
         <div className={styles.panel} role="dialog" aria-label="Настройки звука">
