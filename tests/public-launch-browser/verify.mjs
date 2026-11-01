@@ -1018,7 +1018,7 @@ async function verifyCanonicalLearner(cdp, authored) {
     await clickText(cdp, "Создать аккаунт");
     await waitForExpression(
       cdp,
-      `location.pathname===${JSON.stringify(lessonRoute)} && document.body.innerText.includes("Вступить в организацию")`,
+      `location.pathname===${JSON.stringify(lessonRoute)} && document.body.innerText.includes("Начать курс")`,
       "canonical registration return"
     );
     let state = await ownRead();
@@ -1029,24 +1029,18 @@ async function verifyCanonicalLearner(cdp, authored) {
         state.body.progress === null,
       "Registration implicitly enrolled canonical learner."
     );
-    await clickText(cdp, "Вступить в организацию");
+    // One explicit learner gesture issues the separate entry and enrollment commands.
+    await clickText(cdp, "Начать курс");
     await waitForExpression(
       cdp,
-      'document.body.innerText.includes("Записаться на бесплатный курс")',
-      "canonical explicit membership"
+      'document.body.innerText.includes("Задания курса: 0 из 2")',
+      "canonical one-action course start"
     );
     state = await ownRead();
     assert(
       state.body.entry.membershipStatus === "active" &&
-        state.body.progress === null &&
-        state.body.entry.enrollmentStatus === null,
-      "Membership created implicit Enrollment."
-    );
-    await clickText(cdp, "Записаться на бесплатный курс");
-    await waitForExpression(
-      cdp,
-      'document.body.innerText.includes("Задания курса: 0 из 2")',
-      "canonical active enrollment"
+        state.body.entry.enrollmentStatus === "active",
+      "Course start did not create both Membership and Enrollment."
     );
     await evaluate(
       cdp,
@@ -1214,7 +1208,7 @@ async function verifyCanonicalLearner(cdp, authored) {
     await clickText(cdp, "Создать аккаунт");
     await waitForExpression(
       cdp,
-      'document.body.innerText.includes("Вступить в организацию")',
+      'document.body.innerText.includes("Начать курс")',
       "canonical other principal"
     );
     assert(
@@ -1520,13 +1514,12 @@ async function runBrowserVerification(cdp) {
   assert(await evaluate(cdp, `document.querySelector('input[name="password"]').getAttribute("aria-describedby") === "learning-password-hint" && document.querySelector("#learning-password-hint").innerText.includes("15")`), "Registration password hint is disconnected.");
   assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Learning registration overflows desktop.");
   await clickText(cdp, "Создать аккаунт");
-  await waitForExpression(cdp, `location.pathname === ${JSON.stringify(learningReturn)} && document.body.innerText.includes("Вступить в организацию")`, "registration return to selected Lesson");
+  await waitForExpression(cdp, `location.pathname === ${JSON.stringify(learningReturn)} && document.body.innerText.includes("Начать курс")`, "registration return to selected Lesson");
   assert([...learningActors.values()].every(a => !a.enrolled && !a.member), "Auth created Membership/Enrollment implicitly.");
-  await clickText(cdp, "Вступить в организацию");
-  await waitForExpression(cdp, 'document.body.innerText.includes("Записаться на бесплатный курс")', "separate enrollment action");
-  assert([...learningActors.values()].every(a => !a.enrolled), "Membership implicitly enrolled the learner.");
-  await clickText(cdp, "Записаться на бесплатный курс");
+  // The fixture rejects enrollment before Organization entry, so ordering stays enforced.
+  await clickText(cdp, "Начать курс");
   await waitForExpression(cdp, 'document.body.innerText.includes("Задания курса: 0 из 1")', "own enrollment zero progress");
+  assert([...learningActors.values()].every(a => a.member && a.enrolled), "Course start skipped entry or enrollment.");
   await accessibilityAudit(cdp, "enrolled Lesson");
   await navigate(cdp, `${WEB_ORIGIN}/me/learning`);
   await waitForExpression(cdp, 'document.body.innerText.includes("Основы компьютера") && document.body.innerText.includes("Задания курса: 0 из 1")', "returning learner courses");
