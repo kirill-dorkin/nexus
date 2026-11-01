@@ -12,7 +12,7 @@
   "dependencies": {
     "@platform/contracts": "workspace:*",
     "fastify": "^5.0.0",
-    "pino": "^9.0.0"
+    "pino": "^10.4.0"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
