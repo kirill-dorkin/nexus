@@ -12,22 +12,22 @@ export default function objectsDeep(c, ch, rc) {
   L({
     slug: "prototypes", title: "Прототипы", summary: "Цепочка прототипов, Object.create, Object.getPrototypeOf, Object.setPrototypeOf и isPrototypeOf.",
     skill: ["js-prototypes", "Прототипы", "Понимать, откуда объект берёт свойства и методы, и управлять прототипом."],
-    now: "Откуда у пустого массива метод `map`, если мы его не писали? Разбираем прототипы.",
+    now: "Разбираем прототипы: откуда у объектов берутся методы.",
     body: [
       scene("Чужие методы",
-        ["marta", "Я создала пустой массив, а у него уже есть `map`, `push`… Откуда?"],
+        ["you", "Создаю пустой массив, а у него уже есть `map`, `push`… Откуда?"],
         ["bro", "Из прототипа. Если свойства нет у объекта, я ищу его у прототипа, потом у прототипа прототипа — по цепочке."]),
       idea("Цепочка прототипов", "Где ищутся свойства", "У каждого объекта есть скрытая ссылка на прототип. Чтение свойства идёт по цепочке: объект → его прототип → … → `Object.prototype` → `null`. Классы — удобная запись этого механизма.", "Понять наследование и методы встроенных объектов.", "const arr = [];\nconsole.log(Object.getPrototypeOf(arr) === Array.prototype);\nconsole.log(Object.getPrototypeOf(Array.prototype) === Object.prototype);", { covers: ["цепочка прототипов"] }),
-      meth("Object.create()", "Объект с заданным прототипом", "`Object.create(proto)` — новый объект, прототипом которого будет `proto`. `Object.create(null)` — объект совсем без прототипа.", "Наследование без классов; «чистый» словарь без лишних ключей.", "const drink = { describe() { return `${this.name}, ${this.ml} мл`; } };\nconst latte = Object.create(drink);\nlatte.name = \"Латте\";\nlatte.ml = 350;\nconsole.log(latte.describe());", { covers: O("create") }),
+      meth("Object.create()", "Объект с заданным прототипом", "`Object.create(proto)` — новый объект, прототипом которого будет `proto`. `Object.create(null)` — объект совсем без прототипа.", "Наследование без классов; «чистый» словарь без лишних ключей.", "const item = { describe() { return `${this.name}, ${this.ml} мл`; } };\nconst pen = Object.create(item);\npen.name = \"Блокнот\";\npen.ml = 350;\nconsole.log(pen.describe());", { covers: O("create") }),
       meth("Object.getPrototypeOf()", "Узнать прототип", "Возвращает прототип объекта.", "Проверить, от кого объект наследует.", "class Order {}\nconsole.log(Object.getPrototypeOf(new Order()) === Order.prototype);", { covers: O("getPrototypeOf") }),
-      meth("Object.setPrototypeOf()", "Сменить прототип", "Меняет прототип уже созданного объекта. Работает, но медленно — лучше задавать прототип при создании.", "Редкие случаи «подмены» поведения.", "const hot = { temp() { return \"горячий\"; } };\nconst tea = {};\nObject.setPrototypeOf(tea, hot);\nconsole.log(tea.temp());", { covers: O("setPrototypeOf") }),
+      meth("Object.setPrototypeOf()", "Сменить прототип", "Меняет прототип уже созданного объекта. Работает, но медленно — лучше задавать прототип при создании.", "Редкие случаи «подмены» поведения.", "const hot = { temp() { return \"горячий\"; } };\nconst tech = {};\nObject.setPrototypeOf(tech, hot);\nconsole.log(tech.temp());", { covers: O("setPrototypeOf") }),
       meth("isPrototypeOf()", "Есть ли в цепочке", "`proto.isPrototypeOf(obj)` — true, если `proto` встречается в цепочке прототипов `obj`.", "Проверка наследования без `instanceof`.", "console.log(Array.prototype.isPrototypeOf([]), Object.prototype.isPrototypeOf([]));", { covers: OP("isPrototypeOf") }),
       rule("Метод, которого нет у объекта, ищется в прототипе. Так все массивы делят одни и те же методы.")
     ],
-    tasks: [task("Напитки через прототип", "Создай объект `drink` с методом `label()` (возвращает `` `${this.name} — ${this.price} ₽` ``) и объект `latte` через `Object.create(drink)` с `name: \"Латте\"` и `price: 220`.", {
-      start: "const drink = {};\nconst latte = { name: \"Латте\", price: 220 };\n",
-      checks: [run('latte.label() === "Латте — 220 ₽"', "Метод работает"), run("Object.getPrototypeOf(latte) === drink", "Прототип latte — drink"), run('!Object.hasOwn(latte, "label")', "Метод не скопирован, а унаследован")],
-      solution: "const drink = {\n  label() { return `${this.name} — ${this.price} ₽`; }\n};\nconst latte = Object.create(drink);\nlatte.name = \"Латте\";\nlatte.price = 220;"
+    tasks: [task("Товары через прототип", "Создай объект `item` с методом `label()` (возвращает `` `${this.name} — ${this.price} ₽` ``) и объект `pen` через `Object.create(item)` с `name: \"Блокнот\"` и `price: 220`.", {
+      start: "const item = {};\nconst pen = { name: \"Блокнот\", price: 220 };\n",
+      checks: [run('pen.label() === "Блокнот — 220 ₽"', "Метод работает"), run("Object.getPrototypeOf(pen) === item", "Прототип pen — item"), run('!Object.hasOwn(pen, "label")', "Метод не скопирован, а унаследован")],
+      solution: "const item = {\n  label() { return `${this.name} — ${this.price} ₽`; }\n};\nconst pen = Object.create(item);\npen.name = \"Блокнот\";\npen.price = 220;"
     })],
     quizzes: [
       single("js-proto-end", "Конец цепочки", "Чем заканчивается цепочка прототипов обычного объекта?", [["null", "`null` после Object.prototype"], ["undef", "undefined"], ["window", "window"], ["loop", "Она бесконечна"]], "null", "Object.prototype — последний объект в цепочке."),
@@ -38,24 +38,24 @@ export default function objectsDeep(c, ch, rc) {
   L({
     slug: "own-properties", title: "Свои свойства", summary: "Object.hasOwn, hasOwnProperty, propertyIsEnumerable, getOwnPropertyNames, getOwnPropertySymbols, Object.assign и Object.groupBy.",
     skill: ["js-own-props", "Собственные свойства", "Отличать свои свойства от унаследованных и копировать и группировать объекты."],
-    now: "В объекте заказа смешались свои поля и унаследованные. Учимся их различать.",
+    now: "Отличаем свои свойства от унаследованных, копируем и группируем объекты.",
     body: [
       scene("Чьё свойство",
         ["bug", "`\"toString\" in order` — true! Значит, у заказа есть поле toString?"],
         ["nika", "Оно унаследовано. Свои свойства проверяют через `Object.hasOwn`."]),
-      meth("Object.hasOwn()", "Своё ли свойство", "`Object.hasOwn(obj, key)` — true, только если свойство принадлежит самому объекту.", "Отличить данные от унаследованного.", 'const order = { drink: "Раф" };\nconsole.log("toString" in order, Object.hasOwn(order, "toString"), Object.hasOwn(order, "drink"));', { covers: O("hasOwn") }),
+      meth("Object.hasOwn()", "Своё ли свойство", "`Object.hasOwn(obj, key)` — true, только если свойство принадлежит самому объекту.", "Отличить данные от унаследованного.", 'const order = { item: "Пенал" };\nconsole.log("toString" in order, Object.hasOwn(order, "toString"), Object.hasOwn(order, "item"));', { covers: O("hasOwn") }),
       meth("hasOwnProperty()", "Старый способ", "`obj.hasOwnProperty(key)` — то же, что `Object.hasOwn`, но ломается у объектов без прототипа. В новом коде — `Object.hasOwn`.", "Узнать в чужом коде.", 'console.log({ a: 1 }.hasOwnProperty("a"));', { covers: OP("hasOwnProperty") }),
       meth("propertyIsEnumerable()", "Перечисляемое ли", "true, если свойство своё и видно в `for…in` и `Object.keys`.", "Проверить, попадёт ли свойство в перебор.", 'const arr = [1];\nconsole.log(arr.propertyIsEnumerable(0), arr.propertyIsEnumerable("length"));', { covers: OP("propertyIsEnumerable") }),
       meth("Object.getOwnPropertyNames()", "Все строковые ключи", "Все свои ключи-строки, включая неперечисляемые (в отличие от `Object.keys`).", "Увидеть скрытые свойства.", 'console.log(Object.keys([1, 2]), Object.getOwnPropertyNames([1, 2]));', { covers: O("getOwnPropertyNames") }),
-      meth("Object.getOwnPropertySymbols()", "Ключи-символы", "Свои ключи-символы объекта — их не показывают ни `keys`, ни `getOwnPropertyNames`.", "Найти спрятанные символьные свойства.", 'const id = Symbol("id");\nconst o = { [id]: 7, name: "Раф" };\nconsole.log(Object.keys(o), Object.getOwnPropertySymbols(o).length);', { covers: O("getOwnPropertySymbols") }),
+      meth("Object.getOwnPropertySymbols()", "Ключи-символы", "Свои ключи-символы объекта — их не показывают ни `keys`, ни `getOwnPropertyNames`.", "Найти спрятанные символьные свойства.", 'const id = Symbol("id");\nconst o = { [id]: 7, name: "Пенал" };\nconsole.log(Object.keys(o), Object.getOwnPropertySymbols(o).length);', { covers: O("getOwnPropertySymbols") }),
       meth("Object.assign()", "Скопировать свойства", "`Object.assign(target, ...sources)` копирует свои перечисляемые свойства в `target` и возвращает его. Копия неглубокая.", "Слить настройки, сделать поверхностную копию.", 'const defaults = { size: "M", sugar: 0 };\nconst order = Object.assign({}, defaults, { sugar: 2 });\nconsole.log(order);', { covers: O("assign") }),
-      meth("Object.groupBy()", "Сгруппировать", "`Object.groupBy(items, fn)` — объект, где ключ — результат `fn`, а значение — массив элементов с этим ключом.", "Меню по категориям одной строкой.", 'const menu = [{ n: "Латте", c: "coffee" }, { n: "Чизкейк", c: "dessert" }, { n: "Раф", c: "coffee" }];\nconsole.log(Object.groupBy(menu, (d) => d.c));', { covers: O("groupBy") }),
+      meth("Object.groupBy()", "Сгруппировать", "`Object.groupBy(items, fn)` — объект, где ключ — результат `fn`, а значение — массив элементов с этим ключом.", "Каталог по категориям одной строкой.", 'const catalog = [{ n: "Блокнот", c: "office" }, { n: "Стикер", c: "dessert" }, { n: "Пенал", c: "office" }];\nconsole.log(Object.groupBy(catalog, (d) => d.c));', { covers: O("groupBy") }),
       rule("Проверка своих свойств — `Object.hasOwn`. Оператор `in` смотрит ещё и в прототип.")
     ],
-    tasks: [task("Меню по категориям", "Сгруппируй `menu` по `category` через `Object.groupBy` в `groups`, и сделай `order` — копию `defaults`, поверх которой наложен `custom`, через `Object.assign`.", {
-      start: 'const menu = [{ name: "Латте", category: "coffee" }, { name: "Чизкейк", category: "dessert" }, { name: "Раф", category: "coffee" }];\nconst defaults = { size: "M", sugar: 0 };\nconst custom = { sugar: 2 };\nconst groups = {};\nconst order = defaults;\n',
-      checks: [run("groups.coffee.length === 2 && groups.dessert[0].name === \"Чизкейк\"", "Группы собраны"), run('order.size === "M" && order.sugar === 2', "Настройки слиты"), run("order !== defaults && defaults.sugar === 0", "defaults не испорчен")],
-      solution: 'const menu = [{ name: "Латте", category: "coffee" }, { name: "Чизкейк", category: "dessert" }, { name: "Раф", category: "coffee" }];\nconst defaults = { size: "M", sugar: 0 };\nconst custom = { sugar: 2 };\nconst groups = Object.groupBy(menu, (d) => d.category);\nconst order = Object.assign({}, defaults, custom);'
+    tasks: [task("Каталог по категориям", "Сгруппируй `catalog` по `category` через `Object.groupBy` в `groups`, и сделай `order` — копию `defaults`, поверх которой наложен `custom`, через `Object.assign`.", {
+      start: 'const catalog = [{ name: "Блокнот", category: "office" }, { name: "Стикер", category: "dessert" }, { name: "Пенал", category: "office" }];\nconst defaults = { size: "M", sugar: 0 };\nconst custom = { sugar: 2 };\nconst groups = {};\nconst order = defaults;\n',
+      checks: [run("groups.office.length === 2 && groups.dessert[0].name === \"Стикер\"", "Группы собраны"), run('order.size === "M" && order.sugar === 2', "Настройки слиты"), run("order !== defaults && defaults.sugar === 0", "defaults не испорчен")],
+      solution: 'const catalog = [{ name: "Блокнот", category: "office" }, { name: "Стикер", category: "dessert" }, { name: "Пенал", category: "office" }];\nconst defaults = { size: "M", sugar: 0 };\nconst custom = { sugar: 2 };\nconst groups = Object.groupBy(catalog, (d) => d.category);\nconst order = Object.assign({}, defaults, custom);'
     })],
     quizzes: [
       single("js-hasown-vs-in", "in и hasOwn", "Что вернут `\"toString\" in {}` и `Object.hasOwn({}, \"toString\")`?", [["tf", "true и false"], ["tt", "true и true"], ["ff", "false и false"], ["ft", "false и true"]], "tf", "in смотрит в прототип."),
@@ -66,7 +66,7 @@ export default function objectsDeep(c, ch, rc) {
   L({
     slug: "property-descriptors", title: "Дескрипторы свойств", summary: "Object.defineProperty, defineProperties, getOwnPropertyDescriptor и getOwnPropertyDescriptors: writable, enumerable, configurable, get и set.",
     skill: ["js-descriptors", "Дескрипторы", "Настраивать свойства: только для чтения, скрытые, вычисляемые."],
-    now: "Номер заказа нельзя менять после создания. Делаем свойство только для чтения.",
+    now: "Настраиваем свойства через дескрипторы: только для чтения, скрытые, вычисляемые.",
     body: [
       scene("Только для чтения",
         ["bug", "`order.id = 1` — и все заказы перепутаны!"],
@@ -91,20 +91,20 @@ export default function objectsDeep(c, ch, rc) {
   L({
     slug: "freezing", title: "Заморозка объектов", summary: "Object.freeze и isFrozen, Object.seal и isSealed, Object.preventExtensions и isExtensible.",
     skill: ["js-freezing", "Заморозка", "Защищать объекты от изменений на нужном уровне."],
-    now: "Цены меню должны быть защищены от любых изменений в коде. Замораживаем.",
+    now: "Защищаем объекты от изменений: preventExtensions, seal и freeze.",
     body: [
       scene("Под замок",
-        ["bug", "Поставлю цену латте в 1 рубль. И добавлю «бесплатный кофе» в меню!"],
+        ["bug", "Поставлю цену блокнота в 1 рубль. И добавлю «бесплатный товар» в каталог!"],
         ["nika", "Три уровня защиты: нельзя добавлять, нельзя добавлять и удалять, нельзя ничего."]),
       meth("Object.preventExtensions() · Object.isExtensible()", "Запретить новые свойства", "Существующие свойства можно менять и удалять, новые добавить нельзя. `isExtensible` проверяет.", "Зафиксировать набор полей.", 'const o = { a: 1 };\nObject.preventExtensions(o);\no.b = 2;\nconsole.log(o, Object.isExtensible(o));', { covers: O("preventExtensions", "isExtensible") }),
       meth("Object.seal() · Object.isSealed()", "Запечатать", "Нельзя добавлять и удалять свойства, но можно менять значения.", "Структура фиксирована, данные меняются.", 'const cup = { ml: 350 };\nObject.seal(cup);\ncup.ml = 450;\ndelete cup.ml;\nconsole.log(cup, Object.isSealed(cup));', { covers: O("seal", "isSealed") }),
-      meth("Object.freeze() · Object.isFrozen()", "Заморозить", "Ничего нельзя: ни добавить, ни удалить, ни изменить. Заморозка неглубокая — вложенные объекты остаются изменяемыми.", "Константы, настройки, данные «только читать».", 'const prices = Object.freeze({ latte: 220 });\nprices.latte = 1;\nconsole.log(prices.latte, Object.isFrozen(prices));', { covers: O("freeze", "isFrozen") }),
+      meth("Object.freeze() · Object.isFrozen()", "Заморозить", "Ничего нельзя: ни добавить, ни удалить, ни изменить. Заморозка неглубокая — вложенные объекты остаются изменяемыми.", "Константы, настройки, данные «только читать».", 'const prices = Object.freeze({ pen: 220 });\nprices.pen = 1;\nconsole.log(prices.pen, Object.isFrozen(prices));', { covers: O("freeze", "isFrozen") }),
       rule("`const` защищает переменную, а не объект. Сам объект защищает `Object.freeze`.")
     ],
-    tasks: [task("Глубокая заморозка", "Напиши `deepFreeze(obj)`: замораживает объект и все вложенные объекты (рекурсивно) и возвращает его. Заморозь им `menu`.", {
-      start: 'function deepFreeze(obj) {\n  return obj;\n}\nconst menu = deepFreeze({ coffee: { latte: 220 }, tea: { green: 150 } });\n',
-      checks: [run("Object.isFrozen(menu)", "Меню заморожено"), run("Object.isFrozen(menu.coffee) && Object.isFrozen(menu.tea)", "Вложенные тоже"), run("(menu.coffee.latte = 1, menu.coffee.latte === 220)", "Цену не изменить")],
-      solution: "function deepFreeze(obj) {\n  for (const value of Object.values(obj)) {\n    if (value && typeof value === \"object\") deepFreeze(value);\n  }\n  return Object.freeze(obj);\n}\nconst menu = deepFreeze({ coffee: { latte: 220 }, tea: { green: 150 } });"
+    tasks: [task("Глубокая заморозка", "Напиши `deepFreeze(obj)`: замораживает объект и все вложенные объекты (рекурсивно) и возвращает его. Заморозь им `catalog`.", {
+      start: 'function deepFreeze(obj) {\n  return obj;\n}\nconst catalog = deepFreeze({ office: { pen: 220 }, tech: { mouse: 150 } });\n',
+      checks: [run("Object.isFrozen(catalog)", "Каталог заморожен"), run("Object.isFrozen(catalog.office) && Object.isFrozen(catalog.tech)", "Вложенные тоже"), run("(catalog.office.pen = 1, catalog.office.pen === 220)", "Цену не изменить")],
+      solution: "function deepFreeze(obj) {\n  for (const value of Object.values(obj)) {\n    if (value && typeof value === \"object\") deepFreeze(value);\n  }\n  return Object.freeze(obj);\n}\nconst catalog = deepFreeze({ office: { pen: 220 }, tech: { mouse: 150 } });"
     })],
     quizzes: [
       single("js-freeze-shallow", "Неглубокая", "Можно ли изменить `frozen.inner.x`, если заморожен только `frozen`?", [["yes", "Да, вложенный объект не заморожен"], ["no", "Нет"], ["error", "Всегда ошибка"], ["copy", "Изменится копия"]], "yes", "freeze — только один уровень."),
@@ -115,10 +115,10 @@ export default function objectsDeep(c, ch, rc) {
   L({
     slug: "to-primitive", title: "Объекты в примитивы", summary: "toString, toLocaleString и valueOf у Object, обёртки Boolean, Symbol.toPrimitive и Symbol.toStringTag.",
     skill: ["js-to-primitive", "Преобразование объектов", "Управлять тем, как объект превращается в строку и число."],
-    now: "В чеке заказ выводится как `[object Object]`. Учим объект превращаться в понятный текст.",
+    now: "Управляем тем, как объект превращается в строку и число.",
     body: [
       scene("[object Object]",
-        ["marta", "Вывожу заказ в чек — а там `[object Object]`!"],
+        ["you", "Вывожу заказ на страницу — а там `[object Object]`!"],
         ["bro", "Объект не знает, как стать строкой. Научи его — методами `toString`, `valueOf` или `Symbol.toPrimitive`."]),
       meth("toString()", "Объект как строка", "`Object.prototype.toString` даёт `\"[object Тип]\"`. Свой `toString()` используется в шаблонах и склейке.", "Понятный текст объекта.", 'const order = { id: 7, toString() { return `Заказ №${this.id}`; } };\nconsole.log(`${order}`, Object.prototype.toString.call([]));', { covers: OP("toString") }),
       meth("valueOf()", "Объект как число", "Используется в арифметике и сравнении. По умолчанию возвращает сам объект.", "Сравнивать и складывать объекты по смыслу.", "const bill = { total: 440, valueOf() { return this.total; } };\nconsole.log(bill + 60, bill > 400);", { covers: OP("valueOf") }),
@@ -142,23 +142,23 @@ export default function objectsDeep(c, ch, rc) {
   L({
     slug: "functions-deep", title: "Функции изнутри", summary: "call, apply и bind, свойства length и name, toString у функций и потеря this.",
     skill: ["js-functions-deep", "Методы функций", "Управлять this и аргументами вызова функции."],
-    now: "Метод корзины, переданный как обработчик, теряет `this`. Привязываем его.",
+    now: "Управляем this и аргументами вызова: call, apply и bind.",
     body: [
       scene("Потерянный this",
         ["bug", "Передал `cart.add` в обработчик клика — и `this` стал совсем другим! Хе-хе."],
         ["nika", "У функций есть методы, чтобы явно задать `this`: `call`, `apply` и `bind`."]),
-      meth("call()", "Вызвать с this", "`fn.call(thisArg, a, b)` — вызвать функцию с заданным `this` и аргументами по одному.", "Взять метод одного объекта для другого.", "function label(currency) { return `${this.name}: ${this.price} ${currency}`; }\nconsole.log(label.call({ name: \"Раф\", price: 290 }, \"₽\"));", { covers: on("Function.prototype", "call") }),
+      meth("call()", "Вызвать с this", "`fn.call(thisArg, a, b)` — вызвать функцию с заданным `this` и аргументами по одному.", "Взять метод одного объекта для другого.", "function label(currency) { return `${this.name}: ${this.price} ${currency}`; }\nconsole.log(label.call({ name: \"Пенал\", price: 290 }, \"₽\"));", { covers: on("Function.prototype", "call") }),
       meth("apply()", "Вызвать с массивом аргументов", "`fn.apply(thisArg, [a, b])` — как `call`, но аргументы массивом.", "Аргументы уже лежат в массиве.", "console.log(Math.max.apply(null, [150, 290, 220]));", { covers: on("Function.prototype", "apply") }),
-      meth("bind()", "Привязать навсегда", "`fn.bind(thisArg, …args)` — новая функция с закреплённым `this` (и частью аргументов).", "Методы-обработчики событий, частичное применение.", "const cart = { items: [], add(x) { this.items.push(x); return this.items.length; } };\nconst add = cart.add.bind(cart);\nadd(\"Латте\");\nconsole.log(add(\"Раф\"));", { covers: on("Function.prototype", "bind") }),
-      kw("fn.length · fn.name", "Свойства функции", "`length` — число объявленных параметров (до первого со значением по умолчанию и без rest), `name` — имя функции.", "Отладка, универсальные обёртки.", "function order(drink, qty, size = \"M\") {}\nconsole.log(order.length, order.name, ((a, ...b) => 0).length);", { covers: on("Function.prototype", "length", "name") }),
+      meth("bind()", "Привязать навсегда", "`fn.bind(thisArg, …args)` — новая функция с закреплённым `this` (и частью аргументов).", "Методы-обработчики событий, частичное применение.", "const cart = { items: [], add(x) { this.items.push(x); return this.items.length; } };\nconst add = cart.add.bind(cart);\nadd(\"Блокнот\");\nconsole.log(add(\"Пенал\"));", { covers: on("Function.prototype", "bind") }),
+      kw("fn.length · fn.name", "Свойства функции", "`length` — число объявленных параметров (до первого со значением по умолчанию и без rest), `name` — имя функции.", "Отладка, универсальные обёртки.", "function order(item, qty, size = \"M\") {}\nconsole.log(order.length, order.name, ((a, ...b) => 0).length);", { covers: on("Function.prototype", "length", "name") }),
       obj("Function", "Конструктор функций", "`new Function(\"a\", \"b\", \"return a + b\")` создаёт функцию из строк. Все функции — экземпляры `Function`. Как и `eval`, выполняет текст как код — небезопасно.", "Понимать, что функции — объекты; почти никогда не нужен.", 'const add = new Function("a", "b", "return a + b");\nconsole.log(add(2, 3), add instanceof Function, (() => 0) instanceof Function);', { covers: ["Function"] }),
       meth("fn.toString()", "Исходный код функции", "Возвращает текст функции, как он записан.", "Отладка и логирование.", "const double = (x) => x * 2;\nconsole.log(double.toString());", { covers: on("Function.prototype", "toString") }),
       rule("Передаёшь метод объекта как колбэк — привяжи его через `bind` или оберни в стрелку.")
     ],
     tasks: [task("Привязанный обработчик", "Сделай `add` — метод `cart.add`, навсегда привязанный к `cart` через `bind`, и `price` — результат `label.call(raf)`.", {
-      start: 'const cart = { items: [], add(item) { this.items.push(item); } };\nconst add = cart.add;\nfunction label() { return `${this.name}: ${this.price} ₽`; }\nconst raf = { name: "Раф", price: 290 };\nconst price = "";\n',
-      checks: [run('(add("Латте"), cart.items.length === 1)', "Метод работает отдельно от объекта"), run('price === "Раф: 290 ₽"', "label вызвана для raf"), has("bind", "Использован `bind`"), has(".call(", "Использован `call`")],
-      solution: 'const cart = { items: [], add(item) { this.items.push(item); } };\nconst add = cart.add.bind(cart);\nfunction label() { return `${this.name}: ${this.price} ₽`; }\nconst raf = { name: "Раф", price: 290 };\nconst price = label.call(raf);'
+      start: 'const cart = { items: [], add(item) { this.items.push(item); } };\nconst add = cart.add;\nfunction label() { return `${this.name}: ${this.price} ₽`; }\nconst raf = { name: "Пенал", price: 290 };\nconst price = "";\n',
+      checks: [run('(add("Блокнот"), cart.items.length === 1)', "Метод работает отдельно от объекта"), run('price === "Пенал: 290 ₽"', "label вызвана для raf"), has("bind", "Использован `bind`"), has(".call(", "Использован `call`")],
+      solution: 'const cart = { items: [], add(item) { this.items.push(item); } };\nconst add = cart.add.bind(cart);\nfunction label() { return `${this.name}: ${this.price} ₽`; }\nconst raf = { name: "Пенал", price: 290 };\nconst price = label.call(raf);'
     })],
     quizzes: [
       single("js-call-apply", "call и apply", "Чем `apply` отличается от `call`?", [["array", "Аргументы передаются массивом"], ["this", "apply не задаёт this"], ["new", "apply создаёт объект"], ["same", "Ничем"]], "array", "call — по одному, apply — массивом."),
@@ -169,22 +169,22 @@ export default function objectsDeep(c, ch, rc) {
   L({
     slug: "global-functions", title: "Глобальные значения и функции", summary: "globalThis, Infinity, isFinite, isNaN, eval и кодирование адресов encodeURI, encodeURIComponent, decodeURI, decodeURIComponent.",
     skill: ["js-globals", "Глобальные функции", "Пользоваться функциями глобального объекта и правильно кодировать адреса."],
-    now: "Гость ищет «латте & раф» — и адрес поиска ломается. Учимся кодировать URL.",
+    now: "Глобальные значения и функции и правильное кодирование адресов.",
     body: [
       scene("Сломанный адрес",
-        ["marta", "Ввела в поиск «латте & раф» — и сайт нашёл только «латте»."],
+        ["you", "Ввожу в поиск «блокнот & пенал» — и сайт нашёл только «блокнот»."],
         ["bro", "`&` в адресе — разделитель параметров. Значение надо закодировать — `encodeURIComponent`."]),
-      obj("globalThis", "Глобальный объект", "Один способ обратиться к глобальному объекту везде: `window` в браузере, `self` в воркере, `global` в Node.", "Писать код, который работает в любой среде.", "globalThis.shopName = \"Зерно\";\nconsole.log(shopName, typeof globalThis);", { covers: ["globalThis"] }),
+      obj("globalThis", "Глобальный объект", "Один способ обратиться к глобальному объекту везде: `window` в браузере, `self` в воркере, `global` в Node.", "Писать код, который работает в любой среде.", "globalThis.appName = \"Планер\";\nconsole.log(appName, typeof globalThis);", { covers: ["globalThis"] }),
       val("Infinity", "Бесконечность", "Число больше любого другого; `1 / 0` → `Infinity`, `-1 / 0` → `-Infinity`.", "Начальное значение при поиске минимума.", "console.log(1 / 0, Math.min(), -Infinity < -1e308);", { covers: ["Infinity"] }),
       fnc("isFinite() · isNaN()", "Глобальные проверки", "Сначала превращают значение в число: `isNaN(\"абв\")` → true, `isFinite(\"12\")` → true. Строгие версии — `Number.isNaN` и `Number.isFinite`.", "Понять старый код; в новом — Number.*.", 'console.log(isNaN("абв"), Number.isNaN("абв"), isFinite("12"), isFinite(Infinity));', { covers: ["isFinite", "isNaN"] }),
       fnc("eval()", "Выполнить строку как код", "`eval(\"2 + 2\")` выполняет текст как JavaScript. Опасно (внедрение кода), медленно и почти никогда не нужно.", "Узнать и не использовать.", 'console.log(eval("2 + 2"));', { covers: ["eval"] }),
-      fnc("encodeURIComponent() · decodeURIComponent()", "Кодировать часть адреса", "Кодирует всё, что имеет особый смысл в URL: `&`, `?`, `/`, пробелы, кириллицу.", "Значения параметров поиска.", 'const q = encodeURIComponent("латте & раф");\nconsole.log(q);\nconsole.log(decodeURIComponent(q));', { covers: ["encodeURIComponent", "decodeURIComponent"] }),
-      fnc("encodeURI() · decodeURI()", "Кодировать адрес целиком", "Оставляет служебные символы адреса (`/ ? & :`), кодирует только недопустимые (пробелы, кириллицу).", "Привести к виду ссылки целый URL.", 'console.log(encodeURI("https://zerno.ru/меню?q=латте"));\nconsole.log(decodeURI("%D0%BC%D0%B5%D0%BD%D1%8E"));', { covers: ["encodeURI", "decodeURI"] }),
+      fnc("encodeURIComponent() · decodeURIComponent()", "Кодировать часть адреса", "Кодирует всё, что имеет особый смысл в URL: `&`, `?`, `/`, пробелы, кириллицу.", "Значения параметров поиска.", 'const q = encodeURIComponent("блокнот & пенал");\nconsole.log(q);\nconsole.log(decodeURIComponent(q));', { covers: ["encodeURIComponent", "decodeURIComponent"] }),
+      fnc("encodeURI() · decodeURI()", "Кодировать адрес целиком", "Оставляет служебные символы адреса (`/ ? & :`), кодирует только недопустимые (пробелы, кириллицу).", "Привести к виду ссылки целый URL.", 'console.log(encodeURI("https://app.ru/каталог?q=блокнот"));\nconsole.log(decodeURI("%D0%BC%D0%B5%D0%BD%D1%8E"));', { covers: ["encodeURI", "decodeURI"] }),
       rule("Значение параметра — `encodeURIComponent`. Целый адрес — `encodeURI`. Перепутаешь — адрес сломается.")
     ],
-    tasks: [task("Ссылка на поиск", "Напиши `searchUrl(query)`, которая возвращает `/search?q=` + закодированный запрос. Для `\"латте & раф\"` амперсанд не должен разрывать параметр.", {
+    tasks: [task("Ссылка на поиск", "Напиши `searchUrl(query)`, которая возвращает `/search?q=` + закодированный запрос. Для `\"блокнот & пенал\"` амперсанд не должен разрывать параметр.", {
       start: 'function searchUrl(query) {\n  return "/search?q=" + query;\n}\n',
-      checks: [run('new URLSearchParams(searchUrl("латте & раф").split("?")[1]).get("q") === "латте & раф"', "Запрос восстанавливается целиком"), run('!searchUrl("a b").includes(" ")', "Пробелы закодированы")],
+      checks: [run('new URLSearchParams(searchUrl("блокнот & пенал").split("?")[1]).get("q") === "блокнот & пенал"', "Запрос восстанавливается целиком"), run('!searchUrl("a b").includes(" ")', "Пробелы закодированы")],
       solution: 'function searchUrl(query) {\n  return "/search?q=" + encodeURIComponent(query);\n}'
     })],
     quizzes: [

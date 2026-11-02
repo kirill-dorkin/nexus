@@ -2,7 +2,7 @@
 import { scene, rule, meth, ev, obj, idea, run, has, task, makeLesson } from "./kit.mjs";
 
 const submit = 'document.querySelector("form").dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }))';
-const FORM = '<form id="order">\n  <label>Имя <input name="guest"></label>\n  <label>Телефон <input name="phone"></label>\n  <select name="drink"><option>Латте</option><option>Раф</option></select>\n  <button>Заказать</button>\n</form>\n<p id="msg"></p>';
+const FORM = '<form id="signup">\n  <label>Имя <input name="user"></label>\n  <label>Телефон <input name="phone"></label>\n  <select name="course"><option>HTML</option><option>CSS</option></select>\n  <button>Записаться</button>\n</form>\n<p id="msg"></p>';
 
 export default function forms(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
@@ -11,20 +11,20 @@ export default function forms(c, ch, rc) {
   L({
     slug: "form-submit", title: "Отправка формы", summary: "Событие submit, preventDefault, чтение полей через form.elements.",
     skill: ["js-form-submit", "Отправка формы", "Перехватывать отправку формы и читать введённые данные."],
-    now: "Форма заказа перезагружает страницу и всё теряет. Перехватываем отправку.",
+    now: "Перехватываем отправку формы и читаем введённые данные.",
     body: [
       scene("Всё пропало",
-        ["marta", "Гость заполнил форму, нажал «Заказать» — страница перезагрузилась, и всё пропало!"],
+        ["you", "Пользователь заполнил форму, нажал «Записаться» — страница перезагрузилась, и всё пропало!"],
         ["nika", "Форма по умолчанию отправляется и перезагружает страницу. Перехватим `submit` и обработаем сами."]),
-      ev("submit", "Форму отправляют", "Срабатывает на `<form>` при нажатии кнопки отправки или Enter в поле.", "Одно место для обработки формы — не клик по кнопке.", 'document.querySelector("form").addEventListener("submit", (e) => {\n  e.preventDefault();\n  console.log("Отправка перехвачена");\n});\ndocument.querySelector("button").click();', { page: "<form><input value=\"Латте\"><button>Заказать</button></form>" }),
-      obj("form.elements", "Поля формы", "Доступ к полям по `name`: `form.elements.guest.value`.", "Прочитать конкретное поле.", 'const form = document.querySelector("form");\nconsole.log(form.elements.guest.value);', { page: '<form><input name="guest" value="Аня"></form>' }),
+      ev("submit", "Форму отправляют", "Срабатывает на `<form>` при нажатии кнопки отправки или Enter в поле.", "Одно место для обработки формы — не клик по кнопке.", 'document.querySelector("form").addEventListener("submit", (e) => {\n  e.preventDefault();\n  console.log("Отправка перехвачена");\n});\ndocument.querySelector("button").click();', { page: "<form><input value=\"HTML\"><button>Записаться</button></form>" }),
+      obj("form.elements", "Поля формы", "Доступ к полям по `name`: `form.elements.user.value`.", "Прочитать конкретное поле.", 'const form = document.querySelector("form");\nconsole.log(form.elements.user.value);', { page: '<form><input name="user" value="Аня"></form>' }),
       rule("Слушай `submit` на форме, а не `click` на кнопке: так работает и Enter, и любая кнопка.")
     ],
-    tasks: [task("Перехват заказа", "На `submit` формы отмени перезагрузку и выведи в `#msg` строку `Аня, ваш Латте готовится` из полей `guest` и `drink`.", {
+    tasks: [task("Перехват отправки", "На `submit` формы отмени перезагрузку и выведи в `#msg` строку `Аня, вы записаны на HTML` из полей `user` и `course`.", {
       page: FORM,
       start: "",
-      checks: [run(`(() => { const f = document.querySelector("form"); f.elements.guest.value = "Аня"; const e = new Event("submit", { bubbles: true, cancelable: true }); f.dispatchEvent(e); return e.defaultPrevented; })()`, "Перезагрузки нет"), run('document.querySelector("#msg").textContent === "Аня, ваш Латте готовится"', "Сообщение собрано из полей"), has("submit", "Слушаем `submit`")],
-      solution: 'const form = document.querySelector("#order");\nform.addEventListener("submit", (event) => {\n  event.preventDefault();\n  const guest = form.elements.guest.value;\n  const drink = form.elements.drink.value;\n  document.querySelector("#msg").textContent = `${guest}, ваш ${drink} готовится`;\n});'
+      checks: [run(`(() => { const f = document.querySelector("form"); f.elements.user.value = "Аня"; const e = new Event("submit", { bubbles: true, cancelable: true }); f.dispatchEvent(e); return e.defaultPrevented; })()`, "Перезагрузки нет"), run('document.querySelector("#msg").textContent === "Аня, вы записаны на HTML"', "Сообщение собрано из полей"), has("submit", "Слушаем `submit`")],
+      solution: 'const form = document.querySelector("#signup");\nform.addEventListener("submit", (event) => {\n  event.preventDefault();\n  const user = form.elements.user.value;\n  const course = form.elements.course.value;\n  document.querySelector("#msg").textContent = `${user}, вы записаны на ${course}`;\n});'
     })],
     quizzes: [
       single("js-submit-where", "Где слушать", "На каком элементе правильно слушать отправку формы?", [["form", "На `<form>`, событие submit"], ["button", "На кнопке, событие click"], ["input", "На каждом поле"], ["body", "На body, событие load"]], "form", "submit ловит и Enter, и кнопку."),
@@ -35,10 +35,10 @@ export default function forms(c, ch, rc) {
   L({
     slug: "form-validation", title: "Проверка формы", summary: "Своя проверка полей, сообщения об ошибках, checkValidity, setCustomValidity и aria-invalid.",
     skill: ["js-form-validation", "Проверка полей", "Проверять ввод и понятно сообщать об ошибках."],
-    now: "Гости присылают заказы без телефона. Проверяем поля перед отправкой.",
+    now: "Проверяем поля формы и понятно сообщаем об ошибках.",
     body: [
       scene("Без телефона",
-        ["marta", "Пришёл заказ без телефона. Куда звонить?"],
+        ["you", "Пришла заявка без телефона. Куда звонить?"],
         ["lev", "И пожалуйста: если ошибка — скажите текстом, рядом с полем. Красную рамку я не вижу."]),
       idea("Своя проверка", "Проверить перед отправкой", "В обработчике submit проверяем значения; если что-то не так — `preventDefault` и показываем ошибку.", "Правила, которых нет в HTML-атрибутах.", undefined),
       meth("checkValidity()", "Проверка по HTML-правилам", "`form.checkValidity()` — true, если все поля проходят `required`, `type`, `pattern`.", "Использовать встроенную проверку браузера.", 'const input = document.querySelector("input");\nconsole.log(input.checkValidity());', { page: "<input required>" }),
@@ -47,7 +47,7 @@ export default function forms(c, ch, rc) {
       rule("Ошибка должна быть текстом рядом с полем, а не только красной рамкой.")
     ],
     tasks: [task("Нужен телефон", "При отправке: если в `phone` меньше 10 цифр — отмени отправку, покажи в `#error` текст `Укажите телефон` и поставь полю `aria-invalid=\"true\"`. Иначе очисти `#error`.", {
-      page: '<form>\n  <input name="phone" aria-describedby="error">\n  <button>Заказать</button>\n</form>\n<p id="error"></p>',
+      page: '<form>\n  <input name="phone" aria-describedby="error">\n  <button>Записаться</button>\n</form>\n<p id="error"></p>',
       start: "",
       checks: [run(`(() => { const f = document.querySelector("form"); f.elements.phone.value = "123"; ${submit}; return document.querySelector("#error").textContent === "Укажите телефон"; })()`, "Короткий телефон — ошибка"), run('document.querySelector("[name=phone]").getAttribute("aria-invalid") === "true"', "Поле помечено для скринридера"), run(`(() => { const f = document.querySelector("form"); f.elements.phone.value = "+7 999 123-45-67"; ${submit}; return document.querySelector("#error").textContent === ""; })()`, "Верный телефон — без ошибки")],
       solution: 'const form = document.querySelector("form");\nconst error = document.querySelector("#error");\nform.addEventListener("submit", (event) => {\n  const phone = form.elements.phone;\n  const digits = phone.value.replace(/\\D/g, "");\n  if (digits.length < 10) {\n    event.preventDefault();\n    error.textContent = "Укажите телефон";\n    phone.setAttribute("aria-invalid", "true");\n  } else {\n    event.preventDefault();\n    error.textContent = "";\n    phone.removeAttribute("aria-invalid");\n  }\n});'
@@ -61,20 +61,20 @@ export default function forms(c, ch, rc) {
   L({
     slug: "formdata", title: "FormData: все поля сразу", summary: "new FormData(form), get, перебор и Object.fromEntries для превращения формы в объект.",
     skill: ["js-formdata", "FormData", "Собирать все поля формы в объект одной строкой."],
-    now: "В форме заказа десять полей. Собираем их все разом, а не по одному.",
+    now: "Собираем все поля формы в объект одной строкой — FormData.",
     body: [
       scene("Десять полей",
-        ["marta", "Добавила в форму адрес, комментарий, способ оплаты… Теперь читать каждое поле?"],
+        ["you", "В форме уже адрес, комментарий, способ оплаты… Читать каждое поле по отдельности?"],
         ["bro", "Отдай форму в `FormData` — я соберу все поля с `name` сам."]),
-      obj("FormData", "Все поля формы", "`new FormData(form)` — набор пар «name — значение» всех полей с атрибутом `name`.", "Отправить форму на сервер или собрать объект.", 'const data = new FormData(document.querySelector("form"));\nconsole.log(data.get("drink"), data.get("size"));', { page: '<form><input name="drink" value="Раф"><input name="size" value="L"></form>' }),
-      idea("Форма → объект", "Object.fromEntries(FormData)", "`Object.fromEntries(new FormData(form))` превращает форму в обычный объект.", "Дальше работаешь как с любым объектом.", 'const form = document.querySelector("form");\nconsole.log(Object.fromEntries(new FormData(form)));', { page: '<form><input name="drink" value="Раф"><input name="qty" value="2"></form>' }),
+      obj("FormData", "Все поля формы", "`new FormData(form)` — набор пар «name — значение» всех полей с атрибутом `name`.", "Отправить форму на сервер или собрать объект.", 'const data = new FormData(document.querySelector("form"));\nconsole.log(data.get("course"), data.get("size"));', { page: '<form><input name="course" value="CSS"><input name="size" value="L"></form>' }),
+      idea("Форма → объект", "Object.fromEntries(FormData)", "`Object.fromEntries(new FormData(form))` превращает форму в обычный объект.", "Дальше работаешь как с любым объектом.", 'const form = document.querySelector("form");\nconsole.log(Object.fromEntries(new FormData(form)));', { page: '<form><input name="course" value="CSS"><input name="qty" value="2"></form>' }),
       rule("Без `name` поле не попадёт ни в FormData, ни на сервер.")
     ],
-    tasks: [task("Заказ объектом", "При отправке формы собери все поля в объект `lastOrder` через `FormData` и `Object.fromEntries` (и отмени перезагрузку).", {
+    tasks: [task("Заявка объектом", "При отправке формы собери все поля в объект `lastSignup` через `FormData` и `Object.fromEntries` (и отмени перезагрузку).", {
       page: FORM,
-      start: "let lastOrder = null;\n",
-      checks: [run(`(() => { const f = document.querySelector("form"); f.elements.guest.value = "Борис"; f.elements.phone.value = "89990001122"; f.elements.drink.value = "Раф"; ${submit}; return lastOrder && lastOrder.guest === "Борис" && lastOrder.drink === "Раф" && lastOrder.phone === "89990001122"; })()`, "Все поля собраны"), has("FormData", "Использован `FormData`")],
-      solution: 'let lastOrder = null;\nconst form = document.querySelector("#order");\nform.addEventListener("submit", (event) => {\n  event.preventDefault();\n  lastOrder = Object.fromEntries(new FormData(form));\n});'
+      start: "let lastSignup = null;\n",
+      checks: [run(`(() => { const f = document.querySelector("form"); f.elements.user.value = "Борис"; f.elements.phone.value = "89990001122"; f.elements.course.value = "CSS"; ${submit}; return lastSignup && lastSignup.user === "Борис" && lastSignup.course === "CSS" && lastSignup.phone === "89990001122"; })()`, "Все поля собраны"), has("FormData", "Использован `FormData`")],
+      solution: 'let lastSignup = null;\nconst form = document.querySelector("#signup");\nform.addEventListener("submit", (event) => {\n  event.preventDefault();\n  lastSignup = Object.fromEntries(new FormData(form));\n});'
     })],
     quizzes: [
       single("js-formdata-name", "name", "Какое поле не попадёт в `FormData`?", [["noname", "Поле без атрибута name"], ["empty", "Пустое поле"], ["select", "Select"], ["textarea", "Textarea"]], "noname", "FormData собирает поля по name."),

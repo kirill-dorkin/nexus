@@ -14,10 +14,10 @@ export default function binary(c, ch, rc) {
   L({
     slug: "array-buffer", title: "ArrayBuffer: сырые байты", summary: "ArrayBuffer, byteLength, slice, ArrayBuffer.isView, изменяемые буферы resizable, maxByteLength, resize и передача transfer, transferToFixedLength, detached.",
     skill: ["js-array-buffer", "ArrayBuffer", "Хранить двоичные данные и управлять буферами."],
-    now: "Новый кассовый аппарат общается байтами, а не JSON. Учимся работать с сырыми данными.",
+    now: "Работаем с сырыми двоичными данными: ArrayBuffer.",
     body: [
       scene("Байты",
-        ["marta", "Касса присылает какие-то байты. Это вообще можно прочитать в JavaScript?"],
+        ["you", "Датчик присылает какие-то байты. Это вообще можно прочитать в JavaScript?"],
         ["bro", "Можно. `ArrayBuffer` — кусок памяти, а читать его будем через типизированные массивы и DataView."]),
       obj("ArrayBuffer · byteLength · slice()", "Буфер памяти", "`new ArrayBuffer(16)` — 16 байт, заполненных нулями. Напрямую читать нельзя — только через «представления». `byteLength` — размер, `slice(a, b)` — копия куска.", "Файлы, сеть, аудио, изображения.", "const buf = new ArrayBuffer(8);\nconsole.log(buf.byteLength, buf.slice(2, 6).byteLength);", { covers: ["ArrayBuffer", ...AB("byteLength", "slice")] }),
       meth("ArrayBuffer.isView()", "Представление ли это", "true для типизированных массивов и DataView.", "Принимать и буфер, и представление.", "console.log(ArrayBuffer.isView(new Uint8Array(2)), ArrayBuffer.isView(new ArrayBuffer(2)));", { covers: on("ArrayBuffer", "isView") }),
@@ -25,7 +25,7 @@ export default function binary(c, ch, rc) {
       meth("transfer() · transferToFixedLength() · detached", "Передать владение", "`transfer(n)` — новый буфер с теми же данными, а старый «отсоединяется» (`detached` = true, длина 0). `transferToFixedLength` — то же, но новый не растёт.", "Передать данные без копирования.", "const a = new ArrayBuffer(8);\nconst b = a.transfer();\nconst c = b.transferToFixedLength(4);\nconsole.log(a.detached, a.byteLength, b.detached, c.byteLength, c.resizable);", { covers: AB("transfer", "transferToFixedLength", "detached") }),
       rule("ArrayBuffer — только память. Читать и писать её будешь через Uint8Array, Float32Array или DataView.")
     ],
-    tasks: [task("Буфер чека", "Создай `buf` — растущий ArrayBuffer на 8 байт с максимумом 64, увеличь его до 32 байт, и `isBinary(x)` — true для буфера или любого представления.", {
+    tasks: [task("Буфер данных", "Создай `buf` — растущий ArrayBuffer на 8 байт с максимумом 64, увеличь его до 32 байт, и `isBinary(x)` — true для буфера или любого представления.", {
       start: "const buf = new ArrayBuffer(8);\nfunction isBinary(x) {\n  return false;\n}\n",
       checks: [run("buf.resizable && buf.maxByteLength === 64 && buf.byteLength === 32", "Буфер вырос до 32"), run("isBinary(buf) && isBinary(new Uint8Array(1)) && !isBinary([1])", "Проверка двоичных данных")],
       solution: "const buf = new ArrayBuffer(8, { maxByteLength: 64 });\nbuf.resize(32);\nfunction isBinary(x) {\n  return x instanceof ArrayBuffer || ArrayBuffer.isView(x);\n}"
@@ -36,7 +36,7 @@ export default function binary(c, ch, rc) {
   L({
     slug: "typed-arrays", title: "Типизированные массивы", summary: "Int8Array, Uint8Array, Uint8ClampedArray, Int16Array, Uint16Array, Int32Array, Uint32Array, Float16Array, Float32Array, Float64Array, BigInt64Array, BigUint64Array, BYTES_PER_ELEMENT, from, of, buffer, byteOffset, set и subarray.",
     skill: ["js-typed-arrays", "Типизированные массивы", "Читать и писать двоичные данные числами нужного размера."],
-    now: "Читаем байты от кассы как числа: 8-битные, 16-битные, дробные. Для каждого размера — свой массив.",
+    now: "Читаем и пишем двоичные данные числами нужного размера.",
     body: [
       scene("Размер числа",
         ["bro", "Байт — число от 0 до 255. Два байта — до 65535. Для каждого размера есть свой типизированный массив."]),
@@ -49,7 +49,7 @@ export default function binary(c, ch, rc) {
       meth("set() · subarray()", "Запись и окно", "`set(array, offset)` копирует значения внутрь; `subarray(a, b)` — новое окно в тот же буфер (без копирования, в отличие от `slice`).", "Склеить пакеты, работать с частью данных.", "const all = new Uint8Array(6);\nall.set([1, 2, 3], 3);\nconst tail = all.subarray(3);\ntail[0] = 9;\nconsole.log(all, tail.length);", { covers: TA("set", "subarray") }),
       rule("`subarray` делит память с исходным массивом, `slice` — копирует. Меняешь окно — меняешь оригинал.")
     ],
-    tasks: [task("Пакет кассы", "Собери `packet` — Uint8Array из 4 байт: в начало запиши `header` через `set`, а в `body` сохрани `subarray` с индекса 2 (окно, а не копию).", {
+    tasks: [task("Пакет данных", "Собери `packet` — Uint8Array из 4 байт: в начало запиши `header` через `set`, а в `body` сохрани `subarray` с индекса 2 (окно, а не копию).", {
       start: "const header = [0xaa, 0xbb];\nconst packet = new Uint8Array(4);\nconst body = packet.slice(2);\n",
       checks: [run("packet[0] === 170 && packet[1] === 187", "Заголовок записан"), run("body.length === 2 && (body[0] = 7, packet[2] === 7)", "body — окно в packet")],
       solution: "const header = [0xaa, 0xbb];\nconst packet = new Uint8Array(4);\npacket.set(header, 0);\nconst body = packet.subarray(2);"
@@ -60,7 +60,7 @@ export default function binary(c, ch, rc) {
   L({
     slug: "typed-array-methods", title: "Методы типизированных массивов", summary: "У типизированных массивов есть почти все методы обычных: at, includes, indexOf, lastIndexOf, find, findIndex, findLast, findLastIndex, every, some, forEach, map, filter, reduce, reduceRight, join, sort, reverse, fill, copyWithin, slice, keys, values, entries, toReversed, toSorted, with, toString и toLocaleString.",
     skill: ["js-typed-array-methods", "Методы typed arrays", "Обрабатывать двоичные данные привычными методами массивов."],
-    now: "Анализируем показания датчика температуры кофемашины: байтовый поток, но методы — как у массивов.",
+    now: "Обрабатываем двоичные данные привычными методами массивов.",
     body: [
       scene("Как у массивов",
         ["nika", "Почти все методы массивов есть и у типизированных. Отличие одно: результат — снова типизированный массив того же вида."]),
@@ -85,10 +85,10 @@ export default function binary(c, ch, rc) {
   L({
     slug: "dataview", title: "DataView: байты любого формата", summary: "DataView, buffer, byteLength, byteOffset и методы get и set для Int8, Uint8, Int16, Uint16, Int32, Uint32, Float16, Float32, Float64, BigInt64 и BigUint64 с порядком байтов.",
     skill: ["js-dataview", "DataView", "Читать и писать числа разных размеров в любом месте буфера и с любым порядком байтов."],
-    now: "Пакет кассы: 1 байт — тип, 2 байта — номер, 4 байта — сумма. Разные размеры в одном буфере — работа для DataView.",
+    now: "Читаем и пишем числа любого размера и порядка байтов: DataView.",
     body: [
       scene("Смешанный пакет",
-        ["marta", "В пакете кассы всё вперемешку: байт, два байта, четыре байта…"],
+        ["you", "В пакете от датчика всё вперемешку: байт, два байта, четыре байта…"],
         ["bro", "DataView читает любое число из любого места буфера. И знает про порядок байтов."]),
       obj("DataView · buffer · byteLength · byteOffset", "Окно с любым форматом", "`new DataView(buffer, offset, length)` — окно в буфер; `buffer`, `byteOffset`, `byteLength` — как у типизированных массивов.", "Разбор двоичных форматов: файлы, протоколы.", "const buf = new ArrayBuffer(16);\nconst dv = new DataView(buf, 4, 8);\nconsole.log(dv.buffer === buf, dv.byteOffset, dv.byteLength);", { covers: ["DataView", ...DV("buffer", "byteLength", "byteOffset")] }),
       meth("getInt8() · setInt8() · getUint8() · setUint8()", "Один байт", "Прочитать или записать байт со знаком или без по смещению.", "Флаги, тип пакета.", "const dv = new DataView(new ArrayBuffer(2));\ndv.setUint8(0, 255);\ndv.setInt8(1, -1);\nconsole.log(dv.getUint8(0), dv.getInt8(0), dv.getUint8(1));", { covers: DV("getInt8", "setInt8", "getUint8", "setUint8") }),
@@ -97,7 +97,7 @@ export default function binary(c, ch, rc) {
       meth("getFloat16() · setFloat16() · getFloat32() · setFloat32()", "Дробные 16 и 32 бита", "Дробные половинной и одинарной точности.", "Показания датчиков, графика.", "const dv = new DataView(new ArrayBuffer(6));\ndv.setFloat16(0, 1.5);\ndv.setFloat32(2, 0.1);\nconsole.log(dv.getFloat16(0), dv.getFloat32(2));", { covers: DV("getFloat16", "setFloat16", "getFloat32", "setFloat32") }),
       meth("getFloat64() · setFloat64()", "Дробные 64 бита", "Обычные числа JavaScript без потери точности.", "Точные дробные в бинарных форматах.", "const dv = new DataView(new ArrayBuffer(8));\ndv.setFloat64(0, Math.PI);\nconsole.log(dv.getFloat64(0) === Math.PI);", { covers: DV("getFloat64", "setFloat64") }),
       meth("getBigInt64() · setBigInt64() · getBigUint64() · setBigUint64()", "64-битные целые", "Читают и пишут BigInt.", "Идентификаторы, большие счётчики.", "const dv = new DataView(new ArrayBuffer(8));\ndv.setBigUint64(0, 2n ** 64n - 1n);\nconsole.log(dv.getBigUint64(0), dv.getBigInt64(0));\ndv.setBigInt64(0, -2n);\nconsole.log(dv.getBigInt64(0));", { covers: DV("getBigInt64", "setBigInt64", "getBigUint64", "setBigUint64") }),
-      rule("Двоичный формат описан в документации как «смещение — размер — порядок байтов». Ровно эти три параметра и передаёшь в DataView.")
+      rule("Любой двоичный формат описывается тремя вещами: смещение, размер и порядок байтов. Ровно эти три параметра и передаёшь в DataView.")
     ],
     tasks: [task("Разбор пакета", "Пакет: байт 0 — тип (Uint8), байты 1–2 — номер заказа (Uint16, старший байт первым), байты 3–6 — сумма в копейках (Uint32, младший байт первым). Напиши `parsePacket(buf)` → `{ type, id, kopecks }`.", {
       start: "function parsePacket(buf) {\n  return { type: 0, id: 0, kopecks: 0 };\n}\n",
@@ -110,7 +110,7 @@ export default function binary(c, ch, rc) {
   L({
     slug: "shared-memory", title: "Общая память и Atomics", summary: "SharedArrayBuffer, grow, growable, maxByteLength, byteLength, slice и Atomics: load, store, add, sub, and, or, xor, exchange, compareExchange, isLockFree, wait, waitAsync, notify, pause.",
     skill: ["js-atomics", "Общая память", "Понимать, как потоки делят память и почему нужны атомарные операции."],
-    now: "Касса и кухня работают в разных потоках (Web Workers) и считают общий счётчик заказов. Как не потерять ни одного?",
+    now: "Общая память потоков и атомарные операции.",
     body: [
       scene("Два потока",
         ["bug", "Два потока одновременно сделают `count++` — и один заказ пропадёт! Хе-хе."],
