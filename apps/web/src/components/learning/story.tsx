@@ -27,7 +27,7 @@ type Line = { who: Who; text: string };
 export type Story = { title?: string | undefined; lines: Line[] };
 export type ConceptKind = "tag" | "attr" | "idea" | "property" | "selector" | "at-rule" | "function" | "value"
   | "keyword" | "operator" | "method" | "object" | "event" | "type";
-export type Concept = { name: string; title: string; what: string; why: string; how?: string | undefined; lang?: string | undefined; show?: number | undefined; bro?: string | undefined; kind?: ConceptKind | undefined };
+export type Concept = { name: string; title: string; what: string; why: string; how?: string | undefined; lang?: string | undefined; show?: number | undefined; bro?: string | undefined; kind?: ConceptKind | undefined; page?: string | undefined };
 const KINDS: readonly ConceptKind[] = ["tag", "attr", "idea", "property", "selector", "at-rule", "function", "value", "keyword", "operator", "method", "object", "event", "type"];
 
 const str = (v: unknown, max: number): v is string => typeof v === "string" && v.length > 0 && v.length <= max;
@@ -56,12 +56,15 @@ export function parseConcept(source: string): Concept | null {
   if (!v || !str(v.name, 80) || !str(v.title, 120) || !str(v.what, 600) || !str(v.why, 600)) return null;
   if (v.how !== undefined && !str(v.how, 3000)) return null;
   if (v.bro !== undefined && !str(v.bro, 300)) return null;
+  // Fixed markup a JavaScript example runs on (for DOM cards).
+  if (v.page !== undefined && !(str(v.page, 1500) && v.lang === "js")) return null;
   if (v.lang !== undefined && !(str(v.lang, 20) && /^[a-z]+$/.test(v.lang))) return null;
   if (v.kind !== undefined && !KINDS.includes(v.kind as ConceptKind)) return null;
   if (v.show !== undefined && !(Number.isInteger(v.show) && (v.show as number) >= 40 && (v.show as number) <= 600)) return null;
   return {
     name: v.name, title: v.title, what: v.what, why: v.why,
-    how: v.how as string | undefined, kind: v.kind as ConceptKind | undefined, lang: v.lang as string | undefined, show: v.show as number | undefined, bro: v.bro as string | undefined
+    how: v.how as string | undefined, kind: v.kind as ConceptKind | undefined, lang: v.lang as string | undefined, show: v.show as number | undefined, bro: v.bro as string | undefined,
+    page: v.page as string | undefined
   };
 }
 
@@ -169,7 +172,7 @@ function AutoHeightPreview({ title, html, initial }: { title: string; html: stri
  * Live preview of a JavaScript example: runs in the opaque-origin sandbox of js-runner.ts
  * (scripts on, same-origin off, network closed) and reports its height by message.
  */
-function RunPreview({ title, code, initial }: { title: string; code: string; initial: number }) {
+function RunPreview({ title, code, page, initial }: { title: string; code: string; page?: string | undefined; initial: number }) {
   const [height, setHeight] = useState(initial);
   const frame = useRef<HTMLIFrameElement>(null);
   const token = `${useId()}:card`;
@@ -183,7 +186,7 @@ function RunPreview({ title, code, initial }: { title: string; code: string; ini
   }, [token]);
   return (
     <iframe ref={frame} title={title} sandbox="allow-scripts" referrerPolicy="no-referrer" loading="lazy"
-      srcDoc={runnerDocument({ code, lang: "js", mode: "preview", token })} style={{ height }} />
+      srcDoc={runnerDocument({ code, page, lang: "js", mode: "preview", token })} style={{ height }} />
   );
 }
 
@@ -223,7 +226,7 @@ function ConceptCard({ concept }: { concept: Concept }) {
                   <div className={styles.preview}>
                     <span>{concept.lang === "js" ? "Так это работает" : "Так это выглядит"}</span>
                     {concept.lang === "js"
-                      ? <RunPreview title={`Пример: ${concept.title}`} code={concept.how} initial={concept.show} />
+                      ? <RunPreview title={`Пример: ${concept.title}`} code={concept.how} page={concept.page} initial={concept.show} />
                       : <AutoHeightPreview title={`Пример: ${concept.title}`} html={concept.how} initial={concept.show} />}
                   </div>
                 ) : null}

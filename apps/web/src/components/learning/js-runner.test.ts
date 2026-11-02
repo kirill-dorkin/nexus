@@ -1,6 +1,7 @@
 // @vitest-environment happy-dom
 import { describe, expect, it } from "vitest";
 import { parseChallenge } from "./challenge";
+import { parseConcept } from "./story";
 import { guardLoops, runnerDocument } from "./js-runner";
 import { runInWindow } from "./runner-harness.test-utils";
 
@@ -69,5 +70,13 @@ describe("runnable challenge specs", () => {
     expect(parseChallenge(JSON.stringify({ ...base, page: "<p></p>", checks: [{ label: "a", js: "1" }] }))).toBeNull();
     expect(parseChallenge(JSON.stringify({ ...base, lang: "js", checks: [{ label: "a", js: "'</script>'" }] }))).toBeNull();
     expect(parseChallenge(JSON.stringify({ ...base, lang: "js", checks: [{ label: "a", js: "1", log: "x" }] }))).toBeNull();
+  });
+});
+
+describe("JavaScript concept cards", () => {
+  const card = { name: "querySelector()", title: "t", what: "w", why: "y", how: "1", kind: "method", show: 80 };
+  it("accept a fixed page only for JavaScript examples", () => {
+    expect(parseConcept(JSON.stringify({ ...card, lang: "js", page: "<p>x</p>" }))?.page).toBe("<p>x</p>");
+    expect(parseConcept(JSON.stringify({ ...card, page: "<p>x</p>" }))).toBeNull();
   });
 });
