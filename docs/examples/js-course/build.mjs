@@ -12,6 +12,19 @@ import events from "./c08-events.mjs";
 import forms from "./c09-forms.mjs";
 import asyncChapter from "./c10-async.mjs";
 import final from "./c11-final.mjs";
+import syntax from "./c12-syntax.mjs";
+import objectsDeep from "./c13-objects-deep.mjs";
+import strings from "./c14-strings.mjs";
+import numbers from "./c15-numbers.mjs";
+import arraysDeep from "./c16-arrays-deep.mjs";
+import collections from "./c17-collections.mjs";
+import regexp from "./c18-regexp.mjs";
+import meta from "./c19-meta.mjs";
+import errorsAsync from "./c20-errors-async.mjs";
+import dates from "./c21-dates.mjs";
+import intl from "./c22-intl.mjs";
+import binary from "./c23-binary.mjs";
+import legacy from "./c24-legacy.mjs";
 
 const chapters = [
   ["Старт JavaScript", [start]],
@@ -24,7 +37,20 @@ const chapters = [
   ["События", [events]],
   ["Формы", [forms]],
   ["Асинхронность", [asyncChapter]],
-  ["Хранение и финал", [final]]
+  ["Хранение и финал", [final]],
+  ["Синтаксис полностью", [syntax]],
+  ["Объекты и функции изнутри", [objectsDeep]],
+  ["Строки полностью", [strings]],
+  ["Числа и Math полностью", [numbers]],
+  ["Массивы и итераторы полностью", [arraysDeep]],
+  ["Коллекции", [collections]],
+  ["Регулярные выражения", [regexp]],
+  ["Symbol, Proxy и Reflect", [meta]],
+  ["Ошибки, ресурсы и промисы", [errorsAsync]],
+  ["Даты полностью", [dates]],
+  ["Intl полностью", [intl]],
+  ["Бинарные данные и общая память", [binary]],
+  ["Устаревшее: как читать старый код", [legacy]]
 ];
 
 const challenges = {};

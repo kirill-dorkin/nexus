@@ -46,3 +46,9 @@ Tests load this exact document into a happy-dom window with script evaluation en
 - Concept-card examples that use top-level `await` run as `<script type="module">` (`needsModule`). Challenges stay classic scripts, so their checks can read the learner's top-level bindings.
 - An opaque origin has no Web Storage, so the prelude installs an in-memory `localStorage`/`sessionStorage`. Its data lives only as long as one run, which lessons about storage state explicitly.
 - `course-challenges.test.ts` also runs every JavaScript concept example. An example fails the test if it logs an error, unless the card exists to show that error.
+
+## Amendment (complete JavaScript course)
+
+- The runner CSP also allows `'unsafe-eval'`, so lessons can demonstrate `eval` and `new Function`. This adds no capability: the frame already runs arbitrary learner code, and isolation still comes from the opaque origin and `default-src 'none'`.
+- Checker internals use `__`-prefixed names, so a learner's own globals (`has`, `logs`) are never shadowed in check expressions.
+- The JavaScript course covers the whole of ECMAScript 2025: `docs/examples/js-course/spec-index.json` is a snapshot of the syntax and of every standard built-in member, read from the engine. The contracts test requires every item to be covered by exactly one concept card (its `covers`), with at most four items per card (eight for Annex B legacy).
