@@ -2,6 +2,7 @@
 // examples and tasks run in the learner's browser sandbox (ADR-0064).
 import { scene, card, rule } from "../html-course/stories/kit.mjs";
 import { makeLesson } from "../css-course/kit.mjs";
+import { BASIC_COVERS } from "./covers-basics.mjs";
 export { scene, rule, makeLesson };
 
 /**
@@ -9,7 +10,12 @@ export { scene, rule, makeLesson };
  * `extra.page` is fixed markup the example runs on (for DOM cards); `extra.show` its height.
  */
 const kinded = (kind) => (name, title, what, why, how, extra = {}) =>
-  card(name, title, what, why, how, { kind, ...(how ? { lang: "js", show: 70 } : {}), ...extra });
+  card(name, title, what, why, how, {
+    kind, ...(how ? { lang: "js", show: 70 } : {}),
+    ...(BASIC_COVERS[name] && !extra.covers ? { covers: BASIC_COVERS[name] } : {}), ...extra
+  });
+/** Spec-index names: on("String.prototype", "padStart", "padEnd") → ["String.prototype.padStart", …]. */
+export const on = (prefix, ...names) => names.map((n) => (prefix ? `${prefix}.${n}` : n));
 export const kw = kinded("keyword");
 export const op = kinded("operator");
 export const meth = kinded("method");

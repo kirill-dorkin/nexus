@@ -12,6 +12,10 @@ import events from "./c08-events.mjs";
 import forms from "./c09-forms.mjs";
 import asyncChapter from "./c10-async.mjs";
 import final from "./c11-final.mjs";
+import syntax from "./c12-syntax.mjs";
+import objectsDeep from "./c13-objects-deep.mjs";
+import strings from "./c14-strings.mjs";
+import numbers from "./c15-numbers.mjs";
 
 const chapters = [
   ["Старт JavaScript", [start]],
@@ -24,7 +28,11 @@ const chapters = [
   ["События", [events]],
   ["Формы", [forms]],
   ["Асинхронность", [asyncChapter]],
-  ["Хранение и финал", [final]]
+  ["Хранение и финал", [final]],
+  ["Синтаксис полностью", [syntax]],
+  ["Объекты и функции изнутри", [objectsDeep]],
+  ["Строки полностью", [strings]],
+  ["Числа и Math полностью", [numbers]]
 ];
 
 const challenges = {};

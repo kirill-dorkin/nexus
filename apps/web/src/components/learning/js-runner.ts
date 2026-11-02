@@ -132,13 +132,14 @@ addEventListener("load",function(){render();size();});
 
 function checker(token: string, checks: RunCheck[]): string {
   const steps = checks.map((check) => check.js !== undefined
-    ? `try{r.push(!!(await (async()=>(${check.js}))()))}catch(e){r.push(false)}`
-    : `r.push(has(${JSON.stringify(check.log ?? "")}))`);
+    ? `try{__r.push(!!(await (async()=>(${check.js}))()))}catch(__e){__r.push(false)}`
+    : `__r.push(__has(${JSON.stringify(check.log ?? "")}))`);
   return `addEventListener("load",function(){setTimeout(async function(){
-var logs=window.__runnerLogs||[];var norm=function(s){return String(s).replace(/\\s+/g," ").trim().toLowerCase()};
-var has=function(t){t=norm(t);return logs.some(function(l){return l.level!=="error"&&norm(l.text).indexOf(t)!==-1})};
-var r=[];${steps.join("\n")}
-parent.postMessage({runnerToken:${JSON.stringify(token)},type:"result",results:r,logs:logs.slice()},"*");},60);});`;
+// Internal names start with __ so they never shadow the learner's own globals in check expressions.
+var __logs=window.__runnerLogs||[];var __norm=function(s){return String(s).replace(/\\s+/g," ").trim().toLowerCase()};
+var __has=function(t){t=__norm(t);return __logs.some(function(l){return l.level!=="error"&&__norm(l.text).indexOf(t)!==-1})};
+var __r=[];${steps.join("\n")}
+parent.postMessage({runnerToken:${JSON.stringify(token)},type:"result",results:__r,logs:__logs.slice()},"*");},60);});`;
 }
 
 const CSP = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src data:">`;

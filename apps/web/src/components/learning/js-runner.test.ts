@@ -61,6 +61,13 @@ describe("runner sandbox", () => {
   }, 10000);
 });
 
+describe("checker isolation", () => {
+  it("lets check expressions call learner globals named like checker internals", async () => {
+    const { results } = await runInWindow({ lang: "js", code: "function has(x) { return x === 1; }\nconst logs = 7, norm = 8, r = 9;", checks: [{ js: "has(1) && logs === 7 && norm === 8 && r === 9" }] });
+    expect(results).toEqual([true]);
+  });
+});
+
 describe("module examples", () => {
   it("run as a module when asked, so concept cards may use top-level await", () => {
     expect(runnerDocument({ code: "await wait(1);", lang: "js", mode: "preview", token: "t", module: true })).toContain('<script type="module">');

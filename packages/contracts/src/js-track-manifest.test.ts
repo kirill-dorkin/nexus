@@ -66,15 +66,28 @@ describe("JavaScript full course import", () => {
     }
   });
 
-  it("explains every indexed keyword, operator, method, object, event, type, function and value with a concept card", () => {
+  it("covers the whole language: every ECMAScript 2025 syntax item and built-in member, exactly once", () => {
+    // Refresh with: node docs/examples/js-course/update-spec-index.mjs
     const index = JSON.parse(
-      readFileSync(new URL("../../../docs/examples/js-course/js-index.json", import.meta.url), "utf8")
-    ) as Record<string, string[] | string>;
-    const taught = new Set(conceptNames().flat());
-    for (const [group, items] of Object.entries(index)) {
-      if (!Array.isArray(items)) continue;
-      expect(items.filter((item) => !taught.has(item)), `${group} without a card`).toEqual([]);
-    }
+      readFileSync(new URL("../../../docs/examples/js-course/spec-index.json", import.meta.url), "utf8")
+    ) as { syntax: string[]; builtins: string[]; legacy: string[] };
+    const count = new Map<string, number>();
+    const legacy = new Set(index.legacy);
+    for (const lesson of jsTrack().lessons)
+      for (const block of lesson.blocks) {
+        if (block.type !== "markdown") continue;
+        for (const [, body] of block.markdown.matchAll(/```concept\n([\s\S]*?)\n```/g)) {
+          const card = JSON.parse(body!) as { name: string; covers?: string[] };
+          const covers = card.covers ?? [];
+          // A card explains a few closely related items, never a dump of names.
+          expect(covers.length, card.name).toBeLessThanOrEqual(covers.every((c) => legacy.has(c)) ? 8 : 4);
+          for (const item of covers) count.set(item, (count.get(item) ?? 0) + 1);
+        }
+      }
+    const all = [...index.syntax, ...index.builtins, ...index.legacy];
+    expect(all.filter((item) => !count.has(item)), "not taught").toEqual([]);
+    expect([...count].filter(([, n]) => n > 1).map(([item]) => item), "taught twice").toEqual([]);
+    expect([...count.keys()].filter((item) => !all.includes(item)), "covers outside the index").toEqual([]);
   });
 
   it("explains each item once, without repeating a card in another lesson", () => {
