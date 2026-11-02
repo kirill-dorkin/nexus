@@ -6,7 +6,7 @@ import { runnerDocument, type LogLine, type RunCheck } from "./js-runner";
  * JavaScript enabled, and resolves with what the checker posts. Tests only.
  */
 export async function runInWindow(options: {
-  code: string; lang?: "html" | "js" | undefined; page?: string | undefined; checks: RunCheck[];
+  code: string; lang?: "html" | "js" | undefined; page?: string | undefined; checks: RunCheck[]; module?: boolean;
 }): Promise<{ results: boolean[]; logs: LogLine[] }> {
   const win = new Window({
     settings: { enableJavaScriptEvaluation: true, suppressInsecureJavaScriptEnvironmentWarning: true }

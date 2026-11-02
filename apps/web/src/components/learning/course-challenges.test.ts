@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { isRunCheck, isRunnable, parseChallenge, runChecks, staticPage, type Challenge } from "./challenge";
 import { parseConcept, parseRecap, parseStory } from "./story";
+import { needsModule } from "./js-runner";
 import { runInWindow } from "./runner-harness.test-utils";
 
 type Manifest = { lessons: { slug: string; blocks: { type: string; markdown?: string }[] }[] };
@@ -44,6 +45,19 @@ for (const [name, manifest] of courses) {
       expect(await run(challenge!.start, challenge!), "the starting code must not already pass").toContain(false);
     }, 15000);
   });
+
+  const examples = blocks("concept").map((b) => ({ lesson: b.lesson, concept: parseConcept(b.source) }))
+    .filter((e) => e.concept?.lang === "js" && e.concept.how);
+  if (examples.length) {
+    // Cards that exist to show an error are allowed to print one.
+    const SHOWS_ERROR = new Set(["ReferenceError", "TypeError", "console.error()"]);
+    describe(`${name} course runnable examples`, () => {
+      it.each(examples.map((e) => [`${e.lesson}: ${e.concept!.name}`, e.concept!] as const))("%s runs without errors", async (_, concept) => {
+        const { logs } = await runInWindow({ code: concept.how!, lang: "js", page: concept.page, checks: [{ js: "await wait(700) || true" }], module: needsModule(concept.how!) });
+        if (!SHOWS_ERROR.has(concept.name)) expect(logs.filter((l) => l.level === "error"), concept.how).toEqual([]);
+      }, 15000);
+    });
+  }
 
   describe(`${name} course story blocks`, () => {
     it("every scene and concept card is valid, so none falls back to raw JSON", () => {

@@ -2,8 +2,9 @@
  * Runnable JavaScript practice (ADR-0064). Builds the srcdoc of an opaque-origin iframe
  * (sandbox="allow-scripts", never allow-same-origin) that runs the learner's code:
  *   - a CSP meta tag closes the network, so the page cannot load or send anything;
- *   - a prelude captures console output and errors, offers `wait(ms)` and an offline
- *     teaching API for fetch() lessons (`/api/menu`, `/api/orders`);
+ *   - a prelude captures console output and errors, offers `wait(ms)`, an offline
+ *     teaching API for fetch() lessons (`/api/menu`, `/api/orders`) and, because an opaque origin
+ *     has no Web Storage, an in-memory localStorage/sessionStorage that lives as long as the run;
  *   - loops are guarded, so a half-typed `while` cannot freeze the tab;
  *   - in "preview" mode the console is drawn under the page and the frame reports its height;
  *   - in "check" mode, after the page has loaded, author-written expressions are evaluated
@@ -108,6 +109,8 @@ function push(level,text){if(logs.length<200)logs.push({level:level,text:text});
 addEventListener("error",function(e){push("error",e.message?String(e.message).replace(/^Uncaught /,""):"Ошибка в коде");});
 addEventListener("unhandledrejection",function(e){push("error","Ошибка в промисе: "+fmt(e.reason,0));});
 window.wait=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+function memoryStorage(){var data={};return{get length(){return Object.keys(data).length},key:function(i){return Object.keys(data)[i]??null},getItem:function(k){k=String(k);return Object.prototype.hasOwnProperty.call(data,k)?data[k]:null},setItem:function(k,v){data[String(k)]=String(v)},removeItem:function(k){delete data[String(k)]},clear:function(){data={}}};}
+["localStorage","sessionStorage"].forEach(function(name){try{window[name].getItem("x")}catch(e){try{Object.defineProperty(window,name,{value:memoryStorage(),configurable:true})}catch(e2){}}});
 var MENU=${JSON.stringify(MENU_FIXTURE)};
 function reply(status,body){return wait(80).then(function(){return new Response(JSON.stringify(body),{status:status,headers:{"Content-Type":"application/json"}})});}
 window.fetch=function(input,init){
@@ -140,18 +143,25 @@ parent.postMessage({runnerToken:${JSON.stringify(token)},type:"result",results:r
 
 const CSP = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src data:">`;
 
-export function runnerDocument({ code, lang = "html", page = "", mode, token, checks = [] }: {
-  code: string; lang?: "html" | "js" | undefined; page?: string | undefined; mode: RunMode; token: string; checks?: RunCheck[];
+/**
+ * `module: true` runs JavaScript as a module, so examples may use top-level `await`. Concept cards
+ * use it; challenges do not, because their checks read the learner's top-level bindings.
+ */
+export function runnerDocument({ code, lang = "html", page = "", mode, token, checks = [], module = false }: {
+  code: string; lang?: "html" | "js" | undefined; page?: string | undefined; mode: RunMode; token: string; checks?: RunCheck[]; module?: boolean;
 }): string {
   const head = `${CSP}<meta charset="utf-8"><script>${prelude(token, mode)}</script>`;
   const tail = mode === "check" ? `<script>${checker(token, checks)}</script>` : "";
   if (lang === "js") {
-    return `<!doctype html><html><head>${head}<style>body{font:15px/1.5 system-ui,sans-serif;margin:8px;color:#2b1d14}</style></head><body>${page}<script>${scriptText(guardLoops(code))}</script>${tail}</body></html>`;
+    return `<!doctype html><html><head>${head}<style>body{font:15px/1.5 system-ui,sans-serif;margin:8px;color:#2b1d14}</style></head><body>${page}<script${module ? ' type="module"' : ""}>${scriptText(guardLoops(code))}</script>${tail}</body></html>`;
   }
   const guarded = code.replace(/(<script(?![^>]*\bsrc=)[^>]*>)([\s\S]*?)(<\/script>)/gi, (_, open: string, body: string, close: string) => open + guardLoops(body) + close);
   const withHead = /<head[^>]*>/i.test(guarded) ? guarded.replace(/<head[^>]*>/i, (m) => m + head) : head + guarded;
   return withHead + tail;
 }
+
+/** Examples run as modules only when they need top-level `await`; everything else stays a classic script. */
+export const needsModule = (code: string) => /\bawait\b/.test(code);
 
 export function isRunnerMessage(data: unknown, token: string): data is RunnerMessage {
   return !!data && typeof data === "object" && (data as { runnerToken?: unknown }).runnerToken === token;
