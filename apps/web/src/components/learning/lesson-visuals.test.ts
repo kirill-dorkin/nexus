@@ -47,6 +47,16 @@ describe("code highlighting", () => {
     expect(tokens.find((t) => t.kind === "property")?.text).toBe("color");
     expect(tokens.filter((t) => t.kind === "tag").map((t) => t.text)).toEqual(["style", "style", "p", "p"]);
   });
+  it("highlights SQL keywords in any case, strings, comments, numbers and functions", () => {
+    const code = "-- меню\nselect name, round(price, 2) FROM products WHERE city = 'Москва' AND id > 10;";
+    const tokens = highlight(code, "sql");
+    expect(tokens.map((t) => t.text).join("")).toBe(code);
+    expect(tokens.filter((t) => t.kind === "keyword").map((t) => t.text)).toEqual(["select", "FROM", "WHERE", "AND"]);
+    expect(tokens.find((t) => t.kind === "comment")?.text).toBe("-- меню");
+    expect(tokens.find((t) => t.kind === "string")?.text).toBe("'Москва'");
+    expect(tokens.find((t) => t.kind === "property")?.text).toBe("round");
+    expect(tokens.filter((t) => t.kind === "number").map((t) => t.text)).toEqual(["2", "10"]);
+  });
   it("keeps unknown languages as plain text", () => {
     expect(highlight("WEBVTT", "text")).toEqual([{ kind: "plain", text: "WEBVTT" }]);
   });

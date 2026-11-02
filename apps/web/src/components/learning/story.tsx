@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { Bug, Coffee, FastForward, Headphones, Palette, Robot, Sparkle, User } from "@phosphor-icons/react/dist/ssr";
+import { Bug, ChartBar, Coffee, Database, FastForward, Headphones, Palette, Robot, Sparkle, User } from "@phosphor-icons/react/dist/ssr";
 import { CodeSnippet } from "./code-snippet";
 import { isRunnerMessage, runnerDocument } from "./js-runner";
+import { useSqlRun } from "./sql/sql-client";
+import { SqlOutput } from "./sql/sql-output";
 import styles from "./story.module.css";
 
 /*
@@ -20,15 +22,17 @@ export const CHARACTERS = {
   lev: { name: "Лев", role: "гость, слушает сайты скринридером", color: "#c4b5fd", Icon: Headphones },
   sonya: { name: "Соня", role: "дизайнер, рисует макеты", color: "#f0abfc", Icon: Palette },
   bug: { name: "Вредный Скрипт", role: "злодей", color: "#fda4af", Icon: Bug },
+  slon: { name: "Слон", role: "база данных PostgreSQL", color: "#93c5fd", Icon: Database },
+  dasha: { name: "Даша", role: "маркетолог, любит цифры", color: "#fcd34d", Icon: ChartBar },
   you: { name: "Вы", role: "", color: "#e4e4e7", Icon: User }
 } as const;
 export type Who = keyof typeof CHARACTERS;
 type Line = { who: Who; text: string };
 export type Story = { title?: string | undefined; lines: Line[] };
 export type ConceptKind = "tag" | "attr" | "idea" | "property" | "selector" | "at-rule" | "function" | "value"
-  | "keyword" | "operator" | "method" | "object" | "event" | "type";
+  | "keyword" | "operator" | "method" | "object" | "event" | "type" | "statement" | "clause" | "constraint";
 export type Concept = { name: string; title: string; what: string; why: string; how?: string | undefined; lang?: string | undefined; show?: number | undefined; bro?: string | undefined; kind?: ConceptKind | undefined; page?: string | undefined };
-const KINDS: readonly ConceptKind[] = ["tag", "attr", "idea", "property", "selector", "at-rule", "function", "value", "keyword", "operator", "method", "object", "event", "type"];
+const KINDS: readonly ConceptKind[] = ["tag", "attr", "idea", "property", "selector", "at-rule", "function", "value", "keyword", "operator", "method", "object", "event", "type", "statement", "clause", "constraint"];
 
 const str = (v: unknown, max: number): v is string => typeof v === "string" && v.length > 0 && v.length <= max;
 const json = (source: string): Record<string, unknown> | null => {
@@ -190,6 +194,25 @@ function RunPreview({ title, code, page, initial }: { title: string; code: strin
   );
 }
 
+/** A SQL example run on a fresh copy of the teaching database (sql/, ADR-0065). */
+function SqlPreview({ code }: { code: string }) {
+  const id = useId();
+  const [node, setNode] = useState<HTMLDivElement | null>(null);
+  const [visible, setVisible] = useState(false);
+  // The database engine starts only when an example scrolls near, not for every card at once.
+  useEffect(() => {
+    if (!node || visible) return;
+    if (typeof IntersectionObserver === "undefined") { setVisible(true); return; }
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) setVisible(true);
+    }, { rootMargin: "400px 0px" });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [node, visible]);
+  const sql = useSqlRun(visible ? { code } : null, `${id}:card`);
+  return <div ref={setNode} className={styles.sqlPreview}><SqlOutput run={sql.run} busy={sql.busy || !visible} /></div>;
+}
+
 /** What a card is about: a tag (`<p>`), an attribute (`href`) or a plain idea (Сервер). */
 export function conceptKind(name: string): "tag" | "attr" | "idea" {
   if (name.startsWith("<")) return "tag";
@@ -199,7 +222,8 @@ export function conceptKind(name: string): "tag" | "attr" | "idea" {
 const KIND_LABEL: Record<ConceptKind, string> = {
   tag: "Тег", attr: "Атрибут", idea: "Понятие",
   property: "Свойство", selector: "Селектор", "at-rule": "@-правило", function: "Функция", value: "Значение",
-  keyword: "Ключевое слово", operator: "Оператор", method: "Метод", object: "Объект", event: "Событие", type: "Тип"
+  keyword: "Ключевое слово", operator: "Оператор", method: "Метод", object: "Объект", event: "Событие", type: "Тип",
+  statement: "Команда", clause: "Часть запроса", constraint: "Ограничение"
 };
 
 function ConceptCard({ concept }: { concept: Concept }) {
@@ -224,10 +248,12 @@ function ConceptCard({ concept }: { concept: Concept }) {
                 <CodeSnippet code={concept.how} language={concept.lang ?? "html"} />
                 {concept.show ? (
                   <div className={styles.preview}>
-                    <span>{concept.lang === "js" ? "Так это работает" : "Так это выглядит"}</span>
+                    <span>{concept.lang === "js" ? "Так это работает" : concept.lang === "sql" ? "Что ответит база" : "Так это выглядит"}</span>
                     {concept.lang === "js"
                       ? <RunPreview title={`Пример: ${concept.title}`} code={concept.how} page={concept.page} initial={concept.show} />
-                      : <AutoHeightPreview title={`Пример: ${concept.title}`} html={concept.how} initial={concept.show} />}
+                      : concept.lang === "sql"
+                        ? <SqlPreview code={concept.how} />
+                        : <AutoHeightPreview title={`Пример: ${concept.title}`} html={concept.how} initial={concept.show} />}
                   </div>
                 ) : null}
               </div>

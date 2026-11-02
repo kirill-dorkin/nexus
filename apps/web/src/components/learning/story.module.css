@@ -258,6 +258,9 @@
 .concept[data-kind="event"] code.name { color: #fcd34d; }
 .concept[data-kind="object"] code.name,
 .concept[data-kind="type"] code.name { color: #5eead4; }
+.concept[data-kind="statement"] code.name,
+.concept[data-kind="clause"] code.name { color: #93c5fd; }
+.concept[data-kind="constraint"] code.name { color: #fdba74; }
 .concept .conceptTitle {
   margin: 0;
   color: var(--text-secondary);
@@ -355,4 +358,10 @@
 }
 .concept .row dd :not(pre) > code {
   white-space: nowrap;
+}
+/* SQL examples answer with a result table on the code background. */
+.sqlPreview {
+  flex: 1;
+  min-height: 3rem;
+  background: #0b0c0f;
 }

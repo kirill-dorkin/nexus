@@ -1,0 +1,115 @@
+/* SQL practice: result tables, status lines, errors and the schema panel. */
+.output {
+  max-height: 320px;
+  overflow: auto;
+  transition: opacity 160ms ease;
+}
+.output[data-busy] {
+  opacity: 0.6;
+}
+.status {
+  padding: 0.9rem 1rem;
+  color: var(--text-secondary);
+  font: 500 0.88rem/1.5 var(--font-sans);
+}
+.status[data-tone="ok"] {
+  color: #86efac;
+}
+.error {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.9rem 1rem;
+  color: #fca5a5;
+  font: 0.88rem/1.5 var(--font-sans);
+}
+.error svg {
+  flex: none;
+  margin-top: 0.15rem;
+}
+.error p {
+  margin: 0;
+}
+.errorTitle code {
+  color: #fecaca;
+  font-family: var(--font-mono);
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: none;
+}
+.errorHint {
+  color: var(--text-secondary);
+}
+.tableWrap {
+  overflow-x: auto;
+}
+.tableWrap:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font: 0.84rem/1.45 var(--font-mono);
+  color: var(--code-plain, #e4e4e7);
+}
+.table th,
+.table td {
+  padding: 0.4rem 0.8rem;
+  border-bottom: 1px solid var(--border-default);
+  text-align: left;
+  white-space: nowrap;
+  max-width: 28rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.table th {
+  position: sticky;
+  top: 0;
+  color: var(--text-accent);
+  font-weight: 700;
+  background: color-mix(in srgb, var(--surface-solid) 70%, #0b0c0f);
+}
+.table td[data-null] {
+  color: var(--text-tertiary, #71717a);
+  font-style: italic;
+}
+.table tbody tr:hover td {
+  background: color-mix(in srgb, var(--accent-action) 6%, transparent);
+}
+.count {
+  margin: 0;
+  padding: 0.45rem 0.8rem;
+  color: var(--text-secondary);
+  font: 500 0.78rem/1.4 var(--font-sans);
+}
+.schema {
+  margin: 0.75rem 0 0;
+  border: 1px solid var(--border-default);
+  border-radius: 0.8rem;
+  color: var(--text-secondary);
+  font: 0.86rem/1.5 var(--font-sans);
+}
+.schema summary {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.8rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+.schema ul {
+  margin: 0;
+  padding: 0 0.8rem 0.7rem 1.9rem;
+}
+.schema li {
+  margin: 0.3rem 0;
+}
+.schemaTitle {
+  color: var(--text-secondary);
+}
+.columns {
+  display: block;
+  color: var(--text-tertiary, #a1a1aa);
+  font: 0.8rem/1.5 var(--font-mono);
+}
