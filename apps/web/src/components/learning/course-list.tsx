@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { ButtonLink } from "@platform/ui";
 import { courseUrl } from "../../lib/public-learning-routes";
+import { LEARNING_ROUTE, routeStepNumber } from "../../lib/learning-route";
 import { durationLabel, lessonCount } from "./learning-labels";
 import styles from "./course-list.module.css";
 
@@ -37,6 +38,7 @@ export function CourseCard({
   const lessons = course.course.lessons;
   const minutes = lessons.reduce((sum, lesson) => sum + lesson.durationMinutes, 0);
   const description = firstSentence(course.course.description);
+  const step = routeStepNumber(course);
   return (
     <article className={`${styles.card} ${featured ? styles.featured : ""}`} data-tone={index % 3}>
       <div className={styles.cover} aria-hidden="true">
@@ -51,7 +53,9 @@ export function CourseCard({
         </ol>
       </div>
       <div className={styles.body}>
-        <p className={styles.organization}>{course.organization.name}</p>
+        <p className={styles.organization}>
+          {step ? `Шаг ${step} · ${LEARNING_ROUTE.title}` : course.organization.name}
+        </p>
         <h3 className={styles.title}>
           <Link href={href}>{course.course.title}</Link>
         </h3>

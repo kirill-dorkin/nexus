@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LearningShell } from "./learning-shell";
 import { LessonBlocks } from "./lesson-blocks";
-import type { PublicLearningLesson } from "@platform/contracts";
+import type { PublicLearningCourse, PublicLearningLesson } from "@platform/contracts";
+import { routePosition } from "../../lib/learning-route";
 import { courseUrl, lessonUrl } from "../../lib/public-learning-routes";
 import { LearningPageHeading } from "./learning-page-heading";
 import { CourseNavigator } from "./course-navigator";
@@ -24,13 +25,15 @@ export function lessonMetadata(course: PublicLearningLesson): Metadata {
     }
   };
 }
-export function LessonPageView({ course }: { course: PublicLearningLesson }) {
+export function LessonPageView({ course, catalog = [] }: { course: PublicLearningLesson; catalog?: readonly PublicLearningCourse[] }) {
   const lessonSlug = course.lesson.slug;
   const index = course.course.lessons.findIndex(
     (lesson) => lesson.slug === course.lesson.slug
   );
   const previous = course.course.lessons[index - 1];
   const next = course.course.lessons[index + 1];
+  // The last lesson continues the route with the next course instead of a dead end (ADR-0066).
+  const nextCourse = next ? null : routePosition(course, catalog)?.next?.course ?? null;
   const lessonProgress = Math.round(
     ((index + 1) / course.course.lessons.length) * 100
   );
@@ -92,13 +95,22 @@ export function LessonPageView({ course }: { course: PublicLearningLesson }) {
                 <span>← {previous ? "Предыдущий урок" : "Назад к курсу"}</span>
                 <strong>{previous?.title ?? "Программа курса"}</strong>
               </Link>
-              <Link
-                data-next=""
-                href={next ? lessonUrl(course, next.slug) : courseUrl(course)}
-              >
-                <span>{next ? "Следующий урок" : "Вернуться к курсу"} →</span>
-                <strong>{next?.title ?? "К программе курса"}</strong>
-              </Link>
+              {next ? (
+                <Link data-next="" href={lessonUrl(course, next.slug)}>
+                  <span>Следующий урок →</span>
+                  <strong>{next.title}</strong>
+                </Link>
+              ) : nextCourse ? (
+                <Link data-next="" href={courseUrl(nextCourse)}>
+                  <span>Следующий курс маршрута →</span>
+                  <strong>{nextCourse.course.title}</strong>
+                </Link>
+              ) : (
+                <Link data-next="" href={courseUrl(course)}>
+                  <span>Вернуться к курсу →</span>
+                  <strong>К программе курса</strong>
+                </Link>
+              )}
             </nav>
           </div>
           <aside

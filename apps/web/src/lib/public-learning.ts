@@ -5,6 +5,7 @@ import {
 } from "@platform/contracts";
 import { notFound } from "next/navigation";
 import { cache } from "react";
+import { orderByRoute } from "./learning-route";
 import { serverApiUrl } from "./server-api";
 export { courseUrl, lessonUrl } from "./public-learning-routes";
 
@@ -19,7 +20,8 @@ async function read(path: string) {
   return response.json();
 }
 export const loadLearningCatalog = cache(async function loadLearningCatalog() {
-  return publicLearningCatalogSchema.parse(await read("/v1/public/learning"));
+  const catalog = publicLearningCatalogSchema.parse(await read("/v1/public/learning"));
+  return { ...catalog, courses: orderByRoute(catalog.courses) };
 });
 export const loadLearningCourse = cache(async function loadLearningCourse(
   organizationSlug: string,
@@ -64,3 +66,11 @@ export const loadLearningLessonBySlug = cache(async function loadLearningLessonB
     )
   );
 });
+/** The catalog for route navigation (ADR-0066). A failed read only hides the route, never the page. */
+export async function loadRouteCatalog() {
+  try {
+    return (await loadLearningCatalog()).courses;
+  } catch {
+    return [];
+  }
+}

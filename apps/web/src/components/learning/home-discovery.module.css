@@ -134,16 +134,6 @@
   font-weight: 700;
   letter-spacing: -0.03em;
 }
-.previewVideo {
-  display: grid;
-  place-items: center;
-  aspect-ratio: 16 / 8;
-  border-radius: 1rem;
-  background:
-    radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--accent-action) 25%, transparent), transparent 55%),
-    linear-gradient(135deg, #1b1d22, #0e0f12);
-  border: 1px solid var(--border-default);
-}
 .previewPlay {
   display: inline-grid;
   place-items: center;
@@ -475,4 +465,17 @@
   .chipBottom {
     animation: none;
   }
+}
+.previewCode {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #1b1d22, #0e0f12);
+  color: #e6e6e6;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
 }

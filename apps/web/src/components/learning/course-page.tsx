@@ -9,6 +9,7 @@ import { Heading, Text, buttonClass } from "@platform/ui";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { LearningPageHeading } from "./learning-page-heading";
 import { LessonOutline } from "./lesson-outline";
+import { LearningRouteCard } from "./learning-route-card";
 import { durationLabel, lessonCount } from "./learning-labels";
 import styles from "./flow.module.css";
 import { absoluteUrl, jsonLd } from "../../lib/site";
@@ -26,7 +27,7 @@ export function courseMetadata(course: PublicLearningCourse): Metadata {
     }
   };
 }
-export function CoursePageView({ course }: { course: PublicLearningCourse }) {
+export function CoursePageView({ course, catalog = [] }: { course: PublicLearningCourse; catalog?: readonly PublicLearningCourse[] }) {
   const duration = course.course.lessons.reduce(
     (sum, lesson) => sum + lesson.durationMinutes,
     0
@@ -71,6 +72,7 @@ export function CoursePageView({ course }: { course: PublicLearningCourse }) {
                 <li>В своём темпе</li>
               </ul>
             </LearningPageHeading>
+            <LearningRouteCard course={course} catalog={catalog} />
           </div>
           <aside className={styles.aside} aria-label="Начать курс">
             <section className={styles.courseStart}>

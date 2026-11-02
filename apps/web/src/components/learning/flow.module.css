@@ -565,3 +565,61 @@
   color: var(--text-secondary);
   font-size: 0.85rem;
 }
+/* Learning route on the course page (ADR-0066). */
+.route {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.4rem;
+  border: 1px solid var(--border-default);
+  border-radius: 1.25rem;
+  background: var(--surface-solid);
+}
+.routeSteps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.routeSteps a,
+.routeSteps span {
+  display: inline-block;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.routeSteps a:hover {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+.routeSteps [aria-current] {
+  border-color: color-mix(in srgb, var(--text-accent) 45%, transparent);
+  color: var(--text-accent);
+}
+.routeFacts {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+}
+.routeFacts div {
+  display: grid;
+  gap: 0.15rem;
+}
+.routeFacts dt {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.routeFacts dd {
+  margin: 0;
+  line-height: 1.5;
+}
+.routeFacts a {
+  color: var(--text-accent);
+}
