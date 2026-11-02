@@ -520,6 +520,26 @@
       "key": "js-date-output",
       "title": "Вывод дат",
       "description": "Превращать дату в строку нужного формата: для машин и для людей."
+    },
+    {
+      "key": "js-intl-numbers",
+      "title": "Числа и склонения",
+      "description": "Выводить числа, диапазоны и правильные формы слов на любом языке."
+    },
+    {
+      "key": "js-intl-time",
+      "title": "Время для людей",
+      "description": "Выводить диапазоны дат, относительное время и длительности на языке пользователя."
+    },
+    {
+      "key": "js-intl-text",
+      "title": "Текст на любом языке",
+      "description": "Склеивать списки, называть языки и валюты, сравнивать и делить текст по правилам языка."
+    },
+    {
+      "key": "js-intl-locale",
+      "title": "Локаль",
+      "description": "Разбирать и дополнять языковые теги и узнавать правила региона."
     }
   ],
   "activities": [
@@ -7292,6 +7312,142 @@
         "correctOptionId": "tojson",
         "explanation": "Поэтому даты в JSON — ISO-строки."
       }
+    },
+    {
+      "slug": "js-plural-ru",
+      "type": "quiz.single_choice",
+      "title": "Склонение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-intl-numbers"
+      ],
+      "presentation": {
+        "question": "Какую категорию вернёт `new Intl.PluralRules(\"ru\").select(22)`?",
+        "options": [
+          {
+            "id": "few",
+            "text": "\"few\""
+          },
+          {
+            "id": "one",
+            "text": "\"one\""
+          },
+          {
+            "id": "many",
+            "text": "\"many\""
+          },
+          {
+            "id": "other",
+            "text": "\"other\""
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "few",
+        "explanation": "22 — как 2: «чашки»."
+      }
+    },
+    {
+      "slug": "js-rtf-auto",
+      "type": "quiz.single_choice",
+      "title": "numeric: auto",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-intl-time"
+      ],
+      "presentation": {
+        "question": "Что даст `numeric: \"auto\"` для `format(-1, \"day\")`?",
+        "options": [
+          {
+            "id": "yesterday",
+            "text": "«вчера»"
+          },
+          {
+            "id": "ago",
+            "text": "«1 день назад»"
+          },
+          {
+            "id": "minus",
+            "text": "«-1 день»"
+          },
+          {
+            "id": "err",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "yesterday",
+        "explanation": "Без auto — «1 день назад»."
+      }
+    },
+    {
+      "slug": "js-collator-numeric",
+      "type": "quiz.single_choice",
+      "title": "numeric",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-intl-text"
+      ],
+      "presentation": {
+        "question": "Что даёт `Intl.Collator(\"ru\", { numeric: true })`?",
+        "options": [
+          {
+            "id": "num",
+            "text": "Числа внутри строк сравниваются как числа: «2» < «10»"
+          },
+          {
+            "id": "only",
+            "text": "Сравниваются только цифры"
+          },
+          {
+            "id": "case",
+            "text": "Без учёта регистра"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "num",
+        "explanation": "Иначе «10» окажется раньше «2»."
+      }
+    },
+    {
+      "slug": "js-locale-max",
+      "type": "quiz.single_choice",
+      "title": "maximize",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-intl-locale"
+      ],
+      "presentation": {
+        "question": "Что вернёт `new Intl.Locale(\"ru\").maximize().toString()`?",
+        "options": [
+          {
+            "id": "full",
+            "text": "\"ru-Cyrl-RU\""
+          },
+          {
+            "id": "same",
+            "text": "\"ru\""
+          },
+          {
+            "id": "upper",
+            "text": "\"RU\""
+          },
+          {
+            "id": "err",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "full",
+        "explanation": "Достраиваются вероятные письменность и регион."
+      }
     }
   ],
   "lessons": [
@@ -9855,6 +10011,82 @@
           "activitySlug": "js-tojson",
           "kind": "homework",
           "required": false
+        }
+      ]
+    },
+    {
+      "slug": "intl-numbers",
+      "title": "Intl: числа и множественное число",
+      "summary": "Intl.NumberFormat formatToParts, formatRange, formatRangeToParts; Intl.PluralRules select и selectRange; resolvedOptions и supportedLocalesOf у всех служб Intl.",
+      "chapter": "Intl полностью",
+      "durationMinutes": 8,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"«1 чашек», «5 чашка» — склонения на сайте сломаны. Чиним с Intl.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"1 чашек\",\n  \"lines\": [\n    [\n      \"bug\",\n      \"«1 чашек», «2 чашек», «21 чашек»! Русский язык — моя стихия. Хе-хе.\"\n    ],\n    [\n      \"nika\",\n      \"Intl знает правила множественного числа для любого языка: one, few, many, other.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Intl.PluralRules · select()\",\n  \"title\": \"Форма слова для числа\",\n  \"what\": \"`new Intl.PluralRules(\\\"ru\\\").select(n)` → `\\\"one\\\"` (1, 21), `\\\"few\\\"` (2–4, 22), `\\\"many\\\"` (5–20) или `\\\"other\\\"` (дроби).\",\n  \"why\": \"Склонять «чашка/чашки/чашек».\",\n  \"how\": \"const pr = new Intl.PluralRules(\\\"ru\\\");\\nconst forms = { one: \\\"чашка\\\", few: \\\"чашки\\\", many: \\\"чашек\\\", other: \\\"чашки\\\" };\\nfor (const n of [1, 3, 5, 21, 1.5]) console.log(n, forms[pr.select(n)]);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.PluralRules\",\n    \"Intl.PluralRules.prototype.select\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"selectRange()\",\n  \"title\": \"Форма для диапазона\",\n  \"what\": \"`pr.selectRange(2, 5)` — форма слова для «от 2 до 5».\",\n  \"why\": \"«2–5 чашек».\",\n  \"how\": \"console.log(new Intl.PluralRules(\\\"ru\\\").selectRange(2, 5));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.PluralRules.prototype.selectRange\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"formatToParts()\",\n  \"title\": \"Число по частям\",\n  \"what\": \"Массив частей `{ type, value }`: целое, группы, дробная часть, валюта — чтобы стилизовать отдельно.\",\n  \"why\": \"Сделать копейки мельче рублей.\",\n  \"how\": \"const f = new Intl.NumberFormat(\\\"ru-RU\\\", { style: \\\"currency\\\", currency: \\\"RUB\\\" });\\nconsole.log(f.formatToParts(1250.5).map((p) => p.type).join(\\\" \\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.NumberFormat.prototype.formatToParts\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"formatRange() · formatRangeToParts()\",\n  \"title\": \"Диапазон чисел\",\n  \"what\": \"`formatRange(200, 300)` → «200–300 ₽» по правилам языка; `…ToParts` — по частям.\",\n  \"why\": \"Цены «от и до».\",\n  \"how\": \"const f = new Intl.NumberFormat(\\\"ru-RU\\\", { style: \\\"currency\\\", currency: \\\"RUB\\\", maximumFractionDigits: 0 });\\nconsole.log(f.formatRange(200, 300), f.formatRangeToParts(200, 300).length > 0);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.NumberFormat.prototype.formatRange\",\n    \"Intl.NumberFormat.prototype.formatRangeToParts\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"resolvedOptions() · supportedLocalesOf()\",\n  \"title\": \"Общие методы всех служб Intl\",\n  \"what\": \"У каждой службы Intl: `resolvedOptions()` — какие настройки и язык реально применены; статический `supportedLocalesOf(list)` — какие языки из списка поддерживаются.\",\n  \"why\": \"Проверить, что язык и настройки сработали.\",\n  \"how\": \"console.log(new Intl.NumberFormat(\\\"ru\\\").resolvedOptions().locale, Intl.DateTimeFormat.supportedLocalesOf([\\\"ru\\\", \\\"xx\\\"]));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.*.prototype.resolvedOptions\",\n    \"Intl.*.supportedLocalesOf\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Никогда не пиши склонения через `if (n === 1)`: правила языков сложнее. Есть `Intl.PluralRules`.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Правильные чашки\",\n  \"task\": \"Напиши `cups(n)`: `` `${n} чашка` ``, `чашки` или `чашек` по `Intl.PluralRules(\\\"ru\\\")`.\",\n  \"lang\": \"js\",\n  \"start\": \"function cups(n) {\\n  return n === 1 ? `${n} чашка` : `${n} чашек`;\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"1 и 21 — чашка\",\n      \"js\": \"cups(1) === \\\"1 чашка\\\" && cups(21) === \\\"21 чашка\\\"\"\n    },\n    {\n      \"label\": \"3 и 22 — чашки\",\n      \"js\": \"cups(3) === \\\"3 чашки\\\" && cups(22) === \\\"22 чашки\\\"\"\n    },\n    {\n      \"label\": \"5 и 11 — чашек\",\n      \"js\": \"cups(5) === \\\"5 чашек\\\" && cups(11) === \\\"11 чашек\\\"\"\n    },\n    {\n      \"label\": \"Через PluralRules\",\n      \"contains\": \"PluralRules\"\n    }\n  ],\n  \"solution\": \"const rules = new Intl.PluralRules(\\\"ru\\\");\\nconst forms = { one: \\\"чашка\\\", few: \\\"чашки\\\", many: \\\"чашек\\\", other: \\\"чашки\\\" };\\nfunction cups(n) {\\n  return `${n} ${forms[rules.select(n)]}`;\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-plural-ru",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "intl-time",
+      "title": "Intl: даты, «назад» и длительность",
+      "summary": "Intl.DateTimeFormat formatToParts, formatRange, formatRangeToParts; Intl.RelativeTimeFormat; Intl.DurationFormat.",
+      "chapter": "Intl полностью",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Хотим «заказ 5 минут назад», «акция 2–8 ноября» и «готовится 1 ч 15 мин».\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"По-человечески\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"«2026-11-02T09:30» гости не понимают. Хочу «5 минут назад».\"\n    ],\n    [\n      \"bro\",\n      \"Intl умеет и «назад», и диапазоны дат, и длительности — на любом языке.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"formatToParts()\",\n  \"title\": \"Дата по частям\",\n  \"what\": \"Массив частей даты: день, месяц, год, разделители.\",\n  \"why\": \"Стилизовать части даты.\",\n  \"how\": \"const f = new Intl.DateTimeFormat(\\\"ru-RU\\\", { dateStyle: \\\"long\\\", timeZone: \\\"UTC\\\" });\\nconsole.log(f.formatToParts(new Date(Date.UTC(2026, 10, 2))).map((p) => p.type).join(\\\",\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.DateTimeFormat.prototype.formatToParts\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"formatRange() · formatRangeToParts()\",\n  \"title\": \"Диапазон дат\",\n  \"what\": \"`formatRange(a, b)` → «2–8 ноября 2026 г.» — без повторения общего месяца и года.\",\n  \"why\": \"Сроки акций.\",\n  \"how\": \"const f = new Intl.DateTimeFormat(\\\"ru-RU\\\", { dateStyle: \\\"long\\\", timeZone: \\\"UTC\\\" });\\nconsole.log(f.formatRange(new Date(Date.UTC(2026, 10, 2)), new Date(Date.UTC(2026, 10, 8))));\\nconsole.log(f.formatRangeToParts(new Date(0), new Date(86400000)).length > 0);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.DateTimeFormat.prototype.formatRange\",\n    \"Intl.DateTimeFormat.prototype.formatRangeToParts\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Intl.RelativeTimeFormat\",\n  \"title\": \"«5 минут назад»\",\n  \"what\": \"`new Intl.RelativeTimeFormat(\\\"ru\\\", { numeric: \\\"auto\\\" }).format(-1, \\\"day\\\")` → «вчера»; `formatToParts` — по частям.\",\n  \"why\": \"Ленты событий, комментарии.\",\n  \"how\": \"const rtf = new Intl.RelativeTimeFormat(\\\"ru\\\", { numeric: \\\"auto\\\" });\\nconsole.log(rtf.format(-5, \\\"minute\\\"), rtf.format(-1, \\\"day\\\"), rtf.format(2, \\\"hour\\\"), rtf.formatToParts(3, \\\"day\\\").length);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.RelativeTimeFormat\",\n    \"Intl.RelativeTimeFormat.prototype.format\",\n    \"Intl.RelativeTimeFormat.prototype.formatToParts\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Intl.DurationFormat\",\n  \"title\": \"Длительность\",\n  \"what\": \"`new Intl.DurationFormat(\\\"ru\\\", { style: \\\"short\\\" }).format({ hours: 1, minutes: 15 })` → «1 ч 15 мин»; `formatToParts` — по частям.\",\n  \"why\": \"Время приготовления, таймеры.\",\n  \"how\": \"const df = new Intl.DurationFormat(\\\"ru\\\", { style: \\\"short\\\" });\\nconsole.log(df.format({ hours: 1, minutes: 15 }), df.formatToParts({ minutes: 5 }).length > 0);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.DurationFormat\",\n    \"Intl.DurationFormat.prototype.format\",\n    \"Intl.DurationFormat.prototype.formatToParts\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Время для людей — относительное («5 минут назад»), для точности — полная дата в подсказке.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Сколько назад\",\n  \"task\": \"Напиши `ago(minutes)`: строка через `Intl.RelativeTimeFormat(\\\"ru\\\", { numeric: \\\"auto\\\" })` — для `minutes < 60` в минутах, иначе в целых часах (округлить вниз), всегда в прошлом.\",\n  \"lang\": \"js\",\n  \"start\": \"function ago(minutes) {\\n  return minutes + \\\" мин назад\\\";\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"5 минут назад\",\n      \"js\": \"ago(5) === new Intl.RelativeTimeFormat(\\\"ru\\\", { numeric: \\\"auto\\\" }).format(-5, \\\"minute\\\")\"\n    },\n    {\n      \"label\": \"2 часа назад\",\n      \"js\": \"ago(150) === new Intl.RelativeTimeFormat(\\\"ru\\\", { numeric: \\\"auto\\\" }).format(-2, \\\"hour\\\")\"\n    },\n    {\n      \"label\": \"Через RelativeTimeFormat\",\n      \"contains\": \"RelativeTimeFormat\"\n    }\n  ],\n  \"solution\": \"const rtf = new Intl.RelativeTimeFormat(\\\"ru\\\", { numeric: \\\"auto\\\" });\\nfunction ago(minutes) {\\n  return minutes < 60 ? rtf.format(-minutes, \\\"minute\\\") : rtf.format(-Math.floor(minutes / 60), \\\"hour\\\");\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-rtf-auto",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "intl-text",
+      "title": "Intl: списки, названия, сравнение, сегменты",
+      "summary": "Intl.ListFormat, Intl.DisplayNames, Intl.Collator, Intl.Segmenter, Intl.getCanonicalLocales и Intl.supportedValuesOf.",
+      "chapter": "Intl полностью",
+      "durationMinutes": 8,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"«Латте, раф и какао», «японская иена», сортировка с ё и подсчёт слов в отзывах — всё через Intl.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Списки и слова\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"Хочу «Латте, раф и какао», а не «Латте,раф,какао».\"\n    ],\n    [\n      \"bro\",\n      \"`Intl.ListFormat` склеит список по правилам языка — с запятыми и «и».\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Intl.ListFormat\",\n  \"title\": \"Список по правилам языка\",\n  \"what\": \"`new Intl.ListFormat(\\\"ru\\\", { type: \\\"conjunction\\\" }).format([...])` → «Латте, раф и какао»; `disjunction` — «или»; `formatToParts` — по частям.\",\n  \"why\": \"Перечисления в тексте.\",\n  \"how\": \"const lf = new Intl.ListFormat(\\\"ru\\\", { type: \\\"conjunction\\\" });\\nconsole.log(lf.format([\\\"латте\\\", \\\"раф\\\", \\\"какао\\\"]), new Intl.ListFormat(\\\"ru\\\", { type: \\\"disjunction\\\" }).format([\\\"S\\\", \\\"M\\\", \\\"L\\\"]), lf.formatToParts([\\\"a\\\", \\\"b\\\"]).length);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.ListFormat\",\n    \"Intl.ListFormat.prototype.format\",\n    \"Intl.ListFormat.prototype.formatToParts\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Intl.DisplayNames · of()\",\n  \"title\": \"Названия языков, стран, валют\",\n  \"what\": \"`new Intl.DisplayNames(\\\"ru\\\", { type: \\\"currency\\\" }).of(\\\"JPY\\\")` → «японская иена»; типы: language, region, script, currency, calendar.\",\n  \"why\": \"Переключатель языка, выбор страны.\",\n  \"how\": \"console.log(new Intl.DisplayNames(\\\"ru\\\", { type: \\\"region\\\" }).of(\\\"JP\\\"), new Intl.DisplayNames(\\\"ru\\\", { type: \\\"currency\\\" }).of(\\\"EUR\\\"), new Intl.DisplayNames(\\\"ru\\\", { type: \\\"language\\\" }).of(\\\"en\\\"));\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.DisplayNames\",\n    \"Intl.DisplayNames.prototype.of\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Intl.Collator · compare()\",\n  \"title\": \"Сравнение строк\",\n  \"what\": \"`new Intl.Collator(\\\"ru\\\").compare` — функция для `sort`; настройки `sensitivity`, `numeric: true` («2» < «10»). Быстрее `localeCompare` при многих сравнениях.\",\n  \"why\": \"Сортировка списков людей и товаров.\",\n  \"how\": \"const col = new Intl.Collator(\\\"ru\\\", { numeric: true });\\nconsole.log([\\\"Столик 10\\\", \\\"столик 2\\\", \\\"Ёлка\\\"].sort(col.compare));\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.Collator\",\n    \"Intl.Collator.prototype.compare\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Intl.Segmenter · segment()\",\n  \"title\": \"Деление текста\",\n  \"what\": \"`new Intl.Segmenter(\\\"ru\\\", { granularity: \\\"word\\\" }).segment(text)` — перебор слов, предложений или символов (графем) по правилам языка.\",\n  \"why\": \"Счёт слов, обрезка по символам с эмодзи.\",\n  \"how\": \"const seg = new Intl.Segmenter(\\\"ru\\\", { granularity: \\\"word\\\" });\\nconst words = [...seg.segment(\\\"Лучший латте в городе!\\\")].filter((s) => s.isWordLike);\\nconsole.log(words.length, [...new Intl.Segmenter(\\\"ru\\\", { granularity: \\\"grapheme\\\" }).segment(\\\"👨‍👩‍👧\\\")].length);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.Segmenter\",\n    \"Intl.Segmenter.prototype.segment\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Intl.getCanonicalLocales() · Intl.supportedValuesOf()\",\n  \"title\": \"Языки и поддерживаемые значения\",\n  \"what\": \"`getCanonicalLocales([\\\"RU-ru\\\"])` → `[\\\"ru-RU\\\"]` — правильная запись тегов; `supportedValuesOf(\\\"currency\\\")` — список поддерживаемых валют, календарей, поясов.\",\n  \"why\": \"Проверить и показать варианты выбора.\",\n  \"how\": \"console.log(Intl.getCanonicalLocales([\\\"RU-ru\\\", \\\"EN-us\\\"]), Intl.supportedValuesOf(\\\"currency\\\").includes(\\\"RUB\\\"));\",\n  \"kind\": \"function\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.getCanonicalLocales\",\n    \"Intl.supportedValuesOf\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Слова считай `Intl.Segmenter`, а не `split(\\\" \\\")`: язык знает лучше, где границы слов.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Состав заказа\",\n  \"task\": \"Напиши `orderText(items)` — список через `Intl.ListFormat(\\\"ru\\\", { type: \\\"conjunction\\\" })`, и `wordCount(text)` — число слов через `Intl.Segmenter` с `granularity: \\\"word\\\"` (учитывай `isWordLike`).\",\n  \"lang\": \"js\",\n  \"start\": \"function orderText(items) {\\n  return items.join(\\\",\\\");\\n}\\nfunction wordCount(text) {\\n  return text.split(\\\" \\\").length;\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Список с «и»\",\n      \"js\": \"orderText([\\\"латте\\\", \\\"раф\\\", \\\"какао\\\"]) === new Intl.ListFormat(\\\"ru\\\", { type: \\\"conjunction\\\" }).format([\\\"латте\\\", \\\"раф\\\", \\\"какао\\\"])\"\n    },\n    {\n      \"label\": \"4 слова, без знаков и лишних пробелов\",\n      \"js\": \"wordCount(\\\"Лучший  латте — в городе!\\\") === 4\"\n    }\n  ],\n  \"solution\": \"const lf = new Intl.ListFormat(\\\"ru\\\", { type: \\\"conjunction\\\" });\\nconst seg = new Intl.Segmenter(\\\"ru\\\", { granularity: \\\"word\\\" });\\nfunction orderText(items) {\\n  return lf.format(items);\\n}\\nfunction wordCount(text) {\\n  return [...seg.segment(text)].filter((s) => s.isWordLike).length;\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-collator-numeric",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "intl-locale",
+      "title": "Intl.Locale: всё о языке",
+      "summary": "Intl.Locale и его свойства: language, region, script, baseName, calendar, collation, hourCycle, caseFirst, numeric, numberingSystem, firstDayOfWeek, maximize, minimize, toString и сведения getCalendars, getCollations, getHourCycles, getNumberingSystems, getTimeZones, getTextInfo, getWeekInfo.",
+      "chapter": "Intl полностью",
+      "durationMinutes": 11,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Сайт открывают из Японии, Израиля и Казахстана. Узнаём про регион пользователя всё: календарь, неделю, направление текста.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Чей язык\",\n  \"lines\": [\n    [\n      \"lev\",\n      \"У моего друга в Израиле неделя начинается с воскресенья, а текст пишется справа налево.\"\n    ],\n    [\n      \"nika\",\n      \"`Intl.Locale` знает правила региона: первый день недели, направление текста, календарь, формат часов.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Intl.Locale · toString() · baseName\",\n  \"title\": \"Языковой тег как объект\",\n  \"what\": \"`new Intl.Locale(\\\"ru-RU\\\")` разбирает тег; `toString()` — полный тег с расширениями, `baseName` — без них.\",\n  \"why\": \"Работать с тегами языка структурно.\",\n  \"how\": \"const loc = new Intl.Locale(\\\"ru-RU-u-ca-gregory-hc-h23\\\");\\nconsole.log(loc.toString(), loc.baseName);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.Locale\",\n    \"Intl.Locale.prototype.toString\",\n    \"Intl.Locale.prototype.baseName\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"language · region · script\",\n  \"title\": \"Части тега\",\n  \"what\": \"Язык (`ru`), регион (`RU`), письменность (`Cyrl`, если указана или после maximize).\",\n  \"why\": \"Выбрать флаг страны, шрифт.\",\n  \"how\": \"const loc = new Intl.Locale(\\\"sr-Latn-RS\\\");\\nconsole.log(loc.language, loc.script, loc.region);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.Locale.prototype.language\",\n    \"Intl.Locale.prototype.region\",\n    \"Intl.Locale.prototype.script\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"maximize() · minimize()\",\n  \"title\": \"Дополнить и сократить\",\n  \"what\": \"`maximize()` достраивает вероятные части (`ru` → `ru-Cyrl-RU`), `minimize()` убирает лишние.\",\n  \"why\": \"Нормализовать тег перед сравнением.\",\n  \"how\": \"console.log(new Intl.Locale(\\\"ru\\\").maximize().toString(), new Intl.Locale(\\\"ru-Cyrl-RU\\\").minimize().toString());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.Locale.prototype.maximize\",\n    \"Intl.Locale.prototype.minimize\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"calendar · collation · hourCycle · numberingSystem\",\n  \"title\": \"Настройки из расширений тега\",\n  \"what\": \"Значения из расширения `-u-`: календарь (`ca`), правила сортировки (`co`), формат часов (`hc`: h12/h23), система цифр (`nu`).\",\n  \"why\": \"Учесть явные предпочтения пользователя.\",\n  \"how\": \"const loc = new Intl.Locale(\\\"ar-EG\\\", { calendar: \\\"islamic\\\", hourCycle: \\\"h12\\\", numberingSystem: \\\"arab\\\", collation: \\\"compat\\\" });\\nconsole.log(loc.calendar, loc.hourCycle, loc.numberingSystem, loc.collation);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.Locale.prototype.calendar\",\n    \"Intl.Locale.prototype.collation\",\n    \"Intl.Locale.prototype.hourCycle\",\n    \"Intl.Locale.prototype.numberingSystem\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"caseFirst · numeric · firstDayOfWeek\",\n  \"title\": \"Ещё настройки\",\n  \"what\": \"`caseFirst` — сначала заглавные или строчные при сортировке, `numeric` — числовая сортировка, `firstDayOfWeek` — заданный первый день недели.\",\n  \"why\": \"Тонкая настройка сортировки и календаря.\",\n  \"how\": \"const loc = new Intl.Locale(\\\"ru\\\", { caseFirst: \\\"upper\\\", numeric: true, firstDayOfWeek: \\\"mon\\\" });\\nconsole.log(loc.caseFirst, loc.numeric, loc.firstDayOfWeek);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.Locale.prototype.caseFirst\",\n    \"Intl.Locale.prototype.numeric\",\n    \"Intl.Locale.prototype.firstDayOfWeek\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getCalendars() · getCollations() · getHourCycles() · getNumberingSystems()\",\n  \"title\": \"Что принято в регионе\",\n  \"what\": \"Массивы календарей, правил сортировки, форматов часов и систем цифр, принятых для этой локали.\",\n  \"why\": \"Предложить пользователю привычные варианты.\",\n  \"how\": \"const loc = new Intl.Locale(\\\"ja-JP\\\");\\nconsole.log(loc.getCalendars?.(), loc.getHourCycles?.(), loc.getNumberingSystems?.(), loc.getCollations?.().length);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.Locale.prototype.getCalendars\",\n    \"Intl.Locale.prototype.getCollations\",\n    \"Intl.Locale.prototype.getHourCycles\",\n    \"Intl.Locale.prototype.getNumberingSystems\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getTimeZones() · getTextInfo() · getWeekInfo()\",\n  \"title\": \"Пояса, письмо и неделя\",\n  \"what\": \"`getTimeZones()` — часовые пояса региона, `getTextInfo()` — направление текста (`ltr`/`rtl`), `getWeekInfo()` — первый день недели и выходные.\",\n  \"why\": \"RTL-вёрстка, календарь с правильной неделей.\",\n  \"how\": \"console.log(new Intl.Locale(\\\"he-IL\\\").getTextInfo?.().direction, new Intl.Locale(\\\"he-IL\\\").getWeekInfo?.().firstDay, new Intl.Locale(\\\"ru-RU\\\").getTimeZones?.().length > 1);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.Locale.prototype.getTimeZones\",\n    \"Intl.Locale.prototype.getTextInfo\",\n    \"Intl.Locale.prototype.getWeekInfo\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"calendars · collations · hourCycles · numberingSystems\",\n  \"title\": \"Старые свойства-аналоги\",\n  \"what\": \"Свойства с теми же данными, что `get…()`. Устарели: в новом коде используй методы `get…()`.\",\n  \"why\": \"Узнать в старом коде.\",\n  \"how\": \"const loc = new Intl.Locale(\\\"ja-JP\\\");\\nconsole.log(Array.isArray(loc.calendars ?? []), Array.isArray(loc.hourCycles ?? []));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.Locale.prototype.calendars\",\n    \"Intl.Locale.prototype.collations\",\n    \"Intl.Locale.prototype.hourCycles\",\n    \"Intl.Locale.prototype.numberingSystems\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"timeZones · textInfo · weekInfo\",\n  \"title\": \"Старые свойства-аналоги\",\n  \"what\": \"Устаревшие свойства с данными `getTimeZones()`, `getTextInfo()` и `getWeekInfo()`.\",\n  \"why\": \"Узнать в старом коде.\",\n  \"how\": \"const loc = new Intl.Locale(\\\"he-IL\\\");\\nconsole.log(typeof (loc.textInfo ?? {}), typeof (loc.weekInfo ?? {}), Array.isArray(loc.timeZones ?? []));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Intl.Locale.prototype.timeZones\",\n    \"Intl.Locale.prototype.textInfo\",\n    \"Intl.Locale.prototype.weekInfo\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Направление текста и первый день недели бери из `Intl.Locale`, а не из своей таблицы стран.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Направление сайта\",\n  \"task\": \"Напиши `direction(tag)`: `\\\"rtl\\\"` или `\\\"ltr\\\"` через `new Intl.Locale(tag).getTextInfo()`, и `fullTag(tag)` — тег после `maximize()` строкой.\",\n  \"lang\": \"js\",\n  \"start\": \"function direction(tag) {\\n  return \\\"ltr\\\";\\n}\\nfunction fullTag(tag) {\\n  return tag;\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Иврит — справа налево\",\n      \"js\": \"direction(\\\"he-IL\\\") === \\\"rtl\\\" && direction(\\\"ru\\\") === \\\"ltr\\\"\"\n    },\n    {\n      \"label\": \"ru → ru-Cyrl-RU\",\n      \"js\": \"fullTag(\\\"ru\\\") === \\\"ru-Cyrl-RU\\\"\"\n    }\n  ],\n  \"solution\": \"function direction(tag) {\\n  return new Intl.Locale(tag).getTextInfo().direction;\\n}\\nfunction fullTag(tag) {\\n  return new Intl.Locale(tag).maximize().toString();\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-locale-max",
+          "kind": "practice",
+          "required": true
         }
       ]
     }

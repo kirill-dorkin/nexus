@@ -22,6 +22,7 @@ import regexp from "./c18-regexp.mjs";
 import meta from "./c19-meta.mjs";
 import errorsAsync from "./c20-errors-async.mjs";
 import dates from "./c21-dates.mjs";
+import intl from "./c22-intl.mjs";
 
 const chapters = [
   ["Старт JavaScript", [start]],
@@ -44,7 +45,8 @@ const chapters = [
   ["Регулярные выражения", [regexp]],
   ["Symbol, Proxy и Reflect", [meta]],
   ["Ошибки, ресурсы и промисы", [errorsAsync]],
-  ["Даты полностью", [dates]]
+  ["Даты полностью", [dates]],
+  ["Intl полностью", [intl]]
 ];
 
 const challenges = {};
