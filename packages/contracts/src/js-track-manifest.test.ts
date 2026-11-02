@@ -88,6 +88,13 @@ describe("JavaScript full course import", () => {
     expect([...new Set(text.match(banned) ?? [])]).toEqual([]);
   });
 
+  it("explains everything itself and never sends the learner elsewhere for answers", () => {
+    // The platform teaches; it does not redirect to MDN, search engines or other sites.
+    const text = JSON.stringify(jsTrack());
+    const elsewhere = /MDN|developer\.mozilla|w3schools|stackoverflow|stack overflow|learn\.javascript|google|гугл|загугл|поищи|почитай (в|на)|читай документаци|подробнее (в|на) /giu;
+    expect([...new Set(text.match(elsewhere) ?? [])]).toEqual([]);
+  });
+
   it("keeps quiz answer keys coherent", () => {
     for (const activity of jsTrack().activities) {
       if (activity.type === "quiz.short_text") {
