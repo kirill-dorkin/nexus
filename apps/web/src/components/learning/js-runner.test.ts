@@ -44,10 +44,11 @@ describe("runner sandbox", () => {
   it("serves the offline teaching API to fetch()", async () => {
     const { results } = await runInWindow({
       lang: "js",
-      code: 'async function load() { const res = await fetch("/api/menu"); window.menu = await res.json(); }\nload();',
-      checks: [{ js: "await wait(200) || window.menu.length === 6" }]
+      code: 'async function load() {\n  window.products = await (await fetch("/api/products")).json();\n  window.user = await (await fetch("/api/users/2")).json();\n  window.missing = (await fetch("/api/todos/99")).status;\n  window.created = await (await fetch("/api/todos", { method: "POST", body: JSON.stringify({ title: "x" }) })).json();\n  window.legacy = await (await fetch("/api/menu")).json();\n}\nload();',
+      checks: [{ js: "await wait(600) || (window.products.length === 6 && window.user.name === \"Борис\" && window.missing === 404 && window.created.id === 101 && window.created.title === \"x\")" }, { js: "window.legacy.length === 6" }]
     });
-    expect(results).toEqual([true]);
+    // /api/menu stays for course versions published before the neutral rewrite.
+    expect(results).toEqual([true, true]);
   });
 
   it("stops an endless loop instead of freezing, and reports the error", async () => {

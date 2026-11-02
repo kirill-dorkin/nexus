@@ -80,6 +80,14 @@ describe("JavaScript full course import", () => {
     expect([...count.keys()].filter((item) => !all.includes(item)), "covers outside the index").toEqual([]);
   });
 
+  it("has no storyline: no removed characters and no café business", () => {
+    // Lessons use topic examples (todos, quizzes, a product catalog); only tool characters remain.
+    const text = JSON.stringify(jsTrack());
+    // \b is ASCII-only in JavaScript, so Cyrillic whole words use \p{L} lookarounds.
+    const banned = /"(marta|sonya|dasha)"|zerno|Зерн|кофе|латте|капучино|эспрессо|бариста|какао|чизкейк|напит|столик|кухн|сироп|молок|(?<!\p{L})(раф|гост[ьяеиюй]\p{L}*|Март[аыу]|Сон[яиеу])(?!\p{L})/giu;
+    expect([...new Set(text.match(banned) ?? [])]).toEqual([]);
+  });
+
   it("keeps quiz answer keys coherent", () => {
     for (const activity of jsTrack().activities) {
       if (activity.type === "quiz.short_text") {

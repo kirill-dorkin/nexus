@@ -11,17 +11,17 @@ export default function errorsAsync(c, ch, rc) {
   L({
     slug: "errors-full", title: "Ошибки полностью", summary: "Error, message, name, cause, toString, Error.isError и все встроенные виды: RangeError, URIError, EvalError, AggregateError, свои классы ошибок.",
     skill: ["js-errors-full", "Ошибки", "Создавать, различать и связывать ошибки."],
-    now: "Ошибки кассы надо различать: «нет на складе», «неверная сумма», «нет связи». Строим свои ошибки.",
+    now: "Создаём, различаем и связываем ошибки.",
     body: [
       scene("Какая ошибка",
-        ["marta", "Касса пишет просто «Ошибка». А мне надо понимать: товар кончился или сеть пропала?"],
+        ["you", "Программа пишет просто «Ошибка». А мне надо понимать: товар кончился или сеть пропала?"],
         ["nika", "Ошибка — это объект. У неё есть имя, текст, причина. И можно делать свои виды ошибок."]),
-      obj("Error · message · name", "Объект ошибки", "`new Error(\"текст\")` — `message` хранит текст, `name` — вид (\"Error\"). Обычно ещё есть `stack` — где случилась.", "Бросать и ловить понятные ошибки.", 'const e = new Error("Молоко кончилось");\nconsole.log(e.name, e.message, e instanceof Error);', { covers: ["Error", "Error.prototype.message", "Error.prototype.name"] }),
+      obj("Error · message · name", "Объект ошибки", "`new Error(\"текст\")` — `message` хранит текст, `name` — вид (\"Error\"). Обычно ещё есть `stack` — где случилась.", "Бросать и ловить понятные ошибки.", 'const e = new Error("Файл не найден");\nconsole.log(e.name, e.message, e instanceof Error);', { covers: ["Error", "Error.prototype.message", "Error.prototype.name"] }),
       kw("cause · toString()", "Причина и текст", "`new Error(\"…\", { cause: err })` — связать ошибку с исходной. `toString()` → `\"Имя: текст\"`.", "Не терять исходную причину при повторном выбросе.", 'try {\n  try { JSON.parse("{"); } catch (err) { throw new Error("Меню не загрузилось", { cause: err }); }\n} catch (e) {\n  console.log(e.toString(), "←", e.cause.name);\n}', { covers: on("Error.prototype", "cause", "toString") }),
       meth("Error.isError()", "Настоящая ли ошибка", "Надёжная проверка, что значение — объект ошибки (работает и между iframe, где `instanceof` ломается).", "Обработчики, которые получают что угодно.", 'console.log(Error.isError(new TypeError("x")), Error.isError({ message: "подделка" }));', { covers: on("Error", "isError") }),
       obj("RangeError · URIError · EvalError", "Другие встроенные виды", "`RangeError` — значение вне допустимого диапазона (`new Array(-1)`), `URIError` — испорченный адрес (`decodeURI(\"%\")`), `EvalError` — исторический, сейчас не бросается.", "Понимать текст ошибки в консоли.", 'try { new Array(-1); } catch (e) { console.log(e.name); }\ntry { decodeURI("%"); } catch (e) { console.log(e.name); }\nconsole.log(new EvalError("x").name);', { covers: ["RangeError", "URIError", "EvalError"] }),
-      obj("AggregateError", "Много ошибок сразу", "`new AggregateError([e1, e2], \"текст\")` — массив ошибок в `errors`. Её бросает `Promise.any`, когда все промисы упали.", "Сообщить обо всех сбоях сразу.", 'const e = new AggregateError([new Error("нет молока"), new Error("нет сахара")], "Не приготовить");\nconsole.log(e.message, e.errors.map((x) => x.message));', { covers: ["AggregateError"] }),
-      idea("Свои ошибки", "class extends Error", "`class OutOfStock extends Error` — свой вид ошибки со своим `name` и полями. Ловить по `instanceof`.", "Различать причины сбоев.", 'class OutOfStock extends Error {\n  constructor(item) {\n    super(`Нет на складе: ${item}`);\n    this.name = "OutOfStock";\n    this.item = item;\n  }\n}\ntry { throw new OutOfStock("молоко"); } catch (e) { console.log(e instanceof OutOfStock, e.name, e.item); }', { covers: [] }),
+      obj("AggregateError", "Много ошибок сразу", "`new AggregateError([e1, e2], \"текст\")` — массив ошибок в `errors`. Её бросает `Promise.any`, когда все промисы упали.", "Сообщить обо всех сбоях сразу.", 'const e = new AggregateError([new Error("нет сети"), new Error("нет места на диске")], "Не сохранить");\nconsole.log(e.message, e.errors.map((x) => x.message));', { covers: ["AggregateError"] }),
+      idea("Свои ошибки", "class extends Error", "`class OutOfStock extends Error` — свой вид ошибки со своим `name` и полями. Ловить по `instanceof`.", "Различать причины сбоев.", 'class OutOfStock extends Error {\n  constructor(item) {\n    super(`Нет на складе: ${item}`);\n    this.name = "OutOfStock";\n    this.item = item;\n  }\n}\ntry { throw new OutOfStock("наушники"); } catch (e) { console.log(e instanceof OutOfStock, e.name, e.item); }', { covers: [] }),
       rule("Перебрасываешь ошибку — передай исходную в `cause`, иначе причина потеряется.")
     ],
     tasks: [task("Ошибка склада", "Сделай класс `OutOfStock extends Error` с `name = \"OutOfStock\"` и полем `item`, и функцию `brew(stock, item)`: если `stock[item]` нет или 0 — бросает `OutOfStock`, иначе уменьшает остаток.", {
@@ -38,7 +38,7 @@ export default function errorsAsync(c, ch, rc) {
   L({
     slug: "resources", title: "Управление ресурсами: using", summary: "Объявления using и await using, Symbol.dispose и Symbol.asyncDispose, DisposableStack, AsyncDisposableStack и SuppressedError.",
     skill: ["js-resources", "Управление ресурсами", "Гарантированно освобождать ресурсы при выходе из блока."],
-    now: "Касса открывает соединение с принтером чеков и забывает закрыть. Делаем так, чтобы закрывалось само.",
+    now: "Гарантированно освобождаем ресурсы: using и DisposableStack.",
     body: [
       scene("Забытое соединение",
         ["bug", "Открыл принтер, а закрыть забыл. Через час принтер занят навсегда! Хе-хе."],
@@ -67,17 +67,17 @@ export default function errorsAsync(c, ch, rc) {
   L({
     slug: "promises-full", title: "Промисы полностью", summary: "Promise.resolve, Promise.reject, Promise.allSettled, Promise.any, Promise.race, Promise.try и Promise.withResolvers.",
     skill: ["js-promises-full", "Комбинаторы промисов", "Запускать асинхронные операции параллельно и выбирать нужную стратегию ожидания."],
-    now: "Загружаем меню с трёх серверов: ждать всех, первого или первого успешного? Каждой задаче — свой комбинатор.",
+    now: "Выбираем стратегию ожидания: все комбинаторы промисов.",
     body: [
       scene("Три сервера",
-        ["marta", "У нас три зеркала меню. Какое использовать?"],
+        ["you", "У нас три зеркала с данными. Какое использовать?"],
         ["nika", "Зависит от задачи: все результаты — `allSettled`, самый быстрый успешный — `any`, кто первый — `race`."]),
       meth("Promise.resolve() · Promise.reject()", "Готовые промисы", "`resolve(v)` — уже выполненный промис (или тот же, если v — промис), `reject(e)` — уже отклонённый.", "Вернуть промис из функции, где результат готов.", 'Promise.resolve(220).then((p) => console.log("цена", p));\nPromise.reject(new Error("нет")).catch((e) => console.log("ошибка", e.message));', { covers: on("Promise", "resolve", "reject") }),
       meth("Promise.allSettled()", "Дождаться всех исходов", "Ждёт все промисы и даёт массив `{ status: \"fulfilled\", value }` или `{ status: \"rejected\", reason }`. Никогда не падает.", "Отчёт: что получилось, что нет.", 'const res = await Promise.allSettled([Promise.resolve("меню"), Promise.reject(new Error("акции"))]);\nconsole.log(res.map((r) => r.status));', { covers: on("Promise", "allSettled") }),
       meth("Promise.any()", "Первый успешный", "Выполняется значением первого успешного промиса; если упали все — `AggregateError`.", "Самое быстрое из рабочих зеркал.", 'const fast = await Promise.any([Promise.reject(new Error("зеркало 1 лежит")), wait(50).then(() => "зеркало 2")]);\nconsole.log(fast);', { covers: on("Promise", "any") }),
       meth("Promise.race()", "Кто первый", "Принимает исход первого завершившегося — успех или ошибку.", "Тайм-аут для запроса.", 'const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error("тайм-аут")), ms));\ntry { await Promise.race([wait(500), timeout(50)]); } catch (e) { console.log(e.message); }', { covers: on("Promise", "race") }),
       meth("Promise.try()", "Промис из любой функции", "`Promise.try(fn)` вызывает `fn` и всегда возвращает промис: синхронная ошибка тоже становится отклонением.", "Единая обработка ошибок у синхронного и асинхронного кода.", 'Promise.try(() => JSON.parse("{")).catch((e) => console.log("поймали", e.name));', { covers: on("Promise", "try") }),
-      meth("Promise.withResolvers()", "Промис и его рычаги", "Возвращает `{ promise, resolve, reject }` — можно выполнить промис снаружи, например из обработчика события.", "Превратить событие в промис.", 'const { promise, resolve } = Promise.withResolvers();\nsetTimeout(() => resolve("кофе готов"), 50);\nconsole.log(await promise);', { covers: on("Promise", "withResolvers") }),
+      meth("Promise.withResolvers()", "Промис и его рычаги", "Возвращает `{ promise, resolve, reject }` — можно выполнить промис снаружи, например из обработчика события.", "Превратить событие в промис.", 'const { promise, resolve } = Promise.withResolvers();\nsetTimeout(() => resolve("данные готовы"), 50);\nconsole.log(await promise);', { covers: on("Promise", "withResolvers") }),
       rule("Все нужны — `all`. Все, но без падения — `allSettled`. Любой успешный — `any`. Самый быстрый — `race`.")
     ],
     tasks: [task("Тайм-аут запроса", "Напиши `withTimeout(promise, ms)`: возвращает результат `promise`, а если он не успел за `ms` — отклоняется ошибкой с текстом `\"Тайм-аут\"`. Используй `Promise.race`.", {
@@ -94,20 +94,20 @@ export default function errorsAsync(c, ch, rc) {
   L({
     slug: "json-full", title: "JSON полностью", summary: "Функции replacer и reviver, отступы space, метод toJSON, JSON.rawJSON и JSON.isRawJSON.",
     skill: ["js-json-full", "JSON целиком", "Точно управлять тем, как данные превращаются в JSON и обратно."],
-    now: "Отправляем заказ на кухню: без служебных полей, с датой в правильном формате, а длинные номера — без потери точности.",
+    now: "Точно управляем превращением данных в JSON и обратно.",
     body: [
       scene("Точный JSON",
         ["bug", "Номер заказа 12345678901234567890 после JSON превратится в …7000. Хе-хе."],
         ["nika", "У JSON есть тонкие настройки: что брать, как отступать, как читать даты и как вставить число «как есть»."]),
-      idea("replacer и space", "Что и как сериализовать", "`JSON.stringify(v, replacer, space)`: `replacer` — массив разрешённых ключей или функция `(key, value) => …`; `space` — отступ для читаемости.", "Убрать служебные поля, красиво вывести.", 'const order = { id: 7, drink: "Раф", _secret: "x" };\nconsole.log(JSON.stringify(order, ["id", "drink"]));\nconsole.log(JSON.stringify(order, (k, v) => (k.startsWith("_") ? undefined : v), 2));', { covers: [] }),
+      idea("replacer и space", "Что и как сериализовать", "`JSON.stringify(v, replacer, space)`: `replacer` — массив разрешённых ключей или функция `(key, value) => …`; `space` — отступ для читаемости.", "Убрать служебные поля, красиво вывести.", 'const order = { id: 7, item: "Пенал", _secret: "x" };\nconsole.log(JSON.stringify(order, ["id", "item"]));\nconsole.log(JSON.stringify(order, (k, v) => (k.startsWith("_") ? undefined : v), 2));', { covers: [] }),
       idea("reviver и toJSON", "Как читать и как писать", "`JSON.parse(text, reviver)` — функция может превратить строки обратно в даты. Метод объекта `toJSON()` решает, что попадёт в JSON (так работает `Date`).", "Даты туда и обратно.", 'const text = JSON.stringify({ at: new Date(Date.UTC(2026, 10, 2)) });\nconst back = JSON.parse(text, (k, v) => (k === "at" ? new Date(v) : v));\nconsole.log(text, back.at instanceof Date);', { covers: [] }),
       meth("JSON.rawJSON() · JSON.isRawJSON()", "Вставить JSON как есть", "`JSON.rawJSON(\"12345678901234567890\")` — значение, которое `stringify` вставит без изменений (большие числа без потери точности). `isRawJSON` — проверка.", "Отправить точный BigInt как число JSON.", 'const id = 12345678901234567890n;\nconsole.log(JSON.stringify({ id: JSON.rawJSON(id.toString()) }), JSON.isRawJSON(JSON.rawJSON("1")));', { covers: on("JSON", "rawJSON", "isRawJSON") }),
       rule("BigInt в JSON — через `JSON.rawJSON(String(big))`, иначе `stringify` бросит ошибку.")
     ],
-    tasks: [task("Заказ для кухни", "Напиши `toKitchen(order)`: JSON без полей, начинающихся с `_` (через replacer-функцию), а BigInt-поле `id` вставь точным числом через `JSON.rawJSON`.", {
-      start: "function toKitchen(order) {\n  return JSON.stringify(order);\n}\n",
-      checks: [run('toKitchen({ id: 12345678901234567890n, drink: "Раф", _note: "x" }) === \'{"id":12345678901234567890,"drink":"Раф"}\'', "Точный номер, без служебных полей"), has("rawJSON", "Через `JSON.rawJSON`")],
-      solution: 'function toKitchen(order) {\n  return JSON.stringify(order, (key, value) => {\n    if (key.startsWith("_")) return undefined;\n    if (typeof value === "bigint") return JSON.rawJSON(value.toString());\n    return value;\n  });\n}'
+    tasks: [task("Заказ для сервера", "Напиши `toServer(order)`: JSON без полей, начинающихся с `_` (через replacer-функцию), а BigInt-поле `id` вставь точным числом через `JSON.rawJSON`.", {
+      start: "function toServer(order) {\n  return JSON.stringify(order);\n}\n",
+      checks: [run('toServer({ id: 12345678901234567890n, item: "Пенал", _note: "x" }) === \'{"id":12345678901234567890,"item":"Пенал"}\'', "Точный номер, без служебных полей"), has("rawJSON", "Через `JSON.rawJSON`")],
+      solution: 'function toServer(order) {\n  return JSON.stringify(order, (key, value) => {\n    if (key.startsWith("_")) return undefined;\n    if (typeof value === "bigint") return JSON.rawJSON(value.toString());\n    return value;\n  });\n}'
     })],
     quizzes: [
       single("js-json-replacer", "replacer", "Что сделает replacer, вернувший `undefined` для ключа?", [["skip", "Ключ не попадёт в JSON"], ["null", "Запишет null"], ["err", "Бросит ошибку"], ["empty", "Запишет пустую строку"]], "skip", "Так убирают поля."),
