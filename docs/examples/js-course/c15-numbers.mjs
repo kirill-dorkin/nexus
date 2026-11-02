@@ -82,7 +82,7 @@ export default function numbers(c, ch, rc) {
     })],
     quizzes: [
       single("js-bigint-mix", "Смешивание", "Что будет при `10n + 1`?", [["err", "TypeError — нельзя смешивать BigInt и Number"], ["11n", "11n"], ["11", "11"], ["str", "\"101\""]], "err", "Нужно явное преобразование."),
-      single("js-bigint-div", "Деление", "Чему равно `7n / 2n`?", [["3n", "3n"], ["3.5", "3.5"], ["4n", "4n"], ["err", "Ошибка"]], "3n", "Дробная часть отбрасывается.")
+      single("js-bigint-div", "Деление", "Чему равно `7n / 2n`?", [["3n", "3n"], ["three-half", "3.5"], ["4n", "4n"], ["err", "Ошибка"]], "3n", "Дробная часть отбрасывается.")
     ]
   });
 
@@ -110,7 +110,7 @@ export default function numbers(c, ch, rc) {
       solution: "function distance(dx, dy) {\n  return Math.hypot(dx, dy);\n}\nfunction cupVolume(r, h) {\n  return Math.round(Math.PI * r ** 2 * h);\n}"
     })],
     quizzes: [
-      single("js-trunc-floor", "trunc и floor", "Что вернут `Math.trunc(-2.5)` и `Math.floor(-2.5)`?", [["-2-3", "−2 и −3"], ["-3-2", "−3 и −2"], ["same", "Оба −2"], ["both3", "Оба −3"]], "-2-3", "trunc отбрасывает дробь, floor — вниз."),
+      single("js-trunc-floor", "trunc и floor", "Что вернут `Math.trunc(-2.5)` и `Math.floor(-2.5)`?", [["m2-m3", "−2 и −3"], ["m3-m2", "−3 и −2"], ["same", "Оба −2"], ["both3", "Оба −3"]], "m2-m3", "trunc отбрасывает дробь, floor — вниз."),
       short("js-log2", "log2", "Чему равен `Math.log2(1024)`? Введи число.", ["10"], "2¹⁰ = 1024.")
     ]
   });

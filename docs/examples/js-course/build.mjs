@@ -23,6 +23,8 @@ import meta from "./c19-meta.mjs";
 import errorsAsync from "./c20-errors-async.mjs";
 import dates from "./c21-dates.mjs";
 import intl from "./c22-intl.mjs";
+import binary from "./c23-binary.mjs";
+import legacy from "./c24-legacy.mjs";
 
 const chapters = [
   ["Старт JavaScript", [start]],
@@ -46,7 +48,9 @@ const chapters = [
   ["Symbol, Proxy и Reflect", [meta]],
   ["Ошибки, ресурсы и промисы", [errorsAsync]],
   ["Даты полностью", [dates]],
-  ["Intl полностью", [intl]]
+  ["Intl полностью", [intl]],
+  ["Бинарные данные и общая память", [binary]],
+  ["Устаревшее: как читать старый код", [legacy]]
 ];
 
 const challenges = {};

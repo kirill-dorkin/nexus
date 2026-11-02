@@ -142,7 +142,7 @@ var __r=[];${steps.join("\n")}
 parent.postMessage({runnerToken:${JSON.stringify(token)},type:"result",results:__r,logs:__logs.slice()},"*");},60);});`;
 }
 
-const CSP = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src data:">`;
+const CSP = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval'; style-src 'unsafe-inline'; img-src data:; font-src data:">`;
 
 /**
  * `module: true` runs JavaScript as a module, so examples may use top-level `await`. Concept cards

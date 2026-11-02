@@ -540,6 +540,41 @@
       "key": "js-intl-locale",
       "title": "Локаль",
       "description": "Разбирать и дополнять языковые теги и узнавать правила региона."
+    },
+    {
+      "key": "js-array-buffer",
+      "title": "ArrayBuffer",
+      "description": "Хранить двоичные данные и управлять буферами."
+    },
+    {
+      "key": "js-typed-arrays",
+      "title": "Типизированные массивы",
+      "description": "Читать и писать двоичные данные числами нужного размера."
+    },
+    {
+      "key": "js-typed-array-methods",
+      "title": "Методы typed arrays",
+      "description": "Обрабатывать двоичные данные привычными методами массивов."
+    },
+    {
+      "key": "js-dataview",
+      "title": "DataView",
+      "description": "Читать и писать числа разных размеров в любом месте буфера и с любым порядком байтов."
+    },
+    {
+      "key": "js-atomics",
+      "title": "Общая память",
+      "description": "Понимать, как потоки делят память и почему нужны атомарные операции."
+    },
+    {
+      "key": "js-legacy-strings",
+      "title": "Устаревшие методы строк и дат",
+      "description": "Узнавать устаревшие методы в старом коде и заменять их современными."
+    },
+    {
+      "key": "js-legacy-objects",
+      "title": "Устаревшие возможности объектов",
+      "description": "Узнавать старые способы работы с прототипами и свойствами и знать современные замены."
     }
   ],
   "activities": [
@@ -5882,7 +5917,7 @@
             "text": "3n"
           },
           {
-            "id": "3.5",
+            "id": "three-half",
             "text": "3.5"
           },
           {
@@ -5912,11 +5947,11 @@
         "question": "Что вернут `Math.trunc(-2.5)` и `Math.floor(-2.5)`?",
         "options": [
           {
-            "id": "-2-3",
+            "id": "m2-m3",
             "text": "−2 и −3"
           },
           {
-            "id": "-3-2",
+            "id": "m3-m2",
             "text": "−3 и −2"
           },
           {
@@ -5930,7 +5965,7 @@
         ]
       },
       "validation": {
-        "correctOptionId": "-2-3",
+        "correctOptionId": "m2-m3",
         "explanation": "trunc отбрасывает дробь, floor — вниз."
       }
     },
@@ -7447,6 +7482,278 @@
       "validation": {
         "correctOptionId": "full",
         "explanation": "Достраиваются вероятные письменность и регион."
+      }
+    },
+    {
+      "slug": "js-ab-read",
+      "type": "quiz.single_choice",
+      "title": "Чтение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-array-buffer"
+      ],
+      "presentation": {
+        "question": "Как прочитать байты из ArrayBuffer?",
+        "options": [
+          {
+            "id": "view",
+            "text": "Через типизированный массив или DataView"
+          },
+          {
+            "id": "index",
+            "text": "buf[0]"
+          },
+          {
+            "id": "get",
+            "text": "buf.get(0)"
+          },
+          {
+            "id": "json",
+            "text": "JSON.parse(buf)"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "view",
+        "explanation": "Сам буфер не даёт доступа к байтам."
+      }
+    },
+    {
+      "slug": "js-uint8-overflow",
+      "type": "quiz.single_choice",
+      "title": "Переполнение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-typed-arrays"
+      ],
+      "presentation": {
+        "question": "Что окажется в `new Uint8Array([256])[0]`?",
+        "options": [
+          {
+            "id": "0",
+            "text": "0"
+          },
+          {
+            "id": "255",
+            "text": "255"
+          },
+          {
+            "id": "256",
+            "text": "256"
+          },
+          {
+            "id": "err",
+            "text": "Ошибка"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "0",
+        "explanation": "Значение берётся по модулю 256."
+      }
+    },
+    {
+      "slug": "js-ta-map-type",
+      "type": "quiz.single_choice",
+      "title": "map",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-typed-array-methods"
+      ],
+      "presentation": {
+        "question": "Что вернёт `new Uint8Array([200]).map((x) => x * 2)`?",
+        "options": [
+          {
+            "id": "clip",
+            "text": "Uint8Array [144] — значение обрезано по модулю 256"
+          },
+          {
+            "id": "400",
+            "text": "[400]"
+          },
+          {
+            "id": "arr",
+            "text": "Обычный массив [400]"
+          },
+          {
+            "id": "err",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "clip",
+        "explanation": "Результат того же типа, 400 % 256 = 144."
+      }
+    },
+    {
+      "slug": "js-endian",
+      "type": "quiz.single_choice",
+      "title": "Порядок байтов",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-dataview"
+      ],
+      "presentation": {
+        "question": "Что значит `littleEndian = true`?",
+        "options": [
+          {
+            "id": "low",
+            "text": "Младший байт записан первым"
+          },
+          {
+            "id": "high",
+            "text": "Старший байт первым"
+          },
+          {
+            "id": "small",
+            "text": "Маленькие числа"
+          },
+          {
+            "id": "signed",
+            "text": "Число со знаком"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "low",
+        "explanation": "По умолчанию DataView использует старший-первым (big-endian)."
+      }
+    },
+    {
+      "slug": "js-atomics-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-atomics"
+      ],
+      "presentation": {
+        "question": "Почему `count++` из двух потоков может потерять увеличение?",
+        "options": [
+          {
+            "id": "race",
+            "text": "Чтение и запись — две операции, другой поток может вклиниться между ними"
+          },
+          {
+            "id": "slow",
+            "text": "Это медленно"
+          },
+          {
+            "id": "type",
+            "text": "Из-за типов"
+          },
+          {
+            "id": "never",
+            "text": "Не может"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "race",
+        "explanation": "Atomics.add делает это одной неделимой операцией."
+      }
+    },
+    {
+      "slug": "js-getyear",
+      "type": "quiz.single_choice",
+      "title": "getYear",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-legacy-strings"
+      ],
+      "presentation": {
+        "question": "Что вернёт `new Date(2026, 0).getYear()`?",
+        "options": [
+          {
+            "id": "126",
+            "text": "126"
+          },
+          {
+            "id": "2026",
+            "text": "2026"
+          },
+          {
+            "id": "26",
+            "text": "26"
+          },
+          {
+            "id": "err",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "126",
+        "explanation": "Год минус 1900 — поэтому метод и устарел."
+      }
+    },
+    {
+      "slug": "js-substr",
+      "type": "quiz.single_choice",
+      "title": "substr",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-legacy-strings"
+      ],
+      "presentation": {
+        "question": "Чем заменить `str.substr(2, 3)`?",
+        "options": [
+          {
+            "id": "slice",
+            "text": "`str.slice(2, 5)`"
+          },
+          {
+            "id": "substring",
+            "text": "`str.substring(3, 2)`"
+          },
+          {
+            "id": "at",
+            "text": "`str.at(2)`"
+          },
+          {
+            "id": "split",
+            "text": "`str.split(2)`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "slice",
+        "explanation": "Второй аргумент slice — конец, а не длина."
+      }
+    },
+    {
+      "slug": "js-proto-modern",
+      "type": "quiz.single_choice",
+      "title": "__proto__",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-legacy-objects"
+      ],
+      "presentation": {
+        "question": "Чем заменить чтение `obj.__proto__`?",
+        "options": [
+          {
+            "id": "get",
+            "text": "`Object.getPrototypeOf(obj)`"
+          },
+          {
+            "id": "proto",
+            "text": "`obj.prototype`"
+          },
+          {
+            "id": "ctor",
+            "text": "`obj.constructor`"
+          },
+          {
+            "id": "this",
+            "text": "`this.__proto__`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "get",
+        "explanation": "А запись — Object.setPrototypeOf."
       }
     }
   ],
@@ -9230,11 +9537,11 @@
       "title": "Функции изнутри",
       "summary": "call, apply и bind, свойства length и name, toString у функций и потеря this.",
       "chapter": "Объекты и функции изнутри",
-      "durationMinutes": 9,
+      "durationMinutes": 10,
       "blocks": [
         {
           "type": "markdown",
-          "markdown": "```recap\n{\"now\":\"Метод корзины, переданный как обработчик, теряет `this`. Привязываем его.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Потерянный this\",\n  \"lines\": [\n    [\n      \"bug\",\n      \"Передал `cart.add` в обработчик клика — и `this` стал совсем другим! Хе-хе.\"\n    ],\n    [\n      \"nika\",\n      \"У функций есть методы, чтобы явно задать `this`: `call`, `apply` и `bind`.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"call()\",\n  \"title\": \"Вызвать с this\",\n  \"what\": \"`fn.call(thisArg, a, b)` — вызвать функцию с заданным `this` и аргументами по одному.\",\n  \"why\": \"Взять метод одного объекта для другого.\",\n  \"how\": \"function label(currency) { return `${this.name}: ${this.price} ${currency}`; }\\nconsole.log(label.call({ name: \\\"Раф\\\", price: 290 }, \\\"₽\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Function.prototype.call\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"apply()\",\n  \"title\": \"Вызвать с массивом аргументов\",\n  \"what\": \"`fn.apply(thisArg, [a, b])` — как `call`, но аргументы массивом.\",\n  \"why\": \"Аргументы уже лежат в массиве.\",\n  \"how\": \"console.log(Math.max.apply(null, [150, 290, 220]));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Function.prototype.apply\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"bind()\",\n  \"title\": \"Привязать навсегда\",\n  \"what\": \"`fn.bind(thisArg, …args)` — новая функция с закреплённым `this` (и частью аргументов).\",\n  \"why\": \"Методы-обработчики событий, частичное применение.\",\n  \"how\": \"const cart = { items: [], add(x) { this.items.push(x); return this.items.length; } };\\nconst add = cart.add.bind(cart);\\nadd(\\\"Латте\\\");\\nconsole.log(add(\\\"Раф\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Function.prototype.bind\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"fn.length · fn.name\",\n  \"title\": \"Свойства функции\",\n  \"what\": \"`length` — число объявленных параметров (до первого со значением по умолчанию и без rest), `name` — имя функции.\",\n  \"why\": \"Отладка, универсальные обёртки.\",\n  \"how\": \"function order(drink, qty, size = \\\"M\\\") {}\\nconsole.log(order.length, order.name, ((a, ...b) => 0).length);\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Function.prototype.length\",\n    \"Function.prototype.name\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"fn.toString()\",\n  \"title\": \"Исходный код функции\",\n  \"what\": \"Возвращает текст функции, как он записан.\",\n  \"why\": \"Отладка и логирование.\",\n  \"how\": \"const double = (x) => x * 2;\\nconsole.log(double.toString());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Function.prototype.toString\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Передаёшь метод объекта как колбэк — привяжи его через `bind` или оберни в стрелку.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Привязанный обработчик\",\n  \"task\": \"Сделай `add` — метод `cart.add`, навсегда привязанный к `cart` через `bind`, и `price` — результат `label.call(raf)`.\",\n  \"lang\": \"js\",\n  \"start\": \"const cart = { items: [], add(item) { this.items.push(item); } };\\nconst add = cart.add;\\nfunction label() { return `${this.name}: ${this.price} ₽`; }\\nconst raf = { name: \\\"Раф\\\", price: 290 };\\nconst price = \\\"\\\";\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Метод работает отдельно от объекта\",\n      \"js\": \"(add(\\\"Латте\\\"), cart.items.length === 1)\"\n    },\n    {\n      \"label\": \"label вызвана для raf\",\n      \"js\": \"price === \\\"Раф: 290 ₽\\\"\"\n    },\n    {\n      \"label\": \"Использован `bind`\",\n      \"contains\": \"bind\"\n    },\n    {\n      \"label\": \"Использован `call`\",\n      \"contains\": \".call(\"\n    }\n  ],\n  \"solution\": \"const cart = { items: [], add(item) { this.items.push(item); } };\\nconst add = cart.add.bind(cart);\\nfunction label() { return `${this.name}: ${this.price} ₽`; }\\nconst raf = { name: \\\"Раф\\\", price: 290 };\\nconst price = label.call(raf);\"\n}\n```"
+          "markdown": "```recap\n{\"now\":\"Метод корзины, переданный как обработчик, теряет `this`. Привязываем его.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Потерянный this\",\n  \"lines\": [\n    [\n      \"bug\",\n      \"Передал `cart.add` в обработчик клика — и `this` стал совсем другим! Хе-хе.\"\n    ],\n    [\n      \"nika\",\n      \"У функций есть методы, чтобы явно задать `this`: `call`, `apply` и `bind`.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"call()\",\n  \"title\": \"Вызвать с this\",\n  \"what\": \"`fn.call(thisArg, a, b)` — вызвать функцию с заданным `this` и аргументами по одному.\",\n  \"why\": \"Взять метод одного объекта для другого.\",\n  \"how\": \"function label(currency) { return `${this.name}: ${this.price} ${currency}`; }\\nconsole.log(label.call({ name: \\\"Раф\\\", price: 290 }, \\\"₽\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Function.prototype.call\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"apply()\",\n  \"title\": \"Вызвать с массивом аргументов\",\n  \"what\": \"`fn.apply(thisArg, [a, b])` — как `call`, но аргументы массивом.\",\n  \"why\": \"Аргументы уже лежат в массиве.\",\n  \"how\": \"console.log(Math.max.apply(null, [150, 290, 220]));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Function.prototype.apply\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"bind()\",\n  \"title\": \"Привязать навсегда\",\n  \"what\": \"`fn.bind(thisArg, …args)` — новая функция с закреплённым `this` (и частью аргументов).\",\n  \"why\": \"Методы-обработчики событий, частичное применение.\",\n  \"how\": \"const cart = { items: [], add(x) { this.items.push(x); return this.items.length; } };\\nconst add = cart.add.bind(cart);\\nadd(\\\"Латте\\\");\\nconsole.log(add(\\\"Раф\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Function.prototype.bind\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"fn.length · fn.name\",\n  \"title\": \"Свойства функции\",\n  \"what\": \"`length` — число объявленных параметров (до первого со значением по умолчанию и без rest), `name` — имя функции.\",\n  \"why\": \"Отладка, универсальные обёртки.\",\n  \"how\": \"function order(drink, qty, size = \\\"M\\\") {}\\nconsole.log(order.length, order.name, ((a, ...b) => 0).length);\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Function.prototype.length\",\n    \"Function.prototype.name\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Function\",\n  \"title\": \"Конструктор функций\",\n  \"what\": \"`new Function(\\\"a\\\", \\\"b\\\", \\\"return a + b\\\")` создаёт функцию из строк. Все функции — экземпляры `Function`. Как и `eval`, выполняет текст как код — небезопасно.\",\n  \"why\": \"Понимать, что функции — объекты; почти никогда не нужен.\",\n  \"how\": \"const add = new Function(\\\"a\\\", \\\"b\\\", \\\"return a + b\\\");\\nconsole.log(add(2, 3), add instanceof Function, (() => 0) instanceof Function);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Function\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"fn.toString()\",\n  \"title\": \"Исходный код функции\",\n  \"what\": \"Возвращает текст функции, как он записан.\",\n  \"why\": \"Отладка и логирование.\",\n  \"how\": \"const double = (x) => x * 2;\\nconsole.log(double.toString());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Function.prototype.toString\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Передаёшь метод объекта как колбэк — привяжи его через `bind` или оберни в стрелку.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Привязанный обработчик\",\n  \"task\": \"Сделай `add` — метод `cart.add`, навсегда привязанный к `cart` через `bind`, и `price` — результат `label.call(raf)`.\",\n  \"lang\": \"js\",\n  \"start\": \"const cart = { items: [], add(item) { this.items.push(item); } };\\nconst add = cart.add;\\nfunction label() { return `${this.name}: ${this.price} ₽`; }\\nconst raf = { name: \\\"Раф\\\", price: 290 };\\nconst price = \\\"\\\";\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Метод работает отдельно от объекта\",\n      \"js\": \"(add(\\\"Латте\\\"), cart.items.length === 1)\"\n    },\n    {\n      \"label\": \"label вызвана для raf\",\n      \"js\": \"price === \\\"Раф: 290 ₽\\\"\"\n    },\n    {\n      \"label\": \"Использован `bind`\",\n      \"contains\": \"bind\"\n    },\n    {\n      \"label\": \"Использован `call`\",\n      \"contains\": \".call(\"\n    }\n  ],\n  \"solution\": \"const cart = { items: [], add(item) { this.items.push(item); } };\\nconst add = cart.add.bind(cart);\\nfunction label() { return `${this.name}: ${this.price} ₽`; }\\nconst raf = { name: \\\"Раф\\\", price: 290 };\\nconst price = label.call(raf);\"\n}\n```"
         },
         {
           "type": "activity",
@@ -10085,6 +10392,145 @@
         {
           "type": "activity",
           "activitySlug": "js-locale-max",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "array-buffer",
+      "title": "ArrayBuffer: сырые байты",
+      "summary": "ArrayBuffer, byteLength, slice, ArrayBuffer.isView, изменяемые буферы resizable, maxByteLength, resize и передача transfer, transferToFixedLength, detached.",
+      "chapter": "Бинарные данные и общая память",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Новый кассовый аппарат общается байтами, а не JSON. Учимся работать с сырыми данными.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Байты\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"Касса присылает какие-то байты. Это вообще можно прочитать в JavaScript?\"\n    ],\n    [\n      \"bro\",\n      \"Можно. `ArrayBuffer` — кусок памяти, а читать его будем через типизированные массивы и DataView.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"ArrayBuffer · byteLength · slice()\",\n  \"title\": \"Буфер памяти\",\n  \"what\": \"`new ArrayBuffer(16)` — 16 байт, заполненных нулями. Напрямую читать нельзя — только через «представления». `byteLength` — размер, `slice(a, b)` — копия куска.\",\n  \"why\": \"Файлы, сеть, аудио, изображения.\",\n  \"how\": \"const buf = new ArrayBuffer(8);\\nconsole.log(buf.byteLength, buf.slice(2, 6).byteLength);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"ArrayBuffer\",\n    \"ArrayBuffer.prototype.byteLength\",\n    \"ArrayBuffer.prototype.slice\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"ArrayBuffer.isView()\",\n  \"title\": \"Представление ли это\",\n  \"what\": \"true для типизированных массивов и DataView.\",\n  \"why\": \"Принимать и буфер, и представление.\",\n  \"how\": \"console.log(ArrayBuffer.isView(new Uint8Array(2)), ArrayBuffer.isView(new ArrayBuffer(2)));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"ArrayBuffer.isView\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"resizable · maxByteLength · resize()\",\n  \"title\": \"Растущий буфер\",\n  \"what\": \"`new ArrayBuffer(4, { maxByteLength: 16 })` — буфер, который можно увеличить `resize(n)` до максимума; `resizable` — можно ли.\",\n  \"why\": \"Данные, размер которых растёт.\",\n  \"how\": \"const buf = new ArrayBuffer(4, { maxByteLength: 16 });\\nbuf.resize(12);\\nconsole.log(buf.resizable, buf.byteLength, buf.maxByteLength);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"ArrayBuffer.prototype.resizable\",\n    \"ArrayBuffer.prototype.maxByteLength\",\n    \"ArrayBuffer.prototype.resize\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"transfer() · transferToFixedLength() · detached\",\n  \"title\": \"Передать владение\",\n  \"what\": \"`transfer(n)` — новый буфер с теми же данными, а старый «отсоединяется» (`detached` = true, длина 0). `transferToFixedLength` — то же, но новый не растёт.\",\n  \"why\": \"Передать данные без копирования.\",\n  \"how\": \"const a = new ArrayBuffer(8);\\nconst b = a.transfer();\\nconst c = b.transferToFixedLength(4);\\nconsole.log(a.detached, a.byteLength, b.detached, c.byteLength, c.resizable);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"ArrayBuffer.prototype.transfer\",\n    \"ArrayBuffer.prototype.transferToFixedLength\",\n    \"ArrayBuffer.prototype.detached\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"ArrayBuffer — только память. Читать и писать её будешь через Uint8Array, Float32Array или DataView.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Буфер чека\",\n  \"task\": \"Создай `buf` — растущий ArrayBuffer на 8 байт с максимумом 64, увеличь его до 32 байт, и `isBinary(x)` — true для буфера или любого представления.\",\n  \"lang\": \"js\",\n  \"start\": \"const buf = new ArrayBuffer(8);\\nfunction isBinary(x) {\\n  return false;\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Буфер вырос до 32\",\n      \"js\": \"buf.resizable && buf.maxByteLength === 64 && buf.byteLength === 32\"\n    },\n    {\n      \"label\": \"Проверка двоичных данных\",\n      \"js\": \"isBinary(buf) && isBinary(new Uint8Array(1)) && !isBinary([1])\"\n    }\n  ],\n  \"solution\": \"const buf = new ArrayBuffer(8, { maxByteLength: 64 });\\nbuf.resize(32);\\nfunction isBinary(x) {\\n  return x instanceof ArrayBuffer || ArrayBuffer.isView(x);\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-ab-read",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "typed-arrays",
+      "title": "Типизированные массивы",
+      "summary": "Int8Array, Uint8Array, Uint8ClampedArray, Int16Array, Uint16Array, Int32Array, Uint32Array, Float16Array, Float32Array, Float64Array, BigInt64Array, BigUint64Array, BYTES_PER_ELEMENT, from, of, buffer, byteOffset, set и subarray.",
+      "chapter": "Бинарные данные и общая память",
+      "durationMinutes": 9,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Читаем байты от кассы как числа: 8-битные, 16-битные, дробные. Для каждого размера — свой массив.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Размер числа\",\n  \"lines\": [\n    [\n      \"bro\",\n      \"Байт — число от 0 до 255. Два байта — до 65535. Для каждого размера есть свой типизированный массив.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Int8Array · Uint8Array · Uint8ClampedArray · Int16Array\",\n  \"title\": \"Маленькие целые\",\n  \"what\": \"`Int8Array` −128…127, `Uint8Array` 0…255 (переполнение по кругу), `Uint8ClampedArray` 0…255 с обрезкой (пиксели canvas), `Int16Array` −32768…32767.\",\n  \"why\": \"Байты файлов, пиксели, звук.\",\n  \"how\": \"console.log(new Uint8Array([300])[0], new Uint8ClampedArray([300])[0], new Int8Array([200])[0], new Int16Array([40000])[0]);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Int8Array\",\n    \"Uint8Array\",\n    \"Uint8ClampedArray\",\n    \"Int16Array\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Uint16Array · Int32Array · Uint32Array · Float16Array\",\n  \"title\": \"Средние\",\n  \"what\": \"`Uint16Array` 0…65535, `Int32Array` и `Uint32Array` — 32-битные целые, `Float16Array` — дробные половинной точности (графика, нейросети).\",\n  \"why\": \"Счётчики, цвета, компактные дробные.\",\n  \"how\": \"console.log(new Uint16Array([70000])[0], new Uint32Array([-1])[0], new Float16Array([0.1])[0]);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Uint16Array\",\n    \"Int32Array\",\n    \"Uint32Array\",\n    \"Float16Array\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Float32Array · Float64Array · BigInt64Array · BigUint64Array\",\n  \"title\": \"Дробные и огромные\",\n  \"what\": \"`Float32Array` — одинарная точность (WebGL), `Float64Array` — как обычные числа, `BigInt64Array`/`BigUint64Array` — 64-битные целые в виде BigInt.\",\n  \"why\": \"3D-графика, точные 64-битные значения.\",\n  \"how\": \"console.log(new Float32Array([0.1])[0], new Float64Array([0.1])[0], new BigInt64Array([-1n])[0], new BigUint64Array([-1n])[0]);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Float32Array\",\n    \"Float64Array\",\n    \"BigInt64Array\",\n    \"BigUint64Array\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"BYTES_PER_ELEMENT\",\n  \"title\": \"Размер элемента\",\n  \"what\": \"Сколько байт занимает один элемент: 1, 2, 4 или 8.\",\n  \"why\": \"Посчитать нужный размер буфера.\",\n  \"how\": \"console.log(Uint8Array.BYTES_PER_ELEMENT, Float32Array.BYTES_PER_ELEMENT, BigInt64Array.BYTES_PER_ELEMENT);\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"TypedArray.BYTES_PER_ELEMENT\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"TypedArray.from() · TypedArray.of()\",\n  \"title\": \"Создание\",\n  \"what\": \"Как у Array: из перебираемого (с функцией преобразования) или из аргументов.\",\n  \"why\": \"Преобразовать обычный массив.\",\n  \"how\": \"console.log(Uint8Array.from([1, 2, 3], (x) => x * 10), Float32Array.of(0.5, 1.5));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"TypedArray.from\",\n    \"TypedArray.of\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"buffer · byteLength · byteOffset · length\",\n  \"title\": \"Связь с буфером\",\n  \"what\": \"Типизированный массив — окно в буфер: `buffer` — сам буфер, `byteOffset` — где начинается окно, `byteLength` — размер в байтах, `length` — число элементов.\",\n  \"why\": \"Несколько представлений одного буфера.\",\n  \"how\": \"const buf = new ArrayBuffer(8);\\nconst view = new Uint16Array(buf, 2, 2);\\nconsole.log(view.buffer === buf, view.byteOffset, view.byteLength, view.length);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"TypedArray.prototype.buffer\",\n    \"TypedArray.prototype.byteLength\",\n    \"TypedArray.prototype.byteOffset\",\n    \"TypedArray.prototype.length\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"set() · subarray()\",\n  \"title\": \"Запись и окно\",\n  \"what\": \"`set(array, offset)` копирует значения внутрь; `subarray(a, b)` — новое окно в тот же буфер (без копирования, в отличие от `slice`).\",\n  \"why\": \"Склеить пакеты, работать с частью данных.\",\n  \"how\": \"const all = new Uint8Array(6);\\nall.set([1, 2, 3], 3);\\nconst tail = all.subarray(3);\\ntail[0] = 9;\\nconsole.log(all, tail.length);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"TypedArray.prototype.set\",\n    \"TypedArray.prototype.subarray\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"`subarray` делит память с исходным массивом, `slice` — копирует. Меняешь окно — меняешь оригинал.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Пакет кассы\",\n  \"task\": \"Собери `packet` — Uint8Array из 4 байт: в начало запиши `header` через `set`, а в `body` сохрани `subarray` с индекса 2 (окно, а не копию).\",\n  \"lang\": \"js\",\n  \"start\": \"const header = [0xaa, 0xbb];\\nconst packet = new Uint8Array(4);\\nconst body = packet.slice(2);\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Заголовок записан\",\n      \"js\": \"packet[0] === 170 && packet[1] === 187\"\n    },\n    {\n      \"label\": \"body — окно в packet\",\n      \"js\": \"body.length === 2 && (body[0] = 7, packet[2] === 7)\"\n    }\n  ],\n  \"solution\": \"const header = [0xaa, 0xbb];\\nconst packet = new Uint8Array(4);\\npacket.set(header, 0);\\nconst body = packet.subarray(2);\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-uint8-overflow",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "typed-array-methods",
+      "title": "Методы типизированных массивов",
+      "summary": "У типизированных массивов есть почти все методы обычных: at, includes, indexOf, lastIndexOf, find, findIndex, findLast, findLastIndex, every, some, forEach, map, filter, reduce, reduceRight, join, sort, reverse, fill, copyWithin, slice, keys, values, entries, toReversed, toSorted, with, toString и toLocaleString.",
+      "chapter": "Бинарные данные и общая память",
+      "durationMinutes": 9,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Анализируем показания датчика температуры кофемашины: байтовый поток, но методы — как у массивов.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Как у массивов\",\n  \"lines\": [\n    [\n      \"nika\",\n      \"Почти все методы массивов есть и у типизированных. Отличие одно: результат — снова типизированный массив того же вида.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"at() · includes() · indexOf() · lastIndexOf()\",\n  \"title\": \"Доступ и поиск\",\n  \"what\": \"Как у массивов.\",\n  \"why\": \"Найти значение в данных датчика.\",\n  \"how\": \"const t = new Uint8Array([90, 92, 95, 92]);\\nconsole.log(t.at(-1), t.includes(95), t.indexOf(92), t.lastIndexOf(92));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"TypedArray.prototype.at\",\n    \"TypedArray.prototype.includes\",\n    \"TypedArray.prototype.indexOf\",\n    \"TypedArray.prototype.lastIndexOf\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"find() · findIndex() · findLast() · findLastIndex()\",\n  \"title\": \"Поиск по условию\",\n  \"what\": \"Как у массивов.\",\n  \"why\": \"Первый и последний перегрев.\",\n  \"how\": \"const t = new Uint8Array([90, 97, 95, 98]);\\nconsole.log(t.find((x) => x > 96), t.findIndex((x) => x > 96), t.findLast((x) => x > 96), t.findLastIndex((x) => x > 96));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"TypedArray.prototype.find\",\n    \"TypedArray.prototype.findIndex\",\n    \"TypedArray.prototype.findLast\",\n    \"TypedArray.prototype.findLastIndex\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"every() · some() · forEach()\",\n  \"title\": \"Проверки и перебор\",\n  \"what\": \"Как у массивов.\",\n  \"why\": \"Все ли показания в норме.\",\n  \"how\": \"const t = new Uint8Array([90, 92]);\\nconsole.log(t.every((x) => x < 96), t.some((x) => x > 91));\\nt.forEach((x, i) => console.log(i, x));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"TypedArray.prototype.every\",\n    \"TypedArray.prototype.some\",\n    \"TypedArray.prototype.forEach\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"map() · filter() · reduce() · reduceRight()\",\n  \"title\": \"Преобразования\",\n  \"what\": \"Как у массивов, но `map` и `filter` возвращают типизированный массив того же вида (значения обрежутся по его правилам).\",\n  \"why\": \"Пересчитать и отфильтровать данные.\",\n  \"how\": \"const t = new Uint8Array([100, 200]);\\nconsole.log(t.map((x) => x * 2), t.filter((x) => x > 150), t.reduce((a, b) => a + b, 0), t.reduceRight((a, b) => a + \\\",\\\" + b, \\\"\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"TypedArray.prototype.map\",\n    \"TypedArray.prototype.filter\",\n    \"TypedArray.prototype.reduce\",\n    \"TypedArray.prototype.reduceRight\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"sort() · reverse() · fill() · copyWithin()\",\n  \"title\": \"Изменение на месте\",\n  \"what\": \"Как у массивов; `sort()` без функции сортирует ЧИСЛА (в отличие от обычных массивов).\",\n  \"why\": \"Упорядочить показания.\",\n  \"how\": \"const t = new Uint8Array([10, 9, 100]);\\nconsole.log(t.sort(), t.reverse(), new Uint8Array(3).fill(7), new Uint8Array([1, 2, 3, 4]).copyWithin(0, 2));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"TypedArray.prototype.sort\",\n    \"TypedArray.prototype.reverse\",\n    \"TypedArray.prototype.fill\",\n    \"TypedArray.prototype.copyWithin\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"slice() · join() · toString() · toLocaleString()\",\n  \"title\": \"Копия и строки\",\n  \"what\": \"`slice` — копия (в отличие от `subarray`); строки — как у массивов.\",\n  \"why\": \"Вывести данные.\",\n  \"how\": \"const t = new Float32Array([1250.5, 3]);\\nconsole.log(t.slice(1), t.join(\\\" | \\\"), t.toString(), t.toLocaleString(\\\"ru-RU\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"TypedArray.prototype.slice\",\n    \"TypedArray.prototype.join\",\n    \"TypedArray.prototype.toString\",\n    \"TypedArray.prototype.toLocaleString\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"keys() · values() · entries()\",\n  \"title\": \"Итераторы\",\n  \"what\": \"Индексы, значения и пары — как у массивов.\",\n  \"why\": \"Перебор с номерами.\",\n  \"how\": \"for (const [i, v] of new Uint8Array([5, 6]).entries()) console.log(i, v);\\nconsole.log([...new Uint8Array([5, 6]).keys()], [...new Uint8Array([5, 6]).values()]);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"TypedArray.prototype.keys\",\n    \"TypedArray.prototype.values\",\n    \"TypedArray.prototype.entries\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"toReversed() · toSorted() · with()\",\n  \"title\": \"Копии с изменением\",\n  \"what\": \"Как у массивов, оригинал не меняется.\",\n  \"why\": \"Неизменяемая обработка данных.\",\n  \"how\": \"const t = new Uint8Array([3, 1, 2]);\\nconsole.log(t.toSorted(), t.toReversed(), t.with(0, 9), t);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"TypedArray.prototype.toReversed\",\n    \"TypedArray.prototype.toSorted\",\n    \"TypedArray.prototype.with\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"`sort()` у типизированного массива сортирует числа правильно — функция сравнения не нужна.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Анализ датчика\",\n  \"task\": \"Для `temps` (Uint8Array) посчитай `avg` — среднюю температуру через `reduce`, `hot` — Uint8Array показаний выше 95 через `filter`, и `sorted` — отсортированную копию через `toSorted`.\",\n  \"lang\": \"js\",\n  \"start\": \"const temps = new Uint8Array([92, 97, 90, 99]);\\nconst avg = 0;\\nconst hot = [];\\nconst sorted = temps;\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Средняя 94.5\",\n      \"js\": \"avg === 94.5\"\n    },\n    {\n      \"label\": \"Перегревы\",\n      \"js\": \"hot instanceof Uint8Array && hot.join() === \\\"97,99\\\"\"\n    },\n    {\n      \"label\": \"Копия отсортирована, оригинал цел\",\n      \"js\": \"sorted.join() === \\\"90,92,97,99\\\" && temps[0] === 92\"\n    }\n  ],\n  \"solution\": \"const temps = new Uint8Array([92, 97, 90, 99]);\\nconst avg = temps.reduce((a, b) => a + b, 0) / temps.length;\\nconst hot = temps.filter((t) => t > 95);\\nconst sorted = temps.toSorted();\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-ta-map-type",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "dataview",
+      "title": "DataView: байты любого формата",
+      "summary": "DataView, buffer, byteLength, byteOffset и методы get и set для Int8, Uint8, Int16, Uint16, Int32, Uint32, Float16, Float32, Float64, BigInt64 и BigUint64 с порядком байтов.",
+      "chapter": "Бинарные данные и общая память",
+      "durationMinutes": 9,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пакет кассы: 1 байт — тип, 2 байта — номер, 4 байта — сумма. Разные размеры в одном буфере — работа для DataView.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Смешанный пакет\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"В пакете кассы всё вперемешку: байт, два байта, четыре байта…\"\n    ],\n    [\n      \"bro\",\n      \"DataView читает любое число из любого места буфера. И знает про порядок байтов.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"DataView · buffer · byteLength · byteOffset\",\n  \"title\": \"Окно с любым форматом\",\n  \"what\": \"`new DataView(buffer, offset, length)` — окно в буфер; `buffer`, `byteOffset`, `byteLength` — как у типизированных массивов.\",\n  \"why\": \"Разбор двоичных форматов: файлы, протоколы.\",\n  \"how\": \"const buf = new ArrayBuffer(16);\\nconst dv = new DataView(buf, 4, 8);\\nconsole.log(dv.buffer === buf, dv.byteOffset, dv.byteLength);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"DataView\",\n    \"DataView.prototype.buffer\",\n    \"DataView.prototype.byteLength\",\n    \"DataView.prototype.byteOffset\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getInt8() · setInt8() · getUint8() · setUint8()\",\n  \"title\": \"Один байт\",\n  \"what\": \"Прочитать или записать байт со знаком или без по смещению.\",\n  \"why\": \"Флаги, тип пакета.\",\n  \"how\": \"const dv = new DataView(new ArrayBuffer(2));\\ndv.setUint8(0, 255);\\ndv.setInt8(1, -1);\\nconsole.log(dv.getUint8(0), dv.getInt8(0), dv.getUint8(1));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"DataView.prototype.getInt8\",\n    \"DataView.prototype.setInt8\",\n    \"DataView.prototype.getUint8\",\n    \"DataView.prototype.setUint8\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getInt16() · setInt16() · getUint16() · setUint16()\",\n  \"title\": \"Два байта и порядок байтов\",\n  \"what\": \"Третий аргумент `littleEndian`: `true` — младший байт первым (как в x86), по умолчанию — старший первым (сетевой порядок).\",\n  \"why\": \"Номера, короткие целые в протоколах.\",\n  \"how\": \"const dv = new DataView(new ArrayBuffer(4));\\ndv.setUint16(0, 1042);\\ndv.setInt16(2, -2, true);\\nconsole.log(dv.getUint16(0), dv.getUint16(0, true), dv.getInt16(2, true));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"DataView.prototype.getInt16\",\n    \"DataView.prototype.setInt16\",\n    \"DataView.prototype.getUint16\",\n    \"DataView.prototype.setUint16\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getInt32() · setInt32() · getUint32() · setUint32()\",\n  \"title\": \"Четыре байта\",\n  \"what\": \"32-битные целые со знаком и без.\",\n  \"why\": \"Суммы в копейках, метки времени.\",\n  \"how\": \"const dv = new DataView(new ArrayBuffer(8));\\ndv.setUint32(0, 4_000_000_000);\\ndv.setInt32(4, -5);\\nconsole.log(dv.getUint32(0), dv.getInt32(0), dv.getInt32(4));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"DataView.prototype.getInt32\",\n    \"DataView.prototype.setInt32\",\n    \"DataView.prototype.getUint32\",\n    \"DataView.prototype.setUint32\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getFloat16() · setFloat16() · getFloat32() · setFloat32()\",\n  \"title\": \"Дробные 16 и 32 бита\",\n  \"what\": \"Дробные половинной и одинарной точности.\",\n  \"why\": \"Показания датчиков, графика.\",\n  \"how\": \"const dv = new DataView(new ArrayBuffer(6));\\ndv.setFloat16(0, 1.5);\\ndv.setFloat32(2, 0.1);\\nconsole.log(dv.getFloat16(0), dv.getFloat32(2));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"DataView.prototype.getFloat16\",\n    \"DataView.prototype.setFloat16\",\n    \"DataView.prototype.getFloat32\",\n    \"DataView.prototype.setFloat32\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getFloat64() · setFloat64()\",\n  \"title\": \"Дробные 64 бита\",\n  \"what\": \"Обычные числа JavaScript без потери точности.\",\n  \"why\": \"Точные дробные в бинарных форматах.\",\n  \"how\": \"const dv = new DataView(new ArrayBuffer(8));\\ndv.setFloat64(0, Math.PI);\\nconsole.log(dv.getFloat64(0) === Math.PI);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"DataView.prototype.getFloat64\",\n    \"DataView.prototype.setFloat64\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getBigInt64() · setBigInt64() · getBigUint64() · setBigUint64()\",\n  \"title\": \"64-битные целые\",\n  \"what\": \"Читают и пишут BigInt.\",\n  \"why\": \"Идентификаторы, большие счётчики.\",\n  \"how\": \"const dv = new DataView(new ArrayBuffer(8));\\ndv.setBigUint64(0, 2n ** 64n - 1n);\\nconsole.log(dv.getBigUint64(0), dv.getBigInt64(0));\\ndv.setBigInt64(0, -2n);\\nconsole.log(dv.getBigInt64(0));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"DataView.prototype.getBigInt64\",\n    \"DataView.prototype.setBigInt64\",\n    \"DataView.prototype.getBigUint64\",\n    \"DataView.prototype.setBigUint64\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Двоичный формат описан в документации как «смещение — размер — порядок байтов». Ровно эти три параметра и передаёшь в DataView.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Разбор пакета\",\n  \"task\": \"Пакет: байт 0 — тип (Uint8), байты 1–2 — номер заказа (Uint16, старший байт первым), байты 3–6 — сумма в копейках (Uint32, младший байт первым). Напиши `parsePacket(buf)` → `{ type, id, kopecks }`.\",\n  \"lang\": \"js\",\n  \"start\": \"function parsePacket(buf) {\\n  return { type: 0, id: 0, kopecks: 0 };\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Пакет разобран\",\n      \"js\": \"(() => { const buf = new ArrayBuffer(7); const dv = new DataView(buf); dv.setUint8(0, 2); dv.setUint16(1, 1042); dv.setUint32(3, 44000, true); const p = parsePacket(buf); return p.type === 2 && p.id === 1042 && p.kopecks === 44000; })()\"\n    }\n  ],\n  \"solution\": \"function parsePacket(buf) {\\n  const dv = new DataView(buf);\\n  return { type: dv.getUint8(0), id: dv.getUint16(1), kopecks: dv.getUint32(3, true) };\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-endian",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "shared-memory",
+      "title": "Общая память и Atomics",
+      "summary": "SharedArrayBuffer, grow, growable, maxByteLength, byteLength, slice и Atomics: load, store, add, sub, and, or, xor, exchange, compareExchange, isLockFree, wait, waitAsync, notify, pause.",
+      "chapter": "Бинарные данные и общая память",
+      "durationMinutes": 9,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Касса и кухня работают в разных потоках (Web Workers) и считают общий счётчик заказов. Как не потерять ни одного?\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Два потока\",\n  \"lines\": [\n    [\n      \"bug\",\n      \"Два потока одновременно сделают `count++` — и один заказ пропадёт! Хе-хе.\"\n    ],\n    [\n      \"nika\",\n      \"Для общей памяти есть атомарные операции: они выполняются целиком, никто не вклинится.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"SharedArrayBuffer · byteLength · slice()\",\n  \"title\": \"Общий буфер\",\n  \"what\": \"Буфер, который могут одновременно видеть несколько потоков (workers). В браузере доступен только на изолированных страницах (заголовки COOP и COEP).\",\n  \"why\": \"Параллельные вычисления.\",\n  \"how\": \"if (typeof SharedArrayBuffer === \\\"undefined\\\") {\\n  console.log(\\\"SharedArrayBuffer доступен только на страницах с изоляцией (COOP/COEP)\\\");\\n} else {\\n  const sab = new SharedArrayBuffer(8);\\n  console.log(sab.byteLength, sab.slice(0, 4).byteLength);\\n}\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"SharedArrayBuffer\",\n    \"SharedArrayBuffer.prototype.byteLength\",\n    \"SharedArrayBuffer.prototype.slice\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"growable · maxByteLength · grow()\",\n  \"title\": \"Растущий общий буфер\",\n  \"what\": \"`new SharedArrayBuffer(4, { maxByteLength: 16 })`; общий буфер может только расти: `grow(n)`.\",\n  \"why\": \"Общие данные растущего размера.\",\n  \"how\": \"if (typeof SharedArrayBuffer === \\\"undefined\\\") {\\n  console.log(\\\"SharedArrayBuffer доступен только на страницах с изоляцией (COOP/COEP)\\\");\\n} else {\\n  const sab = new SharedArrayBuffer(4, { maxByteLength: 16 });\\n  sab.grow(8);\\n  console.log(sab.growable, sab.byteLength, sab.maxByteLength);\\n}\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"SharedArrayBuffer.prototype.growable\",\n    \"SharedArrayBuffer.prototype.maxByteLength\",\n    \"SharedArrayBuffer.prototype.grow\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Atomics · load() · store() · add()\",\n  \"title\": \"Атомарные чтение, запись, сложение\",\n  \"what\": \"`Atomics` — объект с атомарными операциями над целочисленными типизированными массивами: `load`, `store`, `add` (возвращает старое значение). Работают и с обычными буферами.\",\n  \"why\": \"Общие счётчики без потерь.\",\n  \"how\": \"const counter = new Int32Array(new ArrayBuffer(4));\\nAtomics.store(counter, 0, 10);\\nconsole.log(Atomics.add(counter, 0, 5), Atomics.load(counter, 0));\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Atomics\",\n    \"Atomics.load\",\n    \"Atomics.store\",\n    \"Atomics.add\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Atomics.sub() · and() · or() · xor()\",\n  \"title\": \"Атомарная арифметика и биты\",\n  \"what\": \"Вычитание и побитовые операции, возвращают старое значение.\",\n  \"why\": \"Флаги, общие для потоков.\",\n  \"how\": \"const a = new Int32Array(new ArrayBuffer(4));\\nAtomics.store(a, 0, 0b1100);\\nAtomics.or(a, 0, 0b0001);\\nAtomics.and(a, 0, 0b1101);\\nAtomics.xor(a, 0, 0b1000);\\nAtomics.sub(a, 0, 1);\\nconsole.log(a[0]);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Atomics.sub\",\n    \"Atomics.and\",\n    \"Atomics.or\",\n    \"Atomics.xor\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Atomics.exchange() · compareExchange() · isLockFree()\",\n  \"title\": \"Обмен и проверка\",\n  \"what\": \"`exchange` — записать и вернуть старое; `compareExchange(arr, i, ожидаемое, новое)` — записать, только если там ожидаемое (основа блокировок); `isLockFree(n)` — работают ли операции размера n без блокировок.\",\n  \"why\": \"Свои блокировки и флаги «занято».\",\n  \"how\": \"const lock = new Int32Array(new ArrayBuffer(4));\\nconsole.log(Atomics.compareExchange(lock, 0, 0, 1), Atomics.compareExchange(lock, 0, 0, 1), Atomics.exchange(lock, 0, 0), Atomics.isLockFree(4));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Atomics.exchange\",\n    \"Atomics.compareExchange\",\n    \"Atomics.isLockFree\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Atomics.wait() · waitAsync() · notify() · pause()\",\n  \"title\": \"Ожидание и пробуждение\",\n  \"what\": \"`wait` — уснуть, пока значение не изменится (только в worker и с общим буфером), `waitAsync` — то же через промис, `notify` — разбудить ждущих, `pause` — подсказка процессору в цикле ожидания.\",\n  \"why\": \"Синхронизация потоков.\",\n  \"how\": \"const a = new Int32Array(new ArrayBuffer(4));\\nconsole.log(typeof Atomics.wait, typeof Atomics.waitAsync, Atomics.notify(a, 0, 1));\\nAtomics.pause?.();\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Atomics.wait\",\n    \"Atomics.waitAsync\",\n    \"Atomics.notify\",\n    \"Atomics.pause\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Общая память без Atomics — гонки и потерянные данные. Каждое общее изменение — атомарной операцией.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Счётчик заказов\",\n  \"task\": \"Напиши `nextOrder(counter)`: атомарно увеличивает `counter[0]` на 1 и возвращает новый номер (через `Atomics.add`, который возвращает старое значение).\",\n  \"lang\": \"js\",\n  \"start\": \"function nextOrder(counter) {\\n  counter[0]++;\\n  return counter[0];\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Номера идут подряд\",\n      \"js\": \"(() => { const c = new Int32Array(new ArrayBuffer(4)); c[0] = 1041; return nextOrder(c) === 1042 && nextOrder(c) === 1043; })()\"\n    },\n    {\n      \"label\": \"Через `Atomics.add`\",\n      \"contains\": \"Atomics.add\"\n    }\n  ],\n  \"solution\": \"function nextOrder(counter) {\\n  return Atomics.add(counter, 0, 1) + 1;\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-atomics-why",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "legacy-strings-dates",
+      "title": "Устаревшее: строки и даты",
+      "summary": "HTML-методы строк anchor, big, blink, bold, fixed, fontcolor, fontsize, italics, link, small, strike, sub, sup; substr, trimLeft, trimRight; getYear, setYear и toGMTString у дат.",
+      "chapter": "Устаревшее: как читать старый код",
+      "durationMinutes": 9,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Достался старый скрипт «Зерна» 2005 года. Он полон странных методов — разбираем и переписываем.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Скрипт из 2005-го\",\n  \"lines\": [\n    [\n      \"lev\",\n      \"Это я писал в 2005-м! Тогда так было можно…\"\n    ],\n    [\n      \"nika\",\n      \"Эти методы оставлены ради старых сайтов — приложение B стандарта. Узнаём их и пишем по-новому.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"anchor · big · blink · bold · fixed · fontcolor · fontsize · italics\",\n  \"title\": \"HTML-методы строк, часть 1\",\n  \"what\": \"Оборачивают строку в старые HTML-теги: `\\\"Хит\\\".bold()` → `<b>Хит</b>`, `fontcolor(\\\"red\\\")` → `<font color=\\\"red\\\">`. Многие из этих тегов давно удалены из HTML.\",\n  \"why\": \"Только узнать в древнем коде. Сегодня — разметка и CSS.\",\n  \"how\": \"console.log(\\\"Хит\\\".bold(), \\\"Скидка\\\".fontcolor(\\\"red\\\"), \\\"Раздел\\\".anchor(\\\"menu\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"String.prototype.anchor\",\n    \"String.prototype.big\",\n    \"String.prototype.blink\",\n    \"String.prototype.bold\",\n    \"String.prototype.fixed\",\n    \"String.prototype.fontcolor\",\n    \"String.prototype.fontsize\",\n    \"String.prototype.italics\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"link() · small() · strike() · sub() · sup()\",\n  \"title\": \"HTML-методы строк, часть 2\",\n  \"what\": \"`link(url)` → `<a href>`, `small` → `<small>`, `strike` → `<strike>`, `sub`/`sup` — нижний и верхний индекс.\",\n  \"why\": \"Только узнать в древнем коде.\",\n  \"how\": \"console.log(\\\"Меню\\\".link(\\\"/menu\\\"), \\\"H\\\".concat(\\\"2\\\".sub(), \\\"O\\\"), \\\"м\\\".concat(\\\"2\\\".sup()));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"String.prototype.link\",\n    \"String.prototype.small\",\n    \"String.prototype.strike\",\n    \"String.prototype.sub\",\n    \"String.prototype.sup\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"substr() · trimLeft() · trimRight()\",\n  \"title\": \"Старые строковые методы\",\n  \"what\": \"`substr(start, length)` — кусок по началу и длине (вместо него `slice`); `trimLeft`/`trimRight` — старые имена `trimStart`/`trimEnd`.\",\n  \"why\": \"Переписать на `slice`, `trimStart`, `trimEnd`.\",\n  \"how\": \"console.log(\\\"Капучино\\\".substr(2, 3), \\\"Капучино\\\".slice(2, 5), \\\"[\\\" + \\\"  раф\\\".trimLeft() + \\\"]\\\");\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"String.prototype.substr\",\n    \"String.prototype.trimLeft\",\n    \"String.prototype.trimRight\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getYear() · setYear() · toGMTString()\",\n  \"title\": \"Старые методы дат\",\n  \"what\": \"`getYear()` — год минус 1900 (2026 → 126), `setYear()` — его пара, `toGMTString()` — старое имя `toUTCString()`.\",\n  \"why\": \"Вместо них: `getFullYear`, `setFullYear`, `toUTCString`.\",\n  \"how\": \"const d = new Date(Date.UTC(2026, 10, 2));\\nconsole.log(d.getYear(), d.getFullYear(), d.toGMTString() === d.toUTCString());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Date.prototype.getYear\",\n    \"Date.prototype.setYear\",\n    \"Date.prototype.toGMTString\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Видишь в коде `substr`, `getYear` или `.bold()` — переписывай: `slice`, `getFullYear` и разметка.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Переписать 2005-й\",\n  \"task\": \"Перепиши функцию `promo(name, year)` без устаревших методов: вместо `name.substr(0, 3)` — `slice`, вместо `getYear() + 1900` — `getFullYear()`, вместо `.bold()` — шаблонная строка с `<b>`.\",\n  \"lang\": \"js\",\n  \"start\": \"function promo(name, date) {\\n  return name.substr(0, 3).bold() + \\\" \\\" + (date.getYear() + 1900);\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Результат тот же\",\n      \"js\": \"promo(\\\"Капучино\\\", new Date(2026, 5, 1)) === \\\"<b>Кап</b> 2026\\\"\"\n    },\n    {\n      \"label\": \"Без substr\",\n      \"contains\": \"substr\",\n      \"absent\": true\n    },\n    {\n      \"label\": \"Без getYear\",\n      \"contains\": \"getYear\",\n      \"absent\": true\n    },\n    {\n      \"label\": \"Без .bold()\",\n      \"contains\": \".bold(\",\n      \"absent\": true\n    }\n  ],\n  \"solution\": \"function promo(name, date) {\\n  return `<b>${name.slice(0, 3)}</b> ${date.getFullYear()}`;\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-getyear",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-substr",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "legacy-objects",
+      "title": "Устаревшее: объекты и функции",
+      "summary": "__proto__, __defineGetter__, __defineSetter__, __lookupGetter__, __lookupSetter__, RegExp.prototype.compile, arguments и caller у функций.",
+      "chapter": "Устаревшее: как читать старый код",
+      "durationMinutes": 8,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"В старом скрипте — `__proto__` и `__defineGetter__`. Переписываем на современный JavaScript.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Подчёркивания\",\n  \"lines\": [\n    [\n      \"bug\",\n      \"`obj.__proto__ = evil` — и всё наследование моё! Хе-хе.\"\n    ],\n    [\n      \"nika\",\n      \"Это старые служебные свойства. У каждого есть современная замена — понятная и безопасная.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"__proto__\",\n  \"title\": \"Старый доступ к прототипу\",\n  \"what\": \"Свойство-аксессор `obj.__proto__` читает и меняет прототип. Замены: `Object.getPrototypeOf` и `Object.setPrototypeOf`; в литерале `{ __proto__: p }` ещё допустим.\",\n  \"why\": \"Узнать в старом коде; опасен при разборе чужих ключей.\",\n  \"how\": \"const base = { hi() { return \\\"привет\\\"; } };\\nconst o = { __proto__: base };\\nconsole.log(o.hi(), o.__proto__ === Object.getPrototypeOf(o));\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Object.prototype.__proto__\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"__defineGetter__ · __defineSetter__ · __lookupGetter__ · __lookupSetter__\",\n  \"title\": \"Старые геттеры и сеттеры\",\n  \"what\": \"Определяют и находят геттеры и сеттеры свойства. Замены: `get`/`set` в литерале и классе, `Object.defineProperty`, `Object.getOwnPropertyDescriptor`.\",\n  \"why\": \"Переписать на современные дескрипторы.\",\n  \"how\": \"const cup = { ml: 350 };\\ncup.__defineGetter__(\\\"liters\\\", function () { return this.ml / 1000; });\\nconsole.log(cup.liters, typeof cup.__lookupGetter__(\\\"liters\\\"), cup.__lookupSetter__(\\\"liters\\\"));\\ncup.__defineSetter__(\\\"liters\\\", function (v) { this.ml = v * 1000; });\\ncup.liters = 0.45;\\nconsole.log(cup.ml);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Object.prototype.__defineGetter__\",\n    \"Object.prototype.__defineSetter__\",\n    \"Object.prototype.__lookupGetter__\",\n    \"Object.prototype.__lookupSetter__\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"RegExp: compile()\",\n  \"title\": \"Перекомпиляция регулярки\",\n  \"what\": \"`re.compile(\\\"новый\\\", \\\"флаги\\\")` меняет шаблон существующего объекта. Замена — просто создать новый: `new RegExp(…)`.\",\n  \"why\": \"Узнать в старом коде.\",\n  \"how\": \"const re = /латте/;\\nre.compile(\\\"раф\\\", \\\"i\\\");\\nconsole.log(re.test(\\\"РАФ\\\"), re.source);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RegExp.prototype.compile\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"arguments · caller у функций\",\n  \"title\": \"Запрещённые свойства функций\",\n  \"what\": \"`fn.arguments` и `fn.caller` из старых движков. У строгих функций, стрелок и классов обращение к ним бросает TypeError. Замены: параметры `...rest` и стек ошибки для отладки.\",\n  \"why\": \"Знать, почему старый код падает в строгом режиме.\",\n  \"how\": \"\\\"use strict\\\";\\nfunction f() {}\\ntry { f.caller; } catch (e) { console.log(e.name); }\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Function.prototype.arguments\",\n    \"Function.prototype.caller\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Двойные подчёркивания в именах — сигнал: метод устарел, ищи современную замену.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Современный стакан\",\n  \"task\": \"Перепиши `makeCup(ml)` без `__defineGetter__` и `__proto__`: верни объект с прототипом `base` (через `Object.create`) и обычным геттером `liters`.\",\n  \"lang\": \"js\",\n  \"start\": \"const base = { kind: \\\"стакан\\\" };\\nfunction makeCup(ml) {\\n  const cup = { ml };\\n  cup.__proto__ = base;\\n  cup.__defineGetter__(\\\"liters\\\", function () { return this.ml / 1000; });\\n  return cup;\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Работает как раньше\",\n      \"js\": \"(() => { const c = makeCup(350); return c.liters === 0.35 && c.kind === \\\"стакан\\\" && Object.getPrototypeOf(c) === base; })()\"\n    },\n    {\n      \"label\": \"Без __proto__\",\n      \"contains\": \"__proto__\",\n      \"absent\": true\n    },\n    {\n      \"label\": \"Без __defineGetter__\",\n      \"contains\": \"__defineGetter__\",\n      \"absent\": true\n    }\n  ],\n  \"solution\": \"const base = { kind: \\\"стакан\\\" };\\nfunction makeCup(ml) {\\n  const cup = Object.create(base);\\n  cup.ml = ml;\\n  Object.defineProperty(cup, \\\"liters\\\", { get() { return this.ml / 1000; }, enumerable: true });\\n  return cup;\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-proto-modern",
           "kind": "practice",
           "required": true
         }
