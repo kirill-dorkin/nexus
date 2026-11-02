@@ -186,7 +186,7 @@ export function CourseNavigator({ courseSlug, items, current }: { courseSlug: st
   };
   return (
     <>
-      <nav className={styles.panel} aria-label="Программа курса">
+      <nav className={styles.panel} aria-label="Уроки курса">
         <Program courseSlug={courseSlug} items={items} current={current} />
       </nav>
       <button type="button" className={styles.fab} onClick={() => setSheet(true)} aria-haspopup="dialog">
