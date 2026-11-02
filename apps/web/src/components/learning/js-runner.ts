@@ -15,8 +15,8 @@ export type RunMode = "preview" | "check";
 export type LogLine = { level: "log" | "info" | "warn" | "error"; text: string };
 export type RunCheck = { js?: string | undefined; log?: string | undefined };
 export type RunnerMessage =
-  | { nexusRunner: string; type: "result"; results: boolean[]; logs: LogLine[] }
-  | { nexusRunner: string; type: "size"; height: number };
+  | { runnerToken: string; type: "result"; results: boolean[]; logs: LogLine[] }
+  | { runnerToken: string; type: "size"; height: number };
 
 export const MENU_FIXTURE = [
   { id: 1, name: "Эспрессо", price: 150, category: "coffee", popular: false },
@@ -74,7 +74,7 @@ export function guardLoops(code: string): string {
       let k = j;
       while (k < n && /\s/.test(code[k]!)) k++;
       if (code[k] === "{") {
-        out += code.slice(i, k + 1) + "if(__nexusLoop())break;";
+        out += code.slice(i, k + 1) + "if(__loopGuard())break;";
         i = k + 1; continue;
       }
       out += code.slice(i, j); i = j; continue;
@@ -89,10 +89,10 @@ const scriptText = (code: string) => code.replace(/<\/(script)/gi, "<\\/$1");
 function prelude(token: string, mode: RunMode): string {
   return `(function(){
 var T=${JSON.stringify(token)},MODE=${JSON.stringify(mode)},logs=[],burst=0;
-window.__nexusLogs=logs;
+window.__runnerLogs=logs;
 // Time is measured per synchronous task: the reset timer only fires once the task yields,
 // so a loop that never yields trips the guard while loops in later handlers start fresh.
-window.__nexusLoop=function(){var now=Date.now();if(!burst){burst=now;setTimeout(function(){burst=0},0);}
+window.__loopGuard=function(){var now=Date.now();if(!burst){burst=now;setTimeout(function(){burst=0},0);}
 if(now-burst>${LOOP_LIMIT_MS}){burst=0;throw new RangeError("Цикл работает слишком долго — похоже, он бесконечный");}return false;};
 function fmt(v,d){d=d||0;
 if(typeof v==="string")return d?JSON.stringify(v):v;
@@ -117,12 +117,12 @@ var m=url.match(/^\\/api\\/menu\\/(\\d+)$/);if(m){var item=MENU.filter(function(
 if(url==="/api/orders"&&method==="POST"){var body={};try{body=JSON.parse(init.body||"{}")}catch(e){return reply(400,{error:"Тело заказа — не JSON"})}return reply(201,Object.assign({id:1042,status:"accepted"},body));}
 return reply(404,{error:"Не найдено"});};
 var pending=false;function schedule(){if(pending)return;pending=true;setTimeout(function(){pending=false;render();},0);}
-function render(){if(!document.body)return;var box=document.getElementById("__nexus-console");
+function render(){if(!document.body)return;var box=document.getElementById("__runner-console");
 if(!logs.length){if(box)box.remove();size();return;}
-if(!box){box=document.createElement("nexus-console");box.id="__nexus-console";box.setAttribute("style","all:initial;display:block;margin-top:8px;border-top:1px solid #3a2a20;background:#1b1410;color:#f5e6d3;font:12px/1.5 ui-monospace,Menlo,monospace;padding:6px 10px;white-space:pre-wrap;word-break:break-word");document.documentElement.appendChild(box);}
+if(!box){box=document.createElement("runner-console");box.id="__runner-console";box.setAttribute("style","all:initial;display:block;margin-top:8px;border-top:1px solid #3a2a20;background:#1b1410;color:#f5e6d3;font:12px/1.5 ui-monospace,Menlo,monospace;padding:6px 10px;white-space:pre-wrap;word-break:break-word");document.documentElement.appendChild(box);}
 box.textContent="";var head=document.createElement("div");head.setAttribute("style","all:initial;display:block;color:#a8927f;font:11px/1.6 ui-monospace,Menlo,monospace;text-transform:uppercase;letter-spacing:.06em");head.textContent="Консоль";box.appendChild(head);
 logs.forEach(function(l){var row=document.createElement("div");row.setAttribute("style","all:initial;display:block;font:inherit;white-space:pre-wrap;color:"+(l.level==="error"?"#fca5a5":l.level==="warn"?"#fcd34d":"#f5e6d3"));row.textContent=(l.level==="error"?"✖ ":l.level==="warn"?"⚠ ":"› ")+l.text;box.appendChild(row);});size();}
-function size(){if(MODE!=="preview")return;var h=Math.max(document.documentElement.scrollHeight,document.body?document.body.scrollHeight:0);parent.postMessage({nexusRunner:T,type:"size",height:h},"*");}
+function size(){if(MODE!=="preview")return;var h=Math.max(document.documentElement.scrollHeight,document.body?document.body.scrollHeight:0);parent.postMessage({runnerToken:T,type:"size",height:h},"*");}
 addEventListener("load",function(){render();size();});
 })();`;
 }
@@ -132,10 +132,10 @@ function checker(token: string, checks: RunCheck[]): string {
     ? `try{r.push(!!(await (async()=>(${check.js}))()))}catch(e){r.push(false)}`
     : `r.push(has(${JSON.stringify(check.log ?? "")}))`);
   return `addEventListener("load",function(){setTimeout(async function(){
-var logs=window.__nexusLogs||[];var norm=function(s){return String(s).replace(/\\s+/g," ").trim().toLowerCase()};
+var logs=window.__runnerLogs||[];var norm=function(s){return String(s).replace(/\\s+/g," ").trim().toLowerCase()};
 var has=function(t){t=norm(t);return logs.some(function(l){return l.level!=="error"&&norm(l.text).indexOf(t)!==-1})};
 var r=[];${steps.join("\n")}
-parent.postMessage({nexusRunner:${JSON.stringify(token)},type:"result",results:r,logs:logs.slice()},"*");},60);});`;
+parent.postMessage({runnerToken:${JSON.stringify(token)},type:"result",results:r,logs:logs.slice()},"*");},60);});`;
 }
 
 const CSP = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src data:">`;
@@ -154,5 +154,5 @@ export function runnerDocument({ code, lang = "html", page = "", mode, token, ch
 }
 
 export function isRunnerMessage(data: unknown, token: string): data is RunnerMessage {
-  return !!data && typeof data === "object" && (data as { nexusRunner?: unknown }).nexusRunner === token;
+  return !!data && typeof data === "object" && (data as { runnerToken?: unknown }).runnerToken === token;
 }

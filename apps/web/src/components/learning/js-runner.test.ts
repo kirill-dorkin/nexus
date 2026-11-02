@@ -6,9 +6,9 @@ import { runInWindow } from "./runner-harness.test-utils";
 
 describe("guardLoops", () => {
   it("guards braced for, while and do bodies", () => {
-    expect(guardLoops("for (let i = 0; i < 3; i++) { x(); }")).toBe("for (let i = 0; i < 3; i++) {if(__nexusLoop())break; x(); }");
-    expect(guardLoops("while (a) {b()}")).toBe("while (a) {if(__nexusLoop())break;b()}");
-    expect(guardLoops("do { n++ } while (n < 3);")).toBe("do {if(__nexusLoop())break; n++ } while (n < 3);");
+    expect(guardLoops("for (let i = 0; i < 3; i++) { x(); }")).toBe("for (let i = 0; i < 3; i++) {if(__loopGuard())break; x(); }");
+    expect(guardLoops("while (a) {b()}")).toBe("while (a) {if(__loopGuard())break;b()}");
+    expect(guardLoops("do { n++ } while (n < 3);")).toBe("do {if(__loopGuard())break; n++ } while (n < 3);");
   });
   it("leaves strings, comments, identifiers and brace-less loops alone", () => {
     const code = 'const format = "for (;;) {"; // while (1) {\nfor (const x of xs) f(x); doIt();';

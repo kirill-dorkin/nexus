@@ -16,8 +16,8 @@ export async function runInWindow(options: {
     const answer = new Promise<{ results: boolean[]; logs: LogLine[] }>((resolve, reject) => {
       const timer = setTimeout(() => reject(new Error("the sandbox never answered")), 8000);
       win.addEventListener("message", (event) => {
-        const data = (event as unknown as { data: { nexusRunner?: string; type?: string; results: boolean[]; logs: LogLine[] } }).data;
-        if (data?.nexusRunner !== token || data.type !== "result") return;
+        const data = (event as unknown as { data: { runnerToken?: string; type?: string; results: boolean[]; logs: LogLine[] } }).data;
+        if (data?.runnerToken !== token || data.type !== "result") return;
         clearTimeout(timer);
         resolve({ results: data.results, logs: data.logs });
       });
