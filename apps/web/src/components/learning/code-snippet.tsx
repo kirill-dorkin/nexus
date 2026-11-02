@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { ArrowCounterClockwise, Check, Copy, Play } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@platform/ui";
 import { highlight, type Token } from "./code-highlight";
+import { useSqlRun } from "./sql/sql-client";
+import { SqlOutput } from "./sql/sql-output";
 import styles from "./code.module.css";
 
 function Tokens({ tokens }: { tokens: Token[] }) {
@@ -19,8 +21,15 @@ function Tokens({ tokens }: { tokens: Token[] }) {
 }
 
 const LANGUAGE_NAMES: Record<string, string> = {
-  html: "HTML", css: "CSS", js: "JavaScript", javascript: "JavaScript", json: "JSON", text: "Текст"
+  html: "HTML", css: "CSS", js: "JavaScript", javascript: "JavaScript", json: "JSON", sql: "SQL", text: "Текст"
 };
+
+/** Result of an SQL example being edited: runs on a fresh teaching database (sql/, ADR-0065). */
+function SqlResult({ code }: { code: string }) {
+  const id = useId();
+  const sql = useSqlRun({ code }, `${id}:snippet`);
+  return <SqlOutput run={sql.run} busy={sql.busy} />;
+}
 
 /** Editable code with live highlighting: a transparent textarea over a highlighted layer. */
 export function CodeEditor({ value, onChange, autoFocus = true, language = "html", label = "Редактор HTML. Tab — отступ, Escape и затем Tab — выйти из редактора" }: {
@@ -83,7 +92,8 @@ export function CodeEditor({ value, onChange, autoFocus = true, language = "html
  * opaque-origin iframe with every sandbox restriction; nothing leaves the browser.
  */
 export function CodeSnippet({ code, language }: { code: string; language?: string | undefined }) {
-  const runnable = language?.toLowerCase() === "html";
+  const lang = language?.toLowerCase();
+  const runnable = lang === "html" || lang === "sql";
   const [editing, setEditing] = useState(false);
   const [value, setValue] = useState(code);
   const [preview, setPreview] = useState(code);
@@ -133,21 +143,24 @@ export function CodeSnippet({ code, language }: { code: string; language?: strin
       </figcaption>
       {editing ? (
         <>
-          <CodeEditor value={value} onChange={setValue} />
+          <CodeEditor value={value} onChange={setValue} language={lang === "sql" ? "sql" : "html"}
+            {...(lang === "sql" ? { label: "Редактор SQL. Tab — отступ, Escape и затем Tab — выйти из редактора" } : {})} />
           <section className={styles.result} aria-label="Результат кода">
             <div className={styles.resultBar}>
               <span>Результат</span>
               <span className={styles.live}><span aria-hidden="true" /> обновляется при вводе</span>
             </div>
-            <div className={styles.frameWrap}>
-              <iframe
-                className={styles.frame}
-                title="Результат вашего HTML"
-                sandbox=""
-                referrerPolicy="no-referrer"
-                srcDoc={preview}
-              />
-            </div>
+            {lang === "sql" ? <SqlResult code={preview} /> : (
+              <div className={styles.frameWrap}>
+                <iframe
+                  className={styles.frame}
+                  title="Результат вашего HTML"
+                  sandbox=""
+                  referrerPolicy="no-referrer"
+                  srcDoc={preview}
+                />
+              </div>
+            )}
           </section>
         </>
       ) : (

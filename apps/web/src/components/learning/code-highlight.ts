@@ -115,8 +115,40 @@ export function highlightCode(code: string, language: string): Token[] {
   return tokens;
 }
 
+const SQL_KEYWORDS = new Set(("select from where and or not in is null like ilike between as distinct order by asc desc nulls first last " +
+  "limit offset fetch next rows only group having join inner left right full outer cross on using natural union all intersect except " +
+  "with recursive insert into values update set delete returning create table drop alter add column rename to primary key foreign " +
+  "references unique check default constraint index view materialized if exists cascade restrict begin commit rollback savepoint " +
+  "transaction case when then else end cast true false conflict do nothing over partition window range preceding following unbounded " +
+  "current row explain analyze generated always identity lateral filter within any some grant revoke truncate interval date time " +
+  "timestamp integer int bigint smallint numeric decimal real text varchar char boolean serial jsonb json array collate escape " +
+  "temporary temp replace function returns language trigger for each execute vacuum").split(" "));
+
+/** SQL: keywords in any case, strings, comments, numbers and function names. */
+export function highlightSql(code: string): Token[] {
+  const tokens: Token[] = [];
+  const pattern = /(--[^\n]*|\/\*[\s\S]*?\*\/)|('(?:''|[^'])*'?|\$\$[\s\S]*?(?:\$\$|$))|("(?:""|[^"])*"?)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_\u0400-\u04FF][\w\u0400-\u04FF]*)|([(),;.*=<>!+\-/%|:\[\]]+)/g;
+  let last = 0;
+  for (const m of code.matchAll(pattern)) {
+    push(tokens, "plain", code.slice(last, m.index));
+    const [text, comment, string, quoted, number, word] = m;
+    if (comment) push(tokens, "comment", text);
+    else if (string) push(tokens, "string", text);
+    else if (quoted) push(tokens, "plain", text);
+    else if (number) push(tokens, "number", text);
+    else if (word) {
+      const isFunction = /^\s*\(/.test(code.slice(m.index! + text.length));
+      push(tokens, SQL_KEYWORDS.has(word.toLowerCase()) ? "keyword" : isFunction ? "property" : "plain", text);
+    } else push(tokens, "punct", text);
+    last = m.index! + text.length;
+  }
+  push(tokens, "plain", code.slice(last));
+  return tokens;
+}
+
 export function highlight(code: string, language?: string): Token[] {
   const lang = (language ?? "").toLowerCase();
+  if (lang === "sql" || lang === "pgsql" || lang === "postgresql") return highlightSql(code);
   if (lang === "html" || lang === "xml" || lang === "svg") return highlightHtml(code);
   if (["js", "javascript", "ts", "json", "css"].includes(lang)) return highlightCode(code, lang);
   return [{ kind: "plain", text: code }];

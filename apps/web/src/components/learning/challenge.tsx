@@ -6,6 +6,9 @@ import { brand } from "@platform/brand";
 import { CodeEditor } from "./code-snippet";
 import { cssMatches, readCss, type CssCheck } from "./css-rules";
 import { isRunnerMessage, runnerDocument } from "./js-runner";
+import { useSqlRun } from "./sql/sql-client";
+import type { SqlBase, SqlJob } from "./sql/sql-engine";
+import { SqlOutput, SqlSchema } from "./sql/sql-output";
 import { SaveProgressHint } from "./signup-nudge";
 import codeStyles from "./code.module.css";
 import styles from "./challenge.module.css";
@@ -16,6 +19,8 @@ import styles from "./challenge.module.css";
  * DOMParser document (no scripts execute) and light up live as they type.
  * Runnable challenges (`lang: "js"`, or any `js`/`log` check) execute the learner's code in an
  * opaque-origin sandbox with the network closed (js-runner.ts, ADR-0064).
+ * SQL challenges (`lang: "sql"`) run the learner's queries against a fresh teaching database
+ * in PGlite inside a Web Worker (sql/, ADR-0065).
  * This is practice only: official progress still comes from server-checked quizzes.
  */
 
@@ -31,6 +36,14 @@ export type ChallengeCheck = {
   js?: string;
   /** Text the learner's code must print to the console. */
   log?: string;
+  /** SQL: a query run after the learner's code that must return true. */
+  sql?: string;
+  /** SQL: a reference query whose rows the learner's last result must match. */
+  rows?: string;
+  /** With `rows`: row order matters. */
+  ordered?: boolean;
+  /** With `rows`: column names (aliases) matter. */
+  names?: boolean;
   count?: number;
   /** Passes only if at most this many elements match. */
   max?: number;
@@ -46,9 +59,12 @@ export type Challenge = {
   checks: ChallengeCheck[];
   hint?: string;
   solution?: string;
-  /** "js": the learner edits JavaScript that runs on top of the fixed `page` markup. */
-  lang?: "html" | "js";
+  /** "js": the learner edits JavaScript that runs on top of the fixed `page` markup. "sql": queries. */
+  lang?: "html" | "js" | "sql";
   page?: string;
+  /** SQL: the starting database ("zerno" by default) and extra SQL run before the learner's code. */
+  db?: SqlBase;
+  setup?: string;
 };
 
 const str = (v: unknown, max: number): v is string => typeof v === "string" && v.length <= max;
@@ -63,15 +79,24 @@ export function parseChallenge(source: string): Challenge | null {
   }
   const c = raw as Record<string, unknown> | null;
   if (!c || !str(c.title, 120) || !str(c.task, 1000) || !str(c.start, 6000) || !opt(c.hint, 600) || !opt(c.solution, 6000)) return null;
-  if (c.lang !== undefined && c.lang !== "html" && c.lang !== "js") return null;
+  if (c.lang !== undefined && c.lang !== "html" && c.lang !== "js" && c.lang !== "sql") return null;
   if (!opt(c.page, 3000) || (c.page !== undefined && c.lang !== "js")) return null;
+  const sql = c.lang === "sql";
+  if (!opt(c.setup, 4000) || (c.setup !== undefined && !sql)) return null;
+  if (c.db !== undefined && !(sql && (c.db === "zerno" || c.db === "empty"))) return null;
   if (!Array.isArray(c.checks) || c.checks.length < 1 || c.checks.length > 8) return null;
   const checks: ChallengeCheck[] = [];
   for (const item of c.checks as Record<string, unknown>[]) {
     if (!item || !str(item.label, 140) || !opt(item.selector, 200) || !opt(item.contains, 200) || !opt(item.text, 200) ||
       !opt(item.attr, 60) || !opt(item.value, 300) ||
       !opt(item.js, 400) || !opt(item.log, 200) || (typeof item.js === "string" && /<\/script/i.test(item.js)) ||
-      [item.selector, item.contains, item.css, item.js, item.log].filter((v) => v !== undefined).length !== 1 ||
+      !opt(item.sql, 600) || !opt(item.rows, 600) ||
+      [item.selector, item.contains, item.css, item.js, item.log, item.sql, item.rows].filter((v) => v !== undefined).length !== 1 ||
+      // SQL challenges are checked by queries (and source fragments); web challenges never by queries.
+      (sql ? item.selector !== undefined || item.css !== undefined || item.js !== undefined || item.log !== undefined
+        : item.sql !== undefined || item.rows !== undefined) ||
+      ((item.ordered !== undefined || item.names !== undefined) && item.rows === undefined) ||
+      (item.ordered !== undefined && typeof item.ordered !== "boolean") || (item.names !== undefined && typeof item.names !== "boolean") ||
       (item.css !== undefined && !validCssCheck(item.css)) ||
       (item.count !== undefined && !(Number.isInteger(item.count) && (item.count as number) >= 1 && (item.count as number) <= 50)) ||
       (item.max !== undefined && !(Number.isInteger(item.max) && (item.max as number) >= 0 && (item.max as number) <= 50)) ||
@@ -82,8 +107,10 @@ export function parseChallenge(source: string): Challenge | null {
     title: c.title, task: c.task, start: c.start, checks,
     ...(c.hint === undefined ? {} : { hint: c.hint as string }),
     ...(c.solution === undefined ? {} : { solution: c.solution as string }),
-    ...(c.lang === undefined ? {} : { lang: c.lang as "html" | "js" }),
-    ...(c.page === undefined ? {} : { page: c.page as string })
+    ...(c.lang === undefined ? {} : { lang: c.lang as "html" | "js" | "sql" }),
+    ...(c.page === undefined ? {} : { page: c.page as string }),
+    ...(c.db === undefined ? {} : { db: c.db as SqlBase }),
+    ...(c.setup === undefined ? {} : { setup: c.setup as string })
   };
 }
 
@@ -98,19 +125,28 @@ function validCssCheck(value: unknown): value is CssCheck {
 
 export const isRunCheck = (check: ChallengeCheck) => check.js !== undefined || check.log !== undefined;
 export const isRunnable = (challenge: Challenge) => challenge.lang === "js" || challenge.checks.some(isRunCheck);
+export const isSqlCheck = (check: ChallengeCheck) => check.sql !== undefined || check.rows !== undefined;
+
+/** What the SQL engine runs for a challenge: the learner's code on the starting database, with the query checks. */
+export const sqlJob = (challenge: Challenge, code: string): SqlJob => ({
+  code, base: challenge.db, setup: challenge.setup,
+  checks: challenge.checks.filter(isSqlCheck).map(({ sql, rows, ordered, names }) => ({ sql, rows, ordered, names }))
+});
 
 /** The page a challenge's static checks read: the learner's HTML, or the fixed page of a JS challenge. */
-export const staticPage = (challenge: Challenge, code: string) => (challenge.lang === "js" ? challenge.page ?? "" : code);
+export const staticPage = (challenge: Challenge, code: string) =>
+  (challenge.lang === "js" ? challenge.page ?? "" : challenge.lang === "sql" ? "" : code);
 
 /**
  * Evaluates the static checks against the learner's HTML. Pure apart from DOMParser.
- * Runnable checks (`js`, `log`) report false here; their results come from the sandbox.
+ * Runnable checks (`js`, `log`) and SQL checks report false here; their results come from the
+ * sandbox and the SQL engine.
  */
 export function runChecks(code: string, checks: ChallengeCheck[], doc: Document): boolean[] {
   const source = code.toLowerCase();
   let rules: ReturnType<typeof readCss> | null = null;
   return checks.map((check) => {
-    if (isRunCheck(check)) return false;
+    if (isRunCheck(check) || isSqlCheck(check)) return false;
     if (check.css !== undefined) {
       rules ??= readCss(code);
       const found = cssMatches(rules, check.css);
@@ -198,10 +234,16 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
     const timer = window.setTimeout(() => { if (!answered) setRunResults([]); }, 5000);
     return () => { window.removeEventListener("message", onMessage); window.clearTimeout(timer); };
   }, [runnable, runChecksList, token]);
+  // SQL challenges: the worker runs the learner's queries on a fresh database and answers per check.
+  const isSql = challenge.lang === "sql";
+  const webLang = challenge.lang === "js" ? "js" : "html";
+  const sql = useSqlRun(isSql ? sqlJob(challenge, checked) : null, id);
   const results = useMemo(() => {
     let k = 0;
-    return challenge.checks.map((check, i) => (isRunCheck(check) ? runResults[k++] === true : staticResults[i] === true));
-  }, [challenge.checks, runResults, staticResults]);
+    let q = 0;
+    return challenge.checks.map((check, i) => (isRunCheck(check) ? runResults[k++] === true
+      : isSqlCheck(check) ? sql.run?.results[q++] === true : staticResults[i] === true));
+  }, [challenge.checks, runResults, staticResults, sql.run]);
   const passed = results.filter(Boolean).length;
   const done = passed === results.length;
   useEffect(() => {
@@ -239,11 +281,12 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
             <span>Результат</span>
             <span className={codeStyles.live}><span aria-hidden="true" /> обновляется при вводе</span>
           </div>
+          {isSql ? <SqlOutput run={sql.run} busy={sql.busy} /> : (
           <div className={`${codeStyles.frameWrap} ${styles.frameWrap}`}>
             {runnable ? (
               <iframe className={codeStyles.frame} title={`Результат задания «${challenge.title}»`} sandbox="allow-scripts"
                 referrerPolicy="no-referrer"
-                srcDoc={runnerDocument({ code: checked, lang: challenge.lang, page: challenge.page, mode: "preview", token: `${id}:preview` })} />
+                srcDoc={runnerDocument({ code: checked, lang: webLang, page: challenge.page, mode: "preview", token: `${id}:preview` })} />
             ) : (
               <iframe className={codeStyles.frame} title={`Результат задания «${challenge.title}»`} sandbox=""
                 referrerPolicy="no-referrer" srcDoc={checked} />
@@ -251,11 +294,13 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
             {runnable && runChecksList.length ? (
               <iframe ref={checkFrame} hidden aria-hidden="true" tabIndex={-1} title="Проверка задания" sandbox="allow-scripts"
                 referrerPolicy="no-referrer"
-                srcDoc={runnerDocument({ code: checked, lang: challenge.lang, page: challenge.page, mode: "check", token, checks: runChecksList })} />
+                srcDoc={runnerDocument({ code: checked, lang: webLang, page: challenge.page, mode: "check", token, checks: runChecksList })} />
             ) : null}
           </div>
+          )}
         </div>
       </div>
+      {isSql && (challenge.db ?? "zerno") === "zerno" ? <SqlSchema /> : null}
       {celebrate && done ? (
         <p className={styles.success} role="status">
           <Trophy size={20} weight="fill" aria-hidden="true" /> Готово! Всё работает — идём дальше.

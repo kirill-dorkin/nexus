@@ -1,10 +1,12 @@
 // @vitest-environment happy-dom
 import { existsSync, readFileSync } from "node:fs";
-import { describe, expect, it } from "vitest";
-import { isRunCheck, isRunnable, parseChallenge, runChecks, staticPage, type Challenge } from "./challenge";
+import { afterAll, describe, expect, it } from "vitest";
+import { isRunCheck, isRunnable, isSqlCheck, parseChallenge, runChecks, sqlJob, staticPage, type Challenge } from "./challenge";
 import { parseConcept, parseRecap, parseStory } from "./story";
 import { needsModule } from "./js-runner";
 import { runInWindow } from "./runner-harness.test-utils";
+import { runSqlJob } from "./sql/sql-engine";
+import { openTestDatabase } from "./sql/sql-test-db.test-utils";
 
 type Manifest = { lessons: { slug: string; blocks: { type: string; markdown?: string }[] }[] };
 // Tests run from the repository root (see vitest.config.ts).
@@ -13,13 +15,25 @@ const courses: [string, Manifest][] = [
   ["CSS", JSON.parse(readFileSync("docs/examples/css-track.manifest.json", "utf8")) as Manifest],
   ...(existsSync("docs/examples/js-track.manifest.json")
     ? [["JavaScript", JSON.parse(readFileSync("docs/examples/js-track.manifest.json", "utf8")) as Manifest] as [string, Manifest]]
+    : []),
+  ...(existsSync("docs/examples/sql-track.manifest.json")
+    ? [["SQL", JSON.parse(readFileSync("docs/examples/sql-track.manifest.json", "utf8")) as Manifest] as [string, Manifest]]
     : [])
 ];
+// One PostgreSQL (PGlite) for every SQL check, as the browser keeps one per page.
+let database: ReturnType<typeof openTestDatabase> | null = null;
+const sqlDatabase = () => (database ??= openTestDatabase());
+afterAll(async () => { if (database) await (await database).close(); });
 /** Static checks in DOMParser, runnable ones in the same sandbox document the browser uses. */
 async function run(code: string, challenge: Challenge): Promise<boolean[]> {
   const stat = runChecks(code, challenge.checks, new DOMParser().parseFromString(staticPage(challenge, code), "text/html"));
+  if (challenge.lang === "sql") {
+    const { results } = await runSqlJob(await sqlDatabase(), sqlJob(challenge, code));
+    let q = 0;
+    return challenge.checks.map((check, i) => (isSqlCheck(check) ? results[q++] === true : stat[i]!));
+  }
   if (!isRunnable(challenge) || !challenge.checks.some(isRunCheck)) return stat;
-  const { results } = await runInWindow({ code, lang: challenge.lang, page: challenge.page, checks: challenge.checks.filter(isRunCheck) });
+  const { results } = await runInWindow({ code, lang: challenge.lang === "js" ? "js" : "html", page: challenge.page, checks: challenge.checks.filter(isRunCheck) });
   let k = 0;
   return challenge.checks.map((check, i) => (isRunCheck(check) ? results[k++] === true : stat[i]!));
 }
@@ -43,7 +57,16 @@ for (const [name, manifest] of courses) {
       expect(challenge!.solution, "a solution is required").toBeTruthy();
       expect(await run(challenge!.solution!, challenge!), "the solution must pass every check").not.toContain(false);
       expect(await run(challenge!.start, challenge!), "the starting code must not already pass").toContain(false);
-    }, 15000);
+    }, 60000);
+  });
+
+  const sqlCards = blocks("concept").some((b) => parseConcept(b.source)?.lang === "sql");
+  if (sqlCards) describe(`${name} course runnable SQL examples`, () => {
+    const cards = blocks("concept").map((b) => ({ ...b, concept: parseConcept(b.source) })).filter((b) => b.concept?.lang === "sql" && b.concept.show);
+    it.each(cards.map((c) => [`${c.lesson}: ${c.concept!.name}`, c.concept!.how!] as const))("%s runs without an error", async (_, how) => {
+      const { output } = await runSqlJob(await sqlDatabase(), { code: how });
+      expect(output.kind, JSON.stringify(output)).not.toBe("error");
+    }, 60000);
   });
 
   const examples = blocks("concept").map((b) => ({ lesson: b.lesson, concept: parseConcept(b.source) }))
@@ -92,5 +115,15 @@ describe("challenge checks", () => {
     expect(parseChallenge('{"title":"t","task":"x","start":"","checks":[{"label":"a"}]}')).toBeNull();
     expect(parseChallenge('{"title":"t","task":"x","start":"","checks":[{"label":"a","selector":"p","contains":"p"}]}')).toBeNull();
     expect(parseChallenge('{"title":"t","task":"x","start":"","checks":[{"label":"a","selector":"p"}]}')).not.toBeNull();
+  });
+  it("accepts query checks only in SQL challenges, and page markup only in web ones", () => {
+    const spec = (extra: object) => JSON.stringify({ title: "t", task: "x", start: "", ...extra });
+    expect(parseChallenge(spec({ lang: "sql", checks: [{ label: "a", rows: "SELECT 1", ordered: true }, { label: "b", sql: "SELECT true" }, { label: "c", contains: "select" }] }))).not.toBeNull();
+    expect(parseChallenge(spec({ lang: "sql", db: "empty", setup: "CREATE TABLE t (x int)", checks: [{ label: "a", sql: "SELECT true" }] }))).not.toBeNull();
+    expect(parseChallenge(spec({ checks: [{ label: "a", rows: "SELECT 1" }] }))).toBeNull();
+    expect(parseChallenge(spec({ lang: "sql", checks: [{ label: "a", selector: "p" }] }))).toBeNull();
+    expect(parseChallenge(spec({ lang: "sql", checks: [{ label: "a", sql: "SELECT true", ordered: true }] }))).toBeNull();
+    expect(parseChallenge(spec({ lang: "sql", db: "prod", checks: [{ label: "a", sql: "SELECT true" }] }))).toBeNull();
+    expect(parseChallenge(spec({ setup: "DROP TABLE x", checks: [{ label: "a", selector: "p" }] }))).toBeNull();
   });
 });
