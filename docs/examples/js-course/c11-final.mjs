@@ -69,7 +69,7 @@ export default function final(c, ch, rc) {
         ["you", "В викторине вопросы всегда идут одинаково. Хочу случайный порядок."],
         ["bro", "`Math.random()` даёт случайное число от 0 до 1. Остальное — арифметика."]),
       fnc("Math.random()", "Случайное число", "Число от 0 (включительно) до 1 (не включая).", "Случайный выбор, перемешивание.", "console.log(Math.random());"),
-      idea("Случайный элемент", "Math.floor(Math.random() * n)", "Целое от 0 до n−1 — готовый случайный индекс массива.", "Случайный вопрос, совет дня.", 'const tips = ["Пей воду", "Делай перерывы", "Читай документацию"];\nconsole.log(tips[Math.floor(Math.random() * tips.length)]);'),
+      idea("Случайный элемент", "Math.floor(Math.random() * n)", "Целое от 0 до n−1 — готовый случайный индекс массива.", "Случайный вопрос, совет дня.", 'const tips = ["Пей воду", "Делай перерывы", "Повторяй пройденное"];\nconsole.log(tips[Math.floor(Math.random() * tips.length)]);'),
       fnc("Math.min() · Math.max()", "Меньшее и большее", "`Math.max(...scores)` — максимум массива через spread.", "Рекорд, ограничение значения.", "const scores = [150, 290, 220];\nconsole.log(Math.min(...scores), Math.max(...scores));"),
       fnc("Math.abs()", "Модуль", "Число без знака: `Math.abs(-5)` → 5.", "Разница без учёта знака.", "console.log(Math.abs(220 - 290));"),
       rule("`Math.random` не годится для паролей и промокодов — для них есть `crypto.getRandomValues`.")
