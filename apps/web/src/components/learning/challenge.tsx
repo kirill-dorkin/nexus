@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { ArrowCounterClockwise, Check, Circle, Eye, Lightbulb, Trophy } from "@phosphor-icons/react/dist/ssr";
 import { brand } from "@platform/brand";
 import { CodeEditor } from "./code-snippet";
+import { cssMatches, readCss, type CssCheck } from "./css-rules";
 import { SaveProgressHint } from "./signup-nudge";
 import codeStyles from "./code.module.css";
 import styles from "./challenge.module.css";
@@ -21,6 +22,8 @@ export type ChallengeCheck = {
   selector?: string;
   /** Case-insensitive source fragment, for things the DOM hides (doctype, comments). */
   contains?: string;
+  /** A CSS declaration the learner must write (see css-rules.ts). */
+  css?: CssCheck;
   count?: number;
   /** Passes only if at most this many elements match. */
   max?: number;
@@ -54,7 +57,9 @@ export function parseChallenge(source: string): Challenge | null {
   const checks: ChallengeCheck[] = [];
   for (const item of c.checks as Record<string, unknown>[]) {
     if (!item || !str(item.label, 140) || !opt(item.selector, 200) || !opt(item.contains, 200) || !opt(item.text, 200) ||
-      !opt(item.attr, 60) || !opt(item.value, 300) || (item.selector === undefined) === (item.contains === undefined) ||
+      !opt(item.attr, 60) || !opt(item.value, 300) ||
+      [item.selector, item.contains, item.css].filter((v) => v !== undefined).length !== 1 ||
+      (item.css !== undefined && !validCssCheck(item.css)) ||
       (item.count !== undefined && !(Number.isInteger(item.count) && (item.count as number) >= 1 && (item.count as number) <= 50)) ||
       (item.max !== undefined && !(Number.isInteger(item.max) && (item.max as number) >= 0 && (item.max as number) <= 50)) ||
       (item.absent !== undefined && typeof item.absent !== "boolean")) return null;
@@ -69,10 +74,23 @@ export function parseChallenge(source: string): Challenge | null {
 
 const norm = (s: string) => s.replace(/\s+/g, " ").trim().toLowerCase();
 
+function validCssCheck(value: unknown): value is CssCheck {
+  const c = value as Record<string, unknown> | null;
+  const values = c?.value === undefined ? [] : [c.value].flat();
+  return !!c && str(c.selector, 200) && (c.selector as string).length > 0 && str(c.property, 80) && (c.property as string).length > 0 &&
+    values.length <= 8 && values.every((v) => str(v, 200)) && opt(c.includes, 120) && opt(c.within, 120);
+}
+
 /** Evaluates every check against the learner's HTML. Pure apart from DOMParser. */
 export function runChecks(code: string, checks: ChallengeCheck[], doc: Document): boolean[] {
   const source = code.toLowerCase();
+  let rules: ReturnType<typeof readCss> | null = null;
   return checks.map((check) => {
+    if (check.css !== undefined) {
+      rules ??= readCss(code);
+      const found = cssMatches(rules, check.css);
+      return check.absent ? !found : found;
+    }
     if (check.contains !== undefined) {
       const found = source.includes(check.contains.toLowerCase());
       return check.absent ? !found : found;

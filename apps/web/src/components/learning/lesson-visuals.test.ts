@@ -40,6 +40,13 @@ describe("code highlighting", () => {
     expect(tokens.find((t) => t.kind === "entity")?.text).toBe("&amp;");
     expect(tokens.find((t) => t.kind === "comment")?.text).toBe("<!-- c -->");
   });
+  it("highlights CSS inside <style> without dropping text", () => {
+    const code = "<style>.card { color: red; }</style><p>x</p>";
+    const tokens = highlight(code, "html");
+    expect(tokens.map((t) => t.text).join("")).toBe(code);
+    expect(tokens.find((t) => t.kind === "property")?.text).toBe("color");
+    expect(tokens.filter((t) => t.kind === "tag").map((t) => t.text)).toEqual(["style", "style", "p", "p"]);
+  });
   it("keeps unknown languages as plain text", () => {
     expect(highlight("WEBVTT", "text")).toEqual([{ kind: "plain", text: "WEBVTT" }]);
   });
