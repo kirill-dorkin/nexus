@@ -224,37 +224,6 @@
   background: var(--action-primary);
   color: var(--text-on-action);
 }
-.outlineCompact {
-  gap: 0.25rem;
-}
-.outlineCompact .lessonLink {
-  gap: 0.75rem;
-  min-height: 48px;
-  padding: 0.6rem 0.7rem;
-  border-color: transparent;
-  background: transparent;
-  font-size: 0.9rem;
-}
-.outlineCompact .lessonLink:hover {
-  border-color: transparent;
-  background: var(--surface-hover);
-}
-.outlineCompact .lessonLink[aria-current="page"] {
-  border-color: transparent;
-  background: color-mix(in srgb, var(--accent-action) 10%, transparent);
-}
-.outlineCompact .minutes {
-  display: none;
-}
-.outlineCompact .lessonLink {
-  grid-template-columns: auto minmax(0, 1fr);
-}
-.outlineCompact .number {
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 0.55rem;
-  font-size: 0.72rem;
-}
 
 /* Lesson */
 .lessonLayout {
@@ -288,22 +257,11 @@
   position: sticky;
   top: 92px;
   display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
   gap: 1rem;
   min-width: 0;
-}
-.lessonOutlineSurface {
-  display: grid;
-  gap: 0.75rem;
-  padding: 1rem;
-  border-radius: 1.25rem;
-}
-.lessonOutlineSurface > :global(.ui-heading) {
-  padding: 0.25rem 0.5rem 0;
-  color: var(--text-secondary);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  /* The program scrolls inside the panel, so the whole column always fits the screen. */
+  max-height: calc(100dvh - 92px - 1.5rem);
 }
 .lessonNav {
   display: grid;
@@ -523,8 +481,13 @@
   .lessonAside {
     position: static;
   }
+  .lessonAside {
+    max-height: none;
+  }
   .lessonLayout {
     grid-template-columns: minmax(0, 1fr);
+    /* Room for the floating «Программа» button, so it never covers the lesson navigation. */
+    padding-bottom: 4.5rem;
   }
   .catalogHero {
     grid-template-columns: minmax(0, 1fr);
@@ -601,42 +564,4 @@
 .chapterMeta {
   color: var(--text-secondary);
   font-size: 0.85rem;
-}
-.chapters .chapterCompact + .chapterCompact {
-  border-top: 1px solid var(--border-default);
-}
-.chapterCompact summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.6rem 0.25rem;
-  color: var(--text-primary);
-  font-size: 0.9rem;
-  font-weight: 700;
-  cursor: pointer;
-  list-style: none;
-}
-.chapterCompact summary::-webkit-details-marker {
-  display: none;
-}
-.chapterCompact summary::after {
-  content: "›";
-  color: var(--text-secondary);
-  transition: transform 160ms ease;
-}
-.chapterCompact[open] summary::after {
-  transform: rotate(90deg);
-}
-.chapterCompact summary small {
-  margin-left: auto;
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-.chapterCompact > ol {
-  padding-bottom: 0.5rem;
-}
-.chaptersCompact {
-  gap: 0;
 }

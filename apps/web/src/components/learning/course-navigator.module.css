@@ -1,0 +1,333 @@
+/* Course program beside a lesson: a scrollable panel on desktop, a sheet on small screens. */
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border: 1px solid var(--border-default);
+  border-radius: 1.25rem;
+  background: var(--surface-solid);
+  overflow: hidden;
+}
+.program {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+.top {
+  display: grid;
+  gap: 0.6rem;
+  padding: 1rem 1rem 0.75rem;
+  border-bottom: 1px solid var(--border-default);
+}
+.position {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.label {
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.count {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+.count strong {
+  color: var(--text-primary);
+}
+.meter {
+  height: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface-hover);
+}
+.meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--action-primary);
+  transition: width 300ms ease;
+}
+.visitedLine,
+.found {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+.search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.65rem;
+  min-height: 40px;
+  border: 1px solid var(--border-default);
+  border-radius: 0.75rem;
+  background: var(--surface-hover);
+  color: var(--text-secondary);
+}
+.search:focus-within {
+  border-color: color-mix(in srgb, var(--accent-action) 60%, transparent);
+}
+.search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 0.9rem;
+}
+.search input::-webkit-search-cancel-button {
+  display: none;
+}
+.search button {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.search button:hover {
+  background: var(--border-default);
+  color: var(--text-primary);
+}
+
+.scroll {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.35rem 0.5rem 0.75rem;
+  scrollbar-width: thin;
+}
+.chapter + .chapter {
+  border-top: 1px solid var(--border-default);
+}
+.chapterHead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "no count" "title count";
+  align-items: center;
+  column-gap: 0.75rem;
+  width: 100%;
+  padding: 0.6rem 0.5rem;
+  border: 0;
+  border-radius: 0.6rem;
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+/* The chapter you are scrolling through stays visible at the top of the panel. */
+.chapterHead[aria-expanded="true"] {
+  position: sticky;
+  top: -0.35rem;
+  z-index: 1;
+  background: var(--surface-solid);
+  box-shadow: 0 1px 0 var(--border-default);
+}
+.chapterHead:hover:not(:disabled) {
+  background: var(--surface-hover);
+}
+.chapterHead:disabled {
+  cursor: default;
+}
+.chapterHead:focus-visible,
+.lesson:focus-visible {
+  outline: 2px solid var(--accent-action);
+  outline-offset: 1px;
+}
+.chapterNo {
+  grid-area: no;
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.chapterTitle {
+  grid-area: title;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.chapter[data-current] .chapterNo {
+  color: var(--text-accent, var(--accent-action));
+}
+.chapterCount {
+  grid-area: count;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: var(--surface-hover);
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.chapterHead[aria-expanded="true"] .chapterCount {
+  background: transparent;
+}
+.lessons {
+  display: grid;
+  gap: 2px;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+.lesson {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 40px;
+  padding: 0.4rem 0.5rem;
+  border-radius: 0.6rem;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  line-height: 1.3;
+  text-decoration: none;
+}
+.lesson:hover {
+  background: var(--surface-hover);
+}
+.no {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.5rem;
+  background: var(--surface-hover);
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.lesson[data-visited] .no {
+  background: transparent;
+  color: #4ade80;
+}
+.lesson[data-visited] .title {
+  color: var(--text-secondary);
+}
+.minutes {
+  color: var(--text-disabled);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+.lesson[aria-current="page"] {
+  background: color-mix(in srgb, var(--accent-action) 12%, transparent);
+  font-weight: 700;
+}
+.lesson[aria-current="page"] .no {
+  background: var(--action-primary);
+  color: var(--text-on-action);
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Small screens: a floating button opens the program as a sheet. */
+.fab {
+  display: none;
+}
+.sheet {
+  width: min(100vw, 30rem);
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid var(--border-default);
+  background: var(--surface-solid);
+  color: var(--text-primary);
+}
+.sheet::backdrop {
+  background: rgb(0 0 0 / 55%);
+}
+.sheet[open] {
+  animation: slide-in 200ms ease-out;
+}
+.sheetInner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 0.5rem;
+}
+.sheetClose {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border-default);
+  border-radius: 50%;
+  background: var(--surface-solid);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+.sheet .top {
+  padding-right: 3.5rem;
+}
+@keyframes slide-in {
+  from { transform: translateX(100%); }
+  to { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sheet[open] { animation: none; }
+  .meter span { transition: none; }
+}
+
+@media (max-width: 960px) {
+  .panel {
+    display: none;
+  }
+  .fab {
+    position: fixed;
+    right: 1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    z-index: 40;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 48px;
+    padding: 0 1.1rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--action-primary);
+    color: var(--text-on-action);
+    font: inherit;
+    font-weight: 750;
+    box-shadow: 0 12px 30px -10px rgb(0 0 0 / 60%);
+    cursor: pointer;
+  }
+  .fab span {
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+    background: rgb(0 0 0 / 15%);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+  }
+}
