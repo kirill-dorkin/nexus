@@ -5,9 +5,8 @@ import { LearningShell } from "./learning-shell";
 import { LessonBlocks } from "./lesson-blocks";
 import type { PublicLearningLesson } from "@platform/contracts";
 import { courseUrl, lessonUrl } from "../../lib/public-learning-routes";
-import { Heading, Surface } from "@platform/ui";
 import { LearningPageHeading } from "./learning-page-heading";
-import { LessonOutline } from "./lesson-outline";
+import { CourseNavigator } from "./course-navigator";
 import { SignupNudge } from "./signup-nudge";
 import styles from "./flow.module.css";
 import { absoluteUrl, jsonLd } from "../../lib/site";
@@ -106,14 +105,17 @@ export function LessonPageView({ course }: { course: PublicLearningLesson }) {
             className={styles.lessonAside}
             aria-label="Программа и сохранённое обучение"
           >
-            <Surface appearance="quiet" className={styles.lessonOutlineSurface}>
-              <Heading level={2} size="small">
-                Программа курса
-              </Heading>
-              <nav aria-label="Уроки курса">
-                <LessonOutline course={course} currentSlug={lessonSlug} compact />
-              </nav>
-            </Surface>
+            <CourseNavigator
+              courseSlug={course.course.slug}
+              current={lessonSlug}
+              items={course.course.lessons.map((lesson) => ({
+                slug: lesson.slug,
+                title: lesson.title,
+                chapter: lesson.chapter ?? null,
+                minutes: lesson.durationMinutes,
+                href: lessonUrl(course, lesson.slug)
+              }))}
+            />
             <LearnerEntry
               organizationSlug={course.organization.slug}
               offeringSlug={course.offering.slug}
