@@ -9,7 +9,7 @@ import styles from "../../components/learning/flow.module.css";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Бесплатные IT-курсы",
-  description: `Открытые курсы ${brand.name} по компьютерной грамотности и цифровым навыкам: программа, видео, конспекты и практика.`,
+  description: `Открытые курсы ${brand.name}: HTML, CSS, JavaScript и SQL с нуля — по порядку, с практикой прямо в браузере.`,
   alternates: { canonical: "/courses" },
   openGraph: { url: "/courses", title: `Бесплатные IT-курсы · ${brand.name}` }
 };
@@ -19,8 +19,8 @@ export default async function CoursesPage() {
       <div className={styles.catalogHero}>
         <LearningPageHeading
           eyebrow="Каталог"
-          title="Выберите навык, который пригодится на практике."
-          description="Короткие объяснения, видео и задания — в понятной последовательности и без спешки."
+          title="Веб-разработка с нуля: четыре курса по порядку."
+          description="HTML, затем CSS, JavaScript и SQL. Каждый курс говорит, что нужно знать до него и что вы будете уметь после."
         />
         <aside className={styles.catalogPromise} aria-label="Как устроено обучение">
           <strong>Сначала посмотрите программу.</strong>

@@ -12,10 +12,10 @@ Last maintained: 2026-11-02.
 |---|---|
 | `main` head | `181b4e1` — #106, disable ordinary Organization self-creation (2026-10-17) |
 | Latest migration | `000044_external_login_identities.sql` |
-| Latest ADR | ADR-0065 SQL practice on PostgreSQL in the learner's browser |
+| Latest ADR | ADR-0066 Home learning route |
 | Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058); daily GitHub-hosted read-only smoke against the production domain |
 | Learner-code execution | **Disabled in production.** Grader artifacts exist in the repository but need a separate activation (exact image digest + green real-cluster verification). |
-| First real content | `docs/examples/computer-basics-first-course.manifest.json`: a four-lesson Russian course with quizzes. Video blocks still need to be added in Studio. Check Studio to see whether it is published in production. |
+| Published content | Route «Веб-разработка с нуля»: `html`, `css`, `js`, `sql` manifests in `docs/examples/`, published in production. The four-lesson `computer-basics-first-course` manifest is not published. Check Studio for current versions. |
 
 ## What is built
 
@@ -36,6 +36,7 @@ Each row is implemented on `main`. The ADRs hold the details; the backend areas 
 | Lesson chapters | Optional `chapter` per manifest lesson; course page and lesson sidebar group the program by chapter | 0063 |
 | In-browser practice | Lesson challenges and concept cards: static HTML/CSS checks; JavaScript in an opaque-origin sandbox; SQL on PostgreSQL (PGlite) in a Web Worker against the «Зерно» teaching database. Practice only, never Evidence | 0064, 0065 |
 | Offering retarget | Free self-paced Offerings move forward to a newer published version of the same Course; Enrollments and progress carry over (`required-activity-passes@2` by stable Activity identity) | 0062 |
+| Learning route | Web orders the home catalog HTML → CSS → JavaScript → SQL, shows each course's prerequisites, outcome and next course, and links the last lesson to the next course. Presentation only | 0066 |
 | Stable course addresses | Home-organization courses live at `/courses/{course}` (course slug, survives new versions); Delivery resolves the newest public Offering; old Offering addresses redirect permanently | 0061 |
 | Studio | Manual and JSON authoring over the same draft, preview, export, publication, Offering visibility, Organization customer-entry policy | 0057 |
 | Web UI | `@platform/ui` + design tokens, light/dark themes with accents, public shell, Blog/SEO surfaces, `/ui` gallery | 0059 (Proposed) |
