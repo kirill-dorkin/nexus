@@ -107,9 +107,10 @@ export const volumeGain = (volume: number) => 0.9 * volume ** 1.6;
 
 /* ------------------------------ Player ------------------------------ */
 
-const LOOKAHEAD = 0.25; // seconds of music scheduled ahead while the tab is visible
-const BACKGROUND_LOOKAHEAD = 1.5; // background clocks tick less often; keep more queued
-const TICK_MS = 50;
+// A whole bar (≈3.2 s) is always queued ahead: page work — opening a heavy course page,
+// running a lesson's code — can block the main thread for a moment without the music noticing.
+const LOOKAHEAD_MARGIN = 0.5;
+const TICK_MS = 100;
 const FADE_IN = 1.8;
 const FADE_OUT = 0.6;
 
@@ -125,6 +126,7 @@ class Player {
   private nextBarTime = 0;
   private suspendTimer: number | null = null;
   private retiring: Band | null = null;
+  private target = -1;
   private channel: BroadcastChannel | null = null;
   private readonly tab = Math.random().toString(36).slice(2);
   private readonly seed = Math.floor(Math.random() * 2 ** 31);
@@ -185,10 +187,19 @@ class Player {
     if (!this.ctx || !this.master) return;
     const s = getSoundSettings();
     const target = s.music && this.playing ? volumeGain(s.musicVolume) : 0;
+    // Clicks and navigation call apply() all the time; touch the gain only when it really changes,
+    // so an ongoing fade is never restarted (some browsers would drop the level to its old value).
+    if (target === this.target) return;
+    this.target = target;
     const now = this.ctx.currentTime;
-    this.master.gain.cancelScheduledValues(now);
-    this.master.gain.setValueAtTime(this.master.gain.value, now);
-    this.master.gain.setTargetAtTime(target, now, timeConstant);
+    const gain = this.master.gain;
+    // Hold the level reached so far, then glide to the new one: no jumps mid-fade.
+    if (typeof gain.cancelAndHoldAtTime === "function") gain.cancelAndHoldAtTime(now);
+    else {
+      gain.cancelScheduledValues(now);
+      gain.setValueAtTime(gain.value, now);
+    }
+    gain.setTargetAtTime(target, now, timeConstant);
   }
 
   private async start() {
@@ -240,7 +251,7 @@ class Player {
     const band = this.band;
     if (!ctx || !band || !this.playing || ctx.state !== "running") return;
     const now = ctx.currentTime;
-    const ahead = document.hidden ? BACKGROUND_LOOKAHEAD : LOOKAHEAD;
+    const ahead = Band.barSeconds() + LOOKAHEAD_MARGIN;
     // The clock fell behind (a sleeping laptop, a frozen tab): skip to the next bar rather
     // than playing every missed note at once.
     const resumed = nextBarAfter(this.bar, this.nextBarTime, now, Band.barSeconds());

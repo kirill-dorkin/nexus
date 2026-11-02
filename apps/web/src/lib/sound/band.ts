@@ -17,7 +17,10 @@ const hz = (midi: number) => 440 * 2 ** ((midi - 69) / 12);
 export class Band {
   readonly output: GainNode;
   private readonly keysBus: GainNode;
-  private readonly duck: GainNode;
+  /** The kick ducks the keys through a gain node that lives for one bar only, so automation
+   *  events never pile up on a long-lived parameter during hours of playback. */
+  private duck: GainNode | null = null;
+  private brightness = -1;
   private readonly bassBus: GainNode;
   private readonly drumBus: GainNode;
   private readonly melodyBus: GainNode;
@@ -28,7 +31,7 @@ export class Band {
 
   constructor(private readonly ctx: BaseAudioContext, private readonly seed: number) {
     const gain = (value: number) => { const g = ctx.createGain(); g.gain.value = value; return g; };
-    this.output = gain(1);
+    this.output = gain(0.8);
     this.noise = noiseBuffer(ctx, 2);
 
     // Master: tape wow → tone → glue compressor → limiter-ish ceiling.
@@ -65,14 +68,13 @@ export class Band {
     this.reverbSend.connect(reverb).connect(reverbReturn).connect(sum);
 
     // Keys: stereo tremolo and a sidechain duck from the kick.
-    this.keysBus = gain(0.55);
-    this.duck = gain(1);
+    this.keysBus = gain(2.2);
     const pan = ctx.createStereoPanner();
     this.lfo(0.18, 0.35, pan.pan);
-    this.keysBus.connect(this.duck).connect(pan).connect(sum);
+    this.keysBus.connect(pan).connect(sum);
     pan.connect(sendLevel(ctx, 0.35)).connect(this.reverbSend);
 
-    this.bassBus = gain(0.7);
+    this.bassBus = gain(0.3);
     const shaper = ctx.createWaveShaper();
     shaper.curve = softClip(1.6);
     shaper.oversample = "2x";
@@ -86,7 +88,7 @@ export class Band {
     this.drumBus.connect(sendLevel(ctx, 0.12)).connect(this.reverbSend);
 
     // Melody: dotted-eighth echo, darkened in the feedback loop, plus a generous reverb send.
-    this.melodyBus = gain(0.32);
+    this.melodyBus = gain(0.9);
     const echo = ctx.createDelay(1);
     echo.delayTime.value = sixteenth() * 3;
     const feedback = gain(0.32);
@@ -104,7 +106,13 @@ export class Band {
   /** Schedules one bar starting at `time` (seconds on the context clock). */
   playBar(index: number, time: number): Bar {
     const bar = composeBar(index, this.seed);
-    this.tone.frequency.setTargetAtTime(1600 + bar.brightness * 3200, time, 1.2);
+    // The tone changes only between sections; one automation event per change, not per bar.
+    if (bar.brightness !== this.brightness) {
+      this.brightness = bar.brightness;
+      this.tone.frequency.setTargetAtTime(1600 + bar.brightness * 3200, time, 1.2);
+    }
+    this.duck = this.ctx.createGain();
+    this.duck.connect(this.keysBus);
     for (const event of bar.events) this.play(event, time + Math.max(0, stepTime(event.step)));
     return bar;
   }
@@ -152,7 +160,7 @@ export class Band {
     const warmthLevel = ctx.createGain();
     warmthLevel.gain.value = 0.18;
     warmth.connect(warmthLevel).connect(env);
-    carrier.connect(env).connect(this.keysBus);
+    carrier.connect(env).connect(this.duck ?? this.keysBus);
     this.run(t, t + length + release * 2, carrier, modulator, warmth);
   }
 
@@ -180,33 +188,35 @@ export class Band {
     body.frequency.exponentialRampToValueAtTime(46, t + 0.12);
     const env = ctx.createGain();
     env.gain.setValueAtTime(0.0001, t);
-    env.gain.exponentialRampToValueAtTime(0.9 * velocity, t + 0.004);
+    env.gain.exponentialRampToValueAtTime(1.13 * velocity, t + 0.004);
     env.gain.exponentialRampToValueAtTime(0.0001, t + 0.42);
     body.connect(env).connect(this.drumBus);
     this.run(t, t + 0.45, body);
     this.noiseHit(t, "highpass", 3000, 0.12 * velocity, 0.012, this.drumBus);
-    // Sidechain: the keys dip under the kick and breathe back.
-    this.duck.gain.setValueAtTime(1, t);
-    this.duck.gain.linearRampToValueAtTime(1 - 0.32 * velocity, t + 0.02);
-    this.duck.gain.linearRampToValueAtTime(1, t + 0.32);
+    // Sidechain: the keys of this bar dip under the kick and breathe back.
+    if (this.duck) {
+      this.duck.gain.setValueAtTime(1, t);
+      this.duck.gain.linearRampToValueAtTime(1 - 0.32 * velocity, t + 0.02);
+      this.duck.gain.linearRampToValueAtTime(1, t + 0.32);
+    }
   }
 
   private snare(t: number, velocity: number) {
     const { ctx } = this;
-    this.noiseHit(t, "bandpass", 1900, 0.38 * velocity, 0.2, this.drumBus, 0.8);
+    this.noiseHit(t, "bandpass", 1900, 2.1 * velocity, 0.2, this.drumBus, 0.8);
     const body = osc(ctx, "triangle", 190);
     body.frequency.setValueAtTime(190, t);
     body.frequency.exponentialRampToValueAtTime(150, t + 0.08);
     const env = ctx.createGain();
     env.gain.setValueAtTime(0.0001, t);
-    env.gain.exponentialRampToValueAtTime(0.22 * velocity, t + 0.003);
+    env.gain.exponentialRampToValueAtTime(1.2 * velocity, t + 0.003);
     env.gain.exponentialRampToValueAtTime(0.0001, t + 0.12);
     body.connect(env).connect(this.drumBus);
     this.run(t, t + 0.15, body);
   }
 
   private hat(t: number, velocity: number) {
-    this.noiseHit(t, "highpass", 7500, 0.16 * velocity, 0.035 + velocity * 0.03, this.drumBus);
+    this.noiseHit(t, "highpass", 7500, 3.8 * velocity, 0.035 + velocity * 0.03, this.drumBus);
   }
 
   /** Soft bell: fundamental plus a quickly fading inharmonic partial. */

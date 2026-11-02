@@ -84,7 +84,7 @@ export function composeBar(index: number, seed: number): Bar {
 
   // Bass: root, a push before beat 3, sometimes a chromatic approach into the next chord.
   if (kind !== "breakdown" || inSection % 2 === 0) {
-    events.push({ voice: "bass", midi: chord.bass, step: human(0.1), length: 6, velocity: 0.85 });
+    events.push({ voice: "bass", midi: chord.bass, step: human(0.1), length: kind === "intro" || kind === "breakdown" ? 14 : 6, velocity: 0.85 });
     if (kind !== "intro") {
       events.push({ voice: "bass", midi: r() < 0.7 ? chord.bass : chord.bass + 7, step: 7 + human(0.1), length: 3, velocity: 0.6 });
       if (r() < 0.45) {
