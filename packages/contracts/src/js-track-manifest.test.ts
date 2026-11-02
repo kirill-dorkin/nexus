@@ -84,7 +84,7 @@ describe("JavaScript full course import", () => {
     // Lessons use topic examples (todos, quizzes, a product catalog); only tool characters remain.
     const text = JSON.stringify(jsTrack());
     // \b is ASCII-only in JavaScript, so Cyrillic whole words use \p{L} lookarounds.
-    const banned = /"(marta|sonya|dasha)"|zerno|Зерн|кофе|латте|капучино|эспрессо|бариста|какао|чизкейк|напит|столик|кухн|сироп|молок|(?<!\p{L})(раф|гост[ьяеиюй]\p{L}*|Март[аыу]|Сон[яиеу])(?!\p{L})/giu;
+    const banned = /"(marta|sonya|dasha)"|zerno|(?<!\p{L})Зерн|кофе|латте|капучино|эспрессо|бариста|какао|чизкейк|напит|столик|кухн|сироп|молок|(?<!\p{L})(раф|гост[ьяеиюй]\p{L}*|Март[аыу]|Сон[яиеу])(?!\p{L})/giu;
     expect([...new Set(text.match(banned) ?? [])]).toEqual([]);
   });
 

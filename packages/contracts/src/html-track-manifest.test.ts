@@ -90,6 +90,20 @@ describe("HTML full course import", () => {
     expect(index.attributes.filter((name) => !own.has(name)), "attributes without their own card").toEqual([]);
   });
 
+  it("has no storyline: no removed characters and no café business", () => {
+    // Lessons use topic examples; only tool characters remain (ADR-0066). \b is ASCII-only, so
+    // Cyrillic whole words use \p{L} lookarounds.
+    const text = JSON.stringify(htmlTrack());
+    const banned = /"(marta|sonya|dasha)"|zerno|(?<!\p{L})Зерн|кофе|латте|капучино|эспрессо|бариста|какао|чизкейк|напит|столик|кухн|сироп|молок|(?<!\p{L})(раф|гост[ьяеиюй]\p{L}*|Март[аыу]|Сон[яиеу]|Тимур\p{L}*)(?!\p{L})/giu;
+    expect([...new Set(text.match(banned) ?? [])]).toEqual([]);
+  });
+
+  it("explains everything itself and never sends the learner elsewhere for answers", () => {
+    const text = JSON.stringify(htmlTrack());
+    const elsewhere = /(?<![\w.])MDN(?![\w.])|developer\.mozilla|w3schools|stackoverflow|stack overflow|validator\.w3|google|гугл|загугл|поищи|почитай (в|на)|читай документаци|подробнее (в|на) /giu;
+    expect([...new Set(text.match(elsewhere) ?? [])]).toEqual([]);
+  });
+
   it("keeps quiz answer keys coherent", () => {
     for (const activity of htmlTrack().activities) {
       if (activity.type === "quiz.short_text") {

@@ -12,20 +12,20 @@ export default {
 
   /* ---------- 3. Ссылки ---------- */
   links: [
-    task("Меню сайта", "Марта хочет меню сверху: ссылка на сайт поставщика зерна (`https://developer.mozilla.org` — для теста), почта `hello@example.com` и якорь на раздел «Контакты» с `id=\"contacts\"` ниже.", {
+    task("Меню сайта", "Нужно меню сверху: ссылка на сайт партнёра (`https://example.org` — для теста), почта `hello@example.com` и якорь на раздел «Контакты» с `id=\"contacts\"` ниже.", {
       start: "<nav>\n  <!-- три ссылки -->\n</nav>\n\n<h2>Контакты</h2>\n<p>Мы на связи с 9 до 18.</p>",
       checks: [
-        el("a[href^=\"https://developer.mozilla.org\"]", "Ссылка на MDN"),
+        el("a[href^=\"https://example.org\"]", "Ссылка на партнёра"),
         el("a[href^=\"mailto:hello@example.com\"]", "Ссылка на почту через `mailto:`"),
         el("a[href=\"#contacts\"]", "Ссылка-якорь `#contacts`"),
         el("h2#contacts", "У заголовка «Контакты» есть `id=\"contacts\"`")
       ],
       hint: "Якорь работает в паре: `href=\"#contacts\"` у ссылки и `id=\"contacts\"` у цели.",
-      solution: "<nav>\n  <a href=\"https://developer.mozilla.org\">MDN</a>\n  <a href=\"mailto:hello@example.com\">Написать нам</a>\n  <a href=\"#contacts\">Контакты</a>\n</nav>\n\n<h2 id=\"contacts\">Контакты</h2>\n<p>Мы на связи с 9 до 18.</p>"
+      solution: "<nav>\n  <a href=\"https://example.org\">Партнёр</a>\n  <a href=\"mailto:hello@example.com\">Написать нам</a>\n  <a href=\"#contacts\">Контакты</a>\n</nav>\n\n<h2 id=\"contacts\">Контакты</h2>\n<p>Мы на связи с 9 до 18.</p>"
     })
   ],
   "file-paths": [
-    task("Пути из блога кофейни", "Эта страница лежит в `zerno/blog/post.html`. Поставь правильные относительные пути: «На главную» → `zerno/index.html`, логотип → `zerno/images/logo.png`, «Следующий пост» → `zerno/blog/post-2.html`.", {
+    task("Пути из блога магазина", "Эта страница лежит в `site/blog/post.html`. Поставь правильные относительные пути: «На главную» → `site/index.html`, логотип → `site/images/logo.png`, «Следующий пост» → `site/blog/post-2.html`.", {
       start: "<a href=\"\">На главную</a>\n<img src=\"\" alt=\"Логотип\">\n<a href=\"\">Следующий пост</a>",
       checks: [
         el("a[href=\"../index.html\"]", "«На главную» → `../index.html`"),
@@ -37,7 +37,7 @@ export default {
     })
   ],
   "link-features": [
-    task("Скачать меню", "Марта просит: ссылка на `price.pdf` должна скачивать меню под именем `prais-2026.pdf`, а ссылка на партнёра `https://example.com` — открываться в новой вкладке безопасно (`rel=\"noopener\"`).", {
+    task("Скачать меню", "Нужно: ссылка на `price.pdf` должна скачивать меню под именем `prais-2026.pdf`, а ссылка на партнёра `https://example.com` — открываться в новой вкладке безопасно (`rel=\"noopener\"`).", {
       start: "<a href=\"price.pdf\">Скачать прайс</a>\n<a href=\"https://example.com\">Партнёр</a>",
       checks: [
         el("a[href=\"price.pdf\"]", "Прайс скачивается под именем `prais-2026.pdf`", { attr: "download", value: "prais-2026.pdf" }),
@@ -50,7 +50,7 @@ export default {
 
   /* ---------- 4. Медиа ---------- */
   images: [
-    task("Фото зала", "Добавь фото зала кофейни в `figure`: у `img` есть `src`, полезный `alt`, размеры `width` и `height`, а под фото — подпись `figcaption`.", {
+    task("Фото зала", "Добавь фото зала магазина в `figure`: у `img` есть `src`, полезный `alt`, размеры `width` и `height`, а под фото — подпись `figcaption`.", {
       start: "<h2>Наш зал</h2>\n",
       checks: [
         el("figure img[src]", "Картинка внутри `figure`"),
@@ -64,17 +64,17 @@ export default {
   ],
   "image-formats": [
     task("Логотип-зёрнышко", "Дизайнер прислал логотип в векторе. Замени растровый `logo.png` на `logo.svg` и оставь фотографию в современном формате `.webp`.", {
-      start: "<img src=\"logo.png\" alt=\"Логотип «Зерно»\">\n<img src=\"photo.bmp\" alt=\"Зал кофейни\">",
+      start: "<img src=\"logo.png\" alt=\"Логотип «Север»\">\n<img src=\"photo.bmp\" alt=\"Зал магазина\">",
       checks: [
         el("img[src=\"logo.svg\"]", "Логотип в SVG"),
         el("img[src=\"photo.webp\"]", "Фото в WebP"),
         el("img[src$=\".bmp\"]", "BMP больше нет", { absent: true })
       ],
-      solution: "<img src=\"logo.svg\" alt=\"Логотип «Зерно»\">\n<img src=\"photo.webp\" alt=\"Зал кофейни\">"
+      solution: "<img src=\"logo.svg\" alt=\"Логотип «Север»\">\n<img src=\"photo.webp\" alt=\"Зал магазина\">"
     })
   ],
   "responsive-images": [
-    task("Чёткий раф на любом экране", "Добавь фото рафа `srcset` с двумя файлами (`cat-1x.jpg 1x` и `cat-2x.jpg 2x`) и ленивую загрузку `loading=\"lazy\"`.", {
+    task("Чёткий пенал на любом экране", "Добавь фото товара `srcset` с двумя файлами (`cat-1x.jpg 1x` и `cat-2x.jpg 2x`) и ленивую загрузку `loading=\"lazy\"`.", {
       start: "<img src=\"cat-1x.jpg\" alt=\"Кот в коробке\" width=\"400\" height=\"300\">",
       checks: [
         el("img[srcset*=\"cat-2x.jpg 2x\"]", "В `srcset` есть версия `2x`"),
@@ -94,7 +94,7 @@ export default {
     })
   ],
   video: [
-    task("Латте-арт на главной", "Добавь видео бариста: `controls`, постер `poster.jpg`, два источника — `film.webm` и `film.mp4` — и запасной текст для старых браузеров.", {
+    task("Ручка-арт на главной", "Добавь видео администратор: `controls`, постер `poster.jpg`, два источника — `film.webm` и `film.mp4` — и запасной текст для старых браузеров.", {
       start: "<h2>Трейлер</h2>\n",
       checks: [
         el("video[controls]", "У видео есть `controls`"),
@@ -106,7 +106,7 @@ export default {
     })
   ],
   "audio-and-captions": [
-    task("Подкаст «Разговоры за кофе»", "Сделай аудиоплеер `audio` с `controls` и источником `episode.mp3`, а под ним видео `lesson.mp4` с субтитрами `track` (`kind=\"subtitles\"`, `srclang=\"ru\"`, `label=\"Русский\"`).", {
+    task("Подкаст «Разговоры о вебе»", "Сделай аудиоплеер `audio` с `controls` и источником `episode.mp3`, а под ним видео `lesson.mp4` с субтитрами `track` (`kind=\"subtitles\"`, `srclang=\"ru\"`, `label=\"Русский\"`).", {
       start: "",
       checks: [
         el("audio[controls]", "Аудио с `controls`"),
@@ -118,18 +118,18 @@ export default {
     })
   ],
   "iframe-embeds": [
-    task("Карта проезда", "Встрой карту до кофейни `https://example.com/map` через `iframe`: дай ему `title`, ленивую загрузку и песочницу `sandbox`.", {
+    task("Карта проезда", "Встрой карту до магазина `https://example.com/map` через `iframe`: дай ему `title`, ленивую загрузку и песочницу `sandbox`.", {
       start: "<iframe src=\"https://example.com/map\"></iframe>",
       checks: [
         el("iframe[title]", "У `iframe` есть `title`"),
         el("iframe[loading=\"lazy\"]", "Ленивая загрузка"),
         el("iframe[sandbox]", "Включена песочница `sandbox`")
       ],
-      solution: "<iframe src=\"https://example.com/map\" title=\"Карта: Зерно на Баумана\" loading=\"lazy\" sandbox width=\"600\" height=\"400\"></iframe>"
+      solution: "<iframe src=\"https://example.com/map\" title=\"Карта: офис на Баумана\" loading=\"lazy\" sandbox width=\"600\" height=\"400\"></iframe>"
     })
   ],
   "svg-and-mathml": [
-    task("Зёрнышко в SVG", "Нарисуй прямо в HTML значок-зерно — жёлтый круг: `svg` с `viewBox=\"0 0 100 100\"` и внутри `circle` с центром 50,50, радиусом 40 и `fill=\"gold\"`. Дай значку `role=\"img\"` и `aria-label`.", {
+    task("Зёрнышко в SVG", "Нарисуй прямо в HTML значок-материал — жёлтый круг: `svg` с `viewBox=\"0 0 100 100\"` и внутри `circle` с центром 50,50, радиусом 40 и `fill=\"gold\"`. Дай значку `role=\"img\"` и `aria-label`.", {
       start: "<svg>\n</svg>",
       checks: [
         src("viewBox=\"0 0 100 100\"", "`viewBox=\"0 0 100 100\"`"),
@@ -137,11 +137,11 @@ export default {
         el("circle[fill=\"gold\"]", "Заливка `gold`"),
         el("svg[role=\"img\"][aria-label]", "У значка есть `role` и `aria-label`")
       ],
-      solution: "<svg viewBox=\"0 0 100 100\" width=\"120\" role=\"img\" aria-label=\"Зерно\">\n  <circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"gold\"/>\n</svg>"
+      solution: "<svg viewBox=\"0 0 100 100\" width=\"120\" role=\"img\" aria-label=\"Север\">\n  <circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"gold\"/>\n</svg>"
     })
   ],
   "script-elements": [
-    task("Калькулятор кофе", "Подготовь место для калькулятора: `canvas` 300×150 с запасным текстом внутри, `template` с карточкой товара (`article` внутри) и `noscript` с просьбой включить JavaScript.", {
+    task("Калькулятор обоев", "Подготовь место для калькулятора: `canvas` 300×150 с запасным текстом внутри, `template` с карточкой товара (`article` внутри) и `noscript` с просьбой включить JavaScript.", {
       start: "",
       checks: [
         el("canvas[width=\"300\"][height=\"150\"]", "`canvas` 300×150"),
@@ -150,42 +150,42 @@ export default {
         el("noscript", "Есть `noscript`")
       ],
       hint: "Содержимое `template` не видно на странице — это заготовка для скриптов.",
-      solution: "<canvas width=\"300\" height=\"150\">График: сколько кофе нужно офису</canvas>\n<template id=\"card\">\n  <article><h3></h3><p></p></article>\n</template>\n<noscript>Включи JavaScript, чтобы увидеть график.</noscript>"
+      solution: "<canvas width=\"300\" height=\"150\">График: сколько обоев нужно на комнату</canvas>\n<template id=\"card\">\n  <article><h3></h3><p></p></article>\n</template>\n<noscript>Включи JavaScript, чтобы увидеть график.</noscript>"
     })
   ],
   "image-maps": [
-    task("Схема зала", "Свяжи схему зала с картой столиков: у `img` атрибут `usemap=\"#floor\"`, у `map` — `name=\"floor\"`, внутри две области `area` со ссылками и `alt`.", {
-      start: "<img src=\"floor.png\" alt=\"Схема зала\" width=\"400\" height=\"200\">\n<map>\n</map>",
+    task("Схема этажа", "Свяжи схему этажа с картой кабинетов: у `img` атрибут `usemap=\"#floor\"`, у `map` — `name=\"floor\"`, внутри две области `area` со ссылками и `alt`.", {
+      start: "<img src=\"floor.png\" alt=\"Схема этажа\" width=\"400\" height=\"200\">\n<map>\n</map>",
       checks: [
         el("img[usemap=\"#floor\"]", "`usemap=\"#floor\"` у картинки"),
         el("map[name=\"floor\"]", "`name=\"floor\"` у карты"),
         el("map area[href][alt]", "Две области со ссылкой и `alt`", { count: 2 })
       ],
-      solution: "<img src=\"floor.png\" alt=\"Схема зала\" width=\"400\" height=\"200\" usemap=\"#floor\">\n<map name=\"floor\">\n  <area shape=\"rect\" coords=\"0,0,200,200\" href=\"#table-1\" alt=\"Столик у окна\">\n  <area shape=\"rect\" coords=\"200,0,400,200\" href=\"#table-2\" alt=\"Столик у бара\">\n</map>"
+      solution: "<img src=\"floor.png\" alt=\"Схема этажа\" width=\"400\" height=\"200\" usemap=\"#floor\">\n<map name=\"floor\">\n  <area shape=\"rect\" coords=\"0,0,200,200\" href=\"#room-1\" alt=\"Кабинет 101\">\n  <area shape=\"rect\" coords=\"200,0,400,200\" href=\"#room-2\" alt=\"Кабинет 102\">\n</map>"
     })
   ],
 
   /* ---------- 5. Таблицы ---------- */
   tables: [
-    task("Цены напитков", "Сделай таблицу цен: подпись `caption`, строка заголовков `th` (Напиток, Цена) и две строки данных.", {
+    task("Цены товаров", "Сделай таблицу цен: подпись `caption`, строка заголовков `th` (Товар, Цена) и две строки данных.", {
       start: "<table>\n</table>",
       checks: [
         el("table caption", "Есть подпись `caption`"),
         el("table th", "Два заголовка столбцов `th`", { count: 2 }),
         el("table td", "Минимум четыре ячейки данных", { count: 4 })
       ],
-      solution: "<table>\n  <caption>Цены, ₽</caption>\n  <tr><th>Напиток</th><th>Цена</th></tr>\n  <tr><td>Латте</td><td>220</td></tr>\n  <tr><td>Раф</td><td>290</td></tr>\n</table>"
+      solution: "<table>\n  <caption>Цены, ₽</caption>\n  <tr><th>Товар</th><th>Цена</th></tr>\n  <tr><td>Ручка</td><td>220</td></tr>\n  <tr><td>Пенал</td><td>290</td></tr>\n</table>"
     })
   ],
   "complex-tables": [
     task("Отчёт для бухгалтера", "Разбей таблицу продаж на `thead`, `tbody` и `tfoot`, у заголовков столбцов поставь `scope=\"col\"`, а ячейку «Итого» растяни на два столбца (`colspan=\"2\"`).", {
-      start: "<table>\n  <tr><th>Товар</th><th>Кол-во</th><th>Сумма</th></tr>\n  <tr><td>Кофе</td><td>2</td><td>400</td></tr>\n  <tr><td>Итого</td><td></td><td>400</td></tr>\n</table>",
+      start: "<table>\n  <tr><th>Товар</th><th>Кол-во</th><th>Сумма</th></tr>\n  <tr><td>Тетрадь</td><td>2</td><td>400</td></tr>\n  <tr><td>Итого</td><td></td><td>400</td></tr>\n</table>",
       checks: [
         el("thead th[scope=\"col\"]", "Заголовки в `thead` со `scope=\"col\"`", { count: 3 }),
         el("tbody td", "Данные в `tbody`"),
         el("tfoot td[colspan=\"2\"]", "«Итого» в `tfoot` на два столбца", { text: "Итого" })
       ],
-      solution: "<table>\n  <thead><tr><th scope=\"col\">Товар</th><th scope=\"col\">Кол-во</th><th scope=\"col\">Сумма</th></tr></thead>\n  <tbody><tr><td>Кофе</td><td>2</td><td>400</td></tr></tbody>\n  <tfoot><tr><td colspan=\"2\">Итого</td><td>400</td></tr></tfoot>\n</table>"
+      solution: "<table>\n  <thead><tr><th scope=\"col\">Товар</th><th scope=\"col\">Кол-во</th><th scope=\"col\">Сумма</th></tr></thead>\n  <tbody><tr><td>Тетрадь</td><td>2</td><td>400</td></tr></tbody>\n  <tfoot><tr><td colspan=\"2\">Итого</td><td>400</td></tr></tfoot>\n</table>"
     })
   ],
 
@@ -204,7 +204,7 @@ export default {
     })
   ],
   "fields-and-labels": [
-    task("Подписи в брони", "Чтобы Лев смог забронировать столик, свяжи каждое поле с подписью: у `label` атрибут `for`, у `input` такой же `id`. Поля: «Имя» и «Email».", {
+    task("Подписи в форме", "Чтобы Лев смог заполнить форму, свяжи каждое поле с подписью: у `label` атрибут `for`, у `input` такой же `id`. Поля: «Имя» и «Email».", {
       start: "<form>\n  Имя <input name=\"name\">\n  Email <input name=\"email\" type=\"email\">\n</form>",
       checks: [
         el("label[for=\"name\"]", "Подпись «Имя» с `for=\"name\"`"),
@@ -228,15 +228,15 @@ export default {
     })
   ],
   "checkboxes-and-radios": [
-    task("Где сидеть", "Сгруппируй три варианта — зал, веранда, бар — в `fieldset` с `legend`. Это `radio` с одинаковым `name=\"delivery\"`, первый выбран по умолчанию.", {
-      start: "<form>\n  Зал\n  Веранда\n  Бар\n</form>",
+    task("Способ участия", "Сгруппируй три варианта — онлайн, очно, в записи — в `fieldset` с `legend`. Это `radio` с одинаковым `name=\"delivery\"`, первый выбран по умолчанию.", {
+      start: "<form>\n  Онлайн\n  Очно\n  В записи\n</form>",
       checks: [
         el("fieldset legend", "Есть `fieldset` с `legend`"),
         el("input[type=\"radio\"][name=\"delivery\"]", "Три `radio` с `name=\"delivery\"`", { count: 3 }),
         el("input[type=\"radio\"][checked]", "Один вариант выбран по умолчанию"),
         el("label input[type=\"radio\"]", "Каждый вариант внутри `label`", { count: 3 })
       ],
-      solution: "<form>\n  <fieldset>\n    <legend>Где сидеть</legend>\n    <label><input type=\"radio\" name=\"delivery\" value=\"hall\" checked> Зал</label>\n    <label><input type=\"radio\" name=\"delivery\" value=\"terrace\"> Веранда</label>\n    <label><input type=\"radio\" name=\"delivery\" value=\"bar\"> Бар</label>\n  </fieldset>\n</form>"
+      solution: "<form>\n  <fieldset>\n    <legend>Способ участия</legend>\n    <label><input type=\"radio\" name=\"delivery\" value=\"online\" checked> Онлайн</label>\n    <label><input type=\"radio\" name=\"delivery\" value=\"offline\"> Очно</label>\n    <label><input type=\"radio\" name=\"delivery\" value=\"recording\"> В записи</label>\n  </fieldset>\n</form>"
     })
   ],
   "select-lists": [
@@ -263,7 +263,7 @@ export default {
     })
   ],
   "file-uploads": [
-    task("Фото к отзыву", "Сделай форму, где гость прикрепляет фото к отзыву: метод POST, `enctype=\"multipart/form-data\"`, поле `type=\"file\"`, которое принимает только картинки и сразу несколько файлов.", {
+    task("Фото к отзыву", "Сделай форму, где посетитель прикрепляет фото к отзыву: метод POST, `enctype=\"multipart/form-data\"`, поле `type=\"file\"`, которое принимает только картинки и сразу несколько файлов.", {
       start: "<form action=\"/upload\">\n  <input name=\"photos\">\n  <button>Загрузить</button>\n</form>",
       checks: [
         el("form[method=\"post\"]", "Метод `post`"),
@@ -275,7 +275,7 @@ export default {
     })
   ],
   "form-validation": [
-    task("Никаких пустых броней", "Марте приходят брони без данных. Добавь встроенные проверки: имя обязательно (`required`), логин от 3 до 16 символов (`minlength`/`maxlength`), индекс — ровно 6 цифр (`pattern=\"[0-9]{6}\"`).", {
+    task("Никаких пустых броней", "заказчику приходят брони без данных. Добавь встроенные проверки: имя обязательно (`required`), логин от 3 до 16 символов (`minlength`/`maxlength`), индекс — ровно 6 цифр (`pattern=\"[0-9]{6}\"`).", {
       start: "<form>\n  <input name=\"name\">\n  <input name=\"login\">\n  <input name=\"zip\">\n  <button>Отправить</button>\n</form>",
       checks: [
         el("input[name=\"name\"][required]", "Имя обязательно"),
@@ -311,7 +311,7 @@ export default {
     })
   ],
   "advanced-forms": [
-    task("Кнопка в подвале", "Дизайнер унёс кнопку «Подписаться» на новости кофейни в подвал, далеко от формы. Дай форме `id=\"sub\"`, а кнопке — `form=\"sub\"`. Ещё отключи блок «Адрес» целиком через `fieldset disabled`.", {
+    task("Кнопка в подвале", "Дизайнер унёс кнопку «Подписаться» на новости магазина в подвал, далеко от формы. Дай форме `id=\"sub\"`, а кнопке — `form=\"sub\"`. Ещё отключи блок «Адрес» целиком через `fieldset disabled`.", {
       start: "<form>\n  <input name=\"email\" type=\"email\">\n  <fieldset>\n    <legend>Адрес</legend>\n    <input name=\"city\">\n  </fieldset>\n</form>\n<footer><button>Подписаться</button></footer>",
       checks: [
         el("form#sub", "У формы `id=\"sub\"`"),
