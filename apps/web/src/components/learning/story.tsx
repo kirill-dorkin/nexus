@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Bug, Coffee, FastForward, Headphones, Palette, Robot, Sparkle, User } from "@phosphor-icons/react/dist/ssr";
 import { CodeSnippet } from "./code-snippet";
+import { isRunnerMessage, runnerDocument } from "./js-runner";
 import styles from "./story.module.css";
 
 /*
@@ -24,9 +25,10 @@ export const CHARACTERS = {
 export type Who = keyof typeof CHARACTERS;
 type Line = { who: Who; text: string };
 export type Story = { title?: string | undefined; lines: Line[] };
-export type ConceptKind = "tag" | "attr" | "idea" | "property" | "selector" | "at-rule" | "function" | "value";
+export type ConceptKind = "tag" | "attr" | "idea" | "property" | "selector" | "at-rule" | "function" | "value"
+  | "keyword" | "operator" | "method" | "object" | "event" | "type";
 export type Concept = { name: string; title: string; what: string; why: string; how?: string | undefined; lang?: string | undefined; show?: number | undefined; bro?: string | undefined; kind?: ConceptKind | undefined };
-const KINDS: readonly ConceptKind[] = ["tag", "attr", "idea", "property", "selector", "at-rule", "function", "value"];
+const KINDS: readonly ConceptKind[] = ["tag", "attr", "idea", "property", "selector", "at-rule", "function", "value", "keyword", "operator", "method", "object", "event", "type"];
 
 const str = (v: unknown, max: number): v is string => typeof v === "string" && v.length > 0 && v.length <= max;
 const json = (source: string): Record<string, unknown> | null => {
@@ -163,6 +165,28 @@ function AutoHeightPreview({ title, html, initial }: { title: string; html: stri
   );
 }
 
+/**
+ * Live preview of a JavaScript example: runs in the opaque-origin sandbox of js-runner.ts
+ * (scripts on, same-origin off, network closed) and reports its height by message.
+ */
+function RunPreview({ title, code, initial }: { title: string; code: string; initial: number }) {
+  const [height, setHeight] = useState(initial);
+  const frame = useRef<HTMLIFrameElement>(null);
+  const token = `${useId()}:card`;
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      if (event.source !== frame.current?.contentWindow || !isRunnerMessage(event.data, token) || event.data.type !== "size") return;
+      setHeight(Math.min(Math.max(Math.ceil(event.data.height), 40), 480));
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [token]);
+  return (
+    <iframe ref={frame} title={title} sandbox="allow-scripts" referrerPolicy="no-referrer" loading="lazy"
+      srcDoc={runnerDocument({ code, lang: "js", mode: "preview", token })} style={{ height }} />
+  );
+}
+
 /** What a card is about: a tag (`<p>`), an attribute (`href`) or a plain idea (Сервер). */
 export function conceptKind(name: string): "tag" | "attr" | "idea" {
   if (name.startsWith("<")) return "tag";
@@ -171,7 +195,8 @@ export function conceptKind(name: string): "tag" | "attr" | "idea" {
 }
 const KIND_LABEL: Record<ConceptKind, string> = {
   tag: "Тег", attr: "Атрибут", idea: "Понятие",
-  property: "Свойство", selector: "Селектор", "at-rule": "@-правило", function: "Функция", value: "Значение"
+  property: "Свойство", selector: "Селектор", "at-rule": "@-правило", function: "Функция", value: "Значение",
+  keyword: "Ключевое слово", operator: "Оператор", method: "Метод", object: "Объект", event: "Событие", type: "Тип"
 };
 
 function ConceptCard({ concept }: { concept: Concept }) {
@@ -196,8 +221,10 @@ function ConceptCard({ concept }: { concept: Concept }) {
                 <CodeSnippet code={concept.how} language={concept.lang ?? "html"} />
                 {concept.show ? (
                   <div className={styles.preview}>
-                    <span>Так это выглядит</span>
-                    <AutoHeightPreview title={`Пример: ${concept.title}`} html={concept.how} initial={concept.show} />
+                    <span>{concept.lang === "js" ? "Так это работает" : "Так это выглядит"}</span>
+                    {concept.lang === "js"
+                      ? <RunPreview title={`Пример: ${concept.title}`} code={concept.how} initial={concept.show} />
+                      : <AutoHeightPreview title={`Пример: ${concept.title}`} html={concept.how} initial={concept.show} />}
                   </div>
                 ) : null}
               </div>

@@ -252,6 +252,12 @@
 .concept[data-kind="at-rule"] code.name { color: #f0abfc; }
 .concept[data-kind="function"] code.name,
 .concept[data-kind="value"] code.name { color: #bef264; }
+.concept[data-kind="keyword"] code.name,
+.concept[data-kind="operator"] code.name { color: #f9a8d4; }
+.concept[data-kind="method"] code.name,
+.concept[data-kind="event"] code.name { color: #fcd34d; }
+.concept[data-kind="object"] code.name,
+.concept[data-kind="type"] code.name { color: #5eead4; }
 .concept .conceptTitle {
   margin: 0;
   color: var(--text-secondary);
