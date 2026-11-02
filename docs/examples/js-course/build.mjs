@@ -20,6 +20,8 @@ import arraysDeep from "./c16-arrays-deep.mjs";
 import collections from "./c17-collections.mjs";
 import regexp from "./c18-regexp.mjs";
 import meta from "./c19-meta.mjs";
+import errorsAsync from "./c20-errors-async.mjs";
+import dates from "./c21-dates.mjs";
 
 const chapters = [
   ["Старт JavaScript", [start]],
@@ -40,7 +42,9 @@ const chapters = [
   ["Массивы и итераторы полностью", [arraysDeep]],
   ["Коллекции", [collections]],
   ["Регулярные выражения", [regexp]],
-  ["Symbol, Proxy и Reflect", [meta]]
+  ["Symbol, Proxy и Reflect", [meta]],
+  ["Ошибки, ресурсы и промисы", [errorsAsync]],
+  ["Даты полностью", [dates]]
 ];
 
 const challenges = {};

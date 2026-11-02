@@ -485,6 +485,41 @@
       "key": "js-reflect",
       "title": "Reflect",
       "description": "Выполнять операции над объектами функциями — особенно внутри ловушек Proxy."
+    },
+    {
+      "key": "js-errors-full",
+      "title": "Ошибки",
+      "description": "Создавать, различать и связывать ошибки."
+    },
+    {
+      "key": "js-resources",
+      "title": "Управление ресурсами",
+      "description": "Гарантированно освобождать ресурсы при выходе из блока."
+    },
+    {
+      "key": "js-promises-full",
+      "title": "Комбинаторы промисов",
+      "description": "Запускать асинхронные операции параллельно и выбирать нужную стратегию ожидания."
+    },
+    {
+      "key": "js-json-full",
+      "title": "JSON целиком",
+      "description": "Точно управлять тем, как данные превращаются в JSON и обратно."
+    },
+    {
+      "key": "js-date-create",
+      "title": "Создание дат",
+      "description": "Создавать даты и работать с метками времени и часовыми поясами."
+    },
+    {
+      "key": "js-date-parts",
+      "title": "Части даты",
+      "description": "Читать и менять любую часть даты, понимая разницу местного времени и UTC."
+    },
+    {
+      "key": "js-date-output",
+      "title": "Вывод дат",
+      "description": "Превращать дату в строку нужного формата: для машин и для людей."
     }
   ],
   "activities": [
@@ -6781,6 +6816,482 @@
         "correctOptionId": "bool",
         "explanation": "И совпадает по аргументам с ловушкой."
       }
+    },
+    {
+      "slug": "js-error-cause",
+      "type": "quiz.single_choice",
+      "title": "cause",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-errors-full"
+      ],
+      "presentation": {
+        "question": "Зачем `new Error(\"…\", { cause })`?",
+        "options": [
+          {
+            "id": "chain",
+            "text": "Сохранить исходную ошибку как причину"
+          },
+          {
+            "id": "code",
+            "text": "Задать код ошибки"
+          },
+          {
+            "id": "silent",
+            "text": "Не показывать ошибку"
+          },
+          {
+            "id": "retry",
+            "text": "Повторить операцию"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "chain",
+        "explanation": "Причина доступна в e.cause."
+      }
+    },
+    {
+      "slug": "js-rangeerror",
+      "type": "quiz.single_choice",
+      "title": "RangeError",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-errors-full"
+      ],
+      "presentation": {
+        "question": "Что бросит `(1).toFixed(200)`?",
+        "options": [
+          {
+            "id": "range",
+            "text": "RangeError"
+          },
+          {
+            "id": "type",
+            "text": "TypeError"
+          },
+          {
+            "id": "syntax",
+            "text": "SyntaxError"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "range",
+        "explanation": "Число знаков вне допустимого диапазона."
+      }
+    },
+    {
+      "slug": "js-using-when",
+      "type": "quiz.single_choice",
+      "title": "Когда",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-resources"
+      ],
+      "presentation": {
+        "question": "Когда вызывается `[Symbol.dispose]()` у `using`-переменной?",
+        "options": [
+          {
+            "id": "exit",
+            "text": "При выходе из блока, даже при ошибке"
+          },
+          {
+            "id": "gc",
+            "text": "При сборке мусора"
+          },
+          {
+            "id": "now",
+            "text": "Сразу после объявления"
+          },
+          {
+            "id": "never",
+            "text": "Никогда сам"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "exit",
+        "explanation": "Детерминированное освобождение."
+      }
+    },
+    {
+      "slug": "js-using-order",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-resources"
+      ],
+      "presentation": {
+        "question": "В каком порядке освобождаются `using a` и потом `using b`?",
+        "options": [
+          {
+            "id": "reverse",
+            "text": "Сначала b, потом a"
+          },
+          {
+            "id": "same",
+            "text": "Сначала a, потом b"
+          },
+          {
+            "id": "parallel",
+            "text": "Одновременно"
+          },
+          {
+            "id": "random",
+            "text": "Как повезёт"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "reverse",
+        "explanation": "Как стопка: последний открытый закрывается первым."
+      }
+    },
+    {
+      "slug": "js-allsettled",
+      "type": "quiz.single_choice",
+      "title": "allSettled",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-promises-full"
+      ],
+      "presentation": {
+        "question": "Когда `Promise.allSettled` отклоняется?",
+        "options": [
+          {
+            "id": "never",
+            "text": "Никогда — он всегда даёт массив исходов"
+          },
+          {
+            "id": "any",
+            "text": "Если любой отклонён"
+          },
+          {
+            "id": "all",
+            "text": "Если все отклонены"
+          },
+          {
+            "id": "first",
+            "text": "Если первый отклонён"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "never",
+        "explanation": "Подходит для отчётов."
+      }
+    },
+    {
+      "slug": "js-any-all-fail",
+      "type": "quiz.single_choice",
+      "title": "any",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-promises-full"
+      ],
+      "presentation": {
+        "question": "Что бросит `Promise.any`, если все промисы упали?",
+        "options": [
+          {
+            "id": "agg",
+            "text": "AggregateError"
+          },
+          {
+            "id": "first",
+            "text": "Первую ошибку"
+          },
+          {
+            "id": "last",
+            "text": "Последнюю ошибку"
+          },
+          {
+            "id": "none",
+            "text": "Ничего, вернёт undefined"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "agg",
+        "explanation": "Все ошибки — в errors."
+      }
+    },
+    {
+      "slug": "js-json-replacer",
+      "type": "quiz.single_choice",
+      "title": "replacer",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-json-full"
+      ],
+      "presentation": {
+        "question": "Что сделает replacer, вернувший `undefined` для ключа?",
+        "options": [
+          {
+            "id": "skip",
+            "text": "Ключ не попадёт в JSON"
+          },
+          {
+            "id": "null",
+            "text": "Запишет null"
+          },
+          {
+            "id": "err",
+            "text": "Бросит ошибку"
+          },
+          {
+            "id": "empty",
+            "text": "Запишет пустую строку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "skip",
+        "explanation": "Так убирают поля."
+      }
+    },
+    {
+      "slug": "js-json-bigint",
+      "type": "quiz.single_choice",
+      "title": "BigInt",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-json-full"
+      ],
+      "presentation": {
+        "question": "Что сделает `JSON.stringify({ n: 1n })`?",
+        "options": [
+          {
+            "id": "err",
+            "text": "TypeError"
+          },
+          {
+            "id": "num",
+            "text": "{\"n\":1}"
+          },
+          {
+            "id": "str",
+            "text": "{\"n\":\"1n\"}"
+          },
+          {
+            "id": "null",
+            "text": "{\"n\":null}"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "err",
+        "explanation": "Нужен rawJSON или преобразование."
+      }
+    },
+    {
+      "slug": "js-date-store",
+      "type": "quiz.single_choice",
+      "title": "Хранение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-date-create"
+      ],
+      "presentation": {
+        "question": "Что на самом деле хранит объект Date?",
+        "options": [
+          {
+            "id": "ms",
+            "text": "Число миллисекунд от 1970-01-01 UTC"
+          },
+          {
+            "id": "str",
+            "text": "Строку даты"
+          },
+          {
+            "id": "local",
+            "text": "Местное время и пояс"
+          },
+          {
+            "id": "parts",
+            "text": "Год, месяц и день отдельно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ms",
+        "explanation": "Пояс применяется только при чтении."
+      }
+    },
+    {
+      "slug": "js-date-diff",
+      "type": "quiz.single_choice",
+      "title": "Разница",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-date-create"
+      ],
+      "presentation": {
+        "question": "Что даст `dateB - dateA`?",
+        "options": [
+          {
+            "id": "ms",
+            "text": "Разницу в миллисекундах"
+          },
+          {
+            "id": "days",
+            "text": "Разницу в днях"
+          },
+          {
+            "id": "nan",
+            "text": "NaN"
+          },
+          {
+            "id": "str",
+            "text": "Строку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ms",
+        "explanation": "Даты превращаются в числа через valueOf."
+      }
+    },
+    {
+      "slug": "js-setdate-0",
+      "type": "quiz.single_choice",
+      "title": "setDate(0)",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-date-parts"
+      ],
+      "presentation": {
+        "question": "Куда переведёт дату `setDate(0)`?",
+        "options": [
+          {
+            "id": "last",
+            "text": "На последний день предыдущего месяца"
+          },
+          {
+            "id": "first",
+            "text": "На первое число"
+          },
+          {
+            "id": "err",
+            "text": "Ошибка"
+          },
+          {
+            "id": "same",
+            "text": "Ничего не изменится"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "last",
+        "explanation": "Дня 0 нет — Date переносит назад."
+      }
+    },
+    {
+      "slug": "js-utc-vs-local",
+      "type": "quiz.single_choice",
+      "title": "UTC",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-date-parts"
+      ],
+      "presentation": {
+        "question": "Чем `getUTCHours()` отличается от `getHours()`?",
+        "options": [
+          {
+            "id": "zone",
+            "text": "Часы по UTC, а не по поясу пользователя"
+          },
+          {
+            "id": "format",
+            "text": "Формат 12 часов"
+          },
+          {
+            "id": "round",
+            "text": "Округление"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "zone",
+        "explanation": "getHours учитывает пояс устройства."
+      }
+    },
+    {
+      "slug": "js-iso",
+      "type": "quiz.single_choice",
+      "title": "Для сервера",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-date-output"
+      ],
+      "presentation": {
+        "question": "Какой формат даты лучше отправлять на сервер?",
+        "options": [
+          {
+            "id": "iso",
+            "text": "toISOString()"
+          },
+          {
+            "id": "local",
+            "text": "toLocaleString()"
+          },
+          {
+            "id": "string",
+            "text": "toString()"
+          },
+          {
+            "id": "manual",
+            "text": "Собранный вручную"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "iso",
+        "explanation": "Однозначный стандарт в UTC."
+      }
+    },
+    {
+      "slug": "js-tojson",
+      "type": "quiz.single_choice",
+      "title": "toJSON",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-date-output"
+      ],
+      "presentation": {
+        "question": "Что вызывает `JSON.stringify` у даты?",
+        "options": [
+          {
+            "id": "tojson",
+            "text": "toJSON(), который возвращает ISO-строку"
+          },
+          {
+            "id": "tostring",
+            "text": "toString()"
+          },
+          {
+            "id": "valueof",
+            "text": "valueOf()"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего — будет {}"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "tojson",
+        "explanation": "Поэтому даты в JSON — ISO-строки."
+      }
     }
   ],
   "lessons": [
@@ -9169,6 +9680,181 @@
           "activitySlug": "js-reflect-why",
           "kind": "practice",
           "required": true
+        }
+      ]
+    },
+    {
+      "slug": "errors-full",
+      "title": "Ошибки полностью",
+      "summary": "Error, message, name, cause, toString, Error.isError и все встроенные виды: RangeError, URIError, EvalError, AggregateError, свои классы ошибок.",
+      "chapter": "Ошибки, ресурсы и промисы",
+      "durationMinutes": 10,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Ошибки кассы надо различать: «нет на складе», «неверная сумма», «нет связи». Строим свои ошибки.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Какая ошибка\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"Касса пишет просто «Ошибка». А мне надо понимать: товар кончился или сеть пропала?\"\n    ],\n    [\n      \"nika\",\n      \"Ошибка — это объект. У неё есть имя, текст, причина. И можно делать свои виды ошибок.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Error · message · name\",\n  \"title\": \"Объект ошибки\",\n  \"what\": \"`new Error(\\\"текст\\\")` — `message` хранит текст, `name` — вид (\\\"Error\\\"). Обычно ещё есть `stack` — где случилась.\",\n  \"why\": \"Бросать и ловить понятные ошибки.\",\n  \"how\": \"const e = new Error(\\\"Молоко кончилось\\\");\\nconsole.log(e.name, e.message, e instanceof Error);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Error\",\n    \"Error.prototype.message\",\n    \"Error.prototype.name\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"cause · toString()\",\n  \"title\": \"Причина и текст\",\n  \"what\": \"`new Error(\\\"…\\\", { cause: err })` — связать ошибку с исходной. `toString()` → `\\\"Имя: текст\\\"`.\",\n  \"why\": \"Не терять исходную причину при повторном выбросе.\",\n  \"how\": \"try {\\n  try { JSON.parse(\\\"{\\\"); } catch (err) { throw new Error(\\\"Меню не загрузилось\\\", { cause: err }); }\\n} catch (e) {\\n  console.log(e.toString(), \\\"←\\\", e.cause.name);\\n}\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Error.prototype.cause\",\n    \"Error.prototype.toString\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Error.isError()\",\n  \"title\": \"Настоящая ли ошибка\",\n  \"what\": \"Надёжная проверка, что значение — объект ошибки (работает и между iframe, где `instanceof` ломается).\",\n  \"why\": \"Обработчики, которые получают что угодно.\",\n  \"how\": \"console.log(Error.isError(new TypeError(\\\"x\\\")), Error.isError({ message: \\\"подделка\\\" }));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Error.isError\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"RangeError · URIError · EvalError\",\n  \"title\": \"Другие встроенные виды\",\n  \"what\": \"`RangeError` — значение вне допустимого диапазона (`new Array(-1)`), `URIError` — испорченный адрес (`decodeURI(\\\"%\\\")`), `EvalError` — исторический, сейчас не бросается.\",\n  \"why\": \"Понимать текст ошибки в консоли.\",\n  \"how\": \"try { new Array(-1); } catch (e) { console.log(e.name); }\\ntry { decodeURI(\\\"%\\\"); } catch (e) { console.log(e.name); }\\nconsole.log(new EvalError(\\\"x\\\").name);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RangeError\",\n    \"URIError\",\n    \"EvalError\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"AggregateError\",\n  \"title\": \"Много ошибок сразу\",\n  \"what\": \"`new AggregateError([e1, e2], \\\"текст\\\")` — массив ошибок в `errors`. Её бросает `Promise.any`, когда все промисы упали.\",\n  \"why\": \"Сообщить обо всех сбоях сразу.\",\n  \"how\": \"const e = new AggregateError([new Error(\\\"нет молока\\\"), new Error(\\\"нет сахара\\\")], \\\"Не приготовить\\\");\\nconsole.log(e.message, e.errors.map((x) => x.message));\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"AggregateError\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Свои ошибки\",\n  \"title\": \"class extends Error\",\n  \"what\": \"`class OutOfStock extends Error` — свой вид ошибки со своим `name` и полями. Ловить по `instanceof`.\",\n  \"why\": \"Различать причины сбоев.\",\n  \"how\": \"class OutOfStock extends Error {\\n  constructor(item) {\\n    super(`Нет на складе: ${item}`);\\n    this.name = \\\"OutOfStock\\\";\\n    this.item = item;\\n  }\\n}\\ntry { throw new OutOfStock(\\\"молоко\\\"); } catch (e) { console.log(e instanceof OutOfStock, e.name, e.item); }\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": []\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Перебрасываешь ошибку — передай исходную в `cause`, иначе причина потеряется.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Ошибка склада\",\n  \"task\": \"Сделай класс `OutOfStock extends Error` с `name = \\\"OutOfStock\\\"` и полем `item`, и функцию `brew(stock, item)`: если `stock[item]` нет или 0 — бросает `OutOfStock`, иначе уменьшает остаток.\",\n  \"lang\": \"js\",\n  \"start\": \"function brew(stock, item) {\\n  if (!stock[item]) throw new Error(\\\"нет\\\");\\n  stock[item]--;\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Своя ошибка с полем item\",\n      \"js\": \"(() => { try { brew({ milk: 0 }, \\\"milk\\\"); return false; } catch (e) { return e instanceof OutOfStock && e.name === \\\"OutOfStock\\\" && e.item === \\\"milk\\\" && e instanceof Error; } })()\"\n    },\n    {\n      \"label\": \"Есть на складе — варим\",\n      \"js\": \"(() => { const s = { milk: 2 }; brew(s, \\\"milk\\\"); return s.milk === 1; })()\"\n    }\n  ],\n  \"solution\": \"class OutOfStock extends Error {\\n  constructor(item) {\\n    super(`Нет на складе: ${item}`);\\n    this.name = \\\"OutOfStock\\\";\\n    this.item = item;\\n  }\\n}\\nfunction brew(stock, item) {\\n  if (!stock[item]) throw new OutOfStock(item);\\n  stock[item]--;\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-error-cause",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-rangeerror",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "resources",
+      "title": "Управление ресурсами: using",
+      "summary": "Объявления using и await using, Symbol.dispose и Symbol.asyncDispose, DisposableStack, AsyncDisposableStack и SuppressedError.",
+      "chapter": "Ошибки, ресурсы и промисы",
+      "durationMinutes": 11,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Касса открывает соединение с принтером чеков и забывает закрыть. Делаем так, чтобы закрывалось само.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Забытое соединение\",\n  \"lines\": [\n    [\n      \"bug\",\n      \"Открыл принтер, а закрыть забыл. Через час принтер занят навсегда! Хе-хе.\"\n    ],\n    [\n      \"nika\",\n      \"`using` закрывает ресурс сам при выходе из блока — даже если внутри случилась ошибка.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Symbol.dispose · Symbol.asyncDispose\",\n  \"title\": \"Метод освобождения\",\n  \"what\": \"Объект-ресурс объявляет метод `[Symbol.dispose]()` (или асинхронный `[Symbol.asyncDispose]()`), который его закрывает.\",\n  \"why\": \"Сделать свой ресурс совместимым с using.\",\n  \"how\": \"const printer = { [Symbol.dispose]() { console.log(\\\"Принтер закрыт\\\"); } };\\nprinter[Symbol.dispose]();\",\n  \"kind\": \"value\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Symbol.dispose\",\n    \"Symbol.asyncDispose\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"using\",\n  \"title\": \"Освободить при выходе\",\n  \"what\": \"`using r = open();` — в конце блока автоматически вызывается `r[Symbol.dispose]()`, в обратном порядке объявления.\",\n  \"why\": \"Файлы, соединения, блокировки.\",\n  \"how\": \"function open(name) {\\n  console.log(\\\"Открыт\\\", name);\\n  return { [Symbol.dispose]() { console.log(\\\"Закрыт\\\", name); } };\\n}\\n{\\n  using a = open(\\\"принтер\\\");\\n  using b = open(\\\"касса\\\");\\n  console.log(\\\"Печатаем чек\\\");\\n}\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"using\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"await using\",\n  \"title\": \"Асинхронное освобождение\",\n  \"what\": \"`await using r = …` — в конце блока ждёт `await r[Symbol.asyncDispose]()`.\",\n  \"why\": \"Соединения, которые закрываются асинхронно.\",\n  \"how\": \"async function main() {\\n  {\\n    await using conn = { async [Symbol.asyncDispose]() { await wait(50); console.log(\\\"Соединение закрыто\\\"); } };\\n    console.log(\\\"Работаем\\\");\\n  }\\n  console.log(\\\"После блока\\\");\\n}\\nawait main();\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"await using\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"DisposableStack\",\n  \"title\": \"Стопка ресурсов\",\n  \"what\": \"`stack.use(r)` — добавить ресурс, `defer(fn)` — добавить действие уборки, `adopt(value, fn)` — значение со своей функцией освобождения, `move()` — передать стопку, `dispose()` — освободить всё; `disposed` — освобождена ли.\",\n  \"why\": \"Много ресурсов, созданных по условию.\",\n  \"how\": \"const stack = new DisposableStack();\\nstack.defer(() => console.log(\\\"уборка 1\\\"));\\nstack.adopt(\\\"файл\\\", (f) => console.log(\\\"закрыт\\\", f));\\nconst moved = stack.move();\\nconsole.log(stack.disposed);\\nmoved.dispose();\\nconsole.log(moved.disposed);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"DisposableStack\",\n    \"DisposableStack.prototype.defer\",\n    \"DisposableStack.prototype.adopt\",\n    \"DisposableStack.prototype.move\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"use() · dispose() · disposed · [Symbol.dispose]\",\n  \"title\": \"Методы DisposableStack\",\n  \"what\": \"`use(resource)` регистрирует объект с `Symbol.dispose`; `dispose()` и `[Symbol.dispose]()` освобождают в обратном порядке; `disposed` — флаг.\",\n  \"why\": \"Стопку можно саму объявить через `using`.\",\n  \"how\": \"const stack = new DisposableStack();\\nstack.use({ [Symbol.dispose]() { console.log(\\\"ресурс освобождён\\\"); } });\\nstack[Symbol.dispose]();\\nconsole.log(stack.disposed);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"DisposableStack.prototype.use\",\n    \"DisposableStack.prototype.dispose\",\n    \"DisposableStack.prototype.disposed\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"AsyncDisposableStack\",\n  \"title\": \"Асинхронная стопка\",\n  \"what\": \"То же для асинхронных ресурсов: `use`, `defer`, `adopt`, `move` и `disposeAsync()`; флаг `disposed`.\",\n  \"why\": \"Несколько асинхронных соединений.\",\n  \"how\": \"const s = new AsyncDisposableStack();\\ns.defer(async () => { await wait(20); console.log(\\\"асинхронная уборка\\\"); });\\nawait s.disposeAsync();\\nconsole.log(s.disposed);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"AsyncDisposableStack\",\n    \"AsyncDisposableStack.prototype.defer\",\n    \"AsyncDisposableStack.prototype.disposeAsync\",\n    \"AsyncDisposableStack.prototype.disposed\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"use() · adopt() · move()\",\n  \"title\": \"Методы асинхронной стопки\",\n  \"what\": \"Как у DisposableStack, но ресурсы и функции могут быть асинхронными.\",\n  \"why\": \"Собрать асинхронные ресурсы.\",\n  \"how\": \"const s = new AsyncDisposableStack();\\ns.use({ async [Symbol.asyncDispose]() { console.log(\\\"закрыто\\\"); } });\\ns.adopt(1, async () => console.log(\\\"adopt\\\"));\\nawait s.move().disposeAsync();\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"AsyncDisposableStack.prototype.use\",\n    \"AsyncDisposableStack.prototype.adopt\",\n    \"AsyncDisposableStack.prototype.move\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"SuppressedError\",\n  \"title\": \"Ошибка при уборке\",\n  \"what\": \"Если упала и работа, и освобождение ресурса, бросается `SuppressedError`: `error` — ошибка уборки, `suppressed` — исходная.\",\n  \"why\": \"Не потерять ни одну из ошибок.\",\n  \"how\": \"try {\\n  using r = { [Symbol.dispose]() { throw new Error(\\\"не закрылся\\\"); } };\\n  throw new Error(\\\"сбой работы\\\");\\n} catch (e) {\\n  console.log(e.name, e.error.message, \\\"/\\\", e.suppressed.message);\\n}\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"SuppressedError\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Открыл — объяви через `using`. Тогда «забыл закрыть» становится невозможным.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Принтер сам закрывается\",\n  \"task\": \"Напиши `openPrinter(log)`: возвращает объект с методом `print(text)` (пишет в `log`) и `[Symbol.dispose]()` (пишет `\\\"closed\\\"`). Функция `printReceipt(log)` должна открыть принтер через `using`, напечатать `\\\"чек\\\"` и закрыться сама.\",\n  \"lang\": \"js\",\n  \"start\": \"function openPrinter(log) {\\n  return { print(text) { log.push(text); } };\\n}\\nfunction printReceipt(log) {\\n  const p = openPrinter(log);\\n  p.print(\\\"чек\\\");\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Печать, потом закрытие\",\n      \"js\": \"(() => { const log = []; printReceipt(log); return log.join() === \\\"чек,closed\\\"; })()\"\n    },\n    {\n      \"label\": \"Закрывается и при ошибке\",\n      \"js\": \"(() => { const log = []; try { (() => { using p = openPrinter(log); throw new Error(\\\"x\\\"); })(); } catch {} return log.join() === \\\"closed\\\"; })()\"\n    },\n    {\n      \"label\": \"Через `using`\",\n      \"contains\": \"using \"\n    }\n  ],\n  \"solution\": \"function openPrinter(log) {\\n  return {\\n    print(text) { log.push(text); },\\n    [Symbol.dispose]() { log.push(\\\"closed\\\"); }\\n  };\\n}\\nfunction printReceipt(log) {\\n  using p = openPrinter(log);\\n  p.print(\\\"чек\\\");\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-using-when",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-using-order",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "promises-full",
+      "title": "Промисы полностью",
+      "summary": "Promise.resolve, Promise.reject, Promise.allSettled, Promise.any, Promise.race, Promise.try и Promise.withResolvers.",
+      "chapter": "Ошибки, ресурсы и промисы",
+      "durationMinutes": 10,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Загружаем меню с трёх серверов: ждать всех, первого или первого успешного? Каждой задаче — свой комбинатор.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Три сервера\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"У нас три зеркала меню. Какое использовать?\"\n    ],\n    [\n      \"nika\",\n      \"Зависит от задачи: все результаты — `allSettled`, самый быстрый успешный — `any`, кто первый — `race`.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Promise.resolve() · Promise.reject()\",\n  \"title\": \"Готовые промисы\",\n  \"what\": \"`resolve(v)` — уже выполненный промис (или тот же, если v — промис), `reject(e)` — уже отклонённый.\",\n  \"why\": \"Вернуть промис из функции, где результат готов.\",\n  \"how\": \"Promise.resolve(220).then((p) => console.log(\\\"цена\\\", p));\\nPromise.reject(new Error(\\\"нет\\\")).catch((e) => console.log(\\\"ошибка\\\", e.message));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Promise.resolve\",\n    \"Promise.reject\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Promise.allSettled()\",\n  \"title\": \"Дождаться всех исходов\",\n  \"what\": \"Ждёт все промисы и даёт массив `{ status: \\\"fulfilled\\\", value }` или `{ status: \\\"rejected\\\", reason }`. Никогда не падает.\",\n  \"why\": \"Отчёт: что получилось, что нет.\",\n  \"how\": \"const res = await Promise.allSettled([Promise.resolve(\\\"меню\\\"), Promise.reject(new Error(\\\"акции\\\"))]);\\nconsole.log(res.map((r) => r.status));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Promise.allSettled\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Promise.any()\",\n  \"title\": \"Первый успешный\",\n  \"what\": \"Выполняется значением первого успешного промиса; если упали все — `AggregateError`.\",\n  \"why\": \"Самое быстрое из рабочих зеркал.\",\n  \"how\": \"const fast = await Promise.any([Promise.reject(new Error(\\\"зеркало 1 лежит\\\")), wait(50).then(() => \\\"зеркало 2\\\")]);\\nconsole.log(fast);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Promise.any\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Promise.race()\",\n  \"title\": \"Кто первый\",\n  \"what\": \"Принимает исход первого завершившегося — успех или ошибку.\",\n  \"why\": \"Тайм-аут для запроса.\",\n  \"how\": \"const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(\\\"тайм-аут\\\")), ms));\\ntry { await Promise.race([wait(500), timeout(50)]); } catch (e) { console.log(e.message); }\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Promise.race\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Promise.try()\",\n  \"title\": \"Промис из любой функции\",\n  \"what\": \"`Promise.try(fn)` вызывает `fn` и всегда возвращает промис: синхронная ошибка тоже становится отклонением.\",\n  \"why\": \"Единая обработка ошибок у синхронного и асинхронного кода.\",\n  \"how\": \"Promise.try(() => JSON.parse(\\\"{\\\")).catch((e) => console.log(\\\"поймали\\\", e.name));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Promise.try\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Promise.withResolvers()\",\n  \"title\": \"Промис и его рычаги\",\n  \"what\": \"Возвращает `{ promise, resolve, reject }` — можно выполнить промис снаружи, например из обработчика события.\",\n  \"why\": \"Превратить событие в промис.\",\n  \"how\": \"const { promise, resolve } = Promise.withResolvers();\\nsetTimeout(() => resolve(\\\"кофе готов\\\"), 50);\\nconsole.log(await promise);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Promise.withResolvers\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Все нужны — `all`. Все, но без падения — `allSettled`. Любой успешный — `any`. Самый быстрый — `race`.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Тайм-аут запроса\",\n  \"task\": \"Напиши `withTimeout(promise, ms)`: возвращает результат `promise`, а если он не успел за `ms` — отклоняется ошибкой с текстом `\\\"Тайм-аут\\\"`. Используй `Promise.race`.\",\n  \"lang\": \"js\",\n  \"start\": \"function withTimeout(promise, ms) {\\n  return promise;\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Успел — результат\",\n      \"js\": \"await withTimeout(wait(10).then(() => \\\"ok\\\"), 200) === \\\"ok\\\"\"\n    },\n    {\n      \"label\": \"Не успел — тайм-аут\",\n      \"js\": \"await withTimeout(wait(300), 30).then(() => false, (e) => e.message === \\\"Тайм-аут\\\")\"\n    },\n    {\n      \"label\": \"Через `Promise.race`\",\n      \"contains\": \"race\"\n    }\n  ],\n  \"solution\": \"function withTimeout(promise, ms) {\\n  const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error(\\\"Тайм-аут\\\")), ms));\\n  return Promise.race([promise, timeout]);\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-allsettled",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-any-all-fail",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "json-full",
+      "title": "JSON полностью",
+      "summary": "Функции replacer и reviver, отступы space, метод toJSON, JSON.rawJSON и JSON.isRawJSON.",
+      "chapter": "Ошибки, ресурсы и промисы",
+      "durationMinutes": 8,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Отправляем заказ на кухню: без служебных полей, с датой в правильном формате, а длинные номера — без потери точности.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Точный JSON\",\n  \"lines\": [\n    [\n      \"bug\",\n      \"Номер заказа 12345678901234567890 после JSON превратится в …7000. Хе-хе.\"\n    ],\n    [\n      \"nika\",\n      \"У JSON есть тонкие настройки: что брать, как отступать, как читать даты и как вставить число «как есть».\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"replacer и space\",\n  \"title\": \"Что и как сериализовать\",\n  \"what\": \"`JSON.stringify(v, replacer, space)`: `replacer` — массив разрешённых ключей или функция `(key, value) => …`; `space` — отступ для читаемости.\",\n  \"why\": \"Убрать служебные поля, красиво вывести.\",\n  \"how\": \"const order = { id: 7, drink: \\\"Раф\\\", _secret: \\\"x\\\" };\\nconsole.log(JSON.stringify(order, [\\\"id\\\", \\\"drink\\\"]));\\nconsole.log(JSON.stringify(order, (k, v) => (k.startsWith(\\\"_\\\") ? undefined : v), 2));\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": []\n}\n```\n\n```concept\n{\n  \"name\": \"reviver и toJSON\",\n  \"title\": \"Как читать и как писать\",\n  \"what\": \"`JSON.parse(text, reviver)` — функция может превратить строки обратно в даты. Метод объекта `toJSON()` решает, что попадёт в JSON (так работает `Date`).\",\n  \"why\": \"Даты туда и обратно.\",\n  \"how\": \"const text = JSON.stringify({ at: new Date(Date.UTC(2026, 10, 2)) });\\nconst back = JSON.parse(text, (k, v) => (k === \\\"at\\\" ? new Date(v) : v));\\nconsole.log(text, back.at instanceof Date);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": []\n}\n```\n\n```concept\n{\n  \"name\": \"JSON.rawJSON() · JSON.isRawJSON()\",\n  \"title\": \"Вставить JSON как есть\",\n  \"what\": \"`JSON.rawJSON(\\\"12345678901234567890\\\")` — значение, которое `stringify` вставит без изменений (большие числа без потери точности). `isRawJSON` — проверка.\",\n  \"why\": \"Отправить точный BigInt как число JSON.\",\n  \"how\": \"const id = 12345678901234567890n;\\nconsole.log(JSON.stringify({ id: JSON.rawJSON(id.toString()) }), JSON.isRawJSON(JSON.rawJSON(\\\"1\\\")));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"JSON.rawJSON\",\n    \"JSON.isRawJSON\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"BigInt в JSON — через `JSON.rawJSON(String(big))`, иначе `stringify` бросит ошибку.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Заказ для кухни\",\n  \"task\": \"Напиши `toKitchen(order)`: JSON без полей, начинающихся с `_` (через replacer-функцию), а BigInt-поле `id` вставь точным числом через `JSON.rawJSON`.\",\n  \"lang\": \"js\",\n  \"start\": \"function toKitchen(order) {\\n  return JSON.stringify(order);\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Точный номер, без служебных полей\",\n      \"js\": \"toKitchen({ id: 12345678901234567890n, drink: \\\"Раф\\\", _note: \\\"x\\\" }) === '{\\\"id\\\":12345678901234567890,\\\"drink\\\":\\\"Раф\\\"}'\"\n    },\n    {\n      \"label\": \"Через `JSON.rawJSON`\",\n      \"contains\": \"rawJSON\"\n    }\n  ],\n  \"solution\": \"function toKitchen(order) {\\n  return JSON.stringify(order, (key, value) => {\\n    if (key.startsWith(\\\"_\\\")) return undefined;\\n    if (typeof value === \\\"bigint\\\") return JSON.rawJSON(value.toString());\\n    return value;\\n  });\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-json-replacer",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-json-bigint",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "date-create",
+      "title": "Даты: создание и время",
+      "summary": "Date.now, Date.parse, Date.UTC, getTime, setTime, valueOf, getTimezoneOffset, getUTCDay и разница между местным временем и UTC.",
+      "chapter": "Даты полностью",
+      "durationMinutes": 9,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Кофейня открылась во Владивостоке. Заказы приходят из разных часовых поясов — учимся работать со временем правильно.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Разные пояса\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"Заказ из Владивостока пришёл «вчера», хотя там уже утро!\"\n    ],\n    [\n      \"nika\",\n      \"Внутри дата — одно число: миллисекунды от 1 января 1970 UTC. А местное время — лишь способ его показать.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Метка времени\",\n  \"title\": \"Миллисекунды от 1970 UTC\",\n  \"what\": \"Каждая дата хранит одно число — сколько миллисекунд прошло с 1970-01-01 00:00 UTC. Одинаково во всём мире.\",\n  \"why\": \"Хранить и сравнивать время без путаницы поясов.\",\n  \"how\": \"console.log(new Date(0).toISOString(), new Date(86_400_000).toISOString());\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": []\n}\n```\n\n```concept\n{\n  \"name\": \"Date.now() · Date.parse() · Date.UTC()\",\n  \"title\": \"Числа времени\",\n  \"what\": \"`Date.now()` — текущая метка; `Date.parse(\\\"2026-11-02T09:30:00Z\\\")` — метка из строки ISO; `Date.UTC(2026, 10, 2)` — метка для даты в UTC.\",\n  \"why\": \"Засечь время, разобрать строку, создать дату без учёта пояса.\",\n  \"how\": \"const start = Date.now();\\nconsole.log(Date.parse(\\\"2026-11-02T09:30:00Z\\\") === Date.UTC(2026, 10, 2, 9, 30), Date.now() - start < 1000);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Date.now\",\n    \"Date.parse\",\n    \"Date.UTC\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getTime() · setTime() · valueOf()\",\n  \"title\": \"Метка времени даты\",\n  \"what\": \"`getTime()` и `valueOf()` — число миллисекунд; `setTime(ms)` — поставить дату по метке. Поэтому даты можно вычитать: `b - a`.\",\n  \"why\": \"Разница во времени, сравнение.\",\n  \"how\": \"const a = new Date(Date.UTC(2026, 10, 2, 9));\\nconst b = new Date(a.getTime());\\nb.setTime(b.getTime() + 90 * 60 * 1000);\\nconsole.log((b - a) / 60000, a.valueOf() === a.getTime());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Date.prototype.getTime\",\n    \"Date.prototype.setTime\",\n    \"Date.prototype.valueOf\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getTimezoneOffset() · getUTCDay()\",\n  \"title\": \"Пояс и день недели в UTC\",\n  \"what\": \"`getTimezoneOffset()` — разница UTC и местного времени в минутах (для Москвы −180); `getUTCDay()` — день недели по UTC.\",\n  \"why\": \"Понять сдвиг пояса пользователя.\",\n  \"how\": \"const d = new Date(Date.UTC(2026, 10, 1, 22));\\nconsole.log(typeof d.getTimezoneOffset(), d.getUTCDay());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Date.prototype.getTimezoneOffset\",\n    \"Date.prototype.getUTCDay\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Храни и передавай время меткой или строкой ISO в UTC. В местное время переводи только для показа.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Сколько ждать\",\n  \"task\": \"Напиши `minutesBetween(a, b)` — сколько целых минут между двумя датами (через `getTime`, округлить вниз), и `fromIso(s)` — дата из строки ISO через `Date.parse`.\",\n  \"lang\": \"js\",\n  \"start\": \"function minutesBetween(a, b) {\\n  return 0;\\n}\\nfunction fromIso(s) {\\n  return new Date();\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Полтора часа — 90 минут\",\n      \"js\": \"minutesBetween(new Date(Date.UTC(2026, 10, 2, 9, 0)), new Date(Date.UTC(2026, 10, 2, 10, 30, 59))) === 90\"\n    },\n    {\n      \"label\": \"Дата из ISO\",\n      \"js\": \"fromIso(\\\"2026-11-02T09:30:00Z\\\").getTime() === Date.UTC(2026, 10, 2, 9, 30)\"\n    }\n  ],\n  \"solution\": \"function minutesBetween(a, b) {\\n  return Math.floor((b.getTime() - a.getTime()) / 60000);\\n}\\nfunction fromIso(s) {\\n  return new Date(Date.parse(s));\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-date-store",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-date-diff",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "date-parts",
+      "title": "Даты: части и изменение",
+      "summary": "Чтение и запись года, месяца, дня, часов, минут, секунд и миллисекунд — в местном времени и в UTC.",
+      "chapter": "Даты полностью",
+      "durationMinutes": 10,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Акция «до конца месяца»: считаем последний день месяца и сдвигаем даты на дни и часы.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"До конца месяца\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"Акция действует до последнего дня месяца. А в месяцах разное число дней!\"\n    ],\n    [\n      \"bro\",\n      \"Поставь число 0 следующего месяца — и я сам перейду на последний день текущего.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getFullYear() · setFullYear() · getUTCFullYear() · setUTCFullYear()\",\n  \"title\": \"Год\",\n  \"what\": \"Год четырьмя цифрами в местном времени и в UTC.\",\n  \"why\": \"Год в отчётах.\",\n  \"how\": \"const d = new Date(Date.UTC(2026, 0, 15));\\nd.setUTCFullYear(2027);\\nconsole.log(d.getUTCFullYear(), typeof d.getFullYear());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Date.prototype.getFullYear\",\n    \"Date.prototype.setFullYear\",\n    \"Date.prototype.getUTCFullYear\",\n    \"Date.prototype.setUTCFullYear\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getMonth() · setMonth() · getUTCMonth() · setUTCMonth()\",\n  \"title\": \"Месяц (с нуля)\",\n  \"what\": \"0 — январь, 11 — декабрь. Запись за пределами переносит год.\",\n  \"why\": \"Сдвиг на месяцы.\",\n  \"how\": \"const d = new Date(Date.UTC(2026, 10, 15));\\nd.setUTCMonth(d.getUTCMonth() + 3);\\nconsole.log(d.getUTCFullYear(), d.getUTCMonth() + 1, typeof d.getMonth());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Date.prototype.getMonth\",\n    \"Date.prototype.setMonth\",\n    \"Date.prototype.getUTCMonth\",\n    \"Date.prototype.setUTCMonth\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getDate() · setDate() · getUTCDate() · setUTCDate()\",\n  \"title\": \"Число месяца\",\n  \"what\": \"1–31. `setDate(0)` — последний день предыдущего месяца, `setDate(32)` — перенос в следующий.\",\n  \"why\": \"Последний день месяца, сдвиг на дни.\",\n  \"how\": \"const d = new Date(Date.UTC(2026, 2, 1));\\nd.setUTCDate(0);\\nconsole.log(d.getUTCDate(), d.getUTCMonth() + 1, typeof d.getDate());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Date.prototype.getDate\",\n    \"Date.prototype.setDate\",\n    \"Date.prototype.getUTCDate\",\n    \"Date.prototype.setUTCDate\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"setHours() · getUTCHours() · setUTCHours()\",\n  \"title\": \"Часы\",\n  \"what\": \"`setHours(h, m, s, ms)` может задать сразу и минуты с секундами.\",\n  \"why\": \"Начало и конец дня.\",\n  \"how\": \"const d = new Date(Date.UTC(2026, 10, 2, 15, 45));\\nd.setUTCHours(0, 0, 0, 0);\\nconsole.log(d.toISOString(), d.getUTCHours());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Date.prototype.setHours\",\n    \"Date.prototype.getUTCHours\",\n    \"Date.prototype.setUTCHours\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getMinutes() · setMinutes() · getUTCMinutes() · setUTCMinutes()\",\n  \"title\": \"Минуты\",\n  \"what\": \"0–59; перенос в часы при переполнении.\",\n  \"why\": \"Время готовности: через 15 минут.\",\n  \"how\": \"const d = new Date(Date.UTC(2026, 10, 2, 9, 50));\\nd.setUTCMinutes(d.getUTCMinutes() + 15);\\nconsole.log(d.getUTCHours(), d.getUTCMinutes(), typeof d.getMinutes());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Date.prototype.getMinutes\",\n    \"Date.prototype.setMinutes\",\n    \"Date.prototype.getUTCMinutes\",\n    \"Date.prototype.setUTCMinutes\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"getSeconds() · setSeconds() · getUTCSeconds() · setUTCSeconds()\",\n  \"title\": \"Секунды\",\n  \"what\": \"0–59.\",\n  \"why\": \"Таймеры, точное время.\",\n  \"how\": \"const d = new Date(Date.UTC(2026, 10, 2, 9, 0, 50));\\nd.setUTCSeconds(70);\\nconsole.log(d.getUTCMinutes(), d.getUTCSeconds(), typeof d.getSeconds());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Date.prototype.getSeconds\",\n    \"Date.prototype.setSeconds\",\n    \"Date.prototype.getUTCSeconds\",\n    \"Date.prototype.setUTCSeconds\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"get/setMilliseconds() · get/setUTCMilliseconds()\",\n  \"title\": \"Миллисекунды\",\n  \"what\": \"0–999.\",\n  \"why\": \"Замеры, точные метки.\",\n  \"how\": \"const d = new Date(Date.UTC(2026, 10, 2));\\nd.setUTCMilliseconds(1500);\\nconsole.log(d.getUTCSeconds(), d.getUTCMilliseconds(), typeof d.getMilliseconds());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Date.prototype.getMilliseconds\",\n    \"Date.prototype.setMilliseconds\",\n    \"Date.prototype.getUTCMilliseconds\",\n    \"Date.prototype.setUTCMilliseconds\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Сдвигать даты удобно через `set…(get…() + n)`: переполнение дней и месяцев Date исправит сам.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Последний день акции\",\n  \"task\": \"Напиши `lastDayOfMonth(year, month)` — число последнего дня месяца (месяц с нуля) через UTC-дату и `setUTCDate(0)`, и `addMinutes(date, n)` — новая дата на `n` минут позже.\",\n  \"lang\": \"js\",\n  \"start\": \"function lastDayOfMonth(year, month) {\\n  return 30;\\n}\\nfunction addMinutes(date, n) {\\n  return date;\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Февраль, високосный, декабрь\",\n      \"js\": \"lastDayOfMonth(2026, 1) === 28 && lastDayOfMonth(2028, 1) === 29 && lastDayOfMonth(2026, 11) === 31\"\n    },\n    {\n      \"label\": \"Переход через полночь, оригинал цел\",\n      \"js\": \"(() => { const a = new Date(Date.UTC(2026, 10, 2, 23, 50)); const b = addMinutes(a, 15); return b.toISOString() === \\\"2026-11-03T00:05:00.000Z\\\" && a.getUTCMinutes() === 50; })()\"\n    }\n  ],\n  \"solution\": \"function lastDayOfMonth(year, month) {\\n  const d = new Date(Date.UTC(year, month + 1, 1));\\n  d.setUTCDate(0);\\n  return d.getUTCDate();\\n}\\nfunction addMinutes(date, n) {\\n  const d = new Date(date.getTime());\\n  d.setUTCMinutes(d.getUTCMinutes() + n);\\n  return d;\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-setdate-0",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-utc-vs-local",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "date-output",
+      "title": "Даты: вывод в строку",
+      "summary": "toISOString, toJSON, toUTCString, toString, toDateString, toTimeString, toLocaleString, toLocaleDateString и toLocaleTimeString.",
+      "chapter": "Даты полностью",
+      "durationMinutes": 8,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Даты нужны в трёх видах: для сервера, для отладки и для гостей. У Date есть методы для каждого.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Три вида\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"На чеке хочу «2 ноября 2026 г.», а сервер требует какое-то «2026-11-02T…Z».\"\n    ],\n    [\n      \"bro\",\n      \"Для машин — ISO, для людей — toLocale… с языком. И ещё пара отладочных форматов.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"toISOString() · toJSON() · toUTCString()\",\n  \"title\": \"Для машин\",\n  \"what\": \"`toISOString()` — «2026-11-02T09:30:00.000Z» (стандарт обмена), `toJSON()` — то же, его вызывает `JSON.stringify`; `toUTCString()` — формат HTTP-заголовков.\",\n  \"why\": \"API, хранение, заголовки.\",\n  \"how\": \"const d = new Date(Date.UTC(2026, 10, 2, 9, 30));\\nconsole.log(d.toISOString(), JSON.stringify({ d }), d.toUTCString());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Date.prototype.toISOString\",\n    \"Date.prototype.toJSON\",\n    \"Date.prototype.toUTCString\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"toString() · toDateString() · toTimeString()\",\n  \"title\": \"Для отладки\",\n  \"what\": \"Полная строка в местном времени, только дата, только время — формат на английском, зависит от движка.\",\n  \"why\": \"Быстро посмотреть в консоли.\",\n  \"how\": \"const d = new Date(Date.UTC(2026, 10, 2, 9, 30));\\nconsole.log(typeof d.toString(), d.toDateString().length > 0, d.toTimeString().includes(\\\":\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Date.prototype.toString\",\n    \"Date.prototype.toDateString\",\n    \"Date.prototype.toTimeString\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"toLocaleString() · toLocaleDateString() · toLocaleTimeString()\",\n  \"title\": \"Для людей\",\n  \"what\": \"Дата и время по правилам языка и с настройками как у `Intl.DateTimeFormat`: `toLocaleDateString(\\\"ru-RU\\\", { dateStyle: \\\"long\\\", timeZone: \\\"UTC\\\" })`.\",\n  \"why\": \"Чеки, сообщения, интерфейс.\",\n  \"how\": \"const d = new Date(Date.UTC(2026, 10, 2, 9, 30));\\nconsole.log(d.toLocaleDateString(\\\"ru-RU\\\", { dateStyle: \\\"long\\\", timeZone: \\\"UTC\\\" }), d.toLocaleTimeString(\\\"ru-RU\\\", { timeStyle: \\\"short\\\", timeZone: \\\"UTC\\\" }), d.toLocaleString(\\\"ru-RU\\\", { timeZone: \\\"Asia/Vladivostok\\\" }));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Date.prototype.toLocaleString\",\n    \"Date.prototype.toLocaleDateString\",\n    \"Date.prototype.toLocaleTimeString\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Серверу — `toISOString()`. Человеку — `toLocaleDateString(\\\"ru-RU\\\", …)`. Никогда не склеивай даты вручную.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Дата на чеке\",\n  \"task\": \"Напиши `receiptDate(d)` — дата по-русски в длинном формате (`dateStyle: \\\"long\\\"`) в поясе UTC, и `apiDate(d)` — строка ISO для сервера.\",\n  \"lang\": \"js\",\n  \"start\": \"function receiptDate(d) {\\n  return String(d);\\n}\\nfunction apiDate(d) {\\n  return String(d);\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Длинная русская дата\",\n      \"js\": \"receiptDate(new Date(Date.UTC(2026, 10, 2))) === new Date(Date.UTC(2026, 10, 2)).toLocaleDateString(\\\"ru-RU\\\", { dateStyle: \\\"long\\\", timeZone: \\\"UTC\\\" })\"\n    },\n    {\n      \"label\": \"ISO для сервера\",\n      \"js\": \"apiDate(new Date(Date.UTC(2026, 10, 2, 9, 30))) === \\\"2026-11-02T09:30:00.000Z\\\"\"\n    }\n  ],\n  \"solution\": \"function receiptDate(d) {\\n  return d.toLocaleDateString(\\\"ru-RU\\\", { dateStyle: \\\"long\\\", timeZone: \\\"UTC\\\" });\\n}\\nfunction apiDate(d) {\\n  return d.toISOString();\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-iso",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-tojson",
+          "kind": "homework",
+          "required": false
         }
       ]
     }
