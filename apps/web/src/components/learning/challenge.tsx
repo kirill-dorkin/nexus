@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { ArrowCounterClockwise, Check, Circle, Eye, Lightbulb, Trophy } from "@phosphor-icons/react/dist/ssr";
 import { brand } from "@platform/brand";
 import { CodeEditor } from "./code-snippet";
 import { cssMatches, readCss, type CssCheck } from "./css-rules";
+import { isRunnerMessage, runnerDocument } from "./js-runner";
 import { SaveProgressHint } from "./signup-nudge";
 import codeStyles from "./code.module.css";
 import styles from "./challenge.module.css";
@@ -13,6 +14,8 @@ import styles from "./challenge.module.css";
  * Hands-on lesson challenge authored as JSON in a ```challenge Markdown fence.
  * The learner edits HTML; declarative checks run in the browser against an inert
  * DOMParser document (no scripts execute) and light up live as they type.
+ * Runnable challenges (`lang: "js"`, or any `js`/`log` check) execute the learner's code in an
+ * opaque-origin sandbox with the network closed (js-runner.ts, ADR-0064).
  * This is practice only: official progress still comes from server-checked quizzes.
  */
 
@@ -24,6 +27,10 @@ export type ChallengeCheck = {
   contains?: string;
   /** A CSS declaration the learner must write (see css-rules.ts). */
   css?: CssCheck;
+  /** A JavaScript expression that must be truthy after the learner's page has run (may use await). */
+  js?: string;
+  /** Text the learner's code must print to the console. */
+  log?: string;
   count?: number;
   /** Passes only if at most this many elements match. */
   max?: number;
@@ -39,6 +46,9 @@ export type Challenge = {
   checks: ChallengeCheck[];
   hint?: string;
   solution?: string;
+  /** "js": the learner edits JavaScript that runs on top of the fixed `page` markup. */
+  lang?: "html" | "js";
+  page?: string;
 };
 
 const str = (v: unknown, max: number): v is string => typeof v === "string" && v.length <= max;
@@ -53,12 +63,15 @@ export function parseChallenge(source: string): Challenge | null {
   }
   const c = raw as Record<string, unknown> | null;
   if (!c || !str(c.title, 120) || !str(c.task, 1000) || !str(c.start, 6000) || !opt(c.hint, 600) || !opt(c.solution, 6000)) return null;
+  if (c.lang !== undefined && c.lang !== "html" && c.lang !== "js") return null;
+  if (!opt(c.page, 3000) || (c.page !== undefined && c.lang !== "js")) return null;
   if (!Array.isArray(c.checks) || c.checks.length < 1 || c.checks.length > 8) return null;
   const checks: ChallengeCheck[] = [];
   for (const item of c.checks as Record<string, unknown>[]) {
     if (!item || !str(item.label, 140) || !opt(item.selector, 200) || !opt(item.contains, 200) || !opt(item.text, 200) ||
       !opt(item.attr, 60) || !opt(item.value, 300) ||
-      [item.selector, item.contains, item.css].filter((v) => v !== undefined).length !== 1 ||
+      !opt(item.js, 400) || !opt(item.log, 200) || (typeof item.js === "string" && /<\/script/i.test(item.js)) ||
+      [item.selector, item.contains, item.css, item.js, item.log].filter((v) => v !== undefined).length !== 1 ||
       (item.css !== undefined && !validCssCheck(item.css)) ||
       (item.count !== undefined && !(Number.isInteger(item.count) && (item.count as number) >= 1 && (item.count as number) <= 50)) ||
       (item.max !== undefined && !(Number.isInteger(item.max) && (item.max as number) >= 0 && (item.max as number) <= 50)) ||
@@ -68,7 +81,9 @@ export function parseChallenge(source: string): Challenge | null {
   return {
     title: c.title, task: c.task, start: c.start, checks,
     ...(c.hint === undefined ? {} : { hint: c.hint as string }),
-    ...(c.solution === undefined ? {} : { solution: c.solution as string })
+    ...(c.solution === undefined ? {} : { solution: c.solution as string }),
+    ...(c.lang === undefined ? {} : { lang: c.lang as "html" | "js" }),
+    ...(c.page === undefined ? {} : { page: c.page as string })
   };
 }
 
@@ -81,11 +96,21 @@ function validCssCheck(value: unknown): value is CssCheck {
     values.length <= 8 && values.every((v) => str(v, 200)) && opt(c.includes, 120) && opt(c.within, 120);
 }
 
-/** Evaluates every check against the learner's HTML. Pure apart from DOMParser. */
+export const isRunCheck = (check: ChallengeCheck) => check.js !== undefined || check.log !== undefined;
+export const isRunnable = (challenge: Challenge) => challenge.lang === "js" || challenge.checks.some(isRunCheck);
+
+/** The page a challenge's static checks read: the learner's HTML, or the fixed page of a JS challenge. */
+export const staticPage = (challenge: Challenge, code: string) => (challenge.lang === "js" ? challenge.page ?? "" : code);
+
+/**
+ * Evaluates the static checks against the learner's HTML. Pure apart from DOMParser.
+ * Runnable checks (`js`, `log`) report false here; their results come from the sandbox.
+ */
 export function runChecks(code: string, checks: ChallengeCheck[], doc: Document): boolean[] {
   const source = code.toLowerCase();
   let rules: ReturnType<typeof readCss> | null = null;
   return checks.map((check) => {
+    if (isRunCheck(check)) return false;
     if (check.css !== undefined) {
       rules ??= readCss(code);
       const found = cssMatches(rules, check.css);
@@ -119,6 +144,12 @@ function Inline({ text }: { text: string }): ReactNode {
   );
 }
 
+function hashText(text: string) {
+  let h = 0;
+  for (const ch of text) h = (h * 31 + ch.charCodeAt(0)) | 0;
+  return (h >>> 0).toString(36);
+}
+
 function storageKey(challenge: Challenge) {
   let h = 0;
   for (const ch of challenge.title + challenge.start) h = (h * 31 + ch.charCodeAt(0)) | 0;
@@ -143,10 +174,34 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
     return () => window.clearTimeout(timer);
   }, [code]);
   // Checks need DOMParser, so they run only in the browser (never during server rendering).
-  const [results, setResults] = useState<boolean[]>(() => challenge.checks.map(() => false));
+  const [staticResults, setStaticResults] = useState<boolean[]>(() => challenge.checks.map(() => false));
   useEffect(() => {
-    setResults(runChecks(checked, challenge.checks, new DOMParser().parseFromString(checked, "text/html")));
-  }, [checked, challenge.checks]);
+    setStaticResults(runChecks(checked, challenge.checks, new DOMParser().parseFromString(staticPage(challenge, checked), "text/html")));
+  }, [checked, challenge]);
+  // Runnable checks: a hidden sandbox runs the code and posts one boolean per runnable check.
+  const runnable = isRunnable(challenge);
+  const id = useId();
+  const checkFrame = useRef<HTMLIFrameElement>(null);
+  const runChecksList = useMemo(() => challenge.checks.filter(isRunCheck), [challenge.checks]);
+  const token = `${id}:${hashText(checked)}`;
+  const [runResults, setRunResults] = useState<boolean[]>([]);
+  useEffect(() => {
+    if (!runnable || !runChecksList.length) return;
+    let answered = false;
+    const onMessage = (event: MessageEvent) => {
+      if (event.source !== checkFrame.current?.contentWindow || !isRunnerMessage(event.data, token) || event.data.type !== "result") return;
+      answered = true;
+      setRunResults(event.data.results.slice(0, runChecksList.length));
+    };
+    window.addEventListener("message", onMessage);
+    // A page that never finishes loading (or throws before the checker) counts as not passing.
+    const timer = window.setTimeout(() => { if (!answered) setRunResults([]); }, 5000);
+    return () => { window.removeEventListener("message", onMessage); window.clearTimeout(timer); };
+  }, [runnable, runChecksList, token]);
+  const results = useMemo(() => {
+    let k = 0;
+    return challenge.checks.map((check, i) => (isRunCheck(check) ? runResults[k++] === true : staticResults[i] === true));
+  }, [challenge.checks, runResults, staticResults]);
   const passed = results.filter(Boolean).length;
   const done = passed === results.length;
   useEffect(() => {
@@ -177,7 +232,7 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
         ))}
       </ul>
       <div className={`${codeStyles.snippet} ${styles.workspace}`}>
-        <CodeEditor value={code} onChange={setCode} autoFocus={false}
+        <CodeEditor value={code} onChange={setCode} autoFocus={false} language={challenge.lang ?? "html"}
           label={`Код задания «${challenge.title}». Tab — отступ, Escape и затем Tab — выйти из редактора`} />
         <div className={codeStyles.result}>
           <div className={codeStyles.resultBar}>
@@ -185,8 +240,19 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
             <span className={codeStyles.live}><span aria-hidden="true" /> обновляется при вводе</span>
           </div>
           <div className={`${codeStyles.frameWrap} ${styles.frameWrap}`}>
-            <iframe className={codeStyles.frame} title={`Результат задания «${challenge.title}»`} sandbox=""
-              referrerPolicy="no-referrer" srcDoc={checked} />
+            {runnable ? (
+              <iframe className={codeStyles.frame} title={`Результат задания «${challenge.title}»`} sandbox="allow-scripts"
+                referrerPolicy="no-referrer"
+                srcDoc={runnerDocument({ code: checked, lang: challenge.lang, page: challenge.page, mode: "preview", token: `${id}:preview` })} />
+            ) : (
+              <iframe className={codeStyles.frame} title={`Результат задания «${challenge.title}»`} sandbox=""
+                referrerPolicy="no-referrer" srcDoc={checked} />
+            )}
+            {runnable && runChecksList.length ? (
+              <iframe ref={checkFrame} hidden aria-hidden="true" tabIndex={-1} title="Проверка задания" sandbox="allow-scripts"
+                referrerPolicy="no-referrer"
+                srcDoc={runnerDocument({ code: checked, lang: challenge.lang, page: challenge.page, mode: "check", token, checks: runChecksList })} />
+            ) : null}
           </div>
         </div>
       </div>

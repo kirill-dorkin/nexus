@@ -1,17 +1,27 @@
 // @vitest-environment happy-dom
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { parseChallenge, runChecks } from "./challenge";
+import { isRunCheck, isRunnable, parseChallenge, runChecks, staticPage, type Challenge } from "./challenge";
 import { parseConcept, parseRecap, parseStory } from "./story";
+import { runInWindow } from "./runner-harness.test-utils";
 
 type Manifest = { lessons: { slug: string; blocks: { type: string; markdown?: string }[] }[] };
 // Tests run from the repository root (see vitest.config.ts).
 const courses: [string, Manifest][] = [
   ["HTML", JSON.parse(readFileSync("docs/examples/html-track.manifest.json", "utf8")) as Manifest],
-  ["CSS", JSON.parse(readFileSync("docs/examples/css-track.manifest.json", "utf8")) as Manifest]
+  ["CSS", JSON.parse(readFileSync("docs/examples/css-track.manifest.json", "utf8")) as Manifest],
+  ...(existsSync("docs/examples/js-track.manifest.json")
+    ? [["JavaScript", JSON.parse(readFileSync("docs/examples/js-track.manifest.json", "utf8")) as Manifest] as [string, Manifest]]
+    : [])
 ];
-const run = (code: string, challenge: NonNullable<ReturnType<typeof parseChallenge>>) =>
-  runChecks(code, challenge.checks, new DOMParser().parseFromString(code, "text/html"));
+/** Static checks in DOMParser, runnable ones in the same sandbox document the browser uses. */
+async function run(code: string, challenge: Challenge): Promise<boolean[]> {
+  const stat = runChecks(code, challenge.checks, new DOMParser().parseFromString(staticPage(challenge, code), "text/html"));
+  if (!isRunnable(challenge) || !challenge.checks.some(isRunCheck)) return stat;
+  const { results } = await runInWindow({ code, lang: challenge.lang, page: challenge.page, checks: challenge.checks.filter(isRunCheck) });
+  let k = 0;
+  return challenge.checks.map((check, i) => (isRunCheck(check) ? results[k++] === true : stat[i]!));
+}
 
 for (const [name, manifest] of courses) {
   const blocks = (lang: string) => manifest.lessons.flatMap((lesson) =>
@@ -26,13 +36,13 @@ for (const [name, manifest] of courses) {
       const withPractice = new Set(fences.map((f) => f.lesson));
       expect(manifest.lessons.filter((l) => !withPractice.has(l.slug)).map((l) => l.slug)).toEqual([]);
     });
-    it.each(fences.map((f, i) => [`${f.lesson} #${i}`, f.source] as const))("%s is valid and solvable", (_, source) => {
+    it.each(fences.map((f, i) => [`${f.lesson} #${i}`, f.source] as const))("%s is valid and solvable", async (_, source) => {
       const challenge = parseChallenge(source);
       expect(challenge, source).not.toBeNull();
       expect(challenge!.solution, "a solution is required").toBeTruthy();
-      expect(run(challenge!.solution!, challenge!), "the solution must pass every check").not.toContain(false);
-      expect(run(challenge!.start, challenge!), "the starting code must not already pass").toContain(false);
-    });
+      expect(await run(challenge!.solution!, challenge!), "the solution must pass every check").not.toContain(false);
+      expect(await run(challenge!.start, challenge!), "the starting code must not already pass").toContain(false);
+    }, 15000);
   });
 
   describe(`${name} course story blocks`, () => {

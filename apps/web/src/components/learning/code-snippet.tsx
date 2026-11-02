@@ -23,8 +23,9 @@ const LANGUAGE_NAMES: Record<string, string> = {
 };
 
 /** Editable code with live highlighting: a transparent textarea over a highlighted layer. */
-export function CodeEditor({ value, onChange, autoFocus = true, label = "Редактор HTML. Tab — отступ, Escape и затем Tab — выйти из редактора" }: {
+export function CodeEditor({ value, onChange, autoFocus = true, language = "html", label = "Редактор HTML. Tab — отступ, Escape и затем Tab — выйти из редактора" }: {
   value: string;
+  language?: string;
   onChange: (value: string) => void;
   autoFocus?: boolean;
   label?: string;
@@ -52,7 +53,7 @@ export function CodeEditor({ value, onChange, autoFocus = true, label = "Ред�
   return (
     <div className={styles.editor}>
       <pre ref={layer} className={styles.layer} aria-hidden="true">
-        <code><Tokens tokens={highlight(value, "html")} />{"\n"}</code>
+        <code><Tokens tokens={highlight(value, language)} />{"\n"}</code>
       </pre>
       <textarea
         ref={input}
