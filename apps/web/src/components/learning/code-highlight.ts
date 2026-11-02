@@ -67,7 +67,18 @@ export function highlightHtml(code: string): Token[] {
         i += 1;
       }
       if (code.startsWith("/>", i)) { push(tokens, "punct", "/>"); i += 2; }
-      else if (code[i] === ">") { push(tokens, "punct", ">"); i += 1; }
+      else if (code[i] === ">") {
+        push(tokens, "punct", ">");
+        i += 1;
+        // Embedded stylesheets and scripts get their own highlighting.
+        const name = tag[1]!.toLowerCase();
+        if (!tag[0].startsWith("</") && (name === "style" || name === "script")) {
+          const end = code.toLowerCase().indexOf(`</${name}`, i);
+          const stop = end < 0 ? code.length : end;
+          for (const t of highlightCode(code.slice(i, stop), name === "style" ? "css" : "js")) push(tokens, t.kind, t.text);
+          i = stop;
+        }
+      }
       continue;
     }
     const next = code.indexOf("<", i + 1);

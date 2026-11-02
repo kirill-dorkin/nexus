@@ -49,7 +49,7 @@ function estimateMinutes(markdown, quizzes) {
   return Math.max(5, Math.round(words / 130 + cards * 0.5 + tasks * 3.5 + quizzes));
 }
 
-export function createCourse(challenges = {}, stories = {}, recaps = {}) {
+export function createCourse(challenges = {}, stories = {}, recaps = {}, recapExtras = {}) {
   const skills = [];
   const activities = [];
   const lessons = [];
@@ -111,7 +111,7 @@ export function createCourse(challenges = {}, stories = {}, recaps = {}) {
       const [key, skillTitle, skillDescription] = skill;
       skills.push({ key, title: skillTitle, description: skillDescription });
       // A rewritten story body (stories/*.mjs) replaces the original prose of the lesson.
-      const parts = [recaps[slug] ? `${FENCE}recap\n${JSON.stringify({ now: recaps[slug] })}\n${FENCE}` : "", ...(stories[slug] ?? body)];
+      const parts = [recaps[slug] ? `${FENCE}recap\n${JSON.stringify({ now: recaps[slug], ...recapExtras })}\n${FENCE}` : "", ...(stories[slug] ?? body)];
       const markdown = placeChallenges(parts.filter(Boolean).join("\n\n").trim(), challenges[slug] ?? []);
       const blocks = [{ type: "markdown", markdown }];
       quizzes.forEach((make, index) => {

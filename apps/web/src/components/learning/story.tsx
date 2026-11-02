@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
-import { Bug, Coffee, FastForward, Headphones, Robot, Sparkle, User } from "@phosphor-icons/react/dist/ssr";
+import { Bug, Coffee, FastForward, Headphones, Palette, Robot, Sparkle, User } from "@phosphor-icons/react/dist/ssr";
 import { CodeSnippet } from "./code-snippet";
 import styles from "./story.module.css";
 
@@ -17,13 +17,16 @@ export const CHARACTERS = {
   bro: { name: "Бро", role: "браузер", color: "#7dd3fc", Icon: Robot },
   nika: { name: "Ника", role: "наставница", color: "#c5f23a", Icon: Sparkle },
   lev: { name: "Лев", role: "гость, слушает сайты скринридером", color: "#c4b5fd", Icon: Headphones },
+  sonya: { name: "Соня", role: "дизайнер, рисует макеты", color: "#f0abfc", Icon: Palette },
   bug: { name: "Вредный Скрипт", role: "злодей", color: "#fda4af", Icon: Bug },
   you: { name: "Вы", role: "", color: "#e4e4e7", Icon: User }
 } as const;
 export type Who = keyof typeof CHARACTERS;
 type Line = { who: Who; text: string };
 export type Story = { title?: string | undefined; lines: Line[] };
-export type Concept = { name: string; title: string; what: string; why: string; how?: string | undefined; lang?: string | undefined; show?: number | undefined; bro?: string | undefined };
+export type ConceptKind = "tag" | "attr" | "idea" | "property" | "selector" | "at-rule" | "function" | "value";
+export type Concept = { name: string; title: string; what: string; why: string; how?: string | undefined; lang?: string | undefined; show?: number | undefined; bro?: string | undefined; kind?: ConceptKind | undefined };
+const KINDS: readonly ConceptKind[] = ["tag", "attr", "idea", "property", "selector", "at-rule", "function", "value"];
 
 const str = (v: unknown, max: number): v is string => typeof v === "string" && v.length > 0 && v.length <= max;
 const json = (source: string): Record<string, unknown> | null => {
@@ -52,10 +55,11 @@ export function parseConcept(source: string): Concept | null {
   if (v.how !== undefined && !str(v.how, 3000)) return null;
   if (v.bro !== undefined && !str(v.bro, 300)) return null;
   if (v.lang !== undefined && !(str(v.lang, 20) && /^[a-z]+$/.test(v.lang))) return null;
+  if (v.kind !== undefined && !KINDS.includes(v.kind as ConceptKind)) return null;
   if (v.show !== undefined && !(Number.isInteger(v.show) && (v.show as number) >= 40 && (v.show as number) <= 600)) return null;
   return {
     name: v.name, title: v.title, what: v.what, why: v.why,
-    how: v.how as string | undefined, lang: v.lang as string | undefined, show: v.show as number | undefined, bro: v.bro as string | undefined
+    how: v.how as string | undefined, kind: v.kind as ConceptKind | undefined, lang: v.lang as string | undefined, show: v.show as number | undefined, bro: v.bro as string | undefined
   };
 }
 
@@ -165,10 +169,13 @@ export function conceptKind(name: string): "tag" | "attr" | "idea" {
   if (/^[a-z][a-z0-9-]*(?:[=:*\s·]|$)/.test(name)) return "attr";
   return "idea";
 }
-const KIND_LABEL = { tag: "Тег", attr: "Атрибут", idea: "Понятие" } as const;
+const KIND_LABEL: Record<ConceptKind, string> = {
+  tag: "Тег", attr: "Атрибут", idea: "Понятие",
+  property: "Свойство", selector: "Селектор", "at-rule": "@-правило", function: "Функция", value: "Значение"
+};
 
 function ConceptCard({ concept }: { concept: Concept }) {
-  const kind = conceptKind(concept.name);
+  const kind: ConceptKind = concept.kind ?? conceptKind(concept.name);
   return (
     <section className={styles.concept} data-kind={kind} aria-label={`${concept.name}: ${concept.title}`}>
       <header className={styles.conceptHead}>
@@ -208,10 +215,12 @@ function ConceptCard({ concept }: { concept: Concept }) {
   );
 }
 
-type Recap = { now: string };
+type Recap = { now: string; premise?: string | undefined; cast?: Who[] | undefined };
 export function parseRecap(source: string): Recap | null {
   const v = json(source);
-  return v && str(v.now, 300) ? { now: v.now } : null;
+  if (!v || !str(v.now, 300)) return null;
+  const cast = Array.isArray(v.cast) && v.cast.length <= 6 && v.cast.every((w) => typeof w === "string" && w in CHARACTERS) ? (v.cast as Who[]) : undefined;
+  return { now: v.now, premise: str(v.premise, 160) ? v.premise : undefined, cast };
 }
 const CAST: Who[] = ["marta", "bro", "nika", "lev"];
 
@@ -220,14 +229,14 @@ function RecapBanner({ recap }: { recap: Recap }) {
   return (
     <aside className={styles.recap} aria-label="Сюжет курса">
       <div className={styles.recapTop}>
-        <span className={styles.cast} aria-hidden="true">{CAST.map((who) => <Avatar key={who} who={who} />)}</span>
-        <p className={styles.premise}>Курс-история: ты делаешь сайт кофейни «Зерно»</p>
+        <span className={styles.cast} aria-hidden="true">{(recap.cast ?? CAST).map((who) => <Avatar key={who} who={who} />)}</span>
+        <p className={styles.premise}>{recap.premise ?? "Курс-история: ты делаешь сайт кофейни «Зерно»"}</p>
       </div>
       <p className={styles.now}><span>Сейчас</span> <Rich text={recap.now} /></p>
       <details className={styles.who}>
         <summary>Кто есть кто</summary>
         <ul>
-          {(Object.keys(CHARACTERS) as Who[]).filter((w) => w !== "you").map((who) => (
+          {(Object.keys(CHARACTERS) as Who[]).filter((w) => w !== "you" && (w !== "sonya" || recap.cast?.includes("sonya"))).map((who) => (
             <li key={who} style={{ "--c": CHARACTERS[who].color } as CSSProperties}>
               <Avatar who={who} /><span><strong>{CHARACTERS[who].name}</strong> — {CHARACTERS[who].role}</span>
             </li>

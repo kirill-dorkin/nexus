@@ -244,9 +244,14 @@
   font: 700 1.25rem/1.2 var(--font-mono);
   letter-spacing: 0;
 }
-.concept[data-kind="attr"] code.name {
+.concept[data-kind="attr"] code.name,
+.concept[data-kind="property"] code.name {
   color: #c4b5fd;
 }
+.concept[data-kind="selector"] code.name { color: #fdba74; }
+.concept[data-kind="at-rule"] code.name { color: #f0abfc; }
+.concept[data-kind="function"] code.name,
+.concept[data-kind="value"] code.name { color: #bef264; }
 .concept .conceptTitle {
   margin: 0;
   color: var(--text-secondary);
