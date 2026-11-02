@@ -410,6 +410,81 @@
       "key": "js-math-trig",
       "title": "Тригонометрия",
       "description": "Использовать тригонометрию для анимаций и графики и низкоуровневые функции Math."
+    },
+    {
+      "key": "js-array-create",
+      "title": "Создание массивов",
+      "description": "Создавать массивы из чего угодно и заполнять их."
+    },
+    {
+      "key": "js-array-search-deep",
+      "title": "Поиск в массиве",
+      "description": "Искать с конца и обращаться к элементам с конца."
+    },
+    {
+      "key": "js-array-transform-deep",
+      "title": "Преобразования без изменений",
+      "description": "Разворачивать вложенные массивы и менять копии, не трогая оригинал."
+    },
+    {
+      "key": "js-iterator-helpers",
+      "title": "Помощники итераторов",
+      "description": "Обрабатывать ленивые и бесконечные последовательности как массивы."
+    },
+    {
+      "key": "js-map",
+      "title": "Map",
+      "description": "Хранить пары ключ — значение с ключами любого типа."
+    },
+    {
+      "key": "js-set",
+      "title": "Set",
+      "description": "Хранить уникальные значения и быстро проверять наличие."
+    },
+    {
+      "key": "js-set-algebra",
+      "title": "Алгебра множеств",
+      "description": "Объединять, пересекать и сравнивать множества."
+    },
+    {
+      "key": "js-weak",
+      "title": "Слабые коллекции",
+      "description": "Привязывать данные к объектам, не создавая утечек памяти."
+    },
+    {
+      "key": "js-regexp-basics",
+      "title": "Основы регулярок",
+      "description": "Описывать шаблоны текста и проверять строки."
+    },
+    {
+      "key": "js-regexp-flags",
+      "title": "Флаги",
+      "description": "Включать нужное поведение регулярного выражения флагами."
+    },
+    {
+      "key": "js-regexp-groups",
+      "title": "Группы и замены",
+      "description": "Извлекать части текста и делать умные замены."
+    },
+    {
+      "key": "js-symbols",
+      "title": "Символы",
+      "description": "Создавать уникальные ключи, которые не пересекаются с чужими."
+    },
+    {
+      "key": "js-well-known-symbols",
+      "title": "Встроенные символы",
+      "description": "Менять поведение instanceof, concat и наследования встроенных классов."
+    },
+    {
+      "key": "js-proxy",
+      "title": "Proxy",
+      "description": "Перехватывать чтение, запись и вызовы у объектов."
+    },
+    {
+      "key": "js-reflect",
+      "title": "Reflect",
+      "description": "Выполнять операции над объектами функциями — особенно внутри ловушек Proxy."
     }
   ],
   "activities": [
@@ -5890,6 +5965,822 @@
         "correctOptionId": "quad",
         "explanation": "Учитывает знаки обоих аргументов."
       }
+    },
+    {
+      "slug": "js-array-of",
+      "type": "quiz.single_choice",
+      "title": "Ловушка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-array-create"
+      ],
+      "presentation": {
+        "question": "Что создаёт `new Array(3)`?",
+        "options": [
+          {
+            "id": "holes",
+            "text": "Пустой массив длины 3 (дырки)"
+          },
+          {
+            "id": "three",
+            "text": "[3]"
+          },
+          {
+            "id": "zeros",
+            "text": "[0, 0, 0]"
+          },
+          {
+            "id": "err",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "holes",
+        "explanation": "Array.of(3) даст [3]."
+      }
+    },
+    {
+      "slug": "js-length-clear",
+      "type": "quiz.single_choice",
+      "title": "Очистка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-array-create"
+      ],
+      "presentation": {
+        "question": "Что сделает `arr.length = 0`?",
+        "options": [
+          {
+            "id": "clear",
+            "text": "Очистит массив"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          },
+          {
+            "id": "err",
+            "text": "Ошибку"
+          },
+          {
+            "id": "copy",
+            "text": "Создаст копию"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "clear",
+        "explanation": "Длина управляет содержимым."
+      }
+    },
+    {
+      "slug": "js-findlast",
+      "type": "quiz.single_choice",
+      "title": "findLast",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-array-search-deep"
+      ],
+      "presentation": {
+        "question": "Что вернёт `[1, 2, 3, 4].findLast((n) => n % 2 === 1)`?",
+        "options": [
+          {
+            "id": "3",
+            "text": "3"
+          },
+          {
+            "id": "1",
+            "text": "1"
+          },
+          {
+            "id": "4",
+            "text": "4"
+          },
+          {
+            "id": "idx",
+            "text": "2"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "3",
+        "explanation": "Последний нечётный."
+      }
+    },
+    {
+      "slug": "js-flat-depth",
+      "type": "quiz.single_choice",
+      "title": "flat",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-array-transform-deep"
+      ],
+      "presentation": {
+        "question": "Что вернёт `[1, [2, [3]]].flat()`?",
+        "options": [
+          {
+            "id": "one",
+            "text": "[1, 2, [3]]"
+          },
+          {
+            "id": "all",
+            "text": "[1, 2, 3]"
+          },
+          {
+            "id": "same",
+            "text": "[1, [2, [3]]]"
+          },
+          {
+            "id": "err",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "По умолчанию глубина 1."
+      }
+    },
+    {
+      "slug": "js-with",
+      "type": "quiz.single_choice",
+      "title": "with",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-array-transform-deep"
+      ],
+      "presentation": {
+        "question": "Что делает `arr.with(1, \"x\")`?",
+        "options": [
+          {
+            "id": "copy",
+            "text": "Возвращает копию с заменой элемента 1"
+          },
+          {
+            "id": "mut",
+            "text": "Меняет arr"
+          },
+          {
+            "id": "insert",
+            "text": "Вставляет x"
+          },
+          {
+            "id": "err",
+            "text": "Ошибка"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "copy",
+        "explanation": "Оригинал не меняется."
+      }
+    },
+    {
+      "slug": "js-iter-lazy",
+      "type": "quiz.single_choice",
+      "title": "Ленивость",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-iterator-helpers"
+      ],
+      "presentation": {
+        "question": "Почему `gen().map(f).take(3).toArray()` работает для бесконечного генератора?",
+        "options": [
+          {
+            "id": "lazy",
+            "text": "Помощники ленивые и берут только нужные значения"
+          },
+          {
+            "id": "limit",
+            "text": "Есть встроенный лимит"
+          },
+          {
+            "id": "async",
+            "text": "Всё асинхронно"
+          },
+          {
+            "id": "no",
+            "text": "Не работает"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lazy",
+        "explanation": "Считается только то, что попросили."
+      }
+    },
+    {
+      "slug": "js-iter-from",
+      "type": "quiz.single_choice",
+      "title": "Iterator.from",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-iterator-helpers"
+      ],
+      "presentation": {
+        "question": "Зачем `Iterator.from(x)`?",
+        "options": [
+          {
+            "id": "helpers",
+            "text": "Получить итератор с помощниками из любого перебираемого"
+          },
+          {
+            "id": "array",
+            "text": "Сделать массив"
+          },
+          {
+            "id": "copy",
+            "text": "Скопировать объект"
+          },
+          {
+            "id": "sync",
+            "text": "Сделать асинхронный код синхронным"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "helpers",
+        "explanation": "Например, из Set или своего итератора."
+      }
+    },
+    {
+      "slug": "js-map-size",
+      "type": "quiz.single_choice",
+      "title": "Размер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-map"
+      ],
+      "presentation": {
+        "question": "Как узнать число пар в Map?",
+        "options": [
+          {
+            "id": "size",
+            "text": "`map.size`"
+          },
+          {
+            "id": "length",
+            "text": "`map.length`"
+          },
+          {
+            "id": "count",
+            "text": "`map.count()`"
+          },
+          {
+            "id": "keys",
+            "text": "`Object.keys(map).length`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "size",
+        "explanation": "size — свойство."
+      }
+    },
+    {
+      "slug": "js-map-vs-object",
+      "type": "quiz.single_choice",
+      "title": "Map или объект",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-map"
+      ],
+      "presentation": {
+        "question": "Когда Map лучше объекта?",
+        "options": [
+          {
+            "id": "keys",
+            "text": "Когда ключи — не строки или нужен порядок и частые изменения"
+          },
+          {
+            "id": "json",
+            "text": "Когда нужен JSON"
+          },
+          {
+            "id": "always",
+            "text": "Всегда"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "keys",
+        "explanation": "Объект — для записей с известными полями."
+      }
+    },
+    {
+      "slug": "js-set-dedupe",
+      "type": "quiz.single_choice",
+      "title": "Дубликаты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-set"
+      ],
+      "presentation": {
+        "question": "Как убрать повторы из массива?",
+        "options": [
+          {
+            "id": "set",
+            "text": "`[...new Set(arr)]`"
+          },
+          {
+            "id": "sort",
+            "text": "`arr.sort()`"
+          },
+          {
+            "id": "filter",
+            "text": "`arr.filter(Boolean)`"
+          },
+          {
+            "id": "flat",
+            "text": "`arr.flat()`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "set",
+        "explanation": "Set хранит только уникальные значения."
+      }
+    },
+    {
+      "slug": "js-set-intersection",
+      "type": "quiz.single_choice",
+      "title": "Пересечение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-set-algebra"
+      ],
+      "presentation": {
+        "question": "Что вернёт `new Set([1, 2]).intersection(new Set([2, 3]))`?",
+        "options": [
+          {
+            "id": "2",
+            "text": "Set {2}"
+          },
+          {
+            "id": "all",
+            "text": "Set {1, 2, 3}"
+          },
+          {
+            "id": "13",
+            "text": "Set {1, 3}"
+          },
+          {
+            "id": "1",
+            "text": "Set {1}"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "2",
+        "explanation": "Только общие элементы."
+      }
+    },
+    {
+      "slug": "js-weakmap-keys",
+      "type": "quiz.single_choice",
+      "title": "Ключи",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-weak"
+      ],
+      "presentation": {
+        "question": "Какие ключи допускает WeakMap?",
+        "options": [
+          {
+            "id": "obj",
+            "text": "Только объекты (и незарегистрированные символы)"
+          },
+          {
+            "id": "any",
+            "text": "Любые"
+          },
+          {
+            "id": "str",
+            "text": "Только строки"
+          },
+          {
+            "id": "num",
+            "text": "Только числа"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "obj",
+        "explanation": "Примитивы не собираются сборщиком."
+      }
+    },
+    {
+      "slug": "js-weakmap-iter",
+      "type": "quiz.single_choice",
+      "title": "Перебор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-weak"
+      ],
+      "presentation": {
+        "question": "Можно ли перебрать WeakMap через for…of?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, перебора и size нет"
+          },
+          {
+            "id": "yes",
+            "text": "Да"
+          },
+          {
+            "id": "keys",
+            "text": "Только ключи"
+          },
+          {
+            "id": "values",
+            "text": "Только значения"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Содержимое может исчезнуть в любой момент."
+      }
+    },
+    {
+      "slug": "js-re-anchors",
+      "type": "quiz.single_choice",
+      "title": "Якоря",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-regexp-basics"
+      ],
+      "presentation": {
+        "question": "Что даст `/\\d{3}/.test(\"ab1234\")`?",
+        "options": [
+          {
+            "id": "true",
+            "text": "true — нашлись три цифры подряд"
+          },
+          {
+            "id": "false",
+            "text": "false"
+          },
+          {
+            "id": "err",
+            "text": "Ошибку"
+          },
+          {
+            "id": "null",
+            "text": "null"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "true",
+        "explanation": "Без ^ и $ подходит часть строки."
+      }
+    },
+    {
+      "slug": "js-re-plus",
+      "type": "quiz.single_choice",
+      "title": "Квантификатор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-regexp-basics"
+      ],
+      "presentation": {
+        "question": "Что значит `+` в регулярке?",
+        "options": [
+          {
+            "id": "one",
+            "text": "Один или больше раз"
+          },
+          {
+            "id": "zero",
+            "text": "Ноль или больше"
+          },
+          {
+            "id": "opt",
+            "text": "Ноль или один"
+          },
+          {
+            "id": "plus",
+            "text": "Знак плюс"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "`*` — ноль и больше."
+      }
+    },
+    {
+      "slug": "js-flag-g",
+      "type": "quiz.single_choice",
+      "title": "Флаг g",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-regexp-flags"
+      ],
+      "presentation": {
+        "question": "Что меняет флаг `g` в `replace`?",
+        "options": [
+          {
+            "id": "all",
+            "text": "Заменяет все совпадения, а не первое"
+          },
+          {
+            "id": "case",
+            "text": "Игнорирует регистр"
+          },
+          {
+            "id": "line",
+            "text": "Многострочный режим"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "all",
+        "explanation": "Без g — только первое."
+      }
+    },
+    {
+      "slug": "js-flag-u",
+      "type": "quiz.single_choice",
+      "title": "Флаг u",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-regexp-flags"
+      ],
+      "presentation": {
+        "question": "Зачем флаг `u`?",
+        "options": [
+          {
+            "id": "unicode",
+            "text": "Правильная работа с Юникодом и \\p{…}"
+          },
+          {
+            "id": "upper",
+            "text": "Только заглавные"
+          },
+          {
+            "id": "unique",
+            "text": "Уникальные совпадения"
+          },
+          {
+            "id": "url",
+            "text": "Для адресов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "unicode",
+        "explanation": "Эмодзи становятся одним символом."
+      }
+    },
+    {
+      "slug": "js-re-named",
+      "type": "quiz.single_choice",
+      "title": "Именованная группа",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-regexp-groups"
+      ],
+      "presentation": {
+        "question": "Где найти значение группы `(?<price>\\d+)`?",
+        "options": [
+          {
+            "id": "groups",
+            "text": "`match.groups.price`"
+          },
+          {
+            "id": "prop",
+            "text": "`match.price`"
+          },
+          {
+            "id": "index",
+            "text": "Только `match[0]`"
+          },
+          {
+            "id": "re",
+            "text": "`re.price`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "groups",
+        "explanation": "Именованные группы — в groups."
+      }
+    },
+    {
+      "slug": "js-re-escape",
+      "type": "quiz.single_choice",
+      "title": "Экранирование",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-regexp-groups"
+      ],
+      "presentation": {
+        "question": "Зачем `RegExp.escape(text)`?",
+        "options": [
+          {
+            "id": "safe",
+            "text": "Чтобы спецсимволы текста не стали частью шаблона"
+          },
+          {
+            "id": "html",
+            "text": "Экранировать HTML"
+          },
+          {
+            "id": "url",
+            "text": "Кодировать URL"
+          },
+          {
+            "id": "upper",
+            "text": "Привести к верхнему регистру"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "safe",
+        "explanation": "Иначе «(» или «+» сломают регулярку."
+      }
+    },
+    {
+      "slug": "js-symbol-unique",
+      "type": "quiz.single_choice",
+      "title": "Уникальность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-symbols"
+      ],
+      "presentation": {
+        "question": "Что вернёт `Symbol(\"a\") === Symbol(\"a\")`?",
+        "options": [
+          {
+            "id": "false",
+            "text": "false"
+          },
+          {
+            "id": "true",
+            "text": "true"
+          },
+          {
+            "id": "err",
+            "text": "Ошибку"
+          },
+          {
+            "id": "undef",
+            "text": "undefined"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "false",
+        "explanation": "Каждый символ уникален."
+      }
+    },
+    {
+      "slug": "js-symbol-for",
+      "type": "quiz.single_choice",
+      "title": "Реестр",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-symbols"
+      ],
+      "presentation": {
+        "question": "Что вернёт `Symbol.for(\"a\") === Symbol.for(\"a\")`?",
+        "options": [
+          {
+            "id": "true",
+            "text": "true"
+          },
+          {
+            "id": "false",
+            "text": "false"
+          },
+          {
+            "id": "err",
+            "text": "Ошибку"
+          },
+          {
+            "id": "null",
+            "text": "null"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "true",
+        "explanation": "Глобальный реестр отдаёт один и тот же символ."
+      }
+    },
+    {
+      "slug": "js-species",
+      "type": "quiz.single_choice",
+      "title": "species",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-well-known-symbols"
+      ],
+      "presentation": {
+        "question": "Зачем `Symbol.species`?",
+        "options": [
+          {
+            "id": "ctor",
+            "text": "Задать, какой класс создают методы вроде map у наследника"
+          },
+          {
+            "id": "kind",
+            "text": "Узнать вид объекта"
+          },
+          {
+            "id": "clone",
+            "text": "Клонировать объект"
+          },
+          {
+            "id": "type",
+            "text": "Проверить тип"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ctor",
+        "explanation": "Например, чтобы map вернул обычный Array."
+      }
+    },
+    {
+      "slug": "js-proxy-set",
+      "type": "quiz.single_choice",
+      "title": "Ловушка set",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-proxy"
+      ],
+      "presentation": {
+        "question": "Что должна вернуть ловушка `set` при успешной записи?",
+        "options": [
+          {
+            "id": "true",
+            "text": "true"
+          },
+          {
+            "id": "value",
+            "text": "Записанное значение"
+          },
+          {
+            "id": "undef",
+            "text": "Ничего"
+          },
+          {
+            "id": "target",
+            "text": "Объект target"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "true",
+        "explanation": "false в строгом режиме даст TypeError."
+      }
+    },
+    {
+      "slug": "js-reflect-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем Reflect",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "js-reflect"
+      ],
+      "presentation": {
+        "question": "Чем `Reflect.set` удобнее присваивания внутри ловушки?",
+        "options": [
+          {
+            "id": "bool",
+            "text": "Возвращает успех и передаёт receiver, не бросая ошибок"
+          },
+          {
+            "id": "fast",
+            "text": "Быстрее"
+          },
+          {
+            "id": "async",
+            "text": "Асинхронный"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bool",
+        "explanation": "И совпадает по аргументам с ловушкой."
+      }
     }
   ],
   "lessons": [
@@ -7939,6 +8830,345 @@
           "activitySlug": "js-atan2",
           "kind": "homework",
           "required": false
+        }
+      ]
+    },
+    {
+      "slug": "array-create",
+      "title": "Создание массивов",
+      "summary": "Array.from, Array.of, Array.isArray, свойство length и его запись, fill и copyWithin.",
+      "chapter": "Массивы и итераторы полностью",
+      "durationMinutes": 10,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Нужно создать сетку из 12 столиков, превратить список карточек на странице в массив и проверить, что данные — массив.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Из чего угодно\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"Нужен список 12 столиков с номерами. Не писать же их руками?\"\n    ],\n    [\n      \"bro\",\n      \"`Array.from({ length: 12 }, (_, i) => i + 1)` — и готово.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Array.from()\",\n  \"title\": \"Массив из перебираемого\",\n  \"what\": \"Создаёт массив из строки, Set, NodeList, итератора или «массивоподобного» `{ length: n }`. Второй аргумент — функция преобразования.\",\n  \"why\": \"Сгенерировать или превратить коллекцию в массив.\",\n  \"how\": \"console.log(Array.from({ length: 5 }, (_, i) => i + 1));\\nconsole.log(Array.from(\\\"чай\\\"), Array.from(new Set([1, 1, 2])));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Array.from\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Array.of()\",\n  \"title\": \"Массив из аргументов\",\n  \"what\": \"`Array.of(7)` → `[7]`, а `new Array(7)` — пустой массив длины 7.\",\n  \"why\": \"Избежать ловушки `new Array(n)`.\",\n  \"how\": \"console.log(Array.of(7), new Array(7).length, Array.of(1, 2, 3));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Array.of\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Array.isArray()\",\n  \"title\": \"Массив ли это\",\n  \"what\": \"Надёжная проверка: `typeof []` — \\\"object\\\", а `Array.isArray([])` — true.\",\n  \"why\": \"Проверить данные с сервера.\",\n  \"how\": \"console.log(typeof [], Array.isArray([]), Array.isArray({ length: 0 }));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Array.isArray\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"arr.length\",\n  \"title\": \"Длина и её запись\",\n  \"what\": \"`length` — на единицу больше последнего индекса. Запись `arr.length = 0` очищает массив, `arr.length = 2` — обрезает.\",\n  \"why\": \"Быстро очистить или обрезать.\",\n  \"how\": \"const cart = [\\\"Латте\\\", \\\"Раф\\\", \\\"Какао\\\"];\\ncart.length = 1;\\nconsole.log(cart, cart.length);\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Array.prototype.length\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"fill()\",\n  \"title\": \"Заполнить значением\",\n  \"what\": \"`arr.fill(value, start, end)` — заполняет (меняет массив).\",\n  \"why\": \"Начальная сетка, сброс значений.\",\n  \"how\": \"console.log(new Array(4).fill(\\\"свободен\\\"), [1, 2, 3, 4].fill(0, 2));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Array.prototype.fill\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"copyWithin()\",\n  \"title\": \"Скопировать внутри массива\",\n  \"what\": \"`arr.copyWithin(target, start, end)` копирует кусок массива в другое место того же массива.\",\n  \"why\": \"Сдвиги в буферах; редкая задача.\",\n  \"how\": \"console.log([1, 2, 3, 4, 5].copyWithin(0, 3));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Array.prototype.copyWithin\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Нужен массив из N элементов — `Array.from({ length: N }, fn)`. `new Array(N)` даёт дырки.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Сетка столиков\",\n  \"task\": \"Сделай `tables` — массив `[1, …, 12]` через `Array.from`, `seats` — массив из 12 значений `4` через `fill`, и `isList(x)` через `Array.isArray`.\",\n  \"lang\": \"js\",\n  \"start\": \"const tables = [];\\nconst seats = [];\\nfunction isList(x) {\\n  return typeof x === \\\"object\\\";\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Номера 1–12\",\n      \"js\": \"tables.length === 12 && tables[0] === 1 && tables[11] === 12\"\n    },\n    {\n      \"label\": \"По 4 места\",\n      \"js\": \"seats.length === 12 && seats.every((s) => s === 4)\"\n    },\n    {\n      \"label\": \"Проверка массива\",\n      \"js\": \"isList([]) && !isList({ length: 1 })\"\n    }\n  ],\n  \"solution\": \"const tables = Array.from({ length: 12 }, (_, i) => i + 1);\\nconst seats = new Array(12).fill(4);\\nfunction isList(x) {\\n  return Array.isArray(x);\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-array-of",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-length-clear",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "array-search-deep",
+      "title": "Поиск с конца и по индексу",
+      "summary": "at, lastIndexOf, findLast, findLastIndex и reduceRight.",
+      "chapter": "Массивы и итераторы полностью",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Ищем последний заказ гостя и считаем выражение справа налево.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"С конца\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"Хочу видеть последний заказ Ани, а не первый.\"\n    ],\n    [\n      \"bro\",\n      \"Для этого — версии методов, которые идут с конца: `findLast`, `lastIndexOf`.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"at()\",\n  \"title\": \"Элемент с конца\",\n  \"what\": \"`arr.at(-1)` — последний элемент, `arr.at(-2)` — предпоследний.\",\n  \"why\": \"Последний заказ без `length - 1`.\",\n  \"how\": \"console.log([\\\"Латте\\\", \\\"Раф\\\", \\\"Какао\\\"].at(-1));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Array.prototype.at\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"lastIndexOf()\",\n  \"title\": \"Последнее вхождение\",\n  \"what\": \"Индекс последнего равного элемента или −1.\",\n  \"why\": \"Где гость был в последний раз.\",\n  \"how\": \"console.log([\\\"Аня\\\", \\\"Борис\\\", \\\"Аня\\\"].lastIndexOf(\\\"Аня\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Array.prototype.lastIndexOf\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"findLast() · findLastIndex()\",\n  \"title\": \"Последний подходящий\",\n  \"what\": \"Как `find` и `findIndex`, но поиск с конца.\",\n  \"why\": \"Последний заказ по условию.\",\n  \"how\": \"const orders = [{ g: \\\"Аня\\\", d: \\\"Латте\\\" }, { g: \\\"Борис\\\", d: \\\"Раф\\\" }, { g: \\\"Аня\\\", d: \\\"Какао\\\" }];\\nconsole.log(orders.findLast((o) => o.g === \\\"Аня\\\").d, orders.findLastIndex((o) => o.g === \\\"Аня\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Array.prototype.findLast\",\n    \"Array.prototype.findLastIndex\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"reduceRight()\",\n  \"title\": \"Свернуть справа налево\",\n  \"what\": \"Как `reduce`, но с последнего элемента.\",\n  \"why\": \"Композиция функций, разбор справа налево.\",\n  \"how\": \"console.log([\\\"а\\\", \\\"б\\\", \\\"в\\\"].reduceRight((acc, x) => acc + x, \\\"\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Array.prototype.reduceRight\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Ищешь «последний» — бери методы с `Last` в имени, а не переворачивай массив.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Последний заказ\",\n  \"task\": \"Напиши `lastOrder(orders, guest)` — последний заказ гостя через `findLast` (или `undefined`), и `lastDrink(orders)` — напиток последнего заказа через `at(-1)`.\",\n  \"lang\": \"js\",\n  \"start\": \"function lastOrder(orders, guest) {\\n  return orders.find((o) => o.guest === guest);\\n}\\nfunction lastDrink(orders) {\\n  return orders[0].drink;\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Поиск с конца работает\",\n      \"js\": \"(() => { const o = [{ guest: \\\"Аня\\\", drink: \\\"Латте\\\" }, { guest: \\\"Борис\\\", drink: \\\"Раф\\\" }, { guest: \\\"Аня\\\", drink: \\\"Какао\\\" }]; return lastOrder(o, \\\"Аня\\\").drink === \\\"Какао\\\" && lastDrink(o) === \\\"Какао\\\" && lastOrder(o, \\\"Лев\\\") === undefined; })()\"\n    },\n    {\n      \"label\": \"Использован `findLast`\",\n      \"contains\": \"findLast\"\n    }\n  ],\n  \"solution\": \"function lastOrder(orders, guest) {\\n  return orders.findLast((o) => o.guest === guest);\\n}\\nfunction lastDrink(orders) {\\n  return orders.at(-1).drink;\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-findlast",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "array-transform-deep",
+      "title": "Плоские массивы и копии",
+      "summary": "flat, flatMap, toReversed, toSpliced, with, keys, values, entries, toString и toLocaleString.",
+      "chapter": "Массивы и итераторы полностью",
+      "durationMinutes": 9,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Заказы со столиков — массив массивов. Делаем один список и правим копии, не портя данные.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Массив массивов\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"У каждого столика свой список. Хочу один общий список заказов.\"\n    ],\n    [\n      \"nika\",\n      \"`flat()` расплющит вложенность. А методы с `to…` и `with` дают изменённую копию.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"flat()\",\n  \"title\": \"Расплющить\",\n  \"what\": \"`[[1, 2], [3]].flat()` → `[1, 2, 3]`. Аргумент — глубина, `Infinity` — до конца.\",\n  \"why\": \"Объединить вложенные списки.\",\n  \"how\": \"console.log([[\\\"Латте\\\"], [\\\"Раф\\\", \\\"Какао\\\"]].flat(), [1, [2, [3, [4]]]].flat(Infinity));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Array.prototype.flat\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"flatMap()\",\n  \"title\": \"map + flat\",\n  \"what\": \"Преобразует каждый элемент в массив и расплющивает на один уровень.\",\n  \"why\": \"Один элемент → несколько.\",\n  \"how\": \"console.log([\\\"латте раф\\\", \\\"какао\\\"].flatMap((s) => s.split(\\\" \\\")));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Array.prototype.flatMap\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"toReversed() · toSpliced() · with()\",\n  \"title\": \"Копии с изменениями\",\n  \"what\": \"`toReversed()` — перевёрнутая копия, `toSpliced(i, n, …)` — копия с вырезанным или вставленным, `with(i, v)` — копия с заменой одного элемента. Оригинал не меняется.\",\n  \"why\": \"Неизменяемые данные (например, в React).\",\n  \"how\": \"const cart = [\\\"Латте\\\", \\\"Раф\\\", \\\"Какао\\\"];\\nconsole.log(cart.toReversed(), cart.toSpliced(1, 1), cart.with(0, \\\"Флэт уайт\\\"), cart);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Array.prototype.toReversed\",\n    \"Array.prototype.toSpliced\",\n    \"Array.prototype.with\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"keys() · values() · entries()\",\n  \"title\": \"Итераторы массива\",\n  \"what\": \"`keys()` — индексы, `values()` — значения, `entries()` — пары `[индекс, значение]`.\",\n  \"why\": \"Перебор с номерами в for…of.\",\n  \"how\": \"for (const [i, d] of [\\\"Латте\\\", \\\"Раф\\\"].entries()) console.log(i + 1, d);\\nconsole.log([...[\\\"a\\\", \\\"b\\\"].keys()], [...[\\\"a\\\", \\\"b\\\"].values()]);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Array.prototype.keys\",\n    \"Array.prototype.values\",\n    \"Array.prototype.entries\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"toString() · toLocaleString()\",\n  \"title\": \"Массив в строку\",\n  \"what\": \"`toString()` — через запятую, `toLocaleString(\\\"ru-RU\\\")` — каждый элемент по правилам языка.\",\n  \"why\": \"Быстрый вывод списка.\",\n  \"how\": \"console.log([1, 2].toString(), [1250.5, 3000].toLocaleString(\\\"ru-RU\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Array.prototype.toString\",\n    \"Array.prototype.toLocaleString\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Не хочешь менять оригинал — бери `toSorted`, `toReversed`, `toSpliced` и `with`.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Общий список\",\n  \"task\": \"Сделай `all` — один массив из `tables` через `flat`, `fixed` — копию `all` с заменой первого элемента на `\\\"Флэт уайт\\\"` через `with`, не меняя `all`.\",\n  \"lang\": \"js\",\n  \"start\": \"const tables = [[\\\"Латте\\\"], [\\\"Раф\\\", \\\"Какао\\\"], []];\\nconst all = tables;\\nconst fixed = all;\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Один общий список\",\n      \"js\": \"all.join() === \\\"Латте,Раф,Какао\\\"\"\n    },\n    {\n      \"label\": \"Копия изменена, оригинал нет\",\n      \"js\": \"fixed[0] === \\\"Флэт уайт\\\" && all[0] === \\\"Латте\\\"\"\n    },\n    {\n      \"label\": \"Через `with`\",\n      \"contains\": \".with(\"\n    }\n  ],\n  \"solution\": \"const tables = [[\\\"Латте\\\"], [\\\"Раф\\\", \\\"Какао\\\"], []];\\nconst all = tables.flat();\\nconst fixed = all.with(0, \\\"Флэт уайт\\\");\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-flat-depth",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-with",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "iterator-helpers",
+      "title": "Помощники итераторов",
+      "summary": "Iterator.from и ленивые методы map, filter, take, drop, flatMap, reduce, toArray, forEach, some, every, find у итераторов.",
+      "chapter": "Массивы и итераторы полностью",
+      "durationMinutes": 9,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Номерки заказов идут бесконечным генератором. Берём первые пять чётных — не создавая бесконечный массив.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Бесконечный поток\",\n  \"lines\": [\n    [\n      \"bug\",\n      \"Сделай `[...tickets()].filter(...)` — и браузер зависнет навсегда! Хе-хе.\"\n    ],\n    [\n      \"nika\",\n      \"У итераторов свои ленивые методы: они берут значения по одному и останавливаются, когда хватит.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Iterator · Iterator.from()\",\n  \"title\": \"Итератор с помощниками\",\n  \"what\": \"`Iterator` — общий прототип итераторов со встроенными методами. `Iterator.from(x)` делает такой итератор из любого перебираемого.\",\n  \"why\": \"Пользоваться помощниками у любого источника.\",\n  \"how\": \"const it = Iterator.from([\\\"Латте\\\", \\\"Раф\\\"]);\\nconsole.log(it.next().value, it.toArray());\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Iterator\",\n    \"Iterator.from\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"map() · filter()\",\n  \"title\": \"Ленивые преобразование и отбор\",\n  \"what\": \"Как у массивов, но ничего не считают, пока не попросишь значение.\",\n  \"why\": \"Обработка бесконечных потоков.\",\n  \"how\": \"function* nums() { let n = 1; while (true) yield n++; }\\nconsole.log(nums().filter((n) => n % 2 === 0).map((n) => n * 10).take(3).toArray());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Iterator.prototype.map\",\n    \"Iterator.prototype.filter\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"take() · drop()\",\n  \"title\": \"Взять и пропустить\",\n  \"what\": \"`take(n)` — первые n значений, `drop(n)` — пропустить первые n.\",\n  \"why\": \"Страницы, «первые пять».\",\n  \"how\": \"function* nums() { let n = 1; while (true) yield n++; }\\nconsole.log(nums().drop(10).take(3).toArray());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Iterator.prototype.take\",\n    \"Iterator.prototype.drop\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"flatMap()\",\n  \"title\": \"Каждое в несколько\",\n  \"what\": \"Как `flatMap` у массивов, но лениво.\",\n  \"why\": \"Разворачивать вложенные потоки.\",\n  \"how\": \"console.log(Iterator.from([\\\"a b\\\", \\\"c\\\"]).flatMap((s) => s.split(\\\" \\\")).toArray());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Iterator.prototype.flatMap\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"reduce() · toArray() · forEach()\",\n  \"title\": \"Собрать результат\",\n  \"what\": \"`reduce` сворачивает, `toArray` собирает в массив, `forEach` вызывает функцию для каждого.\",\n  \"why\": \"Получить итог из потока.\",\n  \"how\": \"const it = () => Iterator.from([220, 150, 290]);\\nconsole.log(it().reduce((a, b) => a + b, 0), it().toArray().length);\\nit().forEach((p) => console.log(p));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Iterator.prototype.reduce\",\n    \"Iterator.prototype.toArray\",\n    \"Iterator.prototype.forEach\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"some() · every() · find()\",\n  \"title\": \"Проверки потока\",\n  \"what\": \"Останавливаются, как только ответ известен.\",\n  \"why\": \"Найти первое подходящее в бесконечном потоке.\",\n  \"how\": \"function* nums() { let n = 1; while (true) yield n++; }\\nconsole.log(nums().find((n) => n * n > 50), nums().some((n) => n > 100));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Iterator.prototype.some\",\n    \"Iterator.prototype.every\",\n    \"Iterator.prototype.find\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Перед `...` у бесконечного генератора остановись: сначала `take(n)`, потом `toArray()`.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Пять чётных номерков\",\n  \"task\": \"Генератор `tickets()` бесконечный. Получи `firstEven` — первые 5 чётных номеров через `filter`, `take` и `toArray`.\",\n  \"lang\": \"js\",\n  \"start\": \"function* tickets() {\\n  let n = 101;\\n  while (true) yield n++;\\n}\\nconst firstEven = [];\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Пять чётных номерков\",\n      \"js\": \"firstEven.join() === \\\"102,104,106,108,110\\\"\"\n    },\n    {\n      \"label\": \"Через `take`\",\n      \"contains\": \"take(\"\n    }\n  ],\n  \"solution\": \"function* tickets() {\\n  let n = 101;\\n  while (true) yield n++;\\n}\\nconst firstEven = tickets().filter((n) => n % 2 === 0).take(5).toArray();\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-iter-lazy",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-iter-from",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "map",
+      "title": "Map: словарь с любыми ключами",
+      "summary": "new Map, set, get, has, delete, clear, size, keys, values, entries, forEach и Map.groupBy.",
+      "chapter": "Коллекции",
+      "durationMinutes": 9,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Считаем, сколько раз каждый гость заходил. Ключи — сами объекты гостей. Объект тут не подходит — нужен Map.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Ключ — объект\",\n  \"lines\": [\n    [\n      \"bug\",\n      \"Положи объект гостя ключом в обычный объект — и все гости станут \\\"[object Object]\\\"! Хе-хе.\"\n    ],\n    [\n      \"bro\",\n      \"Ключи обычного объекта — только строки. У `Map` ключом может быть что угодно, и порядок сохраняется.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Map\",\n  \"title\": \"Словарь\",\n  \"what\": \"`new Map([[ключ, значение], …])` — пары с ключами любого типа, порядок вставки сохраняется.\",\n  \"why\": \"Кэши, счётчики, связь объектов с данными.\",\n  \"how\": \"const visits = new Map([[\\\"Аня\\\", 3]]);\\nconsole.log(visits, visits instanceof Map);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Map\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"set() · get() · has() · delete()\",\n  \"title\": \"Основные операции\",\n  \"what\": \"`set(k, v)` — записать (возвращает Map, можно цепочкой), `get(k)` — прочитать, `has(k)` — есть ли, `delete(k)` — удалить.\",\n  \"why\": \"Работа со словарём.\",\n  \"how\": \"const m = new Map();\\nconst anya = { name: \\\"Аня\\\" };\\nm.set(anya, 1).set(\\\"Борис\\\", 2);\\nconsole.log(m.get(anya), m.has(\\\"Борис\\\"), m.delete(\\\"Борис\\\"), m.has(\\\"Борис\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Map.prototype.set\",\n    \"Map.prototype.get\",\n    \"Map.prototype.has\",\n    \"Map.prototype.delete\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"size · clear()\",\n  \"title\": \"Размер и очистка\",\n  \"what\": \"`size` — число пар (свойство, не метод), `clear()` удаляет всё.\",\n  \"why\": \"Сколько записей, сброс кэша.\",\n  \"how\": \"const m = new Map([[1, \\\"a\\\"], [2, \\\"b\\\"]]);\\nconsole.log(m.size);\\nm.clear();\\nconsole.log(m.size);\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Map.prototype.size\",\n    \"Map.prototype.clear\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"keys() · values() · entries() · forEach()\",\n  \"title\": \"Перебор Map\",\n  \"what\": \"Итераторы ключей, значений и пар; `for…of` по Map сразу даёт пары `[k, v]`.\",\n  \"why\": \"Вывести словарь.\",\n  \"how\": \"const prices = new Map([[\\\"Латте\\\", 220], [\\\"Раф\\\", 290]]);\\nfor (const [drink, price] of prices) console.log(drink, price);\\nconsole.log([...prices.keys()], [...prices.values()], [...prices.entries()].length);\\nprices.forEach((p, d) => console.log(d, \\\"→\\\", p));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Map.prototype.keys\",\n    \"Map.prototype.values\",\n    \"Map.prototype.entries\",\n    \"Map.prototype.forEach\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Map.groupBy()\",\n  \"title\": \"Группировка в Map\",\n  \"what\": \"Как `Object.groupBy`, но ключи — любые значения (объекты, числа), результат — Map.\",\n  \"why\": \"Группы по объекту или числу.\",\n  \"how\": \"const prices = [150, 220, 290, 450];\\nconst groups = Map.groupBy(prices, (p) => p >= 250);\\nconsole.log(groups.get(true), groups.get(false));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Map.groupBy\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Ключи — не строки или важен порядок и частые добавления/удаления — бери `Map`, а не объект.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Счётчик визитов\",\n  \"task\": \"Напиши `countVisits(guests)`: возвращает Map «имя → число визитов» через `get`/`set`.\",\n  \"lang\": \"js\",\n  \"start\": \"function countVisits(guests) {\\n  return {};\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Визиты посчитаны\",\n      \"js\": \"(() => { const m = countVisits([\\\"Аня\\\", \\\"Борис\\\", \\\"Аня\\\"]); return m instanceof Map && m.get(\\\"Аня\\\") === 2 && m.get(\\\"Борис\\\") === 1 && m.size === 2; })()\"\n    }\n  ],\n  \"solution\": \"function countVisits(guests) {\\n  const m = new Map();\\n  for (const g of guests) m.set(g, (m.get(g) ?? 0) + 1);\\n  return m;\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-map-size",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-map-vs-object",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "set",
+      "title": "Set: уникальные значения",
+      "summary": "new Set, add, has, delete, clear, size, keys, values, entries и forEach.",
+      "chapter": "Коллекции",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Нужен список гостей без повторов и быстрая проверка «был ли гость у нас».\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Без повторов\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"Список гостей за неделю: Аня пришла пять раз, а мне нужен список без повторов.\"\n    ],\n    [\n      \"bro\",\n      \"`new Set(guests)` — и повторы исчезнут сами. А `has` проверяет мгновенно.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Set\",\n  \"title\": \"Множество\",\n  \"what\": \"`new Set(iterable)` — коллекция уникальных значений (сравнение по SameValueZero), порядок добавления сохраняется.\",\n  \"why\": \"Убрать дубликаты, быстрые проверки.\",\n  \"how\": \"const guests = new Set([\\\"Аня\\\", \\\"Борис\\\", \\\"Аня\\\"]);\\nconsole.log([...guests], guests.size);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Set\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"add() · has() · delete()\",\n  \"title\": \"Добавить, проверить, удалить\",\n  \"what\": \"`add` возвращает Set (цепочкой), повтор не добавится; `has` — быстрая проверка; `delete` — удалить.\",\n  \"why\": \"Отметки «уже видели».\",\n  \"how\": \"const seen = new Set();\\nseen.add(\\\"Аня\\\").add(\\\"Аня\\\").add(\\\"Лев\\\");\\nconsole.log(seen.has(\\\"Лев\\\"), seen.delete(\\\"Лев\\\"), seen.size);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Set.prototype.add\",\n    \"Set.prototype.has\",\n    \"Set.prototype.delete\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"size · clear()\",\n  \"title\": \"Размер и очистка\",\n  \"what\": \"`size` — сколько значений, `clear()` — удалить всё.\",\n  \"why\": \"Счётчик уникальных.\",\n  \"how\": \"const s = new Set([1, 2, 3]);\\ns.clear();\\nconsole.log(s.size);\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Set.prototype.size\",\n    \"Set.prototype.clear\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"keys() · values() · entries() · forEach()\",\n  \"title\": \"Перебор Set\",\n  \"what\": \"`values()` и `keys()` одинаковы; `entries()` даёт пары `[v, v]` для совместимости с Map.\",\n  \"why\": \"Пройтись по уникальным.\",\n  \"how\": \"const s = new Set([\\\"Латте\\\", \\\"Раф\\\"]);\\nconsole.log([...s.values()], [...s.keys()], [...s.entries()][0]);\\ns.forEach((v) => console.log(v));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Set.prototype.keys\",\n    \"Set.prototype.values\",\n    \"Set.prototype.entries\",\n    \"Set.prototype.forEach\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Убрать повторы из массива — `[...new Set(arr)]`.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Уникальные гости\",\n  \"task\": \"Напиши `unique(list)` — массив без повторов через Set, и `firstVisit(seen, name)`: возвращает true, если гостя ещё нет в Set `seen`, и добавляет его.\",\n  \"lang\": \"js\",\n  \"start\": \"function unique(list) {\\n  return list;\\n}\\nfunction firstVisit(seen, name) {\\n  return true;\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Повторы убраны\",\n      \"js\": \"unique([\\\"Аня\\\", \\\"Борис\\\", \\\"Аня\\\"]).join() === \\\"Аня,Борис\\\"\"\n    },\n    {\n      \"label\": \"Первый визит отмечается\",\n      \"js\": \"(() => { const s = new Set(); return firstVisit(s, \\\"Аня\\\") === true && firstVisit(s, \\\"Аня\\\") === false && s.size === 1; })()\"\n    }\n  ],\n  \"solution\": \"function unique(list) {\\n  return [...new Set(list)];\\n}\\nfunction firstVisit(seen, name) {\\n  if (seen.has(name)) return false;\\n  seen.add(name);\\n  return true;\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-set-dedupe",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "set-algebra",
+      "title": "Операции над множествами",
+      "summary": "union, intersection, difference, symmetricDifference, isSubsetOf, isSupersetOf и isDisjointFrom.",
+      "chapter": "Коллекции",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Какие гости были и в субботу, и в воскресенье? А кто только один день? Множества отвечают сразу.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Выходные\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"Хочу знать постоянных гостей: кто был в оба выходных дня.\"\n    ],\n    [\n      \"nika\",\n      \"Это пересечение множеств. У Set есть все операции — объединение, разность и проверки.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"union() · intersection()\",\n  \"title\": \"Объединение и пересечение\",\n  \"what\": \"`a.union(b)` — все из обоих; `a.intersection(b)` — только общие. Возвращают новый Set.\",\n  \"why\": \"Все гости и постоянные гости.\",\n  \"how\": \"const sat = new Set([\\\"Аня\\\", \\\"Борис\\\"]), sun = new Set([\\\"Аня\\\", \\\"Лев\\\"]);\\nconsole.log([...sat.union(sun)], [...sat.intersection(sun)]);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Set.prototype.union\",\n    \"Set.prototype.intersection\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"difference() · symmetricDifference()\",\n  \"title\": \"Разность\",\n  \"what\": \"`a.difference(b)` — есть в a, нет в b; `symmetricDifference` — есть ровно в одном.\",\n  \"why\": \"Кто был только в субботу; кто был один день.\",\n  \"how\": \"const sat = new Set([\\\"Аня\\\", \\\"Борис\\\"]), sun = new Set([\\\"Аня\\\", \\\"Лев\\\"]);\\nconsole.log([...sat.difference(sun)], [...sat.symmetricDifference(sun)]);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Set.prototype.difference\",\n    \"Set.prototype.symmetricDifference\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"isSubsetOf() · isSupersetOf() · isDisjointFrom()\",\n  \"title\": \"Сравнение множеств\",\n  \"what\": \"Подмножество ли, надмножество ли, нет ли общих элементов.\",\n  \"why\": \"Все ли ингредиенты есть на складе; нет ли аллергенов.\",\n  \"how\": \"const stock = new Set([\\\"молоко\\\", \\\"кофе\\\", \\\"сахар\\\"]), latte = new Set([\\\"молоко\\\", \\\"кофе\\\"]);\\nconsole.log(latte.isSubsetOf(stock), stock.isSupersetOf(latte), latte.isDisjointFrom(new Set([\\\"орехи\\\"])));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Set.prototype.isSubsetOf\",\n    \"Set.prototype.isSupersetOf\",\n    \"Set.prototype.isDisjointFrom\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Вопросы «общие», «все», «ни одного» про списки — это операции над множествами.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Можно ли приготовить\",\n  \"task\": \"Напиши `canMake(recipe, stock)` — true, если все ингредиенты рецепта есть на складе (`isSubsetOf`), и `missing(recipe, stock)` — массив недостающих (`difference`).\",\n  \"lang\": \"js\",\n  \"start\": \"function canMake(recipe, stock) {\\n  return true;\\n}\\nfunction missing(recipe, stock) {\\n  return [];\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Латте можно\",\n      \"js\": \"canMake(new Set([\\\"кофе\\\", \\\"молоко\\\"]), new Set([\\\"кофе\\\", \\\"молоко\\\", \\\"сахар\\\"]))\"\n    },\n    {\n      \"label\": \"Какао нельзя\",\n      \"js\": \"!canMake(new Set([\\\"какао\\\"]), new Set([\\\"кофе\\\"]))\"\n    },\n    {\n      \"label\": \"Не хватает сиропа\",\n      \"js\": \"missing(new Set([\\\"кофе\\\", \\\"сироп\\\"]), new Set([\\\"кофе\\\"])).join() === \\\"сироп\\\"\"\n    }\n  ],\n  \"solution\": \"function canMake(recipe, stock) {\\n  return recipe.isSubsetOf(stock);\\n}\\nfunction missing(recipe, stock) {\\n  return [...recipe.difference(stock)];\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-set-intersection",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "weak-collections",
+      "title": "Слабые ссылки",
+      "summary": "WeakMap, WeakSet, WeakRef и FinalizationRegistry: коллекции, которые не мешают сборщику мусора.",
+      "chapter": "Коллекции",
+      "durationMinutes": 9,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Кэш данных для карточек меню растёт бесконечно: удалённые карточки не освобождают память. Берём слабые коллекции.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Утечка\",\n  \"lines\": [\n    [\n      \"bug\",\n      \"Каждая удалённая карточка остаётся в вашем кэше навсегда. Память тает! Хе-хе.\"\n    ],\n    [\n      \"nika\",\n      \"Слабые коллекции не держат объект в памяти: как только на него больше никто не ссылается, запись исчезает сама.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"WeakMap\",\n  \"title\": \"Словарь со слабыми ключами\",\n  \"what\": \"Ключи — только объекты; запись не мешает сборке мусора ключа. Нет перебора и `size`.\",\n  \"why\": \"Приватные данные и кэш для объектов (DOM-элементов).\",\n  \"how\": \"const meta = new WeakMap();\\nconst card = {};\\nmeta.set(card, { clicks: 1 });\\nconsole.log(meta.get(card).clicks, meta.has({}));\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"WeakMap\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"set() · get() · has() · delete()\",\n  \"title\": \"Операции WeakMap\",\n  \"what\": \"Как у Map, но без перебора, `size` и `clear`.\",\n  \"why\": \"Работать с привязанными данными.\",\n  \"how\": \"const wm = new WeakMap();\\nconst k = {};\\nwm.set(k, 1);\\nconsole.log(wm.get(k), wm.has(k), wm.delete(k), wm.has(k));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"WeakMap.prototype.set\",\n    \"WeakMap.prototype.get\",\n    \"WeakMap.prototype.has\",\n    \"WeakMap.prototype.delete\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"WeakSet\",\n  \"title\": \"Множество объектов со слабыми ссылками\",\n  \"what\": \"Хранит только объекты, не мешает сборке мусора. Методы `add`, `has`, `delete`.\",\n  \"why\": \"Отметки «уже обработан» для объектов.\",\n  \"how\": \"const handled = new WeakSet();\\nconst order = {};\\nhandled.add(order);\\nconsole.log(handled.has(order), handled.delete(order), handled.has(order));\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"WeakSet\",\n    \"WeakSet.prototype.add\",\n    \"WeakSet.prototype.has\",\n    \"WeakSet.prototype.delete\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"WeakRef · deref()\",\n  \"title\": \"Слабая ссылка\",\n  \"what\": \"`new WeakRef(obj)` не мешает удалить объект; `ref.deref()` вернёт объект или `undefined`, если его уже собрали.\",\n  \"why\": \"Необязательный кэш больших объектов.\",\n  \"how\": \"const big = { data: new Array(1000).fill(0) };\\nconst ref = new WeakRef(big);\\nconsole.log(ref.deref() === big);\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"WeakRef\",\n    \"WeakRef.prototype.deref\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"FinalizationRegistry\",\n  \"title\": \"Уведомление об удалении\",\n  \"what\": \"`registry.register(obj, info)` — после сборки `obj` вызовется колбэк с `info`; `unregister(token)` отменяет. Момент вызова не гарантирован.\",\n  \"why\": \"Освободить внешние ресурсы. Не для логики программы.\",\n  \"how\": \"const registry = new FinalizationRegistry((info) => console.log(\\\"Собран\\\", info));\\nconst token = {};\\nregistry.register({}, \\\"карточка\\\", token);\\nconsole.log(registry.unregister(token));\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"FinalizationRegistry\",\n    \"FinalizationRegistry.prototype.register\",\n    \"FinalizationRegistry.prototype.unregister\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Данные «при объекте», которые должны исчезать вместе с ним, — в `WeakMap`.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Кэш без утечек\",\n  \"task\": \"Напиши `cached(obj, compute)`: хранит результат `compute(obj)` в `WeakMap` и при повторном вызове с тем же объектом не вызывает `compute` снова.\",\n  \"lang\": \"js\",\n  \"start\": \"const cache = new Map();\\nfunction cached(obj, compute) {\\n  return compute(obj);\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Повторно не считает\",\n      \"js\": \"(() => { let n = 0; const o = {}; const f = () => ++n; cached(o, f); cached(o, f); return n === 1; })()\"\n    },\n    {\n      \"label\": \"Кэш — WeakMap\",\n      \"js\": \"cache instanceof WeakMap\"\n    }\n  ],\n  \"solution\": \"const cache = new WeakMap();\\nfunction cached(obj, compute) {\\n  if (!cache.has(obj)) cache.set(obj, compute(obj));\\n  return cache.get(obj);\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-weakmap-keys",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-weakmap-iter",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "regexp-basics",
+      "title": "Регулярные выражения: основы",
+      "summary": "RegExp и литерал, test, exec и lastIndex, классы символов, квантификаторы, якоря, source и toString.",
+      "chapter": "Регулярные выражения",
+      "durationMinutes": 9,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Гости вводят телефоны как попало. Проверяем формат регулярным выражением.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Любой формат\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"Телефоны приходят как «+7 (999) 123-45-67», «89991234567», «999 123 45 67»…\"\n    ],\n    [\n      \"bro\",\n      \"Регулярное выражение — мини-язык шаблонов. Опишем «одиннадцать цифр с любыми разделителями».\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"RegExp\",\n  \"title\": \"Регулярное выражение\",\n  \"what\": \"`/шаблон/флаги` или `new RegExp(\\\"шаблон\\\", \\\"флаги\\\")` — второй способ нужен, если шаблон собирается из строки.\",\n  \"why\": \"Поиск, проверка и замена по шаблону.\",\n  \"how\": \"const re = new RegExp(\\\"ла\\\" + \\\"тте\\\", \\\"i\\\");\\nconsole.log(re, re.test(\\\"ЛАТТЕ\\\"));\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RegExp\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Синтаксис шаблона\",\n  \"title\": \"Символы, классы и повторы\",\n  \"what\": \"`\\\\d` цифра, `\\\\w` буква/цифра/_, `\\\\s` пробел, `.` любой символ, `[абв]` один из, `[^…]` кроме; `*` 0+, `+` 1+, `?` 0–1, `{2,4}`; `^` начало, `$` конец, `|` или, `\\\\b` граница слова.\",\n  \"why\": \"Описать любой формат.\",\n  \"how\": \"console.log(/^\\\\d{3}-\\\\d{2}$/.test(\\\"123-45\\\"), /^[A-Z]+\\\\d+$/.test(\\\"ZERNO10\\\"), /кофе|чай/.test(\\\"зелёный чай\\\"));\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": []\n}\n```\n\n```concept\n{\n  \"name\": \"test()\",\n  \"title\": \"Подходит ли\",\n  \"what\": \"`re.test(str)` → true или false.\",\n  \"why\": \"Проверка формата.\",\n  \"how\": \"console.log(/^\\\\+?\\\\d{11}$/.test(\\\"+79991234567\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RegExp.prototype.test\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"exec() · lastIndex\",\n  \"title\": \"Подробное совпадение\",\n  \"what\": \"`exec(str)` — массив совпадения с группами и `index`, или `null`. С флагами `g`/`y` хранит позицию в `lastIndex` и находит следующее при каждом вызове.\",\n  \"why\": \"Пошаговый разбор текста.\",\n  \"how\": \"const re = /\\\\d+/g;\\nconst text = \\\"латте 220, раф 290\\\";\\nlet m;\\nwhile ((m = re.exec(text))) console.log(m[0], \\\"на позиции\\\", m.index, \\\"lastIndex\\\", re.lastIndex);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RegExp.prototype.exec\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"source · toString()\",\n  \"title\": \"Текст шаблона\",\n  \"what\": \"`source` — шаблон без слэшей и флагов, `toString()` — как литерал `/…/flags`.\",\n  \"why\": \"Отладка и сборка новых регулярок.\",\n  \"how\": \"const re = /\\\\d+/gi;\\nconsole.log(re.source, re.toString());\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RegExp.prototype.source\",\n    \"RegExp.prototype.toString\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Пиши якоря `^` и `$`, когда проверяешь всю строку целиком, — иначе подойдёт и кусок.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Проверка телефона\",\n  \"task\": \"Напиши `validPhone(s)`: убери из строки всё, кроме цифр (`replace(/\\\\D/g, \\\"\\\")`), и проверь, что осталось ровно 11 цифр, начинающихся с 7 или 8 (`test` с якорями).\",\n  \"lang\": \"js\",\n  \"start\": \"function validPhone(s) {\\n  return s.length > 5;\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Разные форматы проходят\",\n      \"js\": \"validPhone(\\\"+7 (999) 123-45-67\\\") && validPhone(\\\"89991234567\\\")\"\n    },\n    {\n      \"label\": \"Неверные — нет\",\n      \"js\": \"!validPhone(\\\"123-45\\\") && !validPhone(\\\"+1 999 123 45 67\\\")\"\n    },\n    {\n      \"label\": \"Через `test`\",\n      \"contains\": \"test(\"\n    }\n  ],\n  \"solution\": \"function validPhone(s) {\\n  return /^[78]\\\\d{10}$/.test(s.replace(/\\\\D/g, \\\"\\\"));\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-re-anchors",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-re-plus",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "regexp-flags",
+      "title": "Флаги регулярок",
+      "summary": "Флаги g, i, m, s, u, v, y, d и свойства global, ignoreCase, multiline, dotAll, unicode, unicodeSets, sticky, hasIndices и flags.",
+      "chapter": "Регулярные выражения",
+      "durationMinutes": 11,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Регулярка ищет только первое совпадение и спотыкается о кириллицу и эмодзи. Разбираем флаги.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Флаги\",\n  \"lines\": [\n    [\n      \"bug\",\n      \"/латте/ не найдёт «ЛАТТЕ», а /./ разрежет эмодзи пополам! Хе-хе.\"\n    ],\n    [\n      \"nika\",\n      \"Поведение регулярки меняют флаги после второго слэша. Каждому — своё свойство-проверка.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"g · global\",\n  \"title\": \"Все совпадения\",\n  \"what\": \"Флаг `g`: искать все совпадения (для `match`, `replace`, `matchAll`); свойство `global` — включён ли.\",\n  \"why\": \"Заменить все вхождения.\",\n  \"how\": \"console.log(\\\"а-б-в\\\".replace(/-/g, \\\"+\\\"), /x/g.global);\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RegExp.prototype.global\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"i · ignoreCase\",\n  \"title\": \"Без учёта регистра\",\n  \"what\": \"Флаг `i`; свойство `ignoreCase`.\",\n  \"why\": \"Поиск «латте» и «Латте».\",\n  \"how\": \"console.log(/латте/i.test(\\\"ЛАТТЕ\\\"), /x/i.ignoreCase);\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RegExp.prototype.ignoreCase\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"m · multiline\",\n  \"title\": \"Многострочный режим\",\n  \"what\": \"Флаг `m`: `^` и `$` срабатывают на каждой строке, а не только в начале и конце текста.\",\n  \"why\": \"Разбор многострочного текста.\",\n  \"how\": \"console.log(\\\"латте\\\\nраф\\\".match(/^\\\\p{L}+$/gmu));\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RegExp.prototype.multiline\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"s · dotAll\",\n  \"title\": \"Точка — любой символ\",\n  \"what\": \"Флаг `s`: `.` совпадает и с переводом строки.\",\n  \"why\": \"Захват многострочных блоков.\",\n  \"how\": \"console.log(/а.б/.test(\\\"а\\\\nб\\\"), /а.б/s.test(\\\"а\\\\nб\\\"), /x/s.dotAll);\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RegExp.prototype.dotAll\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"u · unicode\",\n  \"title\": \"Юникод\",\n  \"what\": \"Флаг `u`: эмодзи — один символ, работают `\\\\p{…}` (`\\\\p{L}` — любая буква любого алфавита).\",\n  \"why\": \"Тексты на любых языках и с эмодзи.\",\n  \"how\": \"console.log(\\\"🍵\\\".match(/./g).length, \\\"🍵\\\".match(/./gu).length, /\\\\p{L}+/u.test(\\\"Ёж\\\"), /x/u.unicode);\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RegExp.prototype.unicode\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"v · unicodeSets\",\n  \"title\": \"Расширенный Юникод\",\n  \"what\": \"Флаг `v` — улучшенный `u`: операции над классами (`[\\\\p{L}--[a-z]]`), свойства строк.\",\n  \"why\": \"Сложные классы символов.\",\n  \"how\": \"console.log(/^[\\\\p{L}--[a-z]]+$/v.test(\\\"Ёж\\\"), /x/v.unicodeSets);\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RegExp.prototype.unicodeSets\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"y · sticky\",\n  \"title\": \"Липкий поиск\",\n  \"what\": \"Флаг `y`: совпадение должно начинаться ровно с `lastIndex`.\",\n  \"why\": \"Пошаговые парсеры.\",\n  \"how\": \"const re = /\\\\d+/y;\\nre.lastIndex = 6;\\nconsole.log(re.test(\\\"латте 220\\\"), re.sticky);\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RegExp.prototype.sticky\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"d · hasIndices\",\n  \"title\": \"Индексы групп\",\n  \"what\": \"Флаг `d`: у совпадения появляется `indices` — начало и конец каждой группы.\",\n  \"why\": \"Подсветка найденного в тексте.\",\n  \"how\": \"const m = /(?<price>\\\\d+)/d.exec(\\\"латте 220\\\");\\nconsole.log(m.indices.groups.price, /x/d.hasIndices);\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RegExp.prototype.hasIndices\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"flags\",\n  \"title\": \"Все флаги строкой\",\n  \"what\": \"Свойство `flags` — все включённые флаги, например `\\\"giu\\\"`.\",\n  \"why\": \"Скопировать регулярку с теми же флагами.\",\n  \"how\": \"const re = /x/gimsu;\\nconsole.log(re.flags, new RegExp(\\\"y\\\", re.flags).flags);\",\n  \"kind\": \"keyword\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RegExp.prototype.flags\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Работаешь с русским текстом и эмодзи — ставь флаг `u` (или `v`) всегда.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Слова на любом языке\",\n  \"task\": \"Напиши `words(text)`: массив всех слов (последовательностей букв любого алфавита) через `match` с `\\\\p{L}+` и флагами `g` и `u`, или `[]`.\",\n  \"lang\": \"js\",\n  \"start\": \"function words(text) {\\n  return text.split(\\\" \\\");\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Только слова, любые алфавиты\",\n      \"js\": \"words(\\\"Латте, café и 2 чашки!\\\").join() === \\\"Латте,café,и,чашки\\\"\"\n    },\n    {\n      \"label\": \"Нет слов — пустой массив\",\n      \"js\": \"words(\\\"123\\\").length === 0\"\n    }\n  ],\n  \"solution\": \"function words(text) {\\n  return text.match(/\\\\p{L}+/gu) ?? [];\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-flag-g",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-flag-u",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "regexp-groups",
+      "title": "Группы, замены и экранирование",
+      "summary": "Группы ( ), именованные (?<name>), обратные ссылки, lookahead и lookbehind, замены с $1 и функцией, RegExp.escape и символы Symbol.match, matchAll, replace, search, split.",
+      "chapter": "Регулярные выражения",
+      "durationMinutes": 10,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Превращаем «Латте 220» в объект { drink, price }, и меняем формат дат одной заменой.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Разобрать на части\",\n  \"lines\": [\n    [\n      \"marta\",\n      \"Из строк «Латте 220» хочу получить название и цену отдельно.\"\n    ],\n    [\n      \"bro\",\n      \"Скобки в регулярке запоминают части совпадения — это группы. Им можно дать имена.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Группы и имена\",\n  \"title\": \"( ) и (?<имя>…)\",\n  \"what\": \"Скобки запоминают часть совпадения: `m[1]`; именованная группа `(?<price>\\\\d+)` — в `m.groups.price`; `(?:…)` — группа без запоминания; `\\\\1` или `\\\\k<имя>` — обратная ссылка.\",\n  \"why\": \"Достать части текста по смыслу.\",\n  \"how\": \"const m = \\\"Латте 220\\\".match(/(?<drink>\\\\p{L}+) (?<price>\\\\d+)/u);\\nconsole.log(m.groups.drink, Number(m.groups.price));\\nconsole.log(/(\\\\p{L})\\\\1/u.test(\\\"кофе ее\\\"));\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": []\n}\n```\n\n```concept\n{\n  \"name\": \"Просмотр вперёд и назад\",\n  \"title\": \"(?=…) (?!…) (?<=…) (?<!…)\",\n  \"what\": \"Условие «дальше/раньше идёт (не идёт) …», которое не входит в совпадение.\",\n  \"why\": \"Цифры только перед «₽», слово не после «не».\",\n  \"how\": \"console.log(\\\"220₽ 300$\\\".match(/\\\\d+(?=₽)/g), \\\"латте и не раф\\\".match(/(?<!не )\\\\p{L}{3,}/gu));\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": []\n}\n```\n\n```concept\n{\n  \"name\": \"Замены с группами\",\n  \"title\": \"$1, $<name> и функция\",\n  \"what\": \"В строке замены `$1`, `$<name>`, `$&` (всё совпадение); вместо строки можно передать функцию `(match, ...groups) => …`.\",\n  \"why\": \"Переформатировать даты, цены.\",\n  \"how\": \"console.log(\\\"2026-11-02\\\".replace(/(\\\\d+)-(\\\\d+)-(\\\\d+)/, \\\"$3.$2.$1\\\"));\\nconsole.log(\\\"латте 220\\\".replace(/\\\\d+/, (p) => p * 2));\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": []\n}\n```\n\n```concept\n{\n  \"name\": \"RegExp.escape()\",\n  \"title\": \"Экранировать текст для шаблона\",\n  \"what\": \"Превращает строку в безопасную часть регулярки: `RegExp.escape(\\\"1+1\\\")` экранирует `+`.\",\n  \"why\": \"Искать введённый гостем текст, не ломая шаблон.\",\n  \"how\": \"const q = \\\"латте (L)\\\";\\nconsole.log(new RegExp(RegExp.escape(q)).test(\\\"Большой латте (L)\\\"));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"RegExp.escape\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Symbol.match · .matchAll · .replace · .search\",\n  \"title\": \"Как строки зовут регулярку\",\n  \"what\": \"`str.match(re)` на самом деле вызывает `re[Symbol.match](str)`; так же устроены `matchAll`, `replace` и `search`. Свой объект с такими методами можно передавать в эти методы строк.\",\n  \"why\": \"Свои «шаблоны» поиска.\",\n  \"how\": \"const vowels = { [Symbol.search](s) { return s.search(/[аеёиоуыэюя]/i); } };\\nconsole.log(\\\"Раф\\\".search(vowels));\",\n  \"kind\": \"value\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Symbol.match\",\n    \"Symbol.matchAll\",\n    \"Symbol.replace\",\n    \"Symbol.search\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Symbol.split\",\n  \"title\": \"Свой разделитель\",\n  \"what\": \"`str.split(sep)` вызывает `sep[Symbol.split](str)`, если такой метод есть.\",\n  \"why\": \"Разбивать строку своей логикой.\",\n  \"how\": \"const digits = { [Symbol.split](s) { return s.split(/\\\\D+/).filter(Boolean); } };\\nconsole.log(\\\"тел. 8-999-123\\\".split(digits));\",\n  \"kind\": \"value\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Symbol.split\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Вставляешь в регулярку текст пользователя — сначала `RegExp.escape`.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Разбор позиции меню\",\n  \"task\": \"Напиши `parseItem(line)`: из строки вида `\\\"Латте 220\\\"` возвращает `{ drink: \\\"Латте\\\", price: 220 }` через именованные группы, или `null`, если формат не подходит.\",\n  \"lang\": \"js\",\n  \"start\": \"function parseItem(line) {\\n  return null;\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Латте 220 разобран\",\n      \"js\": \"(() => { const r = parseItem(\\\"Латте 220\\\"); return r && r.drink === \\\"Латте\\\" && r.price === 220; })()\"\n    },\n    {\n      \"label\": \"Неверный формат — null\",\n      \"js\": \"parseItem(\\\"просто текст\\\") === null\"\n    },\n    {\n      \"label\": \"Именованные группы\",\n      \"contains\": \"?<\"\n    }\n  ],\n  \"solution\": \"function parseItem(line) {\\n  const m = line.match(/^(?<drink>\\\\p{L}+) (?<price>\\\\d+)$/u);\\n  return m ? { drink: m.groups.drink, price: Number(m.groups.price) } : null;\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-re-named",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-re-escape",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "symbols",
+      "title": "Symbol: уникальные ключи",
+      "summary": "Symbol(), description, toString, valueOf, глобальный реестр Symbol.for и Symbol.keyFor.",
+      "chapter": "Symbol, Proxy и Reflect",
+      "durationMinutes": 8,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Плагин доставки добавляет в заказ поле `id` — и затирает наш номер заказа. Нужны ключи, которые не пересекаются.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Чужое поле\",\n  \"lines\": [\n    [\n      \"bug\",\n      \"Мой плагин тоже пишет `order.id`. Ваш номер заказа — всё! Хе-хе.\"\n    ],\n    [\n      \"nika\",\n      \"Символ — уникальный ключ. Два символа с одинаковым описанием всё равно разные, и чужой код его случайно не затрёт.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Symbol()\",\n  \"title\": \"Уникальное значение\",\n  \"what\": \"`Symbol(\\\"описание\\\")` — каждый вызов даёт новое уникальное значение. Описание — только для отладки.\",\n  \"why\": \"Ключи, которые не столкнутся с чужими.\",\n  \"how\": \"const a = Symbol(\\\"id\\\"), b = Symbol(\\\"id\\\");\\nconst order = { id: 1, [a]: \\\"наш\\\" };\\nconsole.log(a === b, order[a], Object.keys(order));\",\n  \"kind\": \"type\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Symbol\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"description · toString() · valueOf()\",\n  \"title\": \"Описание символа\",\n  \"what\": \"`sym.description` — текст описания, `toString()` → `\\\"Symbol(id)\\\"`, `valueOf()` — сам символ.\",\n  \"why\": \"Отладка и логи.\",\n  \"how\": \"const s = Symbol(\\\"заказ\\\");\\nconsole.log(s.description, s.toString(), s.valueOf() === s);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Symbol.prototype.description\",\n    \"Symbol.prototype.toString\",\n    \"Symbol.prototype.valueOf\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Symbol.for() · Symbol.keyFor()\",\n  \"title\": \"Глобальный реестр\",\n  \"what\": \"`Symbol.for(\\\"key\\\")` возвращает один и тот же символ для одного ключа во всей программе (даже между iframe); `Symbol.keyFor(sym)` — его ключ.\",\n  \"why\": \"Общий символ для разных модулей.\",\n  \"how\": \"const a = Symbol.for(\\\"zerno.order\\\"), b = Symbol.for(\\\"zerno.order\\\");\\nconsole.log(a === b, Symbol.keyFor(a), Symbol.keyFor(Symbol(\\\"x\\\")));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Symbol.for\",\n    \"Symbol.keyFor\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Добавляешь своё свойство в чужой объект — делай ключ символом.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Своя метка\",\n  \"task\": \"Создай символ `TAG` с описанием `\\\"zerno\\\"` и функцию `mark(obj)`, которая ставит `obj[TAG] = true` и возвращает объект. Метка не должна появляться в `Object.keys` и `JSON.stringify`.\",\n  \"lang\": \"js\",\n  \"start\": \"const TAG = \\\"zerno\\\";\\nfunction mark(obj) {\\n  obj[TAG] = true;\\n  return obj;\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"TAG — символ\",\n      \"js\": \"typeof TAG === \\\"symbol\\\" && TAG.description === \\\"zerno\\\"\"\n    },\n    {\n      \"label\": \"Метка скрыта от keys и JSON\",\n      \"js\": \"(() => { const o = mark({ id: 1 }); return o[TAG] === true && Object.keys(o).join() === \\\"id\\\" && JSON.stringify(o) === '{\\\"id\\\":1}'; })()\"\n    }\n  ],\n  \"solution\": \"const TAG = Symbol(\\\"zerno\\\");\\nfunction mark(obj) {\\n  obj[TAG] = true;\\n  return obj;\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-symbol-unique",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-symbol-for",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "well-known-symbols",
+      "title": "Встроенные символы",
+      "summary": "Symbol.hasInstance, Symbol.isConcatSpreadable, Symbol.species и Symbol.unscopables: как настроить поведение встроенных операций.",
+      "chapter": "Symbol, Proxy и Reflect",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Учим свои объекты вести себя как встроенные: в instanceof, concat и при наследовании от Array.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Под капотом\",\n  \"lines\": [\n    [\n      \"bro\",\n      \"Я сам вызываю особые методы-символы, когда ты пишешь `instanceof` или `concat`. Переопредели их — и я буду слушаться тебя.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Symbol.hasInstance\",\n  \"title\": \"Своё instanceof\",\n  \"what\": \"Статический метод `[Symbol.hasInstance](x)` решает, что вернёт `x instanceof Класс`.\",\n  \"why\": \"Проверка «по форме», а не по прототипу.\",\n  \"how\": \"class HasPrice {\\n  static [Symbol.hasInstance](x) { return typeof x?.price === \\\"number\\\"; }\\n}\\nconsole.log({ price: 220 } instanceof HasPrice, {} instanceof HasPrice);\",\n  \"kind\": \"value\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Symbol.hasInstance\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Symbol.isConcatSpreadable\",\n  \"title\": \"Раскрывать ли в concat\",\n  \"what\": \"Если `true`, объект-«массив» раскрывается в `concat`; если `false` у массива — вставляется целиком.\",\n  \"why\": \"Управлять склейкой коллекций.\",\n  \"how\": \"const pair = { length: 2, 0: \\\"Латте\\\", 1: \\\"Раф\\\", [Symbol.isConcatSpreadable]: true };\\nconst box = [\\\"Какао\\\"];\\nbox[Symbol.isConcatSpreadable] = false;\\nconsole.log([\\\"Чай\\\"].concat(pair), [\\\"Чай\\\"].concat(box).length);\",\n  \"kind\": \"value\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Symbol.isConcatSpreadable\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Symbol.species\",\n  \"title\": \"Какой класс создавать\",\n  \"what\": \"Встроенные методы (`map`, `filter`, `then`) создают результат через `constructor[Symbol.species]`. Переопредели — и наследник вернёт обычный Array.\",\n  \"why\": \"Наследование от Array и Promise.\",\n  \"how\": \"class Menu extends Array {\\n  static get [Symbol.species]() { return Array; }\\n}\\nconst m = Menu.from([1, 2]);\\nconsole.log(m instanceof Menu, m.map((x) => x) instanceof Menu);\",\n  \"kind\": \"value\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Symbol.species\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Symbol.unscopables\",\n  \"title\": \"Скрыть от with\",\n  \"what\": \"Объект с именами свойств, которые не становятся переменными внутри `with`.\",\n  \"why\": \"Защищает старый код от новых методов массивов.\",\n  \"how\": \"console.log(Object.keys(Array.prototype[Symbol.unscopables]).slice(0, 4));\",\n  \"kind\": \"value\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Symbol.unscopables\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Встроенные символы — это крючки, за которые цепляется сам язык. Трогай их, когда делаешь свою «встроенную» коллекцию.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Проверка формы\",\n  \"task\": \"Сделай класс `Drink` со статическим `[Symbol.hasInstance](x)`: true для объектов, у которых есть строка `name` и число `price`.\",\n  \"lang\": \"js\",\n  \"start\": \"class Drink {}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Подходящий объект — Drink\",\n      \"js\": \"({ name: \\\"Латте\\\", price: 220 }) instanceof Drink\"\n    },\n    {\n      \"label\": \"Неполный — нет\",\n      \"js\": \"!(({ name: \\\"Латте\\\" }) instanceof Drink) && !(null instanceof Drink)\"\n    }\n  ],\n  \"solution\": \"class Drink {\\n  static [Symbol.hasInstance](x) {\\n    return typeof x?.name === \\\"string\\\" && typeof x?.price === \\\"number\\\";\\n  }\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-species",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "proxy",
+      "title": "Proxy: перехват операций",
+      "summary": "new Proxy с ловушками get, set, has, deleteProperty, apply, construct и Proxy.revocable.",
+      "chapter": "Symbol, Proxy и Reflect",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Хотим, чтобы цену нельзя было записать отрицательной — ни из какого места кода. Ставим стражника.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Стражник\",\n  \"lines\": [\n    [\n      \"bug\",\n      \"`menu.latte = -100` — и вы ещё и доплачиваете гостю! Хе-хе.\"\n    ],\n    [\n      \"nika\",\n      \"Proxy — обёртка, которая видит каждую операцию с объектом и может её остановить.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Proxy\",\n  \"title\": \"Обёртка с ловушками\",\n  \"what\": \"`new Proxy(target, handler)` — каждая операция (чтение `get`, запись `set`, `in` — `has`, `delete` — `deleteProperty`, вызов `apply`, `new` — `construct`…) проходит через метод-ловушку `handler`.\",\n  \"why\": \"Валидация, логирование, значения по умолчанию, реактивность.\",\n  \"how\": \"const menu = new Proxy({ latte: 220 }, {\\n  get: (t, key) => key in t ? t[key] : \\\"нет в меню\\\",\\n  set(t, key, value) {\\n    if (value < 0) throw new RangeError(\\\"Цена не может быть отрицательной\\\");\\n    t[key] = value;\\n    return true;\\n  }\\n});\\nconsole.log(menu.latte, menu.raf);\\ntry { menu.latte = -1; } catch (e) { console.log(e.message); }\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Proxy\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Proxy.revocable()\",\n  \"title\": \"Отзываемый доступ\",\n  \"what\": \"Возвращает `{ proxy, revoke }`; после `revoke()` любая операция с proxy — TypeError.\",\n  \"why\": \"Временный доступ к объекту для чужого кода.\",\n  \"how\": \"const { proxy, revoke } = Proxy.revocable({ secret: 42 }, {});\\nconsole.log(proxy.secret);\\nrevoke();\\ntry { proxy.secret; } catch (e) { console.log(e.name); }\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Proxy.revocable\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"Proxy — для сквозных правил (валидация, логи). Для обычной логики достаточно классов и геттеров.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Защищённое меню\",\n  \"task\": \"Сделай `guarded(obj)`: Proxy, где `set` бросает `RangeError` на отрицательную или не числовую цену, а `get` для отсутствующего ключа возвращает `0`.\",\n  \"lang\": \"js\",\n  \"start\": \"function guarded(obj) {\\n  return obj;\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Запись и значение по умолчанию\",\n      \"js\": \"(() => { const m = guarded({ latte: 220 }); m.raf = 290; return m.raf === 290 && m.cocoa === 0; })()\"\n    },\n    {\n      \"label\": \"Отрицательная цена — RangeError\",\n      \"js\": \"(() => { const m = guarded({}); try { m.x = -1; return false; } catch (e) { return e instanceof RangeError; } })()\"\n    },\n    {\n      \"label\": \"Не число — RangeError\",\n      \"js\": \"(() => { const m = guarded({}); try { m.x = \\\"дорого\\\"; return false; } catch (e) { return e instanceof RangeError; } })()\"\n    }\n  ],\n  \"solution\": \"function guarded(obj) {\\n  return new Proxy(obj, {\\n    get: (t, key) => (key in t ? t[key] : 0),\\n    set(t, key, value) {\\n      if (typeof value !== \\\"number\\\" || value < 0) throw new RangeError(\\\"Неверная цена\\\");\\n      t[key] = value;\\n      return true;\\n    }\\n  });\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-proxy-set",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "reflect",
+      "title": "Reflect: операции как функции",
+      "summary": "Reflect.get, set, has, deleteProperty, ownKeys, defineProperty, getOwnPropertyDescriptor, getPrototypeOf, setPrototypeOf, isExtensible, preventExtensions, apply и construct.",
+      "chapter": "Symbol, Proxy и Reflect",
+      "durationMinutes": 9,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Внутри стражника-Proxy надо выполнить «обычную» операцию. Для этого есть Reflect.\",\"premise\":\"Курс-история: ты оживляешь сайт кофейни «Зерно»\",\"cast\":[\"marta\",\"bro\",\"nika\",\"bug\",\"lev\"]}\n```\n\n```story\n{\n  \"title\": \"Обычная операция\",\n  \"lines\": [\n    [\n      \"bro\",\n      \"Каждой ловушке Proxy соответствует функция Reflect с теми же аргументами. Внутри ловушки вызываешь Reflect — и операция идёт как обычно.\"\n    ]\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Reflect · get() · set()\",\n  \"title\": \"Чтение и запись\",\n  \"what\": \"`Reflect.get(obj, key, receiver)` и `Reflect.set(obj, key, value, receiver)` — как `obj[key]`, но функцией; `set` возвращает true или false вместо ошибки.\",\n  \"why\": \"Прокинуть операцию дальше из Proxy.\",\n  \"how\": \"const log = [];\\nconst p = new Proxy({ latte: 220 }, {\\n  get(t, k, r) { log.push(k); return Reflect.get(t, k, r); }\\n});\\np.latte;\\nconsole.log(log, Reflect.set(Object.freeze({}), \\\"x\\\", 1));\",\n  \"kind\": \"object\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Reflect\",\n    \"Reflect.get\",\n    \"Reflect.set\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Reflect.has() · Reflect.deleteProperty() · Reflect.ownKeys()\",\n  \"title\": \"in, delete и все ключи\",\n  \"what\": \"`has` — как `in`, `deleteProperty` — как `delete` (возвращает успех), `ownKeys` — все свои ключи, включая символы и неперечисляемые.\",\n  \"why\": \"Полная картина свойств.\",\n  \"how\": \"const o = { a: 1, [Symbol(\\\"s\\\")]: 2 };\\nconsole.log(Reflect.has(o, \\\"a\\\"), Reflect.ownKeys(o).length, Reflect.deleteProperty(o, \\\"a\\\"), o);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Reflect.has\",\n    \"Reflect.deleteProperty\",\n    \"Reflect.ownKeys\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Reflect.defineProperty() · Reflect.getOwnPropertyDescriptor()\",\n  \"title\": \"Дескрипторы\",\n  \"what\": \"Как одноимённые методы Object, но `defineProperty` возвращает true/false вместо исключения.\",\n  \"why\": \"Проверяемое определение свойств.\",\n  \"how\": \"const o = Object.freeze({});\\nconsole.log(Reflect.defineProperty(o, \\\"x\\\", { value: 1 }), Reflect.getOwnPropertyDescriptor({ a: 1 }, \\\"a\\\").writable);\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Reflect.defineProperty\",\n    \"Reflect.getOwnPropertyDescriptor\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Reflect.getPrototypeOf() · Reflect.setPrototypeOf()\",\n  \"title\": \"Прототип\",\n  \"what\": \"Как у Object; `setPrototypeOf` возвращает успех.\",\n  \"why\": \"Управление прототипом в ловушках.\",\n  \"how\": \"const proto = { hi() { return \\\"привет\\\"; } };\\nconst o = {};\\nconsole.log(Reflect.setPrototypeOf(o, proto), Reflect.getPrototypeOf(o) === proto, o.hi());\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Reflect.getPrototypeOf\",\n    \"Reflect.setPrototypeOf\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Reflect.isExtensible() · Reflect.preventExtensions()\",\n  \"title\": \"Расширяемость\",\n  \"what\": \"Как у Object, `preventExtensions` возвращает успех.\",\n  \"why\": \"Проверки в ловушках.\",\n  \"how\": \"const o = {};\\nconsole.log(Reflect.isExtensible(o), Reflect.preventExtensions(o), Reflect.isExtensible(o));\",\n  \"kind\": \"method\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Reflect.isExtensible\",\n    \"Reflect.preventExtensions\"\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Reflect.apply() · Reflect.construct()\",\n  \"title\": \"Вызов и создание\",\n  \"what\": \"`apply(fn, this, args)` — вызвать функцию; `construct(Class, args)` — как `new Class(...args)`.\",\n  \"why\": \"Ловушки apply и construct.\",\n  \"how\": \"class Order { constructor(id) { this.id = id; } }\\nconsole.log(Reflect.apply(Math.max, null, [150, 290]), Reflect.construct(Order, [7]).id);\",\n  \"kind\": \"function\",\n  \"lang\": \"js\",\n  \"show\": 70,\n  \"covers\": [\n    \"Reflect.apply\",\n    \"Reflect.construct\"\n  ]\n}\n```\n\n```story\n{\n  \"lines\": [\n    [\n      \"nika\",\n      \"В ловушке Proxy делай «как обычно» через Reflect с теми же аргументами — так не потеряется `receiver`.\"\n    ]\n  ]\n}\n```\n## Ваш ход\n\n```challenge\n{\n  \"title\": \"Журнал чтений\",\n  \"task\": \"Сделай `logged(obj, log)`: Proxy, который в ловушке `get` добавляет имя ключа в массив `log` и возвращает значение через `Reflect.get`.\",\n  \"lang\": \"js\",\n  \"start\": \"function logged(obj, log) {\\n  return obj;\\n}\\n\",\n  \"checks\": [\n    {\n      \"label\": \"Чтения записаны\",\n      \"js\": \"(() => { const log = []; const p = logged({ latte: 220, raf: 290 }, log); return p.latte === 220 && p.raf === 290 && log.join() === \\\"latte,raf\\\"; })()\"\n    },\n    {\n      \"label\": \"Через `Reflect.get`\",\n      \"contains\": \"Reflect.get\"\n    }\n  ],\n  \"solution\": \"function logged(obj, log) {\\n  return new Proxy(obj, {\\n    get(target, key, receiver) {\\n      log.push(key);\\n      return Reflect.get(target, key, receiver);\\n    }\\n  });\\n}\"\n}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "js-reflect-why",
+          "kind": "practice",
+          "required": true
         }
       ]
     }

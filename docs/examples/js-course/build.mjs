@@ -16,6 +16,10 @@ import syntax from "./c12-syntax.mjs";
 import objectsDeep from "./c13-objects-deep.mjs";
 import strings from "./c14-strings.mjs";
 import numbers from "./c15-numbers.mjs";
+import arraysDeep from "./c16-arrays-deep.mjs";
+import collections from "./c17-collections.mjs";
+import regexp from "./c18-regexp.mjs";
+import meta from "./c19-meta.mjs";
 
 const chapters = [
   ["Старт JavaScript", [start]],
@@ -32,7 +36,11 @@ const chapters = [
   ["Синтаксис полностью", [syntax]],
   ["Объекты и функции изнутри", [objectsDeep]],
   ["Строки полностью", [strings]],
-  ["Числа и Math полностью", [numbers]]
+  ["Числа и Math полностью", [numbers]],
+  ["Массивы и итераторы полностью", [arraysDeep]],
+  ["Коллекции", [collections]],
+  ["Регулярные выражения", [regexp]],
+  ["Symbol, Proxy и Reflect", [meta]]
 ];
 
 const challenges = {};
