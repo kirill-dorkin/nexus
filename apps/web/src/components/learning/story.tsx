@@ -24,7 +24,9 @@ export const CHARACTERS = {
 export type Who = keyof typeof CHARACTERS;
 type Line = { who: Who; text: string };
 export type Story = { title?: string | undefined; lines: Line[] };
-export type Concept = { name: string; title: string; what: string; why: string; how?: string | undefined; lang?: string | undefined; show?: number | undefined; bro?: string | undefined };
+export type ConceptKind = "tag" | "attr" | "idea" | "property" | "selector" | "at-rule" | "function" | "value";
+export type Concept = { name: string; title: string; what: string; why: string; how?: string | undefined; lang?: string | undefined; show?: number | undefined; bro?: string | undefined; kind?: ConceptKind | undefined };
+const KINDS: readonly ConceptKind[] = ["tag", "attr", "idea", "property", "selector", "at-rule", "function", "value"];
 
 const str = (v: unknown, max: number): v is string => typeof v === "string" && v.length > 0 && v.length <= max;
 const json = (source: string): Record<string, unknown> | null => {
@@ -53,10 +55,11 @@ export function parseConcept(source: string): Concept | null {
   if (v.how !== undefined && !str(v.how, 3000)) return null;
   if (v.bro !== undefined && !str(v.bro, 300)) return null;
   if (v.lang !== undefined && !(str(v.lang, 20) && /^[a-z]+$/.test(v.lang))) return null;
+  if (v.kind !== undefined && !KINDS.includes(v.kind as ConceptKind)) return null;
   if (v.show !== undefined && !(Number.isInteger(v.show) && (v.show as number) >= 40 && (v.show as number) <= 600)) return null;
   return {
     name: v.name, title: v.title, what: v.what, why: v.why,
-    how: v.how as string | undefined, lang: v.lang as string | undefined, show: v.show as number | undefined, bro: v.bro as string | undefined
+    how: v.how as string | undefined, kind: v.kind as ConceptKind | undefined, lang: v.lang as string | undefined, show: v.show as number | undefined, bro: v.bro as string | undefined
   };
 }
 
@@ -166,10 +169,13 @@ export function conceptKind(name: string): "tag" | "attr" | "idea" {
   if (/^[a-z][a-z0-9-]*(?:[=:*\s·]|$)/.test(name)) return "attr";
   return "idea";
 }
-const KIND_LABEL = { tag: "Тег", attr: "Атрибут", idea: "Понятие" } as const;
+const KIND_LABEL: Record<ConceptKind, string> = {
+  tag: "Тег", attr: "Атрибут", idea: "Понятие",
+  property: "Свойство", selector: "Селектор", "at-rule": "@-правило", function: "Функция", value: "Значение"
+};
 
 function ConceptCard({ concept }: { concept: Concept }) {
-  const kind = conceptKind(concept.name);
+  const kind: ConceptKind = concept.kind ?? conceptKind(concept.name);
   return (
     <section className={styles.concept} data-kind={kind} aria-label={`${concept.name}: ${concept.title}`}>
       <header className={styles.conceptHead}>
