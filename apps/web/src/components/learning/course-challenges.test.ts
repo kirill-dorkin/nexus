@@ -4,49 +4,49 @@ import { describe, expect, it } from "vitest";
 import { parseChallenge, runChecks } from "./challenge";
 import { parseConcept, parseRecap, parseStory } from "./story";
 
-const manifest = JSON.parse(
-  // Tests run from the repository root (see vitest.config.ts).
-  readFileSync("docs/examples/html-track.manifest.json", "utf8")
-) as { lessons: { slug: string; blocks: { type: string; markdown?: string }[] }[] };
-
-const fences = manifest.lessons.flatMap((lesson) =>
-  lesson.blocks.flatMap((block) =>
-    [...(block.markdown ?? "").matchAll(/```challenge\n([\s\S]*?)\n```/g)].map((m) => ({ lesson: lesson.slug, source: m[1]! }))
-  )
-);
+type Manifest = { lessons: { slug: string; blocks: { type: string; markdown?: string }[] }[] };
+// Tests run from the repository root (see vitest.config.ts).
+const courses: [string, Manifest][] = [
+  ["HTML", JSON.parse(readFileSync("docs/examples/html-track.manifest.json", "utf8")) as Manifest],
+  ["CSS", JSON.parse(readFileSync("docs/examples/css-track.manifest.json", "utf8")) as Manifest]
+];
 const run = (code: string, challenge: NonNullable<ReturnType<typeof parseChallenge>>) =>
   runChecks(code, challenge.checks, new DOMParser().parseFromString(code, "text/html"));
 
-describe("HTML course challenges", () => {
-  it("every lesson has hands-on practice", () => {
-    const withPractice = new Set(fences.map((f) => f.lesson));
-    expect(manifest.lessons.filter((l) => !withPractice.has(l.slug)).map((l) => l.slug)).toEqual([]);
-  });
-  it.each(fences.map((f, i) => [`${f.lesson} #${i}`, f.source] as const))("%s is valid and solvable", (_, source) => {
-    const challenge = parseChallenge(source);
-    expect(challenge, source).not.toBeNull();
-    expect(challenge!.solution, "a solution is required").toBeTruthy();
-    expect(run(challenge!.solution!, challenge!), "the solution must pass every check").not.toContain(false);
-    expect(run(challenge!.start, challenge!), "the starting code must not already pass").toContain(false);
-  });
-});
-
-describe("HTML course story blocks", () => {
+for (const [name, manifest] of courses) {
   const blocks = (lang: string) => manifest.lessons.flatMap((lesson) =>
     lesson.blocks.flatMap((block) =>
       [...(block.markdown ?? "").matchAll(new RegExp("```" + lang + "\\n([\\s\\S]*?)\\n```", "g"))].map((m) => ({ lesson: lesson.slug, source: m[1]! }))
     )
   );
-  it("every scene and concept card is valid, so none falls back to raw JSON", () => {
-    expect(blocks("story").filter((b) => !parseStory(b.source)).map((b) => b.lesson)).toEqual([]);
-    expect(blocks("concept").filter((b) => !parseConcept(b.source)).map((b) => b.lesson)).toEqual([]);
-    expect(blocks("story").length).toBeGreaterThan(60);
-    // Every lesson opens with the story context, so it works on its own.
-    const recaps = blocks("recap");
-    expect(recaps.filter((b) => !parseRecap(b.source)).map((b) => b.lesson)).toEqual([]);
-    expect(manifest.lessons.filter((l) => !recaps.some((r) => r.lesson === l.slug)).map((l) => l.slug)).toEqual([]);
+  const fences = blocks("challenge");
+
+  describe(`${name} course challenges`, () => {
+    it("every lesson has hands-on practice", () => {
+      const withPractice = new Set(fences.map((f) => f.lesson));
+      expect(manifest.lessons.filter((l) => !withPractice.has(l.slug)).map((l) => l.slug)).toEqual([]);
+    });
+    it.each(fences.map((f, i) => [`${f.lesson} #${i}`, f.source] as const))("%s is valid and solvable", (_, source) => {
+      const challenge = parseChallenge(source);
+      expect(challenge, source).not.toBeNull();
+      expect(challenge!.solution, "a solution is required").toBeTruthy();
+      expect(run(challenge!.solution!, challenge!), "the solution must pass every check").not.toContain(false);
+      expect(run(challenge!.start, challenge!), "the starting code must not already pass").toContain(false);
+    });
   });
-});
+
+  describe(`${name} course story blocks`, () => {
+    it("every scene and concept card is valid, so none falls back to raw JSON", () => {
+      expect(blocks("story").filter((b) => !parseStory(b.source)).map((b) => b.lesson)).toEqual([]);
+      expect(blocks("concept").filter((b) => !parseConcept(b.source)).map((b) => b.lesson)).toEqual([]);
+      expect(blocks("story").length).toBeGreaterThanOrEqual(manifest.lessons.length);
+      // Every lesson opens with the story context, so it works on its own.
+      const recaps = blocks("recap");
+      expect(recaps.filter((b) => !parseRecap(b.source)).map((b) => b.lesson)).toEqual([]);
+      expect(manifest.lessons.filter((l) => !recaps.some((r) => r.lesson === l.slug)).map((l) => l.slug)).toEqual([]);
+    });
+  });
+}
 
 describe("challenge checks", () => {
   it("matches selectors, text, attributes, counts, absence and source fragments", () => {
