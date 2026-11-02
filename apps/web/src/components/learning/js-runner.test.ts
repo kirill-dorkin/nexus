@@ -61,6 +61,13 @@ describe("runner sandbox", () => {
   }, 10000);
 });
 
+describe("module examples", () => {
+  it("run as a module when asked, so concept cards may use top-level await", () => {
+    expect(runnerDocument({ code: "await wait(1);", lang: "js", mode: "preview", token: "t", module: true })).toContain('<script type="module">');
+    expect(runnerDocument({ code: "1", lang: "js", mode: "check", token: "t" })).not.toContain('type="module"');
+  });
+});
+
 describe("runnable challenge specs", () => {
   const base = { title: "t", task: "x", start: "", solution: "" };
   it("accepts js and log checks, a js language and a fixed page", () => {

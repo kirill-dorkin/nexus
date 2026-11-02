@@ -3,7 +3,7 @@
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Bug, ChartBar, Coffee, Database, FastForward, Headphones, Palette, Robot, Sparkle, User } from "@phosphor-icons/react/dist/ssr";
 import { CodeSnippet } from "./code-snippet";
-import { isRunnerMessage, runnerDocument } from "./js-runner";
+import { isRunnerMessage, needsModule, runnerDocument } from "./js-runner";
 import { useSqlRun } from "./sql/sql-client";
 import { SqlOutput } from "./sql/sql-output";
 import styles from "./story.module.css";
@@ -190,7 +190,7 @@ function RunPreview({ title, code, page, initial }: { title: string; code: strin
   }, [token]);
   return (
     <iframe ref={frame} title={title} sandbox="allow-scripts" referrerPolicy="no-referrer" loading="lazy"
-      srcDoc={runnerDocument({ code, page, lang: "js", mode: "preview", token })} style={{ height }} />
+      srcDoc={runnerDocument({ code, page, lang: "js", mode: "preview", token, module: needsModule(code) })} style={{ height }} />
   );
 }
 
