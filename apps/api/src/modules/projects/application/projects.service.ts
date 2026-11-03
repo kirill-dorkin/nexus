@@ -90,7 +90,11 @@ export class ProjectsApplicationService {
         "team",
         teamId
       );
-      const team = await this.projects.findTeam(transaction, organizationId, teamId);
+      const team = await this.projects.findTeam(
+        transaction,
+        organizationId,
+        teamId
+      );
       if (team === null) throw new NotFoundException("Project team not found.");
       return this.view.team(transaction, team);
     });
@@ -133,7 +137,10 @@ export class ProjectsApplicationService {
     });
   }
 
-  async getProject(organizationId: string, projectId: string): Promise<Project> {
+  async getProject(
+    organizationId: string,
+    projectId: string
+  ): Promise<Project> {
     const context = this.requestContext.tenantContext(organizationId);
     return this.database.tenantTransaction(context, async (transaction) => {
       await this.identity.requireActiveUser(transaction, context.userId);

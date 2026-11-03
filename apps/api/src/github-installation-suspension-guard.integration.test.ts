@@ -12,7 +12,9 @@ import { GitHubWebhookLifecycleProcessor } from "./modules/integrations/infrastr
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for GitHub suspension guard integration tests.`);
+    throw new Error(
+      `${name} is required for GitHub suspension guard integration tests.`
+    );
   }
   return value;
 }
@@ -84,22 +86,28 @@ describe("GitHub installation suspension source guard", () => {
       [organizationId, installationId, repositoryId]
     );
 
-    await withTenantTransaction(appPool, { organizationId, userId }, async (transaction) => {
-      await transaction.client.query(
-        `UPDATE integrations.github_installations
+    await withTenantTransaction(
+      appPool,
+      { organizationId, userId },
+      async (transaction) => {
+        await transaction.client.query(
+          `UPDATE integrations.github_installations
          SET status = 'suspended', updated_at = now()
          WHERE organization_id = $1 AND github_installation_id = $2`,
-        [organizationId, installationId]
-      );
-      await transaction.client.query(
-        `UPDATE integrations.github_repositories
+          [organizationId, installationId]
+        );
+        await transaction.client.query(
+          `UPDATE integrations.github_repositories
          SET status = 'removed', updated_at = now()
          WHERE organization_id = $1 AND github_installation_id = $2`,
-        [organizationId, installationId]
-      );
-    });
+          [organizationId, installationId]
+        );
+      }
+    );
 
-    const source = await migrationPool.query<{ suspension_source: string | null }>(
+    const source = await migrationPool.query<{
+      suspension_source: string | null;
+    }>(
       `SELECT suspension_source
        FROM integrations.github_installations
        WHERE organization_id = $1 AND github_installation_id = $2`,

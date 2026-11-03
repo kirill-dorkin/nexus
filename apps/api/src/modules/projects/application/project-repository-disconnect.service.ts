@@ -18,7 +18,10 @@ export class ProjectRepositoryDisconnectService {
     private readonly commandContext: ProjectCommandContext
   ) {}
 
-  async disconnect(organizationId: string, projectId: string): Promise<Project> {
+  async disconnect(
+    organizationId: string,
+    projectId: string
+  ): Promise<Project> {
     const context = this.requestContext.tenantContext(organizationId);
     return this.database.tenantTransaction(context, async (transaction) => {
       await this.identity.requireActiveUser(transaction, context.userId);

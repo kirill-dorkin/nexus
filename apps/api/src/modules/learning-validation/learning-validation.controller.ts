@@ -15,7 +15,9 @@ import {
 import { parseRequest } from "../../http/validation";
 import { ValidationApplicationService } from "./application/validation.service";
 
-@Controller("organizations/:organizationId/submissions/:submissionId/validation-results")
+@Controller(
+  "organizations/:organizationId/submissions/:submissionId/validation-results"
+)
 export class LearningValidationController {
   constructor(private readonly validation: ValidationApplicationService) {}
 

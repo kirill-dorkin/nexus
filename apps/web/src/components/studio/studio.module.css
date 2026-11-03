@@ -578,10 +578,16 @@
   border: 1px solid var(--border-default);
   border-radius: 1.25rem;
   background: var(--surface-solid);
-  transition: border-color var(--motion-fast), background var(--motion-fast);
+  transition:
+    border-color var(--motion-fast),
+    background var(--motion-fast);
 }
 .courseRow:hover {
-  border-color: color-mix(in srgb, var(--accent-action) 45%, var(--border-default));
+  border-color: color-mix(
+    in srgb,
+    var(--accent-action) 45%,
+    var(--border-default)
+  );
   background: var(--surface-elevated);
 }
 .courseRow h3 {

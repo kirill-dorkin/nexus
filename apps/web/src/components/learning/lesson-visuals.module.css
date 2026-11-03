@@ -5,7 +5,11 @@
   border: 1px solid var(--border-default);
   border-radius: 1.1rem;
   background:
-    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--accent-action) 8%, transparent), transparent 55%),
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--accent-action) 8%, transparent),
+      transparent 55%
+    ),
     #0b0c0f;
 }
 .title {
@@ -81,7 +85,11 @@
   gap: 0.25rem 1rem;
   padding: 0.35rem 0.6rem 0.35rem calc(0.6rem + var(--depth) * 1.5rem);
   border-radius: 0.6rem;
-  background-image: repeating-linear-gradient(90deg, transparent 0 calc(1.5rem - 1px), rgb(255 255 255 / 8%) calc(1.5rem - 1px) 1.5rem);
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 calc(1.5rem - 1px),
+    rgb(255 255 255 / 8%) calc(1.5rem - 1px) 1.5rem
+  );
   background-size: calc(var(--depth) * 1.5rem + 0.6rem) 100%;
   background-repeat: no-repeat;
   background-position: 0.6rem 0;
@@ -132,7 +140,10 @@
   left: calc(1rem - 1px);
   width: 2px;
   border-radius: 2px;
-  background: linear-gradient(var(--c), color-mix(in srgb, var(--c) 15%, transparent));
+  background: linear-gradient(
+    var(--c),
+    color-mix(in srgb, var(--c) 15%, transparent)
+  );
 }
 .flowIndex {
   display: inline-grid;
@@ -163,8 +174,14 @@
   line-height: 1.5;
 }
 @keyframes flowPulse {
-  0%, 20%, 100% { box-shadow: 0 0 0 0 transparent; }
-  8% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--c) 30%, transparent); }
+  0%,
+  20%,
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  8% {
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--c) 30%, transparent);
+  }
 }
 
 /* DOM tree */
@@ -261,7 +278,9 @@
   line-height: 1.2;
   white-space: nowrap;
   counter-increment: stage;
-  transition: color 200ms ease, background 200ms ease;
+  transition:
+    color 200ms ease,
+    background 200ms ease;
 }
 .stages li::before {
   content: counter(stage);
@@ -326,9 +345,15 @@
   border-radius: 50%;
   background: #3f3f46;
 }
-.windowBar span:nth-child(1) { background: #f87171; }
-.windowBar span:nth-child(2) { background: #fbbf24; }
-.windowBar span:nth-child(3) { background: #4ade80; }
+.windowBar span:nth-child(1) {
+  background: #f87171;
+}
+.windowBar span:nth-child(2) {
+  background: #fbbf24;
+}
+.windowBar span:nth-child(3) {
+  background: #4ade80;
+}
 .windowBar em {
   margin-left: 0.6rem;
   color: var(--text-secondary);
@@ -355,8 +380,12 @@
   animation: expandFlash 1100ms ease-out;
 }
 @keyframes expandFlash {
-  from { background: color-mix(in srgb, var(--accent-action) 14%, transparent); }
-  to { background: transparent; }
+  from {
+    background: color-mix(in srgb, var(--accent-action) 14%, transparent);
+  }
+  to {
+    background: transparent;
+  }
 }
 .line {
   display: inline;
@@ -364,8 +393,14 @@
   animation-delay: calc(var(--line) * 70ms);
 }
 @keyframes lineIn {
-  from { opacity: 0; filter: blur(2px); }
-  to { opacity: 1; filter: none; }
+  from {
+    opacity: 0;
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
 }
 .caret {
   display: inline-block;
@@ -377,7 +412,9 @@
   animation: blink 1s steps(1) infinite;
 }
 @keyframes blink {
-  50% { opacity: 0; }
+  50% {
+    opacity: 0;
+  }
 }
 .key {
   display: inline-flex;
@@ -409,13 +446,30 @@
   animation: keyPress 650ms ease-out both;
 }
 @keyframes fadeIn {
-  from { opacity: 0; }
+  from {
+    opacity: 0;
+  }
 }
 @keyframes keyPress {
-  0% { transform: translateY(-6px) scale(0.92); opacity: 0; }
-  25% { transform: translateY(0) scale(1); opacity: 1; }
-  45% { transform: translateY(3px) scale(0.97); border-bottom-width: 1px; border-color: var(--accent-action); color: var(--text-accent); }
-  70%, 100% { transform: translateY(0) scale(1); border-bottom-width: 3px; }
+  0% {
+    transform: translateY(-6px) scale(0.92);
+    opacity: 0;
+  }
+  25% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  45% {
+    transform: translateY(3px) scale(0.97);
+    border-bottom-width: 1px;
+    border-color: var(--accent-action);
+    color: var(--text-accent);
+  }
+  70%,
+  100% {
+    transform: translateY(0) scale(1);
+    border-bottom-width: 3px;
+  }
 }
 .progress {
   position: absolute;
@@ -454,7 +508,11 @@
   color: var(--text-secondary);
   font-size: 0.82rem;
   opacity: 0.45;
-  transition: opacity 200ms ease, border-color 200ms ease, background 200ms ease, transform 200ms ease;
+  transition:
+    opacity 200ms ease,
+    border-color 200ms ease,
+    background 200ms ease,
+    transform 200ms ease;
 }
 .parts li code {
   padding: 0.1rem 0.4rem;
@@ -494,7 +552,9 @@
   font-weight: 600;
   opacity: 0;
   transform: translateY(4px);
-  transition: opacity 300ms ease 250ms, transform 300ms ease 250ms;
+  transition:
+    opacity 300ms ease 250ms,
+    transform 300ms ease 250ms;
 }
 .caption[data-shown] {
   opacity: 1;

@@ -25,7 +25,10 @@ export class GitHubWebhookSignatureVerifier {
     const expected = createHmac("sha256", secret).update(rawBody).digest();
     const actual = Buffer.from(signatureHex, "hex");
 
-    if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) {
+    if (
+      actual.length !== expected.length ||
+      !timingSafeEqual(actual, expected)
+    ) {
       throw new UnauthorizedException("Invalid GitHub webhook signature.");
     }
   }

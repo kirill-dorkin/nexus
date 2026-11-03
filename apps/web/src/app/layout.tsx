@@ -12,7 +12,8 @@ export const metadata: Metadata = {
     default: brand.name,
     template: `%s · ${brand.name}`
   },
-  description: "Открытые IT-курсы с видео, понятными конспектами, практикой и сохранением прогресса.",
+  description:
+    "Открытые IT-курсы с видео, понятными конспектами, практикой и сохранением прогресса.",
   applicationName: brand.name,
   authors: [{ name: `Команда ${brand.name}` }],
   creator: `Команда ${brand.name}`,

@@ -2,13 +2,35 @@ import { describe, expect, it } from "vitest";
 import { orderByRoute, routePosition } from "./learning-route";
 import { HOME_ORGANIZATION_SLUG } from "./public-learning-routes";
 
-const home = (slug: string) => ({ organization: { slug: HOME_ORGANIZATION_SLUG }, offering: { slug: `${slug}-v9` }, course: { slug } });
-const other = (slug: string) => ({ organization: { slug: "elsewhere" }, offering: { slug }, course: { slug } });
+const home = (slug: string) => ({
+  organization: { slug: HOME_ORGANIZATION_SLUG },
+  offering: { slug: `${slug}-v9` },
+  course: { slug }
+});
+const other = (slug: string) => ({
+  organization: { slug: "elsewhere" },
+  offering: { slug },
+  course: { slug }
+});
 
 describe("learning route", () => {
   it("orders the catalog by the route, whatever order the API returns", () => {
-    const catalog = [other("aaa"), home("css"), home("sql"), home("html"), home("misc"), home("js")];
-    expect(orderByRoute(catalog).map((c) => c.course.slug)).toEqual(["html", "css", "js", "sql", "aaa", "misc"]);
+    const catalog = [
+      other("aaa"),
+      home("css"),
+      home("sql"),
+      home("html"),
+      home("misc"),
+      home("js")
+    ];
+    expect(orderByRoute(catalog).map((c) => c.course.slug)).toEqual([
+      "html",
+      "css",
+      "js",
+      "sql",
+      "aaa",
+      "misc"
+    ]);
   });
 
   it("links neighbours and counts only published steps", () => {
@@ -23,8 +45,12 @@ describe("learning route", () => {
   });
 
   it("ignores courses outside the route and other organizations' courses with the same slug", () => {
-    expect(routePosition(home("misc"), [home("html"), home("misc")])).toBeNull();
+    expect(
+      routePosition(home("misc"), [home("html"), home("misc")])
+    ).toBeNull();
     expect(routePosition(other("html"), [other("html")])).toBeNull();
-    expect(routePosition(home("css"), [other("html"), home("css")])!.previous).toBeNull();
+    expect(
+      routePosition(home("css"), [other("html"), home("css")])!.previous
+    ).toBeNull();
   });
 });

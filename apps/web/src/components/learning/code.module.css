@@ -8,11 +8,18 @@
   border: 1px solid var(--border-default);
   border-radius: 1rem;
   background: var(--code-bg);
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
 }
 .editing {
-  border-color: color-mix(in srgb, var(--accent-action) 45%, var(--border-default));
-  box-shadow: 0 20px 60px -30px color-mix(in srgb, var(--accent-action) 40%, transparent);
+  border-color: color-mix(
+    in srgb,
+    var(--accent-action) 45%,
+    var(--border-default)
+  );
+  box-shadow: 0 20px 60px -30px
+    color-mix(in srgb, var(--accent-action) 40%, transparent);
 }
 
 .bar {
@@ -120,26 +127,53 @@
 }
 .editing:focus-within {
   border-color: var(--accent-action);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-action) 22%, transparent), 0 20px 60px -30px color-mix(in srgb, var(--accent-action) 40%, transparent);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--accent-action) 22%, transparent),
+    0 20px 60px -30px color-mix(in srgb, var(--accent-action) 40%, transparent);
 }
 @keyframes resultIn {
-  from { opacity: 0; }
+  from {
+    opacity: 0;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .frameWrap { animation: none; }
+  .frameWrap {
+    animation: none;
+  }
 }
 
 /* Token colours. */
-.tag { color: #7dd3fc; }
-.attr { color: #c4b5fd; }
-.string { color: #bef264; }
-.comment { color: #71717a; font-style: italic; }
-.punct { color: #94a3b8; }
-.entity { color: #fda4af; }
-.doctype { color: #a1a1aa; }
-.keyword { color: #f0abfc; }
-.number { color: #fdba74; }
-.property { color: #93c5fd; }
+.tag {
+  color: #7dd3fc;
+}
+.attr {
+  color: #c4b5fd;
+}
+.string {
+  color: #bef264;
+}
+.comment {
+  color: #71717a;
+  font-style: italic;
+}
+.punct {
+  color: #94a3b8;
+}
+.entity {
+  color: #fda4af;
+}
+.doctype {
+  color: #a1a1aa;
+}
+.keyword {
+  color: #f0abfc;
+}
+.number {
+  color: #fdba74;
+}
+.property {
+  color: #93c5fd;
+}
 
 .result {
   border-top: 1px solid var(--border-default);
@@ -166,7 +200,8 @@
   height: 7px;
   border-radius: 50%;
   background: var(--action-primary);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-action) 25%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--accent-action) 25%, transparent);
 }
 .frameWrap {
   height: 240px;

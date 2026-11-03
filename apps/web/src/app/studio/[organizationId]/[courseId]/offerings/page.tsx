@@ -17,7 +17,8 @@ export default async function Page({
   if (
     !uuidSchema.safeParse(organizationId).success ||
     !uuidSchema.safeParse(courseId).success
-  ) notFound();
+  )
+    notFound();
 
   return (
     <StudioShell>

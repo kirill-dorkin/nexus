@@ -159,7 +159,8 @@ export function QuizForm({
               : "Введите короткий ответ"}
         </legend>
         <Text className={styles.quizHint} size="sm" muted>
-          Ответ проверится сразу и сохранится в вашем обучении. Если вы ещё не записаны на этот бесплатный курс, проверка запишет вас автоматически.
+          Ответ проверится сразу и сохранится в вашем обучении. Если вы ещё не
+          записаны на этот бесплатный курс, проверка запишет вас автоматически.
         </Text>
         {activity.type === "quiz.short_text" ? (
           <Field htmlFor={`${id}-answer`} label="Ваш ответ">
@@ -230,7 +231,10 @@ export function QuizForm({
       {needsLogin && (
         <div className={styles.quizSignup} role="status">
           <strong>Ответ готов к проверке — осталось войти</strong>
-          <p>Аккаунт бесплатный и создаётся за 20 секунд. После входа вы вернётесь к этому заданию.</p>
+          <p>
+            Аккаунт бесплатный и создаётся за 20 секунд. После входа вы
+            вернётесь к этому заданию.
+          </p>
           <div className={styles.quizSignupActions}>
             <Link
               className={buttonClass({ size: "md" })}

@@ -23,7 +23,9 @@ import {
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for validation-result integration tests.`);
+    throw new Error(
+      `${name} is required for validation-result integration tests.`
+    );
   }
   return value;
 }
@@ -118,7 +120,8 @@ describe("validation result HTTP lifecycle", () => {
     instructorUserId = await createUser("validation-result-instructor");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
@@ -130,10 +133,12 @@ describe("validation result HTTP lifecycle", () => {
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `validation-result-${randomUUID()}`,
         name: "Validation result integration"
-      })).id;
+      })
+    ).id;
 
     await activateMember(learnerUserId, "learner");
     await activateMember(instructorUserId, "instructor");
@@ -221,9 +226,12 @@ describe("validation result HTTP lifecycle", () => {
       }
     });
     if (otherActivity.statusCode !== 201) {
-      throw new Error(`Failed to create second activity: ${otherActivity.body}`);
+      throw new Error(
+        `Failed to create second activity: ${otherActivity.body}`
+      );
     }
-    otherActivityVersionId = (JSON.parse(otherActivity.body) as { id: string }).id;
+    otherActivityVersionId = (JSON.parse(otherActivity.body) as { id: string })
+      .id;
 
     const publish = await app.inject({
       method: "POST",
@@ -282,7 +290,9 @@ describe("validation result HTTP lifecycle", () => {
     if (submissionResponse.statusCode !== 201) {
       throw new Error(`Failed to submit attempt: ${submissionResponse.body}`);
     }
-    submissionId = submissionSchema.parse(JSON.parse(submissionResponse.body)).id;
+    submissionId = submissionSchema.parse(
+      JSON.parse(submissionResponse.body)
+    ).id;
   });
 
   afterAll(async () => {
@@ -457,7 +467,9 @@ describe("validation result HTTP lifecycle", () => {
       payload: command
     });
     expect(replay.statusCode).toBe(201);
-    expect(validationResultSchema.parse(JSON.parse(replay.body)).id).toBe(result.id);
+    expect(validationResultSchema.parse(JSON.parse(replay.body)).id).toBe(
+      result.id
+    );
 
     const persisted = await migrationPool.query<{ count: number }>(
       `SELECT count(*)::integer AS count

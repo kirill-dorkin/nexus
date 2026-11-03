@@ -5,7 +5,9 @@ import { CurrentIdentityApplicationService } from "./application/current-identit
 
 @Controller()
 export class IdentityController {
-  constructor(private readonly currentIdentity: CurrentIdentityApplicationService) {}
+  constructor(
+    private readonly currentIdentity: CurrentIdentityApplicationService
+  ) {}
 
   @Get("me")
   @Header("Cache-Control", "no-store")

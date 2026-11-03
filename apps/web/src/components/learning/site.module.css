@@ -19,8 +19,16 @@
   height: 720px;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 55% 60% at 80% -10%, color-mix(in srgb, var(--accent-action) 13%, transparent), transparent 70%),
-    radial-gradient(ellipse 40% 45% at 0% 0%, color-mix(in srgb, var(--accent-action) 6%, transparent), transparent 70%);
+    radial-gradient(
+      ellipse 55% 60% at 80% -10%,
+      color-mix(in srgb, var(--accent-action) 13%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 40% 45% at 0% 0%,
+      color-mix(in srgb, var(--accent-action) 6%, transparent),
+      transparent 70%
+    );
 }
 
 .skip {
@@ -79,7 +87,9 @@
   border-radius: 10px;
   background: var(--action-primary);
   color: var(--text-on-action);
-  box-shadow: 0 0 0 1px rgb(255 255 255 / 8%) inset, 0 6px 20px color-mix(in srgb, var(--accent-action) 30%, transparent);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 8%) inset,
+    0 6px 20px color-mix(in srgb, var(--accent-action) 30%, transparent);
 }
 
 .main,

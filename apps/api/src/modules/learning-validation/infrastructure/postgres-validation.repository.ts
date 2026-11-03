@@ -121,7 +121,9 @@ export class PostgresValidationRepository extends ValidationRepository {
     );
     const existingRow = existing.rows[0];
     if (existingRow === undefined) {
-      throw new Error("PostgreSQL did not return the idempotent validation result.");
+      throw new Error(
+        "PostgreSQL did not return the idempotent validation result."
+      );
     }
 
     return { result: mapValidationResult(existingRow), created: false };

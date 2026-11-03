@@ -301,7 +301,9 @@ export function ManualEditor({
                 value={lesson.durationMinutes}
                 onChange={(e) =>
                   edit((d) => {
-                    itemAt(d.lessons, i).durationMinutes = Number(e.target.value);
+                    itemAt(d.lessons, i).durationMinutes = Number(
+                      e.target.value
+                    );
                   })
                 }
               />
@@ -389,8 +391,7 @@ export function ManualEditor({
                             const b = itemAt(itemAt(d.lessons, i).blocks, j);
                             if (b.type === "activity")
                               b.kind = e.target.value as
-                                | "practice"
-                                | "homework";
+                                "practice" | "homework";
                           })
                         }
                       >
@@ -418,7 +419,9 @@ export function ManualEditor({
                   label={`Блок ${j + 1}`}
                   index={j}
                   count={lesson.blocks.length}
-                  onMove={(o) => edit((d) => move(itemAt(d.lessons, i).blocks, j, o))}
+                  onMove={(o) =>
+                    edit((d) => move(itemAt(d.lessons, i).blocks, j, o))
+                  }
                   onRemove={() =>
                     edit((d) => {
                       itemAt(d.lessons, i).blocks.splice(j, 1);
@@ -433,7 +436,10 @@ export function ManualEditor({
                 type="button"
                 onClick={() =>
                   edit((d) => {
-                    itemAt(d.lessons, i).blocks.push({ type: "youtube", videoId: "" });
+                    itemAt(d.lessons, i).blocks.push({
+                      type: "youtube",
+                      videoId: ""
+                    });
                   })
                 }
               >

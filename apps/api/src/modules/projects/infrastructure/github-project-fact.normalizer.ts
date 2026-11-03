@@ -8,7 +8,10 @@ type JsonObject = Readonly<Record<string, unknown>>;
 type ExternalUser = Readonly<{ id: string | null; login: string | null }>;
 
 export class RejectedGitHubProjectFactDeliveryError extends Error {
-  constructor(readonly code: string, message: string) {
+  constructor(
+    readonly code: string,
+    message: string
+  ) {
     super(message);
     this.name = "RejectedGitHubProjectFactDeliveryError";
   }
@@ -44,7 +47,11 @@ function positiveInteger(value: unknown, field: string): number {
   return value;
 }
 
-function requiredString(value: unknown, field: string, maxLength = 255): string {
+function requiredString(
+  value: unknown,
+  field: string,
+  maxLength = 255
+): string {
   if (typeof value !== "string") {
     throw new RejectedGitHubProjectFactDeliveryError(
       "invalid_payload",
@@ -61,7 +68,11 @@ function requiredString(value: unknown, field: string, maxLength = 255): string 
   return normalized;
 }
 
-function optionalString(value: unknown, field: string, maxLength = 255): string | null {
+function optionalString(
+  value: unknown,
+  field: string,
+  maxLength = 255
+): string | null {
   if (value === null || value === undefined) return null;
   return requiredString(value, field, maxLength);
 }
@@ -143,7 +154,10 @@ function validateRoutingIdentity(
     object(payload.repository, "payload.repository").id,
     "payload.repository.id"
   );
-  if (payloadInstallationId !== installationId || payloadRepositoryId !== repositoryId) {
+  if (
+    payloadInstallationId !== installationId ||
+    payloadRepositoryId !== repositoryId
+  ) {
     throw new RejectedGitHubProjectFactDeliveryError(
       "routing_identity_mismatch",
       "Payload repository identity differs from the trusted inbox identity."
@@ -174,7 +188,11 @@ export function normalizeGitHubProjectFact(
   }
 
   const payload = object(claim.payload, "payload");
-  validateRoutingIdentity(payload, claim.githubInstallationId, claim.githubRepositoryId);
+  validateRoutingIdentity(
+    payload,
+    claim.githubInstallationId,
+    claim.githubRepositoryId
+  );
   const sender = user(payload.sender, "payload.sender");
   const common = {
     organizationId: claim.organizationId,
@@ -201,12 +219,19 @@ export function normalizeGitHubProjectFact(
       factType: "pull_request",
       githubObjectId: pullRequestId,
       githubPullRequestId: pullRequestId,
-      githubPullRequestNumber: positiveInteger(pullRequest.number, "payload.pull_request.number"),
+      githubPullRequestNumber: positiveInteger(
+        pullRequest.number,
+        "payload.pull_request.number"
+      ),
       githubSubjectUserId: subject.id,
       githubSubjectUserLogin: subject.login,
       githubAppId: null,
       name: null,
-      state: requiredString(pullRequest.state, "payload.pull_request.state", 100),
+      state: requiredString(
+        pullRequest.state,
+        "payload.pull_request.state",
+        100
+      ),
       status: null,
       conclusion: null,
       headSha: gitSha(head.sha, "payload.pull_request.head.sha"),
@@ -235,7 +260,10 @@ export function normalizeGitHubProjectFact(
       ...common,
       factType: "pull_request_review",
       githubObjectId: externalId(review.id, "payload.review.id"),
-      githubPullRequestId: externalId(pullRequest.id, "payload.pull_request.id"),
+      githubPullRequestId: externalId(
+        pullRequest.id,
+        "payload.pull_request.id"
+      ),
       githubPullRequestNumber: positiveInteger(
         pullRequest.number,
         "payload.pull_request.number"
@@ -253,7 +281,10 @@ export function normalizeGitHubProjectFact(
       isMerged: null,
       providerCreatedAt: null,
       providerUpdatedAt: null,
-      providerSubmittedAt: timestamp(review.submitted_at, "payload.review.submitted_at"),
+      providerSubmittedAt: timestamp(
+        review.submitted_at,
+        "payload.review.submitted_at"
+      ),
       providerStartedAt: null,
       providerCompletedAt: null
     };
@@ -273,7 +304,11 @@ export function normalizeGitHubProjectFact(
       name: requiredString(checkRun.name, "payload.check_run.name"),
       state: null,
       status: requiredString(checkRun.status, "payload.check_run.status", 100),
-      conclusion: optionalString(checkRun.conclusion, "payload.check_run.conclusion", 100),
+      conclusion: optionalString(
+        checkRun.conclusion,
+        "payload.check_run.conclusion",
+        100
+      ),
       headSha: gitSha(checkRun.head_sha, "payload.check_run.head_sha"),
       commitSha: null,
       isDraft: null,
@@ -281,7 +316,10 @@ export function normalizeGitHubProjectFact(
       providerCreatedAt: null,
       providerUpdatedAt: null,
       providerSubmittedAt: null,
-      providerStartedAt: timestamp(checkRun.started_at, "payload.check_run.started_at"),
+      providerStartedAt: timestamp(
+        checkRun.started_at,
+        "payload.check_run.started_at"
+      ),
       providerCompletedAt: timestamp(
         checkRun.completed_at,
         "payload.check_run.completed_at"
@@ -301,14 +339,28 @@ export function normalizeGitHubProjectFact(
     githubAppId: optionalAppId(checkSuite.app, "payload.check_suite.app"),
     name: null,
     state: null,
-    status: requiredString(checkSuite.status, "payload.check_suite.status", 100),
-    conclusion: optionalString(checkSuite.conclusion, "payload.check_suite.conclusion", 100),
+    status: requiredString(
+      checkSuite.status,
+      "payload.check_suite.status",
+      100
+    ),
+    conclusion: optionalString(
+      checkSuite.conclusion,
+      "payload.check_suite.conclusion",
+      100
+    ),
     headSha: gitSha(checkSuite.head_sha, "payload.check_suite.head_sha"),
     commitSha: null,
     isDraft: null,
     isMerged: null,
-    providerCreatedAt: timestamp(checkSuite.created_at, "payload.check_suite.created_at"),
-    providerUpdatedAt: timestamp(checkSuite.updated_at, "payload.check_suite.updated_at"),
+    providerCreatedAt: timestamp(
+      checkSuite.created_at,
+      "payload.check_suite.created_at"
+    ),
+    providerUpdatedAt: timestamp(
+      checkSuite.updated_at,
+      "payload.check_suite.updated_at"
+    ),
     providerSubmittedAt: null,
     providerStartedAt: null,
     providerCompletedAt: null

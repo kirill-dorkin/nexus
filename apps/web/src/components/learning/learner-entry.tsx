@@ -36,7 +36,9 @@ export function LearnerEntry({
     offering: { slug: offeringSlug },
     course: { slug: courseSlug }
   };
-  const route = lessonSlug ? lessonUrl(address, lessonSlug) : courseUrl(address);
+  const route = lessonSlug
+    ? lessonUrl(address, lessonSlug)
+    : courseUrl(address);
   const api = `/v1/me/learning/${encodeURIComponent(organizationSlug)}/${encodeURIComponent(offeringSlug)}`;
   const [learning, setLearning] = useState<LearnerLearningCourse | null>(null),
     [anonymous, setAnonymous] = useState(false);
@@ -216,8 +218,8 @@ export function LearnerEntry({
                   </>
                 ) : (
                   <p>
-                    Самостоятельное вступление закрыто. Обратитесь в
-                    организацию «{learning.organization.name}» за приглашением.
+                    Самостоятельное вступление закрыто. Обратитесь в организацию
+                    «{learning.organization.name}» за приглашением.
                   </p>
                 )
               ) : learning.entry.membershipStatus !== "active" ? (

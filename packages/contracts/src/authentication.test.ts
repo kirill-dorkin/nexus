@@ -51,7 +51,8 @@ describe("authentication contracts", () => {
       oauthProvidersResponseSchema.parse({ providers: ["google", "github"] })
     ).toEqual({ providers: ["google", "github"] });
     expect(
-      oauthProvidersResponseSchema.safeParse({ providers: ["facebook"] }).success
+      oauthProvidersResponseSchema.safeParse({ providers: ["facebook"] })
+        .success
     ).toBe(false);
   });
 });

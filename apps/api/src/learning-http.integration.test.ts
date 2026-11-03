@@ -63,20 +63,25 @@ describe("learning catalog, offering, and enrollment HTTP lifecycle", () => {
     outsiderUserId = await createUser("learning-outsider");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, { slug: organizationSlug, name: "Learning domain integration" })).id;
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
+        slug: organizationSlug,
+        name: "Learning domain integration"
+      })
+    ).id;
 
     const invite = await app.inject({
       method: "POST",
@@ -94,7 +99,9 @@ describe("learning catalog, offering, and enrollment HTTP lifecycle", () => {
       headers: { "x-test-user-id": learnerUserId }
     });
     if (accept.statusCode !== 200) {
-      throw new Error(`Failed to activate learning test learner: ${accept.body}`);
+      throw new Error(
+        `Failed to activate learning test learner: ${accept.body}`
+      );
     }
 
     const role = await app.inject({
@@ -108,7 +115,9 @@ describe("learning catalog, offering, and enrollment HTTP lifecycle", () => {
       }
     });
     if (role.statusCode !== 204) {
-      throw new Error(`Failed to assign learning test learner role: ${role.body}`);
+      throw new Error(
+        `Failed to assign learning test learner role: ${role.body}`
+      );
     }
   });
 
@@ -390,7 +399,9 @@ describe("learning catalog, offering, and enrollment HTTP lifecycle", () => {
     const names = result.rows.map((row) => row.event_name);
 
     expect(names).toContain("course.created");
-    expect(names.filter((name) => name === "course_version.created")).toHaveLength(2);
+    expect(
+      names.filter((name) => name === "course_version.created")
+    ).toHaveLength(2);
     expect(names).toContain("course_version.published");
     expect(names).toContain("learning_offering.created");
     expect(names).toContain("enrollment.created");

@@ -83,13 +83,14 @@ export class LearnerRunnerApplicationService {
         offeringScope(organizationId, enrollmentContext.offering.id)
       );
 
-      const applicableAssignments = await this.assignments.listApplicableAssignments(
-        transaction,
-        organizationId,
-        enrollmentContext.offering.id,
-        enrollmentId,
-        asOf
-      );
+      const applicableAssignments =
+        await this.assignments.listApplicableAssignments(
+          transaction,
+          organizationId,
+          enrollmentContext.offering.id,
+          enrollmentId,
+          asOf
+        );
       const graph = await this.content.requirePublishedLearningGraph(
         transaction,
         organizationId,
@@ -104,7 +105,9 @@ export class LearnerRunnerApplicationService {
         offeringId: enrollmentContext.offering.id,
         asOf,
         assignments: applicableAssignments.map((assignment) => {
-          const activity = activitiesByVersionId.get(assignment.activityVersionId);
+          const activity = activitiesByVersionId.get(
+            assignment.activityVersionId
+          );
           if (activity === undefined) {
             throw new Error(
               `Assignment ${assignment.id} references an ActivityVersion outside its Offering graph.`

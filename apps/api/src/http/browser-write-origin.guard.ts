@@ -63,10 +63,7 @@ export class BrowserWriteOriginGuard implements CanActivate {
 
     const actual = requestOrigin(request.headers.origin);
     if (actual === null) {
-      recordPublicLaunchSecurityEvent(
-        "rejected",
-        "origin_missing_or_invalid"
-      );
+      recordPublicLaunchSecurityEvent("rejected", "origin_missing_or_invalid");
       throw new ForbiddenException("Browser write origin is not allowed.");
     }
     if (actual !== expected) {

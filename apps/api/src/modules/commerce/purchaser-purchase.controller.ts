@@ -14,7 +14,9 @@ import { PurchaserPurchaseApplicationService } from "./application/purchaser-pur
 
 @Controller("me/purchases")
 export class PurchaserPurchaseController {
-  constructor(private readonly purchases: PurchaserPurchaseApplicationService) {}
+  constructor(
+    private readonly purchases: PurchaserPurchaseApplicationService
+  ) {}
 
   @Get(":purchaseId")
   @Header("Cache-Control", "no-store")

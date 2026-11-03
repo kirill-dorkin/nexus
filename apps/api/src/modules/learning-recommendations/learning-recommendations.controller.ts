@@ -7,7 +7,9 @@ import {
 import { parseRequest } from "../../http/validation";
 import { LearningRecommendationsApplicationService } from "./application/learning-recommendations.service";
 
-@Controller("organizations/:organizationId/enrollments/:enrollmentId/recommendation")
+@Controller(
+  "organizations/:organizationId/enrollments/:enrollmentId/recommendation"
+)
 export class LearningRecommendationsController {
   constructor(
     private readonly recommendations: LearningRecommendationsApplicationService

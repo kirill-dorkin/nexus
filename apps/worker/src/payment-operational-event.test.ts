@@ -51,11 +51,7 @@ describe("payment worker operational event", () => {
       "purchase 22222222-2222-4222-8222-222222222222 failed"
     );
     error.name = "TenantSpecificProviderFailure_22222222";
-    const event = buildPaymentWorkerFailureEvent(
-      "cycle_failure",
-      4,
-      error
-    );
+    const event = buildPaymentWorkerFailureEvent("cycle_failure", 4, error);
     expect(event).toEqual({
       event: "public_launch.payment_worker",
       outcome: "cycle_failure",
@@ -64,7 +60,9 @@ describe("payment worker operational event", () => {
     });
     expectRedacted(event);
     expect(JSON.stringify(event)).not.toContain("22222222");
-    expect(JSON.stringify(event)).not.toContain("TenantSpecificProviderFailure");
+    expect(JSON.stringify(event)).not.toContain(
+      "TenantSpecificProviderFailure"
+    );
   });
 
   it("keeps logger failures outside the canonical worker state flow", () => {

@@ -2,12 +2,19 @@
 .challenge {
   margin: 2rem 0;
   padding: 1.25rem;
-  border: 1px solid color-mix(in srgb, var(--accent-action) 35%, var(--border-default));
+  border: 1px solid
+    color-mix(in srgb, var(--accent-action) 35%, var(--border-default));
   border-radius: 1.2rem;
   background:
-    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--accent-action) 10%, transparent), transparent 50%),
+    radial-gradient(
+      circle at 0% 0%,
+      color-mix(in srgb, var(--accent-action) 10%, transparent),
+      transparent 50%
+    ),
     #0d0f0b;
-  transition: border-color 300ms ease, box-shadow 300ms ease;
+  transition:
+    border-color 300ms ease,
+    box-shadow 300ms ease;
 }
 .challenge[data-done] {
   border-color: color-mix(in srgb, #4ade80 60%, transparent);
@@ -76,7 +83,10 @@
   color: var(--text-secondary);
   font-size: 0.92rem;
   line-height: 1.45;
-  transition: color 200ms ease, border-color 200ms ease, background 200ms ease;
+  transition:
+    color 200ms ease,
+    border-color 200ms ease,
+    background 200ms ease;
 }
 .checks li svg {
   flex: none;
@@ -92,7 +102,9 @@
   animation: pop 320ms cubic-bezier(0.2, 0.8, 0.3, 1.4);
 }
 @keyframes pop {
-  from { transform: scale(0.4); }
+  from {
+    transform: scale(0.4);
+  }
 }
 .challenge .workspace {
   margin: 0;
@@ -113,7 +125,10 @@
   animation: rise 400ms cubic-bezier(0.2, 0.8, 0.3, 1.2);
 }
 @keyframes rise {
-  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
 }
 .hint {
   display: flex;
@@ -179,5 +194,6 @@
 /* One outline for the whole workspace instead of an inner editor ring. */
 .challenge .workspace:focus-within {
   border-color: var(--accent-action);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-action) 22%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--accent-action) 22%, transparent);
 }

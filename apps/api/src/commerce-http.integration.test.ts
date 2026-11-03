@@ -92,7 +92,9 @@ describe("commerce entitlement and enrollment access HTTP lifecycle", () => {
       headers: { "x-test-user-id": userId }
     });
     if (accept.statusCode !== 200) {
-      throw new Error(`Failed to activate commerce test member: ${accept.body}`);
+      throw new Error(
+        `Failed to activate commerce test member: ${accept.body}`
+      );
     }
 
     const role = await app.inject({
@@ -117,23 +119,25 @@ describe("commerce entitlement and enrollment access HTTP lifecycle", () => {
     secondLearnerUserId = await createUser("commerce-second-learner");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `commerce-${randomUUID()}`,
         name: "Commerce integration"
-      })).id;
+      })
+    ).id;
 
     await addMember(instructorUserId, "instructor");
     await addMember(learnerUserId, "learner");
@@ -164,7 +168,9 @@ describe("commerce entitlement and enrollment access HTTP lifecycle", () => {
       headers: { "x-test-user-id": ownerUserId }
     });
     if (publish.statusCode !== 200) {
-      throw new Error(`Failed to publish commerce test course: ${publish.body}`);
+      throw new Error(
+        `Failed to publish commerce test course: ${publish.body}`
+      );
     }
 
     const restricted = await app.inject({
@@ -180,7 +186,9 @@ describe("commerce entitlement and enrollment access HTTP lifecycle", () => {
       }
     });
     if (restricted.statusCode !== 201) {
-      throw new Error(`Failed to create restricted offering: ${restricted.body}`);
+      throw new Error(
+        `Failed to create restricted offering: ${restricted.body}`
+      );
     }
     restrictedOfferingId = learningOfferingSchema.parse(
       JSON.parse(restricted.body)
@@ -198,7 +206,9 @@ describe("commerce entitlement and enrollment access HTTP lifecycle", () => {
       }
     });
     if (membership.statusCode !== 201) {
-      throw new Error(`Failed to create membership offering: ${membership.body}`);
+      throw new Error(
+        `Failed to create membership offering: ${membership.body}`
+      );
     }
     const membershipOffering = learningOfferingSchema.parse(
       JSON.parse(membership.body)
@@ -363,7 +373,9 @@ describe("commerce entitlement and enrollment access HTTP lifecycle", () => {
       headers: { "x-test-user-id": ownerUserId }
     });
     expect(revoke.statusCode).toBe(200);
-    expect(entitlementSchema.parse(JSON.parse(revoke.body)).status).toBe("revoked");
+    expect(entitlementSchema.parse(JSON.parse(revoke.body)).status).toBe(
+      "revoked"
+    );
 
     const persistedEnrollment = await migrationPool.query<EnrollmentRow>(
       `SELECT status
@@ -420,8 +432,12 @@ describe("commerce entitlement and enrollment access HTTP lifecycle", () => {
       [organizationId]
     );
     const names = events.rows.map((row) => row.event_name);
-    expect(names.filter((name) => name === "entitlement.granted")).toHaveLength(3);
-    expect(names.filter((name) => name === "entitlement.revoked")).toHaveLength(2);
+    expect(names.filter((name) => name === "entitlement.granted")).toHaveLength(
+      3
+    );
+    expect(names.filter((name) => name === "entitlement.revoked")).toHaveLength(
+      2
+    );
 
     const privileges = await migrationPool.query<PrivilegeRow>(
       `SELECT has_table_privilege(
@@ -660,5 +676,4 @@ describe("commerce entitlement and enrollment access HTTP lifecycle", () => {
     );
     expect(purchases.rows[0]?.count).toBe("0");
   });
-
 });

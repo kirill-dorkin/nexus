@@ -21,7 +21,10 @@ function requireEnv(name: string): string {
 
 type IdRow = { id: string };
 type ActivityVersionRow = { id: string; activity_id: string };
-type PrivilegeRow = { can_update_attempts: boolean; can_delete_evidence: boolean };
+type PrivilegeRow = {
+  can_update_attempts: boolean;
+  can_delete_evidence: boolean;
+};
 type EventRow = { event_name: string };
 
 describe("skill, activity, attempt, and evidence HTTP lifecycle", () => {
@@ -63,7 +66,10 @@ describe("skill, activity, attempt, and evidence HTTP lifecycle", () => {
     return id;
   }
 
-  async function activateMember(userId: string, roleKey: "learner" | "instructor") {
+  async function activateMember(
+    userId: string,
+    roleKey: "learner" | "instructor"
+  ) {
     const invite = await app.inject({
       method: "POST",
       url: `/v1/organizations/${organizationId}/memberships`,
@@ -104,23 +110,25 @@ describe("skill, activity, attempt, and evidence HTTP lifecycle", () => {
     instructorUserId = await createUser("loop-instructor");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `loop-${randomUUID()}`,
         name: "Learning loop integration"
-      })).id;
+      })
+    ).id;
 
     await activateMember(learnerUserId, "learner");
     await activateMember(instructorUserId, "instructor");
@@ -132,18 +140,54 @@ describe("skill, activity, attempt, and evidence HTTP lifecycle", () => {
     }
 
     if (organizationId.length > 0) {
-      await migrationPool.query(`DELETE FROM events.outbox WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_progress.evidence WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_progress.attempts WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.learning_offerings WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.activity_skill_mappings WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.course_version_activities WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.course_version_skills WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.activities WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.skills WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.courses WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM organizations.organizations WHERE id = $1`, [organizationId]);
+      await migrationPool.query(
+        `DELETE FROM events.outbox WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_progress.evidence WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_progress.attempts WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.learning_offerings WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.activity_skill_mappings WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.course_version_activities WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.course_version_skills WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.activities WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.skills WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.courses WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM organizations.organizations WHERE id = $1`,
+        [organizationId]
+      );
     }
 
     if (createdUserIds.length > 0) {
@@ -361,7 +405,10 @@ describe("skill, activity, attempt, and evidence HTTP lifecycle", () => {
       payload: { submission: { repository: "attempt-two" } }
     });
     expect(retry.statusCode).toBe(201);
-    const retryBody = JSON.parse(retry.body) as { id: string; attemptNumber: number };
+    const retryBody = JSON.parse(retry.body) as {
+      id: string;
+      attemptNumber: number;
+    };
     expect(retryBody.id).not.toBe(firstAttemptId);
     expect(retryBody.attemptNumber).toBe(2);
 
@@ -469,7 +516,9 @@ describe("skill, activity, attempt, and evidence HTTP lifecycle", () => {
     expect(names.filter((name) => name === "skill.created")).toHaveLength(2);
     expect(names).toContain("course_version.skill_attached");
     expect(names).toContain("activity.created");
-    expect(names.filter((name) => name === "attempt.submitted")).toHaveLength(2);
+    expect(names.filter((name) => name === "attempt.submitted")).toHaveLength(
+      2
+    );
     expect(names).toContain("evidence.recorded");
   });
 });

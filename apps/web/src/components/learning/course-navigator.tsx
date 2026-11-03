@@ -3,7 +3,12 @@ import { itemAt } from "../../lib/item-at";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { CheckCircleIcon, ListBulletsIcon, MagnifyingGlassIcon, XIcon } from "@phosphor-icons/react/dist/ssr";
+import {
+  CheckCircleIcon,
+  ListBulletsIcon,
+  MagnifyingGlassIcon,
+  XIcon
+} from "@phosphor-icons/react/dist/ssr";
 import { brand } from "@platform/brand";
 import { groupByChapter } from "./lesson-outline";
 import styles from "./course-navigator.module.css";
@@ -16,12 +21,21 @@ import styles from "./course-navigator.module.css";
  *   - on narrow screens the same panel opens as a full-height sheet from a floating button.
  */
 
-export type ProgramItem = { slug: string; title: string; chapter?: string | null | undefined; minutes: number; href: string };
+export type ProgramItem = {
+  slug: string;
+  title: string;
+  chapter?: string | null | undefined;
+  minutes: number;
+  href: string;
+};
 
 const norm = (s: string) => s.toLocaleLowerCase("ru").replace(/ё/g, "е").trim();
 
 /** Lessons whose title matches every word of the query (case- and ё-insensitive). */
-export function matchesQuery(item: Pick<ProgramItem, "title" | "chapter">, query: string): boolean {
+export function matchesQuery(
+  item: Pick<ProgramItem, "title" | "chapter">,
+  query: string
+): boolean {
   const words = norm(query).split(/\s+/).filter(Boolean);
   if (!words.length) return true;
   const text = norm(`${item.title} ${item.chapter ?? ""}`);
@@ -38,7 +52,9 @@ function useVisited(course: string, current: string) {
   useEffect(() => {
     let list: string[] = [];
     try {
-      list = JSON.parse(localStorage.getItem(visitedKey(course)) ?? "[]") as string[];
+      list = JSON.parse(
+        localStorage.getItem(visitedKey(course)) ?? "[]"
+      ) as string[];
       if (!Array.isArray(list)) list = [];
       if (!list.includes(current)) {
         list = [...list, current];
@@ -52,7 +68,12 @@ function useVisited(course: string, current: string) {
   return visited;
 }
 
-function Program({ courseSlug, items, current, onNavigate }: {
+function Program({
+  courseSlug,
+  items,
+  current,
+  onNavigate
+}: {
   courseSlug: string;
   items: ProgramItem[];
   current: string;
@@ -65,11 +86,19 @@ function Program({ courseSlug, items, current, onNavigate }: {
   const index = items.findIndex((i) => i.slug === current);
   const groups = useMemo(() => groupByChapter(items), [items]);
   const chaptered = groups.some((g) => g.title !== null);
-  const currentChapter = groups.findIndex((g) => g.lessons.some(({ lesson }) => lesson.slug === current));
-  const [open, setOpen] = useState<ReadonlySet<number>>(() => new Set([currentChapter]));
+  const currentChapter = groups.findIndex((g) =>
+    g.lessons.some(({ lesson }) => lesson.slug === current)
+  );
+  const [open, setOpen] = useState<ReadonlySet<number>>(
+    () => new Set([currentChapter])
+  );
   const searching = query.trim().length > 0;
   const shown = useMemo(
-    () => groups.map((g) => ({ ...g, lessons: g.lessons.filter(({ lesson }) => matchesQuery(lesson, query)) })),
+    () =>
+      groups.map((g) => ({
+        ...g,
+        lessons: g.lessons.filter(({ lesson }) => matchesQuery(lesson, query))
+      })),
     [groups, query]
   );
   const found = shown.reduce((n, g) => n + g.lessons.length, 0);
@@ -78,7 +107,8 @@ function Program({ courseSlug, items, current, onNavigate }: {
   useEffect(() => {
     const box = scroller.current;
     const el = box?.querySelector<HTMLElement>('[aria-current="page"]');
-    if (box && el) box.scrollTop = Math.max(0, el.offsetTop - box.clientHeight / 3);
+    if (box && el)
+      box.scrollTop = Math.max(0, el.offsetTop - box.clientHeight / 3);
   }, [current]);
 
   const toggle = (n: number) =>
@@ -100,9 +130,13 @@ function Program({ courseSlug, items, current, onNavigate }: {
           </span>
         </div>
         <div className={styles.meter} aria-hidden="true">
-          <span style={{ width: `${Math.round((done / items.length) * 100)}%` }} />
+          <span
+            style={{ width: `${Math.round((done / items.length) * 100)}%` }}
+          />
         </div>
-        <p className={styles.visitedLine}>Открыто уроков: {done} из {items.length}</p>
+        <p className={styles.visitedLine}>
+          Открыто уроков: {done} из {items.length}
+        </p>
         <label className={styles.search} htmlFor={searchId}>
           <MagnifyingGlassIcon size={16} aria-hidden="true" />
           <input
@@ -114,26 +148,53 @@ function Program({ courseSlug, items, current, onNavigate }: {
             onChange={(e) => setQuery(e.target.value)}
           />
           {searching ? (
-            <button type="button" onClick={() => setQuery("")} aria-label="Очистить поиск">
+            <button
+              type="button"
+              onClick={() => setQuery("")}
+              aria-label="Очистить поиск"
+            >
               <XIcon size={14} aria-hidden="true" />
             </button>
           ) : null}
         </label>
-        {searching ? <p className={styles.found} role="status">{found ? `Найдено: ${found}` : "Ничего не нашлось"}</p> : null}
+        {searching ? (
+          <p className={styles.found} role="status">
+            {found ? `Найдено: ${found}` : "Ничего не нашлось"}
+          </p>
+        ) : null}
       </div>
       <div ref={scroller} className={styles.scroll}>
         {shown.map((group, n) => {
           if (!group.lessons.length) return null;
           const isOpen = !chaptered || searching || open.has(n);
           const all = itemAt(groups, n).lessons;
-          const seen = all.filter(({ lesson }) => visited.has(lesson.slug)).length;
+          const seen = all.filter(({ lesson }) =>
+            visited.has(lesson.slug)
+          ).length;
           return (
-            <section key={n} className={styles.chapter} data-current={n === currentChapter || undefined}>
+            <section
+              key={n}
+              className={styles.chapter}
+              data-current={n === currentChapter || undefined}
+            >
               {chaptered ? (
-                <button type="button" className={styles.chapterHead} aria-expanded={isOpen} onClick={() => toggle(n)} disabled={searching}>
-                  <span className={styles.chapterNo}>{group.title ? `Глава ${n + 1}` : ""}</span>
-                  <span className={styles.chapterTitle}>{group.title ?? "Без главы"}</span>
-                  <span className={styles.chapterCount} aria-label={`открыто ${seen} из ${all.length}`}>
+                <button
+                  type="button"
+                  className={styles.chapterHead}
+                  aria-expanded={isOpen}
+                  onClick={() => toggle(n)}
+                  disabled={searching}
+                >
+                  <span className={styles.chapterNo}>
+                    {group.title ? `Глава ${n + 1}` : ""}
+                  </span>
+                  <span className={styles.chapterTitle}>
+                    {group.title ?? "Без главы"}
+                  </span>
+                  <span
+                    className={styles.chapterCount}
+                    aria-label={`открыто ${seen} из ${all.length}`}
+                  >
                     {seen}/{all.length}
                   </span>
                 </button>
@@ -153,11 +214,22 @@ function Program({ courseSlug, items, current, onNavigate }: {
                           {...(onNavigate ? { onClick: onNavigate } : {})}
                         >
                           <span className={styles.no} aria-hidden="true">
-                            {seenLesson ? <CheckCircleIcon size={16} weight="fill" /> : i + 1}
+                            {seenLesson ? (
+                              <CheckCircleIcon size={16} weight="fill" />
+                            ) : (
+                              i + 1
+                            )}
                           </span>
                           <span className={styles.title}>{lesson.title}</span>
-                          <span className={styles.minutes}>{lesson.minutes} мин</span>
-                          {seenLesson ? <span className={styles.srOnly}> — уже открывали</span> : null}
+                          <span className={styles.minutes}>
+                            {lesson.minutes} мин
+                          </span>
+                          {seenLesson ? (
+                            <span className={styles.srOnly}>
+                              {" "}
+                              — уже открывали
+                            </span>
+                          ) : null}
                         </Link>
                       </li>
                     );
@@ -173,7 +245,15 @@ function Program({ courseSlug, items, current, onNavigate }: {
 }
 
 /** Desktop side panel plus, on narrow screens, a floating button that opens the same program as a sheet. */
-export function CourseNavigator({ courseSlug, items, current }: { courseSlug: string; items: ProgramItem[]; current: string }) {
+export function CourseNavigator({
+  courseSlug,
+  items,
+  current
+}: {
+  courseSlug: string;
+  items: ProgramItem[];
+  current: string;
+}) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [sheet, setSheet] = useState(false);
   const index = items.findIndex((i) => i.slug === current);
@@ -188,10 +268,17 @@ export function CourseNavigator({ courseSlug, items, current }: { courseSlug: st
       <nav className={styles.panel} aria-label="Уроки курса">
         <Program courseSlug={courseSlug} items={items} current={current} />
       </nav>
-      <button type="button" className={styles.fab} onClick={() => setSheet(true)} aria-haspopup="dialog">
+      <button
+        type="button"
+        className={styles.fab}
+        onClick={() => setSheet(true)}
+        aria-haspopup="dialog"
+      >
         <ListBulletsIcon size={18} weight="bold" aria-hidden="true" />
         Программа
-        <span>{index + 1}/{items.length}</span>
+        <span>
+          {index + 1}/{items.length}
+        </span>
       </button>
       {sheet ? (
         // A click on the backdrop closes the sheet; Escape is handled natively by <dialog>.
@@ -201,13 +288,25 @@ export function CourseNavigator({ courseSlug, items, current }: { courseSlug: st
           className={styles.sheet}
           aria-label="Программа курса"
           onClose={() => setSheet(false)}
-          onClick={(e) => { if (e.target === e.currentTarget) close(); }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) close();
+          }}
         >
           <div className={styles.sheetInner}>
-            <button type="button" className={styles.sheetClose} onClick={close} aria-label="Закрыть программу">
+            <button
+              type="button"
+              className={styles.sheetClose}
+              onClick={close}
+              aria-label="Закрыть программу"
+            >
               <XIcon size={18} aria-hidden="true" />
             </button>
-            <Program courseSlug={courseSlug} items={items} current={current} onNavigate={close} />
+            <Program
+              courseSlug={courseSlug}
+              items={items}
+              current={current}
+              onNavigate={close}
+            />
           </div>
         </dialog>
       ) : null}

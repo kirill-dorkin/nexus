@@ -6,7 +6,11 @@ import {
 } from "@platform/contracts";
 
 /** This URL is presentation only, never proof of learner eligibility. */
-export function publicOfferingUrl(origin: string, organizationSlug: string, offeringSlug: string) {
+export function publicOfferingUrl(
+  origin: string,
+  organizationSlug: string,
+  offeringSlug: string
+) {
   const url = new URL(origin);
   if (
     !["https:", "http:"].includes(url.protocol) ||
@@ -20,7 +24,10 @@ export function publicOfferingUrl(origin: string, organizationSlug: string, offe
 }
 
 export function isShareableFreeOffering(
-  offering: Pick<LearningOffering, "visibility" | "status" | "deliveryMode" | "accessMode">
+  offering: Pick<
+    LearningOffering,
+    "visibility" | "status" | "deliveryMode" | "accessMode"
+  >
 ): boolean {
   return (
     offering.visibility === "public" &&
@@ -36,7 +43,11 @@ export function appendOfferingPage(
   page: LearningOfferingList,
   publishedVersionId: string
 ): LearningOffering[] {
-  if (page.offerings.some((offering) => offering.courseVersionId !== publishedVersionId)) {
+  if (
+    page.offerings.some(
+      (offering) => offering.courseVersionId !== publishedVersionId
+    )
+  ) {
     throw new Error("Offering page belongs to a different published release.");
   }
   if (
@@ -49,7 +60,10 @@ export function appendOfferingPage(
   if (page.offerings.some((offering) => seen.has(offering.id))) {
     throw new Error("Duplicate Offering between pages.");
   }
-  if (new Set(page.offerings.map((offering) => offering.id)).size !== page.offerings.length) {
+  if (
+    new Set(page.offerings.map((offering) => offering.id)).size !==
+    page.offerings.length
+  ) {
     throw new Error("Duplicate Offering within page.");
   }
   return [...existing, ...page.offerings];

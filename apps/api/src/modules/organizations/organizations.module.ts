@@ -19,7 +19,11 @@ import { PublicOrganizationEntryController } from "./public-organization-entry.c
 
 @Module({
   imports: [IdentityModule, AuthorizationModule, OutboxModule],
-  controllers: [OrganizationsController, PublicOrganizationEntryController, OwnOrganizationsController],
+  controllers: [
+    OrganizationsController,
+    PublicOrganizationEntryController,
+    OwnOrganizationsController
+  ],
   providers: [
     { provide: LearningEntryQuery, useClass: PostgresLearningEntryQuery },
     OrganizationsApplicationService,

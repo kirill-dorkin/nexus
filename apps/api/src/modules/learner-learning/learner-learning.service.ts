@@ -230,7 +230,9 @@ export class LearnerLearningService {
         return ownLearningListSchema.parse({
           courses,
           nextCursor:
-            addresses.length > 100 ? (addresses[99]?.enrollmentId ?? null) : null
+            addresses.length > 100
+              ? (addresses[99]?.enrollmentId ?? null)
+              : null
         });
       },
       snapshot
@@ -295,11 +297,17 @@ export class LearnerLearningService {
       const lineage = await this.content.activityLineage(
         tx,
         route.organizationId,
-        [...new Set(structure.flatMap((l) => l.activities.map((a) => a.activityId)))]
+        [
+          ...new Set(
+            structure.flatMap((l) => l.activities.map((a) => a.activityId))
+          )
+        ]
       );
       const ids = [
         ...new Set([
-          ...structure.flatMap((l) => l.activities.map((a) => a.activityVersionId)),
+          ...structure.flatMap((l) =>
+            l.activities.map((a) => a.activityVersionId)
+          ),
           ...lineage.keys()
         ])
       ];

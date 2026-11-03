@@ -8,7 +8,11 @@ import { useEffect, useState, type SubmitEvent } from "react";
 import Link from "next/link";
 import { browserApiRequest, publicApiUrl } from "../../lib/public-api";
 import { safeLearningReturnTo } from "../../lib/learning-return-to";
-import { ArrowRightIcon, GithubLogoIcon, GoogleLogoIcon } from "@phosphor-icons/react/dist/ssr";
+import {
+  ArrowRightIcon,
+  GithubLogoIcon,
+  GoogleLogoIcon
+} from "@phosphor-icons/react/dist/ssr";
 import {
   Alert,
   Button,
@@ -41,18 +45,24 @@ export function LearningAuth({
     const controller = new AbortController();
     void browserApiRequest("/v1/auth/oauth/providers", {
       signal: controller.signal
-    }).then(async (response) => {
-      if (!response.ok) return;
-      const result = oauthProvidersResponseSchema.safeParse(await response.json());
-      if (result.success) setProviders(result.data.providers);
-    }).catch(() => {
-      // Password authentication remains available when provider discovery fails.
-    });
+    })
+      .then(async (response) => {
+        if (!response.ok) return;
+        const result = oauthProvidersResponseSchema.safeParse(
+          await response.json()
+        );
+        if (result.success) setProviders(result.data.providers);
+      })
+      .catch(() => {
+        // Password authentication remains available when provider discovery fails.
+      });
     return () => controller.abort();
   }, []);
 
   function providerUrl(provider: OAuthProvider): string {
-    const query = new URLSearchParams({ returnTo: safeLearningReturnTo(returnTo) });
+    const query = new URLSearchParams({
+      returnTo: safeLearningReturnTo(returnTo)
+    });
     return publicApiUrl(`/v1/auth/oauth/${provider}/start?${query.toString()}`);
   }
   async function submit(event: SubmitEvent<HTMLFormElement>) {
@@ -112,10 +122,22 @@ export function LearningAuth({
         </Text>
       </div>
       <div className={styles.modes} aria-label="Вход или регистрация">
-        <button type="button" aria-pressed={mode === "login"} disabled={busy}
-          onClick={() => changeMode("login")}>Вход</button>
-        <button type="button" aria-pressed={mode === "register"} disabled={busy}
-          onClick={() => changeMode("register")}>Регистрация</button>
+        <button
+          type="button"
+          aria-pressed={mode === "login"}
+          disabled={busy}
+          onClick={() => changeMode("login")}
+        >
+          Вход
+        </button>
+        <button
+          type="button"
+          aria-pressed={mode === "register"}
+          disabled={busy}
+          onClick={() => changeMode("register")}
+        >
+          Регистрация
+        </button>
       </div>
       {providers.length > 0 && (
         <div className={styles.external} aria-label="Вход через другой сервис">
@@ -123,56 +145,107 @@ export function LearningAuth({
             {providers.includes("google") && (
               <a className={styles.providerButton} href={providerUrl("google")}>
                 <GoogleLogoIcon size={21} weight="bold" aria-hidden="true" />
-                <span>{mode === "login" ? "Войти" : "Продолжить"} через Google</span>
+                <span>
+                  {mode === "login" ? "Войти" : "Продолжить"} через Google
+                </span>
               </a>
             )}
             {providers.includes("github") && (
               <a className={styles.providerButton} href={providerUrl("github")}>
                 <GithubLogoIcon size={21} weight="fill" aria-hidden="true" />
-                <span>{mode === "login" ? "Войти" : "Продолжить"} через GitHub</span>
+                <span>
+                  {mode === "login" ? "Войти" : "Продолжить"} через GitHub
+                </span>
               </a>
             )}
           </div>
-          <div className={styles.separator}><span>или по электронной почте</span></div>
+          <div className={styles.separator}>
+            <span>или по электронной почте</span>
+          </div>
         </div>
       )}
       <form className={styles.authForm} onSubmit={submit} aria-busy={busy}>
         {error && <Alert tone="danger">{error}</Alert>}
-        <fieldset disabled={busy} aria-label={mode === "login" ? "Данные для входа" : "Данные нового аккаунта"}>
+        <fieldset
+          disabled={busy}
+          aria-label={
+            mode === "login" ? "Данные для входа" : "Данные нового аккаунта"
+          }
+        >
           {mode === "register" && (
             <div key="name" className={styles.nameField}>
               <Field htmlFor="learning-name" label="Имя" hint="Необязательно">
-                <Input id="learning-name" name="displayName" autoComplete="name" maxLength={160}
-                  aria-describedby="learning-name-hint" />
+                <Input
+                  id="learning-name"
+                  name="displayName"
+                  autoComplete="name"
+                  maxLength={160}
+                  aria-describedby="learning-name-hint"
+                />
               </Field>
             </div>
           )}
           <Field key="email" htmlFor="learning-email" label="Электронная почта">
-            <Input id="learning-email" name="email" type="email" autoComplete="email" required maxLength={320} />
+            <Input
+              id="learning-email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              maxLength={320}
+            />
           </Field>
-          <Field key="password" htmlFor="learning-password" label="Пароль"
-            hint={mode === "register" ? "Не менее 15 символов." : undefined}>
-            <PasswordInput id="learning-password" name="password"
-              autoComplete={mode === "login" ? "current-password" : "new-password"}
-              required minLength={15} maxLength={128}
-              aria-describedby={mode === "register" ? "learning-password-hint" : undefined} />
+          <Field
+            key="password"
+            htmlFor="learning-password"
+            label="Пароль"
+            hint={mode === "register" ? "Не менее 15 символов." : undefined}
+          >
+            <PasswordInput
+              id="learning-password"
+              name="password"
+              autoComplete={
+                mode === "login" ? "current-password" : "new-password"
+              }
+              required
+              minLength={15}
+              maxLength={128}
+              aria-describedby={
+                mode === "register" ? "learning-password-hint" : undefined
+              }
+            />
           </Field>
         </fieldset>
         <div className={styles.actions}>
           <Button loading={busy} type="submit">
-            {busy ? "Подождите…" : mode === "login" ? "Войти" : "Создать аккаунт"}
+            {busy
+              ? "Подождите…"
+              : mode === "login"
+                ? "Войти"
+                : "Создать аккаунт"}
             {!busy && <ArrowRightIcon size={20} aria-hidden="true" />}
           </Button>
           <div className={styles.alternative}>
-            <span>{mode === "login" ? "Нет аккаунта?" : "Уже зарегистрированы?"}</span>
-            <button type="button" disabled={busy}
-              onClick={() => changeMode(mode === "login" ? "register" : "login")}>
-              {mode === "login" ? "Создать новый аккаунт" : "У меня уже есть аккаунт"}
+            <span>
+              {mode === "login" ? "Нет аккаунта?" : "Уже зарегистрированы?"}
+            </span>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() =>
+                changeMode(mode === "login" ? "register" : "login")
+              }
+            >
+              {mode === "login"
+                ? "Создать новый аккаунт"
+                : "У меня уже есть аккаунт"}
             </button>
           </div>
         </div>
       </form>
-      <Link className={styles.authReturn} href={safeLearningReturnTo(returnTo)}>Вернуться</Link>
+      <Link className={styles.authReturn} href={safeLearningReturnTo(returnTo)}>
+        Вернуться
+      </Link>
     </section>
   );
 }

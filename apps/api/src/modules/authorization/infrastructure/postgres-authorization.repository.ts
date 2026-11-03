@@ -60,7 +60,9 @@ export class PostgresAuthorizationRepository extends AuthorizationRepository {
         throw new Error(`Unsupported persisted system role: ${row.role_key}`);
       }
       if (!isScopeType(row.scope_type)) {
-        throw new Error(`Unsupported persisted authorization scope: ${row.scope_type}`);
+        throw new Error(
+          `Unsupported persisted authorization scope: ${row.scope_type}`
+        );
       }
 
       return {

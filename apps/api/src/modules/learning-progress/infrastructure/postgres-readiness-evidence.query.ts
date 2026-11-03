@@ -96,12 +96,7 @@ export class PostgresReadinessEvidenceQuery extends ReadinessEvidenceQuery {
             AND evidence.score IS NOT NULL
           GROUP BY mapping.learner_user_id, evidence.skill_id
           ORDER BY mapping.learner_user_id, evidence.skill_id`,
-        [
-          organizationId,
-          learnerUserIds,
-          enrollmentIds,
-          [...skillIds]
-        ]
+        [organizationId, learnerUserIds, enrollmentIds, [...skillIds]]
       );
 
     return result.rows.map((row) => ({

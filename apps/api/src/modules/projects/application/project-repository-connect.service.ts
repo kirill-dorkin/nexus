@@ -1,5 +1,12 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
-import type { ConnectProjectRepositoryRequest, Project } from "@platform/contracts";
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException
+} from "@nestjs/common";
+import type {
+  ConnectProjectRepositoryRequest,
+  Project
+} from "@platform/contracts";
 
 import { DatabaseService } from "../../../database/database.service";
 import { RequestContextService } from "../../../request-context/request-context.service";
@@ -61,11 +68,12 @@ export class ProjectRepositoryConnectService {
         );
       }
 
-      const existing = await this.projects.findActiveRepositoryBindingForProject(
-        transaction,
-        organizationId,
-        projectId
-      );
+      const existing =
+        await this.projects.findActiveRepositoryBindingForProject(
+          transaction,
+          organizationId,
+          projectId
+        );
       if (existing !== null) {
         if (existing.repositoryMappingId !== command.repositoryMappingId) {
           throw new ConflictException(
@@ -75,11 +83,12 @@ export class ProjectRepositoryConnectService {
         return connectedProjectView(project, existing, reference);
       }
 
-      const repositoryBinding = await this.projects.findActiveRepositoryBindingByMapping(
-        transaction,
-        organizationId,
-        command.repositoryMappingId
-      );
+      const repositoryBinding =
+        await this.projects.findActiveRepositoryBindingByMapping(
+          transaction,
+          organizationId,
+          command.repositoryMappingId
+        );
       if (repositoryBinding !== null) {
         throw new ConflictException(
           "This repository is already connected to another project."

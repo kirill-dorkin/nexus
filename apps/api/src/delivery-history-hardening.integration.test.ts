@@ -10,7 +10,9 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for delivery-history integration tests.`);
+    throw new Error(
+      `${name} is required for delivery-history integration tests.`
+    );
   }
   return value;
 }
@@ -44,10 +46,14 @@ let appPool: DatabasePool;
 let fixture: Fixture | undefined;
 
 async function nextUuid(pool: DatabasePool): Promise<string> {
-  const result = await pool.query<{ id: string }>("SELECT uuidv7()::text AS id");
+  const result = await pool.query<{ id: string }>(
+    "SELECT uuidv7()::text AS id"
+  );
   const id = result.rows[0]?.id;
   if (id === undefined) {
-    throw new Error("PostgreSQL did not generate a delivery-history fixture UUID.");
+    throw new Error(
+      "PostgreSQL did not generate a delivery-history fixture UUID."
+    );
   }
   return id;
 }
@@ -137,7 +143,13 @@ beforeAll(async () => {
         starts_at, ends_at, created_by_user_id)
      VALUES ($1, $2, $3, $4, 'Delivery history cohort', 'cohort',
              '2098-01-01T00:00:00.000Z', '2100-01-01T00:00:00.000Z', $5)`,
-    [offeringId, organizationId, courseVersionId, `delivery-history-${suffix}`, ownerUserId]
+    [
+      offeringId,
+      organizationId,
+      courseVersionId,
+      `delivery-history-${suffix}`,
+      ownerUserId
+    ]
   );
 
   await migrationPool.query(
@@ -195,7 +207,14 @@ beforeAll(async () => {
         '2099-06-01T09:00:00.000Z', '2099-06-01T10:00:00.000Z', $6),
        ($2, $3, $4, NULL, 'race-session', 'Race session',
         '2099-07-01T09:00:00.000Z', '2099-07-01T10:00:00.000Z', $6)`,
-    [sessionId, raceSessionId, organizationId, courseRunId, groupAId, ownerUserId]
+    [
+      sessionId,
+      raceSessionId,
+      organizationId,
+      courseRunId,
+      groupAId,
+      ownerUserId
+    ]
   );
 
   await migrationPool.query(
@@ -460,7 +479,9 @@ describe("delivery history hardening", () => {
       insert(secondAttendanceId, "late")
     ]);
 
-    expect(results.filter((result) => result.status === "fulfilled")).toHaveLength(1);
+    expect(
+      results.filter((result) => result.status === "fulfilled")
+    ).toHaveLength(1);
     const rejected = results.find((result) => result.status === "rejected");
     expect(rejected).toBeDefined();
     if (rejected?.status === "rejected") {

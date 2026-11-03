@@ -74,7 +74,9 @@ export class PurchaseCheckoutApplicationService {
             userId
           );
         if (!activeMembership) {
-          throw new NotFoundException("Public checkout offer is not available.");
+          throw new NotFoundException(
+            "Public checkout offer is not available."
+          );
         }
 
         const offer = await this.checkoutOffers.resolveActiveOffer(
@@ -84,7 +86,9 @@ export class PurchaseCheckoutApplicationService {
           command.priceId
         );
         if (offer === null) {
-          throw new NotFoundException("Public checkout offer is not available.");
+          throw new NotFoundException(
+            "Public checkout offer is not available."
+          );
         }
 
         const sellableOffering =
@@ -94,7 +98,9 @@ export class PurchaseCheckoutApplicationService {
             offer.offeringId
           );
         if (!sellableOffering) {
-          throw new NotFoundException("Public checkout offer is not available.");
+          throw new NotFoundException(
+            "Public checkout offer is not available."
+          );
         }
 
         const opened = await this.purchases.openForCheckoutInTransaction(

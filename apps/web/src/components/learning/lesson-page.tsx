@@ -3,7 +3,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LearningShell } from "./learning-shell";
 import { LessonBlocks } from "./lesson-blocks";
-import type { PublicLearningCourse, PublicLearningLesson } from "@platform/contracts";
+import type {
+  PublicLearningCourse,
+  PublicLearningLesson
+} from "@platform/contracts";
 import { routePosition } from "../../lib/learning-route";
 import { courseUrl, lessonUrl } from "../../lib/public-learning-routes";
 import { LearningPageHeading } from "./learning-page-heading";
@@ -25,7 +28,13 @@ export function lessonMetadata(course: PublicLearningLesson): Metadata {
     }
   };
 }
-export function LessonPageView({ course, catalog = [] }: { course: PublicLearningLesson; catalog?: readonly PublicLearningCourse[] }) {
+export function LessonPageView({
+  course,
+  catalog = []
+}: {
+  course: PublicLearningLesson;
+  catalog?: readonly PublicLearningCourse[];
+}) {
   const lessonSlug = course.lesson.slug;
   const index = course.course.lessons.findIndex(
     (lesson) => lesson.slug === course.lesson.slug
@@ -33,7 +42,9 @@ export function LessonPageView({ course, catalog = [] }: { course: PublicLearnin
   const previous = course.course.lessons[index - 1];
   const next = course.course.lessons[index + 1];
   // The last lesson continues the route with the next course instead of a dead end (ADR-0066).
-  const nextCourse = next ? null : routePosition(course, catalog)?.next?.course ?? null;
+  const nextCourse = next
+    ? null
+    : (routePosition(course, catalog)?.next?.course ?? null);
   const lessonProgress = Math.round(
     ((index + 1) / course.course.lessons.length) * 100
   );
@@ -54,7 +65,10 @@ export function LessonPageView({ course, catalog = [] }: { course: PublicLearnin
   };
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }}
+      />
       <LearningShell>
         <nav className={styles.breadcrumbs} aria-label="Навигационная цепочка">
           <Link href="/courses">Курсы</Link>
@@ -86,10 +100,15 @@ export function LessonPageView({ course, catalog = [] }: { course: PublicLearnin
               offeringSlug={course.offering.slug}
               courseSlug={course.course.slug}
             />
-            <nav className={styles.lessonNav} aria-label="Переход между уроками">
+            <nav
+              className={styles.lessonNav}
+              aria-label="Переход между уроками"
+            >
               <Link
                 href={
-                  previous ? lessonUrl(course, previous.slug) : courseUrl(course)
+                  previous
+                    ? lessonUrl(course, previous.slug)
+                    : courseUrl(course)
                 }
               >
                 <span>← {previous ? "Предыдущий урок" : "Назад к курсу"}</span>

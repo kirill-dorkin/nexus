@@ -5,7 +5,10 @@ import { courseManifestV1Schema } from "./course-manifest";
 function launchManifest() {
   const raw = JSON.parse(
     readFileSync(
-      new URL("../../../docs/examples/computer-basics-first-course.manifest.json", import.meta.url),
+      new URL(
+        "../../../docs/examples/computer-basics-first-course.manifest.json",
+        import.meta.url
+      ),
       "utf8"
     )
   );
@@ -18,7 +21,11 @@ describe("first public computer basics course import", () => {
     expect(manifest.schemaVersion).toBe(1);
     expect(manifest.course.slug).toBe("kak-ustroen-kompyuter");
     expect(Object.keys(manifest)).toEqual([
-      "schemaVersion", "course", "skills", "activities", "lessons"
+      "schemaVersion",
+      "course",
+      "skills",
+      "activities",
+      "lessons"
     ]);
     expect(manifest.lessons).toHaveLength(4);
     expect(manifest.activities).toHaveLength(8);
@@ -29,15 +36,26 @@ describe("first public computer basics course import", () => {
     const manifest = launchManifest();
     const ids = new Set(manifest.activities.map((activity) => activity.slug));
     expect(new Set(manifest.lessons.map((lesson) => lesson.slug)).size).toBe(4);
-    expect(manifest.lessons.map((lesson) => lesson.durationMinutes)).toEqual([12, 12, 13, 14]);
+    expect(manifest.lessons.map((lesson) => lesson.durationMinutes)).toEqual([
+      12, 12, 13, 14
+    ]);
     for (const lesson of manifest.lessons) {
-      expect(lesson.blocks.some(
-        (block) => block.type === "markdown" && block.markdown.length > 700
-      )).toBe(true);
-      expect(lesson.blocks.some((block) =>
-        block.type === "activity" && block.required && ids.has(block.activitySlug)
-      )).toBe(true);
-      expect(lesson.blocks.some((block) => block.type === "youtube")).toBe(false);
+      expect(
+        lesson.blocks.some(
+          (block) => block.type === "markdown" && block.markdown.length > 700
+        )
+      ).toBe(true);
+      expect(
+        lesson.blocks.some(
+          (block) =>
+            block.type === "activity" &&
+            block.required &&
+            ids.has(block.activitySlug)
+        )
+      ).toBe(true);
+      expect(lesson.blocks.some((block) => block.type === "youtube")).toBe(
+        false
+      );
     }
   });
 
@@ -47,15 +65,23 @@ describe("first public computer basics course import", () => {
     for (const activity of manifest.activities) {
       expect(activity.skillKeys.every((key) => skillKeys.has(key))).toBe(true);
       if (activity.type === "quiz.short_text") {
-        throw new Error("The first course uses only deterministic choice quizzes.");
+        throw new Error(
+          "The first course uses only deterministic choice quizzes."
+        );
       }
-      const choices = new Set(activity.presentation.options.map((option) => option.id));
+      const choices = new Set(
+        activity.presentation.options.map((option) => option.id)
+      );
       if (activity.type === "quiz.single_choice")
         expect(choices.has(activity.validation.correctOptionId)).toBe(true);
       if (activity.type === "quiz.multiple_choice")
-        expect(activity.validation.correctOptionIds.every((id) => choices.has(id))).toBe(true);
+        expect(
+          activity.validation.correctOptionIds.every((id) => choices.has(id))
+        ).toBe(true);
     }
     const raw = JSON.stringify(manifest);
-    expect(raw).not.toMatch(/"organizationId"|"userId"|"enrollmentId"|"iframe"/);
+    expect(raw).not.toMatch(
+      /"organizationId"|"userId"|"enrollmentId"|"iframe"/
+    );
   });
 });

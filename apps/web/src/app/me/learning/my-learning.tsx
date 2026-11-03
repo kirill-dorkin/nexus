@@ -188,11 +188,7 @@ export function MyLearning() {
                   </Inline>
                   <Eyebrow>{c.organization.name}</Eyebrow>
                   <h2>
-                    <Link
-                      href={courseUrl(c)}
-                    >
-                      {c.course.title}
-                    </Link>
+                    <Link href={courseUrl(c)}>{c.course.title}</Link>
                   </h2>
                   <Text muted size="sm">
                     {c.course.description}
@@ -200,10 +196,7 @@ export function MyLearning() {
                 </div>
                 <div className={styles.savedProgress}>
                   <CourseProgress learning={c} />
-                  <Link
-                    className={buttonClass()}
-                    href={lessonUrl(c, next)}
-                  >
+                  <Link className={buttonClass()} href={lessonUrl(c, next)}>
                     {c.progress?.allRequiredPassed
                       ? "Вернуться к материалам"
                       : "Продолжить"}

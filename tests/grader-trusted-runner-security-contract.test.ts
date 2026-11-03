@@ -7,7 +7,9 @@ import { loadGraderGatewayRuntimeConfig } from "../apps/grader-gateway/src/confi
 import { GraderExecutionProfileRegistry } from "../apps/grader-gateway/src/execution-profile";
 import { parseGraderExecutionProfilesJson } from "../packages/contracts/src/grader";
 
-const PROFILE_PATH = resolve("infra/grader/execution-profiles/js-sum-v1-v1.json");
+const PROFILE_PATH = resolve(
+  "infra/grader/execution-profiles/js-sum-v1-v1.json"
+);
 
 function text(path: string): string {
   return readFileSync(resolve(path), "utf8");
@@ -19,7 +21,8 @@ function canonicalProfiles() {
 
 function firstCanonicalProfile() {
   const [profile] = canonicalProfiles();
-  if (profile === undefined) throw new Error("No canonical grader profile is registered.");
+  if (profile === undefined)
+    throw new Error("No canonical grader profile is registered.");
   return profile;
 }
 
@@ -49,7 +52,9 @@ describe("trusted grader runner security contract", () => {
       sourceFiles: 1
     });
 
-    const reproducibility = text("apps/grader-runner/scripts/verify-reproducible.sh");
+    const reproducibility = text(
+      "apps/grader-runner/scripts/verify-reproducible.sh"
+    );
     expect(reproducibility).toContain("CGO_ENABLED=0 GOOS=linux GOARCH=amd64");
     expect(reproducibility).toContain("-buildvcs=false");
     expect(reproducibility).toContain("-mod=readonly");
@@ -60,14 +65,21 @@ describe("trusted grader runner security contract", () => {
   it("keeps profile runtime identity aligned with the pinned capability-minimal Go runtime", () => {
     const profile = firstCanonicalProfile();
     const goMod = text("apps/grader-runner/go.mod");
-    const goja = (/github\.com\/dop251\/goja\s+(v\S+)/.exec(goMod))?.[1];
+    const goja = /github\.com\/dop251\/goja\s+(v\S+)/.exec(goMod)?.[1];
 
     expect(goja).toBeDefined();
-    expect(profile.language).toEqual({ key: "javascript", version: `goja@${goja}` });
+    expect(profile.language).toEqual({
+      key: "javascript",
+      version: `goja@${goja}`
+    });
     expect(goMod).not.toContain("goja_nodejs");
 
-    const runnerTests = text("apps/grader-runner/internal/runner/runner_test.go");
-    expect(runnerTests).toContain("TestLearnerRuntimeDoesNotExposeNodeOrHostCapabilities");
+    const runnerTests = text(
+      "apps/grader-runner/internal/runner/runner_test.go"
+    );
+    expect(runnerTests).toContain(
+      "TestLearnerRuntimeDoesNotExposeNodeOrHostCapabilities"
+    );
     for (const capability of ["process", "require", "fetch", "WebSocket"]) {
       expect(runnerTests).toContain(capability);
     }
@@ -77,7 +89,9 @@ describe("trusted grader runner security contract", () => {
     const profile = firstCanonicalProfile();
     const dockerfile = text("apps/grader-runner/Dockerfile");
     const runnerConfig = text("apps/grader-runner/internal/runner/config.go");
-    const provider = text("apps/grader-gateway/src/kubernetes-gvisor-sandbox-provider.ts");
+    const provider = text(
+      "apps/grader-gateway/src/kubernetes-gvisor-sandbox-provider.ts"
+    );
 
     expect(dockerfile).toContain('ENTRYPOINT ["/grader-runner"]');
     expect(dockerfile).toContain("FROM scratch");
@@ -87,14 +101,18 @@ describe("trusted grader runner security contract", () => {
     expect(runnerConfig).toContain('getenv("GRADER_PIDS")');
     expect(runnerConfig).toContain('getenv("GRADER_OUTPUT_BYTES")');
 
-    expect(provider).toContain("image: `${config.runnerImageRepository}@${profile.profile.runnerImageDigest}`");
+    expect(provider).toContain(
+      "image: `${config.runnerImageRepository}@${profile.profile.runnerImageDigest}`"
+    );
     expect(provider).toContain("command: [profile.profile.argv[0]]");
     expect(provider).toContain("args: profile.profile.argv.slice(1)");
     expect(provider).toContain('name: "GRADER_WALL_TIME_MS"');
     expect(provider).toContain('name: "GRADER_CPU_TIME_MS"');
     expect(provider).toContain('name: "GRADER_PIDS"');
     expect(provider).toContain('name: "GRADER_OUTPUT_BYTES"');
-    expect(provider).toContain("profile.profile.limits.wallTimeMs + config.startupGraceMs");
+    expect(provider).toContain(
+      "profile.profile.limits.wallTimeMs + config.startupGraceMs"
+    );
     expect(profile.limits.pids).toBe(64);
   });
 
@@ -120,15 +138,33 @@ describe("trusted grader runner security contract", () => {
     expect(script).toContain("GRADER_GVISOR_RUNTIME_EVIDENCE_FILE");
     expect(script).toContain("podPidsLimit");
     expect(script).toContain("--dry-run=server");
-    expect(script).toContain("default-deny NetworkPolicy is not deny-all for both ingress and egress");
-    expect(script).toContain("live ResourceQuota does not match the finite grader sandbox capacity envelope");
-    expect(script).toContain("live LimitRange does not match the grader sandbox hard envelope");
-    expect(script).toContain("ValidatingAdmissionPolicy $policy is not fail-closed");
-    expect(script).toContain("ValidatingAdmissionPolicyBinding $policy does not deny violations");
-    expect(script).toContain("live admission rejected the hardened reference Pod");
-    expect(script).toContain("admission accepted a Pod with weakened RuntimeClass");
-    expect(script).toContain("admission accepted a Pod with ServiceAccount token automount");
-    expect(script).toContain("admission accepted a Job with internal retry enabled");
+    expect(script).toContain(
+      "default-deny NetworkPolicy is not deny-all for both ingress and egress"
+    );
+    expect(script).toContain(
+      "live ResourceQuota does not match the finite grader sandbox capacity envelope"
+    );
+    expect(script).toContain(
+      "live LimitRange does not match the grader sandbox hard envelope"
+    );
+    expect(script).toContain(
+      "ValidatingAdmissionPolicy $policy is not fail-closed"
+    );
+    expect(script).toContain(
+      "ValidatingAdmissionPolicyBinding $policy does not deny violations"
+    );
+    expect(script).toContain(
+      "live admission rejected the hardened reference Pod"
+    );
+    expect(script).toContain(
+      "admission accepted a Pod with weakened RuntimeClass"
+    );
+    expect(script).toContain(
+      "admission accepted a Pod with ServiceAccount token automount"
+    );
+    expect(script).toContain(
+      "admission accepted a Job with internal retry enabled"
+    );
     expect(script).toContain("duplicate Job create unexpectedly succeeded");
     expect(script).toContain('get jobs,pods,secrets -l "$VERIFY_LABEL"');
     expect(script).toContain("host-api");

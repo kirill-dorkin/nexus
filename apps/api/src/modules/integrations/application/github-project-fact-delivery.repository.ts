@@ -1,10 +1,7 @@
 import type { DatabaseTransaction } from "@platform/database";
 
 export type GitHubProjectFactEventName =
-  | "pull_request"
-  | "pull_request_review"
-  | "check_run"
-  | "check_suite";
+  "pull_request" | "pull_request_review" | "check_run" | "check_suite";
 
 export type GitHubProjectFactRoutingStatus =
   | "mapped"
@@ -31,11 +28,7 @@ export type GitHubProjectFactDeliveryClaim = Readonly<{
 }>;
 
 export type GitHubProjectFactProcessingOutcome =
-  | "blocked"
-  | "retryable"
-  | "completed"
-  | "rejected"
-  | "dead_letter";
+  "blocked" | "retryable" | "completed" | "rejected" | "dead_letter";
 
 export abstract class GitHubProjectFactDeliveryRepository {
   abstract claim(

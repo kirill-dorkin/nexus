@@ -30,11 +30,7 @@ export type PublicLaunchSecurityEvent = Readonly<{
 }>;
 
 export type PurchaseReconciliationAgeBucket =
-  | "lt_30s"
-  | "30s_2m"
-  | "2m_5m"
-  | "5m_15m"
-  | "gte_15m";
+  "lt_30s" | "30s_2m" | "2m_5m" | "5m_15m" | "gte_15m";
 
 export type PublicLaunchReconciliationEvent = Readonly<{
   event: "public_launch.reconciliation";
@@ -151,13 +147,7 @@ export function recordPublicLaunchReconciliation(
   createdAt: string,
   paidAt: string | null
 ): void {
-  emit(
-    buildPublicLaunchReconciliationEvent(
-      purchaseStatus,
-      createdAt,
-      paidAt
-    )
-  );
+  emit(buildPublicLaunchReconciliationEvent(purchaseStatus, createdAt, paidAt));
 }
 
 export async function observePublicLaunchHttp<T>(

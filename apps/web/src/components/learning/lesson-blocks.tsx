@@ -32,7 +32,11 @@ export function LessonBlocks({
       {lesson.blocks.map((block, index) => {
         if (block.type === "youtube")
           return (
-            <YouTubeVideo key={`${index}/${block.videoId}`} videoId={block.videoId} title={lesson.title} />
+            <YouTubeVideo
+              key={`${index}/${block.videoId}`}
+              videoId={block.videoId}
+              title={lesson.title}
+            />
           );
         if (block.type === "markdown")
           return (
@@ -79,4 +83,3 @@ export function LessonBlocks({
     </div>
   );
 }
-

@@ -15,7 +15,9 @@ import {
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for remediation intervention integration tests.`);
+    throw new Error(
+      `${name} is required for remediation intervention integration tests.`
+    );
   }
   return value;
 }
@@ -53,7 +55,9 @@ describe("authored remediation intervention HTTP lifecycle", () => {
     );
     const id = result.rows[0]?.id;
     if (id === undefined) {
-      throw new Error("Failed to create remediation-intervention test identity.");
+      throw new Error(
+        "Failed to create remediation-intervention test identity."
+      );
     }
     createdUserIds.push(id);
     return id;
@@ -144,23 +148,25 @@ describe("authored remediation intervention HTTP lifecycle", () => {
     learnerUserId = await createUser("remediation-learner");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `remediation-${randomUUID()}`,
         name: "Remediation intervention integration"
-      })).id;
+      })
+    ).id;
 
     const invite = await app.inject({
       method: "POST",
@@ -249,8 +255,7 @@ describe("authored remediation intervention HTTP lifecycle", () => {
     );
     diagnosticActivityId = diagnostic.activityId;
 
-    const remediationUrl =
-      `/v1/organizations/${organizationId}/courses/${courseId}/versions/${courseVersionId}/skills/${skillId}/remediations`;
+    const remediationUrl = `/v1/organizations/${organizationId}/courses/${courseId}/versions/${courseVersionId}/skills/${skillId}/remediations`;
     const [remediationMapping, concurrentRetry] = await Promise.all([
       app.inject({
         method: "PUT",
@@ -435,7 +440,9 @@ describe("authored remediation intervention HTTP lifecycle", () => {
     });
     expect(response.statusCode).toBe(200);
 
-    const body = nextLearningRecommendationSchema.parse(JSON.parse(response.body));
+    const body = nextLearningRecommendationSchema.parse(
+      JSON.parse(response.body)
+    );
     expect(body).toMatchObject({
       status: "recommended",
       interventionPolicy: {
@@ -468,7 +475,9 @@ describe("authored remediation intervention HTTP lifecycle", () => {
     });
     expect(response.statusCode).toBe(200);
 
-    const body = nextLearningRecommendationSchema.parse(JSON.parse(response.body));
+    const body = nextLearningRecommendationSchema.parse(
+      JSON.parse(response.body)
+    );
     expect(body.status).toBe("recommended");
     if (body.status !== "recommended") {
       throw new Error("Expected a remediation recommendation.");
@@ -512,7 +521,9 @@ describe("authored remediation intervention HTTP lifecycle", () => {
     });
     expect(response.statusCode).toBe(200);
 
-    const body = nextLearningRecommendationSchema.parse(JSON.parse(response.body));
+    const body = nextLearningRecommendationSchema.parse(
+      JSON.parse(response.body)
+    );
     expect(body.status).toBe("recommended");
     if (body.status !== "recommended") {
       throw new Error("Expected baseline sequencing to resume.");

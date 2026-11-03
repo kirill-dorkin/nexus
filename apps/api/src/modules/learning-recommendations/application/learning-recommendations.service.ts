@@ -94,10 +94,9 @@ export class LearningRecommendationsApplicationService {
           mastery.map((projection) => [projection.skillId, projection] as const)
         );
         const attemptsByActivityVersion = new Map(
-          attemptCounts.map((count) => [
-            count.activityVersionId,
-            count.attemptCount
-          ] as const)
+          attemptCounts.map(
+            (count) => [count.activityVersionId, count.attemptCount] as const
+          )
         );
         const evaluatedAt = new Date().toISOString();
         const policyActivities = graph.activities.map((activity) => ({

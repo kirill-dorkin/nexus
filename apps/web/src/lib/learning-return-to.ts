@@ -20,12 +20,16 @@ export function safeLearningReturnTo(value: unknown): string {
   // although RegExpExecArray types every group as a string.
   const course = /^\/courses\/([^/]+)(?:\/([^/]+))?$/.exec(value);
   if (course)
-    return (course.slice(1) as (string | undefined)[]).filter((v) => v !== undefined).every((v) => resourceSlugSchema.safeParse(v).success)
+    return (course.slice(1) as (string | undefined)[])
+      .filter((v) => v !== undefined)
+      .every((v) => resourceSlugSchema.safeParse(v).success)
       ? value
       : "/me/learning";
   const match = /^\/learn\/([^/]+)\/([^/]+)(?:\/([^/]+))?$/.exec(value);
   if (
-    !(match?.slice(1) as (string | undefined)[] | undefined)?.filter((v) => v !== undefined).every((v) => resourceSlugSchema.safeParse(v).success)
+    !(match?.slice(1) as (string | undefined)[] | undefined)
+      ?.filter((v) => v !== undefined)
+      .every((v) => resourceSlugSchema.safeParse(v).success)
   )
     return "/me/learning";
   return value;

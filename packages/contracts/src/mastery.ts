@@ -82,7 +82,9 @@ export const learnerSkillProgressReadModelSchema = z.object({
 });
 
 export type MasteryProjection = z.infer<typeof masteryProjectionSchema>;
-export type MasteryRecomputeResult = z.infer<typeof masteryRecomputeResultSchema>;
+export type MasteryRecomputeResult = z.infer<
+  typeof masteryRecomputeResultSchema
+>;
 export type LearnerSkillProgress = z.infer<typeof learnerSkillProgressSchema>;
 export type LearnerSkillProgressReadModel = z.infer<
   typeof learnerSkillProgressReadModelSchema

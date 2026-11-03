@@ -6,7 +6,9 @@
   "types": "./src/index.ts",
   "typesVersions": {
     "*": {
-      "grader": ["src/grader.ts"]
+      "grader": [
+        "src/grader.ts"
+      ]
     }
   },
   "exports": {

@@ -49,7 +49,8 @@ describe("payment webhook worker processor", () => {
       [`payment-worker-${randomUUID()}@example.test`, "Payment worker learner"]
     );
     userId = user.rows[0]?.id ?? "";
-    if (userId.length === 0) throw new Error("Failed to create payment worker user.");
+    if (userId.length === 0)
+      throw new Error("Failed to create payment worker user.");
 
     const organization = await migrationPool.query<IdRow>(
       `INSERT INTO organizations.organizations (slug, name, created_by_user_id)
@@ -79,7 +80,8 @@ describe("payment webhook worker processor", () => {
       [organizationId, `payment-worker-course-${randomUUID()}`, userId]
     );
     courseId = course.rows[0]?.id ?? "";
-    if (courseId.length === 0) throw new Error("Failed to create payment worker course.");
+    if (courseId.length === 0)
+      throw new Error("Failed to create payment worker course.");
 
     const version = await migrationPool.query<IdRow>(
       `INSERT INTO learning_content.course_versions (
@@ -122,7 +124,8 @@ describe("payment webhook worker processor", () => {
       ]
     );
     offeringId = offering.rows[0]?.id ?? "";
-    if (offeringId.length === 0) throw new Error("Failed to create payment worker offering.");
+    if (offeringId.length === 0)
+      throw new Error("Failed to create payment worker offering.");
 
     const product = await migrationPool.query<IdRow>(
       `INSERT INTO commerce.products (
@@ -143,7 +146,8 @@ describe("payment webhook worker processor", () => {
       ]
     );
     productId = product.rows[0]?.id ?? "";
-    if (productId.length === 0) throw new Error("Failed to create payment worker Product.");
+    if (productId.length === 0)
+      throw new Error("Failed to create payment worker Product.");
 
     const price = await migrationPool.query<IdRow>(
       `INSERT INTO commerce.prices (
@@ -159,7 +163,8 @@ describe("payment webhook worker processor", () => {
       [organizationId, productId, userId]
     );
     priceId = price.rows[0]?.id ?? "";
-    if (priceId.length === 0) throw new Error("Failed to create payment worker Price.");
+    if (priceId.length === 0)
+      throw new Error("Failed to create payment worker Price.");
   });
 
   afterAll(async () => {
@@ -214,7 +219,9 @@ describe("payment webhook worker processor", () => {
       );
     }
     if (migrationPool !== undefined && userId.length > 0) {
-      await migrationPool.query(`DELETE FROM identity.users WHERE id = $1`, [userId]);
+      await migrationPool.query(`DELETE FROM identity.users WHERE id = $1`, [
+        userId
+      ]);
     }
     await Promise.all([migrationPool?.end(), workerPool?.end()]);
   });
@@ -234,21 +241,18 @@ describe("payment webhook worker processor", () => {
        )
        VALUES ($1, $2, $3, $4, $5, 12900, 'USD', 'one_time', $6)
        RETURNING id::text`,
-      [
-        organizationId,
-        productId,
-        priceId,
-        offeringId,
-        userId,
-        randomUUID()
-      ]
+      [organizationId, productId, priceId, offeringId, userId, randomUUID()]
     );
     const id = result.rows[0]?.id;
-    if (id === undefined) throw new Error("Failed to create payment worker Purchase.");
+    if (id === undefined)
+      throw new Error("Failed to create payment worker Purchase.");
     return id;
   }
 
-  async function createCheckout(purchaseId: string, checkoutId: string): Promise<void> {
+  async function createCheckout(
+    purchaseId: string,
+    checkoutId: string
+  ): Promise<void> {
     await migrationPool.query(
       `INSERT INTO integrations.payment_checkouts (
          organization_id,
@@ -259,15 +263,22 @@ describe("payment webhook worker processor", () => {
          expires_at
        )
        VALUES ($1, $2, 'paddle', $3, $4, NULL)`,
-      [organizationId, purchaseId, checkoutId, `https://checkout.test/${purchaseId}`]
+      [
+        organizationId,
+        purchaseId,
+        checkoutId,
+        `https://checkout.test/${purchaseId}`
+      ]
     );
   }
 
-  async function createInbox(input: Readonly<{
-    checkoutId: string;
-    amountMinor?: number;
-    paymentStatus?: "paid" | "unpaid";
-  }>): Promise<string> {
+  async function createInbox(
+    input: Readonly<{
+      checkoutId: string;
+      amountMinor?: number;
+      paymentStatus?: "paid" | "unpaid";
+    }>
+  ): Promise<string> {
     const eventId = `evt_worker_${randomUUID()}`;
     const payloadHash = createHash("sha256")
       .update(`${eventId}:${input.checkoutId}:${input.amountMinor ?? 12900}`)
@@ -316,7 +327,8 @@ describe("payment webhook worker processor", () => {
       ]
     );
     const id = result.rows[0]?.id;
-    if (id === undefined) throw new Error("Failed to create payment worker inbox row.");
+    if (id === undefined)
+      throw new Error("Failed to create payment worker inbox row.");
     return id;
   }
 

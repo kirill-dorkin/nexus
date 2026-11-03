@@ -19,7 +19,9 @@ import { OrganizationsApplicationService } from "./application/organizations.ser
 @Controller("public/organizations")
 @UseGuards(BrowserWriteOriginGuard)
 export class PublicOrganizationEntryController {
-  constructor(private readonly organizations: OrganizationsApplicationService) {}
+  constructor(
+    private readonly organizations: OrganizationsApplicationService
+  ) {}
 
   @Post(":organizationSlug/memberships/me")
   @HttpCode(HttpStatus.OK)

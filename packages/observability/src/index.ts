@@ -3,7 +3,7 @@ export type TelemetryService = "web" | "api" | "worker" | "grader-gateway";
 export type TelemetryBootstrapOptions = {
   serviceName: TelemetryService;
   serviceVersion?: string;
-}
+};
 
 /**
  * Placeholder port. OpenTelemetry SDK wiring belongs here so applications do not

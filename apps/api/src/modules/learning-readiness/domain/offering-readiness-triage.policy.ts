@@ -26,7 +26,9 @@ const statusRank: Readonly<Record<OfferingReadinessTriageStatus, number>> = {
 function parseInstant(value: string): number {
   const parsed = Date.parse(value);
   if (!Number.isFinite(parsed)) {
-    throw new Error("Offering readiness triage requires a valid enrolledAt instant.");
+    throw new Error(
+      "Offering readiness triage requires a valid enrolledAt instant."
+    );
   }
   return parsed;
 }

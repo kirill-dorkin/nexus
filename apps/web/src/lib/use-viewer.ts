@@ -10,7 +10,13 @@ let pending: Promise<ViewerState> | null = null;
 
 function loadViewer(): Promise<ViewerState> {
   pending ??= browserApiRequest("/v1/me")
-    .then((response): ViewerState => (response.status === 401 ? "anonymous" : response.ok ? "signed-in" : "unknown"))
+    .then((response): ViewerState =>
+      response.status === 401
+        ? "anonymous"
+        : response.ok
+          ? "signed-in"
+          : "unknown"
+    )
     .catch((): ViewerState => "unknown");
   return pending;
 }

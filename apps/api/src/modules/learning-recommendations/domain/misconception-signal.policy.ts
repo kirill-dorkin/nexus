@@ -24,7 +24,9 @@ export type RepeatedTrustedFailureSignal = Readonly<{
 function instant(value: string): number {
   const parsed = Date.parse(value);
   if (!Number.isFinite(parsed)) {
-    throw new Error("Misconception signal observations require valid ISO timestamps.");
+    throw new Error(
+      "Misconception signal observations require valid ISO timestamps."
+    );
   }
   return parsed;
 }
@@ -84,7 +86,9 @@ export function repeatedTrustedFailureSignalsV1(
     const newestFailure = consecutiveFailures[0];
     const oldestFailure = consecutiveFailures[consecutiveFailures.length - 1];
     if (newestFailure === undefined || oldestFailure === undefined) {
-      throw new Error("Misconception signal failure streak is unexpectedly empty.");
+      throw new Error(
+        "Misconception signal failure streak is unexpectedly empty."
+      );
     }
 
     signals.push({
@@ -97,5 +101,7 @@ export function repeatedTrustedFailureSignalsV1(
     });
   }
 
-  return signals.sort((left, right) => left.skillId.localeCompare(right.skillId));
+  return signals.sort((left, right) =>
+    left.skillId.localeCompare(right.skillId)
+  );
 }

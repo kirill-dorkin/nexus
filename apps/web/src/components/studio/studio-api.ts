@@ -10,7 +10,10 @@ export class StudioError extends Error {
   }
 }
 /** Reads a Studio API response. Callers parse the result with a contract schema. */
-export async function studioRequest(path: string, body?: unknown): Promise<unknown> {
+export async function studioRequest(
+  path: string,
+  body?: unknown
+): Promise<unknown> {
   const response = await browserApiRequest(
     `/v1/${path}`,
     body === undefined ? {} : { method: "POST", body: JSON.stringify(body) }
@@ -48,7 +51,9 @@ async function validationIssues(response: Response): Promise<string[]> {
 
 /** A user-facing message for any rejected Studio operation. */
 export function errorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : "Не удалось завершить операцию.";
+  return error instanceof Error
+    ? error.message
+    : "Не удалось завершить операцию.";
 }
 export function downloadManifest(value: unknown, slug: string) {
   downloadManifestText(JSON.stringify(value, null, 2) + "\n", slug);

@@ -33,7 +33,9 @@ function beginStatement(options?: DatabaseTransactionOptions): string {
 
   const clauses: string[] = [];
   if (options.isolationLevel !== undefined) {
-    clauses.push(`ISOLATION LEVEL ${isolationLevelSql[options.isolationLevel]}`);
+    clauses.push(
+      `ISOLATION LEVEL ${isolationLevelSql[options.isolationLevel]}`
+    );
   }
   if (options.readOnly === true) {
     clauses.push("READ ONLY");

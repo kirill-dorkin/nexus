@@ -43,22 +43,34 @@ type RepoSnapshot = Readonly<{
 }>;
 
 class RejectedDeliveryError extends Error {
-  constructor(readonly code: string, message: string) {
+  constructor(
+    readonly code: string,
+    message: string
+  ) {
     super(message);
     this.name = "RejectedDeliveryError";
   }
 }
 
-function object(value: unknown, field: string): Readonly<Record<string, unknown>> {
+function object(
+  value: unknown,
+  field: string
+): Readonly<Record<string, unknown>> {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
-    throw new RejectedDeliveryError("invalid_payload", `${field} must be an object.`);
+    throw new RejectedDeliveryError(
+      "invalid_payload",
+      `${field} must be an object.`
+    );
   }
   return value as Readonly<Record<string, unknown>>;
 }
 
 function array(value: unknown, field: string): readonly unknown[] {
   if (!Array.isArray(value)) {
-    throw new RejectedDeliveryError("invalid_payload", `${field} must be an array.`);
+    throw new RejectedDeliveryError(
+      "invalid_payload",
+      `${field} must be an array.`
+    );
   }
   return value;
 }
@@ -95,7 +107,10 @@ function repositories(
       }
       return { id, fullName: fullName.trim() };
     }
-    return { id, fullName: typeof fullName === "string" ? fullName.trim() : null };
+    return {
+      id,
+      fullName: typeof fullName === "string" ? fullName.trim() : null
+    };
   });
 }
 
@@ -128,7 +143,9 @@ export class GitHubWebhookLifecycleProcessor {
 
   async processOne(): Promise<boolean> {
     const leaseToken = randomUUID();
-    const claim = await withTransaction(this.pool, (tx) => this.claim(tx, leaseToken));
+    const claim = await withTransaction(this.pool, (tx) =>
+      this.claim(tx, leaseToken)
+    );
     if (claim === null) return false;
 
     if (
@@ -136,7 +153,14 @@ export class GitHubWebhookLifecycleProcessor {
       claim.routingStatus === "unmapped_repository"
     ) {
       await withTransaction(this.pool, (tx) =>
-        this.finish(tx, claim.inboxId, leaseToken, "blocked", claim.routingStatus, null)
+        this.finish(
+          tx,
+          claim.inboxId,
+          leaseToken,
+          "blocked",
+          claim.routingStatus,
+          null
+        )
       );
       return true;
     }
@@ -144,16 +168,24 @@ export class GitHubWebhookLifecycleProcessor {
     const organizationId = claim.organizationId;
     if (claim.routingStatus !== "mapped" || organizationId === null) {
       await withTransaction(this.pool, (tx) =>
-        this.finish(tx, claim.inboxId, leaseToken, "rejected", "routing_rejected", null)
+        this.finish(
+          tx,
+          claim.inboxId,
+          leaseToken,
+          "rejected",
+          "routing_rejected",
+          null
+        )
       );
       return true;
     }
 
     try {
       await withTransaction(this.pool, async (tx) => {
-        await tx.client.query("SELECT set_config('app.organization_id', $1, true)", [
-          organizationId
-        ]);
+        await tx.client.query(
+          "SELECT set_config('app.organization_id', $1, true)",
+          [organizationId]
+        );
         await this.apply(tx, claim, organizationId);
         const finished = await this.finish(
           tx,
@@ -168,7 +200,14 @@ export class GitHubWebhookLifecycleProcessor {
     } catch (error) {
       if (error instanceof RejectedDeliveryError) {
         await withTransaction(this.pool, (tx) =>
-          this.finish(tx, claim.inboxId, leaseToken, "rejected", error.code, null)
+          this.finish(
+            tx,
+            claim.inboxId,
+            leaseToken,
+            "rejected",
+            error.code,
+            null
+          )
         );
         return true;
       }
@@ -194,7 +233,10 @@ export class GitHubWebhookLifecycleProcessor {
     return true;
   }
 
-  private async claim(tx: DatabaseTransaction, leaseToken: string): Promise<Claim | null> {
+  private async claim(
+    tx: DatabaseTransaction,
+    leaseToken: string
+  ): Promise<Claim | null> {
     const result = await tx.client.query<ClaimRow>(
       `SELECT
          inbox_id::text,
@@ -224,10 +266,19 @@ export class GitHubWebhookLifecycleProcessor {
     };
   }
 
-  private async apply(tx: DatabaseTransaction, claim: Claim, organizationId: string): Promise<void> {
+  private async apply(
+    tx: DatabaseTransaction,
+    claim: Claim,
+    organizationId: string
+  ): Promise<void> {
     const installationId = this.installationId(claim);
     if (claim.eventName === "installation") {
-      await this.installationEvent(tx, organizationId, installationId, claim.action);
+      await this.installationEvent(
+        tx,
+        organizationId,
+        installationId,
+        claim.action
+      );
       return;
     }
     await this.repositoryEvent(
@@ -246,7 +297,10 @@ export class GitHubWebhookLifecycleProcessor {
         "Lifecycle delivery is missing installation identity."
       );
     }
-    const installation = object(claim.payload.installation, "payload.installation");
+    const installation = object(
+      claim.payload.installation,
+      "payload.installation"
+    );
     const payloadId = externalId(installation.id, "payload.installation.id");
     if (payloadId !== claim.githubInstallationId) {
       throw new RejectedDeliveryError(
@@ -283,7 +337,8 @@ export class GitHubWebhookLifecycleProcessor {
 
     if (action === "suspend" || action === "unsuspend") {
       const installationStatus = action === "suspend" ? "suspended" : "active";
-      const fromRepositoryStatus = action === "suspend" ? "active" : "suspended";
+      const fromRepositoryStatus =
+        action === "suspend" ? "active" : "suspended";
       const toRepositoryStatus = action === "suspend" ? "suspended" : "active";
       await tx.client.query(
         `UPDATE integrations.github_installations
@@ -299,7 +354,12 @@ export class GitHubWebhookLifecycleProcessor {
          WHERE organization_id = $1
            AND github_installation_id = $2
            AND status = $3`,
-        [organizationId, installationId, fromRepositoryStatus, toRepositoryStatus]
+        [
+          organizationId,
+          installationId,
+          fromRepositoryStatus,
+          toRepositoryStatus
+        ]
       );
       if (action === "unsuspend") {
         await this.refreshRoutes(tx, organizationId, installationId);
@@ -307,7 +367,10 @@ export class GitHubWebhookLifecycleProcessor {
       return;
     }
 
-    throw new RejectedDeliveryError("unsupported_action", "Unsupported installation action.");
+    throw new RejectedDeliveryError(
+      "unsupported_action",
+      "Unsupported installation action."
+    );
   }
 
   private async repositoryEvent(
@@ -324,19 +387,31 @@ export class GitHubWebhookLifecycleProcessor {
       );
     }
 
-    const added = repositories(payload.repositories_added, "payload.repositories_added", true);
-    const removed = repositories(payload.repositories_removed, "payload.repositories_removed", false);
-    const installation = await tx.client.query<{ status: "active" | "suspended" | "removed" }>(
+    const added = repositories(
+      payload.repositories_added,
+      "payload.repositories_added",
+      true
+    );
+    const removed = repositories(
+      payload.repositories_removed,
+      "payload.repositories_removed",
+      false
+    );
+    const installation = await tx.client.query<{
+      status: "active" | "suspended" | "removed";
+    }>(
       `SELECT status
        FROM integrations.github_installations
        WHERE organization_id = $1 AND github_installation_id = $2`,
       [organizationId, installationId]
     );
     const installationStatus = installation.rows[0]?.status;
-    if (installationStatus === undefined || installationStatus === "removed") return;
+    if (installationStatus === undefined || installationStatus === "removed")
+      return;
 
     if (action === "added") {
-      const targetStatus = installationStatus === "suspended" ? "suspended" : "active";
+      const targetStatus =
+        installationStatus === "suspended" ? "suspended" : "active";
       for (const repo of added) {
         const inserted = await tx.client.query<{ id: string }>(
           `INSERT INTO integrations.github_repositories (

@@ -17,7 +17,9 @@ type RawBodyRequest = Readonly<{
 
 @Controller("integrations/github")
 export class GitHubWebhookController {
-  constructor(private readonly githubWebhooks: GitHubWebhookApplicationService) {}
+  constructor(
+    private readonly githubWebhooks: GitHubWebhookApplicationService
+  ) {}
 
   @Post("webhooks")
   @HttpCode(HttpStatus.ACCEPTED)

@@ -18,9 +18,7 @@ import { PurchaseCheckoutApplicationService } from "./payment-checkout.service";
 
 @Controller("organizations/:organizationId/commerce/purchases")
 export class PurchaseCheckoutController {
-  constructor(
-    private readonly checkout: PurchaseCheckoutApplicationService
-  ) {}
+  constructor(private readonly checkout: PurchaseCheckoutApplicationService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)

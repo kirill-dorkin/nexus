@@ -114,7 +114,9 @@ export function validateMigrationHistory(
   migrations: readonly MigrationFile[],
   applied: ReadonlyMap<string, string>
 ): void {
-  const sourceByName = new Map(migrations.map((migration) => [migration.name, migration]));
+  const sourceByName = new Map(
+    migrations.map((migration) => [migration.name, migration])
+  );
   const appliedEntries = [...applied.entries()].sort(([left], [right]) =>
     left.localeCompare(right)
   );
@@ -179,7 +181,10 @@ export async function migrateDatabase(
           await client.query("SET LOCAL statement_timeout = '60s'");
           await client.query(migration.sql);
 
-          const executionMs = Math.max(0, Math.round(performance.now() - startedAt));
+          const executionMs = Math.max(
+            0,
+            Math.round(performance.now() - startedAt)
+          );
           await client.query(
             `INSERT INTO platform_internal.schema_migrations
               (name, checksum, execution_ms)

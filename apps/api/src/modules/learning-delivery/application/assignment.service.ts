@@ -65,75 +65,83 @@ export class AssignmentApplicationService {
     const assignmentId = await this.database.nextUuid();
 
     try {
-      return await this.database.tenantTransaction(context, async (transaction) => {
-        await this.identity.requireActiveUser(transaction, context.userId);
-        await this.authorization.requireCapability(
-          transaction,
-          context.userId,
-          "offering.manage",
-          offeringScope(organizationId, offeringId)
-        );
+      return await this.database.tenantTransaction(
+        context,
+        async (transaction) => {
+          await this.identity.requireActiveUser(transaction, context.userId);
+          await this.authorization.requireCapability(
+            transaction,
+            context.userId,
+            "offering.manage",
+            offeringScope(organizationId, offeringId)
+          );
 
-        const offering = await this.delivery.findOffering(
-          transaction,
-          organizationId,
-          offeringId
-        );
-        if (offering === null) {
-          throw new NotFoundException("Learning offering not found.");
-        }
-        if (offering.status !== "open") {
-          throw new ConflictException("New assignments require an open learning offering.");
-        }
-
-        const activity = await this.graph.requireActivityVersion(
-          transaction,
-          organizationId,
-          offering.courseVersionId,
-          command.activityId
-        );
-        const audience = await this.resolveAudience(
-          transaction,
-          organizationId,
-          offeringId,
-          command.audience
-        );
-
-        const assignment = await this.assignments.createAssignment(transaction, {
-          id: assignmentId,
-          organizationId,
-          offeringId,
-          activityVersionId: activity.id,
-          slug: command.slug,
-          name: command.name,
-          ...audience,
-          availableAt: command.availableAt ?? null,
-          dueAt: command.dueAt ?? null,
-          createdByUserId: context.userId
-        });
-
-        await this.outbox.append(transaction, {
-          organizationId,
-          eventName: "assignment.created",
-          eventVersion: 1,
-          aggregateType: "assignment",
-          aggregateId: assignment.id,
-          actorUserId: context.userId,
-          payload: {
+          const offering = await this.delivery.findOffering(
+            transaction,
             organizationId,
-            assignmentId: assignment.id,
-            offeringId,
-            courseVersionId: offering.courseVersionId,
-            activityId: activity.activityId,
-            activityVersionId: activity.id,
-            audience: assignment.audience,
-            availableAt: assignment.availableAt,
-            dueAt: assignment.dueAt
+            offeringId
+          );
+          if (offering === null) {
+            throw new NotFoundException("Learning offering not found.");
           }
-        });
+          if (offering.status !== "open") {
+            throw new ConflictException(
+              "New assignments require an open learning offering."
+            );
+          }
 
-        return assignment;
-      });
+          const activity = await this.graph.requireActivityVersion(
+            transaction,
+            organizationId,
+            offering.courseVersionId,
+            command.activityId
+          );
+          const audience = await this.resolveAudience(
+            transaction,
+            organizationId,
+            offeringId,
+            command.audience
+          );
+
+          const assignment = await this.assignments.createAssignment(
+            transaction,
+            {
+              id: assignmentId,
+              organizationId,
+              offeringId,
+              activityVersionId: activity.id,
+              slug: command.slug,
+              name: command.name,
+              ...audience,
+              availableAt: command.availableAt ?? null,
+              dueAt: command.dueAt ?? null,
+              createdByUserId: context.userId
+            }
+          );
+
+          await this.outbox.append(transaction, {
+            organizationId,
+            eventName: "assignment.created",
+            eventVersion: 1,
+            aggregateType: "assignment",
+            aggregateId: assignment.id,
+            actorUserId: context.userId,
+            payload: {
+              organizationId,
+              assignmentId: assignment.id,
+              offeringId,
+              courseVersionId: offering.courseVersionId,
+              activityId: activity.activityId,
+              activityVersionId: activity.id,
+              audience: assignment.audience,
+              availableAt: assignment.availableAt,
+              dueAt: assignment.dueAt
+            }
+          });
+
+          return assignment;
+        }
+      );
     } catch (error) {
       if (isUniqueViolation(error)) {
         throw new ConflictException(

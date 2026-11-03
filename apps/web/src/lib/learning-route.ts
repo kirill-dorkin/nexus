@@ -1,5 +1,8 @@
 import { itemAt } from "./item-at";
-import { HOME_ORGANIZATION_SLUG, type CourseAddress } from "./public-learning-routes";
+import {
+  HOME_ORGANIZATION_SLUG,
+  type CourseAddress
+} from "./public-learning-routes";
 
 /**
  * The home catalog's learning route (ADR-0066): the order in which a newcomer takes the courses,
@@ -25,38 +28,48 @@ export const LEARNING_ROUTE = {
       buildsOnPrevious: false,
       label: "HTML",
       needs: "Ничего, кроме компьютера и браузера.",
-      outcome: "Размечать страницы, ссылки, таблицы и формы так, чтобы их понимали браузеры, поисковики и скринридеры."
+      outcome:
+        "Размечать страницы, ссылки, таблицы и формы так, чтобы их понимали браузеры, поисковики и скринридеры."
     },
     {
       slug: "css",
       buildsOnPrevious: true,
       label: "CSS",
       needs: "HTML: теги, атрибуты и структура страницы.",
-      outcome: "Оформлять сайты: цвет, шрифты, отступы, Flexbox, Grid, адаптивность и анимации."
+      outcome:
+        "Оформлять сайты: цвет, шрифты, отступы, Flexbox, Grid, адаптивность и анимации."
     },
     {
       slug: "js",
       buildsOnPrevious: true,
       label: "JavaScript",
       needs: "HTML и CSS на уровне готовой вёрстки страницы.",
-      outcome: "Оживлять страницы: данные, функции, события, формы и запросы к серверу."
+      outcome:
+        "Оживлять страницы: данные, функции, события, формы и запросы к серверу."
     },
     {
       slug: "sql",
       buildsOnPrevious: false,
       label: "SQL",
-      needs: "Уверенно пользоваться компьютером. Опыт программирования поможет, но не обязателен.",
-      outcome: "Хранить данные в PostgreSQL и получать из них ответы: выборки, соединения, агрегаты и свои таблицы."
+      needs:
+        "Уверенно пользоваться компьютером. Опыт программирования поможет, но не обязателен.",
+      outcome:
+        "Хранить данные в PostgreSQL и получать из них ответы: выборки, соединения, агрегаты и свои таблицы."
     }
   ] satisfies RouteStep[]
 } as const;
 
-const isHome = (course: CourseAddress) => course.organization.slug === HOME_ORGANIZATION_SLUG;
+const isHome = (course: CourseAddress) =>
+  course.organization.slug === HOME_ORGANIZATION_SLUG;
 const stepIndex = (course: CourseAddress) =>
-  isHome(course) ? LEARNING_ROUTE.steps.findIndex((step) => step.slug === course.course.slug) : -1;
+  isHome(course)
+    ? LEARNING_ROUTE.steps.findIndex((step) => step.slug === course.course.slug)
+    : -1;
 
 /** Route courses first, in route order; every other course keeps its catalog order after them. */
-export function orderByRoute<T extends CourseAddress>(courses: readonly T[]): T[] {
+export function orderByRoute<T extends CourseAddress>(
+  courses: readonly T[]
+): T[] {
   const rank = (course: T) => {
     const index = stepIndex(course);
     return index < 0 ? LEARNING_ROUTE.steps.length : index;
@@ -79,12 +92,19 @@ export type RoutePosition<T> = {
 };
 
 /** Where a course sits in the route, counting only the steps present in `catalog`. */
-export function routePosition<T extends CourseAddress>(course: CourseAddress, catalog: readonly T[]): RoutePosition<T> | null {
+export function routePosition<T extends CourseAddress>(
+  course: CourseAddress,
+  catalog: readonly T[]
+): RoutePosition<T> | null {
   const steps = LEARNING_ROUTE.steps.flatMap((step) => {
-    const found = catalog.find((item) => isHome(item) && item.course.slug === step.slug);
+    const found = catalog.find(
+      (item) => isHome(item) && item.course.slug === step.slug
+    );
     return found ? [{ step, course: found }] : [];
   });
-  const index = isHome(course) ? steps.findIndex(({ step }) => step.slug === course.course.slug) : -1;
+  const index = isHome(course)
+    ? steps.findIndex(({ step }) => step.slug === course.course.slug)
+    : -1;
   if (index < 0) return null;
   return {
     title: LEARNING_ROUTE.title,

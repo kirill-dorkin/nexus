@@ -32,7 +32,9 @@ async function loadProduct(
     notFound();
   }
   if (!response.ok) {
-    throw new Error(`Public catalog request failed with status ${response.status}.`);
+    throw new Error(
+      `Public catalog request failed with status ${response.status}.`
+    );
   }
   return publicCatalogProductResponseSchema.parse(await response.json());
 }
@@ -59,7 +61,9 @@ function dateLabel(value: string | null): string {
   }).format(new Date(value));
 }
 
-export default async function PublicProductPage({ params }: PublicProductPageProps) {
+export default async function PublicProductPage({
+  params
+}: PublicProductPageProps) {
   const { organizationSlug, productSlug } = await params;
   const catalog = await loadProduct(organizationSlug, productSlug);
 
@@ -103,9 +107,9 @@ export default async function PublicProductPage({ params }: PublicProductPagePro
             <p className={styles.eyebrow}>Безопасность покупки</p>
             <h2>Платёж начинается только из актуального состояния</h2>
             <p className={styles.lead}>
-              Браузер не определяет организацию, стоимость, внутренний продукт или
-              пользователя покупки. Эти данные повторно разрешаются и проверяются
-              API перед переходом к защищённой платёжной странице.
+              Браузер не определяет организацию, стоимость, внутренний продукт
+              или пользователя покупки. Эти данные повторно разрешаются и
+              проверяются API перед переходом к защищённой платёжной странице.
             </p>
           </article>
         </section>

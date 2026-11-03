@@ -29,7 +29,9 @@ function mapAudience(row: AssignmentRow): Assignment["audience"] {
       return { type: "offering" };
     case "course_run":
       if (row.course_run_id === null) {
-        throw new Error("Course-run assignment is missing its CourseRun target.");
+        throw new Error(
+          "Course-run assignment is missing its CourseRun target."
+        );
       }
       return { type: "course_run", courseRunId: row.course_run_id };
     case "group":
@@ -39,7 +41,9 @@ function mapAudience(row: AssignmentRow): Assignment["audience"] {
       return { type: "group", groupId: row.group_id };
     case "enrollment":
       if (row.enrollment_id === null) {
-        throw new Error("Enrollment assignment is missing its Enrollment target.");
+        throw new Error(
+          "Enrollment assignment is missing its Enrollment target."
+        );
       }
       return { type: "enrollment", enrollmentId: row.enrollment_id };
   }

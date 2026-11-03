@@ -89,7 +89,8 @@ describe("free learner entry HTTP + PostgreSQL boundary", () => {
   }
   async function fixture(policy = "open", slug = "free-course") {
     const org = await createTestOrganization(migration, owner, {
-      slug: `entry-${randomUUID()}`, name: "Learning entry academy"
+      slug: `entry-${randomUUID()}`,
+      name: "Learning entry academy"
     });
     organizations.push(org.id);
     const manifest = courseManifestV1Schema.parse(

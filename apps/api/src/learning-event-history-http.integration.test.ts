@@ -24,7 +24,9 @@ import {
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for learning-history integration tests.`);
+    throw new Error(
+      `${name} is required for learning-history integration tests.`
+    );
   }
   return value;
 }
@@ -117,7 +119,8 @@ describe("learner LearningEvent history", () => {
     instructorUserId = await createUser("learning-history-instructor");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
@@ -129,10 +132,12 @@ describe("learner LearningEvent history", () => {
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `learning-history-${randomUUID()}`,
         name: "Learning history integration"
-      })).id;
+      })
+    ).id;
 
     await activateMember(learnerUserId, "learner");
     await activateMember(instructorUserId, "instructor");
@@ -263,7 +268,9 @@ describe("learner LearningEvent history", () => {
     if (submissionResponse.statusCode !== 201) {
       throw new Error(`Failed to submit attempt: ${submissionResponse.body}`);
     }
-    submissionId = submissionSchema.parse(JSON.parse(submissionResponse.body)).id;
+    submissionId = submissionSchema.parse(
+      JSON.parse(submissionResponse.body)
+    ).id;
 
     const validation = await app.inject({
       method: "POST",
@@ -280,7 +287,9 @@ describe("learner LearningEvent history", () => {
     if (validation.statusCode !== 201) {
       throw new Error(`Failed to record validation: ${validation.body}`);
     }
-    validationResultId = validationResultSchema.parse(JSON.parse(validation.body)).id;
+    validationResultId = validationResultSchema.parse(
+      JSON.parse(validation.body)
+    ).id;
 
     const systemError = await app.inject({
       method: "POST",
@@ -295,7 +304,9 @@ describe("learner LearningEvent history", () => {
     if (systemError.statusCode !== 201) {
       throw new Error(`Failed to record system error: ${systemError.body}`);
     }
-    systemErrorResultId = validationResultSchema.parse(JSON.parse(systemError.body)).id;
+    systemErrorResultId = validationResultSchema.parse(
+      JSON.parse(systemError.body)
+    ).id;
   });
 
   afterAll(async () => {
@@ -389,7 +400,9 @@ describe("learner LearningEvent history", () => {
     });
     expect(response.statusCode).toBe(200);
 
-    const page = learningEventHistoryPageSchema.parse(JSON.parse(response.body));
+    const page = learningEventHistoryPageSchema.parse(
+      JSON.parse(response.body)
+    );
     expect(page.organizationId).toBe(organizationId);
     expect(page.enrollmentId).toBe(enrollmentId);
     expect(page.offeringId).toBe(offeringId);
@@ -441,7 +454,9 @@ describe("learner LearningEvent history", () => {
       headers: { "x-test-user-id": learnerUserId }
     });
     expect(full.statusCode).toBe(200);
-    const fullPage = learningEventHistoryPageSchema.parse(JSON.parse(full.body));
+    const fullPage = learningEventHistoryPageSchema.parse(
+      JSON.parse(full.body)
+    );
     expect(fullPage.events).toHaveLength(4);
     expect(fullPage.nextCursor).toBeNull();
 
@@ -451,7 +466,9 @@ describe("learner LearningEvent history", () => {
       headers: { "x-test-user-id": learnerUserId }
     });
     expect(first.statusCode).toBe(200);
-    const firstPage = learningEventHistoryPageSchema.parse(JSON.parse(first.body));
+    const firstPage = learningEventHistoryPageSchema.parse(
+      JSON.parse(first.body)
+    );
     expect(firstPage.events).toHaveLength(2);
     expect(firstPage.nextCursor).not.toBeNull();
 
@@ -461,7 +478,9 @@ describe("learner LearningEvent history", () => {
       headers: { "x-test-user-id": learnerUserId }
     });
     expect(second.statusCode).toBe(200);
-    const secondPage = learningEventHistoryPageSchema.parse(JSON.parse(second.body));
+    const secondPage = learningEventHistoryPageSchema.parse(
+      JSON.parse(second.body)
+    );
     expect(secondPage.events).toHaveLength(2);
     expect(secondPage.nextCursor).toBeNull();
 

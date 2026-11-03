@@ -64,7 +64,10 @@ export class GraderGatewayClient {
     }
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), this.options.timeoutMs);
+    const timeout = setTimeout(
+      () => controller.abort(),
+      this.options.timeoutMs
+    );
 
     try {
       let response: Response;

@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { ArrowRightIcon, CheckIcon, XIcon } from "@phosphor-icons/react/dist/ssr";
+import {
+  ArrowRightIcon,
+  CheckIcon,
+  XIcon
+} from "@phosphor-icons/react/dist/ssr";
 import type { PublicLearningCourse } from "@platform/contracts";
 import { Alert, ButtonLink, Skeleton } from "@platform/ui";
 import { loadLearningCatalog, courseUrl } from "../../lib/public-learning";
@@ -41,12 +45,16 @@ function LessonPreview() {
           <span>HTML · урок 8</span>
           <span>12 мин</span>
         </div>
-        <div className={styles.previewBar}><span /></div>
+        <div className={styles.previewBar}>
+          <span />
+        </div>
         <p className={styles.previewTitle}>Заголовки и абзацы</p>
         <pre className={styles.previewCode}>
           <code>{"<h1>Мой первый сайт</h1>\n<p>Привет! Это абзац.</p>"}</code>
         </pre>
-        <p className={styles.previewQuestion}>Какой тег — главный заголовок страницы?</p>
+        <p className={styles.previewQuestion}>
+          Какой тег — главный заголовок страницы?
+        </p>
         <div className={styles.previewOptions}>
           <span>&lt;title&gt;</span>
           <span data-correct="">
@@ -56,7 +64,9 @@ function LessonPreview() {
         </div>
       </div>
       <div className={`${styles.chip} ${styles.chipTop}`}>
-        <span className={styles.chipIcon}><CheckIcon size={14} weight="bold" /></span>
+        <span className={styles.chipIcon}>
+          <CheckIcon size={14} weight="bold" />
+        </span>
         Правильно · сохранено
       </div>
       <div className={`${styles.chip} ${styles.chipBottom}`}>
@@ -78,15 +88,26 @@ function HowItWorks() {
         <article className={`${styles.tile} ${styles.tileWide}`}>
           <div className={styles.tileVisualVideo} aria-hidden="true">
             <span className={styles.previewPlay}>&lt;/&gt;</span>
-            <div className={styles.notesLines}><span /><span /><span /></div>
+            <div className={styles.notesLines}>
+              <span />
+              <span />
+              <span />
+            </div>
           </div>
           <h3>Урок и живые примеры</h3>
-          <p>Объяснение на 10–15 минут и примеры, которые можно менять прямо в браузере.</p>
+          <p>
+            Объяснение на 10–15 минут и примеры, которые можно менять прямо в
+            браузере.
+          </p>
         </article>
         <article className={styles.tile}>
           <div className={styles.tileVisualCheck} aria-hidden="true">
-            <span data-ok=""><CheckIcon size={18} weight="bold" /></span>
-            <span><XIcon size={18} weight="bold" /></span>
+            <span data-ok="">
+              <CheckIcon size={18} weight="bold" />
+            </span>
+            <span>
+              <XIcon size={18} weight="bold" />
+            </span>
           </div>
           <h3>Проверка сразу</h3>
           <p>Ответили — и тут же видно, верно ли. Ошиблись — попробуйте ещё.</p>
@@ -99,7 +120,9 @@ function HowItWorks() {
           <p>Закрыли вкладку — продолжите с того же места.</p>
         </article>
         <article className={`${styles.tile} ${styles.tileAccent}`}>
-          <p className={styles.bigValue} aria-hidden="true">0 ₽</p>
+          <p className={styles.bigValue} aria-hidden="true">
+            0 ₽
+          </p>
           <h3>Бесплатно</h3>
           <p>Без пробных периодов и привязки карты.</p>
         </article>
@@ -130,8 +153,14 @@ export function DiscoveryRows({
 
 export function DiscoveryLoading() {
   return (
-    <div className={styles.courseGrid} aria-busy="true" aria-label="Загрузка курсов">
-      <p role="status" className={styles.srOnly}>Загружаем курсы…</p>
+    <div
+      className={styles.courseGrid}
+      aria-busy="true"
+      aria-label="Загрузка курсов"
+    >
+      <p role="status" className={styles.srOnly}>
+        Загружаем курсы…
+      </p>
       {[0, 1, 2].map((key) => (
         <div key={key} className={styles.loadingCard}>
           <Skeleton className={styles.loadingCover} />
@@ -159,7 +188,11 @@ export async function DiscoveryCourses() {
 
 export function CourseDiscovery() {
   return (
-    <section className={styles.section} aria-labelledby="courses-title" id="courses">
+    <section
+      className={styles.section}
+      aria-labelledby="courses-title"
+      id="courses"
+    >
       <div className={styles.sectionHeadRow}>
         <div className={styles.sectionHead}>
           <p className={styles.kicker}>Маршрут</p>
@@ -190,9 +223,9 @@ export function HomeContent() {
             <span className={styles.accentText}>По 15 минут в день.</span>
           </h1>
           <p className={styles.lead}>
-            Маршрут «Веб-разработка с нуля»: HTML, CSS, JavaScript и SQL по порядку.
-            Понятные уроки, живые примеры и задания с мгновенной проверкой.
-            Аккаунт нужен, только чтобы сохранить прогресс.
+            Маршрут «Веб-разработка с нуля»: HTML, CSS, JavaScript и SQL по
+            порядку. Понятные уроки, живые примеры и задания с мгновенной
+            проверкой. Аккаунт нужен, только чтобы сохранить прогресс.
           </p>
           <Suspense fallback={<HeroButtons href="/courses" />}>
             <HeroActions />

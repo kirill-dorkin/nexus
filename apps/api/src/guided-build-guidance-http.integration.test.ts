@@ -8,10 +8,7 @@ import {
   guidedBuildTransferHandoffSchema,
   submissionSchema
 } from "@platform/contracts";
-import {
-  createDatabasePool,
-  type DatabasePool
-} from "@platform/database";
+import { createDatabasePool, type DatabasePool } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { createTestOrganization } from "./test-support/create-test-organization";
@@ -58,7 +55,8 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       [`${label}-${randomUUID()}@example.test`, label]
     );
     const id = result.rows[0]?.id;
-    if (id === undefined) throw new Error("Failed to create Guided Build test identity.");
+    if (id === undefined)
+      throw new Error("Failed to create Guided Build test identity.");
     createdUserIds.push(id);
     return id;
   }
@@ -72,7 +70,8 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
     learnerUserId = await createUser("guided-build-learner");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
@@ -84,10 +83,12 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `guided-build-${randomUUID()}`,
         name: "Guided Build integration"
-      })).id;
+      })
+    ).id;
 
     const invite = await app.inject({
       method: "POST",
@@ -95,14 +96,16 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       headers: { "x-test-user-id": ownerUserId },
       payload: { userId: learnerUserId }
     });
-    if (invite.statusCode !== 201) throw new Error(`Failed to invite learner: ${invite.body}`);
+    if (invite.statusCode !== 201)
+      throw new Error(`Failed to invite learner: ${invite.body}`);
 
     const accept = await app.inject({
       method: "POST",
       url: `/v1/organizations/${organizationId}/memberships/me/accept`,
       headers: { "x-test-user-id": learnerUserId }
     });
-    if (accept.statusCode !== 200) throw new Error(`Failed to activate learner: ${accept.body}`);
+    if (accept.statusCode !== 200)
+      throw new Error(`Failed to activate learner: ${accept.body}`);
 
     const role = await app.inject({
       method: "POST",
@@ -114,7 +117,8 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
         scope: { type: "organization", id: organizationId }
       }
     });
-    if (role.statusCode !== 204) throw new Error(`Failed to assign learner role: ${role.body}`);
+    if (role.statusCode !== 204)
+      throw new Error(`Failed to assign learner role: ${role.body}`);
 
     const skill = await app.inject({
       method: "POST",
@@ -125,7 +129,8 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
         title: "Guided Build skill"
       }
     });
-    if (skill.statusCode !== 201) throw new Error(`Failed to create skill: ${skill.body}`);
+    if (skill.statusCode !== 201)
+      throw new Error(`Failed to create skill: ${skill.body}`);
     skillId = (JSON.parse(skill.body) as { id: string }).id;
 
     const course = await app.inject({
@@ -137,7 +142,8 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
         title: "Guided Build course"
       }
     });
-    if (course.statusCode !== 201) throw new Error(`Failed to create course: ${course.body}`);
+    if (course.statusCode !== 201)
+      throw new Error(`Failed to create course: ${course.body}`);
     const courseBody = JSON.parse(course.body) as {
       course: { id: string };
       draftVersion: { id: string };
@@ -151,7 +157,8 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       headers: { "x-test-user-id": ownerUserId },
       payload: { skillId }
     });
-    if (attach.statusCode !== 201) throw new Error(`Failed to attach skill: ${attach.body}`);
+    if (attach.statusCode !== 201)
+      throw new Error(`Failed to attach skill: ${attach.body}`);
 
     const transfer = await app.inject({
       method: "POST",
@@ -164,8 +171,12 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
         skillIds: [skillId]
       }
     });
-    if (transfer.statusCode !== 201) throw new Error(`Failed to create transfer: ${transfer.body}`);
-    const transferBody = JSON.parse(transfer.body) as { id: string; activityId: string };
+    if (transfer.statusCode !== 201)
+      throw new Error(`Failed to create transfer: ${transfer.body}`);
+    const transferBody = JSON.parse(transfer.body) as {
+      id: string;
+      activityId: string;
+    };
     transferActivityVersionId = transferBody.id;
     transferActivityId = transferBody.activityId;
 
@@ -187,21 +198,32 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
               title: "Build the layout",
               instructions: "Create the grid before asking for help.",
               hints: [
-                { key: "grid-track", content: { text: "Start with grid-template-columns." } },
-                { key: "grid-gap", content: { text: "Then add a gap between tracks." } }
+                {
+                  key: "grid-track",
+                  content: { text: "Start with grid-template-columns." }
+                },
+                {
+                  key: "grid-gap",
+                  content: { text: "Then add a gap between tracks." }
+                }
               ]
             }
           ],
           professionalSolution: {
             key: "professional-solution",
             title: "Professional solution",
-            content: { code: ".layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }" }
+            content: {
+              code: ".layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }"
+            }
           },
           transferActivityVersionId
         }
       }
     });
-    if (activity.statusCode !== 201) throw new Error(`Failed to create Guided Build activity: ${activity.body}`);
+    if (activity.statusCode !== 201)
+      throw new Error(
+        `Failed to create Guided Build activity: ${activity.body}`
+      );
     const activityBody = JSON.parse(activity.body) as {
       id: string;
       activityId: string;
@@ -218,7 +240,8 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       url: `/v1/organizations/${organizationId}/courses/${courseId}/versions/${courseVersionId}/publish`,
       headers: { "x-test-user-id": ownerUserId }
     });
-    if (publish.statusCode !== 200) throw new Error(`Failed to publish course: ${publish.body}`);
+    if (publish.statusCode !== 200)
+      throw new Error(`Failed to publish course: ${publish.body}`);
 
     const clone = await app.inject({
       method: "POST",
@@ -226,7 +249,8 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       headers: { "x-test-user-id": ownerUserId },
       payload: { title: "Guided Build course v2" }
     });
-    if (clone.statusCode !== 201) throw new Error(`Failed to clone course version: ${clone.body}`);
+    if (clone.statusCode !== 201)
+      throw new Error(`Failed to clone course version: ${clone.body}`);
     clonedCourseVersionId = (JSON.parse(clone.body) as { id: string }).id;
 
     const offering = await app.inject({
@@ -240,7 +264,8 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
         deliveryMode: "self_paced"
       }
     });
-    if (offering.statusCode !== 201) throw new Error(`Failed to create offering: ${offering.body}`);
+    if (offering.statusCode !== 201)
+      throw new Error(`Failed to create offering: ${offering.body}`);
     offeringId = (JSON.parse(offering.body) as { id: string }).id;
 
     const enrollment = await app.inject({
@@ -249,7 +274,8 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       headers: { "x-test-user-id": ownerUserId },
       payload: { userId: learnerUserId }
     });
-    if (enrollment.statusCode !== 201) throw new Error(`Failed to enroll learner: ${enrollment.body}`);
+    if (enrollment.statusCode !== 201)
+      throw new Error(`Failed to enroll learner: ${enrollment.body}`);
     enrollmentId = (JSON.parse(enrollment.body) as { id: string }).id;
 
     const attempt = await app.inject({
@@ -258,7 +284,8 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       headers: { "x-test-user-id": learnerUserId },
       payload: {}
     });
-    if (attempt.statusCode !== 201) throw new Error(`Failed to start Attempt: ${attempt.body}`);
+    if (attempt.statusCode !== 201)
+      throw new Error(`Failed to start Attempt: ${attempt.body}`);
     attemptId = (JSON.parse(attempt.body) as { id: string }).id;
   });
 
@@ -287,18 +314,54 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
              DISABLE TRIGGER guided_build_definitions_validate_context`
         );
 
-        await cleanupClient.query(`DELETE FROM learning_history.learning_events WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM learning_guidance.guidance_exposures WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM events.outbox WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM learning_progress.evidence WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM learning_progress.submissions WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM learning_progress.attempts WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM learning_progress.mastery_projections WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM learning_delivery.learning_offerings WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM learning_content.guided_build_hints WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM learning_content.guided_build_steps WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM learning_content.guided_build_definitions WHERE organization_id = $1`, [organizationId]);
+        await cleanupClient.query(
+          `DELETE FROM learning_history.learning_events WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_guidance.guidance_exposures WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM events.outbox WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_progress.evidence WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_progress.submissions WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_progress.attempts WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_progress.mastery_projections WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_delivery.learning_offerings WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_content.guided_build_hints WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_content.guided_build_steps WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_content.guided_build_definitions WHERE organization_id = $1`,
+          [organizationId]
+        );
 
         await cleanupClient.query(
           `ALTER TABLE learning_guidance.guidance_exposures
@@ -317,17 +380,41 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
              ENABLE TRIGGER guided_build_definitions_validate_context`
         );
 
-        await cleanupClient.query(`DELETE FROM learning_content.activity_skill_mappings WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM learning_content.course_version_activities WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM learning_content.course_version_skills WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM learning_content.activities WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM learning_content.skills WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM learning_content.courses WHERE organization_id = $1`, [organizationId]);
-        await cleanupClient.query(`DELETE FROM organizations.organizations WHERE id = $1`, [organizationId]);
+        await cleanupClient.query(
+          `DELETE FROM learning_content.activity_skill_mappings WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_content.course_version_activities WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_content.course_version_skills WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_content.activities WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_content.skills WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM learning_content.courses WHERE organization_id = $1`,
+          [organizationId]
+        );
+        await cleanupClient.query(
+          `DELETE FROM organizations.organizations WHERE id = $1`,
+          [organizationId]
+        );
       }
 
       if (createdUserIds.length > 0) {
-        await cleanupClient.query(`DELETE FROM identity.users WHERE id = ANY($1::uuid[])`, [createdUserIds]);
+        await cleanupClient.query(
+          `DELETE FROM identity.users WHERE id = ANY($1::uuid[])`,
+          [createdUserIds]
+        );
       }
 
       await cleanupClient.query("COMMIT");
@@ -388,8 +475,13 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       headers: { "x-test-user-id": learnerUserId }
     });
     expect(initial.statusCode).toBe(200);
-    const initialView = guidedBuildLearnerViewSchema.parse(JSON.parse(initial.body));
-    expect(initialView.state).toMatchObject({ phase: "working", workAssistance: "unassisted" });
+    const initialView = guidedBuildLearnerViewSchema.parse(
+      JSON.parse(initial.body)
+    );
+    expect(initialView.state).toMatchObject({
+      phase: "working",
+      workAssistance: "unassisted"
+    });
     expect(initialView.steps[0]?.revealedHints).toEqual([]);
     expect(initialView.professionalSolution).toBeNull();
     expect(initial.body).not.toContain("grid-template-columns");
@@ -418,7 +510,9 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       payload: { stepKey: "layout", idempotencyKey: "layout-hint-1" }
     });
     expect(first.statusCode).toBe(200);
-    const firstView = guidedBuildLearnerViewSchema.parse(JSON.parse(first.body));
+    const firstView = guidedBuildLearnerViewSchema.parse(
+      JSON.parse(first.body)
+    );
     expect(firstView.steps[0]?.revealedHints).toHaveLength(1);
     expect(firstView.steps[0]?.revealedHints[0]).toMatchObject({
       key: "grid-track",
@@ -433,7 +527,10 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       payload: { stepKey: "layout", idempotencyKey: "layout-hint-1" }
     });
     expect(retry.statusCode).toBe(200);
-    expect(guidedBuildLearnerViewSchema.parse(JSON.parse(retry.body)).steps[0]?.revealedHints).toHaveLength(1);
+    expect(
+      guidedBuildLearnerViewSchema.parse(JSON.parse(retry.body)).steps[0]
+        ?.revealedHints
+    ).toHaveLength(1);
 
     const second = await app.inject({
       method: "POST",
@@ -442,13 +539,18 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       payload: { stepKey: "layout", idempotencyKey: "layout-hint-2" }
     });
     expect(second.statusCode).toBe(200);
-    const secondView = guidedBuildLearnerViewSchema.parse(JSON.parse(second.body));
+    const secondView = guidedBuildLearnerViewSchema.parse(
+      JSON.parse(second.body)
+    );
     expect(secondView.steps[0]?.revealedHints.map((hint) => hint.key)).toEqual([
       "grid-track",
       "grid-gap"
     ]);
 
-    const facts = await migrationPool.query<{ exposures: number; events: number }>(
+    const facts = await migrationPool.query<{
+      exposures: number;
+      events: number;
+    }>(
       `SELECT
          (SELECT count(*)::integer FROM learning_guidance.guidance_exposures
            WHERE organization_id = $1 AND attempt_id = $2 AND kind = 'hint') AS exposures,
@@ -484,11 +586,15 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       payload: { idempotencyKey: "solution-after-submission" }
     });
     expect(solution.statusCode).toBe(200);
-    const solutionView = guidedBuildLearnerViewSchema.parse(JSON.parse(solution.body));
+    const solutionView = guidedBuildLearnerViewSchema.parse(
+      JSON.parse(solution.body)
+    );
     expect(solutionView.state.phase).toBe("reviewing");
     expect(solutionView.professionalSolution).toMatchObject({
       key: "professional-solution",
-      content: { code: ".layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }" }
+      content: {
+        code: ".layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }"
+      }
     });
 
     const retry = await app.inject({
@@ -538,9 +644,24 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       [organizationId, attemptId]
     );
     expect(history.rows).toMatchObject([
-      { event_name: "guidance.hint_revealed", guidance_step_key: "layout", guidance_hint_key: "grid-track", guidance_solution_key: null },
-      { event_name: "guidance.hint_revealed", guidance_step_key: "layout", guidance_hint_key: "grid-gap", guidance_solution_key: null },
-      { event_name: "guidance.solution_revealed", guidance_step_key: null, guidance_hint_key: null, guidance_solution_key: "professional-solution" }
+      {
+        event_name: "guidance.hint_revealed",
+        guidance_step_key: "layout",
+        guidance_hint_key: "grid-track",
+        guidance_solution_key: null
+      },
+      {
+        event_name: "guidance.hint_revealed",
+        guidance_step_key: "layout",
+        guidance_hint_key: "grid-gap",
+        guidance_solution_key: null
+      },
+      {
+        event_name: "guidance.solution_revealed",
+        guidance_step_key: null,
+        guidance_hint_key: null,
+        guidance_solution_key: "professional-solution"
+      }
     ]);
     expect(JSON.stringify(history.rows)).not.toContain("grid-template-columns");
   });
@@ -581,7 +702,9 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       submission: { attemptId, payload: { answer: "learner work" } },
       professionalSolution: {
         key: "professional-solution",
-        content: { code: ".layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }" }
+        content: {
+          code: ".layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }"
+        }
       }
     });
 
@@ -610,7 +733,9 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       payload: {}
     });
     expect(sourceAttemptResponse.statusCode).toBe(201);
-    const sourceAttempt = attemptSchema.parse(JSON.parse(sourceAttemptResponse.body));
+    const sourceAttempt = attemptSchema.parse(
+      JSON.parse(sourceAttemptResponse.body)
+    );
 
     const prematureTransfer = await app.inject({
       method: "GET",
@@ -647,7 +772,9 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       headers: { "x-test-user-id": learnerUserId }
     });
     expect(transfer.statusCode).toBe(200);
-    const handoff = guidedBuildTransferHandoffSchema.parse(JSON.parse(transfer.body));
+    const handoff = guidedBuildTransferHandoffSchema.parse(
+      JSON.parse(transfer.body)
+    );
     expect(handoff).toEqual({
       sourceAttemptId: sourceAttempt.id,
       enrollmentId,
@@ -657,7 +784,10 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       title: "Transfer challenge"
     });
 
-    const guidanceFacts = await migrationPool.query<{ exposures: number; guidance_events: number }>(
+    const guidanceFacts = await migrationPool.query<{
+      exposures: number;
+      guidance_events: number;
+    }>(
       `SELECT
          (SELECT count(*)::integer FROM learning_guidance.guidance_exposures
            WHERE organization_id = $1 AND attempt_id = $2) AS exposures,
@@ -674,10 +804,15 @@ describe("protected Guided Build guidance HTTP lifecycle", () => {
       payload: {}
     });
     expect(transferAttemptResponse.statusCode).toBe(201);
-    const transferAttempt = attemptSchema.parse(JSON.parse(transferAttemptResponse.body));
+    const transferAttempt = attemptSchema.parse(
+      JSON.parse(transferAttemptResponse.body)
+    );
     expect(transferAttempt.activityVersionId).toBe(transferActivityVersionId);
 
-    const lifecycle = await migrationPool.query<{ history_events: number; outbox_events: number }>(
+    const lifecycle = await migrationPool.query<{
+      history_events: number;
+      outbox_events: number;
+    }>(
       `SELECT
          (SELECT count(*)::integer FROM learning_history.learning_events
            WHERE organization_id = $1 AND attempt_id = $2 AND event_name = 'attempt.started') AS history_events,

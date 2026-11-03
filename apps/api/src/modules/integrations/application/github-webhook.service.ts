@@ -1,6 +1,10 @@
 import { createHash } from "node:crypto";
 
-import { BadRequestException, ConflictException, Injectable } from "@nestjs/common";
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable
+} from "@nestjs/common";
 
 import { DatabaseService } from "../../../database/database.service";
 import { GitHubWebhookSignatureVerifier } from "../infrastructure/github-webhook-signature.verifier";
@@ -32,7 +36,8 @@ const repositoryRequiredEvents = new Set([
   "check_suite"
 ]);
 
-const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const uuidPattern =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const eventPattern = /^[a-z][a-z0-9_]{0,63}$/;
 const actionPattern = /^[a-z][a-z0-9_]{0,99}$/;
 
@@ -62,11 +67,7 @@ function optionalExternalId(
 
   const object = requireObject(container, `GitHub webhook ${field}`);
   const id = object.id;
-  if (
-    typeof id !== "number" ||
-    !Number.isSafeInteger(id) ||
-    id <= 0
-  ) {
+  if (typeof id !== "number" || !Number.isSafeInteger(id) || id <= 0) {
     throw new BadRequestException(
       `GitHub webhook ${field}.id must be a positive safe integer.`
     );
@@ -88,9 +89,7 @@ export class GitHubWebhookApplicationService {
 
     const deliveryId = input.deliveryId;
     if (deliveryId === undefined || !uuidPattern.test(deliveryId)) {
-      throw new BadRequestException(
-        "x-github-delivery must be a valid UUID."
-      );
+      throw new BadRequestException("x-github-delivery must be a valid UUID.");
     }
 
     const eventName = input.eventName;
@@ -128,18 +127,26 @@ export class GitHubWebhookApplicationService {
         "GitHub webhook installation.id is required for this event."
       );
     }
-    if (repositoryRequiredEvents.has(eventName) && githubRepositoryId === null) {
+    if (
+      repositoryRequiredEvents.has(eventName) &&
+      githubRepositoryId === null
+    ) {
       throw new BadRequestException(
         "GitHub webhook repository.id is required for this event."
       );
     }
-    if (eventName === "ping" && (githubInstallationId !== null || githubRepositoryId !== null)) {
+    if (
+      eventName === "ping" &&
+      (githubInstallationId !== null || githubRepositoryId !== null)
+    ) {
       throw new BadRequestException(
         "GitHub ping webhook must not carry tenant routing identifiers."
       );
     }
 
-    const payloadSha256 = createHash("sha256").update(input.rawBody).digest("hex");
+    const payloadSha256 = createHash("sha256")
+      .update(input.rawBody)
+      .digest("hex");
     const accepted = await this.database.transaction((transaction) =>
       this.inbox.accept(transaction, {
         deliveryId,

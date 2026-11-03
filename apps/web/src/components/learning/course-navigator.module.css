@@ -292,12 +292,20 @@
   padding-right: 3.5rem;
 }
 @keyframes slide-in {
-  from { transform: translateX(100%); }
-  to { transform: none; }
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: none;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .sheet[open] { animation: none; }
-  .meter span { transition: none; }
+  .sheet[open] {
+    animation: none;
+  }
+  .meter span {
+    transition: none;
+  }
 }
 
 @media (max-width: 960px) {

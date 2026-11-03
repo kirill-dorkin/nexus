@@ -21,7 +21,10 @@ function configure(): void {
   process.env.GITHUB_OAUTH_CLIENT_SECRET = "github-secret";
 }
 
-function restore(name: keyof NodeJS.ProcessEnv, value: string | undefined): void {
+function restore(
+  name: keyof NodeJS.ProcessEnv,
+  value: string | undefined
+): void {
   if (value === undefined) delete process.env[name];
   else process.env[name] = value;
 }
@@ -43,11 +46,13 @@ describe("HttpOAuthProviderGateway", () => {
     const gateway = new HttpOAuthProviderGateway();
 
     expect(gateway.configuredProviders()).toEqual(["google"]);
-    const url = new URL(gateway.authorizationUrl({
-      provider: "google",
-      state: "state-value",
-      codeChallenge: "challenge-value"
-    }));
+    const url = new URL(
+      gateway.authorizationUrl({
+        provider: "google",
+        state: "state-value",
+        codeChallenge: "challenge-value"
+      })
+    );
     expect(url.origin).toBe("https://accounts.google.com");
     expect(url.searchParams.get("state")).toBe("state-value");
     expect(url.searchParams.get("code_challenge_method")).toBe("S256");
@@ -58,17 +63,25 @@ describe("HttpOAuthProviderGateway", () => {
 
   it("accepts a verified Google profile without persisting provider tokens", async () => {
     configure();
-    const fetchMock = vi.spyOn(globalThis, "fetch")
-      .mockResolvedValueOnce(new Response(JSON.stringify({ access_token: "transient-token" }), {
-        status: 200,
-        headers: { "content-type": "application/json" }
-      }))
-      .mockResolvedValueOnce(new Response(JSON.stringify({
-        sub: "google-subject",
-        email: "Learner@Example.test",
-        email_verified: true,
-        name: "Learner Name"
-      }), { status: 200, headers: { "content-type": "application/json" } }));
+    const fetchMock = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ access_token: "transient-token" }), {
+          status: 200,
+          headers: { "content-type": "application/json" }
+        })
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            sub: "google-subject",
+            email: "Learner@Example.test",
+            email_verified: true,
+            name: "Learner Name"
+          }),
+          { status: 200, headers: { "content-type": "application/json" } }
+        )
+      );
 
     const profile = await new HttpOAuthProviderGateway().exchangeCode({
       provider: "google",
@@ -82,23 +95,36 @@ describe("HttpOAuthProviderGateway", () => {
       emailVerified: true,
       displayName: "Learner Name"
     });
-    expect(String(fetchMock.mock.calls[0]?.[1]?.body as URLSearchParams | undefined)).toContain("code_verifier=");
+    expect(
+      String(fetchMock.mock.calls[0]?.[1]?.body as URLSearchParams | undefined)
+    ).toContain("code_verifier=");
   });
 
   it("rejects a Google identity whose email is not verified", async () => {
     configure();
     vi.spyOn(globalThis, "fetch")
-      .mockResolvedValueOnce(new Response(JSON.stringify({ access_token: "transient-token" }), { status: 200 }))
-      .mockResolvedValueOnce(new Response(JSON.stringify({
-        sub: "google-subject",
-        email: "learner@example.test",
-        email_verified: false
-      }), { status: 200 }));
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ access_token: "transient-token" }), {
+          status: 200
+        })
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            sub: "google-subject",
+            email: "learner@example.test",
+            email_verified: false
+          }),
+          { status: 200 }
+        )
+      );
 
-    await expect(new HttpOAuthProviderGateway().exchangeCode({
-      provider: "google",
-      code: "authorization-code",
-      codeVerifier: "v".repeat(64)
-    })).rejects.toBeInstanceOf(BadGatewayException);
+    await expect(
+      new HttpOAuthProviderGateway().exchangeCode({
+        provider: "google",
+        code: "authorization-code",
+        codeVerifier: "v".repeat(64)
+      })
+    ).rejects.toBeInstanceOf(BadGatewayException);
   });
 });

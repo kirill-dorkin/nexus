@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { permanentRedirect } from "next/navigation";
-import { CoursePageView, courseMetadata } from "../../../../components/learning/course-page";
+import {
+  CoursePageView,
+  courseMetadata
+} from "../../../../components/learning/course-page";
 import { loadLearningCourse } from "../../../../lib/public-learning";
 import { courseUrl } from "../../../../lib/public-learning-routes";
 export const dynamic = "force-dynamic";

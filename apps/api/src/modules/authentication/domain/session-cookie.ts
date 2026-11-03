@@ -2,7 +2,9 @@ import { isSessionToken } from "./session-token";
 
 export const SESSION_COOKIE_NAME = "__Host-id";
 
-export function readSessionCookie(cookieHeader: string | undefined): string | null {
+export function readSessionCookie(
+  cookieHeader: string | undefined
+): string | null {
   if (cookieHeader === undefined || cookieHeader.length === 0) {
     return null;
   }
@@ -31,7 +33,9 @@ export function readSessionCookie(cookieHeader: string | undefined): string | nu
 
 export function serializeSessionCookie(sessionToken: string): string {
   if (!isSessionToken(sessionToken)) {
-    throw new Error("A valid opaque session token is required for the session cookie.");
+    throw new Error(
+      "A valid opaque session token is required for the session cookie."
+    );
   }
 
   return `${SESSION_COOKIE_NAME}=${sessionToken}; Path=/; HttpOnly; Secure; SameSite=Strict`;

@@ -100,9 +100,7 @@ type ReadyDecision = Readonly<{
 }>;
 
 export type CourseReadinessSkillDecision =
-  | InsufficientDecision
-  | NotReadyDecision
-  | ReadyDecision;
+  InsufficientDecision | NotReadyDecision | ReadyDecision;
 
 export type CourseReadinessPolicyDecision = Readonly<{
   status: "insufficient_evidence" | "not_ready" | "ready";
@@ -144,7 +142,9 @@ function compareSkills(
   left: CourseReadinessSkill,
   right: CourseReadinessSkill
 ): number {
-  return left.position - right.position || left.skillId.localeCompare(right.skillId);
+  return (
+    left.position - right.position || left.skillId.localeCompare(right.skillId)
+  );
 }
 
 function computeFreshUntil(lastScoredEvidenceAt: string): string {
@@ -162,13 +162,17 @@ export function courseProgressionReadinessV1(
   input: CourseReadinessPolicyInput
 ): CourseReadinessPolicyDecision {
   if (input.skills.length === 0) {
-    throw new Error("Course readiness requires at least one CourseVersion skill.");
+    throw new Error(
+      "Course readiness requires at least one CourseVersion skill."
+    );
   }
 
   const evaluatedAtMs = parseInstant(input.evaluatedAt, "evaluatedAt");
   const skillIds = new Set(input.skills.map((skill) => skill.skillId));
   if (skillIds.size !== input.skills.length) {
-    throw new Error("Course readiness contains duplicate CourseVersion skills.");
+    throw new Error(
+      "Course readiness contains duplicate CourseVersion skills."
+    );
   }
 
   const masteryBySkillId = uniqueBySkillId(input.mastery, "Mastery input");
@@ -277,8 +281,7 @@ export function courseProgressionReadinessV1(
       const reasons: NotReadyReason[] = [];
 
       if (
-        mastery.masteryScore <
-        COURSE_PROGRESSION_READINESS_POLICY.masteryTarget
+        mastery.masteryScore < COURSE_PROGRESSION_READINESS_POLICY.masteryTarget
       ) {
         reasons.push({
           code: "mastery_below_target",
@@ -335,7 +338,9 @@ export function courseProgressionReadinessV1(
     return { status: "not_ready", readyUntil: null, skills: decisions };
   }
 
-  if (decisions.some((decision) => decision.status === "insufficient_evidence")) {
+  if (
+    decisions.some((decision) => decision.status === "insufficient_evidence")
+  ) {
     return {
       status: "insufficient_evidence",
       readyUntil: null,
@@ -344,7 +349,9 @@ export function courseProgressionReadinessV1(
   }
 
   const readyUntil = decisions
-    .filter((decision): decision is ReadyDecision => decision.status === "ready")
+    .filter(
+      (decision): decision is ReadyDecision => decision.status === "ready"
+    )
     .map((decision) => decision.freshUntil)
     .sort(
       (left, right) =>
@@ -352,7 +359,9 @@ export function courseProgressionReadinessV1(
     )[0];
 
   if (readyUntil === undefined) {
-    throw new Error("Ready course readiness unexpectedly has no readiness horizon.");
+    throw new Error(
+      "Ready course readiness unexpectedly has no readiness horizon."
+    );
   }
 
   return { status: "ready", readyUntil, skills: decisions };

@@ -68,64 +68,67 @@ export class LearningContentApplicationService {
     const versionId = await this.database.nextUuid();
 
     try {
-      return await this.database.tenantTransaction(context, async (transaction) => {
-        await this.identity.requireActiveUser(transaction, context.userId);
-        await this.authorization.requireCapability(
-          transaction,
-          context.userId,
-          "course.manage",
-          organizationScope(organizationId)
-        );
+      return await this.database.tenantTransaction(
+        context,
+        async (transaction) => {
+          await this.identity.requireActiveUser(transaction, context.userId);
+          await this.authorization.requireCapability(
+            transaction,
+            context.userId,
+            "course.manage",
+            organizationScope(organizationId)
+          );
 
-        const result = await this.content.createCourseWithInitialDraft(
-          transaction,
-          {
-            id: courseId,
-            organizationId,
-            slug: command.slug,
-            createdByUserId: context.userId
-          },
-          {
-            id: versionId,
-            organizationId,
-            courseId,
-            title: command.title,
-            description: command.description ?? null,
-            createdByUserId: context.userId
-          }
-        );
+          const result = await this.content.createCourseWithInitialDraft(
+            transaction,
+            {
+              id: courseId,
+              organizationId,
+              slug: command.slug,
+              createdByUserId: context.userId
+            },
+            {
+              id: versionId,
+              organizationId,
+              courseId,
+              title: command.title,
+              description: command.description ?? null,
+              createdByUserId: context.userId
+            }
+          );
 
-        await this.outbox.append(transaction, {
-          organizationId,
-          eventName: "course.created",
-          eventVersion: 1,
-          aggregateType: "course",
-          aggregateId: courseId,
-          actorUserId: context.userId,
-          payload: {
+          await this.outbox.append(transaction, {
             organizationId,
-            courseId,
-            slug: result.course.slug,
-            initialVersionId: versionId
-          }
-        });
-        await this.outbox.append(transaction, {
-          organizationId,
-          eventName: "course_version.created",
-          eventVersion: 1,
-          aggregateType: "course_version",
-          aggregateId: versionId,
-          actorUserId: context.userId,
-          payload: {
+            eventName: "course.created",
+            eventVersion: 1,
+            aggregateType: "course",
+            aggregateId: courseId,
+            actorUserId: context.userId,
+            payload: {
+              organizationId,
+              courseId,
+              slug: result.course.slug,
+              initialVersionId: versionId
+            }
+          });
+          await this.outbox.append(transaction, {
             organizationId,
-            courseId,
-            versionId,
-            versionNumber: 1
-          }
-        });
+            eventName: "course_version.created",
+            eventVersion: 1,
+            aggregateType: "course_version",
+            aggregateId: versionId,
+            actorUserId: context.userId,
+            payload: {
+              organizationId,
+              courseId,
+              versionId,
+              versionNumber: 1
+            }
+          });
 
-        return result;
-      });
+          return result;
+        }
+      );
     } catch (error) {
       if (isUniqueViolation(error)) {
         throw new ConflictException("A course with this slug already exists.");
@@ -167,53 +170,64 @@ export class LearningContentApplicationService {
     const versionId = await this.database.nextUuid();
 
     try {
-      return await this.database.tenantTransaction(context, async (transaction) => {
-        await this.identity.requireActiveUser(transaction, context.userId);
-        await this.authorization.requireCapability(
-          transaction,
-          context.userId,
-          "course.manage",
-          courseScope(organizationId, courseId)
-        );
+      return await this.database.tenantTransaction(
+        context,
+        async (transaction) => {
+          await this.identity.requireActiveUser(transaction, context.userId);
+          await this.authorization.requireCapability(
+            transaction,
+            context.userId,
+            "course.manage",
+            courseScope(organizationId, courseId)
+          );
 
-        const version = await this.content.createNextDraftVersion(transaction, {
-          id: versionId,
-          organizationId,
-          courseId,
-          title: command.title,
-          description: command.description ?? null,
-          createdByUserId: context.userId
-        });
-        if (version === null) {
-          throw new NotFoundException("Course not found.");
-        }
+          const version = await this.content.createNextDraftVersion(
+            transaction,
+            {
+              id: versionId,
+              organizationId,
+              courseId,
+              title: command.title,
+              description: command.description ?? null,
+              createdByUserId: context.userId
+            }
+          );
+          if (version === null) {
+            throw new NotFoundException("Course not found.");
+          }
 
-        await this.graph.cloneLatestPublishedGraph(
-          transaction,
-          organizationId,
-          courseId,
-          version.id
-        );
-        await this.manifests.cloneLatestPublished(transaction, organizationId, courseId, version.id);
-
-        await this.outbox.append(transaction, {
-          organizationId,
-          eventName: "course_version.created",
-          eventVersion: 1,
-          aggregateType: "course_version",
-          aggregateId: version.id,
-          actorUserId: context.userId,
-          payload: {
+          await this.graph.cloneLatestPublishedGraph(
+            transaction,
             organizationId,
             courseId,
-            versionId: version.id,
-            versionNumber: version.versionNumber,
-            graphClonedFromLatestPublishedVersion: true
-          }
-        });
+            version.id
+          );
+          await this.manifests.cloneLatestPublished(
+            transaction,
+            organizationId,
+            courseId,
+            version.id
+          );
 
-        return version;
-      });
+          await this.outbox.append(transaction, {
+            organizationId,
+            eventName: "course_version.created",
+            eventVersion: 1,
+            aggregateType: "course_version",
+            aggregateId: version.id,
+            actorUserId: context.userId,
+            payload: {
+              organizationId,
+              courseId,
+              versionId: version.id,
+              versionNumber: version.versionNumber,
+              graphClonedFromLatestPublishedVersion: true
+            }
+          });
+
+          return version;
+        }
+      );
     } catch (error) {
       if (isUniqueViolation(error)) {
         throw new ConflictException(
@@ -251,14 +265,36 @@ export class LearningContentApplicationService {
         throw new NotFoundException("Course version not found.");
       }
       if (existing.status !== "draft") {
-        throw new ConflictException("Only a draft course version can be published.");
+        throw new ConflictException(
+          "Only a draft course version can be published."
+        );
       }
-      if (expectedRevision !== undefined && await this.manifests.revision(transaction, organizationId, versionId) !== expectedRevision) {
-        throw new ConflictException("The draft changed. Reload and preview it before publication.");
+      if (
+        expectedRevision !== undefined &&
+        (await this.manifests.revision(
+          transaction,
+          organizationId,
+          versionId
+        )) !== expectedRevision
+      ) {
+        throw new ConflictException(
+          "The draft changed. Reload and preview it before publication."
+        );
       }
       // Legacy versions remain compatible; manifest-managed versions must be complete.
-      if (await this.manifests.isManifestVersion(transaction, organizationId, versionId)) {
-        await this.manifests.exportVersion(transaction, organizationId, courseId, versionId);
+      if (
+        await this.manifests.isManifestVersion(
+          transaction,
+          organizationId,
+          versionId
+        )
+      ) {
+        await this.manifests.exportVersion(
+          transaction,
+          organizationId,
+          courseId,
+          versionId
+        );
       }
 
       const published = await this.content.publishDraftVersion(
@@ -269,7 +305,9 @@ export class LearningContentApplicationService {
         context.userId
       );
       if (published === null) {
-        throw new ConflictException("The course version is no longer publishable.");
+        throw new ConflictException(
+          "The course version is no longer publishable."
+        );
       }
 
       await this.outbox.append(transaction, {

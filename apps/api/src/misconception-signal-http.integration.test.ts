@@ -15,7 +15,9 @@ import {
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for misconception signal integration tests.`);
+    throw new Error(
+      `${name} is required for misconception signal integration tests.`
+    );
   }
   return value;
 }
@@ -103,23 +105,25 @@ describe("trusted misconception signal HTTP lifecycle", () => {
     learnerUserId = await createUser("misconception-learner");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `misconception-${randomUUID()}`,
         name: "Misconception signal integration"
-      })).id;
+      })
+    ).id;
 
     const invite = await app.inject({
       method: "POST",
@@ -328,7 +332,9 @@ describe("trusted misconception signal HTTP lifecycle", () => {
     });
     expect(response.statusCode).toBe(200);
 
-    const body = nextLearningRecommendationSchema.parse(JSON.parse(response.body));
+    const body = nextLearningRecommendationSchema.parse(
+      JSON.parse(response.body)
+    );
     expect(body).toMatchObject({
       status: "recommended",
       misconceptionSignalPolicy: {
@@ -358,7 +364,9 @@ describe("trusted misconception signal HTTP lifecycle", () => {
     });
     expect(response.statusCode).toBe(200);
 
-    const body = nextLearningRecommendationSchema.parse(JSON.parse(response.body));
+    const body = nextLearningRecommendationSchema.parse(
+      JSON.parse(response.body)
+    );
     expect(body.status).toBe("recommended");
     if (body.status !== "recommended") {
       throw new Error("Expected the below-target skill to remain recommended.");
@@ -396,10 +404,14 @@ describe("trusted misconception signal HTTP lifecycle", () => {
     });
     expect(response.statusCode).toBe(200);
 
-    const body = nextLearningRecommendationSchema.parse(JSON.parse(response.body));
+    const body = nextLearningRecommendationSchema.parse(
+      JSON.parse(response.body)
+    );
     expect(body.status).toBe("recommended");
     if (body.status !== "recommended") {
-      throw new Error("Expected the skill to remain below target after one later pass.");
+      throw new Error(
+        "Expected the skill to remain below target after one later pass."
+      );
     }
 
     expect(body.recommendation.activity).toMatchObject({

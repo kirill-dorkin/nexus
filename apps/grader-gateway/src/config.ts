@@ -29,10 +29,14 @@ export type GraderGatewayRuntimeConfig = Readonly<{
   profiles: readonly GraderExecutionProfile[];
   sandboxProvider:
     | Readonly<{ kind: "unavailable" }>
-    | Readonly<{ kind: "kubernetes-gvisor"; config: KubernetesGvisorProviderConfig }>;
+    | Readonly<{
+        kind: "kubernetes-gvisor";
+        config: KubernetesGvisorProviderConfig;
+      }>;
 }>;
 
-const imageRepositoryPattern = /^[a-z0-9]+(?:[._-][a-z0-9]+)*(?::[0-9]+)?(?:\/[a-z0-9]+(?:[._-][a-z0-9]+)*)+$/;
+const imageRepositoryPattern =
+  /^[a-z0-9]+(?:[._-][a-z0-9]+)*(?::[0-9]+)?(?:\/[a-z0-9]+(?:[._-][a-z0-9]+)*)+$/;
 
 function required(env: NodeJS.ProcessEnv, name: string): string {
   const value = env[name];
@@ -50,28 +54,48 @@ function integer(
   maximum: number
 ): number {
   const raw = env[name];
-  const value = raw === undefined || raw.trim().length === 0 ? fallback : Number(raw);
+  const value =
+    raw === undefined || raw.trim().length === 0 ? fallback : Number(raw);
   if (!Number.isInteger(value) || value < minimum || value > maximum) {
-    throw new Error(`${name} must be an integer between ${minimum} and ${maximum}.`);
+    throw new Error(
+      `${name} must be an integer between ${minimum} and ${maximum}.`
+    );
   }
   return value;
 }
 
 function normalizeApiUrl(raw: string, production: boolean): string {
   const url = new URL(raw);
-  if (url.username.length > 0 || url.password.length > 0 || url.search.length > 0 || url.hash.length > 0) {
-    throw new Error("GRADER_KUBERNETES_API_URL must not contain credentials, query, or fragment components.");
+  if (
+    url.username.length > 0 ||
+    url.password.length > 0 ||
+    url.search.length > 0 ||
+    url.hash.length > 0
+  ) {
+    throw new Error(
+      "GRADER_KUBERNETES_API_URL must not contain credentials, query, or fragment components."
+    );
   }
   if (url.pathname !== "/" && url.pathname !== "") {
     throw new Error("GRADER_KUBERNETES_API_URL must contain only an origin.");
   }
-  const loopback = url.hostname === "localhost" || url.hostname === "127.0.0.1" || url.hostname === "[::1]";
+  const loopback =
+    url.hostname === "localhost" ||
+    url.hostname === "127.0.0.1" ||
+    url.hostname === "[::1]";
   if (production) {
     if (url.protocol !== "https:") {
-      throw new Error("GRADER_KUBERNETES_API_URL must use https in production.");
+      throw new Error(
+        "GRADER_KUBERNETES_API_URL must use https in production."
+      );
     }
-  } else if (url.protocol !== "https:" && !(url.protocol === "http:" && loopback)) {
-    throw new Error("Non-production HTTP Kubernetes API URLs are allowed only on loopback.");
+  } else if (
+    url.protocol !== "https:" &&
+    !(url.protocol === "http:" && loopback)
+  ) {
+    throw new Error(
+      "Non-production HTTP Kubernetes API URLs are allowed only on loopback."
+    );
   }
   return url.origin;
 }
@@ -106,19 +130,30 @@ export function loadGraderGatewayRuntimeConfig(
 ): GraderGatewayRuntimeConfig {
   const serviceToken = required(env, "GRADER_GATEWAY_SERVICE_TOKEN");
   if (Buffer.byteLength(serviceToken, "utf8") < 32) {
-    throw new Error("GRADER_GATEWAY_SERVICE_TOKEN must contain at least 32 bytes.");
+    throw new Error(
+      "GRADER_GATEWAY_SERVICE_TOKEN must contain at least 32 bytes."
+    );
   }
 
-  const profiles = parseGraderExecutionProfilesJson(env.GRADER_EXECUTION_PROFILES_JSON);
+  const profiles = parseGraderExecutionProfilesJson(
+    env.GRADER_EXECUTION_PROFILES_JSON
+  );
   new GraderExecutionProfileRegistry(profiles);
 
   const port = integer(env, "GRADER_GATEWAY_PORT", 4100, 1, 65_535);
   const provider = env.GRADER_SANDBOX_PROVIDER?.trim() || "unavailable";
   if (provider === "unavailable") {
-    return { port, serviceToken, profiles, sandboxProvider: { kind: "unavailable" } };
+    return {
+      port,
+      serviceToken,
+      profiles,
+      sandboxProvider: { kind: "unavailable" }
+    };
   }
   if (provider !== "kubernetes-gvisor") {
-    throw new Error("GRADER_SANDBOX_PROVIDER must be unavailable or kubernetes-gvisor.");
+    throw new Error(
+      "GRADER_SANDBOX_PROVIDER must be unavailable or kubernetes-gvisor."
+    );
   }
 
   const apiUrl = normalizeApiUrl(
@@ -131,7 +166,10 @@ export function loadGraderGatewayRuntimeConfig(
   );
   const caFile = env.GRADER_KUBERNETES_CA_FILE?.trim();
   const caCertificate = apiUrl.startsWith("https:")
-    ? readCredential(required(env, "GRADER_KUBERNETES_CA_FILE"), "GRADER_KUBERNETES_CA_FILE")
+    ? readCredential(
+        required(env, "GRADER_KUBERNETES_CA_FILE"),
+        "GRADER_KUBERNETES_CA_FILE"
+      )
     : caFile === undefined || caFile.length === 0
       ? null
       : readCredential(caFile, "GRADER_KUBERNETES_CA_FILE");
@@ -149,7 +187,13 @@ export function loadGraderGatewayRuntimeConfig(
         ),
         serviceAccountTokenFile: tokenFile,
         caCertificate,
-        pollIntervalMs: integer(env, "GRADER_KUBERNETES_POLL_INTERVAL_MS", 250, 50, 5_000),
+        pollIntervalMs: integer(
+          env,
+          "GRADER_KUBERNETES_POLL_INTERVAL_MS",
+          250,
+          50,
+          5_000
+        ),
         requestTimeoutMs: integer(
           env,
           "GRADER_KUBERNETES_REQUEST_TIMEOUT_MS",
@@ -178,7 +222,13 @@ export function loadGraderGatewayRuntimeConfig(
           16,
           512
         ),
-        podPidsLimit: integer(env, "GRADER_KUBERNETES_POD_PIDS_LIMIT", 64, 1, 64)
+        podPidsLimit: integer(
+          env,
+          "GRADER_KUBERNETES_POD_PIDS_LIMIT",
+          64,
+          1,
+          64
+        )
       }
     }
   };

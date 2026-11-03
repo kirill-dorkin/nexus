@@ -12,7 +12,9 @@ import { GitHubWebhookLifecycleProcessor } from "./modules/integrations/infrastr
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for GitHub lifecycle processor integration tests.`);
+    throw new Error(
+      `${name} is required for GitHub lifecycle processor integration tests.`
+    );
   }
   return value;
 }
@@ -76,7 +78,8 @@ describe("GitHub webhook lifecycle processor", () => {
       [`lifecycle-${label}-${randomUUID()}@example.test`, `Lifecycle ${label}`]
     );
     const userId = user.rows[0]?.id;
-    if (userId === undefined) throw new Error("Failed to create lifecycle test user.");
+    if (userId === undefined)
+      throw new Error("Failed to create lifecycle test user.");
 
     const organization = await migrationPool.query<IdRow>(
       `INSERT INTO organizations.organizations (slug, name, created_by_user_id)
@@ -85,7 +88,8 @@ describe("GitHub webhook lifecycle processor", () => {
       [`lifecycle-${label}-${randomUUID()}`, `Lifecycle ${label}`, userId]
     );
     const organizationId = organization.rows[0]?.id;
-    if (organizationId === undefined) throw new Error("Failed to create lifecycle test organization.");
+    if (organizationId === undefined)
+      throw new Error("Failed to create lifecycle test organization.");
     organizationIds.push(organizationId);
 
     await migrationPool.query(
@@ -112,20 +116,27 @@ describe("GitHub webhook lifecycle processor", () => {
         `INSERT INTO integrations.github_repositories (
            organization_id, github_installation_id, github_repository_id, full_name, status
          ) VALUES ($1, $2, $3, $4, 'active')`,
-        [tenant.organizationId, installationId, repository.id, repository.fullName]
+        [
+          tenant.organizationId,
+          installationId,
+          repository.id,
+          repository.fullName
+        ]
       );
     }
   }
 
-  async function insertInbox(input: Readonly<{
-    organizationId: string | null;
-    eventName: string;
-    action: string;
-    installationId: number;
-    repositoryId?: number | null;
-    routingStatus: string;
-    payload: Readonly<Record<string, unknown>>;
-  }>): Promise<string> {
+  async function insertInbox(
+    input: Readonly<{
+      organizationId: string | null;
+      eventName: string;
+      action: string;
+      installationId: number;
+      repositoryId?: number | null;
+      routingStatus: string;
+      payload: Readonly<Record<string, unknown>>;
+    }>
+  ): Promise<string> {
     const deliveryId = randomUUID();
     deliveryIds.push(deliveryId);
     const raw = JSON.stringify(input.payload);
@@ -155,7 +166,8 @@ describe("GitHub webhook lifecycle processor", () => {
       ]
     );
     const id = result.rows[0]?.id;
-    if (id === undefined) throw new Error("Failed to create lifecycle inbox row.");
+    if (id === undefined)
+      throw new Error("Failed to create lifecycle inbox row.");
     return id;
   }
 
@@ -175,7 +187,8 @@ describe("GitHub webhook lifecycle processor", () => {
       [inboxId]
     );
     const row = result.rows[0];
-    if (row === undefined) throw new Error("Lifecycle processing state not found.");
+    if (row === undefined)
+      throw new Error("Lifecycle processing state not found.");
     return row;
   }
 
@@ -198,18 +211,17 @@ describe("GitHub webhook lifecycle processor", () => {
     await mapInstallation(tenant, installationId, [
       { id: repositoryId, fullName: `org-${testId}/repo-reroute` }
     ]);
-    await withTenantTransaction(
-      appPool,
-      tenant,
-      async (transaction) => {
-        await transaction.client.query(
-          `SELECT platform_internal.refresh_github_webhook_routes_for_installation($1, $2)`,
-          [tenant.organizationId, installationId]
-        );
-      }
-    );
+    await withTenantTransaction(appPool, tenant, async (transaction) => {
+      await transaction.client.query(
+        `SELECT platform_internal.refresh_github_webhook_routes_for_installation($1, $2)`,
+        [tenant.organizationId, installationId]
+      );
+    });
 
-    const route = await migrationPool.query<{ routing_status: string; organization_id: string | null }>(
+    const route = await migrationPool.query<{
+      routing_status: string;
+      organization_id: string | null;
+    }>(
       `SELECT routing_status, organization_id::text
        FROM integrations.github_webhook_routing_state
        WHERE inbox_id = $1`,
@@ -222,8 +234,14 @@ describe("GitHub webhook lifecycle processor", () => {
     expect((await processingStatus(inboxId)).status).toBe("pending");
 
     expect(await processor.processOne()).toBe(true);
-    expect(await processingStatus(inboxId)).toMatchObject({ status: "completed", attempt_count: 2 });
-    const mapping = await migrationPool.query<{ installation_status: string; repository_status: string }>(
+    expect(await processingStatus(inboxId)).toMatchObject({
+      status: "completed",
+      attempt_count: 2
+    });
+    const mapping = await migrationPool.query<{
+      installation_status: string;
+      repository_status: string;
+    }>(
       `SELECT installation.status AS installation_status, repository.status AS repository_status
        FROM integrations.github_installations AS installation
        JOIN integrations.github_repositories AS repository
@@ -263,7 +281,10 @@ describe("GitHub webhook lifecycle processor", () => {
     );
 
     expect(await processor.processOne()).toBe(true);
-    expect(await processingStatus(inboxId)).toMatchObject({ status: "completed", attempt_count: 2 });
+    expect(await processingStatus(inboxId)).toMatchObject({
+      status: "completed",
+      attempt_count: 2
+    });
     const installation = await migrationPool.query<{ status: string }>(
       `SELECT status FROM integrations.github_installations
        WHERE organization_id = $1 AND github_installation_id = $2`,
@@ -313,8 +334,12 @@ describe("GitHub webhook lifecycle processor", () => {
     );
     expect(beforeRetry.rows[0]?.status).toBe("active");
 
-    await migrationPool.query(`DROP TRIGGER ${triggerName} ON integrations.github_installations`);
-    await migrationPool.query(`DROP FUNCTION platform_internal.${functionName}()`);
+    await migrationPool.query(
+      `DROP TRIGGER ${triggerName} ON integrations.github_installations`
+    );
+    await migrationPool.query(
+      `DROP FUNCTION platform_internal.${functionName}()`
+    );
     await migrationPool.query(
       `UPDATE integrations.github_webhook_lifecycle_processing
        SET available_at = now()
@@ -323,7 +348,10 @@ describe("GitHub webhook lifecycle processor", () => {
     );
 
     expect(await processor.processOne()).toBe(true);
-    expect(await processingStatus(inboxId)).toMatchObject({ status: "completed", attempt_count: 2 });
+    expect(await processingStatus(inboxId)).toMatchObject({
+      status: "completed",
+      attempt_count: 2
+    });
   });
 
   it("applies repository add/remove and reroutes retained repository deliveries", async () => {
@@ -354,7 +382,9 @@ describe("GitHub webhook lifecycle processor", () => {
       payload: {
         action: "added",
         installation: { id: installationId },
-        repositories_added: [{ id: repositoryId, full_name: `org-${testId}/repo-added` }],
+        repositories_added: [
+          { id: repositoryId, full_name: `org-${testId}/repo-added` }
+        ],
         repositories_removed: []
       }
     });
@@ -377,7 +407,9 @@ describe("GitHub webhook lifecycle processor", () => {
         action: "removed",
         installation: { id: installationId },
         repositories_added: [],
-        repositories_removed: [{ id: repositoryId, full_name: `org-${testId}/repo-added` }]
+        repositories_removed: [
+          { id: repositoryId, full_name: `org-${testId}/repo-added` }
+        ]
       }
     });
     expect(await processor.processOne()).toBe(true);

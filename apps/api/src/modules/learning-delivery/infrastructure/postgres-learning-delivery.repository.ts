@@ -293,7 +293,9 @@ export class PostgresLearningDeliveryRepository extends LearningDeliveryReposito
     );
     const row = result.rows[0];
     if (row === undefined) {
-      throw new Error("PostgreSQL did not return the created learning offering.");
+      throw new Error(
+        "PostgreSQL did not return the created learning offering."
+      );
     }
     return mapOffering(row);
   }
@@ -604,7 +606,9 @@ export class PostgresLearningDeliveryRepository extends LearningDeliveryReposito
     );
     const row = result.rows[0];
     if (row === undefined) {
-      throw new Error("PostgreSQL did not return the created group membership.");
+      throw new Error(
+        "PostgreSQL did not return the created group membership."
+      );
     }
     return mapGroupMembership(row);
   }

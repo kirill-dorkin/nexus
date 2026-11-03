@@ -166,16 +166,15 @@ describe("ordered-mastery@1", () => {
 
   it("does not mutate caller-owned skill or activity ordering", () => {
     const skills = [skill("b", 1, null), skill("a", 0, null)];
-    const activities = [
-      activity("b", "a", 1, 0),
-      activity("a", "a", 0, 0)
-    ];
+    const activities = [activity("b", "a", 1, 0), activity("a", "a", 0, 0)];
     const originalSkillOrder = skills.map((item) => item.skillId);
     const originalActivityOrder = activities.map((item) => item.activityId);
 
     orderedMasteryV1({ skills, activities });
 
     expect(skills.map((item) => item.skillId)).toEqual(originalSkillOrder);
-    expect(activities.map((item) => item.activityId)).toEqual(originalActivityOrder);
+    expect(activities.map((item) => item.activityId)).toEqual(
+      originalActivityOrder
+    );
   });
 });

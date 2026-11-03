@@ -120,17 +120,17 @@ export const recommendedNextLearningActionSchema = z
       context.addIssue({
         code: "custom",
         path: ["interventionPolicy"],
-        message: "interventionPolicy is required when an intervention is present"
+        message:
+          "interventionPolicy is required when an intervention is present"
       });
     }
     const signal = value.recommendation.misconceptionSignal;
-    if (
-      signal?.code !== intervention.signalCode
-    ) {
+    if (signal?.code !== intervention.signalCode) {
       context.addIssue({
         code: "custom",
         path: ["recommendation", "misconceptionSignal"],
-        message: "intervention requires its matching active misconception signal"
+        message:
+          "intervention requires its matching active misconception signal"
       });
     }
     if (

@@ -23,7 +23,9 @@ function assertExposureContext(
     exposure.attemptId !== facts.attemptId ||
     exposure.activityVersionId !== facts.definition.activityVersionId
   ) {
-    throw new Error("Guided Build exposure does not belong to this Attempt context.");
+    throw new Error(
+      "Guided Build exposure does not belong to this Attempt context."
+    );
   }
 }
 
@@ -47,10 +49,14 @@ export function deriveGuidedBuildLearnerState(
 
     if (exposure.kind === "professional_solution") {
       if (solutionExposure !== null) {
-        throw new Error("Professional solution exposure is idempotent per Attempt.");
+        throw new Error(
+          "Professional solution exposure is idempotent per Attempt."
+        );
       }
       if (exposure.solutionKey !== facts.definition.professionalSolution.key) {
-        throw new Error("Professional solution exposure does not match the definition.");
+        throw new Error(
+          "Professional solution exposure does not match the definition."
+        );
       }
       solutionExposure = exposure;
       continue;
@@ -63,7 +69,9 @@ export function deriveGuidedBuildLearnerState(
       throw new Error("Hint exposure references an unknown Guided Build step.");
     }
     if (!step.hints.some((hint) => hint.key === exposure.hintKey)) {
-      throw new Error("Hint exposure does not belong to its Guided Build step.");
+      throw new Error(
+        "Hint exposure does not belong to its Guided Build step."
+      );
     }
 
     const revealed = hintsByStep.get(step.key) ?? new Set<string>();

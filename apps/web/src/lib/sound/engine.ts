@@ -23,8 +23,13 @@ function load() {
   if (loaded || typeof window === "undefined") return;
   loaded = true;
   try {
-    const saved = JSON.parse(localStorage.getItem(KEY) ?? "{}") as Partial<SoundSettings>;
-    settings = { music: saved.music ?? DEFAULTS.music, musicVolume: saved.musicVolume ?? DEFAULTS.musicVolume };
+    const saved = JSON.parse(
+      localStorage.getItem(KEY) ?? "{}"
+    ) as Partial<SoundSettings>;
+    settings = {
+      music: saved.music ?? DEFAULTS.music,
+      musicVolume: saved.musicVolume ?? DEFAULTS.musicVolume
+    };
   } catch {
     settings = DEFAULTS;
   }
@@ -51,7 +56,8 @@ let snapshot = { settings: DEFAULTS, unlocked: false };
 /** Settings plus the unlock state, as one stable snapshot for useSyncExternalStore. */
 export function getSoundState() {
   const current = getSoundSettings();
-  if (snapshot.settings !== current || snapshot.unlocked !== unlocked) snapshot = { settings: current, unlocked };
+  if (snapshot.settings !== current || snapshot.unlocked !== unlocked)
+    snapshot = { settings: current, unlocked };
   return snapshot;
 }
 const serverState = { settings: DEFAULTS, unlocked: false };
@@ -73,7 +79,12 @@ export function updateSound(patch: Partial<SoundSettings>) {
 
 const midi = (n: number) => 440 * 2 ** ((n - 69) / 12);
 // Fmaj7 – Em7 – Dm7 – Cmaj7: warm, unresolved, loops forever without getting tiring.
-const CHORDS = [[53, 57, 60, 64], [52, 55, 59, 62], [50, 53, 57, 60], [48, 52, 55, 59]];
+const CHORDS = [
+  [53, 57, 60, 64],
+  [52, 55, 59, 62],
+  [50, 53, 57, 60],
+  [48, 52, 55, 59]
+];
 const BASS = [41, 40, 38, 36];
 const MELODY = [72, 74, 76, 79, 81, 84];
 const BPM = 70;
@@ -101,7 +112,11 @@ class Music {
     tone.type = "lowpass";
     tone.frequency.value = 3200;
     const bus = ctx.createGain();
-    bus.connect(tone).connect(compressor).connect(master).connect(ctx.destination);
+    bus
+      .connect(tone)
+      .connect(compressor)
+      .connect(master)
+      .connect(ctx.destination);
     const noise = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
     const data = noise.getChannelData(0);
     for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
@@ -159,13 +174,17 @@ class Music {
     const bar = Math.floor(step / 16);
     const inBar = step % 16;
     const chord = CHORDS[bar]!;
-    if (inBar === 0) chord.forEach((n, i) => this.keys(midi(n), t + i * 0.012, 2.6, 0.07));
-    if (inBar === 10 && Math.random() < 0.6) chord.slice(1).forEach((n) => this.keys(midi(n + 12), t, 1.2, 0.035));
-    if (inBar === 0 || inBar === 8 || (inBar === 11 && Math.random() < 0.4)) this.bass(midi(BASS[bar]!), t);
+    if (inBar === 0)
+      chord.forEach((n, i) => this.keys(midi(n), t + i * 0.012, 2.6, 0.07));
+    if (inBar === 10 && Math.random() < 0.6)
+      chord.slice(1).forEach((n) => this.keys(midi(n + 12), t, 1.2, 0.035));
+    if (inBar === 0 || inBar === 8 || (inBar === 11 && Math.random() < 0.4))
+      this.bass(midi(BASS[bar]!), t);
     if (inBar === 0 || inBar === 8) this.kick(t);
     if (inBar === 4 || inBar === 12) this.brush(t);
     if (inBar % 2 === 0) this.hat(t, inBar % 4 === 2 ? 0.022 : 0.012);
-    if (inBar % 4 === 2 && Math.random() < 0.22) this.bell(midi(MELODY[Math.floor(Math.random() * MELODY.length)]!), t);
+    if (inBar % 4 === 2 && Math.random() < 0.22)
+      this.bell(midi(MELODY[Math.floor(Math.random() * MELODY.length)]!), t);
   }
   private keys(freq: number, t: number, length: number, gain: number) {
     const ctx = this.ctx!;
@@ -178,7 +197,10 @@ class Music {
     filter.type = "lowpass";
     filter.frequency.value = 1700;
     env.connect(filter).connect(this.bus!);
-    for (const [type, detune, level] of [["sine", -4, 1], ["triangle", 5, 0.35]] as const) {
+    for (const [type, detune, level] of [
+      ["sine", -4, 1],
+      ["triangle", 5, 0.35]
+    ] as const) {
       const osc = ctx.createOscillator();
       const g = ctx.createGain();
       osc.type = type;
@@ -215,7 +237,13 @@ class Music {
     osc.start(t);
     osc.stop(t + 0.4);
   }
-  private noiseHit(t: number, type: BiquadFilterType, freq: number, gain: number, length: number) {
+  private noiseHit(
+    t: number,
+    type: BiquadFilterType,
+    freq: number,
+    gain: number,
+    length: number
+  ) {
     const ctx = this.ctx!;
     const src = ctx.createBufferSource();
     src.buffer = this.noise;

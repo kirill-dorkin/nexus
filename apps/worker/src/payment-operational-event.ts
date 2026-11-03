@@ -2,7 +2,10 @@ import type { PaymentWebhookCycle } from "./payment-webhook.processor.js";
 
 export type PaymentWorkerOperationalEvent = Readonly<{
   event: "public_launch.payment_worker";
-  outcome: Exclude<PaymentWebhookCycle["kind"], "idle"> | "cycle_failure" | "startup_failure";
+  outcome:
+    | Exclude<PaymentWebhookCycle["kind"], "idle">
+    | "cycle_failure"
+    | "startup_failure";
   durationMs: number;
   paymentStatus?: "paid" | "unpaid" | "no_payment_required";
   errorCode?:

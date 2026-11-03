@@ -141,12 +141,7 @@ export class PostgresTrustedValidationEvidenceQuery extends TrustedValidationEvi
                  skill_id,
                  created_at DESC,
                  evidence_id DESC`,
-      [
-        organizationId,
-        learnerUserIds,
-        enrollmentIds,
-        [...skillIds]
-      ]
+      [organizationId, learnerUserIds, enrollmentIds, [...skillIds]]
     );
 
     return result.rows.map((row) => ({
