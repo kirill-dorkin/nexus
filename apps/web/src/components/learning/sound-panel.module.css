@@ -166,7 +166,8 @@
 }
 .controls label {
   display: grid;
-  grid-template-columns: 5.5rem minmax(0, 1fr);
+  grid-template-columns: 7.2rem minmax(0, 1fr);
+  gap: 0.6rem;
   align-items: center;
   color: var(--text-secondary);
   font-size: 0.8rem;
@@ -211,4 +212,13 @@
   .trigger[data-compact] .bars {
     display: none;
   }
+}
+.volumeHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.volumeHead output {
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
 }
