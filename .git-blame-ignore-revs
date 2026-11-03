@@ -1,0 +1,5 @@
+# Formatting-only commits. GitHub applies this file automatically;
+# locally: git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# chore(format): Prettier for the whole workspace (#152)
+884c8926c267a48ef99a67f641c455f1719852b0
