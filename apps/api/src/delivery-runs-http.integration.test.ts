@@ -62,7 +62,9 @@ describe("course run and delivery-group HTTP lifecycle", () => {
     );
     const id = result.rows[0]?.id;
     if (id === undefined) {
-      throw new Error("Failed to create delivery-run integration-test identity.");
+      throw new Error(
+        "Failed to create delivery-run integration-test identity."
+      );
     }
     createdUserIds.push(id);
     return id;
@@ -73,23 +75,25 @@ describe("course run and delivery-group HTTP lifecycle", () => {
     learnerUserId = await createUser("delivery-run-learner");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `delivery-runs-${randomUUID()}`,
         name: "Delivery run integration"
-      })).id;
+      })
+    ).id;
 
     const invite = await app.inject({
       method: "POST",
@@ -107,7 +111,9 @@ describe("course run and delivery-group HTTP lifecycle", () => {
       headers: { "x-test-user-id": learnerUserId }
     });
     if (accept.statusCode !== 200) {
-      throw new Error(`Failed to activate delivery-run learner: ${accept.body}`);
+      throw new Error(
+        `Failed to activate delivery-run learner: ${accept.body}`
+      );
     }
 
     const role = await app.inject({
@@ -121,7 +127,9 @@ describe("course run and delivery-group HTTP lifecycle", () => {
       }
     });
     if (role.statusCode !== 204) {
-      throw new Error(`Failed to assign delivery-run learner role: ${role.body}`);
+      throw new Error(
+        `Failed to assign delivery-run learner role: ${role.body}`
+      );
     }
 
     const course = await app.inject({
@@ -166,7 +174,9 @@ describe("course run and delivery-group HTTP lifecycle", () => {
       }
     });
     if (cohortOffering.statusCode !== 201) {
-      throw new Error(`Failed to create cohort offering: ${cohortOffering.body}`);
+      throw new Error(
+        `Failed to create cohort offering: ${cohortOffering.body}`
+      );
     }
     cohortOfferingId = learningOfferingSchema.parse(
       JSON.parse(cohortOffering.body)
@@ -184,7 +194,9 @@ describe("course run and delivery-group HTTP lifecycle", () => {
       }
     });
     if (selfPacedOffering.statusCode !== 201) {
-      throw new Error(`Failed to create self-paced offering: ${selfPacedOffering.body}`);
+      throw new Error(
+        `Failed to create self-paced offering: ${selfPacedOffering.body}`
+      );
     }
     selfPacedOfferingId = learningOfferingSchema.parse(
       JSON.parse(selfPacedOffering.body)
@@ -197,9 +209,12 @@ describe("course run and delivery-group HTTP lifecycle", () => {
       payload: { userId: learnerUserId }
     });
     if (cohortEnrollment.statusCode !== 201) {
-      throw new Error(`Failed to create cohort enrollment: ${cohortEnrollment.body}`);
+      throw new Error(
+        `Failed to create cohort enrollment: ${cohortEnrollment.body}`
+      );
     }
-    cohortEnrollmentId = (JSON.parse(cohortEnrollment.body) as { id: string }).id;
+    cohortEnrollmentId = (JSON.parse(cohortEnrollment.body) as { id: string })
+      .id;
 
     const selfPacedEnrollment = await app.inject({
       method: "POST",
@@ -208,9 +223,13 @@ describe("course run and delivery-group HTTP lifecycle", () => {
       payload: { userId: learnerUserId }
     });
     if (selfPacedEnrollment.statusCode !== 201) {
-      throw new Error(`Failed to create self-paced enrollment: ${selfPacedEnrollment.body}`);
+      throw new Error(
+        `Failed to create self-paced enrollment: ${selfPacedEnrollment.body}`
+      );
     }
-    selfPacedEnrollmentId = (JSON.parse(selfPacedEnrollment.body) as { id: string }).id;
+    selfPacedEnrollmentId = (
+      JSON.parse(selfPacedEnrollment.body) as { id: string }
+    ).id;
   });
 
   afterAll(async () => {
@@ -453,13 +472,7 @@ describe("course run and delivery-group HTTP lifecycle", () => {
         `INSERT INTO learning_delivery.group_memberships
            (organization_id, group_set_id, group_id, enrollment_id, assigned_by_user_id)
          VALUES ($1, $2, $3, $4, $5)`,
-        [
-          organizationId,
-          labSetId,
-          labBId,
-          selfPacedEnrollmentId,
-          ownerUserId
-        ]
+        [organizationId, labSetId, labBId, selfPacedEnrollmentId, ownerUserId]
       )
     ).rejects.toMatchObject({ code: "23514" });
   });
@@ -480,8 +493,12 @@ describe("course run and delivery-group HTTP lifecycle", () => {
     const names = result.rows.map((row) => row.event_name);
 
     expect(names).toContain("course_run.created");
-    expect(names.filter((name) => name === "group_set.created")).toHaveLength(2);
+    expect(names.filter((name) => name === "group_set.created")).toHaveLength(
+      2
+    );
     expect(names.filter((name) => name === "group.created")).toHaveLength(3);
-    expect(names.filter((name) => name === "group_membership.assigned")).toHaveLength(2);
+    expect(
+      names.filter((name) => name === "group_membership.assigned")
+    ).toHaveLength(2);
   });
 });

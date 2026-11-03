@@ -9,8 +9,8 @@ export abstract class SandboxProvider {
 }
 
 export class UnavailableSandboxProvider extends SandboxProvider {
-  async execute(request: GraderJobRequest): Promise<GraderJobResult> {
-    return {
+  execute(request: GraderJobRequest): Promise<GraderJobResult> {
+    return Promise.resolve({
       protocolVersion: 1,
       jobId: request.jobId,
       status: "system_error",
@@ -18,6 +18,6 @@ export class UnavailableSandboxProvider extends SandboxProvider {
         code: "sandbox_provider_unavailable",
         retryable: true
       }
-    };
+    });
   }
 }

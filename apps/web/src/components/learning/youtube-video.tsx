@@ -29,9 +29,7 @@ export function YouTubeVideo({
   }, [active]);
   return (
     <section className={styles.video} aria-label="Видео урока">
-      <div
-        className={`${styles.frame} ${active ? styles.frameActive : ""}`}
-      >
+      <div className={`${styles.frame} ${active ? styles.frameActive : ""}`}>
         {active ? (
           <iframe
             src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`}
@@ -46,7 +44,9 @@ export function YouTubeVideo({
             <span className={styles.glow} aria-hidden="true" />
             <div className={styles.posterContent}>
               <span className={styles.eyebrow}>
-                {source ? `ОТКРЫТОЕ ВИДЕО · ${source}` : "ВИДЕО УРОКА · YOUTUBE"}
+                {source
+                  ? `ОТКРЫТОЕ ВИДЕО · ${source}`
+                  : "ВИДЕО УРОКА · YOUTUBE"}
               </span>
               <strong>{title}</strong>
               <p>
@@ -55,8 +55,23 @@ export function YouTubeVideo({
                   : "Сначала посмотрите объяснение, затем переходите к конспекту."}
               </p>
             </div>
-            <Button className={styles.play} ref={play} onClick={() => { setLoaded(false); setActive(true); }}>
-              <svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5 13 8l-9 5.5z" fill="currentColor" /></svg> Смотреть видео
+            <Button
+              className={styles.play}
+              ref={play}
+              onClick={() => {
+                setLoaded(false);
+                setActive(true);
+              }}
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 16 16"
+                aria-hidden="true"
+              >
+                <path d="M4 2.5 13 8l-9 5.5z" fill="currentColor" />
+              </svg>{" "}
+              Смотреть видео
             </Button>
           </div>
         )}
@@ -70,11 +85,26 @@ export function YouTubeVideo({
             : "YouTube не загружается до нажатия. Если встраивание недоступно, откройте видео отдельно."}
         </p>
         <div className={styles.actions}>
-          {active ? <Button ref={close} variant="ghost" size="sm" onClick={() => setActive(false)}>Закрыть плеер</Button> : null}
-          <a href={`https://www.youtube.com/watch?v=${videoId}`} target="_blank" rel="noopener noreferrer">Открыть на YouTube <span aria-hidden="true">↗</span><span className={styles.srOnly}> (новая вкладка)</span></a>
+          {active ? (
+            <Button
+              ref={close}
+              variant="ghost"
+              size="sm"
+              onClick={() => setActive(false)}
+            >
+              Закрыть плеер
+            </Button>
+          ) : null}
+          <a
+            href={`https://www.youtube.com/watch?v=${videoId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Открыть на YouTube <span aria-hidden="true">↗</span>
+            <span className={styles.srOnly}> (новая вкладка)</span>
+          </a>
         </div>
       </div>
     </section>
   );
 }
-

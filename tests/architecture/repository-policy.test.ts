@@ -20,8 +20,10 @@ async function readJson<T>(relativePath: string): Promise<T> {
   return JSON.parse(content) as T;
 }
 
-async function workspaceManifests(): Promise<Array<{ path: string; manifest: PackageManifest }>> {
-  const manifests: Array<{ path: string; manifest: PackageManifest }> = [];
+async function workspaceManifests(): Promise<
+  { path: string; manifest: PackageManifest }[]
+> {
+  const manifests: { path: string; manifest: PackageManifest }[] = [];
 
   for (const workspaceRoot of ["apps", "packages"]) {
     const entries = await readdir(path.join(repoRoot, workspaceRoot), {

@@ -38,10 +38,7 @@ describe("public launch operational events", () => {
   });
 
   it("keeps origin security events categorical instead of logging origins", () => {
-    const event = buildPublicLaunchSecurityEvent(
-      "rejected",
-      "origin_mismatch"
-    );
+    const event = buildPublicLaunchSecurityEvent("rejected", "origin_mismatch");
     expect(event).toEqual({
       event: "public_launch.security",
       operation: "browser_write_origin",

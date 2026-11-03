@@ -117,7 +117,8 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
     await app.init();
     for (let i = 0; i < 2; i++) {
       const organization = await createTestOrganization(migration, owner, {
-        slug: `public-learn-${randomUUID()}`, name: `Public academy ${i}`
+        slug: `public-learn-${randomUUID()}`,
+        name: `Public academy ${i}`
       });
       organizations.push(organization.id);
       const manifest = courseManifestV1Schema.parse(
@@ -304,12 +305,20 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
     expect(list.offerings.map((entry) => entry.id)).toEqual(
       expect.arrayContaining([f.offering, another.id])
     );
-    expect(list.offerings.every((entry) =>
-      entry.organizationId === f.org && entry.courseVersionId === f.version
-    )).toBe(true);
-    expect(list.offerings.find((entry) => entry.id === another.id)?.visibility).toBe("private");
+    expect(
+      list.offerings.every(
+        (entry) =>
+          entry.organizationId === f.org && entry.courseVersionId === f.version
+      )
+    ).toBe(true);
+    expect(
+      list.offerings.find((entry) => entry.id === another.id)?.visibility
+    ).toBe("private");
 
-    for (const [user, expected] of [["", 401], [learner, 403]] as const) {
+    for (const [user, expected] of [
+      ["", 401],
+      [learner, 403]
+    ] as const) {
       const response = await app.inject({
         method: "GET",
         url,
@@ -324,7 +333,11 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
       headers: { "x-test-user-id": owner }
     });
     expect(foreign.statusCode, foreign.body).toBe(404);
-    for (const suffix of ["?courseVersionId=wrong", `?courseVersionId=${f.version}&extra=true`, `?courseVersionId=${f.version}&after=wrong`]) {
+    for (const suffix of [
+      "?courseVersionId=wrong",
+      `?courseVersionId=${f.version}&extra=true`,
+      `?courseVersionId=${f.version}&after=wrong`
+    ]) {
       const malformed = await app.inject({
         method: "GET",
         url: `/v1/organizations/${f.org}/offerings${suffix}`,
@@ -371,11 +384,14 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
     expect(second.nextCursor).toBeNull();
     const all = [...first.offerings, ...second.offerings];
     expect(new Set(all.map((offering) => offering.id))).toEqual(expectedIds);
-    expect(all.every((offering) =>
-      offering.organizationId === f.org &&
-      offering.courseVersionId === f.version &&
-      offering.visibility === "private"
-    )).toBe(true);
+    expect(
+      all.every(
+        (offering) =>
+          offering.organizationId === f.org &&
+          offering.courseVersionId === f.version &&
+          offering.visibility === "private"
+      )
+    ).toBe(true);
   });
 
   it("defaults private and never exposes private content through anonymous functions", async () => {
@@ -432,7 +448,10 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
       "second-lesson"
     ]);
     // Chapter is projected when set and absent otherwise (ADR-0063).
-    expect(course.course.lessons.map((l) => l.chapter)).toEqual(["Введение", undefined]);
+    expect(course.course.lessons.map((l) => l.chapter)).toEqual([
+      "Введение",
+      undefined
+    ]);
     const lesson = publicLearningLessonSchema.parse(
       (await get(fixtures[0], `/lessons/${lessonSlug}`)).json()
     );
@@ -611,9 +630,14 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
     const parsed = publicLearningCourseSchema.parse(course.json());
     expect(parsed.course.slug).toBe(f.manifest.course.slug);
     expect(parsed.offering.slug).toBe(offeringSlug);
-    const lesson = await app.inject({ method: "GET", url: `${base}/lessons/${lessonSlug}` });
+    const lesson = await app.inject({
+      method: "GET",
+      url: `${base}/lessons/${lessonSlug}`
+    });
     expect(lesson.statusCode, lesson.body).toBe(200);
-    expect(publicLearningLessonSchema.parse(lesson.json()).lesson.slug).toBe(lessonSlug);
+    expect(publicLearningLessonSchema.parse(lesson.json()).lesson.slug).toBe(
+      lessonSlug
+    );
     for (const url of [
       `/v1/public/learning/${f.orgSlug}/courses/missing-course`,
       `${base}/lessons/missing-lesson`

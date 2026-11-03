@@ -1,15 +1,31 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import type { IdentityUser, OAuthProvider, OAuthProvidersResponse } from "@platform/contracts";
+import type {
+  IdentityUser,
+  OAuthProvider,
+  OAuthProvidersResponse
+} from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
 import { DatabaseService } from "../../../database/database.service";
 import { optionalConfiguredWebOrigin } from "../../../http/web-app-origin";
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { AuthenticationRepository } from "./authentication.repository";
-import { OAuthProviderGateway, type OAuthIdentityProfile } from "./oauth-provider.gateway";
-import { createCodeChallenge, createCodeVerifier, createOAuthState, sha256Hex } from "../domain/oauth-state";
+import {
+  OAuthProviderGateway,
+  type OAuthIdentityProfile
+} from "./oauth-provider.gateway";
+import {
+  createCodeChallenge,
+  createCodeVerifier,
+  createOAuthState,
+  sha256Hex
+} from "../domain/oauth-state";
 import { safeOAuthReturnTo } from "../domain/oauth-return-to";
-import { createSessionToken, hashSessionToken, isSessionToken } from "../domain/session-token";
+import {
+  createSessionToken,
+  hashSessionToken,
+  isSessionToken
+} from "../domain/session-token";
 
 const STATE_TTL_MS = 10 * 60 * 1000;
 const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
@@ -42,7 +58,9 @@ export class OAuthLoginService {
 
   async start(provider: OAuthProvider, returnTo: unknown): Promise<string> {
     if (!this.providers.configuredProviders().includes(provider)) {
-      throw new UnauthorizedException("External login provider is unavailable.");
+      throw new UnauthorizedException(
+        "External login provider is unavailable."
+      );
     }
     const state = createOAuthState();
     const verifier = createCodeVerifier();
@@ -62,25 +80,32 @@ export class OAuthLoginService {
     });
   }
 
-  async complete(input: Readonly<{
-    provider: OAuthProvider;
-    state: string | undefined;
-    code: string | undefined;
-    providerError: string | undefined;
-    currentSessionToken: string | null;
-  }>): Promise<OAuthCompletion> {
-    if (input.state === undefined || input.state.length > 256) {
+  async complete(
+    input: Readonly<{
+      provider: OAuthProvider;
+      state: string | undefined;
+      code: string | undefined;
+      providerError: string | undefined;
+      currentSessionToken: string | null;
+    }>
+  ): Promise<OAuthCompletion> {
+    const state = input.state;
+    if (state === undefined || state.length > 256) {
       throw new OAuthCallbackFailure("/me/learning");
     }
     const loginState = await this.database.transaction((transaction) =>
       this.authentication.consumeOAuthLoginState(
         transaction,
         input.provider,
-        sha256Hex(input.state as string)
+        sha256Hex(state)
       )
     );
     if (loginState === null) throw new OAuthCallbackFailure("/me/learning");
-    if (input.providerError !== undefined || input.code === undefined || input.code.length > 512) {
+    if (
+      input.providerError !== undefined ||
+      input.code === undefined ||
+      input.code.length > 512
+    ) {
       throw new OAuthCallbackFailure(loginState.returnTo);
     }
 
@@ -113,21 +138,30 @@ export class OAuthLoginService {
       if (!isUniqueViolation(error)) throw error;
       const user = await this.database.transaction(async (transaction) => {
         const userId = await this.authentication.findExternalIdentityUserId(
-          transaction, input.provider, profile.subject
+          transaction,
+          input.provider,
+          profile.subject
         );
-        const existing = userId === null
-          ? await this.identity.findByEmail(transaction, profile.email)
-          : await this.identity.findActiveUser(transaction, userId);
-        if (existing === null || existing.status !== "active") {
+        const existing =
+          userId === null
+            ? await this.identity.findByEmail(transaction, profile.email)
+            : await this.identity.findActiveUser(transaction, userId);
+        if (existing?.status !== "active") {
           throw new OAuthCallbackFailure(loginState.returnTo);
         }
         if (userId === null) {
           await this.authentication.createExternalIdentity(
-            transaction, input.provider, profile.subject, existing.id
+            transaction,
+            input.provider,
+            profile.subject,
+            existing.id
           );
         }
         await this.startSession(
-          transaction, existing.id, hashSessionToken(sessionToken), input.currentSessionToken
+          transaction,
+          existing.id,
+          hashSessionToken(sessionToken),
+          input.currentSessionToken
         );
         return existing;
       });
@@ -150,32 +184,45 @@ export class OAuthLoginService {
     currentSessionToken: string | null
   ): Promise<IdentityUser> {
     const linkedUserId = await this.authentication.findExternalIdentityUserId(
-      transaction, provider, profile.subject
+      transaction,
+      provider,
+      profile.subject
     );
-    let user = linkedUserId === null
-      ? await this.identity.findByEmail(transaction, profile.email)
-      : await this.identity.findActiveUser(transaction, linkedUserId);
+    let user =
+      linkedUserId === null
+        ? await this.identity.findByEmail(transaction, profile.email)
+        : await this.identity.findActiveUser(transaction, linkedUserId);
     if (linkedUserId !== null && user === null) {
       throw new UnauthorizedException("An active account is required.");
     }
-    if (user === null) {
-      user = await this.identity.createUser(transaction, {
-        id: candidateId,
-        email: profile.email,
-        displayName: profile.displayName
-      });
-    }
+    user ??= await this.identity.createUser(transaction, {
+      id: candidateId,
+      email: profile.email,
+      displayName: profile.displayName
+    });
     if (user.status !== "active") {
       throw new UnauthorizedException("An active account is required.");
     }
     if (linkedUserId === null) {
       await this.authentication.createExternalIdentity(
-        transaction, provider, profile.subject, user.id
+        transaction,
+        provider,
+        profile.subject,
+        user.id
       );
     } else {
-      await this.authentication.touchExternalIdentity(transaction, provider, profile.subject);
+      await this.authentication.touchExternalIdentity(
+        transaction,
+        provider,
+        profile.subject
+      );
     }
-    await this.startSession(transaction, user.id, tokenHash, currentSessionToken);
+    await this.startSession(
+      transaction,
+      user.id,
+      tokenHash,
+      currentSessionToken
+    );
     return user;
   }
 
@@ -187,7 +234,8 @@ export class OAuthLoginService {
   ): Promise<void> {
     if (currentSessionToken !== null && isSessionToken(currentSessionToken)) {
       await this.authentication.revokeSessionByTokenHash(
-        transaction, hashSessionToken(currentSessionToken)
+        transaction,
+        hashSessionToken(currentSessionToken)
       );
     }
     await this.authentication.createSession(transaction, {
@@ -199,6 +247,9 @@ export class OAuthLoginService {
 }
 
 function isUniqueViolation(error: unknown): boolean {
-  return typeof error === "object" && error !== null &&
-    (error as { code?: unknown }).code === "23505";
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    (error as { code?: unknown }).code === "23505"
+  );
 }

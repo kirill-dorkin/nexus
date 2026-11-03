@@ -82,7 +82,11 @@ describe("repeated-failure-remediation@1", () => {
         baseline,
         signal: null,
         remediations: [
-          { skillId: "skill-a", activityId: remediationA.activityId, position: 0 }
+          {
+            skillId: "skill-a",
+            activityId: remediationA.activityId,
+            position: 0
+          }
         ],
         activities: [baselineActivity, remediationA]
       })
@@ -95,7 +99,11 @@ describe("repeated-failure-remediation@1", () => {
         baseline,
         signal,
         remediations: [
-          { skillId: "skill-a", activityId: baselineActivity.activityId, position: 0 }
+          {
+            skillId: "skill-a",
+            activityId: baselineActivity.activityId,
+            position: 0
+          }
         ],
         activities: [baselineActivity]
       })
@@ -153,8 +161,16 @@ describe("repeated-failure-remediation@1", () => {
       baseline,
       signal,
       remediations: [
-        { skillId: "skill-a", activityId: samePositionB.activityId, position: 1 },
-        { skillId: "skill-a", activityId: samePositionA.activityId, position: 0 }
+        {
+          skillId: "skill-a",
+          activityId: samePositionB.activityId,
+          position: 1
+        },
+        {
+          skillId: "skill-a",
+          activityId: samePositionA.activityId,
+          position: 0
+        }
       ],
       activities: [baselineActivity, samePositionA, samePositionB]
     });

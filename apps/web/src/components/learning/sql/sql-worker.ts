@@ -4,9 +4,18 @@
  * terminating the worker, without freezing the lesson page.
  */
 import { PGlite } from "@electric-sql/pglite";
-import { BrokenDatabaseError, runSqlJob, type SqlDb, type SqlJob } from "./sql-engine";
+import {
+  BrokenDatabaseError,
+  runSqlJob,
+  type SqlDb,
+  type SqlJob
+} from "./sql-engine";
 
-type Scope = { onmessage: ((event: MessageEvent<{ id: number; job: SqlJob }>) => void) | null; postMessage(message: unknown): void };
+type Scope = {
+  onmessage:
+    ((event: MessageEvent<{ id: number; job: SqlJob }>) => void) | null;
+  postMessage(message: unknown): void;
+};
 const scope = self as unknown as Scope;
 let database: Promise<SqlDb> | null = null;
 
@@ -18,7 +27,10 @@ scope.onmessage = (event) => {
       scope.postMessage({ id, run: await runSqlJob(await database, job) });
     } catch (error) {
       if (!(error instanceof BrokenDatabaseError)) database = null;
-      scope.postMessage({ id, failure: error instanceof BrokenDatabaseError ? "broken" : "failed" });
+      scope.postMessage({
+        id,
+        failure: error instanceof BrokenDatabaseError ? "broken" : "failed"
+      });
     }
   })();
 };

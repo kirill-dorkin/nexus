@@ -31,8 +31,16 @@
   --accent-night: #80dcd0;
   --art-filter: grayscale(1) sepia(1) saturate(2) hue-rotate(115deg);
   /* Derived companion colors, never an independently selected second accent. */
-  --accent-companion: color-mix(in srgb, var(--accent-action) 65%, var(--accent-night));
-  --accent-atmosphere: color-mix(in srgb, var(--accent-companion) 7%, transparent);
+  --accent-companion: color-mix(
+    in srgb,
+    var(--accent-action) 65%,
+    var(--accent-night)
+  );
+  --accent-atmosphere: color-mix(
+    in srgb,
+    var(--accent-companion) 7%,
+    transparent
+  );
   --art-tint-strength: 0.28;
 }
 /* Explicit themes also work inside an isolated component gallery. */
@@ -87,7 +95,11 @@
   --surface-elevated: #fff;
   --surface-solid: #fff;
   --surface-input: #f7f7fb;
-  --surface-glass: color-mix(in srgb, var(--accent-action) 3%, rgb(255 255 255 / 90%));
+  --surface-glass: color-mix(
+    in srgb,
+    var(--accent-action) 3%,
+    rgb(255 255 255 / 90%)
+  );
   --surface-hover: color-mix(in srgb, var(--accent-action) 6%, #f0edfa);
   --text-primary: #20213a;
   --text-secondary: #62687d;
@@ -134,7 +146,7 @@
   --art-filter: grayscale(1) sepia(1) saturate(2) hue-rotate(215deg);
 }
 [data-ui-accent="blue"] {
-  --art-tint-strength: 0.80;
+  --art-tint-strength: 0.8;
   --accent-action: #2455cb;
   --accent-hover: #1947b7;
   --accent-day: #2455cb;

@@ -9,7 +9,9 @@ describe("OAuth return path", () => {
       "/learn/acme/dev-basics/intro"
     );
     expect(safeOAuthReturnTo("/courses/html")).toBe("/courses/html");
-    expect(safeOAuthReturnTo("/courses/html/how-the-web-works")).toBe("/courses/html/how-the-web-works");
+    expect(safeOAuthReturnTo("/courses/html/how-the-web-works")).toBe(
+      "/courses/html/how-the-web-works"
+    );
   });
 
   it.each([

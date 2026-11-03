@@ -152,23 +152,25 @@ describe("readiness-gated enrollment completion HTTP lifecycle", () => {
     learnerUserId = await createUser("progression-learner");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `progression-${randomUUID()}`,
         name: "Progression completion integration"
-      })).id;
+      })
+    ).id;
 
     await activateLearner(learnerUserId);
 
@@ -229,7 +231,8 @@ describe("readiness-gated enrollment completion HTTP lifecycle", () => {
       }
     });
     expect(activity.statusCode).toBe(201);
-    activityId = (JSON.parse(activity.body) as { activityId: string }).activityId;
+    activityId = (JSON.parse(activity.body) as { activityId: string })
+      .activityId;
 
     const published = await app.inject({
       method: "POST",

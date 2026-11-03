@@ -1,4 +1,7 @@
-import type { ProjectActivityActor, ProjectActivityItem } from "@platform/contracts";
+import type {
+  ProjectActivityActor,
+  ProjectActivityItem
+} from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
 import {
@@ -39,7 +42,10 @@ type ActivityRow = {
   recorded_at: Date;
 };
 
-function actor(id: string | null, login: string | null): ProjectActivityActor | null {
+function actor(
+  id: string | null,
+  login: string | null
+): ProjectActivityActor | null {
   if (id === null && login === null) return null;
   return { githubUserId: id, login };
 }
@@ -118,7 +124,10 @@ export class PostgresProjectActivityRepository extends ProjectActivityRepository
         githubObjectId: row.github_object_id,
         githubPullRequestId: row.github_pull_request_id,
         githubPullRequestNumber: row.github_pull_request_number,
-        subject: actor(row.github_subject_user_id, row.github_subject_user_login),
+        subject: actor(
+          row.github_subject_user_id,
+          row.github_subject_user_login
+        ),
         sender: actor(row.github_sender_user_id, row.github_sender_user_login),
         githubAppId: row.github_app_id,
         name: row.name,

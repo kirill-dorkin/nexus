@@ -163,7 +163,7 @@ export class LearnerLearningService {
       userId,
       true
     );
-    if (!enrollment || enrollment.status !== "active")
+    if (enrollment?.status !== "active")
       throw new ConflictException("Active own enrollment is required.");
     const activity = await this.activityContent.requireActivityVersionById(
       tx,
@@ -230,7 +230,9 @@ export class LearnerLearningService {
         return ownLearningListSchema.parse({
           courses,
           nextCursor:
-            addresses.length > 100 ? addresses[99]!.enrollmentId : null
+            addresses.length > 100
+              ? (addresses[99]?.enrollmentId ?? null)
+              : null
         });
       },
       snapshot
@@ -295,11 +297,17 @@ export class LearnerLearningService {
       const lineage = await this.content.activityLineage(
         tx,
         route.organizationId,
-        [...new Set(structure.flatMap((l) => l.activities.map((a) => a.activityId)))]
+        [
+          ...new Set(
+            structure.flatMap((l) => l.activities.map((a) => a.activityId))
+          )
+        ]
       );
       const ids = [
         ...new Set([
-          ...structure.flatMap((l) => l.activities.map((a) => a.activityVersionId)),
+          ...structure.flatMap((l) =>
+            l.activities.map((a) => a.activityVersionId)
+          ),
           ...lineage.keys()
         ])
       ];

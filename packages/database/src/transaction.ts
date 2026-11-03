@@ -3,7 +3,7 @@ import type { Pool, PoolClient } from "pg";
 
 export type DatabaseTransaction = Readonly<{
   client: PoolClient;
-  db: NodePgDatabase<Record<string, never>>;
+  db: NodePgDatabase;
 }>;
 
 export type UserTransactionContext = Readonly<{
@@ -33,7 +33,9 @@ function beginStatement(options?: DatabaseTransactionOptions): string {
 
   const clauses: string[] = [];
   if (options.isolationLevel !== undefined) {
-    clauses.push(`ISOLATION LEVEL ${isolationLevelSql[options.isolationLevel]}`);
+    clauses.push(
+      `ISOLATION LEVEL ${isolationLevelSql[options.isolationLevel]}`
+    );
   }
   if (options.readOnly === true) {
     clauses.push("READ ONLY");

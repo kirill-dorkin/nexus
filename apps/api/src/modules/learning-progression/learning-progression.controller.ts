@@ -1,10 +1,4 @@
-import {
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Param,
-  Post
-} from "@nestjs/common";
+import { Controller, HttpCode, HttpStatus, Param, Post } from "@nestjs/common";
 import { uuidSchema, type Enrollment } from "@platform/contracts";
 
 import { parseRequest } from "../../http/validation";

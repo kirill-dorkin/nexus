@@ -39,10 +39,13 @@ function profile(): GraderExecutionProfile {
   };
 }
 
-function authenticatedHeaders(profileValue: GraderExecutionProfile = profile()) {
+function authenticatedHeaders(
+  profileValue: GraderExecutionProfile = profile()
+) {
   return {
     authorization: `Bearer ${token}`,
-    [GRADER_PROFILE_FINGERPRINT_HEADER]: graderExecutionProfileFingerprint(profileValue)
+    [GRADER_PROFILE_FINGERPRINT_HEADER]:
+      graderExecutionProfileFingerprint(profileValue)
   };
 }
 
@@ -58,7 +61,12 @@ function job(
     submissionId: "01994fc0-8e4a-7f5c-8d26-dbe90af34021",
     activityVersionId: "01994fc0-8e4a-7f5c-8d26-dbe90af34022",
     source: {
-      files: [{ path: "index.ts", content: options.content ?? "export const value = 1;" }]
+      files: [
+        {
+          path: "index.ts",
+          content: options.content ?? "export const value = 1;"
+        }
+      ]
     }
   };
   return { ...spec, jobId: buildGraderJobId(spec) };
@@ -78,9 +86,15 @@ describe("Grader Gateway admission", () => {
   it("keeps health public but requires exact service authentication for jobs", async () => {
     const gateway = app({ serviceToken: token });
 
-    expect((await gateway.inject({ method: "GET", url: "/health" })).statusCode).toBe(200);
+    expect(
+      (await gateway.inject({ method: "GET", url: "/health" })).statusCode
+    ).toBe(200);
 
-    const missing = await gateway.inject({ method: "POST", url: "/v1/jobs", payload: job() });
+    const missing = await gateway.inject({
+      method: "POST",
+      url: "/v1/jobs",
+      payload: job()
+    });
     expect(missing.statusCode).toBe(401);
 
     const wrong = await gateway.inject({
@@ -106,7 +120,9 @@ describe("Grader Gateway admission", () => {
       payload: job({ profile: { key: "python-tests", version: 1 } })
     });
     expect(unknown.statusCode).toBe(422);
-    expect(JSON.parse(unknown.body).error.code).toBe("execution_profile_not_found");
+    expect(JSON.parse(unknown.body).error.code).toBe(
+      "execution_profile_not_found"
+    );
 
     const original = job();
     const changed = job({ content: "export const value = 2;" });
@@ -117,7 +133,9 @@ describe("Grader Gateway admission", () => {
       payload: { ...changed, jobId: original.jobId }
     });
     expect(identityMismatch.statusCode).toBe(422);
-    expect(JSON.parse(identityMismatch.body).error.code).toBe("job_identity_mismatch");
+    expect(JSON.parse(identityMismatch.body).error.code).toBe(
+      "job_identity_mismatch"
+    );
   });
 
   it("fails closed before provider execution when persisted profile fingerprint is absent or drifted", async () => {
@@ -156,7 +174,10 @@ describe("Grader Gateway admission", () => {
       protocolVersion: 1,
       jobId: payload.jobId,
       status: "system_error",
-      error: { code: "execution_profile_fingerprint_mismatch", retryable: false }
+      error: {
+        code: "execution_profile_fingerprint_mismatch",
+        retryable: false
+      }
     });
 
     const drifted = await gateway.inject({
@@ -184,8 +205,18 @@ describe("Grader Gateway admission", () => {
     const headers = authenticatedHeaders();
     const payload = job();
 
-    const first = await gateway.inject({ method: "POST", url: "/v1/jobs", headers, payload });
-    const replay = await gateway.inject({ method: "POST", url: "/v1/jobs", headers, payload });
+    const first = await gateway.inject({
+      method: "POST",
+      url: "/v1/jobs",
+      headers,
+      payload
+    });
+    const replay = await gateway.inject({
+      method: "POST",
+      url: "/v1/jobs",
+      headers,
+      payload
+    });
 
     expect(first.statusCode).toBe(200);
     expect(JSON.parse(first.body)).toEqual({
@@ -245,7 +276,9 @@ describe("Grader Gateway admission", () => {
       headers: authenticatedHeaders(),
       payload
     });
-    expect(JSON.parse(malformed.body).error.code).toBe("sandbox_provider_invalid_result");
+    expect(JSON.parse(malformed.body).error.code).toBe(
+      "sandbox_provider_invalid_result"
+    );
 
     class OversizedProvider extends SandboxProvider {
       async execute(request: GraderJobRequest): Promise<unknown> {
@@ -268,7 +301,10 @@ describe("Grader Gateway admission", () => {
       ]),
       sandboxProvider: new OversizedProvider()
     });
-    const oversizedProfile = { ...restrictive, limits: { ...restrictive.limits, outputBytes: 8 } };
+    const oversizedProfile = {
+      ...restrictive,
+      limits: { ...restrictive.limits, outputBytes: 8 }
+    };
     const oversized = await oversizedGateway.inject({
       method: "POST",
       url: "/v1/jobs",

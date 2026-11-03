@@ -12,10 +12,7 @@ export class PaymentWebhookApplicationService {
     private readonly verifier: PaymentWebhookVerifier
   ) {}
 
-  async receive(
-    rawBody: Buffer,
-    signature: string | undefined
-  ): Promise<void> {
+  async receive(rawBody: Buffer, signature: string | undefined): Promise<void> {
     const event = this.verifier.verify(rawBody, signature);
 
     const accepted = await this.database.transaction((transaction) =>

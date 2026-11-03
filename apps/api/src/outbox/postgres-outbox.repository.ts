@@ -1,10 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import type { DatabaseTransaction } from "@platform/database";
 
-import {
-  OutboxRepository,
-  type OutboxMessage
-} from "./outbox.repository";
+import { OutboxRepository, type OutboxMessage } from "./outbox.repository";
 
 @Injectable()
 export class PostgresOutboxRepository extends OutboxRepository {

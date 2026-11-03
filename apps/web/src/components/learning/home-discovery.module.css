@@ -21,7 +21,8 @@
   gap: clamp(2rem, 5vw, 4rem);
   width: min(100%, calc(1200px + 2 * clamp(1rem, 4vw, 2.5rem)));
   margin-inline: auto;
-  padding: clamp(3rem, 8vw, 6.5rem) clamp(1rem, 4vw, 2.5rem) clamp(3.5rem, 8vw, 6rem);
+  padding: clamp(3rem, 8vw, 6.5rem) clamp(1rem, 4vw, 2.5rem)
+    clamp(3.5rem, 8vw, 6rem);
 }
 .hero::before {
   content: "";
@@ -33,7 +34,11 @@
     linear-gradient(rgb(255 255 255 / 4%) 1px, transparent 1px),
     linear-gradient(90deg, rgb(255 255 255 / 4%) 1px, transparent 1px);
   background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 50% 70% at 60% 30%, black, transparent 75%);
+  mask-image: radial-gradient(
+    ellipse 50% 70% at 60% 30%,
+    black,
+    transparent 75%
+  );
 }
 .heroCopy {
   display: grid;
@@ -59,7 +64,8 @@
   height: 8px;
   border-radius: 50%;
   background: var(--action-primary);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-action) 22%, transparent);
+  box-shadow: 0 0 0 4px
+    color-mix(in srgb, var(--accent-action) 22%, transparent);
 }
 .hero h1 {
   margin: 0;
@@ -101,7 +107,11 @@
   padding: 1.35rem;
   border: 1px solid var(--border-glass);
   border-radius: 1.75rem;
-  background: linear-gradient(180deg, var(--surface-elevated), var(--surface-solid));
+  background: linear-gradient(
+    180deg,
+    var(--surface-elevated),
+    var(--surface-solid)
+  );
   box-shadow:
     0 0 0 1px rgb(0 0 0 / 40%),
     0 40px 100px -30px color-mix(in srgb, var(--accent-action) 35%, transparent),
@@ -134,16 +144,6 @@
   font-weight: 700;
   letter-spacing: -0.03em;
 }
-.previewVideo {
-  display: grid;
-  place-items: center;
-  aspect-ratio: 16 / 8;
-  border-radius: 1rem;
-  background:
-    radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--accent-action) 25%, transparent), transparent 55%),
-    linear-gradient(135deg, #1b1d22, #0e0f12);
-  border: 1px solid var(--border-default);
-}
 .previewPlay {
   display: inline-grid;
   place-items: center;
@@ -152,7 +152,8 @@
   border-radius: 50%;
   background: var(--action-primary);
   color: var(--text-on-action);
-  box-shadow: 0 8px 30px color-mix(in srgb, var(--accent-action) 45%, transparent);
+  box-shadow: 0 8px 30px
+    color-mix(in srgb, var(--accent-action) 45%, transparent);
 }
 .previewQuestion {
   margin: 0.2rem 0 0;
@@ -313,7 +314,11 @@
   overflow: hidden;
   border: 1px solid var(--border-default);
   border-radius: 1.5rem;
-  background: linear-gradient(180deg, var(--surface-solid), var(--surface-subtle));
+  background: linear-gradient(
+    180deg,
+    var(--surface-solid),
+    var(--surface-subtle)
+  );
 }
 .tile h3 {
   margin: 0;
@@ -332,7 +337,11 @@
   grid-column: span 2;
   border-color: color-mix(in srgb, var(--accent-action) 35%, transparent);
   background:
-    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--accent-action) 22%, transparent), transparent 60%),
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--accent-action) 22%, transparent),
+      transparent 60%
+    ),
     var(--surface-solid);
 }
 .bigValue {
@@ -400,7 +409,11 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--accent-action) 60%, transparent), var(--action-primary));
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent-action) 60%, transparent),
+    var(--action-primary)
+  );
 }
 
 /* Final call to action */
@@ -412,10 +425,15 @@
   margin-top: clamp(3.5rem, 8vw, 6rem);
   padding: clamp(3rem, 8vw, 5rem) 1.5rem;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--accent-action) 30%, var(--border-default));
+  border: 1px solid
+    color-mix(in srgb, var(--accent-action) 30%, var(--border-default));
   border-radius: 2rem;
   background:
-    radial-gradient(ellipse 60% 80% at 50% 120%, color-mix(in srgb, var(--accent-action) 30%, transparent), transparent 70%),
+    radial-gradient(
+      ellipse 60% 80% at 50% 120%,
+      color-mix(in srgb, var(--accent-action) 30%, transparent),
+      transparent 70%
+    ),
     var(--surface-solid);
   text-align: center;
 }
@@ -475,4 +493,17 @@
   .chipBottom {
     animation: none;
   }
+}
+.previewCode {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #1b1d22, #0e0f12);
+  color: #e6e6e6;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
 }

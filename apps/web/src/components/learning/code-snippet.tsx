@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
-import { ArrowCounterClockwise, Check, Copy, Play } from "@phosphor-icons/react/dist/ssr";
+import {
+  ArrowCounterClockwiseIcon,
+  CheckIcon,
+  CopyIcon,
+  PlayIcon
+} from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@platform/ui";
 import { highlight, type Token } from "./code-highlight";
 import { useSqlRun } from "./sql/sql-client";
@@ -12,8 +17,12 @@ function Tokens({ tokens }: { tokens: Token[] }) {
   return (
     <>
       {tokens.map((token, index) =>
-        token.kind === "plain" ? token.text : (
-          <span key={index} className={styles[token.kind]}>{token.text}</span>
+        token.kind === "plain" ? (
+          token.text
+        ) : (
+          <span key={index} className={styles[token.kind]}>
+            {token.text}
+          </span>
         )
       )}
     </>
@@ -21,7 +30,13 @@ function Tokens({ tokens }: { tokens: Token[] }) {
 }
 
 const LANGUAGE_NAMES: Record<string, string> = {
-  html: "HTML", css: "CSS", js: "JavaScript", javascript: "JavaScript", json: "JSON", sql: "SQL", text: "Текст"
+  html: "HTML",
+  css: "CSS",
+  js: "JavaScript",
+  javascript: "JavaScript",
+  json: "JSON",
+  sql: "SQL",
+  text: "Текст"
 };
 
 /** Result of an SQL example being edited: runs on a fresh teaching database (sql/, ADR-0065). */
@@ -32,7 +47,13 @@ function SqlResult({ code }: { code: string }) {
 }
 
 /** Editable code with live highlighting: a transparent textarea over a highlighted layer. */
-export function CodeEditor({ value, onChange, autoFocus = true, language = "html", label = "Редактор HTML. Tab — отступ, Escape и затем Tab — выйти из редактора" }: {
+export function CodeEditor({
+  value,
+  onChange,
+  autoFocus = true,
+  language = "html",
+  label = "Редактор HTML. Tab — отступ, Escape и затем Tab — выйти из редактора"
+}: {
   value: string;
   language?: string;
   onChange: (value: string) => void;
@@ -53,7 +74,12 @@ export function CodeEditor({ value, onChange, autoFocus = true, language = "html
     }
     if (event.key === "Tab" && !event.shiftKey && !releaseTab.current) {
       event.preventDefault();
-      event.currentTarget.setRangeText("  ", event.currentTarget.selectionStart, event.currentTarget.selectionEnd, "end");
+      event.currentTarget.setRangeText(
+        "  ",
+        event.currentTarget.selectionStart,
+        event.currentTarget.selectionEnd,
+        "end"
+      );
       onChange(event.currentTarget.value);
       return;
     }
@@ -62,7 +88,10 @@ export function CodeEditor({ value, onChange, autoFocus = true, language = "html
   return (
     <div className={styles.editor}>
       <pre ref={layer} className={styles.layer} aria-hidden="true">
-        <code><Tokens tokens={highlight(value, language)} />{"\n"}</code>
+        <code>
+          <Tokens tokens={highlight(value, language)} />
+          {"\n"}
+        </code>
       </pre>
       <textarea
         ref={input}
@@ -91,7 +120,13 @@ export function CodeEditor({ value, onChange, autoFocus = true, language = "html
  * Lesson code block. HTML examples can be edited in place and rendered live in an
  * opaque-origin iframe with every sandbox restriction; nothing leaves the browser.
  */
-export function CodeSnippet({ code, language }: { code: string; language?: string | undefined }) {
+export function CodeSnippet({
+  code,
+  language
+}: {
+  code: string;
+  language?: string | undefined;
+}) {
   const lang = language?.toLowerCase();
   const runnable = lang === "html" || lang === "sql";
   const [editing, setEditing] = useState(false);
@@ -111,46 +146,85 @@ export function CodeSnippet({ code, language }: { code: string; language?: strin
       setCopied("Не удалось скопировать. Выделите код и скопируйте вручную.");
     }
   }
-  const name = LANGUAGE_NAMES[language?.toLowerCase() ?? ""] ?? language ?? "Пример кода";
+  const name =
+    LANGUAGE_NAMES[language?.toLowerCase() ?? ""] ?? language ?? "Пример кода";
   return (
     <figure className={`${styles.snippet} ${editing ? styles.editing : ""}`}>
       <figcaption className={styles.bar}>
         <span className={styles.lang}>
           <span className={styles.dot} aria-hidden="true" />
           {name}
-          {editing ? <span className={styles.mode}>· редактирование</span> : null}
+          {editing ? (
+            <span className={styles.mode}>· редактирование</span>
+          ) : null}
         </span>
         <span className={styles.actions}>
           {editing ? (
-            <Button variant="ghost" size="sm" disabled={value === code} onClick={() => setValue(code)}>
-              <ArrowCounterClockwise size={16} aria-hidden="true" /> Сбросить
+            <Button
+              variant="ghost"
+              size="sm"
+              disabled={value === code}
+              onClick={() => setValue(code)}
+            >
+              <ArrowCounterClockwiseIcon size={16} aria-hidden="true" />{" "}
+              Сбросить
             </Button>
           ) : null}
-          <Button variant="ghost" size="sm" onClick={() => void copy()} aria-label="Скопировать код">
-            <Copy size={16} aria-hidden="true" /> <span className={styles.hideNarrow}>Скопировать</span>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => void copy()}
+            aria-label="Скопировать код"
+          >
+            <CopyIcon size={16} aria-hidden="true" />{" "}
+            <span className={styles.hideNarrow}>Скопировать</span>
           </Button>
           {runnable && !editing ? (
-            <Button size="sm" onClick={() => { setPreview(value); setEditing(true); }}>
-              <Play size={14} weight="fill" aria-hidden="true" /> Попробовать
+            <Button
+              size="sm"
+              onClick={() => {
+                setPreview(value);
+                setEditing(true);
+              }}
+            >
+              <PlayIcon size={14} weight="fill" aria-hidden="true" />{" "}
+              Попробовать
             </Button>
           ) : null}
           {editing ? (
-            <Button variant="secondary" size="sm" onClick={() => setEditing(false)}>
-              <Check size={16} aria-hidden="true" /> Готово
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setEditing(false)}
+            >
+              <CheckIcon size={16} aria-hidden="true" /> Готово
             </Button>
           ) : null}
         </span>
       </figcaption>
       {editing ? (
         <>
-          <CodeEditor value={value} onChange={setValue} language={lang === "sql" ? "sql" : "html"}
-            {...(lang === "sql" ? { label: "Редактор SQL. Tab — отступ, Escape и затем Tab — выйти из редактора" } : {})} />
+          <CodeEditor
+            value={value}
+            onChange={setValue}
+            language={lang === "sql" ? "sql" : "html"}
+            {...(lang === "sql"
+              ? {
+                  label:
+                    "Редактор SQL. Tab — отступ, Escape и затем Tab — выйти из редактора"
+                }
+              : {})}
+          />
           <section className={styles.result} aria-label="Результат кода">
             <div className={styles.resultBar}>
               <span>Результат</span>
-              <span className={styles.live}><span aria-hidden="true" /> обновляется при вводе</span>
+              <span className={styles.live}>
+                <span aria-hidden="true" /> обновляется при вводе
+              </span>
             </div>
-            {lang === "sql" ? <SqlResult code={preview} /> : (
+            {lang === "sql" ? (
+              <SqlResult code={preview} />
+            ) : (
               <div className={styles.frameWrap}>
                 <iframe
                   className={styles.frame}
@@ -164,11 +238,22 @@ export function CodeSnippet({ code, language }: { code: string; language?: strin
           </section>
         </>
       ) : (
-        <pre className={styles.code} tabIndex={0} aria-label="Пример кода, прокручиваемая область">
-          <code><Tokens tokens={highlight(value, language)} /></code>
+        <pre
+          className={styles.code}
+          tabIndex={0}
+          role="region"
+          aria-label="Пример кода, прокручиваемая область"
+        >
+          <code>
+            <Tokens tokens={highlight(value, language)} />
+          </code>
         </pre>
       )}
-      {copied ? <p className={styles.status} role="status">{copied}</p> : null}
+      {copied ? (
+        <p className={styles.status} role="status">
+          {copied}
+        </p>
+      ) : null}
     </figure>
   );
 }

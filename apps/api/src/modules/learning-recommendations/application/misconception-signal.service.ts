@@ -56,14 +56,17 @@ export class MisconceptionSignalApplicationService extends MisconceptionSignalQu
       (typeof observations)[number][]
     >();
     for (const observation of observations) {
-      const current = observationsByLearner.get(observation.learnerUserId) ?? [];
+      const current =
+        observationsByLearner.get(observation.learnerUserId) ?? [];
       current.push(observation);
       observationsByLearner.set(observation.learnerUserId, current);
     }
 
     const signals: LearnerRepeatedTrustedFailureSignal[] = [];
     for (const [learnerUserId, learnerObservations] of observationsByLearner) {
-      for (const signal of repeatedTrustedFailureSignalsV1(learnerObservations)) {
+      for (const signal of repeatedTrustedFailureSignalsV1(
+        learnerObservations
+      )) {
         signals.push({
           learnerUserId,
           ...signal

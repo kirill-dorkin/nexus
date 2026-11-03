@@ -53,7 +53,14 @@ function canonicalJson(value: unknown): string {
       .map((key) => `${JSON.stringify(key)}:${canonicalJson(object[key])}`)
       .join(",")}}`;
   }
-  return JSON.stringify(value) ?? "null";
+  // JSON.stringify yields undefined (despite its typing) for these values.
+  if (
+    value === undefined ||
+    typeof value === "function" ||
+    typeof value === "symbol"
+  )
+    return "null";
+  return JSON.stringify(value);
 }
 
 function materiallyMatches(
@@ -70,9 +77,11 @@ function materiallyMatches(
     existing.job.profile.key === requested.profileKey &&
     existing.job.profile.version === requested.profileVersion &&
     existing.job.profile.fingerprint === requested.profileFingerprint &&
-    canonicalJson(existing.validatorConfig) === canonicalJson(requested.validatorConfig) &&
+    canonicalJson(existing.validatorConfig) ===
+      canonicalJson(requested.validatorConfig) &&
     existing.evidenceTrust === requested.evidenceTrust &&
-    canonicalJson(existing.requestPayload) === canonicalJson(requested.requestPayload) &&
+    canonicalJson(existing.requestPayload) ===
+      canonicalJson(requested.requestPayload) &&
     existing.requestedByUserId === requested.requestedByUserId
   );
 }
@@ -100,11 +109,12 @@ export class GraderJobApplicationService {
     return this.database.tenantTransaction(context, async (transaction) => {
       await this.identity.requireActiveUser(transaction, context.userId);
 
-      const submissionContext = await this.progress.requireSubmissionForValidation(
-        transaction,
-        organizationId,
-        submissionId
-      );
+      const submissionContext =
+        await this.progress.requireSubmissionForValidation(
+          transaction,
+          organizationId,
+          submissionId
+        );
       if (submissionContext.learnerUserId !== context.userId) {
         throw new ForbiddenException(
           "Grader jobs can only be scheduled by the learner who owns the submission."
@@ -123,21 +133,37 @@ export class GraderJobApplicationService {
         organizationId,
         submissionContext.attempt.activityVersionId
       );
-      const configured = activityValidationConfigSchema.safeParse(activity.config);
+      const configured = activityValidationConfigSchema.safeParse(
+        activity.config
+      );
       if (!configured.success) {
-        throw new ConflictException("Activity has no valid validation binding.");
+        throw new ConflictException(
+          "Activity has no valid validation binding."
+        );
       }
 
       const binding = configured.data.validation;
-      const definition = this.validators.find(binding.validatorKey, binding.validatorVersion);
+      const definition = this.validators.find(
+        binding.validatorKey,
+        binding.validatorVersion
+      );
       if (definition === null) {
-        throw new ConflictException("Configured validator version is not registered.");
+        throw new ConflictException(
+          "Configured validator version is not registered."
+        );
       }
-      if (definition.recordingAuthority !== "system" || definition.grader === undefined) {
-        throw new ConflictException("Configured validator is not executable by the grader.");
+      if (
+        definition.recordingAuthority !== "system" ||
+        definition.grader === undefined
+      ) {
+        throw new ConflictException(
+          "Configured validator is not executable by the grader."
+        );
       }
 
-      const profileReference = graderProfileReferenceSchema.safeParse(binding.config.profile);
+      const profileReference = graderProfileReferenceSchema.safeParse(
+        binding.config.profile
+      );
       if (!profileReference.success) {
         throw new ConflictException(
           "Configured system validator has no valid grader execution profile binding."
@@ -145,15 +171,21 @@ export class GraderJobApplicationService {
       }
       const resolvedProfile = this.profiles.find(profileReference.data);
       if (resolvedProfile === null) {
-        throw new ConflictException("Configured grader execution profile is not available.");
+        throw new ConflictException(
+          "Configured grader execution profile is not available."
+        );
       }
 
       let source: GraderJobSpec["source"];
       try {
-        source = extractGraderSourceEnvelope(submissionContext.submission.payload);
+        source = extractGraderSourceEnvelope(
+          submissionContext.submission.payload
+        );
       } catch (error) {
         if (error instanceof GraderProtocolError) {
-          throw new BadRequestException("Submission has no valid executable source envelope.");
+          throw new BadRequestException(
+            "Submission has no valid executable source envelope."
+          );
         }
         throw error;
       }
@@ -174,8 +206,13 @@ export class GraderJobApplicationService {
         validateGraderJobRequest(request);
         enforceJobResourcePolicy(request, resolvedProfile.profile);
       } catch (error) {
-        if (error instanceof GraderProtocolError || error instanceof GraderJobResourcePolicyError) {
-          throw new BadRequestException("Submission exceeds the configured grader execution policy.");
+        if (
+          error instanceof GraderProtocolError ||
+          error instanceof GraderJobResourcePolicyError
+        ) {
+          throw new BadRequestException(
+            "Submission exceeds the configured grader execution policy."
+          );
         }
         throw error;
       }
@@ -197,7 +234,10 @@ export class GraderJobApplicationService {
       };
 
       const persisted = await this.jobs.createOrFind(transaction, requested);
-      if (!persisted.created && !materiallyMatches(persisted.persisted, requested)) {
+      if (
+        !persisted.created &&
+        !materiallyMatches(persisted.persisted, requested)
+      ) {
         throw new ConflictException(
           "Existing grader job does not match the current immutable grader configuration."
         );

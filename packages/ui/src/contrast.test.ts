@@ -31,10 +31,10 @@ function palette(mode: string, accent: string) {
   function resolve(name: string): string {
     const value = values[name];
     if (!value) throw new Error(`Missing semantic token ${name}`);
-    const alias = value.match(/^var\((--[\w-]+)\)$/);
+    const alias = /^var\((--[\w-]+)\)$/.exec(value);
     if (alias) return resolve(alias[1]!);
     if (/^#[0-9a-f]{3}$/i.test(value))
-      return "#" + [...value.slice(1)].map((char) => char + char).join("");
+      return "#" + value.slice(1).replace(/./g, (char) => char + char);
     return value;
   }
   return Object.fromEntries(

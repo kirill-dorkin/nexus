@@ -47,9 +47,9 @@ for (const [chapter, parts] of chapters) {
 
 const manifest = course.manifest({
   slug: "html",
-  title: "HTML с нуля: полный курс",
+  title: "HTML с нуля",
   description:
-    "Курс-история: ты с нуля делаешь сайт для кофейни «Зерно». Хозяйка Марта приносит задачи, браузер Бро показывает, как он читает твой код, наставница Ника подсказывает, а гость Лев проверяет сайт скринридером. По пути — весь HTML: каждый тег и атрибут с живым примером, задания с мгновенной проверкой и семь проектов."
+    "Весь HTML — с нуля и до каждого тега и атрибута стандарта. Как устроен веб, текст и списки, ссылки и медиа, таблицы и формы, структура страницы, метаданные, доступность. Каждый тег — карточка с живым примером, каждое задание проверяется прямо в браузере, а мини-проекты собирают изученное вместе."
 });
 // The element reference links every element to the lesson whose own concept card explains it.
 {
@@ -73,6 +73,22 @@ const manifest = course.manifest({
       const tags = range ? Array.from({ length: +range[2] - +range[1] + 1 }, (_, i) => `h${+range[1] + i}`) : names.split(/\s*\/\s*/);
       return `- ${tags.map(link).join(" · ")} — `;
     });
+}
+
+// The lesson banner names only the characters who actually speak in that lesson.
+{
+  const FENCE = "```";
+  for (const lesson of manifest.lessons) {
+    const cast = new Set();
+    for (const block of lesson.blocks)
+      for (const [, body] of (block.markdown ?? "").matchAll(new RegExp(FENCE + "story\\n([\\s\\S]*?)\\n" + FENCE, "g")))
+        for (const [who] of JSON.parse(body).lines) if (who !== "you") cast.add(who);
+    const list = cast.size ? [...cast] : ["bro", "nika"];
+    for (const block of lesson.blocks)
+      if (block.markdown)
+        block.markdown = block.markdown.replace(new RegExp(FENCE + "recap\\n(.*)\\n" + FENCE), (_, json) =>
+          `${FENCE}recap\n${JSON.stringify({ ...JSON.parse(json), cast: list })}\n${FENCE}`);
+  }
 }
 
 const out = new URL("../html-track.manifest.json", import.meta.url);

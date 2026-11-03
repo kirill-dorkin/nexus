@@ -136,7 +136,16 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
         );
         await client.query(
           "INSERT INTO events.outbox (organization_id,event_name,event_version,aggregate_type,aggregate_id,actor_user_id,payload) VALUES ($1,'organization.created',1,'organization',$1,$2,$3::jsonb)",
-          [organizationId, actor, JSON.stringify({ organizationId, slug, name: "Studio academy", createdByUserId: actor })]
+          [
+            organizationId,
+            actor,
+            JSON.stringify({
+              organizationId,
+              slug,
+              name: "Studio academy",
+              createdByUserId: actor
+            })
+          ]
         );
         return organizationId;
       });
@@ -292,17 +301,14 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
           .rows
       ).toEqual([]);
     });
-    await withUserTransaction(
-      runtime,
-      { userId: "" + randomUUID() },
-      async (tx) =>
-        expect(
-          (
-            await tx.client.query(
-              "SELECT * FROM organizations.list_own_active_organizations(NULL)"
-            )
-          ).rows
-        ).toEqual([])
+    await withUserTransaction(runtime, { userId: randomUUID() }, async (tx) =>
+      expect(
+        (
+          await tx.client.query(
+            "SELECT * FROM organizations.list_own_active_organizations(NULL)"
+          )
+        ).rows
+      ).toEqual([])
     );
   });
   it("denies user-session tenant creation through both legacy URLs even for owners", async () => {
@@ -318,28 +324,43 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
     expect(registration.statusCode).toBe(201);
     const newcomer: string = registration.json().id;
     users.push(newcomer);
-    actors.set(newcomer, String(registration.headers["set-cookie"]).split(";")[0]!);
+    actors.set(
+      newcomer,
+      String(registration.headers["set-cookie"]).split(";")[0]!
+    );
     const rejectedSlug = `rejected-studio-${randomUUID()}`;
     for (const path of ["me/organizations", "organizations"]) {
       for (const actor of [owner, learner, instructor, foreign, newcomer]) {
         await request(
-          "POST", path, { slug: rejectedSlug, name: "Unauthorized Academy" },
-          actor, 403
+          "POST",
+          path,
+          { slug: rejectedSlug, name: "Unauthorized Academy" },
+          actor,
+          403
         );
       }
       await request(
-        "POST", path, { slug: rejectedSlug, name: "Unauthorized Academy", userId: foreign },
-        owner, 403
+        "POST",
+        path,
+        { slug: rejectedSlug, name: "Unauthorized Academy", userId: foreign },
+        owner,
+        403
       );
       await request(
-        "POST", path, { slug: rejectedSlug, name: "Unauthorized Academy" },
-        "", 401
+        "POST",
+        path,
+        { slug: rejectedSlug, name: "Unauthorized Academy" },
+        "",
+        401
       );
     }
     await request(
-      "POST", "me/organizations",
+      "POST",
+      "me/organizations",
       { slug: rejectedSlug, name: "Unauthorized Academy" },
-      owner, 403, "https://wrong.example.test"
+      owner,
+      403,
+      "https://wrong.example.test"
     );
     const persisted = await migration.query<{ count: string }>(
       "SELECT count(*)::text AS count FROM organizations.organizations WHERE slug=$1",

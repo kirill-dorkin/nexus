@@ -23,7 +23,9 @@ import {
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for attempt/submission integration tests.`);
+    throw new Error(
+      `${name} is required for attempt/submission integration tests.`
+    );
   }
   return value;
 }
@@ -116,23 +118,25 @@ describe("attempt and submission HTTP lifecycle", () => {
     instructorUserId = await createUser("attempt-submission-instructor");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `attempt-submission-${randomUUID()}`,
         name: "Attempt submission integration"
-      })).id;
+      })
+    ).id;
 
     await activateMember(learnerUserId, "learner");
     await activateMember(instructorUserId, "instructor");
@@ -244,20 +248,62 @@ describe("attempt and submission HTTP lifecycle", () => {
     }
 
     if (organizationId.length > 0) {
-      await migrationPool.query(`DELETE FROM events.outbox WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_progress.evidence WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_progress.submissions WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_progress.attempts WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_progress.mastery_projections WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.learning_offerings WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.activity_skill_mappings WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.course_version_activities WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.course_version_skills WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.activities WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.skills WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.courses WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM organizations.organizations WHERE id = $1`, [organizationId]);
+      await migrationPool.query(
+        `DELETE FROM events.outbox WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_progress.evidence WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_progress.submissions WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_progress.attempts WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_progress.mastery_projections WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.learning_offerings WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.activity_skill_mappings WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.course_version_activities WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.course_version_skills WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.activities WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.skills WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.courses WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM organizations.organizations WHERE id = $1`,
+        [organizationId]
+      );
     }
 
     if (createdUserIds.length > 0) {

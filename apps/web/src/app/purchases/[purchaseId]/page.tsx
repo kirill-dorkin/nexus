@@ -18,8 +18,9 @@ export default async function PurchasePage({ params }: PurchasePageProps) {
         <p className={styles.eyebrow}>Статус покупки</p>
         <h1>Проверяем подтверждение оплаты</h1>
         <p className={styles.copy}>
-          Возврат из Paddle означает только завершение checkout UX. Доступ появится
-          после того, как подписанный webhook будет обработан сервером платформы.
+          Возврат из Paddle означает только завершение checkout UX. Доступ
+          появится после того, как подписанный webhook будет обработан сервером
+          платформы.
         </p>
         <PurchaseStatus purchaseId={parsed.data} />
       </section>

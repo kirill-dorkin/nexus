@@ -22,7 +22,8 @@ import { SandboxProvider } from "./sandbox-provider.js";
 const MANAGED_LABEL = "grader.platform.internal/managed";
 const JOB_FRAGMENT_LABEL = "grader.platform.internal/job-fragment";
 const JOB_ID_ANNOTATION = "grader.platform.internal/job-id";
-const PROFILE_FINGERPRINT_ANNOTATION = "grader.platform.internal/profile-fingerprint";
+const PROFILE_FINGERPRINT_ANNOTATION =
+  "grader.platform.internal/profile-fingerprint";
 const SPEC_FINGERPRINT_ANNOTATION = "grader.platform.internal/spec-fingerprint";
 const RUNNER_CONTAINER_NAME = "runner";
 const SOURCE_VOLUME_NAME = "source";
@@ -61,8 +62,8 @@ function record(value: unknown): Record<string, unknown> | null {
 function stringRecord(value: unknown): Record<string, string> {
   const object = record(value);
   if (object === null) return {};
-  const entries = Object.entries(object).filter((entry): entry is [string, string] =>
-    typeof entry[1] === "string"
+  const entries = Object.entries(object).filter(
+    (entry): entry is [string, string] => typeof entry[1] === "string"
   );
   return Object.fromEntries(entries);
 }
@@ -70,8 +71,14 @@ function stringRecord(value: unknown): Record<string, string> {
 function metadata(value: unknown): KubernetesMetadata {
   const object = record(value);
   const meta = object === null ? null : record(object.metadata);
-  if (meta === null || typeof meta.name !== "string" || typeof meta.uid !== "string") {
-    throw new SandboxResourceConflictError("Kubernetes resource metadata was incomplete.");
+  if (
+    meta === null ||
+    typeof meta.name !== "string" ||
+    typeof meta.uid !== "string"
+  ) {
+    throw new SandboxResourceConflictError(
+      "Kubernetes resource metadata was incomplete."
+    );
   }
   return {
     name: meta.name,
@@ -115,7 +122,9 @@ function jobIdentity(
   config: KubernetesGvisorProviderConfig
 ): JobIdentity {
   const name = jobName(request.jobId);
-  const sourceSecretNames = request.source.files.map((_, index) => sourceSecretName(name, index));
+  const sourceSecretNames = request.source.files.map((_, index) =>
+    sourceSecretName(name, index)
+  );
   const signature = {
     jobId: request.jobId,
     profileFingerprint: profile.fingerprint,
@@ -134,7 +143,11 @@ function jobIdentity(
     terminationGraceSeconds: TERMINATION_GRACE_SECONDS,
     sourceSecretNames
   };
-  return { name, sourceSecretNames, specFingerprint: stableFingerprint(signature) };
+  return {
+    name,
+    sourceSecretNames,
+    specFingerprint: stableFingerprint(signature)
+  };
 }
 
 function buildJob(
@@ -163,7 +176,10 @@ function buildJob(
       namespace: GRADER_SANDBOX_NAMESPACE,
       labels: {
         [MANAGED_LABEL]: "true",
-        [JOB_FRAGMENT_LABEL]: request.jobId.slice("sha256:".length, "sha256:".length + 48)
+        [JOB_FRAGMENT_LABEL]: request.jobId.slice(
+          "sha256:".length,
+          "sha256:".length + 48
+        )
       },
       annotations: {
         [JOB_ID_ANNOTATION]: request.jobId,
@@ -182,7 +198,10 @@ function buildJob(
         metadata: {
           labels: {
             [MANAGED_LABEL]: "true",
-            [JOB_FRAGMENT_LABEL]: request.jobId.slice("sha256:".length, "sha256:".length + 48)
+            [JOB_FRAGMENT_LABEL]: request.jobId.slice(
+              "sha256:".length,
+              "sha256:".length + 48
+            )
           },
           annotations: {
             [JOB_ID_ANNOTATION]: request.jobId,
@@ -226,7 +245,10 @@ function buildJob(
                   name: "GRADER_CPU_TIME_MS",
                   value: String(profile.profile.limits.cpuTimeMs)
                 },
-                { name: "GRADER_PIDS", value: String(profile.profile.limits.pids) },
+                {
+                  name: "GRADER_PIDS",
+                  value: String(profile.profile.limits.pids)
+                },
                 {
                   name: "GRADER_OUTPUT_BYTES",
                   value: String(profile.profile.limits.outputBytes)
@@ -363,14 +385,16 @@ function hasExactJobOwner(
   expectedUid: string
 ): boolean {
   if (!Array.isArray(ownerReferences)) return false;
-  return ownerReferences.map(record).some(
-    (owner) =>
-      owner?.apiVersion === "batch/v1" &&
-      owner.kind === "Job" &&
-      owner.name === expectedName &&
-      owner.uid === expectedUid &&
-      owner.controller === true
-  );
+  return ownerReferences
+    .map(record)
+    .some(
+      (owner) =>
+        owner?.apiVersion === "batch/v1" &&
+        owner.kind === "Job" &&
+        owner.name === expectedName &&
+        owner.uid === expectedUid &&
+        owner.controller === true
+    );
 }
 
 function assertSecretIdentity(
@@ -387,11 +411,14 @@ function assertSecretIdentity(
   const annotations = meta === null ? {} : stringRecord(meta.annotations);
   const data = object === null ? null : record(object.data);
   if (
-    meta === null ||
-    meta.name !== expectedName ||
+    meta?.name !== expectedName ||
     annotations[JOB_ID_ANNOTATION] !== request.jobId ||
     annotations[PROFILE_FINGERPRINT_ANNOTATION] !== profile.fingerprint ||
-    !hasExactJobOwner(meta.ownerReferences, expectedOwnerName, expectedOwnerUid) ||
+    !hasExactJobOwner(
+      meta.ownerReferences,
+      expectedOwnerName,
+      expectedOwnerUid
+    ) ||
     data?.content !== expectedContentBase64
   ) {
     throw new SandboxResourceConflictError(
@@ -405,7 +432,10 @@ function terminalCondition(
 ): Readonly<{ type: "Complete" | "Failed"; reason: string }> | null {
   const object = record(value);
   const status = object === null ? null : record(object.status);
-  const conditions = status === null || !Array.isArray(status.conditions) ? [] : status.conditions;
+  const conditions =
+    status === null || !Array.isArray(status.conditions)
+      ? []
+      : status.conditions;
   for (const conditionValue of conditions) {
     const condition = record(conditionValue);
     if (
@@ -415,7 +445,8 @@ function terminalCondition(
     ) {
       return {
         type: condition.type,
-        reason: typeof condition.reason === "string" ? condition.reason : "unknown"
+        reason:
+          typeof condition.reason === "string" ? condition.reason : "unknown"
       };
     }
   }
@@ -451,7 +482,11 @@ function failureFor(error: unknown, jobId: string): SystemErrorGraderJobResult {
   }
   if (error instanceof KubernetesApiTransportError) {
     if (error.code === "response_too_large") {
-      return systemError(jobId, "sandbox_control_plane_response_too_large", false);
+      return systemError(
+        jobId,
+        "sandbox_control_plane_response_too_large",
+        false
+      );
     }
     return systemError(jobId, "sandbox_control_plane_unavailable", true);
   }
@@ -514,11 +549,18 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
         jobApiPath(),
         buildJob(request, profile, identity, this.config)
       );
-      return { metadata: assertJobIdentity(created, request, profile, identity), created: true };
+      return {
+        metadata: assertJobIdentity(created, request, profile, identity),
+        created: true
+      };
     } catch (error) {
-      if (!(error instanceof KubernetesApiError) || error.statusCode !== 409) throw error;
+      if (!(error instanceof KubernetesApiError) || error.statusCode !== 409)
+        throw error;
       const existing = await this.api.getJson(jobApiPath(identity.name));
-      return { metadata: assertJobIdentity(existing, request, profile, identity), created: false };
+      return {
+        metadata: assertJobIdentity(existing, request, profile, identity),
+        created: false
+      };
     }
   }
 
@@ -531,13 +573,22 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
     for (const [index, file] of request.source.files.entries()) {
       const name = identity.sourceSecretNames[index];
       if (name === undefined) {
-        throw new SandboxResourceConflictError("Source Secret identity was not generated.");
+        throw new SandboxResourceConflictError(
+          "Source Secret identity was not generated."
+        );
       }
-      const body = buildSourceSecret(file.content, name, jobMetadata, request, profile);
+      const body = buildSourceSecret(
+        file.content,
+        name,
+        jobMetadata,
+        request,
+        profile
+      );
       try {
         await this.api.postJson(secretApiPath(), body);
       } catch (error) {
-        if (!(error instanceof KubernetesApiError) || error.statusCode !== 409) throw error;
+        if (!(error instanceof KubernetesApiError) || error.statusCode !== 409)
+          throw error;
         const existing = await this.api.getJson(secretApiPath(name));
         assertSecretIdentity(
           existing,
@@ -571,7 +622,10 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
         profile.profile.limits.outputBytes
       );
     } catch (error) {
-      if (error instanceof KubernetesApiTransportError && error.code === "response_too_large") {
+      if (
+        error instanceof KubernetesApiTransportError &&
+        error.code === "response_too_large"
+      ) {
         return systemError(request.jobId, "sandbox_runner_output_limit", false);
       }
       throw error;
@@ -603,7 +657,12 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
       const jobMetadata = assertJobIdentity(job, request, profile, identity);
       const terminal = terminalCondition(job);
       if (terminal?.type === "Complete") {
-        return this.resultFromCompletedJob(request, profile, identity, jobMetadata.uid);
+        return this.resultFromCompletedJob(
+          request,
+          profile,
+          identity,
+          jobMetadata.uid
+        );
       }
       if (terminal?.type === "Failed") {
         if (terminal.reason === "DeadlineExceeded") {
@@ -621,7 +680,11 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
     profile: ResolvedGraderExecutionProfile
   ): Promise<unknown> {
     if (profile.profile.limits.pids !== this.config.podPidsLimit) {
-      return systemError(request.jobId, "sandbox_profile_pid_limit_mismatch", false);
+      return systemError(
+        request.jobId,
+        "sandbox_profile_pid_limit_mismatch",
+        false
+      );
     }
 
     const identity = jobIdentity(request, profile, this.config);
@@ -629,7 +692,12 @@ export class KubernetesGvisorSandboxProvider extends SandboxProvider {
     try {
       const job = await this.createOrFindJob(request, profile, identity);
       created = job.created;
-      await this.createOrVerifySources(request, profile, identity, job.metadata);
+      await this.createOrVerifySources(
+        request,
+        profile,
+        identity,
+        job.metadata
+      );
       return await this.waitForTerminal(request, profile, identity);
     } catch (error) {
       if (created) {

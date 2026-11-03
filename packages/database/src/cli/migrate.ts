@@ -4,7 +4,9 @@ import { fileURLToPath } from "node:url";
 import { createDatabasePool } from "../pool";
 import { migrateDatabase } from "../migrator";
 
-const localEnvFile = fileURLToPath(new URL("../../../../.env", import.meta.url));
+const localEnvFile = fileURLToPath(
+  new URL("../../../../.env", import.meta.url)
+);
 if (existsSync(localEnvFile)) {
   process.loadEnvFile(localEnvFile);
 }
@@ -26,10 +28,10 @@ try {
   const result = await migrateDatabase(pool);
 
   if (result.applied.length === 0) {
-    console.log("Database is already up to date.");
+    process.stdout.write("Database is already up to date.\n");
   } else {
     for (const migration of result.applied) {
-      console.log(`Applied ${migration}`);
+      process.stdout.write(`Applied ${migration}\n`);
     }
   }
 } finally {

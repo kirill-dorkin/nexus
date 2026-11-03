@@ -4,7 +4,7 @@ import { uuidSchema } from "./common";
 
 export const identityUserSchema = z.object({
   id: uuidSchema,
-  email: z.string().email().max(320),
+  email: z.email().max(320),
   displayName: z.string().nullable(),
   status: z.enum(["active", "suspended", "deleted"])
 });

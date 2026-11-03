@@ -30,10 +30,10 @@ async function main(): Promise<void> {
     retryMaxMs: config.retryMaxMs
   });
 
-  let stopping = false;
+  const shutdown = new AbortController();
   for (const signal of ["SIGINT", "SIGTERM"] as const) {
     process.once(signal, () => {
-      stopping = true;
+      shutdown.abort();
       log.info({ signal }, "worker shutdown requested");
     });
   }
@@ -48,7 +48,7 @@ async function main(): Promise<void> {
   );
 
   try {
-    while (!stopping) {
+    while (!shutdown.signal.aborted) {
       try {
         const cycle = await dispatcher.runOnce();
         if (cycle.kind === "idle") {
@@ -87,7 +87,8 @@ async function main(): Promise<void> {
         log.error(
           {
             errorName: error instanceof Error ? error.name : "UnknownError",
-            errorMessage: error instanceof Error ? error.message : "unknown worker failure"
+            errorMessage:
+              error instanceof Error ? error.message : "unknown worker failure"
           },
           "grader dispatcher cycle failed"
         );
@@ -104,7 +105,10 @@ void main().catch((error: unknown) => {
   log.fatal(
     {
       errorName: error instanceof Error ? error.name : "UnknownError",
-      errorMessage: error instanceof Error ? error.message : "unknown worker startup failure"
+      errorMessage:
+        error instanceof Error
+          ? error.message
+          : "unknown worker startup failure"
     },
     "worker terminated unexpectedly"
   );

@@ -17,7 +17,10 @@ export class KubernetesApiError extends Error {
 }
 
 export class KubernetesApiTransportError extends Error {
-  constructor(readonly code: "timeout" | "unreachable" | "response_too_large", message: string) {
+  constructor(
+    readonly code: "timeout" | "unreachable" | "response_too_large",
+    message: string
+  ) {
     super(message);
     this.name = "KubernetesApiTransportError";
   }
@@ -44,7 +47,10 @@ export class KubernetesApiClient {
 
   private serviceAccountToken(): string {
     try {
-      const token = readFileSync(this.options.serviceAccountTokenFile, "utf8").trim();
+      const token = readFileSync(
+        this.options.serviceAccountTokenFile,
+        "utf8"
+      ).trim();
       if (token.length === 0) throw new Error("empty token");
       return token;
     } catch {
@@ -65,7 +71,10 @@ export class KubernetesApiClient {
     const url = new URL(path, this.baseUrl);
     if (url.origin !== this.baseUrl.origin) {
       return Promise.reject(
-        new KubernetesApiTransportError("unreachable", "Kubernetes request escaped configured origin.")
+        new KubernetesApiTransportError(
+          "unreachable",
+          "Kubernetes request escaped configured origin."
+        )
       );
     }
 
@@ -73,7 +82,9 @@ export class KubernetesApiClient {
     try {
       token = this.serviceAccountToken();
     } catch (error) {
-      return Promise.reject(error);
+      return Promise.reject(
+        error instanceof Error ? error : new Error(String(error))
+      );
     }
 
     return new Promise<RequestResult>((resolve, reject) => {
@@ -151,7 +162,10 @@ export class KubernetesApiClient {
       request.setTimeout(this.options.requestTimeoutMs, () => {
         request.destroy();
         finishReject(
-          new KubernetesApiTransportError("timeout", "Kubernetes API request timed out.")
+          new KubernetesApiTransportError(
+            "timeout",
+            "Kubernetes API request timed out."
+          )
         );
       });
       request.on("error", () => {
@@ -168,7 +182,11 @@ export class KubernetesApiClient {
     });
   }
 
-  private ensureSuccess(result: RequestResult, method: string, path: string): RequestResult {
+  private ensureSuccess(
+    result: RequestResult,
+    method: string,
+    path: string
+  ): RequestResult {
     if (result.statusCode >= 200 && result.statusCode < 300) return result;
     throw new KubernetesApiError(
       result.statusCode,
@@ -179,7 +197,13 @@ export class KubernetesApiClient {
 
   async getJson(path: string): Promise<unknown> {
     const result = this.ensureSuccess(
-      await this.request("GET", path, null, MAX_CONTROL_RESPONSE_BYTES, "application/json"),
+      await this.request(
+        "GET",
+        path,
+        null,
+        MAX_CONTROL_RESPONSE_BYTES,
+        "application/json"
+      ),
       "GET",
       path
     );
@@ -196,7 +220,13 @@ export class KubernetesApiClient {
   async postJson(path: string, body: unknown): Promise<unknown> {
     const serialized = JSON.stringify(body);
     const result = this.ensureSuccess(
-      await this.request("POST", path, serialized, MAX_CONTROL_RESPONSE_BYTES, "application/json"),
+      await this.request(
+        "POST",
+        path,
+        serialized,
+        MAX_CONTROL_RESPONSE_BYTES,
+        "application/json"
+      ),
       "POST",
       path
     );
@@ -212,7 +242,13 @@ export class KubernetesApiClient {
 
   async getText(path: string, maxResponseBytes: number): Promise<string> {
     return this.ensureSuccess(
-      await this.request("GET", path, null, maxResponseBytes, "text/plain, */*"),
+      await this.request(
+        "GET",
+        path,
+        null,
+        maxResponseBytes,
+        "text/plain, */*"
+      ),
       "GET",
       path
     ).body;

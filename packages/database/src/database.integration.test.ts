@@ -38,7 +38,9 @@ function requireFixture(): Fixture {
 }
 
 async function nextUuid(pool: Pool): Promise<string> {
-  const result = await pool.query<{ id: string }>("SELECT uuidv7()::text AS id");
+  const result = await pool.query<{ id: string }>(
+    "SELECT uuidv7()::text AS id"
+  );
   const row = result.rows[0];
 
   if (row === undefined) {
@@ -92,10 +94,13 @@ async function createOrganizationFixture(
 }
 
 beforeAll(async () => {
-  migrationPool = createDatabasePool(requireEnvironment("DATABASE_MIGRATION_URL"), {
-    applicationName: "database-integration-migrator",
-    maxConnections: 1
-  });
+  migrationPool = createDatabasePool(
+    requireEnvironment("DATABASE_MIGRATION_URL"),
+    {
+      applicationName: "database-integration-migrator",
+      maxConnections: 1
+    }
+  );
   appPool = createDatabasePool(requireEnvironment("DATABASE_URL"), {
     applicationName: "database-integration-app",
     maxConnections: 1
@@ -172,11 +177,7 @@ afterAll(async () => {
     );
   }
 
-  await Promise.all([
-    appPool?.end(),
-    migrationPool?.end(),
-    workerPool?.end()
-  ]);
+  await Promise.all([appPool?.end(), migrationPool?.end(), workerPool?.end()]);
 });
 
 describe("database security foundation", () => {

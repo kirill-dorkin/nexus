@@ -43,6 +43,10 @@ import { LearningValidationController } from "./learning-validation.controller";
       useClass: PostgresGraderJobRepository
     }
   ],
-  exports: [QuizValidationApplicationService, ValidationApplicationService, GraderJobApplicationService]
+  exports: [
+    QuizValidationApplicationService,
+    ValidationApplicationService,
+    GraderJobApplicationService
+  ]
 })
 export class LearningValidationModule {}

@@ -10,8 +10,20 @@ import { PostgresGuidanceExposureRepository } from "./infrastructure/postgres-gu
 import { LearningGuidanceController } from "./learning-guidance.controller";
 
 @Module({
-  imports: [IdentityModule, AuthorizationModule, LearningContentModule, LearningProgressModule, LearningHistoryModule],
+  imports: [
+    IdentityModule,
+    AuthorizationModule,
+    LearningContentModule,
+    LearningProgressModule,
+    LearningHistoryModule
+  ],
   controllers: [LearningGuidanceController],
-  providers: [LearningGuidanceApplicationService, { provide: GuidanceExposureRepository, useClass: PostgresGuidanceExposureRepository }]
+  providers: [
+    LearningGuidanceApplicationService,
+    {
+      provide: GuidanceExposureRepository,
+      useClass: PostgresGuidanceExposureRepository
+    }
+  ]
 })
 export class LearningGuidanceModule {}

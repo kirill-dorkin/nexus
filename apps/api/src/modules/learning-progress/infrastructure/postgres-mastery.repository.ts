@@ -170,7 +170,9 @@ export class PostgresMasteryRepository extends MasteryRepository {
     );
     const row = result.rows[0];
     if (row === undefined) {
-      throw new Error("PostgreSQL did not return the materialized Mastery projection.");
+      throw new Error(
+        "PostgreSQL did not return the materialized Mastery projection."
+      );
     }
     return mapProjection(row);
   }

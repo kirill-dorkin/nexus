@@ -18,7 +18,7 @@ export const learnerCourseProgressSchema = z
     percentage: z.number().int().min(0).max(100).nullable(),
     allRequiredPassed: z.boolean(),
     nextLessonSlug: resourceSlugSchema.nullable(),
-    lastActionAt: z.string().datetime().nullable(),
+    lastActionAt: z.iso.datetime().nullable(),
     lessons: z
       .array(
         z

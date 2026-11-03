@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { ArrowRight, Check, X } from "@phosphor-icons/react/dist/ssr";
+import {
+  ArrowRightIcon,
+  CheckIcon,
+  XIcon
+} from "@phosphor-icons/react/dist/ssr";
 import type { PublicLearningCourse } from "@platform/contracts";
 import { Alert, ButtonLink, Skeleton } from "@platform/ui";
 import { loadLearningCatalog, courseUrl } from "../../lib/public-learning";
@@ -23,7 +27,7 @@ function HeroButtons({ href }: { href: string }) {
   return (
     <div className={styles.heroActions}>
       <ButtonLink size="lg" href={href}>
-        Начать первый курс <ArrowRight size={20} aria-hidden="true" />
+        Начать первый курс <ArrowRightIcon size={20} aria-hidden="true" />
       </ButtonLink>
       <ButtonLink size="lg" variant="secondary" href="#courses">
         Смотреть все курсы
@@ -38,27 +42,31 @@ function LessonPreview() {
     <div className={styles.preview} aria-hidden="true">
       <div className={styles.previewCard}>
         <div className={styles.previewTop}>
-          <span>Урок 2 из 4</span>
+          <span>HTML · урок 8</span>
           <span>12 мин</span>
         </div>
-        <div className={styles.previewBar}><span /></div>
-        <p className={styles.previewTitle}>Оперативная память и файлы</p>
-        <div className={styles.previewVideo}>
-          <span className={styles.previewPlay}>
-            <svg viewBox="0 0 16 16" width="16" height="16"><path d="M4 2.5 13 8l-9 5.5z" fill="currentColor" /></svg>
-          </span>
+        <div className={styles.previewBar}>
+          <span />
         </div>
-        <p className={styles.previewQuestion}>Что хранит данные, пока программа работает?</p>
+        <p className={styles.previewTitle}>Заголовки и абзацы</p>
+        <pre className={styles.previewCode}>
+          <code>{"<h1>Мой первый сайт</h1>\n<p>Привет! Это абзац.</p>"}</code>
+        </pre>
+        <p className={styles.previewQuestion}>
+          Какой тег — главный заголовок страницы?
+        </p>
         <div className={styles.previewOptions}>
-          <span>Накопитель SSD</span>
+          <span>&lt;title&gt;</span>
           <span data-correct="">
-            Оперативная память <Check size={16} weight="bold" />
+            &lt;h1&gt; <CheckIcon size={16} weight="bold" />
           </span>
-          <span>Монитор</span>
+          <span>&lt;p&gt;</span>
         </div>
       </div>
       <div className={`${styles.chip} ${styles.chipTop}`}>
-        <span className={styles.chipIcon}><Check size={14} weight="bold" /></span>
+        <span className={styles.chipIcon}>
+          <CheckIcon size={14} weight="bold" />
+        </span>
         Правильно · сохранено
       </div>
       <div className={`${styles.chip} ${styles.chipBottom}`}>
@@ -79,18 +87,27 @@ function HowItWorks() {
       <div className={styles.bento}>
         <article className={`${styles.tile} ${styles.tileWide}`}>
           <div className={styles.tileVisualVideo} aria-hidden="true">
-            <span className={styles.previewPlay}>
-              <svg viewBox="0 0 16 16" width="16" height="16"><path d="M4 2.5 13 8l-9 5.5z" fill="currentColor" /></svg>
-            </span>
-            <div className={styles.notesLines}><span /><span /><span /></div>
+            <span className={styles.previewPlay}>&lt;/&gt;</span>
+            <div className={styles.notesLines}>
+              <span />
+              <span />
+              <span />
+            </div>
           </div>
-          <h3>Видео и конспект</h3>
-          <p>Объяснение на 10–15 минут и текст, к которому удобно вернуться.</p>
+          <h3>Урок и живые примеры</h3>
+          <p>
+            Объяснение на 10–15 минут и примеры, которые можно менять прямо в
+            браузере.
+          </p>
         </article>
         <article className={styles.tile}>
           <div className={styles.tileVisualCheck} aria-hidden="true">
-            <span data-ok=""><Check size={18} weight="bold" /></span>
-            <span><X size={18} weight="bold" /></span>
+            <span data-ok="">
+              <CheckIcon size={18} weight="bold" />
+            </span>
+            <span>
+              <XIcon size={18} weight="bold" />
+            </span>
           </div>
           <h3>Проверка сразу</h3>
           <p>Ответили — и тут же видно, верно ли. Ошиблись — попробуйте ещё.</p>
@@ -103,7 +120,9 @@ function HowItWorks() {
           <p>Закрыли вкладку — продолжите с того же места.</p>
         </article>
         <article className={`${styles.tile} ${styles.tileAccent}`}>
-          <p className={styles.bigValue} aria-hidden="true">0 ₽</p>
+          <p className={styles.bigValue} aria-hidden="true">
+            0 ₽
+          </p>
           <h3>Бесплатно</h3>
           <p>Без пробных периодов и привязки карты.</p>
         </article>
@@ -134,8 +153,14 @@ export function DiscoveryRows({
 
 export function DiscoveryLoading() {
   return (
-    <div className={styles.courseGrid} aria-busy="true" aria-label="Загрузка курсов">
-      <p role="status" className={styles.srOnly}>Загружаем курсы…</p>
+    <div
+      className={styles.courseGrid}
+      aria-busy="true"
+      aria-label="Загрузка курсов"
+    >
+      <p role="status" className={styles.srOnly}>
+        Загружаем курсы…
+      </p>
       {[0, 1, 2].map((key) => (
         <div key={key} className={styles.loadingCard}>
           <Skeleton className={styles.loadingCover} />
@@ -163,14 +188,18 @@ export async function DiscoveryCourses() {
 
 export function CourseDiscovery() {
   return (
-    <section className={styles.section} aria-labelledby="courses-title" id="courses">
+    <section
+      className={styles.section}
+      aria-labelledby="courses-title"
+      id="courses"
+    >
       <div className={styles.sectionHeadRow}>
         <div className={styles.sectionHead}>
-          <p className={styles.kicker}>Курсы</p>
-          <h2 id="courses-title">С чего начнём?</h2>
+          <p className={styles.kicker}>Маршрут</p>
+          <h2 id="courses-title">Веб-разработка с нуля — шаг за шагом</h2>
         </div>
         <Link className={styles.allLink} href="/courses">
-          Весь каталог <ArrowRight size={18} aria-hidden="true" />
+          Весь каталог <ArrowRightIcon size={18} aria-hidden="true" />
         </Link>
       </div>
       <Suspense fallback={<DiscoveryLoading />}>
@@ -194,8 +223,9 @@ export function HomeContent() {
             <span className={styles.accentText}>По 15 минут в день.</span>
           </h1>
           <p className={styles.lead}>
-            Короткие видео, понятные конспекты и задания с мгновенной проверкой.
-            Аккаунт нужен, только чтобы сохранить прогресс.
+            Маршрут «Веб-разработка с нуля»: HTML, CSS, JavaScript и SQL по
+            порядку. Понятные уроки, живые примеры и задания с мгновенной
+            проверкой. Аккаунт нужен, только чтобы сохранить прогресс.
           </p>
           <Suspense fallback={<HeroButtons href="/courses" />}>
             <HeroActions />
@@ -208,9 +238,9 @@ export function HomeContent() {
         <HowItWorks />
         <section className={styles.finalCta} aria-labelledby="final-title">
           <h2 id="final-title">Первый урок — через минуту.</h2>
-          <p>Откройте курс и начните смотреть. Регистрация не нужна.</p>
+          <p>Начните с HTML — первый шаг маршрута. Регистрация не нужна.</p>
           <ButtonLink size="lg" href="/courses">
-            Выбрать курс <ArrowRight size={20} aria-hidden="true" />
+            Выбрать курс <ArrowRightIcon size={20} aria-hidden="true" />
           </ButtonLink>
         </section>
       </div>

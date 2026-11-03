@@ -107,7 +107,9 @@ describe("Purchase + Paddle transaction settlement vertical", () => {
       headers: { "x-test-user-id": userId }
     });
     if (accept.statusCode !== 200) {
-      throw new Error(`Failed to activate purchase test member: ${accept.body}`);
+      throw new Error(
+        `Failed to activate purchase test member: ${accept.body}`
+      );
     }
 
     const role = await app.inject({
@@ -146,14 +148,16 @@ describe("Purchase + Paddle transaction settlement vertical", () => {
     return row;
   }
 
-  function paddleEvent(input: Readonly<{
-    eventId: string;
-    transactionId: string;
-    subtotalMinor?: number;
-    discountMinor?: number;
-    taxMinor?: number;
-    currency?: string;
-  }>): string {
+  function paddleEvent(
+    input: Readonly<{
+      eventId: string;
+      transactionId: string;
+      subtotalMinor?: number;
+      discountMinor?: number;
+      taxMinor?: number;
+      currency?: string;
+    }>
+  ): string {
     const subtotal = input.subtotalMinor ?? 12900;
     const discount = input.discountMinor ?? 0;
     const tax = input.taxMinor ?? 0;
@@ -222,23 +226,25 @@ describe("Purchase + Paddle transaction settlement vertical", () => {
     learnerBUserId = await createUser("purchase-learner-b");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `purchase-${randomUUID()}`,
         name: "Purchase integration"
-      })).id;
+      })
+    ).id;
 
     await addLearner(learnerAUserId);
     await addLearner(learnerBUserId);
@@ -268,7 +274,9 @@ describe("Purchase + Paddle transaction settlement vertical", () => {
       headers: { "x-test-user-id": ownerUserId }
     });
     if (publish.statusCode !== 200) {
-      throw new Error(`Failed to publish purchase test course: ${publish.body}`);
+      throw new Error(
+        `Failed to publish purchase test course: ${publish.body}`
+      );
     }
 
     const offering = await app.inject({

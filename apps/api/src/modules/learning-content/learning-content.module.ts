@@ -30,26 +30,60 @@ import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
 
 @Module({
   imports: [IdentityModule, AuthorizationModule, OutboxModule],
-  controllers: [LearningContentController, SkillsController, CourseManifestController, StudioController],
+  controllers: [
+    LearningContentController,
+    SkillsController,
+    CourseManifestController,
+    StudioController
+  ],
   providers: [
     StudioApplicationService,
     { provide: StudioRepository, useClass: PostgresStudioRepository },
-    { provide: QuizValidationContentQuery, useClass: PostgresQuizValidationContentQuery },
-    { provide: LearnerCourseContentQuery, useClass: PostgresLearnerCourseContentQuery },
-    { provide: PublicLearningContentQuery, useClass: PostgresPublicLearningContentQuery },
+    {
+      provide: QuizValidationContentQuery,
+      useClass: PostgresQuizValidationContentQuery
+    },
+    {
+      provide: LearnerCourseContentQuery,
+      useClass: PostgresLearnerCourseContentQuery
+    },
+    {
+      provide: PublicLearningContentQuery,
+      useClass: PostgresPublicLearningContentQuery
+    },
     LearningContentApplicationService,
     CourseManifestApplicationService,
     BrowserWriteOriginGuard,
-    { provide: CourseManifestRepository, useClass: PostgresCourseManifestRepository },
+    {
+      provide: CourseManifestRepository,
+      useClass: PostgresCourseManifestRepository
+    },
     LearningGraphApplicationService,
-    { provide: LearningContentQuery, useExisting: LearningGraphApplicationService },
-    { provide: GuidedBuildContentQuery, useExisting: LearningGraphApplicationService },
-    { provide: LearningContentRepository, useClass: PostgresLearningContentRepository },
-    { provide: LearningGraphRepository, useClass: PostgresLearningGraphRepository }
+    {
+      provide: LearningContentQuery,
+      useExisting: LearningGraphApplicationService
+    },
+    {
+      provide: GuidedBuildContentQuery,
+      useExisting: LearningGraphApplicationService
+    },
+    {
+      provide: LearningContentRepository,
+      useClass: PostgresLearningContentRepository
+    },
+    {
+      provide: LearningGraphRepository,
+      useClass: PostgresLearningGraphRepository
+    }
   ],
   exports: [
     QuizValidationContentQuery,
     LearnerCourseContentQuery,
-    PublicLearningContentQuery, LearningContentApplicationService, LearningGraphApplicationService, LearningContentQuery, GuidedBuildContentQuery]
+    PublicLearningContentQuery,
+    LearningContentApplicationService,
+    LearningGraphApplicationService,
+    LearningContentQuery,
+    GuidedBuildContentQuery
+  ]
 })
 export class LearningContentModule {}

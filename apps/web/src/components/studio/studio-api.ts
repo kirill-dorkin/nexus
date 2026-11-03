@@ -1,3 +1,5 @@
+import { apiValidationErrorSchema } from "@platform/contracts";
+
 import { browserApiRequest } from "../../lib/public-api";
 export class StudioError extends Error {
   constructor(
@@ -7,20 +9,17 @@ export class StudioError extends Error {
     super(message);
   }
 }
-export async function studioRequest(path: string, body?: unknown) {
+/** Reads a Studio API response. Callers parse the result with a contract schema. */
+export async function studioRequest(
+  path: string,
+  body?: unknown
+): Promise<unknown> {
   const response = await browserApiRequest(
     `/v1/${path}`,
     body === undefined ? {} : { method: "POST", body: JSON.stringify(body) }
   );
   if (!response.ok) {
-    let issues: string[] = [];
-    try {
-      const data = await response.json();
-      if (Array.isArray(data.issues))
-        issues = data.issues.map(
-          (i: { path: string; message: string }) => `${i.path}: ${i.message}`
-        );
-    } catch {}
+    const issues = await validationIssues(response);
     const message =
       response.status === 401
         ? "Войдите в аккаунт."
@@ -35,7 +34,26 @@ export async function studioRequest(path: string, body?: unknown) {
                 : "Не удалось завершить операцию. Проверьте сохранённый черновик перед повтором.";
     throw new StudioError(response.status, message);
   }
-  return response.json();
+  return (await response.json()) as unknown;
+}
+
+/** Field issues from a 400 body; an unreadable body yields none. */
+async function validationIssues(response: Response): Promise<string[]> {
+  try {
+    const parsed = apiValidationErrorSchema.safeParse(await response.json());
+    return parsed.success
+      ? parsed.data.issues.map((issue) => `${issue.path}: ${issue.message}`)
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+/** A user-facing message for any rejected Studio operation. */
+export function errorMessage(error: unknown): string {
+  return error instanceof Error
+    ? error.message
+    : "Не удалось завершить операцию.";
 }
 export function downloadManifest(value: unknown, slug: string) {
   downloadManifestText(JSON.stringify(value, null, 2) + "\n", slug);

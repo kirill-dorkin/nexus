@@ -217,23 +217,25 @@ describe("offering readiness intelligence HTTP lifecycle", () => {
     mentorUserId = await createUser("overview-mentor");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `overview-${randomUUID()}`,
         name: "Offering readiness intelligence integration"
-      })).id;
+      })
+    ).id;
 
     await activateMember(readyLearnerUserId, "learner");
     await activateMember(insufficientLearnerUserId, "learner");
@@ -299,7 +301,8 @@ describe("offering readiness intelligence HTTP lifecycle", () => {
       }
     });
     expect(activity.statusCode).toBe(201);
-    activityId = (JSON.parse(activity.body) as { activityId: string }).activityId;
+    activityId = (JSON.parse(activity.body) as { activityId: string })
+      .activityId;
 
     const published = await app.inject({
       method: "POST",
@@ -480,7 +483,9 @@ describe("offering readiness intelligence HTTP lifecycle", () => {
       }
     });
 
-    expect(result.body?.learners.map((learner) => learner.enrollmentId)).toEqual([
+    expect(
+      result.body?.learners.map((learner) => learner.enrollmentId)
+    ).toEqual([
       blockedEnrollmentId,
       insufficientEnrollmentId,
       readyEnrollmentId

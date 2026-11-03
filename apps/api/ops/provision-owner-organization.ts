@@ -24,20 +24,31 @@ export type ProvisionOutcome = {
   outcome: "created" | "already_provisioned";
 };
 
-export function parseOwnerProvisionArgs(argv: string[]): OwnerOrganizationProvision {
+export function parseOwnerProvisionArgs(
+  argv: string[]
+): OwnerOrganizationProvision {
   const keys = new Set(["--owner-user-id", "--slug", "--name"]);
   const provided = new Map<string, string>();
   let apply = false;
   for (let i = 0; i < argv.length; i++) {
-    const flag = argv[i]!;
+    const flag = argv[i] ?? "";
     if (flag === "--apply" && !apply) {
       apply = true;
       continue;
     }
-    if (!keys.has(flag) || provided.has(flag) || !argv[i + 1] || argv[i + 1]!.startsWith("--")) {
-      throw new Error("Usage: --owner-user-id UUID --slug SLUG --name NAME --apply");
+    const value = argv[i + 1];
+    if (
+      !keys.has(flag) ||
+      provided.has(flag) ||
+      !value ||
+      value.startsWith("--")
+    ) {
+      throw new Error(
+        "Usage: --owner-user-id UUID --slug SLUG --name NAME --apply"
+      );
     }
-    provided.set(flag, argv[++i]!);
+    provided.set(flag, value);
+    i += 1;
   }
   if (!apply || provided.size !== 3) {
     throw new Error("Explicit --apply and owner, slug and name are required.");
@@ -64,9 +75,13 @@ export async function provisionOwnerOrganization(
   });
 
   return withTransaction(pool, async ({ client }) => {
-    const role = await client.query<{ role: string }>("SELECT current_user AS role");
+    const role = await client.query<{ role: string }>(
+      "SELECT current_user AS role"
+    );
     if (role.rows[0]?.role !== "platform_migrator") {
-      throw new Error("Owner provisioning requires the dedicated platform_migrator role.");
+      throw new Error(
+        "Owner provisioning requires the dedicated platform_migrator role."
+      );
     }
 
     const user = await client.query<{ status: string }>(
@@ -74,14 +89,21 @@ export async function provisionOwnerOrganization(
       [ownerUserId]
     );
     if (user.rows[0]?.status !== "active") {
-      throw new Error("The proposed owner must already be an active Identity user.");
+      throw new Error(
+        "The proposed owner must already be an active Identity user."
+      );
     }
 
     // PostgreSQL unique slug is the concurrency fence. A retry is read-only
     // only when every original owner-provisioning invariant still matches.
     const existing = await client.query<{
-      id: string; name: string; status: string; created_by_user_id: string;
-      has_membership: boolean; has_role: boolean; has_event: boolean;
+      id: string;
+      name: string;
+      status: string;
+      created_by_user_id: string;
+      has_membership: boolean;
+      has_role: boolean;
+      has_event: boolean;
     }>(
       [
         "SELECT o.id::text, o.name, o.status, o.created_by_user_id::text,",
@@ -109,9 +131,13 @@ export async function provisionOwnerOrganization(
         already.status !== "active" ||
         already.name !== name ||
         already.created_by_user_id !== ownerUserId ||
-        !already.has_membership || !already.has_role || !already.has_event
+        !already.has_membership ||
+        !already.has_role ||
+        !already.has_event
       ) {
-        throw new Error("Existing Organization is not an exact owner-provisioning replay.");
+        throw new Error(
+          "Existing Organization is not an exact owner-provisioning replay."
+        );
       }
       return { id: already.id, slug, outcome: "already_provisioned" };
     }
@@ -138,7 +164,9 @@ export async function provisionOwnerOrganization(
       [id, ownerUserId]
     );
     if (assignment.rowCount !== 1) {
-      throw new Error("Canonical organization_owner system role is unavailable.");
+      throw new Error(
+        "Canonical organization_owner system role is unavailable."
+      );
     }
 
     await client.query(
@@ -147,7 +175,16 @@ export async function provisionOwnerOrganization(
         " (organization_id,event_name,event_version,aggregate_type,aggregate_id,actor_user_id,payload,metadata)",
         " VALUES ($1,'organization.created',1,'organization',$1,$2,$3::jsonb,'{}'::jsonb)"
       ].join("\n"),
-      [id, ownerUserId, JSON.stringify({ organizationId: id, slug, name, createdByUserId: ownerUserId })]
+      [
+        id,
+        ownerUserId,
+        JSON.stringify({
+          organizationId: id,
+          slug,
+          name,
+          createdByUserId: ownerUserId
+        })
+      ]
     );
     return { id, slug, outcome: "created" };
   });
@@ -156,8 +193,12 @@ export async function provisionOwnerOrganization(
 async function cli() {
   const input = parseOwnerProvisionArgs(process.argv.slice(2));
   const url = process.env.DATABASE_MIGRATION_URL;
-  if (!url) throw new Error("DATABASE_MIGRATION_URL is required (not DATABASE_URL).");
-  const pool = createDatabasePool(url, { applicationName: "operator-owner-bootstrap", maxConnections: 1 });
+  if (!url)
+    throw new Error("DATABASE_MIGRATION_URL is required (not DATABASE_URL).");
+  const pool = createDatabasePool(url, {
+    applicationName: "operator-owner-bootstrap",
+    maxConnections: 1
+  });
   try {
     const result = await provisionOwnerOrganization(pool, input);
     process.stdout.write(JSON.stringify(result) + "\n");
@@ -166,10 +207,14 @@ async function cli() {
   }
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (
+  process.argv[1] &&
+  resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+) {
   void cli().catch((error: unknown) => {
     // Never dump database URLs, input arguments or connection objects.
-    const message = error instanceof Error ? error.message : "Owner provisioning failed.";
+    const message =
+      error instanceof Error ? error.message : "Owner provisioning failed.";
     console.error(message);
     process.exitCode = 1;
   });

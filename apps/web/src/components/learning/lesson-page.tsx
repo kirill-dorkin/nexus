@@ -3,11 +3,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LearningShell } from "./learning-shell";
 import { LessonBlocks } from "./lesson-blocks";
-import type { PublicLearningLesson } from "@platform/contracts";
+import type {
+  PublicLearningCourse,
+  PublicLearningLesson
+} from "@platform/contracts";
+import { routePosition } from "../../lib/learning-route";
 import { courseUrl, lessonUrl } from "../../lib/public-learning-routes";
-import { Heading, Surface } from "@platform/ui";
 import { LearningPageHeading } from "./learning-page-heading";
-import { LessonOutline } from "./lesson-outline";
+import { CourseNavigator } from "./course-navigator";
 import { SignupNudge } from "./signup-nudge";
 import styles from "./flow.module.css";
 import { absoluteUrl, jsonLd } from "../../lib/site";
@@ -25,13 +28,23 @@ export function lessonMetadata(course: PublicLearningLesson): Metadata {
     }
   };
 }
-export function LessonPageView({ course }: { course: PublicLearningLesson }) {
+export function LessonPageView({
+  course,
+  catalog = []
+}: {
+  course: PublicLearningLesson;
+  catalog?: readonly PublicLearningCourse[];
+}) {
   const lessonSlug = course.lesson.slug;
   const index = course.course.lessons.findIndex(
     (lesson) => lesson.slug === course.lesson.slug
   );
   const previous = course.course.lessons[index - 1];
   const next = course.course.lessons[index + 1];
+  // The last lesson continues the route with the next course instead of a dead end (ADR-0066).
+  const nextCourse = next
+    ? null
+    : (routePosition(course, catalog)?.next?.course ?? null);
   const lessonProgress = Math.round(
     ((index + 1) / course.course.lessons.length) * 100
   );
@@ -52,7 +65,10 @@ export function LessonPageView({ course }: { course: PublicLearningLesson }) {
   };
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }}
+      />
       <LearningShell>
         <nav className={styles.breadcrumbs} aria-label="Навигационная цепочка">
           <Link href="/courses">Курсы</Link>
@@ -84,36 +100,53 @@ export function LessonPageView({ course }: { course: PublicLearningLesson }) {
               offeringSlug={course.offering.slug}
               courseSlug={course.course.slug}
             />
-            <nav className={styles.lessonNav} aria-label="Переход между уроками">
+            <nav
+              className={styles.lessonNav}
+              aria-label="Переход между уроками"
+            >
               <Link
                 href={
-                  previous ? lessonUrl(course, previous.slug) : courseUrl(course)
+                  previous
+                    ? lessonUrl(course, previous.slug)
+                    : courseUrl(course)
                 }
               >
                 <span>← {previous ? "Предыдущий урок" : "Назад к курсу"}</span>
                 <strong>{previous?.title ?? "Программа курса"}</strong>
               </Link>
-              <Link
-                data-next=""
-                href={next ? lessonUrl(course, next.slug) : courseUrl(course)}
-              >
-                <span>{next ? "Следующий урок" : "Вернуться к курсу"} →</span>
-                <strong>{next?.title ?? "К программе курса"}</strong>
-              </Link>
+              {next ? (
+                <Link data-next="" href={lessonUrl(course, next.slug)}>
+                  <span>Следующий урок →</span>
+                  <strong>{next.title}</strong>
+                </Link>
+              ) : nextCourse ? (
+                <Link data-next="" href={courseUrl(nextCourse)}>
+                  <span>Следующий курс маршрута →</span>
+                  <strong>{nextCourse.course.title}</strong>
+                </Link>
+              ) : (
+                <Link data-next="" href={courseUrl(course)}>
+                  <span>Вернуться к курсу →</span>
+                  <strong>К программе курса</strong>
+                </Link>
+              )}
             </nav>
           </div>
           <aside
             className={styles.lessonAside}
             aria-label="Программа и сохранённое обучение"
           >
-            <Surface appearance="quiet" className={styles.lessonOutlineSurface}>
-              <Heading level={2} size="small">
-                Программа курса
-              </Heading>
-              <nav aria-label="Уроки курса">
-                <LessonOutline course={course} currentSlug={lessonSlug} compact />
-              </nav>
-            </Surface>
+            <CourseNavigator
+              courseSlug={course.course.slug}
+              current={lessonSlug}
+              items={course.course.lessons.map((lesson) => ({
+                slug: lesson.slug,
+                title: lesson.title,
+                chapter: lesson.chapter ?? null,
+                minutes: lesson.durationMinutes,
+                href: lessonUrl(course, lesson.slug)
+              }))}
+            />
             <LearnerEntry
               organizationSlug={course.organization.slug}
               offeringSlug={course.offering.slug}

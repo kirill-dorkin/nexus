@@ -4,14 +4,16 @@ import { posix as posixPath } from "node:path";
 import { z } from "zod";
 
 export const GRADER_PROTOCOL_VERSION = 1 as const;
-export const GRADER_PROFILE_FINGERPRINT_HEADER = "x-grader-profile-fingerprint" as const;
+export const GRADER_PROFILE_FINGERPRINT_HEADER =
+  "x-grader-profile-fingerprint" as const;
 export const GRADER_MAX_SOURCE_FILES = 64;
 export const GRADER_MAX_SOURCE_BYTES = 1_048_576;
 export const GRADER_MAX_FILE_BYTES = 262_144;
 
 const profileKeyPattern = /^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$/;
 const profileKeyJsonPattern = "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$";
-const uuidPattern = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$";
+const uuidPattern =
+  "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$";
 const jobIdPattern = "^sha256:[0-9a-f]{64}$";
 const imageDigestPattern = /^sha256:[0-9a-f]{64}$/;
 const profileFingerprintPattern = /^sha256:[0-9a-f]{64}$/;
@@ -24,7 +26,9 @@ export const graderProfileReferenceSchema = z
   })
   .strict();
 
-export type GraderProfileReference = z.infer<typeof graderProfileReferenceSchema>;
+export type GraderProfileReference = z.infer<
+  typeof graderProfileReferenceSchema
+>;
 
 export type GraderSourceFile = Readonly<{
   path: string;
@@ -65,7 +69,8 @@ export type SystemErrorGraderJobResult = Readonly<{
   }>;
 }>;
 
-export type GraderJobResult = CompletedGraderJobResult | SystemErrorGraderJobResult;
+export type GraderJobResult =
+  CompletedGraderJobResult | SystemErrorGraderJobResult;
 
 export class GraderProtocolError extends Error {
   constructor(
@@ -96,7 +101,12 @@ export const graderJobRequestJsonSchema = {
       additionalProperties: false,
       required: ["key", "version"],
       properties: {
-        key: { type: "string", minLength: 2, maxLength: 80, pattern: profileKeyJsonPattern },
+        key: {
+          type: "string",
+          minLength: 2,
+          maxLength: 80,
+          pattern: profileKeyJsonPattern
+        },
         version: { type: "integer", minimum: 1 }
       }
     },
@@ -137,7 +147,14 @@ function canonicalJson(value: unknown): string {
       .map((key) => `${JSON.stringify(key)}:${canonicalJson(object[key])}`)
       .join(",")}}`;
   }
-  return JSON.stringify(value) ?? "null";
+  // JSON.stringify yields undefined (despite its typing) for these values.
+  if (
+    value === undefined ||
+    typeof value === "function" ||
+    typeof value === "symbol"
+  )
+    return "null";
+  return JSON.stringify(value);
 }
 
 function normalizedIdentityMaterial(spec: GraderJobSpec): unknown {
@@ -162,7 +179,10 @@ export function buildGraderJobId(spec: GraderJobSpec): string {
 }
 
 export function sourceByteCount(files: readonly GraderSourceFile[]): number {
-  return files.reduce((total, file) => total + Buffer.byteLength(file.content, "utf8"), 0);
+  return files.reduce(
+    (total, file) => total + Buffer.byteLength(file.content, "utf8"),
+    0
+  );
 }
 
 export function isGraderProfileFingerprint(value: unknown): value is string {
@@ -176,7 +196,9 @@ function validateSourcePath(path: string): void {
     path.startsWith("/") ||
     path.endsWith("/") ||
     posixPath.normalize(path) !== path ||
-    path.split("/").some((segment) => segment === "" || segment === "." || segment === "..")
+    path
+      .split("/")
+      .some((segment) => segment === "" || segment === "." || segment === "..")
   ) {
     throw new GraderProtocolError(
       "unsafe_source_path",
@@ -196,7 +218,10 @@ function validateSourceFiles(files: readonly GraderSourceFile[]): void {
   const seen = new Set<string>();
   for (const file of files) {
     if (file.path.length < 1 || file.path.length > 240) {
-      throw new GraderProtocolError("unsafe_source_path", "Source file path length is invalid.");
+      throw new GraderProtocolError(
+        "unsafe_source_path",
+        "Source file path length is invalid."
+      );
     }
     validateSourcePath(file.path);
     if (seen.has(file.path)) {
@@ -227,7 +252,11 @@ export function extractGraderSourceEnvelope(
   payload: Readonly<Record<string, unknown>>
 ): GraderJobSpec["source"] {
   const sourceValue = payload.source;
-  if (sourceValue === null || typeof sourceValue !== "object" || Array.isArray(sourceValue)) {
+  if (
+    sourceValue === null ||
+    typeof sourceValue !== "object" ||
+    Array.isArray(sourceValue)
+  ) {
     throw new GraderProtocolError(
       "invalid_source_envelope",
       "Executable submissions require payload.source.files."
@@ -284,10 +313,16 @@ function record(value: unknown): Record<string, unknown> | null {
     : null;
 }
 
-function hasExactKeys(value: Record<string, unknown>, keys: readonly string[]): boolean {
+function hasExactKeys(
+  value: Record<string, unknown>,
+  keys: readonly string[]
+): boolean {
   const actual = Object.keys(value).sort();
   const expected = [...keys].sort();
-  return actual.length === expected.length && actual.every((key, index) => key === expected[index]);
+  return (
+    actual.length === expected.length &&
+    actual.every((key, index) => key === expected[index])
+  );
 }
 
 function invalidProviderResult(): never {
@@ -303,8 +338,7 @@ export function validateGraderJobResult(
 ): GraderJobResult {
   const result = record(value);
   if (
-    result === null ||
-    result.protocolVersion !== GRADER_PROTOCOL_VERSION ||
+    result?.protocolVersion !== GRADER_PROTOCOL_VERSION ||
     result.jobId !== expectedJobId ||
     typeof result.status !== "string"
   ) {
@@ -312,10 +346,23 @@ export function validateGraderJobResult(
   }
 
   if (result.status === "completed") {
-    if (!hasExactKeys(result, ["protocolVersion", "jobId", "status", "outcome", "score", "payload"])) {
+    if (
+      !hasExactKeys(result, [
+        "protocolVersion",
+        "jobId",
+        "status",
+        "outcome",
+        "score",
+        "payload"
+      ])
+    ) {
       return invalidProviderResult();
     }
-    if (!(["passed", "failed", "needs_review"] as const).includes(result.outcome as never)) {
+    if (
+      !(["passed", "failed", "needs_review"] as const).includes(
+        result.outcome as never
+      )
+    ) {
       return invalidProviderResult();
     }
     if (
@@ -332,7 +379,9 @@ export function validateGraderJobResult(
   }
 
   if (result.status === "system_error") {
-    if (!hasExactKeys(result, ["protocolVersion", "jobId", "status", "error"])) {
+    if (
+      !hasExactKeys(result, ["protocolVersion", "jobId", "status", "error"])
+    ) {
       return invalidProviderResult();
     }
     const error = record(result.error);
@@ -418,7 +467,10 @@ function positiveInteger(value: number): boolean {
   return Number.isInteger(value) && value > 0;
 }
 
-function validateLimit(name: keyof typeof GRADER_PROFILE_HARD_LIMITS, value: number): void {
+function validateLimit(
+  name: keyof typeof GRADER_PROFILE_HARD_LIMITS,
+  value: number
+): void {
   if (!positiveInteger(value) || value > GRADER_PROFILE_HARD_LIMITS[name]) {
     throw new InvalidGraderExecutionProfileError(
       `${name} must be a positive integer within the gateway hard limit.`
@@ -427,31 +479,62 @@ function validateLimit(name: keyof typeof GRADER_PROFILE_HARD_LIMITS, value: num
 }
 
 function validateProfile(profile: GraderExecutionProfile): void {
-  if (!profileKeyPattern.test(profile.key) || profile.key.length > 80 || !positiveInteger(profile.version)) {
-    throw new InvalidGraderExecutionProfileError("Profile identity is invalid.");
+  if (
+    !profileKeyPattern.test(profile.key) ||
+    profile.key.length > 80 ||
+    !positiveInteger(profile.version)
+  ) {
+    throw new InvalidGraderExecutionProfileError(
+      "Profile identity is invalid."
+    );
   }
-  if (!profileKeyPattern.test(profile.language.key) || profile.language.version.trim().length === 0) {
-    throw new InvalidGraderExecutionProfileError("Profile language/runtime identity is invalid.");
+  if (
+    !profileKeyPattern.test(profile.language.key) ||
+    profile.language.version.trim().length === 0
+  ) {
+    throw new InvalidGraderExecutionProfileError(
+      "Profile language/runtime identity is invalid."
+    );
   }
   if (!imageDigestPattern.test(profile.runnerImageDigest)) {
     throw new InvalidGraderExecutionProfileError(
       "Runner image must be pinned by an immutable sha256 digest."
     );
   }
-  if (profile.network !== "off") {
-    throw new InvalidGraderExecutionProfileError("Sandbox network policy must be off.");
+  // Profiles are loaded from JSON files, so the security-critical literals are
+  // re-checked at runtime even though their static types already pin them.
+  const isolation: {
+    network: string;
+    filesystem: string;
+    readOnlyRootFilesystem: boolean;
+  } = profile;
+  if (isolation.network !== "off") {
+    throw new InvalidGraderExecutionProfileError(
+      "Sandbox network policy must be off."
+    );
   }
-  if (profile.filesystem !== "ephemeral" || profile.readOnlyRootFilesystem !== true) {
+  if (
+    isolation.filesystem !== "ephemeral" ||
+    !isolation.readOnlyRootFilesystem
+  ) {
     throw new InvalidGraderExecutionProfileError(
       "Sandbox filesystem must be ephemeral with a read-only root filesystem."
     );
   }
   if (profile.argv.length === 0 || profile.argv.length > 16) {
-    throw new InvalidGraderExecutionProfileError("Runner argv must contain between 1 and 16 items.");
+    throw new InvalidGraderExecutionProfileError(
+      "Runner argv must contain between 1 and 16 items."
+    );
   }
   for (const argument of profile.argv) {
-    if (argument.length === 0 || argument.length > 256 || argument.includes("\0")) {
-      throw new InvalidGraderExecutionProfileError("Runner argv contains an invalid item.");
+    if (
+      argument.length === 0 ||
+      argument.length > 256 ||
+      argument.includes("\0")
+    ) {
+      throw new InvalidGraderExecutionProfileError(
+        "Runner argv contains an invalid item."
+      );
     }
   }
   if (forbiddenShellEntrypoints.has(profile.argv[0] ?? "")) {
@@ -475,7 +558,9 @@ function validateProfile(profile: GraderExecutionProfile): void {
   }
 }
 
-export function graderExecutionProfileFingerprint(profile: GraderExecutionProfile): string {
+export function graderExecutionProfileFingerprint(
+  profile: GraderExecutionProfile
+): string {
   const stable = JSON.stringify({
     key: profile.key,
     version: profile.version,
@@ -516,7 +601,9 @@ export class GraderExecutionProfileRegistry {
     this.profiles = resolved;
   }
 
-  find(reference: GraderProfileReference): ResolvedGraderExecutionProfile | null {
+  find(
+    reference: GraderProfileReference
+  ): ResolvedGraderExecutionProfile | null {
     return this.profiles.get(`${reference.key}@${reference.version}`) ?? null;
   }
 }
@@ -539,7 +626,9 @@ export function enforceJobResourcePolicy(
 
 function parsePositiveInteger(value: unknown, name: string): number {
   if (typeof value !== "number" || !positiveInteger(value)) {
-    throw new InvalidGraderExecutionProfileError(`${name} must be a positive integer.`);
+    throw new InvalidGraderExecutionProfileError(
+      `${name} must be a positive integer.`
+    );
   }
   return value;
 }
@@ -572,7 +661,7 @@ function parseProfile(value: unknown): GraderExecutionProfile {
     version: parsePositiveInteger(object.version, "profile.version"),
     language: { key: language.key, version: language.version },
     runnerImageDigest: object.runnerImageDigest,
-    argv: object.argv as string[],
+    argv: object.argv,
     network: "off",
     filesystem: "ephemeral",
     readOnlyRootFilesystem: true,
@@ -581,14 +670,25 @@ function parseProfile(value: unknown): GraderExecutionProfile {
       cpuTimeMs: parsePositiveInteger(limits.cpuTimeMs, "limits.cpuTimeMs"),
       memoryMiB: parsePositiveInteger(limits.memoryMiB, "limits.memoryMiB"),
       pids: parsePositiveInteger(limits.pids, "limits.pids"),
-      outputBytes: parsePositiveInteger(limits.outputBytes, "limits.outputBytes"),
-      sourceBytes: parsePositiveInteger(limits.sourceBytes, "limits.sourceBytes"),
-      sourceFiles: parsePositiveInteger(limits.sourceFiles, "limits.sourceFiles")
+      outputBytes: parsePositiveInteger(
+        limits.outputBytes,
+        "limits.outputBytes"
+      ),
+      sourceBytes: parsePositiveInteger(
+        limits.sourceBytes,
+        "limits.sourceBytes"
+      ),
+      sourceFiles: parsePositiveInteger(
+        limits.sourceFiles,
+        "limits.sourceFiles"
+      )
     }
   };
 }
 
-export function parseGraderExecutionProfilesJson(raw: string | undefined): readonly GraderExecutionProfile[] {
+export function parseGraderExecutionProfilesJson(
+  raw: string | undefined
+): readonly GraderExecutionProfile[] {
   if (raw === undefined || raw.trim().length === 0) return [];
 
   let parsed: unknown;

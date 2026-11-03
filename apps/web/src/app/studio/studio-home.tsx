@@ -7,7 +7,11 @@ import {
   type StudioCourseList
 } from "@platform/contracts";
 import { learningLoginUrl } from "../../lib/learning-return-to";
-import { studioRequest, StudioError } from "../../components/studio/studio-api";
+import {
+  errorMessage,
+  studioRequest,
+  StudioError
+} from "../../components/studio/studio-api";
 import {
   Alert,
   Badge,
@@ -42,11 +46,11 @@ export function StudioHome() {
           setReady(true);
         }
       })
-      .catch((e) => {
+      .catch((e: unknown) => {
         if (!cancelled) {
           setLogin(e instanceof StudioError && e.status === 401);
           setUnavailable(!(e instanceof StudioError && e.status === 401));
-          setError(e.message);
+          setError(errorMessage(e));
           setReady(true);
         }
       });
@@ -63,7 +67,7 @@ export function StudioHome() {
       setOrganizations((old) => [...old, ...data.organizations]);
       setCursor(data.nextCursor);
     } catch (e) {
-      setError((e as Error).message);
+      setError(errorMessage(e));
     } finally {
       setBusy(false);
     }
@@ -87,11 +91,12 @@ export function StudioHome() {
           : data
       );
     } catch (e) {
-      setError((e as Error).message);
+      setError(errorMessage(e));
     } finally {
       setBusy(false);
     }
   }
+  const nextCourseCursor = courses?.nextCursor ?? null;
   return (
     <>
       <header className={styles.pageHeading}>
@@ -150,7 +155,8 @@ export function StudioHome() {
               </Heading>
               {!organizations.length && (
                 <Text muted size="sm">
-                  Организации доступны только назначенным сотрудникам. Если вам нужен доступ, обратитесь к владельцу платформы.
+                  Организации доступны только назначенным сотрудникам. Если вам
+                  нужен доступ, обратитесь к владельцу платформы.
                 </Text>
               )}
               <div
@@ -264,8 +270,10 @@ export function StudioHome() {
                             <span aria-hidden="true">↗</span>
                           </Link>
                           {c.status === "published" && (
-                            <Link className={styles.courseManageLink}
-                              href={`/studio/${selected.id}/${c.courseId}/offerings`}>
+                            <Link
+                              className={styles.courseManageLink}
+                              href={`/studio/${selected.id}/${c.courseId}/offerings`}
+                            >
                               Доступ и ссылка
                             </Link>
                           )}
@@ -273,11 +281,11 @@ export function StudioHome() {
                       ))}
                     </ul>
                   )}
-                  {courses?.nextCursor && (
+                  {nextCourseCursor !== null && (
                     <Button
                       variant="secondary"
                       disabled={busy}
-                      onClick={() => select(selected, courses.nextCursor!)}
+                      onClick={() => select(selected, nextCourseCursor)}
                     >
                       Ещё курсы
                     </Button>

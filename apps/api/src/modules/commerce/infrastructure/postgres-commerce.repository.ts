@@ -193,7 +193,9 @@ export class PostgresCommerceRepository extends CommerceRepository {
     );
     const row = result.rows[0];
     if (row === undefined) {
-      throw new Error("PostgreSQL did not return the created Commerce Product.");
+      throw new Error(
+        "PostgreSQL did not return the created Commerce Product."
+      );
     }
     return mapProduct(row);
   }

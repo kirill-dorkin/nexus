@@ -84,7 +84,8 @@ export class PostgresProjectsRepository extends ProjectsRepository {
       [input.id, input.organizationId, input.name, input.createdByUserId]
     );
     const row = result.rows[0];
-    if (row === undefined) throw new Error("Project team insert returned no row.");
+    if (row === undefined)
+      throw new Error("Project team insert returned no row.");
     return mapTeam(row);
   }
 

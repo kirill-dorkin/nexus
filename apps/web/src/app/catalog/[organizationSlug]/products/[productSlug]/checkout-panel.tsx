@@ -8,12 +8,7 @@ import {
   type IdentityUser,
   type PublicCatalogProductResponse
 } from "@platform/contracts";
-import {
-  type FormEvent,
-  useEffect,
-  useRef,
-  useState
-} from "react";
+import { type SubmitEvent, useEffect, useRef, useState } from "react";
 
 import {
   apiError,
@@ -61,12 +56,14 @@ export function CheckoutPanel({ catalog }: CheckoutPanelProps) {
   const runtimeAttemptKeys = useRef(new Map<string, string>());
 
   useEffect(() => {
-    let cancelled = false;
+    const controller = new AbortController();
 
     void (async () => {
       try {
-        const response = await browserApiRequest("/v1/me");
-        if (cancelled) return;
+        const response = await browserApiRequest("/v1/me", {
+          signal: controller.signal
+        });
+        if (controller.signal.aborted) return;
         if (response.status === 401) {
           setUser(null);
           return;
@@ -76,7 +73,7 @@ export function CheckoutPanel({ catalog }: CheckoutPanelProps) {
         }
         setUser(identityUserSchema.parse(await response.json()));
       } catch {
-        if (!cancelled) {
+        if (!controller.signal.aborted) {
           setUser(null);
           setStatusMessage(
             "Не удалось проверить текущую сессию. Можно войти повторно."
@@ -86,7 +83,7 @@ export function CheckoutPanel({ catalog }: CheckoutPanelProps) {
     })();
 
     return () => {
-      cancelled = true;
+      controller.abort();
     };
   }, []);
 
@@ -119,14 +116,15 @@ export function CheckoutPanel({ catalog }: CheckoutPanelProps) {
     return created;
   }
 
-  async function handleAuth(event: FormEvent<HTMLFormElement>) {
+  async function handleAuth(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
     setErrorMessage(null);
     setStatusMessage(null);
 
     try {
-      const endpoint = authMode === "login" ? "/v1/auth/login" : "/v1/auth/register";
+      const endpoint =
+        authMode === "login" ? "/v1/auth/login" : "/v1/auth/register";
       const payload =
         authMode === "login"
           ? { email, password }

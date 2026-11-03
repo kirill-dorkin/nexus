@@ -8,30 +8,30 @@ const task = (title, text, { start, checks, solution, hint, at }) => ({
 export default {
   /* ---------- 7. Структура ---------- */
   semantics: [
-    task("Каркас сайта кофейни", "Чтобы Лев мог прыгать по сайту, замени безликие `div` на семантические: шапку — на `header`, меню — на `nav`, основное содержимое — на `main`, подвал — на `footer`.", {
-      start: "<div class=\"header\">\n  <div class=\"nav\"><a href=\"/\">Главная</a> <a href=\"/menu\">Меню</a></div>\n</div>\n<div class=\"main\">\n  <h1>Кофейня «Зерно»</h1>\n</div>\n<div class=\"footer\">© 2026</div>",
+    task("Каркас сайта магазина", "Чтобы Лев мог прыгать по сайту, замени безликие `div` на семантические: шапку — на `header`, меню — на `nav`, основное содержимое — на `main`, подвал — на `footer`.", {
+      start: "<div class=\"header\">\n  <div class=\"nav\"><a href=\"/\">Главная</a> <a href=\"/menu\">Меню</a></div>\n</div>\n<div class=\"main\">\n  <h1>Мой сайт</h1>\n</div>\n<div class=\"footer\">© 2026</div>",
       checks: [
         el("header nav", "Меню `nav` внутри `header`"),
         el("main h1", "Заголовок в `main`"),
         el("footer", "Подвал в `footer`"),
         el("div", "Безликих `div` не осталось", { absent: true })
       ],
-      solution: "<header>\n  <nav><a href=\"/\">Главная</a> <a href=\"/menu\">Меню</a></nav>\n</header>\n<main>\n  <h1>Кофейня «Зерно»</h1>\n</main>\n<footer>© 2026</footer>"
+      solution: "<header>\n  <nav><a href=\"/\">Главная</a> <a href=\"/menu\">Меню</a></nav>\n</header>\n<main>\n  <h1>Мой сайт</h1>\n</main>\n<footer>© 2026</footer>"
     })
   ],
   "page-sections": [
-    task("Пост в блог кофейни", "Оформи пост «Кофе из Эфиопии»: всё в `article`, внутри два раздела `section` с заголовками `h2`, а заметка «Кстати» — в `aside`.", {
-      start: "<h1>Кофе из Эфиопии</h1>\n<h2>Вкус</h2>\n<p>Ягоды и цветы.</p>\n<h2>Как заваривать</h2>\n<p>Лучше в воронке.</p>\n<p>Кстати: кофе нашёл эфиопский пастух.</p>",
+    task("Пост в блог магазина", "Оформи пост «Чайный гриб дома»: всё в `article`, внутри два раздела `section` с заголовками `h2`, а заметка «Кстати» — в `aside`.", {
+      start: "<h1>Чайный гриб дома</h1>\n<h2>Что нужно</h2>\n<p>Банка, чай и сахар.</p>\n<h2>Как ухаживать</h2>\n<p>Менять раствор раз в неделю.</p>\n<p>Кстати: гриб живёт много лет.</p>",
       checks: [
         el("article h1", "Пост в `article`"),
         el("article section h2", "Два раздела `section` с `h2`", { count: 2 }),
         el("aside", "Заметка «Кстати» в `aside`", { text: "Кстати" })
       ],
-      solution: "<article>\n  <h1>Кофе из Эфиопии</h1>\n  <section>\n    <h2>Вкус</h2>\n    <p>Ягоды и цветы.</p>\n  </section>\n  <section>\n    <h2>Как заваривать</h2>\n    <p>Лучше в воронке.</p>\n  </section>\n  <aside><p>Кстати: кофе нашёл эфиопский пастух.</p></aside>\n</article>"
+      solution: "<article>\n  <h1>Чайный гриб дома</h1>\n  <section>\n    <h2>Что нужно</h2>\n    <p>Банка, чай и сахар.</p>\n  </section>\n  <section>\n    <h2>Как ухаживать</h2>\n    <p>Менять раствор раз в неделю.</p>\n  </section>\n  <aside><p>Кстати: гриб живёт много лет.</p></aside>\n</article>"
     })
   ],
   "details-summary": [
-    task("FAQ кофейни", "Гости спрашивают одно и то же. Сделай три вопроса FAQ через `details` и `summary`. Все три с одинаковым `name=\"faq\"`, чтобы открывался только один, а первый открыт сразу (`open`). Нажми на вопросы в результате.", {
+    task("FAQ магазина", "Посетители спрашивают одно и то же. Сделай три вопроса FAQ через `details` и `summary`. Все три с одинаковым `name=\"faq\"`, чтобы открывался только один, а первый открыт сразу (`open`). Нажми на вопросы в результате.", {
       start: "<h2>Частые вопросы</h2>\n",
       checks: [
         el("details summary", "Три вопроса с `summary`", { count: 3 }),
@@ -42,39 +42,39 @@ export default {
     })
   ],
   "dialog-and-popover": [
-    task("Подсказка «Состав»", "Сделай кнопку «Что такое раф?», которая открывает `popover`: у кнопки `popovertarget=\"tip\"`, у блока — `id=\"tip\"` и атрибут `popover`.", {
-      start: "<button>Что такое раф?</button>\n<div>Эспрессо, сливки и ваниль.</div>",
+    task("Подсказка «Состав»", "Сделай кнопку «Что такое пенал?», которая открывает `popover`: у кнопки `popovertarget=\"tip\"`, у блока — `id=\"tip\"` и атрибут `popover`.", {
+      start: "<button>Что такое пенал?</button>\n<div>Карандаш, сливки и ваниль.</div>",
       checks: [
         el("button[popovertarget=\"tip\"]", "Кнопка с `popovertarget=\"tip\"`"),
         el("#tip[popover]", "Блок с `id=\"tip\"` и `popover`")
       ],
-      solution: "<button popovertarget=\"tip\">Что такое раф?</button>\n<div id=\"tip\" popover>Эспрессо, сливки и ваниль.</div>"
+      solution: "<button popovertarget=\"tip\">Что такое пенал?</button>\n<div id=\"tip\" popover>Карандаш, сливки и ваниль.</div>"
     })
   ],
 
   /* ---------- 8. head ---------- */
   metadata: [
-    task("Витрина в поиске", "Вместо «Document» в Яндексе — заполни `head` кофейни: кодировка, `viewport` для телефонов, понятный `title` и описание `meta name=\"description\"`.", {
-      start: "<!doctype html>\n<html lang=\"ru\">\n<head>\n</head>\n<body><h1>Кофейня «Зерно»</h1></body>\n</html>",
+    task("Витрина в поиске", "Вместо «Document» в Яндексе — заполни `head` магазина: кодировка, `viewport` для телефонов, понятный `title` и описание `meta name=\"description\"`.", {
+      start: "<!doctype html>\n<html lang=\"ru\">\n<head>\n</head>\n<body><h1>Мой сайт</h1></body>\n</html>",
       checks: [
         el("meta[charset]", "Кодировка"),
         el("meta[name=\"viewport\"][content*=\"width=device-width\"]", "`viewport` с `width=device-width`"),
-        el("head title", "Есть `title`", { text: "Зерно" }),
+        el("head title", "Есть `title`", { text: "Мой сайт" }),
         el("meta[name=\"description\"][content]", "Есть описание `description`")
       ],
-      solution: "<!doctype html>\n<html lang=\"ru\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Кофейня «Зерно» — свежая обжарка в центре Казани</title>\n  <meta name=\"description\" content=\"Кофе своей обжарки, завтраки весь день и розетки у каждого стола.\">\n</head>\n<body><h1>Кофейня «Зерно»</h1></body>\n</html>"
+      solution: "<!doctype html>\n<html lang=\"ru\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Мой сайт — заметки о путешествиях</title>\n  <meta name=\"description\" content=\"Маршруты, советы и фото из поездок по России.\">\n</head>\n<body><h1>Мой сайт</h1></body>\n</html>"
     })
   ],
   "social-and-icons": [
-    task("Превью в мессенджере", "Чтобы ссылка на «Зерно» приходила с картинкой, добавь Open Graph: `og:title`, `og:description`, `og:image`, а ещё иконку сайта `link rel=\"icon\"`.", {
-      start: "<head>\n  <title>Кофейня «Зерно»</title>\n</head>",
+    task("Превью в мессенджере", "Чтобы ссылка на «Север» приходила с картинкой, добавь Open Graph: `og:title`, `og:description`, `og:image`, а ещё иконку сайта `link rel=\"icon\"`.", {
+      start: "<head>\n  <title>Мой сайт</title>\n</head>",
       checks: [
         el("meta[property=\"og:title\"][content]", "`og:title`"),
         el("meta[property=\"og:description\"][content]", "`og:description`"),
         el("meta[property=\"og:image\"][content]", "`og:image`"),
         el("link[rel=\"icon\"][href]", "Иконка `link rel=\"icon\"`")
       ],
-      solution: "<head>\n  <title>Кофейня «Зерно»</title>\n  <meta property=\"og:title\" content=\"Кофейня «Зерно»\">\n  <meta property=\"og:description\" content=\"Свежая обжарка и лучший раф в Казани\">\n  <meta property=\"og:image\" content=\"https://example.com/cover.png\">\n  <link rel=\"icon\" href=\"/favicon.svg\" type=\"image/svg+xml\">\n</head>"
+      solution: "<head>\n  <title>Мой сайт</title>\n  <meta property=\"og:title\" content=\"Мой сайт\">\n  <meta property=\"og:description\" content=\"Лучший магазин канцтоваров в Казани\">\n  <meta property=\"og:image\" content=\"https://example.com/cover.png\">\n  <link rel=\"icon\" href=\"/favicon.svg\" type=\"image/svg+xml\">\n</head>"
     })
   ],
   "linking-resources": [
@@ -89,7 +89,7 @@ export default {
     })
   ],
   "style-base-meta": [
-    task("Красная распродажа", "Марта хочет красный заголовок акции — сделай его тремя строчками CSS: добавь в `head` элемент `style` с правилом для `h1`, а в `head` — `base` с адресом `https://example.com/`.", {
+    task("Красная распродажа", "Нужно красный заголовок акции — сделай его тремя строчками CSS: добавь в `head` элемент `style` с правилом для `h1`, а в `head` — `base` с адресом `https://example.com/`.", {
       start: "<head>\n</head>\n<h1>Распродажа</h1>",
       checks: [
         el("head style", "Есть `style` в `head`"),
@@ -112,14 +112,14 @@ export default {
     })
   ],
   "structured-data": [
-    task("Мастер-класс в поиске", "Чтобы мастер-класс по латте-арту появился в поиске, разметь событие микроданными: у блока `itemscope` и `itemtype=\"https://schema.org/Event\"`, у названия `itemprop=\"name\"`, у даты — `time` с `itemprop=\"startDate\"`.", {
-      start: "<div>\n  <h2>Мастер-класс по латте-арту</h2>\n  <p>15 декабря в 19:00</p>\n</div>",
+    task("Мастер-класс в поиске", "Чтобы мастер-класс по каллиграфии появился в поиске, разметь событие микроданными: у блока `itemscope` и `itemtype=\"https://schema.org/Event\"`, у названия `itemprop=\"name\"`, у даты — `time` с `itemprop=\"startDate\"`.", {
+      start: "<div>\n  <h2>Мастер-класс по каллиграфии</h2>\n  <p>15 декабря в 19:00</p>\n</div>",
       checks: [
         el("[itemscope][itemtype=\"https://schema.org/Event\"]", "Блок — `Event` с `itemscope`"),
         el("[itemprop=\"name\"]", "Название с `itemprop=\"name\"`"),
         el("time[itemprop=\"startDate\"][datetime]", "Дата в `time` с `itemprop=\"startDate\"`")
       ],
-      solution: "<div itemscope itemtype=\"https://schema.org/Event\">\n  <h2 itemprop=\"name\">Мастер-класс по латте-арту</h2>\n  <p><time itemprop=\"startDate\" datetime=\"2026-12-15T19:00\">15 декабря в 19:00</time></p>\n</div>"
+      solution: "<div itemscope itemtype=\"https://schema.org/Event\">\n  <h2 itemprop=\"name\">Мастер-класс по каллиграфии</h2>\n  <p><time itemprop=\"startDate\" datetime=\"2026-12-15T19:00\">15 декабря в 19:00</time></p>\n</div>"
     })
   ],
 
@@ -162,7 +162,7 @@ export default {
 
   /* ---------- JavaScript и интерактивность ---------- */
   "html-and-javascript": [
-    task("Лайки под напитками", "Марта хочет сердечко под рафом. Подготовь разметку, с которой скрипту будет удобно работать: кнопке — `id=\"like\"` и `type=\"button\"`, счётчику — `data-count=\"0\"`, а обработчик клика подключи атрибутом `onclick`.", {
+    task("Лайки под товарами", "Нужно сердечко под товаром. Подготовь разметку, с которой скрипту будет удобно работать: кнопке — `id=\"like\"` и `type=\"button\"`, счётчику — `data-count=\"0\"`, а обработчик клика подключи атрибутом `onclick`.", {
       start: "<button>♥ Нравится</button>\n<span>0</span>",
       checks: [
         el("button#like[type=\"button\"]", "Кнопка `id=\"like\"` с `type=\"button\"`"),
@@ -174,44 +174,44 @@ export default {
     })
   ],
   "editing-and-drag-and-drop": [
-    task("Доска заказов", "Для бариста: сделай заметку редактируемой (`contenteditable`), карточку — перетаскиваемой (`draggable=\"true\"`), а скрытую подсказку — находимой поиском (`hidden=\"until-found\"`).", {
-      start: "<p>Кликни и напиши заметку</p>\n<div>Заказ №12: раф</div>\n<div>Пароль Wi-Fi: zerno2026</div>",
+    task("Доска заказов", "Для администратор: сделай заметку редактируемой (`contenteditable`), карточку — перетаскиваемой (`draggable=\"true\"`), а скрытую подсказку — находимой поиском (`hidden=\"until-found\"`).", {
+      start: "<p>Кликни и напиши заметку</p>\n<div>Заказ №12: пенал</div>\n<div>Пароль Wi-Fi: site2026</div>",
       checks: [
         el("p[contenteditable]", "Абзац редактируемый"),
         el("[draggable=\"true\"]", "Карточка перетаскиваемая"),
         el("[hidden=\"until-found\"]", "Подсказка скрыта до поиска")
       ],
-      solution: "<p contenteditable>Кликни и напиши заметку</p>\n<div draggable=\"true\">Заказ №12: раф</div>\n<div hidden=\"until-found\">Пароль Wi-Fi: zerno2026</div>"
+      solution: "<p contenteditable>Кликни и напиши заметку</p>\n<div draggable=\"true\">Заказ №12: пенал</div>\n<div hidden=\"until-found\">Пароль Wi-Fi: site2026</div>"
     })
   ],
   "custom-elements": [
     task("Свой тег для карточки", "Карточка повторяется 30 раз. Создай свой элемент `user-card` (в имени обязательно дефис) с декларативным Shadow DOM: внутри `template shadowrootmode=\"open\"` со `slot name=\"name\"`, а снаружи — `span slot=\"name\"` с именем.", {
-      start: "<usercard>Раф</usercard>",
+      start: "<usercard>Пенал</usercard>",
       checks: [
         el("user-card", "Есть элемент `user-card`"),
         src("shadowrootmode=\"open\"", "Есть `template shadowrootmode=\"open\"`"),
         src("<slot name=\"name\"", "В шаблоне есть `slot name=\"name\"`"),
         el("user-card span[slot=\"name\"]", "Имя передано в слот")
       ],
-      solution: "<user-card>\n  <template shadowrootmode=\"open\">\n    <p>Напиток: <slot name=\"name\"></slot></p>\n  </template>\n  <span slot=\"name\">Раф</span>\n</user-card>"
+      solution: "<user-card>\n  <template shadowrootmode=\"open\">\n    <p>Товар: <slot name=\"name\"></slot></p>\n  </template>\n  <span slot=\"name\">Пенал</span>\n</user-card>"
     })
   ],
 
   /* ---------- Проекты и качество ---------- */
   "code-quality": [
     task("Код-ревью от Ники", "Ника нашла четыре ошибки: два одинаковых `id`, картинку без `alt`, незакрытый `li` внутри `p` и `h1` после `h3`. Исправь их.", {
-      start: "<h3 id=\"top\">Зерно</h3>\n<h1 id=\"top\">Меню</h1>\n<img src=\"raf.jpg\">\n<p>Напитки: <ul><li>Раф</ul></p>",
+      start: "<h3 id=\"top\">Север</h3>\n<h1 id=\"top\">Меню</h1>\n<img src=\"raf.jpg\">\n<p>Товары: <ul><li>Пенал</ul></p>",
       checks: [
         el("[id=\"top\"]", "`id=\"top\"` не повторяется", { count: 1, max: 1 }),
         el("img[alt]", "У картинки есть `alt`"),
         el("p ul", "Список не стоит внутри абзаца", { absent: true }),
         src("<h3", "Заголовки идут по порядку: нет `h3` перед `h1`", { absent: true })
       ],
-      solution: "<h1 id=\"top\">Зерно</h1>\n<h2>Меню</h2>\n<img src=\"raf.jpg\" alt=\"Раф с корицей\">\n<p>Напитки:</p>\n<ul><li>Раф</li></ul>"
+      solution: "<h1 id=\"top\">Север</h1>\n<h2>Меню</h2>\n<img src=\"raf.jpg\" alt=\"Пенал с корицей\">\n<p>Товары:</p>\n<ul><li>Пенал</li></ul>"
     })
   ],
   "obsolete-elements": [
-    task("Старый сайт Марты", "Перепиши кусок сайта, который племянник Марты сделал в 2005-м: `center` и `font` устарели. Замени `center` на `div`, а `font` убери, оставив текст в `strong`.", {
+    task("Старый сайт", "Перепиши кусок сайта, который кто-то сделал в 2005-м: `center` и `font` устарели. Замени `center` на `div`, а `font` убери, оставив текст в `strong`.", {
       start: "<center><font color=\"red\"><b>Скидки!</b></font></center>",
       checks: [
         el("center", "Нет `center`", { absent: true }),
@@ -233,7 +233,7 @@ export default {
     })
   ],
   "element-reference": [
-    task("Проверка перед запуском", "Собери главную кофейни, где встречаются 10 разных элементов из справочника: `header`, `nav`, `main`, `h1`, `p`, `a`, `ul`, `li`, `img` и `footer`.", {
+    task("Проверка перед запуском", "Собери главную магазина, где встречаются 10 разных элементов из справочника: `header`, `nav`, `main`, `h1`, `p`, `a`, `ul`, `li`, `img` и `footer`.", {
       start: "",
       checks: [
         el("header nav", "`header` и `nav`"),

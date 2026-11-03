@@ -1,8 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import {
-  publicPurchaseSchema,
-  type PublicPurchase
-} from "@platform/contracts";
+import { publicPurchaseSchema, type PublicPurchase } from "@platform/contracts";
 
 import { DatabaseService } from "../../../database/database.service";
 import { RequestContextService } from "../../../request-context/request-context.service";
@@ -24,7 +21,8 @@ export class PurchaserPurchaseApplicationService {
     const principal = this.requestContext.requirePrincipal();
     const organizationId = await this.database.userTransaction(
       { userId: principal.userId },
-      (transaction) => this.ownedPurchaseOrganizations.resolve(transaction, purchaseId),
+      (transaction) =>
+        this.ownedPurchaseOrganizations.resolve(transaction, purchaseId),
       { readOnly: true }
     );
 
@@ -41,7 +39,7 @@ export class PurchaserPurchaseApplicationService {
           organizationId,
           purchaseId
         );
-        if (purchase === null || purchase.purchaserUserId !== principal.userId) {
+        if (purchase?.purchaserUserId !== principal.userId) {
           throw new NotFoundException("Purchase not found.");
         }
         return publicPurchaseSchema.parse(purchase);

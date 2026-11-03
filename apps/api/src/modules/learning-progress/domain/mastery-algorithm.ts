@@ -18,7 +18,10 @@ function roundFiveDecimals(value: number): number {
 export function computeMastery(
   aggregate: MasteryEvidenceAggregate
 ): MasteryComputation {
-  if (!Number.isInteger(aggregate.evidenceCount) || aggregate.evidenceCount <= 0) {
+  if (
+    !Number.isInteger(aggregate.evidenceCount) ||
+    aggregate.evidenceCount <= 0
+  ) {
     throw new Error("Mastery requires at least one Evidence record.");
   }
   if (
@@ -38,7 +41,9 @@ export function computeMastery(
 
   if (aggregate.scoredEvidenceCount === 0) {
     if (aggregate.scoreTotal !== 0) {
-      throw new Error("Unscored Evidence cannot contribute to the score total.");
+      throw new Error(
+        "Unscored Evidence cannot contribute to the score total."
+      );
     }
     return { masteryScore: null };
   }

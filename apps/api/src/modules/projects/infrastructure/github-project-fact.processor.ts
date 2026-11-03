@@ -1,9 +1,6 @@
 import { randomUUID } from "node:crypto";
 
-import {
-  withTransaction,
-  type DatabasePool
-} from "@platform/database";
+import { withTransaction, type DatabasePool } from "@platform/database";
 
 import {
   GitHubProjectFactDeliveryRepository,
@@ -59,17 +56,31 @@ export class GitHubProjectFactProcessor {
       claim.routingStatus === "unmapped_installation" ||
       claim.routingStatus === "unmapped_repository"
     ) {
-      await this.finish(claim, leaseToken, "blocked", claim.routingStatus, null);
+      await this.finish(
+        claim,
+        leaseToken,
+        "blocked",
+        claim.routingStatus,
+        null
+      );
       return true;
     }
 
-    if (claim.routingStatus !== "mapped" || claim.organizationId === null) {
-      await this.finish(claim, leaseToken, "rejected", "routing_rejected", null);
+    const organizationId = claim.organizationId;
+    if (claim.routingStatus !== "mapped" || organizationId === null) {
+      await this.finish(
+        claim,
+        leaseToken,
+        "rejected",
+        "routing_rejected",
+        null
+      );
       return true;
     }
 
+    const githubRepositoryMappingId = claim.githubRepositoryMappingId;
     if (
-      claim.githubRepositoryMappingId === null ||
+      githubRepositoryMappingId === null ||
       claim.githubRepositoryId === null ||
       claim.githubInstallationId === null
     ) {
@@ -85,15 +96,19 @@ export class GitHubProjectFactProcessor {
 
     try {
       await withTransaction(this.pool, async (transaction) => {
-        await transaction.client.query("SELECT set_config('app.organization_id', $1, true)", [
-          claim.organizationId
-        ]);
+        await transaction.client.query(
+          "SELECT set_config('app.organization_id', $1, true)",
+          [organizationId]
+        );
 
-        const binding = await this.facts.resolveRepositoryBindingAt(transaction, {
-          organizationId: claim.organizationId as string,
-          githubRepositoryMappingId: claim.githubRepositoryMappingId as string,
-          sourceReceivedAt: claim.sourceReceivedAt
-        });
+        const binding = await this.facts.resolveRepositoryBindingAt(
+          transaction,
+          {
+            organizationId,
+            githubRepositoryMappingId,
+            sourceReceivedAt: claim.sourceReceivedAt
+          }
+        );
         if (binding === null) {
           throw new RejectedGitHubProjectFactDeliveryError(
             "repository_not_bound_at_receive_time",
@@ -113,7 +128,8 @@ export class GitHubProjectFactProcessor {
           errorCode: null,
           availableAt: null
         });
-        if (!finished) throw new Error("GitHub Project-fact processing lease was lost.");
+        if (!finished)
+          throw new Error("GitHub Project-fact processing lease was lost.");
       });
     } catch (error) {
       if (error instanceof RejectedGitHubProjectFactDeliveryError) {

@@ -96,7 +96,8 @@ describe("durable grader job ledger", () => {
       [`${label}-${randomUUID()}@example.test`, label]
     );
     const id = result.rows[0]?.id;
-    if (id === undefined) throw new Error("Failed to create grader-job test identity.");
+    if (id === undefined)
+      throw new Error("Failed to create grader-job test identity.");
     createdUserIds.push(id);
     return id;
   }
@@ -111,14 +112,16 @@ describe("durable grader job ledger", () => {
       headers: { "x-test-user-id": ownerUserId },
       payload: { userId }
     });
-    if (invite.statusCode !== 201) throw new Error(`Failed to invite ${roleKey}: ${invite.body}`);
+    if (invite.statusCode !== 201)
+      throw new Error(`Failed to invite ${roleKey}: ${invite.body}`);
 
     const accept = await app.inject({
       method: "POST",
       url: `/v1/organizations/${organizationId}/memberships/me/accept`,
       headers: { "x-test-user-id": userId }
     });
-    if (accept.statusCode !== 200) throw new Error(`Failed to activate ${roleKey}: ${accept.body}`);
+    if (accept.statusCode !== 200)
+      throw new Error(`Failed to activate ${roleKey}: ${accept.body}`);
 
     const role = await app.inject({
       method: "POST",
@@ -130,7 +133,8 @@ describe("durable grader job ledger", () => {
         scope: { type: "organization", id: organizationId }
       }
     });
-    if (role.statusCode !== 204) throw new Error(`Failed to assign ${roleKey}: ${role.body}`);
+    if (role.statusCode !== 204)
+      throw new Error(`Failed to assign ${roleKey}: ${role.body}`);
   }
 
   async function createAttemptAndSubmission(
@@ -144,7 +148,9 @@ describe("durable grader job ledger", () => {
       payload: {}
     });
     if (attemptResponse.statusCode !== 201) {
-      throw new Error(`Failed to start grader attempt: ${attemptResponse.body}`);
+      throw new Error(
+        `Failed to start grader attempt: ${attemptResponse.body}`
+      );
     }
     const attempt = attemptSchema.parse(JSON.parse(attemptResponse.body));
 
@@ -155,7 +161,9 @@ describe("durable grader job ledger", () => {
       payload: { payload }
     });
     if (submissionResponse.statusCode !== 201) {
-      throw new Error(`Failed to create grader submission: ${submissionResponse.body}`);
+      throw new Error(
+        `Failed to create grader submission: ${submissionResponse.body}`
+      );
     }
     return submissionSchema.parse(JSON.parse(submissionResponse.body)).id;
   }
@@ -191,20 +199,25 @@ describe("durable grader job ledger", () => {
     instructorUserId = await createUser("grader-job-instructor");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(request as PlatformPrincipalCarrier, { userId: testUserId });
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `grader-job-${randomUUID()}`,
         name: "Grader job ledger integration"
-      })).id;
+      })
+    ).id;
 
     await activateMember(learnerUserId, "learner");
     await activateMember(instructorUserId, "instructor");
@@ -218,7 +231,8 @@ describe("durable grader job ledger", () => {
         title: "Grader job skill"
       }
     });
-    if (skill.statusCode !== 201) throw new Error(`Failed to create skill: ${skill.body}`);
+    if (skill.statusCode !== 201)
+      throw new Error(`Failed to create skill: ${skill.body}`);
     skillId = (JSON.parse(skill.body) as { id: string }).id;
 
     const course = await app.inject({
@@ -230,7 +244,8 @@ describe("durable grader job ledger", () => {
         title: "Grader job course"
       }
     });
-    if (course.statusCode !== 201) throw new Error(`Failed to create course: ${course.body}`);
+    if (course.statusCode !== 201)
+      throw new Error(`Failed to create course: ${course.body}`);
     const courseBody = JSON.parse(course.body) as {
       course: { id: string };
       draftVersion: { id: string };
@@ -244,7 +259,8 @@ describe("durable grader job ledger", () => {
       headers: { "x-test-user-id": ownerUserId },
       payload: { skillId }
     });
-    if (attach.statusCode !== 201) throw new Error(`Failed to attach skill: ${attach.body}`);
+    if (attach.statusCode !== 201)
+      throw new Error(`Failed to attach skill: ${attach.body}`);
 
     const executable = await app.inject({
       method: "POST",
@@ -265,9 +281,13 @@ describe("durable grader job ledger", () => {
       }
     });
     if (executable.statusCode !== 201) {
-      throw new Error(`Failed to create executable activity: ${executable.body}`);
+      throw new Error(
+        `Failed to create executable activity: ${executable.body}`
+      );
     }
-    executableActivityId = (JSON.parse(executable.body) as { activityId: string }).activityId;
+    executableActivityId = (
+      JSON.parse(executable.body) as { activityId: string }
+    ).activityId;
 
     const unknownProfile = await app.inject({
       method: "POST",
@@ -288,16 +308,21 @@ describe("durable grader job ledger", () => {
       }
     });
     if (unknownProfile.statusCode !== 201) {
-      throw new Error(`Failed to create unknown-profile activity: ${unknownProfile.body}`);
+      throw new Error(
+        `Failed to create unknown-profile activity: ${unknownProfile.body}`
+      );
     }
-    unknownProfileActivityId = (JSON.parse(unknownProfile.body) as { activityId: string }).activityId;
+    unknownProfileActivityId = (
+      JSON.parse(unknownProfile.body) as { activityId: string }
+    ).activityId;
 
     const publish = await app.inject({
       method: "POST",
       url: `/v1/organizations/${organizationId}/courses/${courseId}/versions/${courseVersionId}/publish`,
       headers: { "x-test-user-id": ownerUserId }
     });
-    if (publish.statusCode !== 200) throw new Error(`Failed to publish course: ${publish.body}`);
+    if (publish.statusCode !== 200)
+      throw new Error(`Failed to publish course: ${publish.body}`);
 
     const offering = await app.inject({
       method: "POST",
@@ -310,7 +335,8 @@ describe("durable grader job ledger", () => {
         deliveryMode: "self_paced"
       }
     });
-    if (offering.statusCode !== 201) throw new Error(`Failed to create offering: ${offering.body}`);
+    if (offering.statusCode !== 201)
+      throw new Error(`Failed to create offering: ${offering.body}`);
     offeringId = (JSON.parse(offering.body) as { id: string }).id;
 
     const enrollment = await app.inject({
@@ -319,7 +345,8 @@ describe("durable grader job ledger", () => {
       headers: { "x-test-user-id": ownerUserId },
       payload: { userId: learnerUserId }
     });
-    if (enrollment.statusCode !== 201) throw new Error(`Failed to create enrollment: ${enrollment.body}`);
+    if (enrollment.statusCode !== 201)
+      throw new Error(`Failed to create enrollment: ${enrollment.body}`);
     enrollmentId = (JSON.parse(enrollment.body) as { id: string }).id;
 
     validSubmissionId = await createAttemptAndSubmission(executableActivityId, {
@@ -327,41 +354,101 @@ describe("durable grader job ledger", () => {
         files: [{ path: "index.ts", content: "export const answer = 42;" }]
       }
     });
-    invalidSourceSubmissionId = await createAttemptAndSubmission(executableActivityId, {
-      answer: "no executable source envelope"
-    });
-    unknownProfileSubmissionId = await createAttemptAndSubmission(unknownProfileActivityId, {
-      source: {
-        files: [{ path: "main.py", content: "print(42)" }]
+    invalidSourceSubmissionId = await createAttemptAndSubmission(
+      executableActivityId,
+      {
+        answer: "no executable source envelope"
       }
-    });
+    );
+    unknownProfileSubmissionId = await createAttemptAndSubmission(
+      unknownProfileActivityId,
+      {
+        source: {
+          files: [{ path: "main.py", content: "print(42)" }]
+        }
+      }
+    );
   });
 
   afterAll(async () => {
     if (app !== undefined) await app.close();
 
     if (organizationId.length > 0) {
-      await migrationPool.query(`DELETE FROM learning_progress.evidence WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_history.learning_events WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM events.outbox WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_validation.grader_job_processing WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_validation.validation_results WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_validation.grader_jobs WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_progress.submissions WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_progress.attempts WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.learning_offerings WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.activity_skill_mappings WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.course_version_activities WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.course_version_skills WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.activities WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.skills WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.courses WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM organizations.organizations WHERE id = $1`, [organizationId]);
+      await migrationPool.query(
+        `DELETE FROM learning_progress.evidence WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_history.learning_events WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM events.outbox WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_validation.grader_job_processing WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_validation.validation_results WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_validation.grader_jobs WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_progress.submissions WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_progress.attempts WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.learning_offerings WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.activity_skill_mappings WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.course_version_activities WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.course_version_skills WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.activities WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.skills WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.courses WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM organizations.organizations WHERE id = $1`,
+        [organizationId]
+      );
     }
 
     if (createdUserIds.length > 0) {
-      await migrationPool.query(`DELETE FROM identity.users WHERE id = ANY($1::uuid[])`, [createdUserIds]);
+      await migrationPool.query(
+        `DELETE FROM identity.users WHERE id = ANY($1::uuid[])`,
+        [createdUserIds]
+      );
     }
 
     if (previousProfiles === undefined) {
@@ -406,7 +493,9 @@ describe("durable grader job ledger", () => {
 
     const replay = await schedule(learnerUserId);
     expect(replay.statusCode).toBe(202);
-    expect(graderJobSchema.parse(JSON.parse(replay.body)).jobId).toBe(job.jobId);
+    expect(graderJobSchema.parse(JSON.parse(replay.body)).jobId).toBe(
+      job.jobId
+    );
 
     const rows = await migrationPool.query<{
       count: number;
@@ -471,7 +560,9 @@ describe("durable grader job ledger", () => {
     expect(hidden.rows[0]?.count).toBe(0);
 
     await expect(
-      workerPool.query(`UPDATE learning_validation.grader_job_processing SET status = 'retryable'`)
+      workerPool.query(
+        `UPDATE learning_validation.grader_job_processing SET status = 'retryable'`
+      )
     ).rejects.toMatchObject({ code: "42501" });
   });
 
@@ -519,7 +610,9 @@ describe("durable grader job ledger", () => {
         `SELECT platform_internal.fail_grader_job($1, $2, $3, now()) AS status`,
         [claim.job_id, claim.lease_token, `attempt_${attempt}_failed`]
       );
-      expect(failure.rows[0]?.status).toBe(attempt === 5 ? "dead_letter" : "retryable");
+      expect(failure.rows[0]?.status).toBe(
+        attempt === 5 ? "dead_letter" : "retryable"
+      );
 
       if (attempt < 5) {
         const next = await workerPool.query<ClaimedJobRow>(
@@ -628,11 +721,16 @@ describe("durable grader job ledger", () => {
   });
 
   it("records one completed system ValidationResult and replays an uncertain commit idempotently", async () => {
-    const submissionId = await createAttemptAndSubmission(executableActivityId, {
-      source: {
-        files: [{ path: "index.ts", content: "export const replaySafe = 99;" }]
+    const submissionId = await createAttemptAndSubmission(
+      executableActivityId,
+      {
+        source: {
+          files: [
+            { path: "index.ts", content: "export const replaySafe = 99;" }
+          ]
+        }
       }
-    });
+    );
     const scheduled = await scheduleGraderJob(submissionId);
 
     const claimed = await workerPool.query<ClaimedJobRow>(
@@ -651,7 +749,9 @@ describe("durable grader job ledger", () => {
       payload: { testsPassed: 4, testsTotal: 4 }
     };
 
-    const firstAck = await workerPool.query<{ validation_result_id: string | null }>(
+    const firstAck = await workerPool.query<{
+      validation_result_id: string | null;
+    }>(
       `SELECT platform_internal.acknowledge_grader_job($1, $2, $3::jsonb)::text AS validation_result_id`,
       [job.job_id, job.lease_token, JSON.stringify(terminal)]
     );
@@ -660,7 +760,9 @@ describe("durable grader job ledger", () => {
 
     // Simulates a Worker that received the Gateway response and committed it,
     // but crashed before learning whether the database acknowledgement succeeded.
-    const replayAck = await workerPool.query<{ validation_result_id: string | null }>(
+    const replayAck = await workerPool.query<{
+      validation_result_id: string | null;
+    }>(
       `SELECT platform_internal.acknowledge_grader_job($1, $2, $3::jsonb)::text AS validation_result_id`,
       [job.job_id, job.lease_token, JSON.stringify(terminal)]
     );
@@ -743,11 +845,16 @@ describe("durable grader job ledger", () => {
   });
 
   it("rejects stale and wrong-job terminal acknowledgements before recording needs-review state", async () => {
-    const submissionId = await createAttemptAndSubmission(executableActivityId, {
-      source: {
-        files: [{ path: "index.ts", content: "export const reviewMe = true;" }]
+    const submissionId = await createAttemptAndSubmission(
+      executableActivityId,
+      {
+        source: {
+          files: [
+            { path: "index.ts", content: "export const reviewMe = true;" }
+          ]
+        }
       }
-    });
+    );
     const scheduled = await scheduleGraderJob(submissionId);
 
     const firstClaim = await workerPool.query<ClaimedJobRow>(
@@ -781,7 +888,9 @@ describe("durable grader job ledger", () => {
       payload: { reason: "ambiguous_output" }
     };
 
-    const staleAck = await workerPool.query<{ validation_result_id: string | null }>(
+    const staleAck = await workerPool.query<{
+      validation_result_id: string | null;
+    }>(
       `SELECT platform_internal.acknowledge_grader_job($1, $2, $3::jsonb)::text AS validation_result_id`,
       [stale.job_id, stale.lease_token, JSON.stringify(terminal)]
     );
@@ -806,7 +915,9 @@ describe("durable grader job ledger", () => {
     );
     expect(beforeValidAck.rows[0]?.count).toBe(0);
 
-    const validAck = await workerPool.query<{ validation_result_id: string | null }>(
+    const validAck = await workerPool.query<{
+      validation_result_id: string | null;
+    }>(
       `SELECT platform_internal.acknowledge_grader_job($1, $2, $3::jsonb)::text AS validation_result_id`,
       [current.job_id, current.lease_token, JSON.stringify(terminal)]
     );

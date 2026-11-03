@@ -21,7 +21,10 @@
   border: 1px solid var(--border-default);
   border-radius: 1.5rem;
   background: var(--surface-solid);
-  transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+  transition:
+    border-color 200ms ease,
+    transform 200ms ease,
+    box-shadow 200ms ease;
 }
 .card[data-tone="1"] {
   --tone: #7dd3fc;
@@ -47,7 +50,11 @@
   overflow: hidden;
   border-bottom: 1px solid var(--border-default);
   background:
-    radial-gradient(circle at 85% 0%, color-mix(in srgb, var(--tone) 32%, transparent), transparent 60%),
+    radial-gradient(
+      circle at 85% 0%,
+      color-mix(in srgb, var(--tone) 32%, transparent),
+      transparent 60%
+    ),
     linear-gradient(160deg, var(--surface-elevated), var(--surface-subtle));
 }
 .cover::before {
@@ -249,9 +256,14 @@
   height: 48px;
   border-radius: 14px;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--accent-action) 80%, transparent), transparent),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent-action) 80%, transparent),
+      transparent
+    ),
     var(--surface-elevated);
-  box-shadow: 0 10px 40px color-mix(in srgb, var(--accent-action) 30%, transparent);
+  box-shadow: 0 10px 40px
+    color-mix(in srgb, var(--accent-action) 30%, transparent);
 }
 
 .row {

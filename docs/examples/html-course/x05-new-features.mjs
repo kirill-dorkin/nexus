@@ -1,5 +1,5 @@
 export function newFeatures(c) {
-  const { html, code, mdn, lesson, single, multi } = c;
+  const { lesson, single, multi } = c;
   lesson({
     slug: "whats-new", title: "Новинки HTML 2024–2025", minutes: 13,
     summary: "Кнопки-команды commandfor, closedby у диалогов, настраиваемый select, прозрачность в выборе цвета, headingoffset и writingsuggestions.",

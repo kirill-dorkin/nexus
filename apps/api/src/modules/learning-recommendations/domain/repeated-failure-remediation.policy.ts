@@ -1,6 +1,4 @@
-import type {
-  ReviewAwareOrderedMasteryDecision
-} from "./fixed-interval-review.policy";
+import type { ReviewAwareOrderedMasteryDecision } from "./fixed-interval-review.policy";
 import type { RepeatedTrustedFailureSignal } from "./misconception-signal.policy";
 import type { OrderedMasteryActivity } from "./ordered-mastery.policy";
 

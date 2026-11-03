@@ -15,7 +15,9 @@ export function normalizeTrustedValidationResult(
   activity: CourseVersionActivity
 ): readonly NormalizedValidationEvidence[] {
   if (result.activityVersionId !== activity.id) {
-    throw new Error("ValidationResult must match the exact ActivityVersion being normalized.");
+    throw new Error(
+      "ValidationResult must match the exact ActivityVersion being normalized."
+    );
   }
 
   if (result.status !== "completed" || result.evidenceTrust !== "trusted") {

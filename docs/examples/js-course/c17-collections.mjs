@@ -1,32 +1,32 @@
 // Chapter 17: Collections — Map, Set with set algebra, WeakMap, WeakSet, WeakRef, FinalizationRegistry.
-import { scene, rule, meth, obj, kw, idea, run, has, task, makeLesson, on } from "./kit.mjs";
+import { scene, rule, meth, obj, kw, run, task, makeLesson, on } from "./kit.mjs";
 
 const MP = (...m) => on("Map.prototype", ...m);
 const SP = (...m) => on("Set.prototype", ...m);
 
 export default function collections(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "map", title: "Map: словарь с любыми ключами", summary: "new Map, set, get, has, delete, clear, size, keys, values, entries, forEach и Map.groupBy.",
     skill: ["js-map", "Map", "Хранить пары ключ — значение с ключами любого типа."],
-    now: "Считаем, сколько раз каждый гость заходил. Ключи — сами объекты гостей. Объект тут не подходит — нужен Map.",
+    now: "Храним пары «ключ — значение» с ключами любого типа: Map.",
     body: [
       scene("Ключ — объект",
-        ["bug", "Положи объект гостя ключом в обычный объект — и все гости станут \"[object Object]\"! Хе-хе."],
+        ["bug", "Положи объект пользователя ключом в обычный объект — и все пользователи станут \"[object Object]\"! Хе-хе."],
         ["bro", "Ключи обычного объекта — только строки. У `Map` ключом может быть что угодно, и порядок сохраняется."]),
       obj("Map", "Словарь", "`new Map([[ключ, значение], …])` — пары с ключами любого типа, порядок вставки сохраняется.", "Кэши, счётчики, связь объектов с данными.", 'const visits = new Map([["Аня", 3]]);\nconsole.log(visits, visits instanceof Map);', { covers: ["Map"] }),
       meth("set() · get() · has() · delete()", "Основные операции", "`set(k, v)` — записать (возвращает Map, можно цепочкой), `get(k)` — прочитать, `has(k)` — есть ли, `delete(k)` — удалить.", "Работа со словарём.", 'const m = new Map();\nconst anya = { name: "Аня" };\nm.set(anya, 1).set("Борис", 2);\nconsole.log(m.get(anya), m.has("Борис"), m.delete("Борис"), m.has("Борис"));', { covers: MP("set", "get", "has", "delete") }),
       kw("size · clear()", "Размер и очистка", "`size` — число пар (свойство, не метод), `clear()` удаляет всё.", "Сколько записей, сброс кэша.", "const m = new Map([[1, \"a\"], [2, \"b\"]]);\nconsole.log(m.size);\nm.clear();\nconsole.log(m.size);", { covers: MP("size", "clear") }),
-      meth("keys() · values() · entries() · forEach()", "Перебор Map", "Итераторы ключей, значений и пар; `for…of` по Map сразу даёт пары `[k, v]`.", "Вывести словарь.", 'const prices = new Map([["Латте", 220], ["Раф", 290]]);\nfor (const [drink, price] of prices) console.log(drink, price);\nconsole.log([...prices.keys()], [...prices.values()], [...prices.entries()].length);\nprices.forEach((p, d) => console.log(d, "→", p));', { covers: MP("keys", "values", "entries", "forEach") }),
+      meth("keys() · values() · entries() · forEach()", "Перебор Map", "Итераторы ключей, значений и пар; `for…of` по Map сразу даёт пары `[k, v]`.", "Вывести словарь.", 'const prices = new Map([["Блокнот", 220], ["Пенал", 290]]);\nfor (const [item, price] of prices) console.log(item, price);\nconsole.log([...prices.keys()], [...prices.values()], [...prices.entries()].length);\nprices.forEach((p, d) => console.log(d, "→", p));', { covers: MP("keys", "values", "entries", "forEach") }),
       meth("Map.groupBy()", "Группировка в Map", "Как `Object.groupBy`, но ключи — любые значения (объекты, числа), результат — Map.", "Группы по объекту или числу.", "const prices = [150, 220, 290, 450];\nconst groups = Map.groupBy(prices, (p) => p >= 250);\nconsole.log(groups.get(true), groups.get(false));", { covers: on("Map", "groupBy") }),
       rule("Ключи — не строки или важен порядок и частые добавления/удаления — бери `Map`, а не объект.")
     ],
-    tasks: [task("Счётчик визитов", "Напиши `countVisits(guests)`: возвращает Map «имя → число визитов» через `get`/`set`.", {
-      start: "function countVisits(guests) {\n  return {};\n}\n",
+    tasks: [task("Счётчик визитов", "Напиши `countVisits(users)`: возвращает Map «имя → число визитов» через `get`/`set`.", {
+      start: "function countVisits(users) {\n  return {};\n}\n",
       checks: [run('(() => { const m = countVisits(["Аня", "Борис", "Аня"]); return m instanceof Map && m.get("Аня") === 2 && m.get("Борис") === 1 && m.size === 2; })()', "Визиты посчитаны")],
-      solution: "function countVisits(guests) {\n  const m = new Map();\n  for (const g of guests) m.set(g, (m.get(g) ?? 0) + 1);\n  return m;\n}"
+      solution: "function countVisits(users) {\n  const m = new Map();\n  for (const g of users) m.set(g, (m.get(g) ?? 0) + 1);\n  return m;\n}"
     })],
     quizzes: [
       single("js-map-size", "Размер", "Как узнать число пар в Map?", [["size", "`map.size`"], ["length", "`map.length`"], ["count", "`map.count()`"], ["keys", "`Object.keys(map).length`"]], "size", "size — свойство."),
@@ -37,18 +37,18 @@ export default function collections(c, ch, rc) {
   L({
     slug: "set", title: "Set: уникальные значения", summary: "new Set, add, has, delete, clear, size, keys, values, entries и forEach.",
     skill: ["js-set", "Set", "Хранить уникальные значения и быстро проверять наличие."],
-    now: "Нужен список гостей без повторов и быстрая проверка «был ли гость у нас».",
+    now: "Храним уникальные значения и быстро проверяем наличие: Set.",
     body: [
       scene("Без повторов",
-        ["marta", "Список гостей за неделю: Аня пришла пять раз, а мне нужен список без повторов."],
-        ["bro", "`new Set(guests)` — и повторы исчезнут сами. А `has` проверяет мгновенно."]),
-      obj("Set", "Множество", "`new Set(iterable)` — коллекция уникальных значений (сравнение по SameValueZero), порядок добавления сохраняется.", "Убрать дубликаты, быстрые проверки.", 'const guests = new Set(["Аня", "Борис", "Аня"]);\nconsole.log([...guests], guests.size);', { covers: ["Set"] }),
+        ["you", "Список пользователей за неделю: Аня пришла пять раз, а мне нужен список без повторов."],
+        ["bro", "`new Set(users)` — и повторы исчезнут сами. А `has` проверяет мгновенно."]),
+      obj("Set", "Множество", "`new Set(iterable)` — коллекция уникальных значений (сравнение по SameValueZero), порядок добавления сохраняется.", "Убрать дубликаты, быстрые проверки.", 'const users = new Set(["Аня", "Борис", "Аня"]);\nconsole.log([...users], users.size);', { covers: ["Set"] }),
       meth("add() · has() · delete()", "Добавить, проверить, удалить", "`add` возвращает Set (цепочкой), повтор не добавится; `has` — быстрая проверка; `delete` — удалить.", "Отметки «уже видели».", 'const seen = new Set();\nseen.add("Аня").add("Аня").add("Лев");\nconsole.log(seen.has("Лев"), seen.delete("Лев"), seen.size);', { covers: SP("add", "has", "delete") }),
       kw("size · clear()", "Размер и очистка", "`size` — сколько значений, `clear()` — удалить всё.", "Счётчик уникальных.", 'const s = new Set([1, 2, 3]);\ns.clear();\nconsole.log(s.size);', { covers: SP("size", "clear") }),
-      meth("keys() · values() · entries() · forEach()", "Перебор Set", "`values()` и `keys()` одинаковы; `entries()` даёт пары `[v, v]` для совместимости с Map.", "Пройтись по уникальным.", 'const s = new Set(["Латте", "Раф"]);\nconsole.log([...s.values()], [...s.keys()], [...s.entries()][0]);\ns.forEach((v) => console.log(v));', { covers: SP("keys", "values", "entries", "forEach") }),
+      meth("keys() · values() · entries() · forEach()", "Перебор Set", "`values()` и `keys()` одинаковы; `entries()` даёт пары `[v, v]` для совместимости с Map.", "Пройтись по уникальным.", 'const s = new Set(["Блокнот", "Пенал"]);\nconsole.log([...s.values()], [...s.keys()], [...s.entries()][0]);\ns.forEach((v) => console.log(v));', { covers: SP("keys", "values", "entries", "forEach") }),
       rule("Убрать повторы из массива — `[...new Set(arr)]`.")
     ],
-    tasks: [task("Уникальные гости", "Напиши `unique(list)` — массив без повторов через Set, и `firstVisit(seen, name)`: возвращает true, если гостя ещё нет в Set `seen`, и добавляет его.", {
+    tasks: [task("Уникальные пользователи", "Напиши `unique(list)` — массив без повторов через Set, и `firstVisit(seen, name)`: возвращает true, если пользователя ещё нет в Set `seen`, и добавляет его.", {
       start: "function unique(list) {\n  return list;\n}\nfunction firstVisit(seen, name) {\n  return true;\n}\n",
       checks: [run('unique(["Аня", "Борис", "Аня"]).join() === "Аня,Борис"', "Повторы убраны"), run('(() => { const s = new Set(); return firstVisit(s, "Аня") === true && firstVisit(s, "Аня") === false && s.size === 1; })()', "Первый визит отмечается")],
       solution: "function unique(list) {\n  return [...new Set(list)];\n}\nfunction firstVisit(seen, name) {\n  if (seen.has(name)) return false;\n  seen.add(name);\n  return true;\n}"
@@ -59,19 +59,19 @@ export default function collections(c, ch, rc) {
   L({
     slug: "set-algebra", title: "Операции над множествами", summary: "union, intersection, difference, symmetricDifference, isSubsetOf, isSupersetOf и isDisjointFrom.",
     skill: ["js-set-algebra", "Алгебра множеств", "Объединять, пересекать и сравнивать множества."],
-    now: "Какие гости были и в субботу, и в воскресенье? А кто только один день? Множества отвечают сразу.",
+    now: "Объединяем, пересекаем и сравниваем множества.",
     body: [
       scene("Выходные",
-        ["marta", "Хочу знать постоянных гостей: кто был в оба выходных дня."],
+        ["you", "Хочу знать постоянных пользователей: кто был в оба выходных дня."],
         ["nika", "Это пересечение множеств. У Set есть все операции — объединение, разность и проверки."]),
-      meth("union() · intersection()", "Объединение и пересечение", "`a.union(b)` — все из обоих; `a.intersection(b)` — только общие. Возвращают новый Set.", "Все гости и постоянные гости.", 'const sat = new Set(["Аня", "Борис"]), sun = new Set(["Аня", "Лев"]);\nconsole.log([...sat.union(sun)], [...sat.intersection(sun)]);', { covers: SP("union", "intersection") }),
+      meth("union() · intersection()", "Объединение и пересечение", "`a.union(b)` — все из обоих; `a.intersection(b)` — только общие. Возвращают новый Set.", "Все пользователи и постоянные пользователи.", 'const sat = new Set(["Аня", "Борис"]), sun = new Set(["Аня", "Лев"]);\nconsole.log([...sat.union(sun)], [...sat.intersection(sun)]);', { covers: SP("union", "intersection") }),
       meth("difference() · symmetricDifference()", "Разность", "`a.difference(b)` — есть в a, нет в b; `symmetricDifference` — есть ровно в одном.", "Кто был только в субботу; кто был один день.", 'const sat = new Set(["Аня", "Борис"]), sun = new Set(["Аня", "Лев"]);\nconsole.log([...sat.difference(sun)], [...sat.symmetricDifference(sun)]);', { covers: SP("difference", "symmetricDifference") }),
-      meth("isSubsetOf() · isSupersetOf() · isDisjointFrom()", "Сравнение множеств", "Подмножество ли, надмножество ли, нет ли общих элементов.", "Все ли ингредиенты есть на складе; нет ли аллергенов.", 'const stock = new Set(["молоко", "кофе", "сахар"]), latte = new Set(["молоко", "кофе"]);\nconsole.log(latte.isSubsetOf(stock), stock.isSupersetOf(latte), latte.isDisjointFrom(new Set(["орехи"])));', { covers: SP("isSubsetOf", "isSupersetOf", "isDisjointFrom") }),
+      meth("isSubsetOf() · isSupersetOf() · isDisjointFrom()", "Сравнение множеств", "Подмножество ли, надмножество ли, нет ли общих элементов.", "Все ли ингредиенты есть на складе; нет ли аллергенов.", 'const stock = new Set(["хлеб", "сыр", "масло"]), sandwich = new Set(["хлеб", "сыр"]);\nconsole.log(sandwich.isSubsetOf(stock), stock.isSupersetOf(sandwich), sandwich.isDisjointFrom(new Set(["орехи"])));', { covers: SP("isSubsetOf", "isSupersetOf", "isDisjointFrom") }),
       rule("Вопросы «общие», «все», «ни одного» про списки — это операции над множествами.")
     ],
     tasks: [task("Можно ли приготовить", "Напиши `canMake(recipe, stock)` — true, если все ингредиенты рецепта есть на складе (`isSubsetOf`), и `missing(recipe, stock)` — массив недостающих (`difference`).", {
       start: "function canMake(recipe, stock) {\n  return true;\n}\nfunction missing(recipe, stock) {\n  return [];\n}\n",
-      checks: [run('canMake(new Set(["кофе", "молоко"]), new Set(["кофе", "молоко", "сахар"]))', "Латте можно"), run('!canMake(new Set(["какао"]), new Set(["кофе"]))', "Какао нельзя"), run('missing(new Set(["кофе", "сироп"]), new Set(["кофе"])).join() === "сироп"', "Не хватает сиропа")],
+      checks: [run('canMake(new Set(["сыр", "хлеб"]), new Set(["сыр", "хлеб", "масло"]))', "Бутерброд можно"), run('!canMake(new Set(["ветчина"]), new Set(["сыр"]))', "Без ветчины не выйдет"), run('missing(new Set(["сыр", "соль"]), new Set(["сыр"])).join() === "соль"', "Не хватает соли")],
       solution: "function canMake(recipe, stock) {\n  return recipe.isSubsetOf(stock);\n}\nfunction missing(recipe, stock) {\n  return [...recipe.difference(stock)];\n}"
     })],
     quizzes: [single("js-set-intersection", "Пересечение", "Что вернёт `new Set([1, 2]).intersection(new Set([2, 3]))`?", [["2", "Set {2}"], ["all", "Set {1, 2, 3}"], ["13", "Set {1, 3}"], ["1", "Set {1}"]], "2", "Только общие элементы.")]
@@ -80,7 +80,7 @@ export default function collections(c, ch, rc) {
   L({
     slug: "weak-collections", title: "Слабые ссылки", summary: "WeakMap, WeakSet, WeakRef и FinalizationRegistry: коллекции, которые не мешают сборщику мусора.",
     skill: ["js-weak", "Слабые коллекции", "Привязывать данные к объектам, не создавая утечек памяти."],
-    now: "Кэш данных для карточек меню растёт бесконечно: удалённые карточки не освобождают память. Берём слабые коллекции.",
+    now: "Привязываем данные к объектам без утечек памяти: слабые коллекции.",
     body: [
       scene("Утечка",
         ["bug", "Каждая удалённая карточка остаётся в вашем кэше навсегда. Память тает! Хе-хе."],

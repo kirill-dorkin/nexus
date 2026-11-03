@@ -29,7 +29,9 @@ function firstHeaderValue(value: HeaderValue): string | undefined {
 function cookiePair(setCookie: HeaderValue): string {
   const value = firstHeaderValue(setCookie);
   if (value === undefined) {
-    throw new Error("Expected authentication response to set a session cookie.");
+    throw new Error(
+      "Expected authentication response to set a session cookie."
+    );
   }
 
   const pair = value.split(";", 1)[0];
@@ -76,15 +78,15 @@ describe("Foundation 1 HTTP API", () => {
     outsiderUserId = await createUser("http-outsider");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
@@ -198,7 +200,9 @@ describe("Foundation 1 HTTP API", () => {
 
     expect(wrongPassword.statusCode).toBe(401);
     expect(unknownEmail.statusCode).toBe(401);
-    expect(JSON.parse(wrongPassword.body)).toEqual(JSON.parse(unknownEmail.body));
+    expect(JSON.parse(wrongPassword.body)).toEqual(
+      JSON.parse(unknownEmail.body)
+    );
   });
 
   it("revokes the server-side session on logout", async () => {
@@ -209,7 +213,9 @@ describe("Foundation 1 HTTP API", () => {
     });
 
     expect(logout.statusCode).toBe(204);
-    expect(firstHeaderValue(logout.headers["set-cookie"])).toContain("Max-Age=0");
+    expect(firstHeaderValue(logout.headers["set-cookie"])).toContain(
+      "Max-Age=0"
+    );
 
     const afterLogout = await app.inject({
       method: "GET",
@@ -324,26 +330,38 @@ describe("Foundation 1 HTTP API", () => {
   });
 
   it("reads an Organization provisioned only through the trusted operator boundary", async () => {
-    organizationId = await withTransaction(migrationPool, async ({ client }) => {
-      const result = await client.query<{ id: string }>(
-        "INSERT INTO organizations.organizations (slug,name,created_by_user_id) VALUES ($1,$2,$3) RETURNING id::text",
-        [organizationSlug, "HTTP Learning", ownerUserId]
-      );
-      const id = result.rows[0]!.id;
-      await client.query(
-        "INSERT INTO organizations.memberships (organization_id,user_id,status,joined_at) VALUES ($1,$2,'active',now())",
-        [id, ownerUserId]
-      );
-      await client.query(
-        "INSERT INTO access_control.role_assignments (organization_id,user_id,role_id,scope_type,scope_id,assigned_by_user_id) SELECT $1,$2,id,'organization',$1,$2 FROM access_control.roles WHERE key='organization_owner' AND is_system=true",
-        [id, ownerUserId]
-      );
-      await client.query(
-        "INSERT INTO events.outbox (organization_id,event_name,event_version,aggregate_type,aggregate_id,actor_user_id,payload) VALUES ($1,'organization.created',1,'organization',$1,$2,$3::jsonb)",
-        [id, ownerUserId, JSON.stringify({ organizationId: id, slug: organizationSlug, name: "HTTP Learning", createdByUserId: ownerUserId })]
-      );
-      return id;
-    });
+    organizationId = await withTransaction(
+      migrationPool,
+      async ({ client }) => {
+        const result = await client.query<{ id: string }>(
+          "INSERT INTO organizations.organizations (slug,name,created_by_user_id) VALUES ($1,$2,$3) RETURNING id::text",
+          [organizationSlug, "HTTP Learning", ownerUserId]
+        );
+        const id = result.rows[0]!.id;
+        await client.query(
+          "INSERT INTO organizations.memberships (organization_id,user_id,status,joined_at) VALUES ($1,$2,'active',now())",
+          [id, ownerUserId]
+        );
+        await client.query(
+          "INSERT INTO access_control.role_assignments (organization_id,user_id,role_id,scope_type,scope_id,assigned_by_user_id) SELECT $1,$2,id,'organization',$1,$2 FROM access_control.roles WHERE key='organization_owner' AND is_system=true",
+          [id, ownerUserId]
+        );
+        await client.query(
+          "INSERT INTO events.outbox (organization_id,event_name,event_version,aggregate_type,aggregate_id,actor_user_id,payload) VALUES ($1,'organization.created',1,'organization',$1,$2,$3::jsonb)",
+          [
+            id,
+            ownerUserId,
+            JSON.stringify({
+              organizationId: id,
+              slug: organizationSlug,
+              name: "HTTP Learning",
+              createdByUserId: ownerUserId
+            })
+          ]
+        );
+        return id;
+      }
+    );
 
     const getResponse = await app.inject({
       method: "GET",

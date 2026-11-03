@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  publicPurchaseSchema,
-  type PublicPurchase
-} from "@platform/contracts";
+import { publicPurchaseSchema, type PublicPurchase } from "@platform/contracts";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
@@ -23,7 +20,9 @@ function formatMoney(purchase: PublicPurchase): string {
   }).format(purchase.amountMinor / 100);
 }
 
-export function PurchaseStatus({ purchaseId }: Readonly<{ purchaseId: string }>) {
+export function PurchaseStatus({
+  purchaseId
+}: Readonly<{ purchaseId: string }>) {
   const [purchase, setPurchase] = useState<PublicPurchase | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -36,10 +35,16 @@ export function PurchaseStatus({ purchaseId }: Readonly<{ purchaseId: string }>)
         `/v1/me/purchases/${encodeURIComponent(purchaseId)}`
       );
       if (response.status === 401) {
-        throw new PublicApiError(401, "Сессия завершилась. Войдите в аккаунт снова.");
+        throw new PublicApiError(
+          401,
+          "Сессия завершилась. Войдите в аккаунт снова."
+        );
       }
       if (response.status === 404) {
-        throw new PublicApiError(404, "Покупка не найдена для текущего аккаунта.");
+        throw new PublicApiError(
+          404,
+          "Покупка не найдена для текущего аккаунта."
+        );
       }
       if (!response.ok) throw await apiError(response);
       const next = publicPurchaseSchema.parse(await response.json());
@@ -58,15 +63,17 @@ export function PurchaseStatus({ purchaseId }: Readonly<{ purchaseId: string }>)
   }, [purchaseId]);
 
   useEffect(() => {
-    let active = true;
+    const controller = new AbortController();
+    // A function call, so the check is re-read after each await.
+    const active = () => !controller.signal.aborted;
     let timer: ReturnType<typeof setTimeout> | undefined;
 
     const run = async () => {
-      if (!active) return;
+      if (!active()) return;
       automaticReads.current += 1;
       const current = await refresh();
       if (
-        active &&
+        active() &&
         current?.status === "pending" &&
         automaticReads.current < maxAutomaticReads
       ) {
@@ -76,20 +83,28 @@ export function PurchaseStatus({ purchaseId }: Readonly<{ purchaseId: string }>)
 
     void run();
     return () => {
-      active = false;
+      controller.abort();
       if (timer !== undefined) clearTimeout(timer);
     };
   }, [refresh]);
 
   if (loading && purchase === null) {
-    return <p className={styles.status}>Получаем канонический статус покупки…</p>;
+    return (
+      <p className={styles.status}>Получаем канонический статус покупки…</p>
+    );
   }
 
   if (error !== null && purchase === null) {
     return (
       <div className={styles.statusBox}>
-        <p className={styles.error} role="alert">{error}</p>
-        <button className={styles.button} type="button" onClick={() => void refresh()}>
+        <p className={styles.error} role="alert">
+          {error}
+        </p>
+        <button
+          className={styles.button}
+          type="button"
+          onClick={() => void refresh()}
+        >
           Проверить снова
         </button>
       </div>
@@ -100,21 +115,37 @@ export function PurchaseStatus({ purchaseId }: Readonly<{ purchaseId: string }>)
 
   return (
     <div className={styles.statusBox} aria-live="polite">
-      <p className={purchase.status === "paid" ? styles.success : styles.status}>
+      <p
+        className={purchase.status === "paid" ? styles.success : styles.status}
+      >
         {purchase.status === "paid"
           ? "Оплата подтверждена платформой."
           : "Платёж ещё обрабатывается. Эта страница обновит статус автоматически."}
       </p>
       <dl className={styles.details}>
-        <div><dt>Сумма</dt><dd>{formatMoney(purchase)}</dd></div>
-        <div><dt>Статус</dt><dd>{purchase.status === "paid" ? "Оплачено" : "Ожидается"}</dd></div>
+        <div>
+          <dt>Сумма</dt>
+          <dd>{formatMoney(purchase)}</dd>
+        </div>
+        <div>
+          <dt>Статус</dt>
+          <dd>{purchase.status === "paid" ? "Оплачено" : "Ожидается"}</dd>
+        </div>
       </dl>
       {purchase.status === "pending" ? (
-        <button className={styles.button} type="button" onClick={() => void refresh()}>
+        <button
+          className={styles.button}
+          type="button"
+          onClick={() => void refresh()}
+        >
           Проверить сейчас
         </button>
       ) : null}
-      {error !== null ? <p className={styles.error} role="alert">{error}</p> : null}
+      {error !== null ? (
+        <p className={styles.error} role="alert">
+          {error}
+        </p>
+      ) : null}
     </div>
   );
 }

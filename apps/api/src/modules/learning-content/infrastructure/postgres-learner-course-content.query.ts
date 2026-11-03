@@ -13,7 +13,7 @@ export class PostgresLearnerCourseContentQuery extends LearnerCourseContentQuery
     lock = false
   ) {
     const version = (
-      await tx.client.query(
+      await tx.client.query<{ id: string }>(
         `SELECT v.id FROM learning_content.course_versions v JOIN learning_content.courses c ON c.organization_id=v.organization_id AND c.id=v.course_id
        WHERE v.organization_id=$1 AND v.id=$2 AND v.status='published' AND v.manifest_schema_version=1 AND c.status='active' ${lock ? "FOR SHARE OF c" : ""}`,
         [organizationId, versionId]
@@ -34,7 +34,11 @@ export class PostgresLearnerCourseContentQuery extends LearnerCourseContentQuery
     );
     return result.rows.length ? result.rows : null;
   }
-  async activityLineage(tx: DatabaseTransaction, organizationId: string, activityIds: readonly string[]) {
+  async activityLineage(
+    tx: DatabaseTransaction,
+    organizationId: string,
+    activityIds: readonly string[]
+  ) {
     if (!activityIds.length) return new Map<string, string>();
     const result = await tx.client.query<{ id: string; activity_id: string }>(
       `SELECT a.id, a.activity_id FROM learning_content.course_version_activities a

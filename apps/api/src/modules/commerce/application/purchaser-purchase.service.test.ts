@@ -31,11 +31,18 @@ function purchase(): Purchase {
   };
 }
 
-function createSubject(resolvedOrganizationId: string | null, stored = purchase()) {
+function createSubject(
+  resolvedOrganizationId: string | null,
+  stored = purchase()
+) {
   const transaction = {};
   const database = {
-    userTransaction: vi.fn(async (_context, operation) => operation(transaction)),
-    tenantTransaction: vi.fn(async (_context, operation) => operation(transaction))
+    userTransaction: vi.fn(async (_context, operation) =>
+      operation(transaction)
+    ),
+    tenantTransaction: vi.fn(async (_context, operation) =>
+      operation(transaction)
+    )
   } as unknown as DatabaseService;
   const requestContext = {
     requirePrincipal: vi.fn(() => ({ userId }))
@@ -61,7 +68,8 @@ function createSubject(resolvedOrganizationId: string | null, stored = purchase(
 
 describe("PurchaserPurchaseApplicationService", () => {
   it("returns only the public projection for the canonical purchaser", async () => {
-    const result = await createSubject(organizationId).getOwnPurchase(purchaseId);
+    const result =
+      await createSubject(organizationId).getOwnPurchase(purchaseId);
 
     expect(result).toMatchObject({
       id: purchaseId,
@@ -82,7 +90,10 @@ describe("PurchaserPurchaseApplicationService", () => {
   });
 
   it("rechecks purchaser ownership after entering tenant context", async () => {
-    const foreign = { ...purchase(), purchaserUserId: "018f47f1-16ce-7d1f-8f65-c61d8be24a99" };
+    const foreign = {
+      ...purchase(),
+      purchaserUserId: "018f47f1-16ce-7d1f-8f65-c61d8be24a99"
+    };
     await expect(
       createSubject(organizationId, foreign).getOwnPurchase(purchaseId)
     ).rejects.toBeInstanceOf(NotFoundException);

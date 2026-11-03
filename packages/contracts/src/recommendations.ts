@@ -37,8 +37,8 @@ export const misconceptionSignalSchema = z.object({
   code: z.literal("repeated_trusted_failure"),
   skillId: uuidSchema,
   consecutiveFailureCount: z.number().int().min(2),
-  firstObservedAt: z.string().datetime(),
-  lastObservedAt: z.string().datetime()
+  firstObservedAt: z.iso.datetime(),
+  lastObservedAt: z.iso.datetime()
 });
 
 export const recommendationInterventionSchema = z.object({
@@ -83,8 +83,8 @@ export const recommendationReasonSchema = z.discriminatedUnion("code", [
   z.object({
     code: z.literal("focus_skill_review_due"),
     attemptCount: attemptCountSchema,
-    lastEvidenceAt: z.string().datetime(),
-    reviewDueAt: z.string().datetime()
+    lastEvidenceAt: z.iso.datetime(),
+    reviewDueAt: z.iso.datetime()
   })
 ]);
 
@@ -120,19 +120,17 @@ export const recommendedNextLearningActionSchema = z
       context.addIssue({
         code: "custom",
         path: ["interventionPolicy"],
-        message: "interventionPolicy is required when an intervention is present"
+        message:
+          "interventionPolicy is required when an intervention is present"
       });
     }
     const signal = value.recommendation.misconceptionSignal;
-    if (
-      signal === undefined ||
-      signal === null ||
-      signal.code !== intervention.signalCode
-    ) {
+    if (signal?.code !== intervention.signalCode) {
       context.addIssue({
         code: "custom",
         path: ["recommendation", "misconceptionSignal"],
-        message: "intervention requires its matching active misconception signal"
+        message:
+          "intervention requires its matching active misconception signal"
       });
     }
     if (
@@ -161,15 +159,15 @@ export const recommendedNextLearningActionSchema = z
 export const masteryTargetMetRecommendationSchema = z.object({
   status: z.literal("mastery_target_met"),
   ...recommendationContextShape,
-  nextReviewAt: z.string().datetime().nullable().optional(),
+  nextReviewAt: z.iso.datetime().nullable().optional(),
   recommendation: z.null()
 });
 
 export const noPracticeActivityReasonSchema = z
   .object({
     code: z.literal("no_practice_activity_available"),
-    lastEvidenceAt: z.string().datetime().optional(),
-    reviewDueAt: z.string().datetime().optional()
+    lastEvidenceAt: z.iso.datetime().optional(),
+    reviewDueAt: z.iso.datetime().optional()
   })
   .superRefine((value, context) => {
     if (

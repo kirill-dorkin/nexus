@@ -1,7 +1,11 @@
 import type { LearningEvent } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
-export type LearningEventCursorPosition = Readonly<{ occurredAt: string; eventOrder: number; id: string }>;
+export type LearningEventCursorPosition = Readonly<{
+  occurredAt: string;
+  eventOrder: number;
+  id: string;
+}>;
 export type NewLearningEvent = Readonly<{
   organizationId: string;
   learnerUserId: string;
@@ -24,8 +28,20 @@ export type NewLearningEvent = Readonly<{
   guidanceSolutionKey: string | null;
   occurredAt: string;
 }>;
-export type LearningEventPageRow = Readonly<{ event: LearningEvent; position: LearningEventCursorPosition }>;
+export type LearningEventPageRow = Readonly<{
+  event: LearningEvent;
+  position: LearningEventCursorPosition;
+}>;
 export abstract class LearningEventRepository {
-  abstract append(transaction: DatabaseTransaction, event: NewLearningEvent): Promise<void>;
-  abstract listForEnrollment(transaction: DatabaseTransaction, organizationId: string, enrollmentId: string, before: LearningEventCursorPosition | null, limit: number): Promise<readonly LearningEventPageRow[]>;
+  abstract append(
+    transaction: DatabaseTransaction,
+    event: NewLearningEvent
+  ): Promise<void>;
+  abstract listForEnrollment(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    enrollmentId: string,
+    before: LearningEventCursorPosition | null,
+    limit: number
+  ): Promise<readonly LearningEventPageRow[]>;
 }

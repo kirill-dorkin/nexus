@@ -1,8 +1,9 @@
 import type { PublicLearningCourse } from "@platform/contracts";
 import Link from "next/link";
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { ButtonLink } from "@platform/ui";
 import { courseUrl } from "../../lib/public-learning-routes";
+import { LEARNING_ROUTE, routeStepNumber } from "../../lib/learning-route";
 import { durationLabel, lessonCount } from "./learning-labels";
 import styles from "./course-list.module.css";
 
@@ -35,12 +36,21 @@ export function CourseCard({
 }) {
   const href = courseUrl(course);
   const lessons = course.course.lessons;
-  const minutes = lessons.reduce((sum, lesson) => sum + lesson.durationMinutes, 0);
+  const minutes = lessons.reduce(
+    (sum, lesson) => sum + lesson.durationMinutes,
+    0
+  );
   const description = firstSentence(course.course.description);
+  const step = routeStepNumber(course);
   return (
-    <article className={`${styles.card} ${featured ? styles.featured : ""}`} data-tone={index % 3}>
+    <article
+      className={`${styles.card} ${featured ? styles.featured : ""}`}
+      data-tone={index % 3}
+    >
       <div className={styles.cover} aria-hidden="true">
-        <span className={styles.coverIndex}>{String(index + 1).padStart(2, "0")}</span>
+        <span className={styles.coverIndex}>
+          {String(index + 1).padStart(2, "0")}
+        </span>
         <ol className={styles.coverLessons}>
           {lessons.slice(0, featured ? 4 : 3).map((lesson, i) => (
             <li key={lesson.slug}>
@@ -51,7 +61,11 @@ export function CourseCard({
         </ol>
       </div>
       <div className={styles.body}>
-        <p className={styles.organization}>{course.organization.name}</p>
+        <p className={styles.organization}>
+          {step
+            ? `Шаг ${step} · ${LEARNING_ROUTE.title}`
+            : course.organization.name}
+        </p>
         <h3 className={styles.title}>
           <Link href={href}>{course.course.title}</Link>
         </h3>
@@ -61,8 +75,12 @@ export function CourseCard({
           <li>{lessonCount(lessons.length)}</li>
           {minutes > 0 && <li>{durationLabel(minutes)}</li>}
         </ul>
-        <ButtonLink className={styles.action} href={href} variant={featured ? "primary" : "secondary"}>
-          Посмотреть программу <ArrowRight size={18} aria-hidden="true" />
+        <ButtonLink
+          className={styles.action}
+          href={href}
+          variant={featured ? "primary" : "secondary"}
+        >
+          Посмотреть программу <ArrowRightIcon size={18} aria-hidden="true" />
         </ButtonLink>
       </div>
     </article>

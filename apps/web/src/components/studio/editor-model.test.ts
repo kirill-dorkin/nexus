@@ -1,6 +1,6 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { courseManifestV1Schema } from "@platform/contracts";
 import { readFileSync } from "node:fs";
 import { ManualEditor } from "./manual-editor";
@@ -36,7 +36,7 @@ describe("Studio document parity and safe author preview", () => {
       createElement(ManualEditor, {
         document: d,
         existing: true,
-        edit: () => {}
+        edit: vi.fn()
       })
     );
     for (const label of [

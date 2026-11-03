@@ -21,7 +21,9 @@ import {
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for session-attendance integration tests.`);
+    throw new Error(
+      `${name} is required for session-attendance integration tests.`
+    );
   }
   return value;
 }
@@ -71,7 +73,9 @@ describe("session and attendance HTTP lifecycle", () => {
     );
     const id = result.rows[0]?.id;
     if (id === undefined) {
-      throw new Error("Failed to create session-attendance integration-test identity.");
+      throw new Error(
+        "Failed to create session-attendance integration-test identity."
+      );
     }
     createdUserIds.push(id);
     return id;
@@ -85,7 +89,9 @@ describe("session and attendance HTTP lifecycle", () => {
       payload: { userId }
     });
     if (invite.statusCode !== 201) {
-      throw new Error(`Failed to invite session-attendance learner: ${invite.body}`);
+      throw new Error(
+        `Failed to invite session-attendance learner: ${invite.body}`
+      );
     }
 
     const accept = await app.inject({
@@ -94,7 +100,9 @@ describe("session and attendance HTTP lifecycle", () => {
       headers: { "x-test-user-id": userId }
     });
     if (accept.statusCode !== 200) {
-      throw new Error(`Failed to activate session-attendance learner: ${accept.body}`);
+      throw new Error(
+        `Failed to activate session-attendance learner: ${accept.body}`
+      );
     }
 
     const role = await app.inject({
@@ -108,11 +116,16 @@ describe("session and attendance HTTP lifecycle", () => {
       }
     });
     if (role.statusCode !== 204) {
-      throw new Error(`Failed to assign session-attendance learner role: ${role.body}`);
+      throw new Error(
+        `Failed to assign session-attendance learner role: ${role.body}`
+      );
     }
   }
 
-  async function createEnrollment(offeringId: string, userId: string): Promise<string> {
+  async function createEnrollment(
+    offeringId: string,
+    userId: string
+  ): Promise<string> {
     const response = await app.inject({
       method: "POST",
       url: `/v1/organizations/${organizationId}/offerings/${offeringId}/enrollments`,
@@ -120,7 +133,9 @@ describe("session and attendance HTTP lifecycle", () => {
       payload: { userId }
     });
     if (response.statusCode !== 201) {
-      throw new Error(`Failed to create session-attendance enrollment: ${response.body}`);
+      throw new Error(
+        `Failed to create session-attendance enrollment: ${response.body}`
+      );
     }
     return (JSON.parse(response.body) as { id: string }).id;
   }
@@ -131,23 +146,25 @@ describe("session and attendance HTTP lifecycle", () => {
     secondLearnerUserId = await createUser("session-attendance-second-learner");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `sessions-attendance-${randomUUID()}`,
         name: "Session attendance integration"
-      })).id;
+      })
+    ).id;
 
     await activateLearner(learnerUserId);
     await activateLearner(secondLearnerUserId);
@@ -162,7 +179,9 @@ describe("session and attendance HTTP lifecycle", () => {
       }
     });
     if (course.statusCode !== 201) {
-      throw new Error(`Failed to create session-attendance course: ${course.body}`);
+      throw new Error(
+        `Failed to create session-attendance course: ${course.body}`
+      );
     }
     const createdCourse = JSON.parse(course.body) as {
       course: { id: string };
@@ -177,7 +196,9 @@ describe("session and attendance HTTP lifecycle", () => {
       headers: { "x-test-user-id": ownerUserId }
     });
     if (publish.statusCode !== 200) {
-      throw new Error(`Failed to publish session-attendance course: ${publish.body}`);
+      throw new Error(
+        `Failed to publish session-attendance course: ${publish.body}`
+      );
     }
 
     const cohortOffering = await app.inject({
@@ -194,7 +215,9 @@ describe("session and attendance HTTP lifecycle", () => {
       }
     });
     if (cohortOffering.statusCode !== 201) {
-      throw new Error(`Failed to create scheduled cohort offering: ${cohortOffering.body}`);
+      throw new Error(
+        `Failed to create scheduled cohort offering: ${cohortOffering.body}`
+      );
     }
     cohortOfferingId = learningOfferingSchema.parse(
       JSON.parse(cohortOffering.body)
@@ -212,13 +235,18 @@ describe("session and attendance HTTP lifecycle", () => {
       }
     });
     if (selfPacedOffering.statusCode !== 201) {
-      throw new Error(`Failed to create attendance control offering: ${selfPacedOffering.body}`);
+      throw new Error(
+        `Failed to create attendance control offering: ${selfPacedOffering.body}`
+      );
     }
     selfPacedOfferingId = learningOfferingSchema.parse(
       JSON.parse(selfPacedOffering.body)
     ).id;
 
-    cohortEnrollmentId = await createEnrollment(cohortOfferingId, learnerUserId);
+    cohortEnrollmentId = await createEnrollment(
+      cohortOfferingId,
+      learnerUserId
+    );
     secondCohortEnrollmentId = await createEnrollment(
       cohortOfferingId,
       secondLearnerUserId
@@ -256,7 +284,9 @@ describe("session and attendance HTTP lifecycle", () => {
       }
     });
     if (secondRun.statusCode !== 201) {
-      throw new Error(`Failed to create secondary course run: ${secondRun.body}`);
+      throw new Error(
+        `Failed to create secondary course run: ${secondRun.body}`
+      );
     }
     secondCourseRunId = (JSON.parse(secondRun.body) as { id: string }).id;
 
@@ -289,7 +319,9 @@ describe("session and attendance HTTP lifecycle", () => {
       payload: { slug: "foreign-labs", name: "Foreign labs" }
     });
     if (foreignGroupSet.statusCode !== 201) {
-      throw new Error(`Failed to create foreign group set: ${foreignGroupSet.body}`);
+      throw new Error(
+        `Failed to create foreign group set: ${foreignGroupSet.body}`
+      );
     }
     const foreignGroupSetId = groupSetSchema.parse(
       JSON.parse(foreignGroupSet.body)
@@ -304,7 +336,9 @@ describe("session and attendance HTTP lifecycle", () => {
     if (foreignGroup.statusCode !== 201) {
       throw new Error(`Failed to create foreign group: ${foreignGroup.body}`);
     }
-    foreignGroupId = deliveryGroupSchema.parse(JSON.parse(foreignGroup.body)).id;
+    foreignGroupId = deliveryGroupSchema.parse(
+      JSON.parse(foreignGroup.body)
+    ).id;
 
     const membership = await app.inject({
       method: "POST",
@@ -313,7 +347,9 @@ describe("session and attendance HTTP lifecycle", () => {
       payload: { enrollmentId: cohortEnrollmentId }
     });
     if (membership.statusCode !== 201) {
-      throw new Error(`Failed to create primary group membership: ${membership.body}`);
+      throw new Error(
+        `Failed to create primary group membership: ${membership.body}`
+      );
     }
   });
 
@@ -427,7 +463,9 @@ describe("session and attendance HTTP lifecycle", () => {
       headers: { "x-test-user-id": learnerUserId }
     });
     expect(read.statusCode).toBe(200);
-    expect(sessionSchema.parse(JSON.parse(read.body)).id).toBe(runWideSessionId);
+    expect(sessionSchema.parse(JSON.parse(read.body)).id).toBe(
+      runWideSessionId
+    );
   });
 
   it("keeps session scheduling inside the course-run window at application and database boundaries", async () => {
@@ -598,7 +636,9 @@ describe("session and attendance HTTP lifecycle", () => {
       payload: { status: "excused" }
     });
     expect(response.statusCode).toBe(200);
-    expect(attendanceSchema.parse(JSON.parse(response.body)).status).toBe("excused");
+    expect(attendanceSchema.parse(JSON.parse(response.body)).status).toBe(
+      "excused"
+    );
 
     const revisions = await migrationPool.query<RevisionRow>(
       `SELECT previous_status, new_status, changed_by_user_id::text
@@ -631,7 +671,11 @@ describe("session and attendance HTTP lifecycle", () => {
     const names = result.rows.map((row) => row.event_name);
 
     expect(names.filter((name) => name === "session.created")).toHaveLength(2);
-    expect(names.filter((name) => name === "attendance.recorded")).toHaveLength(2);
-    expect(names.filter((name) => name === "attendance.corrected")).toHaveLength(1);
+    expect(names.filter((name) => name === "attendance.recorded")).toHaveLength(
+      2
+    );
+    expect(
+      names.filter((name) => name === "attendance.corrected")
+    ).toHaveLength(1);
   });
 });

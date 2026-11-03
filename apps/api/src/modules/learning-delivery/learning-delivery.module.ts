@@ -45,9 +45,15 @@ import { LearningDeliveryController } from "./learning-delivery.controller";
     LearnerRunnerController
   ],
   providers: [
-    { provide: FreeLearningDeliveryPort, useClass: PostgresFreeLearningDeliveryPort },
+    {
+      provide: FreeLearningDeliveryPort,
+      useClass: PostgresFreeLearningDeliveryPort
+    },
     BrowserWriteOriginGuard,
-    { provide: PublicFreeLearningOfferingQuery, useClass: PostgresPublicFreeLearningOfferingQuery },
+    {
+      provide: PublicFreeLearningOfferingQuery,
+      useClass: PostgresPublicFreeLearningOfferingQuery
+    },
     LearningDeliveryApplicationService,
     LearningDeliveryCommandService,
     LearningDeliveryQueryService,

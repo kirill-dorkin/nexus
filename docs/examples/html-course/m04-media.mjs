@@ -1,9 +1,6 @@
-const VIDEO = "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4";
-const VIDEO_WEBM = "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm";
-const AUDIO = "https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3";
 
 export default function media(c) {
-  const { html, code, mdn, lesson, single, multi, short } = c;
+  const { lesson, single, multi, short } = c;
 
   lesson({
     slug: "images", title: "Изображения", minutes: 10,

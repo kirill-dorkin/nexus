@@ -15,7 +15,9 @@ import {
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for Recommendation integration tests.`);
+    throw new Error(
+      `${name} is required for Recommendation integration tests.`
+    );
   }
   return value;
 }
@@ -57,7 +59,9 @@ describe("adaptive recommendation HTTP lifecycle", () => {
     );
     const id = result.rows[0]?.id;
     if (id === undefined) {
-      throw new Error("Failed to create Recommendation integration-test identity.");
+      throw new Error(
+        "Failed to create Recommendation integration-test identity."
+      );
     }
     createdUserIds.push(id);
     return id;
@@ -108,23 +112,25 @@ describe("adaptive recommendation HTTP lifecycle", () => {
     instructorUserId = await createUser("recommendation-instructor");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `recommendation-${randomUUID()}`,
         name: "Recommendation integration"
-      })).id;
+      })
+    ).id;
 
     await activateMember(learnerUserId, "learner");
     await activateMember(otherLearnerUserId, "learner");
@@ -334,7 +340,9 @@ describe("adaptive recommendation HTTP lifecycle", () => {
     });
     expect(response.statusCode).toBe(200);
 
-    const body = nextLearningRecommendationSchema.parse(JSON.parse(response.body));
+    const body = nextLearningRecommendationSchema.parse(
+      JSON.parse(response.body)
+    );
     expect(body.status).toBe("recommended");
     if (body.status !== "recommended") {
       throw new Error("Expected an activity recommendation.");
@@ -399,7 +407,9 @@ describe("adaptive recommendation HTTP lifecycle", () => {
       url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/recommendation`,
       headers: { "x-test-user-id": learnerUserId }
     });
-    const body = nextLearningRecommendationSchema.parse(JSON.parse(response.body));
+    const body = nextLearningRecommendationSchema.parse(
+      JSON.parse(response.body)
+    );
 
     expect(response.statusCode).toBe(200);
     expect(body.status).toBe("recommended");

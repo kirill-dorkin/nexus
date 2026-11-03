@@ -37,6 +37,9 @@ export function Dialog({
     };
   }, [open]);
   return (
+    // A click on the backdrop closes the dialog; Escape is handled natively
+    // by <dialog>, so keyboard users already have an equivalent.
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
     <dialog
       {...props}
       ref={ref}

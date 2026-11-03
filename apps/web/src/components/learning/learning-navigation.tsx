@@ -4,7 +4,16 @@ import { SoundPanel } from "./sound-panel";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
-import { ArrowRight, BookOpen, CaretRight, House, List, Notebook, UserCircle, X } from "@phosphor-icons/react/dist/ssr";
+import {
+  ArrowRightIcon,
+  BookOpenIcon,
+  CaretRightIcon,
+  HouseIcon,
+  ListIcon,
+  NotebookIcon,
+  UserCircleIcon,
+  XIcon
+} from "@phosphor-icons/react/dist/ssr";
 import { Dialog, IconButton, buttonClass } from "@platform/ui";
 import { brand } from "@platform/brand";
 import { browserApiRequest } from "../../lib/public-api";
@@ -43,7 +52,9 @@ export function LearningNavigation({
       .catch(() => {
         if (!cancelled) setAuthState("anonymous");
       });
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [showLogin]);
   const authenticated = authState === "authenticated";
   function links() {
@@ -74,8 +85,18 @@ export function LearningNavigation({
       <SoundPanel compact />
       {showLogin && authState === "anonymous" ? (
         <div className={styles.authActions}>
-          <Link className={`${buttonClass({ variant: "ghost", size: "sm" })} ${styles.login}`} href="/login">Войти</Link>
-          <Link className={`${buttonClass({ size: "sm" })} ${styles.register}`} href="/login?mode=register">Начать бесплатно</Link>
+          <Link
+            className={`${buttonClass({ variant: "ghost", size: "sm" })} ${styles.login}`}
+            href="/login"
+          >
+            Войти
+          </Link>
+          <Link
+            className={`${buttonClass({ size: "sm" })} ${styles.register}`}
+            href="/login?mode=register"
+          >
+            Начать бесплатно
+          </Link>
         </div>
       ) : showLogin && authState === "checking" ? (
         <div className={styles.authPlaceholder} aria-hidden="true">
@@ -91,7 +112,7 @@ export function LearningNavigation({
         aria-expanded={open}
         onClick={() => setOpen(true)}
       >
-        <List size={22} aria-hidden="true" />
+        <ListIcon size={22} aria-hidden="true" />
       </IconButton>
       <Dialog
         open={open}
@@ -105,38 +126,69 @@ export function LearningNavigation({
             <span className={styles.menuEyebrow}>{brand.name}</span>
             <h2 id={`${id}-title`}>Куда отправимся?</h2>
           </div>
-          <IconButton aria-label="Закрыть меню" onClick={closeMenu} className={styles.closeButton}>
-            <X size={22} aria-hidden="true" />
+          <IconButton
+            aria-label="Закрыть меню"
+            onClick={closeMenu}
+            className={styles.closeButton}
+          >
+            <XIcon size={22} aria-hidden="true" />
           </IconButton>
         </div>
         <div className={styles.menuContent}>
-          <nav className={styles.mobileNav} aria-label="Главное меню на мобильном экране">
+          <nav
+            className={styles.mobileNav}
+            aria-label="Главное меню на мобильном экране"
+          >
             <span className={styles.groupLabel}>ОБУЧЕНИЕ</span>
-            <Link href="/" aria-current={pathname === "/" ? "page" : undefined} onClick={closeMenu}>
-              <House size={21} aria-hidden="true" />
+            <Link
+              href="/"
+              aria-current={pathname === "/" ? "page" : undefined}
+              onClick={closeMenu}
+            >
+              <HouseIcon size={21} aria-hidden="true" />
               <span>Главная</span>
-              <CaretRight size={18} aria-hidden="true" />
+              <CaretRightIcon size={18} aria-hidden="true" />
             </Link>
-            <Link href="/courses" aria-current={pathname === "/courses" ? "page" : undefined} onClick={closeMenu}>
-              <BookOpen size={21} aria-hidden="true" />
+            <Link
+              href="/courses"
+              aria-current={pathname === "/courses" ? "page" : undefined}
+              onClick={closeMenu}
+            >
+              <BookOpenIcon size={21} aria-hidden="true" />
               <span>Все курсы</span>
-              <CaretRight size={18} aria-hidden="true" />
+              <CaretRightIcon size={18} aria-hidden="true" />
             </Link>
-            <Link href="/blog" aria-current={pathname === "/blog" || pathname.startsWith("/blog/") ? "page" : undefined} onClick={closeMenu}>
-              <Notebook size={21} aria-hidden="true" />
+            <Link
+              href="/blog"
+              aria-current={
+                pathname === "/blog" || pathname.startsWith("/blog/")
+                  ? "page"
+                  : undefined
+              }
+              onClick={closeMenu}
+            >
+              <NotebookIcon size={21} aria-hidden="true" />
               <span>Блог</span>
-              <CaretRight size={18} aria-hidden="true" />
+              <CaretRightIcon size={18} aria-hidden="true" />
             </Link>
             {authenticated && (
               <>
                 <span className={styles.groupLabel}>ЛИЧНОЕ</span>
                 {privateDestinations.map((item) => (
-                  <Link key={item.href} href={item.href}
-                    aria-current={pathname === item.href || pathname.startsWith(`${item.href}/`) ? "page" : undefined}
-                    onClick={closeMenu}>
-                    <UserCircle size={21} aria-hidden="true" />
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={
+                      pathname === item.href ||
+                      pathname.startsWith(`${item.href}/`)
+                        ? "page"
+                        : undefined
+                    }
+                    onClick={closeMenu}
+                  >
+                    <UserCircleIcon size={21} aria-hidden="true" />
                     <span>{item.label}</span>
-                    <CaretRight size={18} aria-hidden="true" />
+                    <CaretRightIcon size={18} aria-hidden="true" />
                   </Link>
                 ))}
               </>
@@ -146,15 +198,25 @@ export function LearningNavigation({
         <div className={styles.menuFooter}>
           {showLogin && authState === "anonymous" ? (
             <div className={styles.mobileAuth}>
-              <Link className={buttonClass({ size: "md" })} href="/login?mode=register" onClick={closeMenu}>
-                Начать бесплатно <ArrowRight size={19} aria-hidden="true" />
+              <Link
+                className={buttonClass({ size: "md" })}
+                href="/login?mode=register"
+                onClick={closeMenu}
+              >
+                Начать бесплатно <ArrowRightIcon size={19} aria-hidden="true" />
               </Link>
-              <Link className={buttonClass({ variant: "secondary", size: "md" })} href="/login" onClick={closeMenu}>
+              <Link
+                className={buttonClass({ variant: "secondary", size: "md" })}
+                href="/login"
+                onClick={closeMenu}
+              >
                 Уже есть аккаунт? Войти
               </Link>
             </div>
           ) : showLogin && authState === "checking" ? (
-            <span className={styles.menuStatus} role="status">Проверяем вход…</span>
+            <span className={styles.menuStatus} role="status">
+              Проверяем вход…
+            </span>
           ) : (
             <p className={styles.menuStatus}>Учитесь в своём темпе.</p>
           )}
@@ -163,4 +225,3 @@ export function LearningNavigation({
     </div>
   );
 }
-

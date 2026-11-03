@@ -50,6 +50,8 @@ export function assertApiPath(path: string): void {
     !path.startsWith("/") ||
     path.startsWith("//") ||
     path.includes("\\") ||
+    // Rejecting control characters and spaces is the point of this check.
+    // eslint-disable-next-line no-control-regex
     /[\u0000-\u0020\u007f]/.test(path)
   ) {
     throw new Error("API path must be an absolute path on the configured API.");

@@ -18,7 +18,10 @@ export default async function Page({
 
   return (
     <StudioShell>
-      <CustomerEntryManager key={organizationId} organizationId={organizationId} />
+      <CustomerEntryManager
+        key={organizationId}
+        organizationId={organizationId}
+      />
     </StudioShell>
   );
 }

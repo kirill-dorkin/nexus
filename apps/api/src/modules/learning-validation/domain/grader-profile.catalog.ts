@@ -12,11 +12,15 @@ export class GraderProfileCatalog {
 
   constructor() {
     this.registry = new GraderExecutionProfileRegistry(
-      parseGraderExecutionProfilesJson(process.env.GRADER_EXECUTION_PROFILES_JSON)
+      parseGraderExecutionProfilesJson(
+        process.env.GRADER_EXECUTION_PROFILES_JSON
+      )
     );
   }
 
-  find(reference: GraderProfileReference): ResolvedGraderExecutionProfile | null {
+  find(
+    reference: GraderProfileReference
+  ): ResolvedGraderExecutionProfile | null {
     return this.registry.find(reference);
   }
 }

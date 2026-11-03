@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException
+} from "@nestjs/common";
 import type { DatabaseTransaction } from "@platform/database";
 
 import {
@@ -88,7 +92,9 @@ export class LearningDeliveryQueryService extends LearningDeliveryQuery {
       enrollmentId
     );
     if (context.enrollment.status !== "active") {
-      throw new ConflictException("Only an active enrollment can create attempts.");
+      throw new ConflictException(
+        "Only an active enrollment can create attempts."
+      );
     }
     return context;
   }

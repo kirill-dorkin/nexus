@@ -21,7 +21,10 @@ describe("operator-only Organization owner provisioning", () => {
   let organizationId = "";
 
   beforeAll(async () => {
-    for (const [email, which] of [[ownerEmail, "owner"], [outsiderEmail, "other"]] as const) {
+    for (const [email, which] of [
+      [ownerEmail, "owner"],
+      [outsiderEmail, "other"]
+    ] as const) {
       const result = await migration.query<{ id: string }>(
         "INSERT INTO identity.users (email,display_name) VALUES ($1,'Operator Test') RETURNING id::text",
         [email]
@@ -36,17 +39,30 @@ describe("operator-only Organization owner provisioning", () => {
   afterAll(async () => {
     try {
       if (organizationId) {
-        await migration.query("DELETE FROM events.outbox WHERE organization_id=$1", [organizationId]);
-        await migration.query("DELETE FROM organizations.organizations WHERE id=$1", [organizationId]);
+        await migration.query(
+          "DELETE FROM events.outbox WHERE organization_id=$1",
+          [organizationId]
+        );
+        await migration.query(
+          "DELETE FROM organizations.organizations WHERE id=$1",
+          [organizationId]
+        );
       }
-      await migration.query("DELETE FROM identity.users WHERE id=ANY($1::uuid[])", [[ownerId, otherId].filter(Boolean)]);
+      await migration.query(
+        "DELETE FROM identity.users WHERE id=ANY($1::uuid[])",
+        [[ownerId, otherId].filter(Boolean)]
+      );
     } finally {
       await Promise.all([runtime.end(), migration.end()]);
     }
   });
 
   it("creates exactly one active Organization, owner Membership, role and canonical outbox event", async () => {
-    const created = await provisionOwnerOrganization(migration, { ownerUserId: ownerId, slug, name: title });
+    const created = await provisionOwnerOrganization(migration, {
+      ownerUserId: ownerId,
+      slug,
+      name: title
+    });
     organizationId = created.id;
     expect(created).toMatchObject({ slug, outcome: "created" });
 
@@ -74,12 +90,23 @@ describe("operator-only Organization owner provisioning", () => {
       [organizationId, ownerId]
     );
     expect(result.rows[0]).toMatchObject({
-      status: "active", membership: "active", role_count: "1", event_count: "1",
+      status: "active",
+      membership: "active",
+      role_count: "1",
+      event_count: "1",
       event_payload: { organizationId, createdByUserId: ownerId }
     });
 
-    const replay = await provisionOwnerOrganization(migration, { ownerUserId: ownerId, slug, name: title });
-    expect(replay).toEqual({ id: organizationId, slug, outcome: "already_provisioned" });
+    const replay = await provisionOwnerOrganization(migration, {
+      ownerUserId: ownerId,
+      slug,
+      name: title
+    });
+    expect(replay).toEqual({
+      id: organizationId,
+      slug,
+      outcome: "already_provisioned"
+    });
     const eventCount = await migration.query<{ total: string }>(
       "SELECT count(*)::text AS total FROM events.outbox WHERE organization_id=$1",
       [organizationId]
@@ -88,12 +115,20 @@ describe("operator-only Organization owner provisioning", () => {
   });
 
   it("rejects replay with another owner or a changed name without granting privilege", async () => {
-    await expect(provisionOwnerOrganization(migration, {
-      ownerUserId: otherId, slug, name: title
-    })).rejects.toThrow("not an exact");
-    await expect(provisionOwnerOrganization(migration, {
-      ownerUserId: ownerId, slug, name: "Changed Academy"
-    })).rejects.toThrow("not an exact");
+    await expect(
+      provisionOwnerOrganization(migration, {
+        ownerUserId: otherId,
+        slug,
+        name: title
+      })
+    ).rejects.toThrow("not an exact");
+    await expect(
+      provisionOwnerOrganization(migration, {
+        ownerUserId: ownerId,
+        slug,
+        name: "Changed Academy"
+      })
+    ).rejects.toThrow("not an exact");
     const roles = await migration.query<{ total: string }>(
       "SELECT count(*)::text AS total FROM access_control.role_assignments WHERE organization_id=$1",
       [organizationId]
@@ -104,16 +139,22 @@ describe("operator-only Organization owner provisioning", () => {
   it("rejects an archived Organization or corrupted creation-event replay", async () => {
     const inactiveSlug = "inactive-owner-" + randomUUID();
     const created = await provisionOwnerOrganization(migration, {
-      ownerUserId: ownerId, slug: inactiveSlug, name: title
+      ownerUserId: ownerId,
+      slug: inactiveSlug,
+      name: title
     });
     try {
       await migration.query(
         "UPDATE organizations.organizations SET status='suspended' WHERE id=$1",
         [created.id]
       );
-      await expect(provisionOwnerOrganization(migration, {
-        ownerUserId: ownerId, slug: inactiveSlug, name: title
-      })).rejects.toThrow("not an exact");
+      await expect(
+        provisionOwnerOrganization(migration, {
+          ownerUserId: ownerId,
+          slug: inactiveSlug,
+          name: title
+        })
+      ).rejects.toThrow("not an exact");
       await migration.query(
         "UPDATE organizations.organizations SET status='active' WHERE id=$1",
         [created.id]
@@ -122,22 +163,43 @@ describe("operator-only Organization owner provisioning", () => {
         "UPDATE events.outbox SET payload=jsonb_set(payload,'{slug}',to_jsonb('tampered'::text)) WHERE organization_id=$1 AND event_name='organization.created'",
         [created.id]
       );
-      await expect(provisionOwnerOrganization(migration, {
-        ownerUserId: ownerId, slug: inactiveSlug, name: title
-      })).rejects.toThrow("not an exact");
+      await expect(
+        provisionOwnerOrganization(migration, {
+          ownerUserId: ownerId,
+          slug: inactiveSlug,
+          name: title
+        })
+      ).rejects.toThrow("not an exact");
     } finally {
-      await migration.query("DELETE FROM events.outbox WHERE organization_id=$1", [created.id]);
-      await migration.query("DELETE FROM organizations.organizations WHERE id=$1", [created.id]);
+      await migration.query(
+        "DELETE FROM events.outbox WHERE organization_id=$1",
+        [created.id]
+      );
+      await migration.query(
+        "DELETE FROM organizations.organizations WHERE id=$1",
+        [created.id]
+      );
     }
   });
 
   it("does not adopt a suspended user or allow the restricted app role", async () => {
-    await migration.query("UPDATE identity.users SET status='suspended' WHERE id=$1", [otherId]);
-    await expect(provisionOwnerOrganization(migration, {
-      ownerUserId: otherId, slug: "suspended-" + randomUUID(), name: title
-    })).rejects.toThrow("active Identity");
-    await expect(provisionOwnerOrganization(runtime, {
-      ownerUserId: ownerId, slug: "untrusted-" + randomUUID(), name: title
-    })).rejects.toThrow("platform_migrator");
+    await migration.query(
+      "UPDATE identity.users SET status='suspended' WHERE id=$1",
+      [otherId]
+    );
+    await expect(
+      provisionOwnerOrganization(migration, {
+        ownerUserId: otherId,
+        slug: "suspended-" + randomUUID(),
+        name: title
+      })
+    ).rejects.toThrow("active Identity");
+    await expect(
+      provisionOwnerOrganization(runtime, {
+        ownerUserId: ownerId,
+        slug: "untrusted-" + randomUUID(),
+        name: title
+      })
+    ).rejects.toThrow("platform_migrator");
   });
 });

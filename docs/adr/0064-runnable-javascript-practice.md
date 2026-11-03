@@ -15,7 +15,7 @@ A JavaScript course cannot be checked statically. Whether `add(2, 3)` returns 5,
 1. **Learner JavaScript runs only in the learner's own browser**, inside an iframe with `sandbox="allow-scripts"` and **never** `allow-same-origin`.
    - The frame has an opaque origin: it cannot read the site's cookies, storage or DOM, or call the API as the learner.
 2. **The network is closed.** The runner document starts with a CSP meta tag: `default-src 'none'`, inline scripts and styles only, `data:` images and fonts.
-   - Lessons about `fetch()` use an offline teaching API (`/api/menu`, `/api/menu/:id`, `POST /api/orders`), served by a prelude stub inside the frame.
+   - Lessons about `fetch()` use an offline teaching API (`/api/products`, `/api/users`, `/api/todos`, `/:id` lookups, `POST /api/todos` and `POST /api/orders`), served by a prelude stub inside the frame. The original `/api/menu` route stays until no published course version uses it.
 3. **Endless loops are stopped.**
    - Braced `for`, `while` and `do` bodies get a time guard. A synchronous run longer than 1.5 s throws a visible error instead of freezing the tab.
    - The guard is per synchronous task, so loops inside later event handlers are not affected.

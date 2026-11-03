@@ -105,7 +105,9 @@ describe("assignment HTTP lifecycle", () => {
     }
   }
 
-  async function createPublishedActivity(label: string): Promise<PublishedActivityFixture> {
+  async function createPublishedActivity(
+    label: string
+  ): Promise<PublishedActivityFixture> {
     const skill = await app.inject({
       method: "POST",
       url: `/v1/organizations/${organizationId}/skills`,
@@ -218,7 +220,9 @@ describe("assignment HTTP lifecycle", () => {
       payload: { userId: learnerUserId }
     });
     if (response.statusCode !== 201) {
-      throw new Error(`Failed to create assignment enrollment: ${response.body}`);
+      throw new Error(
+        `Failed to create assignment enrollment: ${response.body}`
+      );
     }
     return (JSON.parse(response.body) as { id: string }).id;
   }
@@ -307,47 +311,64 @@ describe("assignment HTTP lifecycle", () => {
     learnerUserId = await createUser("assignment-learner");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `assignments-${randomUUID()}`,
         name: "Assignment integration"
-      })).id;
+      })
+    ).id;
 
     await activateLearner(learnerUserId);
     primaryActivity = await createPublishedActivity("primary-assignment");
     foreignActivity = await createPublishedActivity("foreign-assignment");
 
-    selfPacedOfferingId = await createOffering("self_paced", "Self paced assignments");
+    selfPacedOfferingId = await createOffering(
+      "self_paced",
+      "Self paced assignments"
+    );
     cohortOfferingId = await createOffering("cohort", "Cohort assignments");
-    foreignOfferingId = await createOffering("cohort", "Foreign cohort assignments");
+    foreignOfferingId = await createOffering(
+      "cohort",
+      "Foreign cohort assignments"
+    );
 
     cohortEnrollmentId = await createEnrollment(cohortOfferingId);
     foreignEnrollmentId = await createEnrollment(foreignOfferingId);
     courseRunId = await createRun(cohortOfferingId, "Primary assignment run");
-    foreignCourseRunId = await createRun(foreignOfferingId, "Foreign assignment run");
-    groupId = await createGroup(cohortOfferingId, courseRunId, "Primary assignment group");
+    foreignCourseRunId = await createRun(
+      foreignOfferingId,
+      "Foreign assignment run"
+    );
+    groupId = await createGroup(
+      cohortOfferingId,
+      courseRunId,
+      "Primary assignment group"
+    );
     foreignGroupId = await createGroup(
       foreignOfferingId,
       foreignCourseRunId,
       "Foreign assignment group"
     );
 
-    isolationOrganizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    isolationOrganizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `assignment-isolation-${randomUUID()}`,
         name: "Assignment RLS isolation"
-      })).id;
+      })
+    ).id;
   });
 
   afterAll(async () => {
@@ -356,26 +377,77 @@ describe("assignment HTTP lifecycle", () => {
     }
 
     if (organizationId.length > 0) {
-      await migrationPool.query(`DELETE FROM events.outbox WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.assignments WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.group_memberships WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.groups WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.group_sets WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.course_runs WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.learning_offerings WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.activity_skill_mappings WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.course_version_activities WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.course_version_skills WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.activities WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.skills WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.courses WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM organizations.organizations WHERE id = $1`, [organizationId]);
+      await migrationPool.query(
+        `DELETE FROM events.outbox WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.assignments WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.group_memberships WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.groups WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.group_sets WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.course_runs WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.learning_offerings WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.activity_skill_mappings WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.course_version_activities WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.course_version_skills WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.activities WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.skills WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.courses WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM organizations.organizations WHERE id = $1`,
+        [organizationId]
+      );
     }
 
     if (isolationOrganizationId.length > 0) {
-      await migrationPool.query(`DELETE FROM events.outbox WHERE organization_id = $1`, [isolationOrganizationId]);
-      await migrationPool.query(`DELETE FROM organizations.organizations WHERE id = $1`, [isolationOrganizationId]);
+      await migrationPool.query(
+        `DELETE FROM events.outbox WHERE organization_id = $1`,
+        [isolationOrganizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM organizations.organizations WHERE id = $1`,
+        [isolationOrganizationId]
+      );
     }
 
     if (createdUserIds.length > 0) {
@@ -400,9 +472,13 @@ describe("assignment HTTP lifecycle", () => {
       }
     );
     expect(offeringAssignment.statusCode).toBe(201);
-    const offeringBody = assignmentSchema.parse(JSON.parse(offeringAssignment.body));
+    const offeringBody = assignmentSchema.parse(
+      JSON.parse(offeringAssignment.body)
+    );
     offeringAssignmentId = offeringBody.id;
-    expect(offeringBody.activityVersionId).toBe(primaryActivity.activityVersionId);
+    expect(offeringBody.activityVersionId).toBe(
+      primaryActivity.activityVersionId
+    );
     expect(offeringBody.audience).toEqual({ type: "offering" });
 
     const runAssignment = await createAssignment(
@@ -415,7 +491,9 @@ describe("assignment HTTP lifecycle", () => {
       }
     );
     expect(runAssignment.statusCode).toBe(201);
-    expect(assignmentSchema.parse(JSON.parse(runAssignment.body)).audience).toEqual({
+    expect(
+      assignmentSchema.parse(JSON.parse(runAssignment.body)).audience
+    ).toEqual({
       type: "course_run",
       courseRunId
     });
@@ -436,7 +514,9 @@ describe("assignment HTTP lifecycle", () => {
       { type: "enrollment", enrollmentId: cohortEnrollmentId }
     );
     expect(enrollmentAssignment.statusCode).toBe(201);
-    expect(assignmentSchema.parse(JSON.parse(enrollmentAssignment.body)).audience).toEqual({
+    expect(
+      assignmentSchema.parse(JSON.parse(enrollmentAssignment.body)).audience
+    ).toEqual({
       type: "enrollment",
       enrollmentId: cohortEnrollmentId
     });
@@ -463,11 +543,10 @@ describe("assignment HTTP lifecycle", () => {
     });
     expect(foreignActivityResponse.statusCode).toBe(404);
 
-    const foreignRun = await createAssignment(
-      cohortOfferingId,
-      "wrong-run",
-      { type: "course_run", courseRunId: foreignCourseRunId }
-    );
+    const foreignRun = await createAssignment(cohortOfferingId, "wrong-run", {
+      type: "course_run",
+      courseRunId: foreignCourseRunId
+    });
     expect(foreignRun.statusCode).toBe(404);
 
     const foreignGroup = await createAssignment(
@@ -602,7 +681,9 @@ describe("assignment HTTP lifecycle", () => {
     expect(firstCancel.statusCode).toBe(200);
     expect(secondCancel.statusCode).toBe(200);
     const firstCancelled = assignmentSchema.parse(JSON.parse(firstCancel.body));
-    const secondCancelled = assignmentSchema.parse(JSON.parse(secondCancel.body));
+    const secondCancelled = assignmentSchema.parse(
+      JSON.parse(secondCancel.body)
+    );
     expect(firstCancelled.cancelledAt).not.toBeNull();
     expect(secondCancelled.cancelledAt).toBe(firstCancelled.cancelledAt);
 

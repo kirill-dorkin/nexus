@@ -11,13 +11,16 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
-    "typecheck": "turbo typecheck",
+    "typecheck": "turbo typecheck && tsc -p tsconfig.json",
+    "lint": "pnpm --filter @platform/web exec next typegen && NODE_OPTIONS=--max-old-space-size=6144 eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "vitest run",
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:launch-performance": "vitest run --config vitest.launch-performance.config.ts",
     "test:browser-launch": "node tests/public-launch-browser/run.mjs",
     "test:watch": "vitest",
-    "check": "pnpm check:brand && pnpm typecheck && pnpm test",
+    "check": "pnpm check:brand && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
     "dev:infra": "docker compose up -d postgres redis",
     "dev:infra:down": "docker compose down",
     "db:migrate": "pnpm --filter @platform/database db:migrate",
@@ -30,9 +33,17 @@
     "enabled": false
   },
   "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "@next/eslint-plugin-next": "16.3.5",
     "@types/node": "^24.0.0",
+    "eslint": "9.39.5",
+    "eslint-plugin-jsx-a11y": "6.10.2",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.14.0",
+    "prettier": "3.9.10",
     "turbo": "^2.5.0",
     "typescript": "^5.9.0",
+    "typescript-eslint": "8.72.1",
     "vitest": "4.1.11"
   }
 }

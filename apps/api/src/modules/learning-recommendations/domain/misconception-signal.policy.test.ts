@@ -97,7 +97,10 @@ describe("repeated-trusted-failure@1", () => {
     const skillA = "00000000-0000-7000-8000-000000000021";
     const skillB = "00000000-0000-7000-8000-000000000022";
     const result = repeatedTrustedFailureSignalsV1([
-      observation({ skillId: skillB, attemptId: "00000000-0000-7000-8000-000000000031" }),
+      observation({
+        skillId: skillB,
+        attemptId: "00000000-0000-7000-8000-000000000031"
+      }),
       observation({
         evidenceId: "00000000-0000-7000-8000-000000000005",
         skillId: skillB,

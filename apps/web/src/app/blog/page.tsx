@@ -9,8 +9,7 @@ import styles from "./blog.module.css";
 
 export const metadata: Metadata = {
   title: "Блог об обучении и цифровых навыках",
-  description:
-    `Практические материалы команды ${brand.name} о компьютерной грамотности, обучении и понятной работе с технологиями.`,
+  description: `Практические материалы команды ${brand.name} о компьютерной грамотности, обучении и понятной работе с технологиями.`,
   alternates: { canonical: "/blog" },
   openGraph: {
     title: `Блог ${brand.name} об обучении и цифровых навыках`,
@@ -41,38 +40,40 @@ export default function BlogPage() {
       />
       <LearningShell>
         <header className={styles.indexHero}>
-        <div>
-          <Eyebrow>Блог {brand.name}</Eyebrow>
-          <h1>Разбираться в технологиях — спокойно и по шагам.</h1>
-          <p>
-            Практические статьи для тех, кто осваивает цифровые инструменты,
-            учится сам или помогает учиться другим.
-          </p>
-        </div>
-        <div className={styles.indexNote}>
-          Материалы готовит команда {brand.name}. Без вымышленных историй успеха и
-          обещаний быстрых результатов.
-        </div>
-      </header>
-      <section className={styles.articles} aria-label="Статьи">
-        {blogArticles.map((article) => (
-          <Link
-            className={styles.articleRow}
-            href={`/blog/${article.slug}`}
-            key={article.slug}
-          >
-            <div>
-              <div className={styles.meta}>
-                <span>{article.category}</span>
-                <time dateTime={article.publishedAt}>9 октября 2026</time>
-                <span>{article.readingMinutes} минут</span>
+          <div>
+            <Eyebrow>Блог {brand.name}</Eyebrow>
+            <h1>Разбираться в технологиях — спокойно и по шагам.</h1>
+            <p>
+              Практические статьи для тех, кто осваивает цифровые инструменты,
+              учится сам или помогает учиться другим.
+            </p>
+          </div>
+          <div className={styles.indexNote}>
+            Материалы готовит команда {brand.name}. Без вымышленных историй
+            успеха и обещаний быстрых результатов.
+          </div>
+        </header>
+        <section className={styles.articles} aria-label="Статьи">
+          {blogArticles.map((article) => (
+            <Link
+              className={styles.articleRow}
+              href={`/blog/${article.slug}`}
+              key={article.slug}
+            >
+              <div>
+                <div className={styles.meta}>
+                  <span>{article.category}</span>
+                  <time dateTime={article.publishedAt}>9 октября 2026</time>
+                  <span>{article.readingMinutes} минут</span>
+                </div>
+                <h2>{article.title}</h2>
+                <p>{article.description}</p>
               </div>
-              <h2>{article.title}</h2>
-              <p>{article.description}</p>
-            </div>
-            <span className={styles.arrow} aria-hidden="true">→</span>
-          </Link>
-        ))}
+              <span className={styles.arrow} aria-hidden="true">
+                →
+              </span>
+            </Link>
+          ))}
         </section>
       </LearningShell>
     </>

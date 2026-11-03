@@ -1,6 +1,9 @@
 import { execFileSync, spawn, spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { createServer as createHttpServer, request as httpRequest } from "node:http";
+import {
+  createServer as createHttpServer,
+  request as httpRequest
+} from "node:http";
 import { createServer as createHttpsServer } from "node:https";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -60,7 +63,8 @@ function resolveChromePath() {
     if (resolved) return resolved;
   }
 
-  const macChrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+  const macChrome =
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
   if (spawnSync("test", ["-x", macChrome]).status === 0) return macChrome;
 
   throw new Error(
@@ -121,7 +125,8 @@ async function readJson(request) {
 
 function fakePurchase(
   status,
-  idempotencyKey = checkoutIdempotencyKey ?? "44444444-4444-4444-8444-444444444444"
+  idempotencyKey = checkoutIdempotencyKey ??
+    "44444444-4444-4444-8444-444444444444"
 ) {
   return {
     id: PURCHASE_ID,
@@ -252,55 +257,150 @@ async function startFakeApi() {
       );
 
       // Non-canonical UX seam, authenticated through the real API session boundary.
-      if (url.pathname.startsWith("/v1/me/learning") ||
-          (request.method === "POST" && url.pathname === "/v1/public/organizations/acme/memberships/me")) {
+      if (
+        url.pathname.startsWith("/v1/me/learning") ||
+        (request.method === "POST" &&
+          url.pathname === "/v1/public/organizations/acme/memberships/me")
+      ) {
         const me = await fetch(`http://127.0.0.1:${API_BACKEND_PORT}/v1/me`, {
           headers: { cookie: request.headers.cookie ?? "" }
         });
-        if (!me.ok) { sendJson(response, 401, { message: "Session required" }, origin); return; }
+        if (!me.ok) {
+          sendJson(response, 401, { message: "Session required" }, origin);
+          return;
+        }
         const actor = (await me.json()).id;
-        const state = learningActors.get(actor) ?? { member: false, enrolled: false };
+        const state = learningActors.get(actor) ?? {
+          member: false,
+          enrolled: false
+        };
         learningActors.set(actor, state);
-        if (request.method === "POST" && url.pathname.includes("memberships/me")) {
+        if (
+          request.method === "POST" &&
+          url.pathname.includes("memberships/me")
+        ) {
           state.member = true;
-          sendJson(response, 200, { status: "active" }, origin); return;
+          sendJson(response, 200, { status: "active" }, origin);
+          return;
         }
         if (request.method === "POST" && url.pathname.endsWith("/enrollment")) {
-          assert(state.member, "UX enrolled without explicit Organization entry.");
+          assert(
+            state.member,
+            "UX enrolled without explicit Organization entry."
+          );
           const body = await readJson(request);
-          assert(Object.keys(body).length === 0, "UX supplied actor/tenant/enrollment authority.");
+          assert(
+            Object.keys(body).length === 0,
+            "UX supplied actor/tenant/enrollment authority."
+          );
           state.enrolled = true;
         }
-        if (request.method === "POST" && url.pathname.endsWith("/quiz/components-check/check")) {
-          assert(state.member && state.enrolled, "Quiz UX bypassed explicit entry.");
+        if (
+          request.method === "POST" &&
+          url.pathname.endsWith("/quiz/components-check/check")
+        ) {
+          assert(
+            state.member && state.enrolled,
+            "Quiz UX bypassed explicit entry."
+          );
           const body = await readJson(request);
-          assert(Object.keys(body).sort().join(",") === "answer,attemptKey", "Quiz caller supplied result authority.");
-          assert(body.answer.type === "quiz.single_choice" && Object.keys(body.answer).sort().join(",") === "optionId,type", "Quiz answer contains result authority.");
+          assert(
+            Object.keys(body).sort().join(",") === "answer,attemptKey",
+            "Quiz caller supplied result authority."
+          );
+          assert(
+            body.answer.type === "quiz.single_choice" &&
+              Object.keys(body.answer).sort().join(",") === "optionId,type",
+            "Quiz answer contains result authority."
+          );
           quizFixtureRequests.push(body.attemptKey);
           const key = `${actor}:${body.attemptKey}`;
           const existing = quizFixtureTries.get(key);
-          if (existing) assert(existing.answer === body.answer.optionId, "Ambiguous retry changed immutable answer.");
-          const attemptNumber = existing?.attemptNumber ?? quizFixtureTries.size + 1;
-          quizFixtureTries.set(key, { answer:body.answer.optionId,attemptNumber });
-          if (quizAmbiguousOnce) { quizAmbiguousOnce=false; sendJson(response,500,{message:"Ambiguous UX fixture result"},origin);return; }
+          if (existing)
+            assert(
+              existing.answer === body.answer.optionId,
+              "Ambiguous retry changed immutable answer."
+            );
+          const attemptNumber =
+            existing?.attemptNumber ?? quizFixtureTries.size + 1;
+          quizFixtureTries.set(key, {
+            answer: body.answer.optionId,
+            attemptNumber
+          });
+          if (quizAmbiguousOnce) {
+            quizAmbiguousOnce = false;
+            sendJson(
+              response,
+              500,
+              { message: "Ambiguous UX fixture result" },
+              origin
+            );
+            return;
+          }
           const passed = body.answer.optionId === "cpu";
           learningFixturePassed ||= passed; // Non-canonical presentation seam only.
-          sendJson(response,200,{attemptNumber,outcome:passed?"passed":"failed",score:passed?1:0,feedback:"Проверьте условие задания."},origin);return;
+          sendJson(
+            response,
+            200,
+            {
+              attemptNumber,
+              outcome: passed ? "passed" : "failed",
+              score: passed ? 1 : 0,
+              feedback: "Проверьте условие задания."
+            },
+            origin
+          );
+          return;
         }
-        const learning = { ...learningCourse,
-          entry: { customerEntryPolicy: "open", membershipStatus: state.member ? "active" : "none", enrollmentStatus: state.enrolled ? "active" : null },
-          progress: state.enrolled ? {
-            policyKey: "required-activity-passes", policyVersion: 2,
-            passedRequired: learningFixturePassed ? 1 : 0, totalRequired: 1,
-            percentage: learningFixturePassed ? 100 : 0, allRequiredPassed: learningFixturePassed,
-            nextLessonSlug: learningFixturePassed ? null : "introduction", lastActionAt: null,
-            lessons: [
-              {slug: "introduction", passedRequired: learningFixturePassed ? 1 : 0, totalRequired: 1, requiredPassed: learningFixturePassed, activities: [{slug:"components-check",passed:learningFixturePassed}]},
-              {slug:"next-lesson",passedRequired:0,totalRequired:0,requiredPassed:false,activities:[]}
-            ]
-          } : null
+        const learning = {
+          ...learningCourse,
+          entry: {
+            customerEntryPolicy: "open",
+            membershipStatus: state.member ? "active" : "none",
+            enrollmentStatus: state.enrolled ? "active" : null
+          },
+          progress: state.enrolled
+            ? {
+                policyKey: "required-activity-passes",
+                policyVersion: 2,
+                passedRequired: learningFixturePassed ? 1 : 0,
+                totalRequired: 1,
+                percentage: learningFixturePassed ? 100 : 0,
+                allRequiredPassed: learningFixturePassed,
+                nextLessonSlug: learningFixturePassed ? null : "introduction",
+                lastActionAt: null,
+                lessons: [
+                  {
+                    slug: "introduction",
+                    passedRequired: learningFixturePassed ? 1 : 0,
+                    totalRequired: 1,
+                    requiredPassed: learningFixturePassed,
+                    activities: [
+                      {
+                        slug: "components-check",
+                        passed: learningFixturePassed
+                      }
+                    ]
+                  },
+                  {
+                    slug: "next-lesson",
+                    passedRequired: 0,
+                    totalRequired: 0,
+                    requiredPassed: false,
+                    activities: []
+                  }
+                ]
+              }
+            : null
         };
-        sendJson(response, 200, url.pathname === "/v1/me/learning" ? {courses:state.enrolled ? [learning] : [],nextCursor:null} : learning, origin);
+        sendJson(
+          response,
+          200,
+          url.pathname === "/v1/me/learning"
+            ? { courses: state.enrolled ? [learning] : [], nextCursor: null }
+            : learning,
+          origin
+        );
         return;
       }
 
@@ -413,7 +513,12 @@ async function startFakeApi() {
         return;
       }
 
-      sendJson(response, 404, { message: "Browser fixture route not found" }, origin);
+      sendJson(
+        response,
+        404,
+        { message: "Browser fixture route not found" },
+        origin
+      );
     } catch (error) {
       sendJson(
         response,
@@ -498,14 +603,19 @@ async function startTlsProxies(tls) {
   const apiProxy = createHttpsServer(tls, (request, response) => {
     const path = new URL(request.url ?? "/", API_ORIGIN).pathname;
     const useRealApi =
-      path.startsWith("/v1/auth/") || path === "/v1/organizations" || path.startsWith("/v1/organizations/") || path === "/v1/me/organizations" || path === "/v1/me" || path === "/v1/health" ||
-      (canonicalLearningSlug !== null && (
-        path === "/v1/me/learning" ||
-        path === "/v1/public/learning" ||
-        path.startsWith(`/v1/public/learning/${canonicalLearningSlug}/`) ||
-        path.startsWith(`/v1/me/learning/${canonicalLearningSlug}/`) ||
-        path === `/v1/public/organizations/${canonicalLearningSlug}/memberships/me`
-      ));
+      path.startsWith("/v1/auth/") ||
+      path === "/v1/organizations" ||
+      path.startsWith("/v1/organizations/") ||
+      path === "/v1/me/organizations" ||
+      path === "/v1/me" ||
+      path === "/v1/health" ||
+      (canonicalLearningSlug !== null &&
+        (path === "/v1/me/learning" ||
+          path === "/v1/public/learning" ||
+          path.startsWith(`/v1/public/learning/${canonicalLearningSlug}/`) ||
+          path.startsWith(`/v1/me/learning/${canonicalLearningSlug}/`) ||
+          path ===
+            `/v1/public/organizations/${canonicalLearningSlug}/memberships/me`));
     proxyRequest(
       request,
       response,
@@ -598,7 +708,9 @@ async function evaluate(cdp, expression) {
     returnByValue: true
   });
   if (result.exceptionDetails) {
-    throw new Error(result.exceptionDetails.text ?? "Browser evaluation failed.");
+    throw new Error(
+      result.exceptionDetails.text ?? "Browser evaluation failed."
+    );
   }
   return result.result?.value;
 }
@@ -610,7 +722,8 @@ async function waitForExpression(cdp, expression, label, timeoutMs = 20_000) {
     try {
       // A hard navigation can temporarily remove document.body. The same
       // predicate is retried once a new document has been created.
-      if (await evaluate(cdp, `document.body !== null && (${expression})`)) return;
+      if (await evaluate(cdp, `document.body !== null && (${expression})`))
+        return;
       lastEvaluationError = null;
     } catch (error) {
       // A document may be replaced between Runtime.evaluate and this response.
@@ -620,9 +733,10 @@ async function waitForExpression(cdp, expression, label, timeoutMs = 20_000) {
     }
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
-  const detail = lastEvaluationError instanceof Error
-    ? ` Last evaluation error: ${lastEvaluationError.message}`
-    : "";
+  const detail =
+    lastEvaluationError instanceof Error
+      ? ` Last evaluation error: ${lastEvaluationError.message}`
+      : "";
   throw new Error(`Timed out waiting for ${label}.${detail}`);
 }
 
@@ -730,14 +844,19 @@ async function launchChrome(tempDirectory) {
   return CdpClient.connect(target.webSocketDebuggerUrl);
 }
 
-
 async function fillLabel(cdp, label, value, index = 0) {
-  await waitForExpression(cdp, `(() => {
+  await waitForExpression(
+    cdp,
+    `(() => {
     const labels=[...document.querySelectorAll("label")].filter(l=>l.firstChild?.textContent?.trim()===${JSON.stringify(label)});
     const label=labels[${index}];
     return Boolean(label?.control ?? label?.querySelector("input,textarea,select"));
-  })()`, `labelled Studio field: ${label}`);
-  const changed = await evaluate(cdp, `(() => {
+  })()`,
+    `labelled Studio field: ${label}`
+  );
+  const changed = await evaluate(
+    cdp,
+    `(() => {
     const labels=[...document.querySelectorAll("label")].filter(l=>l.firstChild?.textContent?.trim()===${JSON.stringify(label)});
     const label=labels[${index}];
     const el=label?.control ?? label?.querySelector("input,textarea,select");
@@ -745,218 +864,577 @@ async function fillLabel(cdp, label, value, index = 0) {
     const proto=el instanceof HTMLTextAreaElement?HTMLTextAreaElement.prototype:el instanceof HTMLSelectElement?HTMLSelectElement.prototype:HTMLInputElement.prototype;
     Object.getOwnPropertyDescriptor(proto,"value").set.call(el,${JSON.stringify(String(value))});
     el.dispatchEvent(new Event("input",{bubbles:true}));el.dispatchEvent(new Event("change",{bubbles:true}));return true;
-  })()`);
+  })()`
+  );
   assert(changed, `Could not fill labelled Studio field: ${label}`);
 }
 async function verifyStudio(cdp) {
-  console.log("[browser-launch] canonical Studio manual/JSON/preview/publication");
+  console.log(
+    "[browser-launch] canonical Studio manual/JSON/preview/publication"
+  );
   await navigate(cdp, `${WEB_ORIGIN}/studio`);
-  await waitForExpression(cdp, 'document.body.innerText.includes("Войти в Studio")', "anonymous Studio gate");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Войти в Studio")',
+    "anonymous Studio gate"
+  );
   await navigate(cdp, `${WEB_ORIGIN}/login?returnTo=%2Fstudio`);
-  await clickText(cdp,"Создать новый аккаунт");
-  await fill(cdp,'input[name="email"]',`studio-browser-${Date.now()}@example.test`);
-  await fill(cdp,'input[name="password"]',PASSWORD);
-  await clickText(cdp,"Создать аккаунт");
-  await waitForExpression(cdp,'location.pathname === "/studio" && document.body.innerText.includes("Ваши организации")',"Studio auth return");
-  assert(!(await evaluate(cdp,'document.body.innerText.includes("Создать организацию")')),
-    "Ordinary registration exposed Organization creation in Studio.");
-  const user = await evaluate(cdp,
-    `fetch(${JSON.stringify(`${API_ORIGIN}/v1/me`)},{credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,body:await r.json()}))`);
-  assert(user.status===200 && /^[0-9a-f-]{36}$/.test(user.body.id),
-    "Studio browser fixture needs its own authenticated Identity locator.");
+  await clickText(cdp, "Создать новый аккаунт");
+  await fill(
+    cdp,
+    'input[name="email"]',
+    `studio-browser-${Date.now()}@example.test`
+  );
+  await fill(cdp, 'input[name="password"]', PASSWORD);
+  await clickText(cdp, "Создать аккаунт");
+  await waitForExpression(
+    cdp,
+    'location.pathname === "/studio" && document.body.innerText.includes("Ваши организации")',
+    "Studio auth return"
+  );
+  assert(
+    !(await evaluate(
+      cdp,
+      'document.body.innerText.includes("Создать организацию")'
+    )),
+    "Ordinary registration exposed Organization creation in Studio."
+  );
+  const user = await evaluate(
+    cdp,
+    `fetch(${JSON.stringify(`${API_ORIGIN}/v1/me`)},{credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,body:await r.json()}))`
+  );
+  assert(
+    user.status === 200 && /^[0-9a-f-]{36}$/.test(user.body.id),
+    "Studio browser fixture needs its own authenticated Identity locator."
+  );
   const organizationSlug = `browser-studio-${Date.now()}`;
   // A browser session, even one that will later own a provisioned Organization,
   // never has authority to create a tenant. Check both legacy endpoints.
   for (const path of ["/v1/me/organizations", "/v1/organizations"]) {
-    const denied = await evaluate(cdp,
+    const denied = await evaluate(
+      cdp,
       `fetch(${JSON.stringify(API_ORIGIN)}+${JSON.stringify(path)},{
         method:"POST",credentials:"include",
         headers:{"content-type":"application/json"},
         body:JSON.stringify({slug:${JSON.stringify(organizationSlug)},name:"Browser Studio Academy"})
-      }).then(r=>r.status)`);
-    assert(denied===403, `Registered learner could create Organization through ${path}.`);
+      }).then(r=>r.status)`
+    );
+    assert(
+      denied === 403,
+      `Registered learner could create Organization through ${path}.`
+    );
   }
   // Offline test-runner-only bootstrap. Credentials remain in the Node runner,
   // never in a browser, public HTTP handler or runtime service.
-  assert(process.env.DATABASE_MIGRATION_URL, "Trusted browser fixture needs migration database credentials.");
-  const provisionOutput = execFileSync("pnpm",[
-    "run","org:bootstrap-owner",
-    "--owner-user-id",user.body.id,
-    "--slug",organizationSlug,
-    "--name","Browser Studio Academy",
-    "--apply"
-  ],{encoding:"utf8",timeout:30_000});
+  assert(
+    process.env.DATABASE_MIGRATION_URL,
+    "Trusted browser fixture needs migration database credentials."
+  );
+  const provisionOutput = execFileSync(
+    "pnpm",
+    [
+      "run",
+      "org:bootstrap-owner",
+      "--owner-user-id",
+      user.body.id,
+      "--slug",
+      organizationSlug,
+      "--name",
+      "Browser Studio Academy",
+      "--apply"
+    ],
+    { encoding: "utf8", timeout: 30_000 }
+  );
   const provisioned = JSON.parse(provisionOutput.trim().split("\n").at(-1));
-  assert(provisioned.outcome==="created" && /^[0-9a-f-]{36}$/.test(provisioned.id),
-    "Trusted browser fixture did not provision its Organization.");
-  const organizationId=provisioned.id;
+  assert(
+    provisioned.outcome === "created" && /^[0-9a-f-]{36}$/.test(provisioned.id),
+    "Trusted browser fixture did not provision its Organization."
+  );
+  const organizationId = provisioned.id;
   await navigate(cdp, `${WEB_ORIGIN}/studio`);
-  await waitForExpression(cdp,
-    'document.querySelector(\'button[aria-label="Browser Studio Academy"]\') !== null',
-    "trusted-provisioned Organization appears in Studio");
-  assert(await evaluate(cdp,
-    'document.querySelector(\'button[aria-label="Browser Studio Academy"]\')?.click() === undefined'),
-    "Studio Organization selector is missing.");
-  await waitForExpression(cdp,
+  await waitForExpression(
+    cdp,
+    "document.querySelector('button[aria-label=\"Browser Studio Academy\"]') !== null",
+    "trusted-provisioned Organization appears in Studio"
+  );
+  assert(
+    await evaluate(
+      cdp,
+      "document.querySelector('button[aria-label=\"Browser Studio Academy\"]')?.click() === undefined"
+    ),
+    "Studio Organization selector is missing."
+  );
+  await waitForExpression(
+    cdp,
     '[...document.querySelectorAll("a")].some(a=>a.textContent==="Создать курс")',
-    "authorized course creation after trusted provisioning");
-  const createHref=await evaluate(cdp,
-    '[...document.querySelectorAll("a")].find(a=>a.textContent==="Создать курс")?.getAttribute("href")');
-  assert(createHref === `/studio/${organizationId}/new`, "Studio Organization-scoped route missing.");
+    "authorized course creation after trusted provisioning"
+  );
+  const createHref = await evaluate(
+    cdp,
+    '[...document.querySelectorAll("a")].find(a=>a.textContent==="Создать курс")?.getAttribute("href")'
+  );
+  assert(
+    createHref === `/studio/${organizationId}/new`,
+    "Studio Organization-scoped route missing."
+  );
   // Verify the UI exposes a real Organization-scoped route, then exercise
   // policy authorization and open/close against canonical PostgreSQL.
-  const policyHref=await evaluate(cdp,
-    '[...document.querySelectorAll("a")].find(a=>a.textContent?.trim()==="Вступление учеников · настройки организации")?.getAttribute("href") ?? null');
-  assert(policyHref===`/studio/${organizationId}/entry-policy`,
-    "Studio Organization self-entry settings were not discoverable.");
-  await navigate(cdp,`${WEB_ORIGIN}${policyHref}`);
-  await waitForExpression(cdp,'document.body.innerText.includes("Вступление закрыто")',"Studio customer entry default closed");
-  await accessibilityAudit(cdp,"Studio Organization entry policy");
-  await clickText(cdp,"Разрешить самостоятельное вступление");
-  await waitForExpression(cdp,'document.body.innerText.includes("Подтвердите: все зарегистрированные пользователи")',"explicit customer entry confirmation");
-  await clickText(cdp,"Подтвердить открытие вступления");
-  await waitForExpression(cdp,'document.body.innerText.includes("Вступление открыто")',"Studio opened customer entry");
-  const readPolicy=()=>evaluate(cdp,`fetch(${JSON.stringify(`${API_ORIGIN}/v1/organizations/${organizationId}/customer-entry-policy`)},{credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,body:await r.json()}))`);
-  const opened=await readPolicy();
-  assert(opened.status===200&&opened.body.policy==="open","Studio failed to persist open customer entry policy.");
-  await clickText(cdp,"Закрыть самостоятельное вступление");
-  await waitForExpression(cdp,'document.body.innerText.includes("Подтвердите: новые пользователи")',"explicit close customer entry confirmation");
-  await clickText(cdp,"Подтвердить закрытие вступления");
-  await waitForExpression(cdp,'document.body.innerText.includes("Вступление закрыто")',"Studio closed customer entry");
-  const closed=await readPolicy();
-  assert(closed.status===200&&closed.body.policy==="closed","Studio failed to restore closed customer entry policy.");
-  await navigate(cdp,`${WEB_ORIGIN}${createHref}`);
-  await waitForExpression(cdp,'document.querySelectorAll("input").length>0',"new manual editor");
-  const slug=`browser-course-${Date.now()}`;
-  await fillLabel(cdp,"Адрес курса (slug)",slug);
-  await fillLabel(cdp,"Название курса","Ручной курс");
-  await fillLabel(cdp,"Описание курса","Описание руками");
-  await clickText(cdp,"Добавить урок");
-  await fillLabel(cdp,"Адрес урока (slug)","introduction");
-  await fillLabel(cdp,"Название урока","Первый урок");
-  await fillLabel(cdp,"Краткое описание урока","Краткое описание");
-  await clickText(cdp,"Добавить конспект");
-  await fillLabel(cdp,"Конспект (Markdown)","## Ручной конспект");
-  await clickText(cdp,"Проверить документ");
-  await waitForExpression(cdp,'document.body.innerText.includes("Проверка пройдена")',"manual validation");
-  await clickText(cdp,"Сохранить черновик");
-  await waitForExpression(cdp,'!location.pathname.endsWith("/new") && document.body.innerText.includes("Ручной курс") && document.body.innerText.includes("версия 1")',"manual canonical creation");
-  const [, ,org,course]=await evaluate(cdp,'location.pathname.split("/")');
-  const apiBase=`${API_ORIGIN}/v1/organizations/${org}`;
-  const canonicalRead=()=>evaluate(cdp,`fetch(${JSON.stringify(`${apiBase}/studio/courses/${course}`)},{credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,body:await r.json()}))`);
-  const created=await canonicalRead();assert(created.status===200&&created.body.manifest.lessons[0].blocks[0].markdown==="## Ручной конспект","Manual editor did not persist canonical Content.");
-  const manifest=JSON.parse(readFileSync("docs/examples/computer-basics.manifest.json","utf8"));manifest.course.slug=slug;
-  manifest.activities[0].validation.explanation="PRIVATE_BROWSER_EXPLANATION";
-  manifest.activities.push({slug:"multi-check",type:"quiz.multiple_choice",title:"Multi",instructions:"Multiple",skillKeys:[manifest.skills[0].key],presentation:{question:"Multi?",options:[{id:"a",text:"A"},{id:"b",text:"B"},{id:"c",text:"C"}]},validation:{correctOptionIds:["a","c"],explanation:"PRIVATE_MULTI"}},{slug:"short-check",type:"quiz.short_text",title:"Short",instructions:"Text",skillKeys:[manifest.skills[0].key],presentation:{question:"Short?"},validation:{acceptedAnswers:["PRIVATE_TEXT","два"],caseSensitive:true,explanation:"PRIVATE_SHORT"}});
-  manifest.lessons.push({slug:"second",title:"Второй урок",summary:"Продолжение",durationMinutes:15,blocks:[{type:"activity",activitySlug:"multi-check",kind:"homework",required:false,title:"Мультивыбор"},{type:"activity",activitySlug:"short-check",kind:"practice",required:true}]});
-  await clickText(cdp,"JSON");
+  const policyHref = await evaluate(
+    cdp,
+    '[...document.querySelectorAll("a")].find(a=>a.textContent?.trim()==="Вступление учеников · настройки организации")?.getAttribute("href") ?? null'
+  );
+  assert(
+    policyHref === `/studio/${organizationId}/entry-policy`,
+    "Studio Organization self-entry settings were not discoverable."
+  );
+  await navigate(cdp, `${WEB_ORIGIN}${policyHref}`);
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Вступление закрыто")',
+    "Studio customer entry default closed"
+  );
+  await accessibilityAudit(cdp, "Studio Organization entry policy");
+  await clickText(cdp, "Разрешить самостоятельное вступление");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Подтвердите: все зарегистрированные пользователи")',
+    "explicit customer entry confirmation"
+  );
+  await clickText(cdp, "Подтвердить открытие вступления");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Вступление открыто")',
+    "Studio opened customer entry"
+  );
+  const readPolicy = () =>
+    evaluate(
+      cdp,
+      `fetch(${JSON.stringify(`${API_ORIGIN}/v1/organizations/${organizationId}/customer-entry-policy`)},{credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,body:await r.json()}))`
+    );
+  const opened = await readPolicy();
+  assert(
+    opened.status === 200 && opened.body.policy === "open",
+    "Studio failed to persist open customer entry policy."
+  );
+  await clickText(cdp, "Закрыть самостоятельное вступление");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Подтвердите: новые пользователи")',
+    "explicit close customer entry confirmation"
+  );
+  await clickText(cdp, "Подтвердить закрытие вступления");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Вступление закрыто")',
+    "Studio closed customer entry"
+  );
+  const closed = await readPolicy();
+  assert(
+    closed.status === 200 && closed.body.policy === "closed",
+    "Studio failed to restore closed customer entry policy."
+  );
+  await navigate(cdp, `${WEB_ORIGIN}${createHref}`);
+  await waitForExpression(
+    cdp,
+    'document.querySelectorAll("input").length>0',
+    "new manual editor"
+  );
+  const slug = `browser-course-${Date.now()}`;
+  await fillLabel(cdp, "Адрес курса (slug)", slug);
+  await fillLabel(cdp, "Название курса", "Ручной курс");
+  await fillLabel(cdp, "Описание курса", "Описание руками");
+  await clickText(cdp, "Добавить урок");
+  await fillLabel(cdp, "Адрес урока (slug)", "introduction");
+  await fillLabel(cdp, "Название урока", "Первый урок");
+  await fillLabel(cdp, "Краткое описание урока", "Краткое описание");
+  await clickText(cdp, "Добавить конспект");
+  await fillLabel(cdp, "Конспект (Markdown)", "## Ручной конспект");
+  await clickText(cdp, "Проверить документ");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Проверка пройдена")',
+    "manual validation"
+  );
+  await clickText(cdp, "Сохранить черновик");
+  await waitForExpression(
+    cdp,
+    '!location.pathname.endsWith("/new") && document.body.innerText.includes("Ручной курс") && document.body.innerText.includes("версия 1")',
+    "manual canonical creation"
+  );
+  const [, , org, course] = await evaluate(cdp, 'location.pathname.split("/")');
+  const apiBase = `${API_ORIGIN}/v1/organizations/${org}`;
+  const canonicalRead = () =>
+    evaluate(
+      cdp,
+      `fetch(${JSON.stringify(`${apiBase}/studio/courses/${course}`)},{credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,body:await r.json()}))`
+    );
+  const created = await canonicalRead();
+  assert(
+    created.status === 200 &&
+      created.body.manifest.lessons[0].blocks[0].markdown ===
+        "## Ручной конспект",
+    "Manual editor did not persist canonical Content."
+  );
+  const manifest = JSON.parse(
+    readFileSync("docs/examples/computer-basics.manifest.json", "utf8")
+  );
+  manifest.course.slug = slug;
+  manifest.activities[0].validation.explanation = "PRIVATE_BROWSER_EXPLANATION";
+  manifest.activities.push(
+    {
+      slug: "multi-check",
+      type: "quiz.multiple_choice",
+      title: "Multi",
+      instructions: "Multiple",
+      skillKeys: [manifest.skills[0].key],
+      presentation: {
+        question: "Multi?",
+        options: [
+          { id: "a", text: "A" },
+          { id: "b", text: "B" },
+          { id: "c", text: "C" }
+        ]
+      },
+      validation: { correctOptionIds: ["a", "c"], explanation: "PRIVATE_MULTI" }
+    },
+    {
+      slug: "short-check",
+      type: "quiz.short_text",
+      title: "Short",
+      instructions: "Text",
+      skillKeys: [manifest.skills[0].key],
+      presentation: { question: "Short?" },
+      validation: {
+        acceptedAnswers: ["PRIVATE_TEXT", "два"],
+        caseSensitive: true,
+        explanation: "PRIVATE_SHORT"
+      }
+    }
+  );
+  manifest.lessons.push({
+    slug: "second",
+    title: "Второй урок",
+    summary: "Продолжение",
+    durationMinutes: 15,
+    blocks: [
+      {
+        type: "activity",
+        activitySlug: "multi-check",
+        kind: "homework",
+        required: false,
+        title: "Мультивыбор"
+      },
+      {
+        type: "activity",
+        activitySlug: "short-check",
+        kind: "practice",
+        required: true
+      }
+    ]
+  });
+  await clickText(cdp, "JSON");
   let published;
-  const temp=mkdtempSync(join(tmpdir(),"studio-manifest-"));
+  const temp = mkdtempSync(join(tmpdir(), "studio-manifest-"));
   try {
-    const file=join(temp,"course.json");writeFileSync(file,JSON.stringify(manifest));
-    const dom=await cdp.send("DOM.getDocument");const {nodeId}=await cdp.send("DOM.querySelector",{nodeId:dom.root.nodeId,selector:'input[type="file"]'});
-    await cdp.send("DOM.setFileInputFiles",{nodeId,files:[file]});
-    await waitForExpression(cdp,'document.querySelector("textarea").value.includes("PRIVATE_SHORT")',"JSON file upload");
-    await clickText(cdp,"Ручной редактор");
-    await waitForExpression(cdp,'document.body.innerText.includes("Допустимые ответы")',"all imported quiz shapes editable");
-    await fillLabel(cdp,"Название курса","JSON + ручные формы");
-    await fillLabel(cdp,"Описание навыка","Изменённый навык");
-    await fillLabel(cdp,"Название задания","Ручная практика");
-    await fillLabel(cdp,"Инструкция (Markdown)","## Инструкция руками");
-    await fillLabel(cdp,"Допустимый ответ 1","PRIVATE_EDITED_TEXT");
-    await fillLabel(cdp,"Длительность, минут","27",1);
-    await accessibilityAudit(cdp,"Studio all authoring shapes");
-    await clickText(cdp,"Предпросмотр");
-    const preview=await evaluate(cdp,'document.querySelector(\'[aria-label="Предпросмотр курса"]\').innerText');
-    assert(preview.includes("Ручная практика")&&!preview.includes("PRIVATE_"),"Studio preview leaked answer definitions.");
-    await clickText(cdp,"Проверить документ");
-    await waitForExpression(cdp,'document.body.innerText.includes("Проверка пройдена")',"JSON/manual validation");
-    await clickText(cdp,"Сохранить черновик");
-    await waitForExpression(cdp,'document.body.innerText.includes("Черновик сохранён")',"JSON/manual canonical save");
-    const saved=await canonicalRead();assert(saved.body.manifest.course.title==="JSON + ручные формы"&&saved.body.manifest.activities[2].validation.acceptedAnswers[0]==="PRIVATE_EDITED_TEXT"&&saved.body.manifest.lessons[1].durationMinutes===27,"JSON/manual fields diverged from canonical export.");
-    const exported=await evaluate(cdp,`fetch(${JSON.stringify(`${apiBase}/courses/${course}/versions/${saved.body.versionId}/manifest`)},{credentials:"include"}).then(r=>r.json())`);
-    assert(JSON.stringify(exported)===JSON.stringify(saved.body.manifest),"Draft export is not the same canonical document.");
-    await evaluate(cdp, '[...document.querySelectorAll("summary")].find(s=>s.textContent.includes("Копии и сохранённая версия")).click()');
-    await clickText(cdp,"Скачать сохранённый JSON");
-    await waitForExpression(cdp,'document.body.innerText.includes("Скачан сохранённый черновик")',"canonical JSON download");
+    const file = join(temp, "course.json");
+    writeFileSync(file, JSON.stringify(manifest));
+    const dom = await cdp.send("DOM.getDocument");
+    const { nodeId } = await cdp.send("DOM.querySelector", {
+      nodeId: dom.root.nodeId,
+      selector: 'input[type="file"]'
+    });
+    await cdp.send("DOM.setFileInputFiles", { nodeId, files: [file] });
+    await waitForExpression(
+      cdp,
+      'document.querySelector("textarea").value.includes("PRIVATE_SHORT")',
+      "JSON file upload"
+    );
+    await clickText(cdp, "Ручной редактор");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Допустимые ответы")',
+      "all imported quiz shapes editable"
+    );
+    await fillLabel(cdp, "Название курса", "JSON + ручные формы");
+    await fillLabel(cdp, "Описание навыка", "Изменённый навык");
+    await fillLabel(cdp, "Название задания", "Ручная практика");
+    await fillLabel(cdp, "Инструкция (Markdown)", "## Инструкция руками");
+    await fillLabel(cdp, "Допустимый ответ 1", "PRIVATE_EDITED_TEXT");
+    await fillLabel(cdp, "Длительность, минут", "27", 1);
+    await accessibilityAudit(cdp, "Studio all authoring shapes");
+    await clickText(cdp, "Предпросмотр");
+    const preview = await evaluate(
+      cdp,
+      "document.querySelector('[aria-label=\"Предпросмотр курса\"]').innerText"
+    );
+    assert(
+      preview.includes("Ручная практика") && !preview.includes("PRIVATE_"),
+      "Studio preview leaked answer definitions."
+    );
+    await clickText(cdp, "Проверить документ");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Проверка пройдена")',
+      "JSON/manual validation"
+    );
+    await clickText(cdp, "Сохранить черновик");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Черновик сохранён")',
+      "JSON/manual canonical save"
+    );
+    const saved = await canonicalRead();
+    assert(
+      saved.body.manifest.course.title === "JSON + ручные формы" &&
+        saved.body.manifest.activities[2].validation.acceptedAnswers[0] ===
+          "PRIVATE_EDITED_TEXT" &&
+        saved.body.manifest.lessons[1].durationMinutes === 27,
+      "JSON/manual fields diverged from canonical export."
+    );
+    const exported = await evaluate(
+      cdp,
+      `fetch(${JSON.stringify(`${apiBase}/courses/${course}/versions/${saved.body.versionId}/manifest`)},{credentials:"include"}).then(r=>r.json())`
+    );
+    assert(
+      JSON.stringify(exported) === JSON.stringify(saved.body.manifest),
+      "Draft export is not the same canonical document."
+    );
+    await evaluate(
+      cdp,
+      '[...document.querySelectorAll("summary")].find(s=>s.textContent.includes("Копии и сохранённая версия")).click()'
+    );
+    await clickText(cdp, "Скачать сохранённый JSON");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Скачан сохранённый черновик")',
+      "canonical JSON download"
+    );
     // A concurrent authorized edit must be surfaced before this working copy can apply.
-    await fillLabel(cdp,"Название курса","Моя несохранённая правка");
-    const concurrent=structuredClone(saved.body.manifest);concurrent.course.title="Другой автор";
-    const conflictWrite=await evaluate(cdp,`(async()=>{const manifest=${JSON.stringify(concurrent)};const plan=await fetch(${JSON.stringify(`${apiBase}/courses/manifest/validate`)},{method:"POST",credentials:"include",headers:{"content-type":"application/json"},body:JSON.stringify(manifest)}).then(r=>r.json());return fetch(${JSON.stringify(`${apiBase}/courses/manifest/apply`)},{method:"POST",credentials:"include",headers:{"content-type":"application/json"},body:JSON.stringify({manifest,expectedDraftVersionId:plan.expectedDraftVersionId,expectedRevision:plan.expectedRevision})}).then(r=>r.status);})()`);
-    assert(conflictWrite===200,"Canonical concurrency fixture failed.");
-    await clickText(cdp,"Проверить документ");
-    await waitForExpression(cdp,'document.body.innerText.includes("На сервере уже другой черновик")',"visible revision conflict");
-    assert(await evaluate(cdp,'[...document.querySelectorAll("button")].find(b=>b.textContent==="Сохранить черновик").disabled'),"Stale working copy remains applicable.");
-    await clickText(cdp,"Отбросить изменения и загрузить сохранённое");
-    await waitForExpression(cdp,'document.querySelector("dialog[open]")?.textContent.includes("Отбросить текущие правки?")',"discard confirmation");
-    await accessibilityAudit(cdp,"Studio discard confirmation");
-    await clickText(cdp,"Остаться в редакторе");
-    await waitForExpression(cdp,'!document.querySelector("dialog[open]")',"discard confirmation close");
-    assert(await evaluate(cdp,'[...document.querySelectorAll("label")].find(l=>l.firstChild?.textContent?.trim()==="Название курса")?.control?.value === "Моя несохранённая правка"'),"Cancelling discard lost working copy.");
-    await evaluate(cdp,'[...document.querySelectorAll("a")].find(a=>a.textContent?.trim()==="← Все курсы").click()');
-    await waitForExpression(cdp,'document.querySelector("dialog[open]")?.textContent.includes("Выйти из редактора?")',"unsaved internal navigation confirmation");
-    await accessibilityAudit(cdp,"Studio unsaved navigation confirmation");
-    await clickText(cdp,"Остаться в редакторе");
-    await waitForExpression(cdp,'!document.querySelector("dialog[open]")',"unsaved navigation confirmation close");
-    assert(await evaluate(cdp,'[...document.querySelectorAll("label")].find(l=>l.firstChild?.textContent?.trim()==="Название курса")?.control?.value === "Моя несохранённая правка"'),"Cancelling navigation lost working copy.");
-    await clickText(cdp,"Отбросить изменения и загрузить сохранённое");
-    await clickText(cdp,"Отбросить и загрузить");
-    await waitForExpression(cdp,'document.body.innerText.includes("Загружен актуальный черновик")',"explicit canonical reload");
-    await clickText(cdp,"Предпросмотр");
-    await clickText(cdp,"Опубликовать версию 1");
-    await waitForExpression(cdp, 'document.querySelector(\'dialog[open][aria-labelledby="studio-publish-title"]\') !== null', "publication confirmation");
-    assert((await canonicalRead()).body.status === "draft", "Opening publication confirmation wrote canonical state.");
+    await fillLabel(cdp, "Название курса", "Моя несохранённая правка");
+    const concurrent = structuredClone(saved.body.manifest);
+    concurrent.course.title = "Другой автор";
+    const conflictWrite = await evaluate(
+      cdp,
+      `(async()=>{const manifest=${JSON.stringify(concurrent)};const plan=await fetch(${JSON.stringify(`${apiBase}/courses/manifest/validate`)},{method:"POST",credentials:"include",headers:{"content-type":"application/json"},body:JSON.stringify(manifest)}).then(r=>r.json());return fetch(${JSON.stringify(`${apiBase}/courses/manifest/apply`)},{method:"POST",credentials:"include",headers:{"content-type":"application/json"},body:JSON.stringify({manifest,expectedDraftVersionId:plan.expectedDraftVersionId,expectedRevision:plan.expectedRevision})}).then(r=>r.status);})()`
+    );
+    assert(conflictWrite === 200, "Canonical concurrency fixture failed.");
+    await clickText(cdp, "Проверить документ");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("На сервере уже другой черновик")',
+      "visible revision conflict"
+    );
+    assert(
+      await evaluate(
+        cdp,
+        '[...document.querySelectorAll("button")].find(b=>b.textContent==="Сохранить черновик").disabled'
+      ),
+      "Stale working copy remains applicable."
+    );
+    await clickText(cdp, "Отбросить изменения и загрузить сохранённое");
+    await waitForExpression(
+      cdp,
+      'document.querySelector("dialog[open]")?.textContent.includes("Отбросить текущие правки?")',
+      "discard confirmation"
+    );
+    await accessibilityAudit(cdp, "Studio discard confirmation");
+    await clickText(cdp, "Остаться в редакторе");
+    await waitForExpression(
+      cdp,
+      '!document.querySelector("dialog[open]")',
+      "discard confirmation close"
+    );
+    assert(
+      await evaluate(
+        cdp,
+        '[...document.querySelectorAll("label")].find(l=>l.firstChild?.textContent?.trim()==="Название курса")?.control?.value === "Моя несохранённая правка"'
+      ),
+      "Cancelling discard lost working copy."
+    );
+    await evaluate(
+      cdp,
+      '[...document.querySelectorAll("a")].find(a=>a.textContent?.trim()==="← Все курсы").click()'
+    );
+    await waitForExpression(
+      cdp,
+      'document.querySelector("dialog[open]")?.textContent.includes("Выйти из редактора?")',
+      "unsaved internal navigation confirmation"
+    );
+    await accessibilityAudit(cdp, "Studio unsaved navigation confirmation");
+    await clickText(cdp, "Остаться в редакторе");
+    await waitForExpression(
+      cdp,
+      '!document.querySelector("dialog[open]")',
+      "unsaved navigation confirmation close"
+    );
+    assert(
+      await evaluate(
+        cdp,
+        '[...document.querySelectorAll("label")].find(l=>l.firstChild?.textContent?.trim()==="Название курса")?.control?.value === "Моя несохранённая правка"'
+      ),
+      "Cancelling navigation lost working copy."
+    );
+    await clickText(cdp, "Отбросить изменения и загрузить сохранённое");
+    await clickText(cdp, "Отбросить и загрузить");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Загружен актуальный черновик")',
+      "explicit canonical reload"
+    );
+    await clickText(cdp, "Предпросмотр");
+    await clickText(cdp, "Опубликовать версию 1");
+    await waitForExpression(
+      cdp,
+      "document.querySelector('dialog[open][aria-labelledby=\"studio-publish-title\"]') !== null",
+      "publication confirmation"
+    );
+    assert(
+      (await canonicalRead()).body.status === "draft",
+      "Opening publication confirmation wrote canonical state."
+    );
     await accessibilityAudit(cdp, "publication confirmation");
     await clickText(cdp, "Отмена");
-    await waitForExpression(cdp, '!document.querySelector(\'dialog[open][aria-labelledby="studio-publish-title"]\')', "cancel publication");
-    assert((await canonicalRead()).body.status === "draft", "Cancelling publication wrote canonical state.");
-    await clickText(cdp,"Опубликовать версию 1");
-    await clickText(cdp,"Подтвердить публикацию");
-    await waitForExpression(cdp,'document.body.innerText.includes("Версия опубликована")',"fenced publication");
-    const release=await canonicalRead();published=release.body;assert(release.body.status==="published"&&release.body.manifest.course.title==="Другой автор","Published an unseen working copy.");
+    await waitForExpression(
+      cdp,
+      "!document.querySelector('dialog[open][aria-labelledby=\"studio-publish-title\"]')",
+      "cancel publication"
+    );
+    assert(
+      (await canonicalRead()).body.status === "draft",
+      "Cancelling publication wrote canonical state."
+    );
+    await clickText(cdp, "Опубликовать версию 1");
+    await clickText(cdp, "Подтвердить публикацию");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Версия опубликована")',
+      "fenced publication"
+    );
+    const release = await canonicalRead();
+    published = release.body;
+    assert(
+      release.body.status === "published" &&
+        release.body.manifest.course.title === "Другой автор",
+      "Published an unseen working copy."
+    );
     // Publishing Content does not open Delivery. Use the real Studio controls
     // against the immutable release and verify private-by-default semantics.
-    await navigate(cdp,`${WEB_ORIGIN}/studio/${org}/${course}/offerings`);
-    await waitForExpression(cdp,
+    await navigate(cdp, `${WEB_ORIGIN}/studio/${org}/${course}/offerings`);
+    await waitForExpression(
+      cdp,
       'document.body.innerText.includes("Новый доступ") && document.body.innerText.includes("Создать приватный доступ")',
-      "Studio published Offering manager");
-    await accessibilityAudit(cdp,"Studio author-only Offering manager");
-    await clickText(cdp,"Создать приватный доступ");
-    await waitForExpression(cdp,'document.body.innerText.includes("Доступ создан приватным")',"Studio private Offering creation");
-    const offeringPage = await evaluate(cdp,
-      `fetch(${JSON.stringify(`${apiBase}/offerings?courseVersionId=${published.versionId}`)},{credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,body:await r.json()}))`);
-    assert(offeringPage.status===200&&offeringPage.body.offerings.length===1&&offeringPage.body.offerings[0].slug===slug&&offeringPage.body.offerings[0].visibility==="private",
-      "Studio created an unexpected/public/duplicate Offering.");
-    await clickText(cdp,"Открыть публичный доступ");
-    await waitForExpression(cdp,'document.body.innerText.includes("Подтвердите: опубликованный курс")',"explicit Offering publication confirmation");
-    await clickText(cdp,"Подтвердить открытие доступа");
-    await waitForExpression(cdp,'document.body.innerText.includes("Публичный доступ включён.")',"explicit Studio visibility change");
-    const publicHref = await evaluate(cdp,
-      '[...document.querySelectorAll("article a")].find(a=>a.pathname.startsWith("/learn/"))?.href ?? null');
-    assert(publicHref===`${WEB_ORIGIN}/learn/${organizationSlug}/${slug}`,
-      "Studio did not expose the canonical learner link.");
-    await clickText(cdp,"Скрыть публичный доступ");
-    await waitForExpression(cdp,'document.body.innerText.includes("Публичный доступ скрыт.")',"explicit Studio private restoration");
-    assert(await evaluate(cdp,'[...document.querySelectorAll("article a")].every(a=>!a.pathname.startsWith("/learn/"))'),
-      "Private Offering still displayed a public learner link.");
-    await clickText(cdp,"Открыть публичный доступ");
-    await waitForExpression(cdp,'document.body.innerText.includes("Подтвердите: опубликованный курс")',"reopen Offering confirmation");
-    await clickText(cdp,"Подтвердить открытие доступа");
-    await waitForExpression(cdp,'document.body.innerText.includes("Публичный доступ включён.")',"Studio reopen access");
-    await navigate(cdp,`${WEB_ORIGIN}/studio/${org}/${course}`);
-    await waitForExpression(cdp,'document.body.innerText.includes("Создать следующий черновик")',"return to published editor");
-    await clickText(cdp,"Создать следующий черновик");
-    await waitForExpression(cdp,'document.body.innerText.includes("Создан следующий черновик")',"explicit next draft");
-    const next=await canonicalRead();assert(next.body.versionNumber===2&&next.body.status==="draft"&&JSON.stringify(next.body.manifest)===JSON.stringify(release.body.manifest),"Next draft lost authored fields.");
-    assert(!(await evaluate(cdp,'document.documentElement.scrollWidth>innerWidth')),"Studio overflows mobile.");
-    await accessibilityAudit(cdp,"Studio next draft mobile");
-  } finally {rmSync(temp,{recursive:true,force:true});}
+      "Studio published Offering manager"
+    );
+    await accessibilityAudit(cdp, "Studio author-only Offering manager");
+    await clickText(cdp, "Создать приватный доступ");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Доступ создан приватным")',
+      "Studio private Offering creation"
+    );
+    const offeringPage = await evaluate(
+      cdp,
+      `fetch(${JSON.stringify(`${apiBase}/offerings?courseVersionId=${published.versionId}`)},{credentials:"include",cache:"no-store"}).then(async r=>({status:r.status,body:await r.json()}))`
+    );
+    assert(
+      offeringPage.status === 200 &&
+        offeringPage.body.offerings.length === 1 &&
+        offeringPage.body.offerings[0].slug === slug &&
+        offeringPage.body.offerings[0].visibility === "private",
+      "Studio created an unexpected/public/duplicate Offering."
+    );
+    await clickText(cdp, "Открыть публичный доступ");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Подтвердите: опубликованный курс")',
+      "explicit Offering publication confirmation"
+    );
+    await clickText(cdp, "Подтвердить открытие доступа");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Публичный доступ включён.")',
+      "explicit Studio visibility change"
+    );
+    const publicHref = await evaluate(
+      cdp,
+      '[...document.querySelectorAll("article a")].find(a=>a.pathname.startsWith("/learn/"))?.href ?? null'
+    );
+    assert(
+      publicHref === `${WEB_ORIGIN}/learn/${organizationSlug}/${slug}`,
+      "Studio did not expose the canonical learner link."
+    );
+    await clickText(cdp, "Скрыть публичный доступ");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Публичный доступ скрыт.")',
+      "explicit Studio private restoration"
+    );
+    assert(
+      await evaluate(
+        cdp,
+        '[...document.querySelectorAll("article a")].every(a=>!a.pathname.startsWith("/learn/"))'
+      ),
+      "Private Offering still displayed a public learner link."
+    );
+    await clickText(cdp, "Открыть публичный доступ");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Подтвердите: опубликованный курс")',
+      "reopen Offering confirmation"
+    );
+    await clickText(cdp, "Подтвердить открытие доступа");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Публичный доступ включён.")',
+      "Studio reopen access"
+    );
+    await navigate(cdp, `${WEB_ORIGIN}/studio/${org}/${course}`);
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Создать следующий черновик")',
+      "return to published editor"
+    );
+    await clickText(cdp, "Создать следующий черновик");
+    await waitForExpression(
+      cdp,
+      'document.body.innerText.includes("Создан следующий черновик")',
+      "explicit next draft"
+    );
+    const next = await canonicalRead();
+    assert(
+      next.body.versionNumber === 2 &&
+        next.body.status === "draft" &&
+        JSON.stringify(next.body.manifest) ===
+          JSON.stringify(release.body.manifest),
+      "Next draft lost authored fields."
+    );
+    assert(
+      !(await evaluate(cdp, "document.documentElement.scrollWidth>innerWidth")),
+      "Studio overflows mobile."
+    );
+    await accessibilityAudit(cdp, "Studio next draft mobile");
+  } finally {
+    rmSync(temp, { recursive: true, force: true });
+  }
   // Organization customer-entry policy remains a separate explicit action.
-  const ownerWrite = (path, method, body) => evaluate(cdp, `fetch(${JSON.stringify(`${apiBase}${path}`)}, {method:${JSON.stringify(method)},credentials:"include",headers:{"content-type":"application/json"},body:${JSON.stringify(JSON.stringify(body))}}).then(async r=>({status:r.status,body:await r.json()}))`);
-  assert((await ownerWrite("/customer-entry-policy", "PUT", {policy:"open"})).status===200, "Owner failed to explicitly open Organization entry.");
-  await evaluate(cdp,`fetch(${JSON.stringify(`${API_ORIGIN}/v1/auth/logout`)},{method:"POST",credentials:"include"}).then(r=>r.status)`);
-  console.log("[browser-launch] canonical Studio manual/JSON/conflict/export/preview/publication passed");
-  return {organizationSlug,offeringSlug:slug,manifest:published.manifest};
+  const ownerWrite = (path, method, body) =>
+    evaluate(
+      cdp,
+      `fetch(${JSON.stringify(`${apiBase}${path}`)}, {method:${JSON.stringify(method)},credentials:"include",headers:{"content-type":"application/json"},body:${JSON.stringify(JSON.stringify(body))}}).then(async r=>({status:r.status,body:await r.json()}))`
+    );
+  assert(
+    (await ownerWrite("/customer-entry-policy", "PUT", { policy: "open" }))
+      .status === 200,
+    "Owner failed to explicitly open Organization entry."
+  );
+  await evaluate(
+    cdp,
+    `fetch(${JSON.stringify(`${API_ORIGIN}/v1/auth/logout`)},{method:"POST",credentials:"include"}).then(r=>r.status)`
+  );
+  console.log(
+    "[browser-launch] canonical Studio manual/JSON/conflict/export/preview/publication passed"
+  );
+  return { organizationSlug, offeringSlug: slug, manifest: published.manifest };
 }
 
 async function verifyCanonicalLearner(cdp, authored) {
@@ -994,9 +1472,16 @@ async function verifyCanonicalLearner(cdp, authored) {
         !publicLesson.raw.includes("correctOption"),
       "Canonical public read leaked author keys."
     );
-    assert(await evaluate(cdp, 'document.querySelector("iframe") === null'), "Canonical lesson loaded YouTube before play.");
+    assert(
+      await evaluate(cdp, 'document.querySelector("iframe") === null'),
+      "Canonical lesson loaded YouTube before play."
+    );
     await clickText(cdp, "Смотреть видео");
-    await waitForExpression(cdp, 'document.querySelector("iframe") !== null', "explicit canonical player activation");
+    await waitForExpression(
+      cdp,
+      'document.querySelector("iframe") !== null',
+      "explicit canonical player activation"
+    );
     assert(
       await evaluate(
         cdp,
@@ -1005,8 +1490,18 @@ async function verifyCanonicalLearner(cdp, authored) {
       "Canonical video did not use safe renderer."
     );
     await clickText(cdp, "Закрыть плеер");
-    await waitForExpression(cdp, 'document.querySelector("iframe") === null', "canonical player dismissal");
-    assert(await evaluate(cdp, 'document.querySelector("iframe") === null && document.activeElement?.textContent.includes("Смотреть видео")'), "Closing video retained iframe or lost keyboard focus.");
+    await waitForExpression(
+      cdp,
+      'document.querySelector("iframe") === null',
+      "canonical player dismissal"
+    );
+    assert(
+      await evaluate(
+        cdp,
+        'document.querySelector("iframe") === null && document.activeElement?.textContent.includes("Смотреть видео")'
+      ),
+      "Closing video retained iframe or lost keyboard focus."
+    );
     await accessibilityAudit(cdp, "canonical anonymous lesson");
     await navigate(
       cdp,
@@ -1093,9 +1588,15 @@ async function verifyCanonicalLearner(cdp, authored) {
       "canonical next lesson"
     );
     // Multi-choice exact set: missing C is wrong, then a fresh Attempt passes A+C.
-    console.log("[browser-launch] canonical single retry and next required Lesson passed");
+    console.log(
+      "[browser-launch] canonical single retry and next required Lesson passed"
+    );
     await evaluate(cdp, "document.querySelector('input[value=\"a\"]').click()");
-    await waitForExpression(cdp, '!document.querySelectorAll("form")[0].querySelector(\'button[type="submit"]\').disabled', "hydrated multi answer ready");
+    await waitForExpression(
+      cdp,
+      '!document.querySelectorAll("form")[0].querySelector(\'button[type="submit"]\').disabled',
+      "hydrated multi answer ready"
+    );
     await clickText(cdp, "Проверить и сохранить ответ");
     await waitForExpression(
       cdp,
@@ -1118,7 +1619,11 @@ async function verifyCanonicalLearner(cdp, authored) {
       "Optional practice fabricated required completion."
     );
     await fill(cdp, 'input[autocomplete="off"]', "wrong");
-    await waitForExpression(cdp, '!document.querySelectorAll("form")[1].querySelector(\'button[type="submit"]\').disabled', "short answer ready");
+    await waitForExpression(
+      cdp,
+      '!document.querySelectorAll("form")[1].querySelector(\'button[type="submit"]\').disabled',
+      "short answer ready"
+    );
     await evaluate(
       cdp,
       'document.querySelectorAll("form")[1].querySelector(\'button[type="submit"]\').click()'
@@ -1245,7 +1750,11 @@ async function runBrowserVerification(cdp) {
         {
           urlPattern: "https://cdn.paddle.com/*",
           requestStage: "Request"
-        }, { urlPattern: "https://www.youtube-nocookie.com/*", requestStage: "Request" }
+        },
+        {
+          urlPattern: "https://www.youtube-nocookie.com/*",
+          requestStage: "Request"
+        }
       ]
     })
   ]);
@@ -1266,12 +1775,31 @@ async function runBrowserVerification(cdp) {
     "learning homepage"
   );
   await accessibilityAudit(cdp, "learning homepage");
-  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Learning homepage overflows mobile.");
-  assert(await evaluate(cdp, 'document.querySelectorAll("h1").length === 1 && !document.body.innerText.includes("Дизайн Preview")'), "Public homepage has duplicate heading or lab notice.");
-  await evaluate(cdp, 'document.querySelector(\'button[aria-label="Открыть меню"]\')?.click()');
-  await waitForExpression(cdp, `(() => { const dialog = document.querySelector("dialog[open]"); return Boolean(dialog && dialog.querySelector('nav[aria-label="Главное меню на мобильном экране"]') && dialog.innerText.includes("Куда отправимся?")); })()`, "mobile navigation");
+  assert(
+    !(await evaluate(cdp, "document.documentElement.scrollWidth > innerWidth")),
+    "Learning homepage overflows mobile."
+  );
+  assert(
+    await evaluate(
+      cdp,
+      'document.querySelectorAll("h1").length === 1 && !document.body.innerText.includes("Дизайн Preview")'
+    ),
+    "Public homepage has duplicate heading or lab notice."
+  );
+  await evaluate(
+    cdp,
+    "document.querySelector('button[aria-label=\"Открыть меню\"]')?.click()"
+  );
+  await waitForExpression(
+    cdp,
+    `(() => { const dialog = document.querySelector("dialog[open]"); return Boolean(dialog && dialog.querySelector('nav[aria-label="Главное меню на мобильном экране"]') && dialog.innerText.includes("Куда отправимся?")); })()`,
+    "mobile navigation"
+  );
   await accessibilityAudit(cdp, "mobile navigation");
-  assert(await evaluate(cdp, `(() => {
+  assert(
+    await evaluate(
+      cdp,
+      `(() => {
     const dialog = document.querySelector("dialog[open]");
     if (!dialog) return false;
     const rect = dialog.getBoundingClientRect();
@@ -1283,24 +1811,47 @@ async function runBrowserVerification(cdp) {
       && dialog.contains(document.activeElement)
       && !dialog.innerText.includes("Куда вы хотите перейти?")
       && document.documentElement.scrollWidth <= innerWidth;
-  })()`), "Mobile navigation is clipped, verbose, or has undersized controls at 390px.");
+  })()`
+    ),
+    "Mobile navigation is clipped, verbose, or has undersized controls at 390px."
+  );
   await cdp.send("Emulation.setDeviceMetricsOverride", {
     width: 320,
     height: 640,
     deviceScaleFactor: 1,
     mobile: true
   });
-  assert(await evaluate(cdp, `(() => {
+  assert(
+    await evaluate(
+      cdp,
+      `(() => {
     const dialog = document.querySelector("dialog[open]");
     if (!dialog) return false;
     const rect = dialog.getBoundingClientRect();
     return rect.left >= -1 && Math.abs(innerWidth - rect.right) <= 2
       && Math.abs(rect.top) <= 2 && Math.abs(innerHeight - rect.bottom) <= 2
       && document.documentElement.scrollWidth <= innerWidth;
-  })()`), "Mobile navigation is clipped or overflows at 320px.");
-  await cdp.send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
-  await cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
-  await waitForExpression(cdp, '!document.querySelector("dialog[open]")', "mobile navigation dismissal");
+  })()`
+    ),
+    "Mobile navigation is clipped or overflows at 320px."
+  );
+  await cdp.send("Input.dispatchKeyEvent", {
+    type: "keyDown",
+    key: "Escape",
+    code: "Escape",
+    windowsVirtualKeyCode: 27
+  });
+  await cdp.send("Input.dispatchKeyEvent", {
+    type: "keyUp",
+    key: "Escape",
+    code: "Escape",
+    windowsVirtualKeyCode: 27
+  });
+  await waitForExpression(
+    cdp,
+    '!document.querySelector("dialog[open]")',
+    "mobile navigation dismissal"
+  );
   await cdp.send("Emulation.setDeviceMetricsOverride", {
     width: 390,
     height: 844,
@@ -1308,39 +1859,128 @@ async function runBrowserVerification(cdp) {
     mobile: true
   });
   // The Acme fixture has no reviewed course artwork. Discovery must work without it.
-  await waitForExpression(cdp, 'document.body.innerText.includes("2 урока") && document.body.innerText.includes("15 мин")', "homepage real metadata");
-  await tabUntil(cdp, 'document.activeElement?.getAttribute("href") === "/learn/acme/computer-basics" && document.activeElement?.classList.contains("ui-button")', "homepage catalog action");
-  assert(await evaluate(cdp, 'document.activeElement.matches(":focus-visible") && parseFloat(getComputedStyle(document.activeElement).outlineWidth) >= 2'), "Homepage action has no keyboard focus.");
-  await cdp.send("Input.dispatchKeyEvent", { type: "keyDown", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
-  await cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
-  await waitForExpression(cdp, 'location.pathname === "/learn/acme/computer-basics" && document.body.innerText.includes("Программа курса")', "homepage course program");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("2 урока") && document.body.innerText.includes("15 мин")',
+    "homepage real metadata"
+  );
+  await tabUntil(
+    cdp,
+    'document.activeElement?.getAttribute("href") === "/learn/acme/computer-basics" && document.activeElement?.classList.contains("ui-button")',
+    "homepage catalog action"
+  );
+  assert(
+    await evaluate(
+      cdp,
+      'document.activeElement.matches(":focus-visible") && parseFloat(getComputedStyle(document.activeElement).outlineWidth) >= 2'
+    ),
+    "Homepage action has no keyboard focus."
+  );
+  await cdp.send("Input.dispatchKeyEvent", {
+    type: "keyDown",
+    key: "Enter",
+    code: "Enter",
+    windowsVirtualKeyCode: 13
+  });
+  await cdp.send("Input.dispatchKeyEvent", {
+    type: "keyUp",
+    key: "Enter",
+    code: "Enter",
+    windowsVirtualKeyCode: 13
+  });
+  await waitForExpression(
+    cdp,
+    'location.pathname === "/learn/acme/computer-basics" && document.body.innerText.includes("Программа курса")',
+    "homepage course program"
+  );
 
   console.log("[browser-launch] UI gallery native controls and theme contract");
   await navigate(cdp, `${WEB_ORIGIN}/ui`);
-  await waitForExpression(cdp, 'document.body.innerText.includes("Тема компонентов")', "UI gallery");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Тема компонентов")',
+    "UI gallery"
+  );
   await accessibilityAudit(cdp, "UI gallery dark");
-  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "UI gallery overflows mobile.");
+  assert(
+    !(await evaluate(cdp, "document.documentElement.scrollWidth > innerWidth")),
+    "UI gallery overflows mobile."
+  );
   await clickText(cdp, "Светлая");
-  await waitForExpression(cdp, 'document.querySelector(".ui-gallery")?.dataset.uiTheme === "light"', "light theme");
+  await waitForExpression(
+    cdp,
+    'document.querySelector(".ui-gallery")?.dataset.uiTheme === "light"',
+    "light theme"
+  );
   await accessibilityAudit(cdp, "UI gallery light");
   await clickText(cdp, "Тёмная");
-  await fill(cdp, '#example-name', 'Пример');
+  await fill(cdp, "#example-name", "Пример");
   await clickText(cdp, "Проверить форму");
-  await waitForExpression(cdp, 'document.body.innerText.includes("данные никуда не отправлены")', "native demo form success");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("данные никуда не отправлены")',
+    "native demo form success"
+  );
   await clickText(cdp, "Сбросить");
-  await waitForExpression(cdp, 'document.querySelector("#example-name")?.value === "" && !document.body.innerText.includes("данные никуда не отправлены")', "native demo form reset");
-  await tabUntil(cdp, 'document.activeElement?.tagName === "SUMMARY"', "native disclosure", 60);
+  await waitForExpression(
+    cdp,
+    'document.querySelector("#example-name")?.value === "" && !document.body.innerText.includes("данные никуда не отправлены")',
+    "native demo form reset"
+  );
+  await tabUntil(
+    cdp,
+    'document.activeElement?.tagName === "SUMMARY"',
+    "native disclosure",
+    60
+  );
   // Native summary activates on Space keyup. Include text on keydown so CDP
   // generates the normal keypress sequence rather than a bare raw key event.
-  await cdp.send("Input.dispatchKeyEvent", { type: "keyDown", key: " ", code: "Space", windowsVirtualKeyCode: 32, text: " ", unmodifiedText: " " });
-  await cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: " ", code: "Space", windowsVirtualKeyCode: 32 });
-  await waitForExpression(cdp, 'document.querySelector("details")?.open === true', "keyboard disclosure");
-  await cdp.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] });
-  assert(await evaluate(cdp, 'getComputedStyle(document.querySelector(".ui-skeleton")).animationName === "none"'), "Reduced motion still animates skeleton.");
+  await cdp.send("Input.dispatchKeyEvent", {
+    type: "keyDown",
+    key: " ",
+    code: "Space",
+    windowsVirtualKeyCode: 32,
+    text: " ",
+    unmodifiedText: " "
+  });
+  await cdp.send("Input.dispatchKeyEvent", {
+    type: "keyUp",
+    key: " ",
+    code: "Space",
+    windowsVirtualKeyCode: 32
+  });
+  await waitForExpression(
+    cdp,
+    'document.querySelector("details")?.open === true',
+    "keyboard disclosure"
+  );
+  await cdp.send("Emulation.setEmulatedMedia", {
+    features: [{ name: "prefers-reduced-motion", value: "reduce" }]
+  });
+  assert(
+    await evaluate(
+      cdp,
+      'getComputedStyle(document.querySelector(".ui-skeleton")).animationName === "none"'
+    ),
+    "Reduced motion still animates skeleton."
+  );
   await cdp.send("Emulation.setEmulatedMedia", { features: [] });
-  await cdp.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
-  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "UI gallery overflows desktop.");
-  await cdp.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+  await cdp.send("Emulation.setDeviceMetricsOverride", {
+    width: 1440,
+    height: 900,
+    deviceScaleFactor: 1,
+    mobile: false
+  });
+  assert(
+    !(await evaluate(cdp, "document.documentElement.scrollWidth > innerWidth")),
+    "UI gallery overflows desktop."
+  );
+  await cdp.send("Emulation.setDeviceMetricsOverride", {
+    width: 390,
+    height: 844,
+    deviceScaleFactor: 1,
+    mobile: true
+  });
   await navigate(cdp, `${WEB_ORIGIN}/courses`);
   await waitForExpression(
     cdp,
@@ -1375,7 +2015,10 @@ async function runBrowserVerification(cdp) {
     "public course"
   );
   await accessibilityAudit(cdp, "public course");
-  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Course outline overflows mobile.");
+  assert(
+    !(await evaluate(cdp, "document.documentElement.scrollWidth > innerWidth")),
+    "Course outline overflows mobile."
+  );
   await tabUntil(
     cdp,
     'document.activeElement?.textContent?.trim() === "Открыть первый урок"',
@@ -1407,11 +2050,24 @@ async function runBrowserVerification(cdp) {
     "lesson start navigation"
   );
   await accessibilityAudit(cdp, "public lesson");
-  const activeLesson = await evaluate(cdp, `document.querySelector('nav[aria-label="Уроки курса"] a[aria-current="page"]')?.getAttribute("href")`);
-  assert(activeLesson === "/learn/acme/computer-basics/introduction", "Outline lost the current Lesson address.");
-  assert(await evaluate(cdp, 'document.querySelector("iframe") === null'), "YouTube loaded before explicit activation.");
+  const activeLesson = await evaluate(
+    cdp,
+    `document.querySelector('nav[aria-label="Уроки курса"] a[aria-current="page"]')?.getAttribute("href")`
+  );
+  assert(
+    activeLesson === "/learn/acme/computer-basics/introduction",
+    "Outline lost the current Lesson address."
+  );
+  assert(
+    await evaluate(cdp, 'document.querySelector("iframe") === null'),
+    "YouTube loaded before explicit activation."
+  );
   await clickText(cdp, "Смотреть видео");
-  await waitForExpression(cdp, 'document.querySelector("iframe") !== null', "explicit fixture player activation");
+  await waitForExpression(
+    cdp,
+    'document.querySelector("iframe") !== null',
+    "explicit fixture player activation"
+  );
   const lessonSafety = await evaluate(
     cdp,
     `({ xss: window.__lessonXss === true, unsafe: !!document.querySelector('main img,main script,main a[href^="javascript:"],main [onerror]'),
@@ -1424,7 +2080,8 @@ async function runBrowserVerification(cdp) {
     "Lesson Markdown created executable or tracking markup."
   );
   assert(
-    lessonSafety.video === "https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ?autoplay=1",
+    lessonSafety.video ===
+      "https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ?autoplay=1",
     "Lesson changed the canonical embed host/ID."
   );
   assert(
@@ -1482,12 +2139,24 @@ async function runBrowserVerification(cdp) {
   learningCatalogEmpty = false;
   console.log("[browser-launch] public learning pages passed");
 
-  console.log("[browser-launch] free learner auth return-to and explicit entry UX");
+  console.log(
+    "[browser-launch] free learner auth return-to and explicit entry UX"
+  );
   const learningReturn = "/learn/acme/computer-basics/introduction";
   await navigate(cdp, `${WEB_ORIGIN}${learningReturn}`);
-  await waitForExpression(cdp, 'document.body.innerText.includes("Войти и сохранить обучение")', "anonymous learner entry");
-  const loginHref = await evaluate(cdp, `document.querySelector('a[href^="/login?returnTo="]').getAttribute("href")`);
-  assert(loginHref === `/login?returnTo=${encodeURIComponent(learningReturn)}`, "Auth target lost the selected Lesson.");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Войти и сохранить обучение")',
+    "anonymous learner entry"
+  );
+  const loginHref = await evaluate(
+    cdp,
+    `document.querySelector('a[href^="/login?returnTo="]').getAttribute("href")`
+  );
+  assert(
+    loginHref === `/login?returnTo=${encodeURIComponent(learningReturn)}`,
+    "Auth target lost the selected Lesson."
+  );
   await navigate(cdp, `${WEB_ORIGIN}${loginHref}`);
   await clickText(cdp, "Создать новый аккаунт");
   const learningEmail = `learner-browser-${Date.now()}@example.test`;
@@ -1512,55 +2181,159 @@ async function runBrowserVerification(cdp) {
   );
   await fill(cdp, 'input[name="displayName"]', "Learning Browser");
   await accessibilityAudit(cdp, "learning registration");
-  assert(await evaluate(cdp, `document.querySelector('input[name="password"]').getAttribute("aria-describedby") === "learning-password-hint" && document.querySelector("#learning-password-hint").innerText.includes("15")`), "Registration password hint is disconnected.");
-  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Learning registration overflows desktop.");
+  assert(
+    await evaluate(
+      cdp,
+      `document.querySelector('input[name="password"]').getAttribute("aria-describedby") === "learning-password-hint" && document.querySelector("#learning-password-hint").innerText.includes("15")`
+    ),
+    "Registration password hint is disconnected."
+  );
+  assert(
+    !(await evaluate(cdp, "document.documentElement.scrollWidth > innerWidth")),
+    "Learning registration overflows desktop."
+  );
   await clickText(cdp, "Создать аккаунт");
-  await waitForExpression(cdp, `location.pathname === ${JSON.stringify(learningReturn)} && document.body.innerText.includes("Начать курс")`, "registration return to selected Lesson");
-  assert([...learningActors.values()].every(a => !a.enrolled && !a.member), "Auth created Membership/Enrollment implicitly.");
+  await waitForExpression(
+    cdp,
+    `location.pathname === ${JSON.stringify(learningReturn)} && document.body.innerText.includes("Начать курс")`,
+    "registration return to selected Lesson"
+  );
+  assert(
+    [...learningActors.values()].every((a) => !a.enrolled && !a.member),
+    "Auth created Membership/Enrollment implicitly."
+  );
   // The fixture rejects enrollment before Organization entry, so ordering stays enforced.
   await clickText(cdp, "Начать курс");
-  await waitForExpression(cdp, 'document.body.innerText.includes("Задания курса: 0 из 1")', "own enrollment zero progress");
-  assert([...learningActors.values()].every(a => a.member && a.enrolled), "Course start skipped entry or enrollment.");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Задания курса: 0 из 1")',
+    "own enrollment zero progress"
+  );
+  assert(
+    [...learningActors.values()].every((a) => a.member && a.enrolled),
+    "Course start skipped entry or enrollment."
+  );
   await accessibilityAudit(cdp, "enrolled Lesson");
   await navigate(cdp, `${WEB_ORIGIN}/me/learning`);
-  await waitForExpression(cdp, 'document.body.innerText.includes("Основы компьютера") && document.body.innerText.includes("Задания курса: 0 из 1")', "returning learner courses");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Основы компьютера") && document.body.innerText.includes("Задания курса: 0 из 1")',
+    "returning learner courses"
+  );
   await accessibilityAudit(cdp, "my learning");
-  const continueHref = await evaluate(cdp, '[...document.querySelectorAll("a")].find(a=>a.textContent?.trim() === "Продолжить").getAttribute("href")');
-  assert(continueHref === learningReturn, "Continue changed the exact learning address.");
+  const continueHref = await evaluate(
+    cdp,
+    '[...document.querySelectorAll("a")].find(a=>a.textContent?.trim() === "Продолжить").getAttribute("href")'
+  );
+  assert(
+    continueHref === learningReturn,
+    "Continue changed the exact learning address."
+  );
   await navigate(cdp, `${WEB_ORIGIN}${learningReturn}`);
-  await waitForExpression(cdp, 'document.querySelector(\'input[value="ram"]\')?.matches(":enabled") === true', "ready quiz form");
-  await tabUntil(cdp, 'document.activeElement?.matches(\'input[type="radio"]\') === true', "quiz radio", 24);
-  const quizFocus = await evaluate(cdp, '(() => {const s=getComputedStyle(document.activeElement);return document.activeElement.matches(":focus-visible") && parseFloat(s.outlineWidth)>=2;})()');
+  await waitForExpression(
+    cdp,
+    'document.querySelector(\'input[value="ram"]\')?.matches(":enabled") === true',
+    "ready quiz form"
+  );
+  await tabUntil(
+    cdp,
+    "document.activeElement?.matches('input[type=\"radio\"]') === true",
+    "quiz radio",
+    24
+  );
+  const quizFocus = await evaluate(
+    cdp,
+    '(() => {const s=getComputedStyle(document.activeElement);return document.activeElement.matches(":focus-visible") && parseFloat(s.outlineWidth)>=2;})()'
+  );
   assert(quizFocus, "Quiz radio has no visible keyboard focus.");
-  await evaluate(cdp, 'document.querySelector(\'input[value="ram"]\').click()');
+  await evaluate(cdp, "document.querySelector('input[value=\"ram\"]').click()");
   await clickText(cdp, "Проверить и сохранить ответ");
-  await waitForExpression(cdp, 'document.body.innerText.includes("Повторить отправку ответа")', "ambiguous quiz retry");
-  assert(await evaluate(cdp, 'document.querySelector(\'input[value="ram"]\').matches(":disabled")'), "Pending answer can change during ambiguous retry.");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Повторить отправку ответа")',
+    "ambiguous quiz retry"
+  );
+  assert(
+    await evaluate(
+      cdp,
+      'document.querySelector(\'input[value="ram"]\').matches(":disabled")'
+    ),
+    "Pending answer can change during ambiguous retry."
+  );
   await clickText(cdp, "Повторить отправку ответа");
-  await waitForExpression(cdp, 'document.body.innerText.includes("Ответ пока неверный")', "failed quiz feedback");
-  assert(quizFixtureRequests[0] === quizFixtureRequests[1], "Ambiguous retry created a different try.");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Ответ пока неверный")',
+    "failed quiz feedback"
+  );
+  assert(
+    quizFixtureRequests[0] === quizFixtureRequests[1],
+    "Ambiguous retry created a different try."
+  );
   await accessibilityAudit(cdp, "failed quiz feedback");
   await clickText(cdp, "Попробовать ещё раз");
-  await evaluate(cdp, 'document.querySelector(\'input[value="cpu"]\').click()');
+  await evaluate(cdp, "document.querySelector('input[value=\"cpu\"]').click()");
   await clickText(cdp, "Проверить и сохранить ответ");
-  await waitForExpression(cdp, 'document.body.innerText.includes("Правильно") && document.body.innerText.includes("Все обязательные задания курса выполнены")', "passed quiz and refreshed progress");
-  assert(quizFixtureRequests[2] !== quizFixtureRequests[1] && quizFixtureTries.size === 2, "Explicit retry did not start a new try.");
-  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "Quiz overflows mobile.");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Правильно") && document.body.innerText.includes("Все обязательные задания курса выполнены")',
+    "passed quiz and refreshed progress"
+  );
+  assert(
+    quizFixtureRequests[2] !== quizFixtureRequests[1] &&
+      quizFixtureTries.size === 2,
+    "Explicit retry did not start a new try."
+  );
+  assert(
+    !(await evaluate(cdp, "document.documentElement.scrollWidth > innerWidth")),
+    "Quiz overflows mobile."
+  );
   await accessibilityAudit(cdp, "passed quiz feedback");
-  console.log("[browser-launch] quiz feedback, same-key network retry and new learner try passed");
+  console.log(
+    "[browser-launch] quiz feedback, same-key network retry and new learner try passed"
+  );
   await navigate(cdp, `${WEB_ORIGIN}/me/learning`);
-  await waitForExpression(cdp, 'document.body.innerText.includes("Все обязательные задания курса выполнены")', "derived progress after reload");
-  assert(!(await evaluate(cdp, 'document.body.innerText.includes("Обучение завершено.")')), "UI fabricated Enrollment.completed from the task percentage.");
-  assert(!(await evaluate(cdp, 'document.documentElement.scrollWidth > innerWidth')), "My learning overflows mobile.");
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Все обязательные задания курса выполнены")',
+    "derived progress after reload"
+  );
+  assert(
+    !(await evaluate(
+      cdp,
+      'document.body.innerText.includes("Обучение завершено.")'
+    )),
+    "UI fabricated Enrollment.completed from the task percentage."
+  );
+  assert(
+    !(await evaluate(cdp, "document.documentElement.scrollWidth > innerWidth")),
+    "My learning overflows mobile."
+  );
   await clickText(cdp, "Выйти");
-  await waitForExpression(cdp, 'document.body.innerText.includes("Войдите, чтобы увидеть свои курсы")', "learning logout");
-  await navigate(cdp, `${WEB_ORIGIN}/login?returnTo=${encodeURIComponent(learningReturn)}`);
+  await waitForExpression(
+    cdp,
+    'document.body.innerText.includes("Войдите, чтобы увидеть свои курсы")',
+    "learning logout"
+  );
+  await navigate(
+    cdp,
+    `${WEB_ORIGIN}/login?returnTo=${encodeURIComponent(learningReturn)}`
+  );
   await fill(cdp, 'input[name="email"]', learningEmail);
   await fill(cdp, 'input[name="password"]', PASSWORD);
   await clickText(cdp, "Войти");
-  await waitForExpression(cdp, `location.pathname === ${JSON.stringify(learningReturn)} && document.body.innerText.includes("Все обязательные задания курса выполнены")`, "login return and retained learner UX");
-  await evaluate(cdp, `fetch(${JSON.stringify(`${API_ORIGIN}/v1/auth/logout`)},{method:"POST",credentials:"include"}).then(r=>r.status)`);
-  console.log("[browser-launch] free learner auth and explicit entry UX passed");
+  await waitForExpression(
+    cdp,
+    `location.pathname === ${JSON.stringify(learningReturn)} && document.body.innerText.includes("Все обязательные задания курса выполнены")`,
+    "login return and retained learner UX"
+  );
+  await evaluate(
+    cdp,
+    `fetch(${JSON.stringify(`${API_ORIGIN}/v1/auth/logout`)},{method:"POST",credentials:"include"}).then(r=>r.status)`
+  );
+  console.log(
+    "[browser-launch] free learner auth and explicit entry UX passed"
+  );
 
   const authored = await verifyStudio(cdp);
   await verifyCanonicalLearner(cdp, authored);
@@ -1665,7 +2438,9 @@ async function runBrowserVerification(cdp) {
   );
   const expectedAttemptKey = `checkout-attempt:acme:course:${PRICE_ID}`;
   assert(
-    postCheckoutStorage.keys.filter((key) => key.startsWith("checkout-attempt:")).length === 1,
+    postCheckoutStorage.keys.filter((key) =>
+      key.startsWith("checkout-attempt:")
+    ).length === 1,
     "Browser checkout did not keep exactly one attempt key for the selected Price."
   );
   assert(
@@ -1676,7 +2451,9 @@ async function runBrowserVerification(cdp) {
   );
   assert(
     postCheckoutStorage.keys.every(
-      (key) => key.startsWith("checkout-attempt:") || !/token|session|bearer/i.test(key)
+      (key) =>
+        key.startsWith("checkout-attempt:") ||
+        !/token|session|bearer/i.test(key)
     ),
     "Browser sessionStorage contains token-like state."
   );
@@ -1827,7 +2604,9 @@ async function main() {
     await runBrowserVerification(cdp);
     console.log("Public launch browser verification passed.");
   } catch (error) {
-    console.error(error instanceof Error ? error.stack ?? error.message : error);
+    console.error(
+      error instanceof Error ? (error.stack ?? error.message) : error
+    );
     if (apiLog) console.error(`\nAPI log tail:\n${apiLog}`);
     if (webLog) console.error(`\nWeb log tail:\n${webLog}`);
     process.exitCode = 1;

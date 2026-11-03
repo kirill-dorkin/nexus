@@ -68,8 +68,7 @@ export class PostgresFreeLearningDeliveryPort extends FreeLearningDeliveryPort {
       route.organizationId,
       route.offeringId
     );
-    return o &&
-      o.status === "open" &&
+    return o?.status === "open" &&
       o.visibility === "public" &&
       o.accessMode === "membership" &&
       o.deliveryMode === "self_paced" &&
@@ -83,11 +82,15 @@ export class PostgresFreeLearningDeliveryPort extends FreeLearningDeliveryPort {
     userId: string,
     lock = false
   ) {
-    const row = (await tx.client.query<{ id: string }>(
-      `SELECT id FROM learning_delivery.enrollments WHERE organization_id=$1 AND offering_id=$2 AND user_id=$3 ${lock ? "FOR UPDATE" : ""}`,
-      [route.organizationId, route.offeringId, userId]
-    )).rows[0];
-    return row ? this.delivery.findEnrollment(tx, route.organizationId, row.id) : null;
+    const row = (
+      await tx.client.query<{ id: string }>(
+        `SELECT id FROM learning_delivery.enrollments WHERE organization_id=$1 AND offering_id=$2 AND user_id=$3 ${lock ? "FOR UPDATE" : ""}`,
+        [route.organizationId, route.offeringId, userId]
+      )
+    ).rows[0];
+    return row
+      ? this.delivery.findEnrollment(tx, route.organizationId, row.id)
+      : null;
   }
   async enrollSelf(
     tx: DatabaseTransaction,

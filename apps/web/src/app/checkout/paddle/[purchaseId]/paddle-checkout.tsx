@@ -27,6 +27,8 @@ type PaddleApi = Readonly<{
 }>;
 
 declare global {
+  // Augmenting the global Window requires interface declaration merging.
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   interface Window {
     Paddle?: PaddleApi;
   }
@@ -37,7 +39,9 @@ function transactionIdFromLocation(): string | null {
   return value !== null && /^txn_[a-z\d]{26}$/.test(value) ? value : null;
 }
 
-export function PaddleCheckout({ purchaseId }: Readonly<{ purchaseId: string }>) {
+export function PaddleCheckout({
+  purchaseId
+}: Readonly<{ purchaseId: string }>) {
   const started = useRef(false);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState("Загружаем защищённую форму оплаты…");
@@ -89,7 +93,9 @@ export function PaddleCheckout({ purchaseId }: Readonly<{ purchaseId: string }>)
       started.current = true;
       setStatus("Форма оплаты открыта. Не закрывайте страницу до завершения.");
     } catch {
-      setError("Не удалось открыть Paddle Checkout. Обновите страницу и повторите попытку.");
+      setError(
+        "Не удалось открыть Paddle Checkout. Обновите страницу и повторите попытку."
+      );
     }
   }
 
@@ -104,7 +110,9 @@ export function PaddleCheckout({ purchaseId }: Readonly<{ purchaseId: string }>)
       {error === null ? (
         <p>{status}</p>
       ) : (
-        <p className={styles.error} role="alert">{error}</p>
+        <p className={styles.error} role="alert">
+          {error}
+        </p>
       )}
     </div>
   );

@@ -132,18 +132,23 @@ export class PaymentWebhookProcessor {
     }
 
     try {
-      const acknowledged = await withTransaction(this.pool, async (transaction) => {
-        await transaction.client.query(
-          "SELECT set_config('app.organization_id', $1, true)",
-          [claim.organizationId]
-        );
-        const result = await transaction.client.query<{ acknowledged: boolean }>(
-          `SELECT platform_internal.acknowledge_payment_webhook($1, $2)
+      const acknowledged = await withTransaction(
+        this.pool,
+        async (transaction) => {
+          await transaction.client.query(
+            "SELECT set_config('app.organization_id', $1, true)",
+            [claim.organizationId]
+          );
+          const result = await transaction.client.query<{
+            acknowledged: boolean;
+          }>(
+            `SELECT platform_internal.acknowledge_payment_webhook($1, $2)
              AS acknowledged`,
-          [claim.inboxId, leaseToken]
-        );
-        return result.rows[0]?.acknowledged === true;
-      });
+            [claim.inboxId, leaseToken]
+          );
+          return result.rows[0]?.acknowledged === true;
+        }
+      );
 
       return acknowledged
         ? {
@@ -240,13 +245,7 @@ export class PaymentWebhookProcessor {
         `SELECT platform_internal.finish_payment_webhook(
            $1, $2, $3, $4, $5
          ) AS finished`,
-        [
-          claim.inboxId,
-          leaseToken,
-          outcome,
-          errorCode,
-          availableAt
-        ]
+        [claim.inboxId, leaseToken, outcome, errorCode, availableAt]
       );
       return result.rows[0]?.finished === true;
     });

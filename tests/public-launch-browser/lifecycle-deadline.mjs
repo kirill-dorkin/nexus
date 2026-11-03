@@ -47,7 +47,9 @@ function installBoundedClose(ServerClass, label) {
       callback?.(...args);
     };
 
-    const result = nativeClose.call(this, (...args) => finish("native", ...args));
+    const result = nativeClose.call(this, (...args) =>
+      finish("native", ...args)
+    );
 
     forceTimer = setTimeout(() => {
       console.error(
@@ -93,7 +95,9 @@ function installChildTreeKill() {
   });
 
   prototype.kill = function killTree(signal = "SIGTERM") {
-    console.error(`[browser-launch] child process tree kill requested ${signal}.`);
+    console.error(
+      `[browser-launch] child process tree kill requested ${signal}.`
+    );
 
     let groupSignalled = false;
     if (process.platform !== "win32" && Number.isInteger(this.pid)) {
@@ -117,7 +121,11 @@ function installChildTreeKill() {
               "[browser-launch] child process tree forced SIGKILL after grace period."
             );
           } catch (error) {
-            if (!(error && typeof error === "object" && error.code === "ESRCH")) {
+            if (!(
+              error &&
+              typeof error === "object" &&
+              error.code === "ESRCH"
+            )) {
               console.error(
                 `[browser-launch] child process group SIGKILL failed: ${error instanceof Error ? error.message : String(error)}`
               );

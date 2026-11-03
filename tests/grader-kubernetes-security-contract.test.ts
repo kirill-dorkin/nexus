@@ -15,17 +15,25 @@ function manifest(name: string): string {
 
 describe("grader Kubernetes security contract", () => {
   it("keeps code placement constants aligned with protected infrastructure identities", () => {
-    expect(manifest("namespace.yaml")).toContain(`name: ${GRADER_SANDBOX_NAMESPACE}`);
-    expect(manifest("runtime-class.yaml")).toContain(`name: ${GRADER_GVISOR_RUNTIME_CLASS}`);
+    expect(manifest("namespace.yaml")).toContain(
+      `name: ${GRADER_SANDBOX_NAMESPACE}`
+    );
+    expect(manifest("runtime-class.yaml")).toContain(
+      `name: ${GRADER_GVISOR_RUNTIME_CLASS}`
+    );
     expect(manifest("runner-service-account.yaml")).toContain(
       `name: ${GRADER_SANDBOX_RUNNER_SERVICE_ACCOUNT}`
     );
-    expect(manifest("runner-service-account.yaml")).toContain("automountServiceAccountToken: false");
+    expect(manifest("runner-service-account.yaml")).toContain(
+      "automountServiceAccountToken: false"
+    );
   });
 
   it("keeps network, Pod Security, capacity, and RuntimeClass boundaries fail closed", () => {
     const namespace = manifest("namespace.yaml");
-    expect(namespace).toContain("pod-security.kubernetes.io/enforce: restricted");
+    expect(namespace).toContain(
+      "pod-security.kubernetes.io/enforce: restricted"
+    );
 
     const network = manifest("network-policy.yaml");
     expect(network).toContain("podSelector: {}");
@@ -55,9 +63,13 @@ describe("grader Kubernetes security contract", () => {
     expect(admission).toContain(
       `object.spec.serviceAccountName == '${GRADER_SANDBOX_RUNNER_SERVICE_ACCOUNT}'`
     );
-    expect(admission).toContain("object.spec.automountServiceAccountToken == false");
+    expect(admission).toContain(
+      "object.spec.automountServiceAccountToken == false"
+    );
     expect(admission).toContain("object.spec.containers.size() == 1");
-    expect(admission).toContain("c.securityContext.readOnlyRootFilesystem == true");
+    expect(admission).toContain(
+      "c.securityContext.readOnlyRootFilesystem == true"
+    );
     expect(admission).toContain("!has(s.serviceAccountToken)");
     expect(admission).toContain("object.spec.parallelism == 1");
     expect(admission).toContain("object.spec.completions == 1");
@@ -69,11 +81,17 @@ describe("grader Kubernetes security contract", () => {
 
   it("keeps Gateway RBAC narrow and does not grant mutable Pod or Secret access", () => {
     const rbac = manifest("rbac.yaml");
-    expect(rbac).toContain('resources: ["jobs"]\n    verbs: ["create", "get", "delete"]');
-    expect(rbac).toContain('resources: ["secrets"]\n    verbs: ["create", "get"]');
+    expect(rbac).toContain(
+      'resources: ["jobs"]\n    verbs: ["create", "get", "delete"]'
+    );
+    expect(rbac).toContain(
+      'resources: ["secrets"]\n    verbs: ["create", "get"]'
+    );
     expect(rbac).toContain('resources: ["pods"]\n    verbs: ["get", "list"]');
     expect(rbac).toContain('resources: ["pods/log"]\n    verbs: ["get"]');
     expect(rbac).not.toContain('resources: ["pods"]\n    verbs: ["create"');
-    expect(rbac).not.toContain('resources: ["secrets"]\n    verbs: ["create", "get", "delete"');
+    expect(rbac).not.toContain(
+      'resources: ["secrets"]\n    verbs: ["create", "get", "delete"'
+    );
   });
 });

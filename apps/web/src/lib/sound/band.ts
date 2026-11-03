@@ -10,7 +10,14 @@
  *   reverb send (generated plate) ────────────┤
  *   vinyl (hiss + crackle loop) ──────────────┘
  */
-import { BAR_STEPS, composeBar, sixteenth, stepTime, type Bar, type NoteEvent } from "./composer";
+import {
+  BAR_STEPS,
+  composeBar,
+  sixteenth,
+  stepTime,
+  type Bar,
+  type NoteEvent
+} from "./composer";
 
 const hz = (midi: number) => 440 * 2 ** ((midi - 69) / 12);
 
@@ -29,8 +36,15 @@ export class Band {
   private readonly noise: AudioBuffer;
   private readonly sources: AudioScheduledSourceNode[] = [];
 
-  constructor(private readonly ctx: BaseAudioContext, private readonly seed: number) {
-    const gain = (value: number) => { const g = ctx.createGain(); g.gain.value = value; return g; };
+  constructor(
+    private readonly ctx: BaseAudioContext,
+    private readonly seed: number
+  ) {
+    const gain = (value: number) => {
+      const g = ctx.createGain();
+      g.gain.value = value;
+      return g;
+    };
     this.output = gain(0.8);
     this.noise = noiseBuffer(ctx, 2);
 
@@ -58,7 +72,13 @@ export class Band {
     ceiling.ratio.value = 20;
     ceiling.attack.value = 0.002;
     ceiling.release.value = 0.1;
-    sum.connect(wow).connect(this.tone).connect(lowCut).connect(glue).connect(ceiling).connect(this.output);
+    sum
+      .connect(wow)
+      .connect(this.tone)
+      .connect(lowCut)
+      .connect(glue)
+      .connect(ceiling)
+      .connect(this.output);
 
     // Reverb: a generated stereo plate, darkened, as a shared send.
     const reverb = ctx.createConvolver();
@@ -96,7 +116,11 @@ export class Band {
     echoTone.type = "lowpass";
     echoTone.frequency.value = 2200;
     this.melodyBus.connect(sum);
-    this.melodyBus.connect(echo).connect(echoTone).connect(feedback).connect(echo);
+    this.melodyBus
+      .connect(echo)
+      .connect(echoTone)
+      .connect(feedback)
+      .connect(echo);
     echoTone.connect(sendLevel(ctx, 0.5)).connect(sum);
     this.melodyBus.connect(sendLevel(ctx, 0.6)).connect(this.reverbSend);
 
@@ -109,11 +133,16 @@ export class Band {
     // The tone changes only between sections; one automation event per change, not per bar.
     if (bar.brightness !== this.brightness) {
       this.brightness = bar.brightness;
-      this.tone.frequency.setTargetAtTime(1600 + bar.brightness * 3200, time, 1.2);
+      this.tone.frequency.setTargetAtTime(
+        1600 + bar.brightness * 3200,
+        time,
+        1.2
+      );
     }
     this.duck = this.ctx.createGain();
     this.duck.connect(this.keysBus);
-    for (const event of bar.events) this.play(event, time + Math.max(0, stepTime(event.step)));
+    for (const event of bar.events)
+      this.play(event, time + Math.max(0, stepTime(event.step)));
     return bar;
   }
 
@@ -124,19 +153,35 @@ export class Band {
 
   stop(time: number) {
     for (const source of this.sources.splice(0)) {
-      try { source.stop(time); } catch { /* already stopped */ }
+      try {
+        source.stop(time);
+      } catch {
+        /* already stopped */
+      }
     }
   }
 
   private play(event: NoteEvent, t: number) {
     const length = event.length * sixteenth();
     switch (event.voice) {
-      case "keys": return this.keys(hz(event.midi!), t, length, event.velocity);
-      case "bass": return this.bass(hz(event.midi!), t, length, event.velocity);
-      case "kick": return this.kick(t, event.velocity);
-      case "snare": return this.snare(t, event.velocity);
-      case "hat": return this.hat(t, event.velocity);
-      case "melody": return this.bell(hz(event.midi!), t, length, event.velocity);
+      case "keys":
+        this.keys(hz(pitch(event)), t, length, event.velocity);
+        break;
+      case "bass":
+        this.bass(hz(pitch(event)), t, length, event.velocity);
+        break;
+      case "kick":
+        this.kick(t, event.velocity);
+        break;
+      case "snare":
+        this.snare(t, event.velocity);
+        break;
+      case "hat":
+        this.hat(t, event.velocity);
+        break;
+      case "melody":
+        this.bell(hz(pitch(event)), t, length, event.velocity);
+        break;
     }
   }
 
@@ -216,7 +261,14 @@ export class Band {
   }
 
   private hat(t: number, velocity: number) {
-    this.noiseHit(t, "highpass", 7500, 3.8 * velocity, 0.035 + velocity * 0.03, this.drumBus);
+    this.noiseHit(
+      t,
+      "highpass",
+      7500,
+      3.8 * velocity,
+      0.035 + velocity * 0.03,
+      this.drumBus
+    );
   }
 
   /** Soft bell: fundamental plus a quickly fading inharmonic partial. */
@@ -237,7 +289,15 @@ export class Band {
     this.run(t, t + length + 2, fundamental, partial);
   }
 
-  private noiseHit(t: number, type: BiquadFilterType, freq: number, peak: number, decay: number, to: AudioNode, q = 0.7) {
+  private noiseHit(
+    t: number,
+    type: BiquadFilterType,
+    freq: number,
+    peak: number,
+    decay: number,
+    to: AudioNode,
+    q = 0.7
+  ) {
     const { ctx } = this;
     const src = ctx.createBufferSource();
     src.buffer = this.noise;
@@ -310,7 +370,11 @@ function sendLevel(ctx: BaseAudioContext, level: number) {
 }
 
 function noiseBuffer(ctx: BaseAudioContext, seconds: number) {
-  const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * seconds), ctx.sampleRate);
+  const buffer = ctx.createBuffer(
+    1,
+    Math.floor(ctx.sampleRate * seconds),
+    ctx.sampleRate
+  );
   const data = buffer.getChannelData(0);
   for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
   return buffer;
@@ -334,15 +398,23 @@ function impulse(ctx: BaseAudioContext, seconds: number) {
 }
 
 function crackleBuffer(ctx: BaseAudioContext, seconds: number, seed: number) {
-  const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * seconds), ctx.sampleRate);
+  const buffer = ctx.createBuffer(
+    1,
+    Math.floor(ctx.sampleRate * seconds),
+    ctx.sampleRate
+  );
   const data = buffer.getChannelData(0);
   let s = seed || 1;
-  const random = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+  const random = () => (s = (s * 16807) % 2147483647) / 2147483647;
   const pops = Math.floor(seconds * 9);
   for (let p = 0; p < pops; p++) {
     const at = Math.floor(random() * (data.length - 200));
     const size = 0.2 + random() * 0.8;
-    for (let i = 0; i < 60; i++) data[at + i]! += (random() * 2 - 1) * size * Math.exp(-i / 9);
+    for (let i = 0; i < 60; i++) {
+      const index = at + i;
+      data[index] =
+        (data[index] ?? 0) + (random() * 2 - 1) * size * Math.exp(-i / 9);
+    }
   }
   return buffer;
 }
@@ -354,4 +426,12 @@ function softClip(drive: number) {
     curve[i] = Math.tanh(x * drive) / Math.tanh(drive);
   }
   return curve;
+}
+
+/** Pitched voices always carry a MIDI note; the composer guarantees it. */
+function pitch(event: NoteEvent): number {
+  if (event.midi === undefined) {
+    throw new Error(`A ${event.voice} note has no pitch.`);
+  }
+  return event.midi;
 }

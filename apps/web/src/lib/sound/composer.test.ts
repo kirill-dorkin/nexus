@@ -1,9 +1,20 @@
 import { describe, expect, it } from "vitest";
-import { BAR_STEPS, MELODY_SCALE, PROGRESSIONS, SECTION_BARS, composeBar, progressionOf, sectionOf, stepTime, sixteenth } from "./composer";
+import {
+  BAR_STEPS,
+  MELODY_SCALE,
+  PROGRESSIONS,
+  SECTION_BARS,
+  composeBar,
+  progressionOf,
+  sectionOf,
+  stepTime,
+  sixteenth
+} from "./composer";
 import { nextBarAfter, RESUME_DELAY } from "./timeline";
 import { volumeGain } from "./engine";
 
-const bars = (seed: number, count: number) => Array.from({ length: count }, (_, i) => composeBar(i, seed));
+const bars = (seed: number, count: number) =>
+  Array.from({ length: count }, (_, i) => composeBar(i, seed));
 
 describe("lo-fi composer", () => {
   it("is deterministic for a seed and varies between seeds", () => {
@@ -12,18 +23,41 @@ describe("lo-fi composer", () => {
   });
 
   it("opens with a drumless intro, then cycles groove, lift, groove, breakdown", () => {
-    expect([0, 8, 16, 24, 32, 40].map((bar) => sectionOf(bar).kind)).toEqual(["intro", "groove", "lift", "groove", "breakdown", "groove"]);
+    expect([0, 8, 16, 24, 32, 40].map((bar) => sectionOf(bar).kind)).toEqual([
+      "intro",
+      "groove",
+      "lift",
+      "groove",
+      "breakdown",
+      "groove"
+    ]);
     const intro = bars(3, SECTION_BARS);
-    expect(intro.flatMap((b) => b.events).some((e) => e.voice === "kick" || e.voice === "snare" || e.voice === "melody")).toBe(false);
+    expect(
+      intro
+        .flatMap((b) => b.events)
+        .some(
+          (e) =>
+            e.voice === "kick" || e.voice === "snare" || e.voice === "melody"
+        )
+    ).toBe(false);
     const groove = composeBar(SECTION_BARS, 3);
-    expect(groove.events.filter((e) => e.voice === "kick").length).toBeGreaterThanOrEqual(2);
-    expect(groove.events.filter((e) => e.voice === "snare").map((e) => Math.round(e.step))).toEqual(expect.arrayContaining([4, 12]));
+    expect(
+      groove.events.filter((e) => e.voice === "kick").length
+    ).toBeGreaterThanOrEqual(2);
+    expect(
+      groove.events
+        .filter((e) => e.voice === "snare")
+        .map((e) => Math.round(e.step))
+    ).toEqual(expect.arrayContaining([4, 12]));
   });
 
   it("never repeats a progression in consecutive sections", () => {
     for (const seed of [1, 2, 3, 99]) {
-      const picks = Array.from({ length: 30 }, (_, s) => progressionOf(s, seed));
-      for (let i = 1; i < picks.length; i++) expect(picks[i]).not.toBe(picks[i - 1]);
+      const picks = Array.from({ length: 30 }, (_, s) =>
+        progressionOf(s, seed)
+      );
+      for (let i = 1; i < picks.length; i++)
+        expect(picks[i]).not.toBe(picks[i - 1]);
       expect(new Set(picks).size).toBe(PROGRESSIONS.length);
     }
   });
@@ -35,9 +69,12 @@ describe("lo-fi composer", () => {
         expect(event.step).toBeLessThan(BAR_STEPS);
         expect(event.velocity).toBeGreaterThan(0);
         expect(event.velocity).toBeLessThanOrEqual(1.1);
-        if (event.voice === "melody") expect(MELODY_SCALE).toContain(event.midi);
-        if (event.voice === "keys") expect(bar.chord.voicing).toContain(event.midi);
-        if (event.voice === "bass") expect(event.midi!).toBeGreaterThanOrEqual(30);
+        if (event.voice === "melody")
+          expect(MELODY_SCALE).toContain(event.midi);
+        if (event.voice === "keys")
+          expect(bar.chord.voicing).toContain(event.midi);
+        if (event.voice === "bass")
+          expect(event.midi!).toBeGreaterThanOrEqual(30);
       }
     }
   });
@@ -54,7 +91,10 @@ describe("timeline after a late clock", () => {
   });
   it("skips missed bars but resumes right away instead of replaying them", () => {
     // Bar 5 was due at 10 s; the tab woke at 17.5 s: bars 5–7 are gone, bar 8 starts now.
-    expect(nextBarAfter(5, 10, 17.5, 3)).toEqual({ bar: 8, time: 17.5 + RESUME_DELAY });
+    expect(nextBarAfter(5, 10, 17.5, 3)).toEqual({
+      bar: 8,
+      time: 17.5 + RESUME_DELAY
+    });
   });
 });
 

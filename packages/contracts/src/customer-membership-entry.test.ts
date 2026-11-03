@@ -7,10 +7,14 @@ import {
 
 describe("customer membership entry contracts", () => {
   it("accepts only explicit open or closed entry policies", () => {
-    expect(updateCustomerEntryPolicyRequestSchema.parse({ policy: "open" })).toEqual({
+    expect(
+      updateCustomerEntryPolicyRequestSchema.parse({ policy: "open" })
+    ).toEqual({
       policy: "open"
     });
-    expect(organizationCustomerEntryPolicySchema.parse({ policy: "closed" })).toEqual({
+    expect(
+      organizationCustomerEntryPolicySchema.parse({ policy: "closed" })
+    ).toEqual({
       policy: "closed"
     });
     expect(() =>

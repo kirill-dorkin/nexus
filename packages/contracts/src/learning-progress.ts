@@ -14,7 +14,7 @@ export const attemptSchema = z.object({
   enrollmentId: uuidSchema,
   activityVersionId: uuidSchema,
   attemptNumber: z.number().int().positive(),
-  startedAt: z.string().datetime()
+  startedAt: z.iso.datetime()
 });
 
 export const submissionSchema = z.object({
@@ -23,7 +23,7 @@ export const submissionSchema = z.object({
   attemptId: uuidSchema,
   payload: jsonObjectSchema,
   submittedByUserId: uuidSchema,
-  submittedAt: z.string().datetime()
+  submittedAt: z.iso.datetime()
 });
 
 const evidenceBaseShape = {
@@ -35,7 +35,7 @@ const evidenceBaseShape = {
   kind: evidenceKindSchema,
   score: z.number().min(0).max(1).nullable(),
   payload: jsonObjectSchema,
-  createdAt: z.string().datetime()
+  createdAt: z.iso.datetime()
 } as const;
 
 export const evidenceSchema = z.discriminatedUnion("sourceType", [
@@ -82,5 +82,7 @@ export type Evidence = z.infer<typeof evidenceSchema>;
 export type EvidenceSourceType = z.infer<typeof evidenceSourceTypeSchema>;
 export type StartAttemptRequest = z.infer<typeof startAttemptRequestSchema>;
 export type CreateAttemptRequest = z.infer<typeof createAttemptRequestSchema>;
-export type CreateSubmissionRequest = z.infer<typeof createSubmissionRequestSchema>;
+export type CreateSubmissionRequest = z.infer<
+  typeof createSubmissionRequestSchema
+>;
 export type CreateEvidenceRequest = z.infer<typeof createEvidenceRequestSchema>;

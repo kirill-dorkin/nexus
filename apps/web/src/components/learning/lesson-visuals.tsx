@@ -1,7 +1,21 @@
 "use client";
+import { itemAt } from "../../lib/item-at";
 
-import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
-import { ArrowCounterClockwise, ArrowRight, File, Folder, Pause, Play } from "@phosphor-icons/react/dist/ssr";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type CSSProperties,
+  type ReactNode
+} from "react";
+import {
+  ArrowCounterClockwiseIcon,
+  ArrowRightIcon,
+  FileIcon,
+  FolderIcon,
+  PauseIcon,
+  PlayIcon
+} from "@phosphor-icons/react/dist/ssr";
 import { highlight, type Token } from "./code-highlight";
 import { Rich } from "./story";
 import styles from "./lesson-visuals.module.css";
@@ -16,16 +30,30 @@ import codeStyles from "./code.module.css";
 type UrlPart = { text: string; label: string };
 type TreeItem = { name: string; depth: number; note?: string };
 type FlowStep = { title: string; text?: string };
-type Scene = { input: string; key?: string; output?: string; caption?: string; parts?: UrlPart[] };
+type Scene = {
+  input: string;
+  key?: string;
+  output?: string;
+  caption?: string;
+  parts?: UrlPart[];
+};
 
 export type Visual =
   | { kind: "url"; title?: string | undefined; parts: UrlPart[] }
   | { kind: "tree"; title?: string | undefined; items: TreeItem[] }
   | { kind: "flow"; title?: string | undefined; steps: FlowStep[] }
   | { kind: "dom"; title?: string | undefined; html: string }
-  | { kind: "typing"; title?: string | undefined; file?: string | undefined; scenes: Scene[] };
+  | {
+      kind: "typing";
+      title?: string | undefined;
+      file?: string | undefined;
+      scenes: Scene[];
+    };
 
-const str = (v: unknown, max = 2000): v is string => typeof v === "string" && v.length <= max;
+const str = (v: unknown, max = 2000): v is string =>
+  typeof v === "string" && v.length <= max;
+const record = (v: unknown): Record<string, unknown> | null =>
+  typeof v === "object" && v !== null ? (v as Record<string, unknown>) : null;
 
 /** Parses and validates a visual description; returns null if anything is off. */
 export function parseVisual(source: string): Visual | null {
@@ -38,19 +66,41 @@ export function parseVisual(source: string): Visual | null {
   if (!raw || typeof raw !== "object") return null;
   const v = raw as Record<string, unknown>;
   const title = str(v.title, 200) ? v.title : undefined;
-  const list = (value: unknown, max: number) => (Array.isArray(value) && value.length > 0 && value.length <= max ? value : null);
+  const list = (value: unknown, max: number): unknown[] | null =>
+    Array.isArray(value) && value.length > 0 && value.length <= max
+      ? (value as unknown[])
+      : null;
   switch (v.kind) {
     case "url": {
-      const parts = list(v.parts, 12)?.filter((p): p is UrlPart => str(p?.text, 200) && str(p?.label, 60));
+      const parts = list(v.parts, 12)?.filter(
+        (p): p is UrlPart =>
+          str(record(p)?.text, 200) && str(record(p)?.label, 60)
+      );
       return parts?.length ? { kind: "url", title, parts } : null;
     }
     case "tree": {
-      const items = list(v.items, 60)?.filter((i): i is TreeItem =>
-        str(i?.name, 120) && Number.isInteger(i?.depth) && i.depth >= 0 && i.depth <= 8 && (i.note === undefined || str(i.note, 160)));
+      const items = list(v.items, 60)?.filter((i): i is TreeItem => {
+        const item = record(i);
+        const depth = item?.depth;
+        return (
+          str(item?.name, 120) &&
+          typeof depth === "number" &&
+          Number.isInteger(depth) &&
+          depth >= 0 &&
+          depth <= 8 &&
+          (item.note === undefined || str(item.note, 160))
+        );
+      });
       return items?.length ? { kind: "tree", title, items } : null;
     }
     case "flow": {
-      const steps = list(v.steps, 8)?.filter((s): s is FlowStep => str(s?.title, 60) && (s.text === undefined || str(s.text, 240)));
+      const steps = list(v.steps, 8)?.filter((s): s is FlowStep => {
+        const step = record(s);
+        return (
+          str(step?.title, 60) &&
+          (step.text === undefined || str(step.text, 240))
+        );
+      });
       return steps?.length ? { kind: "flow", title, steps } : null;
     }
     case "dom":
@@ -59,12 +109,23 @@ export function parseVisual(source: string): Visual | null {
       // One animation per block: { input, key, output, caption, parts }. `scenes` is still accepted.
       const isScene = (s: unknown): s is Scene => {
         const c = s as Record<string, unknown> | null;
-        return !!c && str(c.input, 400) && (c.key === undefined || str(c.key, 20)) &&
-          (c.output === undefined || str(c.output, 2000)) && (c.caption === undefined || str(c.caption, 200)) &&
-          (c.parts === undefined || (Array.isArray(c.parts) && c.parts.length <= 12 &&
-            c.parts.every((p) => str(p?.text, 60) && str(p?.label, 60))));
+        return (
+          !!c &&
+          str(c.input, 400) &&
+          (c.key === undefined || str(c.key, 20)) &&
+          (c.output === undefined || str(c.output, 2000)) &&
+          (c.caption === undefined || str(c.caption, 200)) &&
+          (c.parts === undefined ||
+            (Array.isArray(c.parts) &&
+              c.parts.length <= 12 &&
+              c.parts.every(
+                (p) => str(record(p)?.text, 60) && str(record(p)?.label, 60)
+              )))
+        );
       };
-      const scenes = (Array.isArray(v.scenes) ? list(v.scenes, 10) : [v])?.filter(isScene);
+      const scenes = (
+        Array.isArray(v.scenes) ? list(v.scenes, 10) : [v]
+      )?.filter(isScene);
       const file = str(v.file, 60) ? v.file : undefined;
       return scenes?.length ? { kind: "typing", title, file, scenes } : null;
     }
@@ -73,9 +134,26 @@ export function parseVisual(source: string): Visual | null {
   }
 }
 
-const PALETTE = ["#7dd3fc", "#c4b5fd", "#f0abfc", "#fdba74", "#bef264", "#fda4af", "#93c5fd", "#fcd34d"];
+const PALETTE = [
+  "#7dd3fc",
+  "#c4b5fd",
+  "#f0abfc",
+  "#fdba74",
+  "#bef264",
+  "#fda4af",
+  "#93c5fd",
+  "#fcd34d"
+];
 
-function Frame({ title, kind, children }: { title: string | undefined; kind: string; children: ReactNode }) {
+function Frame({
+  title,
+  kind,
+  children
+}: {
+  title: string | undefined;
+  kind: string;
+  children: ReactNode;
+}) {
   return (
     <figure className={styles.frame} data-kind={kind}>
       {title ? <figcaption className={styles.title}>{title}</figcaption> : null}
@@ -89,7 +167,11 @@ function UrlDiagram({ parts }: { parts: UrlPart[] }) {
     <div className={styles.url}>
       <div className={styles.urlLine}>
         {parts.map((part, i) => (
-          <span key={i} className={styles.urlPart} style={{ "--c": PALETTE[i % PALETTE.length] } as CSSProperties}>
+          <span
+            key={i}
+            className={styles.urlPart}
+            style={{ "--c": PALETTE[i % PALETTE.length] } as CSSProperties}
+          >
             <code>{part.text}</code>
             <span className={styles.urlLabel}>{part.label}</span>
           </span>
@@ -102,7 +184,7 @@ function UrlDiagram({ parts }: { parts: UrlPart[] }) {
 function colorFor(name: string) {
   if (name.endsWith("/")) return "#fcd34d";
   if (/\.html?$/.test(name)) return "#7dd3fc";
-  if (/\.css$/.test(name)) return "#c4b5fd";
+  if (name.endsWith(".css")) return "#c4b5fd";
   if (/\.(js|mjs|json)$/.test(name)) return "#fdba74";
   if (/\.(png|jpe?g|webp|avif|svg|gif)$/.test(name)) return "#bef264";
   return "#a1a1aa";
@@ -114,12 +196,26 @@ function TreeDiagram({ items }: { items: TreeItem[] }) {
       {items.map((item, i) => {
         const folder = item.name.endsWith("/");
         return (
-          <li key={i} style={{ "--depth": item.depth, "--c": colorFor(item.name) } as CSSProperties}>
+          <li
+            key={i}
+            style={
+              {
+                "--depth": item.depth,
+                "--c": colorFor(item.name)
+              } as CSSProperties
+            }
+          >
             <span className={styles.treeName}>
-              {folder ? <Folder size={18} weight="fill" aria-hidden="true" /> : <File size={18} aria-hidden="true" />}
+              {folder ? (
+                <FolderIcon size={18} weight="fill" aria-hidden="true" />
+              ) : (
+                <FileIcon size={18} aria-hidden="true" />
+              )}
               <code>{item.name}</code>
             </span>
-            {item.note ? <span className={styles.treeNote}>{item.note}</span> : null}
+            {item.note ? (
+              <span className={styles.treeNote}>{item.note}</span>
+            ) : null}
           </li>
         );
       })}
@@ -131,8 +227,15 @@ function FlowDiagram({ steps }: { steps: FlowStep[] }) {
   return (
     <ol className={styles.flow}>
       {steps.map((step, i) => (
-        <li key={i} style={{ "--i": i, "--c": PALETTE[i % PALETTE.length] } as CSSProperties}>
-          <span className={styles.flowIndex} aria-hidden="true">{i + 1}</span>
+        <li
+          key={i}
+          style={
+            { "--i": i, "--c": PALETTE[i % PALETTE.length] } as CSSProperties
+          }
+        >
+          <span className={styles.flowIndex} aria-hidden="true">
+            {i + 1}
+          </span>
           <span className={styles.flowBody}>
             <strong>{step.title}</strong>
             {step.text ? <span>{step.text}</span> : null}
@@ -143,20 +246,37 @@ function FlowDiagram({ steps }: { steps: FlowStep[] }) {
   );
 }
 
-type DomNode = { tag: string; attrs: string; children: DomNode[]; text?: string };
+type DomNode = {
+  tag: string;
+  attrs: string;
+  children: DomNode[];
+  text?: string;
+};
 
 function toTree(node: Node, depth = 0): DomNode | null {
   if (node.nodeType === Node.TEXT_NODE) {
     const text = node.textContent?.replace(/\s+/g, " ").trim();
-    return text ? { tag: "#text", attrs: "", children: [], text: text.length > 40 ? `${text.slice(0, 40)}…` : text } : null;
+    return text
+      ? {
+          tag: "#text",
+          attrs: "",
+          children: [],
+          text: text.length > 40 ? `${text.slice(0, 40)}…` : text
+        }
+      : null;
   }
   if (node.nodeType !== Node.ELEMENT_NODE || depth > 12) return null;
   const element = node as Element;
-  const attrs = [...element.attributes].slice(0, 3).map((a) => `${a.name}="${a.value.slice(0, 24)}"`).join(" ");
+  const attrs = [...element.attributes]
+    .slice(0, 3)
+    .map((a) => `${a.name}="${a.value.slice(0, 24)}"`)
+    .join(" ");
   return {
     tag: element.tagName.toLowerCase(),
     attrs,
-    children: [...element.childNodes].map((child) => toTree(child, depth + 1)).filter((n): n is DomNode => n !== null)
+    children: [...element.childNodes]
+      .map((child) => toTree(child, depth + 1))
+      .filter((n): n is DomNode => n !== null)
   };
 }
 
@@ -168,11 +288,17 @@ function DomBranch({ node }: { node: DomNode }) {
       ) : (
         <span className={styles.domTag}>
           <span className={codeStyles.tag}>{node.tag}</span>
-          {node.attrs ? <span className={codeStyles.attr}> {node.attrs}</span> : null}
+          {node.attrs ? (
+            <span className={codeStyles.attr}> {node.attrs}</span>
+          ) : null}
         </span>
       )}
       {node.children.length ? (
-        <ul>{node.children.map((child, i) => <DomBranch key={i} node={child} />)}</ul>
+        <ul>
+          {node.children.map((child, i) => (
+            <DomBranch key={i} node={child} />
+          ))}
+        </ul>
       ) : null}
     </li>
   );
@@ -188,17 +314,41 @@ function DomDiagram({ html }: { html: string }) {
   }, [html]);
   return (
     <div className={styles.dom}>
-      <pre className={styles.domSource}><code><Tokens tokens={highlight(html, "html")} /></code></pre>
-      <div className={styles.domArrow} aria-hidden="true"><ArrowRight size={22} /></div>
+      <pre className={styles.domSource}>
+        <code>
+          <Tokens tokens={highlight(html, "html")} />
+        </code>
+      </pre>
+      <div className={styles.domArrow} aria-hidden="true">
+        <ArrowRightIcon size={22} />
+      </div>
       <div className={styles.domTree} aria-label="DOM-дерево">
-        {tree ? <ul><DomBranch node={tree} /></ul> : <p className={styles.domText}>Строим дерево…</p>}
+        {tree ? (
+          <ul>
+            <DomBranch node={tree} />
+          </ul>
+        ) : (
+          <p className={styles.domText}>Строим дерево…</p>
+        )}
       </div>
     </div>
   );
 }
 
 function Tokens({ tokens }: { tokens: Token[] }) {
-  return <>{tokens.map((t, i) => (t.kind === "plain" ? t.text : <span key={i} className={codeStyles[t.kind]}>{t.text}</span>))}</>;
+  return (
+    <>
+      {tokens.map((t, i) =>
+        t.kind === "plain" ? (
+          t.text
+        ) : (
+          <span key={i} className={codeStyles[t.kind]}>
+            {t.text}
+          </span>
+        )
+      )}
+    </>
+  );
 }
 
 function usePrefersReducedMotion() {
@@ -216,14 +366,18 @@ function usePrefersReducedMotion() {
 /** Where Emmet leaves the caret after expanding: the first empty attribute or element. */
 export function caretOffset(output: string) {
   const blank = /\n( *)\n/.exec(output);
-  const candidates = [output.indexOf('""') + 1, output.indexOf("></") + 1, blank ? blank.index + 1 + blank[1]!.length : 0]
-    .filter((i) => i > 0);
+  const candidates = [
+    output.indexOf('""') + 1,
+    output.indexOf("></") + 1,
+    blank ? blank.index + 1 + itemAt(blank, 1).length : 0
+  ].filter((i) => i > 0);
   return candidates.length ? Math.min(...candidates) : output.length;
 }
 
 /** Splits highlighted tokens into lines, inserting a caret marker at a character offset. */
 function tokenLines(tokens: Token[], caretAt: number) {
-  const lines: (Token | "caret")[][] = [[]];
+  let line: (Token | "caret")[] = [];
+  const lines: (Token | "caret")[][] = [line];
   let offset = 0;
   for (const token of tokens) {
     let text = token.text;
@@ -234,23 +388,27 @@ function tokenLines(tokens: Token[], caretAt: number) {
       let chunk = text.slice(0, chunkEnd);
       if (caretAt >= start && caretAt < start + chunk.length) {
         const before = chunk.slice(0, caretAt - start);
-        if (before) lines.at(-1)!.push({ kind: token.kind, text: before });
-        lines.at(-1)!.push("caret");
+        if (before) line.push({ kind: token.kind, text: before });
+        line.push("caret");
         chunk = chunk.slice(before.length);
         start += before.length;
         caretAt = -1;
       }
-      if (chunk) lines.at(-1)!.push({ kind: token.kind, text: chunk });
+      if (chunk) line.push({ kind: token.kind, text: chunk });
       start += chunk.length;
       if (breakAt < 0) break;
-      if (caretAt === start) { lines.at(-1)!.push("caret"); caretAt = -1; }
-      lines.push([]);
+      if (caretAt === start) {
+        line.push("caret");
+        caretAt = -1;
+      }
+      line = [];
+      lines.push(line);
       start += 1;
       text = text.slice(chunkEnd + 1);
     }
     offset += token.text.length;
   }
-  if (caretAt >= offset) lines.at(-1)!.push("caret");
+  if (caretAt >= offset) line.push("caret");
   return lines;
 }
 
@@ -261,30 +419,52 @@ type Tick = { phase: Phase; typed: number; ms: number };
 function sceneFrames(scene: Scene): Tick[] {
   const frames: Tick[] = [{ phase: "ready", typed: 0, ms: 650 }];
   for (let i = 1; i <= scene.input.length; i++) {
-    const ch = scene.input[i - 1]!;
+    const ch = itemAt(scene.input, i - 1);
     // Symbols take a moment longer than letters, like a real person typing.
-    frames.push({ phase: "typing", typed: i, ms: /[a-z0-9]/i.test(ch) ? 95 : 190 });
+    frames.push({
+      phase: "typing",
+      typed: i,
+      ms: /[a-z0-9]/i.test(ch) ? 95 : 190
+    });
   }
   frames.push({ phase: "typing", typed: scene.input.length, ms: 650 });
-  if (scene.key) frames.push({ phase: "key", typed: scene.input.length, ms: 650 });
+  if (scene.key)
+    frames.push({ phase: "key", typed: scene.input.length, ms: 650 });
   frames.push({ phase: "result", typed: scene.input.length, ms: 0 });
   return frames;
 }
 
 function KeyCap({ label, pressed }: { label: string; pressed?: boolean }) {
-  return <kbd className={`${styles.key} ${pressed ? styles.keyDown : ""}`}>{label}</kbd>;
+  return (
+    <kbd className={`${styles.key} ${pressed ? styles.keyDown : ""}`}>
+      {label}
+    </kbd>
+  );
 }
 
-function AbbreviationParts({ parts, typed, done }: { parts: UrlPart[]; typed: number; done: boolean }) {
+function AbbreviationParts({
+  parts,
+  typed,
+  done
+}: {
+  parts: UrlPart[];
+  typed: number;
+  done: boolean;
+}) {
   let end = 0;
   return (
     <ol className={styles.parts} aria-hidden="true">
       {parts.map((part, i) => {
         const startAt = end;
         end += part.text.length;
-        const state = done || typed >= end ? "done" : typed > startAt ? "active" : "idle";
+        const state =
+          done || typed >= end ? "done" : typed > startAt ? "active" : "idle";
         return (
-          <li key={i} data-state={state} style={{ "--c": PALETTE[i % PALETTE.length] } as CSSProperties}>
+          <li
+            key={i}
+            data-state={state}
+            style={{ "--c": PALETTE[i % PALETTE.length] } as CSSProperties}
+          >
             <code>{part.text}</code>
             <span>{part.label}</span>
           </li>
@@ -305,9 +485,14 @@ function useVisibleOnce<T extends Element>() {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     if (!element || visible) return;
-    if (typeof IntersectionObserver === "undefined") { setVisible(true); return; }
+    if (typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
+    }
     const observer = new IntersectionObserver(
-      (entries) => { if (entries.some((e) => e.isIntersecting)) setVisible(true); },
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) setVisible(true);
+      },
       { threshold: 0.6 }
     );
     observer.observe(element);
@@ -316,14 +501,30 @@ function useVisibleOnce<T extends Element>() {
   return [setElement, visible] as const;
 }
 
-function EditorWindow({ file, children, flash, lines }: { file: string; children: ReactNode; flash?: boolean; lines: number }) {
+function EditorWindow({
+  file,
+  children,
+  flash,
+  lines
+}: {
+  file: string;
+  children: ReactNode;
+  flash?: boolean;
+  lines: number;
+}) {
   return (
     <div className={styles.window}>
       <div className={styles.windowBar} aria-hidden="true">
-        <span /><span /><span />
+        <span />
+        <span />
+        <span />
         <em>{file}</em>
       </div>
-      <pre className={`${styles.editor} ${flash ? styles.expanded : ""}`} style={{ "--lines": lines } as CSSProperties} aria-hidden="true">
+      <pre
+        className={`${styles.editor} ${flash ? styles.expanded : ""}`}
+        style={{ "--lines": lines } as CSSProperties}
+        aria-hidden="true"
+      >
         <code>{children}</code>
       </pre>
     </div>
@@ -335,10 +536,21 @@ function ResultLines({ output }: { output: string }) {
   return (
     <>
       {lines.map((line, i) => (
-        <span key={i} className={styles.line} style={{ "--line": i } as CSSProperties}>
+        <span
+          key={i}
+          className={styles.line}
+          style={{ "--line": i } as CSSProperties}
+        >
           {line.map((part, j) =>
-            part === "caret" ? <span key={j} className={styles.caret} /> :
-              part.kind === "plain" ? part.text : <span key={j} className={codeStyles[part.kind]}>{part.text}</span>
+            part === "caret" ? (
+              <span key={j} className={styles.caret} />
+            ) : part.kind === "plain" ? (
+              part.text
+            ) : (
+              <span key={j} className={codeStyles[part.kind]}>
+                {part.text}
+              </span>
+            )
           )}
           {"\n"}
         </span>
@@ -348,15 +560,30 @@ function ResultLines({ output }: { output: string }) {
 }
 
 /** The abbreviation typed so far, each part in the colour of its legend chip. */
-function TypedInput({ input, typed, parts }: { input: string; typed: number; parts: UrlPart[] | undefined }) {
+function TypedInput({
+  input,
+  typed,
+  parts
+}: {
+  input: string;
+  typed: number;
+  parts: UrlPart[] | undefined;
+}) {
   if (!parts) return <>{input.slice(0, typed)}</>;
   let start = 0;
   return (
     <>
       {parts.map((part, i) => {
-        const text = input.slice(start, Math.min(start + part.text.length, typed));
+        const text = input.slice(
+          start,
+          Math.min(start + part.text.length, typed)
+        );
         start += part.text.length;
-        return text ? <span key={i} style={{ color: PALETTE[i % PALETTE.length] }}>{text}</span> : null;
+        return text ? (
+          <span key={i} style={{ color: PALETTE[i % PALETTE.length] }}>
+            {text}
+          </span>
+        ) : null;
       })}
     </>
   );
@@ -372,12 +599,18 @@ function TypingDemo({ scene, file }: { scene: Scene; file: string }) {
   const last = frames.length - 1;
   useEffect(() => {
     if (reduced || !visible || paused || index >= last) return;
-    const timer = window.setTimeout(() => setIndex((i) => Math.min(i + 1, last)), frames[index]!.ms);
+    const timer = window.setTimeout(
+      () => setIndex((i) => Math.min(i + 1, last)),
+      itemAt(frames, index).ms
+    );
     return () => window.clearTimeout(timer);
   }, [index, paused, reduced, visible, frames, last, run]);
-  const frame = reduced ? frames[last]! : frames[index]!;
+  const frame = reduced ? itemAt(frames, last) : itemAt(frames, index);
   const finished = frame.phase === "result";
-  const parts = scene.parts && scene.parts.map((p) => p.text).join("") === scene.input ? scene.parts : undefined;
+  const parts =
+    scene.parts?.map((p) => p.text).join("") === scene.input
+      ? scene.parts
+      : undefined;
   const stage = STAGES.findIndex((s) => s.phase.includes(frame.phase));
   const description = `${scene.caption ? `${scene.caption}. ` : ""}Ввод «${scene.input}»${scene.key ? `, затем клавиша ${scene.key}` : ""}${scene.output ? `. Результат: ${scene.output}` : ""}`;
   return (
@@ -386,42 +619,89 @@ function TypingDemo({ scene, file }: { scene: Scene; file: string }) {
         {STAGES.filter((s) => scene.key || s.label !== "Жмём").map((s) => {
           const i = STAGES.indexOf(s);
           return (
-            <li key={s.label} data-state={i < stage ? "done" : i === stage ? "active" : "idle"}>
-              {s.label === "Жмём" && scene.key ? <>Жмём <KeyCap label={scene.key} /></> : s.label}
+            <li
+              key={s.label}
+              data-state={i < stage ? "done" : i === stage ? "active" : "idle"}
+            >
+              {s.label === "Жмём" && scene.key ? (
+                <>
+                  Жмём <KeyCap label={scene.key} />
+                </>
+              ) : (
+                s.label
+              )}
             </li>
           );
         })}
       </ol>
       <div className={styles.stage}>
-        <EditorWindow file={file} flash={finished && !reduced} lines={(scene.output ?? scene.input).split("\n").length}>
+        <EditorWindow
+          file={file}
+          flash={finished && !reduced}
+          lines={(scene.output ?? scene.input).split("\n").length}
+        >
           {finished && scene.output !== undefined ? (
             <ResultLines key={run} output={scene.output} />
           ) : (
             <>
-              <TypedInput input={scene.input} typed={frame.typed} parts={parts} />
+              <TypedInput
+                input={scene.input}
+                typed={frame.typed}
+                parts={parts}
+              />
               <span className={styles.caret} />
             </>
           )}
         </EditorWindow>
         {frame.phase === "key" && scene.key ? (
-          <div className={styles.keyPop} aria-hidden="true"><KeyCap label={scene.key} pressed /></div>
+          <div className={styles.keyPop} aria-hidden="true">
+            <KeyCap label={scene.key} pressed />
+          </div>
         ) : null}
         <div className={styles.progress} aria-hidden="true">
-          <span style={{ width: `${Math.round((reduced ? 1 : index / last) * 100)}%` }} />
+          <span
+            style={{
+              width: `${Math.round((reduced ? 1 : index / last) * 100)}%`
+            }}
+          />
         </div>
       </div>
-      {parts ? <AbbreviationParts parts={parts} typed={frame.typed} done={finished} /> : null}
+      {parts ? (
+        <AbbreviationParts parts={parts} typed={frame.typed} done={finished} />
+      ) : null}
       <div className={styles.typingFooter}>
-        <span className={styles.caption} data-shown={finished || undefined}>{scene.caption ? <Rich text={scene.caption} /> : null}</span>
+        <span className={styles.caption} data-shown={finished || undefined}>
+          {scene.caption ? <Rich text={scene.caption} /> : null}
+        </span>
         {reduced ? null : finished ? (
-          <button type="button" className={styles.replay}
-            onClick={() => { setIndex(0); setPaused(false); setRun((r) => r + 1); }}>
-            <ArrowCounterClockwise size={16} weight="bold" aria-hidden="true" /> Повторить
+          <button
+            type="button"
+            className={styles.replay}
+            onClick={() => {
+              setIndex(0);
+              setPaused(false);
+              setRun((r) => r + 1);
+            }}
+          >
+            <ArrowCounterClockwiseIcon
+              size={16}
+              weight="bold"
+              aria-hidden="true"
+            />{" "}
+            Повторить
           </button>
         ) : (
-          <button type="button" className={styles.play} onClick={() => setPaused((p) => !p)}
-            aria-label={paused ? "Продолжить анимацию" : "Пауза анимации"}>
-            {paused ? <Play size={16} weight="fill" aria-hidden="true" /> : <Pause size={16} weight="fill" aria-hidden="true" />}
+          <button
+            type="button"
+            className={styles.play}
+            onClick={() => setPaused((p) => !p)}
+            aria-label={paused ? "Продолжить анимацию" : "Пауза анимации"}
+          >
+            {paused ? (
+              <PlayIcon size={16} weight="fill" aria-hidden="true" />
+            ) : (
+              <PauseIcon size={16} weight="fill" aria-hidden="true" />
+            )}
           </button>
         )}
       </div>
@@ -433,19 +713,43 @@ function TypingDemo({ scene, file }: { scene: Scene; file: string }) {
 export function LessonVisual({ visual }: { visual: Visual }) {
   switch (visual.kind) {
     case "url":
-      return <Frame title={visual.title} kind="url"><UrlDiagram parts={visual.parts} /></Frame>;
+      return (
+        <Frame title={visual.title} kind="url">
+          <UrlDiagram parts={visual.parts} />
+        </Frame>
+      );
     case "tree":
-      return <Frame title={visual.title} kind="tree"><TreeDiagram items={visual.items} /></Frame>;
+      return (
+        <Frame title={visual.title} kind="tree">
+          <TreeDiagram items={visual.items} />
+        </Frame>
+      );
     case "flow":
-      return <Frame title={visual.title} kind="flow"><FlowDiagram steps={visual.steps} /></Frame>;
+      return (
+        <Frame title={visual.title} kind="flow">
+          <FlowDiagram steps={visual.steps} />
+        </Frame>
+      );
     case "dom":
-      return <Frame title={visual.title} kind="dom"><DomDiagram html={visual.html} /></Frame>;
+      return (
+        <Frame title={visual.title} kind="dom">
+          <DomDiagram html={visual.html} />
+        </Frame>
+      );
     case "typing":
       // Every scene is its own animation; a legacy multi-scene block becomes a stack of them.
       return (
         <>
           {visual.scenes.map((scene, i) => (
-            <Frame key={i} title={visual.scenes.length > 1 ? scene.caption ?? visual.title : visual.title} kind="typing">
+            <Frame
+              key={i}
+              title={
+                visual.scenes.length > 1
+                  ? (scene.caption ?? visual.title)
+                  : visual.title
+              }
+              kind="typing"
+            >
               <TypingDemo scene={scene} file={visual.file ?? "index.html"} />
             </Frame>
           ))}
@@ -455,7 +759,13 @@ export function LessonVisual({ visual }: { visual: Visual }) {
 }
 
 /** Markdown entry point: draws a valid visual, otherwise shows the source as code. */
-export function VisualBlock({ source, fallback }: { source: string; fallback: ReactNode }) {
+export function VisualBlock({
+  source,
+  fallback
+}: {
+  source: string;
+  fallback: ReactNode;
+}) {
   const visual = useMemo(() => parseVisual(source), [source]);
   return visual ? <LessonVisual visual={visual} /> : <>{fallback}</>;
 }

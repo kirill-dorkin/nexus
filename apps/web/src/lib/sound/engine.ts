@@ -18,7 +18,11 @@ import { nextBarAfter } from "./timeline";
  */
 
 export type SoundSettings = { music: boolean; musicVolume: number };
-export type SoundState = { settings: SoundSettings; unlocked: boolean; elsewhere: boolean };
+export type SoundState = {
+  settings: SoundSettings;
+  unlocked: boolean;
+  elsewhere: boolean;
+};
 
 // On by default; playback still waits for the first gesture.
 const DEFAULTS: SoundSettings = { music: true, musicVolume: 0.3 };
@@ -28,13 +32,25 @@ const KEY = `${brand.slug}:sound:v2`;
 let settings: SoundSettings = DEFAULTS;
 let loaded = false;
 const listeners = new Set<() => void>();
-const notify = () => { for (const listener of listeners) listener(); };
+const notify = () => {
+  for (const listener of listeners) listener();
+};
 
 function read(): SoundSettings {
   try {
-    const saved = JSON.parse(localStorage.getItem(KEY) ?? "{}") as Partial<SoundSettings>;
-    const volume = typeof saved.musicVolume === "number" && saved.musicVolume >= 0 && saved.musicVolume <= 1 ? saved.musicVolume : DEFAULTS.musicVolume;
-    return { music: typeof saved.music === "boolean" ? saved.music : DEFAULTS.music, musicVolume: volume };
+    const saved = JSON.parse(
+      localStorage.getItem(KEY) ?? "{}"
+    ) as Partial<SoundSettings>;
+    const volume =
+      typeof saved.musicVolume === "number" &&
+      saved.musicVolume >= 0 &&
+      saved.musicVolume <= 1
+        ? saved.musicVolume
+        : DEFAULTS.musicVolume;
+    return {
+      music: typeof saved.music === "boolean" ? saved.music : DEFAULTS.music,
+      musicVolume: volume
+    };
   } catch {
     return DEFAULTS;
   }
@@ -58,7 +74,9 @@ export function getSoundSettings(): SoundSettings {
 export const getServerSoundSettings = (): SoundSettings => DEFAULTS;
 export function subscribeSound(listener: () => void) {
   listeners.add(listener);
-  return () => { listeners.delete(listener); };
+  return () => {
+    listeners.delete(listener);
+  };
 }
 
 let unlocked = false;
@@ -76,17 +94,29 @@ export function unlockSound() {
   if (first) notify();
 }
 
-let snapshot: SoundState = { settings: DEFAULTS, unlocked: false, elsewhere: false };
+let snapshot: SoundState = {
+  settings: DEFAULTS,
+  unlocked: false,
+  elsewhere: false
+};
 /** Settings, unlock and tab state as one stable snapshot for useSyncExternalStore. */
 export function getSoundState(): SoundState {
   const current = getSoundSettings();
   const elsewhere = music.elsewhere;
-  if (snapshot.settings !== current || snapshot.unlocked !== unlocked || snapshot.elsewhere !== elsewhere) {
+  if (
+    snapshot.settings !== current ||
+    snapshot.unlocked !== unlocked ||
+    snapshot.elsewhere !== elsewhere
+  ) {
     snapshot = { settings: current, unlocked, elsewhere };
   }
   return snapshot;
 }
-const serverState: SoundState = { settings: DEFAULTS, unlocked: false, elsewhere: false };
+const serverState: SoundState = {
+  settings: DEFAULTS,
+  unlocked: false,
+  elsewhere: false
+};
 export const getServerSoundState = () => serverState;
 
 export function updateSound(patch: Partial<SoundSettings>) {
@@ -139,7 +169,10 @@ class Player {
     if (!getSoundSettings().music) return;
     const wasElsewhere = this.elsewhere;
     this.elsewhere = false;
-    this.tabs()?.postMessage({ type: "claim", tab: this.tab } satisfies TabMessage);
+    this.tabs()?.postMessage({
+      type: "claim",
+      tab: this.tab
+    } satisfies TabMessage);
     if (wasElsewhere) notify();
   }
 
@@ -153,9 +186,13 @@ class Player {
   }
 
   private tabs() {
-    if (this.channel || typeof BroadcastChannel === "undefined") return this.channel;
+    if (this.channel || typeof BroadcastChannel === "undefined")
+      return this.channel;
     this.channel = new BroadcastChannel(`${brand.slug}:music`);
-    this.channel.onmessage = (event: MessageEvent<TabMessage>) => {
+    // Another tab may run an older build, so its message is checked, not trusted.
+    this.channel.onmessage = (
+      event: MessageEvent<Partial<TabMessage> | null>
+    ) => {
       if (event.data?.type !== "claim" || event.data.tab === this.tab) return;
       if (!this.elsewhere) {
         this.elsewhere = true;
@@ -168,11 +205,23 @@ class Player {
 
   private setup(): AudioContext | null {
     if (this.ctx) return this.ctx;
-    const Context = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    // Older Safari exposes only the prefixed constructor.
+    const audioWindow = window as unknown as {
+      AudioContext?: typeof AudioContext;
+      webkitAudioContext?: typeof AudioContext;
+    };
+    const Context = audioWindow.AudioContext ?? audioWindow.webkitAudioContext;
     if (!Context) return null;
     // iOS: play through the "playback" session, so the silent switch does not mute the music.
-    const session = (navigator as unknown as { audioSession?: { type: string } }).audioSession;
-    if (session) try { session.type = "playback"; } catch { /* unsupported */ }
+    const session = (
+      navigator as unknown as { audioSession?: { type: string } }
+    ).audioSession;
+    if (session)
+      try {
+        session.type = "playback";
+      } catch {
+        /* unsupported */
+      }
     const ctx = new Context({ latencyHint: "playback" });
     const master = ctx.createGain();
     master.gain.value = 0;
@@ -194,7 +243,8 @@ class Player {
     const now = this.ctx.currentTime;
     const gain = this.master.gain;
     // Hold the level reached so far, then glide to the new one: no jumps mid-fade.
-    if (typeof gain.cancelAndHoldAtTime === "function") gain.cancelAndHoldAtTime(now);
+    if (typeof gain.cancelAndHoldAtTime === "function")
+      gain.cancelAndHoldAtTime(now);
     else {
       gain.cancelScheduledValues(now);
       gain.setValueAtTime(gain.value, now);
@@ -231,11 +281,14 @@ class Player {
     this.retiring = this.band;
     this.band = null;
     // After the fade: release the sources and let the device sleep.
-    this.suspendTimer = window.setTimeout(() => {
-      this.suspendTimer = null;
-      this.retire();
-      if (!this.playing) void ctx.suspend().catch(() => undefined);
-    }, (FADE_OUT + 0.6) * 1000);
+    this.suspendTimer = window.setTimeout(
+      () => {
+        this.suspendTimer = null;
+        this.retire();
+        if (!this.playing) void ctx.suspend().catch(() => undefined);
+      },
+      (FADE_OUT + 0.6) * 1000
+    );
   }
 
   /** Releases the band of the previous playback (its loops and anything still scheduled). */
@@ -254,7 +307,12 @@ class Player {
     const ahead = Band.barSeconds() + LOOKAHEAD_MARGIN;
     // The clock fell behind (a sleeping laptop, a frozen tab): skip to the next bar rather
     // than playing every missed note at once.
-    const resumed = nextBarAfter(this.bar, this.nextBarTime, now, Band.barSeconds());
+    const resumed = nextBarAfter(
+      this.bar,
+      this.nextBarTime,
+      now,
+      Band.barSeconds()
+    );
     this.bar = resumed.bar;
     this.nextBarTime = resumed.time;
     while (this.nextBarTime < now + ahead) {
@@ -268,8 +326,11 @@ class Player {
   private startClock() {
     if (this.clock || this.fallbackTimer !== null) return;
     try {
-      const source = "let t;onmessage=e=>{clearInterval(t);if(e.data>0)t=setInterval(()=>postMessage(0),e.data)}";
-      this.clock = new Worker(URL.createObjectURL(new Blob([source], { type: "text/javascript" })));
+      const source =
+        "let t;onmessage=e=>{clearInterval(t);if(e.data>0)t=setInterval(()=>postMessage(0),e.data)}";
+      this.clock = new Worker(
+        URL.createObjectURL(new Blob([source], { type: "text/javascript" }))
+      );
       this.clock.onmessage = () => this.tick();
       this.clock.postMessage(TICK_MS);
     } catch {

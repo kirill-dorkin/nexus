@@ -7,19 +7,31 @@ import { runInWindow } from "./runner-harness.test-utils";
 
 describe("guardLoops", () => {
   it("guards braced for, while and do bodies", () => {
-    expect(guardLoops("for (let i = 0; i < 3; i++) { x(); }")).toBe("for (let i = 0; i < 3; i++) {if(__loopGuard())break; x(); }");
-    expect(guardLoops("while (a) {b()}")).toBe("while (a) {if(__loopGuard())break;b()}");
-    expect(guardLoops("do { n++ } while (n < 3);")).toBe("do {if(__loopGuard())break; n++ } while (n < 3);");
+    expect(guardLoops("for (let i = 0; i < 3; i++) { x(); }")).toBe(
+      "for (let i = 0; i < 3; i++) {if(__loopGuard())break; x(); }"
+    );
+    expect(guardLoops("while (a) {b()}")).toBe(
+      "while (a) {if(__loopGuard())break;b()}"
+    );
+    expect(guardLoops("do { n++ } while (n < 3);")).toBe(
+      "do {if(__loopGuard())break; n++ } while (n < 3);"
+    );
   });
   it("leaves strings, comments, identifiers and brace-less loops alone", () => {
-    const code = 'const format = "for (;;) {"; // while (1) {\nfor (const x of xs) f(x); doIt();';
+    const code =
+      'const format = "for (;;) {"; // while (1) {\nfor (const x of xs) f(x); doIt();';
     expect(guardLoops(code)).toBe(code);
   });
 });
 
 describe("runner sandbox", () => {
   it("closes the network and never asks for same-origin", () => {
-    const doc = runnerDocument({ code: "1", lang: "js", mode: "preview", token: "t" });
+    const doc = runnerDocument({
+      code: "1",
+      lang: "js",
+      mode: "preview",
+      token: "t"
+    });
     expect(doc).toContain("default-src 'none'");
     expect(doc).not.toMatch(/allow-same-origin/);
   });
@@ -32,7 +44,9 @@ describe("runner sandbox", () => {
       checks: [
         { log: "привет [1, 2] { a: 1 }" },
         { js: "count === 0" },
-        { js: '(document.querySelector("#add").click(), document.querySelector("#n").textContent === "1")' },
+        {
+          js: '(document.querySelector("#add").click(), document.querySelector("#n").textContent === "1")'
+        },
         { js: "await wait(10) || true" },
         { log: "нет такого" }
       ]
@@ -44,10 +58,16 @@ describe("runner sandbox", () => {
   it("serves the offline teaching API to fetch()", async () => {
     const { results } = await runInWindow({
       lang: "js",
-      code: 'async function load() { const res = await fetch("/api/menu"); window.menu = await res.json(); }\nload();',
-      checks: [{ js: "await wait(200) || window.menu.length === 6" }]
+      code: 'async function load() {\n  window.products = await (await fetch("/api/products")).json();\n  window.user = await (await fetch("/api/users/2")).json();\n  window.missing = (await fetch("/api/todos/99")).status;\n  window.created = await (await fetch("/api/todos", { method: "POST", body: JSON.stringify({ title: "x" }) })).json();\n  window.legacy = await (await fetch("/api/menu")).json();\n}\nload();',
+      checks: [
+        {
+          js: 'await wait(600) || (window.products.length === 6 && window.user.name === "Борис" && window.missing === 404 && window.created.id === 101 && window.created.title === "x")'
+        },
+        { js: "window.legacy.length === 6" }
+      ]
     });
-    expect(results).toEqual([true]);
+    // /api/menu stays for course versions published before the neutral rewrite.
+    expect(results).toEqual([true, true]);
   });
 
   it("stops an endless loop instead of freezing, and reports the error", async () => {
@@ -57,40 +77,105 @@ describe("runner sandbox", () => {
       checks: [{ js: "window.after === true" }]
     });
     expect(results).toEqual([false]);
-    expect(logs.some((l) => l.level === "error" && /бесконечный/.test(l.text))).toBe(true);
+    expect(
+      logs.some((l) => l.level === "error" && l.text.includes("бесконечный"))
+    ).toBe(true);
   }, 10000);
 });
 
 describe("checker isolation", () => {
   it("lets check expressions call learner globals named like checker internals", async () => {
-    const { results } = await runInWindow({ lang: "js", code: "function has(x) { return x === 1; }\nconst logs = 7, norm = 8, r = 9;", checks: [{ js: "has(1) && logs === 7 && norm === 8 && r === 9" }] });
+    const { results } = await runInWindow({
+      lang: "js",
+      code: "function has(x) { return x === 1; }\nconst logs = 7, norm = 8, r = 9;",
+      checks: [{ js: "has(1) && logs === 7 && norm === 8 && r === 9" }]
+    });
     expect(results).toEqual([true]);
   });
 });
 
 describe("module examples", () => {
   it("run as a module when asked, so concept cards may use top-level await", () => {
-    expect(runnerDocument({ code: "await wait(1);", lang: "js", mode: "preview", token: "t", module: true })).toContain('<script type="module">');
-    expect(runnerDocument({ code: "1", lang: "js", mode: "check", token: "t" })).not.toContain('type="module"');
+    expect(
+      runnerDocument({
+        code: "await wait(1);",
+        lang: "js",
+        mode: "preview",
+        token: "t",
+        module: true
+      })
+    ).toContain('<script type="module">');
+    expect(
+      runnerDocument({ code: "1", lang: "js", mode: "check", token: "t" })
+    ).not.toContain('type="module"');
   });
 });
 
 describe("runnable challenge specs", () => {
   const base = { title: "t", task: "x", start: "", solution: "" };
   it("accepts js and log checks, a js language and a fixed page", () => {
-    expect(parseChallenge(JSON.stringify({ ...base, lang: "js", page: "<p></p>", checks: [{ label: "a", js: "1 === 1" }, { label: "b", log: "hi" }] }))).not.toBeNull();
+    expect(
+      parseChallenge(
+        JSON.stringify({
+          ...base,
+          lang: "js",
+          page: "<p></p>",
+          checks: [
+            { label: "a", js: "1 === 1" },
+            { label: "b", log: "hi" }
+          ]
+        })
+      )
+    ).not.toBeNull();
   });
   it("rejects a page without js, a script terminator in a check and mixed check kinds", () => {
-    expect(parseChallenge(JSON.stringify({ ...base, page: "<p></p>", checks: [{ label: "a", js: "1" }] }))).toBeNull();
-    expect(parseChallenge(JSON.stringify({ ...base, lang: "js", checks: [{ label: "a", js: "'</script>'" }] }))).toBeNull();
-    expect(parseChallenge(JSON.stringify({ ...base, lang: "js", checks: [{ label: "a", js: "1", log: "x" }] }))).toBeNull();
+    expect(
+      parseChallenge(
+        JSON.stringify({
+          ...base,
+          page: "<p></p>",
+          checks: [{ label: "a", js: "1" }]
+        })
+      )
+    ).toBeNull();
+    expect(
+      parseChallenge(
+        JSON.stringify({
+          ...base,
+          lang: "js",
+          checks: [{ label: "a", js: "'</script>'" }]
+        })
+      )
+    ).toBeNull();
+    expect(
+      parseChallenge(
+        JSON.stringify({
+          ...base,
+          lang: "js",
+          checks: [{ label: "a", js: "1", log: "x" }]
+        })
+      )
+    ).toBeNull();
   });
 });
 
 describe("JavaScript concept cards", () => {
-  const card = { name: "querySelector()", title: "t", what: "w", why: "y", how: "1", kind: "method", show: 80 };
+  const card = {
+    name: "querySelector()",
+    title: "t",
+    what: "w",
+    why: "y",
+    how: "1",
+    kind: "method",
+    show: 80
+  };
   it("accept a fixed page only for JavaScript examples", () => {
-    expect(parseConcept(JSON.stringify({ ...card, lang: "js", page: "<p>x</p>" }))?.page).toBe("<p>x</p>");
-    expect(parseConcept(JSON.stringify({ ...card, page: "<p>x</p>" }))).toBeNull();
+    expect(
+      parseConcept(JSON.stringify({ ...card, lang: "js", page: "<p>x</p>" }))
+        ?.page
+    ).toBe("<p>x</p>");
+    expect(
+      parseConcept(JSON.stringify({ ...card, page: "<p>x</p>" }))
+    ).toBeNull();
   });
 });

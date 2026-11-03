@@ -55,10 +55,7 @@ const chapters = [
 
 const challenges = {};
 const recaps = {};
-const course = createCourse(challenges, {}, recaps, {
-  premise: "Курс-история: ты оживляешь сайт кофейни «Зерно»",
-  cast: ["marta", "bro", "nika", "bug", "lev"]
-});
+const course = createCourse(challenges, {}, recaps);
 for (const [chapter, parts] of chapters) {
   course.chapter(chapter);
   for (const part of parts) part(course, challenges, recaps);
@@ -66,10 +63,27 @@ for (const [chapter, parts] of chapters) {
 
 const manifest = course.manifest({
   slug: "js",
-  title: "JavaScript с нуля: живой сайт кофейни",
+  title: "JavaScript с нуля",
   description:
-    "Курс-история: сайт кофейни «Зерно» красивый, но мёртвый — кнопки не нажимаются, корзина не считает. Вместе с наставницей Никой ты оживляешь его и побеждаешь Вредного Скрипта. Весь практический JavaScript — переменные, условия, функции, массивы и объекты, DOM и события, формы, асинхронность и fetch — с живыми примерами, консолью и заданиями с мгновенной проверкой прямо в браузере."
+    "Весь JavaScript — от первой строки до каждой возможности языка. Первая часть учит программировать: переменные, условия, функции, массивы и объекты, DOM и события, формы, асинхронность и fetch. Вторая — разбирает язык целиком: синтаксис, все встроенные объекты и их методы, регулярные выражения, Intl, бинарные данные. Каждая конструкция — карточка с живым примером, каждое задание проверяется прямо в браузере."
 });
+
+// The lesson banner names only the characters who actually speak in that lesson.
+const FENCE = "```";
+for (const lesson of manifest.lessons) {
+  const cast = new Set();
+  for (const block of lesson.blocks) {
+    if (block.type !== "markdown") continue;
+    for (const [, body] of block.markdown.matchAll(new RegExp(FENCE + "story\\n([\\s\\S]*?)\\n" + FENCE, "g")))
+      for (const [who] of JSON.parse(body).lines) if (who !== "you") cast.add(who);
+  }
+  const list = cast.size ? [...cast] : ["bro", "nika"];
+  for (const block of lesson.blocks) {
+    if (block.type !== "markdown") continue;
+    block.markdown = block.markdown.replace(new RegExp(FENCE + "recap\\n(.*)\\n" + FENCE), (_, json) =>
+      `${FENCE}recap\n${JSON.stringify({ ...JSON.parse(json), cast: list })}\n${FENCE}`);
+  }
+}
 writeFileSync(new URL("../js-track.manifest.json", import.meta.url), JSON.stringify(manifest, null, 2) + "\n");
 const minutes = manifest.lessons.reduce((sum, l) => sum + l.durationMinutes, 0);
 console.log(`lessons=${manifest.lessons.length} activities=${manifest.activities.length} hours=${(minutes / 60).toFixed(1)}`);

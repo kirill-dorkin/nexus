@@ -47,7 +47,9 @@ describe("learning loop contracts", () => {
 
   it("separates starting an attempt from committing its immutable submission", () => {
     expect(startAttemptRequestSchema.parse({})).toEqual({});
-    expect(startAttemptRequestSchema.safeParse({ payload: {} }).success).toBe(false);
+    expect(startAttemptRequestSchema.safeParse({ payload: {} }).success).toBe(
+      false
+    );
 
     expect(
       createSubmissionRequestSchema.parse({

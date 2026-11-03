@@ -33,23 +33,55 @@ import { LearningProgressController } from "./learning-progress.controller";
 import { MasteryController } from "./mastery.controller";
 
 @Module({
-  imports: [IdentityModule, AuthorizationModule, OutboxModule, LearningContentModule, LearningDeliveryModule, LearningHistoryModule],
-  controllers: [LearningProgressController, MasteryController, LearnerSkillProgressController],
+  imports: [
+    IdentityModule,
+    AuthorizationModule,
+    OutboxModule,
+    LearningContentModule,
+    LearningDeliveryModule,
+    LearningHistoryModule
+  ],
+  controllers: [
+    LearningProgressController,
+    MasteryController,
+    LearnerSkillProgressController
+  ],
   providers: [
-    { provide: QuizSubmissionCommand, useExisting: LearningProgressApplicationService },
-    { provide: CourseActivityProgressQuery, useClass: PostgresCourseActivityProgressQuery },
+    {
+      provide: QuizSubmissionCommand,
+      useExisting: LearningProgressApplicationService
+    },
+    {
+      provide: CourseActivityProgressQuery,
+      useClass: PostgresCourseActivityProgressQuery
+    },
     LearningProgressApplicationService,
     AttemptGuidanceReader,
     MasteryApplicationService,
     LearnerSkillProgressApplicationService,
     TrustedValidationEvidenceApplicationService,
-    { provide: LearningProgressQuery, useExisting: LearningProgressApplicationService },
+    {
+      provide: LearningProgressQuery,
+      useExisting: LearningProgressApplicationService
+    },
     { provide: AttemptGuidanceQuery, useExisting: AttemptGuidanceReader },
-    { provide: TrustedValidationEvidenceSink, useExisting: TrustedValidationEvidenceApplicationService },
-    { provide: TrustedValidationEvidenceQuery, useClass: PostgresTrustedValidationEvidenceQuery },
-    { provide: ReadinessEvidenceQuery, useClass: PostgresReadinessEvidenceQuery },
+    {
+      provide: TrustedValidationEvidenceSink,
+      useExisting: TrustedValidationEvidenceApplicationService
+    },
+    {
+      provide: TrustedValidationEvidenceQuery,
+      useClass: PostgresTrustedValidationEvidenceQuery
+    },
+    {
+      provide: ReadinessEvidenceQuery,
+      useClass: PostgresReadinessEvidenceQuery
+    },
     { provide: MasteryQuery, useExisting: MasteryApplicationService },
-    { provide: LearningProgressRepository, useClass: PostgresLearningProgressRepository },
+    {
+      provide: LearningProgressRepository,
+      useClass: PostgresLearningProgressRepository
+    },
     { provide: MasteryRepository, useClass: PostgresMasteryRepository }
   ],
   exports: [

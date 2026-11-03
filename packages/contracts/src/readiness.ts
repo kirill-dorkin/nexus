@@ -41,15 +41,15 @@ export const masteryBelowTargetReasonSchema = z.object({
 
 export const scoredEvidenceStaleReasonSchema = z.object({
   code: z.literal("scored_evidence_stale"),
-  lastScoredEvidenceAt: z.string().datetime(),
-  freshUntil: z.string().datetime()
+  lastScoredEvidenceAt: z.iso.datetime(),
+  freshUntil: z.iso.datetime()
 });
 
 export const activeRepeatedTrustedFailureReasonSchema = z.object({
   code: z.literal("active_repeated_trusted_failure"),
   consecutiveFailureCount: z.number().int().min(2),
-  firstObservedAt: z.string().datetime(),
-  lastObservedAt: z.string().datetime()
+  firstObservedAt: z.iso.datetime(),
+  lastObservedAt: z.iso.datetime()
 });
 
 export const readinessNotReadyReasonSchema = z.discriminatedUnion("code", [
@@ -77,8 +77,8 @@ export const readinessSkillDecisionSchema = z.discriminatedUnion("status", [
     status: z.literal("insufficient_evidence"),
     masteryScore: z.number().min(0).max(1).nullable(),
     scoredAttemptCount: z.number().int().nonnegative(),
-    lastScoredEvidenceAt: z.string().datetime().nullable(),
-    freshUntil: z.string().datetime().nullable(),
+    lastScoredEvidenceAt: z.iso.datetime().nullable(),
+    freshUntil: z.iso.datetime().nullable(),
     reasons: z.array(insufficientScoredAttemptsReasonSchema).min(1)
   }),
   z.object({
@@ -86,8 +86,8 @@ export const readinessSkillDecisionSchema = z.discriminatedUnion("status", [
     status: z.literal("not_ready"),
     masteryScore: z.number().min(0).max(1),
     scoredAttemptCount: z.number().int().positive(),
-    lastScoredEvidenceAt: z.string().datetime(),
-    freshUntil: z.string().datetime(),
+    lastScoredEvidenceAt: z.iso.datetime(),
+    freshUntil: z.iso.datetime(),
     reasons: z.array(readinessNotReadyReasonSchema).min(1)
   }),
   z.object({
@@ -95,8 +95,8 @@ export const readinessSkillDecisionSchema = z.discriminatedUnion("status", [
     status: z.literal("ready"),
     masteryScore: z.number().min(0).max(1),
     scoredAttemptCount: z.number().int().positive(),
-    lastScoredEvidenceAt: z.string().datetime(),
-    freshUntil: z.string().datetime(),
+    lastScoredEvidenceAt: z.iso.datetime(),
+    freshUntil: z.iso.datetime(),
     reasons: z.tuple([])
   })
 ]);
@@ -111,7 +111,9 @@ function validateReadinessOutcome(
   value: ReadinessOutcome,
   context: z.RefinementCtx
 ): void {
-  const hasNotReady = value.skills.some((skill) => skill.status === "not_ready");
+  const hasNotReady = value.skills.some(
+    (skill) => skill.status === "not_ready"
+  );
   const hasInsufficient = value.skills.some(
     (skill) => skill.status === "insufficient_evidence"
   );
@@ -159,10 +161,10 @@ export const courseReadinessDecisionSchema = z
     enrollmentId: uuidSchema,
     offeringId: uuidSchema,
     courseVersionId: uuidSchema,
-    evaluatedAt: z.string().datetime(),
+    evaluatedAt: z.iso.datetime(),
     policy: readinessPolicySchema,
     status: readinessStatusSchema,
-    readyUntil: z.string().datetime().nullable(),
+    readyUntil: z.iso.datetime().nullable(),
     skills: z.array(readinessSkillDecisionSchema).min(1)
   })
   .superRefine(validateReadinessOutcome);
@@ -181,9 +183,9 @@ export const offeringReadinessLearnerSchema = z
   .object({
     enrollmentId: uuidSchema,
     learnerUserId: uuidSchema,
-    enrolledAt: z.string().datetime(),
+    enrolledAt: z.iso.datetime(),
     status: readinessStatusSchema,
-    readyUntil: z.string().datetime().nullable(),
+    readyUntil: z.iso.datetime().nullable(),
     skills: z.array(readinessSkillDecisionSchema).min(1)
   })
   .superRefine(validateReadinessOutcome);
@@ -203,7 +205,8 @@ export const offeringReadinessSummarySchema = z
     ) {
       context.addIssue({
         code: "custom",
-        message: "readiness summary status counts must equal active enrollment count"
+        message:
+          "readiness summary status counts must equal active enrollment count"
       });
     }
     if (
@@ -223,7 +226,7 @@ export const offeringReadinessOverviewSchema = z
     organizationId: uuidSchema,
     offeringId: uuidSchema,
     courseVersionId: uuidSchema,
-    evaluatedAt: z.string().datetime(),
+    evaluatedAt: z.iso.datetime(),
     policy: readinessPolicySchema,
     triagePolicy: offeringReadinessTriagePolicySchema,
     summary: offeringReadinessSummarySchema,
@@ -239,16 +242,19 @@ export const offeringReadinessOverviewSchema = z
     }
 
     const actual = {
-      not_ready: value.learners.filter((learner) => learner.status === "not_ready")
-        .length,
+      not_ready: value.learners.filter(
+        (learner) => learner.status === "not_ready"
+      ).length,
       insufficient_evidence: value.learners.filter(
         (learner) => learner.status === "insufficient_evidence"
       ).length,
-      ready: value.learners.filter((learner) => learner.status === "ready").length
+      ready: value.learners.filter((learner) => learner.status === "ready")
+        .length
     };
     if (
       actual.not_ready !== value.summary.notReadyCount ||
-      actual.insufficient_evidence !== value.summary.insufficientEvidenceCount ||
+      actual.insufficient_evidence !==
+        value.summary.insufficientEvidenceCount ||
       actual.ready !== value.summary.readyCount
     ) {
       context.addIssue({
@@ -287,8 +293,12 @@ export const offeringReadinessOverviewSchema = z
 export type ReadinessPolicy = z.infer<typeof readinessPolicySchema>;
 export type ReadinessStatus = z.infer<typeof readinessStatusSchema>;
 export type ReadinessSkillReason = z.infer<typeof readinessSkillReasonSchema>;
-export type ReadinessSkillDecision = z.infer<typeof readinessSkillDecisionSchema>;
-export type CourseReadinessDecision = z.infer<typeof courseReadinessDecisionSchema>;
+export type ReadinessSkillDecision = z.infer<
+  typeof readinessSkillDecisionSchema
+>;
+export type CourseReadinessDecision = z.infer<
+  typeof courseReadinessDecisionSchema
+>;
 export type OfferingReadinessTriagePolicy = z.infer<
   typeof offeringReadinessTriagePolicySchema
 >;

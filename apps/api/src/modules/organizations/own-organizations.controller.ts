@@ -40,7 +40,7 @@ export class OwnOrganizationsController {
         ).rows;
         return ownOrganizationsSchema.parse({
           organizations: rows.slice(0, 100),
-          nextCursor: rows.length > 100 ? rows[99]!.id : null
+          nextCursor: rows.length > 100 ? (rows[99]?.id ?? null) : null
         });
       },
       { readOnly: true }

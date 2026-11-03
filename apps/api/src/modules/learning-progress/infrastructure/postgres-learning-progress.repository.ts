@@ -125,7 +125,9 @@ function mapEvidence(row: EvidenceRow): Evidence {
       row.recorded_by_user_id !== null ||
       row.source_validation_result_id === null
     ) {
-      throw new Error("PostgreSQL returned invalid validation Evidence provenance.");
+      throw new Error(
+        "PostgreSQL returned invalid validation Evidence provenance."
+      );
     }
 
     return {
@@ -390,7 +392,9 @@ export class PostgresLearningProgressRepository extends LearningProgressReposito
       evidence.sourceType !== "validation_result" ||
       evidence.sourceValidationResultId === null
     ) {
-      throw new Error("Validation Evidence requires ValidationResult provenance.");
+      throw new Error(
+        "Validation Evidence requires ValidationResult provenance."
+      );
     }
 
     const inserted = await transaction.client.query<EvidenceRow>(
@@ -434,7 +438,9 @@ export class PostgresLearningProgressRepository extends LearningProgressReposito
     );
     const existingRow = existing.rows[0];
     if (existingRow === undefined) {
-      throw new Error("PostgreSQL did not return idempotent validation Evidence.");
+      throw new Error(
+        "PostgreSQL did not return idempotent validation Evidence."
+      );
     }
     return { evidence: mapEvidence(existingRow), created: false };
   }

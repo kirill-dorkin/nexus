@@ -54,7 +54,7 @@ function close(server: Server): Promise<void> {
 }
 
 describe("Worker -> Grader Gateway transport", () => {
-  const cleanup: Array<() => Promise<void>> = [];
+  const cleanup: (() => Promise<void>)[] = [];
 
   afterEach(async () => {
     while (cleanup.length > 0) {
@@ -73,12 +73,21 @@ describe("Worker -> Grader Gateway transport", () => {
         }
         if (incoming.headers.authorization !== `Bearer ${serviceToken}`) {
           response.writeHead(401, { "content-type": "application/json" });
-          response.end(JSON.stringify({ error: { code: "service_authentication_required" } }));
+          response.end(
+            JSON.stringify({
+              error: { code: "service_authentication_required" }
+            })
+          );
           return;
         }
-        if (incoming.headers[GRADER_PROFILE_FINGERPRINT_HEADER] !== profileFingerprint) {
+        if (
+          incoming.headers[GRADER_PROFILE_FINGERPRINT_HEADER] !==
+          profileFingerprint
+        ) {
           response.writeHead(400, { "content-type": "application/json" });
-          response.end(JSON.stringify({ error: { code: "profile_fingerprint_required" } }));
+          response.end(
+            JSON.stringify({ error: { code: "profile_fingerprint_required" } })
+          );
           return;
         }
         const body = await readJsonBody(incoming);
@@ -106,7 +115,9 @@ describe("Worker -> Grader Gateway transport", () => {
       serviceToken,
       timeoutMs: 5_000
     });
-    await expect(client.dispatch(persisted, profileFingerprint)).resolves.toEqual({
+    await expect(
+      client.dispatch(persisted, profileFingerprint)
+    ).resolves.toEqual({
       protocolVersion: 1,
       jobId: persisted.jobId,
       status: "completed",
@@ -121,7 +132,9 @@ describe("Worker -> Grader Gateway transport", () => {
       serviceToken: "wrong-service-token-that-is-still-long-enough",
       timeoutMs: 5_000
     });
-    await expect(untrusted.dispatch(persisted, profileFingerprint)).rejects.toMatchObject({
+    await expect(
+      untrusted.dispatch(persisted, profileFingerprint)
+    ).rejects.toMatchObject({
       name: "GraderGatewayDispatchError",
       code: "gateway_http_401",
       retryable: true
@@ -144,7 +157,9 @@ describe("Worker -> Grader Gateway transport", () => {
       serviceToken,
       timeoutMs: 5_000
     });
-    await expect(client.dispatch(persisted, "not-a-fingerprint")).rejects.toMatchObject({
+    await expect(
+      client.dispatch(persisted, "not-a-fingerprint")
+    ).rejects.toMatchObject({
       name: "GraderGatewayDispatchError",
       code: "persisted_profile_fingerprint_invalid",
       retryable: false
@@ -157,7 +172,9 @@ describe("Worker -> Grader Gateway transport", () => {
     const server = createServer(async (incoming, response) => {
       try {
         expect(incoming.headers.authorization).toBe(`Bearer ${serviceToken}`);
-        expect(incoming.headers[GRADER_PROFILE_FINGERPRINT_HEADER]).toBe(profileFingerprint);
+        expect(incoming.headers[GRADER_PROFILE_FINGERPRINT_HEADER]).toBe(
+          profileFingerprint
+        );
         expect(await readJsonBody(incoming)).toEqual(persisted);
         response.writeHead(200, { "content-type": "application/json" });
         response.end(
@@ -183,7 +200,9 @@ describe("Worker -> Grader Gateway transport", () => {
       timeoutMs: 5_000
     });
 
-    await expect(client.dispatch(persisted, profileFingerprint)).rejects.toEqual(
+    await expect(
+      client.dispatch(persisted, profileFingerprint)
+    ).rejects.toEqual(
       expect.objectContaining<Partial<GraderGatewayDispatchError>>({
         name: "GraderGatewayDispatchError",
         code: "gateway_protocol_error",

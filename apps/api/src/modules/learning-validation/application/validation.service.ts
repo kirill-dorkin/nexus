@@ -40,7 +40,14 @@ function canonicalJson(value: unknown): string {
       .map((key) => `${JSON.stringify(key)}:${canonicalJson(object[key])}`);
     return `{${entries.join(",")}}`;
   }
-  return JSON.stringify(value) ?? "null";
+  // JSON.stringify yields undefined (despite its typing) for these values.
+  if (
+    value === undefined ||
+    typeof value === "function" ||
+    typeof value === "symbol"
+  )
+    return "null";
+  return JSON.stringify(value);
 }
 
 function materiallyMatches(
@@ -53,7 +60,8 @@ function materiallyMatches(
     existing.activityVersionId === requested.activityVersionId &&
     existing.validatorKey === requested.validatorKey &&
     existing.validatorVersion === requested.validatorVersion &&
-    canonicalJson(existing.validatorConfig) === canonicalJson(requested.validatorConfig) &&
+    canonicalJson(existing.validatorConfig) ===
+      canonicalJson(requested.validatorConfig) &&
     existing.idempotencyKey === requested.idempotencyKey &&
     existing.status === requested.status &&
     existing.outcome === requested.outcome &&
@@ -98,11 +106,12 @@ export class ValidationApplicationService {
       async (transaction): Promise<RecordedValidation> => {
         await this.identity.requireActiveUser(transaction, context.userId);
 
-        const submissionContext = await this.progress.requireSubmissionForValidation(
-          transaction,
-          organizationId,
-          submissionId
-        );
+        const submissionContext =
+          await this.progress.requireSubmissionForValidation(
+            transaction,
+            organizationId,
+            submissionId
+          );
 
         await this.authorization.requireCapability(
           transaction,
@@ -116,9 +125,13 @@ export class ValidationApplicationService {
           organizationId,
           submissionContext.attempt.activityVersionId
         );
-        const configured = activityValidationConfigSchema.safeParse(activity.config);
+        const configured = activityValidationConfigSchema.safeParse(
+          activity.config
+        );
         if (!configured.success) {
-          throw new ConflictException("Activity has no valid validation binding.");
+          throw new ConflictException(
+            "Activity has no valid validation binding."
+          );
         }
 
         const binding = configured.data.validation;
@@ -127,7 +140,9 @@ export class ValidationApplicationService {
           binding.validatorVersion
         );
         if (definition === null) {
-          throw new ConflictException("Configured validator version is not registered.");
+          throw new ConflictException(
+            "Configured validator version is not registered."
+          );
         }
         if (definition.recordingAuthority !== "authorized_user") {
           throw new ConflictException(
@@ -152,7 +167,10 @@ export class ValidationApplicationService {
           recordedByUserId: context.userId
         };
 
-        const persisted = await this.validation.createOrFind(transaction, requested);
+        const persisted = await this.validation.createOrFind(
+          transaction,
+          requested
+        );
         if (!persisted.created) {
           if (!materiallyMatches(persisted.result, requested)) {
             throw new ConflictException(

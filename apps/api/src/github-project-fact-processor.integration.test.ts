@@ -10,7 +10,9 @@ import { PostgresGitHubProjectFactsRepository } from "./modules/projects/infrast
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for GitHub Project-fact integration tests.`);
+    throw new Error(
+      `${name} is required for GitHub Project-fact integration tests.`
+    );
   }
   return value;
 }
@@ -79,10 +81,14 @@ describe("GitHub Project fact processor", () => {
       `INSERT INTO identity.users (email, display_name)
        VALUES ($1, $2)
        RETURNING id::text`,
-      [`project-fact-${label}-${randomUUID()}@example.test`, `Project fact ${label}`]
+      [
+        `project-fact-${label}-${randomUUID()}@example.test`,
+        `Project fact ${label}`
+      ]
     );
     const userId = user.rows[0]?.id;
-    if (userId === undefined) throw new Error("Failed to create Project-fact test user.");
+    if (userId === undefined)
+      throw new Error("Failed to create Project-fact test user.");
 
     const organization = await migrationPool.query<IdRow>(
       `INSERT INTO organizations.organizations (slug, name, created_by_user_id)
@@ -91,7 +97,8 @@ describe("GitHub Project fact processor", () => {
       [`project-fact-${label}-${randomUUID()}`, `Project fact ${label}`, userId]
     );
     const organizationId = organization.rows[0]?.id;
-    if (organizationId === undefined) throw new Error("Failed to create Project-fact organization.");
+    if (organizationId === undefined)
+      throw new Error("Failed to create Project-fact organization.");
     organizationIds.push(organizationId);
 
     await migrationPool.query(
@@ -113,10 +120,16 @@ describe("GitHub Project fact processor", () => {
          organization_id, github_installation_id, github_repository_id, full_name, status
        ) VALUES ($1, $2, $3, $4, 'active')
        RETURNING id::text`,
-      [organizationId, installationId, repositoryId, `project-fact-${label}/repository`]
+      [
+        organizationId,
+        installationId,
+        repositoryId,
+        `project-fact-${label}/repository`
+      ]
     );
     const repositoryMappingId = repository.rows[0]?.id;
-    if (repositoryMappingId === undefined) throw new Error("Failed to create repository mapping.");
+    if (repositoryMappingId === undefined)
+      throw new Error("Failed to create repository mapping.");
 
     const team = await migrationPool.query<IdRow>(
       `INSERT INTO projects.teams (organization_id, name, created_by_user_id)
@@ -125,7 +138,8 @@ describe("GitHub Project fact processor", () => {
       [organizationId, `Team ${label}`, userId]
     );
     const teamId = team.rows[0]?.id;
-    if (teamId === undefined) throw new Error("Failed to create Project-fact team.");
+    if (teamId === undefined)
+      throw new Error("Failed to create Project-fact team.");
 
     const project = await migrationPool.query<IdRow>(
       `INSERT INTO projects.projects (
@@ -135,7 +149,8 @@ describe("GitHub Project fact processor", () => {
       [organizationId, teamId, `Project ${label}`, userId]
     );
     const projectId = project.rows[0]?.id;
-    if (projectId === undefined) throw new Error("Failed to create Project-fact project.");
+    if (projectId === undefined)
+      throw new Error("Failed to create Project-fact project.");
 
     let bindingId: string | null = null;
     if (bind) {
@@ -151,7 +166,8 @@ describe("GitHub Project fact processor", () => {
         [organizationId, projectId, repositoryMappingId, userId]
       );
       bindingId = binding.rows[0]?.id ?? null;
-      if (bindingId === null) throw new Error("Failed to create repository binding.");
+      if (bindingId === null)
+        throw new Error("Failed to create repository binding.");
     }
 
     return {
@@ -168,7 +184,8 @@ describe("GitHub Project fact processor", () => {
   async function insertDelivery(
     fixture: Fixture,
     input: Readonly<{
-      eventName: "pull_request" | "pull_request_review" | "check_run" | "check_suite";
+      eventName:
+        "pull_request" | "pull_request_review" | "check_run" | "check_suite";
       action: string;
       payload: Readonly<Record<string, unknown>>;
       routingStatus?: "mapped" | "unmapped_repository";
@@ -206,7 +223,8 @@ describe("GitHub Project fact processor", () => {
       ]
     );
     const inboxId = row.rows[0]?.id;
-    if (inboxId === undefined) throw new Error("Failed to insert GitHub Project-fact delivery.");
+    if (inboxId === undefined)
+      throw new Error("Failed to insert GitHub Project-fact delivery.");
     return inboxId;
   }
 
@@ -262,7 +280,8 @@ describe("GitHub Project fact processor", () => {
       [inboxId]
     );
     const row = result.rows[0];
-    if (row === undefined) throw new Error("Project-fact processing state not found.");
+    if (row === undefined)
+      throw new Error("Project-fact processing state not found.");
     return row;
   }
 
@@ -336,7 +355,7 @@ describe("GitHub Project fact processor", () => {
       })
     ];
 
-    for (let index = 0; index < inboxIds.length; index += 1) {
+    for (const _inboxId of inboxIds) {
       expect(await processor.processOne()).toBe(true);
     }
 
@@ -375,16 +394,31 @@ describe("GitHub Project fact processor", () => {
 
     expect(facts.rows).toHaveLength(4);
     expect(new Set(facts.rows.map((fact) => fact.fact_type))).toEqual(
-      new Set(["pull_request", "pull_request_review", "check_run", "check_suite"])
+      new Set([
+        "pull_request",
+        "pull_request_review",
+        "check_run",
+        "check_suite"
+      ])
     );
-    expect(facts.rows.every((fact) => fact.project_id === fixture.projectId)).toBe(true);
-    expect(facts.rows.every((fact) => fact.repository_binding_id === fixture.bindingId)).toBe(true);
-    expect(facts.rows.find((fact) => fact.fact_type === "pull_request_review")).toMatchObject({
+    expect(
+      facts.rows.every((fact) => fact.project_id === fixture.projectId)
+    ).toBe(true);
+    expect(
+      facts.rows.every(
+        (fact) => fact.repository_binding_id === fixture.bindingId
+      )
+    ).toBe(true);
+    expect(
+      facts.rows.find((fact) => fact.fact_type === "pull_request_review")
+    ).toMatchObject({
       github_pull_request_number: 42,
       state: "approved",
       commit_sha: commitSha
     });
-    expect(facts.rows.find((fact) => fact.fact_type === "check_run")).toMatchObject({
+    expect(
+      facts.rows.find((fact) => fact.fact_type === "check_run")
+    ).toMatchObject({
       status: "completed",
       conclusion: "success",
       head_sha: checkSha
@@ -528,8 +562,12 @@ describe("GitHub Project fact processor", () => {
     );
     expect(beforeRetry.rows[0]?.count).toBe("0");
 
-    await migrationPool.query(`DROP TRIGGER ${triggerName} ON projects.github_project_facts`);
-    await migrationPool.query(`DROP FUNCTION platform_internal.${functionName}()`);
+    await migrationPool.query(
+      `DROP TRIGGER ${triggerName} ON projects.github_project_facts`
+    );
+    await migrationPool.query(
+      `DROP FUNCTION platform_internal.${functionName}()`
+    );
     await migrationPool.query(
       `UPDATE integrations.github_webhook_project_fact_processing
        SET available_at = now()

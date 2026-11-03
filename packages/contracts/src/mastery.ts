@@ -17,8 +17,8 @@ export const masteryProjectionSchema = z.object({
   masteryScore: z.number().min(0).max(1).nullable(),
   evidenceCount: z.number().int().positive(),
   scoredEvidenceCount: z.number().int().nonnegative(),
-  lastEvidenceAt: z.string().datetime(),
-  computedAt: z.string().datetime()
+  lastEvidenceAt: z.iso.datetime(),
+  computedAt: z.iso.datetime()
 });
 
 export const masteryRecomputeResultSchema = z.object({
@@ -49,7 +49,7 @@ export const learnerSkillProgressSchema = z
       masteryScore: z.null(),
       evidenceCount: z.number().int().positive(),
       scoredEvidenceCount: z.literal(0),
-      lastEvidenceAt: z.string().datetime()
+      lastEvidenceAt: z.iso.datetime()
     }),
     z.object({
       ...learnerSkillPresentationShape,
@@ -57,7 +57,7 @@ export const learnerSkillProgressSchema = z
       masteryScore: z.number().min(0).max(1),
       evidenceCount: z.number().int().positive(),
       scoredEvidenceCount: z.number().int().positive(),
-      lastEvidenceAt: z.string().datetime()
+      lastEvidenceAt: z.iso.datetime()
     })
   ])
   .superRefine((value, context) => {
@@ -82,7 +82,9 @@ export const learnerSkillProgressReadModelSchema = z.object({
 });
 
 export type MasteryProjection = z.infer<typeof masteryProjectionSchema>;
-export type MasteryRecomputeResult = z.infer<typeof masteryRecomputeResultSchema>;
+export type MasteryRecomputeResult = z.infer<
+  typeof masteryRecomputeResultSchema
+>;
 export type LearnerSkillProgress = z.infer<typeof learnerSkillProgressSchema>;
 export type LearnerSkillProgressReadModel = z.infer<
   typeof learnerSkillProgressReadModelSchema

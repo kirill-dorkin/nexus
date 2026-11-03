@@ -60,10 +60,18 @@ describe("AuthorizationPolicy", () => {
       id: "offering-a"
     };
 
-    expect(policy.allows([instructor], "course.manage", courseScope)).toBe(true);
-    expect(policy.allows([instructor], "course.publish", courseScope)).toBe(true);
-    expect(policy.allows([instructor], "offering.manage", offeringScope)).toBe(true);
-    expect(policy.allows([instructor], "enrollment.manage", offeringScope)).toBe(true);
+    expect(policy.allows([instructor], "course.manage", courseScope)).toBe(
+      true
+    );
+    expect(policy.allows([instructor], "course.publish", courseScope)).toBe(
+      true
+    );
+    expect(policy.allows([instructor], "offering.manage", offeringScope)).toBe(
+      true
+    );
+    expect(
+      policy.allows([instructor], "enrollment.manage", offeringScope)
+    ).toBe(true);
   });
 
   it("keeps commercial entitlement grants away from instructors and learners", () => {
@@ -105,7 +113,11 @@ describe("AuthorizationPolicy", () => {
       policy.allows([assignment({ roleKey: "learner" })], "guidance.use", scope)
     ).toBe(true);
     expect(
-      policy.allows([assignment({ roleKey: "instructor" })], "guidance.use", scope)
+      policy.allows(
+        [assignment({ roleKey: "instructor" })],
+        "guidance.use",
+        scope
+      )
     ).toBe(false);
     expect(
       policy.allows([assignment({ roleKey: "mentor" })], "guidance.use", scope)
@@ -241,7 +253,11 @@ describe("AuthorizationPolicy", () => {
       )
     ).toBe(false);
     expect(
-      policy.allows([assignment()], "authorization.assign_owner", organizationScope)
+      policy.allows(
+        [assignment()],
+        "authorization.assign_owner",
+        organizationScope
+      )
     ).toBe(true);
   });
 

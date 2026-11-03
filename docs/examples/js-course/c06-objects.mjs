@@ -1,29 +1,29 @@
 // Chapter 6: Objects, JSON and classes.
-import { scene, rule, kw, meth, obj, op, idea, typ, run, out, has, task, makeLesson } from "./kit.mjs";
+import { scene, rule, kw, meth, op, idea, typ, run, has, task, makeLesson } from "./kit.mjs";
 
 export default function objects(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
-    slug: "objects", title: "Объекты: карточка напитка", summary: "Литерал объекта, свойства через точку и квадратные скобки, добавление, изменение и удаление, оператор in.",
+    slug: "objects", title: "Объекты: карточка с данными", summary: "Литерал объекта, свойства через точку и квадратные скобки, добавление, изменение и удаление, оператор in.",
     skill: ["js-objects", "Объекты", "Описывать сущности объектами и работать с их свойствами."],
-    now: "У напитка есть имя, цена, объём и состав. Храним всё это одним объектом.",
+    now: "Описываем вещи объектами и работаем с их свойствами.",
     body: [
-      scene("Карточка напитка",
-        ["marta", "У латте есть название, цена, объём и молоко на выбор. Как это хранить вместе?"],
+      scene("Карточка пользователя",
+        ["you", "У пользователя есть имя, возраст, город и почта. Как хранить это вместе?"],
         ["nika", "Объект — набор свойств «ключ: значение». Как карточка в картотеке."]),
-      typ("{ }", "Объект", "`const drink = { name: \"Латте\", price: 220 };` — свойства через запятую.", "Описать одну вещь со многими характеристиками.", 'const drink = { name: "Латте", price: 220, ml: 350 };\nconsole.log(drink);'),
-      op("obj.key", "Свойство через точку", "`drink.price` — прочитать, `drink.price = 230` — изменить, `drink.hot = true` — добавить.", "Обычный доступ к свойствам.", 'const drink = { name: "Латте", price: 220 };\ndrink.price = 230;\ndrink.hot = true;\nconsole.log(drink.price, drink.hot);'),
-      op("obj[key]", "Свойство по имени из переменной", "`drink[key]` — когда имя свойства хранится в переменной.", "Перебор, динамические поля.", 'const drink = { name: "Раф", price: 290 };\nconst key = "price";\nconsole.log(drink[key]);'),
-      op("delete", "Удалить свойство", "`delete drink.hot` — свойство исчезает.", "Убрать временные данные.", 'const drink = { name: "Какао", promo: true };\ndelete drink.promo;\nconsole.log(drink);'),
-      op("in", "Есть ли свойство", "`\"price\" in drink` → `true`.", "Проверить, заполнено ли поле.", 'console.log("price" in { price: 220 });'),
+      typ("{ }", "Объект", "`const user = { name: \"Аня\", age: 20 };` — свойства через запятую.", "Описать одну вещь со многими характеристиками.", 'const user = { name: "Аня", age: 20, city: "Казань" };\nconsole.log(user);'),
+      op("obj.key", "Свойство через точку", "`user.age` — прочитать, `user.age = 21` — изменить, `user.admin = true` — добавить.", "Обычный доступ к свойствам.", 'const user = { name: "Аня", age: 20 };\nuser.age = 21;\nuser.admin = true;\nconsole.log(user.age, user.admin);'),
+      op("obj[key]", "Свойство по имени из переменной", "`user[key]` — когда имя свойства хранится в переменной.", "Перебор, динамические поля.", 'const user = { name: "Борис", city: "Пермь" };\nconst key = "city";\nconsole.log(user[key]);'),
+      op("delete", "Удалить свойство", "`delete user.temp` — свойство исчезает.", "Убрать временные данные.", 'const user = { name: "Вера", temp: true };\ndelete user.temp;\nconsole.log(user);'),
+      op("in", "Есть ли свойство", "`\"age\" in user` → `true`.", "Проверить, заполнено ли поле.", 'console.log("price" in { price: 220 });'),
       rule("Одна вещь со многими характеристиками — объект. Много однотипных вещей — массив объектов.")
     ],
-    tasks: [task("Карточка раф", "Создай объект `raf` с `name: \"Раф\"`, `price: 290`. Потом подними цену до `310` и добавь свойство `syrup: \"ваниль\"`.", {
-      start: "const raf = {};\n",
-      checks: [run('raf.name === "Раф"', "Имя Раф"), run("raf.price === 310", "Цена поднята до 310"), run('raf.syrup === "ваниль"', "Добавлен сироп")],
-      solution: 'const raf = { name: "Раф", price: 290 };\nraf.price = 310;\nraf.syrup = "ваниль";'
+    tasks: [task("Карточка пользователя", "Создай объект `user` с `name: \"Аня\"`, `age: 20`. Потом поменяй возраст на `21` и добавь свойство `city: \"Казань\"`.", {
+      start: "const user = {};\n",
+      checks: [run('user.name === "Аня"', "Имя Аня"), run("user.age === 21", "Возраст 21"), run('user.city === "Казань"', "Добавлен город")],
+      solution: 'const user = { name: "Аня", age: 20 };\nuser.age = 21;\nuser.city = "Казань";'
     })],
     quizzes: [
       single("js-obj-brackets", "Скобки", "Когда нужен доступ `obj[key]`, а не `obj.key`?", [["var", "Когда имя свойства лежит в переменной"], ["always", "Всегда"], ["never", "Никогда"], ["num", "Только для чисел"]], "var", "`obj.key` ищет свойство с именем «key»."),
@@ -34,13 +34,13 @@ export default function objects(c, ch, rc) {
   L({
     slug: "methods-this", title: "Методы и this", summary: "Функции внутри объекта, короткая запись методов, this, сокращённые свойства.",
     skill: ["js-methods", "Методы объекта", "Добавлять объекту поведение и обращаться к его данным через this."],
-    now: "Пусть корзина сама умеет добавлять позицию и считать сумму.",
+    now: "Добавляем объектам поведение — методы — и обращаемся к данным через this.",
     body: [
       scene("Умная корзина",
         ["bro", "Объект может хранить не только данные, но и действия — методы. Внутри метода `this` — это сам объект."]),
-      idea("Метод", "Функция-свойство", "`const cart = { items: [], add(item) { … } }` — вызывается как `cart.add(x)`.", "Данные и действия с ними — в одном месте.", 'const cup = {\n  size: 350,\n  describe() {\n    return `Стакан ${this.size} мл`;\n  }\n};\nconsole.log(cup.describe());'),
+      idea("Метод", "Функция-свойство", "`const cart = { items: [], add(item) { … } }` — вызывается как `cart.add(x)`.", "Данные и действия с ними — в одном месте.", 'const rect = {\n  w: 3,\n  h: 4,\n  area() {\n    return this.w * this.h;\n  }\n};\nconsole.log(rect.area());'),
       kw("this", "Этот объект", "Внутри метода `this` указывает на объект, у которого метод вызван.", "Обратиться к своим свойствам.", undefined),
-      idea("Короткие свойства", "{ name } вместо { name: name }", "Если переменная и свойство называются одинаково, можно писать один раз.", "Короче собирать объекты.", 'const name = "Латте", price = 220;\nconst drink = { name, price };\nconsole.log(drink);'),
+      idea("Короткие свойства", "{ name } вместо { name: name }", "Если переменная и свойство называются одинаково, можно писать один раз.", "Короче собирать объекты.", 'const name = "Аня", age = 20;\nconst user = { name, age };\nconsole.log(user);'),
       rule("У стрелочной функции нет своего `this`: методы объекта пиши обычной записью `add() {}`.")
     ],
     tasks: [task("Корзина с методами", "Допиши объект `cart`: метод `add(price)` кладёт цену в `this.items`, метод `total()` возвращает сумму.", {
@@ -57,22 +57,22 @@ export default function objects(c, ch, rc) {
   L({
     slug: "object-iteration", title: "Перебор объекта", summary: "Object.keys, Object.values, Object.entries, for…in и Object.fromEntries.",
     skill: ["js-object-iteration", "Перебор объекта", "Проходить по свойствам объекта и превращать объект в массивы и обратно."],
-    now: "Склад: объект «продукт → остаток». Нужно показать всё, что заканчивается.",
+    now: "Перебираем свойства объекта и превращаем объект в массивы и обратно.",
     body: [
       scene("Склад",
-        ["marta", "У меня объект остатков: молоко 3, зерно 10, сироп 1. Что заканчивается?"],
+        ["you", "У меня объект остатков: ручек 3, тетрадей 10, блокнотов 1. Как узнать, что заканчивается?"],
         ["bro", "Преврати объект в список пар — и работай с ним как с массивом."]),
-      meth("Object.keys()", "Ключи", "Массив имён свойств.", "Список того, что есть.", 'console.log(Object.keys({ milk: 3, beans: 10 }));'),
-      meth("Object.values()", "Значения", "Массив значений.", "Сумма всех остатков.", "console.log(Object.values({ milk: 3, beans: 10 }));"),
-      meth("Object.entries()", "Пары", "Массив пар `[ключ, значение]`.", "Перебор с ключами и значениями сразу.", 'for (const [item, left] of Object.entries({ milk: 3, syrup: 1 })) {\n  console.log(item, left);\n}'),
-      meth("Object.fromEntries()", "Пары → объект", "Обратно из массива пар в объект.", "Отфильтровать объект через entries и собрать снова.", 'console.log(Object.fromEntries([["milk", 3]]));'),
-      kw("for…in", "Перебор ключей", "`for (const key in obj)` — по именам свойств.", "Старый способ, встречается в чужом коде.", 'for (const key in { milk: 3, beans: 10 }) console.log(key);'),
+      meth("Object.keys()", "Ключи", "Массив имён свойств.", "Список того, что есть.", 'console.log(Object.keys({ pens: 3, books: 10 }));'),
+      meth("Object.values()", "Значения", "Массив значений.", "Сумма всех остатков.", "console.log(Object.values({ pens: 3, books: 10 }));"),
+      meth("Object.entries()", "Пары", "Массив пар `[ключ, значение]`.", "Перебор с ключами и значениями сразу.", 'for (const [item, left] of Object.entries({ pens: 3, notes: 1 })) {\n  console.log(item, left);\n}'),
+      meth("Object.fromEntries()", "Пары → объект", "Обратно из массива пар в объект.", "Отфильтровать объект через entries и собрать снова.", 'console.log(Object.fromEntries([["pens", 3]]));'),
+      kw("for…in", "Перебор ключей", "`for (const key in obj)` — по именам свойств.", "Старый способ, встречается в чужом коде.", 'for (const key in { pens: 3, books: 10 }) console.log(key);'),
       rule("Объект перебирают через `Object.entries` — дальше работают как с массивом.")
     ],
     tasks: [task("Что заканчивается", "Из `stock` получи `low` — массив названий, где остаток меньше 5.", {
-      start: "const stock = { milk: 3, beans: 10, syrup: 1, cups: 40 };\nconst low = [];\n",
-      checks: [run('JSON.stringify(low) === \'["milk","syrup"]\'', "Молоко и сироп"), has("Object.", "Использован Object.keys/entries")],
-      solution: "const stock = { milk: 3, beans: 10, syrup: 1, cups: 40 };\nconst low = Object.entries(stock).filter(([, left]) => left < 5).map(([item]) => item);"
+      start: "const stock = { pens: 3, books: 10, notes: 1, folders: 40 };\nconst low = [];\n",
+      checks: [run('JSON.stringify(low) === \'["pens","notes"]\'', "Ручки и блокноты"), has("Object.", "Использован Object.keys/entries")],
+      solution: "const stock = { pens: 3, books: 10, notes: 1, folders: 40 };\nconst low = Object.entries(stock).filter(([, left]) => left < 5).map(([item]) => item);"
     })],
     quizzes: [
       single("js-entries", "entries", "Что вернёт `Object.entries({ a: 1 })`?", [["pairs", "`[[\"a\", 1]]`"], ["keys", "`[\"a\"]`"], ["values", "`[1]`"], ["obj", "`{ a: 1 }`"]], "pairs", "Массив пар."),
@@ -83,23 +83,23 @@ export default function objects(c, ch, rc) {
   L({
     slug: "json", title: "JSON: данные текстом", summary: "Формат JSON, JSON.stringify и JSON.parse, отличие JSON от объекта JavaScript.",
     skill: ["js-json", "JSON", "Превращать данные в текст JSON и обратно."],
-    now: "Корзину надо сохранить и отправить на сервер. Объект превращаем в текст — JSON.",
+    now: "Превращаем данные в текст JSON и обратно.",
     body: [
       scene("Как отправить",
-        ["marta", "Корзину надо отправить на кухню. Но по сети ходит только текст!"],
+        ["you", "Корзину надо отправить на сервер. Но по сети ходит только текст!"],
         ["bro", "Для этого есть JSON — текстовый формат данных. Объект → строка, и обратно."]),
       idea("JSON", "Текстовый формат данных", "Похож на объект JS, но строже: ключи только в двойных кавычках, без функций и комментариев.", "Формат обмена данными с сервером и хранения.", undefined),
-      meth("JSON.stringify()", "Объект → текст", "Превращает значение в JSON-строку.", "Отправить или сохранить.", 'const cart = { items: ["Латте"], total: 220 };\nconst text = JSON.stringify(cart);\nconsole.log(text, typeof text);'),
-      meth("JSON.parse()", "Текст → объект", "Разбирает JSON-строку в значение. Неверный JSON — ошибка.", "Получили ответ сервера — разобрали.", 'const data = JSON.parse(\'{"name":"Раф","price":290}\');\nconsole.log(data.price);'),
+      meth("JSON.stringify()", "Объект → текст", "Превращает значение в JSON-строку.", "Отправить или сохранить.", 'const cart = { items: ["Книга"], total: 220 };\nconst text = JSON.stringify(cart);\nconsole.log(text, typeof text);'),
+      meth("JSON.parse()", "Текст → объект", "Разбирает JSON-строку в значение. Неверный JSON — ошибка.", "Получили ответ сервера — разобрали.", 'const data = JSON.parse(\'{"name":"Аня","age":20}\');\nconsole.log(data.age);'),
       rule("Пришло по сети — `JSON.parse`. Отправляешь — `JSON.stringify`. Посередине всегда строка.")
     ],
     tasks: [task("Туда и обратно", "Преврати `order` в строку `text` через `JSON.stringify`, а затем разбери её обратно в `copy`.", {
-      start: 'const order = { drink: "Латте", qty: 2 };\nconst text = "";\nconst copy = {};\n',
-      checks: [run('typeof text === "string" && text.includes("\\"drink\\":\\"Латте\\"")', "`text` — JSON-строка"), run('copy.drink === "Латте" && copy.qty === 2 && copy !== order', "`copy` — новый объект с теми же данными")],
-      solution: 'const order = { drink: "Латте", qty: 2 };\nconst text = JSON.stringify(order);\nconst copy = JSON.parse(text);'
+      start: 'const order = { item: "Книга", qty: 2 };\nconst text = "";\nconst copy = {};\n',
+      checks: [run('typeof text === "string" && text.includes("\\"item\\":\\"Книга\\"")', "`text` — JSON-строка"), run('copy.item === "Книга" && copy.qty === 2 && copy !== order', "`copy` — новый объект с теми же данными")],
+      solution: 'const order = { item: "Книга", qty: 2 };\nconst text = JSON.stringify(order);\nconst copy = JSON.parse(text);'
     })],
     quizzes: [
-      single("js-json-keys", "Кавычки", "Какой JSON правильный?", [["ok", "`{\"name\": \"Раф\"}`"], ["single", "`{'name': 'Раф'}`"], ["bare", "`{name: \"Раф\"}`"], ["fn", "`{\"f\": function(){}}`"]], "ok", "В JSON — только двойные кавычки у ключей и строк."),
+      single("js-json-keys", "Кавычки", "Какой JSON правильный?", [["ok", "`{\"name\": \"Аня\"}`"], ["single", "`{'name': 'Аня'}`"], ["bare", "`{name: \"Аня\"}`"], ["fn", "`{\"f\": function(){}}`"]], "ok", "В JSON — только двойные кавычки у ключей и строк."),
       single("js-json-type", "Тип", "Какой тип у результата `JSON.stringify({ a: 1 })`?", [["string", "Строка"], ["object", "Объект"], ["json", "Особый тип JSON"], ["array", "Массив"]], "string", "JSON — это текст.")
     ]
   });
@@ -107,15 +107,15 @@ export default function objects(c, ch, rc) {
   L({
     slug: "classes", title: "Классы", summary: "class, constructor, методы класса, new, наследование extends и super, геттеры get.",
     skill: ["js-classes", "Классы", "Описывать шаблоны объектов классами и создавать экземпляры."],
-    now: "Каждый заказ — объект с одинаковым устройством. Описываем шаблон заказа классом.",
+    now: "Описываем шаблоны объектов классами и создаём экземпляры через new.",
     body: [
       scene("Шаблон заказа",
-        ["marta", "Каждый заказ одинаковый: номер, позиции, сумма. Можно сделать «бланк»?"],
+        ["you", "Все заказы в магазине устроены одинаково: номер, позиции, сумма. Можно сделать «бланк»?"],
         ["nika", "Класс — это бланк. По нему `new` создаёт сколько угодно заказов."]),
-      kw("class", "Шаблон объектов", "`class Order { … }` — описание устройства объектов: данные и методы.", "Много однотипных объектов.", 'class Cup {\n  constructor(size) {\n    this.size = size;\n  }\n  describe() {\n    return `Стакан ${this.size} мл`;\n  }\n}\nconsole.log(new Cup(350).describe());'),
+      kw("class", "Шаблон объектов", "`class Order { … }` — описание устройства объектов: данные и методы.", "Много однотипных объектов.", 'class Rect {\n  constructor(w, h) {\n    this.w = w;\n    this.h = h;\n  }\n  area() {\n    return this.w * this.h;\n  }\n}\nconsole.log(new Rect(3, 4).area());'),
       meth("constructor()", "Конструктор", "Особый метод: вызывается при `new` и заполняет свойства.", "Задать начальные данные.", undefined),
       kw("new", "Создать экземпляр", "`new Order(1)` — новый объект по шаблону класса.", "Получить конкретный заказ.", undefined),
-      kw("extends · super", "Наследование", "`class Takeaway extends Order` — берёт всё у родителя; `super(...)` вызывает конструктор родителя.", "Заказ с собой — тот же заказ плюс упаковка.", 'class Order {\n  constructor(id) { this.id = id; }\n}\nclass Takeaway extends Order {\n  constructor(id) {\n    super(id);\n    this.pack = true;\n  }\n}\nconsole.log(new Takeaway(7));'),
+      kw("extends · super", "Наследование", "`class Delivery extends Order` — берёт всё у родителя; `super(...)` вызывает конструктор родителя.", "Заказ с доставкой — тот же заказ плюс адрес.", 'class Order {\n  constructor(id) { this.id = id; }\n}\nclass Delivery extends Order {\n  constructor(id, address) {\n    super(id);\n    this.address = address;\n  }\n}\nconsole.log(new Delivery(7, "Казань"));'),
       kw("get", "Геттер", "`get total() { … }` — вычисляемое свойство: читается как поле, считается как функция.", "Сумма всегда актуальна.", 'class Bill {\n  constructor(items) { this.items = items; }\n  get total() { return this.items.reduce((s, p) => s + p, 0); }\n}\nconsole.log(new Bill([220, 150]).total);'),
       rule("Класс нужен, когда объектов одного устройства много и у них есть поведение.")
     ],

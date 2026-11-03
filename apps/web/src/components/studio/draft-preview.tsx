@@ -33,7 +33,11 @@ export function DraftPreview({ document }: { document: CourseManifestV1 }) {
           <Text muted>{l.summary}</Text>
           {l.blocks.map((b, j) =>
             b.type === "youtube" ? (
-              normalizeYouTubeVideoId(b.videoId) ? <YouTubeVideo key={`${j}/${b.videoId}`} videoId={normalizeYouTubeVideoId(b.videoId)!} title={l.title} /> : <p key={j}>Добавьте корректную ссылку YouTube, чтобы посмотреть видео.</p>
+              <PreviewVideo
+                key={`${j}/${b.videoId}`}
+                source={b.videoId}
+                title={l.title}
+              />
             ) : b.type === "markdown" ? (
               <div
                 key={j}
@@ -52,7 +56,11 @@ export function DraftPreview({ document }: { document: CourseManifestV1 }) {
                 {(() => {
                   const a = document.activities.find(
                     (a) => a.slug === b.activitySlug
-                  )!;
+                  );
+                  if (!a)
+                    return (
+                      <p>Задание «{b.activitySlug}» не найдено в курсе.</p>
+                    );
                   return (
                     <>
                       <h4>{b.title ?? a.title}</h4>
@@ -78,5 +86,14 @@ export function DraftPreview({ document }: { document: CourseManifestV1 }) {
         </article>
       ))}
     </section>
+  );
+}
+
+function PreviewVideo({ source, title }: { source: string; title: string }) {
+  const videoId = normalizeYouTubeVideoId(source);
+  return videoId ? (
+    <YouTubeVideo videoId={videoId} title={title} />
+  ) : (
+    <p>Добавьте корректную ссылку YouTube, чтобы посмотреть видео.</p>
   );
 }

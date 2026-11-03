@@ -69,7 +69,9 @@ export class CourseReadinessEvaluator {
       );
     }
 
-    const learnerUserIds = [...new Set(enrollments.map((enrollment) => enrollment.userId))];
+    const learnerUserIds = [
+      ...new Set(enrollments.map((enrollment) => enrollment.userId))
+    ];
     const skillIds = graph.skills.map((skill) => skill.skillId);
 
     const learnerEnrollments = await this.delivery.listEnrollmentsForUsers(

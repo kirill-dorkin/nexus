@@ -15,7 +15,9 @@ import {
 import { parseRequest } from "../../http/validation";
 import { GraderJobApplicationService } from "./application/grader-job.service";
 
-@Controller("organizations/:organizationId/submissions/:submissionId/grader-jobs")
+@Controller(
+  "organizations/:organizationId/submissions/:submissionId/grader-jobs"
+)
 export class GraderJobController {
   constructor(private readonly graderJobs: GraderJobApplicationService) {}
 

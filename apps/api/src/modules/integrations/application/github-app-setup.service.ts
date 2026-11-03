@@ -49,9 +49,14 @@ function requireOpaqueState(value: string | undefined): string {
   return value;
 }
 
-function requirePositiveDecimal(value: string | undefined, field: string): string {
+function requirePositiveDecimal(
+  value: string | undefined,
+  field: string
+): string {
   if (value === undefined || !positiveDecimalPattern.test(value)) {
-    throw new BadRequestException(`${field} must be a positive decimal integer.`);
+    throw new BadRequestException(
+      `${field} must be a positive decimal integer.`
+    );
   }
   return value;
 }
@@ -98,11 +103,13 @@ export class GitHubAppSetupApplicationService {
     };
   }
 
-  async handleInstallationReturn(input: Readonly<{
-    state: string | undefined;
-    installationId: string | undefined;
-    setupAction: string | undefined;
-  }>): Promise<string> {
+  async handleInstallationReturn(
+    input: Readonly<{
+      state: string | undefined;
+      installationId: string | undefined;
+      setupAction: string | undefined;
+    }>
+  ): Promise<string> {
     const principal = this.requestContext.requirePrincipal();
     const state = requireOpaqueState(input.state);
     const installationId = requirePositiveDecimal(
@@ -131,10 +138,12 @@ export class GitHubAppSetupApplicationService {
     return this.github.buildUserAuthorizationUrl(oauthState);
   }
 
-  async completeUserAuthorization(input: Readonly<{
-    state: string | undefined;
-    code: string | undefined;
-  }>): Promise<GitHubInstallationMapping> {
+  async completeUserAuthorization(
+    input: Readonly<{
+      state: string | undefined;
+      code: string | undefined;
+    }>
+  ): Promise<GitHubInstallationMapping> {
     const principal = this.requestContext.requirePrincipal();
     const state = requireOpaqueState(input.state);
     if (
@@ -142,7 +151,9 @@ export class GitHubAppSetupApplicationService {
       input.code.length < 1 ||
       input.code.length > 2048
     ) {
-      throw new BadRequestException("Invalid or missing GitHub authorization code.");
+      throw new BadRequestException(
+        "Invalid or missing GitHub authorization code."
+      );
     }
 
     const callbackContext = await this.database.transaction((transaction) =>

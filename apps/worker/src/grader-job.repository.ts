@@ -1,4 +1,7 @@
-import type { GraderJobRequest, GraderJobResult } from "@platform/contracts/grader";
+import type {
+  GraderJobRequest,
+  GraderJobResult
+} from "@platform/contracts/grader";
 import type { DatabasePool } from "@platform/database";
 
 export type ClaimedGraderJob = Readonly<{
@@ -72,7 +75,9 @@ export class GraderJobRepository {
     job: Pick<ClaimedGraderJob, "jobId" | "leaseToken">,
     result: GraderJobResult
   ): Promise<string | null> {
-    const acknowledged = await this.pool.query<{ validation_result_id: string | null }>(
+    const acknowledged = await this.pool.query<{
+      validation_result_id: string | null;
+    }>(
       `SELECT platform_internal.acknowledge_grader_job($1, $2, $3::jsonb)::text AS validation_result_id`,
       [job.jobId, job.leaseToken, JSON.stringify(result)]
     );

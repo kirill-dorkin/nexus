@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type SubmitEvent } from "react";
 import Link from "next/link";
 import {
   createLearningOfferingRequestSchema,
@@ -29,10 +29,13 @@ async function ownOrganizationSlug(organizationId: string): Promise<string> {
     const result = ownOrganizationsSchema.parse(
       await studioRequest(`me/organizations${cursor ? `?after=${cursor}` : ""}`)
     );
-    const own = result.organizations.find((organization) => organization.id === organizationId);
+    const own = result.organizations.find(
+      (organization) => organization.id === organizationId
+    );
     if (own) return own.slug;
     if (result.nextCursor === null) break;
-    if (seen.has(result.nextCursor)) throw new Error("Повторяющийся курсор организаций.");
+    if (seen.has(result.nextCursor))
+      throw new Error("Повторяющийся курсор организаций.");
     seen.add(result.nextCursor);
     cursor = result.nextCursor;
   }
@@ -40,9 +43,13 @@ async function ownOrganizationSlug(organizationId: string): Promise<string> {
 }
 
 function requestError(error: unknown): string {
-  if (error instanceof StudioError && error.status === 401) return "Войдите в Studio и попробуйте снова.";
-  if (error instanceof StudioError && error.status === 403) return "У вас нет прав управления доступом к этому курсу.";
-  return error instanceof Error ? error.message : "Не удалось выполнить запрос.";
+  if (error instanceof StudioError && error.status === 401)
+    return "Войдите в Studio и попробуйте снова.";
+  if (error instanceof StudioError && error.status === 403)
+    return "У вас нет прав управления доступом к этому курсу.";
+  return error instanceof Error
+    ? error.message
+    : "Не удалось выполнить запрос.";
 }
 
 export function OfferingManager({
@@ -71,14 +78,18 @@ export function OfferingManager({
 
   async function refresh() {
     const [raw, orgSlug] = await Promise.all([
-      studioRequest(`organizations/${organizationId}/studio/courses/${courseId}`),
+      studioRequest(
+        `organizations/${organizationId}/studio/courses/${courseId}`
+      ),
       ownOrganizationSlug(organizationId)
     ]);
     const latest = studioDraftSchema.parse(raw);
     if (latest.courseId !== courseId) throw new Error("Курс изменился.");
     if (latest.status === "published") {
       const first = learningOfferingListSchema.parse(
-        await studioRequest(`${offeringPath}?courseVersionId=${latest.versionId}`)
+        await studioRequest(
+          `${offeringPath}?courseVersionId=${latest.versionId}`
+        )
       );
       setOfferings(appendOfferingPage([], first, latest.versionId));
       setCursor(first.nextCursor);
@@ -102,16 +113,21 @@ export function OfferingManager({
       try {
         // Read only. Every later command is still separately authorized by API.
         const [raw, orgSlug] = await Promise.all([
-          studioRequest(`organizations/${organizationId}/studio/courses/${courseId}`),
+          studioRequest(
+            `organizations/${organizationId}/studio/courses/${courseId}`
+          ),
           ownOrganizationSlug(organizationId)
         ]);
         const latest = studioDraftSchema.parse(raw);
         if (latest.courseId !== courseId) throw new Error("Курс изменился.");
-        const first = latest.status === "published"
-          ? learningOfferingListSchema.parse(
-              await studioRequest(`${offeringPath}?courseVersionId=${latest.versionId}`)
-            )
-          : null;
+        const first =
+          latest.status === "published"
+            ? learningOfferingListSchema.parse(
+                await studioRequest(
+                  `${offeringPath}?courseVersionId=${latest.versionId}`
+                )
+              )
+            : null;
         if (cancelled) return;
         setCourse(latest);
         setOrganizationSlug(orgSlug);
@@ -130,10 +146,15 @@ export function OfferingManager({
       }
     }
     void initial();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [organizationId, courseId, offeringPath]);
 
-  async function run(action: () => Promise<void>, failureMayHaveCommitted = false) {
+  async function run(
+    action: () => Promise<void>,
+    failureMayHaveCommitted = false
+  ) {
     if (inFlight.current) return;
     inFlight.current = true;
     setBusy(true);
@@ -159,11 +180,13 @@ export function OfferingManager({
   }
 
   async function more() {
-    if (!course || course.status !== "published" || !cursor) return;
+    if (course?.status !== "published" || !cursor) return;
     const after = cursor;
     await run(async () => {
       const page = learningOfferingListSchema.parse(
-        await studioRequest(`${offeringPath}?courseVersionId=${course.versionId}&after=${after}`)
+        await studioRequest(
+          `${offeringPath}?courseVersionId=${course.versionId}&after=${after}`
+        )
       );
       const combined = appendOfferingPage(offerings, page, course.versionId);
       setOfferings(combined);
@@ -171,9 +194,9 @@ export function OfferingManager({
     });
   }
 
-  async function create(event: FormEvent<HTMLFormElement>) {
+  async function create(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!course || course.status !== "published" || uncertain) return;
+    if (course?.status !== "published" || uncertain) return;
     const parsed = createLearningOfferingRequestSchema.safeParse({
       courseVersionId: course.versionId,
       name: name.trim(),
@@ -182,7 +205,9 @@ export function OfferingManager({
       accessMode: "membership"
     });
     if (!parsed.success) {
-      setError("Проверьте название и адрес: slug должен состоять из строчных латинских букв, цифр и дефисов.");
+      setError(
+        "Проверьте название и адрес: slug должен состоять из строчных латинских букв, цифр и дефисов."
+      );
       return;
     }
     if (offerings.some((item) => item.slug === parsed.data.slug)) {
@@ -198,14 +223,22 @@ export function OfferingManager({
         created.courseVersionId !== course.versionId ||
         created.organizationId !== organizationId ||
         created.visibility !== "private"
-      ) throw new Error("Получен неожиданный ответ сервера. Обновите список перед повтором.");
+      )
+        throw new Error(
+          "Получен неожиданный ответ сервера. Обновите список перед повтором."
+        );
       await refresh();
-      setMessage("Доступ создан приватным. Проверьте настройки и откройте его отдельной кнопкой.");
+      setMessage(
+        "Доступ создан приватным. Проверьте настройки и откройте его отдельной кнопкой."
+      );
     }, true);
   }
 
-  async function changeVisibility(offering: LearningOffering, visibility: "public" | "private") {
-    if (!course || offering.courseVersionId !== course.versionId || uncertain) return;
+  async function changeVisibility(
+    offering: LearningOffering,
+    visibility: "public" | "private"
+  ) {
+    if (offering.courseVersionId !== course?.versionId || uncertain) return;
     if (visibility === "public" && confirmPublicId !== offering.id) return;
     await run(async () => {
       const response = await browserApiRequest(
@@ -213,13 +246,14 @@ export function OfferingManager({
         { method: "PATCH", body: JSON.stringify({ visibility }) }
       );
       if (!response.ok) {
-        const message = response.status === 401
-          ? "Войдите в Studio."
-          : response.status === 403
-            ? "Недостаточно прав на изменение видимости."
-            : response.status === 409
-              ? "Состояние курса изменилось. Обновите список."
-              : "Не удалось проверить изменение видимости. Обновите список перед повтором.";
+        const message =
+          response.status === 401
+            ? "Войдите в Studio."
+            : response.status === 403
+              ? "Недостаточно прав на изменение видимости."
+              : response.status === 409
+                ? "Состояние курса изменилось. Обновите список."
+                : "Не удалось проверить изменение видимости. Обновите список перед повтором.";
         throw new StudioError(response.status, message);
       }
       const updated = learningOfferingSchema.parse(await response.json());
@@ -228,10 +262,19 @@ export function OfferingManager({
         updated.courseVersionId !== course.versionId ||
         updated.organizationId !== organizationId ||
         updated.visibility !== visibility
-      ) throw new Error("Сервер вернул неожиданное состояние. Обновите список.");
-      setOfferings((previous) => previous.map((item) => item.id === updated.id ? updated : item));
+      )
+        throw new Error(
+          "Сервер вернул неожиданное состояние. Обновите список."
+        );
+      setOfferings((previous) =>
+        previous.map((item) => (item.id === updated.id ? updated : item))
+      );
       setConfirmPublicId(null);
-      setMessage(visibility === "public" ? "Публичный доступ включён." : "Публичный доступ скрыт.");
+      setMessage(
+        visibility === "public"
+          ? "Публичный доступ включён."
+          : "Публичный доступ скрыт."
+      );
     }, true);
   }
 
@@ -240,30 +283,59 @@ export function OfferingManager({
       await navigator.clipboard.writeText(url);
       setMessage("Ссылка скопирована.");
     } catch {
-      setMessage("Не удалось скопировать автоматически. Выделите ссылку на странице.");
+      setMessage(
+        "Не удалось скопировать автоматически. Выделите ссылку на странице."
+      );
     }
   }
 
   return (
     <>
-      <Link href={`/studio/${organizationId}/${courseId}`}>← К редактору курса</Link>
+      <Link href={`/studio/${organizationId}/${courseId}`}>
+        ← К редактору курса
+      </Link>
       <h1>Доступ к опубликованному курсу</h1>
-      <p>Публикация содержимого и открытие доступа — отдельные действия. Новый доступ всегда приватный.</p>
+      <p>
+        Публикация содержимого и открытие доступа — отдельные действия. Новый
+        доступ всегда приватный.
+      </p>
       {!ready && <p role="status">Загрузка…</p>}
-      {error && <p role="alert" className={styles.error}>{error}</p>}
+      {error && (
+        <p role="alert" className={styles.error}>
+          {error}
+        </p>
+      )}
       {message && <p role="status">{message}</p>}
-      {login && <p><Link href={learningLoginUrl("/studio")}>Войти в Studio</Link></p>}
+      {login && (
+        <p>
+          <Link href={learningLoginUrl("/studio")}>Войти в Studio</Link>
+        </p>
+      )}
       {ready && !login && course && organizationSlug && (
         <div className={styles.sections}>
           <section className={styles.card}>
             <h2>{course.manifest.course.title}</h2>
-            <p>Версия {course.versionNumber} · {course.status === "published" ? "Опубликована" : "Черновик"}</p>
+            <p>
+              Версия {course.versionNumber} ·{" "}
+              {course.status === "published" ? "Опубликована" : "Черновик"}
+            </p>
             {course.status !== "published" ? (
-              <p role="status">Эта версия ещё не опубликована. Сначала опубликуйте её в редакторе. Существующие Offerings других версий сохраняются и не изменяются автоматически.</p>
+              <p role="status">
+                Эта версия ещё не опубликована. Сначала опубликуйте её в
+                редакторе. Существующие Offerings других версий сохраняются и не
+                изменяются автоматически.
+              </p>
             ) : (
               <>
-                <p>Выберите существующий доступ или создайте новый. Редактирование курса не изменяет уже опубликованную версию.</p>
-                <button disabled={busy} type="button" onClick={() => void reload()}>
+                <p>
+                  Выберите существующий доступ или создайте новый.
+                  Редактирование курса не изменяет уже опубликованную версию.
+                </p>
+                <button
+                  disabled={busy}
+                  type="button"
+                  onClick={() => void reload()}
+                >
                   Обновить доступы
                 </button>
               </>
@@ -274,49 +346,119 @@ export function OfferingManager({
             <>
               <section className={styles.card}>
                 <h2>Существующие доступы</h2>
-                {offerings.length === 0 && <p>Для этой опубликованной версии доступов пока нет.</p>}
+                {offerings.length === 0 && (
+                  <p>Для этой опубликованной версии доступов пока нет.</p>
+                )}
                 <div className={accessStyles.list}>
                   {offerings.map((offering) => {
                     const shareable = isShareableFreeOffering(offering);
-                    const url = shareable && browserOrigin
-                      ? publicOfferingUrl(browserOrigin, organizationSlug, offering.slug)
-                      : null;
+                    const url =
+                      shareable && browserOrigin
+                        ? publicOfferingUrl(
+                            browserOrigin,
+                            organizationSlug,
+                            offering.slug
+                          )
+                        : null;
                     return (
                       <article className={accessStyles.item} key={offering.id}>
                         <div className={accessStyles.titleRow}>
                           <h3>{offering.name}</h3>
                           <span className={accessStyles.state}>
-                            {offering.visibility === "public" ? "Публичный" : "Приватный"} · {offering.status === "open" ? "Открыт" : offering.status === "closed" ? "Закрыт" : "Архив"}
+                            {offering.visibility === "public"
+                              ? "Публичный"
+                              : "Приватный"}{" "}
+                            ·{" "}
+                            {offering.status === "open"
+                              ? "Открыт"
+                              : offering.status === "closed"
+                                ? "Закрыт"
+                                : "Архив"}
                           </span>
                         </div>
-                        <p>Адрес: <code>{offering.slug}</code></p>
-                        {offering.deliveryMode !== "self_paced" || offering.accessMode !== "membership" ? (
-                          <p>Этот доступ не относится к бесплатному самостоятельному обучению.</p>
+                        <p>
+                          Адрес: <code>{offering.slug}</code>
+                        </p>
+                        {offering.deliveryMode !== "self_paced" ||
+                        offering.accessMode !== "membership" ? (
+                          <p>
+                            Этот доступ не относится к бесплатному
+                            самостоятельному обучению.
+                          </p>
                         ) : null}
                         {url && (
                           <div className={accessStyles.link}>
-                            <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
-                            <button type="button" disabled={busy} onClick={() => void copyLink(url)}>Скопировать ссылку</button>
+                            <a
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {url}
+                            </a>
+                            <button
+                              type="button"
+                              disabled={busy}
+                              onClick={() => void copyLink(url)}
+                            >
+                              Скопировать ссылку
+                            </button>
                           </div>
                         )}
                         {offering.visibility === "private" ? (
                           <div className={styles.actions}>
                             {confirmPublicId === offering.id ? (
                               <>
-                                <p>Подтвердите: опубликованный курс станет доступен без входа для просмотра. Вступление и запись останутся отдельными действиями.</p>
-                                <button type="button" className={styles.primary} disabled={busy || uncertain || offering.status !== "open"} onClick={() => void changeVisibility(offering, "public")}>
+                                <p>
+                                  Подтвердите: опубликованный курс станет
+                                  доступен без входа для просмотра. Вступление и
+                                  запись останутся отдельными действиями.
+                                </p>
+                                <button
+                                  type="button"
+                                  className={styles.primary}
+                                  disabled={
+                                    busy ||
+                                    uncertain ||
+                                    offering.status !== "open"
+                                  }
+                                  onClick={() =>
+                                    void changeVisibility(offering, "public")
+                                  }
+                                >
                                   Подтвердить открытие доступа
                                 </button>
-                                <button type="button" disabled={busy} onClick={() => setConfirmPublicId(null)}>Отмена</button>
+                                <button
+                                  type="button"
+                                  disabled={busy}
+                                  onClick={() => setConfirmPublicId(null)}
+                                >
+                                  Отмена
+                                </button>
                               </>
                             ) : (
-                              <button type="button" disabled={busy || uncertain || offering.status !== "open" || offering.deliveryMode !== "self_paced" || offering.accessMode !== "membership"} onClick={() => setConfirmPublicId(offering.id)}>
+                              <button
+                                type="button"
+                                disabled={
+                                  busy ||
+                                  uncertain ||
+                                  offering.status !== "open" ||
+                                  offering.deliveryMode !== "self_paced" ||
+                                  offering.accessMode !== "membership"
+                                }
+                                onClick={() => setConfirmPublicId(offering.id)}
+                              >
                                 Открыть публичный доступ
                               </button>
                             )}
                           </div>
                         ) : (
-                          <button type="button" disabled={busy || uncertain} onClick={() => void changeVisibility(offering, "private")}>
+                          <button
+                            type="button"
+                            disabled={busy || uncertain}
+                            onClick={() =>
+                              void changeVisibility(offering, "private")
+                            }
+                          >
                             Скрыть публичный доступ
                           </button>
                         )}
@@ -325,7 +467,11 @@ export function OfferingManager({
                   })}
                 </div>
                 {cursor && (
-                  <button type="button" disabled={busy} onClick={() => void more()}>
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => void more()}
+                  >
                     Загрузить ещё
                   </button>
                 )}
@@ -333,28 +479,56 @@ export function OfferingManager({
 
               <section className={styles.card}>
                 <h2>Новый доступ</h2>
-                <p>Для первого бесплатного курса используйте самостоятельный формат и доступ по членству. Новое предложение останется приватным, пока вы не подтвердите публикацию.</p>
+                <p>
+                  Для первого бесплатного курса используйте самостоятельный
+                  формат и доступ по членству. Новое предложение останется
+                  приватным, пока вы не подтвердите публикацию.
+                </p>
                 <form onSubmit={(event) => void create(event)}>
                   <label>
                     Название
-                    <input required maxLength={160} value={name} onChange={(event) => setName(event.target.value)} disabled={busy || uncertain} />
+                    <input
+                      required
+                      maxLength={160}
+                      value={name}
+                      onChange={(event) => setName(event.target.value)}
+                      disabled={busy || uncertain}
+                    />
                   </label>
                   <label>
                     Адрес курса (slug)
-                    <input required minLength={2} maxLength={63} pattern="[a-z0-9]+(-[a-z0-9]+)*" value={slug} onChange={(event) => setSlug(event.target.value)} disabled={busy || uncertain} />
+                    <input
+                      required
+                      minLength={2}
+                      maxLength={63}
+                      pattern="[a-z0-9]+(-[a-z0-9]+)*"
+                      value={slug}
+                      onChange={(event) => setSlug(event.target.value)}
+                      disabled={busy || uncertain}
+                    />
                   </label>
-                  <button className={styles.primary} disabled={busy || uncertain} type="submit">
+                  <button
+                    className={styles.primary}
+                    disabled={busy || uncertain}
+                    type="submit"
+                  >
                     Создать приватный доступ
                   </button>
                 </form>
                 {uncertain && (
-                  <p role="alert">Результат предыдущего изменения не подтверждён. Не повторяйте запрос: сначала обновите список, чтобы избежать дубликатов.</p>
+                  <p role="alert">
+                    Результат предыдущего изменения не подтверждён. Не
+                    повторяйте запрос: сначала обновите список, чтобы избежать
+                    дубликатов.
+                  </p>
                 )}
               </section>
             </>
           )}
           <p className={accessStyles.note}>
-            Для новой регистрации может потребоваться отдельно разрешить вступление в организацию (customer entry policy). Публичная ссылка сама по себе не выдаёт членство, запись на курс или платный доступ.
+            Для новой регистрации может потребоваться отдельно разрешить
+            вступление в организацию (customer entry policy). Публичная ссылка
+            сама по себе не выдаёт членство, запись на курс или платный доступ.
           </p>
         </div>
       )}

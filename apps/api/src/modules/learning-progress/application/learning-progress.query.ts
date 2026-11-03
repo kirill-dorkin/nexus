@@ -31,11 +31,10 @@ export type ReadinessEvidenceSummary = Readonly<{
   lastScoredEvidenceAt: string;
 }>;
 
-export type LearnerReadinessEvidenceSummary =
-  ReadinessEvidenceSummary &
-    Readonly<{
-      learnerUserId: string;
-    }>;
+export type LearnerReadinessEvidenceSummary = ReadinessEvidenceSummary &
+  Readonly<{
+    learnerUserId: string;
+  }>;
 
 export type SubmissionValidationContext = Readonly<{
   submission: Submission;

@@ -246,7 +246,9 @@ export class PostgresOrganizationsRepository extends OrganizationsRepository {
       row.membership_status !== "active" ||
       row.joined_at === null
     ) {
-      throw new Error("Customer membership entry returned an invalid active membership.");
+      throw new Error(
+        "Customer membership entry returned an invalid active membership."
+      );
     }
 
     return {
