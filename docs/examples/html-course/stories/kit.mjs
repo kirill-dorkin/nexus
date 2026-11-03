@@ -1,10 +1,10 @@
 // Authoring kit for the story version of the HTML course.
-// Characters: marta (заказчица, кофейня «Зерно»), bro (браузер), nika (наставница),
-// lev (гость со скринридером), bug (Вредный Скрипт), you (ученик).
+// Characters: marta (заказчица, мой сайт), bro (браузер), nika (наставница),
+// lev (посетитель со скринридером), bug (Вредный Скрипт), you (ученик).
 const FENCE = "```";
 const fence = (lang, value) => `${FENCE}${lang}\n${JSON.stringify(value, null, 2)}\n${FENCE}`;
 
-/** Messenger scene: scene("Заказ", ["marta", "Привет!"], ["you", "Сделаю"]) */
+/** Messenger scene: scene("Заказ", ["you", "Привет!"], ["you", "Сделаю"]) */
 export const scene = (title, ...lines) => fence("story", { title, lines });
 /** One element or attribute: what it is, why it exists, how it is written (+ live preview height). */
 export const card = (name, title, what, why, how, extra = {}) =>
