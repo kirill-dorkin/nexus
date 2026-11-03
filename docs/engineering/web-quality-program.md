@@ -37,11 +37,15 @@ Prettier 3 with its default style (80 columns, double quotes, semicolons) and no
 
 Open branches rebase by running `pnpm format` after the rebase and resolving what remains.
 
-### 2. Component test infrastructure
+### 2. Component test infrastructure — done
 
-Vitest projects split `node` and `happy-dom` environments; Testing Library and `user-event` for behaviour, not markup snapshots. First suites: quiz form (answer, retry, locked pending state), challenge (checks, hint, solution, solved state), course navigator (search, keyboard, current lesson), progress, sign-in/registration form, checkout panel states. `v8` coverage for `apps/web` and `packages/ui` with thresholds set to the measured value and raised by every later phase.
+Vitest projects: `node` for logic, `web-components` and `ui-components` (happy-dom) for `*.test.tsx`. Testing Library and `user-event` assert behaviour through roles and accessible names, not markup snapshots; `apps/web/src/test/fixtures.ts` builds contract-valid API data. Suites cover the `@platform/ui` primitives (button, field, choices, alert, progress, password input, dialog), the quiz, practice challenges, course navigator, learner entry and course progress, my learning, sign-in/registration, checkout and purchase status, and the Studio API client.
 
-**Done when:** every learner-facing interactive component has a behaviour suite and coverage thresholds run in CI.
+`pnpm test:web-coverage` (part of `pnpm check`) measures Web and `@platform/ui` with `v8`. Floors: 43 % statements / 47 % branches / 39 % functions / 44 % lines overall, and 80 / 55 / 75 / 80 for every learner- or buyer-facing component that has a suite. They only go up.
+
+The suites found and fixed three defects: practice editors took focus on page load (a regression from phase 0), the course navigator stored every visited lesson twice, and a failed second step of «Начать курс» erased its own explanation.
+
+Components still without a suite are covered by the phase that changes them, before the change: lesson visuals, story scenes, signup nudge, SQL client and sound panel in phase 3; the Studio editors and offering manager in phase 4.
 
 ### 3. React correctness
 

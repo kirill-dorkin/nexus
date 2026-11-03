@@ -68,7 +68,7 @@ Keep the PR Draft while CI or required local verification is unresolved.
 
 ### 5a. Run the local gate before every push
 
-Run `pnpm check` (brand isolation, formatting, lint, typecheck, unit tests) on the developer machine before pushing. Type-aware lint holds every package's TypeScript program in memory (about 3 GB), so it runs locally rather than on GitHub-hosted runners; GitHub CI keeps the database, integration, launch and browser gates. Record the local result in the PR test plan.
+Run `pnpm check` (brand isolation, formatting, lint, typecheck, unit and component tests, Web coverage floors) on the developer machine before pushing. Type-aware lint holds every package's TypeScript program in memory (about 3 GB), so it runs locally rather than on GitHub-hosted runners; GitHub CI keeps the database, integration, launch and browser gates. Record the local result in the PR test plan.
 
 ### 6. Make GitHub CI green
 

@@ -12,7 +12,7 @@ Last maintained: 2026-11-03.
 |---|---|
 | `main` head | `4d8f5e9` — #150, drop the café story characters (2026-11-03) |
 | Latest migration | `000047_lesson_chapters.sql` |
-| Quality gates | Local before every push: `pnpm check` (brand isolation, Prettier, ESLint strict type-checked + React + jsx-a11y strict + Next, typecheck incl. API operator scripts and root tests, unit tests). GitHub CI: brand isolation, Prettier, typecheck, unit, integration, launch-performance and browser-launch tests. Lint baseline: `eslint-suppressions.json`, which may only shrink. |
+| Quality gates | Local before every push: `pnpm check` (brand isolation, Prettier, ESLint strict type-checked + React + jsx-a11y strict + Next, typecheck incl. API operator scripts and root tests, unit and component tests, Web coverage floors). GitHub CI: brand isolation, Prettier, typecheck, unit, integration, launch-performance and browser-launch tests. Lint baseline: `eslint-suppressions.json`, which may only shrink. |
 | Latest ADR | ADR-0066 Home learning route |
 | Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058); daily GitHub-hosted read-only smoke against the production domain |
 | Learner-code execution | **Disabled in production.** Grader artifacts exist in the repository but need a separate activation (exact image digest + green real-cluster verification). |
@@ -122,7 +122,7 @@ Nexus has no external API clients yet, so a cleanup slice could close these wind
 
 ## Next recommended slice
 
-**Bring Web to the backend's engineering level: [`web-quality-program.md`](web-quality-program.md).** Phases 0 (workspace lint, type-checked operator scripts and root tests) and 1 (Prettier) are done; next is phase 2 (component test infrastructure), then the React correctness work that empties the lint baseline.
+**Bring Web to the backend's engineering level: [`web-quality-program.md`](web-quality-program.md).** Phases 0 (workspace lint, type-checked operator scripts and root tests), 1 (Prettier) and 2 (component tests and Web coverage floors) are done; next is phase 3, the React correctness work that empties the lint baseline.
 
 The four route courses (HTML, CSS, JavaScript, SQL) are published; collect learner usage and feedback in parallel before choosing the next domain capability.
 

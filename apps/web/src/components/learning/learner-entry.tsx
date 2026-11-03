@@ -58,7 +58,8 @@ export function LearnerEntry({
     setLoading(true);
     setLearning(null);
     setAnonymous(false);
-    setError(null);
+    // The error stays: a reload after a failed command must keep its explanation.
+    // Only the learner's own retry (below) clears it.
     void (async () => {
       try {
         const r = await browserApiRequest(api, { signal: controller.signal });
@@ -253,7 +254,10 @@ export function LearnerEntry({
               <Button
                 variant="secondary"
                 disabled={busy || loading}
-                onClick={() => setReload((x) => x + 1)}
+                onClick={() => {
+                  setError(null);
+                  setReload((x) => x + 1);
+                }}
               >
                 Обновить состояние
               </Button>
