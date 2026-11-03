@@ -44,6 +44,12 @@ a {
   outline: 3px solid var(--focus-ring);
   outline-offset: 5px;
 }
+/* A preview frame is a Tab stop in some browsers. :focus-visible is not
+   reliable on iframes, and their wrappers clip, so the ring is drawn inside. */
+:where(iframe):focus {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: -3px;
+}
 ::selection {
   color: var(--text-on-action);
   background: var(--action-primary);
