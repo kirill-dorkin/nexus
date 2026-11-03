@@ -1,7 +1,9 @@
 // Shared builders for component tests: contract-valid API data and responses.
 import type {
+  CourseManifestV1,
   LearnerCourseProgress,
-  LearnerLearningCourse
+  LearnerLearningCourse,
+  StudioDraft
 } from "@platform/contracts";
 
 export function json(status: number, body?: unknown): Response {
@@ -68,6 +70,69 @@ export function learnerCourse(
       enrollmentStatus: null
     },
     progress: null,
+    ...overrides
+  };
+}
+
+/** A small course manifest that passes `courseManifestV1Schema`. */
+export function manifest(): CourseManifestV1 {
+  return {
+    schemaVersion: 1,
+    course: {
+      slug: "html",
+      title: "HTML с нуля",
+      description: "Разметка страниц."
+    },
+    skills: [{ key: "tags", title: "Теги", description: "Пишет теги." }],
+    activities: [
+      {
+        slug: "first-tag",
+        title: "Первый тег",
+        instructions: "",
+        skillKeys: ["tags"],
+        type: "quiz.single_choice",
+        presentation: {
+          question: "Какой тег делает заголовок?",
+          options: [
+            { id: "h1", text: "<h1>" },
+            { id: "p", text: "<p>" }
+          ]
+        },
+        validation: { correctOptionId: "h1", explanation: "Заголовок — h1." }
+      }
+    ],
+    lessons: [
+      {
+        slug: "intro",
+        title: "Введение",
+        summary: "Что такое HTML.",
+        durationMinutes: 10,
+        blocks: [
+          { type: "markdown", markdown: "## Привет" },
+          {
+            type: "activity",
+            activitySlug: "first-tag",
+            kind: "practice",
+            required: true
+          }
+        ]
+      }
+    ]
+  };
+}
+
+export function studioDraft(overrides: Partial<StudioDraft> = {}): StudioDraft {
+  return {
+    courseId: "0195d9a8-6c8e-7000-8000-0000000000e1",
+    slug: "html",
+    title: "HTML с нуля",
+    versionId: "0195d9a8-6c8e-7000-8000-0000000000e2",
+    versionNumber: 2,
+    status: "draft",
+    revision: 3,
+    manifest: manifest(),
+    canApply: true,
+    canPublish: true,
     ...overrides
   };
 }
