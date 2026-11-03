@@ -5,9 +5,10 @@
  * lives in a dedicated Web Worker (sql-worker.ts); the tests pass one created in Node.
  * Practice only: nothing here is Evidence, and nothing leaves the learner's browser.
  */
-import { ZERNO_DATA, ZERNO_SCHEMA } from "./zerno-db";
+import { SHOP_DATA, SHOP_SCHEMA } from "./shop-db";
 
-export type SqlBase = "zerno" | "empty";
+/** "shop" — the teaching store database; "zerno" is the earlier name of the same base. */
+export type SqlBase = "shop" | "zerno" | "empty";
 export type SqlCheck = {
   /** A query run after the learner's code; passes when its first value is true. */
   sql?: string | undefined;
@@ -127,7 +128,7 @@ export async function resetDatabase(db: SqlDb, job: Pick<SqlJob, "base" | "setup
   END LOOP;
 END $$;
 CREATE SCHEMA public;`);
-    if ((job.base ?? "zerno") === "zerno") await db.exec(ZERNO_SCHEMA + ZERNO_DATA);
+    if ((job.base ?? "shop") !== "empty") await db.exec(SHOP_SCHEMA + SHOP_DATA);
   } catch (error) {
     throw new BrokenDatabaseError(error instanceof Error ? error.message : String(error));
   }

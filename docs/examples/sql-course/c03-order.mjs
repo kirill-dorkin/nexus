@@ -8,17 +8,17 @@ export default function order(c, ch, rc) {
   L({
     slug: "order-by", title: "ORDER BY", summary: "Сортировка: по возрастанию, по убыванию, по нескольким столбцам и с пустотами.",
     skill: ["sql-order", "ORDER BY", "Сортировать результат по одному и нескольким столбцам."],
-    now: "Меню на доске должно идти от дорогого к дешёвому. Слон пока выдаёт строки как попало.",
+    now: "База выдаёт строки в любом порядке. Учимся сортировать результат.",
     body: [
       scene("В каком порядке?",
-        ["marta", "Почему меню каждый раз в разном порядке?"],
+        ["you", "Почему товары каждый раз в разном порядке?"],
         ["slon", "Без ORDER BY я не обещаю никакого порядка. Отдаю, как мне удобнее. Нужен порядок — попроси."]),
-      clause("ORDER BY", "Сортировка", "Последняя часть запроса: по каким столбцам упорядочить строки. Можно по нескольким: при равенстве первого смотрим второй.", "Меню по цене, гости по алфавиту, заказы от новых к старым.", "SELECT name, price\nFROM products\nORDER BY price DESC, name;"),
+      clause("ORDER BY", "Сортировка", "Последняя часть запроса: по каким столбцам упорядочить строки. Можно по нескольким: при равенстве первого смотрим второй.", "Товары по цене, покупатели по алфавиту, заказы от новых к старым.", "SELECT name, price\nFROM products\nORDER BY price DESC, name;"),
       kw("ASC · DESC", "Направление", "`ASC` — по возрастанию (по умолчанию), `DESC` — по убыванию. Пишется после каждого столбца отдельно.", "Самые дорогие сверху, самые свежие заказы первыми.", "SELECT id, created_at\nFROM orders\nORDER BY created_at DESC\nLIMIT 5;"),
-      kw("NULLS FIRST · NULLS LAST", "Где пустоты", "В PostgreSQL NULL при сортировке считается больше любого значения: при `ASC` пустоты внизу, при `DESC` — наверху. `NULLS LAST` и `NULLS FIRST` переставляют их.", "Гости без дня рождения не должны вылезать в начало списка.", "SELECT name, birthday\nFROM customers\nORDER BY birthday DESC NULLS LAST;"),
+      kw("NULLS FIRST · NULLS LAST", "Где пустоты", "В PostgreSQL NULL при сортировке считается больше любого значения: при `ASC` пустоты внизу, при `DESC` — наверху. `NULLS LAST` и `NULLS FIRST` переставляют их.", "Покупатели без дня рождения не должны вылезать в начало списка.", "SELECT name, birthday\nFROM customers\nORDER BY birthday DESC NULLS LAST;"),
       rule("Нужен порядок — пиши ORDER BY, всегда. «Само так выводится» — не порядок.")
     ],
-    tasks: [task("Меню на доску", "Выведи `name` и `price` всех товаров: сначала дорогие, при одинаковой цене — по названию в алфавитном порядке.", {
+    tasks: [task("Прайс по цене", "Выведи `name` и `price` всех товаров: сначала дорогие, при одинаковой цене — по названию в алфавитном порядке.", {
       checks: [rows("SELECT name, price FROM products ORDER BY price DESC, name", "Порядок: цена по убыванию, затем название", { ordered: true }), src("order by", "Есть `ORDER BY`")],
       hint: "`ORDER BY price DESC, name`",
       solution: "SELECT name, price\nFROM products\nORDER BY price DESC, name;"
@@ -32,10 +32,10 @@ export default function order(c, ch, rc) {
   L({
     slug: "limit-offset", title: "LIMIT и OFFSET", summary: "Топ-3 и постраничный вывод.",
     skill: ["sql-limit", "LIMIT и OFFSET", "Ограничивать число строк и пропускать первые строки."],
-    now: "Даша делает баннер «Топ-3 самых дорогих напитка», а для сайта нужно меню по страницам.",
+    now: "Иногда нужны только первые строки или одна страница результата.",
     body: [
       scene("Только три",
-        ["dasha", "Мне нужны три самых дорогих. Не шестнадцать."],
+        ["you", "Мне нужны три самых дорогих. Не шестнадцать."],
         ["slon", "Отсортируй по цене по убыванию и скажи LIMIT 3. Без сортировки «первые три» — какие попало."]),
       clause("LIMIT", "Не больше N строк", "Ограничивает число строк результата. Ставится в самом конце.", "Топы, превью, защита от огромных ответов.", "SELECT name, price\nFROM products\nORDER BY price DESC\nLIMIT 3;"),
       clause("OFFSET", "Пропустить строки", "`OFFSET 5` пропускает первые 5 строк. Вместе с LIMIT даёт страницы: страница 2 по 5 строк — `LIMIT 5 OFFSET 5`.", "Постраничный вывод каталога или списка заказов.", "SELECT name, price\nFROM products\nORDER BY name\nLIMIT 5 OFFSET 5;"),
@@ -45,8 +45,8 @@ export default function order(c, ch, rc) {
     tasks: [task("Топ-3", "Выведи `name` и `price` трёх самых дорогих товаров, от самого дорогого.", {
       checks: [rows("SELECT name, price FROM products ORDER BY price DESC LIMIT 3", "Три самых дорогих, по убыванию цены", { ordered: true }), src("limit", "Есть `LIMIT`")],
       solution: "SELECT name, price\nFROM products\nORDER BY price DESC\nLIMIT 3;"
-    }), task("Вторая страница", "Гости по 4 на страницу, по алфавиту имён (`name`). Выведи `name` и `city` гостей второй страницы.", {
-      checks: [rows("SELECT name, city FROM customers ORDER BY name LIMIT 4 OFFSET 4", "Гости с 5-го по 8-й по алфавиту", { ordered: true }), src("offset", "Есть `OFFSET`")],
+    }), task("Вторая страница", "Покупатели по 4 на страницу, по алфавиту имён (`name`). Выведи `name` и `city` покупателей второй страницы.", {
+      checks: [rows("SELECT name, city FROM customers ORDER BY name LIMIT 4 OFFSET 4", "Покупатели с 5-го по 8-й по алфавиту", { ordered: true }), src("offset", "Есть `OFFSET`")],
       hint: "Вторая страница: пропустить первые 4 — `LIMIT 4 OFFSET 4`.",
       solution: "SELECT name, city\nFROM customers\nORDER BY name\nLIMIT 4 OFFSET 4;"
     })],

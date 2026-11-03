@@ -1,6 +1,6 @@
 // Authoring kit for the SQL course. Same story format as the HTML and CSS courses
 // (scenes, concept cards, hands-on tasks, quizzes); examples and tasks run on PostgreSQL in
-// the learner's browser against the «Зерно» teaching database (ADR-0065).
+// the learner's browser against the teaching store database (ADR-0065).
 import { scene, card, diagram, rule, code } from "../html-course/stories/kit.mjs";
 export { scene, diagram, rule, code };
 

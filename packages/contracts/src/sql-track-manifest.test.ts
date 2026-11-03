@@ -87,6 +87,20 @@ describe("SQL full course import", () => {
     for (const card of cards()) if (card.how) expect(card.lang, card.name).toBe("sql");
   });
 
+  it("has no storyline: no removed characters and no café business", () => {
+    // Lessons use a neutral teaching store; only tool characters remain. \b is ASCII-only, so
+    // Cyrillic whole words use \p{L} lookarounds.
+    const text = JSON.stringify(sqlTrack());
+    const banned = /"(marta|sonya|dasha)"|zerno|(?<!\p{L})Зерн|кофе|латте|капучино|эспрессо|бариста|какао|чизкейк|напит|столик|кухн|сироп|молок|(?<!\p{L})(раф\p{L}{0,2}|чай|меню|гост[ьяеиюй]\p{L}*|Март[аыу]|Даш[аиуе]|Сон[яиеу]|чашк\p{L}*)(?!\p{L})/giu;
+    expect([...new Set(text.match(banned) ?? [])]).toEqual([]);
+  });
+
+  it("explains everything itself and never sends the learner elsewhere for answers", () => {
+    const text = JSON.stringify(sqlTrack());
+    const elsewhere = /(?<![\w.])MDN(?![\w.])|postgresql\.org|w3schools|stackoverflow|stack overflow|google\.|гугл|загугл|поищи|почитай (в|на)|читай документаци|подробнее (в|на) /giu;
+    expect([...new Set(text.match(elsewhere) ?? [])]).toEqual([]);
+  });
+
   it("keeps quiz answer keys coherent", () => {
     for (const activity of sqlTrack().activities) {
       if (activity.type === "quiz.short_text") {
