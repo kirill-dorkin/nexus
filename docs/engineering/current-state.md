@@ -122,7 +122,7 @@ Nexus has no external API clients yet, so a cleanup slice could close these wind
 
 ## Next recommended slice
 
-**Bring Web to the backend's engineering level: [`web-quality-program.md`](web-quality-program.md).** Phases 0 (workspace lint, type-checked operator scripts and root tests), 1 (Prettier), 2 (component tests and Web coverage floors) 3 (React correctness on shared hooks; the lint baseline is gone) and 4 (Studio editors split under tests) are done; next is phase 4b (the remaining large learner components) and phase 5 (end-to-end tests).
+**Bring Web to the backend's engineering level: [`web-quality-program.md`](web-quality-program.md).** Phases 0 (workspace lint, type-checked operator scripts and root tests), 1 (Prettier), 2 (component tests and Web coverage floors) 3 (React correctness on shared hooks; the lint baseline is gone), 4 and 4b (Studio editors and every other file over 300 lines split under tests; a size test keeps it so) are done; next is phase 5, end-to-end tests in a real browser.
 
 The four route courses (HTML, CSS, JavaScript, SQL) are published; collect learner usage and feedback in parallel before choosing the next domain capability.
 

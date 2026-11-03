@@ -77,11 +77,22 @@ Coverage floors rose to 66 / 68 / 70 / 67 % overall, with a 70 / 50 / 60 / 70 % 
 
 Files still over 300 lines elsewhere — lesson visuals, story scenes, practice challenge, checkout panel, the `@platform/ui` index and the `/ui` gallery — are split the same way in phase 4b, each under its existing suite.
 
-### 4b. Remaining large components
+### 4b. Remaining large components — done
 
-Split the learner components above (parsers and diagrams out of `lesson-visuals.tsx`, scenes and concept cards out of `story.tsx`, checks out of `challenge.tsx`), the checkout panel and the `@platform/ui` primitives into files under 300 lines, under their existing suites.
+Every file over 300 lines was split by responsibility, each entry file keeping its public exports so imports and suites stayed unchanged:
 
-**Done when:** no Web or UI source file is over 300 lines.
+- `lesson-visuals.tsx` → `visuals/` (model and parser, diagrams, animation frames, typing demo);
+- `story.tsx` → `story/` (model and parsers, rich text and avatars, chat scene, previews, concept card, recap banner);
+- `challenge.tsx` → `challenge/` (model and checks, inline text, checklist, web result frames);
+- `course-navigator.tsx` → `navigator/` (program list, visited lessons);
+- the checkout panel → `checkout/` (attempt key, checkout flow, price list, sign-in form);
+- `@platform/ui` → class names, buttons, layout, typography, forms, feedback;
+- the `/ui` gallery → `gallery/` sections; Studio home → a course rows component;
+- sound → `voices.ts` and `dsp.ts` out of `band.ts`, `settings.ts` and `clock.ts` out of `engine.ts`.
+
+New suites came before the components that had none: the gallery, Studio home, sound settings and clock, and the band. The band has no Web Audio in tests, so a recording context traces every node, connection, parameter change and scheduled note for eight bars; the trace stayed identical through the split.
+
+`tests/architecture/web-file-size.test.ts` keeps every Web and UI source file at 300 lines or fewer. Coverage floors rose to 74 / 71 / 76 / 76 %.
 
 ### 5. End-to-end tests
 
