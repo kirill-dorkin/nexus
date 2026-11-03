@@ -23,10 +23,10 @@ export function StudioShell({ children }: { children: ReactNode }) {
           <Link
             className={site.brand}
             href="/"
-            aria-label={`${brand.name} — на главную`}
+            aria-label={`${brand.name} Studio — на главную`}
           >
             <BrandMark />
-            <span>{brand.name}</span>
+            <span>{brand.name}</span>{" "}
             <span className={styles.areaBadge}>Studio</span>
           </Link>
           <LearningNavigation showLogin={false} />

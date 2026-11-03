@@ -70,6 +70,20 @@ Keep the PR Draft while CI or required local verification is unresolved.
 
 Run `pnpm check` (brand isolation, formatting, lint, typecheck, unit and component tests, Web coverage floors) on the developer machine before pushing. Type-aware lint holds every package's TypeScript program in memory (about 3 GB), so it runs locally rather than on GitHub-hosted runners; GitHub CI keeps the database, integration, launch and browser gates. Record the local result in the PR test plan.
 
+### 5b. End-to-end tests
+
+GitHub CI runs them on every PR. To run them locally (Docker with the development PostgreSQL from `pnpm dev:infra`):
+
+```sh
+PGPASSWORD=local_postgres_admin psql -h 127.0.0.1 -U postgres -f tests/e2e/local-database.sql  # once
+pnpm turbo build --filter=@platform/api...
+NEXT_PUBLIC_API_ORIGIN=/ pnpm --filter @platform/web build
+pnpm exec playwright install chromium   # or E2E_BROWSER_CHANNEL=chrome where Playwright has no Chromium build
+pnpm test:e2e
+```
+
+The local run uses its own `platform_e2e` database, never the development one.
+
 ### 6. Make GitHub CI green
 
 Inspect the workflow for the exact PR head. If CI fails:

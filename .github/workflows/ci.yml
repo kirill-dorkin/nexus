@@ -221,3 +221,24 @@ jobs:
           done
           docker compose logs --tail=30 api web
           exit 1
+
+      # Real PostgreSQL, the built API, `next start` behind a one-origin edge,
+      # and a course published by scripts/launch-course.mjs (tests/e2e).
+      - name: End-to-end tests
+        env:
+          NEXT_PUBLIC_API_ORIGIN: /
+        run: |
+          pnpm --filter @platform/web build
+          pnpm exec playwright install --with-deps chromium
+          pnpm test:e2e
+
+      - name: Publish end-to-end report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: e2e-report-${{ github.sha }}
+          path: |
+            playwright-report
+            test-results
+          if-no-files-found: ignore
+          retention-days: 14

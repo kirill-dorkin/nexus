@@ -954,13 +954,13 @@ async function verifyStudio(cdp) {
   await navigate(cdp, `${WEB_ORIGIN}/studio`);
   await waitForExpression(
     cdp,
-    "document.querySelector('button[aria-label=\"Browser Studio Academy\"]') !== null",
+    "[...document.querySelectorAll('[aria-label=\"Выбор организации\"] button')].find((b) => b.querySelector('strong')?.textContent === \"Browser Studio Academy\") !== undefined",
     "trusted-provisioned Organization appears in Studio"
   );
   assert(
     await evaluate(
       cdp,
-      "document.querySelector('button[aria-label=\"Browser Studio Academy\"]')?.click() === undefined"
+      "[...document.querySelectorAll('[aria-label=\"Выбор организации\"] button')].find((b) => b.querySelector('strong')?.textContent === \"Browser Studio Academy\")?.click() === undefined"
     ),
     "Studio Organization selector is missing."
   );

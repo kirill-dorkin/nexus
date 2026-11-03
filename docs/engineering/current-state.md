@@ -12,7 +12,7 @@ Last maintained: 2026-11-03.
 |---|---|
 | `main` head | `4d8f5e9` — #150, drop the café story characters (2026-11-03) |
 | Latest migration | `000047_lesson_chapters.sql` |
-| Quality gates | Local before every push: `pnpm check` (brand isolation, Prettier, ESLint strict type-checked + React + jsx-a11y strict + Next, typecheck incl. API operator scripts and root tests, unit and component tests, Web coverage floors). GitHub CI: brand isolation, Prettier, typecheck, unit, integration, launch-performance and browser-launch tests. No lint baseline: every violation fails. |
+| Quality gates | Local before every push: `pnpm check` (brand isolation, Prettier, ESLint strict type-checked + React + jsx-a11y strict + Next, typecheck incl. API operator scripts and root tests, unit and component tests, Web coverage floors). GitHub CI: brand isolation, Prettier, typecheck, unit, integration, launch-performance, browser-launch and Playwright end-to-end tests (axe on every page). No lint baseline: every violation fails. |
 | Latest ADR | ADR-0066 Home learning route |
 | Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058); daily GitHub-hosted read-only smoke against the production domain |
 | Learner-code execution | **Disabled in production.** Grader artifacts exist in the repository but need a separate activation (exact image digest + green real-cluster verification). |
@@ -122,7 +122,7 @@ Nexus has no external API clients yet, so a cleanup slice could close these wind
 
 ## Next recommended slice
 
-**Bring Web to the backend's engineering level: [`web-quality-program.md`](web-quality-program.md).** Phases 0 (workspace lint, type-checked operator scripts and root tests), 1 (Prettier), 2 (component tests and Web coverage floors) 3 (React correctness on shared hooks; the lint baseline is gone), 4 and 4b (Studio editors and every other file over 300 lines split under tests; a size test keeps it so) are done; next is phase 5, end-to-end tests in a real browser.
+**Bring Web to the backend's engineering level: [`web-quality-program.md`](web-quality-program.md).** Phases 0 (workspace lint, type-checked operator scripts and root tests), 1 (Prettier), 2 (component tests and Web coverage floors) 3 (React correctness on shared hooks; the lint baseline is gone), 4 and 4b (Studio editors and every other file over 300 lines split under tests; a size test keeps it so) and 5 (Playwright end-to-end tests with axe on every page, in CI) are done; next is phase 6, performance budgets.
 
 The four route courses (HTML, CSS, JavaScript, SQL) are published; collect learner usage and feedback in parallel before choosing the next domain capability.
 

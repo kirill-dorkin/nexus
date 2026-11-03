@@ -94,11 +94,19 @@ New suites came before the components that had none: the gallery, Studio home, s
 
 `tests/architecture/web-file-size.test.ts` keeps every Web and UI source file at 300 lines or fewer. Coverage floors rose to 74 / 71 / 76 / 76 %.
 
-### 5. End-to-end tests
+### 5. End-to-end tests — done
 
-Playwright against a production build with PostgreSQL in CI: the learner path (home → course → lesson → quiz → practice → progress), registration and sign-in, Studio (create → validate → apply → publish), purchase return states with provider stubs. Every visited page runs an `axe` accessibility check with zero serious or critical violations.
+Playwright (`tests/e2e/`) drives Chromium against the production builds: PostgreSQL with all migrations, the built API, `next start`, and a one-origin edge (`edge.mjs`) that sends `/v1/*` to the API and the rest to Web, so session cookies are first-party as in production. Global setup publishes the e2e course with `scripts/launch-course.mjs` — migrations, owner account, owner organization, manifest, publication, public offering — the same path operators use.
 
-**Done when:** the suites run in CI on every PR and gate merge.
+Scenarios:
+
+- an anonymous visitor goes from the home page to the course and the lesson, solves the practice challenge and is asked to sign in before the quiz is saved;
+- a new learner registers from that prompt, returns to the lesson, the answer enrolls them and is saved, and «Моё обучение» shows the progress; then signs out and back in to the same progress;
+- an author signs in to Studio, creates a course from JSON, validates, saves, previews, publishes, creates a private offering, opens it publicly, and an anonymous visitor reaches the course.
+
+Every visited page runs axe with the WCAG 2.2 A/AA rules and fails on serious or critical violations. The first run found two in Studio — the organization buttons and the Studio logo announced a name that did not contain their visible text (WCAG 2.5.3) — fixed here.
+
+GitHub CI runs `pnpm test:e2e` after the Web build in one-origin mode and keeps the Playwright report and traces of a failed run. The paid checkout path stays covered by the browser launch verification with provider stubs.
 
 ### 6. Performance budgets
 
