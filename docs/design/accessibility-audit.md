@@ -27,6 +27,7 @@ Audit of the learner site and Studio, 2026-11-04 (web quality program, phase 8).
 | 3 | Practice editor | 2.4.7 Focus Visible | The textarea removed its outline and nothing replaced it | Fixed: the editor block shows a focus ring (`:focus-within`) |
 | 4 | Course program search | 2.4.7 Focus Visible | The input removed its outline; focus only tinted the border | Fixed: the search field shows a focus ring |
 | 5 | UI gallery loading example | 4.1.2 Name, Role, Value | `aria-label` on a `div` without a role | Fixed: `role="status"` with `aria-busy` |
+| 6 | Lesson result frames | 2.4.7 Focus Visible | CI's Chromium makes a preview `iframe` a Tab stop; it had no focus indicator (desktop Chrome skipped it) | Fixed: every `iframe` draws a focus ring inside its edge |
 
 The remaining `outline: none` rules in Web are on `<main>` landmarks that receive programmatic focus from the skip link (`tabindex="-1"`), which is the intended pattern.
 
