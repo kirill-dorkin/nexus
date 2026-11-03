@@ -70,6 +70,8 @@ test.describe("keyboard", () => {
     page
   }) => {
     await page.goto("/courses/e2e-html/first-tag");
+    // On a slow runner a Tab pressed before hydration can be lost.
+    await page.waitForLoadState("networkidle");
     await page.keyboard.press("Tab");
     const skip = page.getByRole("link", { name: "Перейти к содержимому" });
     await expect(skip).toBeFocused();

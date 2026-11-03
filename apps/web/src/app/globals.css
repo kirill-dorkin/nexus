@@ -44,9 +44,10 @@ a {
   outline: 3px solid var(--focus-ring);
   outline-offset: 5px;
 }
-/* A preview frame is a Tab stop in some browsers. :focus-visible is not
-   reliable on iframes, and their wrappers clip, so the ring is drawn inside. */
-:where(iframe):focus {
+/* A preview frame is a Tab stop in some browsers. Chromium never matches
+   :focus on the iframe itself, so the ring goes on the element around it
+   (which matches :focus-within), drawn inside because frame wrappers clip. */
+:where(:has(> iframe)):focus-within {
   outline: 3px solid var(--focus-ring);
   outline-offset: -3px;
 }
