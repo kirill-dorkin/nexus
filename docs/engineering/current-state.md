@@ -41,9 +41,9 @@ Each row is implemented on `main`. The ADRs hold the details; the backend areas 
 | Learning route | Web orders the home catalog HTML → CSS → JavaScript → SQL, shows each course's prerequisites, outcome and next course, and links the last lesson to the next course. Presentation only | 0066 |
 | Stable course addresses | Home-organization courses live at `/courses/{course}` (course slug, survives new versions); Delivery resolves the newest public Offering; old Offering addresses redirect permanently | 0061 |
 | Studio | Manual and JSON authoring over the same draft, preview, export, publication, Offering visibility, Organization customer-entry policy | 0057 |
-| Web UI | `@platform/ui` + design tokens, light/dark themes with accents, public shell, Blog/SEO surfaces, `/ui` gallery | 0059 (Proposed) |
+| Web UI | `@platform/ui` + design tokens, light/dark themes with accents, public shell, Blog/SEO surfaces, `/ui` gallery | 0059 |
 | Sign-in | Password, optional Google/GitHub OAuth (PKCE) on the same Nexus session | 0060 (Proposed) |
-| Organization provisioning | Organizations are created only by the offline operator command `org:bootstrap-owner` (`platform_migrator` role, `--apply`). Both HTTP create routes return 403/401. | 0059 |
+| Organization provisioning | Organizations are created only by the offline operator command `org:bootstrap-owner` (`platform_migrator` role, `--apply`). Both HTTP create routes return 403/401. | 0068 |
 
 The paid path (F9) for reference:
 
@@ -123,7 +123,7 @@ Nexus has no external API clients yet, so a cleanup slice could close these wind
 
 ## Next recommended slice
 
-**Bring Web to the backend's engineering level: [`web-quality-program.md`](web-quality-program.md).** Phases 0 (workspace lint, type-checked operator scripts and root tests), 1 (Prettier), 2 (component tests and Web coverage floors) 3 (React correctness on shared hooks; the lint baseline is gone), 4 and 4b (Studio editors and every other file over 300 lines split under tests; a size test keeps it so) 5 (Playwright end-to-end tests with axe on every page, in CI) 6 (per-page JavaScript, LCP and CLS budgets) 7 (client error and Web Vitals reporting, ADR-0067) and 8 (accessibility audit: axe and keyboard checks on every page, `docs/design/accessibility-audit.md`) are done; next is phase 9, accepting ADR-0059 and the Web architecture document.
+**Bring Web to the backend's engineering level: [`web-quality-program.md`](web-quality-program.md).** Phases 0 (workspace lint, type-checked operator scripts and root tests), 1 (Prettier), 2 (component tests and Web coverage floors) 3 (React correctness on shared hooks; the lint baseline is gone), 4 and 4b (Studio editors and every other file over 300 lines split under tests; a size test keeps it so) 5 (Playwright end-to-end tests with axe on every page, in CI) 6 (per-page JavaScript, LCP and CLS budgets) 7 (client error and Web Vitals reporting, ADR-0067), 8 (accessibility audit: axe and keyboard checks on every page, `docs/design/accessibility-audit.md`) and 9 (ADR-0059 accepted, the duplicate number renumbered to ADR-0068, and [`docs/architecture/web.md`](../architecture/web.md)) are done. The program is complete; the next Web size step is client-side parsing without full zod (see phase 6).
 
 The four route courses (HTML, CSS, JavaScript, SQL) are published; collect learner usage and feedback in parallel before choosing the next domain capability.
 

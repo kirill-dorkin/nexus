@@ -26,6 +26,8 @@ NestJS API (modular monolith)
        HOSTILE sandbox pool
 ```
 
+The Web application on top of the API is described in [`web.md`](web.md).
+
 ## Core learning flow
 
 ```text

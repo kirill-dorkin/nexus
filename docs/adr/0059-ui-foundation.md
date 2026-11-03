@@ -1,6 +1,6 @@
 # ADR-0059: Semantic UI foundation and incremental Web adoption
 
-- Status: Proposed
+- Status: Accepted (2026-11-04)
 - Date: 2026-10-07
 
 ## Decision
@@ -26,3 +26,7 @@ There is no migration, authorization/RLS change, canonical event or outbox chang
 ## Amendment — 2026-11-01: dark learner interface
 
 The maintainer replaced the learner-facing art direction. Learner pages (home, catalog, course, lesson, auth, my learning, 404) now render inside a dark scope with one electric-lime accent (`data-ui-accent="lime"`, dark text on accent actions) and no appearance picker. The dark theme tokens are neutral near-black instead of plum. Studio uses the same dark scope and shell (marked with a Studio badge). The light theme and the five selectable accents remain only for the `/ui` gallery and the not-yet-redesigned Commerce pages; the appearance control is removed. Ownership boundaries above are unchanged: tokens own values, `@platform/ui` owns primitives, Web owns composition. No API, auth, progress, migration or outbox change. See `apps/web/DESIGN.md`.
+
+## Acceptance — 2026-11-04
+
+Accepted as implemented: the token, primitive and composition ownership above is what Web and `@platform/ui` ship, and the web quality program (phases 0–8) put it under lint, component tests, end-to-end tests, an accessibility audit and performance budgets. How Web is organized on top of this decision — server and client components, data loading, state, styling — is described in `docs/architecture/web.md`.

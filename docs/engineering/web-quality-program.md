@@ -132,11 +132,9 @@ Covered by contract, API, reporter and component tests, and by an e2e test in wh
 
 It found two fields without a visible focus (the practice editor and the course program search) and an `aria-label` on a role-less element in the UI gallery; all fixed. The report lists no open automated or keyboard AA failures. A screen-reader pass, zoom and reflow on every page, non-text contrast and authored lesson content are listed there as left to a person.
 
-### 9. Decisions and documentation
+### 9. Decisions and documentation — done
 
-Accept ADR-0059 (and give the duplicate ADR number its own number), and write the Web architecture document: server and client component boundaries, data loading, state, styling with tokens and CSS modules, ownership between Web and `@platform/ui`.
-
-**Done when:** a new contributor can place a new page or component from the documents alone.
+ADR-0059 (UI foundation) is accepted. The managed-academy provisioning ADR, which had been given the same number two days later, is now ADR-0068 with its decision unchanged. [`docs/architecture/web.md`](../architecture/web.md) describes ownership between tokens, `@platform/ui`, contracts and Web; the layout of `apps/web/src`; server and client components; data loading for public and signed-in pages; state; styling; the quality gates; and step-by-step where a new page or component goes.
 
 ## Backend items found on the way
 
