@@ -4,6 +4,7 @@ import { Module } from "@nestjs/common";
 
 import { DatabaseModule } from "./database/database.module";
 import { HealthController } from "./health.controller";
+import { WebTelemetryController } from "./observability/web-telemetry.controller";
 import { AuthenticationModule } from "./modules/authentication/authentication.module";
 import { AuthorizationModule } from "./modules/authorization/authorization.module";
 import { CommerceModule } from "./modules/commerce/commerce.module";
@@ -49,6 +50,6 @@ import { RequestContextModule } from "./request-context/request-context.module";
     LearningReadinessModule,
     LearningProgressionModule
   ],
-  controllers: [HealthController]
+  controllers: [HealthController, WebTelemetryController]
 })
 export class AppModule {}

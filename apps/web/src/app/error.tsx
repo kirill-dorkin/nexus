@@ -1,7 +1,23 @@
 "use client";
+import { useEffect } from "react";
 import { Button, Heading, Stack, Text } from "@platform/ui";
 import { LearningShell } from "../components/learning/learning-shell";
-export default function PageError({ reset }: { reset: () => void }) {
+import { telemetry } from "../components/telemetry/client-telemetry";
+import { clientError } from "../lib/telemetry/errors";
+import { routeTemplate } from "../lib/telemetry/route";
+
+export default function PageError({
+  error,
+  reset
+}: {
+  error: Error;
+  reset: () => void;
+}) {
+  useEffect(() => {
+    telemetry.report(
+      clientError("render", error, routeTemplate(window.location.pathname))
+    );
+  }, [error]);
   return (
     <LearningShell>
       <Stack

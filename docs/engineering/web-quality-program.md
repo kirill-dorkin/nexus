@@ -120,11 +120,11 @@ Measuring what the browser actually downloads is independent of the bundler's ma
 
 The largest remaining client cost is zod: about 90 KB compressed on every page that parses API data. Moving client-side parsing to `zod/mini` (or narrower client schemas) is the next size step; budgets go down with it.
 
-### 7. Client observability
+### 7. Client observability — done
 
-Error reporting (`error` and `unhandledrejection`, React error boundaries) and Web Vitals sent to a first-party endpoint, behind an ADR that fixes what is collected and what is never collected. Replaces the empty `@platform/observability` placeholder for Web.
+ADR-0067. `ClientTelemetry` in the root layout reports uncaught errors, unhandled rejections and Web Vitals, and `app/error.tsx` reports render failures, to `POST /v1/telemetry/web`; the API logs `web.client_error` and `web.vital` lines under the ADR-0052 rules. Events carry the route template, the error name from a closed list, the source (app or external script) and the release — never messages, URLs or identifiers; the strict contract rejects anything else. Batching, per-page deduplication and a per-page cap keep a crash loop from flooding the API.
 
-**Done when:** production client errors and vitals are visible without reading user devices.
+Covered by contract, API, reporter and component tests, and by an e2e test in which a real error on a lesson page reaches the API with 204 and without its message or the lesson address. The performance budgets caught the first version pulling zod onto every page through a contract value; the error-name list now lives in a zod-free module.
 
 ### 8. Accessibility audit
 

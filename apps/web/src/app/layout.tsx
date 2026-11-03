@@ -3,6 +3,7 @@ import { brand } from "@platform/brand";
 import type { ReactNode } from "react";
 import { appearanceBootScript } from "../components/appearance/preferences";
 import { siteUrl } from "../lib/site";
+import { ClientTelemetry } from "../components/telemetry/client-telemetry";
 import "@fontsource-variable/onest";
 import "./globals.css";
 
@@ -52,7 +53,10 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: appearanceBootScript }} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <ClientTelemetry />
+      </body>
     </html>
   );
 }
