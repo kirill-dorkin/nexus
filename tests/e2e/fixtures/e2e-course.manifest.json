@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "e2e-html",
+    "title": "E2E: HTML",
+    "description": "Курс для сквозных тестов: урок с практикой и квизом."
+  },
+  "skills": [
+    {
+      "key": "tags",
+      "title": "Теги",
+      "description": "Пишет теги разметки."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "heading-tag",
+      "title": "Тег заголовка",
+      "instructions": "",
+      "skillKeys": ["tags"],
+      "type": "quiz.single_choice",
+      "presentation": {
+        "question": "Какой тег делает главный заголовок страницы?",
+        "options": [
+          {
+            "id": "h1",
+            "text": "h1"
+          },
+          {
+            "id": "p",
+            "text": "p"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "h1",
+        "explanation": "Главный заголовок — h1."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "first-tag",
+      "title": "Первый тег",
+      "summary": "Заголовок страницы.",
+      "chapter": "Начало",
+      "durationMinutes": 10,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Заголовки\n\nТег `h1` — главный заголовок.\n\n```challenge\n{\"title\":\"Первый заголовок\",\"task\":\"Добавьте заголовок `h1` с текстом «Привет».\",\"start\":\"<p>Текст</p>\",\"checks\":[{\"label\":\"Есть заголовок h1\",\"selector\":\"h1\"},{\"label\":\"В заголовке слово «Привет»\",\"selector\":\"h1\",\"text\":\"Привет\"}],\"hint\":\"Заголовок пишется тегом `<h1>`.\",\"solution\":\"<h1>Привет</h1>\\n<p>Текст</p>\"}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "heading-tag",
+          "kind": "practice",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "next-steps",
+      "title": "Что дальше",
+      "summary": "Итог курса.",
+      "chapter": "Начало",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Готово\n\nВы прошли курс."
+        }
+      ]
+    }
+  ]
+}

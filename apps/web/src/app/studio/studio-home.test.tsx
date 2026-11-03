@@ -72,10 +72,10 @@ describe("StudioHome", () => {
       screen.getByRole("button", { name: "Ещё организации" })
     );
     expect(
-      await screen.findByRole("button", { name: "Beta" })
+      await screen.findByRole("button", { name: /^Beta/ })
     ).toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole("button", { name: "Acme" }));
+    await userEvent.click(screen.getByRole("button", { name: /^Acme/ }));
     const workspace = within(
       screen.getByRole("region", { name: "Курсы организации" })
     );
@@ -107,7 +107,7 @@ describe("StudioHome", () => {
       [coursesPath]: [{ courses: [], nextCursor: null, canCreate: false }]
     });
     render(<StudioHome />);
-    await userEvent.click(await screen.findByRole("button", { name: "Acme" }));
+    await userEvent.click(await screen.findByRole("button", { name: /^Acme/ }));
     expect(
       await screen.findByText("Пока нет доступных курсов")
     ).toBeInTheDocument();
@@ -125,7 +125,7 @@ describe("StudioHome", () => {
       ]
     });
     render(<StudioHome />);
-    await userEvent.click(await screen.findByRole("button", { name: "Acme" }));
+    await userEvent.click(await screen.findByRole("button", { name: /^Acme/ }));
     await userEvent.click(
       await screen.findByRole("button", { name: "Повторить загрузку курсов" })
     );

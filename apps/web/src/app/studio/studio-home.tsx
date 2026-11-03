@@ -170,7 +170,6 @@ export function StudioHome() {
                     variant="ghost"
                     className={styles.organizationChoice}
                     disabled={busy}
-                    aria-label={o.name}
                     aria-pressed={selected?.id === o.id}
                     onClick={() => select(o)}
                   >
