@@ -18,7 +18,9 @@ env:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Unit tests, the container build and the e2e suite (with the axe audit)
+    # take 18–21 minutes on a hosted runner; 30 leaves room without hiding a hang.
+    timeout-minutes: 30
     services:
       postgres:
         image: postgres:18.6-bookworm

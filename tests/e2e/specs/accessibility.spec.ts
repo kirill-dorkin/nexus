@@ -70,6 +70,15 @@ test.describe("keyboard", () => {
     page
   }) => {
     await page.goto("/courses/e2e-html/first-tag");
+    // On a slow runner a Tab pressed before hydration can be lost; React
+    // marks the nodes it has hydrated.
+    await page.waitForFunction(() => {
+      const main = document.getElementById("learning-main");
+      return (
+        main !== null &&
+        Object.keys(main).some((key) => key.startsWith("__reactFiber"))
+      );
+    });
     await page.keyboard.press("Tab");
     const skip = page.getByRole("link", { name: "Перейти к содержимому" });
     await expect(skip).toBeFocused();
@@ -88,6 +97,21 @@ test.describe("keyboard", () => {
       const report = await page.evaluate(() => {
         const el = document.activeElement as HTMLElement | null;
         if (!el || el === document.body) return null;
+        // Focus inside a frame lives in the frame's own process; headless
+        // Chromium then reports no :focus-within on the wrapper, although a
+        // real browser draws the global frame ring there (globals.css). Check
+        // that the wrapper is one the ring applies to.
+        if (el.tagName === "IFRAME")
+          return el.parentElement?.matches(":has(> iframe)") &&
+            [...document.styleSheets].some((sheet) =>
+              [...sheet.cssRules].some((rule) =>
+                rule.cssText
+                  .replace(/\s/g, "")
+                  .includes(":has(>iframe)):focus-within")
+              )
+            )
+            ? null
+            : "iframe without the frame focus ring";
         // The indicator may be drawn on the element or on a wrapper around it
         // (the code editor rings its whole block while its textarea has focus).
         let node: HTMLElement | null = el;
