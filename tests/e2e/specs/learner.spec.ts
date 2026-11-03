@@ -11,7 +11,14 @@ test("an anonymous visitor finds the course and practices without an account", a
 }) => {
   await page.goto("/");
   await expectAccessible(page);
-  await page.getByRole("link", { name: "Начать первый курс" }).click();
+  // Other suites may publish courses into the same database, so the course is
+  // found by its title in the catalog rather than as "the first course".
+  await page.goto("/courses");
+  await expectAccessible(page);
+  await page
+    .getByRole("link", { name: /E2E: HTML/ })
+    .first()
+    .click();
 
   await expect(page).toHaveURL(course);
   await expect(
