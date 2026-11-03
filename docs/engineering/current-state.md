@@ -13,7 +13,7 @@ Last maintained: 2026-11-03.
 | `main` head | `4d8f5e9` — #150, drop the café story characters (2026-11-03) |
 | Latest migration | `000047_lesson_chapters.sql` |
 | Quality gates | Local before every push: `pnpm check` (brand isolation, Prettier, ESLint strict type-checked + React + jsx-a11y strict + Next, typecheck incl. API operator scripts and root tests, unit and component tests, Web coverage floors). GitHub CI: brand isolation, Prettier, typecheck, unit, integration, launch-performance, browser-launch and Playwright end-to-end tests (axe on every page). No lint baseline: every violation fails. |
-| Latest ADR | ADR-0066 Home learning route |
+| Latest ADR | ADR-0067 Client error and Web Vitals reporting |
 | Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058); daily GitHub-hosted read-only smoke against the production domain |
 | Learner-code execution | **Disabled in production.** Grader artifacts exist in the repository but need a separate activation (exact image digest + green real-cluster verification). |
 | Published content | Route «Веб-разработка с нуля»: `html`, `css`, `js`, `sql` manifests in `docs/examples/`, published in production. The four-lesson `computer-basics-first-course` manifest is not published. Check Studio for current versions. |
@@ -37,6 +37,7 @@ Each row is implemented on `main`. The ADRs hold the details; the backend areas 
 | Lesson chapters | Optional `chapter` per manifest lesson; course page and lesson sidebar group the program by chapter | 0063 |
 | In-browser practice | Lesson challenges and concept cards: static HTML/CSS checks; JavaScript in an opaque-origin sandbox; SQL on PostgreSQL (PGlite) in a Web Worker against a neutral store teaching database (`shop`) or an empty one. Practice only, never Evidence | 0064, 0065 |
 | Offering retarget | Free self-paced Offerings move forward to a newer published version of the same Course; Enrollments and progress carry over (`required-activity-passes@2` by stable Activity identity) | 0062 |
+| Client telemetry | Web reports uncaught errors, unhandled rejections, render failures and Web Vitals as `web.client_error` / `web.vital` log events: route template, error name, release — never messages, URLs or identifiers | 0067 |
 | Learning route | Web orders the home catalog HTML → CSS → JavaScript → SQL, shows each course's prerequisites, outcome and next course, and links the last lesson to the next course. Presentation only | 0066 |
 | Stable course addresses | Home-organization courses live at `/courses/{course}` (course slug, survives new versions); Delivery resolves the newest public Offering; old Offering addresses redirect permanently | 0061 |
 | Studio | Manual and JSON authoring over the same draft, preview, export, publication, Offering visibility, Organization customer-entry policy | 0057 |
@@ -122,7 +123,7 @@ Nexus has no external API clients yet, so a cleanup slice could close these wind
 
 ## Next recommended slice
 
-**Bring Web to the backend's engineering level: [`web-quality-program.md`](web-quality-program.md).** Phases 0 (workspace lint, type-checked operator scripts and root tests), 1 (Prettier), 2 (component tests and Web coverage floors) 3 (React correctness on shared hooks; the lint baseline is gone), 4 and 4b (Studio editors and every other file over 300 lines split under tests; a size test keeps it so) 5 (Playwright end-to-end tests with axe on every page, in CI) and 6 (per-page JavaScript, LCP and CLS budgets) are done; next is phase 7, client error and Web Vitals reporting.
+**Bring Web to the backend's engineering level: [`web-quality-program.md`](web-quality-program.md).** Phases 0 (workspace lint, type-checked operator scripts and root tests), 1 (Prettier), 2 (component tests and Web coverage floors) 3 (React correctness on shared hooks; the lint baseline is gone), 4 and 4b (Studio editors and every other file over 300 lines split under tests; a size test keeps it so) 5 (Playwright end-to-end tests with axe on every page, in CI) 6 (per-page JavaScript, LCP and CLS budgets) and 7 (client error and Web Vitals reporting, ADR-0067) are done; next is phase 8, the accessibility audit.
 
 The four route courses (HTML, CSS, JavaScript, SQL) are published; collect learner usage and feedback in parallel before choosing the next domain capability.
 

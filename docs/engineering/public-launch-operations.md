@@ -53,6 +53,15 @@ Allowed dimensions:
 
 No inbox/Purchase/provider id is permitted in routine worker events.
 
+### `web.client_error` and `web.vital` (ADR-0067)
+
+Sent by the Web app to `POST /v1/telemetry/web` and logged by the API (`WebTelemetry` context): errors at warn level, vitals at log level.
+
+- `web.client_error`: `release`, `kind=error | unhandled_rejection | render`, bounded `errorName`, `source=app | external`, `route` template.
+- `web.vital`: `release`, `name=CLS | FCP | INP | LCP | TTFB`, `rating=good | needs-improvement | poor`, `value`, `route` template.
+
+Read them per `release` and `route`: a new `errorName` or a jump in `poor` ratings right after a deploy points at that release. Errors with `source=external` come from browser extensions or embedded players and usually need no action. No message, URL or identifier is ever present; the contract rejects them.
+
 ### `public_launch.reconciliation`
 
 Allowed dimensions:
