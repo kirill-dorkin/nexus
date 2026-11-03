@@ -21,6 +21,14 @@ export async function measure(
   // not in the page's own resource timeline.
   const requested: string[] = [];
   page.context().on("request", (request) => requested.push(request.url()));
+  // Next prefetches the code of every route linked in the viewport. That is
+  // the cost of the next navigation, not of this page, and it depends on
+  // which courses the database holds, so prefetches are cut off here.
+  await page.route("**/*", (route) =>
+    route.request().headers()["next-router-prefetch"]
+      ? route.abort()
+      : route.continue()
+  );
   await page.addInitScript(() => {
     const w = window as unknown as { __cls: number; __lcp: number };
     w.__cls = 0;
@@ -38,7 +46,8 @@ export async function measure(
     }).observe({ type: "largest-contentful-paint", buffered: true });
   });
   await page.goto(path, { waitUntil: "load" });
-  await page.locator("main").waitFor();
+  // While a page streams, the hidden loading fallback is a second <main>.
+  await page.getByRole("main").waitFor();
   if (scrollToEnd) {
     await page.evaluate(() => {
       window.scrollTo(0, document.body.scrollHeight);

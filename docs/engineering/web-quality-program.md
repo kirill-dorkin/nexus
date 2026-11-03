@@ -116,7 +116,7 @@ GitHub CI runs `pnpm test:e2e` after the Web build in one-origin mode and keeps 
 - Largest Contentful Paint ≤ 2.5 s and Cumulative Layout Shift ≤ 0.1 (the Core Web Vitals "good" thresholds);
 - the in-browser PostgreSQL engine (PGlite, ~108 KB compressed plus WebAssembly) loads on the SQL lesson once its example scrolls near, and on no other page — checked in both directions, including requests made by the worker.
 
-Measuring what the browser actually downloads is independent of the bundler's manifest format. `@platform/contracts` is now marked `sideEffects: false`, so unused contract modules leave the client bundles, and the course table list moved out of the teaching-database SQL, which only the worker needs.
+Measuring what the browser actually downloads is independent of the bundler's manifest format. Next's prefetches of linked routes are cut off during the measurement: they are the cost of the next navigation, and they depend on which courses the database holds (CI first counted the code of another organization's course page on the catalog). `@platform/contracts` is now marked `sideEffects: false`, so unused contract modules leave the client bundles, and the course table list moved out of the teaching-database SQL, which only the worker needs.
 
 The largest remaining client cost is zod: about 90 KB compressed on every page that parses API data. Moving client-side parsing to `zod/mini` (or narrower client schemas) is the next size step; budgets go down with it.
 
