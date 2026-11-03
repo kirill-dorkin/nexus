@@ -1,7 +1,8 @@
-# ADR-0059: Managed-academy Organization provisioning
+# ADR-0068: Managed-academy Organization provisioning
 
 - Status: **Accepted** (supersedes only the user-session Organization-creation clause of ADR-0057)
 - Date: 2026-10-16
+- Renumbered: 2026-11-04, from a second ADR-0059 (number collision with the UI foundation ADR); the decision is unchanged
 - Relates to: issue #99, frontend master spec v1.2 §§2.5, 3.1, 7.4 and Phase 7
 
 ## Context and security decision
