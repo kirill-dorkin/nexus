@@ -4,7 +4,7 @@ test("a page error and the page's Web Vitals reach the API without private detai
   page
 }) => {
   await page.goto("/courses/e2e-html/first-tag");
-  await page.locator("main").waitFor();
+  await page.getByRole("main").waitFor();
   await page.evaluate(() => {
     setTimeout(() => {
       throw new TypeError("e2e private detail");
