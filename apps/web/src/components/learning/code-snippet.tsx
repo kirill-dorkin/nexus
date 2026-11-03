@@ -50,22 +50,23 @@ function SqlResult({ code }: { code: string }) {
 export function CodeEditor({
   value,
   onChange,
-  autoFocus = true,
+  focusOnMount = false,
   language = "html",
   label = "Редактор HTML. Tab — отступ, Escape и затем Tab — выйти из редактора"
 }: {
   value: string;
   language?: string;
   onChange: (value: string) => void;
-  autoFocus?: boolean;
+  /** Move focus into the editor when it appears after the learner asked for it. */
+  focusOnMount?: boolean;
   label?: string;
 }) {
   const layer = useRef<HTMLPreElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
   const releaseTab = useRef(false);
   useEffect(() => {
-    if (autoFocus) input.current?.focus({ preventScroll: true });
-  }, [autoFocus]);
+    if (focusOnMount) input.current?.focus({ preventScroll: true });
+  }, [focusOnMount]);
   const rows = Math.min(Math.max(value.split("\n").length + 1, 4), 24);
   function keyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
     if (event.key === "Escape") {
@@ -207,6 +208,7 @@ export function CodeSnippet({
           <CodeEditor
             value={value}
             onChange={setValue}
+            focusOnMount
             language={lang === "sql" ? "sql" : "html"}
             {...(lang === "sql"
               ? {

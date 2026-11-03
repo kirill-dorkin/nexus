@@ -406,6 +406,7 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
             <CheckIcon size={14} weight="bold" aria-hidden="true" />
           ) : null}
           Задание
+          {solved ? <span className={styles.srOnly}> решено</span> : null}
         </span>
         <h3 className={styles.title}>{challenge.title}</h3>
         <span className={styles.score} aria-hidden="true">
