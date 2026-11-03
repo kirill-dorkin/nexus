@@ -62,7 +62,7 @@ export type Challenge = {
   /** "js": the learner edits JavaScript that runs on top of the fixed `page` markup. "sql": queries. */
   lang?: "html" | "js" | "sql";
   page?: string;
-  /** SQL: the starting database ("shop" by default; "zerno" is its earlier name) and extra SQL run before the learner's code. */
+  /** SQL: the starting database ("shop" by default) and extra SQL run before the learner's code. */
   db?: SqlBase;
   setup?: string;
 };
@@ -83,7 +83,7 @@ export function parseChallenge(source: string): Challenge | null {
   if (!opt(c.page, 3000) || (c.page !== undefined && c.lang !== "js")) return null;
   const sql = c.lang === "sql";
   if (!opt(c.setup, 4000) || (c.setup !== undefined && !sql)) return null;
-  if (c.db !== undefined && !(sql && (c.db === "shop" || c.db === "zerno" || c.db === "empty"))) return null;
+  if (c.db !== undefined && !(sql && (c.db === "shop" || c.db === "empty"))) return null;
   if (!Array.isArray(c.checks) || c.checks.length < 1 || c.checks.length > 8) return null;
   const checks: ChallengeCheck[] = [];
   for (const item of c.checks as Record<string, unknown>[]) {

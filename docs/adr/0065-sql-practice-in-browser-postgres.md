@@ -35,4 +35,4 @@ Running learner SQL on the platform's PostgreSQL is out of the question. It is t
 
 ## Amendment (2026-11): neutral teaching database
 
-The courses no longer follow a café storyline. The teaching database became a generic store (stationery, paper, gifts, books) in `sql/shop-db.ts`. Table names, columns (except `volume_ml` → `weight_g`), ids and prices are unchanged, so expected results stay stable. The base is named `"shop"`; `"zerno"` stays accepted as an alias so that already published course versions keep working until they are republished.
+The courses no longer follow a café storyline. The teaching database became a generic store (stationery, paper, gifts, books) in `sql/shop-db.ts`. Table names, columns (except `volume_ml` → `weight_g`), ids and prices are unchanged, so expected results stay stable. The base is named `"shop"`. The earlier name `"zerno"` was accepted as an alias until every course was republished, then removed.

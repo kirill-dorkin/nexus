@@ -7,8 +7,8 @@
  */
 import { SHOP_DATA, SHOP_SCHEMA } from "./shop-db";
 
-/** "shop" — the teaching store database; "zerno" is the earlier name of the same base. */
-export type SqlBase = "shop" | "zerno" | "empty";
+/** "shop" — the teaching store database; "empty" — no tables. */
+export type SqlBase = "shop" | "empty";
 export type SqlCheck = {
   /** A query run after the learner's code; passes when its first value is true. */
   sql?: string | undefined;

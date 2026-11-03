@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { Bug, ChartBar, Coffee, Database, FastForward, Headphones, Palette, Robot, Sparkle, User } from "@phosphor-icons/react/dist/ssr";
+import { Bug, Database, FastForward, Headphones, Robot, Sparkle, User } from "@phosphor-icons/react/dist/ssr";
 import { CodeSnippet } from "./code-snippet";
 import { isRunnerMessage, needsModule, runnerDocument } from "./js-runner";
 import { useSqlRun } from "./sql/sql-client";
@@ -16,14 +16,11 @@ import styles from "./story.module.css";
  */
 
 export const CHARACTERS = {
-  marta: { name: "Марта", role: "хозяйка кофейни «Зерно»", color: "#fdba74", Icon: Coffee },
   bro: { name: "Бро", role: "браузер", color: "#7dd3fc", Icon: Robot },
   nika: { name: "Ника", role: "наставница", color: "#c5f23a", Icon: Sparkle },
-  lev: { name: "Лев", role: "гость, слушает сайты скринридером", color: "#c4b5fd", Icon: Headphones },
-  sonya: { name: "Соня", role: "дизайнер, рисует макеты", color: "#f0abfc", Icon: Palette },
+  lev: { name: "Лев", role: "слушает сайты скринридером", color: "#c4b5fd", Icon: Headphones },
   bug: { name: "Вредный Скрипт", role: "злодей", color: "#fda4af", Icon: Bug },
   slon: { name: "Слон", role: "база данных PostgreSQL", color: "#93c5fd", Icon: Database },
-  dasha: { name: "Даша", role: "маркетолог, любит цифры", color: "#fcd34d", Icon: ChartBar },
   you: { name: "Вы", role: "", color: "#e4e4e7", Icon: User }
 } as const;
 export type Who = keyof typeof CHARACTERS;
