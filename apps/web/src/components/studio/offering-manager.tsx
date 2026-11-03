@@ -1,4 +1,5 @@
 "use client";
+import { useBrowserOrigin } from "../../lib/hooks/browser";
 
 import { useEffect, useRef, useState, type SubmitEvent } from "react";
 import Link from "next/link";
@@ -60,7 +61,8 @@ export function OfferingManager({
   courseId: string;
 }) {
   const [course, setCourse] = useState<StudioDraft | null>(null);
-  const [browserOrigin, setBrowserOrigin] = useState<string | null>(null);
+  // "" while rendering on the server, the page origin in the browser.
+  const browserOrigin = useBrowserOrigin();
   const [organizationSlug, setOrganizationSlug] = useState<string | null>(null);
   const [offerings, setOfferings] = useState<LearningOffering[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
@@ -107,7 +109,6 @@ export function OfferingManager({
 
   useEffect(() => {
     let cancelled = false;
-    setBrowserOrigin(window.location.origin);
     // The route changes by remounting this keyed component.
     async function initial() {
       try {

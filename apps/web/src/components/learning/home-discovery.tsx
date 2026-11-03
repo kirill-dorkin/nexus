@@ -173,9 +173,10 @@ export function DiscoveryLoading() {
 }
 
 export async function DiscoveryCourses() {
+  // Only the read is guarded: rendering errors belong to the nearest error boundary.
+  let courses: Awaited<ReturnType<typeof loadLearningCatalog>>["courses"];
   try {
-    const catalog = await loadLearningCatalog();
-    return <DiscoveryRows courses={catalog.courses} />;
+    courses = (await loadLearningCatalog()).courses;
   } catch {
     return (
       <Alert title="Не удалось загрузить курсы" tone="warning">
@@ -184,6 +185,7 @@ export async function DiscoveryCourses() {
       </Alert>
     );
   }
+  return <DiscoveryRows courses={courses} />;
 }
 
 export function CourseDiscovery() {

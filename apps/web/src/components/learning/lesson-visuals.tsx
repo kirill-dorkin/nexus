@@ -1,5 +1,7 @@
 "use client";
 import { itemAt } from "../../lib/item-at";
+import { useIsClient, usePrefersReducedMotion } from "../../lib/hooks/browser";
+import { useSeenOnce } from "../../lib/hooks/in-view";
 
 import {
   useEffect,
@@ -306,12 +308,14 @@ function DomBranch({ node }: { node: DomNode }) {
 
 /** Parses author HTML into an inert document (no scripts run) and draws its DOM tree. */
 function DomDiagram({ html }: { html: string }) {
-  const [tree, setTree] = useState<DomNode | null>(null);
-  useEffect(() => {
+  // DOMParser exists only in the browser; the server renders the placeholder.
+  const isClient = useIsClient();
+  const tree = useMemo(() => {
+    if (!isClient) return null;
     const doc = new DOMParser().parseFromString(html, "text/html");
     const full = /<html[\s>]/i.test(html);
-    setTree(toTree(full ? doc.documentElement : doc.body));
-  }, [html]);
+    return toTree(full ? doc.documentElement : doc.body);
+  }, [isClient, html]);
   return (
     <div className={styles.dom}>
       <pre className={styles.domSource}>
@@ -349,18 +353,6 @@ function Tokens({ tokens }: { tokens: Token[] }) {
       )}
     </>
   );
-}
-
-function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(query.matches);
-    const listener = () => setReduced(query.matches);
-    query.addEventListener("change", listener);
-    return () => query.removeEventListener("change", listener);
-  }, []);
-  return reduced;
 }
 
 /** Where Emmet leaves the caret after expanding: the first empty attribute or element. */
@@ -451,12 +443,12 @@ function AbbreviationParts({
   typed: number;
   done: boolean;
 }) {
-  let end = 0;
+  const starts = partStarts(parts);
   return (
     <ol className={styles.parts} aria-hidden="true">
       {parts.map((part, i) => {
-        const startAt = end;
-        end += part.text.length;
+        const startAt = itemAt(starts, i);
+        const end = startAt + part.text.length;
         const state =
           done || typed >= end ? "done" : typed > startAt ? "active" : "idle";
         return (
@@ -482,23 +474,19 @@ const STAGES: { phase: Phase[]; label: string }[] = [
 
 function useVisibleOnce<T extends Element>() {
   const [element, setElement] = useState<T | null>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    if (!element || visible) return;
-    if (typeof IntersectionObserver === "undefined") {
-      setVisible(true);
-      return;
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) setVisible(true);
-      },
-      { threshold: 0.6 }
-    );
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [element, visible]);
+  const visible = useSeenOnce(element, { threshold: 0.6 });
   return [setElement, visible] as const;
+}
+
+/** Offset of each part inside the abbreviation. */
+function partStarts(parts: readonly UrlPart[]): number[] {
+  const starts: number[] = [];
+  let offset = 0;
+  for (const part of parts) {
+    starts.push(offset);
+    offset += part.text.length;
+  }
+  return starts;
 }
 
 function EditorWindow({
@@ -570,15 +558,15 @@ function TypedInput({
   parts: UrlPart[] | undefined;
 }) {
   if (!parts) return <>{input.slice(0, typed)}</>;
-  let start = 0;
+  const starts = partStarts(parts);
   return (
     <>
       {parts.map((part, i) => {
+        const start = itemAt(starts, i);
         const text = input.slice(
           start,
           Math.min(start + part.text.length, typed)
         );
-        start += part.text.length;
         return text ? (
           <span key={i} style={{ color: PALETTE[i % PALETTE.length] }}>
             {text}

@@ -89,10 +89,12 @@ export function SignupNudge({ returnTo }: { returnTo: string }) {
   const viewer = useViewer();
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const lastActive = useRef(Date.now());
+  // Set when watching starts: reading the clock during render is impure.
+  const lastActive = useRef(0);
 
   useEffect(() => {
     if (viewer !== "anonymous") return;
+    lastActive.current = Date.now();
     const mark = () => {
       lastActive.current = Date.now();
     };

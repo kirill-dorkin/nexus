@@ -10,6 +10,7 @@ import {
   XIcon
 } from "@phosphor-icons/react/dist/ssr";
 import { brand } from "@platform/brand";
+import { useStoredValue, writeStoredValue } from "../../lib/hooks/stored-value";
 import { groupByChapter } from "./lesson-outline";
 import styles from "./course-navigator.module.css";
 
@@ -46,26 +47,30 @@ function visitedKey(course: string) {
   return `${brand.slug}:visited:${course}`;
 }
 
+function visitedList(raw: string | null): readonly string[] {
+  if (raw === null) return [];
+  try {
+    const value: unknown = JSON.parse(raw);
+    return Array.isArray(value)
+      ? (value as unknown[]).filter(
+          (slug): slug is string => typeof slug === "string"
+        )
+      : [];
+  } catch {
+    return [];
+  }
+}
+
 /** Remembers which lessons this browser has opened. Never blocks rendering when storage is unavailable. */
-function useVisited(course: string, current: string) {
-  const [visited, setVisited] = useState<ReadonlySet<string>>(() => new Set());
+function useVisited(course: string, current: string): ReadonlySet<string> {
+  const key = visitedKey(course);
+  const raw = useStoredValue(key);
+  const stored = useMemo(() => visitedList(raw), [raw]);
   useEffect(() => {
-    let list: string[] = [];
-    try {
-      list = JSON.parse(
-        localStorage.getItem(visitedKey(course)) ?? "[]"
-      ) as string[];
-      if (!Array.isArray(list)) list = [];
-      if (!list.includes(current)) {
-        list = [...list, current];
-        localStorage.setItem(visitedKey(course), JSON.stringify(list));
-      }
-    } catch {
-      list = [current];
-    }
-    setVisited(new Set(list));
-  }, [course, current]);
-  return visited;
+    if (!stored.includes(current))
+      writeStoredValue(key, JSON.stringify([...stored, current]));
+  }, [key, current, stored]);
+  return useMemo(() => new Set([...stored, current]), [stored, current]);
 }
 
 function Program({

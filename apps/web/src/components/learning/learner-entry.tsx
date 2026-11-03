@@ -4,6 +4,7 @@ import {
   type LearnerLearningCourse
 } from "@platform/contracts";
 import { useEffect, useState } from "react";
+import { useApiResource } from "../../lib/hooks/api-resource";
 import Link from "next/link";
 import { browserApiRequest } from "../../lib/public-api";
 import { learningLoginUrl } from "../../lib/learning-return-to";
@@ -40,46 +41,33 @@ export function LearnerEntry({
     ? lessonUrl(address, lessonSlug)
     : courseUrl(address);
   const api = `/v1/me/learning/${encodeURIComponent(organizationSlug)}/${encodeURIComponent(offeringSlug)}`;
-  const [learning, setLearning] = useState<LearnerLearningCourse | null>(null),
-    [anonymous, setAnonymous] = useState(false);
+  const [version, setVersion] = useState(0);
+  const [resource, setResource] = useApiResource(
+    api,
+    learnerLearningCourseSchema,
+    version
+  );
   const [busy, setBusy] = useState(false),
     [error, setError] = useState<string | null>(null),
-    [message, setMessage] = useState<string | null>(null),
-    [reload, setReload] = useState(0),
-    [loading, setLoading] = useState(true);
+    [message, setMessage] = useState<string | null>(null);
+  const reload = () => setVersion((x) => x + 1);
   useEffect(() => {
-    const refresh = () => setReload((x) => x + 1);
+    const refresh = () => setVersion((x) => x + 1);
     window.addEventListener("learning-progress-changed", refresh);
     return () =>
       window.removeEventListener("learning-progress-changed", refresh);
   }, []);
-  useEffect(() => {
-    const controller = new AbortController();
-    setLoading(true);
-    setLearning(null);
-    setAnonymous(false);
-    // The error stays: a reload after a failed command must keep its explanation.
-    // Only the learner's own retry (below) clears it.
-    void (async () => {
-      try {
-        const r = await browserApiRequest(api, { signal: controller.signal });
-        if (r.status === 401) {
-          setAnonymous(true);
-          return;
-        }
-        if (!r.ok) throw new Error("Learning unavailable");
-        setLearning(learnerLearningCourseSchema.parse(await r.json()));
-      } catch {
-        if (!controller.signal.aborted)
-          setError(
-            "Не удалось загрузить состояние обучения. Попробуйте снова."
-          );
-      } finally {
-        if (!controller.signal.aborted) setLoading(false);
-      }
-    })();
-    return () => controller.abort();
-  }, [api, reload]);
+  const loading = resource.status === "loading";
+  const anonymous = resource.status === "anonymous";
+  const learning: LearnerLearningCourse | null =
+    resource.status === "ready" ? resource.data : null;
+  // A failed command keeps its own explanation across the reload it triggers;
+  // only the learner's retry clears it.
+  const shownError =
+    error ??
+    (resource.status === "error"
+      ? "Не удалось загрузить состояние обучения. Попробуйте снова."
+      : null);
   /** Sends one existing domain command; null means the caller must stop. */
   async function post(kind: "join" | "enroll"): Promise<Response | null> {
     const response = await browserApiRequest(
@@ -89,8 +77,7 @@ export function LearnerEntry({
       { method: "POST", body: "{}" }
     );
     if (response.status === 401) {
-      setLearning(null);
-      setAnonymous(true);
+      setResource({ status: "anonymous" });
       return null;
     }
     if (!response.ok) {
@@ -108,7 +95,10 @@ export function LearnerEntry({
   async function enroll() {
     const response = await post("enroll");
     if (!response) return false;
-    setLearning(learnerLearningCourseSchema.parse(await response.json()));
+    setResource({
+      status: "ready",
+      data: learnerLearningCourseSchema.parse(await response.json())
+    });
     setMessage("Вы записаны на курс. Результаты практики будут сохраняться.");
     return true;
   }
@@ -125,7 +115,7 @@ export function LearnerEntry({
       if (kind === "start") {
         const joined = await post("join");
         if (!joined) return;
-        if (!(await enroll())) setReload((x) => x + 1);
+        if (!(await enroll())) reload();
         return;
       }
       await enroll();
@@ -248,15 +238,15 @@ export function LearnerEntry({
             </>
           )}
           {message && <Alert tone="success">{message}</Alert>}
-          {error && (
+          {shownError && (
             <>
-              <Alert tone="danger">{error}</Alert>
+              <Alert tone="danger">{shownError}</Alert>
               <Button
                 variant="secondary"
                 disabled={busy || loading}
                 onClick={() => {
                   setError(null);
-                  setReload((x) => x + 1);
+                  reload();
                 }}
               >
                 Обновить состояние

@@ -23,13 +23,20 @@ export default defineConfig({
       reporter: ["text-summary", "json-summary"],
       reportsDirectory: "coverage/web",
       thresholds: {
-        statements: 43,
-        branches: 47,
-        functions: 39,
-        lines: 44,
+        statements: 52,
+        branches: 55,
+        functions: 50,
+        lines: 52,
         // Learner- and buyer-facing components with behaviour suites stay well covered.
-        "**/{quiz-form,challenge,course-navigator,course-progress,learner-entry,my-learning,purchase-status,checkout-panel,learning-auth}.tsx":
-          { statements: 80, branches: 55, functions: 75, lines: 80 }
+        "**/{quiz-form,challenge,course-navigator,course-progress,learner-entry,my-learning,purchase-status,checkout-panel,learning-auth,signup-nudge,lesson-visuals}.tsx":
+          { statements: 80, branches: 55, functions: 75, lines: 80 },
+        // Shared hooks every interactive component builds on.
+        "apps/web/src/lib/hooks/**": {
+          statements: 85,
+          branches: 60,
+          functions: 80,
+          lines: 85
+        }
       }
     },
     projects: [

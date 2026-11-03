@@ -125,26 +125,31 @@ export function runSql(job: SqlJob, key?: string): Promise<SqlRun | null> {
   });
 }
 
-/** Runs `job` whenever it changes; `null` runs nothing. */
+/**
+ * Runs `job` whenever it changes; `null` runs nothing. The last result stays on
+ * screen while a newer job runs; `busy` is derived from which job it answers.
+ */
 export function useSqlRun(
   job: SqlJob | null,
   key: string
 ): { run: SqlRun | null; busy: boolean } {
-  const [state, setState] = useState<{ run: SqlRun | null; busy: boolean }>({
-    run: null,
-    busy: job !== null
-  });
   const signature = job ? JSON.stringify(job) : "";
+  const [state, setState] = useState<{
+    signature: string;
+    run: SqlRun;
+  } | null>(null);
   useEffect(() => {
     if (!signature) return;
     let current = true;
-    setState((previous) => ({ run: previous.run, busy: true }));
     void runSql(JSON.parse(signature) as SqlJob, key).then((run) => {
-      if (current && run) setState({ run, busy: false });
+      if (current && run) setState({ signature, run });
     });
     return () => {
       current = false;
     };
   }, [signature, key]);
-  return state;
+  return {
+    run: state?.run ?? null,
+    busy: signature !== "" && state?.signature !== signature
+  };
 }

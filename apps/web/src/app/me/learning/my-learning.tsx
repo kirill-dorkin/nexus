@@ -2,9 +2,10 @@
 import { itemAt } from "../../../lib/item-at";
 import {
   ownLearningListSchema,
-  type LearnerLearningCourse
+  type OwnLearningList
 } from "@platform/contracts";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useApiResource } from "../../../lib/hooks/api-resource";
 import Link from "next/link";
 import { browserApiRequest } from "../../../lib/public-api";
 import { learningLoginUrl } from "../../../lib/learning-return-to";
@@ -26,46 +27,33 @@ import { LearningPageHeading } from "../../../components/learning/learning-page-
 import { LearningLoading } from "../../../components/learning/learning-loading";
 import styles from "../../../components/learning/flow.module.css";
 export function MyLearning() {
-  const [courses, setCourses] = useState<LearnerLearningCourse[]>([]),
-    [cursor, setCursor] = useState<string | null>(null),
-    [anonymous, setAnonymous] = useState(false),
-    [loading, setLoading] = useState(true),
-    [busy, setBusy] = useState(false),
-    [error, setError] = useState<string | null>(null),
-    [reload, setReload] = useState(0);
+  const [version, setVersion] = useState(0);
+  const [resource, setResource] = useApiResource(
+    "/v1/me/learning",
+    ownLearningListSchema,
+    version
+  );
+  const [busy, setBusy] = useState(false),
+    [error, setError] = useState<string | null>(null);
+  const reload = () => {
+    setError(null);
+    setVersion((x) => x + 1);
+  };
+  const loading = resource.status === "loading";
+  const anonymous = resource.status === "anonymous";
+  const list: OwnLearningList =
+    resource.status === "ready"
+      ? resource.data
+      : { courses: [], nextCursor: null };
+  const courses = list.courses;
+  const cursor = list.nextCursor;
+  const shownError =
+    error ??
+    (resource.status === "error" ? "Не удалось загрузить обучение." : null);
   const completedCount = courses.filter(
     (course) => course.entry.enrollmentStatus === "completed"
   ).length;
   const inProgressCount = courses.length - completedCount;
-  useEffect(() => {
-    const controller = new AbortController();
-    setLoading(true);
-    setAnonymous(false);
-    setError(null);
-    setCourses([]);
-    setCursor(null);
-    void (async () => {
-      try {
-        const r = await browserApiRequest("/v1/me/learning", {
-          signal: controller.signal
-        });
-        if (r.status === 401) {
-          setAnonymous(true);
-          return;
-        }
-        if (!r.ok) throw new Error("Unavailable");
-        const data = ownLearningListSchema.parse(await r.json());
-        setCourses(data.courses);
-        setCursor(data.nextCursor);
-      } catch {
-        if (!controller.signal.aborted)
-          setError("Не удалось загрузить обучение.");
-      } finally {
-        if (!controller.signal.aborted) setLoading(false);
-      }
-    })();
-    return () => controller.abort();
-  }, [reload]);
   async function more() {
     if (!cursor) return;
     setBusy(true);
@@ -75,22 +63,25 @@ export function MyLearning() {
         `/v1/me/learning?after=${encodeURIComponent(cursor)}`
       );
       if (r.status === 401) {
-        setAnonymous(true);
-        setCourses([]);
-        setCursor(null);
+        setResource({ status: "anonymous" });
         return;
       }
       if (!r.ok) throw new Error("Unavailable");
       const data = ownLearningListSchema.parse(await r.json());
-      setCourses((old) => [
-        ...new Map(
-          [...old, ...data.courses].map((c) => [
-            `${c.organization.slug}/${c.offering.slug}`,
-            c
-          ])
-        ).values()
-      ]);
-      setCursor(data.nextCursor);
+      setResource({
+        status: "ready",
+        data: {
+          courses: [
+            ...new Map(
+              [...courses, ...data.courses].map((c) => [
+                `${c.organization.slug}/${c.offering.slug}`,
+                c
+              ])
+            ).values()
+          ],
+          nextCursor: data.nextCursor
+        }
+      });
     } catch {
       setError("Не удалось загрузить следующую страницу. Попробуйте снова.");
     } finally {
@@ -103,9 +94,7 @@ export function MyLearning() {
     try {
       const r = await browserApiRequest("/v1/auth/logout", { method: "POST" });
       if (!r.ok) throw new Error("Unavailable");
-      setCourses([]);
-      setCursor(null);
-      setAnonymous(true);
+      setResource({ status: "anonymous" });
     } catch {
       setError("Не удалось выйти. Попробуйте снова.");
     } finally {
@@ -141,7 +130,7 @@ export function MyLearning() {
           </EmptyState>
         </Surface>
       )}
-      {!loading && !anonymous && !error && !courses.length && (
+      {!loading && !anonymous && !shownError && !courses.length && (
         <Surface padding="none">
           <EmptyState
             title="Вы пока не записаны на доступные курсы."
@@ -213,27 +202,19 @@ export function MyLearning() {
           Показать ещё
         </Button>
       )}
-      {error && (
+      {shownError && (
         <Surface className={styles.learningError} appearance="quiet">
           <Alert tone="danger" title="Обучение сейчас недоступно">
-            {error}
+            {shownError}
           </Alert>
-          <Button
-            variant="secondary"
-            disabled={busy}
-            onClick={() => setReload((x) => x + 1)}
-          >
+          <Button variant="secondary" disabled={busy} onClick={reload}>
             Повторить загрузку
           </Button>
         </Surface>
       )}
-      {!anonymous && !loading && !error && (
+      {!anonymous && !loading && !shownError && (
         <Inline gap="sm" className={styles.savedGrid}>
-          <Button
-            variant="secondary"
-            disabled={busy}
-            onClick={() => setReload((x) => x + 1)}
-          >
+          <Button variant="secondary" disabled={busy} onClick={reload}>
             Обновить обучение
           </Button>
           <Button variant="ghost" disabled={busy} onClick={() => void logout()}>

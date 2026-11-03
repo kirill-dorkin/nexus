@@ -25,7 +25,7 @@ The rules that are relaxed are relaxed in one place with a written reason: `type
 
 Lint runs locally through `pnpm check` before every push (see `development-workflow.md`), not on GitHub-hosted runners, because type-aware lint needs about 3 GB of memory.
 
-`eslint-suppressions.json` is the only baseline. It holds the React Compiler findings that need component tests before they are refactored (phase 3) and the sound files that draft PR #144 replaces. `pnpm check` fails on any new violation, and a fixed one must be pruned with `npx eslint . --prune-suppressions`, so the file can only shrink.
+There is no lint baseline any more: phase 0 kept the React Compiler findings in `eslint-suppressions.json` until phase 3 fixed them, and the file was then deleted. Every violation fails `pnpm check`.
 
 Phase 0 also made two blind spots type-checked: the operator scripts in `apps/api/ops/` (their own `tsconfig.json`, part of `@platform/api` typecheck) and the root-level tests and Vitest configs (root `tsconfig.json`, part of `pnpm typecheck`). Both had type errors that nothing had reported.
 
@@ -47,15 +47,20 @@ The suites found and fixed three defects: practice editors took focus on page lo
 
 Components still without a suite are covered by the phase that changes them, before the change: lesson visuals, story scenes, signup nudge, SQL client and sound panel in phase 3; the Studio editors and offering manager in phase 4.
 
-### 3. React correctness
+### 3. React correctness — done
 
-Remove every `react-hooks/*` entry from `eslint-suppressions.json`:
+Shared hooks in `apps/web/src/lib/hooks/`, each with tests:
 
-- shared hooks over `useSyncExternalStore` for `matchMedia`, `localStorage` and `IntersectionObserver` (no `setState` in effects, correct server snapshot);
-- data loading without synchronous `setState` in effects (one small typed fetch hook with a reducer and abort, or server-side data where the route allows it);
-- error boundaries instead of JSX in `try/catch`; no reassigned render variables; no impure calls during render.
+- `browser.ts`: `useIsClient`, `useBrowserOrigin`, `usePrefersReducedMotion` over `useSyncExternalStore` (fixed server value, live browser value, follows the reduced-motion setting);
+- `stored-value.ts`: `useStoredValue` / `writeStoredValue`, localStorage as an external store with same-tab and cross-tab updates;
+- `in-view.ts`: `useSeenOnce`, IntersectionObserver with the "unsupported means visible" fallback derived instead of set;
+- `api-resource.ts`: `useApiResource`, API reads parsed with a contract schema whose loading state is derived from the request key.
 
-**Done when:** the suppressions file has no `react-hooks` entries.
+All 21 suppressed findings were fixed on top of them: data loading (learner entry, my learning), derived practice results and solved state, visited lessons, the DOM diagram, typing and chat animations, the SQL client's busy state, the Studio origin, the clock read in the signup nudge, and JSX inside `try/catch` on the home page. Components that had no suite got one first (signup nudge, lesson visuals, story scenes, SQL client).
+
+Two more defects surfaced: the SQL client stayed «busy» forever when its job was withdrawn before the answer, and the story scene ignored a change of the reduced-motion setting while open.
+
+Coverage floors rose to 52 / 55 / 50 / 52 % overall, the strict list gained the signup nudge and lesson visuals, and the shared hooks have their own 85 / 60 / 80 / 85 % floor.
 
 ### 4. Studio decomposition
 
