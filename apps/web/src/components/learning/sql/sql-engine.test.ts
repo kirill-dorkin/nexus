@@ -9,7 +9,7 @@ afterAll(async () => { await db?.close(); });
 describe("SQL practice engine", () => {
   it("runs a query on the teaching database and prints values as PostgreSQL does", async () => {
     const { output } = await runSqlJob(db, { code: "SELECT name, price, is_available, added_on FROM products WHERE id = 7;" });
-    expect(output).toEqual({ kind: "rows", columns: ["name", "price", "is_available", "added_on"], rows: [["Мокко", "260.00", "false", "2024-09-01"]], total: 1 });
+    expect(output).toEqual({ kind: "rows", columns: ["name", "price", "is_available", "added_on"], rows: [["Ежедневник", "260.00", "false", "2024-09-01"]], total: 1 });
     const counts = await runSqlJob(db, { code: "SELECT count(*), array[1,2], NULL::text AS nothing, '{\"a\":1}'::jsonb AS j" });
     expect(counts.output).toMatchObject({ rows: [["1", "{1,2}", null, "{\"a\": 1}"]] });
   });

@@ -18,10 +18,7 @@ const chapters = [
 
 const challenges = {};
 const recaps = {};
-const course = createCourse(challenges, {}, recaps, {
-  premise: "Курс-история: ты наводишь порядок в данных кофейни «Зерно»",
-  cast: ["marta", "dasha", "slon", "nika"]
-});
+const course = createCourse(challenges, {}, recaps);
 for (const [chapter, file] of chapters) {
   // While the course is being written, missing chapters are skipped.
   if (!existsSync(new URL(file, import.meta.url))) continue;
@@ -31,10 +28,25 @@ for (const [chapter, file] of chapters) {
 
 const manifest = course.manifest({
   slug: "sql",
-  title: "SQL с нуля: данные кофейни",
+  title: "SQL с нуля: запросы к PostgreSQL",
   description:
-    "Курс-история: заказы «Зерна» живут в тетрадках, а маркетологу Даше нужны цифры. Вместе с базой данных Слоном ты переносишь всё в PostgreSQL и учишься задавать данным вопросы. Весь практический SQL — выборки и фильтры, функции, агрегаты, соединения, подзапросы, изменение данных, свои таблицы, оконные функции, индексы и безопасность — с настоящим PostgreSQL прямо в браузере и мгновенной проверкой заданий."
+    "Весь практический SQL — выборки и фильтры, функции, агрегаты, соединения, подзапросы, изменение данных, свои таблицы, оконные функции, JSON, индексы и безопасность. Настоящий PostgreSQL работает прямо в браузере на учебной базе магазина: каждый пример можно запустить, каждое задание проверяется мгновенно."
 });
+// The lesson banner names only the characters who actually speak in that lesson.
+{
+  const FENCE = "```";
+  for (const lesson of manifest.lessons) {
+    const cast = new Set();
+    for (const block of lesson.blocks)
+      for (const [, body] of (block.markdown ?? "").matchAll(new RegExp(FENCE + "story\\n([\\s\\S]*?)\\n" + FENCE, "g")))
+        for (const [who] of JSON.parse(body).lines) if (who !== "you") cast.add(who);
+    const list = cast.size ? [...cast] : ["slon", "nika"];
+    for (const block of lesson.blocks)
+      if (block.markdown)
+        block.markdown = block.markdown.replace(new RegExp(FENCE + "recap\\n(.*)\\n" + FENCE), (_, json) =>
+          `${FENCE}recap\n${JSON.stringify({ ...JSON.parse(json), cast: list })}\n${FENCE}`);
+  }
+}
 writeFileSync(new URL("../sql-track.manifest.json", import.meta.url), JSON.stringify(manifest, null, 2) + "\n");
 const minutes = manifest.lessons.reduce((sum, l) => sum + l.durationMinutes, 0);
 console.log(`lessons=${manifest.lessons.length} activities=${manifest.activities.length} hours=${(minutes / 60).toFixed(1)}`);

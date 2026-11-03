@@ -2,7 +2,7 @@
 
 import { Database, Warning } from "@phosphor-icons/react/dist/ssr";
 import type { SqlRun } from "./sql-engine";
-import { ZERNO_TABLES } from "./zerno-db";
+import { SHOP_TABLES } from "./shop-db";
 import styles from "./sql.module.css";
 
 const plural = (n: number, one: string, few: string, many: string) => {
@@ -59,7 +59,7 @@ export function SqlSchema() {
     <details className={styles.schema}>
       <summary><Database size={16} aria-hidden="true" /> Таблицы базы «Зерно»</summary>
       <ul>
-        {ZERNO_TABLES.map((table) => (
+        {SHOP_TABLES.map((table) => (
           <li key={table.name}>
             <code>{table.name}</code> <span className={styles.schemaTitle}>— {table.title}</span>
             <span className={styles.columns}>{table.columns.join(", ")}</span>
