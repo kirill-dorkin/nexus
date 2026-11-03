@@ -22,7 +22,7 @@ export const connectProjectRepositoryRequestSchema = z.object({
 
 export const projectTeamMemberSchema = z.object({
   userId: uuidSchema,
-  joinedAt: z.string().datetime()
+  joinedAt: z.iso.datetime()
 });
 
 export const projectTeamSchema = z.object({
@@ -30,7 +30,7 @@ export const projectTeamSchema = z.object({
   name: projectTeamNameSchema,
   status: z.enum(["active", "archived"]),
   members: z.array(projectTeamMemberSchema),
-  createdAt: z.string().datetime()
+  createdAt: z.iso.datetime()
 });
 
 export const projectRepositoryReferenceSchema = z.object({
@@ -39,7 +39,7 @@ export const projectRepositoryReferenceSchema = z.object({
   githubRepositoryId: z.string().min(1),
   fullName: z.string().min(3).max(260),
   availability: z.enum(["active", "suspended", "removed"]),
-  connectedAt: z.string().datetime()
+  connectedAt: z.iso.datetime()
 });
 
 export const projectSchema = z.object({
@@ -48,7 +48,7 @@ export const projectSchema = z.object({
   status: z.enum(["active", "archived"]),
   teamId: projectTeamIdSchema,
   repository: projectRepositoryReferenceSchema.nullable(),
-  createdAt: z.string().datetime()
+  createdAt: z.iso.datetime()
 });
 
 export const projectActivityFactTypeSchema = z.enum([
@@ -88,13 +88,13 @@ export const projectActivityItemSchema = z.object({
   commitSha: githubShaSchema.nullable(),
   isDraft: z.boolean().nullable(),
   isMerged: z.boolean().nullable(),
-  providerCreatedAt: z.string().datetime().nullable(),
-  providerUpdatedAt: z.string().datetime().nullable(),
-  providerSubmittedAt: z.string().datetime().nullable(),
-  providerStartedAt: z.string().datetime().nullable(),
-  providerCompletedAt: z.string().datetime().nullable(),
-  sourceReceivedAt: z.string().datetime(),
-  recordedAt: z.string().datetime()
+  providerCreatedAt: z.iso.datetime().nullable(),
+  providerUpdatedAt: z.iso.datetime().nullable(),
+  providerSubmittedAt: z.iso.datetime().nullable(),
+  providerStartedAt: z.iso.datetime().nullable(),
+  providerCompletedAt: z.iso.datetime().nullable(),
+  sourceReceivedAt: z.iso.datetime(),
+  recordedAt: z.iso.datetime()
 }).strict();
 
 export const projectActivityQuerySchema = z.object({

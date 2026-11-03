@@ -11,9 +11,9 @@ describe("Neon bootstrap connection boundary", () => {
   it("verifies TLS and separates pooled app credentials from direct migration/worker credentials", () => {
     const admin = normalizeNeonAdminUrl(direct);
     const urls = createRoleUrls(admin, "platform");
-    const app = new URL(urls.app);
-    const migrator = new URL(urls.migrator);
-    const worker = new URL(urls.worker);
+    const app = new URL(urls.app!);
+    const migrator = new URL(urls.migrator!);
+    const worker = new URL(urls.worker!);
     expect(app.hostname).toBe("ep-example-pooler.us-east-1.aws.neon.tech");
     expect(migrator.hostname).toBe(admin.hostname);
     expect(worker.hostname).toBe(admin.hostname);

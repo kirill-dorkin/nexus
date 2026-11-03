@@ -4,8 +4,8 @@ export const eventEnvelopeSchema = z.object({
   eventId: z.string().min(1),
   eventName: z.string().regex(/^[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)+$/),
   eventVersion: z.number().int().positive(),
-  occurredAt: z.string().datetime({ offset: true }),
-  receivedAt: z.string().datetime({ offset: true }),
+  occurredAt: z.iso.datetime({ offset: true }),
+  receivedAt: z.iso.datetime({ offset: true }),
   organizationId: z.string().min(1).optional(),
   actor: z.object({
     type: z.enum(["user", "system", "github", "grader"]),

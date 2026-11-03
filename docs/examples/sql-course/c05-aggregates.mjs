@@ -3,7 +3,7 @@ import { scene, clause, fn, kw, idea, rule, diagram, rows, src, task, makeLesson
 
 export default function aggregates(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "aggregates", title: "COUNT, SUM, AVG, MIN, MAX", summary: "Сворачиваем много строк в одно число.",

@@ -54,7 +54,7 @@ function close(server: Server): Promise<void> {
 }
 
 describe("Worker -> Grader Gateway transport", () => {
-  const cleanup: Array<() => Promise<void>> = [];
+  const cleanup: (() => Promise<void>)[] = [];
 
   afterEach(async () => {
     while (cleanup.length > 0) {

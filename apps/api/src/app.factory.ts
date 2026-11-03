@@ -8,7 +8,10 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 import { optionalConfiguredWebOrigin } from "./http/web-app-origin";
 
-export async function createApiApplication(): Promise<NestFastifyApplication> {
+/** The Nest application type, exported so tests outside this package need not resolve Nest themselves. */
+export type ApiApplication = NestFastifyApplication;
+
+export async function createApiApplication(): Promise<ApiApplication> {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { brand } from "@platform/brand";
-import { Sparkle, X } from "@phosphor-icons/react/dist/ssr";
+import { SparkleIcon, XIcon } from "@phosphor-icons/react/dist/ssr";
 import { learningLoginUrl } from "../../lib/learning-return-to";
 import { useViewer } from "../../lib/use-viewer";
 import styles from "./signup-nudge.module.css";
@@ -25,11 +25,17 @@ const KEY = `${brand.slug}:signup-nudge`;
 type Saved = { day: string; seconds: number; nextAt: number; shown: number };
 
 const today = () => new Date().toISOString().slice(0, 10);
+const SOLVED_FORMS: Readonly<Record<string, string>> = {
+  "задание": "решённое задание",
+  "задания": "решённых задания",
+  "заданий": "решённых заданий"
+};
+
 function read(): Saved {
   const fresh = { day: today(), seconds: 0, nextAt: FIRST_AT, shown: 0 };
   try {
     const saved = JSON.parse(localStorage.getItem(KEY) ?? "null") as Saved | null;
-    return saved && saved.day === fresh.day ? saved : fresh;
+    return saved?.day === fresh.day ? saved : fresh;
   } catch {
     return fresh;
   }
@@ -82,7 +88,7 @@ export function SignupNudge({ returnTo }: { returnTo: string }) {
         const solved = solvedChallenges();
         const minutes = Math.round(state.seconds / 60);
         setMessage(solved > 0
-          ? `У тебя уже ${tasks(solved).replace(/задани(е|я|й)/, (w) => ({ "задание": "решённое задание", "задания": "решённых задания", "заданий": "решённых заданий" } as Record<string, string>)[w]!)}. Создай аккаунт — прогресс сохранится, а курс останется бесплатным.`
+          ? `У тебя уже ${tasks(solved).replace(/задани(е|я|й)/, (w) => SOLVED_FORMS[w] ?? w)}. Создай аккаунт — прогресс сохранится, а курс останется бесплатным.`
           : `Ты учишься уже ${minutes} мин. Создай аккаунт — прогресс сохранится, а курс останется бесплатным.`);
         state.shown += 1;
         state.nextAt = state.seconds + SNOOZE;
@@ -100,10 +106,10 @@ export function SignupNudge({ returnTo }: { returnTo: string }) {
   return (
     <aside className={styles.nudge} aria-label="Сохранить прогресс" style={{ "--c": "#c5f23a" } as CSSProperties}>
       <button type="button" className={styles.close} aria-label="Закрыть" onClick={() => setOpen(false)}>
-        <X size={16} aria-hidden="true" />
+        <XIcon size={16} aria-hidden="true" />
       </button>
       <div className={styles.head}>
-        <span className={styles.avatar} aria-hidden="true"><Sparkle size={18} weight="fill" /></span>
+        <span className={styles.avatar} aria-hidden="true"><SparkleIcon size={18} weight="fill" /></span>
         <strong>Ника</strong>
       </div>
       <p role="status">{message}</p>
@@ -118,7 +124,7 @@ export function SignupNudge({ returnTo }: { returnTo: string }) {
 /** Quiet one-liner under a solved challenge for anonymous learners. */
 export function SaveProgressHint() {
   const viewer = useViewer();
-  const returnTo = usePathname() ?? "/me/learning";
+  const returnTo = usePathname();
   if (viewer !== "anonymous") return null;
   return (
     <p className={styles.hint}>

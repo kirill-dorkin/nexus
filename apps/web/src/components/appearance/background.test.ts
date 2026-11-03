@@ -9,13 +9,13 @@ const globalCss = readFileSync(new URL("../../app/globals.css", import.meta.url)
 
 function declarations(selector: string) {
   const normalized = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const block = tokens.match(new RegExp(`${normalized}\\s*\\{([^}]*)\\}`));
+  const block = new RegExp(`${normalized}\\s*\\{([^}]*)\\}`).exec(tokens);
   expect(block, `Missing palette scope ${selector}`).not.toBeNull();
   return block![1]!;
 }
 
 function token(block: string, name: string) {
-  const found = block.match(new RegExp(`${name}:\\s*([^;]+);`));
+  const found = new RegExp(`${name}:\\s*([^;]+);`).exec(block);
   expect(found, `Missing ${name}`).not.toBeNull();
   return found![1]!.trim();
 }
@@ -50,12 +50,8 @@ describe("quiet accent-aware page canvas", () => {
     const themeBlock = declarations(`[data-ui-theme="${theme}"]`);
     const canvas = token(themeBlock, "--page-background");
     const glow = token(themeBlock, "--page-glow");
-    const match = canvas.match(
-      /^color-mix\(in srgb, var\(--accent-action\) (\d+)%, (#[0-9a-f]{6})\)$/i
-    );
-    const glowMatch = glow.match(
-      /^color-mix\(in srgb, var\(--accent-(?:action|night)\) (\d+)%, transparent\)$/i
-    );
+    const match = /^color-mix\(in srgb, var\(--accent-action\) (\d+)%, (#[0-9a-f]{6})\)$/i.exec(canvas);
+    const glowMatch = /^color-mix\(in srgb, var\(--accent-(?:action|night)\) (\d+)%, transparent\)$/i.exec(glow);
     it(`limits the ${theme} background color and glow to a subtle fraction`, () => {
       expect(match).not.toBeNull();
       expect(glowMatch).not.toBeNull();

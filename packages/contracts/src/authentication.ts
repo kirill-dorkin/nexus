@@ -3,8 +3,8 @@ import { z } from "zod";
 export const authenticationEmailSchema = z
   .string()
   .trim()
-  .email()
-  .max(320);
+  .max(320)
+  .pipe(z.email());
 
 export const passwordSchema = z
   .string()

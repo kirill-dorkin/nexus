@@ -41,7 +41,7 @@ export class PurchaserPurchaseApplicationService {
           organizationId,
           purchaseId
         );
-        if (purchase === null || purchase.purchaserUserId !== principal.userId) {
+        if (purchase?.purchaserUserId !== principal.userId) {
           throw new NotFoundException("Purchase not found.");
         }
         return publicPurchaseSchema.parse(purchase);

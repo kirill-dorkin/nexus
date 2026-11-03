@@ -1,4 +1,5 @@
 "use client";
+import { itemAt } from "../../../lib/item-at";
 import {
   ownLearningListSchema,
   type LearnerLearningCourse
@@ -20,7 +21,7 @@ import {
   Text,
   buttonClass
 } from "@platform/ui";
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { LearningPageHeading } from "../../../components/learning/learning-page-heading";
 import { LearningLoading } from "../../../components/learning/learning-loading";
 import styles from "../../../components/learning/flow.module.css";
@@ -146,7 +147,7 @@ export function MyLearning() {
             title="Вы пока не записаны на доступные курсы."
             action={
               <Link className={buttonClass()} href="/courses">
-                Выбрать курс <ArrowRight size={18} aria-hidden="true" />
+                Выбрать курс <ArrowRightIcon size={18} aria-hidden="true" />
               </Link>
             }
           >
@@ -172,7 +173,7 @@ export function MyLearning() {
         <ul className={styles.savedList}>
           {courses.map((c) => {
             const next =
-              c.progress?.nextLessonSlug ?? c.course.lessons[0]!.slug;
+              c.progress?.nextLessonSlug ?? itemAt(c.course.lessons, 0).slug;
             return (
               <li
                 className={styles.savedCard}
@@ -206,7 +207,7 @@ export function MyLearning() {
                     {c.progress?.allRequiredPassed
                       ? "Вернуться к материалам"
                       : "Продолжить"}
-                    <ArrowRight size={18} aria-hidden="true" />
+                    <ArrowRightIcon size={18} aria-hidden="true" />
                   </Link>
                 </div>
               </li>

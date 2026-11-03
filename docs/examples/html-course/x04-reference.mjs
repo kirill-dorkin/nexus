@@ -1,5 +1,5 @@
 export function obsolete(c) {
-  const { html, mdn, lesson, single, multi } = c;
+  const { lesson, single, multi } = c;
   lesson({
     slug: "obsolete-elements", title: "Устаревшие элементы и атрибуты", minutes: 8,
     summary: "font, center, marquee, frameset, align, bgcolor и другие: что встретится в старом коде и чем это заменить.",

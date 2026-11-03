@@ -1,5 +1,5 @@
 // Chapter 5: Arrays.
-import { scene, rule, meth, op, kw, idea, typ, run, out, has, task, makeLesson } from "./kit.mjs";
+import { scene, rule, meth, op, idea, typ, run, has, task, makeLesson } from "./kit.mjs";
 
 const CATALOG = 'const products = [\n  { title: "Мышь", price: 1290, category: "input" },\n  { title: "Клавиатура", price: 4990, category: "input" },\n  { title: "Наушники", price: 3490, category: "audio" },\n  { title: "Колонка", price: 2790, category: "audio" }\n];\n';
 

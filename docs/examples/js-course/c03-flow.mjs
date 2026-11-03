@@ -3,7 +3,7 @@ import { scene, rule, kw, op, idea, run, out, has, task, makeLesson } from "./ki
 
 export default function flow(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "if-else", title: "if и else: решения", summary: "Условия if, else if, else и блоки кода в фигурных скобках.",

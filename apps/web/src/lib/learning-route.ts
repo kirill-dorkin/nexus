@@ -1,3 +1,4 @@
+import { itemAt } from "./item-at";
 import { HOME_ORGANIZATION_SLUG, type CourseAddress } from "./public-learning-routes";
 
 /**
@@ -89,7 +90,7 @@ export function routePosition<T extends CourseAddress>(course: CourseAddress, ca
     title: LEARNING_ROUTE.title,
     number: index + 1,
     total: steps.length,
-    step: steps[index]!.step,
+    step: itemAt(steps, index).step,
     steps,
     previous: steps[index - 1] ?? null,
     next: steps[index + 1] ?? null

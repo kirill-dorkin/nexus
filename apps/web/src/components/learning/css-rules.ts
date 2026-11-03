@@ -1,3 +1,4 @@
+import { itemAt } from "../../lib/item-at";
 /**
  * Minimal CSS reader for hands-on CSS challenges: finds which declarations a learner wrote for
  * which selector, inside which at-rule context. It is deliberately static (no layout engine), so
@@ -38,7 +39,7 @@ function splitTop(text: string, separator: string): string[] {
   let quote = "";
   let start = 0;
   for (let i = 0; i < text.length; i++) {
-    const ch = text[i]!;
+    const ch = itemAt(text, i);
     if (quote) { if (ch === quote && text[i - 1] !== "\\") quote = ""; continue; }
     if (ch === '"' || ch === "'") quote = ch;
     else if (ch === "(" || ch === "[") depth++;
@@ -54,7 +55,7 @@ function matchBrace(text: string, open: number): number {
   let depth = 0;
   let quote = "";
   for (let i = open; i < text.length; i++) {
-    const ch = text[i]!;
+    const ch = itemAt(text, i);
     if (quote) { if (ch === quote && text[i - 1] !== "\\") quote = ""; continue; }
     if (ch === '"' || ch === "'") quote = ch;
     else if (ch === "{") depth++;
@@ -89,7 +90,7 @@ function parseBlock(text: string, parents: string[], context: string[], rules: C
     if (prelude.startsWith("@")) {
       if (GROUPING.test(prelude)) parseBlock(body, prelude.startsWith("@keyframes") ? [] : parents, [...context, normalizePrelude(prelude)], rules);
       else if (/^@(font-face|page|property|counter-style|font-palette-values)\b/.test(prelude))
-        parseBlock(`${body}`, [normalizePrelude(prelude)], context, rules);
+        parseBlock(body, [normalizePrelude(prelude)], context, rules);
     } else if (prelude) {
       const own = splitTop(prelude, ",").map((s) => s.trim()).filter(Boolean);
       const selectors = own.flatMap((s) => resolveNested(parents, s)).map(normalizeSelector);
@@ -112,7 +113,7 @@ function parseBlock(text: string, parents: string[], context: string[], rules: C
 
 /** All style rules from `<style>` elements and bare CSS text. */
 export function readCss(source: string): CssRule[] {
-  const sheets = [...source.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].map((m) => m[1]!);
+  const sheets = [...source.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].map((m) => itemAt(m, 1));
   const css = (sheets.length ? sheets.join("\n") : /<[a-z!]/i.test(source) ? "" : source).replace(/\/\*[\s\S]*?\*\//g, "");
   const rules: CssRule[] = [];
   parseBlock(css, [], [], rules);

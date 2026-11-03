@@ -1,5 +1,5 @@
 export function imageMaps(c) {
-  const { html, code, mdn, lesson, single } = c;
+  const { lesson, single } = c;
   lesson({
     slug: "image-maps", title: "Карты-изображения и object", minutes: 9,
     summary: "map и area: кликабельные области на картинке. object: встраивание PDF и других документов.",
@@ -17,7 +17,7 @@ export function imageMaps(c) {
 }
 
 export function projectGallery(c) {
-  const { html, lesson, multi } = c;
+  const { lesson, multi } = c;
   lesson({
     slug: "project-gallery", title: "Мини-проект: фотогалерея", minutes: 25,
     summary: "Галерея путешествия: адаптивные картинки с подписями, ленивая загрузка, видео с субтитрами и иконки SVG.",
@@ -32,7 +32,7 @@ export function projectGallery(c) {
 }
 
 export function advancedForms(c) {
-  const { html, code, mdn, lesson, single } = c;
+  const { lesson, single } = c;
   lesson({
     slug: "advanced-forms", title: "Продвинутые возможности форм", minutes: 11,
     summary: "Атрибут form, formtarget, fieldset disabled, input image, dirname и несколько форм на странице.",
@@ -50,7 +50,7 @@ export function advancedForms(c) {
 }
 
 export function projectSignup(c) {
-  const { html, lesson, multi } = c;
+  const { lesson, multi } = c;
   lesson({
     slug: "project-signup", title: "Мини-проект: форма регистрации", minutes: 25,
     summary: "Регистрация на онлайн-мероприятие: все типы полей, группы, проверка, автозаполнение и понятные подсказки.",

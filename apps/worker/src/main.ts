@@ -30,10 +30,10 @@ async function main(): Promise<void> {
     retryMaxMs: config.retryMaxMs
   });
 
-  let stopping = false;
+  const shutdown = new AbortController();
   for (const signal of ["SIGINT", "SIGTERM"] as const) {
     process.once(signal, () => {
-      stopping = true;
+      shutdown.abort();
       log.info({ signal }, "worker shutdown requested");
     });
   }
@@ -48,7 +48,7 @@ async function main(): Promise<void> {
   );
 
   try {
-    while (!stopping) {
+    while (!shutdown.signal.aborted) {
       try {
         const cycle = await dispatcher.runOnce();
         if (cycle.kind === "idle") {

@@ -3,7 +3,7 @@ import { scene, clause, op, fn, idea, rule, rows, src, task, makeLesson } from "
 
 export default function subqueries(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "subqueries", title: "Подзапросы", summary: "Запрос внутри запроса: дороже среднего, из списка, который ещё надо найти.",

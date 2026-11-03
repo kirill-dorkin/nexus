@@ -24,7 +24,7 @@ export class PostgresStudioRepository extends StudioRepository {
     return rows.map((row) => studioCourseSummarySchema.parse(row));
   }
   async latest(tx: DatabaseTransaction, org: string, course: string) {
-    const row = (
+    const row: unknown = (
       await tx.client.query(`${projection} AND c.id=$2`, [org, course])
     ).rows[0];
     return row ? studioCourseSummarySchema.parse(row) : null;

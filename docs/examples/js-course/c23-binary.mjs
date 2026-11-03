@@ -1,5 +1,5 @@
 // Chapter 23: Binary data — ArrayBuffer, typed arrays, DataView, SharedArrayBuffer and Atomics.
-import { scene, rule, meth, obj, kw, idea, run, has, task, makeLesson, on } from "./kit.mjs";
+import { scene, rule, meth, obj, kw, run, has, task, makeLesson, on } from "./kit.mjs";
 
 const AB = (...m) => on("ArrayBuffer.prototype", ...m);
 const TA = (...m) => on("TypedArray.prototype", ...m);
@@ -9,7 +9,7 @@ const shared = 'if (typeof SharedArrayBuffer === "undefined") {\n  console.log("
 
 export default function binary(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "array-buffer", title: "ArrayBuffer: сырые байты", summary: "ArrayBuffer, byteLength, slice, ArrayBuffer.isView, изменяемые буферы resizable, maxByteLength, resize и передача transfer, transferToFixedLength, detached.",

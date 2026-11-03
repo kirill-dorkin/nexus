@@ -58,7 +58,7 @@ describe("runner sandbox", () => {
       checks: [{ js: "window.after === true" }]
     });
     expect(results).toEqual([false]);
-    expect(logs.some((l) => l.level === "error" && /бесконечный/.test(l.text))).toBe(true);
+    expect(logs.some((l) => l.level === "error" && l.text.includes('бесконечный'))).toBe(true);
   }, 10000);
 });
 

@@ -1,11 +1,11 @@
 // Chapter 21: Dates completely — creating, reading and changing every part, local vs UTC, output formats.
-import { scene, rule, meth, idea, run, has, task, makeLesson, on } from "./kit.mjs";
+import { scene, rule, meth, idea, run, task, makeLesson, on } from "./kit.mjs";
 
 const D = (...m) => on("Date.prototype", ...m);
 
 export default function dates(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "date-create", title: "Даты: создание и время", summary: "Date.now, Date.parse, Date.UTC, getTime, setTime, valueOf, getTimezoneOffset, getUTCDay и разница между местным временем и UTC.",

@@ -1,5 +1,6 @@
 "use client";
-import { useId, useRef, useState, type FormEvent } from "react";
+import { itemAt } from "../../lib/item-at";
+import { useId, useRef, useState, type SubmitEvent } from "react";
 import Link from "next/link";
 import {
   quizCheckResultSchema,
@@ -73,7 +74,7 @@ export function QuizForm({
     );
     return enroll.ok;
   }
-  async function submit(event: FormEvent) {
+  async function submit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     if (inFlight.current || result || (!attempt.current && !ready)) return;
     inFlight.current = true;
@@ -85,7 +86,7 @@ export function QuizForm({
         activity.type === "quiz.short_text"
           ? { type: activity.type, text }
           : activity.type === "quiz.single_choice"
-            ? { type: activity.type, optionId: selected[0]! }
+            ? { type: activity.type, optionId: itemAt(selected, 0) }
             : { type: activity.type, optionIds: selected };
       attempt.current = { attemptKey: crypto.randomUUID(), answer };
     }

@@ -1,5 +1,5 @@
 export function quality(c) {
-  const { html, code, mdn, lesson, single, multi, diagram, demo } = c;
+  const { lesson, single, multi } = c;
 
   lesson({
     slug: "code-quality", title: "Проверка и качество кода", minutes: 10,
@@ -18,7 +18,7 @@ export function quality(c) {
 }
 
 export function projectCard(c) {
-  const { html, code, mdn, lesson, single, multi, diagram, demo } = c;
+  const { lesson, multi } = c;
 
   lesson({
     slug: "project-business-card", title: "Проект 1: страница-визитка", minutes: 30,
@@ -34,7 +34,7 @@ export function projectCard(c) {
 }
 
 export function projectLanding(c) {
-  const { html, code, mdn, lesson, single, multi, diagram, demo } = c;
+  const { lesson, multi } = c;
 
   lesson({
     slug: "project-landing", title: "Проект 2: лендинг курса", minutes: 40,
@@ -50,7 +50,7 @@ export function projectLanding(c) {
 }
 
 export function projectArticle(c) {
-  const { html, code, mdn, lesson, single, multi, diagram, demo } = c;
+  const { lesson, single } = c;
 
   lesson({
     slug: "project-article", title: "Проект 3: статья для блога", minutes: 35,
@@ -66,7 +66,7 @@ export function projectArticle(c) {
 }
 
 export function projectFinal(c) {
-  const { html, code, mdn, lesson, single, multi, diagram, demo } = c;
+  const { lesson, single } = c;
 
   lesson({
     slug: "final-project", title: "Финальный проект: сайт-портфолио", minutes: 45,

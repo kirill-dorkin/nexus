@@ -3,7 +3,7 @@ import type { Pool, PoolClient } from "pg";
 
 export type DatabaseTransaction = Readonly<{
   client: PoolClient;
-  db: NodePgDatabase<Record<string, never>>;
+  db: NodePgDatabase;
 }>;
 
 export type UserTransactionContext = Readonly<{

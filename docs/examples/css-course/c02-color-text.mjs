@@ -1,9 +1,9 @@
 // Chapter 2: color, units, fonts, text.
-import { scene, prop, sel, at, fn, val, idea, rule, page, css, el, task, makeLesson } from "./kit.mjs";
+import { scene, prop, sel, at, fn, val, rule, page, css, task, makeLesson } from "./kit.mjs";
 
 export default function colorText(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, multi } = c;
 
   L({
     slug: "colors", title: "Цвета", summary: "Как записать любой цвет: имена, hex, rgb, hsl, oklch, прозрачность и смешивание.",

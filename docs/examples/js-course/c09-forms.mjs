@@ -6,7 +6,7 @@ const FORM = '<form id="signup">\n  <label>Имя <input name="user"></label>\n 
 
 export default function forms(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "form-submit", title: "Отправка формы", summary: "Событие submit, preventDefault, чтение полей через form.elements.",

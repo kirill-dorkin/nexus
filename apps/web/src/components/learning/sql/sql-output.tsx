@@ -1,6 +1,6 @@
 "use client";
 
-import { Database, Warning } from "@phosphor-icons/react/dist/ssr";
+import { DatabaseIcon, WarningIcon } from "@phosphor-icons/react/dist/ssr";
 import type { SqlRun } from "./sql-engine";
 import { SHOP_TABLES } from "./shop-db";
 import styles from "./sql.module.css";
@@ -22,7 +22,7 @@ export function SqlOutput({ run, busy }: { run: SqlRun | null; busy: boolean }) 
       {output.kind === "done" ? <div className={styles.status} data-tone="ok">{output.message}</div> : null}
       {output.kind === "error" ? (
         <div className={styles.error} role="alert">
-          <Warning size={18} weight="fill" aria-hidden="true" />
+          <WarningIcon size={18} weight="fill" aria-hidden="true" />
           <div>
             <p className={styles.errorTitle}>Ошибка{output.line ? ` в строке ${output.line}` : ""}: <code>{output.message}</code></p>
             {output.hint ? <p className={styles.errorHint}>{output.hint}</p> : null}
@@ -31,7 +31,7 @@ export function SqlOutput({ run, busy }: { run: SqlRun | null; busy: boolean }) 
       ) : null}
       {output.kind === "rows" ? (
         <>
-          <div className={styles.tableWrap} tabIndex={0} aria-label="Результат запроса, прокручиваемая таблица">
+          <div className={styles.tableWrap} tabIndex={0} role="region" aria-label="Результат запроса, прокручиваемая таблица">
             <table className={styles.table}>
               <thead>
                 <tr>{output.columns.map((name, i) => <th key={i} scope="col">{name}</th>)}</tr>
@@ -57,7 +57,7 @@ export function SqlOutput({ run, busy }: { run: SqlRun | null; busy: boolean }) 
 export function SqlSchema() {
   return (
     <details className={styles.schema}>
-      <summary><Database size={16} aria-hidden="true" /> Таблицы базы «Зерно»</summary>
+      <summary><DatabaseIcon size={16} aria-hidden="true" /> Таблицы базы «Зерно»</summary>
       <ul>
         {SHOP_TABLES.map((table) => (
           <li key={table.name}>

@@ -82,7 +82,7 @@ describe("HttpOAuthProviderGateway", () => {
       emailVerified: true,
       displayName: "Learner Name"
     });
-    expect(fetchMock.mock.calls[0]?.[1]?.body?.toString()).toContain("code_verifier=");
+    expect(String(fetchMock.mock.calls[0]?.[1]?.body as URLSearchParams | undefined)).toContain("code_verifier=");
   });
 
   it("rejects a Google identity whose email is not verified", async () => {

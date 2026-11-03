@@ -398,7 +398,7 @@ describe("Project activity read model", () => {
 
     const secondResponse = await request(
       tenantA.userId,
-      `${baseUrl}?limit=2&cursor=${encodeURIComponent(first.nextCursor as string)}`
+      `${baseUrl}?limit=2&cursor=${encodeURIComponent(first.nextCursor!)}`
     );
     expect(secondResponse.statusCode).toBe(200);
     const second = projectActivityPageSchema.parse(JSON.parse(secondResponse.body));

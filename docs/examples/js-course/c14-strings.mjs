@@ -6,7 +6,7 @@ const S = (...m) => on("String.prototype", ...m);
 
 export default function strings(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "string-chars", title: "Символы и коды", summary: "at, charAt, charCodeAt, codePointAt, String.fromCharCode, String.fromCodePoint и почему эмодзи — это два символа.",

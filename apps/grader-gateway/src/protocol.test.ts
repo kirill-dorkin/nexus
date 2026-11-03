@@ -44,7 +44,7 @@ describe("grader protocol v1", () => {
 
     expect(() =>
       validateGraderJobRequest({ ...changed, jobId: buildGraderJobId(original) })
-    ).toThrowError(
+    ).toThrow(
       expect.objectContaining<Partial<GraderProtocolError>>({ code: "job_identity_mismatch" })
     );
   });
@@ -76,7 +76,7 @@ describe("grader protocol v1", () => {
       )
     );
 
-    expect(() => validateGraderJobRequest(candidate)).toThrowError(
+    expect(() => validateGraderJobRequest(candidate)).toThrow(
       expect.objectContaining<Partial<GraderProtocolError>>({ code: "source_bundle_too_large" })
     );
   });

@@ -80,10 +80,10 @@ async function main(): Promise<void> {
     retryMaxMs
   });
 
-  let stopping = false;
+  const shutdown = new AbortController();
   for (const signal of ["SIGINT", "SIGTERM"] as const) {
     process.once(signal, () => {
-      stopping = true;
+      shutdown.abort();
       safelyWritePaymentWorkerOperationalEvent(() =>
         log.info({ signal }, "payment worker shutdown requested")
       );
@@ -98,7 +98,7 @@ async function main(): Promise<void> {
   );
 
   try {
-    while (!stopping) {
+    while (!shutdown.signal.aborted) {
       const startedAt = Date.now();
       try {
         const cycle = await processor.processOne();

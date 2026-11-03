@@ -68,8 +68,7 @@ export class PostgresFreeLearningDeliveryPort extends FreeLearningDeliveryPort {
       route.organizationId,
       route.offeringId
     );
-    return o &&
-      o.status === "open" &&
+    return o?.status === "open" &&
       o.visibility === "public" &&
       o.accessMode === "membership" &&
       o.deliveryMode === "self_paced" &&

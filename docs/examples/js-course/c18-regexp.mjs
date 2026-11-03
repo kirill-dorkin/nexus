@@ -5,7 +5,7 @@ const R = (...m) => on("RegExp.prototype", ...m);
 
 export default function regexp(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "regexp-basics", title: "Регулярные выражения: основы", summary: "RegExp и литерал, test, exec и lastIndex, классы символов, квантификаторы, якоря, source и toString.",

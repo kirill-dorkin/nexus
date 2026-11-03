@@ -140,7 +140,7 @@ function jobOwner(name: string, uid: string) {
 }
 
 describe("Kubernetes gVisor sandbox provider", () => {
-  const cleanup: Array<() => Promise<void>> = [];
+  const cleanup: (() => Promise<void>)[] = [];
 
   afterEach(async () => {
     while (cleanup.length > 0) await cleanup.pop()?.();

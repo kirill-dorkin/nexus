@@ -6,7 +6,7 @@ const base = "div > div { background: #fdf6ec; border: 1px solid #c8763a; paddin
 
 export default function flex(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "flex-basics", title: "Flexbox: основы", summary: "display: flex, направление, перенос и промежутки gap.",

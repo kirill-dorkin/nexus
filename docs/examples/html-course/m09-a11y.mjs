@@ -1,5 +1,5 @@
 export default function a11y(c) {
-  const { html, code, mdn, lesson, single, multi, short } = c;
+  const { lesson, single, multi, short } = c;
 
   lesson({
     slug: "accessibility-basics", title: "Доступность: основы", minutes: 12,

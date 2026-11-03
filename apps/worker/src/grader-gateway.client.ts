@@ -13,9 +13,10 @@ export class GraderGatewayDispatchError extends Error {
   constructor(
     readonly code: string,
     readonly retryable: boolean,
-    message: string
+    message: string,
+    options?: ErrorOptions
   ) {
-    super(message);
+    super(message, options);
     this.name = "GraderGatewayDispatchError";
   }
 }
@@ -83,13 +84,15 @@ export class GraderGatewayClient {
           throw new GraderGatewayDispatchError(
             "gateway_timeout",
             true,
-            "Grader Gateway request timed out."
+            "Grader Gateway request timed out.",
+            { cause: error }
           );
         }
         throw new GraderGatewayDispatchError(
           "gateway_unreachable",
           true,
-          "Grader Gateway request failed before an HTTP response was received."
+          "Grader Gateway request failed before an HTTP response was received.",
+          { cause: error }
         );
       }
 

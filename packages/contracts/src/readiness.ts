@@ -41,15 +41,15 @@ export const masteryBelowTargetReasonSchema = z.object({
 
 export const scoredEvidenceStaleReasonSchema = z.object({
   code: z.literal("scored_evidence_stale"),
-  lastScoredEvidenceAt: z.string().datetime(),
-  freshUntil: z.string().datetime()
+  lastScoredEvidenceAt: z.iso.datetime(),
+  freshUntil: z.iso.datetime()
 });
 
 export const activeRepeatedTrustedFailureReasonSchema = z.object({
   code: z.literal("active_repeated_trusted_failure"),
   consecutiveFailureCount: z.number().int().min(2),
-  firstObservedAt: z.string().datetime(),
-  lastObservedAt: z.string().datetime()
+  firstObservedAt: z.iso.datetime(),
+  lastObservedAt: z.iso.datetime()
 });
 
 export const readinessNotReadyReasonSchema = z.discriminatedUnion("code", [
@@ -77,8 +77,8 @@ export const readinessSkillDecisionSchema = z.discriminatedUnion("status", [
     status: z.literal("insufficient_evidence"),
     masteryScore: z.number().min(0).max(1).nullable(),
     scoredAttemptCount: z.number().int().nonnegative(),
-    lastScoredEvidenceAt: z.string().datetime().nullable(),
-    freshUntil: z.string().datetime().nullable(),
+    lastScoredEvidenceAt: z.iso.datetime().nullable(),
+    freshUntil: z.iso.datetime().nullable(),
     reasons: z.array(insufficientScoredAttemptsReasonSchema).min(1)
   }),
   z.object({
@@ -86,8 +86,8 @@ export const readinessSkillDecisionSchema = z.discriminatedUnion("status", [
     status: z.literal("not_ready"),
     masteryScore: z.number().min(0).max(1),
     scoredAttemptCount: z.number().int().positive(),
-    lastScoredEvidenceAt: z.string().datetime(),
-    freshUntil: z.string().datetime(),
+    lastScoredEvidenceAt: z.iso.datetime(),
+    freshUntil: z.iso.datetime(),
     reasons: z.array(readinessNotReadyReasonSchema).min(1)
   }),
   z.object({
@@ -95,8 +95,8 @@ export const readinessSkillDecisionSchema = z.discriminatedUnion("status", [
     status: z.literal("ready"),
     masteryScore: z.number().min(0).max(1),
     scoredAttemptCount: z.number().int().positive(),
-    lastScoredEvidenceAt: z.string().datetime(),
-    freshUntil: z.string().datetime(),
+    lastScoredEvidenceAt: z.iso.datetime(),
+    freshUntil: z.iso.datetime(),
     reasons: z.tuple([])
   })
 ]);
@@ -159,10 +159,10 @@ export const courseReadinessDecisionSchema = z
     enrollmentId: uuidSchema,
     offeringId: uuidSchema,
     courseVersionId: uuidSchema,
-    evaluatedAt: z.string().datetime(),
+    evaluatedAt: z.iso.datetime(),
     policy: readinessPolicySchema,
     status: readinessStatusSchema,
-    readyUntil: z.string().datetime().nullable(),
+    readyUntil: z.iso.datetime().nullable(),
     skills: z.array(readinessSkillDecisionSchema).min(1)
   })
   .superRefine(validateReadinessOutcome);
@@ -181,9 +181,9 @@ export const offeringReadinessLearnerSchema = z
   .object({
     enrollmentId: uuidSchema,
     learnerUserId: uuidSchema,
-    enrolledAt: z.string().datetime(),
+    enrolledAt: z.iso.datetime(),
     status: readinessStatusSchema,
-    readyUntil: z.string().datetime().nullable(),
+    readyUntil: z.iso.datetime().nullable(),
     skills: z.array(readinessSkillDecisionSchema).min(1)
   })
   .superRefine(validateReadinessOutcome);
@@ -223,7 +223,7 @@ export const offeringReadinessOverviewSchema = z
     organizationId: uuidSchema,
     offeringId: uuidSchema,
     courseVersionId: uuidSchema,
-    evaluatedAt: z.string().datetime(),
+    evaluatedAt: z.iso.datetime(),
     policy: readinessPolicySchema,
     triagePolicy: offeringReadinessTriagePolicySchema,
     summary: offeringReadinessSummarySchema,

@@ -79,7 +79,7 @@ describe("PaddlePaymentCheckoutProvider", () => {
       "Paddle-Version": "1"
     });
 
-    expect(JSON.parse(String(init?.body))).toEqual({
+    expect(JSON.parse(init?.body as string)).toEqual({
       items: [
         {
           quantity: 1,

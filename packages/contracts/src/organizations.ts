@@ -40,7 +40,7 @@ export const organizationMembershipSchema = z.object({
   organizationId: uuidSchema,
   userId: uuidSchema,
   status: organizationMembershipStatusSchema,
-  joinedAt: z.string().datetime().nullable()
+  joinedAt: z.iso.datetime().nullable()
 });
 
 export const inviteOrganizationMemberRequestSchema = z.object({

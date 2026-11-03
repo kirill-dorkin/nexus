@@ -17,13 +17,19 @@ function canonicalProfiles() {
   return parseGraderExecutionProfilesJson(readFileSync(PROFILE_PATH, "utf8"));
 }
 
+function firstCanonicalProfile() {
+  const [profile] = canonicalProfiles();
+  if (profile === undefined) throw new Error("No canonical grader profile is registered.");
+  return profile;
+}
+
 describe("trusted grader runner security contract", () => {
   it("pins the first executable profile to the CI-proven immutable runner artifact", () => {
     const profiles = canonicalProfiles();
     expect(profiles).toHaveLength(1);
     expect(() => new GraderExecutionProfileRegistry(profiles)).not.toThrow();
 
-    const profile = profiles[0]!;
+    const profile = firstCanonicalProfile();
     expect(profile.key).toBe("js-sum-v1");
     expect(profile.version).toBe(1);
     expect(profile.runnerImageDigest).toBe(
@@ -52,9 +58,9 @@ describe("trusted grader runner security contract", () => {
   });
 
   it("keeps profile runtime identity aligned with the pinned capability-minimal Go runtime", () => {
-    const profile = canonicalProfiles()[0]!;
+    const profile = firstCanonicalProfile();
     const goMod = text("apps/grader-runner/go.mod");
-    const goja = goMod.match(/github\.com\/dop251\/goja\s+(v\S+)/)?.[1];
+    const goja = (/github\.com\/dop251\/goja\s+(v\S+)/.exec(goMod))?.[1];
 
     expect(goja).toBeDefined();
     expect(profile.language).toEqual({ key: "javascript", version: `goja@${goja}` });
@@ -68,7 +74,7 @@ describe("trusted grader runner security contract", () => {
   });
 
   it("ties runner argv and resource controls to the Kubernetes provider contract", () => {
-    const profile = canonicalProfiles()[0]!;
+    const profile = firstCanonicalProfile();
     const dockerfile = text("apps/grader-runner/Dockerfile");
     const runnerConfig = text("apps/grader-runner/internal/runner/config.go");
     const provider = text("apps/grader-gateway/src/kubernetes-gvisor-sandbox-provider.ts");

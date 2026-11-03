@@ -5,7 +5,7 @@ const box = "background: #fdf6ec; border: 1px solid #c8763a; padding: 6px;";
 
 export default function position(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "position", title: "position: где стоит элемент", summary: "static, relative, absolute, fixed, sticky и координаты top, right, bottom, left, inset.",

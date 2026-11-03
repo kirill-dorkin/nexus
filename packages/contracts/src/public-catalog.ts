@@ -5,7 +5,7 @@ import { commerceBillingTypeSchema } from "./commerce";
 import { learningOfferingDeliveryModeSchema } from "./learning-delivery";
 import { customerEntryPolicySchema } from "./organizations";
 
-const nullableDateTimeSchema = z.string().datetime().nullable();
+const nullableDateTimeSchema = z.iso.datetime().nullable();
 const publicCurrencySchema = z.string().regex(/^[A-Z]{3}$/);
 
 export const publicCatalogOrganizationSchema = z

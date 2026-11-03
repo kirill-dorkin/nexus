@@ -115,7 +115,7 @@ export class AuthenticationApplicationService {
     );
     const candidateUser = candidate.user;
 
-    if (!passwordMatches || candidateUser === null || candidateUser.status !== "active") {
+    if (!passwordMatches || candidateUser?.status !== "active") {
       throw new UnauthorizedException(INVALID_CREDENTIALS_MESSAGE);
     }
 

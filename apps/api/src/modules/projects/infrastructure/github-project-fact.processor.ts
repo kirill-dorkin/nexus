@@ -63,13 +63,15 @@ export class GitHubProjectFactProcessor {
       return true;
     }
 
-    if (claim.routingStatus !== "mapped" || claim.organizationId === null) {
+    const organizationId = claim.organizationId;
+    if (claim.routingStatus !== "mapped" || organizationId === null) {
       await this.finish(claim, leaseToken, "rejected", "routing_rejected", null);
       return true;
     }
 
+    const githubRepositoryMappingId = claim.githubRepositoryMappingId;
     if (
-      claim.githubRepositoryMappingId === null ||
+      githubRepositoryMappingId === null ||
       claim.githubRepositoryId === null ||
       claim.githubInstallationId === null
     ) {
@@ -86,12 +88,12 @@ export class GitHubProjectFactProcessor {
     try {
       await withTransaction(this.pool, async (transaction) => {
         await transaction.client.query("SELECT set_config('app.organization_id', $1, true)", [
-          claim.organizationId
+          organizationId
         ]);
 
         const binding = await this.facts.resolveRepositoryBindingAt(transaction, {
-          organizationId: claim.organizationId as string,
-          githubRepositoryMappingId: claim.githubRepositoryMappingId as string,
+          organizationId,
+          githubRepositoryMappingId,
           sourceReceivedAt: claim.sourceReceivedAt
         });
         if (binding === null) {

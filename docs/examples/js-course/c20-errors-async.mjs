@@ -1,12 +1,12 @@
 // Chapter 20: Errors, resource management and promises completely.
-import { scene, rule, kw, meth, obj, fnc, val, idea, run, has, task, makeLesson, on } from "./kit.mjs";
+import { scene, rule, kw, meth, obj, val, idea, run, has, task, makeLesson, on } from "./kit.mjs";
 
 const DS = (...m) => on("DisposableStack.prototype", ...m);
 const ADS = (...m) => on("AsyncDisposableStack.prototype", ...m);
 
 export default function errorsAsync(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "errors-full", title: "Ошибки полностью", summary: "Error, message, name, cause, toString, Error.isError и все встроенные виды: RangeError, URIError, EvalError, AggregateError, свои классы ошибок.",

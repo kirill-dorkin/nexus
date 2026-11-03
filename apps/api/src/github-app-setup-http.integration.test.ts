@@ -226,7 +226,7 @@ describe("trusted GitHub App setup lifecycle", () => {
       "http://localhost:4000/v1/integrations/github/oauth/callback";
 
     vi.stubGlobal("fetch", async (input: string | URL | Request, init?: RequestInit) => {
-      const url = String(input);
+      const url = input instanceof Request ? input.url : input.toString();
       if (url === "https://github.com/login/oauth/access_token") {
         const body = typeof init?.body === "string"
           ? JSON.parse(init.body) as { code?: string }

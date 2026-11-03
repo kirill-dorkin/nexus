@@ -137,7 +137,9 @@ function canonicalJson(value: unknown): string {
       .map((key) => `${JSON.stringify(key)}:${canonicalJson(object[key])}`)
       .join(",")}}`;
   }
-  return JSON.stringify(value) ?? "null";
+  // JSON.stringify yields undefined (despite its typing) for these values.
+  if (value === undefined || typeof value === "function" || typeof value === "symbol") return "null";
+  return JSON.stringify(value);
 }
 
 function normalizedIdentityMaterial(spec: GraderJobSpec): unknown {
@@ -303,8 +305,7 @@ export function validateGraderJobResult(
 ): GraderJobResult {
   const result = record(value);
   if (
-    result === null ||
-    result.protocolVersion !== GRADER_PROTOCOL_VERSION ||
+    result?.protocolVersion !== GRADER_PROTOCOL_VERSION ||
     result.jobId !== expectedJobId ||
     typeof result.status !== "string"
   ) {
@@ -438,10 +439,13 @@ function validateProfile(profile: GraderExecutionProfile): void {
       "Runner image must be pinned by an immutable sha256 digest."
     );
   }
-  if (profile.network !== "off") {
+  // Profiles are loaded from JSON files, so the security-critical literals are
+  // re-checked at runtime even though their static types already pin them.
+  const isolation: { network: string; filesystem: string; readOnlyRootFilesystem: boolean } = profile;
+  if (isolation.network !== "off") {
     throw new InvalidGraderExecutionProfileError("Sandbox network policy must be off.");
   }
-  if (profile.filesystem !== "ephemeral" || profile.readOnlyRootFilesystem !== true) {
+  if (isolation.filesystem !== "ephemeral" || !isolation.readOnlyRootFilesystem) {
     throw new InvalidGraderExecutionProfileError(
       "Sandbox filesystem must be ephemeral with a read-only root filesystem."
     );
@@ -572,7 +576,7 @@ function parseProfile(value: unknown): GraderExecutionProfile {
     version: parsePositiveInteger(object.version, "profile.version"),
     language: { key: language.key, version: language.version },
     runnerImageDigest: object.runnerImageDigest,
-    argv: object.argv as string[],
+    argv: object.argv,
     network: "off",
     filesystem: "ephemeral",
     readOnlyRootFilesystem: true,

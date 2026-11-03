@@ -1,3 +1,4 @@
+import { itemAt } from "../../lib/item-at";
 /*
  * Runnable JavaScript practice (ADR-0064). Builds the srcdoc of an opaque-origin iframe
  * (sandbox="allow-scripts", never allow-same-origin) that runs the learner's code:
@@ -60,7 +61,7 @@ export function guardLoops(code: string): string {
   const n = code.length;
   const word = (at: number) => /[A-Za-z0-9_$]/.test(code[at] ?? "");
   while (i < n) {
-    const ch = code[i]!;
+    const ch = itemAt(code, i);
     if (ch === "/" && code[i + 1] === "/") {
       const end = code.indexOf("\n", i);
       const stop = end === -1 ? n : end;
@@ -82,7 +83,7 @@ export function guardLoops(code: string): string {
     if (keyword) {
       let j = i + keyword.length;
       if (keyword !== "do") {
-        while (j < n && /\s/.test(code[j]!)) j++;
+        while (j < n && /\s/.test(itemAt(code, j))) j++;
         if (code[j] === "(") {
           let depth = 0;
           for (; j < n; j++) {
@@ -92,7 +93,7 @@ export function guardLoops(code: string): string {
         }
       }
       let k = j;
-      while (k < n && /\s/.test(code[k]!)) k++;
+      while (k < n && /\s/.test(itemAt(code, k))) k++;
       if (code[k] === "{") {
         out += code.slice(i, k + 1) + "if(__loopGuard())break;";
         i = k + 1; continue;

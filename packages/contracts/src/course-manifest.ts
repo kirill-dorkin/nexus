@@ -138,10 +138,25 @@ export type ManifestActivity = z.infer<typeof manifestActivitySchema>;
 export type ManifestLesson = z.infer<typeof manifestLessonSchema>;
 export type LessonBlock = z.infer<typeof lessonBlockSchema>;
 export type ApplyCourseManifestRequest = z.infer<typeof applyCourseManifestRequestSchema>;
-export type CourseManifestPlan = {
-  mode: "create_course" | "replace_draft" | "create_draft";
-  courseId: string | null;
-  expectedDraftVersionId: string | null;
-  expectedRevision: number;
-  counts: { skills: number; activities: number; lessons: number };
-};
+const courseManifestCountsSchema = z.object({
+  skills: z.number().int().min(0),
+  activities: z.number().int().min(0),
+  lessons: z.number().int().min(0)
+}).strict();
+
+export const courseManifestPlanSchema = z.object({
+  mode: z.enum(["create_course", "replace_draft", "create_draft"]),
+  courseId: uuidSchema.nullable(),
+  expectedDraftVersionId: uuidSchema.nullable(),
+  expectedRevision: z.number().int().min(0),
+  counts: courseManifestCountsSchema
+}).strict();
+export type CourseManifestPlan = z.infer<typeof courseManifestPlanSchema>;
+
+export const courseManifestApplyResultSchema = z.object({
+  courseId: uuidSchema,
+  draftVersionId: uuidSchema,
+  revision: z.number().int().min(0),
+  counts: courseManifestCountsSchema
+}).strict();
+export type CourseManifestApplyResult = z.infer<typeof courseManifestApplyResultSchema>;

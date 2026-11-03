@@ -61,7 +61,7 @@ export const learnerAssignmentTimingSchema = z.enum([
   "past_due"
 ]);
 
-const optionalDateTimeSchema = z.string().datetime().nullable();
+const optionalDateTimeSchema = z.iso.datetime().nullable();
 const deliveryNameSchema = z.string().trim().min(1).max(160);
 
 export const learningOfferingSchema = z.object({
@@ -93,8 +93,8 @@ export const createLearningOfferingRequestSchema = z
     name: deliveryNameSchema,
     deliveryMode: learningOfferingDeliveryModeSchema,
     accessMode: learningOfferingAccessModeSchema.default("membership"),
-    startsAt: z.string().datetime().optional(),
-    endsAt: z.string().datetime().optional()
+    startsAt: z.iso.datetime().optional(),
+    endsAt: z.iso.datetime().optional()
   })
   .refine(
     (value) =>
@@ -113,7 +113,7 @@ export const enrollmentSchema = z.object({
   offeringId: uuidSchema,
   userId: uuidSchema,
   status: enrollmentStatusSchema,
-  enrolledAt: z.string().datetime(),
+  enrolledAt: z.iso.datetime(),
   completedAt: optionalDateTimeSchema
 });
 
@@ -127,16 +127,16 @@ export const courseRunSchema = z.object({
   offeringId: uuidSchema,
   slug: resourceSlugSchema,
   name: deliveryNameSchema,
-  startsAt: z.string().datetime(),
-  endsAt: z.string().datetime()
+  startsAt: z.iso.datetime(),
+  endsAt: z.iso.datetime()
 });
 
 export const createCourseRunRequestSchema = z
   .object({
     slug: resourceSlugSchema,
     name: deliveryNameSchema,
-    startsAt: z.string().datetime(),
-    endsAt: z.string().datetime()
+    startsAt: z.iso.datetime(),
+    endsAt: z.iso.datetime()
   })
   .refine(
     (value) =>
@@ -179,7 +179,7 @@ export const groupMembershipSchema = z.object({
   groupSetId: uuidSchema,
   groupId: uuidSchema,
   enrollmentId: uuidSchema,
-  assignedAt: z.string().datetime(),
+  assignedAt: z.iso.datetime(),
   endedAt: optionalDateTimeSchema
 });
 
@@ -194,8 +194,8 @@ export const sessionSchema = z.object({
   groupId: uuidSchema.nullable(),
   slug: resourceSlugSchema,
   name: deliveryNameSchema,
-  startsAt: z.string().datetime(),
-  endsAt: z.string().datetime()
+  startsAt: z.iso.datetime(),
+  endsAt: z.iso.datetime()
 });
 
 export const createSessionRequestSchema = z
@@ -203,8 +203,8 @@ export const createSessionRequestSchema = z
     groupId: uuidSchema.nullable().default(null),
     slug: resourceSlugSchema,
     name: deliveryNameSchema,
-    startsAt: z.string().datetime(),
-    endsAt: z.string().datetime()
+    startsAt: z.iso.datetime(),
+    endsAt: z.iso.datetime()
   })
   .refine(
     (value) =>
@@ -221,8 +221,8 @@ export const attendanceSchema = z.object({
   sessionId: uuidSchema,
   enrollmentId: uuidSchema,
   status: attendanceStatusSchema,
-  recordedAt: z.string().datetime(),
-  updatedAt: z.string().datetime()
+  recordedAt: z.iso.datetime(),
+  updatedAt: z.iso.datetime()
 });
 
 export const recordAttendanceRequestSchema = z.object({
@@ -290,7 +290,7 @@ export const learnerRunnerAssignmentSchema = z.object({
 export const learnerRunnerReadModelSchema = z.object({
   enrollmentId: uuidSchema,
   offeringId: uuidSchema,
-  asOf: z.string().datetime(),
+  asOf: z.iso.datetime(),
   assignments: z.array(learnerRunnerAssignmentSchema)
 });
 
@@ -300,8 +300,8 @@ export const createAssignmentRequestSchema = z
     slug: resourceSlugSchema,
     name: deliveryNameSchema,
     audience: assignmentAudienceSchema,
-    availableAt: z.string().datetime().optional(),
-    dueAt: z.string().datetime().optional()
+    availableAt: z.iso.datetime().optional(),
+    dueAt: z.iso.datetime().optional()
   })
   .refine(
     (value) =>

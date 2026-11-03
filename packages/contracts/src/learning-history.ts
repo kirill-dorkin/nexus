@@ -21,7 +21,7 @@ const learningEventBaseShape = {
   activityVersionId: uuidSchema,
   attemptNumber: z.number().int().positive(),
   eventVersion: z.literal(1),
-  occurredAt: z.string().datetime()
+  occurredAt: z.iso.datetime()
 } as const;
 
 const attemptStartedLearningEventSchema = z.object({ ...learningEventBaseShape, eventName: z.literal("attempt.started") }).strict();

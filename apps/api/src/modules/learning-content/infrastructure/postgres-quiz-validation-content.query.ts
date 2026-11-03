@@ -37,7 +37,7 @@ export class PostgresQuizValidationContentQuery extends QuizValidationContentQue
         presentation: row.config.presentation,
         validation: row.validation
       });
-    if (!parsed || !parsed.success)
+    if (!parsed?.success)
       throw new ConflictException("Quiz definition is unavailable.");
     return parsed.data;
   }

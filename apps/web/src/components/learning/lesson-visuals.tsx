@@ -1,7 +1,8 @@
 "use client";
+import { itemAt } from "../../lib/item-at";
 
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
-import { ArrowCounterClockwise, ArrowRight, File, Folder, Pause, Play } from "@phosphor-icons/react/dist/ssr";
+import { ArrowCounterClockwiseIcon, ArrowRightIcon, FileIcon, FolderIcon, PauseIcon, PlayIcon } from "@phosphor-icons/react/dist/ssr";
 import { highlight, type Token } from "./code-highlight";
 import { Rich } from "./story";
 import styles from "./lesson-visuals.module.css";
@@ -26,6 +27,8 @@ export type Visual =
   | { kind: "typing"; title?: string | undefined; file?: string | undefined; scenes: Scene[] };
 
 const str = (v: unknown, max = 2000): v is string => typeof v === "string" && v.length <= max;
+const record = (v: unknown): Record<string, unknown> | null =>
+  typeof v === "object" && v !== null ? (v as Record<string, unknown>) : null;
 
 /** Parses and validates a visual description; returns null if anything is off. */
 export function parseVisual(source: string): Visual | null {
@@ -38,19 +41,27 @@ export function parseVisual(source: string): Visual | null {
   if (!raw || typeof raw !== "object") return null;
   const v = raw as Record<string, unknown>;
   const title = str(v.title, 200) ? v.title : undefined;
-  const list = (value: unknown, max: number) => (Array.isArray(value) && value.length > 0 && value.length <= max ? value : null);
+  const list = (value: unknown, max: number): unknown[] | null =>
+    Array.isArray(value) && value.length > 0 && value.length <= max ? (value as unknown[]) : null;
   switch (v.kind) {
     case "url": {
-      const parts = list(v.parts, 12)?.filter((p): p is UrlPart => str(p?.text, 200) && str(p?.label, 60));
+      const parts = list(v.parts, 12)?.filter((p): p is UrlPart => str(record(p)?.text, 200) && str(record(p)?.label, 60));
       return parts?.length ? { kind: "url", title, parts } : null;
     }
     case "tree": {
-      const items = list(v.items, 60)?.filter((i): i is TreeItem =>
-        str(i?.name, 120) && Number.isInteger(i?.depth) && i.depth >= 0 && i.depth <= 8 && (i.note === undefined || str(i.note, 160)));
+      const items = list(v.items, 60)?.filter((i): i is TreeItem => {
+        const item = record(i);
+        const depth = item?.depth;
+        return str(item?.name, 120) && typeof depth === "number" && Number.isInteger(depth) && depth >= 0 && depth <= 8 &&
+          (item.note === undefined || str(item.note, 160));
+      });
       return items?.length ? { kind: "tree", title, items } : null;
     }
     case "flow": {
-      const steps = list(v.steps, 8)?.filter((s): s is FlowStep => str(s?.title, 60) && (s.text === undefined || str(s.text, 240)));
+      const steps = list(v.steps, 8)?.filter((s): s is FlowStep => {
+        const step = record(s);
+        return str(step?.title, 60) && (step.text === undefined || str(step.text, 240));
+      });
       return steps?.length ? { kind: "flow", title, steps } : null;
     }
     case "dom":
@@ -62,7 +73,7 @@ export function parseVisual(source: string): Visual | null {
         return !!c && str(c.input, 400) && (c.key === undefined || str(c.key, 20)) &&
           (c.output === undefined || str(c.output, 2000)) && (c.caption === undefined || str(c.caption, 200)) &&
           (c.parts === undefined || (Array.isArray(c.parts) && c.parts.length <= 12 &&
-            c.parts.every((p) => str(p?.text, 60) && str(p?.label, 60))));
+            c.parts.every((p) => str(record(p)?.text, 60) && str(record(p)?.label, 60))));
       };
       const scenes = (Array.isArray(v.scenes) ? list(v.scenes, 10) : [v])?.filter(isScene);
       const file = str(v.file, 60) ? v.file : undefined;
@@ -102,7 +113,7 @@ function UrlDiagram({ parts }: { parts: UrlPart[] }) {
 function colorFor(name: string) {
   if (name.endsWith("/")) return "#fcd34d";
   if (/\.html?$/.test(name)) return "#7dd3fc";
-  if (/\.css$/.test(name)) return "#c4b5fd";
+  if (name.endsWith(".css")) return "#c4b5fd";
   if (/\.(js|mjs|json)$/.test(name)) return "#fdba74";
   if (/\.(png|jpe?g|webp|avif|svg|gif)$/.test(name)) return "#bef264";
   return "#a1a1aa";
@@ -116,7 +127,7 @@ function TreeDiagram({ items }: { items: TreeItem[] }) {
         return (
           <li key={i} style={{ "--depth": item.depth, "--c": colorFor(item.name) } as CSSProperties}>
             <span className={styles.treeName}>
-              {folder ? <Folder size={18} weight="fill" aria-hidden="true" /> : <File size={18} aria-hidden="true" />}
+              {folder ? <FolderIcon size={18} weight="fill" aria-hidden="true" /> : <FileIcon size={18} aria-hidden="true" />}
               <code>{item.name}</code>
             </span>
             {item.note ? <span className={styles.treeNote}>{item.note}</span> : null}
@@ -189,7 +200,7 @@ function DomDiagram({ html }: { html: string }) {
   return (
     <div className={styles.dom}>
       <pre className={styles.domSource}><code><Tokens tokens={highlight(html, "html")} /></code></pre>
-      <div className={styles.domArrow} aria-hidden="true"><ArrowRight size={22} /></div>
+      <div className={styles.domArrow} aria-hidden="true"><ArrowRightIcon size={22} /></div>
       <div className={styles.domTree} aria-label="DOM-дерево">
         {tree ? <ul><DomBranch node={tree} /></ul> : <p className={styles.domText}>Строим дерево…</p>}
       </div>
@@ -216,14 +227,15 @@ function usePrefersReducedMotion() {
 /** Where Emmet leaves the caret after expanding: the first empty attribute or element. */
 export function caretOffset(output: string) {
   const blank = /\n( *)\n/.exec(output);
-  const candidates = [output.indexOf('""') + 1, output.indexOf("></") + 1, blank ? blank.index + 1 + blank[1]!.length : 0]
+  const candidates = [output.indexOf('""') + 1, output.indexOf("></") + 1, blank ? blank.index + 1 + itemAt(blank, 1).length : 0]
     .filter((i) => i > 0);
   return candidates.length ? Math.min(...candidates) : output.length;
 }
 
 /** Splits highlighted tokens into lines, inserting a caret marker at a character offset. */
 function tokenLines(tokens: Token[], caretAt: number) {
-  const lines: (Token | "caret")[][] = [[]];
+  let line: (Token | "caret")[] = [];
+  const lines: (Token | "caret")[][] = [line];
   let offset = 0;
   for (const token of tokens) {
     let text = token.text;
@@ -234,23 +246,24 @@ function tokenLines(tokens: Token[], caretAt: number) {
       let chunk = text.slice(0, chunkEnd);
       if (caretAt >= start && caretAt < start + chunk.length) {
         const before = chunk.slice(0, caretAt - start);
-        if (before) lines.at(-1)!.push({ kind: token.kind, text: before });
-        lines.at(-1)!.push("caret");
+        if (before) line.push({ kind: token.kind, text: before });
+        line.push("caret");
         chunk = chunk.slice(before.length);
         start += before.length;
         caretAt = -1;
       }
-      if (chunk) lines.at(-1)!.push({ kind: token.kind, text: chunk });
+      if (chunk) line.push({ kind: token.kind, text: chunk });
       start += chunk.length;
       if (breakAt < 0) break;
-      if (caretAt === start) { lines.at(-1)!.push("caret"); caretAt = -1; }
-      lines.push([]);
+      if (caretAt === start) { line.push("caret"); caretAt = -1; }
+      line = [];
+      lines.push(line);
       start += 1;
       text = text.slice(chunkEnd + 1);
     }
     offset += token.text.length;
   }
-  if (caretAt >= offset) lines.at(-1)!.push("caret");
+  if (caretAt >= offset) line.push("caret");
   return lines;
 }
 
@@ -261,7 +274,7 @@ type Tick = { phase: Phase; typed: number; ms: number };
 function sceneFrames(scene: Scene): Tick[] {
   const frames: Tick[] = [{ phase: "ready", typed: 0, ms: 650 }];
   for (let i = 1; i <= scene.input.length; i++) {
-    const ch = scene.input[i - 1]!;
+    const ch = itemAt(scene.input, i - 1);
     // Symbols take a moment longer than letters, like a real person typing.
     frames.push({ phase: "typing", typed: i, ms: /[a-z0-9]/i.test(ch) ? 95 : 190 });
   }
@@ -372,12 +385,12 @@ function TypingDemo({ scene, file }: { scene: Scene; file: string }) {
   const last = frames.length - 1;
   useEffect(() => {
     if (reduced || !visible || paused || index >= last) return;
-    const timer = window.setTimeout(() => setIndex((i) => Math.min(i + 1, last)), frames[index]!.ms);
+    const timer = window.setTimeout(() => setIndex((i) => Math.min(i + 1, last)), itemAt(frames, index).ms);
     return () => window.clearTimeout(timer);
   }, [index, paused, reduced, visible, frames, last, run]);
-  const frame = reduced ? frames[last]! : frames[index]!;
+  const frame = reduced ? itemAt(frames, last) : itemAt(frames, index);
   const finished = frame.phase === "result";
-  const parts = scene.parts && scene.parts.map((p) => p.text).join("") === scene.input ? scene.parts : undefined;
+  const parts = scene.parts?.map((p) => p.text).join("") === scene.input ? scene.parts : undefined;
   const stage = STAGES.findIndex((s) => s.phase.includes(frame.phase));
   const description = `${scene.caption ? `${scene.caption}. ` : ""}Ввод «${scene.input}»${scene.key ? `, затем клавиша ${scene.key}` : ""}${scene.output ? `. Результат: ${scene.output}` : ""}`;
   return (
@@ -416,12 +429,12 @@ function TypingDemo({ scene, file }: { scene: Scene; file: string }) {
         {reduced ? null : finished ? (
           <button type="button" className={styles.replay}
             onClick={() => { setIndex(0); setPaused(false); setRun((r) => r + 1); }}>
-            <ArrowCounterClockwise size={16} weight="bold" aria-hidden="true" /> Повторить
+            <ArrowCounterClockwiseIcon size={16} weight="bold" aria-hidden="true" /> Повторить
           </button>
         ) : (
           <button type="button" className={styles.play} onClick={() => setPaused((p) => !p)}
             aria-label={paused ? "Продолжить анимацию" : "Пауза анимации"}>
-            {paused ? <Play size={16} weight="fill" aria-hidden="true" /> : <Pause size={16} weight="fill" aria-hidden="true" />}
+            {paused ? <PlayIcon size={16} weight="fill" aria-hidden="true" /> : <PauseIcon size={16} weight="fill" aria-hidden="true" />}
           </button>
         )}
       </div>

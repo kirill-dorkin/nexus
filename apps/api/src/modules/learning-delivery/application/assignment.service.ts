@@ -165,7 +165,7 @@ export class AssignmentApplicationService {
         organizationId,
         assignmentId
       );
-      if (assignment === null || assignment.offeringId !== offeringId) {
+      if (assignment?.offeringId !== offeringId) {
         throw new NotFoundException("Assignment not found.");
       }
       return assignment;
@@ -193,7 +193,7 @@ export class AssignmentApplicationService {
         organizationId,
         assignmentId
       );
-      if (assignment === null || assignment.offeringId !== offeringId) {
+      if (assignment?.offeringId !== offeringId) {
         throw new NotFoundException("Assignment not found.");
       }
       if (assignment.cancelledAt !== null) {
@@ -260,7 +260,7 @@ export class AssignmentApplicationService {
           organizationId,
           audience.courseRunId
         );
-        if (courseRun === null || courseRun.offeringId !== offeringId) {
+        if (courseRun?.offeringId !== offeringId) {
           throw new NotFoundException("Course run not found.");
         }
         return {
@@ -293,7 +293,7 @@ export class AssignmentApplicationService {
           organizationId,
           groupSet.courseRunId
         );
-        if (courseRun === null || courseRun.offeringId !== offeringId) {
+        if (courseRun?.offeringId !== offeringId) {
           throw new NotFoundException("Group not found.");
         }
         return {
@@ -310,7 +310,7 @@ export class AssignmentApplicationService {
           organizationId,
           audience.enrollmentId
         );
-        if (enrollment === null || enrollment.offeringId !== offeringId) {
+        if (enrollment?.offeringId !== offeringId) {
           throw new NotFoundException("Enrollment not found.");
         }
         return {

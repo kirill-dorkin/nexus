@@ -37,7 +37,7 @@ export const validationResultSchema = z.object({
   evidenceTrust: validationEvidenceTrustSchema,
   payload: z.record(z.string(), z.unknown()),
   recordedByUserId: uuidSchema.nullable(),
-  recordedAt: z.string().datetime()
+  recordedAt: z.iso.datetime()
 });
 
 const validationResultCommandBase = {
@@ -85,11 +85,11 @@ export const graderJobSchema = z.object({
   }),
   status: graderJobStatusSchema,
   attemptCount: z.number().int().nonnegative(),
-  availableAt: z.string().datetime(),
+  availableAt: z.iso.datetime(),
   lastErrorCode: z.string().nullable(),
-  finishedAt: z.string().datetime().nullable(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime()
+  finishedAt: z.iso.datetime().nullable(),
+  createdAt: z.iso.datetime(),
+  updatedAt: z.iso.datetime()
 });
 
 export const scheduleGraderJobRequestSchema = z.object({}).strict();

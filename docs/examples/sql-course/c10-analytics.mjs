@@ -5,7 +5,7 @@ const DAILY = "SELECT o.created_at::date AS day, sum(oi.quantity * oi.unit_price
 
 export default function analytics(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "window-functions", title: "Оконные функции", summary: "Номер, место и доля — не сворачивая строки в группы.",

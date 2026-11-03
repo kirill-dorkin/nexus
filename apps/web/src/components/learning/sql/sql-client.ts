@@ -41,7 +41,7 @@ function finish(run: SqlRun) {
 function startWorker(): Worker {
   const created = new Worker(new URL("./sql-worker.ts", import.meta.url), { type: "module" });
   created.onmessage = (event: MessageEvent<{ id: number; run?: SqlRun; failure?: "broken" | "failed" }>) => {
-    if (!running || event.data.id !== running.id) return;
+    if (event.data.id !== running?.id) return;
     if (event.data.run) {
       warm = true;
       finish(event.data.run);
@@ -83,7 +83,8 @@ export function runSql(job: SqlJob, key?: string): Promise<SqlRun | null> {
   return new Promise((resolve) => {
     if (key !== undefined) {
       const index = queue.findIndex((item) => item.key === key);
-      if (index >= 0) queue.splice(index, 1)[0]!.resolve(null);
+      const [replaced] = index >= 0 ? queue.splice(index, 1) : [];
+      replaced?.resolve(null);
     }
     queue.push({ job, key, resolve });
     next();

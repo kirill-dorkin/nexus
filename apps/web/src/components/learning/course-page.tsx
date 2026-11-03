@@ -1,3 +1,4 @@
+import { itemAt } from "../../lib/item-at";
 import { LearnerEntry } from "./learner-entry";
 import type { Metadata } from "next";
 import { brand } from "@platform/brand";
@@ -6,7 +7,7 @@ import { LearningShell } from "./learning-shell";
 import type { PublicLearningCourse } from "@platform/contracts";
 import { courseUrl, lessonUrl } from "../../lib/public-learning-routes";
 import { Heading, Text, buttonClass } from "@platform/ui";
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { LearningPageHeading } from "./learning-page-heading";
 import { LessonOutline } from "./lesson-outline";
 import { LearningRouteCard } from "./learning-route-card";
@@ -81,13 +82,13 @@ export function CoursePageView({ course, catalog = [] }: { course: PublicLearnin
                 Начните с первого урока
               </Heading>
               <Text muted size="sm">
-                {course.course.lessons[0]!.title} · {course.course.lessons[0]!.durationMinutes} мин
+                {itemAt(course.course.lessons, 0).title} · {itemAt(course.course.lessons, 0).durationMinutes} мин
               </Text>
               <Link
                 className={buttonClass({ size: "lg" })}
-                href={lessonUrl(course, course.course.lessons[0]!.slug)}
+                href={lessonUrl(course, itemAt(course.course.lessons, 0).slug)}
               >
-                Открыть первый урок <ArrowRight size={18} aria-hidden="true" />
+                Открыть первый урок <ArrowRightIcon size={18} aria-hidden="true" />
               </Link>
             </section>
             <LearnerEntry

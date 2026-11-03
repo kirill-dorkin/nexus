@@ -3,7 +3,7 @@ import { scene, op, fn, kw, idea, rule, rows, src, task, makeLesson } from "./ki
 
 export default function functions(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, multi } = c;
 
   L({
     slug: "math", title: "Числа и округление", summary: "Округляем цены, считаем остатки и проценты.",

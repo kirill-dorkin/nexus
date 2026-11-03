@@ -7,7 +7,7 @@ const OP = (...m) => on("Object.prototype", ...m);
 
 export default function objectsDeep(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "prototypes", title: "Прототипы", summary: "Цепочка прототипов, Object.create, Object.getPrototypeOf, Object.setPrototypeOf и isPrototypeOf.",

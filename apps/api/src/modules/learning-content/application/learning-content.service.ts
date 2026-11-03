@@ -247,7 +247,7 @@ export class LearningContentApplicationService {
         organizationId,
         versionId
       );
-      if (existing === null || existing.courseId !== courseId) {
+      if (existing?.courseId !== courseId) {
         throw new NotFoundException("Course version not found.");
       }
       if (existing.status !== "draft") {

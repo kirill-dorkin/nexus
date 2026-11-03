@@ -15,7 +15,7 @@ export function groupByChapter<T extends { chapter?: string | null | undefined }
   lessons.forEach((lesson, index) => {
     const title = lesson.chapter ?? null;
     const last = groups.at(-1);
-    if (last && last.title === title) last.lessons.push({ lesson, index });
+    if (last?.title === title) last.lessons.push({ lesson, index });
     else groups.push({ title, lessons: [{ lesson, index }] });
   });
   return groups;

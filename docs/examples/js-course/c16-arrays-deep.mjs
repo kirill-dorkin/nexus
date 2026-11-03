@@ -6,7 +6,7 @@ const I = (...m) => on("Iterator.prototype", ...m);
 
 export default function arraysDeep(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "array-create", title: "Создание массивов", summary: "Array.from, Array.of, Array.isArray, свойство length и его запись, fill и copyWithin.",

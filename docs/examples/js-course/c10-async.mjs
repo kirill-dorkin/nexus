@@ -1,10 +1,10 @@
 // Chapter 10: Asynchronous JavaScript — timers, promises, async/await, fetch, errors.
 // The sandbox serves an offline teaching API: /api/products, /api/users, /api/todos (+ POST /api/todos, /api/orders).
-import { scene, rule, kw, meth, fnc, obj, idea, run, out, has, task, makeLesson } from "./kit.mjs";
+import { scene, rule, kw, meth, fnc, obj, idea, run, has, task, makeLesson } from "./kit.mjs";
 
 export default function asyncChapter(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "timers", title: "Таймеры", summary: "setTimeout, setInterval, clearTimeout, clearInterval и почему код не ждёт таймер.",

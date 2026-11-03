@@ -1,9 +1,9 @@
 // Chapter 6: Objects, JSON and classes.
-import { scene, rule, kw, meth, obj, op, idea, typ, run, out, has, task, makeLesson } from "./kit.mjs";
+import { scene, rule, kw, meth, op, idea, typ, run, has, task, makeLesson } from "./kit.mjs";
 
 export default function objects(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "objects", title: "Объекты: карточка с данными", summary: "Литерал объекта, свойства через точку и квадратные скобки, добавление, изменение и удаление, оператор in.",

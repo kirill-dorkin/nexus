@@ -58,15 +58,17 @@ export function PurchaseStatus({ purchaseId }: Readonly<{ purchaseId: string }>)
   }, [purchaseId]);
 
   useEffect(() => {
-    let active = true;
+    const controller = new AbortController();
+    // A function call, so the check is re-read after each await.
+    const active = () => !controller.signal.aborted;
     let timer: ReturnType<typeof setTimeout> | undefined;
 
     const run = async () => {
-      if (!active) return;
+      if (!active()) return;
       automaticReads.current += 1;
       const current = await refresh();
       if (
-        active &&
+        active() &&
         current?.status === "pending" &&
         automaticReads.current < maxAutomaticReads
       ) {
@@ -76,7 +78,7 @@ export function PurchaseStatus({ purchaseId }: Readonly<{ purchaseId: string }>)
 
     void run();
     return () => {
-      active = false;
+      controller.abort();
       if (timer !== undefined) clearTimeout(timer);
     };
   }, [refresh]);

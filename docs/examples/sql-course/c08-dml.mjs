@@ -3,7 +3,7 @@ import { scene, stmt, clause, kw, idea, rule, rows, holds, src, task, makeLesson
 
 export default function dml(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, multi } = c;
 
   L({
     slug: "insert", title: "INSERT", summary: "Добавляем новые строки: одну, несколько, из другого запроса.",

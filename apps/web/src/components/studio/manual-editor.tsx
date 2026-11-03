@@ -1,4 +1,5 @@
 "use client";
+import { itemAt } from "../../lib/item-at";
 import { useId } from "react";
 import type { CourseManifestV1, ManifestActivity } from "@platform/contracts";
 import { move, newActivity } from "./editor-model";
@@ -153,8 +154,8 @@ export function ManualEditor({
               maxLength={63}
               onChange={(v) =>
                 edit((d) => {
-                  const old = d.skills[i]!.key;
-                  d.skills[i]!.key = v;
+                  const old = itemAt(d.skills, i).key;
+                  itemAt(d.skills, i).key = v;
                   d.activities.forEach((a) => {
                     a.skillKeys = a.skillKeys.map((k) => (k === old ? v : k));
                   });
@@ -167,7 +168,7 @@ export function ManualEditor({
               maxLength={200}
               onChange={(v) =>
                 edit((d) => {
-                  d.skills[i]!.title = v;
+                  itemAt(d.skills, i).title = v;
                 })
               }
             />
@@ -178,7 +179,7 @@ export function ManualEditor({
               maxLength={5000}
               onChange={(v) =>
                 edit((d) => {
-                  d.skills[i]!.description = v;
+                  itemAt(d.skills, i).description = v;
                 })
               }
             />
@@ -251,7 +252,7 @@ export function ManualEditor({
               maxLength={63}
               onChange={(v) =>
                 edit((d) => {
-                  d.lessons[i]!.slug = v;
+                  itemAt(d.lessons, i).slug = v;
                 })
               }
             />
@@ -261,7 +262,7 @@ export function ManualEditor({
               maxLength={200}
               onChange={(v) =>
                 edit((d) => {
-                  d.lessons[i]!.title = v;
+                  itemAt(d.lessons, i).title = v;
                 })
               }
             />
@@ -272,7 +273,7 @@ export function ManualEditor({
               maxLength={5000}
               onChange={(v) =>
                 edit((d) => {
-                  d.lessons[i]!.summary = v;
+                  itemAt(d.lessons, i).summary = v;
                 })
               }
             />
@@ -285,8 +286,8 @@ export function ManualEditor({
                 onChange={(e) =>
                   edit((d) => {
                     const value = e.target.value;
-                    if (value.trim()) d.lessons[i]!.chapter = value;
-                    else delete d.lessons[i]!.chapter;
+                    if (value.trim()) itemAt(d.lessons, i).chapter = value;
+                    else delete itemAt(d.lessons, i).chapter;
                   })
                 }
               />
@@ -300,7 +301,7 @@ export function ManualEditor({
                 value={lesson.durationMinutes}
                 onChange={(e) =>
                   edit((d) => {
-                    d.lessons[i]!.durationMinutes = Number(e.target.value);
+                    itemAt(d.lessons, i).durationMinutes = Number(e.target.value);
                   })
                 }
               />
@@ -323,7 +324,7 @@ export function ManualEditor({
                     maxLength={2048}
                     onChange={(v) =>
                       edit((d) => {
-                        const b = d.lessons[i]!.blocks[j]!;
+                        const b = itemAt(itemAt(d.lessons, i).blocks, j);
                         if (b.type === "youtube") b.videoId = v;
                       })
                     }
@@ -337,7 +338,7 @@ export function ManualEditor({
                     value={block.markdown}
                     onChange={(v) =>
                       edit((d) => {
-                        const b = d.lessons[i]!.blocks[j]!;
+                        const b = itemAt(itemAt(d.lessons, i).blocks, j);
                         if (b.type === "markdown") b.markdown = v;
                       })
                     }
@@ -351,7 +352,7 @@ export function ManualEditor({
                         value={block.activitySlug}
                         onChange={(e) =>
                           edit((d) => {
-                            const b = d.lessons[i]!.blocks[j]!;
+                            const b = itemAt(itemAt(d.lessons, i).blocks, j);
                             if (b.type === "activity")
                               b.activitySlug = e.target.value;
                           })
@@ -371,7 +372,7 @@ export function ManualEditor({
                       maxLength={200}
                       onChange={(v) =>
                         edit((d) => {
-                          const b = d.lessons[i]!.blocks[j]!;
+                          const b = itemAt(itemAt(d.lessons, i).blocks, j);
                           if (b.type === "activity") {
                             if (v) b.title = v;
                             else delete b.title;
@@ -385,7 +386,7 @@ export function ManualEditor({
                         value={block.kind}
                         onChange={(e) =>
                           edit((d) => {
-                            const b = d.lessons[i]!.blocks[j]!;
+                            const b = itemAt(itemAt(d.lessons, i).blocks, j);
                             if (b.type === "activity")
                               b.kind = e.target.value as
                                 | "practice"
@@ -403,7 +404,7 @@ export function ManualEditor({
                         checked={block.required}
                         onChange={(e) =>
                           edit((d) => {
-                            const b = d.lessons[i]!.blocks[j]!;
+                            const b = itemAt(itemAt(d.lessons, i).blocks, j);
                             if (b.type === "activity")
                               b.required = e.target.checked;
                           })
@@ -417,10 +418,10 @@ export function ManualEditor({
                   label={`Блок ${j + 1}`}
                   index={j}
                   count={lesson.blocks.length}
-                  onMove={(o) => edit((d) => move(d.lessons[i]!.blocks, j, o))}
+                  onMove={(o) => edit((d) => move(itemAt(d.lessons, i).blocks, j, o))}
                   onRemove={() =>
                     edit((d) => {
-                      d.lessons[i]!.blocks.splice(j, 1);
+                      itemAt(d.lessons, i).blocks.splice(j, 1);
                     })
                   }
                 />
@@ -432,7 +433,7 @@ export function ManualEditor({
                 type="button"
                 onClick={() =>
                   edit((d) => {
-                    d.lessons[i]!.blocks.push({ type: "youtube", videoId: "" });
+                    itemAt(d.lessons, i).blocks.push({ type: "youtube", videoId: "" });
                   })
                 }
               >
@@ -443,7 +444,7 @@ export function ManualEditor({
                 type="button"
                 onClick={() =>
                   edit((d) => {
-                    d.lessons[i]!.blocks.push({
+                    itemAt(d.lessons, i).blocks.push({
                       type: "markdown",
                       markdown: ""
                     });
@@ -457,7 +458,7 @@ export function ManualEditor({
                 type="button"
                 onClick={() =>
                   edit((d) => {
-                    d.lessons[i]!.blocks.push({
+                    itemAt(d.lessons, i).blocks.push({
                       type: "activity",
                       activitySlug: d.activities[0]?.slug ?? "",
                       kind: "practice",
@@ -523,8 +524,8 @@ function ActivityEditor({
         maxLength={63}
         onChange={(v) =>
           edit((d) => {
-            const old = d.activities[i]!.slug;
-            d.activities[i]!.slug = v;
+            const old = itemAt(d.activities, i).slug;
+            itemAt(d.activities, i).slug = v;
             d.lessons.forEach((l) =>
               l.blocks.forEach((b) => {
                 if (b.type === "activity" && b.activitySlug === old)
@@ -540,7 +541,7 @@ function ActivityEditor({
         maxLength={200}
         onChange={(v) =>
           edit((d) => {
-            d.activities[i]!.title = v;
+            itemAt(d.activities, i).title = v;
           })
         }
       />
@@ -551,7 +552,7 @@ function ActivityEditor({
         maxLength={20000}
         onChange={(v) =>
           edit((d) => {
-            d.activities[i]!.instructions = v;
+            itemAt(d.activities, i).instructions = v;
           })
         }
       />
@@ -561,7 +562,7 @@ function ActivityEditor({
           value={activity.type}
           onChange={(e) =>
             edit((d) => {
-              const old = d.activities[i]!;
+              const old = itemAt(d.activities, i);
               const next = newActivity(
                 e.target.value as ManifestActivity["type"],
                 old.slug,
@@ -609,7 +610,7 @@ function ActivityEditor({
               checked={activity.skillKeys.includes(s.key)}
               onChange={(e) =>
                 edit((d) => {
-                  const a = d.activities[i]!;
+                  const a = itemAt(d.activities, i);
                   a.skillKeys = e.target.checked
                     ? [...a.skillKeys, s.key]
                     : a.skillKeys.filter((v) => v !== s.key);
@@ -627,7 +628,7 @@ function ActivityEditor({
         maxLength={20000}
         onChange={(v) =>
           edit((d) => {
-            d.activities[i]!.presentation.question = v;
+            itemAt(d.activities, i).presentation.question = v;
           })
         }
       />
@@ -643,7 +644,7 @@ function ActivityEditor({
                   maxLength={2000}
                   onChange={(v) =>
                     edit((d) => {
-                      const a = d.activities[i]!;
+                      const a = itemAt(d.activities, i);
                       if (a.type === "quiz.short_text")
                         a.validation.acceptedAnswers[j] = v;
                     })
@@ -655,14 +656,14 @@ function ActivityEditor({
                   count={activity.validation.acceptedAnswers.length}
                   onMove={(o) =>
                     edit((d) => {
-                      const a = d.activities[i]!;
+                      const a = itemAt(d.activities, i);
                       if (a.type === "quiz.short_text")
                         move(a.validation.acceptedAnswers, j, o);
                     })
                   }
                   onRemove={() =>
                     edit((d) => {
-                      const a = d.activities[i]!;
+                      const a = itemAt(d.activities, i);
                       if (a.type === "quiz.short_text")
                         a.validation.acceptedAnswers.splice(j, 1);
                     })
@@ -675,7 +676,7 @@ function ActivityEditor({
               type="button"
               onClick={() =>
                 edit((d) => {
-                  const a = d.activities[i]!;
+                  const a = itemAt(d.activities, i);
                   if (a.type === "quiz.short_text")
                     a.validation.acceptedAnswers.push("");
                 })
@@ -690,7 +691,7 @@ function ActivityEditor({
               checked={activity.validation.caseSensitive}
               onChange={(e) =>
                 edit((d) => {
-                  const a = d.activities[i]!;
+                  const a = itemAt(d.activities, i);
                   if (a.type === "quiz.short_text")
                     a.validation.caseSensitive = e.target.checked;
                 })
@@ -710,10 +711,10 @@ function ActivityEditor({
                 maxLength={63}
                 onChange={(v) =>
                   edit((d) => {
-                    const a = d.activities[i]!;
+                    const a = itemAt(d.activities, i);
                     if (a.type === "quiz.short_text") return;
-                    const old = a.presentation.options[j]!.id;
-                    a.presentation.options[j]!.id = v;
+                    const old = itemAt(a.presentation.options, j).id;
+                    itemAt(a.presentation.options, j).id = v;
                     if (
                       a.type === "quiz.single_choice" &&
                       a.validation.correctOptionId === old
@@ -734,9 +735,9 @@ function ActivityEditor({
                 maxLength={2000}
                 onChange={(v) =>
                   edit((d) => {
-                    const a = d.activities[i]!;
+                    const a = itemAt(d.activities, i);
                     if (a.type !== "quiz.short_text")
-                      a.presentation.options[j]!.text = v;
+                      itemAt(a.presentation.options, j).text = v;
                   })
                 }
               />
@@ -755,7 +756,7 @@ function ActivityEditor({
                   }
                   onChange={(e) =>
                     edit((d) => {
-                      const a = d.activities[i]!;
+                      const a = itemAt(d.activities, i);
                       if (a.type === "quiz.single_choice")
                         a.validation.correctOptionId = option.id;
                       else if (a.type === "quiz.multiple_choice")
@@ -775,14 +776,14 @@ function ActivityEditor({
                 count={activity.presentation.options.length}
                 onMove={(o) =>
                   edit((d) => {
-                    const a = d.activities[i]!;
+                    const a = itemAt(d.activities, i);
                     if (a.type !== "quiz.short_text")
                       move(a.presentation.options, j, o);
                   })
                 }
                 onRemove={() =>
                   edit((d) => {
-                    const a = d.activities[i]!;
+                    const a = itemAt(d.activities, i);
                     if (a.type !== "quiz.short_text")
                       a.presentation.options.splice(j, 1);
                   })
@@ -795,7 +796,7 @@ function ActivityEditor({
             type="button"
             onClick={() =>
               edit((d) => {
-                const a = d.activities[i]!;
+                const a = itemAt(d.activities, i);
                 if (a.type !== "quiz.short_text")
                   a.presentation.options.push({ id: "", text: "" });
               })
@@ -812,7 +813,7 @@ function ActivityEditor({
         maxLength={10000}
         onChange={(v) =>
           edit((d) => {
-            d.activities[i]!.validation.explanation = v;
+            itemAt(d.activities, i).validation.explanation = v;
           })
         }
       />
