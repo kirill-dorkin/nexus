@@ -59,6 +59,19 @@
       ]
     },
     {
+      "slug": "query-preview",
+      "title": "Первый запрос",
+      "summary": "SQL-пример с живым результатом.",
+      "chapter": "Начало",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "## Запрос\n\n```concept\n{\"name\": \"SELECT\", \"title\": \"Выборка строк\", \"what\": \"Читает строки из таблицы.\", \"why\": \"Чтобы видеть данные.\", \"how\": \"SELECT 1 AS answer;\", \"lang\": \"sql\", \"show\": 80}\n```"
+        }
+      ]
+    },
+    {
       "slug": "next-steps",
       "title": "Что дальше",
       "summary": "Итог курса.",
