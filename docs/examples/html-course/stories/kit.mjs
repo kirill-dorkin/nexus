@@ -1,6 +1,6 @@
 // Authoring kit for the story version of the HTML course.
-// Characters: marta (заказчица, мой сайт), bro (браузер), nika (наставница),
-// lev (посетитель со скринридером), bug (Вредный Скрипт), you (ученик).
+// Characters: bro (браузер), nika (наставница), lev (слушает сайты скринридером),
+// bug (Вредный Скрипт), you (ученик). SQL adds slon (база данных).
 const FENCE = "```";
 const fence = (lang, value) => `${FENCE}${lang}\n${JSON.stringify(value, null, 2)}\n${FENCE}`;
 
