@@ -31,20 +31,30 @@ describe("learning-loop authorization", () => {
   const policy = new AuthorizationPolicy();
 
   it("lets an enrolled learner submit attempts and read learning history but not manufacture validation or evidence", () => {
-    expect(policy.allows([role("learner")], "attempt.submit", offeringScope)).toBe(true);
-    expect(policy.allows([role("learner")], "learning_event.read", offeringScope)).toBe(
-      true
-    );
-    expect(policy.allows([role("learner")], "validation.record", offeringScope)).toBe(false);
-    expect(policy.allows([role("learner")], "evidence.record", offeringScope)).toBe(false);
+    expect(
+      policy.allows([role("learner")], "attempt.submit", offeringScope)
+    ).toBe(true);
+    expect(
+      policy.allows([role("learner")], "learning_event.read", offeringScope)
+    ).toBe(true);
+    expect(
+      policy.allows([role("learner")], "validation.record", offeringScope)
+    ).toBe(false);
+    expect(
+      policy.allows([role("learner")], "evidence.record", offeringScope)
+    ).toBe(false);
   });
 
   it("lets instructors record validation and evidence and manage the learning graph", () => {
-    expect(policy.allows([role("instructor")], "validation.record", offeringScope)).toBe(true);
-    expect(policy.allows([role("instructor")], "evidence.record", offeringScope)).toBe(true);
-    expect(policy.allows([role("instructor")], "learning_event.read", offeringScope)).toBe(
-      true
-    );
+    expect(
+      policy.allows([role("instructor")], "validation.record", offeringScope)
+    ).toBe(true);
+    expect(
+      policy.allows([role("instructor")], "evidence.record", offeringScope)
+    ).toBe(true);
+    expect(
+      policy.allows([role("instructor")], "learning_event.read", offeringScope)
+    ).toBe(true);
     expect(
       policy.allows([role("instructor")], "activity.manage", {
         organizationId: "org-a",
@@ -55,7 +65,9 @@ describe("learning-loop authorization", () => {
   });
 
   it("separates self Mastery reads from reading other learners", () => {
-    expect(policy.allows([role("learner")], "mastery.read", organizationScope)).toBe(true);
+    expect(
+      policy.allows([role("learner")], "mastery.read", organizationScope)
+    ).toBe(true);
     expect(
       policy.allows([role("learner")], "mastery.read_others", organizationScope)
     ).toBe(false);
@@ -66,10 +78,18 @@ describe("learning-loop authorization", () => {
 
   it("keeps explicit Mastery recomputation operationally privileged", () => {
     expect(
-      policy.allows([role("organization_admin")], "mastery.recompute", organizationScope)
+      policy.allows(
+        [role("organization_admin")],
+        "mastery.recompute",
+        organizationScope
+      )
     ).toBe(true);
     expect(
-      policy.allows([role("instructor")], "mastery.recompute", organizationScope)
+      policy.allows(
+        [role("instructor")],
+        "mastery.recompute",
+        organizationScope
+      )
     ).toBe(false);
     expect(
       policy.allows([role("learner")], "mastery.recompute", organizationScope)

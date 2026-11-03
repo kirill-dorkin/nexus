@@ -32,7 +32,9 @@ function parseMinorAmount(
     amount > maxMinorAmount ||
     (allowZero ? amount < 0 : amount <= 0)
   ) {
-    throw new BadRequestException(`Paddle ${field} is outside supported bounds.`);
+    throw new BadRequestException(
+      `Paddle ${field} is outside supported bounds.`
+    );
   }
   return amount;
 }
@@ -53,7 +55,11 @@ function parseSignatureHeader(signature: string): {
     if (key === "h1" && /^[a-f\d]{64}$/i.test(value)) signatures.push(value);
   }
   const [timestamp] = timestamps;
-  if (timestamps.length !== 1 || timestamp === undefined || signatures.length === 0) {
+  if (
+    timestamps.length !== 1 ||
+    timestamp === undefined ||
+    signatures.length === 0
+  ) {
     throw new UnauthorizedException("Invalid Paddle webhook signature.");
   }
   return { timestamp, signatures };
@@ -117,7 +123,10 @@ export class PaddlePaymentWebhookVerifier extends PaymentWebhookVerifier {
       throw new BadRequestException("Unsupported Paddle webhook event.");
     }
 
-    const data = asRecord(envelope.data, "Paddle transaction payload is invalid.");
+    const data = asRecord(
+      envelope.data,
+      "Paddle transaction payload is invalid."
+    );
     const transactionId = data.id;
     if (
       typeof transactionId !== "string" ||
@@ -133,13 +142,21 @@ export class PaddlePaymentWebhookVerifier extends PaymentWebhookVerifier {
       throw new BadRequestException("Paddle transaction currency is invalid.");
     }
 
-    const details = asRecord(data.details, "Paddle transaction details are invalid.");
-    const totals = asRecord(details.totals, "Paddle transaction totals are invalid.");
+    const details = asRecord(
+      data.details,
+      "Paddle transaction details are invalid."
+    );
+    const totals = asRecord(
+      details.totals,
+      "Paddle transaction totals are invalid."
+    );
     if (
       typeof totals.currency_code !== "string" ||
       totals.currency_code !== currency
     ) {
-      throw new BadRequestException("Paddle transaction currency is inconsistent.");
+      throw new BadRequestException(
+        "Paddle transaction currency is inconsistent."
+      );
     }
     const subtotal = parseMinorAmount(totals.subtotal, "subtotal");
     const discount = parseMinorAmount(totals.discount, "discount", true);

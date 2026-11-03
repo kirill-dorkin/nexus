@@ -28,7 +28,13 @@ export function courseMetadata(course: PublicLearningCourse): Metadata {
     }
   };
 }
-export function CoursePageView({ course, catalog = [] }: { course: PublicLearningCourse; catalog?: readonly PublicLearningCourse[] }) {
+export function CoursePageView({
+  course,
+  catalog = []
+}: {
+  course: PublicLearningCourse;
+  catalog?: readonly PublicLearningCourse[];
+}) {
   const duration = course.course.lessons.reduce(
     (sum, lesson) => sum + lesson.durationMinutes,
     0
@@ -53,7 +59,10 @@ export function CoursePageView({ course, catalog = [] }: { course: PublicLearnin
   };
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }}
+      />
       <LearningShell>
         <nav className={styles.breadcrumbs} aria-label="Навигационная цепочка">
           <Link href="/courses">Все курсы</Link>
@@ -82,13 +91,15 @@ export function CoursePageView({ course, catalog = [] }: { course: PublicLearnin
                 Начните с первого урока
               </Heading>
               <Text muted size="sm">
-                {itemAt(course.course.lessons, 0).title} · {itemAt(course.course.lessons, 0).durationMinutes} мин
+                {itemAt(course.course.lessons, 0).title} ·{" "}
+                {itemAt(course.course.lessons, 0).durationMinutes} мин
               </Text>
               <Link
                 className={buttonClass({ size: "lg" })}
                 href={lessonUrl(course, itemAt(course.course.lessons, 0).slug)}
               >
-                Открыть первый урок <ArrowRightIcon size={18} aria-hidden="true" />
+                Открыть первый урок{" "}
+                <ArrowRightIcon size={18} aria-hidden="true" />
               </Link>
             </section>
             <LearnerEntry
@@ -103,7 +114,8 @@ export function CoursePageView({ course, catalog = [] }: { course: PublicLearnin
                 Программа курса
               </Heading>
               <Text muted size="sm">
-                {lessonCount(course.course.lessons.length)} · {durationLabel(duration)}
+                {lessonCount(course.course.lessons.length)} ·{" "}
+                {durationLabel(duration)}
               </Text>
             </header>
             <LessonOutline course={course} />

@@ -21,7 +21,9 @@ import {
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for public checkout integration tests.`);
+    throw new Error(
+      `${name} is required for public checkout integration tests.`
+    );
   }
   return value;
 }
@@ -76,7 +78,9 @@ describe("public Purchase checkout authority", () => {
       payload: { userId }
     });
     if (invite.statusCode !== 201) {
-      throw new Error(`Failed to invite public-checkout member: ${invite.body}`);
+      throw new Error(
+        `Failed to invite public-checkout member: ${invite.body}`
+      );
     }
 
     const accept = await app.inject({
@@ -85,7 +89,9 @@ describe("public Purchase checkout authority", () => {
       headers: { "x-test-user-id": userId }
     });
     if (accept.statusCode !== 200) {
-      throw new Error(`Failed to activate public-checkout member: ${accept.body}`);
+      throw new Error(
+        `Failed to activate public-checkout member: ${accept.body}`
+      );
     }
   }
 
@@ -101,7 +107,8 @@ describe("public Purchase checkout authority", () => {
     outsiderUserId = await createUser("public-checkout-outsider");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
@@ -113,10 +120,12 @@ describe("public Purchase checkout authority", () => {
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: organizationSlug,
         name: "Public Checkout Integration"
-      })).id;
+      })
+    ).id;
     await addActiveMember(buyerUserId);
 
     const course = await app.inject({
@@ -129,7 +138,9 @@ describe("public Purchase checkout authority", () => {
       }
     });
     if (course.statusCode !== 201) {
-      throw new Error(`Failed to create public-checkout course: ${course.body}`);
+      throw new Error(
+        `Failed to create public-checkout course: ${course.body}`
+      );
     }
     const createdCourse = JSON.parse(course.body) as {
       course: { id: string };
@@ -144,7 +155,9 @@ describe("public Purchase checkout authority", () => {
       headers: { "x-test-user-id": ownerUserId }
     });
     if (publish.statusCode !== 200) {
-      throw new Error(`Failed to publish public-checkout course: ${publish.body}`);
+      throw new Error(
+        `Failed to publish public-checkout course: ${publish.body}`
+      );
     }
 
     const offering = await app.inject({
@@ -160,7 +173,9 @@ describe("public Purchase checkout authority", () => {
       }
     });
     if (offering.statusCode !== 201) {
-      throw new Error(`Failed to create public-checkout offering: ${offering.body}`);
+      throw new Error(
+        `Failed to create public-checkout offering: ${offering.body}`
+      );
     }
     offeringId = learningOfferingSchema.parse(JSON.parse(offering.body)).id;
 
@@ -175,7 +190,9 @@ describe("public Purchase checkout authority", () => {
       }
     });
     if (product.statusCode !== 201) {
-      throw new Error(`Failed to create public-checkout Product: ${product.body}`);
+      throw new Error(
+        `Failed to create public-checkout Product: ${product.body}`
+      );
     }
     productId = commerceProductSchema.parse(JSON.parse(product.body)).id;
 
@@ -245,7 +262,8 @@ describe("public Purchase checkout authority", () => {
       await migrationPool.end();
     }
 
-    if (previousPaymentProvider === undefined) delete process.env.PAYMENT_PROVIDER;
+    if (previousPaymentProvider === undefined)
+      delete process.env.PAYMENT_PROVIDER;
     else process.env.PAYMENT_PROVIDER = previousPaymentProvider;
     if (previousWebOrigin === undefined) delete process.env.WEB_APP_ORIGIN;
     else process.env.WEB_APP_ORIGIN = previousWebOrigin;

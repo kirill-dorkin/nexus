@@ -7,7 +7,11 @@ import {
   type StudioCourseList
 } from "@platform/contracts";
 import { learningLoginUrl } from "../../lib/learning-return-to";
-import { errorMessage, studioRequest, StudioError } from "../../components/studio/studio-api";
+import {
+  errorMessage,
+  studioRequest,
+  StudioError
+} from "../../components/studio/studio-api";
 import {
   Alert,
   Badge,
@@ -151,7 +155,8 @@ export function StudioHome() {
               </Heading>
               {!organizations.length && (
                 <Text muted size="sm">
-                  Организации доступны только назначенным сотрудникам. Если вам нужен доступ, обратитесь к владельцу платформы.
+                  Организации доступны только назначенным сотрудникам. Если вам
+                  нужен доступ, обратитесь к владельцу платформы.
                 </Text>
               )}
               <div
@@ -265,8 +270,10 @@ export function StudioHome() {
                             <span aria-hidden="true">↗</span>
                           </Link>
                           {c.status === "published" && (
-                            <Link className={styles.courseManageLink}
-                              href={`/studio/${selected.id}/${c.courseId}/offerings`}>
+                            <Link
+                              className={styles.courseManageLink}
+                              href={`/studio/${selected.id}/${c.courseId}/offerings`}
+                            >
                               Доступ и ссылка
                             </Link>
                           )}

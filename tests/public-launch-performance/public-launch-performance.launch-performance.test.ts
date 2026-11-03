@@ -1,8 +1,4 @@
-import {
-  createHash,
-  createHmac,
-  randomUUID
-} from "node:crypto";
+import { createHash, createHmac, randomUUID } from "node:crypto";
 import { performance } from "node:perf_hooks";
 
 import {
@@ -11,7 +7,10 @@ import {
 } from "../../packages/database/src/index";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { createApiApplication, type ApiApplication } from "../../apps/api/src/app.factory";
+import {
+  createApiApplication,
+  type ApiApplication
+} from "../../apps/api/src/app.factory";
 import {
   attachPlatformPrincipal,
   type PlatformPrincipalCarrier
@@ -52,7 +51,9 @@ type PerformanceEvidence = Readonly<{
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for public launch performance verification.`);
+    throw new Error(
+      `${name} is required for public launch performance verification.`
+    );
   }
   return value;
 }
@@ -143,7 +144,8 @@ describe("bounded public launch performance verification", () => {
     const result = await migrationPool.query<IdRow>(sql, [...values]);
     const id = result.rows[0]?.id;
     if (id === undefined) {
-      const fixtureTable = (/\bINSERT\s+INTO\s+([^\s(]+)/i.exec(sql))?.[1] ?? "unknown";
+      const fixtureTable =
+        /\bINSERT\s+INTO\s+([^\s(]+)/i.exec(sql)?.[1] ?? "unknown";
       throw new Error(
         `Launch performance fixture insert did not return an id (${fixtureTable}).`
       );
@@ -193,14 +195,7 @@ describe("bounded public launch performance verification", () => {
        )
        VALUES ($1, $2, $3, $4, $5, 12900, 'USD', 'one_time', $6)
        RETURNING id::text`,
-      [
-        organizationId,
-        productId,
-        priceId,
-        offeringId,
-        userId,
-        randomUUID()
-      ]
+      [organizationId, productId, priceId, offeringId, userId, randomUUID()]
     );
   }
 
@@ -415,7 +410,10 @@ describe("bounded public launch performance verification", () => {
 
     paddleIngressPurchaseId = await createPurchase(buyerUserId);
     paddleIngressCheckoutId = `txn_${randomUUID().replaceAll("-", "").slice(0, 26)}`;
-    await createPaddleCheckout(paddleIngressPurchaseId, paddleIngressCheckoutId);
+    await createPaddleCheckout(
+      paddleIngressPurchaseId,
+      paddleIngressCheckoutId
+    );
 
     for (let index = 0; index < WARMUP_SAMPLES + MEASURED_SAMPLES; index += 1) {
       const workerUserId = await createUser(`launch-worker-${index}`);
@@ -427,7 +425,8 @@ describe("bounded public launch performance verification", () => {
     }
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
@@ -510,7 +509,8 @@ describe("bounded public launch performance verification", () => {
 
     await Promise.all([migrationPool?.end(), workerPool?.end()]);
 
-    if (previousPaymentProvider === undefined) delete process.env.PAYMENT_PROVIDER;
+    if (previousPaymentProvider === undefined)
+      delete process.env.PAYMENT_PROVIDER;
     else process.env.PAYMENT_PROVIDER = previousPaymentProvider;
     if (previousWebOrigin === undefined) delete process.env.WEB_APP_ORIGIN;
     else process.env.WEB_APP_ORIGIN = previousWebOrigin;
@@ -531,7 +531,9 @@ describe("bounded public launch performance verification", () => {
           url: `/v1/public/catalog/${organizationSlug}/products`
         });
         if (response.statusCode !== 200) {
-          throw new Error(`catalog list returned ${response.statusCode}: ${response.body}`);
+          throw new Error(
+            `catalog list returned ${response.statusCode}: ${response.body}`
+          );
         }
       })
     );
@@ -554,7 +556,9 @@ describe("bounded public launch performance verification", () => {
       await measureBoundary("customer_entry", async (sampleIndex) => {
         const userId = customerEntryUserIds[sampleIndex];
         if (userId === undefined) {
-          throw new Error(`missing customer-entry user for sample ${sampleIndex}`);
+          throw new Error(
+            `missing customer-entry user for sample ${sampleIndex}`
+          );
         }
         const response = await app.inject({
           method: "POST",
@@ -582,11 +586,15 @@ describe("bounded public launch performance verification", () => {
           }
         });
         if (response.statusCode !== 201) {
-          throw new Error(`checkout returned ${response.statusCode}: ${response.body}`);
+          throw new Error(
+            `checkout returned ${response.statusCode}: ${response.body}`
+          );
         }
         const body = JSON.parse(response.body) as CheckoutResponse;
         if (typeof body.purchase?.id !== "string") {
-          throw new Error("checkout response did not expose a Purchase locator");
+          throw new Error(
+            "checkout response did not expose a Purchase locator"
+          );
         }
         checkoutPurchaseIds.push(body.purchase.id);
       })
@@ -594,7 +602,9 @@ describe("bounded public launch performance verification", () => {
 
     const reconciliationPurchaseId = checkoutPurchaseIds.at(-1);
     if (reconciliationPurchaseId === undefined) {
-      throw new Error("checkout verification produced no Purchase for reconciliation");
+      throw new Error(
+        "checkout verification produced no Purchase for reconciliation"
+      );
     }
 
     evidence.push(

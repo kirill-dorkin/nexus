@@ -61,55 +61,65 @@ export const projectActivityFactTypeSchema = z.enum([
 const githubExternalIdSchema = z.string().regex(/^[1-9][0-9]*$/);
 const githubShaSchema = z.string().regex(/^[0-9a-f]{40,64}$/);
 
-export const projectActivityActorSchema = z.object({
-  githubUserId: githubExternalIdSchema.nullable(),
-  login: z.string().trim().min(1).max(255).nullable()
-}).strict();
+export const projectActivityActorSchema = z
+  .object({
+    githubUserId: githubExternalIdSchema.nullable(),
+    login: z.string().trim().min(1).max(255).nullable()
+  })
+  .strict();
 
-export const projectActivityItemSchema = z.object({
-  id: uuidSchema,
-  repositoryBindingId: uuidSchema,
-  repositoryMappingId: uuidSchema,
-  sourceDeliveryId: uuidSchema,
-  factType: projectActivityFactTypeSchema,
-  action: z.string().regex(/^[a-z][a-z0-9_]{0,99}$/),
-  githubRepositoryId: githubExternalIdSchema,
-  githubObjectId: githubExternalIdSchema,
-  githubPullRequestId: githubExternalIdSchema.nullable(),
-  githubPullRequestNumber: z.number().int().positive().nullable(),
-  subject: projectActivityActorSchema.nullable(),
-  sender: projectActivityActorSchema.nullable(),
-  githubAppId: githubExternalIdSchema.nullable(),
-  name: z.string().trim().min(1).max(255).nullable(),
-  state: z.string().trim().min(1).max(100).nullable(),
-  status: z.string().trim().min(1).max(100).nullable(),
-  conclusion: z.string().trim().min(1).max(100).nullable(),
-  headSha: githubShaSchema.nullable(),
-  commitSha: githubShaSchema.nullable(),
-  isDraft: z.boolean().nullable(),
-  isMerged: z.boolean().nullable(),
-  providerCreatedAt: z.iso.datetime().nullable(),
-  providerUpdatedAt: z.iso.datetime().nullable(),
-  providerSubmittedAt: z.iso.datetime().nullable(),
-  providerStartedAt: z.iso.datetime().nullable(),
-  providerCompletedAt: z.iso.datetime().nullable(),
-  sourceReceivedAt: z.iso.datetime(),
-  recordedAt: z.iso.datetime()
-}).strict();
+export const projectActivityItemSchema = z
+  .object({
+    id: uuidSchema,
+    repositoryBindingId: uuidSchema,
+    repositoryMappingId: uuidSchema,
+    sourceDeliveryId: uuidSchema,
+    factType: projectActivityFactTypeSchema,
+    action: z.string().regex(/^[a-z][a-z0-9_]{0,99}$/),
+    githubRepositoryId: githubExternalIdSchema,
+    githubObjectId: githubExternalIdSchema,
+    githubPullRequestId: githubExternalIdSchema.nullable(),
+    githubPullRequestNumber: z.number().int().positive().nullable(),
+    subject: projectActivityActorSchema.nullable(),
+    sender: projectActivityActorSchema.nullable(),
+    githubAppId: githubExternalIdSchema.nullable(),
+    name: z.string().trim().min(1).max(255).nullable(),
+    state: z.string().trim().min(1).max(100).nullable(),
+    status: z.string().trim().min(1).max(100).nullable(),
+    conclusion: z.string().trim().min(1).max(100).nullable(),
+    headSha: githubShaSchema.nullable(),
+    commitSha: githubShaSchema.nullable(),
+    isDraft: z.boolean().nullable(),
+    isMerged: z.boolean().nullable(),
+    providerCreatedAt: z.iso.datetime().nullable(),
+    providerUpdatedAt: z.iso.datetime().nullable(),
+    providerSubmittedAt: z.iso.datetime().nullable(),
+    providerStartedAt: z.iso.datetime().nullable(),
+    providerCompletedAt: z.iso.datetime().nullable(),
+    sourceReceivedAt: z.iso.datetime(),
+    recordedAt: z.iso.datetime()
+  })
+  .strict();
 
-export const projectActivityQuerySchema = z.object({
-  limit: z.coerce.number().int().min(1).max(100).default(50),
-  cursor: z.string().min(1).max(1000).optional()
-}).strict();
+export const projectActivityQuerySchema = z
+  .object({
+    limit: z.coerce.number().int().min(1).max(100).default(50),
+    cursor: z.string().min(1).max(1000).optional()
+  })
+  .strict();
 
-export const projectActivityPageSchema = z.object({
-  project: projectSchema,
-  items: z.array(projectActivityItemSchema),
-  nextCursor: z.string().nullable()
-}).strict();
+export const projectActivityPageSchema = z
+  .object({
+    project: projectSchema,
+    items: z.array(projectActivityItemSchema),
+    nextCursor: z.string().nullable()
+  })
+  .strict();
 
 export type CreateProjectRequest = z.infer<typeof createProjectRequestSchema>;
-export type CreateProjectTeamRequest = z.infer<typeof createProjectTeamRequestSchema>;
+export type CreateProjectTeamRequest = z.infer<
+  typeof createProjectTeamRequestSchema
+>;
 export type ConnectProjectRepositoryRequest = z.infer<
   typeof connectProjectRepositoryRequestSchema
 >;
@@ -119,7 +129,9 @@ export type ProjectRepositoryReference = z.infer<
   typeof projectRepositoryReferenceSchema
 >;
 export type Project = z.infer<typeof projectSchema>;
-export type ProjectActivityFactType = z.infer<typeof projectActivityFactTypeSchema>;
+export type ProjectActivityFactType = z.infer<
+  typeof projectActivityFactTypeSchema
+>;
 export type ProjectActivityActor = z.infer<typeof projectActivityActorSchema>;
 export type ProjectActivityItem = z.infer<typeof projectActivityItemSchema>;
 export type ProjectActivityQuery = z.infer<typeof projectActivityQuerySchema>;

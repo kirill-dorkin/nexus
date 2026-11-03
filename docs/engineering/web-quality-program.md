@@ -31,11 +31,11 @@ Phase 0 also made two blind spots type-checked: the operator scripts in `apps/ap
 
 ## Phases
 
-### 1. Formatting
+### 1. Formatting — done
 
-Prettier for TypeScript, CSS, JSON and Markdown, one formatting commit recorded in `.git-blame-ignore-revs`, `prettier --check` in CI. About 400 of 541 source files change, so it lands alone, after open PRs that touch the same files are merged or rebased.
+Prettier 3 with its default style (80 columns, double quotes, semicolons) and no trailing commas, the style most of the older code already used. It formats code, CSS, JSON and YAML. Markdown and the course content in `docs/examples/` keep their authored line breaks (ESLint still checks the course builders; their generated manifests stayed byte-identical). One formatting commit, listed in `.git-blame-ignore-revs`. `pnpm format:check` runs in GitHub CI and in `pnpm check`.
 
-**Done when:** `pnpm format:check` is a CI step and passes.
+Open branches rebase by running `pnpm format` after the rebase and resolving what remains.
 
 ### 2. Component test infrastructure
 

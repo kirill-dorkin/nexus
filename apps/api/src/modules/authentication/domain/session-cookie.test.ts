@@ -23,7 +23,9 @@ describe("session cookie", () => {
     const token = createSessionToken();
 
     expect(
-      readSessionCookie(`theme=dark; ${SESSION_COOKIE_NAME}=${token}; locale=en`)
+      readSessionCookie(
+        `theme=dark; ${SESSION_COOKIE_NAME}=${token}; locale=en`
+      )
     ).toBe(token);
     expect(
       readSessionCookie(

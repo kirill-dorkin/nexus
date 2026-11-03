@@ -1,10 +1,15 @@
 import { Controller, Get, Param } from "@nestjs/common";
-import { uuidSchema, type LearnerSkillProgressReadModel } from "@platform/contracts";
+import {
+  uuidSchema,
+  type LearnerSkillProgressReadModel
+} from "@platform/contracts";
 
 import { parseRequest } from "../../http/validation";
 import { LearnerSkillProgressApplicationService } from "./application/learner-skill-progress.service";
 
-@Controller("organizations/:organizationId/enrollments/:enrollmentId/skill-progress")
+@Controller(
+  "organizations/:organizationId/enrollments/:enrollmentId/skill-progress"
+)
 export class LearnerSkillProgressController {
   constructor(
     private readonly learnerSkillProgress: LearnerSkillProgressApplicationService

@@ -30,7 +30,10 @@ describe("grader protocol v1", () => {
   it("derives a stable content-addressed identity independent of source file ordering", () => {
     const first = spec([
       { path: "src/index.ts", content: "export const value = 1;" },
-      { path: "src/math.ts", content: "export const add = (a: number, b: number) => a + b;" }
+      {
+        path: "src/math.ts",
+        content: "export const add = (a: number, b: number) => a + b;"
+      }
     ]);
     const reordered = spec([...first.source.files].reverse());
 
@@ -39,13 +42,22 @@ describe("grader protocol v1", () => {
   });
 
   it("rejects reuse of a job identity for materially different source", () => {
-    const original = spec([{ path: "index.ts", content: "export const value = 1;" }]);
-    const changed = spec([{ path: "index.ts", content: "export const value = 2;" }]);
+    const original = spec([
+      { path: "index.ts", content: "export const value = 1;" }
+    ]);
+    const changed = spec([
+      { path: "index.ts", content: "export const value = 2;" }
+    ]);
 
     expect(() =>
-      validateGraderJobRequest({ ...changed, jobId: buildGraderJobId(original) })
+      validateGraderJobRequest({
+        ...changed,
+        jobId: buildGraderJobId(original)
+      })
     ).toThrow(
-      expect.objectContaining<Partial<GraderProtocolError>>({ code: "job_identity_mismatch" })
+      expect.objectContaining<Partial<GraderProtocolError>>({
+        code: "job_identity_mismatch"
+      })
     );
   });
 
@@ -58,11 +70,17 @@ describe("grader protocol v1", () => {
           { path: "index.ts", content: "b" }
         ])
       ),
-      request(spec([{ path: "large.txt", content: "x".repeat(GRADER_MAX_FILE_BYTES + 1) }]))
+      request(
+        spec([
+          { path: "large.txt", content: "x".repeat(GRADER_MAX_FILE_BYTES + 1) }
+        ])
+      )
     ];
 
     for (const candidate of cases) {
-      expect(() => validateGraderJobRequest(candidate)).toThrow(GraderProtocolError);
+      expect(() => validateGraderJobRequest(candidate)).toThrow(
+        GraderProtocolError
+      );
     }
   });
 
@@ -77,7 +95,9 @@ describe("grader protocol v1", () => {
     );
 
     expect(() => validateGraderJobRequest(candidate)).toThrow(
-      expect.objectContaining<Partial<GraderProtocolError>>({ code: "source_bundle_too_large" })
+      expect.objectContaining<Partial<GraderProtocolError>>({
+        code: "source_bundle_too_large"
+      })
     );
   });
 });

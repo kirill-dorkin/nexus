@@ -8,12 +8,7 @@ import {
   type IdentityUser,
   type PublicCatalogProductResponse
 } from "@platform/contracts";
-import {
-  type SubmitEvent,
-  useEffect,
-  useRef,
-  useState
-} from "react";
+import { type SubmitEvent, useEffect, useRef, useState } from "react";
 
 import {
   apiError,
@@ -128,7 +123,8 @@ export function CheckoutPanel({ catalog }: CheckoutPanelProps) {
     setStatusMessage(null);
 
     try {
-      const endpoint = authMode === "login" ? "/v1/auth/login" : "/v1/auth/register";
+      const endpoint =
+        authMode === "login" ? "/v1/auth/login" : "/v1/auth/register";
       const payload =
         authMode === "login"
           ? { email, password }

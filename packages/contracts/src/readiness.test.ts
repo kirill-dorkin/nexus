@@ -142,7 +142,6 @@ describe("courseReadinessDecisionSchema", () => {
   });
 });
 
-
 describe("offeringReadinessOverviewSchema", () => {
   const triagePolicy = {
     key: "offering-readiness-triage",
@@ -225,7 +224,9 @@ describe("offeringReadinessOverviewSchema", () => {
     ]
   };
 
-  function overview(learners = [notReadyLearner, insufficientLearner, readyLearner]) {
+  function overview(
+    learners = [notReadyLearner, insufficientLearner, readyLearner]
+  ) {
     return {
       organizationId: ids.organizationId,
       offeringId: ids.offeringId,

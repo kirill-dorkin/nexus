@@ -14,7 +14,9 @@ import {
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for customer entry integration tests.`);
+    throw new Error(
+      `${name} is required for customer entry integration tests.`
+    );
   }
   return value;
 }
@@ -68,23 +70,25 @@ describe("customer Organization membership entry", () => {
     suspendedUserId = await createUser("customer-entry-suspended");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: organizationSlug,
         name: "Customer entry organization"
-      })).id;
+      })
+    ).id;
   });
 
   afterAll(async () => {

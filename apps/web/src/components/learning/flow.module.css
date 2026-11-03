@@ -137,10 +137,15 @@
   display: grid;
   gap: 0.75rem;
   padding: 1.5rem;
-  border: 1px solid color-mix(in srgb, var(--accent-action) 35%, var(--border-default));
+  border: 1px solid
+    color-mix(in srgb, var(--accent-action) 35%, var(--border-default));
   border-radius: 1.5rem;
   background:
-    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--accent-action) 16%, transparent), transparent 60%),
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--accent-action) 16%, transparent),
+      transparent 60%
+    ),
     var(--surface-solid);
 }
 .courseStart a {
@@ -184,7 +189,9 @@
   background: var(--surface-solid);
   color: var(--text-primary);
   text-decoration: none;
-  transition: border-color var(--motion-fast), background var(--motion-fast);
+  transition:
+    border-color var(--motion-fast),
+    background var(--motion-fast);
 }
 .lessonLink:hover {
   border-color: var(--border-strong);
@@ -280,7 +287,9 @@
   background: var(--surface-solid);
   color: var(--text-primary);
   text-decoration: none;
-  transition: border-color var(--motion-fast), background var(--motion-fast);
+  transition:
+    border-color var(--motion-fast),
+    background var(--motion-fast);
 }
 .lessonNav a:hover {
   border-color: var(--border-strong);
@@ -288,7 +297,11 @@
 }
 .lessonNav a[data-next] {
   text-align: right;
-  border-color: color-mix(in srgb, var(--accent-action) 40%, var(--border-default));
+  border-color: color-mix(
+    in srgb,
+    var(--accent-action) 40%,
+    var(--border-default)
+  );
 }
 .lessonNav span {
   color: var(--text-secondary);
@@ -366,7 +379,9 @@
   border: 1px solid var(--border-default);
   border-radius: 0.95rem;
   background: var(--surface-input);
-  transition: border-color var(--motion-fast), background var(--motion-fast);
+  transition:
+    border-color var(--motion-fast),
+    background var(--motion-fast);
 }
 .quizOption:hover {
   border-color: var(--border-strong);
@@ -519,7 +534,8 @@
   display: grid;
   gap: 0.5rem;
   padding: 1.1rem 1.2rem;
-  border: 1px solid color-mix(in srgb, var(--accent-action) 40%, var(--border-default));
+  border: 1px solid
+    color-mix(in srgb, var(--accent-action) 40%, var(--border-default));
   border-radius: 1rem;
   background: color-mix(in srgb, var(--accent-action) 7%, var(--surface-solid));
 }

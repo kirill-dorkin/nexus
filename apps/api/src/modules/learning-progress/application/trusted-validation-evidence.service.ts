@@ -33,11 +33,19 @@ function canonicalJson(value: unknown): string {
     return `{${entries.join(",")}}`;
   }
   // JSON.stringify yields undefined (despite its typing) for these values.
-  if (value === undefined || typeof value === "function" || typeof value === "symbol") return "null";
+  if (
+    value === undefined ||
+    typeof value === "function" ||
+    typeof value === "symbol"
+  )
+    return "null";
   return JSON.stringify(value);
 }
 
-function materiallyMatches(existing: Evidence, requested: NewEvidence): boolean {
+function materiallyMatches(
+  existing: Evidence,
+  requested: NewEvidence
+): boolean {
   return (
     existing.organizationId === requested.organizationId &&
     existing.attemptId === requested.attemptId &&
@@ -74,7 +82,9 @@ export class TrustedValidationEvidenceApplicationService extends TrustedValidati
       result.organizationId !== organizationId ||
       activity.organizationId !== organizationId
     ) {
-      throw new ConflictException("Validation Evidence must remain in one organization.");
+      throw new ConflictException(
+        "Validation Evidence must remain in one organization."
+      );
     }
 
     const normalized = normalizeTrustedValidationResult(result, activity);
@@ -91,7 +101,8 @@ export class TrustedValidationEvidenceApplicationService extends TrustedValidati
       throw new NotFoundException("ValidationResult Submission not found.");
     }
     if (
-      submissionContext.attempt.activityVersionId !== result.activityVersionId ||
+      submissionContext.attempt.activityVersionId !==
+        result.activityVersionId ||
       activity.id !== result.activityVersionId
     ) {
       throw new ConflictException(

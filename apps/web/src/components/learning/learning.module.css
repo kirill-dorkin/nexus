@@ -232,11 +232,43 @@
   font-family: var(--font-mono);
   font-size: 0.9em;
 }
-.markdown :not(pre) > code { background: var(--surface-subtle); border: 1px solid var(--border-default); padding: 0.1em 0.35em; border-radius: 0.3rem; box-decoration-break: clone; }
-.codeSnippet { margin: 1.5rem 0; min-width: 0; border: 1px solid var(--border-default); border-radius: var(--radius-md); overflow: hidden; background: var(--surface-subtle); }
-.codeSnippet figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border-default); font: 0.75rem/1.5 var(--font-mono); color: var(--text-secondary); }
-.codeSnippet pre { margin: 0; border: 0; border-radius: 0; }
-.codeSnippet > p { margin: 0; padding: 0.75rem 1rem; font-size: 0.8rem; line-height: 1.5; }
+.markdown :not(pre) > code {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-default);
+  padding: 0.1em 0.35em;
+  border-radius: 0.3rem;
+  box-decoration-break: clone;
+}
+.codeSnippet {
+  margin: 1.5rem 0;
+  min-width: 0;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-subtle);
+}
+.codeSnippet figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border-default);
+  font: 0.75rem/1.5 var(--font-mono);
+  color: var(--text-secondary);
+}
+.codeSnippet pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+}
+.codeSnippet > p {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
 .markdown blockquote {
   border-left: 3px solid var(--border-strong);
   margin: 1rem 0;
@@ -563,12 +595,15 @@ button.button {
   gap: 1.4rem;
   min-height: 70px;
   padding: 0.65rem 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--border-default) 82%, transparent);
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--border-default) 82%, transparent);
   background: color-mix(in srgb, var(--surface-default) 91%, transparent);
   -webkit-backdrop-filter: blur(16px) saturate(120%);
   backdrop-filter: blur(16px) saturate(120%);
 }
-.nav > a { text-decoration: none; }
+.nav > a {
+  text-decoration: none;
+}
 .appearanceRow {
   position: sticky;
   top: 78px;
@@ -580,7 +615,9 @@ button.button {
   padding-top: 0.7rem;
   pointer-events: none;
 }
-.appearanceRow > * { pointer-events: auto; }
+.appearanceRow > * {
+  pointer-events: auto;
+}
 .brand {
   display: inline-flex;
   align-items: center;
@@ -613,7 +650,10 @@ button.button {
   border-radius: 50%;
   background: var(--action-primary);
 }
-.brandLockup { display: grid; line-height: 1; }
+.brandLockup {
+  display: grid;
+  line-height: 1;
+}
 .brandLockup > span {
   font-size: 1.16rem;
   letter-spacing: -0.05em;
@@ -628,17 +668,25 @@ button.button {
   text-transform: uppercase;
 }
 @media (max-width: 860px) {
-  .nav { min-height: 62px; padding-block: 0.45rem; }
+  .nav {
+    min-height: 62px;
+    padding-block: 0.45rem;
+  }
   .appearanceRow {
     position: relative;
     top: auto;
     height: auto;
     padding-top: 0.55rem;
   }
-  .brandMark { width: 36px; height: 36px; }
+  .brandMark {
+    width: 36px;
+    height: 36px;
+  }
 }
 @media (max-width: 380px) {
-  .brandLockup small { display: none; }
+  .brandLockup small {
+    display: none;
+  }
 }
 @media (prefers-reduced-transparency: reduce) {
   .nav {

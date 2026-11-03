@@ -18,7 +18,9 @@ import {
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for Project activity integration tests.`);
+    throw new Error(
+      `${name} is required for Project activity integration tests.`
+    );
   }
   return value;
 }
@@ -61,10 +63,14 @@ describe("Project activity read model", () => {
       `INSERT INTO identity.users (email, display_name)
        VALUES ($1, $2)
        RETURNING id::text`,
-      [`project-activity-${label}-${randomUUID()}@example.test`, `Project activity ${label}`]
+      [
+        `project-activity-${label}-${randomUUID()}@example.test`,
+        `Project activity ${label}`
+      ]
     );
     const id = result.rows[0]?.id;
-    if (id === undefined) throw new Error("Failed to create Project activity test user.");
+    if (id === undefined)
+      throw new Error("Failed to create Project activity test user.");
     userIds.push(id);
     return id;
   }
@@ -92,10 +98,15 @@ describe("Project activity read model", () => {
       `INSERT INTO organizations.organizations (slug, name, created_by_user_id)
        VALUES ($1, $2, $3)
        RETURNING id::text`,
-      [`project-activity-${label}-${randomUUID()}`, `Project activity ${label}`, userId]
+      [
+        `project-activity-${label}-${randomUUID()}`,
+        `Project activity ${label}`,
+        userId
+      ]
     );
     const organizationId = organization.rows[0]?.id;
-    if (organizationId === undefined) throw new Error("Failed to create Project activity organization.");
+    if (organizationId === undefined)
+      throw new Error("Failed to create Project activity organization.");
     organizationIds.push(organizationId);
     await migrationPool.query(
       `INSERT INTO organizations.memberships (organization_id, user_id, status, joined_at)
@@ -106,7 +117,10 @@ describe("Project activity read model", () => {
     return { userId, organizationId };
   }
 
-  async function createProjectFixture(actor: Actor, label: string): Promise<Fixture> {
+  async function createProjectFixture(
+    actor: Actor,
+    label: string
+  ): Promise<Fixture> {
     const installationId = externalId();
     const repositoryId = externalId();
     await migrationPool.query(
@@ -120,10 +134,16 @@ describe("Project activity read model", () => {
          organization_id, github_installation_id, github_repository_id, full_name, status
        ) VALUES ($1, $2, $3, $4, 'active')
        RETURNING id::text`,
-      [actor.organizationId, installationId, repositoryId, `project-activity-${label}/repository`]
+      [
+        actor.organizationId,
+        installationId,
+        repositoryId,
+        `project-activity-${label}/repository`
+      ]
     );
     const repositoryMappingId = repository.rows[0]?.id;
-    if (repositoryMappingId === undefined) throw new Error("Failed to create repository mapping.");
+    if (repositoryMappingId === undefined)
+      throw new Error("Failed to create repository mapping.");
 
     const team = await migrationPool.query<IdRow>(
       `INSERT INTO projects.teams (organization_id, name, created_by_user_id)
@@ -132,7 +152,8 @@ describe("Project activity read model", () => {
       [actor.organizationId, `Activity team ${label}`, actor.userId]
     );
     const teamId = team.rows[0]?.id;
-    if (teamId === undefined) throw new Error("Failed to create Project activity team.");
+    if (teamId === undefined)
+      throw new Error("Failed to create Project activity team.");
 
     const project = await migrationPool.query<IdRow>(
       `INSERT INTO projects.projects (organization_id, team_id, name, created_by_user_id)
@@ -141,7 +162,8 @@ describe("Project activity read model", () => {
       [actor.organizationId, teamId, `Activity project ${label}`, actor.userId]
     );
     const projectId = project.rows[0]?.id;
-    if (projectId === undefined) throw new Error("Failed to create Project activity project.");
+    if (projectId === undefined)
+      throw new Error("Failed to create Project activity project.");
 
     const binding = await migrationPool.query<IdRow>(
       `INSERT INTO projects.repository_bindings (
@@ -155,7 +177,8 @@ describe("Project activity read model", () => {
       [actor.organizationId, projectId, repositoryMappingId, actor.userId]
     );
     const bindingId = binding.rows[0]?.id;
-    if (bindingId === undefined) throw new Error("Failed to create Project activity binding.");
+    if (bindingId === undefined)
+      throw new Error("Failed to create Project activity binding.");
 
     return {
       organizationId: actor.organizationId,
@@ -214,7 +237,8 @@ describe("Project activity read model", () => {
       ]
     );
     const sourceInboxId = inbox.rows[0]?.id;
-    if (sourceInboxId === undefined) throw new Error("Failed to create Project activity inbox row.");
+    if (sourceInboxId === undefined)
+      throw new Error("Failed to create Project activity inbox row.");
 
     const fact = await migrationPool.query<IdRow>(
       `INSERT INTO projects.github_project_facts (
@@ -272,7 +296,8 @@ describe("Project activity read model", () => {
       ]
     );
     const id = fact.rows[0]?.id;
-    if (id === undefined) throw new Error("Failed to create Project activity fact.");
+    if (id === undefined)
+      throw new Error("Failed to create Project activity fact.");
     return id;
   }
 
@@ -300,7 +325,12 @@ describe("Project activity read model", () => {
        VALUES ($1, $2, 'active', now())`,
       [tenantA.organizationId, learnerA]
     );
-    await assignRole(tenantA.organizationId, learnerA, "learner", tenantA.userId);
+    await assignRole(
+      tenantA.organizationId,
+      learnerA,
+      "learner",
+      tenantA.userId
+    );
 
     fixtureA = await createProjectFixture(tenantA, "tenant-a");
     fixtureB = await createProjectFixture(tenantB, "tenant-b");
@@ -343,12 +373,17 @@ describe("Project activity read model", () => {
     });
 
     app = await createApiApplication();
-    app.getHttpAdapter().getInstance().addHook("onRequest", async (incoming) => {
-      const testUserId = incoming.headers["x-test-user-id"];
-      if (typeof testUserId === "string" && testUserId.length > 0) {
-        attachPlatformPrincipal(incoming as PlatformPrincipalCarrier, { userId: testUserId });
-      }
-    });
+    app
+      .getHttpAdapter()
+      .getInstance()
+      .addHook("onRequest", async (incoming) => {
+        const testUserId = incoming.headers["x-test-user-id"];
+        if (typeof testUserId === "string" && testUserId.length > 0) {
+          attachPlatformPrincipal(incoming as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
+        }
+      });
     await app.init();
   });
 
@@ -389,7 +424,9 @@ describe("Project activity read model", () => {
     const baseUrl = `/v1/organizations/${tenantA.organizationId}/projects/${fixtureA.projectId}/activity`;
     const firstResponse = await request(tenantA.userId, `${baseUrl}?limit=2`);
     expect(firstResponse.statusCode).toBe(200);
-    const first = projectActivityPageSchema.parse(JSON.parse(firstResponse.body));
+    const first = projectActivityPageSchema.parse(
+      JSON.parse(firstResponse.body)
+    );
     expect(first.project.id).toBe(fixtureA.projectId);
     expect(first.project.repository?.availability).toBe("active");
     expect(first.items).toHaveLength(2);
@@ -401,7 +438,9 @@ describe("Project activity read model", () => {
       `${baseUrl}?limit=2&cursor=${encodeURIComponent(first.nextCursor!)}`
     );
     expect(secondResponse.statusCode).toBe(200);
-    const second = projectActivityPageSchema.parse(JSON.parse(secondResponse.body));
+    const second = projectActivityPageSchema.parse(
+      JSON.parse(secondResponse.body)
+    );
     expect(second.items).toHaveLength(2);
     expect(second.nextCursor).toBeNull();
 
@@ -412,11 +451,16 @@ describe("Project activity read model", () => {
        ORDER BY source_received_at DESC, id DESC`,
       [tenantA.organizationId, fixtureA.projectId]
     );
-    const combinedIds = [...first.items, ...second.items].map((item) => item.id);
+    const combinedIds = [...first.items, ...second.items].map(
+      (item) => item.id
+    );
     expect(combinedIds).toEqual(expected.rows.map((row) => row.id));
     expect(new Set(combinedIds).size).toBe(4);
 
-    const invalidCursor = await request(tenantA.userId, `${baseUrl}?cursor=not-a-cursor`);
+    const invalidCursor = await request(
+      tenantA.userId,
+      `${baseUrl}?cursor=not-a-cursor`
+    );
     expect(invalidCursor.statusCode).toBe(400);
   });
 
@@ -449,10 +493,9 @@ describe("Project activity read model", () => {
     );
 
     const url = `/v1/organizations/${tenantA.organizationId}/projects/${fixtureA.projectId}/activity?limit=10`;
-    const suspended = projectActivityPageSchema.parse(JSON.parse((await request(
-      tenantA.userId,
-      url
-    )).body));
+    const suspended = projectActivityPageSchema.parse(
+      JSON.parse((await request(tenantA.userId, url)).body)
+    );
     expect(suspended.project.repository?.availability).toBe("suspended");
     expect(suspended.items).toHaveLength(4);
 
@@ -462,10 +505,9 @@ describe("Project activity read model", () => {
        WHERE organization_id = $1 AND id = $2`,
       [tenantA.organizationId, fixtureA.repositoryMappingId]
     );
-    const removed = projectActivityPageSchema.parse(JSON.parse((await request(
-      tenantA.userId,
-      url
-    )).body));
+    const removed = projectActivityPageSchema.parse(
+      JSON.parse((await request(tenantA.userId, url)).body)
+    );
     expect(removed.project.repository?.availability).toBe("removed");
     expect(removed.items).toHaveLength(4);
   });
@@ -487,6 +529,10 @@ describe("Project activity read model", () => {
     const page = projectActivityPageSchema.parse(JSON.parse(response.body));
     expect(page.project.repository).toBeNull();
     expect(page.items).toHaveLength(4);
-    expect(page.items.every((item) => item.repositoryBindingId === fixtureA.bindingId)).toBe(true);
+    expect(
+      page.items.every(
+        (item) => item.repositoryBindingId === fixtureA.bindingId
+      )
+    ).toBe(true);
   });
 });

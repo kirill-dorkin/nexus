@@ -37,7 +37,9 @@ function credentials(provider: OAuthProvider): Readonly<{
 
 function object(value: unknown, description: string): JsonObject {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
-    throw new BadGatewayException(`${description} returned an invalid response.`);
+    throw new BadGatewayException(
+      `${description} returned an invalid response.`
+    );
   }
   return value as JsonObject;
 }
@@ -51,9 +53,10 @@ function nonEmptyString(value: unknown, description: string): string {
 
 function callbackUrl(provider: OAuthProvider): string {
   const configured = env("OAUTH_CALLBACK_ORIGIN");
-  const origin = configured === null
-    ? optionalConfiguredWebOrigin()
-    : parseExactHttpOrigin(configured);
+  const origin =
+    configured === null
+      ? optionalConfiguredWebOrigin()
+      : parseExactHttpOrigin(configured);
   if (origin === null) {
     throw new ServiceUnavailableException(
       "OAUTH_CALLBACK_ORIGIN must be an exact HTTP(S) origin."
@@ -62,7 +65,10 @@ function callbackUrl(provider: OAuthProvider): string {
   return `${origin}/v1/auth/oauth/${provider}/callback`;
 }
 
-async function json(response: Response, description: string): Promise<JsonObject> {
+async function json(
+  response: Response,
+  description: string
+): Promise<JsonObject> {
   if (!response.ok) {
     throw new BadGatewayException(`${description} failed.`);
   }
@@ -82,11 +88,13 @@ export class HttpOAuthProviderGateway extends OAuthProviderGateway {
     );
   }
 
-  authorizationUrl(input: Readonly<{
-    provider: OAuthProvider;
-    state: string;
-    codeChallenge: string;
-  }>): string {
+  authorizationUrl(
+    input: Readonly<{
+      provider: OAuthProvider;
+      state: string;
+      codeChallenge: string;
+    }>
+  ): string {
     const configured = credentials(input.provider);
     if (configured === null) {
       throw new ServiceUnavailableException(
@@ -120,11 +128,13 @@ export class HttpOAuthProviderGateway extends OAuthProviderGateway {
     return `https://github.com/login/oauth/authorize?${query.toString()}`;
   }
 
-  async exchangeCode(input: Readonly<{
-    provider: OAuthProvider;
-    code: string;
-    codeVerifier: string;
-  }>): Promise<OAuthIdentityProfile> {
+  async exchangeCode(
+    input: Readonly<{
+      provider: OAuthProvider;
+      code: string;
+      codeVerifier: string;
+    }>
+  ): Promise<OAuthIdentityProfile> {
     const configured = credentials(input.provider);
     if (configured === null) {
       throw new ServiceUnavailableException(
@@ -132,42 +142,55 @@ export class HttpOAuthProviderGateway extends OAuthProviderGateway {
       );
     }
 
-    const tokenUrl = input.provider === "google"
-      ? "https://oauth2.googleapis.com/token"
-      : "https://github.com/login/oauth/access_token";
-    const token = await json(await fetch(tokenUrl, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: new URLSearchParams({
-        client_id: configured.clientId,
-        client_secret: configured.clientSecret,
-        code: input.code,
-        code_verifier: input.codeVerifier,
-        redirect_uri: callbackUrl(input.provider),
-        ...(input.provider === "google" ? { grant_type: "authorization_code" } : {})
+    const tokenUrl =
+      input.provider === "google"
+        ? "https://oauth2.googleapis.com/token"
+        : "https://github.com/login/oauth/access_token";
+    const token = await json(
+      await fetch(tokenUrl, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+          client_id: configured.clientId,
+          client_secret: configured.clientSecret,
+          code: input.code,
+          code_verifier: input.codeVerifier,
+          redirect_uri: callbackUrl(input.provider),
+          ...(input.provider === "google"
+            ? { grant_type: "authorization_code" }
+            : {})
+        }),
+        signal: AbortSignal.timeout(10_000)
       }),
-      signal: AbortSignal.timeout(10_000)
-    }), `${input.provider} token exchange`);
-    const accessToken = nonEmptyString(token.access_token, "OAuth access token");
+      `${input.provider} token exchange`
+    );
+    const accessToken = nonEmptyString(
+      token.access_token,
+      "OAuth access token"
+    );
 
     return input.provider === "google"
       ? this.googleProfile(accessToken)
       : this.githubProfile(accessToken);
   }
 
-  private async googleProfile(accessToken: string): Promise<OAuthIdentityProfile> {
-    const profile = await json(await fetch(
-      "https://openidconnect.googleapis.com/v1/userinfo",
-      {
+  private async googleProfile(
+    accessToken: string
+  ): Promise<OAuthIdentityProfile> {
+    const profile = await json(
+      await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
         headers: { Authorization: `Bearer ${accessToken}` },
         signal: AbortSignal.timeout(10_000)
-      }
-    ), "Google user info");
+      }),
+      "Google user info"
+    );
     if (profile.email_verified !== true) {
-      throw new BadGatewayException("Google did not confirm the account email.");
+      throw new BadGatewayException(
+        "Google did not confirm the account email."
+      );
     }
     const name = typeof profile.name === "string" ? profile.name.trim() : "";
     return {
@@ -178,7 +201,9 @@ export class HttpOAuthProviderGateway extends OAuthProviderGateway {
     };
   }
 
-  private async githubProfile(accessToken: string): Promise<OAuthIdentityProfile> {
+  private async githubProfile(
+    accessToken: string
+  ): Promise<OAuthIdentityProfile> {
     const headers = {
       Accept: "application/vnd.github+json",
       Authorization: `Bearer ${accessToken}`,
@@ -198,25 +223,41 @@ export class HttpOAuthProviderGateway extends OAuthProviderGateway {
     if (!emailsResponse.ok) {
       throw new BadGatewayException("GitHub verified email lookup failed.");
     }
-    const emails = await emailsResponse.json() as unknown;
+    const emails = (await emailsResponse.json()) as unknown;
     if (!Array.isArray(emails)) {
-      throw new BadGatewayException("GitHub returned an invalid email response.");
+      throw new BadGatewayException(
+        "GitHub returned an invalid email response."
+      );
     }
-    const verified = (emails as unknown[]).filter((candidate): candidate is JsonObject => {
-      if (typeof candidate !== "object" || candidate === null || Array.isArray(candidate)) return false;
-      const entry = candidate as JsonObject;
-      return entry.verified === true && typeof entry.email === "string" && entry.email.trim().length > 0;
-    });
-    const selected = verified.find((candidate) => candidate.primary === true) ?? verified[0];
+    const verified = (emails as unknown[]).filter(
+      (candidate): candidate is JsonObject => {
+        if (
+          typeof candidate !== "object" ||
+          candidate === null ||
+          Array.isArray(candidate)
+        )
+          return false;
+        const entry = candidate as JsonObject;
+        return (
+          entry.verified === true &&
+          typeof entry.email === "string" &&
+          entry.email.trim().length > 0
+        );
+      }
+    );
+    const selected =
+      verified.find((candidate) => candidate.primary === true) ?? verified[0];
     if (selected === undefined) {
       throw new BadGatewayException("GitHub did not provide a verified email.");
     }
-    const rawName = typeof user.name === "string" && user.name.trim().length > 0
-      ? user.name
-      : user.login;
-    const displayName = typeof rawName === "string" && rawName.trim().length > 0
-      ? rawName.trim().slice(0, 160)
-      : null;
+    const rawName =
+      typeof user.name === "string" && user.name.trim().length > 0
+        ? user.name
+        : user.login;
+    const displayName =
+      typeof rawName === "string" && rawName.trim().length > 0
+        ? rawName.trim().slice(0, 160)
+        : null;
     const id = user.id;
     if (typeof id !== "number" || !Number.isSafeInteger(id) || id <= 0) {
       throw new BadGatewayException("GitHub account subject was invalid.");

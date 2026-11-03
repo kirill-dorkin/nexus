@@ -10,15 +10,19 @@ export type OAuthIdentityProfile = Readonly<{
 export abstract class OAuthProviderGateway {
   abstract configuredProviders(): readonly OAuthProvider[];
 
-  abstract authorizationUrl(input: Readonly<{
-    provider: OAuthProvider;
-    state: string;
-    codeChallenge: string;
-  }>): string;
+  abstract authorizationUrl(
+    input: Readonly<{
+      provider: OAuthProvider;
+      state: string;
+      codeChallenge: string;
+    }>
+  ): string;
 
-  abstract exchangeCode(input: Readonly<{
-    provider: OAuthProvider;
-    code: string;
-    codeVerifier: string;
-  }>): Promise<OAuthIdentityProfile>;
+  abstract exchangeCode(
+    input: Readonly<{
+      provider: OAuthProvider;
+      code: string;
+      codeVerifier: string;
+    }>
+  ): Promise<OAuthIdentityProfile>;
 }

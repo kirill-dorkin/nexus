@@ -89,7 +89,9 @@ export class AuthenticationApplicationService {
       return { user, sessionToken };
     } catch (error) {
       if (isConstraintViolation(error, "23505", "users_email_normalized_key")) {
-        throw new ConflictException("An account with this email already exists.");
+        throw new ConflictException(
+          "An account with this email already exists."
+        );
       }
       throw error;
     }

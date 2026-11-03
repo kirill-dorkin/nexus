@@ -18,11 +18,13 @@ export const githubInstallationMappingSchema = z.object({
   id: z.uuid(),
   githubInstallationId: externalIdSchema,
   status: z.enum(["active", "suspended", "removed"]),
-  account: z.object({
-    id: externalIdSchema,
-    login: z.string().min(1).max(255),
-    type: z.string().min(1).max(100)
-  }).nullable(),
+  account: z
+    .object({
+      id: externalIdSchema,
+      login: z.string().min(1).max(255),
+      type: z.string().min(1).max(100)
+    })
+    .nullable(),
   repositorySelection: z.enum(["all", "selected"]).nullable(),
   lastSyncedAt: z.iso.datetime().nullable(),
   repositories: z.array(githubRepositoryMappingSchema)

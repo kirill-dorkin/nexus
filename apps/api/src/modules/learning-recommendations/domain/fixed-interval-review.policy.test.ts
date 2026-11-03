@@ -193,9 +193,7 @@ describe("fixed-interval-review@1", () => {
   });
 
   it("keeps ordered-mastery@1 input compatibility explicit", () => {
-    expect(
-      baselineSkill("baseline", 0, 0.5)
-    ).toEqual({
+    expect(baselineSkill("baseline", 0, 0.5)).toEqual({
       skillId: "baseline",
       title: "Skill baseline",
       position: 0,

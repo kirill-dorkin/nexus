@@ -4,7 +4,13 @@ import { courseManifestV1Schema } from "./course-manifest";
 
 function sqlTrack() {
   const raw = JSON.parse(
-    readFileSync(new URL("../../../docs/examples/sql-track.manifest.json", import.meta.url), "utf8")
+    readFileSync(
+      new URL(
+        "../../../docs/examples/sql-track.manifest.json",
+        import.meta.url
+      ),
+      "utf8"
+    )
   );
   return courseManifestV1Schema.parse(raw);
 }
@@ -15,7 +21,10 @@ function cards(): Card[] {
   for (const lesson of sqlTrack().lessons)
     for (const block of lesson.blocks) {
       if (block.type !== "markdown") continue;
-      for (const [, body] of block.markdown.matchAll(/```concept\n([\s\S]*?)\n```/g)) found.push(JSON.parse(body!) as Card);
+      for (const [, body] of block.markdown.matchAll(
+        /```concept\n([\s\S]*?)\n```/g
+      ))
+        found.push(JSON.parse(body!) as Card);
     }
   return found;
 }
@@ -25,7 +34,9 @@ describe("SQL full course import", () => {
   it("passes the strict Studio manifest schema without tenant identities", () => {
     const manifest = sqlTrack();
     expect(manifest.course.slug).toBe("sql");
-    expect(JSON.stringify(manifest)).not.toMatch(/"organizationId"|"userId"|"enrollmentId"/);
+    expect(JSON.stringify(manifest)).not.toMatch(
+      /"organizationId"|"userId"|"enrollmentId"/
+    );
   });
 
   it("keeps one atomic skill per lesson with required graded practice and a chapter", () => {
@@ -33,9 +44,16 @@ describe("SQL full course import", () => {
     const activities = new Map(manifest.activities.map((a) => [a.slug, a]));
     expect(manifest.lessons.length).toBeGreaterThanOrEqual(45);
     for (const lesson of manifest.lessons) {
-      const used = lesson.blocks.flatMap((b) => (b.type === "activity" ? [b] : []));
-      expect(used.some((b) => b.required), lesson.slug).toBe(true);
-      const lessonSkills = new Set(used.flatMap((b) => activities.get(b.activitySlug)!.skillKeys));
+      const used = lesson.blocks.flatMap((b) =>
+        b.type === "activity" ? [b] : []
+      );
+      expect(
+        used.some((b) => b.required),
+        lesson.slug
+      ).toBe(true);
+      const lessonSkills = new Set(
+        used.flatMap((b) => activities.get(b.activitySlug)!.skillKeys)
+      );
       expect(lessonSkills.size, lesson.slug).toBe(1);
       expect(lesson.durationMinutes).toBeLessThanOrEqual(45);
       expect(lesson.chapter, lesson.slug).toBeTruthy();
@@ -44,7 +62,9 @@ describe("SQL full course import", () => {
 
   it("gives every lesson a hands-on SQL challenge", () => {
     for (const lesson of sqlTrack().lessons) {
-      const text = lesson.blocks.flatMap((b) => (b.type === "markdown" ? [b.markdown] : [])).join("\n");
+      const text = lesson.blocks
+        .flatMap((b) => (b.type === "markdown" ? [b.markdown] : []))
+        .join("\n");
       expect(text, lesson.slug).toMatch(/```challenge\n/);
       expect(text, lesson.slug).toMatch(/"lang": "sql"/);
     }
@@ -63,41 +83,67 @@ describe("SQL full course import", () => {
 
   it("keeps markup out of questions, because question Markdown strips raw HTML", () => {
     for (const activity of sqlTrack().activities) {
-      const outsideCode = activity.presentation.question.replace(/`[^`]*`/g, "");
+      const outsideCode = activity.presentation.question.replace(
+        /`[^`]*`/g,
+        ""
+      );
       expect(outsideCode, activity.slug).not.toMatch(/<[a-z/][^>]*>|&[a-z]+;/i);
     }
   });
 
   it("explains every indexed statement, clause, keyword, operator, function, type and constraint with a card", () => {
     const index = JSON.parse(
-      readFileSync(new URL("../../../docs/examples/sql-course/sql-index.json", import.meta.url), "utf8")
+      readFileSync(
+        new URL(
+          "../../../docs/examples/sql-course/sql-index.json",
+          import.meta.url
+        ),
+        "utf8"
+      )
     ) as Record<string, string[]>;
     const taught = new Set(names().flat());
-    for (const group of ["statements", "clauses", "keywords", "operators", "functions", "types", "constraints"])
-      expect(index[group]!.filter((item) => !taught.has(item)), `${group} without a card`).toEqual([]);
+    for (const group of [
+      "statements",
+      "clauses",
+      "keywords",
+      "operators",
+      "functions",
+      "types",
+      "constraints"
+    ])
+      expect(
+        index[group]!.filter((item) => !taught.has(item)),
+        `${group} without a card`
+      ).toEqual([]);
   });
 
   it("explains each item once, without repeating a card in another lesson", () => {
     const seen = new Map<string, number>();
-    for (const parts of names()) for (const part of parts) seen.set(part, (seen.get(part) ?? 0) + 1);
-    expect([...seen].filter(([, count]) => count > 1).map(([name]) => name)).toEqual([]);
+    for (const parts of names())
+      for (const part of parts) seen.set(part, (seen.get(part) ?? 0) + 1);
+    expect(
+      [...seen].filter(([, count]) => count > 1).map(([name]) => name)
+    ).toEqual([]);
   });
 
   it("runs card examples as SQL", () => {
-    for (const card of cards()) if (card.how) expect(card.lang, card.name).toBe("sql");
+    for (const card of cards())
+      if (card.how) expect(card.lang, card.name).toBe("sql");
   });
 
   it("has no storyline: no removed characters and no café business", () => {
     // Lessons use a neutral teaching store; only tool characters remain. \b is ASCII-only, so
     // Cyrillic whole words use \p{L} lookarounds.
     const text = JSON.stringify(sqlTrack());
-    const banned = /"(marta|sonya|dasha)"|zerno|(?<!\p{L})Зерн|кофе|латте|капучино|эспрессо|бариста|какао|чизкейк|напит|столик|кухн|сироп|молок|(?<!\p{L})(раф\p{L}{0,2}|чай|меню|гост[ьяеиюй]\p{L}*|Март[аыу]|Даш[аиуе]|Сон[яиеу]|чашк\p{L}*)(?!\p{L})/giu;
+    const banned =
+      /"(marta|sonya|dasha)"|zerno|(?<!\p{L})Зерн|кофе|латте|капучино|эспрессо|бариста|какао|чизкейк|напит|столик|кухн|сироп|молок|(?<!\p{L})(раф\p{L}{0,2}|чай|меню|гост[ьяеиюй]\p{L}*|Март[аыу]|Даш[аиуе]|Сон[яиеу]|чашк\p{L}*)(?!\p{L})/giu;
     expect([...new Set(text.match(banned) ?? [])]).toEqual([]);
   });
 
   it("explains everything itself and never sends the learner elsewhere for answers", () => {
     const text = JSON.stringify(sqlTrack());
-    const elsewhere = /(?<![\w.])MDN(?![\w.])|postgresql\.org|w3schools|stackoverflow|stack overflow|google\.|гугл|загугл|поищи|почитай (в|на)|читай документаци|подробнее (в|на) /giu;
+    const elsewhere =
+      /(?<![\w.])MDN(?![\w.])|postgresql\.org|w3schools|stackoverflow|stack overflow|google\.|гугл|загугл|поищи|почитай (в|на)|читай документаци|подробнее (в|на) /giu;
     expect([...new Set(text.match(elsewhere) ?? [])]).toEqual([]);
   });
 
@@ -108,8 +154,12 @@ describe("SQL full course import", () => {
         continue;
       }
       const ids = new Set(activity.presentation.options.map((o) => o.id));
-      if (activity.type === "quiz.single_choice") expect(ids.has(activity.validation.correctOptionId)).toBe(true);
-      else expect(activity.validation.correctOptionIds.every((id) => ids.has(id))).toBe(true);
+      if (activity.type === "quiz.single_choice")
+        expect(ids.has(activity.validation.correctOptionId)).toBe(true);
+      else
+        expect(
+          activity.validation.correctOptionIds.every((id) => ids.has(id))
+        ).toBe(true);
     }
   });
 });

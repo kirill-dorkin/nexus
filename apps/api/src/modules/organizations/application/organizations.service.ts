@@ -105,7 +105,9 @@ export class OrganizationsApplicationService {
       );
     } catch (error) {
       if (isUniqueViolation(error)) {
-        throw new ConflictException("An organization with this slug already exists.");
+        throw new ConflictException(
+          "An organization with this slug already exists."
+        );
       }
       throw error;
     }
@@ -156,7 +158,8 @@ export class OrganizationsApplicationService {
           transaction,
           organizationId
         );
-        if (policy === null) throw new NotFoundException("Organization not found.");
+        if (policy === null)
+          throw new NotFoundException("Organization not found.");
         return { policy };
       },
       { readOnly: true }
@@ -265,7 +268,9 @@ export class OrganizationsApplicationService {
       );
 
       if (membership === null) {
-        throw new ConflictException("An invited membership is required to join.");
+        throw new ConflictException(
+          "An invited membership is required to join."
+        );
       }
 
       return membership;
@@ -313,14 +318,18 @@ export class OrganizationsApplicationService {
         memberUserId
       );
       if (membership === null) {
-        throw new ConflictException("An active membership is required to suspend a member.");
+        throw new ConflictException(
+          "An active membership is required to suspend a member."
+        );
       }
 
       return membership;
     });
   }
 
-  async leaveMembership(organizationId: string): Promise<OrganizationMembership> {
+  async leaveMembership(
+    organizationId: string
+  ): Promise<OrganizationMembership> {
     const context = this.requestContext.tenantContext(organizationId);
 
     return this.database.tenantTransaction(context, async (transaction) => {

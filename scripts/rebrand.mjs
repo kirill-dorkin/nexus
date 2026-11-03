@@ -15,7 +15,9 @@ const shortName = value("--short-name") ?? name;
 const tagline = value("--tagline");
 
 if (!name || !slug) {
-  console.error('Usage: pnpm rebrand --name "New Name" --slug "new-name" [--short-name "Name"] [--tagline "..."]');
+  console.error(
+    'Usage: pnpm rebrand --name "New Name" --slug "new-name" [--short-name "Name"] [--tagline "..."]'
+  );
   process.exit(1);
 }
 

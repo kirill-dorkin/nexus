@@ -85,7 +85,13 @@ export class PostgresAuthenticationRepository extends AuthenticationRepository {
       `INSERT INTO identity.oauth_login_states
          (state_hash, provider, code_verifier, return_to, expires_at)
        VALUES ($1, $2, $3, $4, $5)`,
-      [state.stateHash, state.provider, state.codeVerifier, state.returnTo, state.expiresAt]
+      [
+        state.stateHash,
+        state.provider,
+        state.codeVerifier,
+        state.returnTo,
+        state.expiresAt
+      ]
     );
   }
 

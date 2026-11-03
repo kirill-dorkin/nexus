@@ -14,7 +14,9 @@ export function deriveCourseProgress(
 ): LearnerCourseProgress {
   const identity = (versionId: string) => lineage.get(versionId) ?? versionId;
   const passed = new Set(
-    observations.filter((o) => o.passed).map((o) => identity(o.activityVersionId))
+    observations
+      .filter((o) => o.passed)
+      .map((o) => identity(o.activityVersionId))
   );
   const required = new Set(
     structure.flatMap((l) =>
@@ -24,16 +26,12 @@ export function deriveCourseProgress(
   const passedRequired = [...required].filter((id) => passed.has(id)).length;
   const lessons = structure.map((l) => {
     const tasks = new Map(
-      l.activities
-        .filter((a) => a.required)
-        .map((a) => [a.activityId, a])
+      l.activities.filter((a) => a.required).map((a) => [a.activityId, a])
     );
     const passedRequired = [...tasks.keys()].filter((id) =>
       passed.has(id)
     ).length;
-    const allActivities = new Map(
-      l.activities.map((a) => [a.activityId, a])
-    );
+    const allActivities = new Map(l.activities.map((a) => [a.activityId, a]));
     return {
       slug: l.slug,
       totalRequired: tasks.size,

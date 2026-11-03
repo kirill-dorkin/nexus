@@ -41,19 +41,87 @@ export type NewCourseVersionActivity = Readonly<{
 }>;
 
 export abstract class LearningGraphRepository {
-  abstract createSkill(transaction: DatabaseTransaction, skill: NewSkill): Promise<Skill>;
-  abstract attachSkill(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string, skillId: string, position: number): Promise<CourseVersionSkill | null>;
-  abstract findAttachedSkill(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string, skillId: string): Promise<CourseVersionSkill | null>;
-  abstract listCourseVersionSkills(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string): Promise<readonly CourseVersionSkill[]>;
-  abstract createActivity(transaction: DatabaseTransaction, activity: NewCourseVersionActivity): Promise<CourseVersionActivity>;
-  abstract createGuidedBuildDefinition(transaction: DatabaseTransaction, organizationId: string, activityVersionId: string, definition: GuidedBuildAuthoring): Promise<void>;
-  abstract findGuidedBuildDefinition(transaction: DatabaseTransaction, organizationId: string, activityVersionId: string): Promise<GuidedBuildProtectedDefinition | null>;
-  abstract findActivityVersion(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string, activityId: string): Promise<CourseVersionActivity | null>;
-  abstract findActivityVersionById(transaction: DatabaseTransaction, organizationId: string, activityVersionId: string): Promise<CourseVersionActivity | null>;
-  abstract listCourseVersionActivities(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string): Promise<readonly CourseVersionActivity[]>;
-  abstract lockCourseVersionSkill(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string, skillId: string): Promise<void>;
-  abstract listCourseVersionSkillRemediations(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string): Promise<readonly CourseVersionSkillRemediation[]>;
-  abstract replaceCourseVersionSkillRemediations(transaction: DatabaseTransaction, organizationId: string, courseVersionId: string, skillId: string, activityIds: readonly string[]): Promise<readonly CourseVersionSkillRemediation[]>;
-  abstract activityAssessesSkill(transaction: DatabaseTransaction, organizationId: string, activityVersionId: string, skillId: string): Promise<boolean>;
-  abstract cloneLatestPublishedGraph(transaction: DatabaseTransaction, organizationId: string, courseId: string, targetCourseVersionId: string): Promise<void>;
+  abstract createSkill(
+    transaction: DatabaseTransaction,
+    skill: NewSkill
+  ): Promise<Skill>;
+  abstract attachSkill(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseVersionId: string,
+    skillId: string,
+    position: number
+  ): Promise<CourseVersionSkill | null>;
+  abstract findAttachedSkill(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseVersionId: string,
+    skillId: string
+  ): Promise<CourseVersionSkill | null>;
+  abstract listCourseVersionSkills(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseVersionId: string
+  ): Promise<readonly CourseVersionSkill[]>;
+  abstract createActivity(
+    transaction: DatabaseTransaction,
+    activity: NewCourseVersionActivity
+  ): Promise<CourseVersionActivity>;
+  abstract createGuidedBuildDefinition(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    activityVersionId: string,
+    definition: GuidedBuildAuthoring
+  ): Promise<void>;
+  abstract findGuidedBuildDefinition(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    activityVersionId: string
+  ): Promise<GuidedBuildProtectedDefinition | null>;
+  abstract findActivityVersion(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseVersionId: string,
+    activityId: string
+  ): Promise<CourseVersionActivity | null>;
+  abstract findActivityVersionById(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    activityVersionId: string
+  ): Promise<CourseVersionActivity | null>;
+  abstract listCourseVersionActivities(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseVersionId: string
+  ): Promise<readonly CourseVersionActivity[]>;
+  abstract lockCourseVersionSkill(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseVersionId: string,
+    skillId: string
+  ): Promise<void>;
+  abstract listCourseVersionSkillRemediations(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseVersionId: string
+  ): Promise<readonly CourseVersionSkillRemediation[]>;
+  abstract replaceCourseVersionSkillRemediations(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseVersionId: string,
+    skillId: string,
+    activityIds: readonly string[]
+  ): Promise<readonly CourseVersionSkillRemediation[]>;
+  abstract activityAssessesSkill(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    activityVersionId: string,
+    skillId: string
+  ): Promise<boolean>;
+  abstract cloneLatestPublishedGraph(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseId: string,
+    targetCourseVersionId: string
+  ): Promise<void>;
 }

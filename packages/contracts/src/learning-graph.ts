@@ -94,11 +94,15 @@ export type Skill = z.infer<typeof skillSchema>;
 export type CourseVersionSkill = z.infer<typeof courseVersionSkillSchema>;
 export type CourseVersionActivity = z.infer<typeof courseVersionActivitySchema>;
 export type CreateSkillRequest = z.infer<typeof createSkillRequestSchema>;
-export type AttachSkillToCourseVersionRequest = z.infer<typeof attachSkillToCourseVersionRequestSchema>;
+export type AttachSkillToCourseVersionRequest = z.infer<
+  typeof attachSkillToCourseVersionRequestSchema
+>;
 export type ReplaceSkillRemediationActivitiesRequest = z.infer<
   typeof replaceSkillRemediationActivitiesRequestSchema
 >;
 export type CourseVersionSkillRemediationSet = z.infer<
   typeof courseVersionSkillRemediationSetSchema
 >;
-export type CreateCourseVersionActivityRequest = z.infer<typeof createCourseVersionActivityRequestSchema>;
+export type CreateCourseVersionActivityRequest = z.infer<
+  typeof createCourseVersionActivityRequestSchema
+>;

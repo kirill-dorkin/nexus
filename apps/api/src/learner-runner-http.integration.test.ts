@@ -19,7 +19,9 @@ import {
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for learner-runner integration tests.`);
+    throw new Error(
+      `${name} is required for learner-runner integration tests.`
+    );
   }
   return value;
 }
@@ -163,7 +165,10 @@ describe("learner runner effective assignments", () => {
       if (response.statusCode !== 201) {
         throw new Error(`Failed to create ${slug}: ${response.body}`);
       }
-      const body = JSON.parse(response.body) as { id: string; activityId: string };
+      const body = JSON.parse(response.body) as {
+        id: string;
+        activityId: string;
+      };
       return {
         activityId: body.activityId,
         activityVersionId: body.id
@@ -220,7 +225,10 @@ describe("learner runner effective assignments", () => {
     return (JSON.parse(response.body) as { id: string }).id;
   }
 
-  async function createGroup(runId: string, label: string): Promise<GroupFixture> {
+  async function createGroup(
+    runId: string,
+    label: string
+  ): Promise<GroupFixture> {
     const groupSet = await app.inject({
       method: "POST",
       url: `/v1/organizations/${organizationId}/offerings/${offeringId}/runs/${runId}/group-sets`,
@@ -287,7 +295,8 @@ describe("learner runner effective assignments", () => {
     otherLearnerUserId = await createUser("runner-other-learner");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
@@ -299,10 +308,12 @@ describe("learner runner effective assignments", () => {
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `runner-${randomUUID()}`,
         name: "Learner runner integration"
-      })).id;
+      })
+    ).id;
 
     await activateLearner(learnerUserId);
     await activateLearner(otherLearnerUserId);
@@ -404,28 +415,85 @@ describe("learner runner effective assignments", () => {
     }
 
     if (organizationId.length > 0) {
-      await migrationPool.query(`DELETE FROM events.outbox WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_progress.evidence WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_progress.submissions WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_progress.attempts WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.assignments WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.group_memberships WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.groups WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.group_sets WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.course_runs WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_delivery.learning_offerings WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.activity_skill_mappings WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.course_version_activities WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.course_version_skills WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.activities WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.skills WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM learning_content.courses WHERE organization_id = $1`, [organizationId]);
-      await migrationPool.query(`DELETE FROM organizations.organizations WHERE id = $1`, [organizationId]);
+      await migrationPool.query(
+        `DELETE FROM events.outbox WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_progress.evidence WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_progress.submissions WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_progress.attempts WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.assignments WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.group_memberships WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.groups WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.group_sets WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.course_runs WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.enrollments WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_delivery.learning_offerings WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.activity_skill_mappings WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.course_version_activities WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.course_version_skills WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.activities WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.skills WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM learning_content.courses WHERE organization_id = $1`,
+        [organizationId]
+      );
+      await migrationPool.query(
+        `DELETE FROM organizations.organizations WHERE id = $1`,
+        [organizationId]
+      );
     }
 
     if (createdUserIds.length > 0) {
-      await migrationPool.query(`DELETE FROM identity.users WHERE id = ANY($1::uuid[])`, [createdUserIds]);
+      await migrationPool.query(
+        `DELETE FROM identity.users WHERE id = ANY($1::uuid[])`,
+        [createdUserIds]
+      );
     }
 
     await migrationPool.end();
@@ -439,7 +507,9 @@ describe("learner runner effective assignments", () => {
     });
     expect(response.statusCode).toBe(200);
 
-    const readModel = learnerRunnerReadModelSchema.parse(JSON.parse(response.body));
+    const readModel = learnerRunnerReadModelSchema.parse(
+      JSON.parse(response.body)
+    );
     expect(readModel.enrollmentId).toBe(enrollmentId);
     expect(readModel.offeringId).toBe(offeringId);
 

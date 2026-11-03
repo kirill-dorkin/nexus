@@ -323,7 +323,9 @@ export type CreateEnrollmentRequest = z.infer<
   typeof createEnrollmentRequestSchema
 >;
 export type CourseRun = z.infer<typeof courseRunSchema>;
-export type CreateCourseRunRequest = z.infer<typeof createCourseRunRequestSchema>;
+export type CreateCourseRunRequest = z.infer<
+  typeof createCourseRunRequestSchema
+>;
 export type GroupSet = z.infer<typeof groupSetSchema>;
 export type CreateGroupSetRequest = z.infer<typeof createGroupSetRequestSchema>;
 export type DeliveryGroup = z.infer<typeof deliveryGroupSchema>;
@@ -337,14 +339,26 @@ export type CreateGroupMembershipRequest = z.infer<
 export type Session = z.infer<typeof sessionSchema>;
 export type CreateSessionRequest = z.infer<typeof createSessionRequestSchema>;
 export type Attendance = z.infer<typeof attendanceSchema>;
-export type RecordAttendanceRequest = z.infer<typeof recordAttendanceRequestSchema>;
-export type CorrectAttendanceRequest = z.infer<typeof correctAttendanceRequestSchema>;
+export type RecordAttendanceRequest = z.infer<
+  typeof recordAttendanceRequestSchema
+>;
+export type CorrectAttendanceRequest = z.infer<
+  typeof correctAttendanceRequestSchema
+>;
 export type AssignmentAudience = z.infer<typeof assignmentAudienceSchema>;
 export type Assignment = z.infer<typeof assignmentSchema>;
-export type LearnerAssignmentTiming = z.infer<typeof learnerAssignmentTimingSchema>;
-export type LearnerRunnerAssignment = z.infer<typeof learnerRunnerAssignmentSchema>;
-export type LearnerRunnerReadModel = z.infer<typeof learnerRunnerReadModelSchema>;
-export type CreateAssignmentRequest = z.infer<typeof createAssignmentRequestSchema>;
+export type LearnerAssignmentTiming = z.infer<
+  typeof learnerAssignmentTimingSchema
+>;
+export type LearnerRunnerAssignment = z.infer<
+  typeof learnerRunnerAssignmentSchema
+>;
+export type LearnerRunnerReadModel = z.infer<
+  typeof learnerRunnerReadModelSchema
+>;
+export type CreateAssignmentRequest = z.infer<
+  typeof createAssignmentRequestSchema
+>;
 
 export type UpdateLearningOfferingVisibilityRequest = z.infer<
   typeof updateLearningOfferingVisibilityRequestSchema

@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { organizationSlugSchema, resourceSlugSchema, uuidSchema } from "./common";
+import {
+  organizationSlugSchema,
+  resourceSlugSchema,
+  uuidSchema
+} from "./common";
 import { commerceBillingTypeSchema } from "./commerce";
 import { learningOfferingDeliveryModeSchema } from "./learning-delivery";
 import { customerEntryPolicySchema } from "./organizations";

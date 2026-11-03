@@ -19,7 +19,9 @@ type JsonObject = Record<string, unknown>;
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new ServiceUnavailableException(`${name} is required for GitHub App setup.`);
+    throw new ServiceUnavailableException(
+      `${name} is required for GitHub App setup.`
+    );
   }
   return value.trim();
 }
@@ -95,29 +97,39 @@ export class GitHubHttpAppGateway extends GitHubAppGateway {
     const clientId = requireEnv("GITHUB_APP_CLIENT_ID");
     const clientSecret = requireEnv("GITHUB_APP_CLIENT_SECRET");
     const redirectUri = requireEnv("GITHUB_APP_OAUTH_CALLBACK_URL");
-    const response = await fetch("https://github.com/login/oauth/access_token", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        client_id: clientId,
-        client_secret: clientSecret,
-        code,
-        redirect_uri: redirectUri
-      }),
-      signal: AbortSignal.timeout(10_000)
-    });
+    const response = await fetch(
+      "https://github.com/login/oauth/access_token",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          client_id: clientId,
+          client_secret: clientSecret,
+          code,
+          redirect_uri: redirectUri
+        }),
+        signal: AbortSignal.timeout(10_000)
+      }
+    );
 
     if (!response.ok) {
-      throw new BadGatewayException("GitHub user authorization exchange failed.");
+      throw new BadGatewayException(
+        "GitHub user authorization exchange failed."
+      );
     }
 
-    const payload = requireObject(await response.json(), "OAuth token response");
+    const payload = requireObject(
+      await response.json(),
+      "OAuth token response"
+    );
     const accessToken = payload.access_token;
     if (typeof accessToken !== "string" || accessToken.length === 0) {
-      throw new BadGatewayException("GitHub did not return a user access token.");
+      throw new BadGatewayException(
+        "GitHub did not return a user access token."
+      );
     }
 
     return accessToken;
@@ -126,12 +138,14 @@ export class GitHubHttpAppGateway extends GitHubAppGateway {
   private async findAccessibleInstallation(
     accessToken: string,
     githubInstallationId: string
-  ): Promise<Readonly<{
-    accountId: string;
-    accountLogin: string;
-    accountType: string;
-    repositorySelection: "all" | "selected";
-  }>> {
+  ): Promise<
+    Readonly<{
+      accountId: string;
+      accountLogin: string;
+      accountType: string;
+      repositorySelection: "all" | "selected";
+    }>
+  > {
     const expectedAppId = requirePositiveDecimalEnv("GITHUB_APP_ID");
 
     for (let page = 1; page <= 100; page += 1) {
@@ -141,20 +155,33 @@ export class GitHubHttpAppGateway extends GitHubAppGateway {
       );
       const installations = payload.installations;
       if (!Array.isArray(installations)) {
-        throw new BadGatewayException("GitHub returned an invalid installations response.");
+        throw new BadGatewayException(
+          "GitHub returned an invalid installations response."
+        );
       }
 
       for (const candidate of installations) {
         const object = requireObject(candidate, "installation");
-        const candidateId = requirePositiveSafeInteger(object.id, "installation.id");
+        const candidateId = requirePositiveSafeInteger(
+          object.id,
+          "installation.id"
+        );
         if (candidateId !== githubInstallationId) continue;
 
-        const appId = requirePositiveSafeInteger(object.app_id, "installation.app_id");
+        const appId = requirePositiveSafeInteger(
+          object.app_id,
+          "installation.app_id"
+        );
         if (appId !== expectedAppId) {
-          throw new ForbiddenException("The GitHub installation belongs to another app.");
+          throw new ForbiddenException(
+            "The GitHub installation belongs to another app."
+          );
         }
 
-        const permissions = requireObject(object.permissions, "installation.permissions");
+        const permissions = requireObject(
+          object.permissions,
+          "installation.permissions"
+        );
         if (
           !permissionAllowsRead(permissions.pull_requests) ||
           !permissionAllowsRead(permissions.checks)
@@ -173,8 +200,14 @@ export class GitHubHttpAppGateway extends GitHubAppGateway {
         }
 
         return {
-          accountId: requirePositiveSafeInteger(account.id, "installation.account.id"),
-          accountLogin: requireString(account.login, "installation.account.login"),
+          accountId: requirePositiveSafeInteger(
+            account.id,
+            "installation.account.id"
+          ),
+          accountLogin: requireString(
+            account.login,
+            "installation.account.login"
+          ),
           accountType: requireString(account.type, "installation.account.type"),
           repositorySelection: selection
         };
@@ -201,13 +234,18 @@ export class GitHubHttpAppGateway extends GitHubAppGateway {
       );
       const pageRepositories = payload.repositories;
       if (!Array.isArray(pageRepositories)) {
-        throw new BadGatewayException("GitHub returned an invalid repositories response.");
+        throw new BadGatewayException(
+          "GitHub returned an invalid repositories response."
+        );
       }
 
       for (const candidate of pageRepositories) {
         const repository = requireObject(candidate, "repository");
         repositories.push({
-          githubRepositoryId: requirePositiveSafeInteger(repository.id, "repository.id"),
+          githubRepositoryId: requirePositiveSafeInteger(
+            repository.id,
+            "repository.id"
+          ),
           fullName: requireString(repository.full_name, "repository.full_name")
         });
       }
@@ -218,7 +256,10 @@ export class GitHubHttpAppGateway extends GitHubAppGateway {
     return repositories;
   }
 
-  private async githubGet(url: string, accessToken: string): Promise<JsonObject> {
+  private async githubGet(
+    url: string,
+    accessToken: string
+  ): Promise<JsonObject> {
     const response = await fetch(url, {
       headers: {
         Accept: "application/vnd.github+json",
@@ -229,8 +270,14 @@ export class GitHubHttpAppGateway extends GitHubAppGateway {
     });
 
     if (!response.ok) {
-      if (response.status === 401 || response.status === 403 || response.status === 404) {
-        throw new ForbiddenException("GitHub did not authorize access to the requested installation.");
+      if (
+        response.status === 401 ||
+        response.status === 403 ||
+        response.status === 404
+      ) {
+        throw new ForbiddenException(
+          "GitHub did not authorize access to the requested installation."
+        );
       }
       throw new BadGatewayException("GitHub installation verification failed.");
     }
@@ -242,7 +289,9 @@ export class GitHubHttpAppGateway extends GitHubAppGateway {
 function requirePositiveDecimalEnv(name: string): string {
   const value = requireEnv(name);
   if (!/^[1-9][0-9]*$/.test(value)) {
-    throw new ServiceUnavailableException(`${name} must be a positive decimal integer.`);
+    throw new ServiceUnavailableException(
+      `${name} must be a positive decimal integer.`
+    );
   }
   return value;
 }

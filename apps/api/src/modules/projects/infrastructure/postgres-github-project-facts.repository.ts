@@ -16,12 +16,18 @@ type IdRow = { id: string };
 export class PostgresGitHubProjectFactsRepository extends GitHubProjectFactsRepository {
   async resolveRepositoryBindingAt(
     transaction: DatabaseTransaction,
-    input: Parameters<GitHubProjectFactsRepository["resolveRepositoryBindingAt"]>[1]
+    input: Parameters<
+      GitHubProjectFactsRepository["resolveRepositoryBindingAt"]
+    >[1]
   ): Promise<ProjectRepositoryBindingAt | null> {
     const result = await transaction.client.query<BindingRow>(
       `SELECT repository_binding_id::text, project_id::text
        FROM platform_internal.resolve_project_repository_binding_at($1, $2, $3)`,
-      [input.organizationId, input.githubRepositoryMappingId, input.sourceReceivedAt]
+      [
+        input.organizationId,
+        input.githubRepositoryMappingId,
+        input.sourceReceivedAt
+      ]
     );
     const row = result.rows[0];
     return row === undefined
@@ -122,7 +128,9 @@ export class PostgresGitHubProjectFactsRepository extends GitHubProjectFactsRepo
     );
     const existingId = existing.rows[0]?.id;
     if (existingId === undefined) {
-      throw new Error("GitHub Project fact conflict did not resolve to an existing tenant fact.");
+      throw new Error(
+        "GitHub Project fact conflict did not resolve to an existing tenant fact."
+      );
     }
     return existingId;
   }

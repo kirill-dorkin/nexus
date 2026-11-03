@@ -21,7 +21,10 @@ import {
 
 import { parseRequest } from "../../http/validation";
 import { AuthenticationApplicationService } from "./application/authentication.service";
-import { OAuthCallbackFailure, OAuthLoginService } from "./application/oauth-login.service";
+import {
+  OAuthCallbackFailure,
+  OAuthLoginService
+} from "./application/oauth-login.service";
 import {
   readSessionCookie,
   serializeClearedSessionCookie,
@@ -96,7 +99,10 @@ export class AuthenticationController {
         currentSessionToken: currentSessionToken(request)
       });
       returnTo = result.returnTo;
-      response.header("Set-Cookie", serializeSessionCookie(result.sessionToken));
+      response.header(
+        "Set-Cookie",
+        serializeSessionCookie(result.sessionToken)
+      );
       setNoStore(response);
       return {
         url: this.oauth.destination(result.returnTo),

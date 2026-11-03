@@ -136,11 +136,7 @@ export class MasteryApplicationService {
         organizationScope(organizationId)
       );
 
-      return this.listUserMastery(
-        transaction,
-        organizationId,
-        userId
-      );
+      return this.listUserMastery(transaction, organizationId, userId);
     });
   }
 

@@ -6,46 +6,97 @@ import { SHOP_TABLES } from "./shop-db";
 import styles from "./sql.module.css";
 
 const plural = (n: number, one: string, few: string, many: string) => {
-  const d = n % 10, h = n % 100;
-  return d === 1 && h !== 11 ? one : d >= 2 && d <= 4 && (h < 12 || h > 14) ? few : many;
+  const d = n % 10,
+    h = n % 100;
+  return d === 1 && h !== 11
+    ? one
+    : d >= 2 && d <= 4 && (h < 12 || h > 14)
+      ? few
+      : many;
 };
 
 /** What the learner's SQL returned: a table, a short status, or a Russian explanation of the error. */
-export function SqlOutput({ run, busy }: { run: SqlRun | null; busy: boolean }) {
+export function SqlOutput({
+  run,
+  busy
+}: {
+  run: SqlRun | null;
+  busy: boolean;
+}) {
   if (!run) {
-    return <div className={styles.status} role="status">{busy ? "Запускаю базу данных…" : "Здесь появится результат запроса."}</div>;
+    return (
+      <div className={styles.status} role="status">
+        {busy ? "Запускаю базу данных…" : "Здесь появится результат запроса."}
+      </div>
+    );
   }
   const { output } = run;
   return (
-    <div className={styles.output} data-busy={busy || undefined} aria-live="polite">
-      {output.kind === "empty" ? <div className={styles.status}>Напиши запрос — результат появится здесь.</div> : null}
-      {output.kind === "done" ? <div className={styles.status} data-tone="ok">{output.message}</div> : null}
+    <div
+      className={styles.output}
+      data-busy={busy || undefined}
+      aria-live="polite"
+    >
+      {output.kind === "empty" ? (
+        <div className={styles.status}>
+          Напиши запрос — результат появится здесь.
+        </div>
+      ) : null}
+      {output.kind === "done" ? (
+        <div className={styles.status} data-tone="ok">
+          {output.message}
+        </div>
+      ) : null}
       {output.kind === "error" ? (
         <div className={styles.error} role="alert">
           <WarningIcon size={18} weight="fill" aria-hidden="true" />
           <div>
-            <p className={styles.errorTitle}>Ошибка{output.line ? ` в строке ${output.line}` : ""}: <code>{output.message}</code></p>
-            {output.hint ? <p className={styles.errorHint}>{output.hint}</p> : null}
+            <p className={styles.errorTitle}>
+              Ошибка{output.line ? ` в строке ${output.line}` : ""}:{" "}
+              <code>{output.message}</code>
+            </p>
+            {output.hint ? (
+              <p className={styles.errorHint}>{output.hint}</p>
+            ) : null}
           </div>
         </div>
       ) : null}
       {output.kind === "rows" ? (
         <>
-          <div className={styles.tableWrap} tabIndex={0} role="region" aria-label="Результат запроса, прокручиваемая таблица">
+          <div
+            className={styles.tableWrap}
+            tabIndex={0}
+            role="region"
+            aria-label="Результат запроса, прокручиваемая таблица"
+          >
             <table className={styles.table}>
               <thead>
-                <tr>{output.columns.map((name, i) => <th key={i} scope="col">{name}</th>)}</tr>
+                <tr>
+                  {output.columns.map((name, i) => (
+                    <th key={i} scope="col">
+                      {name}
+                    </th>
+                  ))}
+                </tr>
               </thead>
               <tbody>
                 {output.rows.map((row, i) => (
-                  <tr key={i}>{row.map((value, j) => <td key={j} data-null={value === null || undefined}>{value ?? "NULL"}</td>)}</tr>
+                  <tr key={i}>
+                    {row.map((value, j) => (
+                      <td key={j} data-null={value === null || undefined}>
+                        {value ?? "NULL"}
+                      </td>
+                    ))}
+                  </tr>
                 ))}
               </tbody>
             </table>
           </div>
           <p className={styles.count}>
             {output.total} {plural(output.total, "строка", "строки", "строк")}
-            {output.total > output.rows.length ? ` · показаны первые ${output.rows.length}` : ""}
+            {output.total > output.rows.length
+              ? ` · показаны первые ${output.rows.length}`
+              : ""}
           </p>
         </>
       ) : null}
@@ -57,11 +108,14 @@ export function SqlOutput({ run, busy }: { run: SqlRun | null; busy: boolean }) 
 export function SqlSchema() {
   return (
     <details className={styles.schema}>
-      <summary><DatabaseIcon size={16} aria-hidden="true" /> Таблицы базы «Зерно»</summary>
+      <summary>
+        <DatabaseIcon size={16} aria-hidden="true" /> Таблицы базы «Зерно»
+      </summary>
       <ul>
         {SHOP_TABLES.map((table) => (
           <li key={table.name}>
-            <code>{table.name}</code> <span className={styles.schemaTitle}>— {table.title}</span>
+            <code>{table.name}</code>{" "}
+            <span className={styles.schemaTitle}>— {table.title}</span>
             <span className={styles.columns}>{table.columns.join(", ")}</span>
           </li>
         ))}

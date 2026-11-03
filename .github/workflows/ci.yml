@@ -149,6 +149,9 @@ jobs:
       - name: Brand isolation
         run: pnpm check:brand
 
+      - name: Formatting
+        run: pnpm format:check
+
       - name: Typecheck
         run: pnpm typecheck
 

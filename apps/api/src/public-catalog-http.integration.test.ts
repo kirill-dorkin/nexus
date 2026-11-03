@@ -13,7 +13,9 @@ import { createApiApplication } from "./app.factory";
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for public catalog integration tests.`);
+    throw new Error(
+      `${name} is required for public catalog integration tests.`
+    );
   }
   return value;
 }
@@ -52,7 +54,10 @@ describe("public sellable catalog HTTP boundary", () => {
   const organizationIds: string[] = [];
   const courseIds: string[] = [];
 
-  async function insertId(sql: string, values: readonly unknown[]): Promise<string> {
+  async function insertId(
+    sql: string,
+    values: readonly unknown[]
+  ): Promise<string> {
     const result = await migrationPool.query<IdRow>(sql, [...values]);
     const id = result.rows[0]?.id;
     if (id === undefined) {
@@ -61,7 +66,9 @@ describe("public sellable catalog HTTP boundary", () => {
     return id;
   }
 
-  async function createOrganization(slugPrefix: string): Promise<OrganizationFixture> {
+  async function createOrganization(
+    slugPrefix: string
+  ): Promise<OrganizationFixture> {
     const slug = `${slugPrefix}-${randomUUID()}`;
     const organizationId = await insertId(
       `INSERT INTO organizations.organizations
@@ -87,7 +94,12 @@ describe("public sellable catalog HTTP boundary", () => {
           created_by_user_id, published_by_user_id, published_at)
        VALUES ($1, $2, 1, 'published', $3, $4, $4, now())
        RETURNING id::text`,
-      [organizationId, courseId, `${slugPrefix} published course`, fixtureUserId]
+      [
+        organizationId,
+        courseId,
+        `${slugPrefix} published course`,
+        fixtureUserId
+      ]
     );
 
     return { id: organizationId, slug, courseVersionId };
@@ -170,8 +182,12 @@ describe("public sellable catalog HTTP boundary", () => {
     );
 
     primaryOrganization = await createOrganization("public-catalog-primary");
-    secondaryOrganization = await createOrganization("public-catalog-secondary");
-    suspendedOrganization = await createOrganization("public-catalog-suspended");
+    secondaryOrganization = await createOrganization(
+      "public-catalog-secondary"
+    );
+    suspendedOrganization = await createOrganization(
+      "public-catalog-suspended"
+    );
 
     const publicOfferingId = await createOffering(
       primaryOrganization,
@@ -285,7 +301,12 @@ describe("public sellable catalog HTTP boundary", () => {
       secondaryProductSlug,
       "Same slug, second organization"
     );
-    await createPrice(secondaryOrganization.id, secondaryProductId, "USD", 7777);
+    await createPrice(
+      secondaryOrganization.id,
+      secondaryProductId,
+      "USD",
+      7777
+    );
 
     const suspendedOfferingId = await createOffering(
       suspendedOrganization,
@@ -299,7 +320,12 @@ describe("public sellable catalog HTTP boundary", () => {
       `suspended-product-${randomUUID()}`,
       "Suspended organization product"
     );
-    await createPrice(suspendedOrganization.id, suspendedProductId, "USD", 8888);
+    await createPrice(
+      suspendedOrganization.id,
+      suspendedProductId,
+      "USD",
+      8888
+    );
 
     await migrationPool.query(
       `UPDATE organizations.organizations
@@ -470,7 +496,10 @@ describe("public sellable catalog HTTP boundary", () => {
     );
     expect(resolverPrivilege.rows[0]?.can_resolve_id).toBe(false);
 
-    const publicOrganization = await appPool.query<{ slug: string; name: string }>(
+    const publicOrganization = await appPool.query<{
+      slug: string;
+      name: string;
+    }>(
       `SELECT slug, name
          FROM organizations.find_public_organization_by_slug($1)`,
       [primaryOrganization.slug]

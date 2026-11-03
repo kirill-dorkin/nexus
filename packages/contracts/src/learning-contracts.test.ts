@@ -157,9 +157,11 @@ describe("learning catalog and delivery contracts", () => {
       })
     ).toEqual({ enrollmentId: id, status: "late" });
 
-    expect(correctAttendanceRequestSchema.parse({ status: "excused" })).toEqual({
-      status: "excused"
-    });
+    expect(correctAttendanceRequestSchema.parse({ status: "excused" })).toEqual(
+      {
+        status: "excused"
+      }
+    );
 
     expect(() =>
       recordAttendanceRequestSchema.parse({

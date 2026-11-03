@@ -91,7 +91,8 @@ describe("deterministic learner quiz HTTP + PostgreSQL boundary", () => {
   }
   async function fixture(policy = "open", slug = "free-course") {
     const org = await createTestOrganization(migration, owner, {
-      slug: `entry-${randomUUID()}`, name: "Learning entry academy"
+      slug: `entry-${randomUUID()}`,
+      name: "Learning entry academy"
     });
     organizations.push(org.id);
     const manifest = courseManifestV1Schema.parse(
@@ -765,39 +766,85 @@ describe("deterministic learner quiz HTTP + PostgreSQL boundary", () => {
     await join(f);
     await enroll(f);
     const before = await enrollment(f);
-    const passed = quizCheckResultSchema.parse((await check(single("cpu"), randomUUID(), "components-check", f)).json());
+    const passed = quizCheckResultSchema.parse(
+      (await check(single("cpu"), randomUUID(), "components-check", f)).json()
+    );
     expect(passed.outcome).toBe("passed");
     const first = learnerLearningCourseSchema.parse((await state(f)).json());
     expect(first.progress?.policyVersion).toBe(2);
     expect(first.progress?.passedRequired).toBe(1);
 
     // Republish the same course as version 2 with a new title.
-    await request("POST", `organizations/${f.org}/studio/courses/${f.course}/draft`, {}, owner, 201);
+    await request(
+      "POST",
+      `organizations/${f.org}/studio/courses/${f.course}/draft`,
+      {},
+      owner,
+      201
+    );
     const next = structuredClone(f.manifest);
     next.course.title = "Republished course";
-    const plan = (await request("POST", `organizations/${f.org}/courses/manifest/validate`, next, owner)).json();
-    const applied = (await request("POST", `organizations/${f.org}/courses/manifest/apply`,
-      { manifest: next, expectedDraftVersionId: plan.expectedDraftVersionId, expectedRevision: plan.expectedRevision }, owner)).json();
+    const plan = (
+      await request(
+        "POST",
+        `organizations/${f.org}/courses/manifest/validate`,
+        next,
+        owner
+      )
+    ).json();
+    const applied = (
+      await request(
+        "POST",
+        `organizations/${f.org}/courses/manifest/apply`,
+        {
+          manifest: next,
+          expectedDraftVersionId: plan.expectedDraftVersionId,
+          expectedRevision: plan.expectedRevision
+        },
+        owner
+      )
+    ).json();
     expect(applied.courseId).toBe(f.course);
     const v2 = applied.draftVersionId as string;
-    await request("POST", `organizations/${f.org}/courses/${f.course}/versions/${v2}/publish`, {}, owner);
+    await request(
+      "POST",
+      `organizations/${f.org}/courses/${f.course}/versions/${v2}/publish`,
+      {},
+      owner
+    );
 
     const path = `organizations/${f.org}/offerings/${f.offering}/course-version`;
     await request("PATCH", path, { courseVersionId: v2 }, learner, 403);
-    await request("PATCH", path, { courseVersionId: v2, extra: true }, owner, 400);
+    await request(
+      "PATCH",
+      path,
+      { courseVersionId: v2, extra: true },
+      owner,
+      400
+    );
     await request("PATCH", path, { courseVersionId: base.version }, owner, 404);
-    const moved = (await request("PATCH", path, { courseVersionId: v2 }, owner)).json();
+    const moved = (
+      await request("PATCH", path, { courseVersionId: v2 }, owner)
+    ).json();
     expect(moved.courseVersionId).toBe(v2);
     expect(moved.slug).toBe(f.slug);
     // Idempotent repeat, and never backwards.
     await request("PATCH", path, { courseVersionId: v2 }, owner);
     await request("PATCH", path, { courseVersionId: f.version }, owner, 409);
-    const retargeted = await migration.query<{ payload: Record<string, string> }>(
+    const retargeted = await migration.query<{
+      payload: Record<string, string>;
+    }>(
       "SELECT payload FROM events.outbox WHERE organization_id=$1 AND event_name='learning_offering.retargeted'",
       [f.org]
     );
     expect(retargeted.rows.map((r) => r.payload)).toEqual([
-      { organizationId: f.org, offeringId: f.offering, courseId: f.course, fromCourseVersionId: f.version, toCourseVersionId: v2 }
+      {
+        organizationId: f.org,
+        offeringId: f.offering,
+        courseId: f.course,
+        fromCourseVersionId: f.version,
+        toCourseVersionId: v2
+      }
     ]);
 
     // Same Enrollment, new content, earlier pass still counts; new attempts pin version 2.
@@ -805,7 +852,11 @@ describe("deterministic learner quiz HTTP + PostgreSQL boundary", () => {
     const after = learnerLearningCourseSchema.parse((await state(f)).json());
     expect(after.course.title).toBe("Republished course");
     expect(after.progress?.passedRequired).toBe(1);
-    expect(after.progress?.lessons[0]!.activities.find((a) => a.slug === "components-check")?.passed).toBe(true);
+    expect(
+      after.progress?.lessons[0]!.activities.find(
+        (a) => a.slug === "components-check"
+      )?.passed
+    ).toBe(true);
     await check(multi(["a", "c"]), randomUUID(), "multi-check", f);
     const pinned = await migration.query<{ course_version_id: string }>(
       `SELECT av.course_version_id FROM learning_progress.attempts a
@@ -814,11 +865,33 @@ describe("deterministic learner quiz HTTP + PostgreSQL boundary", () => {
       [f.org, before!.id]
     );
     expect(pinned.rows[0]!.course_version_id).toBe(v2);
-    expect(learnerLearningCourseSchema.parse((await state(f)).json()).progress?.passedRequired).toBe(2);
+    expect(
+      learnerLearningCourseSchema.parse((await state(f)).json()).progress
+        ?.passedRequired
+    ).toBe(2);
 
     // Cohort Offerings keep their pinned version.
-    const cohort = (await request("POST", `organizations/${f.org}/offerings`,
-      { slug: "retarget-cohort", name: "Cohort", courseVersionId: f.version, deliveryMode: "cohort", accessMode: "membership" }, owner, 201)).json();
-    await request("PATCH", `organizations/${f.org}/offerings/${cohort.id}/course-version`, { courseVersionId: v2 }, owner, 409);
+    const cohort = (
+      await request(
+        "POST",
+        `organizations/${f.org}/offerings`,
+        {
+          slug: "retarget-cohort",
+          name: "Cohort",
+          courseVersionId: f.version,
+          deliveryMode: "cohort",
+          accessMode: "membership"
+        },
+        owner,
+        201
+      )
+    ).json();
+    await request(
+      "PATCH",
+      `organizations/${f.org}/offerings/${cohort.id}/course-version`,
+      { courseVersionId: v2 },
+      owner,
+      409
+    );
   });
 });

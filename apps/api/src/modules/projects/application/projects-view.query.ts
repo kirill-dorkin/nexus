@@ -45,11 +45,11 @@ export class ProjectsViewQuery {
   ): Promise<Project> {
     const binding =
       knownBinding ??
-      await this.projects.findActiveRepositoryBindingForProject(
+      (await this.projects.findActiveRepositoryBindingForProject(
         transaction,
         project.organizationId,
         project.id
-      );
+      ));
 
     if (binding === null) {
       return {

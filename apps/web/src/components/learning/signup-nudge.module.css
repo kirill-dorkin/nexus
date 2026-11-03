@@ -8,13 +8,20 @@
   border: 1px solid color-mix(in srgb, var(--c) 35%, var(--border-default));
   border-radius: 1.1rem;
   background:
-    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--c) 10%, transparent), transparent 55%),
+    radial-gradient(
+      circle at 0% 0%,
+      color-mix(in srgb, var(--c) 10%, transparent),
+      transparent 55%
+    ),
     #111316;
   box-shadow: 0 24px 60px -20px rgb(0 0 0 / 70%);
   animation: nudgeIn 420ms cubic-bezier(0.2, 0.8, 0.3, 1.1);
 }
 @keyframes nudgeIn {
-  from { opacity: 0; transform: translateY(16px); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
 }
 .head {
   display: flex;
@@ -55,7 +62,9 @@
   font-size: 0.9rem;
   text-decoration: none;
 }
-.primary:hover { filter: brightness(1.05); }
+.primary:hover {
+  filter: brightness(1.05);
+}
 .later,
 .close {
   border: 0;
@@ -107,5 +116,7 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .nudge { animation: none; }
+  .nudge {
+    animation: none;
+  }
 }

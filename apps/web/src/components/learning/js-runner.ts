@@ -14,7 +14,10 @@ import { itemAt } from "../../lib/item-at";
  */
 
 export type RunMode = "preview" | "check";
-export type LogLine = { level: "log" | "info" | "warn" | "error"; text: string };
+export type LogLine = {
+  level: "log" | "info" | "warn" | "error";
+  text: string;
+};
 export type RunCheck = { js?: string | undefined; log?: string | undefined };
 export type RunnerMessage =
   | { runnerToken: string; type: "result"; results: boolean[]; logs: LogLine[] }
@@ -65,21 +68,33 @@ export function guardLoops(code: string): string {
     if (ch === "/" && code[i + 1] === "/") {
       const end = code.indexOf("\n", i);
       const stop = end === -1 ? n : end;
-      out += code.slice(i, stop); i = stop; continue;
+      out += code.slice(i, stop);
+      i = stop;
+      continue;
     }
     if (ch === "/" && code[i + 1] === "*") {
       const end = code.indexOf("*/", i + 2);
       const stop = end === -1 ? n : end + 2;
-      out += code.slice(i, stop); i = stop; continue;
+      out += code.slice(i, stop);
+      i = stop;
+      continue;
     }
     if (ch === '"' || ch === "'" || ch === "`") {
       let j = i + 1;
       while (j < n && code[j] !== ch) j += code[j] === "\\" ? 2 : 1;
-      out += code.slice(i, j + 1); i = j + 1; continue;
+      out += code.slice(i, j + 1);
+      i = j + 1;
+      continue;
     }
-    const keyword = !word(i - 1) && (code.startsWith("for", i) && !word(i + 3) ? "for"
-      : code.startsWith("while", i) && !word(i + 5) ? "while"
-      : code.startsWith("do", i) && !word(i + 2) ? "do" : null);
+    const keyword =
+      !word(i - 1) &&
+      (code.startsWith("for", i) && !word(i + 3)
+        ? "for"
+        : code.startsWith("while", i) && !word(i + 5)
+          ? "while"
+          : code.startsWith("do", i) && !word(i + 2)
+            ? "do"
+            : null);
     if (keyword) {
       let j = i + keyword.length;
       if (keyword !== "do") {
@@ -88,7 +103,10 @@ export function guardLoops(code: string): string {
           let depth = 0;
           for (; j < n; j++) {
             if (code[j] === "(") depth++;
-            else if (code[j] === ")" && --depth === 0) { j++; break; }
+            else if (code[j] === ")" && --depth === 0) {
+              j++;
+              break;
+            }
           }
         }
       }
@@ -96,11 +114,15 @@ export function guardLoops(code: string): string {
       while (k < n && /\s/.test(itemAt(code, k))) k++;
       if (code[k] === "{") {
         out += code.slice(i, k + 1) + "if(__loopGuard())break;";
-        i = k + 1; continue;
+        i = k + 1;
+        continue;
       }
-      out += code.slice(i, j); i = j; continue;
+      out += code.slice(i, j);
+      i = j;
+      continue;
     }
-    out += ch; i++;
+    out += ch;
+    i++;
   }
   return out;
 }
@@ -152,9 +174,11 @@ addEventListener("load",function(){render();size();});
 }
 
 function checker(token: string, checks: RunCheck[]): string {
-  const steps = checks.map((check) => check.js !== undefined
-    ? `try{__r.push(!!(await (async()=>(${check.js}))()))}catch(__e){__r.push(false)}`
-    : `__r.push(__has(${JSON.stringify(check.log ?? "")}))`);
+  const steps = checks.map((check) =>
+    check.js !== undefined
+      ? `try{__r.push(!!(await (async()=>(${check.js}))()))}catch(__e){__r.push(false)}`
+      : `__r.push(__has(${JSON.stringify(check.log ?? "")}))`
+  );
   return `addEventListener("load",function(){setTimeout(async function(){
 // Internal names start with __ so they never shadow the learner's own globals in check expressions.
 var __logs=window.__runnerLogs||[];var __norm=function(s){return String(s).replace(/\\s+/g," ").trim().toLowerCase()};
@@ -169,22 +193,50 @@ const CSP = `<meta http-equiv="Content-Security-Policy" content="default-src 'no
  * `module: true` runs JavaScript as a module, so examples may use top-level `await`. Concept cards
  * use it; challenges do not, because their checks read the learner's top-level bindings.
  */
-export function runnerDocument({ code, lang = "html", page = "", mode, token, checks = [], module = false }: {
-  code: string; lang?: "html" | "js" | undefined; page?: string | undefined; mode: RunMode; token: string; checks?: RunCheck[]; module?: boolean;
+export function runnerDocument({
+  code,
+  lang = "html",
+  page = "",
+  mode,
+  token,
+  checks = [],
+  module = false
+}: {
+  code: string;
+  lang?: "html" | "js" | undefined;
+  page?: string | undefined;
+  mode: RunMode;
+  token: string;
+  checks?: RunCheck[];
+  module?: boolean;
 }): string {
   const head = `${CSP}<meta charset="utf-8"><script>${prelude(token, mode)}</script>`;
-  const tail = mode === "check" ? `<script>${checker(token, checks)}</script>` : "";
+  const tail =
+    mode === "check" ? `<script>${checker(token, checks)}</script>` : "";
   if (lang === "js") {
     return `<!doctype html><html><head>${head}<style>body{font:15px/1.5 system-ui,sans-serif;margin:8px;color:#2b1d14}</style></head><body>${page}<script${module ? ' type="module"' : ""}>${scriptText(guardLoops(code))}</script>${tail}</body></html>`;
   }
-  const guarded = code.replace(/(<script(?![^>]*\bsrc=)[^>]*>)([\s\S]*?)(<\/script>)/gi, (_, open: string, body: string, close: string) => open + guardLoops(body) + close);
-  const withHead = /<head[^>]*>/i.test(guarded) ? guarded.replace(/<head[^>]*>/i, (m) => m + head) : head + guarded;
+  const guarded = code.replace(
+    /(<script(?![^>]*\bsrc=)[^>]*>)([\s\S]*?)(<\/script>)/gi,
+    (_, open: string, body: string, close: string) =>
+      open + guardLoops(body) + close
+  );
+  const withHead = /<head[^>]*>/i.test(guarded)
+    ? guarded.replace(/<head[^>]*>/i, (m) => m + head)
+    : head + guarded;
   return withHead + tail;
 }
 
 /** Examples run as modules only when they need top-level `await`; everything else stays a classic script. */
 export const needsModule = (code: string) => /\bawait\b/.test(code);
 
-export function isRunnerMessage(data: unknown, token: string): data is RunnerMessage {
-  return !!data && typeof data === "object" && (data as { runnerToken?: unknown }).runnerToken === token;
+export function isRunnerMessage(
+  data: unknown,
+  token: string
+): data is RunnerMessage {
+  return (
+    !!data &&
+    typeof data === "object" &&
+    (data as { runnerToken?: unknown }).runnerToken === token
+  );
 }

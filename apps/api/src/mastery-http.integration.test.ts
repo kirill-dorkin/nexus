@@ -88,7 +88,9 @@ describe("Mastery projection and recomputation HTTP lifecycle", () => {
     );
     organizationId = organization.rows[0]?.id ?? "";
     if (organizationId.length === 0) {
-      throw new Error("Failed to create Mastery integration-test organization.");
+      throw new Error(
+        "Failed to create Mastery integration-test organization."
+      );
     }
 
     for (const userId of [adminUserId, learnerUserId, instructorUserId]) {
@@ -180,7 +182,12 @@ describe("Mastery projection and recomputation HTTP lifecycle", () => {
          (organization_id, course_version_id, slug, name, delivery_mode, created_by_user_id)
        VALUES ($1, $2, $3, 'Mastery self-paced', 'self_paced', $4)
        RETURNING id::text`,
-      [organizationId, courseVersionId, `mastery-offering-${randomUUID()}`, adminUserId]
+      [
+        organizationId,
+        courseVersionId,
+        `mastery-offering-${randomUUID()}`,
+        adminUserId
+      ]
     );
     const offeringId = offering.rows[0]?.id ?? "";
 
@@ -210,15 +217,15 @@ describe("Mastery projection and recomputation HTTP lifecycle", () => {
     );
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
@@ -456,6 +463,8 @@ describe("Mastery projection and recomputation HTTP lifecycle", () => {
       [organizationId]
     );
 
-    expect(result.rows.map((row) => row.event_name)).toContain("mastery.recomputed");
+    expect(result.rows.map((row) => row.event_name)).toContain(
+      "mastery.recomputed"
+    );
   });
 });

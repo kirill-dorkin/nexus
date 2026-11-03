@@ -25,9 +25,7 @@ const activity: CourseVersionActivity = {
   skillIds: [skillA, skillB]
 };
 
-function result(
-  overrides: Partial<ValidationResult> = {}
-): ValidationResult {
+function result(overrides: Partial<ValidationResult> = {}): ValidationResult {
   return {
     id: "01994f13-8de0-7a11-8d5f-1e8c5526f007",
     organizationId,
@@ -68,7 +66,8 @@ describe("trusted ValidationResult evidence normalization", () => {
 
   it("uses deterministic score fallbacks for decisive unscored outcomes", () => {
     expect(
-      normalizeTrustedValidationResult(result({ score: null }), activity)[0]?.score
+      normalizeTrustedValidationResult(result({ score: null }), activity)[0]
+        ?.score
     ).toBe(1);
     expect(
       normalizeTrustedValidationResult(
@@ -92,7 +91,10 @@ describe("trusted ValidationResult evidence normalization", () => {
       )
     ).toEqual([]);
     expect(
-      normalizeTrustedValidationResult(result({ evidenceTrust: "advisory" }), activity)
+      normalizeTrustedValidationResult(
+        result({ evidenceTrust: "advisory" }),
+        activity
+      )
     ).toEqual([]);
   });
 

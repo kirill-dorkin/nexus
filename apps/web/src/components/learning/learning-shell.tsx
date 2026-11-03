@@ -11,7 +11,12 @@ export function BrandMark() {
       <svg viewBox="0 0 24 24" width="18" height="18">
         <circle cx="7" cy="7" r="3.2" fill="currentColor" />
         <circle cx="17" cy="17" r="3.2" fill="currentColor" />
-        <path d="M9.3 9.3 14.7 14.7" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
+        <path
+          d="M9.3 9.3 14.7 14.7"
+          stroke="currentColor"
+          strokeWidth="2.6"
+          strokeLinecap="round"
+        />
       </svg>
     </span>
   );
@@ -19,7 +24,11 @@ export function BrandMark() {
 
 export function BrandLink() {
   return (
-    <Link className={styles.brand} href="/" aria-label={`${brand.name} — на главную`}>
+    <Link
+      className={styles.brand}
+      href="/"
+      aria-label={`${brand.name} — на главную`}
+    >
       <BrandMark />
       <span>{brand.name}</span>
     </Link>

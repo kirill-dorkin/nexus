@@ -8,7 +8,9 @@ import {
 import { parseRequest } from "../../http/validation";
 import { LearningHistoryApplicationService } from "./application/learning-history.service";
 
-@Controller("organizations/:organizationId/enrollments/:enrollmentId/learning-events")
+@Controller(
+  "organizations/:organizationId/enrollments/:enrollmentId/learning-events"
+)
 export class LearningHistoryController {
   constructor(private readonly history: LearningHistoryApplicationService) {}
 

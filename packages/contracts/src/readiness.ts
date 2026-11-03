@@ -111,7 +111,9 @@ function validateReadinessOutcome(
   value: ReadinessOutcome,
   context: z.RefinementCtx
 ): void {
-  const hasNotReady = value.skills.some((skill) => skill.status === "not_ready");
+  const hasNotReady = value.skills.some(
+    (skill) => skill.status === "not_ready"
+  );
   const hasInsufficient = value.skills.some(
     (skill) => skill.status === "insufficient_evidence"
   );
@@ -203,7 +205,8 @@ export const offeringReadinessSummarySchema = z
     ) {
       context.addIssue({
         code: "custom",
-        message: "readiness summary status counts must equal active enrollment count"
+        message:
+          "readiness summary status counts must equal active enrollment count"
       });
     }
     if (
@@ -239,16 +242,19 @@ export const offeringReadinessOverviewSchema = z
     }
 
     const actual = {
-      not_ready: value.learners.filter((learner) => learner.status === "not_ready")
-        .length,
+      not_ready: value.learners.filter(
+        (learner) => learner.status === "not_ready"
+      ).length,
       insufficient_evidence: value.learners.filter(
         (learner) => learner.status === "insufficient_evidence"
       ).length,
-      ready: value.learners.filter((learner) => learner.status === "ready").length
+      ready: value.learners.filter((learner) => learner.status === "ready")
+        .length
     };
     if (
       actual.not_ready !== value.summary.notReadyCount ||
-      actual.insufficient_evidence !== value.summary.insufficientEvidenceCount ||
+      actual.insufficient_evidence !==
+        value.summary.insufficientEvidenceCount ||
       actual.ready !== value.summary.readyCount
     ) {
       context.addIssue({
@@ -287,8 +293,12 @@ export const offeringReadinessOverviewSchema = z
 export type ReadinessPolicy = z.infer<typeof readinessPolicySchema>;
 export type ReadinessStatus = z.infer<typeof readinessStatusSchema>;
 export type ReadinessSkillReason = z.infer<typeof readinessSkillReasonSchema>;
-export type ReadinessSkillDecision = z.infer<typeof readinessSkillDecisionSchema>;
-export type CourseReadinessDecision = z.infer<typeof courseReadinessDecisionSchema>;
+export type ReadinessSkillDecision = z.infer<
+  typeof readinessSkillDecisionSchema
+>;
+export type CourseReadinessDecision = z.infer<
+  typeof courseReadinessDecisionSchema
+>;
 export type OfferingReadinessTriagePolicy = z.infer<
   typeof offeringReadinessTriagePolicySchema
 >;

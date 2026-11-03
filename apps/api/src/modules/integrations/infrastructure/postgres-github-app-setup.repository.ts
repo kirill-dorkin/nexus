@@ -191,7 +191,11 @@ export class PostgresGitHubAppSetupRepository extends GitHubAppSetupRepository {
        WHERE organization_id = $1
          AND github_installation_id = $2
          AND status <> 'removed'`,
-      [input.organizationId, input.installation.githubInstallationId, input.syncedAt]
+      [
+        input.organizationId,
+        input.installation.githubInstallationId,
+        input.syncedAt
+      ]
     );
 
     for (const repository of input.installation.repositories) {
@@ -251,7 +255,9 @@ export class PostgresGitHubAppSetupRepository extends GitHubAppSetupRepository {
       installationRow.id
     );
     if (installation === null) {
-      throw new Error("GitHub installation mapping disappeared during setup completion.");
+      throw new Error(
+        "GitHub installation mapping disappeared during setup completion."
+      );
     }
     return installation;
   }
@@ -280,7 +286,8 @@ export class PostgresGitHubAppSetupRepository extends GitHubAppSetupRepository {
         installation,
         repositoryResult.rows.filter(
           (repository) =>
-            repository.github_installation_id === installation.github_installation_id
+            repository.github_installation_id ===
+            installation.github_installation_id
         )
       )
     );

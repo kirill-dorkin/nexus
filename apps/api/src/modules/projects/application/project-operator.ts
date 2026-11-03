@@ -15,7 +15,9 @@ const operatorRoles: readonly SystemRoleKey[] = [
 
 @Injectable()
 export class ProjectOperator {
-  constructor(private readonly authorization: AuthorizationApplicationService) {}
+  constructor(
+    private readonly authorization: AuthorizationApplicationService
+  ) {}
 
   async require(
     transaction: DatabaseTransaction,
@@ -47,14 +49,14 @@ export class ProjectOperator {
 
       if (
         scopeType !== "organization" &&
-        await this.authorization.hasRoleAssignment(
+        (await this.authorization.hasRoleAssignment(
           transaction,
           organizationId,
           userId,
           role,
           scopeType,
           scopeId
-        )
+        ))
       ) {
         return;
       }

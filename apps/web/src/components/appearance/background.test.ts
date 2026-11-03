@@ -5,7 +5,10 @@ const tokens = readFileSync(
   new URL("../../../../../packages/design-tokens/tokens.css", import.meta.url),
   "utf8"
 );
-const globalCss = readFileSync(new URL("../../app/globals.css", import.meta.url), "utf8");
+const globalCss = readFileSync(
+  new URL("../../app/globals.css", import.meta.url),
+  "utf8"
+);
 
 function declarations(selector: string) {
   const normalized = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -50,15 +53,23 @@ describe("quiet accent-aware page canvas", () => {
     const themeBlock = declarations(`[data-ui-theme="${theme}"]`);
     const canvas = token(themeBlock, "--page-background");
     const glow = token(themeBlock, "--page-glow");
-    const match = /^color-mix\(in srgb, var\(--accent-action\) (\d+)%, (#[0-9a-f]{6})\)$/i.exec(canvas);
-    const glowMatch = /^color-mix\(in srgb, var\(--accent-(?:action|night)\) (\d+)%, transparent\)$/i.exec(glow);
+    const match =
+      /^color-mix\(in srgb, var\(--accent-action\) (\d+)%, (#[0-9a-f]{6})\)$/i.exec(
+        canvas
+      );
+    const glowMatch =
+      /^color-mix\(in srgb, var\(--accent-(?:action|night)\) (\d+)%, transparent\)$/i.exec(
+        glow
+      );
     it(`limits the ${theme} background color and glow to a subtle fraction`, () => {
       expect(match).not.toBeNull();
       expect(glowMatch).not.toBeNull();
       const strength = Number(match![1]);
       expect(strength).toBeGreaterThan(0);
       expect(strength).toBeLessThanOrEqual(theme === "dark" ? 9 : 5);
-      expect(Number(glowMatch![1])).toBeLessThanOrEqual(theme === "dark" ? 8 : 6);
+      expect(Number(glowMatch![1])).toBeLessThanOrEqual(
+        theme === "dark" ? 8 : 6
+      );
     });
     for (const accent of ["rose", "violet", "blue", "teal", "amber", "lime"]) {
       it(`preserves readable ${theme} text on the ${accent} canvas`, () => {
@@ -67,12 +78,15 @@ describe("quiet accent-aware page canvas", () => {
         const action = rgb(token(accentBlock, "--accent-action"));
         const neutral = rgb(match![2]!);
         const weight = Number(match![1]) / 100;
-        const canvasRgb = neutral.map((channel, i) =>
-          (1 - weight) * channel + weight * action[i]!
+        const canvasRgb = neutral.map(
+          (channel, i) => (1 - weight) * channel + weight * action[i]!
         );
         for (const foreground of ["--text-primary", "--text-secondary"]) {
           const textRgb = rgb(token(themeBlock, foreground));
-          expect(ratio(textRgb, canvasRgb), `${theme}/${accent}: ${foreground}`).toBeGreaterThanOrEqual(4.5);
+          expect(
+            ratio(textRgb, canvasRgb),
+            `${theme}/${accent}: ${foreground}`
+          ).toBeGreaterThanOrEqual(4.5);
         }
       });
     }

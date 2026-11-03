@@ -98,7 +98,8 @@ export class LearningProgressionApplicationService {
 
           if (gate.status === "blocked") {
             throw new ConflictException({
-              message: "Enrollment completion is blocked by the progression gate.",
+              message:
+                "Enrollment completion is blocked by the progression gate.",
               code: "progression_gate_denied",
               gatePolicy: ENROLLMENT_COMPLETION_GATE_POLICY,
               readiness

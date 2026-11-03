@@ -20,7 +20,11 @@ export function StudioShell({ children }: { children: ReactNode }) {
       </a>
       <header className={site.header}>
         <div className={site.headerInner}>
-          <Link className={site.brand} href="/" aria-label={`${brand.name} — на главную`}>
+          <Link
+            className={site.brand}
+            href="/"
+            aria-label={`${brand.name} — на главную`}
+          >
             <BrandMark />
             <span>{brand.name}</span>
             <span className={styles.areaBadge}>Studio</span>

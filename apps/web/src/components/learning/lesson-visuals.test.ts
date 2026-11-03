@@ -4,16 +4,37 @@ import { highlight } from "./code-highlight";
 
 describe("lesson visuals", () => {
   it("accepts valid diagrams and demos", () => {
-    expect(parseVisual('{"kind":"url","parts":[{"text":"https://","label":"протокол"}]}')?.kind).toBe("url");
-    expect(parseVisual('{"kind":"tree","items":[{"name":"site/","depth":0}]}')?.kind).toBe("tree");
-    expect(parseVisual('{"kind":"typing","scenes":[{"input":"ul>li*3","key":"Tab","output":"<ul></ul>"}]}')?.kind).toBe("typing");
+    expect(
+      parseVisual(
+        '{"kind":"url","parts":[{"text":"https://","label":"протокол"}]}'
+      )?.kind
+    ).toBe("url");
+    expect(
+      parseVisual('{"kind":"tree","items":[{"name":"site/","depth":0}]}')?.kind
+    ).toBe("tree");
+    expect(
+      parseVisual(
+        '{"kind":"typing","scenes":[{"input":"ul>li*3","key":"Tab","output":"<ul></ul>"}]}'
+      )?.kind
+    ).toBe("typing");
   });
   it("treats a single-scene typing block as one animation and keeps legacy scenes", () => {
-    const single = parseVisual('{"kind":"typing","input":"h1+p","key":"Tab","output":"<h1></h1>","parts":[{"text":"h1","label":"заголовок"},{"text":"+","label":"рядом"},{"text":"p","label":"абзац"}]}');
-    expect(single).toMatchObject({ kind: "typing", scenes: [{ input: "h1+p", parts: [{ text: "h1" }, { text: "+" }, { text: "p" }] }] });
-    const legacy = parseVisual('{"kind":"typing","scenes":[{"input":"a"},{"input":"b"}]}');
+    const single = parseVisual(
+      '{"kind":"typing","input":"h1+p","key":"Tab","output":"<h1></h1>","parts":[{"text":"h1","label":"заголовок"},{"text":"+","label":"рядом"},{"text":"p","label":"абзац"}]}'
+    );
+    expect(single).toMatchObject({
+      kind: "typing",
+      scenes: [
+        { input: "h1+p", parts: [{ text: "h1" }, { text: "+" }, { text: "p" }] }
+      ]
+    });
+    const legacy = parseVisual(
+      '{"kind":"typing","scenes":[{"input":"a"},{"input":"b"}]}'
+    );
     expect(legacy?.kind === "typing" && legacy.scenes.length).toBe(2);
-    expect(parseVisual('{"kind":"typing","input":"a","parts":[{"text":1}]}')).toBeNull();
+    expect(
+      parseVisual('{"kind":"typing","input":"a","parts":[{"text":1}]}')
+    ).toBeNull();
   });
   it("puts the caret where Emmet would: first empty attribute, element or blank line", () => {
     expect(caretOffset("<ul>\n  <li></li>\n</ul>")).toBe("<ul>\n  <li>".length);
@@ -25,7 +46,9 @@ describe("lesson visuals", () => {
     expect(parseVisual("{not json")).toBeNull();
     expect(parseVisual('{"kind":"script","src":"x"}')).toBeNull();
     expect(parseVisual('{"kind":"url","parts":[]}')).toBeNull();
-    expect(parseVisual('{"kind":"tree","items":[{"name":"a","depth":99}]}')).toBeNull();
+    expect(
+      parseVisual('{"kind":"tree","items":[{"name":"a","depth":99}]}')
+    ).toBeNull();
   });
 });
 
@@ -45,19 +68,31 @@ describe("code highlighting", () => {
     const tokens = highlight(code, "html");
     expect(tokens.map((t) => t.text).join("")).toBe(code);
     expect(tokens.find((t) => t.kind === "property")?.text).toBe("color");
-    expect(tokens.filter((t) => t.kind === "tag").map((t) => t.text)).toEqual(["style", "style", "p", "p"]);
+    expect(tokens.filter((t) => t.kind === "tag").map((t) => t.text)).toEqual([
+      "style",
+      "style",
+      "p",
+      "p"
+    ]);
   });
   it("highlights SQL keywords in any case, strings, comments, numbers and functions", () => {
-    const code = "-- меню\nselect name, round(price, 2) FROM products WHERE city = 'Москва' AND id > 10;";
+    const code =
+      "-- меню\nselect name, round(price, 2) FROM products WHERE city = 'Москва' AND id > 10;";
     const tokens = highlight(code, "sql");
     expect(tokens.map((t) => t.text).join("")).toBe(code);
-    expect(tokens.filter((t) => t.kind === "keyword").map((t) => t.text)).toEqual(["select", "FROM", "WHERE", "AND"]);
+    expect(
+      tokens.filter((t) => t.kind === "keyword").map((t) => t.text)
+    ).toEqual(["select", "FROM", "WHERE", "AND"]);
     expect(tokens.find((t) => t.kind === "comment")?.text).toBe("-- меню");
     expect(tokens.find((t) => t.kind === "string")?.text).toBe("'Москва'");
     expect(tokens.find((t) => t.kind === "property")?.text).toBe("round");
-    expect(tokens.filter((t) => t.kind === "number").map((t) => t.text)).toEqual(["2", "10"]);
+    expect(
+      tokens.filter((t) => t.kind === "number").map((t) => t.text)
+    ).toEqual(["2", "10"]);
   });
   it("keeps unknown languages as plain text", () => {
-    expect(highlight("WEBVTT", "text")).toEqual([{ kind: "plain", text: "WEBVTT" }]);
+    expect(highlight("WEBVTT", "text")).toEqual([
+      { kind: "plain", text: "WEBVTT" }
+    ]);
   });
 });

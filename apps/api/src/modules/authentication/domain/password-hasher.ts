@@ -1,8 +1,4 @@
-import {
-  randomBytes,
-  scrypt,
-  timingSafeEqual
-} from "node:crypto";
+import { randomBytes, scrypt, timingSafeEqual } from "node:crypto";
 
 const SCRYPT_N = 2 ** 17;
 const SCRYPT_R = 8;
@@ -44,7 +40,8 @@ type ParsedPasswordHash = Readonly<{
 }>;
 
 function parsePasswordHash(encodedHash: string): ParsedPasswordHash | null {
-  const [format, n, r, p, saltEncoded, keyEncoded, ...rest] = encodedHash.split("$");
+  const [format, n, r, p, saltEncoded, keyEncoded, ...rest] =
+    encodedHash.split("$");
 
   if (
     rest.length > 0 ||

@@ -5,7 +5,13 @@ import { courseUrl } from "../../lib/public-learning-routes";
 import styles from "./flow.module.css";
 
 /** Course page: where this course sits in the route, what it expects and what comes next (ADR-0066). */
-export function LearningRouteCard({ course, catalog }: { course: PublicLearningCourse; catalog: readonly PublicLearningCourse[] }) {
+export function LearningRouteCard({
+  course,
+  catalog
+}: {
+  course: PublicLearningCourse;
+  catalog: readonly PublicLearningCourse[];
+}) {
   const route = routePosition(course, catalog);
   if (!route) return null;
   const { step, previous, next } = route;
@@ -36,7 +42,12 @@ export function LearningRouteCard({ course, catalog }: { course: PublicLearningC
             {step.needs}
             {step.buildsOnPrevious && previous && (
               <>
-                {" "}Если пока нет — начните с курса <Link href={courseUrl(previous.course)}>{previous.course.course.title}</Link>.
+                {" "}
+                Если пока нет — начните с курса{" "}
+                <Link href={courseUrl(previous.course)}>
+                  {previous.course.course.title}
+                </Link>
+                .
               </>
             )}
           </dd>
@@ -49,7 +60,9 @@ export function LearningRouteCard({ course, catalog }: { course: PublicLearningC
           <div>
             <dt>Дальше</dt>
             <dd>
-              <Link href={courseUrl(next.course)}>{next.course.course.title}</Link>
+              <Link href={courseUrl(next.course)}>
+                {next.course.course.title}
+              </Link>
             </dd>
           </div>
         )}

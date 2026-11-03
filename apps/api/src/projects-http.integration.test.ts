@@ -61,7 +61,8 @@ describe("Projects repository-backed vertical", () => {
       [`projects-${label}-${randomUUID()}@example.test`, `Projects ${label}`]
     );
     const id = result.rows[0]?.id;
-    if (id === undefined) throw new Error("Failed to create Projects test user.");
+    if (id === undefined)
+      throw new Error("Failed to create Projects test user.");
     createdUserIds.push(id);
     return id;
   }
@@ -92,7 +93,8 @@ describe("Projects repository-backed vertical", () => {
       [`projects-${label}-${randomUUID()}`, `Projects ${label}`, userId]
     );
     const organizationId = organization.rows[0]?.id;
-    if (organizationId === undefined) throw new Error("Failed to create Projects test organization.");
+    if (organizationId === undefined)
+      throw new Error("Failed to create Projects test organization.");
     await migrationPool.query(
       `INSERT INTO organizations.memberships (organization_id, user_id, status, joined_at)
        VALUES ($1, $2, 'active', now())`,
@@ -142,10 +144,16 @@ describe("Projects repository-backed vertical", () => {
          status
        ) VALUES ($1, $2, $3, $4, 'active')
        RETURNING id::text`,
-      [organizationId, installationId, repositoryId, `example-${namespace}/${label}`]
+      [
+        organizationId,
+        installationId,
+        repositoryId,
+        `example-${namespace}/${label}`
+      ]
     );
     const mappingId = repository.rows[0]?.id;
-    if (mappingId === undefined) throw new Error("Failed to create trusted repository fixture.");
+    if (mappingId === undefined)
+      throw new Error("Failed to create trusted repository fixture.");
     return { installationId, repositoryId, mappingId };
   }
 
@@ -172,20 +180,44 @@ describe("Projects repository-backed vertical", () => {
     });
     ownerA = await createTenant("tenant-a");
     ownerB = await createTenant("tenant-b");
-    adminA = await addMember(ownerA.organizationId, "admin-a", "active", "organization_admin");
-    instructorA = await addMember(ownerA.organizationId, "instructor-a", "active", "instructor");
-    learnerA = await addMember(ownerA.organizationId, "learner-a", "active", "learner");
-    suspendedMemberA = await addMember(ownerA.organizationId, "suspended-a", "suspended");
+    adminA = await addMember(
+      ownerA.organizationId,
+      "admin-a",
+      "active",
+      "organization_admin"
+    );
+    instructorA = await addMember(
+      ownerA.organizationId,
+      "instructor-a",
+      "active",
+      "instructor"
+    );
+    learnerA = await addMember(
+      ownerA.organizationId,
+      "learner-a",
+      "active",
+      "learner"
+    );
+    suspendedMemberA = await addMember(
+      ownerA.organizationId,
+      "suspended-a",
+      "suspended"
+    );
     repositoryA = await createRepository(ownerA.organizationId, "alpha");
     repositoryB = await createRepository(ownerB.organizationId, "foreign");
 
     app = await createApiApplication();
-    app.getHttpAdapter().getInstance().addHook("onRequest", async (incoming) => {
-      const testUserId = incoming.headers["x-test-user-id"];
-      if (typeof testUserId === "string" && testUserId.length > 0) {
-        attachPlatformPrincipal(incoming as PlatformPrincipalCarrier, { userId: testUserId });
-      }
-    });
+    app
+      .getHttpAdapter()
+      .getInstance()
+      .addHook("onRequest", async (incoming) => {
+        const testUserId = incoming.headers["x-test-user-id"];
+        if (typeof testUserId === "string" && testUserId.length > 0) {
+          attachPlatformPrincipal(incoming as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
+        }
+      });
     await app.init();
   });
 
@@ -221,7 +253,9 @@ describe("Projects repository-backed vertical", () => {
     expect(ownerResponse.statusCode).toBe(201);
     const primaryTeam = projectTeamSchema.parse(JSON.parse(ownerResponse.body));
     primaryTeamId = primaryTeam.id;
-    expect(primaryTeam.members.map((member) => member.userId)).toEqual([learnerA]);
+    expect(primaryTeam.members.map((member) => member.userId)).toEqual([
+      learnerA
+    ]);
 
     for (const [actor, name] of [
       [adminA, "Admin team"],
@@ -258,7 +292,9 @@ describe("Projects repository-backed vertical", () => {
        WHERE organization_id = $1`,
       [ownerA.organizationId]
     );
-    expect(groupCountAfter.rows[0]?.count).toBe(groupCountBefore.rows[0]?.count);
+    expect(groupCountAfter.rows[0]?.count).toBe(
+      groupCountBefore.rows[0]?.count
+    );
 
     const teamMembership = await migrationPool.query<{ count: string }>(
       `SELECT count(*)::text AS count
@@ -285,16 +321,21 @@ describe("Projects repository-backed vertical", () => {
     });
     expect(connectedResponse.statusCode).toBe(200);
     const connected = projectSchema.parse(JSON.parse(connectedResponse.body));
-    expect(connected.repository?.repositoryMappingId).toBe(repositoryA.mappingId);
+    expect(connected.repository?.repositoryMappingId).toBe(
+      repositoryA.mappingId
+    );
     expect(connected.repository?.availability).toBe("active");
     activeBindingId = connected.repository?.bindingId ?? "";
 
-    const repeated = projectSchema.parse(JSON.parse((await request(
-      ownerA.userId,
-      "PUT",
-      connectUrl,
-      { repositoryMappingId: repositoryA.mappingId }
-    )).body));
+    const repeated = projectSchema.parse(
+      JSON.parse(
+        (
+          await request(ownerA.userId, "PUT", connectUrl, {
+            repositoryMappingId: repositoryA.mappingId
+          })
+        ).body
+      )
+    );
     expect(repeated.repository?.bindingId).toBe(activeBindingId);
 
     const bindingCount = await migrationPool.query<{ count: string }>(
@@ -311,36 +352,53 @@ describe("Projects repository-backed vertical", () => {
       `/v1/organizations/${ownerA.organizationId}/projects`,
       { name: "Second project", teamId: primaryTeamId }
     );
-    const secondProject = projectSchema.parse(JSON.parse(secondProjectResponse.body));
-    expect((await request(
-      ownerA.userId,
-      "PUT",
-      `/v1/organizations/${ownerA.organizationId}/projects/${secondProject.id}/repository`,
-      { repositoryMappingId: repositoryA.mappingId }
-    )).statusCode).toBe(409);
+    const secondProject = projectSchema.parse(
+      JSON.parse(secondProjectResponse.body)
+    );
+    expect(
+      (
+        await request(
+          ownerA.userId,
+          "PUT",
+          `/v1/organizations/${ownerA.organizationId}/projects/${secondProject.id}/repository`,
+          { repositoryMappingId: repositoryA.mappingId }
+        )
+      ).statusCode
+    ).toBe(409);
 
-    expect((await request(
-      ownerA.userId,
-      "PUT",
-      `/v1/organizations/${ownerA.organizationId}/projects/${secondProject.id}/repository`,
-      { repositoryMappingId: repositoryB.mappingId }
-    )).statusCode).toBe(404);
+    expect(
+      (
+        await request(
+          ownerA.userId,
+          "PUT",
+          `/v1/organizations/${ownerA.organizationId}/projects/${secondProject.id}/repository`,
+          { repositoryMappingId: repositoryB.mappingId }
+        )
+      ).statusCode
+    ).toBe(404);
 
-    await expect(withTenantTransaction(
-      appPool,
-      { organizationId: ownerA.organizationId, userId: ownerA.userId },
-      async (transaction) => {
-        await transaction.client.query(
-          `INSERT INTO projects.repository_bindings (
+    await expect(
+      withTenantTransaction(
+        appPool,
+        { organizationId: ownerA.organizationId, userId: ownerA.userId },
+        async (transaction) => {
+          await transaction.client.query(
+            `INSERT INTO projects.repository_bindings (
              organization_id,
              project_id,
              github_repository_mapping_id,
              connected_by_user_id
            ) VALUES ($1, $2, $3, $4)`,
-          [ownerA.organizationId, secondProject.id, repositoryB.mappingId, ownerA.userId]
-        );
-      }
-    )).rejects.toMatchObject({ code: "23503" });
+            [
+              ownerA.organizationId,
+              secondProject.id,
+              repositoryB.mappingId,
+              ownerA.userId
+            ]
+          );
+        }
+      )
+    ).rejects.toMatchObject({ code: "23503" });
   });
 
   it("preserves the Project binding while current repository availability changes", async () => {
@@ -357,11 +415,17 @@ describe("Projects repository-backed vertical", () => {
       [ownerA.organizationId, repositoryA.mappingId]
     );
 
-    const suspended = projectSchema.parse(JSON.parse((await request(
-      ownerA.userId,
-      "GET",
-      `/v1/organizations/${ownerA.organizationId}/projects/${primaryProjectId}`
-    )).body));
+    const suspended = projectSchema.parse(
+      JSON.parse(
+        (
+          await request(
+            ownerA.userId,
+            "GET",
+            `/v1/organizations/${ownerA.organizationId}/projects/${primaryProjectId}`
+          )
+        ).body
+      )
+    );
     expect(suspended.repository?.bindingId).toBe(activeBindingId);
     expect(suspended.repository?.availability).toBe("suspended");
 
@@ -378,11 +442,17 @@ describe("Projects repository-backed vertical", () => {
       [ownerA.organizationId, repositoryA.mappingId]
     );
 
-    const removed = projectSchema.parse(JSON.parse((await request(
-      ownerA.userId,
-      "GET",
-      `/v1/organizations/${ownerA.organizationId}/projects/${primaryProjectId}`
-    )).body));
+    const removed = projectSchema.parse(
+      JSON.parse(
+        (
+          await request(
+            ownerA.userId,
+            "GET",
+            `/v1/organizations/${ownerA.organizationId}/projects/${primaryProjectId}`
+          )
+        ).body
+      )
+    );
     expect(removed.repository?.bindingId).toBe(activeBindingId);
     expect(removed.repository?.availability).toBe("removed");
 
@@ -397,18 +467,14 @@ describe("Projects repository-backed vertical", () => {
 
   it("disconnects non-destructively and idempotently while preserving binding history", async () => {
     const url = `/v1/organizations/${ownerA.organizationId}/projects/${primaryProjectId}/repository`;
-    const first = projectSchema.parse(JSON.parse((await request(
-      ownerA.userId,
-      "DELETE",
-      url
-    )).body));
+    const first = projectSchema.parse(
+      JSON.parse((await request(ownerA.userId, "DELETE", url)).body)
+    );
     expect(first.repository).toBeNull();
 
-    const second = projectSchema.parse(JSON.parse((await request(
-      ownerA.userId,
-      "DELETE",
-      url
-    )).body));
+    const second = projectSchema.parse(
+      JSON.parse((await request(ownerA.userId, "DELETE", url)).body)
+    );
     expect(second.repository).toBeNull();
 
     const history = await migrationPool.query<{

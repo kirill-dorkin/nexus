@@ -1,7 +1,4 @@
-import {
-  Injectable,
-  type OnApplicationShutdown
-} from "@nestjs/common";
+import { Injectable, type OnApplicationShutdown } from "@nestjs/common";
 import {
   createDatabasePool,
   withTenantTransaction as runTenantTransaction,
@@ -17,7 +14,9 @@ function requireDatabaseUrl(): string {
   const databaseUrl = process.env.DATABASE_URL;
 
   if (databaseUrl === undefined || databaseUrl.trim().length === 0) {
-    throw new Error("DATABASE_URL is required to start the API database boundary.");
+    throw new Error(
+      "DATABASE_URL is required to start the API database boundary."
+    );
   }
 
   return databaseUrl;

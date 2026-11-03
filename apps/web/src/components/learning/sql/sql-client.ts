@@ -12,7 +12,11 @@ import type { SqlJob, SqlRun } from "./sql-engine";
 const FIRST_RUN_MS = 60000; // download and start of the engine on a slow connection
 const RUN_MS = 5000;
 
-type Queued = { job: SqlJob; key: string | undefined; resolve: (run: SqlRun | null) => void };
+type Queued = {
+  job: SqlJob;
+  key: string | undefined;
+  resolve: (run: SqlRun | null) => void;
+};
 let worker: Worker | null = null;
 let warm = false;
 let running: (Queued & { id: number; timer: number }) | null = null;
@@ -39,8 +43,16 @@ function finish(run: SqlRun) {
 }
 
 function startWorker(): Worker {
-  const created = new Worker(new URL("./sql-worker.ts", import.meta.url), { type: "module" });
-  created.onmessage = (event: MessageEvent<{ id: number; run?: SqlRun; failure?: "broken" | "failed" }>) => {
+  const created = new Worker(new URL("./sql-worker.ts", import.meta.url), {
+    type: "module"
+  });
+  created.onmessage = (
+    event: MessageEvent<{
+      id: number;
+      run?: SqlRun;
+      failure?: "broken" | "failed";
+    }>
+  ) => {
     if (event.data.id !== running?.id) return;
     if (event.data.run) {
       warm = true;
@@ -48,13 +60,30 @@ function startWorker(): Worker {
       return;
     }
     stopWorker();
-    finish(event.data.failure === "broken"
-      ? failed(running.job, "База данных сломалась и перезапущена.", "Запусти запрос ещё раз.")
-      : failed(running.job, "Не удалось запустить базу данных.", "Проверь интернет и обнови страницу."));
+    finish(
+      event.data.failure === "broken"
+        ? failed(
+            running.job,
+            "База данных сломалась и перезапущена.",
+            "Запусти запрос ещё раз."
+          )
+        : failed(
+            running.job,
+            "Не удалось запустить базу данных.",
+            "Проверь интернет и обнови страницу."
+          )
+    );
   };
   created.onerror = () => {
     stopWorker();
-    if (running) finish(failed(running.job, "Движок базы данных упал и перезапущен.", "Возможно, запрос строил слишком большой результат."));
+    if (running)
+      finish(
+        failed(
+          running.job,
+          "Движок базы данных упал и перезапущен.",
+          "Возможно, запрос строил слишком большой результат."
+        )
+      );
   };
   return created;
 }
@@ -68,8 +97,13 @@ function next() {
   const limit = warm ? RUN_MS : FIRST_RUN_MS;
   const timer = window.setTimeout(() => {
     stopWorker();
-    finish(failed(item.job, `Запрос выполнялся дольше ${RUN_MS / 1000} секунд и был остановлен.`,
-      "Проверь условие рекурсии и соединения: возможно, запрос никогда не заканчивается."));
+    finish(
+      failed(
+        item.job,
+        `Запрос выполнялся дольше ${RUN_MS / 1000} секунд и был остановлен.`,
+        "Проверь условие рекурсии и соединения: возможно, запрос никогда не заканчивается."
+      )
+    );
   }, limit);
   running = { ...item, id, timer };
   worker.postMessage({ id, job: item.job });
@@ -92,8 +126,14 @@ export function runSql(job: SqlJob, key?: string): Promise<SqlRun | null> {
 }
 
 /** Runs `job` whenever it changes; `null` runs nothing. */
-export function useSqlRun(job: SqlJob | null, key: string): { run: SqlRun | null; busy: boolean } {
-  const [state, setState] = useState<{ run: SqlRun | null; busy: boolean }>({ run: null, busy: job !== null });
+export function useSqlRun(
+  job: SqlJob | null,
+  key: string
+): { run: SqlRun | null; busy: boolean } {
+  const [state, setState] = useState<{ run: SqlRun | null; busy: boolean }>({
+    run: null,
+    busy: job !== null
+  });
   const signature = job ? JSON.stringify(job) : "";
   useEffect(() => {
     if (!signature) return;
@@ -102,7 +142,9 @@ export function useSqlRun(job: SqlJob | null, key: string): { run: SqlRun | null
     void runSql(JSON.parse(signature) as SqlJob, key).then((run) => {
       if (current && run) setState({ run, busy: false });
     });
-    return () => { current = false; };
+    return () => {
+      current = false;
+    };
   }, [signature, key]);
   return state;
 }

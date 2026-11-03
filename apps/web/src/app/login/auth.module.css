@@ -15,10 +15,20 @@
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 45% 40% at 50% 0%, color-mix(in srgb, var(--accent-action) 14%, transparent), transparent 70%),
-    linear-gradient(rgb(255 255 255 / 3.5%) 1px, transparent 1px) 0 0 / 56px 56px,
-    linear-gradient(90deg, rgb(255 255 255 / 3.5%) 1px, transparent 1px) 0 0 / 56px 56px;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, black, transparent 80%);
+    radial-gradient(
+      ellipse 45% 40% at 50% 0%,
+      color-mix(in srgb, var(--accent-action) 14%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(rgb(255 255 255 / 3.5%) 1px, transparent 1px) 0 0 / 56px
+      56px,
+    linear-gradient(90deg, rgb(255 255 255 / 3.5%) 1px, transparent 1px) 0 0 /
+      56px 56px;
+  mask-image: radial-gradient(
+    ellipse 70% 60% at 50% 20%,
+    black,
+    transparent 80%
+  );
 }
 .skip {
   position: absolute;
@@ -75,7 +85,9 @@
   border-radius: 1.75rem;
   background: color-mix(in srgb, var(--surface-solid) 88%, transparent);
   backdrop-filter: blur(18px);
-  box-shadow: 0 40px 120px -40px color-mix(in srgb, var(--accent-action) 25%, transparent), 0 30px 80px -30px rgb(0 0 0 / 70%);
+  box-shadow:
+    0 40px 120px -40px color-mix(in srgb, var(--accent-action) 25%, transparent),
+    0 30px 80px -30px rgb(0 0 0 / 70%);
 }
 .intro {
   display: grid;
@@ -109,7 +121,9 @@
   font-size: 0.9rem;
   font-weight: 650;
   cursor: pointer;
-  transition: background var(--motion-fast), color var(--motion-fast);
+  transition:
+    background var(--motion-fast),
+    color var(--motion-fast);
 }
 .modes button[aria-pressed="true"] {
   background: var(--surface-hover);
@@ -141,7 +155,9 @@
   font-size: 0.92rem;
   font-weight: 600;
   text-decoration: none;
-  transition: border-color var(--motion-fast), background var(--motion-fast);
+  transition:
+    border-color var(--motion-fast),
+    background var(--motion-fast);
 }
 .providerButton:hover {
   border-color: var(--border-strong);

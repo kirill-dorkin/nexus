@@ -15,7 +15,9 @@ import {
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for course readiness integration tests.`);
+    throw new Error(
+      `${name} is required for course readiness integration tests.`
+    );
   }
   return value;
 }
@@ -174,23 +176,25 @@ describe("course readiness HTTP lifecycle", () => {
     instructorUserId = await createUser("readiness-instructor");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: `readiness-${randomUUID()}`,
         name: "Course readiness integration"
-      })).id;
+      })
+    ).id;
 
     await activateMember(learnerUserId, "learner");
     await activateMember(otherLearnerUserId, "learner");
@@ -253,7 +257,8 @@ describe("course readiness HTTP lifecycle", () => {
       }
     });
     expect(activity.statusCode).toBe(201);
-    activityId = (JSON.parse(activity.body) as { activityId: string }).activityId;
+    activityId = (JSON.parse(activity.body) as { activityId: string })
+      .activityId;
 
     const published = await app.inject({
       method: "POST",

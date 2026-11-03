@@ -134,23 +134,30 @@ export function CourseEditor({
         event.ctrlKey ||
         event.shiftKey ||
         event.altKey
-      ) return;
-      const anchor = event.target instanceof Element
-        ? event.target.closest<HTMLAnchorElement>("a[href]")
-        : null;
+      )
+        return;
+      const anchor =
+        event.target instanceof Element
+          ? event.target.closest<HTMLAnchorElement>("a[href]")
+          : null;
       if (
-        !anchor || anchor.hasAttribute("download") ||
+        !anchor ||
+        anchor.hasAttribute("download") ||
         (anchor.target && anchor.target !== "_self")
-      ) return;
+      )
+        return;
       const destination = new URL(anchor.href, window.location.href);
       if (
         destination.origin !== window.location.origin ||
         (destination.pathname === window.location.pathname &&
           destination.search === window.location.search)
-      ) return;
+      )
+        return;
       event.preventDefault();
       event.stopImmediatePropagation();
-      setLeaveHref(destination.pathname + destination.search + destination.hash);
+      setLeaveHref(
+        destination.pathname + destination.search + destination.hash
+      );
     };
     window.document.addEventListener("click", intercept, true);
     return () => window.document.removeEventListener("click", intercept, true);
@@ -238,11 +245,13 @@ export function CourseEditor({
     setChecked(null);
     await operation(async () => {
       try {
-        const result = courseManifestApplyResultSchema.parse(await studioRequest(`${path}/courses/manifest/apply`, {
-          manifest: candidate.document,
-          expectedDraftVersionId: candidate.plan.expectedDraftVersionId,
-          expectedRevision: candidate.plan.expectedRevision
-        }));
+        const result = courseManifestApplyResultSchema.parse(
+          await studioRequest(`${path}/courses/manifest/apply`, {
+            manifest: candidate.document,
+            expectedDraftVersionId: candidate.plan.expectedDraftVersionId,
+            expectedRevision: candidate.plan.expectedRevision
+          })
+        );
         if (isNew) {
           router.replace(`/studio/${org}/${result.courseId}`);
           return;
@@ -625,10 +634,14 @@ export function CourseEditor({
                     Скачать рабочую копию
                   </Button>
                   {base && (
-                    <Button variant="ghost" disabled={busy} onClick={() => {
-                      if (unsaved || uncertain) setDiscardOpen(true);
-                      else void reload();
-                    }}>
+                    <Button
+                      variant="ghost"
+                      disabled={busy}
+                      onClick={() => {
+                        if (unsaved || uncertain) setDiscardOpen(true);
+                        else void reload();
+                      }}
+                    >
                       {dirty || uncertain || mode === "json"
                         ? "Отбросить изменения и загрузить сохранённое"
                         : "Обновить сохранённое"}
@@ -687,7 +700,10 @@ export function CourseEditor({
           </div>
           <Dialog
             open={discardOpen || leaveHref !== null}
-            onDismiss={() => { setDiscardOpen(false); setLeaveHref(null); }}
+            onDismiss={() => {
+              setDiscardOpen(false);
+              setLeaveHref(null);
+            }}
             aria-labelledby="studio-discard-title"
             aria-describedby="studio-discard-description"
             className={styles.confirmation}
@@ -701,22 +717,39 @@ export function CourseEditor({
               скачать её; сохранённая версия на сервере останется без изменений.
             </Text>
             <div className={styles.actions}>
-              {/* A destructive confirmation opens with focus on the safe choice (WAI-ARIA APG). */}
-              {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
-              <Button variant="secondary" autoFocus onClick={() => {
-                setDiscardOpen(false); setLeaveHref(null);
-              }}>Остаться в редакторе</Button>
-              <Button variant="ghost" onClick={() => {
-                if (mode === "json") {
-                  downloadManifestText(raw, document.course.slug);
-                } else downloadManifest(document, document.course.slug);
-              }}>Скачать рабочую копию</Button>
-              <Button onClick={() => {
-                const destination = leaveHref;
-                setDiscardOpen(false); setLeaveHref(null);
-                if (destination) router.push(destination);
-                else void reload();
-              }}>{leaveHref ? "Выйти без сохранения" : "Отбросить и загрузить"}</Button>
+              <Button
+                variant="secondary"
+                // A destructive confirmation opens on the safe choice (WAI-ARIA APG).
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus
+                onClick={() => {
+                  setDiscardOpen(false);
+                  setLeaveHref(null);
+                }}
+              >
+                Остаться в редакторе
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  if (mode === "json") {
+                    downloadManifestText(raw, document.course.slug);
+                  } else downloadManifest(document, document.course.slug);
+                }}
+              >
+                Скачать рабочую копию
+              </Button>
+              <Button
+                onClick={() => {
+                  const destination = leaveHref;
+                  setDiscardOpen(false);
+                  setLeaveHref(null);
+                  if (destination) router.push(destination);
+                  else void reload();
+                }}
+              >
+                {leaveHref ? "Выйти без сохранения" : "Отбросить и загрузить"}
+              </Button>
             </div>
           </Dialog>
           <Dialog
@@ -740,10 +773,11 @@ export function CourseEditor({
               выполняется отдельно.
             </Text>
             <div className={styles.actions}>
-              {/* A confirmation opens with focus on the safe choice (WAI-ARIA APG). */}
-              {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
-              <Button autoFocus
+              <Button
                 variant="secondary"
+                // A confirmation opens on the safe choice (WAI-ARIA APG).
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus
                 onClick={() => setPublishOpen(false)}
               >
                 Отмена

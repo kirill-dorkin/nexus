@@ -46,12 +46,7 @@ async function main(): Promise<void> {
     50,
     60_000
   );
-  const leaseSeconds = integer(
-    "PAYMENT_WORKER_LEASE_SECONDS",
-    60,
-    1,
-    900
-  );
+  const leaseSeconds = integer("PAYMENT_WORKER_LEASE_SECONDS", 60, 1, 900);
   const retryBaseMs = integer(
     "PAYMENT_WORKER_RETRY_BASE_MS",
     1_000,

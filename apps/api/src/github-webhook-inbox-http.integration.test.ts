@@ -9,7 +9,9 @@ import { createApiApplication } from "./app.factory";
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for GitHub webhook integration tests.`);
+    throw new Error(
+      `${name} is required for GitHub webhook integration tests.`
+    );
   }
   return value;
 }
@@ -46,7 +48,9 @@ describe("GitHub webhook durable inbox ingress", () => {
   let organizationA = "";
   let organizationB = "";
 
-  async function createTenant(label: string): Promise<{ userId: string; organizationId: string }> {
+  async function createTenant(
+    label: string
+  ): Promise<{ userId: string; organizationId: string }> {
     const user = await migrationPool.query<IdRow>(
       `INSERT INTO identity.users (email, display_name)
        VALUES ($1, $2)
@@ -54,7 +58,8 @@ describe("GitHub webhook durable inbox ingress", () => {
       [`github-${label}-${randomUUID()}@example.test`, `GitHub ${label}`]
     );
     const userId = user.rows[0]?.id;
-    if (userId === undefined) throw new Error("Failed to create GitHub webhook test user.");
+    if (userId === undefined)
+      throw new Error("Failed to create GitHub webhook test user.");
 
     const organization = await migrationPool.query<IdRow>(
       `INSERT INTO organizations.organizations (slug, name, created_by_user_id)
@@ -63,7 +68,8 @@ describe("GitHub webhook durable inbox ingress", () => {
       [`github-${label}-${randomUUID()}`, `GitHub ${label}`, userId]
     );
     const organizationId = organization.rows[0]?.id;
-    if (organizationId === undefined) throw new Error("Failed to create GitHub webhook test organization.");
+    if (organizationId === undefined)
+      throw new Error("Failed to create GitHub webhook test organization.");
 
     return { userId, organizationId };
   }
@@ -109,8 +115,10 @@ describe("GitHub webhook durable inbox ingress", () => {
       applicationName: "github-webhook-inbox-integration-fixtures"
     });
 
-    ({ userId: userA, organizationId: organizationA } = await createTenant("tenant-a"));
-    ({ userId: userB, organizationId: organizationB } = await createTenant("tenant-b"));
+    ({ userId: userA, organizationId: organizationA } =
+      await createTenant("tenant-a"));
+    ({ userId: userB, organizationId: organizationB } =
+      await createTenant("tenant-b"));
 
     await migrationPool.query(
       `INSERT INTO integrations.github_installations (organization_id, github_installation_id)
@@ -339,12 +347,19 @@ describe("GitHub webhook durable inbox ingress", () => {
       testNamespace
     });
     const pingDeliveryId = randomUUID();
-    const pingRawBody = JSON.stringify({ zen: "Keep it logically awesome.", testNamespace });
+    const pingRawBody = JSON.stringify({
+      zen: "Keep it logically awesome.",
+      testNamespace
+    });
 
     const unmapped = await app.inject({
       method: "POST",
       url: "/v1/integrations/github/webhooks",
-      headers: signedHeaders(unmappedRawBody, unmappedDeliveryId, "installation"),
+      headers: signedHeaders(
+        unmappedRawBody,
+        unmappedDeliveryId,
+        "installation"
+      ),
       payload: unmappedRawBody
     });
     const ping = await app.inject({

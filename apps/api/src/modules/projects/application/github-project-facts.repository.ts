@@ -1,10 +1,7 @@
 import type { DatabaseTransaction } from "@platform/database";
 
 export type GitHubProjectFactType =
-  | "pull_request"
-  | "pull_request_review"
-  | "check_run"
-  | "check_suite";
+  "pull_request" | "pull_request_review" | "check_run" | "check_suite";
 
 export type ProjectRepositoryBindingAt = Readonly<{
   repositoryBindingId: string;

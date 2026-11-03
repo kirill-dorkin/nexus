@@ -1,9 +1,7 @@
 import { randomUUID } from "node:crypto";
 
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
-import {
-  learnerSkillProgressReadModelSchema
-} from "@platform/contracts";
+import { learnerSkillProgressReadModelSchema } from "@platform/contracts";
 import { createDatabasePool } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
@@ -16,7 +14,9 @@ import {
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value.trim().length === 0) {
-    throw new Error(`${name} is required for learner skill progress integration tests.`);
+    throw new Error(
+      `${name} is required for learner skill progress integration tests.`
+    );
   }
   return value;
 }
@@ -101,11 +101,17 @@ describe("learner skill progress HTTP read model", () => {
       `INSERT INTO organizations.organizations (slug, name, created_by_user_id)
        VALUES ($1, $2, $3)
        RETURNING id::text`,
-      [`skill-progress-${randomUUID()}`, "Skill progress integration", adminUserId]
+      [
+        `skill-progress-${randomUUID()}`,
+        "Skill progress integration",
+        adminUserId
+      ]
     );
     organizationId = organization.rows[0]?.id ?? "";
     if (organizationId.length === 0) {
-      throw new Error("Failed to create learner skill progress test organization.");
+      throw new Error(
+        "Failed to create learner skill progress test organization."
+      );
     }
 
     for (const userId of [adminUserId, learnerUserId, instructorUserId]) {
@@ -255,7 +261,8 @@ describe("learner skill progress HTTP read model", () => {
     submissionId = submission.rows[0]?.id ?? "";
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
@@ -461,7 +468,9 @@ describe("learner skill progress HTTP read model", () => {
     });
 
     expect(response.statusCode).toBe(200);
-    const body = learnerSkillProgressReadModelSchema.parse(JSON.parse(response.body));
+    const body = learnerSkillProgressReadModelSchema.parse(
+      JSON.parse(response.body)
+    );
     expect(body.skills).toHaveLength(3);
     expect(body.skills[2]).toMatchObject({
       state: "assessed",

@@ -13,7 +13,9 @@ export default function NotFound() {
   return (
     <LearningShell>
       <section className={styles.page} aria-labelledby="not-found-title">
-        <p className={styles.code} aria-hidden="true">404</p>
+        <p className={styles.code} aria-hidden="true">
+          404
+        </p>
         <h1 id="not-found-title">Такой страницы нет</h1>
         <p>Возможно, ссылка устарела или в адресе опечатка.</p>
         <div className={styles.actions}>

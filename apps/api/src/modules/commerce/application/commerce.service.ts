@@ -90,41 +90,44 @@ export class CommerceApplicationService implements PurchaseCommand {
     const productId = await this.database.nextUuid();
 
     try {
-      return await this.database.tenantTransaction(context, async (transaction) => {
-        await this.identity.requireActiveUser(transaction, context.userId);
-        await this.authorization.requireCapability(
-          transaction,
-          context.userId,
-          "commerce.manage",
-          organizationScope(organizationId)
-        );
+      return await this.database.tenantTransaction(
+        context,
+        async (transaction) => {
+          await this.identity.requireActiveUser(transaction, context.userId);
+          await this.authorization.requireCapability(
+            transaction,
+            context.userId,
+            "commerce.manage",
+            organizationScope(organizationId)
+          );
 
-        const product = await this.commerce.createProduct(transaction, {
-          id: productId,
-          organizationId,
-          offeringId: command.offeringId,
-          slug: command.slug,
-          name: command.name,
-          createdByUserId: context.userId
-        });
-
-        await this.outbox.append(transaction, {
-          organizationId,
-          eventName: "commerce.product.created",
-          eventVersion: 1,
-          aggregateType: "commerce_product",
-          aggregateId: product.id,
-          actorUserId: context.userId,
-          payload: {
+          const product = await this.commerce.createProduct(transaction, {
+            id: productId,
             organizationId,
-            productId: product.id,
-            offeringId: product.offeringId,
-            slug: product.slug
-          }
-        });
+            offeringId: command.offeringId,
+            slug: command.slug,
+            name: command.name,
+            createdByUserId: context.userId
+          });
 
-        return product;
-      });
+          await this.outbox.append(transaction, {
+            organizationId,
+            eventName: "commerce.product.created",
+            eventVersion: 1,
+            aggregateType: "commerce_product",
+            aggregateId: product.id,
+            actorUserId: context.userId,
+            payload: {
+              organizationId,
+              productId: product.id,
+              offeringId: product.offeringId,
+              slug: product.slug
+            }
+          });
+
+          return product;
+        }
+      );
     } catch (error) {
       if (isUniqueViolation(error)) {
         throw new ConflictException(
@@ -213,58 +216,61 @@ export class CommerceApplicationService implements PurchaseCommand {
     const priceId = await this.database.nextUuid();
 
     try {
-      return await this.database.tenantTransaction(context, async (transaction) => {
-        await this.identity.requireActiveUser(transaction, context.userId);
-        await this.authorization.requireCapability(
-          transaction,
-          context.userId,
-          "commerce.manage",
-          organizationScope(organizationId)
-        );
-
-        const product = await this.commerce.findProductById(
-          transaction,
-          organizationId,
-          productId
-        );
-        if (product === null) {
-          throw new NotFoundException("Commerce Product not found.");
-        }
-        if (product.status !== "active") {
-          throw new ConflictException(
-            "Commerce Prices can only be created for an active Product."
+      return await this.database.tenantTransaction(
+        context,
+        async (transaction) => {
+          await this.identity.requireActiveUser(transaction, context.userId);
+          await this.authorization.requireCapability(
+            transaction,
+            context.userId,
+            "commerce.manage",
+            organizationScope(organizationId)
           );
-        }
 
-        const price = await this.commerce.createPrice(transaction, {
-          id: priceId,
-          organizationId,
-          productId,
-          amountMinor: command.amountMinor,
-          currency: command.currency,
-          billingType: command.billingType,
-          createdByUserId: context.userId
-        });
-
-        await this.outbox.append(transaction, {
-          organizationId,
-          eventName: "commerce.price.created",
-          eventVersion: 1,
-          aggregateType: "commerce_price",
-          aggregateId: price.id,
-          actorUserId: context.userId,
-          payload: {
+          const product = await this.commerce.findProductById(
+            transaction,
             organizationId,
-            priceId: price.id,
-            productId: price.productId,
-            amountMinor: price.amountMinor,
-            currency: price.currency,
-            billingType: price.billingType
+            productId
+          );
+          if (product === null) {
+            throw new NotFoundException("Commerce Product not found.");
           }
-        });
+          if (product.status !== "active") {
+            throw new ConflictException(
+              "Commerce Prices can only be created for an active Product."
+            );
+          }
 
-        return price;
-      });
+          const price = await this.commerce.createPrice(transaction, {
+            id: priceId,
+            organizationId,
+            productId,
+            amountMinor: command.amountMinor,
+            currency: command.currency,
+            billingType: command.billingType,
+            createdByUserId: context.userId
+          });
+
+          await this.outbox.append(transaction, {
+            organizationId,
+            eventName: "commerce.price.created",
+            eventVersion: 1,
+            aggregateType: "commerce_price",
+            aggregateId: price.id,
+            actorUserId: context.userId,
+            payload: {
+              organizationId,
+              priceId: price.id,
+              productId: price.productId,
+              amountMinor: price.amountMinor,
+              currency: price.currency,
+              billingType: price.billingType
+            }
+          });
+
+          return price;
+        }
+      );
     } catch (error) {
       if (isUniqueViolation(error)) {
         throw new ConflictException(
@@ -501,55 +507,58 @@ export class CommerceApplicationService implements PurchaseCommand {
     }
 
     try {
-      return await this.database.tenantTransaction(context, async (transaction) => {
-        await this.identity.requireActiveUser(transaction, context.userId);
-        await this.identity.requireActiveUser(transaction, command.userId);
-        await this.authorization.requireCapability(
-          transaction,
-          context.userId,
-          "entitlement.manage",
-          offeringScope(organizationId, offeringId)
-        );
-        await this.organizations.requireActiveMembership(
-          transaction,
-          organizationId,
-          command.userId
-        );
-
-        const entitlement = await this.commerce.grantOfferingEntitlement(
-          transaction,
-          {
-            id: entitlementId,
+      return await this.database.tenantTransaction(
+        context,
+        async (transaction) => {
+          await this.identity.requireActiveUser(transaction, context.userId);
+          await this.identity.requireActiveUser(transaction, command.userId);
+          await this.authorization.requireCapability(
+            transaction,
+            context.userId,
+            "entitlement.manage",
+            offeringScope(organizationId, offeringId)
+          );
+          await this.organizations.requireActiveMembership(
+            transaction,
             organizationId,
-            offeringId,
-            userId: command.userId,
-            expiresAt: command.expiresAt ?? null,
-            grantedByUserId: context.userId,
-            grantSource: "manual",
-            sourcePurchaseId: null
-          }
-        );
+            command.userId
+          );
 
-        await this.outbox.append(transaction, {
-          organizationId,
-          eventName: "entitlement.granted",
-          eventVersion: 1,
-          aggregateType: "entitlement",
-          aggregateId: entitlement.id,
-          actorUserId: context.userId,
-          payload: {
+          const entitlement = await this.commerce.grantOfferingEntitlement(
+            transaction,
+            {
+              id: entitlementId,
+              organizationId,
+              offeringId,
+              userId: command.userId,
+              expiresAt: command.expiresAt ?? null,
+              grantedByUserId: context.userId,
+              grantSource: "manual",
+              sourcePurchaseId: null
+            }
+          );
+
+          await this.outbox.append(transaction, {
             organizationId,
-            entitlementId: entitlement.id,
-            offeringId,
-            userId: command.userId,
-            expiresAt: entitlement.expiresAt,
-            grantSource: entitlement.grantSource,
-            sourcePurchaseId: entitlement.sourcePurchaseId
-          }
-        });
+            eventName: "entitlement.granted",
+            eventVersion: 1,
+            aggregateType: "entitlement",
+            aggregateId: entitlement.id,
+            actorUserId: context.userId,
+            payload: {
+              organizationId,
+              entitlementId: entitlement.id,
+              offeringId,
+              userId: command.userId,
+              expiresAt: entitlement.expiresAt,
+              grantSource: entitlement.grantSource,
+              sourcePurchaseId: entitlement.sourcePurchaseId
+            }
+          });
 
-        return entitlement;
-      });
+          return entitlement;
+        }
+      );
     } catch (error) {
       if (isForeignKeyViolation(error)) {
         throw new NotFoundException("Learning offering not found.");

@@ -5,8 +5,14 @@ import {
   type SystemErrorGraderJobResult
 } from "@platform/contracts/grader";
 
-import { GraderGatewayClient, GraderGatewayDispatchError } from "./grader-gateway.client.js";
-import { GraderJobRepository, type ClaimedGraderJob } from "./grader-job.repository.js";
+import {
+  GraderGatewayClient,
+  GraderGatewayDispatchError
+} from "./grader-gateway.client.js";
+import {
+  GraderJobRepository,
+  type ClaimedGraderJob
+} from "./grader-job.repository.js";
 
 export type GraderDispatchCycle =
   | Readonly<{ kind: "idle" }>
@@ -42,7 +48,11 @@ function systemError(jobId: string, code: string): SystemErrorGraderJobResult {
   };
 }
 
-function retryDelayMs(attemptCount: number, baseMs: number, maxMs: number): number {
+function retryDelayMs(
+  attemptCount: number,
+  baseMs: number,
+  maxMs: number
+): number {
   const exponent = Math.max(0, Math.min(attemptCount - 1, 20));
   return Math.min(maxMs, baseMs * 2 ** exponent);
 }
@@ -64,7 +74,11 @@ export class GraderJobDispatcher {
   ): Promise<GraderDispatchCycle> {
     const validationResultId = await this.jobs.acknowledge(job, result);
     if (validationResultId === null) {
-      return { kind: "lease_lost", jobId: job.jobId, attemptCount: job.attemptCount };
+      return {
+        kind: "lease_lost",
+        jobId: job.jobId,
+        attemptCount: job.attemptCount
+      };
     }
     return {
       kind: "terminal",
@@ -87,7 +101,11 @@ export class GraderJobDispatcher {
     const retryAt = new Date(this.now().getTime() + delay);
     const nextState = await this.jobs.fail(job, errorCode, retryAt);
     if (nextState === null) {
-      return { kind: "lease_lost", jobId: job.jobId, attemptCount: job.attemptCount };
+      return {
+        kind: "lease_lost",
+        jobId: job.jobId,
+        attemptCount: job.attemptCount
+      };
     }
     return {
       kind: "retryable",
@@ -104,24 +122,39 @@ export class GraderJobDispatcher {
 
     try {
       if (job.request.jobId !== job.jobId) {
-        return await this.acknowledge(job, systemError(job.jobId, "persisted_job_identity_mismatch"));
+        return await this.acknowledge(
+          job,
+          systemError(job.jobId, "persisted_job_identity_mismatch")
+        );
       }
       try {
         validateGraderJobRequest(job.request);
       } catch (error) {
-        if (error instanceof GraderProtocolError || error instanceof TypeError) {
-          return await this.acknowledge(job, systemError(job.jobId, "persisted_grader_request_invalid"));
+        if (
+          error instanceof GraderProtocolError ||
+          error instanceof TypeError
+        ) {
+          return await this.acknowledge(
+            job,
+            systemError(job.jobId, "persisted_grader_request_invalid")
+          );
         }
         throw error;
       }
 
       let result: GraderJobResult;
       try {
-        result = await this.gateway.dispatch(job.request, job.profileFingerprint);
+        result = await this.gateway.dispatch(
+          job.request,
+          job.profileFingerprint
+        );
       } catch (error) {
         if (error instanceof GraderGatewayDispatchError) {
           if (error.retryable) return await this.retry(job, error.code);
-          return await this.acknowledge(job, systemError(job.jobId, error.code));
+          return await this.acknowledge(
+            job,
+            systemError(job.jobId, error.code)
+          );
         }
         return await this.retry(job, "worker_dispatch_error");
       }

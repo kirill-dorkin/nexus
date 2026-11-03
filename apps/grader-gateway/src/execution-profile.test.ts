@@ -7,9 +7,15 @@ import {
   enforceJobResourcePolicy,
   type GraderExecutionProfile
 } from "./execution-profile.js";
-import { buildGraderJobId, type GraderJobRequest, type GraderJobSpec } from "./protocol.js";
+import {
+  buildGraderJobId,
+  type GraderJobRequest,
+  type GraderJobSpec
+} from "./protocol.js";
 
-function profile(overrides: Partial<GraderExecutionProfile> = {}): GraderExecutionProfile {
+function profile(
+  overrides: Partial<GraderExecutionProfile> = {}
+): GraderExecutionProfile {
   return {
     key: "typescript-tests",
     version: 1,
@@ -48,7 +54,9 @@ describe("Grader execution profile registry", () => {
     const registry = new GraderExecutionProfileRegistry([profile()]);
     const resolved = registry.find({ key: "typescript-tests", version: 1 });
 
-    expect(resolved?.profile.runnerImageDigest).toBe(`sha256:${"a".repeat(64)}`);
+    expect(resolved?.profile.runnerImageDigest).toBe(
+      `sha256:${"a".repeat(64)}`
+    );
     expect(resolved?.fingerprint).toMatch(/^sha256:[0-9a-f]{64}$/);
     expect(registry.find({ key: "typescript-tests", version: 2 })).toBeNull();
   });
@@ -81,8 +89,8 @@ describe("Grader execution profile registry", () => {
       }
     });
 
-    expect(() => enforceJobResourcePolicy(request("123456789"), restricted)).toThrow(
-      GraderJobResourcePolicyError
-    );
+    expect(() =>
+      enforceJobResourcePolicy(request("123456789"), restricted)
+    ).toThrow(GraderJobResourcePolicyError);
   });
 });

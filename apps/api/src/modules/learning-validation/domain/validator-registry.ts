@@ -1,7 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import type { ValidationEvidenceTrust } from "@platform/contracts";
 
-export type ValidatorRecordingAuthority = "authorized_user" | "system" | "deterministic_quiz";
+export type ValidatorRecordingAuthority =
+  "authorized_user" | "system" | "deterministic_quiz";
 
 export type ValidatorDefinition = Readonly<{
   key: string;
@@ -15,9 +16,14 @@ export type ValidatorDefinition = Readonly<{
 }>;
 
 const validatorDefinitions: readonly ValidatorDefinition[] = [
-  ...["quiz.single_choice", "quiz.multiple_choice", "quiz.short_text"].map(key => ({
-    key, version: 1, recordingAuthority: "deterministic_quiz" as const, evidenceTrust: "trusted" as const
-  })),
+  ...["quiz.single_choice", "quiz.multiple_choice", "quiz.short_text"].map(
+    (key) => ({
+      key,
+      version: 1,
+      recordingAuthority: "deterministic_quiz" as const,
+      evidenceTrust: "trusted" as const
+    })
+  ),
   {
     key: "manual-review",
     version: 1,

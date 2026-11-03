@@ -69,7 +69,9 @@ function mapSkillProgress(
     projection.scoredEvidenceCount <= 0 ||
     projection.scoredEvidenceCount > projection.evidenceCount
   ) {
-    throw new Error("Assessed Mastery projection has inconsistent Evidence counts.");
+    throw new Error(
+      "Assessed Mastery projection has inconsistent Evidence counts."
+    );
   }
 
   return {
@@ -132,14 +134,19 @@ export class LearnerSkillProgressApplicationService {
         context.userId
       );
       const masteryBySkillId = new Map(
-        projections.map((projection) => [projection.skillId, projection] as const)
+        projections.map(
+          (projection) => [projection.skillId, projection] as const
+        )
       );
       const skills = [...graph.skills]
         .sort(
           (left, right) =>
-            left.position - right.position || left.skillId.localeCompare(right.skillId)
+            left.position - right.position ||
+            left.skillId.localeCompare(right.skillId)
         )
-        .map((skill) => mapSkillProgress(skill, masteryBySkillId.get(skill.skillId)));
+        .map((skill) =>
+          mapSkillProgress(skill, masteryBySkillId.get(skill.skillId))
+        );
 
       return {
         organizationId,

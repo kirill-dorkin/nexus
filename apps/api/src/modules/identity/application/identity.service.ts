@@ -49,7 +49,9 @@ export class IdentityApplicationService {
     const user = candidate?.status === "active" ? candidate : null;
 
     if (user === null) {
-      throw new ForbiddenException("An active user is required for this operation.");
+      throw new ForbiddenException(
+        "An active user is required for this operation."
+      );
     }
 
     return user;

@@ -34,7 +34,11 @@ export class PostgresLearnerCourseContentQuery extends LearnerCourseContentQuery
     );
     return result.rows.length ? result.rows : null;
   }
-  async activityLineage(tx: DatabaseTransaction, organizationId: string, activityIds: readonly string[]) {
+  async activityLineage(
+    tx: DatabaseTransaction,
+    organizationId: string,
+    activityIds: readonly string[]
+  ) {
     if (!activityIds.length) return new Map<string, string>();
     const result = await tx.client.query<{ id: string; activity_id: string }>(
       `SELECT a.id, a.activity_id FROM learning_content.course_version_activities a

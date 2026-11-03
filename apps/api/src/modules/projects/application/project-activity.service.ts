@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException
+} from "@nestjs/common";
 import {
   uuidSchema,
   type ProjectActivityPage,
@@ -20,12 +24,20 @@ function encodeCursor(position: ProjectActivityCursorPosition): string {
   return Buffer.from(JSON.stringify(position), "utf8").toString("base64url");
 }
 
-function decodeCursor(cursor: string | undefined): ProjectActivityCursorPosition | null {
+function decodeCursor(
+  cursor: string | undefined
+): ProjectActivityCursorPosition | null {
   if (cursor === undefined) return null;
 
   try {
-    const parsed = JSON.parse(Buffer.from(cursor, "base64url").toString("utf8")) as unknown;
-    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    const parsed = JSON.parse(
+      Buffer.from(cursor, "base64url").toString("utf8")
+    ) as unknown;
+    if (
+      typeof parsed !== "object" ||
+      parsed === null ||
+      Array.isArray(parsed)
+    ) {
       throw new Error("cursor is not an object");
     }
 
@@ -99,7 +111,8 @@ export class ProjectActivityApplicationService {
       return {
         project: await this.view.project(transaction, project),
         items: pageRows.map((row) => row.item),
-        nextCursor: hasMore && last !== undefined ? encodeCursor(last.position) : null
+        nextCursor:
+          hasMore && last !== undefined ? encodeCursor(last.position) : null
       };
     });
   }

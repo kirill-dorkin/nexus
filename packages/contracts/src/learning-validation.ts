@@ -18,8 +18,15 @@ export const activityValidationConfigSchema = z.object({
   validation: validatorBindingSchema
 });
 
-export const validationResultStatusSchema = z.enum(["completed", "system_error"]);
-export const validationOutcomeSchema = z.enum(["passed", "failed", "needs_review"]);
+export const validationResultStatusSchema = z.enum([
+  "completed",
+  "system_error"
+]);
+export const validationOutcomeSchema = z.enum([
+  "passed",
+  "failed",
+  "needs_review"
+]);
 export const validationEvidenceTrustSchema = z.enum(["trusted", "advisory"]);
 
 export const validationResultSchema = z.object({
@@ -45,22 +52,25 @@ const validationResultCommandBase = {
   payload: z.record(z.string(), z.unknown()).default({})
 };
 
-export const recordValidationResultRequestSchema = z.discriminatedUnion("status", [
-  z
-    .object({
-      ...validationResultCommandBase,
-      status: z.literal("completed"),
-      outcome: validationOutcomeSchema,
-      score: z.number().min(0).max(1).nullable().optional().default(null)
-    })
-    .strict(),
-  z
-    .object({
-      ...validationResultCommandBase,
-      status: z.literal("system_error")
-    })
-    .strict()
-]);
+export const recordValidationResultRequestSchema = z.discriminatedUnion(
+  "status",
+  [
+    z
+      .object({
+        ...validationResultCommandBase,
+        status: z.literal("completed"),
+        outcome: validationOutcomeSchema,
+        score: z.number().min(0).max(1).nullable().optional().default(null)
+      })
+      .strict(),
+    z
+      .object({
+        ...validationResultCommandBase,
+        status: z.literal("system_error")
+      })
+      .strict()
+  ]
+);
 
 export const graderJobStatusSchema = z.enum([
   "pending",
@@ -95,13 +105,19 @@ export const graderJobSchema = z.object({
 export const scheduleGraderJobRequestSchema = z.object({}).strict();
 
 export type ValidatorBinding = z.infer<typeof validatorBindingSchema>;
-export type ValidationResultStatus = z.infer<typeof validationResultStatusSchema>;
+export type ValidationResultStatus = z.infer<
+  typeof validationResultStatusSchema
+>;
 export type ValidationOutcome = z.infer<typeof validationOutcomeSchema>;
-export type ValidationEvidenceTrust = z.infer<typeof validationEvidenceTrustSchema>;
+export type ValidationEvidenceTrust = z.infer<
+  typeof validationEvidenceTrustSchema
+>;
 export type ValidationResult = z.infer<typeof validationResultSchema>;
 export type RecordValidationResultRequest = z.infer<
   typeof recordValidationResultRequestSchema
 >;
 export type GraderJobStatus = z.infer<typeof graderJobStatusSchema>;
 export type GraderJob = z.infer<typeof graderJobSchema>;
-export type ScheduleGraderJobRequest = z.infer<typeof scheduleGraderJobRequestSchema>;
+export type ScheduleGraderJobRequest = z.infer<
+  typeof scheduleGraderJobRequestSchema
+>;

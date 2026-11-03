@@ -56,23 +56,25 @@ describe("organization membership HTTP lifecycle", () => {
     leaverUserId = await createUser("membership-leaver");
 
     app = await createApiApplication();
-    app.getHttpAdapter()
+    app
+      .getHttpAdapter()
       .getInstance()
       .addHook("onRequest", async (request) => {
         const testUserId = request.headers["x-test-user-id"];
         if (typeof testUserId === "string" && testUserId.length > 0) {
-          attachPlatformPrincipal(
-            request as PlatformPrincipalCarrier,
-            { userId: testUserId }
-          );
+          attachPlatformPrincipal(request as PlatformPrincipalCarrier, {
+            userId: testUserId
+          });
         }
       });
     await app.init();
 
-    organizationId = (await createTestOrganization(migrationPool, ownerUserId, {
+    organizationId = (
+      await createTestOrganization(migrationPool, ownerUserId, {
         slug: organizationSlug,
         name: "Membership lifecycle"
-      })).id;
+      })
+    ).id;
   });
 
   afterAll(async () => {
@@ -153,9 +155,9 @@ describe("organization membership HTTP lifecycle", () => {
       userId: memberUserId,
       status: "active"
     });
-    expect((JSON.parse(response.body) as { joinedAt: string }).joinedAt).toEqual(
-      expect.any(String)
-    );
+    expect(
+      (JSON.parse(response.body) as { joinedAt: string }).joinedAt
+    ).toEqual(expect.any(String));
   });
 
   it("allows role assignment only after membership is active", async () => {

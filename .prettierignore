@@ -1,0 +1,20 @@
+# Generated or tool-owned files
+pnpm-lock.yaml
+eslint-suppressions.json
+**/.next/
+**/dist/
+**/coverage/
+**/node_modules/
+.turbo/
+.tmp/
+next-env.d.ts
+
+# Course content: one lesson per compact object, like prose; ESLint still checks it.
+# The manifests are generated from it by docs/examples/*-course/build.mjs.
+docs/examples/
+
+# Prose is reviewed as written; ADR and design text keeps its own line breaks
+*.md
+
+# Go module and its fixtures
+apps/grader-runner/

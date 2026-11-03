@@ -10,7 +10,11 @@ import tseslint from "typescript-eslint";
 
 const typeScriptFiles = ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"];
 const webFiles = ["apps/web/**/*.{ts,tsx}", "packages/ui/**/*.{ts,tsx}"];
-const testFiles = ["**/*.test.{ts,tsx}", "**/*.spec.{ts,tsx}", "tests/**/*.{ts,mjs}"];
+const testFiles = [
+  "**/*.test.{ts,tsx}",
+  "**/*.spec.{ts,tsx}",
+  "tests/**/*.{ts,mjs}"
+];
 
 export default tseslint.config(
   {
@@ -43,7 +47,10 @@ export default tseslint.config(
 
   {
     files: typeScriptFiles,
-    extends: [...tseslint.configs.strictTypeChecked, ...tseslint.configs.stylisticTypeChecked],
+    extends: [
+      ...tseslint.configs.strictTypeChecked,
+      ...tseslint.configs.stylisticTypeChecked
+    ],
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -53,7 +60,11 @@ export default tseslint.config(
     rules: {
       "@typescript-eslint/no-unused-vars": [
         "error",
-        { argsIgnorePattern: "^_", varsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" }
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_"
+        }
       ],
       "@typescript-eslint/restrict-template-expressions": [
         "error",
@@ -66,9 +77,15 @@ export default tseslint.config(
       // The codebase models data with `type` aliases.
       "@typescript-eslint/consistent-type-definitions": ["error", "type"],
       // `onClick={() => setOpen(false)}` is idiomatic React.
-      "@typescript-eslint/no-confusing-void-expression": ["error", { ignoreArrowShorthand: true }],
+      "@typescript-eslint/no-confusing-void-expression": [
+        "error",
+        { ignoreArrowShorthand: true }
+      ],
       // NestJS modules are decorated empty classes by design.
-      "@typescript-eslint/no-extraneous-class": ["error", { allowWithDecorator: true }],
+      "@typescript-eslint/no-extraneous-class": [
+        "error",
+        { allowWithDecorator: true }
+      ],
       // `||` on strings and booleans deliberately treats "" and false as absent.
       "@typescript-eslint/prefer-nullish-coalescing": [
         "error",
@@ -105,10 +122,17 @@ export default tseslint.config(
       // @platform/ui renders native controls under these names.
       "jsx-a11y/label-has-associated-control": [
         "error",
-        { assert: "either", controlComponents: ["Input", "Select", "Textarea", "PasswordInput"], depth: 3 }
+        {
+          assert: "either",
+          controlComponents: ["Input", "Select", "Textarea", "PasswordInput"],
+          depth: 3
+        }
       ],
       // A scrollable region must be keyboard-focusable (WCAG 2.1.1).
-      "jsx-a11y/no-noninteractive-tabindex": ["error", { roles: ["region", "tabpanel"] }]
+      "jsx-a11y/no-noninteractive-tabindex": [
+        "error",
+        { roles: ["region", "tabpanel"] }
+      ]
     }
   },
 
@@ -131,13 +155,22 @@ export default tseslint.config(
       // Tests restore the `process.env` keys they changed.
       "@typescript-eslint/no-dynamic-delete": "off",
       // Stub HTTP servers use async listeners; a rejection fails the test run.
-      "@typescript-eslint/no-misused-promises": ["error", { checksVoidReturn: false }],
+      "@typescript-eslint/no-misused-promises": [
+        "error",
+        { checksVoidReturn: false }
+      ],
       "no-console": "off"
     }
   },
 
   {
-    files: ["scripts/**", "docs/examples/**", "infra/**", "apps/*/ops/**", "tests/public-launch-browser/**"],
+    files: [
+      "scripts/**",
+      "docs/examples/**",
+      "infra/**",
+      "apps/*/ops/**",
+      "tests/public-launch-browser/**"
+    ],
     rules: {
       "no-console": "off"
     }

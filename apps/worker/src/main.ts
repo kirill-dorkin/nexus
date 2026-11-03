@@ -87,7 +87,8 @@ async function main(): Promise<void> {
         log.error(
           {
             errorName: error instanceof Error ? error.name : "UnknownError",
-            errorMessage: error instanceof Error ? error.message : "unknown worker failure"
+            errorMessage:
+              error instanceof Error ? error.message : "unknown worker failure"
           },
           "grader dispatcher cycle failed"
         );
@@ -104,7 +105,10 @@ void main().catch((error: unknown) => {
   log.fatal(
     {
       errorName: error instanceof Error ? error.name : "UnknownError",
-      errorMessage: error instanceof Error ? error.message : "unknown worker startup failure"
+      errorMessage:
+        error instanceof Error
+          ? error.message
+          : "unknown worker startup failure"
     },
     "worker terminated unexpectedly"
   );
