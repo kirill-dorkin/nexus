@@ -1,8 +1,10 @@
 -- Local e2e database next to the development one, so end-to-end runs never
--- write into `platform`. Run once as the local superuser:
+-- write into `platform`. Re-running it resets the database to empty. Run as the
+-- local superuser:
 --   PGPASSWORD=local_postgres_admin psql -h 127.0.0.1 -U postgres -f tests/e2e/local-database.sql
 -- The roles come from infra/postgres/init/001-runtime-roles.sql.
 
+DROP DATABASE IF EXISTS platform_e2e WITH (FORCE);
 CREATE DATABASE platform_e2e OWNER platform_migrator;
 
 \connect platform_e2e

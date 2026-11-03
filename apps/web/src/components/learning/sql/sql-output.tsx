@@ -2,7 +2,7 @@
 
 import { DatabaseIcon, WarningIcon } from "@phosphor-icons/react/dist/ssr";
 import type { SqlRun } from "./sql-engine";
-import { SHOP_TABLES } from "./shop-db";
+import { SHOP_TABLES } from "./shop-tables";
 import styles from "./sql.module.css";
 
 const plural = (n: number, one: string, few: string, many: string) => {

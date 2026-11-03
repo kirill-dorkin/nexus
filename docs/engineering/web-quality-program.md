@@ -108,11 +108,17 @@ Every visited page runs axe with the WCAG 2.2 A/AA rules and fails on serious or
 
 GitHub CI runs `pnpm test:e2e` after the Web build in one-origin mode and keeps the Playwright report and traces of a failed run. The paid checkout path stays covered by the browser launch verification with provider stubs.
 
-### 6. Performance budgets
+### 6. Performance budgets — done
 
-Per-route JavaScript budgets checked from the Next build output; Lighthouse CI on home, course, lesson and catalog pages with LCP, CLS and TBT thresholds; heavy runtimes (PGlite, the code sandbox) verified to load only on the pages that use them.
+`tests/e2e/specs/performance.spec.ts` loads every key page in the e2e environment and fails when one breaks its budget (`tests/e2e/budgets.ts`):
 
-**Done when:** a budget regression fails CI.
+- compressed JavaScript per page, about 15 % above the size measured when the budgets were set — home and catalog 185 KB, course 285 KB, lesson 340 KB, SQL lesson 350 KB, sign-in and my learning 295 KB;
+- Largest Contentful Paint ≤ 2.5 s and Cumulative Layout Shift ≤ 0.1 (the Core Web Vitals "good" thresholds);
+- the in-browser PostgreSQL engine (PGlite, ~108 KB compressed plus WebAssembly) loads on the SQL lesson once its example scrolls near, and on no other page — checked in both directions, including requests made by the worker.
+
+Measuring what the browser actually downloads is independent of the bundler's manifest format. `@platform/contracts` is now marked `sideEffects: false`, so unused contract modules leave the client bundles, and the course table list moved out of the teaching-database SQL, which only the worker needs.
+
+The largest remaining client cost is zod: about 90 KB compressed on every page that parses API data. Moving client-side parsing to `zod/mini` (or narrower client schemas) is the next size step; budgets go down with it.
 
 ### 7. Client observability
 
