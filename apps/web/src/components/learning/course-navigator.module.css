@@ -73,6 +73,9 @@
 }
 .search:focus-within {
   border-color: color-mix(in srgb, var(--accent-action) 60%, transparent);
+  /* The input itself has no outline; the whole field shows focus (WCAG 2.4.7). */
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 .search input {
   flex: 1;

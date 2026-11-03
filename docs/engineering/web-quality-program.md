@@ -126,11 +126,11 @@ ADR-0067. `ClientTelemetry` in the root layout reports uncaught errors, unhandle
 
 Covered by contract, API, reporter and component tests, and by an e2e test in which a real error on a lesson page reaches the API with 204 and without its message or the lesson address. The performance budgets caught the first version pulling zod onto every page through a contract value; the error-name list now lives in a zod-free module.
 
-### 8. Accessibility audit
+### 8. Accessibility audit — done
 
-A manual keyboard and screen-reader pass over every learner and Studio page against WCAG 2.2 AA, recorded in `docs/design/` with each finding fixed or tracked.
+[`docs/design/accessibility-audit.md`](../design/accessibility-audit.md). `tests/e2e/specs/accessibility.spec.ts` runs axe (WCAG 2.2 A/AA, fails on serious or critical) on every public, learner and Studio page and on the open mobile course program, and checks the keyboard: the skip link, a visible focus indicator on every Tab stop of a lesson, no keyboard trap in the practice editor, Escape on the program modal, a quiz answered without a mouse.
 
-**Done when:** the audit report lists no open AA failures.
+It found two fields without a visible focus (the practice editor and the course program search) and an `aria-label` on a role-less element in the UI gallery; all fixed. The report lists no open automated or keyboard AA failures. A screen-reader pass, zoom and reflow on every page, non-text contrast and authored lesson content are listed there as left to a person.
 
 ### 9. Decisions and documentation
 

@@ -45,7 +45,7 @@ export function StatesSection() {
             <Progress value={60} label="Пример прогресса" />
             <Progress label="Пример неопределённого прогресса" />
             <Divider />
-            <div aria-busy="true" aria-label="Пример загрузки">
+            <div role="status" aria-busy="true" aria-label="Пример загрузки">
               <Stack gap="sm">
                 <Skeleton />
                 <Skeleton className="ui-gallery-skeleton-short" />

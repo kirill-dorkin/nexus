@@ -121,9 +121,10 @@
   background: color-mix(in srgb, var(--accent-action) 28%, transparent);
   color: transparent;
 }
-/* Focus is shown on the whole block (see .editing), not as an inner outline. */
+/* Focus is shown on the whole block, not as an inner outline (WCAG 2.4.7). */
 .editor:focus-within {
-  box-shadow: none;
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
 }
 .editing:focus-within {
   border-color: var(--accent-action);
