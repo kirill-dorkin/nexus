@@ -14,7 +14,6 @@ import {
 } from "../../components/studio/studio-api";
 import {
   Alert,
-  Badge,
   Button,
   EmptyState,
   Eyebrow,
@@ -24,6 +23,7 @@ import {
   buttonClass
 } from "@platform/ui";
 import styles from "../../components/studio/studio.module.css";
+import { StudioCourseRows } from "./studio-course-rows";
 type Org = { id: string; slug: string; name: string };
 export function StudioHome() {
   const [organizations, setOrganizations] = useState<Org[]>([]),
@@ -241,45 +241,10 @@ export function StudioHome() {
                     </EmptyState>
                   )}
                   {courses && (
-                    <ul className={styles.courseList}>
-                      {courses.courses.map((c) => (
-                        <li key={c.courseId}>
-                          <Link
-                            className={styles.courseRow}
-                            href={`/studio/${selected.id}/${c.courseId}`}
-                          >
-                            <div>
-                              <div className={styles.courseMeta}>
-                                <Badge
-                                  tone={
-                                    c.status === "draft" ? "accent" : "neutral"
-                                  }
-                                >
-                                  {c.status === "draft"
-                                    ? "Черновик"
-                                    : "Опубликовано"}
-                                </Badge>
-                                <Text muted size="sm">
-                                  Версия {c.versionNumber}
-                                </Text>
-                              </div>
-                              <Heading level={3} size="section">
-                                {c.title}
-                              </Heading>
-                            </div>
-                            <span aria-hidden="true">↗</span>
-                          </Link>
-                          {c.status === "published" && (
-                            <Link
-                              className={styles.courseManageLink}
-                              href={`/studio/${selected.id}/${c.courseId}/offerings`}
-                            >
-                              Доступ и ссылка
-                            </Link>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
+                    <StudioCourseRows
+                      organizationId={selected.id}
+                      courses={courses.courses}
+                    />
                   )}
                   {nextCourseCursor !== null && (
                     <Button

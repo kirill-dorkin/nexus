@@ -2,6 +2,15 @@
 
 import { brand } from "@platform/brand";
 import { Band } from "./band";
+import { TickClock } from "./clock";
+import {
+  DEFAULT_SOUND,
+  readSoundSettings,
+  SOUND_KEY,
+  volumeGain,
+  writeSoundSettings,
+  type SoundSettings
+} from "./settings";
 import { nextBarAfter } from "./timeline";
 
 /*
@@ -17,52 +26,30 @@ import { nextBarAfter } from "./timeline";
  * A module singleton, so it keeps playing across client-side navigation.
  */
 
-export type SoundSettings = { music: boolean; musicVolume: number };
+export type { SoundSettings } from "./settings";
+export { volumeGain };
+
 export type SoundState = {
   settings: SoundSettings;
   unlocked: boolean;
   elsewhere: boolean;
 };
 
-// On by default; playback still waits for the first gesture.
-const DEFAULTS: SoundSettings = { music: true, musicVolume: 0.3 };
-// v2: the old key stored "off" as the former default, which would hide the new default.
-const KEY = `${brand.slug}:sound:v2`;
-
-let settings: SoundSettings = DEFAULTS;
+let settings: SoundSettings = DEFAULT_SOUND;
 let loaded = false;
 const listeners = new Set<() => void>();
 const notify = () => {
   for (const listener of listeners) listener();
 };
 
-function read(): SoundSettings {
-  try {
-    const saved = JSON.parse(
-      localStorage.getItem(KEY) ?? "{}"
-    ) as Partial<SoundSettings>;
-    const volume =
-      typeof saved.musicVolume === "number" &&
-      saved.musicVolume >= 0 &&
-      saved.musicVolume <= 1
-        ? saved.musicVolume
-        : DEFAULTS.musicVolume;
-    return {
-      music: typeof saved.music === "boolean" ? saved.music : DEFAULTS.music,
-      musicVolume: volume
-    };
-  } catch {
-    return DEFAULTS;
-  }
-}
 function load() {
   if (loaded || typeof window === "undefined") return;
   loaded = true;
-  settings = read();
+  settings = readSoundSettings();
   // Another tab changed the settings: follow them.
   window.addEventListener("storage", (event) => {
-    if (event.key !== KEY) return;
-    settings = read();
+    if (event.key !== SOUND_KEY) return;
+    settings = readSoundSettings();
     music.apply();
     notify();
   });
@@ -71,7 +58,7 @@ export function getSoundSettings(): SoundSettings {
   load();
   return settings;
 }
-export const getServerSoundSettings = (): SoundSettings => DEFAULTS;
+export const getServerSoundSettings = (): SoundSettings => DEFAULT_SOUND;
 export function subscribeSound(listener: () => void) {
   listeners.add(listener);
   return () => {
@@ -94,11 +81,12 @@ export function unlockSound() {
   if (first) notify();
 }
 
-let snapshot: SoundState = {
-  settings: DEFAULTS,
+const serverState: SoundState = {
+  settings: DEFAULT_SOUND,
   unlocked: false,
   elsewhere: false
 };
+let snapshot = serverState;
 /** Settings, unlock and tab state as one stable snapshot for useSyncExternalStore. */
 export function getSoundState(): SoundState {
   const current = getSoundSettings();
@@ -112,30 +100,16 @@ export function getSoundState(): SoundState {
   }
   return snapshot;
 }
-const serverState: SoundState = {
-  settings: DEFAULTS,
-  unlocked: false,
-  elsewhere: false
-};
 export const getServerSoundState = () => serverState;
 
 export function updateSound(patch: Partial<SoundSettings>) {
   load();
   settings = { ...settings, ...patch };
-  try {
-    localStorage.setItem(KEY, JSON.stringify(settings));
-  } catch {
-    /* storage unavailable: settings last for this page only */
-  }
+  writeSoundSettings(settings);
   if (patch.music) music.claim();
   music.apply();
   notify();
 }
-
-/** A perceptual curve: the slider's middle sounds like half volume; full stays below clipping. */
-export const volumeGain = (volume: number) => 0.9 * volume ** 1.6;
-
-/* ------------------------------ Player ------------------------------ */
 
 // A whole bar (≈3.2 s) is always queued ahead: page work — opening a heavy course page,
 // running a lesson's code — can block the main thread for a moment without the music noticing.
@@ -150,8 +124,7 @@ class Player {
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
   private band: Band | null = null;
-  private clock: Worker | null = null;
-  private fallbackTimer: number | null = null;
+  private readonly clock = new TickClock(TICK_MS, () => this.tick());
   private bar = 0;
   private nextBarTime = 0;
   private suspendTimer: number | null = null;
@@ -268,14 +241,14 @@ class Player {
     this.bar = 0;
     this.nextBarTime = ctx.currentTime + 0.15;
     this.level(FADE_IN / 4);
-    this.startClock();
+    this.clock.start();
     this.tick();
   }
 
   private stop() {
     if (!this.playing || !this.ctx) return;
     this.playing = false;
-    this.stopClock();
+    this.clock.stop();
     this.level(FADE_OUT / 4);
     const ctx = this.ctx;
     this.retiring = this.band;
@@ -320,30 +293,6 @@ class Player {
       this.bar += 1;
       this.nextBarTime += Band.barSeconds();
     }
-  }
-
-  /** A worker's timer is not throttled in background tabs the way page timers are. */
-  private startClock() {
-    if (this.clock || this.fallbackTimer !== null) return;
-    try {
-      const source =
-        "let t;onmessage=e=>{clearInterval(t);if(e.data>0)t=setInterval(()=>postMessage(0),e.data)}";
-      this.clock = new Worker(
-        URL.createObjectURL(new Blob([source], { type: "text/javascript" }))
-      );
-      this.clock.onmessage = () => this.tick();
-      this.clock.postMessage(TICK_MS);
-    } catch {
-      this.fallbackTimer = window.setInterval(() => this.tick(), TICK_MS);
-    }
-  }
-
-  private stopClock() {
-    this.clock?.postMessage(0);
-    this.clock?.terminate();
-    this.clock = null;
-    if (this.fallbackTimer !== null) window.clearInterval(this.fallbackTimer);
-    this.fallbackTimer = null;
   }
 }
 

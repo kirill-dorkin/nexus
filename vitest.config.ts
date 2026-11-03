@@ -23,10 +23,10 @@ export default defineConfig({
       reporter: ["text-summary", "json-summary"],
       reportsDirectory: "coverage/web",
       thresholds: {
-        statements: 66,
-        branches: 68,
-        functions: 70,
-        lines: 67,
+        statements: 74,
+        branches: 71,
+        functions: 76,
+        lines: 76,
         // Learner- and buyer-facing components with behaviour suites stay well covered.
         "**/{quiz-form,challenge,course-navigator,course-progress,learner-entry,my-learning,purchase-status,checkout-panel,learning-auth,signup-nudge,lesson-visuals}.tsx":
           { statements: 80, branches: 55, functions: 75, lines: 80 },

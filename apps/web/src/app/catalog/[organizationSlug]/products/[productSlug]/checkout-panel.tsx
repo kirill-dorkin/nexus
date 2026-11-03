@@ -2,43 +2,22 @@
 
 import {
   identityUserSchema,
-  publicCatalogProductResponseSchema,
-  publicPurchaseCheckoutSchema,
-  uuidSchema,
   type IdentityUser,
   type PublicCatalogProductResponse
 } from "@platform/contracts";
-import { type SubmitEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import {
-  apiError,
-  browserApiRequest,
-  PublicApiError
-} from "../../../../../lib/public-api";
+import { apiError, browserApiRequest } from "../../../../../lib/public-api";
+import { attemptKey } from "./checkout/attempt-key";
+import { CheckoutAuthForm } from "./checkout/auth-form";
+import { PriceList } from "./checkout/price-list";
+import { startCheckout } from "./checkout/start-checkout";
 import styles from "./product.module.css";
 
-type AuthMode = "login" | "register";
-
-type CheckoutPanelProps = Readonly<{
-  catalog: PublicCatalogProductResponse;
-}>;
-
-function formatMoney(amountMinor: number, currency: string): string {
-  return new Intl.NumberFormat("ru-RU", {
-    style: "currency",
-    currency
-  }).format(amountMinor / 100);
-}
-
-function checkoutStorageKey(
-  organizationSlug: string,
-  productSlug: string,
-  priceId: string
-): string {
-  return `checkout-attempt:${organizationSlug}:${productSlug}:${priceId}`;
-}
-
-export function CheckoutPanel({ catalog }: CheckoutPanelProps) {
+/** Price choice, account and the step to the payment provider for one product. */
+export function CheckoutPanel({
+  catalog
+}: Readonly<{ catalog: PublicCatalogProductResponse }>) {
   const firstPrice = catalog.product.prices[0];
   if (firstPrice === undefined) {
     throw new Error("Public checkout requires at least one active Price.");
@@ -46,18 +25,13 @@ export function CheckoutPanel({ catalog }: CheckoutPanelProps) {
 
   const [selectedPriceId, setSelectedPriceId] = useState(firstPrice.id);
   const [user, setUser] = useState<IdentityUser | null | undefined>(undefined);
-  const [authMode, setAuthMode] = useState<AuthMode>("login");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [displayName, setDisplayName] = useState("");
   const [busy, setBusy] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
-  const runtimeAttemptKeys = useRef(new Map<string, string>());
+  const attempts = useRef(new Map<string, string>());
 
   useEffect(() => {
     const controller = new AbortController();
-
     void (async () => {
       try {
         const response = await browserApiRequest("/v1/me", {
@@ -68,9 +42,7 @@ export function CheckoutPanel({ catalog }: CheckoutPanelProps) {
           setUser(null);
           return;
         }
-        if (!response.ok) {
-          throw await apiError(response);
-        }
+        if (!response.ok) throw await apiError(response);
         setUser(identityUserSchema.parse(await response.json()));
       } catch {
         if (!controller.signal.aborted) {
@@ -81,82 +53,10 @@ export function CheckoutPanel({ catalog }: CheckoutPanelProps) {
         }
       }
     })();
-
     return () => {
       controller.abort();
     };
   }, []);
-
-  function attemptKey(priceId: string): string {
-    const storageKey = checkoutStorageKey(
-      catalog.organization.slug,
-      catalog.product.slug,
-      priceId
-    );
-    const runtime = runtimeAttemptKeys.current.get(storageKey);
-    if (runtime !== undefined) return runtime;
-
-    try {
-      const stored = window.sessionStorage.getItem(storageKey);
-      if (stored !== null && uuidSchema.safeParse(stored).success) {
-        runtimeAttemptKeys.current.set(storageKey, stored);
-        return stored;
-      }
-    } catch {
-      // Runtime memory below still preserves retry idempotency for this page life.
-    }
-
-    const created = crypto.randomUUID();
-    runtimeAttemptKeys.current.set(storageKey, created);
-    try {
-      window.sessionStorage.setItem(storageKey, created);
-    } catch {
-      // Storage can be unavailable in privacy modes; runtime memory is sufficient.
-    }
-    return created;
-  }
-
-  async function handleAuth(event: SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setBusy(true);
-    setErrorMessage(null);
-    setStatusMessage(null);
-
-    try {
-      const endpoint =
-        authMode === "login" ? "/v1/auth/login" : "/v1/auth/register";
-      const payload =
-        authMode === "login"
-          ? { email, password }
-          : {
-              email,
-              password,
-              ...(displayName.trim().length > 0
-                ? { displayName: displayName.trim() }
-                : {})
-            };
-      const response = await browserApiRequest(endpoint, {
-        method: "POST",
-        body: JSON.stringify(payload)
-      });
-      if (!response.ok) {
-        throw await apiError(response);
-      }
-
-      const authenticated = identityUserSchema.parse(await response.json());
-      setUser(authenticated);
-      setPassword("");
-      setStatusMessage(
-        authMode === "login" ? "Вы вошли в аккаунт." : "Аккаунт создан."
-      );
-    } catch (error) {
-      setErrorMessage(
-        error instanceof Error ? error.message : "Не удалось выполнить вход."
-      );
-    } finally {
-      setBusy(false);
-    }
-  }
 
   async function handleLogout() {
     setBusy(true);
@@ -178,97 +78,30 @@ export function CheckoutPanel({ catalog }: CheckoutPanelProps) {
     }
   }
 
-  async function currentProduct(): Promise<PublicCatalogProductResponse> {
-    const response = await browserApiRequest(
-      `/v1/public/catalog/${encodeURIComponent(catalog.organization.slug)}/products/${encodeURIComponent(catalog.product.slug)}`
-    );
-    if (!response.ok) throw await apiError(response);
-    return publicCatalogProductResponseSchema.parse(await response.json());
-  }
-
   async function handleCheckout() {
-    if (user === null || user === undefined) {
+    if (!user) {
       setErrorMessage("Сначала войдите или создайте аккаунт.");
       return;
     }
-
     setBusy(true);
     setErrorMessage(null);
     setStatusMessage("Проверяем актуальность предложения…");
-
     try {
-      const fresh = await currentProduct();
-      const selectedPrice = fresh.product.prices.find(
-        (price) => price.id === selectedPriceId
-      );
-      if (selectedPrice === undefined) {
-        throw new PublicApiError(
-          409,
-          "Выбранная цена больше недоступна. Обновите страницу и выберите актуальную цену."
-        );
-      }
-
-      if (fresh.organization.customerEntryPolicy === "open") {
-        setStatusMessage("Подтверждаем участие в организации…");
-        const entry = await browserApiRequest(
-          `/v1/public/organizations/${encodeURIComponent(fresh.organization.slug)}/memberships/me`,
-          { method: "POST" }
-        );
-        if (entry.status === 401) {
-          setUser(null);
-          throw new PublicApiError(401, "Сессия завершилась. Войдите снова.");
-        }
-        if (entry.status === 409) {
-          throw new PublicApiError(
-            409,
-            "Текущее состояние участия нельзя изменить через публичный вход."
-          );
-        }
-        if (!entry.ok && entry.status !== 404) {
-          throw await apiError(entry);
-        }
-        // A 404 can mean that open entry closed after the fresh read. Checkout is
-        // still attempted because an already-active member remains authorized.
-      }
-
-      const idempotencyKey = attemptKey(selectedPrice.id);
-      setStatusMessage("Создаём защищённую сессию оплаты…");
-      const checkoutResponse = await browserApiRequest(
-        `/v1/public/catalog/${encodeURIComponent(fresh.organization.slug)}/products/${encodeURIComponent(fresh.product.slug)}/checkout`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            priceId: selectedPrice.id,
-            idempotencyKey
-          })
-        }
-      );
-
-      if (checkoutResponse.status === 401) {
-        setUser(null);
-        throw new PublicApiError(401, "Сессия завершилась. Войдите снова.");
-      }
-      if (checkoutResponse.status === 404) {
-        throw new PublicApiError(
-          404,
-          "Покупка сейчас недоступна. Проверьте участие в организации и актуальность предложения."
-        );
-      }
-      if (checkoutResponse.status === 409) {
-        throw new PublicApiError(
-          409,
-          "Состояние покупки изменилось. Обновите страницу перед новой попыткой."
-        );
-      }
-      if (!checkoutResponse.ok) {
-        throw await apiError(checkoutResponse);
-      }
-
-      const checkout = publicPurchaseCheckoutSchema.parse(
-        await checkoutResponse.json()
-      );
+      const checkoutUrl = await startCheckout({
+        catalog,
+        priceId: selectedPriceId,
+        attemptKey: (priceId) =>
+          attemptKey(
+            attempts.current,
+            catalog.organization.slug,
+            catalog.product.slug,
+            priceId
+          ),
+        onStatus: setStatusMessage,
+        onSessionEnded: () => setUser(null)
+      });
       setStatusMessage("Переходим к защищённой оплате…");
-      window.location.assign(checkout.checkoutUrl);
+      window.location.assign(checkoutUrl);
     } catch (error) {
       setStatusMessage(null);
       setErrorMessage(
@@ -281,6 +114,7 @@ export function CheckoutPanel({ catalog }: CheckoutPanelProps) {
     }
   }
 
+  const open = catalog.organization.customerEntryPolicy === "open";
   return (
     <aside className={styles.checkoutCard} aria-labelledby="checkout-heading">
       <div>
@@ -288,99 +122,29 @@ export function CheckoutPanel({ catalog }: CheckoutPanelProps) {
         <h2 id="checkout-heading">Выберите цену</h2>
       </div>
 
-      <fieldset className={styles.priceList} disabled={busy}>
-        <legend className={styles.eyebrow}>Доступные варианты</legend>
-        {catalog.product.prices.map((price) => (
-          <label className={styles.priceOption} key={price.id}>
-            <input
-              type="radio"
-              name="price"
-              value={price.id}
-              checked={selectedPriceId === price.id}
-              onChange={() => setSelectedPriceId(price.id)}
-            />
-            <span>
-              <span className={styles.priceValue}>
-                {formatMoney(price.amountMinor, price.currency)}
-              </span>
-              <span className={styles.hint}>Разовая оплата</span>
-            </span>
-          </label>
-        ))}
-      </fieldset>
+      <PriceList
+        prices={catalog.product.prices}
+        selected={selectedPriceId}
+        disabled={busy}
+        onSelect={setSelectedPriceId}
+      />
 
       <div className={styles.authBox}>
         {user === undefined ? (
           <p className={styles.status}>Проверяем сессию…</p>
         ) : user === null ? (
-          <>
-            <div className={styles.authTabs} aria-label="Способ входа">
-              <button
-                className={styles.tabButton}
-                type="button"
-                aria-pressed={authMode === "login"}
-                onClick={() => setAuthMode("login")}
-                disabled={busy}
-              >
-                Войти
-              </button>
-              <button
-                className={styles.tabButton}
-                type="button"
-                aria-pressed={authMode === "register"}
-                onClick={() => setAuthMode("register")}
-                disabled={busy}
-              >
-                Регистрация
-              </button>
-            </div>
-
-            <form className={styles.form} onSubmit={handleAuth}>
-              <label className={styles.field}>
-                Email
-                <input
-                  type="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  required
-                  maxLength={320}
-                />
-              </label>
-
-              {authMode === "register" ? (
-                <label className={styles.field}>
-                  Имя
-                  <input
-                    type="text"
-                    autoComplete="name"
-                    value={displayName}
-                    onChange={(event) => setDisplayName(event.target.value)}
-                    maxLength={160}
-                  />
-                </label>
-              ) : null}
-
-              <label className={styles.field}>
-                Пароль
-                <input
-                  type="password"
-                  autoComplete={
-                    authMode === "login" ? "current-password" : "new-password"
-                  }
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  required
-                  minLength={15}
-                  maxLength={128}
-                />
-              </label>
-
-              <button className={styles.button} type="submit" disabled={busy}>
-                {authMode === "login" ? "Войти" : "Создать аккаунт"}
-              </button>
-            </form>
-          </>
+          <CheckoutAuthForm
+            busy={busy}
+            onBusy={(next) => {
+              setBusy(next);
+              if (next) setStatusMessage(null);
+            }}
+            onSignedIn={(signedIn, message) => {
+              setUser(signedIn);
+              setStatusMessage(message);
+            }}
+            onError={setErrorMessage}
+          />
         ) : (
           <>
             <div className={styles.sessionRow}>
@@ -397,24 +161,19 @@ export function CheckoutPanel({ catalog }: CheckoutPanelProps) {
                 Выйти
               </button>
             </div>
-
             <div className={styles.divider} />
-
             <p className={styles.hint}>
-              {catalog.organization.customerEntryPolicy === "open"
+              {open
                 ? "Организация разрешает самостоятельное вступление. Нажатие кнопки явно подтвердит участие перед оплатой."
                 : "Самостоятельное вступление закрыто. Оплата доступна уже активным участникам организации."}
             </p>
-
             <button
               className={styles.button}
               type="button"
               onClick={handleCheckout}
               disabled={busy}
             >
-              {catalog.organization.customerEntryPolicy === "open"
-                ? "Присоединиться и перейти к оплате"
-                : "Перейти к оплате"}
+              {open ? "Присоединиться и перейти к оплате" : "Перейти к оплате"}
             </button>
           </>
         )}

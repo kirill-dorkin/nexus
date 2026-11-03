@@ -18,8 +18,17 @@ import {
   type Bar,
   type NoteEvent
 } from "./composer";
-
-const hz = (midi: number) => 440 * 2 ** ((midi - 69) / 12);
+import {
+  crackleBuffer,
+  hz,
+  impulse,
+  noiseBuffer,
+  osc,
+  pitch,
+  sendLevel,
+  softClip
+} from "./dsp";
+import { bass, bell, hat, keys, kick, snare, type Mixer } from "./voices";
 
 export class Band {
   readonly output: GainNode;
@@ -161,157 +170,40 @@ export class Band {
     }
   }
 
+  private mixer(): Mixer {
+    return {
+      ctx: this.ctx,
+      noise: this.noise,
+      keys: this.keysBus,
+      bass: this.bassBus,
+      drums: this.drumBus,
+      melody: this.melodyBus,
+      duck: this.duck
+    };
+  }
+
   private play(event: NoteEvent, t: number) {
     const length = event.length * sixteenth();
     switch (event.voice) {
       case "keys":
-        this.keys(hz(pitch(event)), t, length, event.velocity);
+        keys(this.mixer(), hz(pitch(event)), t, length, event.velocity);
         break;
       case "bass":
-        this.bass(hz(pitch(event)), t, length, event.velocity);
+        bass(this.mixer(), hz(pitch(event)), t, length, event.velocity);
         break;
       case "kick":
-        this.kick(t, event.velocity);
+        kick(this.mixer(), t, event.velocity);
         break;
       case "snare":
-        this.snare(t, event.velocity);
+        snare(this.mixer(), t, event.velocity);
         break;
       case "hat":
-        this.hat(t, event.velocity);
+        hat(this.mixer(), t, event.velocity);
         break;
       case "melody":
-        this.bell(hz(pitch(event)), t, length, event.velocity);
+        bell(this.mixer(), hz(pitch(event)), t, length, event.velocity);
         break;
     }
-  }
-
-  /** FM electric piano: a sine carrier with a decaying sine modulator gives the "tine" bark. */
-  private keys(f: number, t: number, length: number, velocity: number) {
-    const { ctx } = this;
-    const peak = 0.11 * velocity;
-    const release = 0.35;
-    const env = ctx.createGain();
-    env.gain.setValueAtTime(0, t);
-    env.gain.linearRampToValueAtTime(peak, t + 0.006);
-    env.gain.setTargetAtTime(peak * 0.38, t + 0.006, 0.45);
-    env.gain.setTargetAtTime(0, t + length, release / 3);
-    const carrier = osc(ctx, "sine", f);
-    const modulator = osc(ctx, "sine", f);
-    const index = ctx.createGain();
-    index.gain.setValueAtTime(f * (0.9 + velocity * 1.4), t);
-    index.gain.setTargetAtTime(f * 0.12, t, 0.35);
-    modulator.connect(index).connect(carrier.frequency);
-    const warmth = osc(ctx, "triangle", f / 2);
-    const warmthLevel = ctx.createGain();
-    warmthLevel.gain.value = 0.18;
-    warmth.connect(warmthLevel).connect(env);
-    carrier.connect(env).connect(this.duck ?? this.keysBus);
-    this.run(t, t + length + release * 2, carrier, modulator, warmth);
-  }
-
-  private bass(f: number, t: number, length: number, velocity: number) {
-    const { ctx } = this;
-    const env = ctx.createGain();
-    const peak = 0.5 * velocity;
-    env.gain.setValueAtTime(0, t);
-    env.gain.linearRampToValueAtTime(peak, t + 0.012);
-    env.gain.setTargetAtTime(peak * 0.6, t + 0.012, 0.25);
-    env.gain.setTargetAtTime(0, t + length * 0.9, 0.06);
-    const body = osc(ctx, "sine", f);
-    const edge = osc(ctx, "triangle", f * 2);
-    const edgeLevel = ctx.createGain();
-    edgeLevel.gain.value = 0.12;
-    edge.connect(edgeLevel).connect(env);
-    body.connect(env).connect(this.bassBus);
-    this.run(t, t + length + 0.4, body, edge);
-  }
-
-  private kick(t: number, velocity: number) {
-    const { ctx } = this;
-    const body = osc(ctx, "sine", 140);
-    body.frequency.setValueAtTime(140, t);
-    body.frequency.exponentialRampToValueAtTime(46, t + 0.12);
-    const env = ctx.createGain();
-    env.gain.setValueAtTime(0.0001, t);
-    env.gain.exponentialRampToValueAtTime(1.13 * velocity, t + 0.004);
-    env.gain.exponentialRampToValueAtTime(0.0001, t + 0.42);
-    body.connect(env).connect(this.drumBus);
-    this.run(t, t + 0.45, body);
-    this.noiseHit(t, "highpass", 3000, 0.12 * velocity, 0.012, this.drumBus);
-    // Sidechain: the keys of this bar dip under the kick and breathe back.
-    if (this.duck) {
-      this.duck.gain.setValueAtTime(1, t);
-      this.duck.gain.linearRampToValueAtTime(1 - 0.32 * velocity, t + 0.02);
-      this.duck.gain.linearRampToValueAtTime(1, t + 0.32);
-    }
-  }
-
-  private snare(t: number, velocity: number) {
-    const { ctx } = this;
-    this.noiseHit(t, "bandpass", 1900, 2.1 * velocity, 0.2, this.drumBus, 0.8);
-    const body = osc(ctx, "triangle", 190);
-    body.frequency.setValueAtTime(190, t);
-    body.frequency.exponentialRampToValueAtTime(150, t + 0.08);
-    const env = ctx.createGain();
-    env.gain.setValueAtTime(0.0001, t);
-    env.gain.exponentialRampToValueAtTime(1.2 * velocity, t + 0.003);
-    env.gain.exponentialRampToValueAtTime(0.0001, t + 0.12);
-    body.connect(env).connect(this.drumBus);
-    this.run(t, t + 0.15, body);
-  }
-
-  private hat(t: number, velocity: number) {
-    this.noiseHit(
-      t,
-      "highpass",
-      7500,
-      3.8 * velocity,
-      0.035 + velocity * 0.03,
-      this.drumBus
-    );
-  }
-
-  /** Soft bell: fundamental plus a quickly fading inharmonic partial. */
-  private bell(f: number, t: number, length: number, velocity: number) {
-    const { ctx } = this;
-    const env = ctx.createGain();
-    const peak = 0.14 * velocity;
-    env.gain.setValueAtTime(0, t);
-    env.gain.linearRampToValueAtTime(peak, t + 0.008);
-    env.gain.setTargetAtTime(0, t + 0.02, Math.max(0.25, length * 0.6));
-    const fundamental = osc(ctx, "sine", f);
-    const partial = osc(ctx, "sine", f * 3.01);
-    const partialEnv = ctx.createGain();
-    partialEnv.gain.setValueAtTime(0.25, t);
-    partialEnv.gain.setTargetAtTime(0, t, 0.08);
-    partial.connect(partialEnv).connect(env);
-    fundamental.connect(env).connect(this.melodyBus);
-    this.run(t, t + length + 2, fundamental, partial);
-  }
-
-  private noiseHit(
-    t: number,
-    type: BiquadFilterType,
-    freq: number,
-    peak: number,
-    decay: number,
-    to: AudioNode,
-    q = 0.7
-  ) {
-    const { ctx } = this;
-    const src = ctx.createBufferSource();
-    src.buffer = this.noise;
-    const filter = ctx.createBiquadFilter();
-    filter.type = type;
-    filter.frequency.value = freq;
-    filter.Q.value = q;
-    const env = ctx.createGain();
-    env.gain.setValueAtTime(0.0001, t);
-    env.gain.exponentialRampToValueAtTime(Math.max(0.0002, peak), t + 0.002);
-    env.gain.exponentialRampToValueAtTime(0.0001, t + decay);
-    src.connect(filter).connect(env).connect(to);
-    src.start(t, (t * 7.31) % 1.5);
-    src.stop(t + decay + 0.05);
   }
 
   /** Vinyl: a quiet hiss bed plus sparse crackle, looped. */
@@ -347,91 +239,4 @@ export class Band {
     source.start();
     this.sources.push(source);
   }
-
-  private run(start: number, end: number, ...nodes: OscillatorNode[]) {
-    for (const node of nodes) {
-      node.start(start);
-      node.stop(end);
-    }
-  }
-}
-
-function osc(ctx: BaseAudioContext, type: OscillatorType, frequency: number) {
-  const node = ctx.createOscillator();
-  node.type = type;
-  node.frequency.value = frequency;
-  return node;
-}
-
-function sendLevel(ctx: BaseAudioContext, level: number) {
-  const node = ctx.createGain();
-  node.gain.value = level;
-  return node;
-}
-
-function noiseBuffer(ctx: BaseAudioContext, seconds: number) {
-  const buffer = ctx.createBuffer(
-    1,
-    Math.floor(ctx.sampleRate * seconds),
-    ctx.sampleRate
-  );
-  const data = buffer.getChannelData(0);
-  for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
-  return buffer;
-}
-
-/** Stereo decaying noise, darkening as it fades: a convincing small plate. */
-function impulse(ctx: BaseAudioContext, seconds: number) {
-  const length = Math.floor(ctx.sampleRate * seconds);
-  const buffer = ctx.createBuffer(2, length, ctx.sampleRate);
-  for (let channel = 0; channel < 2; channel++) {
-    const data = buffer.getChannelData(channel);
-    let smooth = 0;
-    for (let i = 0; i < length; i++) {
-      const progress = i / length;
-      const darkening = 0.15 + progress * 0.8;
-      smooth = smooth * darkening + (Math.random() * 2 - 1) * (1 - darkening);
-      data[i] = smooth * (1 - progress) ** 2.4 * 2.2;
-    }
-  }
-  return buffer;
-}
-
-function crackleBuffer(ctx: BaseAudioContext, seconds: number, seed: number) {
-  const buffer = ctx.createBuffer(
-    1,
-    Math.floor(ctx.sampleRate * seconds),
-    ctx.sampleRate
-  );
-  const data = buffer.getChannelData(0);
-  let s = seed || 1;
-  const random = () => (s = (s * 16807) % 2147483647) / 2147483647;
-  const pops = Math.floor(seconds * 9);
-  for (let p = 0; p < pops; p++) {
-    const at = Math.floor(random() * (data.length - 200));
-    const size = 0.2 + random() * 0.8;
-    for (let i = 0; i < 60; i++) {
-      const index = at + i;
-      data[index] =
-        (data[index] ?? 0) + (random() * 2 - 1) * size * Math.exp(-i / 9);
-    }
-  }
-  return buffer;
-}
-
-function softClip(drive: number) {
-  const curve = new Float32Array(1024);
-  for (let i = 0; i < curve.length; i++) {
-    const x = (i / (curve.length - 1)) * 2 - 1;
-    curve[i] = Math.tanh(x * drive) / Math.tanh(drive);
-  }
-  return curve;
-}
-
-/** Pitched voices always carry a MIDI note; the composer guarantees it. */
-function pitch(event: NoteEvent): number {
-  if (event.midi === undefined) {
-    throw new Error(`A ${event.voice} note has no pitch.`);
-  }
-  return event.midi;
 }
