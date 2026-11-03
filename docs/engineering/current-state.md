@@ -12,7 +12,7 @@ Last maintained: 2026-11-03.
 |---|---|
 | `main` head | `4d8f5e9` — #150, drop the café story characters (2026-11-03) |
 | Latest migration | `000047_lesson_chapters.sql` |
-| Quality gates | CI runs brand isolation, typecheck (packages, API operator scripts, root tests), ESLint (strict type-checked, React, jsx-a11y strict, Next), unit, integration, launch-performance and browser-launch tests. Lint baseline: `eslint-suppressions.json`, which may only shrink. |
+| Quality gates | Local before every push: `pnpm check` (brand isolation, ESLint strict type-checked + React + jsx-a11y strict + Next, typecheck incl. API operator scripts and root tests, unit tests). GitHub CI: brand isolation, typecheck, unit, integration, launch-performance and browser-launch tests. Lint baseline: `eslint-suppressions.json`, which may only shrink. |
 | Latest ADR | ADR-0066 Home learning route |
 | Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058); daily GitHub-hosted read-only smoke against the production domain |
 | Learner-code execution | **Disabled in production.** Grader artifacts exist in the repository but need a separate activation (exact image digest + green real-cluster verification). |

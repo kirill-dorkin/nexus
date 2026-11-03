@@ -23,7 +23,9 @@ The plan that brings `apps/web` and `packages/ui` to the engineering level of th
 
 The rules that are relaxed are relaxed in one place with a written reason: `type` over `interface`, decorated NestJS modules, async React event props, `||` on strings and booleans, scrollable regions as focus targets, and a short list for test files (deliberately malformed input, vitest mocks, `process.env` restoration). An inline `eslint-disable` must name its rule and say why (dialog backdrop clicks, intentional control-character regex, declaration merging, focus on the safe choice of a confirmation).
 
-`eslint-suppressions.json` is the only baseline. It holds the React Compiler findings that need component tests before they are refactored (phase 3) and the sound files that draft PR #144 replaces. CI fails on any new violation, and a fixed one must be pruned with `npx eslint . --prune-suppressions`, so the file can only shrink.
+Lint runs locally through `pnpm check` before every push (see `development-workflow.md`), not on GitHub-hosted runners, because type-aware lint needs about 3 GB of memory.
+
+`eslint-suppressions.json` is the only baseline. It holds the React Compiler findings that need component tests before they are refactored (phase 3) and the sound files that draft PR #144 replaces. `pnpm check` fails on any new violation, and a fixed one must be pruned with `npx eslint . --prune-suppressions`, so the file can only shrink.
 
 Phase 0 also made two blind spots type-checked: the operator scripts in `apps/api/ops/` (their own `tsconfig.json`, part of `@platform/api` typecheck) and the root-level tests and Vitest configs (root `tsconfig.json`, part of `pnpm typecheck`). Both had type errors that nothing had reported.
 
