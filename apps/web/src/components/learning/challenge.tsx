@@ -17,6 +17,8 @@ import {
   TrophyIcon
 } from "@phosphor-icons/react/dist/ssr";
 import { brand } from "@platform/brand";
+import { useIsClient } from "../../lib/hooks/browser";
+import { useStoredValue, writeStoredValue } from "../../lib/hooks/stored-value";
 import { CodeEditor } from "./code-snippet";
 import { cssMatches, readCss, type CssCheck } from "./css-rules";
 import { isRunnerMessage, runnerDocument } from "./js-runner";
@@ -304,35 +306,28 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
   const [code, setCode] = useState(challenge.start);
   const [checked, setChecked] = useState(challenge.start);
   const [hint, setHint] = useState(false);
-  const [solved, setSolved] = useState(false);
-  const [celebrate, setCelebrate] = useState(false);
-  useEffect(() => {
-    try {
-      if (localStorage.getItem(storageKey(challenge)) === "1") setSolved(true);
-    } catch {
-      /* storage unavailable: progress simply is not remembered */
-    }
-  }, [challenge]);
+  const key = storageKey(challenge);
+  const solvedBefore = useStoredValue(key) === "1";
   useEffect(() => {
     const timer = window.setTimeout(() => setChecked(code), 250);
     return () => window.clearTimeout(timer);
   }, [code]);
   // Checks need DOMParser, so they run only in the browser (never during server rendering).
-  const [staticResults, setStaticResults] = useState<boolean[]>(() =>
-    challenge.checks.map(() => false)
+  const isClient = useIsClient();
+  const staticResults = useMemo(
+    () =>
+      isClient
+        ? runChecks(
+            checked,
+            challenge.checks,
+            new DOMParser().parseFromString(
+              staticPage(challenge, checked),
+              "text/html"
+            )
+          )
+        : challenge.checks.map(() => false),
+    [isClient, checked, challenge]
   );
-  useEffect(() => {
-    setStaticResults(
-      runChecks(
-        checked,
-        challenge.checks,
-        new DOMParser().parseFromString(
-          staticPage(challenge, checked),
-          "text/html"
-        )
-      )
-    );
-  }, [checked, challenge]);
   // Runnable checks: a hidden sandbox runs the code and posts one boolean per runnable check.
   const runnable = isRunnable(challenge);
   const id = useId();
@@ -383,16 +378,12 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
   }, [challenge.checks, runResults, staticResults, sql.run]);
   const passed = results.filter(Boolean).length;
   const done = passed === results.length;
+  // Solved in this visit: every check passes on code the learner changed.
+  const celebrate = done && checked !== challenge.start;
+  const solved = solvedBefore || celebrate;
   useEffect(() => {
-    if (!done || checked === challenge.start) return;
-    setCelebrate(true);
-    setSolved(true);
-    try {
-      localStorage.setItem(storageKey(challenge), "1");
-    } catch {
-      /* ignore */
-    }
-  }, [done, checked, challenge]);
+    if (celebrate) writeStoredValue(key, "1");
+  }, [celebrate, key]);
   const solution = challenge.solution;
   return (
     <section
@@ -498,13 +489,13 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
         </div>
       </div>
       {isSql && (challenge.db ?? "shop") !== "empty" ? <SqlSchema /> : null}
-      {celebrate && done ? (
+      {celebrate ? (
         <p className={styles.success} role="status">
           <TrophyIcon size={20} weight="fill" aria-hidden="true" /> Готово! Всё
           работает — идём дальше.
         </p>
       ) : null}
-      {celebrate && done ? <SaveProgressHint /> : null}
+      {celebrate ? <SaveProgressHint /> : null}
       {hint && challenge.hint ? (
         <p className={styles.hint}>
           <LightbulbIcon size={18} weight="fill" aria-hidden="true" />{" "}
@@ -538,7 +529,7 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
           disabled={code === challenge.start}
           onClick={() => {
             setCode(challenge.start);
-            setCelebrate(false);
+            setChecked(challenge.start);
           }}
         >
           <ArrowCounterClockwiseIcon size={16} aria-hidden="true" /> Начать

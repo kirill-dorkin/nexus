@@ -1,5 +1,7 @@
 "use client";
 import { itemAt } from "../../lib/item-at";
+import { usePrefersReducedMotion } from "../../lib/hooks/browser";
+import { useSeenOnce } from "../../lib/hooks/in-view";
 
 import {
   useEffect,
@@ -215,36 +217,12 @@ function Avatar({ who }: { who: Who }) {
   );
 }
 
-function useReducedMotion() {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(query.matches);
-  }, []);
-  return reduced;
-}
-
 function StoryScene({ story }: { story: Story }) {
-  const reduced = useReducedMotion();
+  const reduced = usePrefersReducedMotion();
   const [node, setNode] = useState<HTMLElement | null>(null);
-  const [started, setStarted] = useState(false);
+  const started = useSeenOnce(node, { threshold: 0.4 });
   const [shown, setShown] = useState(1);
   const all = reduced ? story.lines.length : shown;
-  useEffect(() => {
-    if (!node || started) return;
-    if (typeof IntersectionObserver === "undefined") {
-      setStarted(true);
-      return;
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) setStarted(true);
-      },
-      { threshold: 0.4 }
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [node, started]);
   useEffect(() => {
     if (!started || reduced || shown >= story.lines.length) return;
     // Reading time of the previous message, so the scene is paced like a real chat.
@@ -311,10 +289,7 @@ function StoryScene({ story }: { story: Story }) {
         <button
           type="button"
           className={styles.skip}
-          onClick={() => {
-            setStarted(true);
-            setShown(story.lines.length);
-          }}
+          onClick={() => setShown(story.lines.length)}
         >
           <FastForwardIcon size={14} weight="fill" aria-hidden="true" />{" "}
           Показать всё
@@ -414,23 +389,8 @@ function RunPreview({
 function SqlPreview({ code }: { code: string }) {
   const id = useId();
   const [node, setNode] = useState<HTMLDivElement | null>(null);
-  const [visible, setVisible] = useState(false);
   // The database engine starts only when an example scrolls near, not for every card at once.
-  useEffect(() => {
-    if (!node || visible) return;
-    if (typeof IntersectionObserver === "undefined") {
-      setVisible(true);
-      return;
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) setVisible(true);
-      },
-      { rootMargin: "400px 0px" }
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [node, visible]);
+  const visible = useSeenOnce(node, { rootMargin: "400px 0px" });
   const sql = useSqlRun(visible ? { code } : null, `${id}:card`);
   return (
     <div ref={setNode} className={styles.sqlPreview}>
