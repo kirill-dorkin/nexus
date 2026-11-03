@@ -3,7 +3,7 @@ import { scene, rule, kw, op, idea, run, has, lacks, task, makeLesson } from "./
 
 export default function functions(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "functions", title: "Функции: свой инструмент", summary: "Объявление function, вызов, параметры, return и почему функция без return возвращает undefined.",

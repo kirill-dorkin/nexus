@@ -1,5 +1,5 @@
 export default function head(c) {
-  const { code, mdn, lesson, single, multi, short } = c;
+  const { lesson, single, short } = c;
 
   lesson({
     slug: "metadata", title: "Метаданные страницы", minutes: 11,

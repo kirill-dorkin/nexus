@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/courses" },
   openGraph: { url: "/courses", title: `Бесплатные IT-курсы · ${brand.name}` }
 };
-export default async function CoursesPage() {
+export default function CoursesPage() {
   return (
     <LearningShell>
       <div className={styles.catalogHero}>

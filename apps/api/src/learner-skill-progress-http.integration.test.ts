@@ -2,8 +2,7 @@ import { randomUUID } from "node:crypto";
 
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import {
-  learnerSkillProgressReadModelSchema,
-  type LearnerSkillProgressReadModel
+  learnerSkillProgressReadModelSchema
 } from "@platform/contracts";
 import { createDatabasePool } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -380,7 +379,7 @@ describe("learner skill progress HTTP read model", () => {
     expect(response.statusCode).toBe(200);
     const body = learnerSkillProgressReadModelSchema.parse(
       JSON.parse(response.body)
-    ) as LearnerSkillProgressReadModel;
+    );
 
     expect(body).toMatchObject({
       organizationId,

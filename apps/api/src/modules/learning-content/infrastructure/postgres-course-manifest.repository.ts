@@ -1,7 +1,8 @@
 import { ConflictException, Injectable } from "@nestjs/common";
-import { courseManifestV1Schema, type LessonBlock, type CourseManifestV1 } from "@platform/contracts";
+import { courseManifestV1Schema, type CourseManifestV1 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
+import { oneRow } from "../../../database/one-row";
 import { CourseManifestRepository, type ManifestCourseState } from "../application/course-manifest.repository";
 
 @Injectable()
@@ -101,14 +102,14 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
         );
         if (history.rows.length > 1) throw new ConflictException("Historical activity slug has ambiguous stable identity.");
         stable = history.rows[0]?.activity_id;
-        if (!stable) stable = (await tx.client.query<{ id: string }>("INSERT INTO learning_content.activities (organization_id,course_id,created_by_user_id) VALUES ($1,$2,$3) RETURNING id::text", [org, course, user])).rows[0]!.id;
+        if (!stable) stable = oneRow(await tx.client.query<{ id: string }>("INSERT INTO learning_content.activities (organization_id,course_id,created_by_user_id) VALUES ($1,$2,$3) RETURNING id::text", [org, course, user]), "the created activity").id;
         await tx.client.query("INSERT INTO learning_content.manifest_activity_identities (organization_id,course_id,slug,activity_id) VALUES ($1,$2,$3,$4)", [org, course, activity.slug, stable]);
       }
       activityIds.set(activity.slug, stable);
       const config = { presentation: activity.presentation, validation: { validatorKey: activity.type, validatorVersion: 1, config: {} } };
-      const snapshot = (await tx.client.query<{ id: string }>(
+      const snapshot = oneRow(await tx.client.query<{ id: string }>(
         "INSERT INTO learning_content.course_version_activities (organization_id,course_version_id,activity_id,slug,activity_type,title,instructions,config,position) VALUES ($1,$2,$3,$4,$5,$6,$7,$8::jsonb,$9) RETURNING id::text", [org, version, stable, activity.slug, activity.type, activity.title, activity.instructions, JSON.stringify(config), position]
-      )).rows[0]!.id;
+      ), "the activity version").id;
       await tx.client.query("INSERT INTO learning_content.quiz_validation_configs (organization_id,course_version_id,activity_version_id,config) VALUES ($1,$2,$3,$4::jsonb)", [org, version, snapshot, JSON.stringify(activity.validation)]);
       for (const skillKey of activity.skillKeys) {
         await tx.client.query("INSERT INTO learning_content.activity_skill_mappings (organization_id,course_version_id,activity_id,skill_id) VALUES ($1,$2,$3,$4)", [org, version, stable, skillIds.get(skillKey)]);
@@ -116,13 +117,13 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
     }
     for (const [position, lesson] of manifest.lessons.entries()) {
       await tx.client.query("INSERT INTO learning_content.lessons (organization_id,course_id,slug,created_by_user_id) VALUES ($1,$2,$3,$4) ON CONFLICT (organization_id,course_id,slug) DO NOTHING", [org, course, lesson.slug, user]);
-      const lessonId = (await tx.client.query<{ id: string }>("SELECT id::text FROM learning_content.lessons WHERE organization_id=$1 AND course_id=$2 AND slug=$3", [org, course, lesson.slug])).rows[0]!.id;
+      const lessonId = oneRow(await tx.client.query<{ id: string }>("SELECT id::text FROM learning_content.lessons WHERE organization_id=$1 AND course_id=$2 AND slug=$3", [org, course, lesson.slug]), "the lesson").id;
       await tx.client.query("INSERT INTO learning_content.course_version_lessons (organization_id,course_id,course_version_id,lesson_id,title,summary,duration_minutes,position,chapter) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)", [org, course, version, lessonId, lesson.title, lesson.summary, lesson.durationMinutes, position, lesson.chapter ?? null]);
       for (const [blockPosition, block] of lesson.blocks.entries()) {
         await tx.client.query("INSERT INTO learning_content.course_version_lesson_blocks (organization_id,course_version_id,lesson_id,position,block_type,video_id,markdown,activity_id,title,kind,required) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)", [org, version, lessonId, blockPosition, block.type, block.type === "youtube" ? block.videoId : null, block.type === "markdown" ? block.markdown : null, block.type === "activity" ? activityIds.get(block.activitySlug) : null, block.type === "activity" ? block.title ?? null : null, block.type === "activity" ? block.kind : null, block.type === "activity" ? block.required : null]);
       }
     }
-    const revision = (await tx.client.query<{ authoring_revision: number }>("SELECT authoring_revision FROM learning_content.course_versions WHERE organization_id=$1 AND id=$2", [org, version])).rows[0]!.authoring_revision;
+    const revision = oneRow(await tx.client.query<{ authoring_revision: number }>("SELECT authoring_revision FROM learning_content.course_versions WHERE organization_id=$1 AND id=$2", [org, version]), "the course version revision").authoring_revision;
     return { revision, createdSkills };
   }
 
@@ -152,7 +153,8 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
     const resultLessons = [];
     for (const lesson of lessons.rows) {
       const blocks = await tx.client.query<{ block_type: string; video_id: string | null; markdown: string | null; slug: string | null; title: string | null; kind: "practice" | "homework" | null; required: boolean | null }>("SELECT b.block_type,b.video_id,b.markdown,a.slug,b.title,b.kind,b.required FROM learning_content.course_version_lesson_blocks b LEFT JOIN learning_content.course_version_activities a ON a.organization_id=b.organization_id AND a.course_version_id=b.course_version_id AND a.activity_id=b.activity_id WHERE b.organization_id=$1 AND b.course_version_id=$2 AND b.lesson_id=$3 ORDER BY b.position", [org, version, lesson.id]);
-      const mapped: LessonBlock[] = blocks.rows.map((b) => b.block_type === "youtube" ? { type: "youtube", videoId: b.video_id! } : b.block_type === "markdown" ? { type: "markdown", markdown: b.markdown! } : { type: "activity", activitySlug: b.slug!, ...(b.title === null ? {} : { title: b.title }), kind: b.kind!, required: b.required! });
+      // Unexpected NULLs stay visible: the manifest schema below rejects them.
+      const mapped = blocks.rows.map((b) => b.block_type === "youtube" ? { type: "youtube", videoId: b.video_id } : b.block_type === "markdown" ? { type: "markdown", markdown: b.markdown } : { type: "activity", activitySlug: b.slug, ...(b.title === null ? {} : { title: b.title }), kind: b.kind, required: b.required });
       const { id: _id, chapter, ...metadata } = lesson;
       resultLessons.push({ ...metadata, ...(chapter === null ? {} : { chapter }), blocks: mapped });
     }

@@ -1,9 +1,9 @@
 // Chapter 3: the box model.
-import { scene, prop, fn, val, idea, rule, page, css, task, makeLesson, diagram } from "./kit.mjs";
+import { scene, prop, fn, idea, rule, page, css, task, makeLesson, diagram } from "./kit.mjs";
 
 export default function box(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "box-model", title: "Блочная модель", summary: "Каждый элемент — коробка: содержимое, padding, border, margin, ширина и высота.",

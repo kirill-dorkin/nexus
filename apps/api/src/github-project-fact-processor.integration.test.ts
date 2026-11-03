@@ -336,7 +336,7 @@ describe("GitHub Project fact processor", () => {
       })
     ];
 
-    for (let index = 0; index < inboxIds.length; index += 1) {
+    for (const _inboxId of inboxIds) {
       expect(await processor.processOne()).toBe(true);
     }
 

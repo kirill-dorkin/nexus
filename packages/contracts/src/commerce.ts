@@ -9,7 +9,7 @@ export const commercePriceStatusSchema = z.enum(["active", "archived"]);
 export const commerceBillingTypeSchema = z.enum(["one_time"]);
 export const purchaseStatusSchema = z.enum(["pending", "paid"]);
 
-const optionalDateTimeSchema = z.string().datetime().nullable();
+const optionalDateTimeSchema = z.iso.datetime().nullable();
 const commerceNameSchema = z.string().trim().min(1).max(160);
 const currencySchema = z.string().regex(/^[A-Z]{3}$/);
 
@@ -21,7 +21,7 @@ export const entitlementSchema = z.object({
   status: entitlementStatusSchema,
   grantSource: entitlementGrantSourceSchema,
   sourcePurchaseId: uuidSchema.nullable(),
-  grantedAt: z.string().datetime(),
+  grantedAt: z.iso.datetime(),
   expiresAt: optionalDateTimeSchema,
   revokedAt: optionalDateTimeSchema
 });
@@ -33,7 +33,7 @@ export const commerceProductSchema = z.object({
   slug: resourceSlugSchema,
   name: commerceNameSchema,
   status: commerceProductStatusSchema,
-  createdAt: z.string().datetime(),
+  createdAt: z.iso.datetime(),
   archivedAt: optionalDateTimeSchema
 });
 
@@ -45,7 +45,7 @@ export const commercePriceSchema = z.object({
   currency: currencySchema,
   billingType: commerceBillingTypeSchema,
   status: commercePriceStatusSchema,
-  createdAt: z.string().datetime(),
+  createdAt: z.iso.datetime(),
   archivedAt: optionalDateTimeSchema
 });
 
@@ -61,13 +61,13 @@ export const purchaseSchema = z.object({
   currency: currencySchema,
   billingType: commerceBillingTypeSchema,
   idempotencyKey: uuidSchema,
-  createdAt: z.string().datetime(),
+  createdAt: z.iso.datetime(),
   paidAt: optionalDateTimeSchema
 });
 
 export const purchaseCheckoutSchema = z.object({
   purchase: purchaseSchema,
-  checkoutUrl: z.string().url(),
+  checkoutUrl: z.url(),
   checkoutExpiresAt: optionalDateTimeSchema
 });
 
@@ -85,7 +85,7 @@ export const publicPurchaseSchema = purchaseSchema.pick({
 
 export const publicPurchaseCheckoutSchema = z.object({
   purchase: publicPurchaseSchema,
-  checkoutUrl: z.string().url(),
+  checkoutUrl: z.url(),
   checkoutExpiresAt: optionalDateTimeSchema
 });
 
@@ -110,7 +110,7 @@ export const createPurchaseCheckoutRequestSchema = z
 
 export const grantOfferingEntitlementRequestSchema = z.object({
   userId: uuidSchema,
-  expiresAt: z.string().datetime().optional()
+  expiresAt: z.iso.datetime().optional()
 });
 
 export type Entitlement = z.infer<typeof entitlementSchema>;

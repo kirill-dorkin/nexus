@@ -1,11 +1,10 @@
 // Chapter 10: Modern CSS — variables, nesting, layers, logical properties, color schemes, forms, counters.
-import { scene, prop, sel, at, fn, val, idea, rule, page, css, src, task, makeLesson } from "./kit.mjs";
+import { scene, prop, sel, at, fn, idea, rule, page, css, src, task, makeLesson } from "./kit.mjs";
 
-const box = "background: #fdf6ec; border: 1px solid #c8763a; padding: 6px;";
 
 export default function modern(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "custom-properties", title: "Переменные: --цвет и var()", summary: "Пользовательские свойства --x, var() с запасным значением, область видимости и @property.",

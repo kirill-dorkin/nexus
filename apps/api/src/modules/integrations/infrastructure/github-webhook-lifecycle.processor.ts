@@ -141,7 +141,8 @@ export class GitHubWebhookLifecycleProcessor {
       return true;
     }
 
-    if (claim.routingStatus !== "mapped" || claim.organizationId === null) {
+    const organizationId = claim.organizationId;
+    if (claim.routingStatus !== "mapped" || organizationId === null) {
       await withTransaction(this.pool, (tx) =>
         this.finish(tx, claim.inboxId, leaseToken, "rejected", "routing_rejected", null)
       );
@@ -151,9 +152,9 @@ export class GitHubWebhookLifecycleProcessor {
     try {
       await withTransaction(this.pool, async (tx) => {
         await tx.client.query("SELECT set_config('app.organization_id', $1, true)", [
-          claim.organizationId
+          organizationId
         ]);
-        await this.apply(tx, claim);
+        await this.apply(tx, claim, organizationId);
         const finished = await this.finish(
           tx,
           claim.inboxId,
@@ -223,15 +224,15 @@ export class GitHubWebhookLifecycleProcessor {
     };
   }
 
-  private async apply(tx: DatabaseTransaction, claim: Claim): Promise<void> {
+  private async apply(tx: DatabaseTransaction, claim: Claim, organizationId: string): Promise<void> {
     const installationId = this.installationId(claim);
     if (claim.eventName === "installation") {
-      await this.installationEvent(tx, claim.organizationId as string, installationId, claim.action);
+      await this.installationEvent(tx, organizationId, installationId, claim.action);
       return;
     }
     await this.repositoryEvent(
       tx,
-      claim.organizationId as string,
+      organizationId,
       installationId,
       claim.action,
       claim.payload

@@ -56,8 +56,7 @@ export class QuizValidationApplicationService {
       binding.validatorVersion
     );
     if (
-      !definition ||
-      definition.recordingAuthority !== "deterministic_quiz" ||
+      definition?.recordingAuthority !== "deterministic_quiz" ||
       definition.version !== 1 ||
       definition.evidenceTrust !== "trusted" ||
       definition.key !== activity.activityType ||

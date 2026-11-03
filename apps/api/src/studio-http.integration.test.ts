@@ -294,7 +294,7 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
     });
     await withUserTransaction(
       runtime,
-      { userId: "" + randomUUID() },
+      { userId: randomUUID() },
       async (tx) =>
         expect(
           (

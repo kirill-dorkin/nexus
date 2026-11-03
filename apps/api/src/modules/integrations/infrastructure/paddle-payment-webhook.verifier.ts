@@ -52,10 +52,11 @@ function parseSignatureHeader(signature: string): {
     if (key === "ts" && value.length > 0) timestamps.push(value);
     if (key === "h1" && /^[a-f\d]{64}$/i.test(value)) signatures.push(value);
   }
-  if (timestamps.length !== 1 || signatures.length === 0) {
+  const [timestamp] = timestamps;
+  if (timestamps.length !== 1 || timestamp === undefined || signatures.length === 0) {
     throw new UnauthorizedException("Invalid Paddle webhook signature.");
   }
-  return { timestamp: timestamps[0]!, signatures };
+  return { timestamp, signatures };
 }
 
 export class PaddlePaymentWebhookVerifier extends PaymentWebhookVerifier {

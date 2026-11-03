@@ -1,11 +1,11 @@
 // Chapter 9: designing your own tables.
-import { scene, stmt, kw, type, cons, idea, rule, holds, src, task, makeLesson } from "./kit.mjs";
+import { scene, stmt, kw, type, cons, idea, rule, holds, task, makeLesson } from "./kit.mjs";
 
 const column = (table, name) => `information_schema.columns WHERE table_schema = 'public' AND table_name = '${table}' AND column_name = '${name}'`;
 
 export default function ddl(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, multi } = c;
 
   L({
     slug: "create-table", title: "CREATE TABLE и типы", summary: "Своя таблица: имена столбцов, типы и автоматический id.",

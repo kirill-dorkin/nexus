@@ -73,7 +73,7 @@ export class KubernetesApiClient {
     try {
       token = this.serviceAccountToken();
     } catch (error) {
-      return Promise.reject(error);
+      return Promise.reject(error instanceof Error ? error : new Error(String(error)));
     }
 
     return new Promise<RequestResult>((resolve, reject) => {

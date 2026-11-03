@@ -27,7 +27,7 @@ export type CreateGraderGatewayOptions = Readonly<{
 }>;
 
 function tokenMatches(expected: string, authorization: string | undefined): boolean {
-  if (authorization === undefined || !authorization.startsWith("Bearer ")) return false;
+  if (!authorization?.startsWith("Bearer ")) return false;
   const candidate = authorization.slice("Bearer ".length);
   const expectedBytes = Buffer.from(expected, "utf8");
   const candidateBytes = Buffer.from(candidate, "utf8");
@@ -64,7 +64,7 @@ export function createGraderGateway(options: CreateGraderGatewayOptions): Fastif
   const sandbox = options.sandboxProvider ?? new UnavailableSandboxProvider();
   const app = Fastify({ logger: options.logger ?? false });
 
-  app.get("/health", async () => ({ status: "ok", service: "grader-gateway" }));
+  app.get("/health", () => ({ status: "ok", service: "grader-gateway" }));
 
   app.post<{ Body: GraderJobRequest }>(
     "/v1/jobs",
@@ -87,7 +87,7 @@ export function createGraderGateway(options: CreateGraderGatewayOptions): Fastif
 
         const resolved = profiles.find(request.body.profile);
         if (resolved === null) {
-          return reply.code(422).send({
+          return await reply.code(422).send({
             error: {
               code: "execution_profile_not_found",
               message: "Requested grader execution profile is not registered."

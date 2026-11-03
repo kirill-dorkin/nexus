@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
-import { ArrowRight, BookOpen } from "@phosphor-icons/react/dist/ssr";
+import { useState, type SubmitEvent } from "react";
+import { ArrowRightIcon, BookOpenIcon } from "@phosphor-icons/react/dist/ssr";
 import {
   Alert,
   Badge,
@@ -46,7 +46,7 @@ export function ComponentGallery() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [buttonFeedback, setButtonFeedback] = useState("");
   const [formFeedback, setFormFeedback] = useState("");
-  function submitExample(event: FormEvent<HTMLFormElement>) {
+  function submitExample(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setFormFeedback(
       "Форма прошла проверку. Это пример: данные никуда не отправлены."
@@ -142,7 +142,7 @@ export function ComponentGallery() {
               <Button
                 onClick={() => setButtonFeedback("Нажата основная кнопка.")}
               >
-                Основная <ArrowRight size={18} aria-hidden="true" />
+                Основная <ArrowRightIcon size={18} aria-hidden="true" />
               </Button>
               <Button
                 variant="secondary"
@@ -172,7 +172,7 @@ export function ComponentGallery() {
                   setButtonFeedback("У кнопки с иконкой есть доступное имя.")
                 }
               >
-                <BookOpen size={20} aria-hidden="true" />
+                <BookOpenIcon size={20} aria-hidden="true" />
               </IconButton>
             </Inline>
             <Inline>
@@ -360,7 +360,7 @@ export function ComponentGallery() {
             <Surface padding="none">
               <EmptyState
                 title="Пока ничего нет"
-                icon={<BookOpen size={28} />}
+                icon={<BookOpenIcon size={28} />}
                 action={
                   <ButtonLink href="/courses" variant="secondary">
                     Открыть каталог

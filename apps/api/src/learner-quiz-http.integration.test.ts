@@ -216,14 +216,6 @@ describe("deterministic learner quiz HTTP + PostgreSQL boundary", () => {
       )
     ).rows[0];
   }
-  async function events(f: Fixture) {
-    return (
-      await migration.query<{ n: number }>(
-        "SELECT count(*)::int AS n FROM events.outbox WHERE organization_id=$1 AND event_name='enrollment.created'",
-        [f.org]
-      )
-    ).rows[0]!.n;
-  }
   // Canonical history fixtures exercise the read policy without inventing quiz execution before Slice D.
   beforeAll(async () => {
     process.env.WEB_APP_ORIGIN = origin;
@@ -453,7 +445,7 @@ describe("deterministic learner quiz HTTP + PostgreSQL boundary", () => {
     expect(failed).toMatchObject({
       outcome: "failed",
       score: 0,
-      attemptNumber: first.attemptNumber + 1
+      attemptNumber: (first as { attemptNumber: number }).attemptNumber + 1
     });
     expect(await counts(key)).toEqual({
       attempts: 1,
@@ -595,7 +587,7 @@ describe("deterministic learner quiz HTTP + PostgreSQL boundary", () => {
       check(single(), key),
       check(single(), key)
     ]);
-    expect(replies[0]!.json()).toEqual(replies[1]!.json());
+    expect(replies[0].json()).toEqual(replies[1].json());
     expect(await counts(key)).toEqual({
       attempts: 1,
       submissions: 1,

@@ -1,5 +1,5 @@
 export default function text(c) {
-  const { html, mdn, lesson, single, multi, short } = c;
+  const { lesson, single, short } = c;
 
   lesson({
     slug: "text-emphasis", title: "Выделение текста по смыслу", minutes: 10,

@@ -47,10 +47,13 @@ export function ButtonLink({
   variant,
   size,
   className,
+  children,
   ...props
 }: ComponentPropsWithRef<"a"> & ButtonStyle & { href: string }) {
   return (
-    <a {...props} className={cx(buttonClass({ variant, size }), className)} />
+    <a {...props} className={cx(buttonClass({ variant, size }), className)}>
+      {children}
+    </a>
   );
 }
 export function IconButton({
@@ -156,7 +159,7 @@ export function Heading({
   level?: 1 | 2 | 3 | 4 | 5 | 6;
   size?: "display" | "section" | "card" | "small";
 }) {
-  const Tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  const Tag = `h${level}` as const;
   return (
     <Tag {...props} data-size={size} className={cx("ui-heading", className)} />
   );

@@ -27,6 +27,8 @@ type PaddleApi = Readonly<{
 }>;
 
 declare global {
+  // Augmenting the global Window requires interface declaration merging.
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   interface Window {
     Paddle?: PaddleApi;
   }

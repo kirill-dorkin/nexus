@@ -5,7 +5,7 @@ const click = (sel) => `document.querySelector(${JSON.stringify(sel)}).click()`;
 
 export default function events(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "events-click", title: "События: клик", summary: "addEventListener, событие click, функция-обработчик и removeEventListener.",

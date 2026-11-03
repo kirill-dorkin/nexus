@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  courseManifestApplyResultSchema,
+  courseManifestPlanSchema,
   courseManifestV1Schema,
   studioCourseListSchema,
   studioDraftSchema,
@@ -17,6 +19,7 @@ import { DraftPreview } from "./draft-preview";
 import {
   downloadManifest,
   downloadManifestText,
+  errorMessage,
   studioRequest,
   StudioError
 } from "./studio-api";
@@ -103,9 +106,9 @@ export function CourseEditor({
           setReady(true);
         } else install(studioDraftSchema.parse(value));
       })
-      .catch((e) => {
+      .catch((e: unknown) => {
         if (!cancelled) {
-          setError(e.message);
+          setError(errorMessage(e));
           setLogin(e instanceof StudioError && e.status === 401);
         }
       });
@@ -207,10 +210,9 @@ export function CourseEditor({
     const d = working();
     if (!d) return;
     await operation(async () => {
-      const plan = (await studioRequest(
-        `${path}/courses/manifest/validate`,
-        d
-      )) as CourseManifestPlan;
+      const plan = courseManifestPlanSchema.parse(
+        await studioRequest(`${path}/courses/manifest/validate`, d)
+      );
       const expectedVersion = base?.status === "draft" ? base.versionId : null,
         expectedRevision = base?.status === "draft" ? base.revision : 0;
       if (
@@ -236,11 +238,11 @@ export function CourseEditor({
     setChecked(null);
     await operation(async () => {
       try {
-        const result = await studioRequest(`${path}/courses/manifest/apply`, {
+        const result = courseManifestApplyResultSchema.parse(await studioRequest(`${path}/courses/manifest/apply`, {
           manifest: candidate.document,
           expectedDraftVersionId: candidate.plan.expectedDraftVersionId,
           expectedRevision: candidate.plan.expectedRevision
-        });
+        }));
         if (isNew) {
           router.replace(`/studio/${org}/${result.courseId}`);
           return;
@@ -699,6 +701,8 @@ export function CourseEditor({
               скачать её; сохранённая версия на сервере останется без изменений.
             </Text>
             <div className={styles.actions}>
+              {/* A destructive confirmation opens with focus on the safe choice (WAI-ARIA APG). */}
+              {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
               <Button variant="secondary" autoFocus onClick={() => {
                 setDiscardOpen(false); setLeaveHref(null);
               }}>Остаться в редакторе</Button>
@@ -736,9 +740,10 @@ export function CourseEditor({
               выполняется отдельно.
             </Text>
             <div className={styles.actions}>
-              <Button
+              {/* A confirmation opens with focus on the safe choice (WAI-ARIA APG). */}
+              {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
+              <Button autoFocus
                 variant="secondary"
-                autoFocus
                 onClick={() => setPublishOpen(false)}
               >
                 Отмена

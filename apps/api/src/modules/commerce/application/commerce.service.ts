@@ -296,7 +296,7 @@ export class CommerceApplicationService implements PurchaseCommand {
         organizationId,
         priceId
       );
-      if (price === null || price.productId !== productId) {
+      if (price?.productId !== productId) {
         throw new NotFoundException("Commerce Price not found.");
       }
       if (price.status === "archived") {
@@ -573,7 +573,7 @@ export class CommerceApplicationService implements PurchaseCommand {
         organizationId,
         entitlementId
       );
-      if (entitlement === null || entitlement.offeringId !== offeringId) {
+      if (entitlement?.offeringId !== offeringId) {
         throw new NotFoundException("Entitlement not found.");
       }
 

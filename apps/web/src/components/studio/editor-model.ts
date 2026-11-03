@@ -1,3 +1,4 @@
+import { itemAt } from "../../lib/item-at";
 import {
   courseManifestV1Schema,
   type CourseManifestV1,
@@ -71,8 +72,8 @@ export function parseEditorJson(
         )
       };
 }
-export function move<T>(items: T[], index: number, offset: number): void {
+export function move(items: unknown[], index: number, offset: number): void {
   const target = index + offset;
   if (target < 0 || target >= items.length) return;
-  [items[index], items[target]] = [items[target]!, items[index]!];
+  [items[index], items[target]] = [itemAt(items, target), itemAt(items, index)];
 }

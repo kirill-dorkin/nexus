@@ -1,7 +1,8 @@
 "use client";
+import { itemAt } from "../../lib/item-at";
 
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { Bug, Database, FastForward, Headphones, Robot, Sparkle, User } from "@phosphor-icons/react/dist/ssr";
+import { BugIcon, DatabaseIcon, FastForwardIcon, HeadphonesIcon, RobotIcon, SparkleIcon, UserIcon } from "@phosphor-icons/react/dist/ssr";
 import { CodeSnippet } from "./code-snippet";
 import { isRunnerMessage, needsModule, runnerDocument } from "./js-runner";
 import { useSqlRun } from "./sql/sql-client";
@@ -16,12 +17,12 @@ import styles from "./story.module.css";
  */
 
 export const CHARACTERS = {
-  bro: { name: "Бро", role: "браузер", color: "#7dd3fc", Icon: Robot },
-  nika: { name: "Ника", role: "наставница", color: "#c5f23a", Icon: Sparkle },
-  lev: { name: "Лев", role: "слушает сайты скринридером", color: "#c4b5fd", Icon: Headphones },
-  bug: { name: "Вредный Скрипт", role: "злодей", color: "#fda4af", Icon: Bug },
-  slon: { name: "Слон", role: "база данных PostgreSQL", color: "#93c5fd", Icon: Database },
-  you: { name: "Вы", role: "", color: "#e4e4e7", Icon: User }
+  bro: { name: "Бро", role: "браузер", color: "#7dd3fc", Icon: RobotIcon },
+  nika: { name: "Ника", role: "наставница", color: "#c5f23a", Icon: SparkleIcon },
+  lev: { name: "Лев", role: "слушает сайты скринридером", color: "#c4b5fd", Icon: HeadphonesIcon },
+  bug: { name: "Вредный Скрипт", role: "злодей", color: "#fda4af", Icon: BugIcon },
+  slon: { name: "Слон", role: "база данных PostgreSQL", color: "#93c5fd", Icon: DatabaseIcon },
+  you: { name: "Вы", role: "", color: "#e4e4e7", Icon: UserIcon }
 } as const;
 export type Who = keyof typeof CHARACTERS;
 type Line = { who: Who; text: string };
@@ -64,8 +65,8 @@ export function parseConcept(source: string): Concept | null {
   if (v.show !== undefined && !(Number.isInteger(v.show) && (v.show as number) >= 40 && (v.show as number) <= 600)) return null;
   return {
     name: v.name, title: v.title, what: v.what, why: v.why,
-    how: v.how as string | undefined, kind: v.kind as ConceptKind | undefined, lang: v.lang as string | undefined, show: v.show as number | undefined, bro: v.bro as string | undefined,
-    page: v.page as string | undefined
+    how: v.how, kind: v.kind as ConceptKind | undefined, lang: v.lang, show: v.show as number | undefined, bro: v.bro,
+    page: v.page
   };
 }
 
@@ -114,11 +115,11 @@ function StoryScene({ story }: { story: Story }) {
   useEffect(() => {
     if (!started || reduced || shown >= story.lines.length) return;
     // Reading time of the previous message, so the scene is paced like a real chat.
-    const previous = story.lines[shown - 1]!.text.length;
+    const previous = itemAt(story.lines, shown - 1).text.length;
     const timer = window.setTimeout(() => setShown((n) => n + 1), Math.min(2600, 700 + previous * 18));
     return () => window.clearTimeout(timer);
   }, [started, reduced, shown, story.lines]);
-  const typing = !reduced && started && all < story.lines.length ? story.lines[all]!.who : null;
+  const typing = !reduced && started && all < story.lines.length ? itemAt(story.lines, all).who : null;
   return (
     <figure ref={setNode} className={styles.scene} data-single={story.lines.length === 1 || undefined}>
       {story.title ? <figcaption className={styles.sceneTitle}>{story.title}</figcaption> : null}
@@ -145,7 +146,7 @@ function StoryScene({ story }: { story: Story }) {
       ) : null}
       {!reduced && all < story.lines.length ? (
         <button type="button" className={styles.skip} onClick={() => { setStarted(true); setShown(story.lines.length); }}>
-          <FastForward size={14} weight="fill" aria-hidden="true" /> Показать всё
+          <FastForwardIcon size={14} weight="fill" aria-hidden="true" /> Показать всё
         </button>
       ) : null}
     </figure>
@@ -163,7 +164,9 @@ function AutoHeightPreview({ title, html, initial }: { title: string; html: stri
       style={{ height }}
       onLoad={(event) => {
         const doc = event.currentTarget.contentDocument;
-        const measured = doc ? Math.max(doc.documentElement.scrollHeight, doc.body?.scrollHeight ?? 0) : 0;
+        // `body` is typed as always present but is null until the frame has parsed one.
+        const body = doc?.body as HTMLElement | null | undefined;
+        const measured = doc ? Math.max(doc.documentElement.scrollHeight, body?.scrollHeight ?? 0) : 0;
         if (measured > 0) setHeight(Math.min(Math.max(measured, 40), 480));
       }} />
   );

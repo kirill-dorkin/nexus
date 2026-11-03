@@ -4,11 +4,11 @@ import {
   oauthProvidersResponseSchema,
   type OAuthProvider
 } from "@platform/contracts";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, type SubmitEvent } from "react";
 import Link from "next/link";
 import { browserApiRequest, publicApiUrl } from "../../lib/public-api";
 import { safeLearningReturnTo } from "../../lib/learning-return-to";
-import { ArrowRight, GithubLogo, GoogleLogo } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon, GithubLogoIcon, GoogleLogoIcon } from "@phosphor-icons/react/dist/ssr";
 import {
   Alert,
   Button,
@@ -55,21 +55,23 @@ export function LearningAuth({
     const query = new URLSearchParams({ returnTo: safeLearningReturnTo(returnTo) });
     return publicApiUrl(`/v1/auth/oauth/${provider}/start?${query.toString()}`);
   }
-  async function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const field = (name: string): string => {
+      const value = data.get(name);
+      return typeof value === "string" ? value : "";
+    };
+    const displayName = field("displayName").trim();
     setBusy(true);
     setError(null);
     try {
       const response = await browserApiRequest(`/v1/auth/${mode}`, {
         method: "POST",
         body: JSON.stringify({
-          email: data.get("email"),
-          password: data.get("password"),
-          ...(mode === "register" &&
-          String(data.get("displayName") ?? "").trim()
-            ? { displayName: String(data.get("displayName")).trim() }
-            : {})
+          email: field("email"),
+          password: field("password"),
+          ...(mode === "register" && displayName ? { displayName } : {})
         })
       });
       if (!response.ok) {
@@ -120,13 +122,13 @@ export function LearningAuth({
           <div className={styles.providerGrid}>
             {providers.includes("google") && (
               <a className={styles.providerButton} href={providerUrl("google")}>
-                <GoogleLogo size={21} weight="bold" aria-hidden="true" />
+                <GoogleLogoIcon size={21} weight="bold" aria-hidden="true" />
                 <span>{mode === "login" ? "Войти" : "Продолжить"} через Google</span>
               </a>
             )}
             {providers.includes("github") && (
               <a className={styles.providerButton} href={providerUrl("github")}>
-                <GithubLogo size={21} weight="fill" aria-hidden="true" />
+                <GithubLogoIcon size={21} weight="fill" aria-hidden="true" />
                 <span>{mode === "login" ? "Войти" : "Продолжить"} через GitHub</span>
               </a>
             )}
@@ -159,7 +161,7 @@ export function LearningAuth({
         <div className={styles.actions}>
           <Button loading={busy} type="submit">
             {busy ? "Подождите…" : mode === "login" ? "Войти" : "Создать аккаунт"}
-            {!busy && <ArrowRight size={20} aria-hidden="true" />}
+            {!busy && <ArrowRightIcon size={20} aria-hidden="true" />}
           </Button>
           <div className={styles.alternative}>
             <span>{mode === "login" ? "Нет аккаунта?" : "Уже зарегистрированы?"}</span>

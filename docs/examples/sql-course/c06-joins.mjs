@@ -3,7 +3,7 @@ import { scene, clause, kw, idea, rule, diagram, rows, src, task, makeLesson } f
 
 export default function joins(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "keys-relations", title: "Ключи и связи", summary: "Почему данные лежат в разных таблицах и как строки ссылаются друг на друга.",

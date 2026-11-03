@@ -32,7 +32,9 @@ function canonicalJson(value: unknown): string {
       .map((key) => `${JSON.stringify(key)}:${canonicalJson(object[key])}`);
     return `{${entries.join(",")}}`;
   }
-  return JSON.stringify(value) ?? "null";
+  // JSON.stringify yields undefined (despite its typing) for these values.
+  if (value === undefined || typeof value === "function" || typeof value === "symbol") return "null";
+  return JSON.stringify(value);
 }
 
 function materiallyMatches(existing: Evidence, requested: NewEvidence): boolean {

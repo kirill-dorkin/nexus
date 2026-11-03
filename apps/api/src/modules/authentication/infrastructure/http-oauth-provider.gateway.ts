@@ -202,11 +202,11 @@ export class HttpOAuthProviderGateway extends OAuthProviderGateway {
     if (!Array.isArray(emails)) {
       throw new BadGatewayException("GitHub returned an invalid email response.");
     }
-    const verified = emails.filter((candidate): candidate is JsonObject =>
-      typeof candidate === "object" && candidate !== null &&
-      !Array.isArray(candidate) && candidate.verified === true &&
-      typeof candidate.email === "string" && candidate.email.trim().length > 0
-    );
+    const verified = (emails as unknown[]).filter((candidate): candidate is JsonObject => {
+      if (typeof candidate !== "object" || candidate === null || Array.isArray(candidate)) return false;
+      const entry = candidate as JsonObject;
+      return entry.verified === true && typeof entry.email === "string" && entry.email.trim().length > 0;
+    });
     const selected = verified.find((candidate) => candidate.primary === true) ?? verified[0];
     if (selected === undefined) {
       throw new BadGatewayException("GitHub did not provide a verified email.");

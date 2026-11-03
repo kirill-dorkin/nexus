@@ -1,5 +1,5 @@
 export default function basics(c) {
-  const { html, mdn, lesson, single, multi, short, diagram, demo } = c;
+  const { lesson, single, multi, short } = c;
 
   lesson({
     slug: "what-is-html", title: "Что такое HTML", minutes: 9,

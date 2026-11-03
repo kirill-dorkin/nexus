@@ -1,12 +1,12 @@
 // Chapter 24: Legacy (ECMAScript Annex B) — what old code uses and what to write instead.
-import { scene, rule, meth, kw, run, has, lacks, task, makeLesson, on } from "./kit.mjs";
+import { scene, rule, meth, kw, run, lacks, task, makeLesson, on } from "./kit.mjs";
 
 const S = (...m) => on("String.prototype", ...m);
 const OP = (...m) => on("Object.prototype", ...m);
 
 export default function legacy(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "legacy-strings-dates", title: "Устаревшее: строки и даты", summary: "HTML-методы строк anchor, big, blink, bold, fixed, fontcolor, fontsize, italics, link, small, strike, sub, sup; substr, trimLeft, trimRight; getYear, setYear и toGMTString у дат.",

@@ -104,13 +104,13 @@ export class GraderJobDispatcher {
 
     try {
       if (job.request.jobId !== job.jobId) {
-        return this.acknowledge(job, systemError(job.jobId, "persisted_job_identity_mismatch"));
+        return await this.acknowledge(job, systemError(job.jobId, "persisted_job_identity_mismatch"));
       }
       try {
         validateGraderJobRequest(job.request);
       } catch (error) {
         if (error instanceof GraderProtocolError || error instanceof TypeError) {
-          return this.acknowledge(job, systemError(job.jobId, "persisted_grader_request_invalid"));
+          return await this.acknowledge(job, systemError(job.jobId, "persisted_grader_request_invalid"));
         }
         throw error;
       }
@@ -120,17 +120,17 @@ export class GraderJobDispatcher {
         result = await this.gateway.dispatch(job.request, job.profileFingerprint);
       } catch (error) {
         if (error instanceof GraderGatewayDispatchError) {
-          if (error.retryable) return this.retry(job, error.code);
-          return this.acknowledge(job, systemError(job.jobId, error.code));
+          if (error.retryable) return await this.retry(job, error.code);
+          return await this.acknowledge(job, systemError(job.jobId, error.code));
         }
-        return this.retry(job, "worker_dispatch_error");
+        return await this.retry(job, "worker_dispatch_error");
       }
 
       if (result.status === "system_error" && result.error.retryable) {
-        return this.retry(job, result.error.code);
+        return await this.retry(job, result.error.code);
       }
 
-      return this.acknowledge(job, result);
+      return await this.acknowledge(job, result);
     } catch (error) {
       if (error instanceof GraderGatewayDispatchError && error.retryable) {
         return this.retry(job, error.code);

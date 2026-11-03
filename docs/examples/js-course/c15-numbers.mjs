@@ -1,12 +1,12 @@
 // Chapter 15: Numbers completely — Number constants and methods, BigInt, every Math function.
-import { scene, rule, meth, obj, fnc, val, run, has, task, makeLesson, on } from "./kit.mjs";
+import { scene, rule, meth, fnc, val, run, has, task, makeLesson, on } from "./kit.mjs";
 
 const N = (...m) => on("Number", ...m);
 const M = (...m) => on("Math", ...m);
 
 export default function numbers(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "number-limits", title: "Границы чисел", summary: "Number.MAX_SAFE_INTEGER, MIN_SAFE_INTEGER, MAX_VALUE, MIN_VALUE, EPSILON, бесконечности, Number.NaN и проверки isInteger, isSafeInteger, isFinite.",

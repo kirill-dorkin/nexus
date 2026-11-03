@@ -45,7 +45,7 @@ export class StudioApplicationService {
         );
         return studioCourseListSchema.parse({
           courses: rows.slice(0, 100),
-          nextCursor: rows.length > 100 ? rows[99]!.courseId : null,
+          nextCursor: rows.length > 100 ? (rows[99]?.courseId ?? null) : null,
           canCreate: scopes.allCourses && scopes.canApply
         });
       },

@@ -1,8 +1,9 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
-import type { ApplyCourseManifestRequest, CourseManifestPlan, CourseManifestV1 } from "@platform/contracts";
+import type { ApplyCourseManifestRequest, CourseManifestApplyResult, CourseManifestPlan, CourseManifestV1 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
 import { DatabaseService } from "../../../database/database.service";
+import { oneRow } from "../../../database/one-row";
 import { OutboxRepository } from "../../../outbox/outbox.repository";
 import { RequestContextService } from "../../../request-context/request-context.service";
 import { AuthorizationApplicationService } from "../../authorization/application/authorization.service";
@@ -49,7 +50,7 @@ export class CourseManifestApplicationService {
     return this.database.tenantTransaction(context, (tx) => this.plan(tx, organizationId, context.userId, manifest, false), { readOnly: true, isolationLevel: "repeatable_read" });
   }
 
-  async apply(organizationId: string, command: ApplyCourseManifestRequest) {
+  async apply(organizationId: string, command: ApplyCourseManifestRequest): Promise<CourseManifestApplyResult> {
     const context = this.requestContext.tenantContext(organizationId);
     return this.database.tenantTransaction(context, async (tx) => {
       const plan = await this.plan(tx, organizationId, context.userId, command.manifest, true);
@@ -98,14 +99,14 @@ export class CourseManifestApplicationService {
       await this.authorization.requireCapability(tx, context.userId, "course.manage", scope);
       await this.authorization.requireCapability(tx, context.userId, "activity.manage", scope);
       const version = await this.content.findVersion(tx, organizationId, versionId);
-      if (!version || version.courseId !== courseId) throw new NotFoundException("Course version not found.");
+      if (version?.courseId !== courseId) throw new NotFoundException("Course version not found.");
       if (version.status !== "draft") throw new ConflictException("Only a draft can be exported through authoring.");
       return this.manifests.exportVersion(tx, organizationId, courseId, versionId);
     }, { readOnly: true, isolationLevel: "repeatable_read" });
   }
 
   private async uuid(tx: DatabaseTransaction): Promise<string> {
-    return (await tx.client.query<{ id: string }>("SELECT uuidv7()::text AS id")).rows[0]!.id;
+    return oneRow(await tx.client.query<{ id: string }>("SELECT uuidv7()::text AS id"), "uuidv7()").id;
   }
 
   private async versionCreated(tx: DatabaseTransaction, org: string, course: string, version: string, number: number, user: string) {

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ButtonLink } from "@platform/ui";
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { LearningShell } from "../components/learning/learning-shell";
 import styles from "../components/learning/not-found.module.css";
 
@@ -18,7 +18,7 @@ export default function NotFound() {
         <p>Возможно, ссылка устарела или в адресе опечатка.</p>
         <div className={styles.actions}>
           <ButtonLink href="/courses" size="lg">
-            Смотреть курсы <ArrowRight size={18} aria-hidden="true" />
+            Смотреть курсы <ArrowRightIcon size={18} aria-hidden="true" />
           </ButtonLink>
           <ButtonLink href="/" size="lg" variant="secondary">
             На главную

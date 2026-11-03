@@ -1,9 +1,9 @@
 // Chapter 4: selectors.
-import { scene, prop, sel, val, fn, rule, page, css, task, makeLesson } from "./kit.mjs";
+import { scene, prop, sel, rule, page, css, task, makeLesson } from "./kit.mjs";
 
 export default function selectors(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "attribute-selectors", title: "Селекторы атрибутов", summary: "Выбор по атрибуту и его значению: [href], [type=\"email\"], ^=, $=, *=.",

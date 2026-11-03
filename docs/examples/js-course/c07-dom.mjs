@@ -5,7 +5,7 @@ const MENU_PAGE = '<h1>Каталог</h1>\n<ul id="menu">\n  <li class="item" d
 
 export default function dom(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "dom-intro", title: "DOM и поиск элементов", summary: "Что такое DOM, document, querySelector, querySelectorAll и getElementById.",

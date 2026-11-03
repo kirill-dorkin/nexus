@@ -1,5 +1,5 @@
 import { ButtonLink } from "@platform/ui";
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { LearningShell } from "../../components/learning/learning-shell";
 import styles from "../../components/learning/not-found.module.css";
 
@@ -12,7 +12,7 @@ export default function LearningNotFound() {
         <p>Он мог быть закрыт, или ссылка изменилась.</p>
         <div className={styles.actions}>
           <ButtonLink href="/courses" size="lg">
-            Посмотреть доступные курсы <ArrowRight size={18} aria-hidden="true" />
+            Посмотреть доступные курсы <ArrowRightIcon size={18} aria-hidden="true" />
           </ButtonLink>
         </div>
       </section>

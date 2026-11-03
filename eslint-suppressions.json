@@ -1,0 +1,65 @@
+{
+  "apps/web/src/app/me/learning/my-learning.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "apps/web/src/components/learning/challenge.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 3
+    }
+  },
+  "apps/web/src/components/learning/course-navigator.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "apps/web/src/components/learning/home-discovery.tsx": {
+    "react-hooks/error-boundaries": {
+      "count": 1
+    }
+  },
+  "apps/web/src/components/learning/learner-entry.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "apps/web/src/components/learning/lesson-visuals.tsx": {
+    "react-hooks/immutability": {
+      "count": 2
+    },
+    "react-hooks/set-state-in-effect": {
+      "count": 3
+    }
+  },
+  "apps/web/src/components/learning/signup-nudge.tsx": {
+    "react-hooks/purity": {
+      "count": 1
+    }
+  },
+  "apps/web/src/components/learning/sound-panel.tsx": {
+    "@typescript-eslint/no-deprecated": {
+      "count": 3
+    }
+  },
+  "apps/web/src/components/learning/sql/sql-client.ts": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "apps/web/src/components/learning/story.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 3
+    }
+  },
+  "apps/web/src/components/studio/offering-manager.tsx": {
+    "react-hooks/set-state-in-effect": {
+      "count": 1
+    }
+  },
+  "apps/web/src/lib/sound/engine.ts": {
+    "@typescript-eslint/no-non-null-assertion": {
+      "count": 16
+    }
+  }
+}

@@ -143,7 +143,7 @@ export class LearningGraphApplicationService extends GuidedBuildContentQuery {
           versionId,
           activityId
         );
-        if (activity === null || !activity.skillIds.includes(skillId)) {
+        if (!activity?.skillIds.includes(skillId)) {
           throw new BadRequestException(
             "Every remediation activity must belong to the same course version and assess the target skill."
           );
@@ -237,7 +237,7 @@ export class LearningGraphApplicationService extends GuidedBuildContentQuery {
         const transferId = command.guidedBuild?.transferActivityVersionId ?? null;
         if (transferId !== null) {
           const transfer = await this.graph.findActivityVersionById(transaction, organizationId, transferId);
-          if (transfer === null || transfer.courseVersionId !== versionId) {
+          if (transfer?.courseVersionId !== versionId) {
             throw new BadRequestException("Guided Build transfer must reference a different ActivityVersion in the same course version.");
           }
         }
@@ -306,7 +306,7 @@ export class LearningGraphApplicationService extends GuidedBuildContentQuery {
   }
   private async requireDraftVersion(transaction: DatabaseTransaction, organizationId: string, courseId: string, versionId: string): Promise<void> {
     const version = await this.content.findVersion(transaction, organizationId, versionId);
-    if (version === null || version.courseId !== courseId) throw new NotFoundException("Course version not found.");
+    if (version?.courseId !== courseId) throw new NotFoundException("Course version not found.");
     if (version.status !== "draft") throw new ConflictException("Published course version learning graphs are immutable.");
   }
 }

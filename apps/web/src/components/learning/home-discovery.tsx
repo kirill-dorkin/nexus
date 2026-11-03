@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { ArrowRight, Check, X } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon, CheckIcon, XIcon } from "@phosphor-icons/react/dist/ssr";
 import type { PublicLearningCourse } from "@platform/contracts";
 import { Alert, ButtonLink, Skeleton } from "@platform/ui";
 import { loadLearningCatalog, courseUrl } from "../../lib/public-learning";
@@ -23,7 +23,7 @@ function HeroButtons({ href }: { href: string }) {
   return (
     <div className={styles.heroActions}>
       <ButtonLink size="lg" href={href}>
-        Начать первый курс <ArrowRight size={20} aria-hidden="true" />
+        Начать первый курс <ArrowRightIcon size={20} aria-hidden="true" />
       </ButtonLink>
       <ButtonLink size="lg" variant="secondary" href="#courses">
         Смотреть все курсы
@@ -50,13 +50,13 @@ function LessonPreview() {
         <div className={styles.previewOptions}>
           <span>&lt;title&gt;</span>
           <span data-correct="">
-            &lt;h1&gt; <Check size={16} weight="bold" />
+            &lt;h1&gt; <CheckIcon size={16} weight="bold" />
           </span>
           <span>&lt;p&gt;</span>
         </div>
       </div>
       <div className={`${styles.chip} ${styles.chipTop}`}>
-        <span className={styles.chipIcon}><Check size={14} weight="bold" /></span>
+        <span className={styles.chipIcon}><CheckIcon size={14} weight="bold" /></span>
         Правильно · сохранено
       </div>
       <div className={`${styles.chip} ${styles.chipBottom}`}>
@@ -85,8 +85,8 @@ function HowItWorks() {
         </article>
         <article className={styles.tile}>
           <div className={styles.tileVisualCheck} aria-hidden="true">
-            <span data-ok=""><Check size={18} weight="bold" /></span>
-            <span><X size={18} weight="bold" /></span>
+            <span data-ok=""><CheckIcon size={18} weight="bold" /></span>
+            <span><XIcon size={18} weight="bold" /></span>
           </div>
           <h3>Проверка сразу</h3>
           <p>Ответили — и тут же видно, верно ли. Ошиблись — попробуйте ещё.</p>
@@ -166,7 +166,7 @@ export function CourseDiscovery() {
           <h2 id="courses-title">Веб-разработка с нуля — шаг за шагом</h2>
         </div>
         <Link className={styles.allLink} href="/courses">
-          Весь каталог <ArrowRight size={18} aria-hidden="true" />
+          Весь каталог <ArrowRightIcon size={18} aria-hidden="true" />
         </Link>
       </div>
       <Suspense fallback={<DiscoveryLoading />}>
@@ -207,7 +207,7 @@ export function HomeContent() {
           <h2 id="final-title">Первый урок — через минуту.</h2>
           <p>Начните с HTML — первый шаг маршрута. Регистрация не нужна.</p>
           <ButtonLink size="lg" href="/courses">
-            Выбрать курс <ArrowRight size={20} aria-hidden="true" />
+            Выбрать курс <ArrowRightIcon size={20} aria-hidden="true" />
           </ButtonLink>
         </section>
       </div>

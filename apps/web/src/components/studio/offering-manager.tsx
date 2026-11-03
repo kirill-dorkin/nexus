@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type SubmitEvent } from "react";
 import Link from "next/link";
 import {
   createLearningOfferingRequestSchema,
@@ -159,7 +159,7 @@ export function OfferingManager({
   }
 
   async function more() {
-    if (!course || course.status !== "published" || !cursor) return;
+    if (course?.status !== "published" || !cursor) return;
     const after = cursor;
     await run(async () => {
       const page = learningOfferingListSchema.parse(
@@ -171,9 +171,9 @@ export function OfferingManager({
     });
   }
 
-  async function create(event: FormEvent<HTMLFormElement>) {
+  async function create(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!course || course.status !== "published" || uncertain) return;
+    if (course?.status !== "published" || uncertain) return;
     const parsed = createLearningOfferingRequestSchema.safeParse({
       courseVersionId: course.versionId,
       name: name.trim(),
@@ -205,7 +205,7 @@ export function OfferingManager({
   }
 
   async function changeVisibility(offering: LearningOffering, visibility: "public" | "private") {
-    if (!course || offering.courseVersionId !== course.versionId || uncertain) return;
+    if (offering.courseVersionId !== course?.versionId || uncertain) return;
     if (visibility === "public" && confirmPublicId !== offering.id) return;
     await run(async () => {
       const response = await browserApiRequest(

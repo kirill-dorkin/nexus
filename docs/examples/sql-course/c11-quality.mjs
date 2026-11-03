@@ -5,7 +5,7 @@ const SPENDING = "SELECT c.city, c.name, sum(oi.quantity * oi.unit_price) AS spe
 
 export default function quality(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, multi } = c;
 
   L({
     slug: "indexes", title: "Индексы и EXPLAIN", summary: "Почему запрос тормозит и как база ищет быстро.",

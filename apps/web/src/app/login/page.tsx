@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
+import { ArrowLeftIcon } from "@phosphor-icons/react/dist/ssr";
 import { BrandLink } from "../../components/learning/learning-shell";
 import styles from "./auth.module.css";
 import { safeLearningReturnTo } from "../../lib/learning-return-to";
@@ -29,7 +29,7 @@ export default async function LoginPage({
         <nav aria-label="Навигация">
           <BrandLink />
           <Link className={styles.courses} href="/courses">
-            <ArrowLeft size={18} aria-hidden="true" />К курсам
+            <ArrowLeftIcon size={18} aria-hidden="true" />К курсам
           </Link>
         </nav>
       </header>

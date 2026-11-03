@@ -1,5 +1,5 @@
 // Chapter 3: sorting and paging.
-import { scene, clause, kw, idea, rule, rows, src, task, makeLesson } from "./kit.mjs";
+import { scene, clause, kw, rule, rows, src, task, makeLesson } from "./kit.mjs";
 
 export default function order(c, ch, rc) {
   const L = makeLesson(c, ch, rc);

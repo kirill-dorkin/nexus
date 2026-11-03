@@ -1,10 +1,10 @@
 // Chapter 12: The whole syntax — values, declarations, every operator, literals, classes,
 // iterators and generators, async iteration, modules, the event loop.
-import { scene, rule, kw, op, meth, obj, fnc, val, idea, typ, run, out, has, task, makeLesson, on } from "./kit.mjs";
+import { scene, rule, kw, op, meth, obj, fnc, val, idea, run, has, task, makeLesson, on } from "./kit.mjs";
 
 export default function syntax(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "values-deep", title: "Значения: примитивы и ссылки", summary: "Семь примитивов и объекты, передача по значению и по ссылке, приведение типов, Object.is и SameValueZero.",

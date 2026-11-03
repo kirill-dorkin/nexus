@@ -1,11 +1,11 @@
 // Chapter 19: Metaprogramming — Symbol, well-known symbols, Proxy and Reflect.
-import { scene, rule, meth, obj, fnc, val, typ, idea, run, has, task, makeLesson, on } from "./kit.mjs";
+import { scene, rule, meth, obj, fnc, val, typ, run, has, task, makeLesson, on } from "./kit.mjs";
 
 const RF = (...m) => on("Reflect", ...m);
 
 export default function meta(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "symbols", title: "Symbol: уникальные ключи", summary: "Symbol(), description, toString, valueOf, глобальный реестр Symbol.for и Symbol.keyFor.",

@@ -6,12 +6,13 @@ It is **not live telemetry**. Before working, check the current `main`, open PRs
 
 ## Snapshot
 
-Last maintained: 2026-11-02.
+Last maintained: 2026-11-03.
 
 | | |
 |---|---|
-| `main` head | `181b4e1` — #106, disable ordinary Organization self-creation (2026-10-17) |
-| Latest migration | `000044_external_login_identities.sql` |
+| `main` head | `4d8f5e9` — #150, drop the café story characters (2026-11-03) |
+| Latest migration | `000047_lesson_chapters.sql` |
+| Quality gates | CI runs brand isolation, typecheck (packages, API operator scripts, root tests), ESLint (strict type-checked, React, jsx-a11y strict, Next), unit, integration, launch-performance and browser-launch tests. Lint baseline: `eslint-suppressions.json`, which may only shrink. |
 | Latest ADR | ADR-0066 Home learning route |
 | Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058); daily GitHub-hosted read-only smoke against the production domain |
 | Learner-code execution | **Disabled in production.** Grader artifacts exist in the repository but need a separate activation (exact image digest + green real-cluster verification). |
@@ -34,7 +35,7 @@ Each row is implemented on `main`. The ADRs hold the details; the backend areas 
 | F9 Commerce | Product + immutable Price, Purchase settlement via Paddle webhook, public catalog, customer entry, checkout + return reconciliation, operational/browser/performance launch gates | 0044–0052 |
 | MVP free learning | Lessons + YouTube/Markdown/quiz blocks, strict manifest v1, public course/lesson pages, free self-enrollment, deterministic quiz checks with retries, derived task progress | 0053–0056 |
 | Lesson chapters | Optional `chapter` per manifest lesson; course page and lesson sidebar group the program by chapter | 0063 |
-| In-browser practice | Lesson challenges and concept cards: static HTML/CSS checks; JavaScript in an opaque-origin sandbox; SQL on PostgreSQL (PGlite) in a Web Worker against the «Зерно» teaching database. Practice only, never Evidence | 0064, 0065 |
+| In-browser practice | Lesson challenges and concept cards: static HTML/CSS checks; JavaScript in an opaque-origin sandbox; SQL on PostgreSQL (PGlite) in a Web Worker against a neutral store teaching database (`shop`) or an empty one. Practice only, never Evidence | 0064, 0065 |
 | Offering retarget | Free self-paced Offerings move forward to a newer published version of the same Course; Enrollments and progress carry over (`required-activity-passes@2` by stable Activity identity) | 0062 |
 | Learning route | Web orders the home catalog HTML → CSS → JavaScript → SQL, shows each course's prerequisites, outcome and next course, and links the last lesson to the next course. Presentation only | 0066 |
 | Stable course addresses | Home-organization courses live at `/courses/{course}` (course slug, survives new versions); Delivery resolves the newest public Offering; old Offering addresses redirect permanently | 0061 |
@@ -121,13 +122,8 @@ Nexus has no external API clients yet, so a cleanup slice could close these wind
 
 ## Next recommended slice
 
-**Get the first course in front of real learners. Freeze new domain capabilities until then.**
+**Bring Web to the backend's engineering level: [`web-quality-program.md`](web-quality-program.md).** Phase 0 (workspace lint, type-checked operator scripts and root tests) is done; next is phase 1 (formatting) and phase 2 (component test infrastructure), then the React correctness work that empties the lint baseline.
 
-The foundation (F0–F9, free learning, Studio) is enough for a free public course. The open risk is product, not architecture: production has no learners yet. In order:
-
-1. Land or close the UI Draft stack (#97–#103) and close #104.
-2. Provision the production Organization with `org:bootstrap-owner`, import the computer-basics manifest in Studio, add real videos, publish, and make the Offering public.
-3. Walk the full anonymous → returning learner flow on the production domain by hand.
-4. Share the course and collect real usage and feedback before choosing the next capability.
+The four route courses (HTML, CSS, JavaScript, SQL) are published; collect learner usage and feedback in parallel before choosing the next domain capability.
 
 Not selected (do not start without an explicit decision): grader production activation, refunds/subscriptions/coupons, more recommendation policies, telemetry backend, load planning.

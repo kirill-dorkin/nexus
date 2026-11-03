@@ -1,5 +1,5 @@
 export default function tables(c) {
-  const { html, mdn, lesson, single, multi, short } = c;
+  const { lesson, single, multi, short } = c;
 
   lesson({
     slug: "tables", title: "Таблицы", minutes: 11,

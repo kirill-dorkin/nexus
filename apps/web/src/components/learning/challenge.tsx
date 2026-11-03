@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowCounterClockwise, Check, Circle, Eye, Lightbulb, Trophy } from "@phosphor-icons/react/dist/ssr";
+import { ArrowCounterClockwiseIcon, CheckIcon, CircleIcon, EyeIcon, LightbulbIcon, TrophyIcon } from "@phosphor-icons/react/dist/ssr";
 import { brand } from "@platform/brand";
 import { CodeEditor } from "./code-snippet";
 import { cssMatches, readCss, type CssCheck } from "./css-rules";
@@ -86,8 +86,10 @@ export function parseChallenge(source: string): Challenge | null {
   if (c.db !== undefined && !(sql && (c.db === "shop" || c.db === "empty"))) return null;
   if (!Array.isArray(c.checks) || c.checks.length < 1 || c.checks.length > 8) return null;
   const checks: ChallengeCheck[] = [];
-  for (const item of c.checks as Record<string, unknown>[]) {
-    if (!item || !str(item.label, 140) || !opt(item.selector, 200) || !opt(item.contains, 200) || !opt(item.text, 200) ||
+  for (const raw of c.checks as unknown[]) {
+    if (typeof raw !== "object" || raw === null) return null;
+    const item = raw as Record<string, unknown>;
+    if (!str(item.label, 140) || !opt(item.selector, 200) || !opt(item.contains, 200) || !opt(item.text, 200) ||
       !opt(item.attr, 60) || !opt(item.value, 300) ||
       !opt(item.js, 400) || !opt(item.log, 200) || (typeof item.js === "string" && /<\/script/i.test(item.js)) ||
       !opt(item.sql, 600) || !opt(item.rows, 600) ||
@@ -105,12 +107,12 @@ export function parseChallenge(source: string): Challenge | null {
   }
   return {
     title: c.title, task: c.task, start: c.start, checks,
-    ...(c.hint === undefined ? {} : { hint: c.hint as string }),
-    ...(c.solution === undefined ? {} : { solution: c.solution as string }),
-    ...(c.lang === undefined ? {} : { lang: c.lang as "html" | "js" | "sql" }),
-    ...(c.page === undefined ? {} : { page: c.page as string }),
-    ...(c.db === undefined ? {} : { db: c.db as SqlBase }),
-    ...(c.setup === undefined ? {} : { setup: c.setup as string })
+    ...(c.hint === undefined ? {} : { hint: c.hint }),
+    ...(c.solution === undefined ? {} : { solution: c.solution }),
+    ...(c.lang === undefined ? {} : { lang: c.lang }),
+    ...(c.page === undefined ? {} : { page: c.page }),
+    ...(c.db === undefined ? {} : { db: c.db }),
+    ...(c.setup === undefined ? {} : { setup: c.setup })
   };
 }
 
@@ -119,7 +121,7 @@ const norm = (s: string) => s.replace(/\s+/g, " ").trim().toLowerCase();
 function validCssCheck(value: unknown): value is CssCheck {
   const c = value as Record<string, unknown> | null;
   const values = c?.value === undefined ? [] : [c.value].flat();
-  return !!c && str(c.selector, 200) && (c.selector as string).length > 0 && str(c.property, 80) && (c.property as string).length > 0 &&
+  return !!c && str(c.selector, 200) && (c.selector).length > 0 && str(c.property, 80) && (c.property).length > 0 &&
     values.length <= 8 && values.every((v) => str(v, 200)) && opt(c.includes, 120) && opt(c.within, 120);
 }
 
@@ -156,14 +158,15 @@ export function runChecks(code: string, checks: ChallengeCheck[], doc: Document)
       const found = source.includes(check.contains.toLowerCase());
       return check.absent ? !found : found;
     }
+    if (check.selector === undefined) return false;
     let found: Element[];
     try {
-      found = [...doc.querySelectorAll(check.selector!)];
+      found = [...doc.querySelectorAll(check.selector)];
     } catch {
       return false;
     }
     found = found.filter((el) =>
-      (check.text === undefined || norm(el.textContent ?? "").includes(norm(check.text))) &&
+      (check.text === undefined || norm(el.textContent).includes(norm(check.text))) &&
       (check.attr === undefined || (el.hasAttribute(check.attr) &&
         (check.value === undefined || (el.getAttribute(check.attr) ?? "").trim() === check.value)))
     );
@@ -256,10 +259,11 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
       /* ignore */
     }
   }, [done, checked, challenge]);
+  const solution = challenge.solution;
   return (
     <section className={styles.challenge} data-done={done || undefined} aria-label={`Задание: ${challenge.title}`}>
       <header className={styles.head}>
-        <span className={styles.badge}>{solved ? <Check size={14} weight="bold" aria-hidden="true" /> : null}Задание</span>
+        <span className={styles.badge}>{solved ? <CheckIcon size={14} weight="bold" aria-hidden="true" /> : null}Задание</span>
         <h3 className={styles.title}>{challenge.title}</h3>
         <span className={styles.score} aria-hidden="true">{passed}/{results.length}</span>
       </header>
@@ -267,14 +271,14 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
       <ul className={styles.checks} aria-live="polite">
         {challenge.checks.map((check, i) => (
           <li key={i} data-ok={results[i] || undefined}>
-            {results[i] ? <Check size={16} weight="bold" aria-hidden="true" /> : <Circle size={16} aria-hidden="true" />}
+            {results[i] ? <CheckIcon size={16} weight="bold" aria-hidden="true" /> : <CircleIcon size={16} aria-hidden="true" />}
             <span><Inline text={check.label} /></span>
             <span className={styles.srOnly}>{results[i] ? " — выполнено" : " — пока нет"}</span>
           </li>
         ))}
       </ul>
       <div className={`${codeStyles.snippet} ${styles.workspace}`}>
-        <CodeEditor value={code} onChange={setCode} autoFocus={false} language={challenge.lang ?? "html"}
+        <CodeEditor value={code} onChange={setCode} language={challenge.lang ?? "html"}
           label={`Код задания «${challenge.title}». Tab — отступ, Escape и затем Tab — выйти из редактора`} />
         <div className={codeStyles.result}>
           <div className={codeStyles.resultBar}>
@@ -303,25 +307,25 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
       {isSql && (challenge.db ?? "shop") !== "empty" ? <SqlSchema /> : null}
       {celebrate && done ? (
         <p className={styles.success} role="status">
-          <Trophy size={20} weight="fill" aria-hidden="true" /> Готово! Всё работает — идём дальше.
+          <TrophyIcon size={20} weight="fill" aria-hidden="true" /> Готово! Всё работает — идём дальше.
         </p>
       ) : null}
       {celebrate && done ? <SaveProgressHint /> : null}
-      {hint && challenge.hint ? <p className={styles.hint}><Lightbulb size={18} weight="fill" aria-hidden="true" /> <span><Inline text={challenge.hint} /></span></p> : null}
+      {hint && challenge.hint ? <p className={styles.hint}><LightbulbIcon size={18} weight="fill" aria-hidden="true" /> <span><Inline text={challenge.hint} /></span></p> : null}
       <div className={styles.actions}>
         {challenge.hint && !hint && !done ? (
           <button type="button" className={styles.action} onClick={() => setHint(true)}>
-            <Lightbulb size={16} aria-hidden="true" /> Подсказка
+            <LightbulbIcon size={16} aria-hidden="true" /> Подсказка
           </button>
         ) : null}
-        {challenge.solution && !done ? (
-          <button type="button" className={styles.action} onClick={() => setCode(challenge.solution!)}>
-            <Eye size={16} aria-hidden="true" /> Показать решение
+        {solution && !done ? (
+          <button type="button" className={styles.action} onClick={() => setCode(solution)}>
+            <EyeIcon size={16} aria-hidden="true" /> Показать решение
           </button>
         ) : null}
         <button type="button" className={styles.action} disabled={code === challenge.start}
           onClick={() => { setCode(challenge.start); setCelebrate(false); }}>
-          <ArrowCounterClockwise size={16} aria-hidden="true" /> Начать заново
+          <ArrowCounterClockwiseIcon size={16} aria-hidden="true" /> Начать заново
         </button>
       </div>
     </section>

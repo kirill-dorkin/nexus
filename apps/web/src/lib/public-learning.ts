@@ -9,7 +9,7 @@ import { orderByRoute } from "./learning-route";
 import { serverApiUrl } from "./server-api";
 export { courseUrl, lessonUrl } from "./public-learning-routes";
 
-async function read(path: string) {
+async function read(path: string): Promise<unknown> {
   const response = await fetch(serverApiUrl(path), {
     cache: "no-store",
     signal: AbortSignal.timeout(10000)
@@ -17,7 +17,7 @@ async function read(path: string) {
   if (response.status === 404) notFound();
   if (!response.ok)
     throw new Error("Public learning is temporarily unavailable.");
-  return response.json();
+  return (await response.json()) as unknown;
 }
 export const loadLearningCatalog = cache(async function loadLearningCatalog() {
   const catalog = publicLearningCatalogSchema.parse(await read("/v1/public/learning"));

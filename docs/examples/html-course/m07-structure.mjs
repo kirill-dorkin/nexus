@@ -1,5 +1,5 @@
 export default function structure(c) {
-  const { html, code, mdn, lesson, single, multi, short } = c;
+  const { lesson, single } = c;
 
   lesson({
     slug: "semantics", title: "Семантическая структура страницы", minutes: 11,

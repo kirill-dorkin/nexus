@@ -171,7 +171,7 @@ export class LearningDeliveryApplicationService {
       const offerings = rows.slice(0, 50);
       return {
         offerings,
-        nextCursor: rows.length > 50 ? offerings[49]!.id : null
+        nextCursor: rows.length > 50 ? (offerings[49]?.id ?? null) : null
       };
     });
   }
@@ -490,7 +490,7 @@ export class LearningDeliveryApplicationService {
         organizationId,
         courseRunId
       );
-      if (courseRun === null || courseRun.offeringId !== offeringId) {
+      if (courseRun?.offeringId !== offeringId) {
         throw new NotFoundException("Course run not found.");
       }
       return courseRun;
@@ -521,7 +521,7 @@ export class LearningDeliveryApplicationService {
           organizationId,
           courseRunId
         );
-        if (courseRun === null || courseRun.offeringId !== offeringId) {
+        if (courseRun?.offeringId !== offeringId) {
           throw new NotFoundException("Course run not found.");
         }
 
@@ -586,7 +586,7 @@ export class LearningDeliveryApplicationService {
           organizationId,
           courseRunId
         );
-        if (courseRun === null || courseRun.offeringId !== offeringId) {
+        if (courseRun?.offeringId !== offeringId) {
           throw new NotFoundException("Course run not found.");
         }
         const groupSet = await this.delivery.findGroupSet(
@@ -594,7 +594,7 @@ export class LearningDeliveryApplicationService {
           organizationId,
           groupSetId
         );
-        if (groupSet === null || groupSet.courseRunId !== courseRunId) {
+        if (groupSet?.courseRunId !== courseRunId) {
           throw new NotFoundException("Group set not found.");
         }
 
@@ -661,7 +661,7 @@ export class LearningDeliveryApplicationService {
           organizationId,
           courseRunId
         );
-        if (courseRun === null || courseRun.offeringId !== offeringId) {
+        if (courseRun?.offeringId !== offeringId) {
           throw new NotFoundException("Course run not found.");
         }
         const groupSet = await this.delivery.findGroupSet(
@@ -669,7 +669,7 @@ export class LearningDeliveryApplicationService {
           organizationId,
           groupSetId
         );
-        if (groupSet === null || groupSet.courseRunId !== courseRunId) {
+        if (groupSet?.courseRunId !== courseRunId) {
           throw new NotFoundException("Group set not found.");
         }
         const group = await this.delivery.findGroup(
@@ -677,7 +677,7 @@ export class LearningDeliveryApplicationService {
           organizationId,
           groupId
         );
-        if (group === null || group.groupSetId !== groupSetId) {
+        if (group?.groupSetId !== groupSetId) {
           throw new NotFoundException("Group not found.");
         }
         const enrollment = await this.delivery.findEnrollment(
@@ -760,7 +760,7 @@ export class LearningDeliveryApplicationService {
           organizationId,
           courseRunId
         );
-        if (courseRun === null || courseRun.offeringId !== offeringId) {
+        if (courseRun?.offeringId !== offeringId) {
           throw new NotFoundException("Course run not found.");
         }
 
@@ -789,7 +789,7 @@ export class LearningDeliveryApplicationService {
             organizationId,
             group.groupSetId
           );
-          if (groupSet === null || groupSet.courseRunId !== courseRunId) {
+          if (groupSet?.courseRunId !== courseRunId) {
             throw new NotFoundException("Group not found.");
           }
         }
@@ -858,7 +858,7 @@ export class LearningDeliveryApplicationService {
         organizationId,
         courseRunId
       );
-      if (courseRun === null || courseRun.offeringId !== offeringId) {
+      if (courseRun?.offeringId !== offeringId) {
         throw new NotFoundException("Course run not found.");
       }
 
@@ -867,7 +867,7 @@ export class LearningDeliveryApplicationService {
         organizationId,
         sessionId
       );
-      if (session === null || session.courseRunId !== courseRunId) {
+      if (session?.courseRunId !== courseRunId) {
         throw new NotFoundException("Session not found.");
       }
       return session;
@@ -899,7 +899,7 @@ export class LearningDeliveryApplicationService {
           organizationId,
           courseRunId
         );
-        if (courseRun === null || courseRun.offeringId !== offeringId) {
+        if (courseRun?.offeringId !== offeringId) {
           throw new NotFoundException("Course run not found.");
         }
 
@@ -908,7 +908,7 @@ export class LearningDeliveryApplicationService {
           organizationId,
           sessionId
         );
-        if (session === null || session.courseRunId !== courseRunId) {
+        if (session?.courseRunId !== courseRunId) {
           throw new NotFoundException("Session not found.");
         }
 
@@ -1012,7 +1012,7 @@ export class LearningDeliveryApplicationService {
         organizationId,
         courseRunId
       );
-      if (courseRun === null || courseRun.offeringId !== offeringId) {
+      if (courseRun?.offeringId !== offeringId) {
         throw new NotFoundException("Course run not found.");
       }
 
@@ -1021,7 +1021,7 @@ export class LearningDeliveryApplicationService {
         organizationId,
         sessionId
       );
-      if (session === null || session.courseRunId !== courseRunId) {
+      if (session?.courseRunId !== courseRunId) {
         throw new NotFoundException("Session not found.");
       }
 
@@ -1030,7 +1030,7 @@ export class LearningDeliveryApplicationService {
         organizationId,
         attendanceId
       );
-      if (attendance === null || attendance.sessionId !== sessionId) {
+      if (attendance?.sessionId !== sessionId) {
         throw new NotFoundException("Attendance not found.");
       }
 

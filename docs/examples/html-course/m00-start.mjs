@@ -1,5 +1,5 @@
 export default function start(c) {
-  const { html, code, mdn, lesson, single, multi, short, diagram, demo } = c;
+  const { lesson, single, multi } = c;
 
   lesson({
     slug: "how-the-web-works", title: "Как устроен веб", minutes: 10,

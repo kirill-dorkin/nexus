@@ -1,4 +1,5 @@
 import { BadRequestException } from "@nestjs/common";
+import type { ApiValidationError } from "@platform/contracts";
 
 type ValidationIssue = Readonly<{
   path: readonly PropertyKey[];
@@ -29,5 +30,5 @@ export function parseRequest<T>(schema: SafeParser<T>, input: unknown): T {
       path: issue.path.map(String).join("."),
       message: issue.message
     }))
-  });
+  } satisfies ApiValidationError);
 }

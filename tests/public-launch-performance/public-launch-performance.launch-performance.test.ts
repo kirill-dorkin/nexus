@@ -5,14 +5,13 @@ import {
 } from "node:crypto";
 import { performance } from "node:perf_hooks";
 
-import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import {
   createDatabasePool,
   type DatabasePool
 } from "../../packages/database/src/index";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { createApiApplication } from "../../apps/api/src/app.factory";
+import { createApiApplication, type ApiApplication } from "../../apps/api/src/app.factory";
 import {
   attachPlatformPrincipal,
   type PlatformPrincipalCarrier
@@ -117,7 +116,7 @@ describe("bounded public launch performance verification", () => {
   let migrationPool: DatabasePool;
   let workerPool: DatabasePool;
   let processor: PaymentWebhookProcessor;
-  let app: NestFastifyApplication;
+  let app: ApiApplication;
 
   let ownerUserId = "";
   let buyerUserId = "";
@@ -144,7 +143,7 @@ describe("bounded public launch performance verification", () => {
     const result = await migrationPool.query<IdRow>(sql, [...values]);
     const id = result.rows[0]?.id;
     if (id === undefined) {
-      const fixtureTable = sql.match(/\bINSERT\s+INTO\s+([^\s(]+)/i)?.[1] ?? "unknown";
+      const fixtureTable = (/\bINSERT\s+INTO\s+([^\s(]+)/i.exec(sql))?.[1] ?? "unknown";
       throw new Error(
         `Launch performance fixture insert did not return an id (${fixtureTable}).`
       );

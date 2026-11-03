@@ -25,7 +25,9 @@ Coding agents обязаны начинать работу с [`AGENTS.md`](AGEN
 - published content не мутируется;
 - schema/API/event changes versioned или backward-compatible;
 - тесты покрывают изменённые invariants;
-- security-sensitive изменения описывают threat impact.
+- security-sensitive изменения описывают threat impact;
+- `pnpm lint` и `pnpm typecheck` проходят без новых записей в `eslint-suppressions.json`;
+- изменения Web дополнительно следуют Definition of Done из [`docs/engineering/web-quality-program.md`](docs/engineering/web-quality-program.md#web-definition-of-done).
 
 ## Зависимости модулей
 

@@ -387,8 +387,7 @@ function assertSecretIdentity(
   const annotations = meta === null ? {} : stringRecord(meta.annotations);
   const data = object === null ? null : record(object.data);
   if (
-    meta === null ||
-    meta.name !== expectedName ||
+    meta?.name !== expectedName ||
     annotations[JOB_ID_ANNOTATION] !== request.jobId ||
     annotations[PROFILE_FINGERPRINT_ANNOTATION] !== profile.fingerprint ||
     !hasExactJobOwner(meta.ownerReferences, expectedOwnerName, expectedOwnerUid) ||

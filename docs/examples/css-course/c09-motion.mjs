@@ -1,5 +1,5 @@
 // Chapter 9: Transitions, transforms, keyframe animations and scrolling.
-import { scene, prop, at, fn, val, idea, rule, page, css, task, makeLesson } from "./kit.mjs";
+import { scene, prop, at, fn, rule, page, css, task, makeLesson } from "./kit.mjs";
 
 const btn = "background: #c8763a; color: white; border: 0; padding: 8px 14px; border-radius: 8px;";
 

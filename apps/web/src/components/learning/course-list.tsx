@@ -1,6 +1,6 @@
 import type { PublicLearningCourse } from "@platform/contracts";
 import Link from "next/link";
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { ButtonLink } from "@platform/ui";
 import { courseUrl } from "../../lib/public-learning-routes";
 import { LEARNING_ROUTE, routeStepNumber } from "../../lib/learning-route";
@@ -66,7 +66,7 @@ export function CourseCard({
           {minutes > 0 && <li>{durationLabel(minutes)}</li>}
         </ul>
         <ButtonLink className={styles.action} href={href} variant={featured ? "primary" : "secondary"}>
-          Посмотреть программу <ArrowRight size={18} aria-hidden="true" />
+          Посмотреть программу <ArrowRightIcon size={18} aria-hidden="true" />
         </ButtonLink>
       </div>
     </article>

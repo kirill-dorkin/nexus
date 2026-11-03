@@ -1,5 +1,5 @@
 // Chapter 11: Accessibility, performance, effects, print, tables and the final project.
-import { scene, prop, sel, at, fn, val, idea, rule, page, css, task, makeLesson } from "./kit.mjs";
+import { scene, prop, sel, at, val, idea, rule, page, css, task, makeLesson } from "./kit.mjs";
 
 export default function quality(c, ch, rc) {
   const L = makeLesson(c, ch, rc);

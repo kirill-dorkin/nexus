@@ -3,7 +3,7 @@ import { installProviderStubs } from "./provider-stubs.mjs";
 
 function fixture() {
   const listeners = new Map<string, (event: unknown) => void>();
-  let rejectRequest: (error: Error) => void = () => {};
+  let rejectRequest: ((error: Error) => void) | undefined;
   const stub = installProviderStubs({
     on: (name: string, handler: (event: unknown) => void) =>
       listeners.set(name, handler),
@@ -14,8 +14,8 @@ function fixture() {
   });
   return {
     stub,
-    emit: (name: string, event: unknown) => listeners.get(name)!(event),
-    reject: (message: string) => rejectRequest(new Error(message))
+    emit: (name: string, event: unknown) => listeners.get(name)?.(event),
+    reject: (message: string) => rejectRequest?.(new Error(message))
   };
 }
 const video = {

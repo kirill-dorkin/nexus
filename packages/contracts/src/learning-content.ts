@@ -20,7 +20,7 @@ export const courseVersionSchema = z.object({
   status: courseVersionStatusSchema,
   title: z.string().trim().min(1).max(200),
   description: z.string().max(5000).nullable(),
-  publishedAt: z.string().datetime().nullable()
+  publishedAt: z.iso.datetime().nullable()
 });
 
 export const createCourseRequestSchema = z.object({

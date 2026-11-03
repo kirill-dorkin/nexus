@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
-import { ArrowCounterClockwise, Check, Copy, Play } from "@phosphor-icons/react/dist/ssr";
+import { ArrowCounterClockwiseIcon, CheckIcon, CopyIcon, PlayIcon } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@platform/ui";
 import { highlight, type Token } from "./code-highlight";
 import { useSqlRun } from "./sql/sql-client";
@@ -123,20 +123,20 @@ export function CodeSnippet({ code, language }: { code: string; language?: strin
         <span className={styles.actions}>
           {editing ? (
             <Button variant="ghost" size="sm" disabled={value === code} onClick={() => setValue(code)}>
-              <ArrowCounterClockwise size={16} aria-hidden="true" /> Сбросить
+              <ArrowCounterClockwiseIcon size={16} aria-hidden="true" /> Сбросить
             </Button>
           ) : null}
           <Button variant="ghost" size="sm" onClick={() => void copy()} aria-label="Скопировать код">
-            <Copy size={16} aria-hidden="true" /> <span className={styles.hideNarrow}>Скопировать</span>
+            <CopyIcon size={16} aria-hidden="true" /> <span className={styles.hideNarrow}>Скопировать</span>
           </Button>
           {runnable && !editing ? (
             <Button size="sm" onClick={() => { setPreview(value); setEditing(true); }}>
-              <Play size={14} weight="fill" aria-hidden="true" /> Попробовать
+              <PlayIcon size={14} weight="fill" aria-hidden="true" /> Попробовать
             </Button>
           ) : null}
           {editing ? (
             <Button variant="secondary" size="sm" onClick={() => setEditing(false)}>
-              <Check size={16} aria-hidden="true" /> Готово
+              <CheckIcon size={16} aria-hidden="true" /> Готово
             </Button>
           ) : null}
         </span>
@@ -164,7 +164,7 @@ export function CodeSnippet({ code, language }: { code: string; language?: strin
           </section>
         </>
       ) : (
-        <pre className={styles.code} tabIndex={0} aria-label="Пример кода, прокручиваемая область">
+        <pre className={styles.code} tabIndex={0} role="region" aria-label="Пример кода, прокручиваемая область">
           <code><Tokens tokens={highlight(value, language)} /></code>
         </pre>
       )}

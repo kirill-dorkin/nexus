@@ -69,14 +69,15 @@ export class OAuthLoginService {
     providerError: string | undefined;
     currentSessionToken: string | null;
   }>): Promise<OAuthCompletion> {
-    if (input.state === undefined || input.state.length > 256) {
+    const state = input.state;
+    if (state === undefined || state.length > 256) {
       throw new OAuthCallbackFailure("/me/learning");
     }
     const loginState = await this.database.transaction((transaction) =>
       this.authentication.consumeOAuthLoginState(
         transaction,
         input.provider,
-        sha256Hex(input.state as string)
+        sha256Hex(state)
       )
     );
     if (loginState === null) throw new OAuthCallbackFailure("/me/learning");
@@ -118,7 +119,7 @@ export class OAuthLoginService {
         const existing = userId === null
           ? await this.identity.findByEmail(transaction, profile.email)
           : await this.identity.findActiveUser(transaction, userId);
-        if (existing === null || existing.status !== "active") {
+        if (existing?.status !== "active") {
           throw new OAuthCallbackFailure(loginState.returnTo);
         }
         if (userId === null) {
@@ -158,13 +159,11 @@ export class OAuthLoginService {
     if (linkedUserId !== null && user === null) {
       throw new UnauthorizedException("An active account is required.");
     }
-    if (user === null) {
-      user = await this.identity.createUser(transaction, {
-        id: candidateId,
-        email: profile.email,
-        displayName: profile.displayName
-      });
-    }
+    user ??= await this.identity.createUser(transaction, {
+      id: candidateId,
+      email: profile.email,
+      displayName: profile.displayName
+    });
     if (user.status !== "active") {
       throw new UnauthorizedException("An active account is required.");
     }

@@ -29,15 +29,17 @@ export function parseOwnerProvisionArgs(argv: string[]): OwnerOrganizationProvis
   const provided = new Map<string, string>();
   let apply = false;
   for (let i = 0; i < argv.length; i++) {
-    const flag = argv[i]!;
+    const flag = argv[i] ?? "";
     if (flag === "--apply" && !apply) {
       apply = true;
       continue;
     }
-    if (!keys.has(flag) || provided.has(flag) || !argv[i + 1] || argv[i + 1]!.startsWith("--")) {
+    const value = argv[i + 1];
+    if (!keys.has(flag) || provided.has(flag) || !value || value.startsWith("--")) {
       throw new Error("Usage: --owner-user-id UUID --slug SLUG --name NAME --apply");
     }
-    provided.set(flag, argv[++i]!);
+    provided.set(flag, value);
+    i += 1;
   }
   if (!apply || provided.size !== 3) {
     throw new Error("Explicit --apply and owner, slug and name are required.");

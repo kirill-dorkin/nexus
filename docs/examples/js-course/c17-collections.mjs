@@ -1,12 +1,12 @@
 // Chapter 17: Collections — Map, Set with set algebra, WeakMap, WeakSet, WeakRef, FinalizationRegistry.
-import { scene, rule, meth, obj, kw, idea, run, has, task, makeLesson, on } from "./kit.mjs";
+import { scene, rule, meth, obj, kw, run, task, makeLesson, on } from "./kit.mjs";
 
 const MP = (...m) => on("Map.prototype", ...m);
 const SP = (...m) => on("Set.prototype", ...m);
 
 export default function collections(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "map", title: "Map: словарь с любыми ключами", summary: "new Map, set, get, has, delete, clear, size, keys, values, entries, forEach и Map.groupBy.",

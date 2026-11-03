@@ -83,7 +83,9 @@ async function api(method, path, body) {
   let data = null;
   try {
     data = await response.json();
-  } catch {}
+  } catch {
+    // A non-JSON body is reported through status alone.
+  }
   return { status: response.status, ok: response.ok, data };
 }
 const must = async (label, promise) => {

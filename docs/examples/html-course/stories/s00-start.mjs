@@ -1,5 +1,5 @@
 // Story bodies: module 0 (start) and module 1 (basics).
-import { scene, card, diagram, demo, html, rule } from "./kit.mjs";
+import { scene, card, diagram, demo, rule } from "./kit.mjs";
 
 export default {
   "how-the-web-works": [

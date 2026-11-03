@@ -6,7 +6,7 @@ const base = ".g > * { background: #fdf6ec; border: 1px solid #c8763a; padding: 
 
 export default function grid(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "grid-basics", title: "Grid: колонки и строки", summary: "display: grid, grid-template-columns и rows, единица fr, repeat() и minmax().",

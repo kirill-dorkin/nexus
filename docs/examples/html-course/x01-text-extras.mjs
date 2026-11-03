@@ -1,5 +1,5 @@
 export function divSpan(c) {
-  const { html, mdn, lesson, single, multi } = c;
+  const { lesson, single, multi } = c;
   lesson({
     slug: "block-and-inline", title: "Блочные и строчные элементы: div и span", minutes: 10,
     summary: "Почему одни элементы встают с новой строки, а другие — нет, и зачем нужны «пустые» div и span.",
@@ -17,7 +17,7 @@ export function divSpan(c) {
 }
 
 export function bidiRuby(c) {
-  const { html, mdn, lesson, single } = c;
+  const { lesson, single } = c;
   lesson({
     slug: "language-and-direction", title: "Языки, направление текста и ruby", minutes: 9,
     summary: "lang, dir, bdi, bdo и ruby: текст на разных языках, справа налево и подписи произношения.",
@@ -35,7 +35,7 @@ export function bidiRuby(c) {
 }
 
 export function projectRecipe(c) {
-  const { html, lesson, multi } = c;
+  const { lesson, multi } = c;
   lesson({
     slug: "project-recipe", title: "Мини-проект: страница рецепта", minutes: 20,
     summary: "Соберите полноценную текстовую страницу: заголовки, списки, выделения, время, термины и характеристики.",

@@ -1,5 +1,5 @@
 export default function forms(c) {
-  const { html, code, mdn, lesson, single, multi, short, diagram, demo } = c;
+  const { lesson, single, multi, short } = c;
 
   lesson({
     slug: "how-forms-work", title: "Как работают формы", minutes: 12,

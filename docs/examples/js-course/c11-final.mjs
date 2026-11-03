@@ -7,7 +7,7 @@ const PAGE = '<style>.done { text-decoration: line-through; opacity: .6; }</styl
 
 export default function final(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single, multi } = c;
 
   L({
     slug: "local-storage", title: "localStorage: память браузера", summary: "localStorage setItem, getItem, removeItem, хранение объектов через JSON и sessionStorage.",

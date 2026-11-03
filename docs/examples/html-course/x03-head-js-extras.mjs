@@ -1,5 +1,5 @@
 export function styleBaseMeta(c) {
-  const { html, code, mdn, lesson, single } = c;
+  const { lesson, single } = c;
   lesson({
     slug: "style-base-meta", title: "style, base и служебные meta", minutes: 10,
     summary: "Встроенные стили, атрибут style, базовый адрес base и meta для обновления и реферера.",
@@ -17,7 +17,7 @@ export function styleBaseMeta(c) {
 }
 
 export function security(c) {
-  const { code, html, mdn, lesson, single, multi } = c;
+  const { lesson, single, multi } = c;
   lesson({
     slug: "security", title: "Безопасность в HTML", minutes: 11,
     summary: "CSP, integrity, crossorigin, rel=noopener, sandbox и почему нельзя вставлять чужой HTML как есть.",
@@ -38,7 +38,7 @@ export function security(c) {
 }
 
 export function structuredData(c) {
-  const { code, html, mdn, lesson, single } = c;
+  const { lesson, single } = c;
   lesson({
     slug: "structured-data", title: "Структурированные данные", minutes: 10,
     summary: "JSON-LD и микроданные: как объяснить поисковикам, что на странице курс, рецепт, товар или статья.",
@@ -56,7 +56,7 @@ export function structuredData(c) {
 }
 
 export function jsBridge(c) {
-  const { html, code, mdn, lesson, single } = c;
+  const { lesson, single } = c;
   lesson({
     slug: "html-and-javascript", title: "HTML и JavaScript: события и DOM", minutes: 11,
     summary: "Как HTML связан со скриптами: атрибуты событий, id и data-*, почему addEventListener лучше onclick.",
@@ -74,7 +74,7 @@ export function jsBridge(c) {
 }
 
 export function nativeInteractivity(c) {
-  const { html, mdn, lesson, single } = c;
+  const { lesson, single } = c;
   lesson({
     slug: "editing-and-drag-and-drop", title: "Редактирование и перетаскивание", minutes: 9,
     summary: "contenteditable, spellcheck, draggable, autocapitalize и hidden=until-found: встроенные возможности браузера.",
@@ -92,7 +92,7 @@ export function nativeInteractivity(c) {
 }
 
 export function webComponents(c) {
-  const { html, code, mdn, lesson, single } = c;
+  const { lesson, single } = c;
   lesson({
     slug: "custom-elements", title: "Свои элементы и Shadow DOM", minutes: 11,
     summary: "Custom elements, template, slot и декларативный Shadow DOM: как создают переиспользуемые компоненты на чистом HTML.",

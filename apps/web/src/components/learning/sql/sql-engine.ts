@@ -1,3 +1,4 @@
+import { itemAt } from "../../../lib/item-at";
 /*
  * SQL practice engine (ADR-0065). Runs learner SQL against a fresh copy of the teaching
  * database inside PGlite (PostgreSQL compiled to WebAssembly) and evaluates author checks.
@@ -40,10 +41,10 @@ const SHOWN_ROWS = 100;
 // `2025-09-01 08:15:00` and `{1,2}` exactly as the database stores them.
 const asText = (value: string) => value;
 const TEXT_TYPES = [20, 21, 23, 26, 700, 701, 790, 1700, 114, 3802, 1082, 1083, 1114, 1184, 1186, 1266, 17, 25, 1043, 1042];
-const PARSERS: Record<number, (value: string) => unknown> = Object.fromEntries([
-  ...TEXT_TYPES.map((oid) => [oid, asText]),
-  [16, (value: string) => (value === "t" ? "true" : value === "f" ? "false" : value)]
-]);
+const PARSERS: Record<number, (value: string) => unknown> = {
+  ...Object.fromEntries(TEXT_TYPES.map((oid) => [oid, asText] as const)),
+  16: (value: string) => (value === "t" ? "true" : value === "f" ? "false" : value)
+};
 const OPTIONS: ExecOptions = { rowMode: "array", parsers: PARSERS };
 
 function cell(value: unknown): SqlCell {
@@ -51,7 +52,9 @@ function cell(value: unknown): SqlCell {
   if (Array.isArray(value)) return `{${value.map((v) => (v === null ? "NULL" : String(cell(v)))).join(",")}}`;
   if (value instanceof Date) return value.toISOString();
   if (typeof value === "object") return JSON.stringify(value);
-  return String(value);
+  if (typeof value === "string") return value;
+  if (typeof value === "number" || typeof value === "boolean" || typeof value === "bigint") return String(value);
+  return null;
 }
 
 type Rowset = { columns: string[]; rows: SqlCell[][] };
@@ -60,7 +63,7 @@ const rowset = (result: ExecResult): Rowset => ({
   rows: result.rows.map((row) => row.map(cell))
 });
 const lastRowset = (results: ExecResult[]): Rowset | null => {
-  for (let i = results.length - 1; i >= 0; i--) if (results[i]!.fields.length) return rowset(results[i]!);
+  for (let i = results.length - 1; i >= 0; i--) if (itemAt(results, i).fields.length) return rowset(itemAt(results, i));
   return null;
 };
 
@@ -90,11 +93,12 @@ const ERROR_HINTS: Record<string, string> = {
 };
 
 function errorOutput(error: unknown, code: string): SqlOutput {
-  const e = error as { message?: unknown; code?: unknown; position?: unknown };
-  const message = typeof e?.message === "string" ? e.message : "Запрос не выполнился";
-  const position = Number(e?.position);
+  const e: { message?: unknown; code?: unknown; position?: unknown } =
+    typeof error === "object" && error !== null ? error : {};
+  const message = typeof e.message === "string" ? e.message : "Запрос не выполнился";
+  const position = Number(e.position);
   const line = Number.isInteger(position) && position > 0 ? code.slice(0, position - 1).split("\n").length : undefined;
-  const hint = typeof e?.code === "string" ? ERROR_HINTS[e.code] : undefined;
+  const hint = typeof e.code === "string" ? ERROR_HINTS[e.code] : undefined;
   return { kind: "error", message, ...(hint ? { hint } : {}), ...(line ? { line } : {}) };
 }
 
@@ -107,8 +111,8 @@ const rowKey = (row: SqlCell[]) => JSON.stringify(row.map(cellKey));
 export function sameRows(actual: Rowset | null, expected: Rowset | null, check: SqlCheck): boolean {
   if (!actual || !expected) return false;
   if (actual.columns.length !== expected.columns.length || actual.rows.length !== expected.rows.length) return false;
-  if (check.names && actual.columns.some((name, i) => name.toLowerCase() !== expected.columns[i]!.toLowerCase())) return false;
-  if (check.ordered) return actual.rows.every((row, i) => row.every((c, j) => sameCell(c, expected.rows[i]![j]!)));
+  if (check.names && actual.columns.some((name, i) => name.toLowerCase() !== itemAt(expected.columns, i).toLowerCase())) return false;
+  if (check.ordered) return actual.rows.every((row, i) => row.every((c, j) => sameCell(c, itemAt(itemAt(expected.rows, i), j))));
   const a = actual.rows.map(rowKey).sort();
   const b = expected.rows.map(rowKey).sort();
   return a.every((key, i) => key === b[i]);
@@ -138,7 +142,7 @@ CREATE SCHEMA public;`);
 function describeDone(results: ExecResult[]): SqlOutput {
   // PGlite reports affected rows cumulatively within one call; the last statement's share is the delta.
   const last = results[results.length - 1];
-  const before = results.length > 1 ? results[results.length - 2]!.affectedRows ?? 0 : 0;
+  const before = results.length > 1 ? itemAt(results, results.length - 2).affectedRows ?? 0 : 0;
   const affected = Math.max(0, (last?.affectedRows ?? 0) - before);
   const statements = results.length;
   const message = affected
@@ -169,8 +173,8 @@ export async function runSqlJob(db: SqlDb, job: SqlJob): Promise<SqlRun> {
     const results = await db.exec(job.code, OPTIONS);
     learner = lastRowset(results);
     const shown = results[results.length - 1];
-    output = shown && shown.fields.length
-      ? { kind: "rows", columns: learner!.columns, rows: learner!.rows.slice(0, SHOWN_ROWS), total: learner!.rows.length }
+    output = learner && shown?.fields.length
+      ? { kind: "rows", columns: learner.columns, rows: learner.rows.slice(0, SHOWN_ROWS), total: learner.rows.length }
       : describeDone(results);
   } catch (error) {
     ran = false;
@@ -180,7 +184,7 @@ export async function runSqlJob(db: SqlDb, job: SqlJob): Promise<SqlRun> {
   const results: boolean[] = [];
   for (const [i, check] of checks.entries()) {
     if (!ran) { results.push(false); continue; }
-    if (check.rows !== undefined) { results.push(sameRows(learner, expected[i]!, check)); continue; }
+    if (check.rows !== undefined) { results.push(sameRows(learner, itemAt(expected, i), check)); continue; }
     try {
       const value = lastRowset(await db.exec(check.sql ?? "SELECT false", OPTIONS))?.rows[0]?.[0];
       results.push(value === "true");

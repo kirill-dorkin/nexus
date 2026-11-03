@@ -1,12 +1,12 @@
 // Chapter 22: Intl completely — numbers, plurals, dates, relative time, durations, lists,
 // display names, collation, segmentation and locales.
-import { scene, rule, meth, obj, fnc, idea, run, has, task, makeLesson, on } from "./kit.mjs";
+import { scene, rule, meth, obj, fnc, run, has, task, makeLesson, on } from "./kit.mjs";
 
 const LP = (...m) => on("Intl.Locale.prototype", ...m);
 
 export default function intl(c, ch, rc) {
   const L = makeLesson(c, ch, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "intl-numbers", title: "Intl: числа и множественное число", summary: "Intl.NumberFormat formatToParts, formatRange, formatRangeToParts; Intl.PluralRules select и selectRange; resolvedOptions и supportedLocalesOf у всех служб Intl.",

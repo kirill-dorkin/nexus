@@ -1,8 +1,9 @@
 "use client";
+import { itemAt } from "../../lib/item-at";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { CheckCircle, ListBullets, MagnifyingGlass, X } from "@phosphor-icons/react/dist/ssr";
+import { CheckCircleIcon, ListBulletsIcon, MagnifyingGlassIcon, XIcon } from "@phosphor-icons/react/dist/ssr";
 import { brand } from "@platform/brand";
 import { groupByChapter } from "./lesson-outline";
 import styles from "./course-navigator.module.css";
@@ -51,12 +52,11 @@ function useVisited(course: string, current: string) {
   return visited;
 }
 
-function Program({ courseSlug, items, current, onNavigate, autoFocusSearch = false }: {
+function Program({ courseSlug, items, current, onNavigate }: {
   courseSlug: string;
   items: ProgramItem[];
   current: string;
   onNavigate?: () => void;
-  autoFocusSearch?: boolean;
 }) {
   const [query, setQuery] = useState("");
   const visited = useVisited(courseSlug, current);
@@ -104,19 +104,18 @@ function Program({ courseSlug, items, current, onNavigate, autoFocusSearch = fal
         </div>
         <p className={styles.visitedLine}>Открыто уроков: {done} из {items.length}</p>
         <label className={styles.search} htmlFor={searchId}>
-          <MagnifyingGlass size={16} aria-hidden="true" />
+          <MagnifyingGlassIcon size={16} aria-hidden="true" />
           <input
             id={searchId}
             type="search"
             value={query}
-            autoFocus={autoFocusSearch}
             placeholder="Найти урок"
             aria-label="Найти урок по названию"
             onChange={(e) => setQuery(e.target.value)}
           />
           {searching ? (
             <button type="button" onClick={() => setQuery("")} aria-label="Очистить поиск">
-              <X size={14} aria-hidden="true" />
+              <XIcon size={14} aria-hidden="true" />
             </button>
           ) : null}
         </label>
@@ -126,7 +125,7 @@ function Program({ courseSlug, items, current, onNavigate, autoFocusSearch = fal
         {shown.map((group, n) => {
           if (!group.lessons.length) return null;
           const isOpen = !chaptered || searching || open.has(n);
-          const all = groups[n]!.lessons;
+          const all = itemAt(groups, n).lessons;
           const seen = all.filter(({ lesson }) => visited.has(lesson.slug)).length;
           return (
             <section key={n} className={styles.chapter} data-current={n === currentChapter || undefined}>
@@ -154,7 +153,7 @@ function Program({ courseSlug, items, current, onNavigate, autoFocusSearch = fal
                           {...(onNavigate ? { onClick: onNavigate } : {})}
                         >
                           <span className={styles.no} aria-hidden="true">
-                            {seenLesson ? <CheckCircle size={16} weight="fill" /> : i + 1}
+                            {seenLesson ? <CheckCircleIcon size={16} weight="fill" /> : i + 1}
                           </span>
                           <span className={styles.title}>{lesson.title}</span>
                           <span className={styles.minutes}>{lesson.minutes} мин</span>
@@ -190,11 +189,13 @@ export function CourseNavigator({ courseSlug, items, current }: { courseSlug: st
         <Program courseSlug={courseSlug} items={items} current={current} />
       </nav>
       <button type="button" className={styles.fab} onClick={() => setSheet(true)} aria-haspopup="dialog">
-        <ListBullets size={18} weight="bold" aria-hidden="true" />
+        <ListBulletsIcon size={18} weight="bold" aria-hidden="true" />
         Программа
         <span>{index + 1}/{items.length}</span>
       </button>
       {sheet ? (
+        // A click on the backdrop closes the sheet; Escape is handled natively by <dialog>.
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
         <dialog
           ref={attach}
           className={styles.sheet}
@@ -204,7 +205,7 @@ export function CourseNavigator({ courseSlug, items, current }: { courseSlug: st
         >
           <div className={styles.sheetInner}>
             <button type="button" className={styles.sheetClose} onClick={close} aria-label="Закрыть программу">
-              <X size={18} aria-hidden="true" />
+              <XIcon size={18} aria-hidden="true" />
             </button>
             <Program courseSlug={courseSlug} items={items} current={current} onNavigate={close} />
           </div>

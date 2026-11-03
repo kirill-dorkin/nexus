@@ -1,5 +1,5 @@
 export default function links(c) {
-  const { html, code, mdn, lesson, single, short, diagram, demo } = c;
+  const { lesson, single, short } = c;
 
   lesson({
     slug: "links", title: "Ссылки", minutes: 11,
