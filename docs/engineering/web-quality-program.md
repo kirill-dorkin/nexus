@@ -62,11 +62,26 @@ Two more defects surfaced: the SQL client stayed «busy» forever when its job w
 
 Coverage floors rose to 52 / 55 / 50 / 52 % overall, the strict list gained the signup nudge and lesson visuals, and the shared hooks have their own 85 / 60 / 80 / 85 % floor.
 
-### 4. Studio decomposition
+### 4. Studio decomposition — done
 
-`manual-editor.tsx` and `course-editor.tsx` split into pure, unit-tested document operations (`editor-model.ts` grows) and small section components. No component file over 300 lines; no business rule inside JSX callbacks.
+Behaviour suites came first for the manual editor (every field, list order, type changes), the course editor (load, validate, save, version conflict, JSON mode and upload, publish, next draft, permissions, sign-in, leaving with unsaved work, discard, downloads) and the offering manager (listing, confirmed publication, link copy, unconfirmed results, creation, paging, sign-in). The split then kept every test green:
 
-**Done when:** both editors are composed of sections under 300 lines and every document operation has a unit test.
+- `editor-model.ts` (blank course, JSON parsing, the working-copy and version-conflict checks, file reading) and `editor-commands.ts` (every document change that touches more than one field) are pure and unit-tested;
+- `manual/` holds the form: shared controls, course, skills, activity, answers, lessons and blocks;
+- `course/` holds `useCourseDraft` (the editor's state machine), `useOperation`, `useLeaveGuard`, and the toolbar, rail, JSON editor, file actions, publication panel, notices and dialogs;
+- `offering/` holds the access loader, `useOfferings`, the offering card and the new-offering form.
+
+No Studio file is over 300 lines (the three entry components are 55, 113 and 231). Removing a skill now unlinks it from activities, and removing an option moves or drops the correct answer, so these edits no longer leave a document that fails validation.
+
+Coverage floors rose to 66 / 68 / 70 / 67 % overall, with a 70 / 50 / 60 / 70 % floor for the Studio folders.
+
+Files still over 300 lines elsewhere — lesson visuals, story scenes, practice challenge, checkout panel, the `@platform/ui` index and the `/ui` gallery — are split the same way in phase 4b, each under its existing suite.
+
+### 4b. Remaining large components
+
+Split the learner components above (parsers and diagrams out of `lesson-visuals.tsx`, scenes and concept cards out of `story.tsx`, checks out of `challenge.tsx`), the checkout panel and the `@platform/ui` primitives into files under 300 lines, under their existing suites.
+
+**Done when:** no Web or UI source file is over 300 lines.
 
 ### 5. End-to-end tests
 

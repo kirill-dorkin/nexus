@@ -77,3 +77,62 @@ export function move(items: unknown[], index: number, offset: number): void {
   if (target < 0 || target >= items.length) return;
   [items[index], items[target]] = [itemAt(items, target), itemAt(items, index)];
 }
+
+/** The working copy as a manifest for this course, or the issues that prevent it. */
+export function workingManifest(
+  source: string,
+  savedSlug: string | null
+):
+  | { manifest: CourseManifestV1; issues: [] }
+  | { manifest: null; issues: string[] } {
+  const result = parseEditorJson(source);
+  if (!result.manifest) return result;
+  if (savedSlug !== null && result.manifest.course.slug !== savedSlug)
+    return {
+      manifest: null,
+      issues: ["course.slug: адрес существующего курса нельзя менять."]
+    };
+  return { manifest: result.manifest, issues: [] };
+}
+
+/**
+ * Whether a validation plan targets the draft this editor loaded. A mismatch
+ * means someone else changed the course since, so saving must not proceed.
+ */
+export function planMatchesDraft(
+  plan: {
+    courseId: string | null;
+    expectedDraftVersionId: string | null;
+    expectedRevision: number;
+  },
+  saved: {
+    status: "draft" | "published";
+    versionId: string;
+    revision: number;
+  } | null,
+  isNew: boolean
+): boolean {
+  const draft = saved?.status === "draft" ? saved : null;
+  return (
+    plan.expectedDraftVersionId === (draft?.versionId ?? null) &&
+    plan.expectedRevision === (draft?.revision ?? 0) &&
+    !(isNew && plan.courseId !== null)
+  );
+}
+
+const maxManifestBytes = 900000;
+
+/** Reads an uploaded manifest file into the JSON editor, refusing oversized files. */
+export async function readManifestFile(file: Blob): Promise<
+  | { tooLarge: true }
+  | {
+      tooLarge: false;
+      text: string;
+      manifest: CourseManifestV1 | null;
+      issues: string[];
+    }
+> {
+  if (file.size > maxManifestBytes) return { tooLarge: true };
+  const text = await file.text();
+  return { tooLarge: false, text, ...parseEditorJson(text) };
+}
