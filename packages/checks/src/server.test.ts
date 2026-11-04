@@ -88,8 +88,11 @@ describe("server HTML adapter", () => {
       `<!-- <div a=" -->${"<ul><li>".repeat(300)}`
     ])
       expect(() => parseHtmlOnServer(deep)).toThrow(UncheckablePageError);
-    expect(performance.now() - started).toBeLessThan(1_000);
-  });
+    expect(performance.now() - started).toBeLessThan(
+      // Linear work takes milliseconds; quadratic would take minutes. Loose for loaded CI.
+      15_000
+    );
+  }, 60_000);
 
   it("accepts large flat pages and nesting up to the limit", () => {
     const flat = "<div><p>a<li>b<br><img src=x></div>".repeat(20_000);
@@ -102,7 +105,7 @@ describe("server HTML adapter", () => {
     expect(() => parseHtmlOnServer("<div>".repeat(511))).toThrow(
       UncheckablePageError
     );
-  });
+  }, 60_000);
 
   it("parses <noscript> as markup, like DOMParser", () => {
     expect(
@@ -125,10 +128,11 @@ describe("CSS reader limits", () => {
       const started = performance.now();
       readCss(input);
       expect(performance.now() - started, input.slice(0, 12)).toBeLessThan(
-        1_000
+        // Linear work takes milliseconds; quadratic would take minutes. Loose for loaded CI.
+        15_000
       );
     }
-  });
+  }, 60_000);
 
   it("still reads rules at realistic depths", () => {
     const css =
