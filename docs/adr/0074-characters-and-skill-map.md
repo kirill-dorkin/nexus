@@ -1,6 +1,6 @@
 # ADR-0074: Characters and the skill map are presentation over Mastery
 
-- Status: Accepted (stage 1)
+- Status: Accepted (stage 1). Spec v3 (2026-11-05) refines the progress rules: level 0–100 from **active** confirmed skills, skill confirmation by test, decay `skill-freshness@1`, and confirmation gated by prerequisite skills. These land as ADR-0075–0078; until then the stage-1 rules below apply
 - Date: 2026-11-05
 
 ## Context
