@@ -1,6 +1,10 @@
 import { QuizSubmissionCommand } from "./application/quiz-submission.command";
 import { CourseActivityProgressQuery } from "./application/course-activity-progress.query";
 import { PostgresCourseActivityProgressQuery } from "./infrastructure/postgres-course-activity-progress.query";
+import { OwnSkillsQuery } from "./application/own-skills.query";
+import { OwnSkillsApplicationService } from "./application/own-skills.service";
+import { SkillConfirmationRepository } from "./application/skill-confirmation.repository";
+import { PostgresSkillConfirmationRepository } from "./infrastructure/postgres-skill-confirmation.repository";
 import { Module } from "@nestjs/common";
 
 import { OutboxModule } from "../../outbox/outbox.module";
@@ -64,6 +68,12 @@ import { MasteryController } from "./mastery.controller";
       provide: OwnSkillProgressQuery,
       useExisting: LearnerSkillProgressApplicationService
     },
+    OwnSkillsApplicationService,
+    { provide: OwnSkillsQuery, useExisting: OwnSkillsApplicationService },
+    {
+      provide: SkillConfirmationRepository,
+      useClass: PostgresSkillConfirmationRepository
+    },
     TrustedValidationEvidenceApplicationService,
     {
       provide: LearningProgressQuery,
@@ -93,6 +103,7 @@ import { MasteryController } from "./mastery.controller";
     QuizSubmissionCommand,
     CourseActivityProgressQuery,
     OwnSkillProgressQuery,
+    OwnSkillsQuery,
     MasteryApplicationService,
     LearningProgressQuery,
     AttemptGuidanceQuery,

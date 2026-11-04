@@ -8,6 +8,8 @@ import { LearnerCourseContentQuery } from "./application/learner-course-content.
 import { PostgresLearnerCourseContentQuery } from "./infrastructure/postgres-learner-course-content.query";
 import { PublicLearningContentQuery } from "./application/public-learning-content.query";
 import { PostgresPublicLearningContentQuery } from "./infrastructure/postgres-public-learning-content.query";
+import { SkillKeyQuery } from "./application/skill-key.query";
+import { PostgresSkillKeyQuery } from "./infrastructure/postgres-skill-key.query";
 import { Module } from "@nestjs/common";
 import { OutboxModule } from "../../outbox/outbox.module";
 import { AuthorizationModule } from "../authorization/authorization.module";
@@ -43,6 +45,7 @@ import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
       provide: QuizValidationContentQuery,
       useClass: PostgresQuizValidationContentQuery
     },
+    { provide: SkillKeyQuery, useClass: PostgresSkillKeyQuery },
     {
       provide: LearnerCourseContentQuery,
       useClass: PostgresLearnerCourseContentQuery
@@ -77,6 +80,7 @@ import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
     }
   ],
   exports: [
+    SkillKeyQuery,
     QuizValidationContentQuery,
     LearnerCourseContentQuery,
     PublicLearningContentQuery,
