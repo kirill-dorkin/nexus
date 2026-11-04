@@ -13,6 +13,7 @@
     "@fontsource-variable/onest": "5.3.1",
     "@phosphor-icons/react": "2.1.10",
     "@platform/brand": "workspace:*",
+    "@platform/checks": "workspace:*",
     "@platform/contracts": "workspace:*",
     "@platform/design-tokens": "workspace:*",
     "@platform/ui": "workspace:*",

@@ -9,6 +9,7 @@ How `apps/web` (Next 16 App Router, React 19) and `@platform/ui` are built, and 
 | `@platform/design-tokens` (`tokens.css`) | Semantic values: colors per theme and accent, radii, spacing, type scale, focus ring | Components, storage, product names |
 | `@platform/ui` | Brand-neutral typed primitives (buttons, forms, layout, typography, feedback, `Dialog`, `PasswordInput`) and their stylesheet | Requests, local storage, routing, business rules |
 | `@platform/contracts` | zod schemas and types of every API payload Web reads or sends | Rendering |
+| `@platform/checks` | Challenge types, parsing and the static HTML/CSS checks, shared with the API's server adapter (ADR-0072) | DOM globals, sandboxed JS/SQL checks, storage, UI |
 | `apps/web` | Routes, product composition, data loading, client state, domain-specific patterns, copy | Canonical business state or authorization: the API decides, Web presents |
 
 Web never reaches into the database or the API's modules; every read and command goes through the HTTP API and is parsed with a contract schema at the boundary.
