@@ -40,3 +40,4 @@ export * from "./quiz-check";
 export * from "./studio";
 export * from "./web-telemetry";
 export * from "./web-telemetry-names";
+export * from "./browser-parsing";

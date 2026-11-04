@@ -25,7 +25,10 @@ export default function globalSetup() {
       "--org-slug",
       "nexus",
       "--org-name",
-      "Nexus"
+      "Nexus",
+      // A reused local database keeps the first published fixture; set
+      // E2E_REPUBLISH=1 after changing the fixture to publish it as a new version.
+      ...(process.env.E2E_REPUBLISH === "1" ? ["--new-version"] : [])
     ],
     {
       cwd: root,
