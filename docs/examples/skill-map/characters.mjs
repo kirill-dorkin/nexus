@@ -10,7 +10,7 @@ export const characters = [
     role: "Знаток компьютера",
     summary:
       "Как устроен компьютер: детали, память и файлы, загрузка системы и путь от клика до результата.",
-    accent: "slate",
+    accent: "rose",
     sources: [
       {
         manifest: "computer-basics-first-course.manifest.json",
@@ -25,7 +25,7 @@ export const characters = [
     role: "Проводник по вебу",
     summary:
       "Что происходит между адресной строкой и готовой страницей, и какими инструментами пользуется веб-разработчик.",
-    accent: "sky",
+    accent: "blue",
     sources: [
       {
         manifest: "html-track.manifest.json",

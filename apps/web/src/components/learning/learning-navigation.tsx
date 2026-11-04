@@ -12,6 +12,7 @@ import {
   ListIcon,
   NotebookIcon,
   UserCircleIcon,
+  UsersThreeIcon,
   XIcon
 } from "@phosphor-icons/react/dist/ssr";
 import { Dialog, IconButton, buttonClass } from "@platform/ui";
@@ -21,6 +22,7 @@ import styles from "./navigation.module.css";
 
 const publicDestinations = [
   { href: "/courses", label: "Курсы" },
+  { href: "/characters", label: "Персонажи" },
   { href: "/blog", label: "Блог" }
 ] as const;
 
@@ -156,6 +158,20 @@ export function LearningNavigation({
             >
               <BookOpenIcon size={21} aria-hidden="true" />
               <span>Все курсы</span>
+              <CaretRightIcon size={18} aria-hidden="true" />
+            </Link>
+            <Link
+              href="/characters"
+              aria-current={
+                pathname === "/characters" ||
+                pathname.startsWith("/characters/")
+                  ? "page"
+                  : undefined
+              }
+              onClick={closeMenu}
+            >
+              <UsersThreeIcon size={21} aria-hidden="true" />
+              <span>Персонажи</span>
               <CaretRightIcon size={18} aria-hidden="true" />
             </Link>
             <Link
