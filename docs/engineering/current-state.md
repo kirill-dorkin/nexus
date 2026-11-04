@@ -6,14 +6,14 @@ It is **not live telemetry**. Before working, check the current `main`, open PRs
 
 ## Snapshot
 
-Last maintained: 2026-11-03.
+Last maintained: 2026-11-04.
 
 | | |
 |---|---|
-| `main` head | `4d8f5e9` — #150, drop the café story characters (2026-11-03) |
+| `main` head | `199f95f` — #166, revert of NestJS 12 after a production API outage (2026-11-04) |
 | Latest migration | `000047_lesson_chapters.sql` |
 | Quality gates | Local before every push: `pnpm check` (brand isolation, Prettier, ESLint strict type-checked + React + jsx-a11y strict + Next, typecheck incl. API operator scripts and root tests, unit and component tests, Web coverage floors). GitHub CI: brand isolation, Prettier, typecheck, unit, integration, launch-performance, browser-launch and Playwright end-to-end tests (axe on every page). No lint baseline: every violation fails. |
-| Latest ADR | ADR-0067 Client error and Web Vitals reporting |
+| Latest ADR | ADR-0068 Managed-academy Organization provisioning (renumbered); newest decision ADR-0067 |
 | Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058); daily GitHub-hosted read-only smoke against the production domain |
 | Learner-code execution | **Disabled in production.** Grader artifacts exist in the repository but need a separate activation (exact image digest + green real-cluster verification). |
 | Published content | Route «Веб-разработка с нуля»: `html`, `css`, `js`, `sql` manifests in `docs/examples/`, published in production. The four-lesson `computer-basics-first-course` manifest is not published. Check Studio for current versions. |
@@ -114,17 +114,15 @@ Do not remove these without an explicit cleanup slice/migration and proven calle
 
 Nexus has no external API clients yet, so a cleanup slice could close these windows cheaply before launch.
 
-## Open work on GitHub (as of 2026-10-31)
+## Open work on GitHub (as of 2026-11-04)
 
-- **UI stack, Draft since 2026-10-15:** #97 (lesson-first Studio editor, conflicting), #98 (frontend spec docs), #100 (shared header), #101 (semantic surfaces), #103 (mobile Product pricing). #104 is a temporary integration harness for these and must never be merged.
-- **#46** (gVisor provider): superseded by #45, which is merged.
-- **Dependabot:** patch/minor bumps with green CI, plus NestJS 12 (#80, #82, #83: red CI), TypeScript 7 (#12: red CI), pino 10, @types/node 26, upload-artifact 7.
-- Issue #99 (managed-academy provisioning): Stages A and B landed in #105/#106.
+- **#46** (gVisor provider, Draft since 2026-09-16): superseded by #45, which is merged; close it (spec A7).
+- **Dependabot:** none open. NestJS packages arrive as one group; TypeScript ≥7 is held until typescript-eslint and `@nestjs/swagger` support it; major `@types/node` bumps are ignored while the runtime is Node 24.
 
 ## Next recommended slice
 
-**Bring Web to the backend's engineering level: [`web-quality-program.md`](web-quality-program.md).** Phases 0 (workspace lint, type-checked operator scripts and root tests), 1 (Prettier), 2 (component tests and Web coverage floors) 3 (React correctness on shared hooks; the lint baseline is gone), 4 and 4b (Studio editors and every other file over 300 lines split under tests; a size test keeps it so) 5 (Playwright end-to-end tests with axe on every page, in CI) 6 (per-page JavaScript, LCP and CLS budgets) 7 (client error and Web Vitals reporting, ADR-0067), 8 (accessibility audit: axe and keyboard checks on every page, `docs/design/accessibility-audit.md`) and 9 (ADR-0059 accepted, the duplicate number renumbered to ADR-0068, and [`docs/architecture/web.md`](../architecture/web.md)) are done. The program is complete; the next Web size step is client-side parsing without full zod (see phase 6).
+**Follow [`docs/roadmap/product-development-spec.md`](../roadmap/product-development-spec.md)** (v2, 2026-11-04): capability audit, findings A1–A11, autonomous-work rules and work packages. Order: WP-1 production reliability and security (smoke waits for the release, Web security headers, rate limiting), WP-2 architecture hygiene, WP-3 learner skill progress, WP-4 shared `@platform/checks`, WP-5 downloadable assignments with trusted HTML/CSS checks.
 
-The four route courses (HTML, CSS, JavaScript, SQL) are published; collect learner usage and feedback in parallel before choosing the next domain capability.
+The web quality program ([`web-quality-program.md`](web-quality-program.md)) is complete. The four route courses (HTML, CSS, JavaScript, SQL) are published.
 
 Not selected (do not start without an explicit decision): grader production activation, refunds/subscriptions/coupons, more recommendation policies, telemetry backend, load planning.
