@@ -15,7 +15,10 @@ const API_ORIGIN = "https://127.0.0.1:4443";
 const WEB_BACKEND_PORT = 3000;
 const API_BACKEND_PORT = 4000;
 const FAKE_API_PORT = 4100;
-const CHROME_DEBUG_PORT = 9222;
+// Chrome on a cold CI runner took ~16 s to open DevTools when the old fixed
+// 20 s poll still passed. Readiness is Chrome's own "DevTools listening" line;
+// this is only the ceiling, kept inside run.mjs's 120 s budget.
+const CHROME_START_TIMEOUT_MS = 45_000;
 
 const PURCHASE_ID = "11111111-1111-4111-8111-111111111111";
 const PRICE_ID = "22222222-2222-4222-8222-222222222222";
@@ -815,30 +818,68 @@ async function accessibilityAudit(cdp, label) {
 
 async function launchChrome(tempDirectory) {
   const chrome = resolveChromePath();
+  const startedAt = Date.now();
   const child = spawnChild(chrome, [
     "--headless=new",
     "--no-sandbox",
     "--disable-gpu",
     "--ignore-certificate-errors",
-    `--remote-debugging-port=${CHROME_DEBUG_PORT}`,
+    // A fresh profile otherwise spends startup on first-run UI, keychain and
+    // update/sync network work the verification never uses.
+    "--no-first-run",
+    "--no-default-browser-check",
+    "--disable-background-networking",
+    "--disable-component-update",
+    "--disable-sync",
+    "--disable-dev-shm-usage",
+    "--password-store=basic",
+    "--use-mock-keychain",
+    // Port 0: Chrome picks a free port and prints it, so a busy 9222 cannot
+    // make another process answer for it.
+    "--remote-debugging-port=0",
     `--user-data-dir=${join(tempDirectory, "chrome-profile")}`,
     "about:blank"
   ]);
   let chromeLog = "";
-  child.stderr.on("data", (chunk) => {
-    chromeLog = appendLog(chromeLog, chunk);
-  });
-
-  await waitForHttp(
-    `http://127.0.0.1:${CHROME_DEBUG_PORT}/json/version`,
-    "Chrome DevTools",
-    80
-  ).catch((error) => {
+  const devtools = await new Promise((resolve, reject) => {
+    const timer = setTimeout(
+      () =>
+        reject(
+          new Error(
+            `Chrome DevTools did not start within ${CHROME_START_TIMEOUT_MS} ms.`
+          )
+        ),
+      CHROME_START_TIMEOUT_MS
+    );
+    child.stderr.on("data", (chunk) => {
+      chromeLog = appendLog(chromeLog, chunk);
+      const listening = /DevTools listening on (ws:\/\/\S+)/.exec(chromeLog);
+      if (listening) {
+        clearTimeout(timer);
+        resolve(new URL(listening[1]));
+      }
+    });
+    child.once("error", (error) => {
+      clearTimeout(timer);
+      reject(error);
+    });
+    child.once("exit", (code, signal) => {
+      clearTimeout(timer);
+      reject(
+        new Error(
+          `Chrome exited before DevTools started (code ${code}, signal ${signal}).`
+        )
+      );
+    });
+  }).catch((error) => {
     throw new Error(`${error.message}\nChrome log:\n${chromeLog}`);
   });
+  console.error(
+    `[browser-launch] Chrome DevTools ready on port ${devtools.port} after ${Date.now() - startedAt} ms`
+  );
 
   const target = await fetch(
-    `http://127.0.0.1:${CHROME_DEBUG_PORT}/json/new?about%3Ablank`,
+    `http://127.0.0.1:${devtools.port}/json/new?about%3Ablank`,
     { method: "PUT" }
   ).then((response) => response.json());
   return CdpClient.connect(target.webSocketDebuggerUrl);
