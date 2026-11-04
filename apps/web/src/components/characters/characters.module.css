@@ -1,4 +1,5 @@
 .intro {
+  justify-items: start;
   display: grid;
   gap: var(--space-3);
   max-width: 62ch;
@@ -448,4 +449,96 @@
   padding: var(--space-3);
   border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--action-primary) 10%, transparent);
+}
+
+.city {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 30% 20%, var(--surface-hover), transparent 55%),
+    var(--surface-subtle);
+}
+
+.cityPlan {
+  display: block;
+  width: 100%;
+  min-width: 640px;
+  height: auto;
+}
+
+.road {
+  stroke: var(--border-strong);
+  stroke-width: 6;
+  stroke-dasharray: 2 12;
+  stroke-linecap: round;
+}
+
+.hatch {
+  stroke: color-mix(in srgb, var(--action-primary) 45%, transparent);
+  stroke-width: 3;
+}
+
+.district {
+  cursor: pointer;
+}
+
+.districtBase {
+  fill: var(--surface-elevated);
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  stroke-dasharray: 8 6;
+  transition:
+    fill 400ms ease,
+    stroke 400ms ease;
+}
+
+.district[data-state="scaffolding"] .districtBase {
+  stroke: var(--action-primary);
+  stroke-dasharray: none;
+}
+
+.district[data-state="alive"] .districtBase {
+  fill: color-mix(in srgb, var(--action-primary) 22%, var(--surface-elevated));
+  stroke: var(--action-primary);
+  stroke-width: 3;
+  stroke-dasharray: none;
+}
+
+.districtBadge {
+  fill: color-mix(in srgb, var(--action-primary) 25%, transparent);
+}
+
+.district[data-state="ruined"] .districtBadge {
+  fill: var(--surface-hover);
+}
+
+.districtInitials {
+  fill: var(--action-primary);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.districtName {
+  fill: var(--text-primary);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.districtMeta {
+  fill: var(--text-secondary);
+  font-size: 14px;
+}
+
+a:focus-visible .districtBase {
+  stroke: var(--text-primary);
+  stroke-width: 4;
+  stroke-dasharray: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .districtBase {
+    transition: none;
+  }
 }

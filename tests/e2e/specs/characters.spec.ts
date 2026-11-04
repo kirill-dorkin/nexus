@@ -47,3 +47,19 @@ test("a visitor browses the characters and a character's skill tree", async ({
   const missing = await page.goto("/characters/unknown");
   expect(missing?.status()).toBe(404);
 });
+
+test("a visitor opens the city map and goes to a district", async ({
+  page
+}) => {
+  await page.goto("/map");
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Карта города" })
+  ).toBeVisible();
+  const district = page.getByRole("link", {
+    name: /Квартал Каркасов.*HTML · ур\. 0.*разрушен/
+  });
+  await expect(district).toBeVisible();
+  await expectAccessible(page);
+  await district.click();
+  await expect(page).toHaveURL("/characters/html");
+});
