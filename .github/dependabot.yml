@@ -5,6 +5,15 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 10
+    groups:
+      # NestJS packages must move together; one at a time they fail to install.
+      nestjs:
+        patterns:
+          - "@nestjs/*"
+    ignore:
+      # Types follow the runtime: Node 24 (package.json engines, CI, containers).
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
