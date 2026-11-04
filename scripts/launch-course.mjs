@@ -206,8 +206,6 @@ const list = await must(
   api("GET", `${orgPath}/studio/courses`)
 );
 let summary = list.courses.find((c) => c.slug === manifest.course.slug);
-const previousVersionId =
-  summary?.status === "published" ? summary.versionId : null;
 async function importAndPublish(courseIdHint) {
   const plan = await must(
     "Проверка документа",
@@ -260,41 +258,77 @@ const published = await must(
 );
 
 step("Публичный доступ");
-// ADR-0062: a new version moves the existing public Offering forward, so learners keep their
-// Enrollment and progress. A brand-new Offering is created only for the first publication or when
-// the old one cannot move (for example, a cohort Offering).
+// ADR-0062: a course keeps one public Offering, and every republish moves it forward, so learners
+// keep their Enrollment and progress. It looks at Offerings on every published version of the
+// course, not only the previous one: an Offering left behind on an older version would otherwise
+// stay public next to a new one and show the course twice in the catalogue.
+async function courseOfferings() {
+  const all = [];
+  let after = null;
+  do {
+    const page = await must(
+      "Текущие доступы",
+      api(
+        "GET",
+        `${orgPath}/offerings?courseVersionId=${published.versionId}&scope=course` +
+          (after ? `&after=${after}` : "")
+      )
+    );
+    all.push(...page.offerings);
+    after = page.nextCursor;
+  } while (after);
+  return all;
+}
+const publicOfferings = (await courseOfferings()).filter(
+  (o) => o.visibility === "public"
+);
+// Keep the requested address if given; otherwise prefer an Offering still on an older version:
+// it carries the learners' history, while one on the new version may be a fresh duplicate.
+const onNewVersion = (o) => Number(o.courseVersionId === published.versionId);
+publicOfferings.sort(
+  (a, b) =>
+    Number(b.slug === OFFERING_SLUG) - Number(a.slug === OFFERING_SLUG) ||
+    onNewVersion(a) - onNewVersion(b)
+);
 let offering = null;
 let offeringSlug = OFFERING_SLUG ?? manifest.course.slug;
-if (previousVersionId && previousVersionId !== published.versionId) {
-  const old = (
+for (const item of publicOfferings) {
+  if (offering) {
     await must(
-      "Текущие доступы",
-      api("GET", `${orgPath}/offerings?courseVersionId=${previousVersionId}`)
-    )
-  ).offerings;
-  for (const item of old.filter((o) => o.visibility === "public")) {
-    const moved = await api(
-      "PATCH",
-      `${orgPath}/offerings/${item.id}/course-version`,
-      { courseVersionId: published.versionId }
+      "Скрытие лишнего доступа",
+      api("PATCH", `${orgPath}/offerings/${item.id}/visibility`, {
+        visibility: "private"
+      })
     );
-    if (moved.ok && !offering) {
-      offering = moved.data;
-      offeringSlug = offering.slug;
-      ok(
-        `Доступ /${offering.slug} переведён на версию ${published.versionNumber} — ученики сохраняют прогресс`
-      );
-    } else if (!moved.ok) {
-      await must(
-        "Скрытие старого доступа",
-        api("PATCH", `${orgPath}/offerings/${item.id}/visibility`, {
-          visibility: "private"
-        })
-      );
-      ok(
-        `Старый доступ /${item.slug} нельзя перевести (HTTP ${moved.status}) — скрыт`
-      );
-    }
+    ok(`Лишний доступ /${item.slug} скрыт — курс показан в каталоге один раз`);
+    continue;
+  }
+  if (item.courseVersionId === published.versionId) {
+    offering = item;
+    offeringSlug = item.slug;
+    continue;
+  }
+  const moved = await api(
+    "PATCH",
+    `${orgPath}/offerings/${item.id}/course-version`,
+    { courseVersionId: published.versionId }
+  );
+  if (moved.ok) {
+    offering = moved.data;
+    offeringSlug = offering.slug;
+    ok(
+      `Доступ /${offering.slug} переведён на версию ${published.versionNumber} — ученики сохраняют прогресс`
+    );
+  } else {
+    await must(
+      "Скрытие старого доступа",
+      api("PATCH", `${orgPath}/offerings/${item.id}/visibility`, {
+        visibility: "private"
+      })
+    );
+    ok(
+      `Старый доступ /${item.slug} нельзя перевести (HTTP ${moved.status}) — скрыт`
+    );
   }
 }
 if (!offering) {

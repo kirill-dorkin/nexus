@@ -149,7 +149,8 @@ export class LearningDeliveryApplicationService {
   async listOfferings(
     organizationId: string,
     courseVersionId: string,
-    after: string | null
+    after: string | null,
+    scope: "version" | "course" = "version"
   ): Promise<LearningOfferingList> {
     const context = this.requestContext.tenantContext(organizationId);
     return this.database.tenantTransaction(context, async (transaction) => {
@@ -165,10 +166,20 @@ export class LearningDeliveryApplicationService {
         "offering.manage",
         courseScope(organizationId, version.courseId)
       );
-      const rows = await this.delivery.listOfferingsForCourseVersion(
+      // scope=course also lists Offerings still on other published versions of the Course,
+      // so a republish can find every public Offering to move forward (ADR-0062).
+      const versionIds =
+        scope === "course"
+          ? await this.content.listPublishedVersionIds(
+              transaction,
+              organizationId,
+              version.courseId
+            )
+          : [courseVersionId];
+      const rows = await this.delivery.listOfferingsForCourseVersions(
         transaction,
         organizationId,
-        courseVersionId,
+        versionIds,
         after
       );
       const offerings = rows.slice(0, 50);

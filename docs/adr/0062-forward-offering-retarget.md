@@ -25,6 +25,8 @@ An Offering was pinned to one immutable CourseVersion for its whole life (000011
    - Learning Content provides the version→Activity lineage through its learner content port (`activityLineage`). Learning Progress still reads only its own Attempts and Evidence.
    - Everything else from ADR-0055 is unchanged: own Enrollment only, normalized validation Evidence only, a pass stays passed after a later failed retry, and there is no progress table.
 6. **Operator launch.** `scripts/launch-course.mjs --new-version` moves the existing public Offering forward instead of creating `{course}-v{N}`. It creates a new Offering only for the first publication or when the old one cannot move.
+   - A course keeps **one public Offering**. The script lists Offerings on every published version of the course (`GET …/offerings?courseVersionId=…&scope=course`, authorized like the per-version list), not only on the previous version. An Offering left on an older version was once missed and stayed public next to a new `{course}-v{N}` duplicate.
+   - It keeps the `--offering-slug` Offering if given, otherwise one still on an older version (it carries the learners' history). It moves that one forward and makes every other public Offering of the course private. Rerunning the script without `--new-version` repairs a duplicate the same way.
 
 ## Consequences
 
