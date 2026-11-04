@@ -73,7 +73,8 @@ export const characters = [
   }
 ];
 
-// Branch → branches that should be at least half mastered first ("character/branch title").
+// Branch → branches whose skills must be at least `unlockShare` active before its skills can be
+// confirmed ("character/branch title").
 // Inside a character every branch also requires the previous one.
 export const requires = {
   "html/Старт": ["browser/Как работает веб"],
@@ -84,9 +85,7 @@ export const requires = {
   "js/Формы": ["html/Формы"]
 };
 
-/** Share of a required branch's skills that must be mastered before a branch opens. */
+/** Share of a required branch's skills that must be active before a branch opens. */
 export const unlockShare = 0.5;
-/** Mastery score from which a skill counts as mastered (the readiness target, ADR-0041). */
-export const masteredScore = 0.8;
-/** Levels 0…maxLevel by the share of mastered skills. */
-export const maxLevel = 10;
+/** Levels 0…maxLevel by the share of active (confirmed, not forgotten) skills. */
+export const maxLevel = 100;

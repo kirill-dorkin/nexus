@@ -1,8 +1,7 @@
 {
   "version": 1,
   "unlockShare": 0.5,
-  "masteredScore": 0.8,
-  "maxLevel": 10,
+  "maxLevel": 100,
   "characters": [
     {
       "slug": "pc",
