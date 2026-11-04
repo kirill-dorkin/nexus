@@ -2,11 +2,11 @@
 import { useRef, useState, type DragEvent } from "react";
 import Link from "next/link";
 import {
-  assignmentCheckResultSchema,
-  uploadProblems,
   type AssignmentCheckResult,
   type PublicAssignmentActivity
 } from "@platform/contracts";
+import { clientAssignmentCheckResultSchema as assignmentCheckResultSchema } from "@platform/contracts/client";
+import { uploadProblems } from "@platform/contracts/browser";
 import { Alert, Button, Stack, Text, buttonClass } from "@platform/ui";
 
 import { browserApiRequest } from "../../../lib/public-api";

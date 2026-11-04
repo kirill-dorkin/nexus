@@ -118,7 +118,7 @@ GitHub CI runs `pnpm test:e2e` after the Web build in one-origin mode and keeps 
 
 Measuring what the browser actually downloads is independent of the bundler's manifest format. Next's prefetches of linked routes are cut off during the measurement: they are the cost of the next navigation, and they depend on which courses the database holds (CI first counted the code of another organization's course page on the catalog). `@platform/contracts` is now marked `sideEffects: false`, so unused contract modules leave the client bundles, and the course table list moved out of the teaching-database SQL, which only the worker needs.
 
-The largest remaining client cost is zod: about 90 KB compressed on every page that parses API data. Moving client-side parsing to `zod/mini` (or narrower client schemas) is the next size step; budgets go down with it.
+The largest client cost was zod: about 86 KB compressed on every page that parses API data. Spec WP-6 (2026-11-04) moved browser parsing to `zod/mini` copies in `@platform/contracts/client` (an equivalence test keeps them equal to the full schemas) and schema-free helpers in `@platform/contracts/browser`; learner pages now carry about 31 KB of validation code, pages that parse nothing carry none, and the budgets dropped: course, sign-in and my learning 220 KB, lessons 275 KB.
 
 ### 7. Client observability — done
 

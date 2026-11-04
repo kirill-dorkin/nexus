@@ -1,4 +1,4 @@
-import { parseWithoutEvalInBrowser } from "@platform/contracts";
+import { parseWithoutEvalInBrowser } from "@platform/contracts/browser";
 
 // Every browser read goes through this module before it is parsed.
 parseWithoutEvalInBrowser();

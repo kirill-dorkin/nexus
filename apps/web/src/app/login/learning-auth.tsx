@@ -1,9 +1,9 @@
 "use client";
+import { type OAuthProvider } from "@platform/contracts";
 import {
-  identityUserSchema,
-  oauthProvidersResponseSchema,
-  type OAuthProvider
-} from "@platform/contracts";
+  clientIdentityUserSchema as identityUserSchema,
+  clientOAuthProvidersResponseSchema as oauthProvidersResponseSchema
+} from "@platform/contracts/client";
 import { useEffect, useState, type SubmitEvent } from "react";
 import Link from "next/link";
 import { browserApiRequest, publicApiUrl } from "../../lib/public-api";

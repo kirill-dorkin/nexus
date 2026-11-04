@@ -1,4 +1,4 @@
-import { resourceSlugSchema, uuidSchema } from "@platform/contracts";
+import { isResourceSlug, isUuid } from "@platform/contracts/browser";
 /** A URL locator is never authority; only exact local learning/Studio paths are accepted. */
 export function safeLearningReturnTo(value: unknown): string {
   if (value === "/studio") return value;
@@ -7,11 +7,7 @@ export function safeLearningReturnTo(value: unknown): string {
     /^\/studio\/[^/]+\/(?:new|[^/]+)$/.test(value)
   ) {
     const [, , org, course] = value.split("/");
-    if (
-      uuidSchema.safeParse(org).success &&
-      (course === "new" || uuidSchema.safeParse(course).success)
-    )
-      return value;
+    if (isUuid(org) && (course === "new" || isUuid(course))) return value;
   }
   if (value === "/me/learning") return value;
   if (typeof value !== "string" || value.length > 220) return "/me/learning";
@@ -22,14 +18,14 @@ export function safeLearningReturnTo(value: unknown): string {
   if (course)
     return (course.slice(1) as (string | undefined)[])
       .filter((v) => v !== undefined)
-      .every((v) => resourceSlugSchema.safeParse(v).success)
+      .every((v) => isResourceSlug(v))
       ? value
       : "/me/learning";
   const match = /^\/learn\/([^/]+)\/([^/]+)(?:\/([^/]+))?$/.exec(value);
   if (
     !(match?.slice(1) as (string | undefined)[] | undefined)
       ?.filter((v) => v !== undefined)
-      .every((v) => resourceSlugSchema.safeParse(v).success)
+      .every((v) => isResourceSlug(v))
   )
     return "/me/learning";
   return value;
