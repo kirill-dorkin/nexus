@@ -28,6 +28,13 @@ test("a visitor browses the characters and a character's skill tree", async ({
   await expect(
     page.getByRole("heading", { name: "Основы HTML" })
   ).toBeVisible();
+  // The season-1 scene of a branch opens on demand and is plain text for screen readers.
+  const start = page.getByRole("region", { name: "Старт" });
+  await start.getByText("Сцена", { exact: true }).click();
+  await expect(
+    start.getByText("Стой. По стройке без каски не ходят.")
+  ).toBeVisible();
+
   const builtOn = page.getByRole("region", { name: "Стоит на персонажах" });
   await expect(
     builtOn.getByRole("link", { name: "Браузер", exact: true })

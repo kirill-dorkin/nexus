@@ -4,12 +4,30 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import * as config from "./characters.mjs";
+import { parseStory } from "./story.mjs";
 
 const examples = join(dirname(fileURLToPath(import.meta.url)), "..");
 export const outputPath = join(
   examples,
   "../../apps/web/src/lib/skill-map/skill-map.json"
 );
+export const storyOutputPath = join(
+  examples,
+  "../../apps/web/src/lib/skill-map/story.json"
+);
+
+/** Branch scenes from the director's script, only for branches of the map; every branch needs both. */
+export function buildStory(map = buildSkillMap(), story = parseStory()) {
+  const scenes = {};
+  for (const character of map.characters)
+    for (const branch of character.branches) {
+      const scene = story[branch.id];
+      if (!scene?.intro.length || !scene.outro.length)
+        throw new Error(`${branch.id}: the script needs an intro and an outro`);
+      scenes[branch.id] = scene;
+    }
+  return scenes;
+}
 
 /** Pure: the map for the given config and manifest reader. Throws on any inconsistency. */
 export function buildSkillMap(
@@ -120,6 +138,8 @@ export function buildSkillMap(
 export const serialize = (map) => `${JSON.stringify(map, null, 2)}\n`;
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {
-  writeFileSync(outputPath, serialize(buildSkillMap()));
-  console.log(`Wrote ${outputPath}`);
+  const map = buildSkillMap();
+  writeFileSync(outputPath, serialize(map));
+  writeFileSync(storyOutputPath, serialize(buildStory(map)));
+  console.log(`Wrote ${outputPath} and ${storyOutputPath}`);
 }

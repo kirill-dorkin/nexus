@@ -17,6 +17,8 @@ import {
   skillsWord
 } from "./character-labels";
 import { initials } from "./character-roster";
+import { BranchSceneView } from "./branch-scene";
+import type { BranchScene } from "../../lib/skill-map/story";
 import styles from "./characters.module.css";
 
 const lessonHref = (skill: SkillMapSkill) =>
@@ -25,7 +27,13 @@ const lessonHref = (skill: SkillMapSkill) =>
     : null;
 
 /** One character: level, rank, what to do next and the whole skill tree with its states. */
-export function CharacterProfile({ character }: { character: Character }) {
+export function CharacterProfile({
+  character,
+  scenes = {}
+}: {
+  character: Character;
+  scenes?: Readonly<Record<string, BranchScene>>;
+}) {
   const { status, records } = useOwnSkillRecords();
   const progress = characterProgress(character, records, utcToday());
   const builtOn = requiredCharacters(character);
@@ -135,6 +143,10 @@ export function CharacterProfile({ character }: { character: Character }) {
                   : `Закрыта: ${skills.length} ${skillsWord(skills.length)}`}
               </span>
             </div>
+            <BranchSceneView
+              scene={scenes[branch.id]}
+              restored={active === skills.length && skills.length > 0}
+            />
             <ul className={styles.skills}>
               {skills.map((item) => {
                 const href = lessonHref(item.skill);

@@ -20,3 +20,4 @@ apps/grader-runner/
 
 # Built by docs/examples/skill-map/build.mjs; a test checks it is current
 apps/web/src/lib/skill-map/skill-map.json
+apps/web/src/lib/skill-map/story.json

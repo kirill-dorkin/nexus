@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { LearningShell } from "../../../components/learning/learning-shell";
 import { CharacterProfile } from "../../../components/characters/character-profile";
 import { SKILL_MAP, findCharacter } from "../../../lib/skill-map/skill-map";
+import { scenesFor } from "../../../lib/skill-map/story";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -25,7 +26,10 @@ export default async function CharacterPage({ params }: Props) {
   if (!character) notFound();
   return (
     <LearningShell>
-      <CharacterProfile character={character} />
+      <CharacterProfile
+        character={character}
+        scenes={scenesFor(character.branches.map((b) => b.id))}
+      />
     </LearningShell>
   );
 }
