@@ -20,6 +20,8 @@ External Google/GitHub login is optional. Set `OAUTH_CALLBACK_ORIGIN` to the sam
 
 The Web service build/dev commands set the public API mode to `/`, so no public internal hostname is compiled into browser JavaScript. Runtime server reads consume only the binding. The older Docker/standalone profile still compiles an absolute `NEXT_PUBLIC_API_ORIGIN` and uses that origin for server reads when no binding exists. Turbo hashes all three existing public Web build variables.
 
+Set `RATE_LIMIT_KEY` (Production, Secret) to a long random value, for example the output of `openssl rand -base64 48`, after migration `000048` is applied; without it login and registration are not rate limited (ADR-0070). Rotating it resets the counters.
+
 Keep `PAYMENT_PROVIDER=unavailable` for the free-learning launch. Paddle activation and webhook settlement still require the existing separate credentials and payment worker acceptance. The grader gateway, one-shot runner and continuous workers are omitted; no production learner-code activation is implied.
 
 ## Local and deployed checks
