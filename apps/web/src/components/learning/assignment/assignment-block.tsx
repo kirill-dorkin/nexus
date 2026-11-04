@@ -84,7 +84,9 @@ export function AssignmentBlock({
       attemptKey.current = null;
     } catch {
       setFiles(null);
-      setNotes(["Не получилось прочитать файлы. Проверьте, что это zip или текстовые файлы."]);
+      setNotes([
+        "Не получилось прочитать файлы. Проверьте, что это zip или текстовые файлы."
+      ]);
     }
   }
 
@@ -104,7 +106,7 @@ export function AssignmentBlock({
 
   const post = () =>
     browserApiRequest(
-        `/v1/me/learning/${encodeURIComponent(organizationSlug)}/${encodeURIComponent(offeringSlug)}/assignments/${encodeURIComponent(activity.slug)}/submissions`,
+      `/v1/me/learning/${encodeURIComponent(organizationSlug)}/${encodeURIComponent(offeringSlug)}/assignments/${encodeURIComponent(activity.slug)}/submissions`,
       {
         method: "POST",
         body: JSON.stringify({ attemptKey: attemptKey.current, files })
@@ -124,7 +126,9 @@ export function AssignmentBlock({
       else if (response.status === 429)
         setError("Слишком много сдач подряд. Подождите несколько минут.");
       else if (response.status === 400)
-        setError("Эти файлы не получилось проверить. Проверьте их и выберите снова.");
+        setError(
+          "Эти файлы не получилось проверить. Проверьте их и выберите снова."
+        );
       else if (!response.ok)
         setError("Проверка не завершилась. Отправьте эти же файлы ещё раз.");
       else {
@@ -147,9 +151,7 @@ export function AssignmentBlock({
   return (
     <Stack gap="md">
       <div>
-        <Text muted>
-          Что проверим:
-        </Text>
+        <Text muted>Что проверим:</Text>
         <ul>
           {activity.checkLabels.map((label) => (
             <li key={label}>{label}</li>
@@ -161,6 +163,7 @@ export function AssignmentBlock({
           Скачать заготовку
         </Button>
       </div>
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- dropping files is a pointer shortcut; the file input inside is the keyboard path */}
       <div
         className={styles.dropZone}
         onDragOver={(event) => {
@@ -169,8 +172,8 @@ export function AssignmentBlock({
         onDrop={drop}
       >
         <label htmlFor={`${activity.slug}-files`}>
-          Выберите zip-архив или файлы задания ({activity.allowedFiles.join(", ")}), или
-          перетащите их сюда.
+          Выберите zip-архив или файлы задания (
+          {activity.allowedFiles.join(", ")}), или перетащите их сюда.
         </label>
         <input
           ref={input}
@@ -182,9 +185,7 @@ export function AssignmentBlock({
         />
       </div>
       {files && (
-        <Text>
-          Готово к отправке: {Object.keys(files).sort().join(", ")}.
-        </Text>
+        <Text>Готово к отправке: {Object.keys(files).sort().join(", ")}.</Text>
       )}
       {notes.length > 0 && (
         <ul aria-label="Замечания к файлам">
@@ -205,7 +206,10 @@ export function AssignmentBlock({
       {needsLogin && (
         <div className={styles.quizSignup} role="status">
           <strong>Файлы готовы к проверке — осталось войти</strong>
-          <p>Аккаунт бесплатный. После входа вернитесь к этому заданию и отправьте файлы.</p>
+          <p>
+            Аккаунт бесплатный. После входа вернитесь к этому заданию и
+            отправьте файлы.
+          </p>
           <div className={styles.quizSignupActions}>
             <Link
               className={buttonClass({ size: "md" })}

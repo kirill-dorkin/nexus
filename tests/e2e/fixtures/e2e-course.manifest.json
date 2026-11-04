@@ -36,6 +36,42 @@
         "correctOptionId": "h1",
         "explanation": "Главный заголовок — h1."
       }
+    },
+    {
+      "slug": "files-page",
+      "title": "Страница из файлов",
+      "instructions": "Сделайте заголовок первого уровня и покрасьте его в style.css.",
+      "type": "assignment.files",
+      "skillKeys": ["tags"],
+      "presentation": {
+        "lang": "html",
+        "starterFiles": {
+          "index.html": "<!doctype html>\n<link rel=\"stylesheet\" href=\"style.css\">\n<p>Текст</p>\n",
+          "style.css": ""
+        },
+        "allowedFiles": ["index.html", "style.css"]
+      },
+      "validation": {
+        "checks": [
+          {
+            "label": "Есть заголовок первого уровня",
+            "selector": "h1"
+          },
+          {
+            "label": "Заголовок красный",
+            "css": {
+              "selector": "h1",
+              "property": "color",
+              "value": ["red", "#f00", "#ff0000"]
+            },
+            "hint": "Задайте цвет заголовка в style.css."
+          }
+        ],
+        "solutionFiles": {
+          "index.html": "<!doctype html>\n<link rel=\"stylesheet\" href=\"style.css\">\n<h1>Привет</h1>\n",
+          "style.css": "h1 { color: red; }\n"
+        }
+      }
     }
   ],
   "lessons": [
@@ -81,6 +117,12 @@
         {
           "type": "markdown",
           "markdown": "## Готово\n\nВы прошли курс.\n\n```challenge\n{\"title\": \"Сумма в консоли\", \"task\": \"Выведите в консоль сумму чисел 2 и 3.\", \"lang\": \"js\", \"page\": \"<p>Результат в консоли.</p>\", \"start\": \"console.log(0);\", \"checks\": [{\"label\": \"В консоли число 5\", \"log\": \"5\"}], \"hint\": \"Сложите числа внутри `console.log`.\", \"solution\": \"console.log(2 + 3);\"}\n```"
+        },
+        {
+          "type": "activity",
+          "activitySlug": "files-page",
+          "kind": "homework",
+          "required": false
         }
       ]
     }
