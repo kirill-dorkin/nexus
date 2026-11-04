@@ -16,7 +16,7 @@ Last maintained: 2026-11-04.
 | Latest ADR | ADR-0073 Downloadable file assignments with trusted static checks |
 | Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058); daily GitHub-hosted read-only smoke against the production domain |
 | Learner-code execution | **Disabled in production.** Grader artifacts exist in the repository but need a separate activation (exact image digest + green real-cluster verification). |
-| Published content | Route «Веб-разработка с нуля»: `html`, `css`, `js`, `sql` manifests in `docs/examples/`, published in production. The four-lesson `computer-basics-first-course` manifest is not published. Check Studio for current versions. |
+| Published content | Route «Веб-разработка с нуля» (HTML and CSS carry 7 + 6 optional file assignments from 2026-11-04 once republished): `html`, `css`, `js`, `sql` manifests in `docs/examples/`, published in production. The four-lesson `computer-basics-first-course` manifest is not published. Check Studio for current versions. |
 
 ## What is built
 

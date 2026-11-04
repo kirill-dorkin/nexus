@@ -49,7 +49,12 @@ function estimateMinutes(markdown, quizzes) {
   return Math.max(5, Math.round(words / 130 + cards * 0.5 + tasks * 3.5 + quizzes));
 }
 
-export function createCourse(challenges = {}, stories = {}, recaps = {}, recapExtras = {}) {
+/**
+ * assignments: { [lessonSlug]: { slug, title, instructions, starterFiles, allowedFiles, checks, solutionFiles, entry? } }
+ * A file assignment (ADR-0073) is added to its lesson as optional homework: the learner downloads the
+ * starter files, works locally and uploads them; the server checks them statically.
+ */
+export function createCourse(challenges = {}, stories = {}, recaps = {}, recapExtras = {}, assignments = {}) {
   const skills = [];
   const activities = [];
   const lessons = [];
@@ -119,6 +124,20 @@ export function createCourse(challenges = {}, stories = {}, recaps = {}, recapEx
         const required = allRequired || index === 0;
         blocks.push({ type: "activity", activitySlug, kind: required ? "practice" : "homework", required });
       });
+      const assignment = assignments[slug];
+      if (assignment) {
+        const { slug: activitySlug, title: activityTitle, instructions, starterFiles, allowedFiles, checks, solutionFiles, entry = "index.html" } = assignment;
+        activities.push({
+          slug: activitySlug,
+          type: "assignment.files",
+          title: activityTitle,
+          instructions,
+          skillKeys: [key],
+          presentation: { lang: "html", entry, starterFiles, allowedFiles },
+          validation: { checks, solutionFiles }
+        });
+        blocks.push({ type: "activity", activitySlug, kind: "homework", required: false });
+      }
       // `minutes` from the module sources is only a fallback for lessons without hands-on content.
       const estimated = estimateMinutes(markdown, quizzes.length);
       lessons.push({ slug, title, summary, ...(currentChapter ? { chapter: currentChapter } : {}), durationMinutes: markdown.includes("```challenge") ? estimated : minutes, blocks });
