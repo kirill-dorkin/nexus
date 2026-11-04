@@ -66,3 +66,9 @@ See ADR `0011-dependency-lifecycle-security.md` and ADR `0037-trusted-grader-run
 ## Public lesson Markdown
 
 react-markdown 10.1.0 is pinned for CommonMark parsing into React elements, without raw HTML plugins or dangerouslySetInnerHTML. Its installed Markdown parsing graph has no preinstall/install/postinstall scripts; existing strictDepBuilds policy and lockfile integrity pinning remain unchanged. The application skips HTML and images, restricts links and tests actual rendered output against script/event/unsafe-URL injection. No build approval is added.
+
+## Static HTML/CSS checks on the server
+
+`@platform/checks/server` (ADR-0072) pins parse5 7.3.0, parse5-htmlparser2-tree-adapter 7.1.0, css-select 5.2.2 and domhandler 5.0.3 exactly; the lockfile pins their transitive packages (domutils, dom-serializer, domelementtype, css-what, nth-check, boolbase, entities) with integrity hashes. Licenses are MIT, BSD-2-Clause and ISC. None of the 12 packages has an install script, so no build approval is added. These lines ship CommonJS builds; their newer majors are ESM-only and Dependabot ignores them until the API can load ESM (the NestJS 12 outage, #164/#166). linkedom was evaluated and rejected: its htmlparser2 tree differs from the HTML standard and two course reference solutions fail on it.
+
+Only the server entry imports these packages; the browser entry of `@platform/checks` has no runtime dependencies.

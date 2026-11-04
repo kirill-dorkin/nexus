@@ -1,8 +1,8 @@
-import { itemAt } from "../../lib/item-at";
+import { itemAt } from "./item-at";
 /**
  * Minimal CSS reader for hands-on CSS challenges: finds which declarations a learner wrote for
  * which selector, inside which at-rule context. It is deliberately static (no layout engine), so
- * checks behave the same in the browser and in Node tests. Never executes anything.
+ * checks behave the same in the browser, on the server and in Node tests. Never executes anything.
  */
 
 export type CssRule = {
@@ -89,11 +89,15 @@ function resolveNested(parents: string[], child: string): string[] {
   );
 }
 
+/** Deeper blocks are skipped: real stylesheets nest a few levels, and this bounds the work. */
+const MAX_DEPTH = 16;
+
 function parseBlock(
   text: string,
   parents: string[],
   context: string[],
-  rules: CssRule[]
+  rules: CssRule[],
+  depth = 0
 ) {
   let declarations = "";
   let i = 0;
@@ -116,20 +120,29 @@ function parseBlock(
     const prelude = text.slice(i, open).trim();
     const close = matchBrace(text, open);
     const body = text.slice(open + 1, close);
-    if (prelude.startsWith("@")) {
+    if (depth >= MAX_DEPTH) {
+      // Too deep to be a real stylesheet: skip the block without reading it.
+    } else if (prelude.startsWith("@")) {
       if (GROUPING.test(prelude))
         parseBlock(
           body,
           prelude.startsWith("@keyframes") ? [] : parents,
           [...context, normalizePrelude(prelude)],
-          rules
+          rules,
+          depth + 1
         );
       else if (
         /^@(font-face|page|property|counter-style|font-palette-values)\b/.test(
           prelude
         )
       )
-        parseBlock(body, [normalizePrelude(prelude)], context, rules);
+        parseBlock(
+          body,
+          [normalizePrelude(prelude)],
+          context,
+          rules,
+          depth + 1
+        );
     } else if (prelude) {
       const own = splitTop(prelude, ",")
         .map((s) => s.trim())
@@ -137,7 +150,7 @@ function parseBlock(
       const selectors = own
         .flatMap((s) => resolveNested(parents, s))
         .map(normalizeSelector);
-      parseBlock(body, selectors, context, rules);
+      parseBlock(body, selectors, context, rules, depth + 1);
     }
     i = close + 1;
   }
@@ -155,14 +168,46 @@ function parseBlock(
   }
 }
 
+/** Contents of `<style>…</style>` elements, found in one pass (no backtracking on broken input). */
+function styleSheets(source: string): string[] {
+  const lower = source.toLowerCase();
+  const sheets: string[] = [];
+  let from = 0;
+  for (;;) {
+    const tag = lower.indexOf("<style", from);
+    if (tag < 0) break;
+    if (/[a-z0-9_]/.test(lower.charAt(tag + 6))) {
+      from = tag + 6;
+      continue;
+    }
+    const open = lower.indexOf(">", tag);
+    const close = open < 0 ? -1 : lower.indexOf("</style>", open);
+    if (close < 0) break;
+    sheets.push(source.slice(open + 1, close));
+    from = close + 8;
+  }
+  return sheets;
+}
+
+/** Removes complete comments; an unclosed one is kept as text, as a regular expression would. */
+function stripComments(css: string): string {
+  let out = "";
+  let from = 0;
+  for (;;) {
+    const open = css.indexOf("/*", from);
+    const close = open < 0 ? -1 : css.indexOf("*/", open + 2);
+    if (close < 0) return out + css.slice(from);
+    out += css.slice(from, open);
+    from = close + 2;
+  }
+}
+
 /** All style rules from `<style>` elements and bare CSS text. */
 export function readCss(source: string): CssRule[] {
-  const sheets = [
-    ...source.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)
-  ].map((m) => itemAt(m, 1));
-  const css = (
+  const sheets = styleSheets(source);
+  const css = stripComments(
     sheets.length ? sheets.join("\n") : /<[a-z!]/i.test(source) ? "" : source
-  ).replace(/\/\*[\s\S]*?\*\//g, "");
+  );
   const rules: CssRule[] = [];
   parseBlock(css, [], [], rules);
   return rules;

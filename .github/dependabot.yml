@@ -22,6 +22,16 @@ updates:
       # upgrade only after a green Vercel preview of the API.
       - dependency-name: "@nestjs/*"
         versions: [">=12.0.0"]
+      # @platform/checks/server must load with require() in the CommonJS API; these majors
+      # are ESM only (ADR-0072). Upgrade with the API's move to ESM.
+      - dependency-name: "parse5"
+        versions: [">=8.0.0"]
+      - dependency-name: "parse5-htmlparser2-tree-adapter"
+        versions: [">=8.0.0"]
+      - dependency-name: "css-select"
+        versions: [">=6.0.0"]
+      - dependency-name: "domhandler"
+        versions: [">=6.0.0"]
   - package-ecosystem: github-actions
     directory: /
     schedule:

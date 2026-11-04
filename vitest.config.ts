@@ -14,11 +14,16 @@ export default defineConfig({
   test: {
     passWithNoTests: false,
     clearMocks: true,
-    // Measured for Web and @platform/ui by `pnpm test:web-coverage`. The floors are the
+    // Measured for Web, @platform/ui and @platform/checks (Web practice checks, ADR-0072) by
+    // `pnpm test:web-coverage`. The floors are the
     // values reached so far; each web-quality phase raises them (never lowers them).
     coverage: {
       provider: "v8",
-      include: ["apps/web/src/**/*.{ts,tsx}", "packages/ui/src/**/*.{ts,tsx}"],
+      include: [
+        "apps/web/src/**/*.{ts,tsx}",
+        "packages/ui/src/**/*.{ts,tsx}",
+        "packages/checks/src/**/*.ts"
+      ],
       exclude: ["**/*.test.{ts,tsx}", "**/*.test-utils.ts", "**/src/test/**"],
       reporter: ["text-summary", "json-summary"],
       reportsDirectory: "coverage/web",
