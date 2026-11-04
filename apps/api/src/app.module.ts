@@ -3,6 +3,7 @@ import { PublicLearningModule } from "./modules/public-learning/public-learning.
 import { Module } from "@nestjs/common";
 
 import { DatabaseModule } from "./database/database.module";
+import { RateLimitModule } from "./http/rate-limit.module";
 import { HealthController } from "./health.controller";
 import { WebTelemetryController } from "./observability/web-telemetry.controller";
 import { AuthenticationModule } from "./modules/authentication/authentication.module";
@@ -28,6 +29,7 @@ import { RequestContextModule } from "./request-context/request-context.module";
 @Module({
   imports: [
     DatabaseModule,
+    RateLimitModule,
     RequestContextModule,
     IdentityModule,
     AuthenticationModule,

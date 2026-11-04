@@ -127,6 +127,16 @@ describe("LearningAuth", () => {
     });
   });
 
+  it("asks to wait after too many attempts", async () => {
+    respond(null, json(429));
+    render(<LearningAuth returnTo="/me/learning" initialMode="login" />);
+    await fillAndSubmit("Войти");
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Слишком много попыток."
+    );
+  });
+
   it("leaves out a blank name and explains an existing account", async () => {
     respond(null, json(409));
     render(<LearningAuth returnTo="/me/learning" initialMode="register" />);

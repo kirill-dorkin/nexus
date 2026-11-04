@@ -11,7 +11,7 @@ Last maintained: 2026-11-04.
 | | |
 |---|---|
 | `main` head | `199f95f` — #166, revert of NestJS 12 after a production API outage (2026-11-04) |
-| Latest migration | `000047_lesson_chapters.sql` |
+| Latest migration | `000048_rate_limit_buckets.sql` |
 | Quality gates | Local before every push: `pnpm check` (brand isolation, Prettier, ESLint strict type-checked + React + jsx-a11y strict + Next, typecheck incl. API operator scripts and root tests, unit and component tests, Web coverage floors). GitHub CI: brand isolation, Prettier, typecheck, unit, integration, launch-performance, browser-launch and Playwright end-to-end tests (axe on every page). No lint baseline: every violation fails. |
 | Latest ADR | ADR-0068 Managed-academy Organization provisioning (renumbered); newest decision ADR-0067 |
 | Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058); daily GitHub-hosted read-only smoke against the production domain |
@@ -37,6 +37,7 @@ Each row is implemented on `main`. The ADRs hold the details; the backend areas 
 | Lesson chapters | Optional `chapter` per manifest lesson; course page and lesson sidebar group the program by chapter | 0063 |
 | In-browser practice | Lesson challenges and concept cards: static HTML/CSS checks; JavaScript in an opaque-origin sandbox; SQL on PostgreSQL (PGlite) in a Web Worker against a neutral store teaching database (`shop`) or an empty one. Practice only, never Evidence | 0064, 0065 |
 | Offering retarget | Free self-paced Offerings move forward to a newer published version of the same Course; Enrollments and progress carry over (`required-activity-passes@2` by stable Activity identity) | 0062 |
+| Rate limiting | Login (per address and per email), registration, quiz check and Web telemetry are counted in PostgreSQL by HMAC key; 429 with `Retry-After`; off without `RATE_LIMIT_KEY`, fails open if the counter is unavailable | 0070 |
 | Client telemetry | Web reports uncaught errors, unhandled rejections, render failures and Web Vitals as `web.client_error` / `web.vital` log events: route template, error name, release — never messages, URLs or identifiers | 0067 |
 | Learner skills | `GET /v1/me/learning/{org}/{offering}/skills` returns the caller's own skill states for an active/completed Enrollment (own Enrollment is the authority, like own quiz checks; no role needed); the course page shows «Навыки курса», «Моё обучение» shows mastered skills per course (score ≥ readiness target 0.8). Presentation of existing Mastery only | 0023, 0055 |
 | Learning route | Web orders the home catalog HTML → CSS → JavaScript → SQL, shows each course's prerequisites, outcome and next course, and links the last lesson to the next course. Presentation only | 0066 |

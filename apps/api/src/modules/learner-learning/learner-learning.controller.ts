@@ -17,13 +17,15 @@ import {
   resourceSlugSchema
 } from "@platform/contracts";
 import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
+import { RateLimit, RateLimitGuard } from "../../http/rate-limit";
 import { parseRequest } from "../../http/validation";
 import { LearnerLearningService } from "./learner-learning.service";
 @Controller("me/learning")
 export class LearnerLearningController {
   constructor(private readonly learning: LearnerLearningService) {}
   @Post(":organizationSlug/:offeringSlug/quiz/:activitySlug/check")
-  @UseGuards(BrowserWriteOriginGuard)
+  @UseGuards(BrowserWriteOriginGuard, RateLimitGuard)
+  @RateLimit("learning.quiz_check")
   @HttpCode(200)
   @Header("Cache-Control", "no-store")
   checkQuiz(

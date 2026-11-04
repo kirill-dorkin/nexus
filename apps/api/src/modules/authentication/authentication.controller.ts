@@ -9,7 +9,8 @@ import {
   Query,
   Redirect,
   Req,
-  Res
+  Res,
+  UseGuards
 } from "@nestjs/common";
 import {
   loginRequestSchema,
@@ -19,6 +20,7 @@ import {
   type OAuthProvidersResponse
 } from "@platform/contracts";
 
+import { RateLimit, RateLimitGuard } from "../../http/rate-limit";
 import { parseRequest } from "../../http/validation";
 import { AuthenticationApplicationService } from "./application/authentication.service";
 import {
@@ -123,6 +125,8 @@ export class AuthenticationController {
   }
 
   @Post("register")
+  @UseGuards(RateLimitGuard)
+  @RateLimit("auth.register")
   @HttpCode(201)
   async register(
     @Body() body: unknown,
@@ -141,6 +145,8 @@ export class AuthenticationController {
   }
 
   @Post("login")
+  @UseGuards(RateLimitGuard)
+  @RateLimit("auth.login")
   @HttpCode(200)
   async login(
     @Body() body: unknown,
