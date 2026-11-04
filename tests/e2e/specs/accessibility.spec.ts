@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { expectAccessible } from "../a11y";
-import { OWNER } from "../fixtures/accounts";
+import { OWNER, newLearner } from "../fixtures/accounts";
 
 /*
  * Accessibility audit (web quality phase 8): axe on every route a visitor or
@@ -33,6 +33,24 @@ for (const route of PUBLIC_ROUTES) {
     await expectAccessible(page);
   });
 }
+
+// The course page as an enrolled learner: progress and «Навыки курса».
+test("axe: /courses/e2e-html as an enrolled learner", async ({ page }) => {
+  const learner = newLearner();
+  await page.goto(
+    `/login?returnTo=${encodeURIComponent("/courses/e2e-html")}&mode=register`
+  );
+  await page.getByLabel("Имя").fill(learner.name);
+  await page.getByLabel("Электронная почта").fill(learner.email);
+  await page.getByLabel("Пароль", { exact: true }).fill(learner.password);
+  await page.getByRole("button", { name: "Создать аккаунт" }).click();
+  await expect(page).toHaveURL("/courses/e2e-html");
+  await page.getByRole("button", { name: "Начать курс" }).click();
+  await expect(
+    page.getByRole("region", { name: "Навыки курса" }).getByText("Теги")
+  ).toBeVisible();
+  await expectAccessible(page);
+});
 
 async function signInAsOwner(page: Page) {
   await page.goto("/login?returnTo=%2Fstudio");
