@@ -339,7 +339,9 @@ describe("attempt and submission HTTP lifecycle", () => {
     );
     expect(beforeSubmission.rows[0]?.count).toBe(0);
 
-    const prematureEvidence = await app.inject({
+    // Evidence is recorded only against a Submission; the transitional
+    // Evidence-by-Attempt route is gone.
+    const attemptEvidence = await app.inject({
       method: "POST",
       url: `/v1/organizations/${organizationId}/attempts/${attempt.id}/evidence`,
       headers: { "x-test-user-id": instructorUserId },
@@ -349,7 +351,15 @@ describe("attempt and submission HTTP lifecycle", () => {
         score: 0.5
       }
     });
-    expect(prematureEvidence.statusCode).toBe(409);
+    expect(attemptEvidence.statusCode).toBe(404);
+
+    const startWithWork = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/activities/${activityId}/attempts`,
+      headers: { "x-test-user-id": learnerUserId },
+      payload: { submission: { answer: "inline work" } }
+    });
+    expect(startWithWork.statusCode).toBe(400);
 
     const submitted = await app.inject({
       method: "POST",
@@ -468,8 +478,7 @@ describe("attempt and submission HTTP lifecycle", () => {
 
     expect(events.rows.map((row) => row.event_name)).toEqual([
       "attempt.started",
-      "submission.submitted",
-      "attempt.submitted"
+      "submission.submitted"
     ]);
   });
 });

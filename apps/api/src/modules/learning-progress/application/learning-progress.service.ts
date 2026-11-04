@@ -7,7 +7,6 @@ import {
 } from "@nestjs/common";
 import type {
   Attempt,
-  CreateAttemptRequest,
   CourseVersionActivity,
   CreateEvidenceRequest,
   CreateSubmissionRequest,
@@ -180,13 +179,10 @@ export class LearningProgressApplicationService extends QuizSubmissionCommand {
   async createAttempt(
     organizationId: string,
     enrollmentId: string,
-    activityId: string,
-    command: CreateAttemptRequest
+    activityId: string
   ): Promise<Attempt> {
     const context = this.requestContext.tenantContext(organizationId);
     const attemptId = await this.database.nextUuid();
-    const compatibilitySubmissionId =
-      command.submission === undefined ? null : await this.database.nextUuid();
 
     return this.database.tenantTransaction(context, async (transaction) => {
       await this.identity.requireActiveUser(transaction, context.userId);
@@ -247,27 +243,6 @@ export class LearningProgressApplicationService extends QuizSubmissionCommand {
           attemptNumber: attempt.attemptNumber
         }
       });
-
-      if (
-        command.submission !== undefined &&
-        compatibilitySubmissionId !== null
-      ) {
-        const submission = await this.progress.createSubmission(transaction, {
-          id: compatibilitySubmissionId,
-          organizationId,
-          attemptId: attempt.id,
-          payload: command.submission,
-          submittedByUserId: context.userId
-        });
-        await this.appendSubmissionEvents(
-          transaction,
-          organizationId,
-          context.userId,
-          enrollmentContext.offering.id,
-          attempt,
-          submission
-        );
-      }
 
       return attempt;
     });
@@ -356,36 +331,6 @@ export class LearningProgressApplicationService extends QuizSubmissionCommand {
         organizationId,
         context.userId,
         submissionId,
-        evidenceId,
-        command
-      );
-    });
-  }
-
-  async recordEvidenceForAttempt(
-    organizationId: string,
-    attemptId: string,
-    command: CreateEvidenceRequest
-  ): Promise<Evidence> {
-    const context = this.requestContext.tenantContext(organizationId);
-    const evidenceId = await this.database.nextUuid();
-
-    return this.database.tenantTransaction(context, async (transaction) => {
-      await this.identity.requireActiveUser(transaction, context.userId);
-      const submission = await this.progress.findSubmissionByAttempt(
-        transaction,
-        organizationId,
-        attemptId
-      );
-      if (submission === null) {
-        throw new ConflictException("Evidence requires a submitted attempt.");
-      }
-
-      return this.recordEvidenceInTransaction(
-        transaction,
-        organizationId,
-        context.userId,
-        submission.id,
         evidenceId,
         command
       );
@@ -536,25 +481,6 @@ export class LearningProgressApplicationService extends QuizSubmissionCommand {
         organizationId,
         submissionId: submission.id,
         attemptId: attempt.id,
-        enrollmentId: attempt.enrollmentId,
-        offeringId,
-        activityVersionId: attempt.activityVersionId,
-        attemptNumber: attempt.attemptNumber
-      }
-    });
-
-    // Transitional integration-event alias for consumers of the pre-F4 lifecycle.
-    await this.outbox.append(transaction, {
-      organizationId,
-      eventName: "attempt.submitted",
-      eventVersion: 1,
-      aggregateType: "attempt",
-      aggregateId: attempt.id,
-      actorUserId,
-      payload: {
-        organizationId,
-        attemptId: attempt.id,
-        submissionId: submission.id,
         enrollmentId: attempt.enrollmentId,
         offeringId,
         activityVersionId: attempt.activityVersionId,

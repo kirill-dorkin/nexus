@@ -55,14 +55,6 @@ export const evidenceSchema = z.discriminatedUnion("sourceType", [
 
 export const startAttemptRequestSchema = z.object({}).strict();
 
-// Transitional compatibility command. Omitting submission starts an Attempt only;
-// supplying submission atomically starts the Attempt and creates its Submission.
-export const createAttemptRequestSchema = z
-  .object({
-    submission: jsonObjectSchema.optional()
-  })
-  .strict();
-
 export const createSubmissionRequestSchema = z
   .object({
     payload: jsonObjectSchema
@@ -81,7 +73,6 @@ export type Submission = z.infer<typeof submissionSchema>;
 export type Evidence = z.infer<typeof evidenceSchema>;
 export type EvidenceSourceType = z.infer<typeof evidenceSourceTypeSchema>;
 export type StartAttemptRequest = z.infer<typeof startAttemptRequestSchema>;
-export type CreateAttemptRequest = z.infer<typeof createAttemptRequestSchema>;
 export type CreateSubmissionRequest = z.infer<
   typeof createSubmissionRequestSchema
 >;
