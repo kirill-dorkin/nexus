@@ -350,4 +350,17 @@ export class LearningContentApplicationService {
     }
     return version;
   }
+
+  /** Public interface for Delivery: every published version of a Course, oldest first. */
+  listPublishedVersionIds(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseId: string
+  ): Promise<readonly string[]> {
+    return this.content.listPublishedVersionIds(
+      transaction,
+      organizationId,
+      courseId
+    );
+  }
 }

@@ -817,6 +817,24 @@ describe("deterministic learner quiz HTTP + PostgreSQL boundary", () => {
       owner
     );
 
+    // A republish finds the Offering still on version 1 only with scope=course.
+    const listed = (scope: string) =>
+      request(
+        "GET",
+        `organizations/${f.org}/offerings?courseVersionId=${v2}${scope}`,
+        undefined,
+        owner
+      ).then((r) => r.json().offerings.map((o: { id: string }) => o.id));
+    expect(await listed("")).toEqual([]);
+    expect(await listed("&scope=course")).toContain(f.offering);
+    await request(
+      "GET",
+      `organizations/${f.org}/offerings?courseVersionId=${v2}&scope=all`,
+      undefined,
+      owner,
+      400
+    );
+
     const path = `organizations/${f.org}/offerings/${f.offering}/course-version`;
     await request("PATCH", path, { courseVersionId: v2 }, learner, 403);
     await request(

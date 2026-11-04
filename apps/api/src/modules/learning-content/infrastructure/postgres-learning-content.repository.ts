@@ -196,4 +196,21 @@ export class PostgresLearningContentRepository extends LearningContentRepository
     const row = result.rows[0];
     return row === undefined ? null : mapVersion(row);
   }
+
+  async listPublishedVersionIds(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseId: string
+  ): Promise<readonly string[]> {
+    const result = await transaction.client.query<{ id: string }>(
+      `SELECT id::text
+         FROM learning_content.course_versions
+        WHERE organization_id = $1
+          AND course_id = $2
+          AND status = 'published'
+        ORDER BY version_number ASC`,
+      [organizationId, courseId]
+    );
+    return result.rows.map((row) => row.id);
+  }
 }

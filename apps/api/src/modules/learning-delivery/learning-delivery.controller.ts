@@ -66,7 +66,8 @@ export class LearningDeliveryController {
     return this.delivery.listOfferings(
       parseRequest(uuidSchema, organizationId),
       parsed.courseVersionId,
-      parsed.after ?? null
+      parsed.after ?? null,
+      parsed.scope ?? "version"
     );
   }
 
