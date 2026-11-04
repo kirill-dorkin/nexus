@@ -57,7 +57,6 @@ export function CityMap() {
           <Link
             key={district.character.slug}
             href={`/characters/${district.character.slug}`}
-            aria-label={`${district.name}, персонаж ${district.character.name}: уровень ${district.level}, район ${stateLabel[district.state]}`}
           >
             <g
               className={styles.district}
@@ -94,6 +93,7 @@ export function CityMap() {
                 y="-18"
                 textAnchor="middle"
                 className={styles.districtInitials}
+                aria-hidden="true"
               >
                 {initials(district.character)}
               </text>

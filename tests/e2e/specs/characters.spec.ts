@@ -56,7 +56,7 @@ test("a visitor opens the city map and goes to a district", async ({
     page.getByRole("heading", { level: 1, name: "Карта города" })
   ).toBeVisible();
   const district = page.getByRole("link", {
-    name: /^Квартал Каркасов, персонаж HTML: уровень 0, район разрушен$/
+    name: /Квартал Каркасов.*HTML · ур\. 0.*разрушен/
   });
   await expect(district).toBeVisible();
   await expectAccessible(page);
