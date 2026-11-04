@@ -32,7 +32,7 @@ function setup() {
   render(
     <AssignmentBlock
       activity={activity}
-      organizationSlug="nexus"
+      organizationSlug="academy"
       offeringSlug="html"
       courseSlug="html"
       lessonSlug="start"
@@ -97,7 +97,7 @@ describe("AssignmentBlock", () => {
     expect(report).toHaveTextContent("Задайте цвет.");
     const [url, init] = api.mock.calls[0]!;
     expect(url).toBe(
-      "/v1/me/learning/nexus/html/assignments/first-page/submissions"
+      "/v1/me/learning/academy/html/assignments/first-page/submissions"
     );
     expect(JSON.parse(init?.body as string)).toMatchObject({
       files: { "index.html": "<h1>Привет</h1>" }
