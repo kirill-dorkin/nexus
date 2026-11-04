@@ -9,17 +9,17 @@
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p ops/tsconfig.json"
   },
   "dependencies": {
-    "@nestjs/common": "^12.3.2",
-    "@nestjs/core": "^12.3.2",
-    "@nestjs/platform-fastify": "^12.3.2",
-    "@nestjs/swagger": "^12.1.0",
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@nestjs/platform-fastify": "^11.0.0",
+    "@nestjs/swagger": "^11.0.0",
     "@platform/contracts": "workspace:*",
     "@platform/database": "workspace:*",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "^12.0.11",
+    "@nestjs/cli": "^11.0.0",
     "@types/node": "^24.0.0",
     "typescript": "^5.9.0"
   }
