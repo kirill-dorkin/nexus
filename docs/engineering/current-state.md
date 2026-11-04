@@ -105,17 +105,15 @@ These are continuation guardrails, not substitutes for accepted ADRs.
 - UI primitives own presentation only; no primitive owns requests, storage or business authority.
 - Refund/reversal support requires an explicit canonical Purchase/Entitlement lifecycle decision before provider reversal events may change access.
 
-## Active F4 compatibility windows
+## F4 compatibility windows
 
-Do not remove these without an explicit cleanup slice/migration and proven caller migration.
+Closed on 2026-11-04 (spec WP-2.1): starting an Attempt no longer accepts a submission payload (`startAttemptRequestSchema` is an empty strict object), Evidence-by-Attempt (`POST …/attempts/:id/evidence`) is removed, and the `attempt.submitted` outbox alias is no longer emitted. Canonical paths: `POST …/attempts` → `POST …/attempts/:id/submissions` → `POST …/submissions/:id/evidence`, event `submission.submitted`.
 
-1. Historical `learning_progress.attempts.submission` and `submitted_at` remain for migration compatibility; dedicated `learning_progress.submissions` is source of truth for new writes.
-2. The transition create-Attempt command may still carry a submission payload and must atomically create the dedicated Submission.
-3. `submission.submitted` is the canonical new lifecycle event; deprecated `attempt.submitted` remains only as an integration alias and is not materialized as a learner LearningEvent.
-4. Evidence-by-Submission is canonical API direction; Evidence-by-Attempt remains temporarily for compatibility.
-5. Historical outbox rows are immutable and must not be rewritten to imitate LearningEvent history.
+Still open, needs an owner-approved migration (irreversible):
 
-Nexus has no external API clients yet, so a cleanup slice could close these windows cheaply before launch.
+1. Historical `learning_progress.attempts.submission` and `submitted_at` columns remain; new writes never use them.
+
+Historical outbox rows (including old `attempt.submitted`) are immutable and are not rewritten.
 
 ## Open work on GitHub (as of 2026-11-04)
 

@@ -46,7 +46,7 @@ describe("Mastery projection and recomputation HTTP lifecycle", () => {
   let instructorUserId = "";
   let organizationId = "";
   let skillId = "";
-  let attemptId = "";
+  let submissionId = "";
   const createdUserIds: string[] = [];
 
   async function createUser(label: string): Promise<string> {
@@ -207,14 +207,16 @@ describe("Mastery projection and recomputation HTTP lifecycle", () => {
        RETURNING id::text`,
       [organizationId, enrollmentId, activityVersionId]
     );
-    attemptId = attempt.rows[0]?.id ?? "";
+    const attemptId = attempt.rows[0]?.id ?? "";
 
-    await migrationPool.query(
+    const submission = await migrationPool.query<IdRow>(
       `INSERT INTO learning_progress.submissions
          (organization_id, attempt_id, payload, submitted_by_user_id)
-       VALUES ($1, $2, '{}'::jsonb, $3)`,
+       VALUES ($1, $2, '{}'::jsonb, $3)
+       RETURNING id::text`,
       [organizationId, attemptId, learnerUserId]
     );
+    submissionId = submission.rows[0]?.id ?? "";
 
     app = await createApiApplication();
     app
@@ -314,7 +316,7 @@ describe("Mastery projection and recomputation HTTP lifecycle", () => {
   it("materializes Mastery transactionally when scored Evidence is recorded", async () => {
     const evidence = await app.inject({
       method: "POST",
-      url: `/v1/organizations/${organizationId}/attempts/${attemptId}/evidence`,
+      url: `/v1/organizations/${organizationId}/submissions/${submissionId}/evidence`,
       headers: { "x-test-user-id": instructorUserId },
       payload: {
         skillId,
@@ -349,7 +351,7 @@ describe("Mastery projection and recomputation HTTP lifecycle", () => {
     const [scored, unscored] = await Promise.all([
       app.inject({
         method: "POST",
-        url: `/v1/organizations/${organizationId}/attempts/${attemptId}/evidence`,
+        url: `/v1/organizations/${organizationId}/submissions/${submissionId}/evidence`,
         headers: { "x-test-user-id": instructorUserId },
         payload: {
           skillId,
@@ -359,7 +361,7 @@ describe("Mastery projection and recomputation HTTP lifecycle", () => {
       }),
       app.inject({
         method: "POST",
-        url: `/v1/organizations/${organizationId}/attempts/${attemptId}/evidence`,
+        url: `/v1/organizations/${organizationId}/submissions/${submissionId}/evidence`,
         headers: { "x-test-user-id": instructorUserId },
         payload: {
           skillId,

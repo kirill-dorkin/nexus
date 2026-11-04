@@ -425,7 +425,10 @@ describe("deterministic learner quiz HTTP + PostgreSQL boundary", () => {
         [key]
       )
     ).rows;
-    expect(events).toHaveLength(5);
+    // attempt.started, submission.submitted, validation and evidence events;
+    // the old attempt.submitted alias is gone (ADR-0018 amendment).
+    expect(events).toHaveLength(4);
+    expect(events.map((r) => r.event_name)).not.toContain("attempt.submitted");
     expect(events.every((r) => r.n === 1)).toBe(true);
   });
   it("rejects changing a submitted answer under the same retry key", async () => {

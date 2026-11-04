@@ -10,6 +10,10 @@ import {
   attachPlatformPrincipal,
   type PlatformPrincipalCarrier
 } from "./request-context/platform-principal";
+import {
+  evidenceUrlForAttempt,
+  startAndSubmitAttempt
+} from "./test-support/start-and-submit-attempt";
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -382,11 +386,10 @@ describe("skill, activity, attempt, and evidence HTTP lifecycle", () => {
   });
 
   it("models retry as a new immutable Attempt against the exact activity snapshot", async () => {
-    const first = await app.inject({
-      method: "POST",
+    const first = await startAndSubmitAttempt(app, {
       url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/activities/${activityId}/attempts`,
       headers: { "x-test-user-id": learnerUserId },
-      payload: { submission: { repository: "attempt-one" } }
+      submission: { repository: "attempt-one" }
     });
     expect(first.statusCode).toBe(201);
     const firstBody = JSON.parse(first.body) as {
@@ -398,11 +401,10 @@ describe("skill, activity, attempt, and evidence HTTP lifecycle", () => {
     expect(firstBody.activityVersionId).toBe(activityVersionOneId);
     expect(firstBody.attemptNumber).toBe(1);
 
-    const retry = await app.inject({
-      method: "POST",
+    const retry = await startAndSubmitAttempt(app, {
       url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/activities/${activityId}/attempts`,
       headers: { "x-test-user-id": learnerUserId },
-      payload: { submission: { repository: "attempt-two" } }
+      submission: { repository: "attempt-two" }
     });
     expect(retry.statusCode).toBe(201);
     const retryBody = JSON.parse(retry.body) as {
@@ -412,11 +414,10 @@ describe("skill, activity, attempt, and evidence HTTP lifecycle", () => {
     expect(retryBody.id).not.toBe(firstAttemptId);
     expect(retryBody.attemptNumber).toBe(2);
 
-    const impersonation = await app.inject({
-      method: "POST",
+    const impersonation = await startAndSubmitAttempt(app, {
       url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/activities/${activityId}/attempts`,
       headers: { "x-test-user-id": instructorUserId },
-      payload: { submission: {} }
+      submission: {}
     });
     expect(impersonation.statusCode).toBe(403);
   });
@@ -435,7 +436,7 @@ describe("skill, activity, attempt, and evidence HTTP lifecycle", () => {
   it("lets an instructor record Evidence only for a Skill assessed by the Attempt activity", async () => {
     const learnerEvidence = await app.inject({
       method: "POST",
-      url: `/v1/organizations/${organizationId}/attempts/${firstAttemptId}/evidence`,
+      url: evidenceUrlForAttempt(organizationId, firstAttemptId),
       headers: { "x-test-user-id": learnerUserId },
       payload: {
         skillId: primarySkillId,
@@ -447,7 +448,7 @@ describe("skill, activity, attempt, and evidence HTTP lifecycle", () => {
 
     const unrelated = await app.inject({
       method: "POST",
-      url: `/v1/organizations/${organizationId}/attempts/${firstAttemptId}/evidence`,
+      url: evidenceUrlForAttempt(organizationId, firstAttemptId),
       headers: { "x-test-user-id": instructorUserId },
       payload: {
         skillId: unrelatedSkillId,
@@ -459,7 +460,7 @@ describe("skill, activity, attempt, and evidence HTTP lifecycle", () => {
 
     const valid = await app.inject({
       method: "POST",
-      url: `/v1/organizations/${organizationId}/attempts/${firstAttemptId}/evidence`,
+      url: evidenceUrlForAttempt(organizationId, firstAttemptId),
       headers: { "x-test-user-id": instructorUserId },
       payload: {
         skillId: primarySkillId,
@@ -507,7 +508,7 @@ describe("skill, activity, attempt, and evidence HTTP lifecycle", () => {
             'skill.created',
             'course_version.skill_attached',
             'activity.created',
-            'attempt.submitted',
+            'submission.submitted',
             'evidence.recorded'
           )`,
       [organizationId]
@@ -516,9 +517,11 @@ describe("skill, activity, attempt, and evidence HTTP lifecycle", () => {
     expect(names.filter((name) => name === "skill.created")).toHaveLength(2);
     expect(names).toContain("course_version.skill_attached");
     expect(names).toContain("activity.created");
-    expect(names.filter((name) => name === "attempt.submitted")).toHaveLength(
-      2
-    );
+    expect(
+      names.filter((name) => name === "submission.submitted")
+    ).toHaveLength(2);
+    // The pre-F4 alias is no longer emitted (ADR-0018 compatibility window closed).
+    expect(names).not.toContain("attempt.submitted");
     expect(names).toContain("evidence.recorded");
   });
 });

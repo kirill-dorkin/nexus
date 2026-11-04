@@ -11,6 +11,7 @@ import {
   attachPlatformPrincipal,
   type PlatformPrincipalCarrier
 } from "./request-context/platform-principal";
+import { startAndSubmitAttempt } from "./test-support/start-and-submit-attempt";
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -103,13 +104,10 @@ describe("authored remediation intervention HTTP lifecycle", () => {
     outcome: "passed" | "failed",
     sequence: number
   ): Promise<void> {
-    const attempt = await app.inject({
-      method: "POST",
+    const attempt = await startAndSubmitAttempt(app, {
       url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/activities/${activityId}/attempts`,
       headers: { "x-test-user-id": learnerUserId },
-      payload: {
-        submission: { source: `intervention-attempt-${sequence}` }
-      }
+      submission: { source: `intervention-attempt-${sequence}` }
     });
     expect(attempt.statusCode).toBe(201);
     const attemptId = (JSON.parse(attempt.body) as { id: string }).id;

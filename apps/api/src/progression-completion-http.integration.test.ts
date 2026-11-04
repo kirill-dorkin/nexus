@@ -11,6 +11,10 @@ import {
   attachPlatformPrincipal,
   type PlatformPrincipalCarrier
 } from "./request-context/platform-principal";
+import {
+  evidenceUrlForAttempt,
+  startAndSubmitAttempt
+} from "./test-support/start-and-submit-attempt";
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -101,14 +105,11 @@ describe("readiness-gated enrollment completion HTTP lifecycle", () => {
     score: number,
     sequence: number
   ): Promise<void> {
-    const attempt = await app.inject({
-      method: "POST",
+    const attempt = await startAndSubmitAttempt(app, {
       url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/activities/${activityId}/attempts`,
       headers: { "x-test-user-id": learnerUserId },
-      payload: {
-        submission: {
-          source: `completion-${sequence}`
-        }
+      submission: {
+        source: `completion-${sequence}`
       }
     });
     expect(attempt.statusCode).toBe(201);
@@ -116,7 +117,7 @@ describe("readiness-gated enrollment completion HTTP lifecycle", () => {
 
     const evidence = await app.inject({
       method: "POST",
-      url: `/v1/organizations/${organizationId}/attempts/${attemptId}/evidence`,
+      url: evidenceUrlForAttempt(organizationId, attemptId),
       headers: { "x-test-user-id": ownerUserId },
       payload: {
         skillId,
@@ -437,11 +438,10 @@ describe("readiness-gated enrollment completion HTTP lifecycle", () => {
       )
     ).rejects.toMatchObject({ code: "55000" });
 
-    const attemptAfterCompletion = await app.inject({
-      method: "POST",
+    const attemptAfterCompletion = await startAndSubmitAttempt(app, {
       url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/activities/${activityId}/attempts`,
       headers: { "x-test-user-id": learnerUserId },
-      payload: { submission: { source: "after-completion" } }
+      submission: { source: "after-completion" }
     });
     expect(attemptAfterCompletion.statusCode).toBe(409);
 
