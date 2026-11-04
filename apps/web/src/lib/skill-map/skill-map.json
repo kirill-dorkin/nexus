@@ -1,0 +1,3227 @@
+{
+  "version": 1,
+  "unlockShare": 0.5,
+  "masteredScore": 0.8,
+  "maxLevel": 10,
+  "characters": [
+    {
+      "slug": "pc",
+      "name": "ПК",
+      "role": "Знаток компьютера",
+      "summary": "Как устроен компьютер: детали, память и файлы, загрузка системы и путь от клика до результата.",
+      "accent": "slate",
+      "published": false,
+      "branches": [
+        {
+          "id": "pc-1",
+          "title": "Устройство компьютера",
+          "requires": [],
+          "skills": [
+            {
+              "key": "computer-components",
+              "title": "Компоненты компьютера",
+              "lesson": null
+            },
+            {
+              "key": "memory-storage",
+              "title": "Память и хранение данных",
+              "lesson": null
+            },
+            {
+              "key": "software-system",
+              "title": "Программное обеспечение",
+              "lesson": null
+            },
+            {
+              "key": "practical-diagnostics",
+              "title": "Базовая диагностика",
+              "lesson": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "browser",
+      "name": "Браузер",
+      "role": "Проводник по вебу",
+      "summary": "Что происходит между адресной строкой и готовой страницей, и какими инструментами пользуется веб-разработчик.",
+      "accent": "sky",
+      "published": true,
+      "branches": [
+        {
+          "id": "browser-1",
+          "title": "Как работает веб",
+          "requires": [],
+          "skills": [
+            {
+              "key": "web-how-it-works",
+              "title": "Как работает веб",
+              "lesson": {
+                "course": "html",
+                "slug": "how-the-web-works",
+                "title": "Как устроен веб"
+              }
+            },
+            {
+              "key": "web-tools",
+              "title": "Рабочие инструменты",
+              "lesson": {
+                "course": "html",
+                "slug": "tools",
+                "title": "Инструменты: браузер и редактор кода"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "html",
+      "name": "HTML",
+      "role": "Строитель страниц",
+      "summary": "Разметка страниц целиком: текст, ссылки, медиа, таблицы, формы, структура, метаданные и доступность.",
+      "accent": "lime",
+      "published": true,
+      "branches": [
+        {
+          "id": "html-1",
+          "title": "Старт",
+          "requires": [
+            "browser-1"
+          ],
+          "skills": [
+            {
+              "key": "web-first-page",
+              "title": "Первая страница",
+              "lesson": {
+                "course": "html",
+                "slug": "first-page",
+                "title": "Первая страница на своём компьютере"
+              }
+            },
+            {
+              "key": "web-learning",
+              "title": "Самопроверка",
+              "lesson": {
+                "course": "html",
+                "slug": "how-to-learn",
+                "title": "Как учиться: проверяй себя сам"
+              }
+            }
+          ]
+        },
+        {
+          "id": "html-2",
+          "title": "Основы HTML",
+          "requires": [
+            "html-1"
+          ],
+          "skills": [
+            {
+              "key": "html-elements",
+              "title": "Теги, элементы и атрибуты",
+              "lesson": {
+                "course": "html",
+                "slug": "what-is-html",
+                "title": "Что такое HTML"
+              }
+            },
+            {
+              "key": "html-document",
+              "title": "Каркас HTML-документа",
+              "lesson": {
+                "course": "html",
+                "slug": "document-skeleton",
+                "title": "Каркас HTML-документа"
+              }
+            },
+            {
+              "key": "html-parsing",
+              "title": "DOM и инструменты разработчика",
+              "lesson": {
+                "course": "html",
+                "slug": "how-browsers-read-html",
+                "title": "Как браузер читает HTML"
+              }
+            },
+            {
+              "key": "html-headings",
+              "title": "Заголовки и абзацы",
+              "lesson": {
+                "course": "html",
+                "slug": "headings-and-paragraphs",
+                "title": "Заголовки и абзацы"
+              }
+            },
+            {
+              "key": "html-whitespace",
+              "title": "Пробелы и спецсимволы",
+              "lesson": {
+                "course": "html",
+                "slug": "whitespace-and-entities",
+                "title": "Пробелы, переносы и спецсимволы"
+              }
+            },
+            {
+              "key": "html-global-attributes",
+              "title": "Глобальные атрибуты",
+              "lesson": {
+                "course": "html",
+                "slug": "global-attributes",
+                "title": "Глобальные атрибуты"
+              }
+            },
+            {
+              "key": "html-block-inline",
+              "title": "Блочные и строчные элементы",
+              "lesson": {
+                "course": "html",
+                "slug": "block-and-inline",
+                "title": "Блочные и строчные элементы: div и span"
+              }
+            }
+          ]
+        },
+        {
+          "id": "html-3",
+          "title": "Текст",
+          "requires": [
+            "html-2"
+          ],
+          "skills": [
+            {
+              "key": "html-text-emphasis",
+              "title": "Смысловое выделение текста",
+              "lesson": {
+                "course": "html",
+                "slug": "text-emphasis",
+                "title": "Выделение текста по смыслу"
+              }
+            },
+            {
+              "key": "html-inline-semantics",
+              "title": "Строчная семантика",
+              "lesson": {
+                "course": "html",
+                "slug": "inline-semantics",
+                "title": "Строчная семантика"
+              }
+            },
+            {
+              "key": "html-code",
+              "title": "Код и технический текст",
+              "lesson": {
+                "course": "html",
+                "slug": "code-in-text",
+                "title": "Код, клавиши и вывод программ"
+              }
+            },
+            {
+              "key": "html-quotes",
+              "title": "Цитаты, подписи и контакты",
+              "lesson": {
+                "course": "html",
+                "slug": "quotes-and-addresses",
+                "title": "Цитаты, подписи и адреса"
+              }
+            },
+            {
+              "key": "html-lists",
+              "title": "Списки",
+              "lesson": {
+                "course": "html",
+                "slug": "lists",
+                "title": "Списки"
+              }
+            },
+            {
+              "key": "html-description-lists",
+              "title": "Списки определений",
+              "lesson": {
+                "course": "html",
+                "slug": "description-lists",
+                "title": "Списки определений"
+              }
+            },
+            {
+              "key": "html-i18n-text",
+              "title": "Многоязычный текст",
+              "lesson": {
+                "course": "html",
+                "slug": "language-and-direction",
+                "title": "Языки, направление текста и ruby"
+              }
+            },
+            {
+              "key": "html-project-recipe",
+              "title": "Мини-проект: рецепт",
+              "lesson": {
+                "course": "html",
+                "slug": "project-recipe",
+                "title": "Мини-проект: страница рецепта"
+              }
+            }
+          ]
+        },
+        {
+          "id": "html-4",
+          "title": "Ссылки и пути",
+          "requires": [
+            "html-3"
+          ],
+          "skills": [
+            {
+              "key": "html-links",
+              "title": "Ссылки",
+              "lesson": {
+                "course": "html",
+                "slug": "links",
+                "title": "Ссылки"
+              }
+            },
+            {
+              "key": "html-paths",
+              "title": "Пути к файлам",
+              "lesson": {
+                "course": "html",
+                "slug": "file-paths",
+                "title": "Пути к файлам и структура сайта"
+              }
+            },
+            {
+              "key": "html-link-attributes",
+              "title": "Атрибуты ссылок",
+              "lesson": {
+                "course": "html",
+                "slug": "link-features",
+                "title": "Возможности ссылок"
+              }
+            }
+          ]
+        },
+        {
+          "id": "html-5",
+          "title": "Картинки, видео и встраивание",
+          "requires": [
+            "html-4"
+          ],
+          "skills": [
+            {
+              "key": "html-images",
+              "title": "Изображения",
+              "lesson": {
+                "course": "html",
+                "slug": "images",
+                "title": "Изображения"
+              }
+            },
+            {
+              "key": "html-image-formats",
+              "title": "Форматы изображений",
+              "lesson": {
+                "course": "html",
+                "slug": "image-formats",
+                "title": "Форматы изображений"
+              }
+            },
+            {
+              "key": "html-responsive-images",
+              "title": "Адаптивные изображения",
+              "lesson": {
+                "course": "html",
+                "slug": "responsive-images",
+                "title": "Адаптивные изображения"
+              }
+            },
+            {
+              "key": "html-video",
+              "title": "Видео",
+              "lesson": {
+                "course": "html",
+                "slug": "video",
+                "title": "Видео"
+              }
+            },
+            {
+              "key": "html-audio-tracks",
+              "title": "Аудио и субтитры",
+              "lesson": {
+                "course": "html",
+                "slug": "audio-and-captions",
+                "title": "Аудио и субтитры"
+              }
+            },
+            {
+              "key": "html-iframe",
+              "title": "Встраивание через iframe",
+              "lesson": {
+                "course": "html",
+                "slug": "iframe-embeds",
+                "title": "Встраивание: iframe"
+              }
+            },
+            {
+              "key": "html-svg-mathml",
+              "title": "Встроенный SVG и MathML",
+              "lesson": {
+                "course": "html",
+                "slug": "svg-and-mathml",
+                "title": "SVG и формулы в HTML"
+              }
+            },
+            {
+              "key": "html-scripting",
+              "title": "Элементы для скриптов",
+              "lesson": {
+                "course": "html",
+                "slug": "script-elements",
+                "title": "script, noscript, template и canvas"
+              }
+            },
+            {
+              "key": "html-image-maps",
+              "title": "Карты-изображения и object",
+              "lesson": {
+                "course": "html",
+                "slug": "image-maps",
+                "title": "Карты-изображения и object"
+              }
+            },
+            {
+              "key": "html-project-gallery",
+              "title": "Мини-проект: галерея",
+              "lesson": {
+                "course": "html",
+                "slug": "project-gallery",
+                "title": "Мини-проект: фотогалерея"
+              }
+            }
+          ]
+        },
+        {
+          "id": "html-6",
+          "title": "Таблицы",
+          "requires": [
+            "html-5"
+          ],
+          "skills": [
+            {
+              "key": "html-tables",
+              "title": "Таблицы",
+              "lesson": {
+                "course": "html",
+                "slug": "tables",
+                "title": "Таблицы"
+              }
+            },
+            {
+              "key": "html-tables-advanced",
+              "title": "Сложные таблицы",
+              "lesson": {
+                "course": "html",
+                "slug": "complex-tables",
+                "title": "Сложные таблицы"
+              }
+            }
+          ]
+        },
+        {
+          "id": "html-7",
+          "title": "Формы",
+          "requires": [
+            "html-6"
+          ],
+          "skills": [
+            {
+              "key": "html-form-basics",
+              "title": "Отправка форм",
+              "lesson": {
+                "course": "html",
+                "slug": "how-forms-work",
+                "title": "Как работают формы"
+              }
+            },
+            {
+              "key": "html-form-labels",
+              "title": "Подписи полей",
+              "lesson": {
+                "course": "html",
+                "slug": "fields-and-labels",
+                "title": "Поля и подписи"
+              }
+            },
+            {
+              "key": "html-input-types",
+              "title": "Типы полей",
+              "lesson": {
+                "course": "html",
+                "slug": "input-types",
+                "title": "Типы полей input"
+              }
+            },
+            {
+              "key": "html-form-choices",
+              "title": "Флажки и переключатели",
+              "lesson": {
+                "course": "html",
+                "slug": "checkboxes-and-radios",
+                "title": "Флажки и переключатели"
+              }
+            },
+            {
+              "key": "html-form-select",
+              "title": "Списки выбора",
+              "lesson": {
+                "course": "html",
+                "slug": "select-lists",
+                "title": "Списки выбора"
+              }
+            },
+            {
+              "key": "html-form-buttons",
+              "title": "Текстовые области и кнопки",
+              "lesson": {
+                "course": "html",
+                "slug": "textarea-and-buttons",
+                "title": "Многострочный текст и кнопки"
+              }
+            },
+            {
+              "key": "html-file-upload",
+              "title": "Загрузка файлов",
+              "lesson": {
+                "course": "html",
+                "slug": "file-uploads",
+                "title": "Загрузка файлов"
+              }
+            },
+            {
+              "key": "html-form-validation",
+              "title": "Встроенная проверка форм",
+              "lesson": {
+                "course": "html",
+                "slug": "form-validation",
+                "title": "Встроенная проверка форм"
+              }
+            },
+            {
+              "key": "html-form-ux",
+              "title": "Удобство форм",
+              "lesson": {
+                "course": "html",
+                "slug": "usable-forms",
+                "title": "Удобные формы"
+              }
+            },
+            {
+              "key": "html-form-indicators",
+              "title": "Индикаторы и результаты",
+              "lesson": {
+                "course": "html",
+                "slug": "output-progress-meter",
+                "title": "output, progress и meter"
+              }
+            },
+            {
+              "key": "html-form-advanced",
+              "title": "Продвинутые формы",
+              "lesson": {
+                "course": "html",
+                "slug": "advanced-forms",
+                "title": "Продвинутые возможности форм"
+              }
+            },
+            {
+              "key": "html-project-signup",
+              "title": "Мини-проект: регистрация",
+              "lesson": {
+                "course": "html",
+                "slug": "project-signup",
+                "title": "Мини-проект: форма регистрации"
+              }
+            }
+          ]
+        },
+        {
+          "id": "html-8",
+          "title": "Структура страницы",
+          "requires": [
+            "html-7"
+          ],
+          "skills": [
+            {
+              "key": "html-semantics",
+              "title": "Семантическая структура",
+              "lesson": {
+                "course": "html",
+                "slug": "semantics",
+                "title": "Семантическая структура страницы"
+              }
+            },
+            {
+              "key": "html-sectioning",
+              "title": "Разделы содержимого",
+              "lesson": {
+                "course": "html",
+                "slug": "page-sections",
+                "title": "article, section, aside и search"
+              }
+            },
+            {
+              "key": "html-details",
+              "title": "Раскрывающиеся блоки",
+              "lesson": {
+                "course": "html",
+                "slug": "details-summary",
+                "title": "Раскрывающиеся блоки: details и summary"
+              }
+            },
+            {
+              "key": "html-dialog-popover",
+              "title": "Диалоги и всплывающие окна",
+              "lesson": {
+                "course": "html",
+                "slug": "dialog-and-popover",
+                "title": "Диалоги и всплывающие окна"
+              }
+            },
+            {
+              "key": "html-project-card",
+              "title": "Проект: визитка",
+              "lesson": {
+                "course": "html",
+                "slug": "project-business-card",
+                "title": "Проект 1: страница-визитка"
+              }
+            }
+          ]
+        },
+        {
+          "id": "html-9",
+          "title": "Head, поиск и безопасность",
+          "requires": [
+            "html-8"
+          ],
+          "skills": [
+            {
+              "key": "html-meta",
+              "title": "Метаданные страницы",
+              "lesson": {
+                "course": "html",
+                "slug": "metadata",
+                "title": "Метаданные страницы"
+              }
+            },
+            {
+              "key": "html-social-icons",
+              "title": "Превью и иконки сайта",
+              "lesson": {
+                "course": "html",
+                "slug": "social-and-icons",
+                "title": "Превью в соцсетях и иконки"
+              }
+            },
+            {
+              "key": "html-resources",
+              "title": "Подключение ресурсов",
+              "lesson": {
+                "course": "html",
+                "slug": "linking-resources",
+                "title": "Подключение стилей, скриптов и шрифтов"
+              }
+            },
+            {
+              "key": "html-head-misc",
+              "title": "Служебные элементы head",
+              "lesson": {
+                "course": "html",
+                "slug": "style-base-meta",
+                "title": "style, base и служебные meta"
+              }
+            },
+            {
+              "key": "html-security",
+              "title": "Безопасность разметки",
+              "lesson": {
+                "course": "html",
+                "slug": "security",
+                "title": "Безопасность в HTML"
+              }
+            },
+            {
+              "key": "html-structured-data",
+              "title": "Структурированные данные",
+              "lesson": {
+                "course": "html",
+                "slug": "structured-data",
+                "title": "Структурированные данные"
+              }
+            },
+            {
+              "key": "html-project-landing",
+              "title": "Проект: лендинг",
+              "lesson": {
+                "course": "html",
+                "slug": "project-landing",
+                "title": "Проект 2: лендинг курса"
+              }
+            }
+          ]
+        },
+        {
+          "id": "html-10",
+          "title": "HTML и JavaScript",
+          "requires": [
+            "html-9",
+            "js-1"
+          ],
+          "skills": [
+            {
+              "key": "html-js-bridge",
+              "title": "Связь HTML и JavaScript",
+              "lesson": {
+                "course": "html",
+                "slug": "html-and-javascript",
+                "title": "HTML и JavaScript: события и DOM"
+              }
+            },
+            {
+              "key": "html-native-interactivity",
+              "title": "Встроенная интерактивность",
+              "lesson": {
+                "course": "html",
+                "slug": "editing-and-drag-and-drop",
+                "title": "Редактирование и перетаскивание"
+              }
+            },
+            {
+              "key": "html-web-components",
+              "title": "Веб-компоненты",
+              "lesson": {
+                "course": "html",
+                "slug": "custom-elements",
+                "title": "Свои элементы и Shadow DOM"
+              }
+            }
+          ]
+        },
+        {
+          "id": "html-11",
+          "title": "Доступность",
+          "requires": [
+            "html-10"
+          ],
+          "skills": [
+            {
+              "key": "html-a11y-basics",
+              "title": "Основы доступности",
+              "lesson": {
+                "course": "html",
+                "slug": "accessibility-basics",
+                "title": "Доступность: основы"
+              }
+            },
+            {
+              "key": "html-keyboard",
+              "title": "Клавиатура и фокус",
+              "lesson": {
+                "course": "html",
+                "slug": "keyboard-and-focus",
+                "title": "Клавиатура и фокус"
+              }
+            },
+            {
+              "key": "html-aria",
+              "title": "ARIA",
+              "lesson": {
+                "course": "html",
+                "slug": "aria",
+                "title": "ARIA: когда нужна и когда нет"
+              }
+            },
+            {
+              "key": "html-project-article",
+              "title": "Проект: статья",
+              "lesson": {
+                "course": "html",
+                "slug": "project-article",
+                "title": "Проект 3: статья для блога"
+              }
+            }
+          ]
+        },
+        {
+          "id": "html-12",
+          "title": "Качество и финал",
+          "requires": [
+            "html-11"
+          ],
+          "skills": [
+            {
+              "key": "html-quality",
+              "title": "Качество разметки",
+              "lesson": {
+                "course": "html",
+                "slug": "code-quality",
+                "title": "Проверка и качество кода"
+              }
+            },
+            {
+              "key": "html-obsolete",
+              "title": "Устаревшие элементы",
+              "lesson": {
+                "course": "html",
+                "slug": "obsolete-elements",
+                "title": "Устаревшие элементы и атрибуты"
+              }
+            },
+            {
+              "key": "html-new-features",
+              "title": "Новые возможности HTML",
+              "lesson": {
+                "course": "html",
+                "slug": "whats-new",
+                "title": "Новинки HTML 2024–2025"
+              }
+            },
+            {
+              "key": "html-reference",
+              "title": "Карта всех элементов",
+              "lesson": {
+                "course": "html",
+                "slug": "element-reference",
+                "title": "Справочник: все элементы HTML"
+              }
+            },
+            {
+              "key": "html-project-portfolio",
+              "title": "Финальный проект: портфолио",
+              "lesson": {
+                "course": "html",
+                "slug": "final-project",
+                "title": "Финальный проект: сайт-портфолио"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "css",
+      "name": "CSS",
+      "role": "Художник интерфейсов",
+      "summary": "Оформление и вёрстка: каскад и селекторы, цвет и шрифты, блочная модель, Flexbox, Grid, адаптивность и анимации.",
+      "accent": "violet",
+      "published": true,
+      "branches": [
+        {
+          "id": "css-1",
+          "title": "Старт CSS",
+          "requires": [
+            "html-2"
+          ],
+          "skills": [
+            {
+              "key": "css-what",
+              "title": "Синтаксис CSS",
+              "lesson": {
+                "course": "css",
+                "slug": "what-is-css",
+                "title": "Что такое CSS"
+              }
+            },
+            {
+              "key": "css-connect",
+              "title": "Подключение стилей",
+              "lesson": {
+                "course": "css",
+                "slug": "connecting-css",
+                "title": "Как подключить CSS"
+              }
+            },
+            {
+              "key": "css-selectors-basic",
+              "title": "Базовые селекторы",
+              "lesson": {
+                "course": "css",
+                "slug": "basic-selectors",
+                "title": "Базовые селекторы"
+              }
+            },
+            {
+              "key": "css-cascade",
+              "title": "Каскад и специфичность",
+              "lesson": {
+                "course": "css",
+                "slug": "cascade-and-specificity",
+                "title": "Каскад и специфичность"
+              }
+            },
+            {
+              "key": "css-inherit",
+              "title": "Наследование",
+              "lesson": {
+                "course": "css",
+                "slug": "inheritance-and-keywords",
+                "title": "Наследование"
+              }
+            },
+            {
+              "key": "css-devtools",
+              "title": "DevTools для CSS",
+              "lesson": {
+                "course": "css",
+                "slug": "devtools-styles",
+                "title": "DevTools: стили под микроскопом"
+              }
+            }
+          ]
+        },
+        {
+          "id": "css-2",
+          "title": "Цвет и текст",
+          "requires": [
+            "css-1"
+          ],
+          "skills": [
+            {
+              "key": "css-colors",
+              "title": "Цвета",
+              "lesson": {
+                "course": "css",
+                "slug": "colors",
+                "title": "Цвета"
+              }
+            },
+            {
+              "key": "css-units",
+              "title": "Единицы измерения",
+              "lesson": {
+                "course": "css",
+                "slug": "units",
+                "title": "Единицы и размеры"
+              }
+            },
+            {
+              "key": "css-fonts",
+              "title": "Шрифты",
+              "lesson": {
+                "course": "css",
+                "slug": "fonts",
+                "title": "Шрифты"
+              }
+            },
+            {
+              "key": "css-text",
+              "title": "Оформление текста",
+              "lesson": {
+                "course": "css",
+                "slug": "text-styling",
+                "title": "Оформление текста"
+              }
+            },
+            {
+              "key": "css-links-states",
+              "title": "Ссылки и состояния",
+              "lesson": {
+                "course": "css",
+                "slug": "lists-links-states",
+                "title": "Списки, ссылки и состояния"
+              }
+            },
+            {
+              "key": "css-project-type",
+              "title": "Типографика страницы",
+              "lesson": {
+                "course": "css",
+                "slug": "project-typography",
+                "title": "Проект: типографика прайса"
+              }
+            }
+          ]
+        },
+        {
+          "id": "css-3",
+          "title": "Блочная модель",
+          "requires": [
+            "css-2"
+          ],
+          "skills": [
+            {
+              "key": "css-box",
+              "title": "Блочная модель",
+              "lesson": {
+                "course": "css",
+                "slug": "box-model",
+                "title": "Блочная модель"
+              }
+            },
+            {
+              "key": "css-box-sizing",
+              "title": "box-sizing",
+              "lesson": {
+                "course": "css",
+                "slug": "box-sizing-margins",
+                "title": "box-sizing и схлопывание отступов"
+              }
+            },
+            {
+              "key": "css-borders",
+              "title": "Рамки и скругления",
+              "lesson": {
+                "course": "css",
+                "slug": "borders-outline",
+                "title": "Рамки, скругления и обводка"
+              }
+            },
+            {
+              "key": "css-backgrounds",
+              "title": "Фоны",
+              "lesson": {
+                "course": "css",
+                "slug": "backgrounds",
+                "title": "Фоны и градиенты"
+              }
+            },
+            {
+              "key": "css-effects",
+              "title": "Тени и эффекты",
+              "lesson": {
+                "course": "css",
+                "slug": "shadows-effects",
+                "title": "Тени и фильтры"
+              }
+            },
+            {
+              "key": "css-display",
+              "title": "Отображение и переполнение",
+              "lesson": {
+                "course": "css",
+                "slug": "display-overflow",
+                "title": "display, видимость и переполнение"
+              }
+            },
+            {
+              "key": "css-project-card",
+              "title": "Карточка товара",
+              "lesson": {
+                "course": "css",
+                "slug": "project-card",
+                "title": "Проект: карточка товара"
+              }
+            }
+          ]
+        },
+        {
+          "id": "css-4",
+          "title": "Селекторы",
+          "requires": [
+            "css-3"
+          ],
+          "skills": [
+            {
+              "key": "css-attr-selectors",
+              "title": "Селекторы атрибутов",
+              "lesson": {
+                "course": "css",
+                "slug": "attribute-selectors",
+                "title": "Селекторы атрибутов"
+              }
+            },
+            {
+              "key": "css-combinators",
+              "title": "Комбинаторы",
+              "lesson": {
+                "course": "css",
+                "slug": "combinators",
+                "title": "Комбинаторы"
+              }
+            },
+            {
+              "key": "css-pseudo-classes",
+              "title": "Псевдоклассы",
+              "lesson": {
+                "course": "css",
+                "slug": "pseudo-classes",
+                "title": "Псевдоклассы"
+              }
+            },
+            {
+              "key": "css-pseudo-elements",
+              "title": "Псевдоэлементы",
+              "lesson": {
+                "course": "css",
+                "slug": "pseudo-elements",
+                "title": "Псевдоэлементы"
+              }
+            }
+          ]
+        },
+        {
+          "id": "css-5",
+          "title": "Flexbox",
+          "requires": [
+            "css-4"
+          ],
+          "skills": [
+            {
+              "key": "css-flex-basics",
+              "title": "Основы Flexbox",
+              "lesson": {
+                "course": "css",
+                "slug": "flex-basics",
+                "title": "Flexbox: основы"
+              }
+            },
+            {
+              "key": "css-flex-align",
+              "title": "Выравнивание во флексе",
+              "lesson": {
+                "course": "css",
+                "slug": "flex-alignment",
+                "title": "Flexbox: выравнивание"
+              }
+            },
+            {
+              "key": "css-flex-items",
+              "title": "Гибкие элементы",
+              "lesson": {
+                "course": "css",
+                "slug": "flex-items",
+                "title": "Flexbox: гибкие элементы"
+              }
+            },
+            {
+              "key": "css-project-header",
+              "title": "Шапка на флексе",
+              "lesson": {
+                "course": "css",
+                "slug": "project-header",
+                "title": "Проект: шапка сайта"
+              }
+            }
+          ]
+        },
+        {
+          "id": "css-6",
+          "title": "Grid",
+          "requires": [
+            "css-5"
+          ],
+          "skills": [
+            {
+              "key": "css-grid-basics",
+              "title": "Основы Grid",
+              "lesson": {
+                "course": "css",
+                "slug": "grid-basics",
+                "title": "Grid: колонки и строки"
+              }
+            },
+            {
+              "key": "css-grid-placement",
+              "title": "Расстановка в гриде",
+              "lesson": {
+                "course": "css",
+                "slug": "grid-placement",
+                "title": "Grid: расстановка и области"
+              }
+            },
+            {
+              "key": "css-grid-auto",
+              "title": "Автоматическая сетка",
+              "lesson": {
+                "course": "css",
+                "slug": "grid-auto",
+                "title": "Grid: автоматическая сетка"
+              }
+            },
+            {
+              "key": "css-grid-align",
+              "title": "Выравнивание в гриде",
+              "lesson": {
+                "course": "css",
+                "slug": "grid-alignment",
+                "title": "Grid: выравнивание и subgrid"
+              }
+            },
+            {
+              "key": "css-project-grid",
+              "title": "Сетка меню",
+              "lesson": {
+                "course": "css",
+                "slug": "project-menu-grid",
+                "title": "Проект: сетка каталога"
+              }
+            }
+          ]
+        },
+        {
+          "id": "css-7",
+          "title": "Позиционирование",
+          "requires": [
+            "css-6"
+          ],
+          "skills": [
+            {
+              "key": "css-position",
+              "title": "Позиционирование",
+              "lesson": {
+                "course": "css",
+                "slug": "position",
+                "title": "position: где стоит элемент"
+              }
+            },
+            {
+              "key": "css-stacking",
+              "title": "Слои",
+              "lesson": {
+                "course": "css",
+                "slug": "z-index-stacking",
+                "title": "z-index и слои"
+              }
+            },
+            {
+              "key": "css-float-columns",
+              "title": "Обтекание и колонки",
+              "lesson": {
+                "course": "css",
+                "slug": "float-columns",
+                "title": "float и колонки текста"
+              }
+            }
+          ]
+        },
+        {
+          "id": "css-8",
+          "title": "Адаптивность",
+          "requires": [
+            "css-7"
+          ],
+          "skills": [
+            {
+              "key": "css-media",
+              "title": "Медиазапросы",
+              "lesson": {
+                "course": "css",
+                "slug": "media-queries",
+                "title": "@media: сайт под любой экран"
+              }
+            },
+            {
+              "key": "css-media-features",
+              "title": "Медиа-характеристики",
+              "lesson": {
+                "course": "css",
+                "slug": "media-features",
+                "title": "@media: тёмная тема, движение, мышь"
+              }
+            },
+            {
+              "key": "css-container",
+              "title": "Контейнерные запросы",
+              "lesson": {
+                "course": "css",
+                "slug": "container-queries",
+                "title": "@container: компонент сам решает"
+              }
+            },
+            {
+              "key": "css-project-responsive",
+              "title": "Адаптивная страница",
+              "lesson": {
+                "course": "css",
+                "slug": "project-responsive-home",
+                "title": "Проект: адаптивная главная"
+              }
+            }
+          ]
+        },
+        {
+          "id": "css-9",
+          "title": "Анимации",
+          "requires": [
+            "css-8"
+          ],
+          "skills": [
+            {
+              "key": "css-transition",
+              "title": "Переходы",
+              "lesson": {
+                "course": "css",
+                "slug": "transitions",
+                "title": "transition: плавные изменения"
+              }
+            },
+            {
+              "key": "css-transform",
+              "title": "Трансформации",
+              "lesson": {
+                "course": "css",
+                "slug": "transforms",
+                "title": "transform: сдвиг, поворот, масштаб"
+              }
+            },
+            {
+              "key": "css-keyframes",
+              "title": "Анимации по кадрам",
+              "lesson": {
+                "course": "css",
+                "slug": "keyframes",
+                "title": "@keyframes: анимации"
+              }
+            },
+            {
+              "key": "css-scroll",
+              "title": "Прокрутка",
+              "lesson": {
+                "course": "css",
+                "slug": "scrolling",
+                "title": "Прокрутка: плавная и с примагничиванием"
+              }
+            }
+          ]
+        },
+        {
+          "id": "css-10",
+          "title": "Современный CSS",
+          "requires": [
+            "css-9"
+          ],
+          "skills": [
+            {
+              "key": "css-variables",
+              "title": "CSS-переменные",
+              "lesson": {
+                "course": "css",
+                "slug": "custom-properties",
+                "title": "Переменные: --цвет и var()"
+              }
+            },
+            {
+              "key": "css-nesting-layers",
+              "title": "Структура стилей",
+              "lesson": {
+                "course": "css",
+                "slug": "nesting-layers",
+                "title": "Вложенность, @layer и @scope"
+              }
+            },
+            {
+              "key": "css-logical",
+              "title": "Логические свойства",
+              "lesson": {
+                "course": "css",
+                "slug": "logical-properties",
+                "title": "Логические свойства"
+              }
+            },
+            {
+              "key": "css-modern-functions",
+              "title": "Современные функции",
+              "lesson": {
+                "course": "css",
+                "slug": "color-scheme-supports",
+                "title": "color-scheme, light-dark() и @supports"
+              }
+            },
+            {
+              "key": "css-forms-ui",
+              "title": "Стили форм",
+              "lesson": {
+                "course": "css",
+                "slug": "forms-ui",
+                "title": "Формы и интерфейс"
+              }
+            },
+            {
+              "key": "css-counters",
+              "title": "Счётчики",
+              "lesson": {
+                "course": "css",
+                "slug": "counters-content",
+                "title": "Счётчики и content"
+              }
+            }
+          ]
+        },
+        {
+          "id": "css-11",
+          "title": "Доступность и качество",
+          "requires": [
+            "css-10"
+          ],
+          "skills": [
+            {
+              "key": "css-a11y",
+              "title": "Доступность в CSS",
+              "lesson": {
+                "course": "css",
+                "slug": "accessible-css",
+                "title": "Доступный CSS"
+              }
+            },
+            {
+              "key": "css-performance",
+              "title": "Производительность и эффекты",
+              "lesson": {
+                "course": "css",
+                "slug": "performance-effects",
+                "title": "Быстрый CSS и эффекты"
+              }
+            },
+            {
+              "key": "css-print-tables",
+              "title": "Печать и таблицы",
+              "lesson": {
+                "course": "css",
+                "slug": "print-tables",
+                "title": "Печать и таблицы"
+              }
+            },
+            {
+              "key": "css-project-final",
+              "title": "Сайт целиком",
+              "lesson": {
+                "course": "css",
+                "slug": "project-final-site",
+                "title": "Финальный проект: сайт-портфолио целиком"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "js",
+      "name": "JavaScript",
+      "role": "Механик страниц",
+      "summary": "Язык, который оживляет страницы: данные, функции, события, формы, асинхронность и весь стандарт ECMAScript.",
+      "accent": "amber",
+      "published": true,
+      "branches": [
+        {
+          "id": "js-1",
+          "title": "Старт JavaScript",
+          "requires": [
+            "html-2",
+            "css-1"
+          ],
+          "skills": [
+            {
+              "key": "js-what",
+              "title": "Что такое JavaScript",
+              "lesson": {
+                "course": "js",
+                "slug": "what-is-js",
+                "title": "Что такое JavaScript"
+              }
+            },
+            {
+              "key": "js-console",
+              "title": "Консоль",
+              "lesson": {
+                "course": "js",
+                "slug": "console",
+                "title": "Консоль: окно разработчика"
+              }
+            },
+            {
+              "key": "js-variables",
+              "title": "Переменные",
+              "lesson": {
+                "course": "js",
+                "slug": "variables",
+                "title": "Переменные: let и const"
+              }
+            },
+            {
+              "key": "js-types",
+              "title": "Типы данных",
+              "lesson": {
+                "course": "js",
+                "slug": "types",
+                "title": "Типы данных"
+              }
+            },
+            {
+              "key": "js-errors",
+              "title": "Чтение ошибок",
+              "lesson": {
+                "course": "js",
+                "slug": "errors-and-comments",
+                "title": "Ошибки и комментарии"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-2",
+          "title": "Значения и операторы",
+          "requires": [
+            "js-1"
+          ],
+          "skills": [
+            {
+              "key": "js-arithmetic",
+              "title": "Арифметика",
+              "lesson": {
+                "course": "js",
+                "slug": "arithmetic",
+                "title": "Арифметика"
+              }
+            },
+            {
+              "key": "js-strings",
+              "title": "Строки",
+              "lesson": {
+                "course": "js",
+                "slug": "strings",
+                "title": "Строки и шаблоны"
+              }
+            },
+            {
+              "key": "js-comparison",
+              "title": "Сравнение",
+              "lesson": {
+                "course": "js",
+                "slug": "comparison",
+                "title": "Сравнение"
+              }
+            },
+            {
+              "key": "js-logic",
+              "title": "Логические операторы",
+              "lesson": {
+                "course": "js",
+                "slug": "logic",
+                "title": "Логика: && || ! ?? ?."
+              }
+            },
+            {
+              "key": "js-conversion",
+              "title": "Преобразование типов",
+              "lesson": {
+                "course": "js",
+                "slug": "conversion",
+                "title": "Преобразование типов"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-3",
+          "title": "Условия и циклы",
+          "requires": [
+            "js-2"
+          ],
+          "skills": [
+            {
+              "key": "js-if",
+              "title": "Условия",
+              "lesson": {
+                "course": "js",
+                "slug": "if-else",
+                "title": "if и else: решения"
+              }
+            },
+            {
+              "key": "js-ternary-switch",
+              "title": "Короткие условия",
+              "lesson": {
+                "course": "js",
+                "slug": "ternary-switch",
+                "title": "Тернарный оператор и switch"
+              }
+            },
+            {
+              "key": "js-loops",
+              "title": "Циклы",
+              "lesson": {
+                "course": "js",
+                "slug": "loops",
+                "title": "Циклы for и while"
+              }
+            },
+            {
+              "key": "js-loop-control",
+              "title": "Управление циклами",
+              "lesson": {
+                "course": "js",
+                "slug": "loop-control",
+                "title": "for…of, break и continue"
+              }
+            },
+            {
+              "key": "js-project-bill",
+              "title": "Сумма корзины",
+              "lesson": {
+                "course": "js",
+                "slug": "project-bill",
+                "title": "Проект: корзина со скидкой"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-4",
+          "title": "Функции",
+          "requires": [
+            "js-3"
+          ],
+          "skills": [
+            {
+              "key": "js-functions",
+              "title": "Функции",
+              "lesson": {
+                "course": "js",
+                "slug": "functions",
+                "title": "Функции: свой инструмент"
+              }
+            },
+            {
+              "key": "js-parameters",
+              "title": "Параметры",
+              "lesson": {
+                "course": "js",
+                "slug": "parameters",
+                "title": "Параметры по умолчанию и rest"
+              }
+            },
+            {
+              "key": "js-arrow",
+              "title": "Стрелочные функции",
+              "lesson": {
+                "course": "js",
+                "slug": "arrow-functions",
+                "title": "Стрелочные функции"
+              }
+            },
+            {
+              "key": "js-scope",
+              "title": "Область видимости",
+              "lesson": {
+                "course": "js",
+                "slug": "scope-closures",
+                "title": "Область видимости и замыкания"
+              }
+            },
+            {
+              "key": "js-callbacks",
+              "title": "Колбэки",
+              "lesson": {
+                "course": "js",
+                "slug": "callbacks",
+                "title": "Колбэки: функция в функцию"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-5",
+          "title": "Массивы",
+          "requires": [
+            "js-4"
+          ],
+          "skills": [
+            {
+              "key": "js-arrays",
+              "title": "Массивы",
+              "lesson": {
+                "course": "js",
+                "slug": "arrays",
+                "title": "Массивы: списки"
+              }
+            },
+            {
+              "key": "js-map-filter",
+              "title": "map и filter",
+              "lesson": {
+                "course": "js",
+                "slug": "map-filter",
+                "title": "map и filter"
+              }
+            },
+            {
+              "key": "js-find",
+              "title": "Поиск в массиве",
+              "lesson": {
+                "course": "js",
+                "slug": "find-some-every",
+                "title": "find, some, every"
+              }
+            },
+            {
+              "key": "js-reduce",
+              "title": "reduce",
+              "lesson": {
+                "course": "js",
+                "slug": "reduce",
+                "title": "reduce: свернуть в одно"
+              }
+            },
+            {
+              "key": "js-sort",
+              "title": "Сортировка и куски",
+              "lesson": {
+                "course": "js",
+                "slug": "sort-slice-splice",
+                "title": "Сортировка и куски"
+              }
+            },
+            {
+              "key": "js-destructuring",
+              "title": "Деструктуризация",
+              "lesson": {
+                "course": "js",
+                "slug": "destructuring-spread",
+                "title": "Деструктуризация и spread"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-6",
+          "title": "Объекты",
+          "requires": [
+            "js-5"
+          ],
+          "skills": [
+            {
+              "key": "js-objects",
+              "title": "Объекты",
+              "lesson": {
+                "course": "js",
+                "slug": "objects",
+                "title": "Объекты: карточка с данными"
+              }
+            },
+            {
+              "key": "js-methods",
+              "title": "Методы объекта",
+              "lesson": {
+                "course": "js",
+                "slug": "methods-this",
+                "title": "Методы и this"
+              }
+            },
+            {
+              "key": "js-object-iteration",
+              "title": "Перебор объекта",
+              "lesson": {
+                "course": "js",
+                "slug": "object-iteration",
+                "title": "Перебор объекта"
+              }
+            },
+            {
+              "key": "js-json",
+              "title": "JSON",
+              "lesson": {
+                "course": "js",
+                "slug": "json",
+                "title": "JSON: данные текстом"
+              }
+            },
+            {
+              "key": "js-classes",
+              "title": "Классы",
+              "lesson": {
+                "course": "js",
+                "slug": "classes",
+                "title": "Классы"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-7",
+          "title": "DOM",
+          "requires": [
+            "js-6",
+            "html-8"
+          ],
+          "skills": [
+            {
+              "key": "js-dom-query",
+              "title": "Поиск элементов",
+              "lesson": {
+                "course": "js",
+                "slug": "dom-intro",
+                "title": "DOM и поиск элементов"
+              }
+            },
+            {
+              "key": "js-dom-content",
+              "title": "Содержимое элементов",
+              "lesson": {
+                "course": "js",
+                "slug": "dom-content",
+                "title": "Менять текст и разметку"
+              }
+            },
+            {
+              "key": "js-dom-classes",
+              "title": "Классы и атрибуты",
+              "lesson": {
+                "course": "js",
+                "slug": "dom-classes-styles",
+                "title": "Классы, стили и атрибуты"
+              }
+            },
+            {
+              "key": "js-dom-create",
+              "title": "Создание элементов",
+              "lesson": {
+                "course": "js",
+                "slug": "dom-create",
+                "title": "Создать и удалить элементы"
+              }
+            },
+            {
+              "key": "js-dom-traversal",
+              "title": "Навигация по DOM",
+              "lesson": {
+                "course": "js",
+                "slug": "dom-traversal",
+                "title": "Навигация по дереву"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-8",
+          "title": "События",
+          "requires": [
+            "js-7"
+          ],
+          "skills": [
+            {
+              "key": "js-events-click",
+              "title": "Обработка кликов",
+              "lesson": {
+                "course": "js",
+                "slug": "events-click",
+                "title": "События: клик"
+              }
+            },
+            {
+              "key": "js-event-object",
+              "title": "Объект события",
+              "lesson": {
+                "course": "js",
+                "slug": "event-object",
+                "title": "Объект события"
+              }
+            },
+            {
+              "key": "js-input-events",
+              "title": "События ввода",
+              "lesson": {
+                "course": "js",
+                "slug": "input-events",
+                "title": "Ввод: input и change"
+              }
+            },
+            {
+              "key": "js-keyboard",
+              "title": "События клавиатуры",
+              "lesson": {
+                "course": "js",
+                "slug": "keyboard-events",
+                "title": "Клавиатура"
+              }
+            },
+            {
+              "key": "js-delegation",
+              "title": "Делегирование",
+              "lesson": {
+                "course": "js",
+                "slug": "event-delegation",
+                "title": "Делегирование событий"
+              }
+            },
+            {
+              "key": "js-project-cart",
+              "title": "Корзина",
+              "lesson": {
+                "course": "js",
+                "slug": "project-cart",
+                "title": "Проект: живая корзина"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-9",
+          "title": "Формы",
+          "requires": [
+            "js-8",
+            "html-7"
+          ],
+          "skills": [
+            {
+              "key": "js-form-submit",
+              "title": "Отправка формы",
+              "lesson": {
+                "course": "js",
+                "slug": "form-submit",
+                "title": "Отправка формы"
+              }
+            },
+            {
+              "key": "js-form-validation",
+              "title": "Проверка полей",
+              "lesson": {
+                "course": "js",
+                "slug": "form-validation",
+                "title": "Проверка формы"
+              }
+            },
+            {
+              "key": "js-formdata",
+              "title": "FormData",
+              "lesson": {
+                "course": "js",
+                "slug": "formdata",
+                "title": "FormData: все поля сразу"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-10",
+          "title": "Асинхронность",
+          "requires": [
+            "js-9"
+          ],
+          "skills": [
+            {
+              "key": "js-timers",
+              "title": "Таймеры",
+              "lesson": {
+                "course": "js",
+                "slug": "timers",
+                "title": "Таймеры"
+              }
+            },
+            {
+              "key": "js-promises",
+              "title": "Промисы",
+              "lesson": {
+                "course": "js",
+                "slug": "promises",
+                "title": "Промисы"
+              }
+            },
+            {
+              "key": "js-async-await",
+              "title": "async/await",
+              "lesson": {
+                "course": "js",
+                "slug": "async-await",
+                "title": "async и await"
+              }
+            },
+            {
+              "key": "js-fetch",
+              "title": "fetch",
+              "lesson": {
+                "course": "js",
+                "slug": "fetch",
+                "title": "fetch: данные с сервера"
+              }
+            },
+            {
+              "key": "js-loading-states",
+              "title": "Состояния загрузки",
+              "lesson": {
+                "course": "js",
+                "slug": "loading-states",
+                "title": "Загрузка и ошибки на странице"
+              }
+            },
+            {
+              "key": "js-project-api",
+              "title": "Каталог с сервера",
+              "lesson": {
+                "course": "js",
+                "slug": "project-menu-api",
+                "title": "Проект: каталог с сервера"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-11",
+          "title": "Хранение и финал",
+          "requires": [
+            "js-10"
+          ],
+          "skills": [
+            {
+              "key": "js-storage",
+              "title": "Хранение в браузере",
+              "lesson": {
+                "course": "js",
+                "slug": "local-storage",
+                "title": "localStorage: память браузера"
+              }
+            },
+            {
+              "key": "js-dates",
+              "title": "Даты и форматирование",
+              "lesson": {
+                "course": "js",
+                "slug": "dates-formatting",
+                "title": "Даты, время и форматирование"
+              }
+            },
+            {
+              "key": "js-math",
+              "title": "Math",
+              "lesson": {
+                "course": "js",
+                "slug": "math-random",
+                "title": "Math и случайность"
+              }
+            },
+            {
+              "key": "js-modules",
+              "title": "Модули и отладка",
+              "lesson": {
+                "course": "js",
+                "slug": "modules-quality",
+                "title": "Модули и чистый код"
+              }
+            },
+            {
+              "key": "js-project-final",
+              "title": "Приложение целиком",
+              "lesson": {
+                "course": "js",
+                "slug": "project-final-js",
+                "title": "Финальный проект: список задач"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-12",
+          "title": "Синтаксис полностью",
+          "requires": [
+            "js-11"
+          ],
+          "skills": [
+            {
+              "key": "js-values-deep",
+              "title": "Примитивы и ссылки",
+              "lesson": {
+                "course": "js",
+                "slug": "values-deep",
+                "title": "Значения: примитивы и ссылки"
+              }
+            },
+            {
+              "key": "js-declarations-deep",
+              "title": "Правила объявлений",
+              "lesson": {
+                "course": "js",
+                "slug": "declarations-deep",
+                "title": "Объявления, всплытие и строгий режим"
+              }
+            },
+            {
+              "key": "js-operators-all",
+              "title": "Все операторы",
+              "lesson": {
+                "course": "js",
+                "slug": "operators-all",
+                "title": "Все операторы"
+              }
+            },
+            {
+              "key": "js-literals",
+              "title": "Литералы",
+              "lesson": {
+                "course": "js",
+                "slug": "literals-deep",
+                "title": "Литералы: числа, строки, объекты"
+              }
+            },
+            {
+              "key": "js-classes-full",
+              "title": "Классы целиком",
+              "lesson": {
+                "course": "js",
+                "slug": "classes-full",
+                "title": "Классы полностью"
+              }
+            },
+            {
+              "key": "js-generators",
+              "title": "Итераторы и генераторы",
+              "lesson": {
+                "course": "js",
+                "slug": "iterators-generators",
+                "title": "Итераторы и генераторы"
+              }
+            },
+            {
+              "key": "js-async-iteration",
+              "title": "Асинхронный перебор",
+              "lesson": {
+                "course": "js",
+                "slug": "async-iteration",
+                "title": "Асинхронные итераторы"
+              }
+            },
+            {
+              "key": "js-modules-full",
+              "title": "Модули целиком",
+              "lesson": {
+                "course": "js",
+                "slug": "modules-full",
+                "title": "Модули полностью"
+              }
+            },
+            {
+              "key": "js-event-loop",
+              "title": "Цикл событий",
+              "lesson": {
+                "course": "js",
+                "slug": "event-loop",
+                "title": "Цикл событий и память"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-13",
+          "title": "Объекты и функции изнутри",
+          "requires": [
+            "js-12"
+          ],
+          "skills": [
+            {
+              "key": "js-prototypes",
+              "title": "Прототипы",
+              "lesson": {
+                "course": "js",
+                "slug": "prototypes",
+                "title": "Прототипы"
+              }
+            },
+            {
+              "key": "js-own-props",
+              "title": "Собственные свойства",
+              "lesson": {
+                "course": "js",
+                "slug": "own-properties",
+                "title": "Свои свойства"
+              }
+            },
+            {
+              "key": "js-descriptors",
+              "title": "Дескрипторы",
+              "lesson": {
+                "course": "js",
+                "slug": "property-descriptors",
+                "title": "Дескрипторы свойств"
+              }
+            },
+            {
+              "key": "js-freezing",
+              "title": "Заморозка",
+              "lesson": {
+                "course": "js",
+                "slug": "freezing",
+                "title": "Заморозка объектов"
+              }
+            },
+            {
+              "key": "js-to-primitive",
+              "title": "Преобразование объектов",
+              "lesson": {
+                "course": "js",
+                "slug": "to-primitive",
+                "title": "Объекты в примитивы"
+              }
+            },
+            {
+              "key": "js-functions-deep",
+              "title": "Методы функций",
+              "lesson": {
+                "course": "js",
+                "slug": "functions-deep",
+                "title": "Функции изнутри"
+              }
+            },
+            {
+              "key": "js-globals",
+              "title": "Глобальные функции",
+              "lesson": {
+                "course": "js",
+                "slug": "global-functions",
+                "title": "Глобальные значения и функции"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-14",
+          "title": "Строки полностью",
+          "requires": [
+            "js-13"
+          ],
+          "skills": [
+            {
+              "key": "js-string-chars",
+              "title": "Символы строки",
+              "lesson": {
+                "course": "js",
+                "slug": "string-chars",
+                "title": "Символы и коды"
+              }
+            },
+            {
+              "key": "js-string-search",
+              "title": "Поиск в строке",
+              "lesson": {
+                "course": "js",
+                "slug": "string-search",
+                "title": "Поиск в строке"
+              }
+            },
+            {
+              "key": "js-string-transform",
+              "title": "Преобразование строк",
+              "lesson": {
+                "course": "js",
+                "slug": "string-transform",
+                "title": "Преобразование строк"
+              }
+            },
+            {
+              "key": "js-string-unicode",
+              "title": "Юникод",
+              "lesson": {
+                "course": "js",
+                "slug": "string-unicode",
+                "title": "Юникод и сравнение строк"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-15",
+          "title": "Числа и Math полностью",
+          "requires": [
+            "js-14"
+          ],
+          "skills": [
+            {
+              "key": "js-number-limits",
+              "title": "Границы чисел",
+              "lesson": {
+                "course": "js",
+                "slug": "number-limits",
+                "title": "Границы чисел"
+              }
+            },
+            {
+              "key": "js-number-format",
+              "title": "Форматирование чисел",
+              "lesson": {
+                "course": "js",
+                "slug": "number-format",
+                "title": "Числа в строку"
+              }
+            },
+            {
+              "key": "js-bigint",
+              "title": "BigInt",
+              "lesson": {
+                "course": "js",
+                "slug": "bigint",
+                "title": "BigInt: огромные целые"
+              }
+            },
+            {
+              "key": "js-math-basic",
+              "title": "Математика",
+              "lesson": {
+                "course": "js",
+                "slug": "math-basic",
+                "title": "Math: округление, степени, корни"
+              }
+            },
+            {
+              "key": "js-math-trig",
+              "title": "Тригонометрия",
+              "lesson": {
+                "course": "js",
+                "slug": "math-trig",
+                "title": "Math: тригонометрия и биты"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-16",
+          "title": "Массивы и итераторы полностью",
+          "requires": [
+            "js-15"
+          ],
+          "skills": [
+            {
+              "key": "js-array-create",
+              "title": "Создание массивов",
+              "lesson": {
+                "course": "js",
+                "slug": "array-create",
+                "title": "Создание массивов"
+              }
+            },
+            {
+              "key": "js-array-search-deep",
+              "title": "Поиск в массиве",
+              "lesson": {
+                "course": "js",
+                "slug": "array-search-deep",
+                "title": "Поиск с конца и по индексу"
+              }
+            },
+            {
+              "key": "js-array-transform-deep",
+              "title": "Преобразования без изменений",
+              "lesson": {
+                "course": "js",
+                "slug": "array-transform-deep",
+                "title": "Плоские массивы и копии"
+              }
+            },
+            {
+              "key": "js-iterator-helpers",
+              "title": "Помощники итераторов",
+              "lesson": {
+                "course": "js",
+                "slug": "iterator-helpers",
+                "title": "Помощники итераторов"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-17",
+          "title": "Коллекции",
+          "requires": [
+            "js-16"
+          ],
+          "skills": [
+            {
+              "key": "js-map",
+              "title": "Map",
+              "lesson": {
+                "course": "js",
+                "slug": "map",
+                "title": "Map: словарь с любыми ключами"
+              }
+            },
+            {
+              "key": "js-set",
+              "title": "Set",
+              "lesson": {
+                "course": "js",
+                "slug": "set",
+                "title": "Set: уникальные значения"
+              }
+            },
+            {
+              "key": "js-set-algebra",
+              "title": "Алгебра множеств",
+              "lesson": {
+                "course": "js",
+                "slug": "set-algebra",
+                "title": "Операции над множествами"
+              }
+            },
+            {
+              "key": "js-weak",
+              "title": "Слабые коллекции",
+              "lesson": {
+                "course": "js",
+                "slug": "weak-collections",
+                "title": "Слабые ссылки"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-18",
+          "title": "Регулярные выражения",
+          "requires": [
+            "js-17"
+          ],
+          "skills": [
+            {
+              "key": "js-regexp-basics",
+              "title": "Основы регулярок",
+              "lesson": {
+                "course": "js",
+                "slug": "regexp-basics",
+                "title": "Регулярные выражения: основы"
+              }
+            },
+            {
+              "key": "js-regexp-flags",
+              "title": "Флаги",
+              "lesson": {
+                "course": "js",
+                "slug": "regexp-flags",
+                "title": "Флаги регулярок"
+              }
+            },
+            {
+              "key": "js-regexp-groups",
+              "title": "Группы и замены",
+              "lesson": {
+                "course": "js",
+                "slug": "regexp-groups",
+                "title": "Группы, замены и экранирование"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-19",
+          "title": "Symbol, Proxy и Reflect",
+          "requires": [
+            "js-18"
+          ],
+          "skills": [
+            {
+              "key": "js-symbols",
+              "title": "Символы",
+              "lesson": {
+                "course": "js",
+                "slug": "symbols",
+                "title": "Symbol: уникальные ключи"
+              }
+            },
+            {
+              "key": "js-well-known-symbols",
+              "title": "Встроенные символы",
+              "lesson": {
+                "course": "js",
+                "slug": "well-known-symbols",
+                "title": "Встроенные символы"
+              }
+            },
+            {
+              "key": "js-proxy",
+              "title": "Proxy",
+              "lesson": {
+                "course": "js",
+                "slug": "proxy",
+                "title": "Proxy: перехват операций"
+              }
+            },
+            {
+              "key": "js-reflect",
+              "title": "Reflect",
+              "lesson": {
+                "course": "js",
+                "slug": "reflect",
+                "title": "Reflect: операции как функции"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-20",
+          "title": "Ошибки, ресурсы и промисы",
+          "requires": [
+            "js-19"
+          ],
+          "skills": [
+            {
+              "key": "js-errors-full",
+              "title": "Ошибки",
+              "lesson": {
+                "course": "js",
+                "slug": "errors-full",
+                "title": "Ошибки полностью"
+              }
+            },
+            {
+              "key": "js-resources",
+              "title": "Управление ресурсами",
+              "lesson": {
+                "course": "js",
+                "slug": "resources",
+                "title": "Управление ресурсами: using"
+              }
+            },
+            {
+              "key": "js-promises-full",
+              "title": "Комбинаторы промисов",
+              "lesson": {
+                "course": "js",
+                "slug": "promises-full",
+                "title": "Промисы полностью"
+              }
+            },
+            {
+              "key": "js-json-full",
+              "title": "JSON целиком",
+              "lesson": {
+                "course": "js",
+                "slug": "json-full",
+                "title": "JSON полностью"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-21",
+          "title": "Даты полностью",
+          "requires": [
+            "js-20"
+          ],
+          "skills": [
+            {
+              "key": "js-date-create",
+              "title": "Создание дат",
+              "lesson": {
+                "course": "js",
+                "slug": "date-create",
+                "title": "Даты: создание и время"
+              }
+            },
+            {
+              "key": "js-date-parts",
+              "title": "Части даты",
+              "lesson": {
+                "course": "js",
+                "slug": "date-parts",
+                "title": "Даты: части и изменение"
+              }
+            },
+            {
+              "key": "js-date-output",
+              "title": "Вывод дат",
+              "lesson": {
+                "course": "js",
+                "slug": "date-output",
+                "title": "Даты: вывод в строку"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-22",
+          "title": "Intl полностью",
+          "requires": [
+            "js-21"
+          ],
+          "skills": [
+            {
+              "key": "js-intl-numbers",
+              "title": "Числа и склонения",
+              "lesson": {
+                "course": "js",
+                "slug": "intl-numbers",
+                "title": "Intl: числа и множественное число"
+              }
+            },
+            {
+              "key": "js-intl-time",
+              "title": "Время для людей",
+              "lesson": {
+                "course": "js",
+                "slug": "intl-time",
+                "title": "Intl: даты, «назад» и длительность"
+              }
+            },
+            {
+              "key": "js-intl-text",
+              "title": "Текст на любом языке",
+              "lesson": {
+                "course": "js",
+                "slug": "intl-text",
+                "title": "Intl: списки, названия, сравнение, сегменты"
+              }
+            },
+            {
+              "key": "js-intl-locale",
+              "title": "Локаль",
+              "lesson": {
+                "course": "js",
+                "slug": "intl-locale",
+                "title": "Intl.Locale: всё о языке"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-23",
+          "title": "Бинарные данные и общая память",
+          "requires": [
+            "js-22"
+          ],
+          "skills": [
+            {
+              "key": "js-array-buffer",
+              "title": "ArrayBuffer",
+              "lesson": {
+                "course": "js",
+                "slug": "array-buffer",
+                "title": "ArrayBuffer: сырые байты"
+              }
+            },
+            {
+              "key": "js-typed-arrays",
+              "title": "Типизированные массивы",
+              "lesson": {
+                "course": "js",
+                "slug": "typed-arrays",
+                "title": "Типизированные массивы"
+              }
+            },
+            {
+              "key": "js-typed-array-methods",
+              "title": "Методы typed arrays",
+              "lesson": {
+                "course": "js",
+                "slug": "typed-array-methods",
+                "title": "Методы типизированных массивов"
+              }
+            },
+            {
+              "key": "js-dataview",
+              "title": "DataView",
+              "lesson": {
+                "course": "js",
+                "slug": "dataview",
+                "title": "DataView: байты любого формата"
+              }
+            },
+            {
+              "key": "js-atomics",
+              "title": "Общая память",
+              "lesson": {
+                "course": "js",
+                "slug": "shared-memory",
+                "title": "Общая память и Atomics"
+              }
+            }
+          ]
+        },
+        {
+          "id": "js-24",
+          "title": "Устаревшее: как читать старый код",
+          "requires": [
+            "js-23"
+          ],
+          "skills": [
+            {
+              "key": "js-legacy-strings",
+              "title": "Устаревшие методы строк и дат",
+              "lesson": {
+                "course": "js",
+                "slug": "legacy-strings-dates",
+                "title": "Устаревшее: строки и даты"
+              }
+            },
+            {
+              "key": "js-legacy-objects",
+              "title": "Устаревшие возможности объектов",
+              "lesson": {
+                "course": "js",
+                "slug": "legacy-objects",
+                "title": "Устаревшее: объекты и функции"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "sql",
+      "name": "SQL",
+      "role": "Хранитель данных",
+      "summary": "Запросы к PostgreSQL: выборки и фильтры, агрегаты, соединения, подзапросы, изменение данных и свои таблицы.",
+      "accent": "teal",
+      "published": true,
+      "branches": [
+        {
+          "id": "sql-1",
+          "title": "Старт SQL",
+          "requires": [],
+          "skills": [
+            {
+              "key": "sql-db-what",
+              "title": "База данных и таблицы",
+              "lesson": {
+                "course": "sql",
+                "slug": "what-is-database",
+                "title": "Что такое база данных"
+              }
+            },
+            {
+              "key": "sql-select",
+              "title": "SELECT … FROM",
+              "lesson": {
+                "course": "sql",
+                "slug": "select-from",
+                "title": "SELECT и FROM"
+              }
+            },
+            {
+              "key": "sql-expressions",
+              "title": "Выражения и псевдонимы",
+              "lesson": {
+                "course": "sql",
+                "slug": "expressions-as",
+                "title": "Выражения и AS"
+              }
+            },
+            {
+              "key": "sql-distinct",
+              "title": "DISTINCT",
+              "lesson": {
+                "course": "sql",
+                "slug": "distinct",
+                "title": "DISTINCT"
+              }
+            },
+            {
+              "key": "sql-style",
+              "title": "Стиль SQL",
+              "lesson": {
+                "course": "sql",
+                "slug": "comments-style",
+                "title": "Комментарии и стиль"
+              }
+            }
+          ]
+        },
+        {
+          "id": "sql-2",
+          "title": "Фильтры",
+          "requires": [
+            "sql-1"
+          ],
+          "skills": [
+            {
+              "key": "sql-where",
+              "title": "WHERE",
+              "lesson": {
+                "course": "sql",
+                "slug": "where",
+                "title": "WHERE и сравнение"
+              }
+            },
+            {
+              "key": "sql-logic",
+              "title": "Логические операторы",
+              "lesson": {
+                "course": "sql",
+                "slug": "and-or-not",
+                "title": "AND, OR, NOT"
+              }
+            },
+            {
+              "key": "sql-in-between",
+              "title": "IN и BETWEEN",
+              "lesson": {
+                "course": "sql",
+                "slug": "in-between",
+                "title": "IN и BETWEEN"
+              }
+            },
+            {
+              "key": "sql-like",
+              "title": "Поиск по шаблону",
+              "lesson": {
+                "course": "sql",
+                "slug": "like",
+                "title": "LIKE и ILIKE"
+              }
+            },
+            {
+              "key": "sql-null",
+              "title": "NULL",
+              "lesson": {
+                "course": "sql",
+                "slug": "null",
+                "title": "NULL: пустые значения"
+              }
+            }
+          ]
+        },
+        {
+          "id": "sql-3",
+          "title": "Сортировка и порции",
+          "requires": [
+            "sql-2"
+          ],
+          "skills": [
+            {
+              "key": "sql-order",
+              "title": "ORDER BY",
+              "lesson": {
+                "course": "sql",
+                "slug": "order-by",
+                "title": "ORDER BY"
+              }
+            },
+            {
+              "key": "sql-limit",
+              "title": "LIMIT и OFFSET",
+              "lesson": {
+                "course": "sql",
+                "slug": "limit-offset",
+                "title": "LIMIT и OFFSET"
+              }
+            }
+          ]
+        },
+        {
+          "id": "sql-4",
+          "title": "Функции и выражения",
+          "requires": [
+            "sql-3"
+          ],
+          "skills": [
+            {
+              "key": "sql-math",
+              "title": "Математические функции",
+              "lesson": {
+                "course": "sql",
+                "slug": "math",
+                "title": "Числа и округление"
+              }
+            },
+            {
+              "key": "sql-strings",
+              "title": "Строковые функции",
+              "lesson": {
+                "course": "sql",
+                "slug": "strings",
+                "title": "Работа с текстом"
+              }
+            },
+            {
+              "key": "sql-case",
+              "title": "CASE",
+              "lesson": {
+                "course": "sql",
+                "slug": "case",
+                "title": "CASE: условия в запросе"
+              }
+            },
+            {
+              "key": "sql-coalesce",
+              "title": "COALESCE и NULLIF",
+              "lesson": {
+                "course": "sql",
+                "slug": "coalesce",
+                "title": "COALESCE и NULLIF"
+              }
+            },
+            {
+              "key": "sql-dates",
+              "title": "Даты и время",
+              "lesson": {
+                "course": "sql",
+                "slug": "dates",
+                "title": "Даты и время"
+              }
+            },
+            {
+              "key": "sql-cast",
+              "title": "Типы и приведение",
+              "lesson": {
+                "course": "sql",
+                "slug": "types-cast",
+                "title": "Типы данных и приведение"
+              }
+            }
+          ]
+        },
+        {
+          "id": "sql-5",
+          "title": "Агрегаты и группы",
+          "requires": [
+            "sql-4"
+          ],
+          "skills": [
+            {
+              "key": "sql-aggregates",
+              "title": "Агрегатные функции",
+              "lesson": {
+                "course": "sql",
+                "slug": "aggregates",
+                "title": "COUNT, SUM, AVG, MIN, MAX"
+              }
+            },
+            {
+              "key": "sql-group-by",
+              "title": "GROUP BY",
+              "lesson": {
+                "course": "sql",
+                "slug": "group-by",
+                "title": "GROUP BY"
+              }
+            },
+            {
+              "key": "sql-having",
+              "title": "HAVING",
+              "lesson": {
+                "course": "sql",
+                "slug": "having",
+                "title": "HAVING и порядок выполнения"
+              }
+            },
+            {
+              "key": "sql-agg-extras",
+              "title": "Продвинутые агрегаты",
+              "lesson": {
+                "course": "sql",
+                "slug": "aggregate-extras",
+                "title": "FILTER, DISTINCT и string_agg"
+              }
+            }
+          ]
+        },
+        {
+          "id": "sql-6",
+          "title": "Соединения таблиц",
+          "requires": [
+            "sql-5"
+          ],
+          "skills": [
+            {
+              "key": "sql-keys",
+              "title": "Ключи и связи",
+              "lesson": {
+                "course": "sql",
+                "slug": "keys-relations",
+                "title": "Ключи и связи"
+              }
+            },
+            {
+              "key": "sql-join",
+              "title": "INNER JOIN",
+              "lesson": {
+                "course": "sql",
+                "slug": "inner-join",
+                "title": "JOIN"
+              }
+            },
+            {
+              "key": "sql-left-join",
+              "title": "LEFT JOIN",
+              "lesson": {
+                "course": "sql",
+                "slug": "left-join",
+                "title": "LEFT JOIN"
+              }
+            },
+            {
+              "key": "sql-other-joins",
+              "title": "Виды соединений",
+              "lesson": {
+                "course": "sql",
+                "slug": "other-joins",
+                "title": "RIGHT, FULL и CROSS JOIN"
+              }
+            },
+            {
+              "key": "sql-self-join",
+              "title": "Self join",
+              "lesson": {
+                "course": "sql",
+                "slug": "self-join",
+                "title": "Таблица сама с собой"
+              }
+            },
+            {
+              "key": "sql-multi-join",
+              "title": "Цепочка JOIN",
+              "lesson": {
+                "course": "sql",
+                "slug": "multi-join",
+                "title": "Три таблицы и больше"
+              }
+            }
+          ]
+        },
+        {
+          "id": "sql-7",
+          "title": "Подзапросы и множества",
+          "requires": [
+            "sql-6"
+          ],
+          "skills": [
+            {
+              "key": "sql-subquery",
+              "title": "Подзапросы",
+              "lesson": {
+                "course": "sql",
+                "slug": "subqueries",
+                "title": "Подзапросы"
+              }
+            },
+            {
+              "key": "sql-exists",
+              "title": "EXISTS",
+              "lesson": {
+                "course": "sql",
+                "slug": "exists",
+                "title": "EXISTS, ANY и ALL"
+              }
+            },
+            {
+              "key": "sql-derived",
+              "title": "Производные и коррелированные подзапросы",
+              "lesson": {
+                "course": "sql",
+                "slug": "derived-correlated",
+                "title": "Подзапрос в FROM и коррелированный"
+              }
+            },
+            {
+              "key": "sql-cte",
+              "title": "WITH",
+              "lesson": {
+                "course": "sql",
+                "slug": "cte",
+                "title": "WITH: общие табличные выражения"
+              }
+            },
+            {
+              "key": "sql-sets",
+              "title": "Операции над множествами",
+              "lesson": {
+                "course": "sql",
+                "slug": "set-operations",
+                "title": "UNION, INTERSECT, EXCEPT"
+              }
+            },
+            {
+              "key": "sql-recursive",
+              "title": "Рекурсивные запросы",
+              "lesson": {
+                "course": "sql",
+                "slug": "recursive",
+                "title": "WITH RECURSIVE"
+              }
+            }
+          ]
+        },
+        {
+          "id": "sql-8",
+          "title": "Изменение данных",
+          "requires": [
+            "sql-7"
+          ],
+          "skills": [
+            {
+              "key": "sql-insert",
+              "title": "INSERT",
+              "lesson": {
+                "course": "sql",
+                "slug": "insert",
+                "title": "INSERT"
+              }
+            },
+            {
+              "key": "sql-update",
+              "title": "UPDATE",
+              "lesson": {
+                "course": "sql",
+                "slug": "update",
+                "title": "UPDATE"
+              }
+            },
+            {
+              "key": "sql-delete",
+              "title": "DELETE",
+              "lesson": {
+                "course": "sql",
+                "slug": "delete",
+                "title": "DELETE и TRUNCATE"
+              }
+            },
+            {
+              "key": "sql-returning",
+              "title": "RETURNING",
+              "lesson": {
+                "course": "sql",
+                "slug": "returning",
+                "title": "RETURNING"
+              }
+            },
+            {
+              "key": "sql-upsert",
+              "title": "ON CONFLICT",
+              "lesson": {
+                "course": "sql",
+                "slug": "upsert",
+                "title": "ON CONFLICT"
+              }
+            },
+            {
+              "key": "sql-transactions",
+              "title": "Транзакции",
+              "lesson": {
+                "course": "sql",
+                "slug": "transactions",
+                "title": "Транзакции"
+              }
+            }
+          ]
+        },
+        {
+          "id": "sql-9",
+          "title": "Свои таблицы",
+          "requires": [
+            "sql-8"
+          ],
+          "skills": [
+            {
+              "key": "sql-create-table",
+              "title": "CREATE TABLE",
+              "lesson": {
+                "course": "sql",
+                "slug": "create-table",
+                "title": "CREATE TABLE и типы"
+              }
+            },
+            {
+              "key": "sql-constraints",
+              "title": "Ограничения",
+              "lesson": {
+                "course": "sql",
+                "slug": "constraints",
+                "title": "Ограничения"
+              }
+            },
+            {
+              "key": "sql-foreign-keys",
+              "title": "FOREIGN KEY",
+              "lesson": {
+                "course": "sql",
+                "slug": "foreign-keys",
+                "title": "Внешние ключи"
+              }
+            },
+            {
+              "key": "sql-alter",
+              "title": "ALTER TABLE",
+              "lesson": {
+                "course": "sql",
+                "slug": "alter-drop",
+                "title": "ALTER TABLE и DROP TABLE"
+              }
+            },
+            {
+              "key": "sql-normalization",
+              "title": "Нормализация",
+              "lesson": {
+                "course": "sql",
+                "slug": "normalization",
+                "title": "Проектирование и нормализация"
+              }
+            }
+          ]
+        },
+        {
+          "id": "sql-10",
+          "title": "Аналитика",
+          "requires": [
+            "sql-9"
+          ],
+          "skills": [
+            {
+              "key": "sql-window",
+              "title": "Оконные функции",
+              "lesson": {
+                "course": "sql",
+                "slug": "window-functions",
+                "title": "Оконные функции"
+              }
+            },
+            {
+              "key": "sql-window-frames",
+              "title": "Накопительные итоги",
+              "lesson": {
+                "course": "sql",
+                "slug": "running-totals",
+                "title": "Накопительные итоги, LAG и LEAD"
+              }
+            },
+            {
+              "key": "sql-views",
+              "title": "Представления",
+              "lesson": {
+                "course": "sql",
+                "slug": "views",
+                "title": "Представления"
+              }
+            },
+            {
+              "key": "sql-json",
+              "title": "JSON",
+              "lesson": {
+                "course": "sql",
+                "slug": "json",
+                "title": "JSON в PostgreSQL"
+              }
+            }
+          ]
+        },
+        {
+          "id": "sql-11",
+          "title": "Скорость и безопасность",
+          "requires": [
+            "sql-10"
+          ],
+          "skills": [
+            {
+              "key": "sql-indexes",
+              "title": "Индексы",
+              "lesson": {
+                "course": "sql",
+                "slug": "indexes",
+                "title": "Индексы и EXPLAIN"
+              }
+            },
+            {
+              "key": "sql-security",
+              "title": "Безопасность запросов",
+              "lesson": {
+                "course": "sql",
+                "slug": "sql-injection",
+                "title": "SQL-инъекции и права"
+              }
+            },
+            {
+              "key": "sql-final",
+              "title": "Итоговый отчёт",
+              "lesson": {
+                "course": "sql",
+                "slug": "final-report",
+                "title": "Итоговый проект: годовой отчёт"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
