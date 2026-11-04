@@ -6,15 +6,18 @@ import {
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 import { AppModule } from "./app.module";
+import { registerRouteBodyLimits } from "./http/body-limits";
 import { optionalConfiguredWebOrigin } from "./http/web-app-origin";
 
 /** The Nest application type, exported so tests outside this package need not resolve Nest themselves. */
 export type ApiApplication = NestFastifyApplication;
 
 export async function createApiApplication(): Promise<ApiApplication> {
+  const adapter = new FastifyAdapter();
+  registerRouteBodyLimits(adapter);
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    adapter,
     { rawBody: true }
   );
   app.setGlobalPrefix("v1");
