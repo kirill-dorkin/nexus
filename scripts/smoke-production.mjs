@@ -23,6 +23,12 @@ async function read(path, json = false) {
 }
 const health = await read("/v1/health", true);
 if (health.status !== "ok") throw new Error("API health is not ok.");
+// After a push, check the version that was pushed, not the one before it.
+const expected = process.env.EXPECTED_RELEASE?.slice(0, 12);
+if (expected && health.release !== expected)
+  throw new Error(
+    `Deployment smoke: production runs ${health.release ?? "an unknown release"}, waiting for ${expected}.`
+  );
 // An API 404 must remain an API 404, never the Next.js fallback page.
 // Keep the probe read-only and do not send any session cookies.
 const unknown = await fetch(

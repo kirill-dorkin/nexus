@@ -22,9 +22,12 @@ jobs:
   verify-public-origin:
     name: Check deployed public learner entry
     runs-on: ubuntu-latest
-    timeout-minutes: 9
+    timeout-minutes: 15
     env:
       PUBLIC_ORIGIN: https://nexus-lake-nine-17.vercel.app
+      # On a push to main, wait until production runs that commit; a smoke
+      # against the previous deployment once hid a broken API (#166).
+      EXPECTED_RELEASE: ${{ github.event_name == 'push' && github.sha || '' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -41,12 +44,12 @@ jobs:
           set -euo pipefail
           # The Git push can race Vercel's promotion. Poll boundedly instead
           # of treating a build-in-progress as a permanent outage.
-          for attempt in $(seq 1 10); do
-            echo "Public origin smoke attempt ${attempt}/10"
+          for attempt in $(seq 1 30); do
+            echo "Public origin smoke attempt ${attempt}/30"
             if node scripts/smoke-production.mjs "$PUBLIC_ORIGIN"; then
               exit 0
             fi
-            if [ "$attempt" -eq 10 ]; then
+            if [ "$attempt" -eq 30 ]; then
               echo "Production public HTTPS Web/API/PostgreSQL smoke failed." >&2
               exit 1
             fi
