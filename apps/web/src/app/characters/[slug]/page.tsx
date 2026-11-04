@@ -10,7 +10,6 @@ type Props = { params: Promise<{ slug: string }> };
 export function generateStaticParams() {
   return SKILL_MAP.characters.map((c) => ({ slug: c.slug }));
 }
-export const dynamicParams = false;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const character = findCharacter((await params).slug);

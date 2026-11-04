@@ -28,12 +28,13 @@ test("a visitor browses the characters and a character's skill tree", async ({
   await expect(
     page.getByRole("heading", { name: "Основы HTML" })
   ).toBeVisible();
+  const builtOn = page.getByRole("region", { name: "Стоит на персонажах" });
   await expect(
-    page.getByRole("link", { name: "Создайте аккаунт" })
+    builtOn.getByRole("link", { name: "Браузер", exact: true })
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "Браузер", exact: true })
-  ).toBeVisible();
+    builtOn.getByRole("link", { name: "HTML", exact: true })
+  ).toHaveCount(0);
   await expectAccessible(page);
 
   const missing = await page.goto("/characters/unknown");

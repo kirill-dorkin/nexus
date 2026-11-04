@@ -282,6 +282,12 @@ describe("character progress", () => {
 
   it("names the characters a character builds on", () => {
     expect(requiredCharacters(top, tiny).map((c) => c.slug)).toEqual(["base"]);
+    // A copy (as passed from a server page to a client one) still excludes itself.
+    expect(
+      requiredCharacters(structuredClone(findCharacter("html")!)).map(
+        (c) => c.slug
+      )
+    ).toEqual(["browser", "js"]);
     expect(requiredCharacters(findCharacter("js")!).map((c) => c.slug)).toEqual(
       ["html", "css"]
     );

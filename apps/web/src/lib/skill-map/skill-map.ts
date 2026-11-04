@@ -206,7 +206,9 @@ export function requiredCharacters(
     character.branches
       .flatMap((b) => b.requires)
       .map((id) => owner.get(id))
-      .filter((c): c is Character => c !== undefined && c !== character)
+      .filter(
+        (c): c is Character => c !== undefined && c.slug !== character.slug
+      )
   );
   return map.characters.filter((c) => needed.has(c));
 }
