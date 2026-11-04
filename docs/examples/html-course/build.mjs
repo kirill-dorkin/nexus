@@ -3,6 +3,7 @@
 import { writeFileSync } from "node:fs";
 import { createCourse } from "./lib.mjs";
 import challenges from "./challenges.mjs";
+import assignments from "./assignments.mjs";
 import stories from "./stories/index.mjs";
 import recaps from "./stories/recaps.mjs";
 import start from "./m00-start.mjs";
@@ -39,7 +40,7 @@ const chapters = [
   ["Качество и финал", [quality, obsolete, newFeatures, referenceSheet, projectFinal]]
 ];
 
-const course = createCourse(challenges, stories, recaps);
+const course = createCourse(challenges, stories, recaps, {}, assignments);
 for (const [chapter, parts] of chapters) {
   course.chapter(chapter);
   for (const part of parts) part(course);
