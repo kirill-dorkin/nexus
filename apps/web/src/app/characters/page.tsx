@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Eyebrow, Heading, Text } from "@platform/ui";
+import Link from "next/link";
+import { Eyebrow, Heading, Text, buttonClass } from "@platform/ui";
 
 import { LearningShell } from "../../components/learning/learning-shell";
 import { CharacterRoster } from "../../components/characters/character-roster";
@@ -25,6 +26,9 @@ export default function CharactersPage() {
           Без повторения навык тускнеет и забывается, а уровень персонажа
           снижается.
         </Text>
+        <Link className={buttonClass({ variant: "secondary" })} href="/map">
+          Карта города
+        </Link>
       </div>
       <CharacterRoster />
     </LearningShell>
