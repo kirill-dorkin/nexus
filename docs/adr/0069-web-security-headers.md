@@ -15,7 +15,7 @@ Three things constrain a Content Security Policy here:
 
 ## Decision
 
-`apps/web/security-headers.mjs` builds the headers; `next.config.ts` sends them on every page. The module is plain JavaScript with a `.d.mts` type declaration: `next start` compiles only `next.config.ts`, and a TypeScript module imported from it was not found in the production container.
+`apps/web/next.config.ts` builds and sends the headers on every page. They are built inside the config on purpose: the production container runs `next start apps/web` from the repository root, and Next resolves relative imports of the config from the working directory, so an imported module is not found there.
 
 - `Content-Security-Policy`:
   - `default-src 'self'`, `manifest-src 'self'`;

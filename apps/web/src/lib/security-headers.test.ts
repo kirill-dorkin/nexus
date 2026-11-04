@@ -1,56 +1,76 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 
-import {
-  contentSecurityPolicy,
-  securityHeaders
-} from "../../security-headers.mjs";
+import nextConfig from "../../next.config";
 
-const directive = (policy: string, name: string) =>
-  policy
+// ADR-0069: the headers next.config.ts sends on every page.
+
+type Rule = Awaited<ReturnType<NonNullable<typeof nextConfig.headers>>>[number];
+
+const saved = process.env.NEXT_PUBLIC_API_ORIGIN;
+afterEach(() => {
+  if (saved === undefined) delete process.env.NEXT_PUBLIC_API_ORIGIN;
+  else process.env.NEXT_PUBLIC_API_ORIGIN = saved;
+});
+
+async function rules(apiOrigin?: string): Promise<Rule[]> {
+  if (apiOrigin === undefined) delete process.env.NEXT_PUBLIC_API_ORIGIN;
+  else process.env.NEXT_PUBLIC_API_ORIGIN = apiOrigin;
+  const headers = nextConfig.headers;
+  if (headers === undefined) throw new Error("next.config.ts sends no headers");
+  return await headers();
+}
+
+const policy = (rule: Rule | undefined) =>
+  rule?.headers.find((header) => header.key === "Content-Security-Policy")
+    ?.value ?? "";
+
+const directive = (value: string, name: string) =>
+  value
     .split("; ")
     .find((part) => part.startsWith(`${name} `))
     ?.split(" ")
     .slice(1);
 
 describe("security headers", () => {
-  it("forbids framing, plugins and foreign form targets", () => {
-    const policy = contentSecurityPolicy();
-    expect(directive(policy, "frame-ancestors")).toEqual(["'none'"]);
-    expect(directive(policy, "object-src")).toEqual(["'none'"]);
-    expect(directive(policy, "form-action")).toEqual(["'self'"]);
-    expect(directive(policy, "base-uri")).toEqual(["'self'"]);
+  it("cover every page, with a separate rule for the Paddle checkout", async () => {
+    const [pages, checkout] = await rules("/");
+    expect(pages?.source).toBe("/:path((?!checkout/paddle/).*)");
+    expect(checkout?.source).toBe("/checkout/paddle/:path*");
   });
 
-  it("loads scripts and data only from the site itself", () => {
-    const policy = contentSecurityPolicy();
-    expect(directive(policy, "script-src")).not.toContain("https:");
-    expect(directive(policy, "connect-src")).toEqual(["'self'"]);
+  it("forbid framing, plugins and foreign form targets", async () => {
+    const value = policy((await rules("/"))[0]);
+    expect(directive(value, "frame-ancestors")).toEqual(["'none'"]);
+    expect(directive(value, "object-src")).toEqual(["'none'"]);
+    expect(directive(value, "form-action")).toEqual(["'self'"]);
+    expect(directive(value, "base-uri")).toEqual(["'self'"]);
+    expect(directive(value, "script-src")).not.toContain("https:");
   });
 
-  it("allows Paddle only on payment pages", () => {
-    expect(contentSecurityPolicy()).not.toContain("paddle");
-    const payments = contentSecurityPolicy({ payments: true });
-    expect(directive(payments, "script-src")).toContain(
+  it("allow Paddle only on payment pages", async () => {
+    const [pages, checkout] = await rules("/");
+    expect(policy(pages)).not.toContain("paddle");
+    expect(directive(policy(checkout), "script-src")).toContain(
       "https://cdn.paddle.com"
     );
-    expect(directive(payments, "frame-ancestors")).toEqual(["'none'"]);
+    expect(directive(policy(checkout), "frame-ancestors")).toEqual(["'none'"]);
   });
 
-  it("lets the browser call a separate API origin, and nothing else", () => {
+  it("let the browser call a separate API origin, and nothing else", async () => {
     expect(
       directive(
-        contentSecurityPolicy({ apiOrigin: "https://api.example.test" }),
+        policy((await rules("https://api.example.test"))[0]),
         "connect-src"
       )
     ).toEqual(["'self'", "https://api.example.test"]);
-    for (const apiOrigin of ["/", "", "javascript:alert(1)", "not a url"])
-      expect(
-        directive(contentSecurityPolicy({ apiOrigin }), "connect-src")
-      ).toEqual(["'self'"]);
+    for (const value of ["/", "", "javascript:alert(1)", "not a url"])
+      expect(directive(policy((await rules(value))[0]), "connect-src")).toEqual(
+        ["'self'"]
+      );
   });
 
-  it("sends the companion headers", () => {
-    const names = securityHeaders().map((header) => header.key);
+  it("send the companion headers", async () => {
+    const names = (await rules("/"))[0]?.headers.map((header) => header.key);
     expect(names).toEqual([
       "Content-Security-Policy",
       "Referrer-Policy",
