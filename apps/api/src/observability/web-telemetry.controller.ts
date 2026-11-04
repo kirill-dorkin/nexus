@@ -7,7 +7,8 @@ import {
   HttpStatus,
   Logger,
   Post,
-  ServiceUnavailableException
+  ServiceUnavailableException,
+  UseGuards
 } from "@nestjs/common";
 import {
   webTelemetryBatchSchema,
@@ -18,6 +19,7 @@ import {
   optionalConfiguredWebOrigin,
   parseExactHttpOrigin
 } from "../http/web-app-origin";
+import { RateLimit, RateLimitGuard } from "../http/rate-limit";
 import { parseRequest } from "../http/validation";
 
 const logger = new Logger("WebTelemetry");
@@ -30,6 +32,8 @@ const logger = new Logger("WebTelemetry");
 @Controller("telemetry")
 export class WebTelemetryController {
   @Post("web")
+  @UseGuards(RateLimitGuard)
+  @RateLimit("telemetry.web")
   @HttpCode(HttpStatus.NO_CONTENT)
   receive(
     @Headers("origin") origin: string | undefined,
