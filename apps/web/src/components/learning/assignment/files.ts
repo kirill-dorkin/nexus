@@ -1,7 +1,7 @@
 // Reading and packing the files of a file assignment in the browser (ADR-0073).
 // fflate is loaded on demand, only when a learner downloads or uploads.
 
-import { ASSIGNMENT_LIMITS } from "@platform/contracts";
+import { ASSIGNMENT_LIMITS } from "@platform/contracts/browser";
 
 export type Upload = {
   files: Record<string, string>;

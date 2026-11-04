@@ -1,8 +1,6 @@
 "use client";
-import {
-  learnerLearningCourseSchema,
-  type LearnerLearningCourse
-} from "@platform/contracts";
+import { type LearnerLearningCourse } from "@platform/contracts";
+import { clientLearnerLearningCourseSchema as learnerLearningCourseSchema } from "@platform/contracts/client";
 import { useEffect, useState } from "react";
 import { useApiResource } from "../../lib/hooks/api-resource";
 import Link from "next/link";

@@ -1,9 +1,7 @@
 "use client";
 import { itemAt } from "../../../lib/item-at";
-import {
-  ownLearningListSchema,
-  type OwnLearningList
-} from "@platform/contracts";
+import { type OwnLearningList } from "@platform/contracts";
+import { clientOwnLearningListSchema as ownLearningListSchema } from "@platform/contracts/client";
 import { useState } from "react";
 import { useApiResource } from "../../../lib/hooks/api-resource";
 import Link from "next/link";

@@ -3,11 +3,11 @@ import { itemAt } from "../../lib/item-at";
 import { useId, useRef, useState, type SubmitEvent } from "react";
 import Link from "next/link";
 import {
-  quizCheckResultSchema,
   type PublicQuizActivity,
   type QuizAnswer,
   type QuizCheckResult
 } from "@platform/contracts";
+import { clientQuizCheckResultSchema as quizCheckResultSchema } from "@platform/contracts/client";
 import { browserApiRequest } from "../../lib/public-api";
 import { learningLoginUrl } from "../../lib/learning-return-to";
 import { lessonUrl } from "../../lib/public-learning-routes";

@@ -1,8 +1,6 @@
 "use client";
-import {
-  learnerCourseSkillsSchema,
-  type LearnerSkillProgress
-} from "@platform/contracts";
+import { type LearnerSkillProgress } from "@platform/contracts";
+import { clientLearnerCourseSkillsSchema as learnerCourseSkillsSchema } from "@platform/contracts/client";
 import { Heading, Stack, Text } from "@platform/ui";
 import { useApiResource } from "../../lib/hooks/api-resource";
 import { LearningLoading } from "./learning-loading";

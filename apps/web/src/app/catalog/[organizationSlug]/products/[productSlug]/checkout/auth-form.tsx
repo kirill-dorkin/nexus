@@ -1,7 +1,8 @@
 "use client";
 import { useState, type SubmitEvent } from "react";
 import { apiError, browserApiRequest } from "../../../../../../lib/public-api";
-import { identityUserSchema, type IdentityUser } from "@platform/contracts";
+import { type IdentityUser } from "@platform/contracts";
+import { clientIdentityUserSchema as identityUserSchema } from "@platform/contracts/client";
 import styles from "../product.module.css";
 
 type AuthMode = "login" | "register";
