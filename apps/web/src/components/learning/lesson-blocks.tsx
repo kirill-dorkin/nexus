@@ -1,4 +1,5 @@
 import { Badge, Heading, Inline, Stack, Surface } from "@platform/ui";
+import { AssignmentBlock } from "./assignment/assignment-block";
 import { QuizForm } from "./quiz-form";
 import type { PublicLearningLesson } from "@platform/contracts";
 import { SafeMarkdown } from "./safe-markdown";
@@ -67,12 +68,14 @@ export function LessonBlocks({
                   <SafeMarkdown>{block.activity.instructions}</SafeMarkdown>
                 ) : null}
                 {block.activity.type === "assignment.files" ? (
-                  // The upload form arrives with spec WP-5 step 4.
-                  <ul aria-label="Что проверим">
-                    {block.activity.checkLabels.map((label) => (
-                      <li key={label}>{label}</li>
-                    ))}
-                  </ul>
+                  <AssignmentBlock
+                    key={`${organizationSlug}/${offeringSlug}/${lesson.slug}/${block.activity.slug}`}
+                    activity={block.activity}
+                    organizationSlug={organizationSlug}
+                    offeringSlug={offeringSlug}
+                    courseSlug={courseSlug}
+                    lessonSlug={lesson.slug}
+                  />
                 ) : (
                   <>
                     <SafeMarkdown>{block.activity.question}</SafeMarkdown>
