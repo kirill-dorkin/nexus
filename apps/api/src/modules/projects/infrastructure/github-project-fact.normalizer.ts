@@ -1,4 +1,4 @@
-import type { GitHubProjectFactDeliveryClaim } from "../../integrations/application/github-project-fact-delivery.repository";
+import type { GitHubProjectFactDeliveryClaim } from "../../integrations/application/github-project-fact-delivery.port";
 import type {
   NormalizedGitHubProjectFact,
   ProjectRepositoryBindingAt

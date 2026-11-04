@@ -29,7 +29,7 @@ Each row is implemented on `main`. The ADRs hold the details; the backend areas 
 | F3 Delivery | LearningOffering, Enrollment, CourseRun, Group, Session/Attendance, Assignment | 0010, 0014–0017 |
 | F4 Learner vertical | Attempt → immutable Submission → ValidationResult → normalized Evidence → Mastery projection; LearningEvent history | 0005, 0018–0023 |
 | F5 Guided Build | Protected hints/solutions, Attempt-scoped assistance exposure, compare, transfer | 0024–0026 |
-| F6 GitHub Projects | GitHub App, webhook inbox, Team/Project/repository binding, immutable PR/review/check facts | 0027–0032 |
+| F6 GitHub Projects | GitHub App, webhook inbox, Team/Project/repository binding, immutable PR/review/check facts. **Inactive in production**: processors have no host (ADR-0071) | 0027–0032, 0071 |
 | F7 Grader | Gateway admission, durable job ledger, authenticated dispatch, Kubernetes/gVisor sandbox, trusted Go runner. Repository only, not active | 0007, 0033–0037 |
 | F8 Recommendations | Versioned derived policies: ordered mastery, review scheduling, misconception signals, remediation, readiness, readiness-gated completion | 0013, 0038–0043 |
 | F9 Commerce | Product + immutable Price, Purchase settlement via Paddle webhook, public catalog, customer entry, checkout + return reconciliation, operational/browser/performance launch gates | 0044–0052 |
@@ -44,7 +44,7 @@ Each row is implemented on `main`. The ADRs hold the details; the backend areas 
 | Stable course addresses | Home-organization courses live at `/courses/{course}` (course slug, survives new versions); Delivery resolves the newest public Offering; old Offering addresses redirect permanently | 0061 |
 | Studio | Manual and JSON authoring over the same draft, preview, export, publication, Offering visibility, Organization customer-entry policy | 0057 |
 | Web UI | `@platform/ui` + design tokens, light/dark themes with accents, public shell, Blog/SEO surfaces, `/ui` gallery | 0059 |
-| Sign-in | Password, optional Google/GitHub OAuth (PKCE) on the same Nexus session | 0060 (Proposed) |
+| Sign-in | Password, optional Google/GitHub OAuth (PKCE) on the same Nexus session | 0060 |
 | Organization provisioning | Organizations are created only by the offline operator command `org:bootstrap-owner` (`platform_migrator` role, `--apply`). Both HTTP create routes return 403/401. | 0068 |
 
 The paid path (F9) for reference:
@@ -64,7 +64,8 @@ Deliberately not built: refunds/disputes and Entitlement reversal, subscriptions
 These are continuation guardrails, not substitutes for accepted ADRs.
 
 - Nexus is a modular monolith. A module owns its business state and application code does not reach into another module's repositories/tables.
-- PostgreSQL is canonical business state. Application authorization plus RLS/transaction-local actor and tenant context provide defense in depth.
+- PostgreSQL is canonical business state.
+- `events.outbox` is written atomically but has no relay or consumer yet (ADR-0071); the first consumer adds the relay. New deferred work uses the same transaction or a lease-fenced processor over the owning module's table. Application authorization plus RLS/transaction-local actor and tenant context provide defense in depth.
 - Cross-module synchronous collaboration targets public application/query interfaces. Deferred consequences use events/outbox.
 - Migrations are ordered and append-only; applied history is never rewritten.
 - Published curriculum is immutable **what**; Delivery is **how / when / to whom**.
@@ -118,7 +119,7 @@ Nexus has no external API clients yet, so a cleanup slice could close these wind
 
 ## Open work on GitHub (as of 2026-11-04)
 
-- **#46** (gVisor provider, Draft since 2026-09-16): superseded by #45, which is merged; close it (spec A7).
+- **#46** (gVisor provider, Draft since 2026-09-16): superseded by #45, which is merged; the owner closes it.
 - **Dependabot:** none open. NestJS packages arrive as one group; TypeScript ≥7 is held until typescript-eslint and `@nestjs/swagger` support it; major `@types/node` bumps are ignored while the runtime is Node 24.
 
 ## Next recommended slice

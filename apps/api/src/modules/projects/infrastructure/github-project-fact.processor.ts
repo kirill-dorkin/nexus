@@ -3,9 +3,9 @@ import { randomUUID } from "node:crypto";
 import { withTransaction, type DatabasePool } from "@platform/database";
 
 import {
-  GitHubProjectFactDeliveryRepository,
+  GitHubProjectFactDeliveryPort,
   type GitHubProjectFactDeliveryClaim
-} from "../../integrations/application/github-project-fact-delivery.repository";
+} from "../../integrations/application/github-project-fact-delivery.port";
 import { GitHubProjectFactsRepository } from "../application/github-project-facts.repository";
 import {
   normalizeGitHubProjectFact,
@@ -27,7 +27,7 @@ export class GitHubProjectFactProcessor {
 
   constructor(
     private readonly pool: DatabasePool,
-    private readonly deliveries: GitHubProjectFactDeliveryRepository,
+    private readonly deliveries: GitHubProjectFactDeliveryPort,
     private readonly facts: GitHubProjectFactsRepository,
     options: GitHubProjectFactProcessorOptions = {}
   ) {
