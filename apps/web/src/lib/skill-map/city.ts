@@ -7,7 +7,7 @@ import {
 } from "./skill-map";
 
 /**
- * The city of the season-1 script (, section 2): one district per character, roads where a
+ * The city of the season-1 script (section 2): one district per character, roads where a
  * character builds on another, and three looks that follow the share of active skills.
  */
 export type DistrictState = "ruined" | "scaffolding" | "alive";
