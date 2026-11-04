@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { cityPlan, districtState } from "./city";
 
-describe("city of Nexus", () => {
+describe("city map", () => {
   it("rebuilds a district as its skills become active", () => {
     expect(districtState(0)).toBe("ruined");
     expect(districtState(0.19)).toBe("ruined");
