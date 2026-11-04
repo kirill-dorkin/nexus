@@ -120,6 +120,15 @@ const must = async (label, promise) => {
 const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
 console.log(`Запуск курса «${manifest.course.title}» на ${ORIGIN}`);
 
+// The API accepts manifests up to 4 MiB (apps/api/src/http/body-limits.ts);
+// apply sends the manifest plus a small preview token.
+const MANIFEST_LIMIT_BYTES = 4 * 1024 * 1024 - 4096;
+const manifestBytes = Buffer.byteLength(JSON.stringify(manifest));
+if (manifestBytes > MANIFEST_LIMIT_BYTES)
+  fail(
+    `Манифест ${(manifestBytes / 1024 / 1024).toFixed(2)} МБ больше лимита API 4 МБ. Разделите курс на несколько.`
+  );
+
 step("Проверяю, что продакшен отвечает");
 const health = await fetch(`${ORIGIN}/v1/health`).catch(() => null);
 if (!health?.ok)

@@ -18,6 +18,7 @@
 - strict CSP;
 - validation на trust boundaries;
 - upload restrictions;
+- request bodies limited to 1 MiB; only the manifest validate/apply routes allow 4 MiB (`apps/api/src/http/body-limits.ts`), below the 4.5 MB Vercel Functions cap;
 - rate limits по risk profile;
 - security headers;
 - MFA/passkeys для privileged accounts.
