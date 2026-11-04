@@ -1,4 +1,5 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
+import type { DatabaseTransaction } from "@platform/database";
 import type {
   CourseVersionSkill,
   LearnerSkillProgress,
@@ -13,6 +14,7 @@ import { IdentityApplicationService } from "../../identity/application/identity.
 import { LearningContentQuery } from "../../learning-content/application/learning-content.query";
 import { LearningDeliveryQuery } from "../../learning-delivery/application/learning-delivery.query";
 import { MasteryQuery } from "./mastery.query";
+import { OwnSkillProgressQuery } from "./own-skill-progress.query";
 
 function offeringScope(organizationId: string, offeringId: string) {
   return {
@@ -85,7 +87,7 @@ function mapSkillProgress(
 }
 
 @Injectable()
-export class LearnerSkillProgressApplicationService {
+export class LearnerSkillProgressApplicationService implements OwnSkillProgressQuery {
   constructor(
     private readonly database: DatabaseService,
     private readonly requestContext: RequestContextService,
@@ -123,30 +125,12 @@ export class LearnerSkillProgressApplicationService {
         offeringScope(organizationId, enrollmentContext.offering.id)
       );
 
-      const graph = await this.content.requirePublishedLearningGraph(
+      const skills = await this.readSkills(
         transaction,
         organizationId,
-        enrollmentContext.offering.courseVersionId
-      );
-      const projections = await this.mastery.listUserMastery(
-        transaction,
-        organizationId,
+        enrollmentContext.offering.courseVersionId,
         context.userId
       );
-      const masteryBySkillId = new Map(
-        projections.map(
-          (projection) => [projection.skillId, projection] as const
-        )
-      );
-      const skills = [...graph.skills]
-        .sort(
-          (left, right) =>
-            left.position - right.position ||
-            left.skillId.localeCompare(right.skillId)
-        )
-        .map((skill) =>
-          mapSkillProgress(skill, masteryBySkillId.get(skill.skillId))
-        );
 
       return {
         organizationId,
@@ -156,5 +140,59 @@ export class LearnerSkillProgressApplicationService {
         skills
       };
     });
+  }
+
+  async ownSkills(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    enrollmentId: string
+  ): Promise<readonly LearnerSkillProgress[]> {
+    const { userId } = this.requestContext.requirePrincipal();
+    const enrollmentContext = await this.delivery.requireEnrollment(
+      transaction,
+      organizationId,
+      enrollmentId
+    );
+    if (enrollmentContext.enrollment.userId !== userId) {
+      throw new ForbiddenException(
+        "Skill progress can only be read for your own enrollment."
+      );
+    }
+    return this.readSkills(
+      transaction,
+      organizationId,
+      enrollmentContext.offering.courseVersionId,
+      userId
+    );
+  }
+
+  private async readSkills(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseVersionId: string,
+    userId: string
+  ): Promise<LearnerSkillProgress[]> {
+    const graph = await this.content.requirePublishedLearningGraph(
+      transaction,
+      organizationId,
+      courseVersionId
+    );
+    const projections = await this.mastery.listUserMastery(
+      transaction,
+      organizationId,
+      userId
+    );
+    const masteryBySkillId = new Map(
+      projections.map((projection) => [projection.skillId, projection] as const)
+    );
+    return [...graph.skills]
+      .sort(
+        (left, right) =>
+          left.position - right.position ||
+          left.skillId.localeCompare(right.skillId)
+      )
+      .map((skill) =>
+        mapSkillProgress(skill, masteryBySkillId.get(skill.skillId))
+      );
   }
 }
