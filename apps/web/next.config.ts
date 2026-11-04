@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+import { securityHeaders } from "./src/lib/security-headers";
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   agentRules: false,
@@ -8,6 +10,20 @@ const nextConfig: NextConfig = {
     // Client telemetry names the deployed build (ADR-0067), never the visitor.
     NEXT_PUBLIC_RELEASE:
       process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 12) ?? "local"
+  },
+  headers() {
+    return Promise.resolve([
+      // Every page except the Paddle checkout, which gets the same policy
+      // plus Paddle's own origins (two matching rules would both apply).
+      {
+        source: "/:path((?!checkout/paddle/).*)",
+        headers: securityHeaders()
+      },
+      {
+        source: "/checkout/paddle/:path*",
+        headers: securityHeaders({ payments: true })
+      }
+    ]);
   }
 };
 

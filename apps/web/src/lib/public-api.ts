@@ -1,3 +1,8 @@
+import { parseWithoutEvalInBrowser } from "@platform/contracts";
+
+// Every browser read goes through this module before it is parsed.
+parseWithoutEvalInBrowser();
+
 function parseApiOrigin(value: string): string | null {
   try {
     const raw = value.trim();
