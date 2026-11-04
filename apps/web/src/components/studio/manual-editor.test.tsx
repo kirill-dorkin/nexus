@@ -6,6 +6,7 @@ import { describe, expect, it } from "vitest";
 
 import { manifest } from "../../test/fixtures";
 import { ManualEditor } from "./manual-editor";
+import { quizAt } from "./editor-commands";
 
 /** Renders the editor over real state and exposes the latest document. */
 function setup(initial: CourseManifestV1 = manifest(), existing = false) {
@@ -120,7 +121,7 @@ describe("ManualEditor", () => {
 
   it("marks several correct options of a multiple-choice question", async () => {
     const initial = manifest();
-    const activity = initial.activities[0]!;
+    const activity = quizAt(initial.activities, 0)!;
     initial.activities[0] = {
       ...activity,
       type: "quiz.multiple_choice",
@@ -212,7 +213,8 @@ describe("every form field writes its own value", () => {
   type Doc = ReturnType<typeof manifest>;
   const choice = (d: Doc) => {
     const a = d.activities[0];
-    if (!a || a.type === "quiz.short_text") throw new Error("choice expected");
+    if (!a || a.type === "quiz.short_text" || a.type === "assignment.files")
+      throw new Error("choice expected");
     return a;
   };
   const cases: [string, string, (d: Doc) => unknown][] = [
@@ -225,12 +227,12 @@ describe("every form field writes its own value", () => {
     [
       "Вопрос (Markdown)",
       "Что?",
-      (d) => d.activities[0]?.presentation.question
+      (d) => quizAt(d.activities, 0)?.presentation.question
     ],
     [
       "Объяснение автора",
       "Потому что",
-      (d) => d.activities[0]?.validation.explanation
+      (d) => quizAt(d.activities, 0)?.validation.explanation
     ],
     ["Адрес урока (slug)", "start", (d) => d.lessons[0]?.slug],
     ["Название урока", "Старт", (d) => d.lessons[0]?.title],

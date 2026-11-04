@@ -8,30 +8,30 @@ export type SqlBase = "shop" | "empty";
 export type ChallengeCheck = {
   label: string;
   /** CSS selector that must match (or must not match, with `absent`). */
-  selector?: string;
+  selector?: string | undefined;
   /** Case-insensitive source fragment, for things the DOM hides (doctype, comments). */
-  contains?: string;
+  contains?: string | undefined;
   /** A CSS declaration the learner must write (see css-rules.ts). */
-  css?: CssCheck;
+  css?: CssCheck | undefined;
   /** A JavaScript expression that must be truthy after the learner's page has run (may use await). */
-  js?: string;
+  js?: string | undefined;
   /** Text the learner's code must print to the console. */
-  log?: string;
+  log?: string | undefined;
   /** SQL: a query run after the learner's code that must return true. */
-  sql?: string;
+  sql?: string | undefined;
   /** SQL: a reference query whose rows the learner's last result must match. */
-  rows?: string;
+  rows?: string | undefined;
   /** With `rows`: row order matters. */
-  ordered?: boolean;
+  ordered?: boolean | undefined;
   /** With `rows`: column names (aliases) matter. */
-  names?: boolean;
-  count?: number;
+  names?: boolean | undefined;
+  count?: number | undefined;
   /** Passes only if at most this many elements match. */
-  max?: number;
-  text?: string;
-  attr?: string;
-  value?: string;
-  absent?: boolean;
+  max?: number | undefined;
+  text?: string | undefined;
+  attr?: string | undefined;
+  value?: string | undefined;
+  absent?: boolean | undefined;
 };
 export type Challenge = {
   title: string;

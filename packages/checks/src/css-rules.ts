@@ -217,11 +217,11 @@ export type CssCheck = {
   selector: string;
   property: string;
   /** Accepted values (normalized comparison). Omit to require only that the property is set. */
-  value?: string | string[];
+  value?: string | string[] | undefined;
   /** Value must contain this fragment instead (e.g. "minmax(" or "ease"). */
-  includes?: string;
+  includes?: string | undefined;
   /** An enclosing at-rule prelude must contain this (e.g. "@media", "min-width", "@container"). */
-  within?: string;
+  within?: string | undefined;
 };
 
 export function cssMatches(rules: CssRule[], check: CssCheck): boolean {

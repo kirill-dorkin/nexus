@@ -12,6 +12,7 @@ import {
 import {
   freeSelfEnrollmentRequestSchema,
   checkQuizRequestSchema,
+  submitAssignmentRequestSchema,
   ownLearningListQuerySchema,
   organizationSlugSchema,
   resourceSlugSchema
@@ -19,10 +20,33 @@ import {
 import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
 import { RateLimit, RateLimitGuard } from "../../http/rate-limit";
 import { parseRequest } from "../../http/validation";
+import { LearnerAssignmentService } from "./learner-assignment.service";
 import { LearnerLearningService } from "./learner-learning.service";
 @Controller("me/learning")
 export class LearnerLearningController {
-  constructor(private readonly learning: LearnerLearningService) {}
+  constructor(
+    private readonly learning: LearnerLearningService,
+    private readonly assignments: LearnerAssignmentService
+  ) {}
+  /** ADR-0073: the files of one try at a file assignment; answers with what to fix. */
+  @Post(":organizationSlug/:offeringSlug/assignments/:activitySlug/submissions")
+  @UseGuards(BrowserWriteOriginGuard, RateLimitGuard)
+  @RateLimit("learning.assignment_submit")
+  @HttpCode(200)
+  @Header("Cache-Control", "no-store")
+  submitAssignment(
+    @Param("organizationSlug") organizationSlug: string,
+    @Param("offeringSlug") offeringSlug: string,
+    @Param("activitySlug") activitySlug: string,
+    @Body() body: unknown
+  ) {
+    return this.assignments.submit(
+      parseRequest(organizationSlugSchema, organizationSlug),
+      parseRequest(resourceSlugSchema, offeringSlug),
+      parseRequest(resourceSlugSchema, activitySlug),
+      parseRequest(submitAssignmentRequestSchema, body)
+    );
+  }
   @Post(":organizationSlug/:offeringSlug/quiz/:activitySlug/check")
   @UseGuards(BrowserWriteOriginGuard, RateLimitGuard)
   @RateLimit("learning.quiz_check")

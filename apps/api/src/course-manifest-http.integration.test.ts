@@ -17,6 +17,7 @@ import {
   type PlatformPrincipalCarrier
 } from "./request-context/platform-principal";
 import { OutboxRepository } from "./outbox/outbox.repository";
+import type { ManifestQuizActivity } from "@platform/contracts";
 
 function env(name: string) {
   const value = process.env[name];
@@ -154,7 +155,7 @@ describe("course manifest HTTP + PostgreSQL authoring", () => {
     // Chapters round-trip through import, export and cloning (ADR-0063).
     manifest.lessons[0]!.chapter = "Введение";
     manifest.course.slug = `example-${randomUUID()}`;
-    manifest.activities[0]!.validation.explanation =
+    (manifest.activities[0] as ManifestQuizActivity).validation.explanation =
       "PRIVATE_EXPLANATION_SENTINEL";
   });
 
@@ -545,7 +546,7 @@ describe("course manifest HTTP + PostgreSQL authoring", () => {
     ])
       expect(r.body).not.toContain(secret);
     expect(r.json().assignments[0].activity.config.presentation.question).toBe(
-      manifest.activities[0]!.presentation.question
+      (manifest.activities[0] as ManifestQuizActivity).presentation.question
     );
   });
 

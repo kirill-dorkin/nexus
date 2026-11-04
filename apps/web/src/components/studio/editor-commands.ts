@@ -1,4 +1,8 @@
-import type { CourseManifestV1, ManifestActivity } from "@platform/contracts";
+import {
+  isQuizActivity,
+  type CourseManifestV1,
+  type ManifestQuizActivity
+} from "@platform/contracts";
 import { itemAt } from "../../lib/item-at";
 import { newActivity } from "./editor-model";
 
@@ -8,7 +12,16 @@ import { newActivity } from "./editor-model";
  * activity or option is renamed wherever it is used.
  */
 type Doc = CourseManifestV1;
-type ActivityType = ManifestActivity["type"];
+type ActivityType = ManifestQuizActivity["type"];
+
+/** The quiz at `index`, or null for a file assignment (edited in JSON only). */
+export function quizAt(
+  activities: Doc["activities"],
+  index: number
+): ManifestQuizActivity | null {
+  const activity = itemAt(activities, index);
+  return isQuizActivity(activity) ? activity : null;
+}
 type LessonBlock = Doc["lessons"][number]["blocks"][number];
 
 export function addSkill(d: Doc): void {
@@ -67,7 +80,8 @@ export function changeActivityType(
   index: number,
   type: ActivityType
 ): void {
-  const old = itemAt(d.activities, index);
+  const old = quizAt(d.activities, index);
+  if (!old) return;
   const next = newActivity(type, old.slug, old.skillKeys);
   next.title = old.title;
   next.instructions = old.instructions;
@@ -92,7 +106,8 @@ export function changeActivityType(
 }
 
 export function addOption(d: Doc, index: number): void {
-  const activity = itemAt(d.activities, index);
+  const activity = quizAt(d.activities, index);
+  if (!activity) return;
   if (activity.type !== "quiz.short_text")
     activity.presentation.options.push({ id: "", text: "" });
 }
@@ -103,7 +118,8 @@ export function renameOption(
   option: number,
   id: string
 ): void {
-  const activity = itemAt(d.activities, index);
+  const activity = quizAt(d.activities, index);
+  if (!activity) return;
   if (activity.type === "quiz.short_text") return;
   const choice = itemAt(activity.presentation.options, option);
   const old = choice.id;
@@ -118,7 +134,8 @@ export function renameOption(
 
 /** Removes an option; a removed correct answer stops being the answer. */
 export function removeOption(d: Doc, index: number, option: number): void {
-  const activity = itemAt(d.activities, index);
+  const activity = quizAt(d.activities, index);
+  if (!activity) return;
   if (activity.type === "quiz.short_text") return;
   const [removed] = activity.presentation.options.splice(option, 1);
   if (!removed) return;
@@ -137,7 +154,8 @@ export function setCorrectOption(
   optionId: string,
   correct: boolean
 ): void {
-  const activity = itemAt(d.activities, index);
+  const activity = quizAt(d.activities, index);
+  if (!activity) return;
   if (activity.type === "quiz.single_choice")
     activity.validation.correctOptionId = optionId;
   else if (activity.type === "quiz.multiple_choice")

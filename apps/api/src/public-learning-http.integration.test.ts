@@ -18,6 +18,7 @@ import {
   type PlatformPrincipalCarrier
 } from "./request-context/platform-principal";
 import { OutboxRepository } from "./outbox/outbox.repository";
+import type { ManifestQuizActivity } from "@platform/contracts";
 
 function env(name: string) {
   const value = process.env[name];
@@ -128,7 +129,7 @@ describe("public free learning HTTP + PostgreSQL boundary", () => {
       );
       manifest.course.title = `Public course ${i}`;
       manifest.lessons[0]!.chapter = "Введение";
-      manifest.activities[0]!.validation.explanation =
+      (manifest.activities[0] as ManifestQuizActivity).validation.explanation =
         "PRIVATE_EXPLANATION_SENTINEL";
       manifest.activities.push(
         {

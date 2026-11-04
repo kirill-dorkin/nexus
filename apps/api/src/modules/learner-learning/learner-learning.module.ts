@@ -7,6 +7,7 @@ import { LearningContentModule } from "../learning-content/learning-content.modu
 import { LearningDeliveryModule } from "../learning-delivery/learning-delivery.module";
 import { LearningProgressModule } from "../learning-progress/learning-progress.module";
 import { LearnerLearningController } from "./learner-learning.controller";
+import { LearnerAssignmentService } from "./learner-assignment.service";
 import { LearnerLearningService } from "./learner-learning.service";
 @Module({
   imports: [
@@ -18,6 +19,10 @@ import { LearnerLearningService } from "./learner-learning.service";
     LearningProgressModule
   ],
   controllers: [LearnerLearningController],
-  providers: [BrowserWriteOriginGuard, LearnerLearningService]
+  providers: [
+    BrowserWriteOriginGuard,
+    LearnerLearningService,
+    LearnerAssignmentService
+  ]
 })
 export class LearnerLearningModule {}

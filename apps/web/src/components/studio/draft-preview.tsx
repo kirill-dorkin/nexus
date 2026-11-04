@@ -61,6 +61,19 @@ export function DraftPreview({ document }: { document: CourseManifestV1 }) {
                     return (
                       <p>Задание «{b.activitySlug}» не найдено в курсе.</p>
                     );
+                  if (a.type === "assignment.files")
+                    return (
+                      <>
+                        <h4>{b.title ?? a.title}</h4>
+                        <div className={reading.markdown}>
+                          <SafeMarkdown>{a.instructions}</SafeMarkdown>
+                        </div>
+                        <p>
+                          Задание с файлами: {a.validation.checks.length}{" "}
+                          проверок.
+                        </p>
+                      </>
+                    );
                   return (
                     <>
                       <h4>{b.title ?? a.title}</h4>
