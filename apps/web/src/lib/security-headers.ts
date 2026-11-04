@@ -40,17 +40,42 @@ function merge(...sets: Directives[]): Directives {
   return result;
 }
 
+export type SecurityHeaderOptions = {
+  payments?: boolean;
+  /** NEXT_PUBLIC_API_ORIGIN; an absolute origin is added to connect-src (ADR-0058 allows a separate API origin). */
+  apiOrigin?: string | undefined;
+};
+
+/** The API origin the browser may call, when it is not the site itself. */
+export function separateApiOrigin(value: string | undefined): string | null {
+  if (value === undefined || value.trim() === "" || value.trim() === "/")
+    return null;
+  try {
+    const url = new URL(value.trim());
+    return url.protocol === "https:" || url.protocol === "http:"
+      ? url.origin
+      : null;
+  } catch {
+    return null;
+  }
+}
+
 export function contentSecurityPolicy(
-  options: { payments?: boolean } = {}
+  options: SecurityHeaderOptions = {}
 ): string {
-  const directives = options.payments ? merge(base, paddle) : base;
+  const api = separateApiOrigin(options.apiOrigin);
+  const directives = merge(
+    base,
+    options.payments ? paddle : {},
+    api ? { "connect-src": [api] } : {}
+  );
   return Object.entries(directives)
     .map(([name, values]) => `${name} ${values.join(" ")}`)
     .join("; ");
 }
 
 export function securityHeaders(
-  options: { payments?: boolean } = {}
+  options: SecurityHeaderOptions = {}
 ): { key: string; value: string }[] {
   return [
     {

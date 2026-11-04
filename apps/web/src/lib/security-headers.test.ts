@@ -33,6 +33,19 @@ describe("security headers", () => {
     expect(directive(payments, "frame-ancestors")).toEqual(["'none'"]);
   });
 
+  it("lets the browser call a separate API origin, and nothing else", () => {
+    expect(
+      directive(
+        contentSecurityPolicy({ apiOrigin: "https://api.example.test" }),
+        "connect-src"
+      )
+    ).toEqual(["'self'", "https://api.example.test"]);
+    for (const apiOrigin of ["/", "", "javascript:alert(1)", "not a url"])
+      expect(
+        directive(contentSecurityPolicy({ apiOrigin }), "connect-src")
+      ).toEqual(["'self'"]);
+  });
+
   it("sends the companion headers", () => {
     const names = securityHeaders().map((header) => header.key);
     expect(names).toEqual([

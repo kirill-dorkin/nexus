@@ -17,11 +17,16 @@ const nextConfig: NextConfig = {
       // plus Paddle's own origins (two matching rules would both apply).
       {
         source: "/:path((?!checkout/paddle/).*)",
-        headers: securityHeaders()
+        headers: securityHeaders({
+          apiOrigin: process.env.NEXT_PUBLIC_API_ORIGIN
+        })
       },
       {
         source: "/checkout/paddle/:path*",
-        headers: securityHeaders({ payments: true })
+        headers: securityHeaders({
+          payments: true,
+          apiOrigin: process.env.NEXT_PUBLIC_API_ORIGIN
+        })
       }
     ]);
   }

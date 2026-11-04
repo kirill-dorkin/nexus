@@ -18,7 +18,8 @@ Three things constrain a Content Security Policy here:
 `apps/web/src/lib/security-headers.ts` builds the headers; `next.config.ts` sends them on every page.
 
 - `Content-Security-Policy`:
-  - `default-src 'self'`, `connect-src 'self'`, `manifest-src 'self'`;
+  - `default-src 'self'`, `manifest-src 'self'`;
+  - `connect-src 'self'`, plus `NEXT_PUBLIC_API_ORIGIN` when it is an absolute origin (ADR-0058 allows the API on its own origin; production uses one origin);
   - `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'`: no external script origin; inline scripts stay allowed for the reasons above; WebAssembly compiles; `eval` stays forbidden;
   - `style-src 'self' 'unsafe-inline'`, `font-src 'self' data:`;
   - `img-src` and `media-src`: `'self' data: blob: https:` (learners' practice pages may show any image);
