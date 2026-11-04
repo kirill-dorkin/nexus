@@ -1,9 +1,11 @@
-// Response headers for every Web page (ADR-0069). Pure, so next.config.ts and
-// the tests build the same policy.
+// Response headers for every Web page (ADR-0069). Plain JavaScript on purpose:
+// `next start` compiles only next.config.ts, so the config can import an .mjs
+// file but not another TypeScript module. Types: security-headers.d.mts.
 
-type Directives = Record<string, readonly string[]>;
+/** @typedef {Record<string, readonly string[]>} Directives */
 
-const base: Directives = {
+/** @type {Directives} */
+const base = {
   "default-src": ["'self'"],
   // Next streams its data in inline scripts and lesson practice runs inline
   // scripts in srcdoc frames, which inherit this policy; nonces cannot reach
@@ -25,29 +27,33 @@ const base: Directives = {
 };
 
 /** Paddle.js runs its checkout from its own CDN and frames (payment pages only). */
-const paddle: Directives = {
+/** @type {Directives} */
+const paddle = {
   "script-src": ["https://cdn.paddle.com"],
   "style-src": ["https://cdn.paddle.com"],
   "connect-src": ["https://*.paddle.com"],
   "frame-src": ["https://buy.paddle.com", "https://sandbox-buy.paddle.com"]
 };
 
-function merge(...sets: Directives[]): Directives {
-  const result: Record<string, string[]> = {};
+/**
+ * @param {...Directives} sets
+ * @returns {Directives}
+ */
+function merge(...sets) {
+  /** @type {Record<string, string[]>} */
+  const result = {};
   for (const set of sets)
     for (const [name, values] of Object.entries(set))
       result[name] = [...(result[name] ?? []), ...values];
   return result;
 }
 
-export type SecurityHeaderOptions = {
-  payments?: boolean;
-  /** NEXT_PUBLIC_API_ORIGIN; an absolute origin is added to connect-src (ADR-0058 allows a separate API origin). */
-  apiOrigin?: string | undefined;
-};
-
 /** The API origin the browser may call, when it is not the site itself. */
-export function separateApiOrigin(value: string | undefined): string | null {
+/**
+ * @param {string | undefined} value
+ * @returns {string | null}
+ */
+export function separateApiOrigin(value) {
   if (value === undefined || value.trim() === "" || value.trim() === "/")
     return null;
   try {
@@ -60,9 +66,11 @@ export function separateApiOrigin(value: string | undefined): string | null {
   }
 }
 
-export function contentSecurityPolicy(
-  options: SecurityHeaderOptions = {}
-): string {
+/**
+ * @param {{ payments?: boolean; apiOrigin?: string | undefined }} [options]
+ * @returns {string}
+ */
+export function contentSecurityPolicy(options = {}) {
   const api = separateApiOrigin(options.apiOrigin);
   const directives = merge(
     base,
@@ -74,9 +82,11 @@ export function contentSecurityPolicy(
     .join("; ");
 }
 
-export function securityHeaders(
-  options: SecurityHeaderOptions = {}
-): { key: string; value: string }[] {
+/**
+ * @param {{ payments?: boolean; apiOrigin?: string | undefined }} [options]
+ * @returns {{ key: string; value: string }[]}
+ */
+export function securityHeaders(options = {}) {
   return [
     {
       key: "Content-Security-Policy",

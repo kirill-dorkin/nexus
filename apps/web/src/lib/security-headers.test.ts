@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { contentSecurityPolicy, securityHeaders } from "./security-headers";
+import {
+  contentSecurityPolicy,
+  securityHeaders
+} from "../../security-headers.mjs";
 
 const directive = (policy: string, name: string) =>
   policy
