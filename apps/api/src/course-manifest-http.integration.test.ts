@@ -247,6 +247,46 @@ describe("course manifest HTTP + PostgreSQL authoring", () => {
     expect(await counts()).toEqual(before);
   });
 
+  it("accepts multi-megabyte manifests on the import routes only", async () => {
+    const MB = 1024 * 1024;
+    const big = structuredClone(manifest);
+    for (let i = 0; i < 45; i++)
+      big.lessons[0]!.blocks.push({
+        type: "markdown",
+        markdown: "x".repeat(50_000)
+      });
+    expect(JSON.stringify(big).length).toBeGreaterThan(2 * MB);
+    const before = await counts();
+
+    const preview = await plan(big);
+    expect(preview.mode).toBe("create_course");
+    // The larger limit lets the body reach the strict schema on apply too;
+    // a missing preview token is refused there without any write.
+    await post(
+      `organizations/${org}/courses/manifest/apply`,
+      { manifest: big },
+      owner,
+      400
+    );
+    expect(await counts()).toEqual(before);
+
+    const tooLarge = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${org}/courses/manifest/validate`,
+      headers: { "x-test-user-id": owner, origin },
+      payload: { ...manifest, padding: "x".repeat(4 * MB) }
+    });
+    expect(tooLarge.statusCode).toBe(413);
+
+    const otherRoute = await app.inject({
+      method: "POST",
+      url: `/v1/organizations/${org}/memberships`,
+      headers: { "x-test-user-id": owner, origin },
+      payload: { userId: learner, padding: "x".repeat(2 * MB) }
+    });
+    expect(otherRoute.statusCode).toBe(413);
+  });
+
   it("denies anonymous, learner authoring, and mismatched browser origin", async () => {
     await post(
       `organizations/${org}/courses/manifest/validate`,
