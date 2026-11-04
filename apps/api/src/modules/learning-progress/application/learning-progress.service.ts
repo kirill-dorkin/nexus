@@ -83,10 +83,13 @@ export class LearningProgressApplicationService extends QuizSubmissionCommand {
       enrollment.enrollment.userId !== userId ||
       activity.organizationId !== organizationId ||
       activity.courseVersionId !== enrollment.offering.courseVersionId ||
-      !activity.activityType.startsWith("quiz.")
+      !(
+        activity.activityType.startsWith("quiz.") ||
+        activity.activityType === "assignment.files"
+      )
     )
       throw new ForbiddenException(
-        "Quiz work must belong to your exact enrollment."
+        "Learner work must belong to your exact enrollment."
       );
     await transaction.client.query(
       "SELECT pg_advisory_xact_lock(hashtextextended($1,0))",

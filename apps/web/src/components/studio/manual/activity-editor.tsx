@@ -1,10 +1,16 @@
 "use client";
-import type { CourseManifestV1, ManifestActivity } from "@platform/contracts";
+import type {
+  CourseManifestV1,
+  ManifestActivity,
+  ManifestAssignmentActivity,
+  ManifestQuizActivity
+} from "@platform/contracts";
 import { Select } from "@platform/ui";
 import { itemAt } from "../../../lib/item-at";
 import { move } from "../editor-model";
 import {
   changeActivityType,
+  quizAt,
   renameActivity,
   setActivitySkill
 } from "../editor-commands";
@@ -25,6 +31,15 @@ export function ActivityEditor({
   skills: CourseManifestV1["skills"];
   edit: Edit;
 }) {
+  if (activity.type === "assignment.files")
+    return (
+      <AssignmentSummary
+        activity={activity}
+        index={i}
+        count={count}
+        edit={edit}
+      />
+    );
   return (
     <fieldset>
       <legend>Задание {i + 1}</legend>
@@ -64,7 +79,7 @@ export function ActivityEditor({
               changeActivityType(
                 d,
                 i,
-                e.target.value as ManifestActivity["type"]
+                e.target.value as ManifestQuizActivity["type"]
               )
             )
           }
@@ -98,7 +113,8 @@ export function ActivityEditor({
         maxLength={20000}
         onChange={(v) =>
           edit((d) => {
-            itemAt(d.activities, i).presentation.question = v;
+            const quiz = quizAt(d.activities, i);
+            if (quiz) quiz.presentation.question = v;
           })
         }
       />
@@ -114,10 +130,47 @@ export function ActivityEditor({
         maxLength={10000}
         onChange={(v) =>
           edit((d) => {
-            itemAt(d.activities, i).validation.explanation = v;
+            const quiz = quizAt(d.activities, i);
+            if (quiz) quiz.validation.explanation = v;
           })
         }
       />
+      <Order
+        label={`Задание ${i + 1}`}
+        index={i}
+        count={count}
+        onMove={(o) => edit((d) => move(d.activities, i, o))}
+        onRemove={() =>
+          edit((d) => {
+            d.activities.splice(i, 1);
+          })
+        }
+      />
+    </fieldset>
+  );
+}
+
+/** File assignments (ADR-0073) are edited in the JSON tab; here they are listed and ordered. */
+function AssignmentSummary({
+  activity,
+  index: i,
+  count,
+  edit
+}: {
+  activity: ManifestAssignmentActivity;
+  index: number;
+  count: number;
+  edit: Edit;
+}) {
+  return (
+    <fieldset>
+      <legend>Задание {i + 1}</legend>
+      <p>
+        <strong>{activity.title || activity.slug}</strong> — задание с файлами:{" "}
+        {Object.keys(activity.presentation.starterFiles).length} файл(ов) в
+        заготовке, {activity.validation.checks.length} проверок. Оно
+        редактируется во вкладке JSON.
+      </p>
       <Order
         label={`Задание ${i + 1}`}
         index={i}

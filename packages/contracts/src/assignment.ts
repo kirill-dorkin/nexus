@@ -4,7 +4,8 @@ import { z } from "zod";
 export const ASSIGNMENT_LIMITS = {
   maxFiles: 50,
   maxFileBytes: 200 * 1024,
-  maxTotalBytes: 1024 * 1024,
+  // Half the API body limit (1 MB), so JSON escaping of the files always fits.
+  maxTotalBytes: 512 * 1024,
   maxPathDepth: 5
 } as const;
 
@@ -58,7 +59,7 @@ export const assignmentFilesSchema = z
         (total, content) => total + new TextEncoder().encode(content).length,
         0
       ) <= ASSIGNMENT_LIMITS.maxTotalBytes,
-    "At most 1 MB in total."
+    "At most 512 KB in total."
   );
 
 /** Static checks (ADR-0064 kinds) usable on a file assignment; `label` is what the learner sees. */
@@ -96,44 +97,103 @@ export const assignmentCheckSchema = z
     "A check has exactly one of selector, contains or css."
   );
 
-/** What an author writes for an `assignment.files` activity (ADR-0073). */
-export const fileAssignmentSpecSchema = z
+/** The learner-visible part of an `assignment.files` activity (manifest `presentation`). */
+export const fileAssignmentPresentationSchema = z
   .object({
     lang: z.literal("html"),
     entry: assignmentPathSchema.default("index.html"),
     starterFiles: assignmentFilesSchema,
-    allowedFiles: z.array(z.string().min(1).max(200)).min(1).max(50),
+    allowedFiles: z.array(z.string().min(1).max(200)).min(1).max(50)
+  })
+  .strict();
+
+/** The protected part (manifest `validation`): never shown to learners. */
+export const fileAssignmentValidationSchema = z
+  .object({
     checks: z.array(assignmentCheckSchema).min(1).max(100),
     solutionFiles: assignmentFilesSchema
   })
+  .strict();
+
+type SpecParts = {
+  entry: string;
+  allowedFiles: readonly string[];
+  starterFiles: Readonly<Record<string, string>>;
+  solutionFiles: Readonly<Record<string, string>>;
+};
+
+/** Cross-field rules of an assignment; used by the spec and by the manifest activity. */
+export function assignmentSpecIssues(
+  spec: SpecParts
+): { path: (string | number)[]; message: string }[] {
+  const issues: { path: (string | number)[]; message: string }[] = [];
+  const allowed = (path: string) =>
+    spec.allowedFiles.some((pattern) => matchesAllowedFile(path, pattern));
+  if (!allowed(spec.entry))
+    issues.push({
+      path: ["allowedFiles"],
+      message: "The entry file must be allowed."
+    });
+  for (const [key, files] of [
+    ["starterFiles", spec.starterFiles],
+    ["solutionFiles", spec.solutionFiles]
+  ] as const)
+    for (const path of Object.keys(files))
+      if (!allowed(path))
+        issues.push({
+          path: [key, path],
+          message: "Every file must match allowedFiles."
+        });
+  if (spec.solutionFiles[spec.entry] === undefined)
+    issues.push({
+      path: ["solutionFiles"],
+      message: "The solution must contain the entry file."
+    });
+  return issues;
+}
+
+/** What an author writes for an `assignment.files` activity (ADR-0073). */
+export const fileAssignmentSpecSchema = fileAssignmentPresentationSchema
+  .extend(fileAssignmentValidationSchema.shape)
   .strict()
   .superRefine((spec, context) => {
-    const allowed = (path: string) =>
-      spec.allowedFiles.some((pattern) => matchesAllowedFile(path, pattern));
-    if (!allowed(spec.entry))
-      context.addIssue({
-        code: "custom",
-        path: ["allowedFiles"],
-        message: "The entry file must be allowed."
-      });
-    for (const [key, files] of [
-      ["starterFiles", spec.starterFiles],
-      ["solutionFiles", spec.solutionFiles]
-    ] as const)
-      for (const path of Object.keys(files))
-        if (!allowed(path))
-          context.addIssue({
-            code: "custom",
-            path: [key, path],
-            message: "Every file must match allowedFiles."
-          });
-    if (spec.solutionFiles[spec.entry] === undefined)
-      context.addIssue({
-        code: "custom",
-        path: ["solutionFiles"],
-        message: "The solution must contain the entry file."
-      });
+    for (const issue of assignmentSpecIssues(spec))
+      context.addIssue({ code: "custom", ...issue });
   });
+
+/** Learner request: the files of one try, under a client-made attempt key. */
+export const submitAssignmentRequestSchema = z
+  .object({
+    attemptKey: z.uuid(),
+    files: assignmentFilesSchema
+  })
+  .strict();
+
+export const assignmentCheckResultSchema = z
+  .object({
+    attemptNumber: z.number().int().positive(),
+    outcome: z.enum(["passed", "failed"]),
+    score: z.number().min(0).max(1),
+    checks: z
+      .array(
+        z
+          .object({
+            label: z.string().min(1).max(200),
+            passed: z.boolean(),
+            hint: z.string().max(600).optional()
+          })
+          .strict()
+      )
+      .max(100)
+  })
+  .strict();
+export type SubmitAssignmentRequest = z.infer<
+  typeof submitAssignmentRequestSchema
+>;
+export type AssignmentCheckResult = z.infer<typeof assignmentCheckResultSchema>;
+export type FileAssignmentValidation = z.infer<
+  typeof fileAssignmentValidationSchema
+>;
 
 export type AssignmentCheck = z.infer<typeof assignmentCheckSchema>;
 export type FileAssignmentSpec = z.infer<typeof fileAssignmentSpecSchema>;

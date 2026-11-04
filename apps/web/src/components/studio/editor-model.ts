@@ -2,7 +2,7 @@ import { itemAt } from "../../lib/item-at";
 import {
   courseManifestV1Schema,
   type CourseManifestV1,
-  type ManifestActivity
+  type ManifestQuizActivity
 } from "@platform/contracts";
 export function blankCourse(): CourseManifestV1 {
   return {
@@ -14,10 +14,10 @@ export function blankCourse(): CourseManifestV1 {
   };
 }
 export function newActivity(
-  type: ManifestActivity["type"],
+  type: ManifestQuizActivity["type"],
   slug = "",
   skillKeys: string[] = []
-): ManifestActivity {
+): ManifestQuizActivity {
   const base = { slug, title: "", instructions: "", skillKeys };
   if (type === "quiz.short_text")
     return {

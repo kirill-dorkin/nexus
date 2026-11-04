@@ -57,7 +57,7 @@ export class LearnerLearningService {
       const submission = await this.database.userTransaction(
         { userId },
         async (tx) => {
-          const target = await this.quizTarget(
+          const target = await this.ownActivityTarget(
             tx,
             userId,
             organizationSlug,
@@ -83,7 +83,7 @@ export class LearnerLearningService {
       const recorded = await this.database.userTransaction(
         { userId },
         async (tx) => {
-          const target = await this.quizTarget(
+          const target = await this.ownActivityTarget(
             tx,
             userId,
             organizationSlug,
@@ -122,7 +122,8 @@ export class LearnerLearningService {
       throw error;
     }
   }
-  private async quizTarget(
+  /** The caller's own published activity on an open offering, with its active enrollment. */
+  async ownActivityTarget(
     tx: DatabaseTransaction,
     userId: string,
     organizationSlug: string,

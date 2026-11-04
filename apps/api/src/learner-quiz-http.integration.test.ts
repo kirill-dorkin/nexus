@@ -19,6 +19,7 @@ import {
 } from "./request-context/platform-principal";
 import { OutboxRepository } from "./outbox/outbox.repository";
 import { ValidatorRegistry } from "./modules/learning-validation/domain/validator-registry";
+import type { ManifestQuizActivity } from "@platform/contracts";
 function env(name: string) {
   const v = process.env[name];
   if (!v) throw Error(`${name} required`);
@@ -101,7 +102,7 @@ describe("deterministic learner quiz HTTP + PostgreSQL boundary", () => {
       )
     );
     manifest.course.slug = `entry-course-${randomUUID()}`;
-    const first = manifest.activities[0]!;
+    const first = manifest.activities[0] as ManifestQuizActivity;
     first.validation.explanation = "PRIVATE QUIZ EXPLANATION " + randomUUID();
     manifest.activities.push(
       {

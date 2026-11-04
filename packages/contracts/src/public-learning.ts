@@ -83,6 +83,25 @@ export const publicQuizActivitySchema = z.discriminatedUnion("type", [
     .strict(),
   z.object({ ...activityBase, type: z.literal("quiz.short_text") }).strict()
 ]);
+/** ADR-0073: what a learner sees of a file assignment — never its checks or solution. */
+export const publicAssignmentActivitySchema = z
+  .object({
+    slug: resourceSlugSchema,
+    title,
+    instructions: z.string().max(20000),
+    question: z.null(),
+    type: z.literal("assignment.files"),
+    lang: z.literal("html"),
+    entry: z.string().min(1).max(200),
+    starterFiles: z.record(z.string().max(200), z.string().max(204800)),
+    allowedFiles: z.array(z.string().min(1).max(200)).min(1).max(50),
+    checkLabels: z.array(z.string().min(1).max(200)).max(100)
+  })
+  .strict();
+export const publicLessonActivitySchema = z.union([
+  publicQuizActivitySchema,
+  publicAssignmentActivitySchema
+]);
 export const publicLessonBlockSchema = z.discriminatedUnion("type", [
   z
     .object({
@@ -102,7 +121,7 @@ export const publicLessonBlockSchema = z.discriminatedUnion("type", [
       title: title.nullable(),
       kind: z.enum(["practice", "homework"]),
       required: z.boolean(),
-      activity: publicQuizActivitySchema
+      activity: publicLessonActivitySchema
     })
     .strict()
 ]);
@@ -122,3 +141,7 @@ export type PublicLearningCourse = z.infer<typeof publicLearningCourseSchema>;
 export type PublicLearningCatalog = z.infer<typeof publicLearningCatalogSchema>;
 export type PublicLearningLesson = z.infer<typeof publicLearningLessonSchema>;
 export type PublicQuizActivity = z.infer<typeof publicQuizActivitySchema>;
+export type PublicAssignmentActivity = z.infer<
+  typeof publicAssignmentActivitySchema
+>;
+export type PublicLessonActivity = z.infer<typeof publicLessonActivitySchema>;

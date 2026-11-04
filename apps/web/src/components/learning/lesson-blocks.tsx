@@ -66,15 +66,26 @@ export function LessonBlocks({
                 {block.activity.instructions ? (
                   <SafeMarkdown>{block.activity.instructions}</SafeMarkdown>
                 ) : null}
-                <SafeMarkdown>{block.activity.question}</SafeMarkdown>
-                <QuizForm
-                  key={`${organizationSlug}/${offeringSlug}/${lesson.slug}/${block.activity.slug}`}
-                  activity={block.activity}
-                  organizationSlug={organizationSlug}
-                  offeringSlug={offeringSlug}
-                  courseSlug={courseSlug}
-                  lessonSlug={lesson.slug}
-                />
+                {block.activity.type === "assignment.files" ? (
+                  // The upload form arrives with spec WP-5 step 4.
+                  <ul aria-label="Что проверим">
+                    {block.activity.checkLabels.map((label) => (
+                      <li key={label}>{label}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <>
+                    <SafeMarkdown>{block.activity.question}</SafeMarkdown>
+                    <QuizForm
+                      key={`${organizationSlug}/${offeringSlug}/${lesson.slug}/${block.activity.slug}`}
+                      activity={block.activity}
+                      organizationSlug={organizationSlug}
+                      offeringSlug={offeringSlug}
+                      courseSlug={courseSlug}
+                      lessonSlug={lesson.slug}
+                    />
+                  </>
+                )}
               </Stack>
             </Surface>
           </section>

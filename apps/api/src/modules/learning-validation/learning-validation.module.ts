@@ -1,3 +1,4 @@
+import { AssignmentValidationApplicationService } from "./application/assignment-validation.service";
 import { QuizValidationApplicationService } from "./application/quiz-validation.service";
 import { Module } from "@nestjs/common";
 
@@ -29,6 +30,7 @@ import { LearningValidationController } from "./learning-validation.controller";
   ],
   controllers: [LearningValidationController, GraderJobController],
   providers: [
+    AssignmentValidationApplicationService,
     QuizValidationApplicationService,
     ValidationApplicationService,
     GraderJobApplicationService,
@@ -44,6 +46,7 @@ import { LearningValidationController } from "./learning-validation.controller";
     }
   ],
   exports: [
+    AssignmentValidationApplicationService,
     QuizValidationApplicationService,
     ValidationApplicationService,
     GraderJobApplicationService

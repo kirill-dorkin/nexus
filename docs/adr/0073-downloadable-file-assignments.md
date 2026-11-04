@@ -33,7 +33,7 @@ ADR-0072 made the static checks a shared package (`@platform/checks`) with a ser
 
 The same function runs in the browser (preliminary, labelled as such) and in the API (trusted). JavaScript and SQL assignments are not part of this version: they need execution and stay browser practice until a separate decision.
 
-**Upload limits** (checked in the browser and again on the server): at most 50 files, 200 KB per file, 1 MB in total; UTF-8 text; paths relative, without `..`, backslashes or empty segments, at most 5 levels, matching `allowedFiles`; the entry file must be present. Larger pages are refused before parsing (`MAX_SERVER_PAGE_LENGTH`), and markup deeper than `MAX_TREE_DEPTH` is refused, as in ADR-0072.
+**Upload limits** (checked in the browser and again on the server): at most 50 files, 200 KB per file, 512 KB in total (half the API body limit of 1 MB, so the JSON-escaped files always fit); UTF-8 text; paths relative, without `..`, backslashes or empty segments, at most 5 levels, matching `allowedFiles`; the entry file must be present. Larger pages are refused before parsing (`MAX_SERVER_PAGE_LENGTH`), and markup deeper than `MAX_TREE_DEPTH` is refused, as in ADR-0072.
 
 **Lifecycle.** A learner submission is an Attempt with one Submission whose payload is `{ files }` (ADR-0018). The server evaluation is a ValidationResult from the versioned validator `assignment.files@1` and is normalized into Evidence for the activity's skills, like quizzes (ADR-0056). An infrastructure failure is `system_error`, never a learner failure. Publication refuses an assignment whose `solutionFiles` do not pass its own checks.
 

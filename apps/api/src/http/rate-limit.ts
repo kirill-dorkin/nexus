@@ -21,6 +21,9 @@ export const RATE_LIMIT_RULES = {
   ],
   "auth.register": [{ scope: "ip", limit: 5, windowSeconds: 3600 }],
   "learning.quiz_check": [{ scope: "ip", limit: 120, windowSeconds: 600 }],
+  "learning.assignment_submit": [
+    { scope: "ip", limit: 30, windowSeconds: 600 }
+  ],
   "telemetry.web": [{ scope: "ip", limit: 60, windowSeconds: 60 }]
 } as const satisfies Record<
   string,

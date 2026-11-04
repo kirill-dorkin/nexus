@@ -97,9 +97,10 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
     const r = await tx.client.query<{ incompatible: boolean }>(
       `SELECT EXISTS (SELECT 1 FROM learning_content.course_version_activities a
         WHERE a.organization_id=$1 AND a.course_version_id=$2 AND
-          (a.activity_type NOT IN ('quiz.single_choice','quiz.multiple_choice','quiz.short_text')
+          (a.activity_type NOT IN ('quiz.single_choice','quiz.multiple_choice','quiz.short_text','assignment.files')
            OR a.config <> jsonb_build_object('presentation',a.config->'presentation','validation',jsonb_build_object('validatorKey',a.activity_type,'validatorVersion',1,'config','{}'::jsonb))
-           OR NOT EXISTS (SELECT 1 FROM learning_content.quiz_validation_configs q WHERE q.organization_id=$1 AND q.activity_version_id=a.id)))
+           OR (a.activity_type<>'assignment.files' AND NOT EXISTS (SELECT 1 FROM learning_content.quiz_validation_configs q WHERE q.organization_id=$1 AND q.activity_version_id=a.id))
+           OR (a.activity_type='assignment.files' AND NOT EXISTS (SELECT 1 FROM learning_content.assignment_check_configs c WHERE c.organization_id=$1 AND c.activity_version_id=a.id))))
         OR EXISTS (SELECT 1 FROM learning_content.course_version_skill_remediations WHERE organization_id=$1 AND course_version_id=$2)
         OR EXISTS (SELECT 1 FROM learning_content.activity_skill_mappings WHERE organization_id=$1 AND course_version_id=$2 AND role<>'primary')
         OR EXISTS (SELECT 1 FROM learning_content.guided_build_definitions d JOIN learning_content.course_version_activities a ON a.organization_id=d.organization_id AND a.id=d.activity_version_id WHERE a.organization_id=$1 AND a.course_version_id=$2) AS incompatible`,
@@ -166,6 +167,10 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
     );
     await tx.client.query(
       "DELETE FROM learning_content.quiz_validation_configs WHERE organization_id=$1 AND course_version_id=$2",
+      [org, version]
+    );
+    await tx.client.query(
+      "DELETE FROM learning_content.assignment_check_configs WHERE organization_id=$1 AND course_version_id=$2",
       [org, version]
     );
     await tx.client.query(
@@ -265,8 +270,11 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
         ),
         "the activity version"
       ).id;
+      // Protected: quiz answer keys and assignment checks/solutions (ADR-0073).
       await tx.client.query(
-        "INSERT INTO learning_content.quiz_validation_configs (organization_id,course_version_id,activity_version_id,config) VALUES ($1,$2,$3,$4::jsonb)",
+        activity.type === "assignment.files"
+          ? "INSERT INTO learning_content.assignment_check_configs (organization_id,course_version_id,activity_version_id,config) VALUES ($1,$2,$3,$4::jsonb)"
+          : "INSERT INTO learning_content.quiz_validation_configs (organization_id,course_version_id,activity_version_id,config) VALUES ($1,$2,$3,$4::jsonb)",
         [org, version, snapshot, JSON.stringify(activity.validation)]
       );
       for (const skillKey of activity.skillKeys) {
@@ -381,11 +389,12 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
       validation: unknown;
       skillKeys: string[];
     }>(
-      `SELECT a.slug,a.activity_type AS type,a.title,a.instructions,a.config->'presentation' AS presentation,q.config AS validation,
+      `SELECT a.slug,a.activity_type AS type,a.title,a.instructions,a.config->'presentation' AS presentation,coalesce(q.config,ac.config) AS validation,
         ARRAY(SELECT s.skill_key FROM learning_content.activity_skill_mappings m JOIN learning_content.skills s ON s.organization_id=m.organization_id AND s.id=m.skill_id
           JOIN learning_content.course_version_skills vs ON vs.organization_id=m.organization_id AND vs.course_version_id=m.course_version_id AND vs.skill_id=m.skill_id
           WHERE m.organization_id=a.organization_id AND m.course_version_id=a.course_version_id AND m.activity_id=a.activity_id ORDER BY vs.position,s.skill_key) AS "skillKeys"
         FROM learning_content.course_version_activities a LEFT JOIN learning_content.quiz_validation_configs q ON q.organization_id=a.organization_id AND q.activity_version_id=a.id
+        LEFT JOIN learning_content.assignment_check_configs ac ON ac.organization_id=a.organization_id AND ac.activity_version_id=a.id
         WHERE a.organization_id=$1 AND a.course_version_id=$2 ORDER BY a.position,a.slug`,
       [org, version]
     );
@@ -486,6 +495,10 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
     );
     await tx.client.query(
       "INSERT INTO learning_content.quiz_validation_configs (organization_id,course_version_id,activity_version_id,config) SELECT q.organization_id,$3,target.id,q.config FROM learning_content.quiz_validation_configs q JOIN learning_content.course_version_activities a ON a.organization_id=q.organization_id AND a.id=q.activity_version_id JOIN learning_content.course_version_activities target ON target.organization_id=a.organization_id AND target.course_version_id=$3 AND target.activity_id=a.activity_id WHERE q.organization_id=$1 AND q.course_version_id=$2",
+      [org, source, version]
+    );
+    await tx.client.query(
+      "INSERT INTO learning_content.assignment_check_configs (organization_id,course_version_id,activity_version_id,config) SELECT c.organization_id,$3,target.id,c.config FROM learning_content.assignment_check_configs c JOIN learning_content.course_version_activities a ON a.organization_id=c.organization_id AND a.id=c.activity_version_id JOIN learning_content.course_version_activities target ON target.organization_id=a.organization_id AND target.course_version_id=$3 AND target.activity_id=a.activity_id WHERE c.organization_id=$1 AND c.course_version_id=$2",
       [org, source, version]
     );
   }

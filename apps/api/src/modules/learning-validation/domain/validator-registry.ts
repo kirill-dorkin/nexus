@@ -2,7 +2,10 @@ import { Injectable } from "@nestjs/common";
 import type { ValidationEvidenceTrust } from "@platform/contracts";
 
 export type ValidatorRecordingAuthority =
-  "authorized_user" | "system" | "deterministic_quiz";
+  | "authorized_user"
+  | "system"
+  | "deterministic_quiz"
+  | "deterministic_assignment";
 
 export type ValidatorDefinition = Readonly<{
   key: string;
@@ -24,6 +27,13 @@ const validatorDefinitions: readonly ValidatorDefinition[] = [
       evidenceTrust: "trusted" as const
     })
   ),
+  // ADR-0073: static HTML/CSS checks of uploaded files; nothing is executed.
+  {
+    key: "assignment.files",
+    version: 1,
+    recordingAuthority: "deterministic_assignment",
+    evidenceTrust: "trusted"
+  },
   {
     key: "manual-review",
     version: 1,

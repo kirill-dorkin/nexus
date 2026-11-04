@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException
@@ -19,6 +20,7 @@ import { AuthorizationApplicationService } from "../../authorization/application
 import { IdentityApplicationService } from "../../identity/application/identity.service";
 import { LearningContentRepository } from "./learning-content.repository";
 import { CourseManifestRepository } from "./course-manifest.repository";
+import { assignmentSolutionProblems } from "../domain/assignment-solution.policy";
 
 @Injectable()
 export class CourseManifestApplicationService {
@@ -80,6 +82,12 @@ export class CourseManifestApplicationService {
         state.draftVersionId
       );
     await this.manifests.requireCompatibleSkills(tx, org, manifest);
+    const unsolved = assignmentSolutionProblems(manifest);
+    if (unsolved.length)
+      throw new BadRequestException({
+        message: "An assignment's reference solution fails its own checks.",
+        assignments: unsolved
+      });
     if (state)
       await this.manifests.requireCompatibleActivityIdentities(
         tx,
