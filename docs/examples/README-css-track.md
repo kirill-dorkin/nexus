@@ -38,6 +38,6 @@ npx vitest run packages/contracts/src/css-track-manifest.test.ts apps/web/src/co
 ## Правила авторинга
 
 - Карточки пишутся через `prop`, `sel`, `at`, `fn`, `val` и `idea` из [`css-course/kit.mjs`](css-course/kit.mjs). Превью собирает `page(css, html)`.
-- Проверка задания `css(selector, property, label, { value | includes | within })` читает таблицу стилей ученика статически, через `apps/web/src/components/learning/css-rules.ts`. Перед сравнением значения нормализуются: нижний регистр, пробелы вокруг запятых, скобок и `/`. Вложенность `&` и @-правила учитываются, их задаёт `within`.
+- Проверка задания `css(selector, property, label, { value | includes | within })` читает таблицу стилей ученика статически, через `packages/checks/src/css-rules.ts` (`@platform/checks`, ADR-0072). Перед сравнением значения нормализуются: нижний регистр, пробелы вокруг запятых, скобок и `/`. Вложенность `&` и @-правила учитываются, их задаёт `within`.
 - Решение каждого задания проходит все проверки, а стартовый код хотя бы одну не проходит. Это проверяет тест.
 - Markdown уроков рендерится без GFM, а разметку в вопросах пишут в обратных кавычках.
