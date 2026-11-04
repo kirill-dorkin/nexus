@@ -57,6 +57,17 @@ export class LearnerLearningController {
       parseRequest(resourceSlugSchema, offeringSlug)
     );
   }
+  @Get(":organizationSlug/:offeringSlug/skills")
+  @Header("Cache-Control", "no-store")
+  skills(
+    @Param("organizationSlug") organizationSlug: string,
+    @Param("offeringSlug") offeringSlug: string
+  ) {
+    return this.learning.skills(
+      parseRequest(organizationSlugSchema, organizationSlug),
+      parseRequest(resourceSlugSchema, offeringSlug)
+    );
+  }
   @Post(":organizationSlug/:offeringSlug/enrollment")
   @UseGuards(BrowserWriteOriginGuard)
   @HttpCode(200)

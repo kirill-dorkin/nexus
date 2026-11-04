@@ -10,6 +10,7 @@ import { browserApiRequest } from "../../lib/public-api";
 import { learningLoginUrl } from "../../lib/learning-return-to";
 import { courseUrl, lessonUrl } from "../../lib/public-learning-routes";
 import { CourseProgress } from "./course-progress";
+import { CourseSkills } from "./course-skills";
 import {
   Alert,
   Button,
@@ -194,6 +195,13 @@ export function LearnerEntry({
                       Моё обучение
                     </Link>
                   </div>
+                  {!lessonSlug && (
+                    <CourseSkills
+                      organizationSlug={organizationSlug}
+                      offeringSlug={offeringSlug}
+                      version={version}
+                    />
+                  )}
                 </>
               ) : learning.entry.membershipStatus === "none" ? (
                 learning.entry.customerEntryPolicy === "open" ? (
