@@ -3,7 +3,12 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { browserApiRequest } from "../../../lib/public-api";
-import { json, learnerCourse, progress } from "../../../test/fixtures";
+import {
+  courseSkills,
+  json,
+  learnerCourse,
+  progress
+} from "../../../test/fixtures";
 import { MyLearning } from "./my-learning";
 
 vi.mock("../../../lib/public-api", () => ({
@@ -67,7 +72,11 @@ describe("MyLearning", () => {
 
   it("lists courses with a summary and the next step for each", async () => {
     routes({
-      "/v1/me/learning": [json(200, { courses: [html, css], nextCursor: null })]
+      "/v1/me/learning": [
+        json(200, { courses: [html, css], nextCursor: null })
+      ],
+      "/v1/me/learning/acme/web/skills": [json(200, courseSkills())],
+      "/v1/me/learning/acme/css/skills": [json(200, { skills: [] })]
     });
     render(<MyLearning />);
 
@@ -83,6 +92,10 @@ describe("MyLearning", () => {
     expect(
       within(second!).getByRole("link", { name: /Вернуться к материалам/ })
     ).toHaveAttribute("href", "/learn/acme/css/intro");
+    expect(
+      await within(first!).findByText("Освоено навыков: 1 из 3")
+    ).toBeInTheDocument();
+    expect(within(second!).queryByText(/Освоено навыков/)).toBeNull();
   });
 
   it("loads the next page without duplicating a course", async () => {
