@@ -397,3 +397,55 @@
 .quest[data-done] .skillTitle {
   color: var(--text-secondary);
 }
+
+.scene {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.scene summary {
+  width: fit-content;
+  cursor: pointer;
+  color: var(--action-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.sceneLines {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sceneLine {
+  display: grid;
+  gap: 0.1rem;
+  padding: var(--space-2) var(--space-3);
+  border-left: 3px solid var(--speaker);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: var(--surface-subtle);
+  color: var(--text-primary);
+}
+
+.speaker {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--speaker);
+}
+
+.sceneLabel {
+  margin: var(--space-3) 0 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.restored {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--action-primary) 10%, transparent);
+}
