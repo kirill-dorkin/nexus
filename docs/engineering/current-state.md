@@ -10,7 +10,7 @@ Last maintained: 2026-11-04.
 
 | | |
 |---|---|
-| `main` head | `64a791e` — #164, NestJS 12 and pino 10 (2026-11-04) |
+| `main` head | `199f95f` — #166, revert of NestJS 12 after a production API outage (2026-11-04) |
 | Latest migration | `000047_lesson_chapters.sql` |
 | Quality gates | Local before every push: `pnpm check` (brand isolation, Prettier, ESLint strict type-checked + React + jsx-a11y strict + Next, typecheck incl. API operator scripts and root tests, unit and component tests, Web coverage floors). GitHub CI: brand isolation, Prettier, typecheck, unit, integration, launch-performance, browser-launch and Playwright end-to-end tests (axe on every page). No lint baseline: every violation fails. |
 | Latest ADR | ADR-0068 Managed-academy Organization provisioning (renumbered); newest decision ADR-0067 |
@@ -121,7 +121,7 @@ Nexus has no external API clients yet, so a cleanup slice could close these wind
 
 ## Next recommended slice
 
-**Follow [`docs/roadmap/product-development-spec.md`](../roadmap/product-development-spec.md)** (2026-11-04): the capability audit, the architecture findings A1–A7 and the next epics. Start with Э0 (close the F4 compatibility windows, a module-boundary architecture test, the Projects → Integrations port, ADR decisions on the unused outbox relay and the unstarted GitHub processors, ADR-0060 acceptance), then Э1 step 1.1 — downloadable assignments checked in the browser and stored as Submissions.
+**Follow [`docs/roadmap/product-development-spec.md`](../roadmap/product-development-spec.md)** (v2, 2026-11-04): capability audit, findings A1–A11, autonomous-work rules and work packages. Order: WP-1 production reliability and security (smoke waits for the release, Web security headers, rate limiting), WP-2 architecture hygiene, WP-3 learner skill progress, WP-4 shared `@platform/checks`, WP-5 downloadable assignments with trusted HTML/CSS checks.
 
 The web quality program ([`web-quality-program.md`](web-quality-program.md)) is complete. The four route courses (HTML, CSS, JavaScript, SQL) are published.
 
