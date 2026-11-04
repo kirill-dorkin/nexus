@@ -1,15 +1,14 @@
 {
   "version": 1,
   "unlockShare": 0.5,
-  "masteredScore": 0.8,
-  "maxLevel": 10,
+  "maxLevel": 100,
   "characters": [
     {
       "slug": "pc",
       "name": "ПК",
       "role": "Знаток компьютера",
       "summary": "Как устроен компьютер: детали, память и файлы, загрузка системы и путь от клика до результата.",
-      "accent": "slate",
+      "accent": "rose",
       "published": false,
       "branches": [
         {
@@ -46,7 +45,7 @@
       "name": "Браузер",
       "role": "Проводник по вебу",
       "summary": "Что происходит между адресной строкой и готовой страницей, и какими инструментами пользуется веб-разработчик.",
-      "accent": "sky",
+      "accent": "blue",
       "published": true,
       "branches": [
         {

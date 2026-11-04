@@ -13,7 +13,7 @@ export const outputPath = join(
 
 /** Pure: the map for the given config and manifest reader. Throws on any inconsistency. */
 export function buildSkillMap(
-  { characters, requires, unlockShare, masteredScore, maxLevel } = config,
+  { characters, requires, unlockShare, maxLevel } = config,
   readManifest = (name) =>
     JSON.parse(readFileSync(join(examples, name), "utf8"))
 ) {
@@ -112,7 +112,6 @@ export function buildSkillMap(
   return {
     version: 1,
     unlockShare,
-    masteredScore,
     maxLevel,
     characters: result
   };

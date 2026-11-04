@@ -1,3 +1,4 @@
+import { SKILL_MAP } from "../lib/skill-map/skill-map";
 import type { MetadataRoute } from "next";
 import { blogArticles } from "../lib/blog";
 import { loadLearningCatalog } from "../lib/public-learning";
@@ -9,6 +10,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: absoluteUrl("/"), changeFrequency: "weekly", priority: 1 },
     { url: absoluteUrl("/courses"), changeFrequency: "weekly", priority: 0.9 },
     { url: absoluteUrl("/blog"), changeFrequency: "weekly", priority: 0.8 },
+    {
+      url: absoluteUrl("/characters"),
+      changeFrequency: "weekly",
+      priority: 0.8
+    },
+    ...SKILL_MAP.characters.map((character) => ({
+      url: absoluteUrl(`/characters/${character.slug}`),
+      changeFrequency: "weekly" as const,
+      priority: 0.7
+    })),
     ...blogArticles.map((article) => ({
       url: absoluteUrl(`/blog/${article.slug}`),
       lastModified: new Date(article.updatedAt),

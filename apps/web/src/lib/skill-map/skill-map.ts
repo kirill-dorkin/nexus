@@ -1,10 +1,17 @@
 import data from "./skill-map.json";
+import {
+  isActive,
+  skillFreshness,
+  type Freshness,
+  type FreshnessState
+} from "./freshness";
 
 /**
  * The skill map (ADR-0074): characters a learner levels up, each a set of the organization's
  * skills grouped into branches. Built from course manifests by docs/examples/skill-map/build.mjs.
- * It is presentation only: progress is read from the learner's Mastery, and "locked" is advice,
- * never an access rule (Enrollment and Entitlement still decide access).
+ * Progress is derived from the learner's confirmations (`skill-freshness@1`). "Locked" means a
+ * skill cannot be confirmed yet; lessons stay readable and access is still decided by Enrollment
+ * and Entitlement. Until the map moves into Learning Content the lock is shown, not enforced.
  */
 export type SkillMapLesson = { course: string; slug: string; title: string };
 export type SkillMapSkill = {
@@ -31,8 +38,8 @@ export type Character = {
 };
 export type SkillMap = {
   version: 1;
+  /** Share of a required branch that must be active before a branch opens. */
   unlockShare: number;
-  masteredScore: number;
   maxLevel: number;
   characters: Character[];
 };
@@ -46,117 +53,142 @@ export function findCharacter(
   return map.characters.find((c) => c.slug === slug);
 }
 
-/** The learner's Mastery of one skill, as the API reports it; absent means no Evidence yet. */
-export type SkillMastery = {
-  masteryScore: number | null;
-  evidenceCount: number;
-};
-export type MasteryByKey = ReadonlyMap<string, SkillMastery>;
+/** The learner's confirmations of one skill: UTC days with passing Evidence (API). */
+export type SkillRecord = { confirmedDays: readonly string[] };
+export type RecordsByKey = ReadonlyMap<string, SkillRecord>;
 
-export type SkillState = "locked" | "open" | "progress" | "mastered";
+/**
+ * `locked`: a required branch is not active enough, so the skill cannot be confirmed yet (it can
+ * still be studied). `open`: ready to confirm. Then the freshness states of `skill-freshness@1`.
+ */
+export type SkillState = "locked" | "open" | Exclude<Freshness, "unconfirmed">;
+
+export type SkillProgress = {
+  skill: SkillMapSkill;
+  state: SkillState;
+  freshness: FreshnessState;
+};
 
 export type BranchProgress = {
   branch: SkillMapBranch;
   unlocked: boolean;
-  mastered: number;
-  states: SkillState[];
+  active: number;
+  skills: SkillProgress[];
 };
+
+export const RANKS = [
+  { from: 0, title: "Новичок" },
+  { from: 20, title: "Ученик" },
+  { from: 40, title: "Практик" },
+  { from: 60, title: "Мастер" },
+  { from: 80, title: "Эксперт" },
+  { from: 95, title: "Легенда" }
+] as const;
+
+export function rankOf(level: number): string {
+  let title: string = RANKS[0].title;
+  for (const rank of RANKS) if (level >= rank.from) title = rank.title;
+  return title;
+}
 
 export type CharacterProgress = {
   character: Character;
+  /** 0…maxLevel: share of active skills. Falls when skills are forgotten. */
   level: number;
   maxLevel: number;
-  /** Sum of mastery scores × 100. */
+  rank: string;
+  /** Never decreases: 100 for a first confirmation, 25 for each spaced repeat. */
   xp: number;
-  maxXp: number;
-  mastered: number;
+  active: number;
+  fading: number;
+  forgotten: number;
   total: number;
-  /** Mastered skills still needed to reach the next level; 0 at the top. */
-  toNextLevel: number;
   branches: BranchProgress[];
-  /** First skill to learn: not mastered, in the first unlocked branch with work left. */
-  next: { branch: SkillMapBranch; skill: SkillMapSkill } | null;
+  /**
+   * What to do next: repeat a fading skill first, then recall a forgotten one, then confirm the
+   * first open skill.
+   */
+  next: {
+    action: "repeat" | "recall" | "confirm";
+    skill: SkillMapSkill;
+  } | null;
 };
 
-const isMastered = (m: SkillMastery | undefined, target: number) =>
-  m?.masteryScore != null && m.masteryScore >= target;
-
-/** Share of a branch's skills the learner has mastered. */
-function branchShare(
-  branch: SkillMapBranch,
-  mastery: MasteryByKey,
-  target: number
-) {
-  const done = branch.skills.filter((s) =>
-    isMastered(mastery.get(s.key), target)
-  ).length;
-  return branch.skills.length === 0 ? 1 : done / branch.skills.length;
-}
+const NO_RECORD: SkillRecord = { confirmedDays: [] };
 
 export function characterProgress(
   character: Character,
-  mastery: MasteryByKey,
+  records: RecordsByKey,
+  today: string,
   map: SkillMap = SKILL_MAP
 ): CharacterProgress {
+  const freshnessOf = (key: string) =>
+    skillFreshness((records.get(key) ?? NO_RECORD).confirmedDays, today);
   const branchById = new Map(
     map.characters.flatMap((c) => c.branches.map((b) => [b.id, b] as const))
   );
+  const activeShare = (branch: SkillMapBranch) =>
+    branch.skills.length === 0
+      ? 1
+      : branch.skills.filter((s) => isActive(freshnessOf(s.key).state)).length /
+        branch.skills.length;
+
   const branches = character.branches.map((branch): BranchProgress => {
     const unlocked = branch.requires.every((id) => {
       const required = branchById.get(id);
-      return (
-        required === undefined ||
-        branchShare(required, mastery, map.masteredScore) >= map.unlockShare
-      );
+      return required === undefined || activeShare(required) >= map.unlockShare;
     });
-    const states = branch.skills.map((skill): SkillState => {
-      const m = mastery.get(skill.key);
-      if (isMastered(m, map.masteredScore)) return "mastered";
-      if (m !== undefined && m.evidenceCount > 0) return "progress";
-      return unlocked ? "open" : "locked";
+    const skills = branch.skills.map((skill): SkillProgress => {
+      const freshness = freshnessOf(skill.key);
+      const state: SkillState =
+        freshness.state !== "unconfirmed"
+          ? freshness.state
+          : unlocked
+            ? "open"
+            : "locked";
+      return { skill, state, freshness };
     });
     return {
       branch,
       unlocked,
-      mastered: states.filter((s) => s === "mastered").length,
-      states
+      active: skills.filter((s) => isActive(s.freshness.state)).length,
+      skills
     };
   });
-  const skills = character.branches.flatMap((b) => b.skills);
-  const total = skills.length;
-  const mastered = branches.reduce((sum, b) => sum + b.mastered, 0);
-  const xp = Math.round(
-    skills.reduce(
-      (sum, s) => sum + (mastery.get(s.key)?.masteryScore ?? 0),
-      0
-    ) * 100
-  );
+
+  const all = branches.flatMap((b) => b.skills);
+  const total = all.length;
+  const active = all.filter((s) => isActive(s.freshness.state)).length;
   const level =
-    total === 0 ? 0 : Math.floor((mastered / total) * map.maxLevel + 1e-9);
-  const toNextLevel =
-    level >= map.maxLevel
-      ? 0
-      : Math.ceil(((level + 1) / map.maxLevel) * total - 1e-9) - mastered;
-  let next: CharacterProgress["next"] = null;
-  for (const progress of branches) {
-    if (!progress.unlocked) continue;
-    const skill = progress.branch.skills.find(
-      (_, index) => progress.states[index] !== "mastered"
-    );
-    if (skill) {
-      next = { branch: progress.branch, skill };
-      break;
-    }
-  }
+    total === 0 ? 0 : Math.floor((active / total) * map.maxLevel + 1e-9);
+  const xp = character.branches
+    .flatMap((b) => b.skills)
+    .reduce((sum, skill) => {
+      const n = new Set((records.get(skill.key) ?? NO_RECORD).confirmedDays)
+        .size;
+      return sum + (n === 0 ? 0 : 100 + 25 * (n - 1));
+    }, 0);
+  const find = (state: SkillState) => all.find((s) => s.state === state)?.skill;
+  const repeat = find("fading");
+  const recall = find("forgotten");
+  const confirm = find("open");
+  const next = repeat
+    ? { action: "repeat" as const, skill: repeat }
+    : recall
+      ? { action: "recall" as const, skill: recall }
+      : confirm
+        ? { action: "confirm" as const, skill: confirm }
+        : null;
   return {
     character,
     level,
     maxLevel: map.maxLevel,
+    rank: rankOf(level),
     xp,
-    maxXp: total * 100,
-    mastered,
+    active,
+    fading: all.filter((s) => s.state === "fading").length,
+    forgotten: all.filter((s) => s.state === "forgotten").length,
     total,
-    toNextLevel,
     branches,
     next
   };
@@ -174,7 +206,9 @@ export function requiredCharacters(
     character.branches
       .flatMap((b) => b.requires)
       .map((id) => owner.get(id))
-      .filter((c): c is Character => c !== undefined && c !== character)
+      .filter(
+        (c): c is Character => c !== undefined && c.slug !== character.slug
+      )
   );
   return map.characters.filter((c) => needed.has(c));
 }

@@ -6,8 +6,7 @@ import {
   characterProgress,
   findCharacter,
   requiredCharacters,
-  type SkillMap,
-  type SkillMastery
+  type SkillMap
 } from "./skill-map";
 
 // The builder is plain JavaScript beside the course sources (docs/examples is not typed).
@@ -96,7 +95,6 @@ describe("skill map data (ADR-0074)", () => {
         }
       ],
       unlockShare: 0.5,
-      masteredScore: 0.8,
       maxLevel: 10
     };
     const manifest = {
@@ -142,8 +140,7 @@ describe("skill map data (ADR-0074)", () => {
 const tiny: SkillMap = {
   version: 1,
   unlockShare: 0.5,
-  masteredScore: 0.8,
-  maxLevel: 10,
+  maxLevel: 100,
   characters: [
     {
       slug: "base",
@@ -186,68 +183,111 @@ const tiny: SkillMap = {
     }
   ]
 };
-const top = tiny.characters[1]!;
 const base = tiny.characters[0]!;
-const mastery = (entries: Record<string, SkillMastery>) =>
-  new Map(Object.entries(entries));
+const top = tiny.characters[1]!;
+const records = (entries: Record<string, string[]>) =>
+  new Map(
+    Object.entries(entries).map(([key, confirmedDays]) => [
+      key,
+      { confirmedDays }
+    ])
+  );
+const today = "2026-11-05";
 
 describe("character progress", () => {
-  it("starts at level 0 with a locked branch until its requirement is half mastered", () => {
-    const fresh = characterProgress(top, mastery({}), tiny);
+  it("starts at level 0; a branch stays locked until half of its requirement is active", () => {
+    const fresh = characterProgress(top, records({}), today, tiny);
     expect(fresh.level).toBe(0);
-    expect(fresh.xp).toBe(0);
+    expect(fresh.rank).toBe("Новичок");
     expect(fresh.branches[0]!.unlocked).toBe(false);
-    expect(fresh.branches[0]!.states[0]).toBe("locked");
+    expect(fresh.branches[0]!.skills[0]!.state).toBe("locked");
     expect(fresh.next).toBeNull();
 
     const half = characterProgress(
       top,
-      mastery({ b1: { masteryScore: 0.9, evidenceCount: 1 } }),
+      records({ b1: ["2026-11-04"] }),
+      today,
       tiny
     );
     expect(half.branches[0]!.unlocked).toBe(true);
-    expect(half.next?.skill.key).toBe("t0");
+    expect(half.next).toMatchObject({
+      action: "confirm",
+      skill: { key: "t0" }
+    });
   });
 
-  it("counts mastered skills into levels and evidence into progress", () => {
+  it("counts only active skills into the level, and forgetting lowers it", () => {
     const progress = characterProgress(
       top,
-      mastery({
-        b1: { masteryScore: 1, evidenceCount: 1 },
-        t0: { masteryScore: 1, evidenceCount: 2 },
-        t1: { masteryScore: 0.8, evidenceCount: 1 },
-        t2: { masteryScore: 0.5, evidenceCount: 1 },
-        t3: { masteryScore: null, evidenceCount: 1 }
+      records({
+        b1: ["2026-11-04"],
+        t0: ["2026-11-04"],
+        t1: ["2026-10-30"],
+        t2: ["2026-10-01"]
       }),
+      today,
       tiny
     );
-    expect(progress.mastered).toBe(2);
-    expect(progress.level).toBe(2);
-    expect(progress.toNextLevel).toBe(1);
-    expect(progress.xp).toBe(230);
-    expect(progress.maxXp).toBe(1000);
-    expect(progress.branches[0]!.states.slice(0, 5)).toEqual([
-      "mastered",
-      "mastered",
-      "progress",
-      "progress",
-      "open"
-    ]);
-    expect(progress.next?.skill.key).toBe("t2");
+    expect(
+      progress.branches[0]!.skills.slice(0, 4).map((s) => s.state)
+    ).toEqual(["confirmed", "fading", "forgotten", "open"]);
+    expect(progress.active).toBe(2);
+    expect(progress.level).toBe(20);
+    expect(progress.rank).toBe("Ученик");
+    expect(progress.fading).toBe(1);
+    expect(progress.forgotten).toBe(1);
+    expect(progress.xp).toBe(300);
+    expect(progress.next).toMatchObject({
+      action: "repeat",
+      skill: { key: "t1" }
+    });
   });
 
-  it("reaches the top level with every skill mastered", () => {
-    const all = Object.fromEntries(
-      ["b1", "b2"].map((k) => [k, { masteryScore: 1, evidenceCount: 1 }])
+  it("recalls a forgotten skill before confirming new ones", () => {
+    const progress = characterProgress(
+      top,
+      records({ b1: ["2026-11-04"], t3: ["2026-09-01"] }),
+      today,
+      tiny
     );
-    const progress = characterProgress(base, mastery(all), tiny);
-    expect(progress.level).toBe(10);
-    expect(progress.toNextLevel).toBe(0);
+    expect(progress.next).toMatchObject({
+      action: "recall",
+      skill: { key: "t3" }
+    });
+  });
+
+  it("keeps experience from spaced repeats even after a skill is forgotten", () => {
+    const progress = characterProgress(
+      base,
+      records({ b1: ["2026-01-01", "2026-01-04", "2026-01-11"] }),
+      today,
+      tiny
+    );
+    expect(progress.forgotten).toBe(1);
+    expect(progress.level).toBe(0);
+    expect(progress.xp).toBe(150);
+  });
+
+  it("reaches the top level and rank with every skill active", () => {
+    const progress = characterProgress(
+      base,
+      records({ b1: ["2026-11-04"], b2: ["2026-11-05"] }),
+      today,
+      tiny
+    );
+    expect(progress.level).toBe(100);
+    expect(progress.rank).toBe("Легенда");
     expect(progress.next).toBeNull();
   });
 
   it("names the characters a character builds on", () => {
     expect(requiredCharacters(top, tiny).map((c) => c.slug)).toEqual(["base"]);
+    // A copy (as passed from a server page to a client one) still excludes itself.
+    expect(
+      requiredCharacters(structuredClone(findCharacter("html")!)).map(
+        (c) => c.slug
+      )
+    ).toEqual(["browser", "js"]);
     expect(requiredCharacters(findCharacter("js")!).map((c) => c.slug)).toEqual(
       ["html", "css"]
     );

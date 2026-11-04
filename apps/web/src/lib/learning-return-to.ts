@@ -11,6 +11,10 @@ export function safeLearningReturnTo(value: unknown): string {
   }
   if (value === "/me/learning") return value;
   if (typeof value !== "string" || value.length > 220) return "/me/learning";
+  // Characters (ADR-0074): /characters and /characters/{character}.
+  if (value === "/characters") return value;
+  const character = /^\/characters\/([^/]+)$/.exec(value);
+  if (character) return isResourceSlug(character[1]) ? value : "/me/learning";
   // Stable course addresses (ADR-0061): /courses/{course} and /courses/{course}/{lesson}.
   // Optional groups that did not match are undefined at runtime,
   // although RegExpExecArray types every group as a string.
