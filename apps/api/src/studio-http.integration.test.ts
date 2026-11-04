@@ -7,7 +7,8 @@ import {
   studioCourseListSchema,
   studioDraftSchema,
   type CourseManifestV1,
-  type StudioDraft
+  type StudioDraft,
+  currentRegistrationConsents
 } from "@platform/contracts";
 import {
   createDatabasePool,
@@ -103,7 +104,8 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
         headers: { origin },
         payload: {
           email: `studio-${randomUUID()}@example.test`,
-          password: "StudioIntegration!12345"
+          password: "StudioIntegration!12345",
+          consents: currentRegistrationConsents()
         }
       });
       expect(r.statusCode, r.body).toBe(201);
@@ -318,7 +320,8 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
       headers: { origin },
       payload: {
         email: `new-learner-${randomUUID()}@example.test`,
-        password: "StudioIntegration!12345"
+        password: "StudioIntegration!12345",
+        consents: currentRegistrationConsents()
       }
     });
     expect(registration.statusCode).toBe(201);

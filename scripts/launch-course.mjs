@@ -152,7 +152,16 @@ for (let tries = 0; tries < (fromEnv ? 1 : 5) && !auth?.ok; tries++) {
   }
   auth = await api("POST", "auth/login", { email, password });
   if (auth.status === 401) {
-    auth = await api("POST", "auth/register", { email, password });
+    // The operator accepts the current legal documents when the script creates the account.
+    // Keep in sync with CURRENT_LEGAL_DOCUMENT_VERSIONS (tests/legal-consent-versions.test.ts).
+    auth = await api("POST", "auth/register", {
+      email,
+      password,
+      consents: [
+        { document: "terms", version: "placeholder-2026-11-04" },
+        { document: "personal_data", version: "placeholder-2026-11-04" }
+      ]
+    });
     if (auth.ok) console.log("  Создан новый аккаунт.");
     else if (auth.status === 409) {
       console.log("  Аккаунт с этой почтой уже есть, но пароль не подошёл.");

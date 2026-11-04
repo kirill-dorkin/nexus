@@ -75,6 +75,10 @@ test.describe.serial("a registered learner", () => {
     await page.getByLabel("Имя").fill(learner.name);
     await page.getByLabel("Электронная почта").fill(learner.email);
     await page.getByLabel("Пароль", { exact: true }).fill(learner.password);
+    await page.getByRole("checkbox", { name: /условия использования/ }).check();
+    await page
+      .getByRole("checkbox", { name: /обработку персональных данных/ })
+      .check();
     await page.getByRole("button", { name: "Создать аккаунт" }).click();
 
     await expect(page).toHaveURL(lesson);
