@@ -1,6 +1,6 @@
 # ADR-0060: External login identities reuse the canonical Nexus session
 
-- Status: Proposed
+- Status: Accepted (2026-11-04)
 - Date: 2026-10-13
 
 ## Decision
@@ -20,3 +20,7 @@ The Web login and registration modes share the same provider actions because the
 Deployments must register exact callback URLs `/v1/auth/oauth/google/callback` and `/v1/auth/oauth/github/callback` under `OAUTH_CALLBACK_ORIGIN` and provide the matching client ID/secret pairs. Social login on arbitrary Preview hostnames is intentionally unavailable unless that environment has a stable configured origin and dedicated provider callbacks.
 
 Email-based automatic linking is limited to provider-verified addresses. Account unlinking, multiple identities from the same provider per user, organization-managed SSO and cross-device preference synchronization remain separate reviewed changes.
+
+## Acceptance — 2026-11-04
+
+Accepted as implemented: Google and GitHub sign-in with PKCE issue the same Nexus session as password login, provider tokens are not stored, and an incomplete client pair hides that provider (`vercel-services.md`).

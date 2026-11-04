@@ -30,7 +30,12 @@ export type GitHubProjectFactDeliveryClaim = Readonly<{
 export type GitHubProjectFactProcessingOutcome =
   "blocked" | "retryable" | "completed" | "rejected" | "dead_letter";
 
-export abstract class GitHubProjectFactDeliveryRepository {
+/**
+ * What Projects may do with GitHub project-fact deliveries owned by
+ * Integrations (ADR-0031): claim one under a lease and record the outcome.
+ * Projects depends on this port, never on the Integrations tables.
+ */
+export abstract class GitHubProjectFactDeliveryPort {
   abstract claim(
     transaction: DatabaseTransaction,
     input: Readonly<{ leaseToken: string; leaseSeconds: number }>
