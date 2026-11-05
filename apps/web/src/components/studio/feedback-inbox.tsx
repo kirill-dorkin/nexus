@@ -65,29 +65,47 @@ export function FeedbackInbox({ organizationId }: { organizationId: string }) {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState<string | null>(null);
 
-  const load = useCallback(
+  const fetchPage = useCallback(
     async (after: string | null) => {
       const query = new URLSearchParams();
       if (filter !== "all") query.set("status", filter);
       if (after) query.set("after", after);
-      const page = feedbackReportListSchema.parse(
+      return feedbackReportListSchema.parse(
         await studioRequest(
           `organizations/${organizationId}/feedback?${query.toString()}`
         )
       );
-      setReports((current) =>
-        after ? [...(current ?? []), ...page.reports] : page.reports
-      );
-      setNext(page.nextCursor);
     },
     [filter, organizationId]
   );
 
   useEffect(() => {
-    setReports(null);
-    setError(null);
-    load(null).catch((e: unknown) => setError(failure(e)));
-  }, [load]);
+    let cancelled = false;
+    async function initial() {
+      try {
+        const page = await fetchPage(null);
+        if (cancelled) return;
+        setReports(page.reports);
+        setNext(page.nextCursor);
+      } catch (e) {
+        if (!cancelled) setError(failure(e));
+      }
+    }
+    void initial();
+    return () => {
+      cancelled = true;
+    };
+  }, [fetchPage]);
+
+  async function more(after: string) {
+    try {
+      const page = await fetchPage(after);
+      setReports((current) => [...(current ?? []), ...page.reports]);
+      setNext(page.nextCursor);
+    } catch (e) {
+      setError(failure(e));
+    }
+  }
 
   async function changeStatus(report: FeedbackReport, status: FeedbackStatus) {
     setSaving(report.id);
@@ -123,9 +141,11 @@ export function FeedbackInbox({ organizationId }: { organizationId: string }) {
         Показать
         <Select
           value={filter}
-          onChange={(event) =>
-            setFilter(event.target.value as FeedbackStatus | "all")
-          }
+          onChange={(event) => {
+            setReports(null);
+            setError(null);
+            setFilter(event.target.value as FeedbackStatus | "all");
+          }}
         >
           <option value="all">Все</option>
           {STATUSES.map((status) => (
@@ -189,12 +209,7 @@ export function FeedbackInbox({ organizationId }: { organizationId: string }) {
         ))}
       </ul>
       {next && (
-        <Button
-          variant="secondary"
-          onClick={() => {
-            load(next).catch((e: unknown) => setError(failure(e)));
-          }}
-        >
+        <Button variant="secondary" onClick={() => void more(next)}>
           Показать ещё
         </Button>
       )}
