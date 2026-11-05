@@ -53,8 +53,14 @@ export function findCharacter(
   return map.characters.find((c) => c.slug === slug);
 }
 
-/** The learner's confirmations of one skill: UTC days with passing Evidence (API). */
-export type SkillRecord = { confirmedDays: readonly string[] };
+/**
+ * The learner's confirmations of one skill: UTC days with passing Evidence (API, the latest 30)
+ * and, when the API sent it, `skill-freshness@1` computed over the whole history (ADR-0076).
+ */
+export type SkillRecord = {
+  confirmedDays: readonly string[];
+  freshness?: FreshnessState | undefined;
+};
 export type RecordsByKey = ReadonlyMap<string, SkillRecord>;
 
 /**
@@ -122,8 +128,10 @@ export function characterProgress(
   today: string,
   map: SkillMap = SKILL_MAP
 ): CharacterProgress {
-  const freshnessOf = (key: string) =>
-    skillFreshness((records.get(key) ?? NO_RECORD).confirmedDays, today);
+  const freshnessOf = (key: string) => {
+    const record = records.get(key) ?? NO_RECORD;
+    return record.freshness ?? skillFreshness(record.confirmedDays, today);
+  };
   const branchById = new Map(
     map.characters.flatMap((c) => c.branches.map((b) => [b.id, b] as const))
   );

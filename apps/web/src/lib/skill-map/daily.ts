@@ -37,7 +37,8 @@ export function dailyQuests(
 ): DailyQuest[] {
   const confirmedToday = (key: string) =>
     records.get(key)?.confirmedDays.includes(today) ?? false;
-  // Skills confirmed today read as they were yesterday, so finishing a quest keeps it on the list.
+  // Skills confirmed today read as they were yesterday, so finishing a quest keeps it on the list;
+  // freshness is recomputed from the days for that view.
   const before = new Map(
     [...records].map(([key, record]) => [
       key,

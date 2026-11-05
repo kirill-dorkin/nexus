@@ -16,8 +16,10 @@ ADR-0074, as amended, computes freshness in Web from the confirmation days retur
    - an earlier confirmation only restarts the term;
    - relearning after forgetting steps down.
    Inputs are the distinct UTC days with passing Evidence for the skill.
-2. Web keeps its copy (`apps/web/src/lib/skill-map/freshness.ts`) for display. A shared fixture of day sequences and expected states runs against both implementations, so they cannot drift.
-3. `GET /v1/me/skills/{org}` adds `freshness: { policy, state, step, dueOn, forgottenAfter }` per skill. Web prefers it when present.
+2. One implementation, so the API and Web cannot drift: `packages/contracts/src/skill-freshness.ts`. It is zod-free and exported from `@platform/contracts` and `@platform/contracts/browser`.
+3. `GET /v1/me/skills/{org}` adds `freshness: { policy, state, step, dueOn, forgottenAfter }` per skill.
+   - The API computes it over **every** confirmation day; `confirmedDays` in the response stays capped at the latest 30.
+   - Web prefers the API value and recomputes from the days only when it is absent.
 4. Nothing is stored. Changing the policy means a new version (`skill-freshness@2`) chosen explicitly, never silent recomputation of old meanings.
 
 ## Consequences
