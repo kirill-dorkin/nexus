@@ -56,4 +56,4 @@ So a learner's level in a subject can be read from existing Mastery. No new lear
 - Characters cost no migration and no new projection. The history of every learner already counts towards their levels.
 - Courses stay the content source. A course page can show which characters it levels up.
 - A skill added to a manifest must be placed in a character, otherwise the build fails. A course republish therefore also needs the map rebuilt.
-- Pricing by character needs its own decision: Products and Entitlements still grant Offerings, not characters (see `docs/roadmap/characters-spec.md`, section 6).
+- Pricing by character needs its own decision: Products and Entitlements still grant Offerings, not characters (see `docs/product/game-design.md`, section 6).

@@ -73,6 +73,31 @@ Components are Server Components unless they need the browser. A file gets `"use
 | JavaScript, LCP and CLS budgets per page | `tests/e2e/budgets.ts`, CI |
 | Client errors and Web Vitals in production logs | ADR-0067 |
 
+### Lint policy
+
+`eslint.config.mjs` applies one policy to the whole workspace:
+
+- **TypeScript:** `strictTypeChecked` + `stylisticTypeChecked` with type information from each package's `tsconfig.json`, plus exhaustive `switch`, `eqeqeq` and no `console.log`.
+- **Web and `@platform/ui`:** React hooks including the React Compiler rules, `jsx-a11y` **strict**, Next.js core-web-vitals.
+- **Scripts and course builders:** plain-JS recommended rules.
+
+The rules that are relaxed are relaxed in one place with a written reason: `type` over `interface`, decorated NestJS modules, async React event props, `||` on strings and booleans, scrollable regions as focus targets, and a short list for test files (deliberately malformed input, vitest mocks, `process.env` restoration). An inline `eslint-disable` must name its rule and say why (dialog backdrop clicks, intentional control-character regex, declaration merging, focus on the safe choice of a confirmation).
+
+Lint runs locally through `pnpm check` before every push (see `../engineering/development-workflow.md`), not on GitHub-hosted runners, because type-aware lint needs about 3 GB of memory.
+
+There is no lint baseline any more: phase 0 kept the React Compiler findings in `eslint-suppressions.json` until phase 3 fixed them, and the file was then deleted. Every violation fails `pnpm check`.
+
+Phase 0 also made two blind spots type-checked: the operator scripts in `apps/api/ops/` (their own `tsconfig.json`, part of `@platform/api` typecheck) and the root-level tests and Vitest configs (root `tsconfig.json`, part of `pnpm typecheck`). Both had type errors that nothing had reported.
+
+### Web Definition of Done
+
+A Web change is done when, in addition to `CONTRIBUTING.md`:
+
+- `pnpm lint` and `pnpm typecheck` pass with no new suppressions;
+- new interactive behaviour has a component test and new routes are covered by an end-to-end path;
+- data from the API or from authored content is parsed with a `@platform/contracts` schema before use, never cast;
+- controls are reachable and operable by keyboard, with visible focus and accessible names.
+
 ## Adding a page
 
 1. Add the route under `app/`. Public data: a `cache()`d loader in `lib/` that parses with a contract schema; signed-in data: a client component with `useApiResource`.

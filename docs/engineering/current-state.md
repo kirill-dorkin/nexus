@@ -45,7 +45,7 @@ Each row is implemented on `main`. The ADRs hold the details; the backend areas 
 | Learner skills | `GET /v1/me/learning/{org}/{offering}/skills` returns the caller's own skill states for an active/completed Enrollment (own Enrollment is the authority, like own quiz checks; no role needed); the course page shows «Навыки курса», «Моё обучение» shows mastered skills per course (score ≥ readiness target 0.8). Presentation of existing Mastery only | 0023, 0055 |
 | Learning route | Web orders the home catalog HTML → CSS → JavaScript → SQL, shows each course's prerequisites, outcome and next course, and links the last lesson to the next course. Presentation only | 0066 |
 | Stable course addresses | Home-organization courses live at `/courses/{course}` (course slug, survives new versions); Delivery resolves the newest public Offering; old Offering addresses redirect permanently | 0061 |
-| Characters (stage 1) | Every technology is a character (ПК, Браузер, HTML, CSS, JavaScript, SQL) built from course manifests by `docs/examples/skill-map/build.mjs`. Skill state comes from `skill-freshness@1` over passing Evidence days: confirmed → fading → forgotten, with terms 3/7/21/60/180/365 days. Level 0–100 counts active skills. `/characters` shows the roster with «Сегодня» (player level, streak, daily quests); `/characters/{slug}` shows the skill tree. Confirmations are read from `GET /v1/me/skills/{org}`. The confirmation lock is shown, not yet enforced. Plan: `docs/roadmap/characters-spec.md`, story: `docs/story/season-1.md` | 0074 |
+| Characters (stage 1) | Every technology is a character (ПК, Браузер, HTML, CSS, JavaScript, SQL) built from course manifests by `docs/examples/skill-map/build.mjs`. Skill state comes from `skill-freshness@1` over passing Evidence days: confirmed → fading → forgotten, with terms 3/7/21/60/180/365 days. Level 0–100 counts active skills. `/characters` shows the roster with «Сегодня» (player level, streak, daily quests); `/characters/{slug}` shows the skill tree. Confirmations are read from `GET /v1/me/skills/{org}`. The confirmation lock is shown, not yet enforced. Design: `docs/product/game-design.md`, story: `docs/story/season-1.md` | 0074 |
 | Studio | Manual and JSON authoring over the same draft, preview, export, publication, Offering visibility, Organization customer-entry policy | 0057 |
 | Web UI | `@platform/ui` + design tokens, light/dark themes with accents, public shell, Blog/SEO surfaces, `/ui` gallery | 0059 |
 | Sign-in | Password, optional Google/GitHub OAuth (PKCE) on the same Nexus session | 0060 |
@@ -119,17 +119,15 @@ Still open, needs an owner-approved migration (irreversible):
 
 Historical outbox rows (including old `attempt.submitted`) are immutable and are not rewritten.
 
-## Open work on GitHub (as of 2026-11-04)
+## Open work on GitHub (as of 2026-11-05)
 
+- **#200** — full ПК and Браузер character courses (in CI). The owner publishes them after merge.
+- **Owner decisions:** #170 (course completion), #171 (funnel), #172 (email and password reset), #174 (legal skeleton) — drafts, not to merge without the owner.
 - **#46** (gVisor provider, Draft since 2026-09-16): superseded by #45, which is merged; the owner closes it.
-- **Dependabot:** none open. NestJS packages arrive as one group; TypeScript ≥7 is held until typescript-eslint and `@nestjs/swagger` support it; major `@types/node` bumps are ignored while the runtime is Node 24.
+- **Dependabot:** NestJS packages arrive as one group; TypeScript ≥7 is held until typescript-eslint and `@nestjs/swagger` support it; major `@types/node` bumps are ignored while the runtime is Node 24.
 
 ## Next recommended slice
 
-**Follow [`docs/roadmap/master-plan.md`](../roadmap/master-plan.md)** (2026-11-05): everything left, grouped by area (game core, content, infrastructure, trust, testers, subscription, analytics), in five phases with owner decisions. Phase 1: the skill test (ADR-0075), the skill map in Learning Content (ADR-0078) and the server-side prerequisite lock (ADR-0077).
+**Follow the working spec [`docs/roadmap/spec.md`](../roadmap/spec.md)** (2026-11-05). The game design behind it is [`docs/product/game-design.md`](../product/game-design.md); the season-1 script is [`docs/story/season-1.md`](../story/season-1.md). Finished plans are in [`docs/archive/`](../archive/README.md).
 
-**Follow [`docs/roadmap/product-development-spec.md`](../roadmap/product-development-spec.md)** (v2, 2026-11-04): capability audit, findings A1–A11, autonomous-work rules and work packages. Order: WP-1 production reliability and security (smoke waits for the release, Web security headers, rate limiting), WP-2 architecture hygiene, WP-3 learner skill progress, WP-4 shared `@platform/checks`, WP-5 downloadable assignments with trusted HTML/CSS checks.
-
-The web quality program ([`web-quality-program.md`](web-quality-program.md)) is complete. The four route courses (HTML, CSS, JavaScript, SQL) are published.
-
-Not selected (do not start without an explicit decision): grader production activation, refunds/subscriptions/coupons, more recommendation policies, telemetry backend, load planning.
+Started only after an owner decision (spec section 5): grader in production, subscriptions and prices, a second payment provider, the email provider, background-process hosting.
