@@ -22,10 +22,10 @@ const flag = (name, fallback) => {
   const i = args.indexOf(name);
   return i >= 0 && args[i + 1] ? args.splice(i, 2)[1] : fallback;
 };
-const ORIGIN = flag(
-  "--origin",
-  "https://nexus-lake-nine-17.vercel.app"
-).replace(/\/$/, "");
+const ORIGIN = flag("--origin", "https://www.dorkin.academy").replace(
+  /\/$/,
+  ""
+);
 const ORG_SLUG = flag("--org-slug", "nexus");
 const ORG_NAME = flag("--org-name", "Nexus");
 const OFFERING_SLUG = flag("--offering-slug", null);

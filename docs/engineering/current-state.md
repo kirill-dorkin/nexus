@@ -6,15 +6,15 @@ It is **not live telemetry**. Before working, check the current `main`, open PRs
 
 ## Snapshot
 
-Last maintained: 2026-11-04.
+Last maintained: 2026-11-05.
 
 | | |
 |---|---|
-| `main` head | `199f95f` — #166, revert of NestJS 12 after a production API outage (2026-11-04) |
-| Latest migration | `000052_identity_legal_consents.sql` (append-only registration consents, ADR-0083); `000051_skill_maps.sql` (skill maps, versions and prerequisites, ADR-0078); `000050_skill_tests.sql` (skill test banks and draws, ADR-0075). Both additive; nothing reads them yet |
+| `main` head | `28bcfa4` — #208, beta wave-1 kit (2026-11-05). Production `/v1/health` reports this release |
+| Latest migration | `000052_identity_legal_consents.sql` (append-only registration consents, ADR-0083); `000051_skill_maps.sql` (skill maps, versions and prerequisites, ADR-0078); `000050_skill_tests.sql` (skill test banks and draws, ADR-0075). Both additive; nothing reads them on `main` yet (readers are in `wip/skill-test-api` and `wip/skill-map-api`) |
 | Quality gates | Local before every push: `pnpm check` (brand isolation, Prettier, ESLint strict type-checked + React + jsx-a11y strict + Next, typecheck incl. API operator scripts and root tests, unit and component tests, Web coverage floors). GitHub CI: brand isolation, Prettier, typecheck, unit, integration, launch-performance, browser-launch and Playwright end-to-end tests (axe on every page). No lint baseline: every violation fails. |
-| Latest ADR | ADR-0083 Recorded legal consent at registration (ADR-0080–0082 are open Proposed drafts #170–#172) |
-| Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058). Each push to `main` runs `deploy-production.yml`: migrate with `platform_migrator`, then the Vercel deploy hook (ADR-0079). Daily GitHub-hosted read-only smoke against the production domain |
+| Latest ADR | ADR-0083 Recorded legal consent at registration. ADR-0079 Migrate production before every deploy of `main`. ADR-0075–0078 (skill tests, server freshness, prerequisite lock, map in Learning Content) are accepted |
+| Production | `https://www.dorkin.academy` (the apex `dorkin.academy` and the old `nexus-lake-nine-17.vercel.app` redirect to it; DNS at Namecheap). Vercel Services Web + API with managed PostgreSQL (ADR-0058). Each push to `main` runs `deploy-production.yml`: migrate with `platform_migrator`, then the Vercel deploy hook (ADR-0079). Daily GitHub-hosted read-only smoke against the production domain |
 | Learner-code execution | **Disabled in production.** Grader artifacts exist in the repository but need a separate activation (exact image digest + green real-cluster verification). |
 | Published content | Route «Веб-разработка с нуля» (HTML and CSS carry 7 + 6 optional file assignments from 2026-11-04 once republished): `html`, `css`, `js`, `sql` manifests in `docs/examples/`, published in production. The four-lesson `computer-basics-first-course` manifest is not published. Check Studio for current versions. |
 
@@ -122,15 +122,42 @@ Historical outbox rows (including old `attempt.submitted`) are immutable and are
 
 ## Open work on GitHub (as of 2026-11-05)
 
-- **#200** — full ПК and Браузер character courses (in CI). The owner publishes them after merge.
-- **Owner decisions:** #170 (course completion), #171 (funnel), #172 (email and password reset), #174 (legal skeleton) — drafts, not to merge without the owner.
-- **#46** (gVisor provider, Draft since 2026-09-16): superseded by #45, which is merged; the owner closes it.
-- **Dependabot:** NestJS packages arrive as one group; TypeScript ≥7 is held until typescript-eslint and `@nestjs/swagger` support it; major `@types/node` bumps are ignored while the runtime is Node 24.
+Open PRs (all Draft):
+
+- **#200**: full ПК and Браузер character courses. Conflicts with `main`, so merge `main` into it first. The owner publishes the courses after merge.
+- **#174**: legal pages and recorded registration consent (ADR-0083, migration 000052). Needs the owner's texts.
+- **#207**: specification of the learning beta (`docs/roadmap/beta-launch.md` exists only in that PR).
+- **Owner decisions:** #170 (course completion, ADR-0080), #172 (email and password reset, ADR-0082). #171 (funnel, ADR-0081) is superseded for now by the analytics branch (ADR-0084).
+
+Branches without a PR. These are saved work from abandoned local sessions: not reviewed, `pnpm check` not run.
+
+| Branch | What | Number |
+|---|---|---|
+| `analytics/collection` | lesson views, steps and active time | ADR-0084, 000053 |
+| `wip/feedback-module` | in-product feedback (beta B1.3) | ADR-0085, 000054 |
+| `wip/skill-test-api` | skill tests from the protected bank (ADR-0075) | — |
+| `wip/skill-map-api` | skill map API and Web loader (ADR-0078) | — |
+| `wip/html-skill-test-bank` | HTML skill test banks m02–m03 | — |
+
+### Reserved numbers
+
+Take the next number after this table and add a row (see `development-workflow.md` §4a).
+
+| Number | Branch |
+|---|---|
+| ADR-0080, 0081, 0082 | #170, #171, #172 |
+| ADR-0083, migration 000052 | #174 legal consent |
+| ADR-0084, migration 000053 | `analytics/collection` |
+| ADR-0085, migration 000054 | `wip/feedback-module` |
+
+Dependabot: NestJS packages arrive as one group. TypeScript ≥7 is held until typescript-eslint and `@nestjs/swagger` support it. Major `@types/node` bumps are ignored while the runtime is Node 24.
 
 ## Next recommended slice
 
-**Priority (owner, 2026-11-05): the closed learning beta.** 20 learners study and test; the product grows from their feedback. Wave-1 kit: [`docs/beta/`](../beta/README.md) (owner checklist, 4-week HTML/CSS plans, texts, coordinator guide). Next code: B1.3 feedback in the product, then B1.1/B1.2 participation and week counters (`docs/roadmap/beta-launch.md`). Game packages of `spec.md` are paused until two beta weeks are reviewed.
+**Priority (owner, 2026-11-05): bring the project into order, then launch free self-study courses for anyone.**
 
-**Follow the working spec [`docs/roadmap/spec.md`](../roadmap/spec.md)** (2026-11-05). The game design behind it is [`docs/product/game-design.md`](../product/game-design.md); the season-1 script is [`docs/story/season-1.md`](../story/season-1.md). Finished plans are in [`docs/archive/`](../archive/README.md).
+1. Bring the project into order: save abandoned work, fix numbering and stale documents. This PR does that.
+2. Prepare the launch: the domain `dorkin.academy`, legal texts and consent (#174), learning analytics (`analytics/collection`), and the ПК and Браузер courses (#200).
+3. Let people in. Grow the reference courses one character at a time, in the order the data shows.
 
-Started only after an owner decision (spec section 5): grader in production, subscriptions and prices, a second payment provider, the email provider, background-process hosting.
+On hold until there are learners and data: the story layer on top of the courses, prices and subscriptions, the grader in production, a second payment provider, the email provider, and hosting for background processes. The game packages of [`docs/roadmap/spec.md`](../roadmap/spec.md) stay paused. The game design is in [`docs/product/game-design.md`](../product/game-design.md), the season-1 script in [`docs/story/season-1.md`](../story/season-1.md). Finished plans are in [`docs/archive/`](../archive/README.md).
