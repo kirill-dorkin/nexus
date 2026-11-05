@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 import { expectAccessible } from "../a11y";
-import { newLearner } from "../fixtures/accounts";
+import { acceptLegalDocuments, newLearner } from "../fixtures/accounts";
 
 // ADR-0073: a learner downloads a file assignment, uploads the work and sees
 // what to fix; a correct try is accepted. Runs against the real API.
@@ -18,6 +18,7 @@ test("a learner downloads, uploads and fixes a file assignment", async ({
   await page.getByLabel("Имя").fill(learner.name);
   await page.getByLabel("Электронная почта").fill(learner.email);
   await page.getByLabel("Пароль", { exact: true }).fill(learner.password);
+  await acceptLegalDocuments(page);
   await page.getByRole("button", { name: "Создать аккаунт" }).click();
   await expect(page).toHaveURL(lesson);
 
