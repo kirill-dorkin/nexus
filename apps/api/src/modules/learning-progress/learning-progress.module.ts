@@ -6,6 +6,8 @@ import { OwnSkillsApplicationService } from "./application/own-skills.service";
 import { SkillConfirmationRepository } from "./application/skill-confirmation.repository";
 import { PostgresSkillConfirmationRepository } from "./infrastructure/postgres-skill-confirmation.repository";
 import { Module } from "@nestjs/common";
+import { SkillTestDrawsPort } from "./application/skill-test-draws.port";
+import { PostgresSkillTestDrawsRepository } from "./infrastructure/postgres-skill-test-draws.repository";
 
 import { OutboxModule } from "../../outbox/outbox.module";
 import { AuthorizationModule } from "../authorization/authorization.module";
@@ -97,7 +99,11 @@ import { MasteryController } from "./mastery.controller";
       provide: LearningProgressRepository,
       useClass: PostgresLearningProgressRepository
     },
-    { provide: MasteryRepository, useClass: PostgresMasteryRepository }
+    { provide: MasteryRepository, useClass: PostgresMasteryRepository },
+    {
+      provide: SkillTestDrawsPort,
+      useClass: PostgresSkillTestDrawsRepository
+    }
   ],
   exports: [
     QuizSubmissionCommand,
@@ -110,7 +116,8 @@ import { MasteryController } from "./mastery.controller";
     TrustedValidationEvidenceSink,
     TrustedValidationEvidenceQuery,
     ReadinessEvidenceQuery,
-    MasteryQuery
+    MasteryQuery,
+    SkillTestDrawsPort
   ]
 })
 export class LearningProgressModule {}

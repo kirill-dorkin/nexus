@@ -24,6 +24,8 @@ export const RATE_LIMIT_RULES = {
   "learning.assignment_submit": [
     { scope: "ip", limit: 30, windowSeconds: 600 }
   ],
+  // ADR-0075: starting and submitting skill tests.
+  "learning.skill_test": [{ scope: "ip", limit: 60, windowSeconds: 600 }],
   "telemetry.web": [{ scope: "ip", limit: 60, windowSeconds: 60 }]
 } as const satisfies Record<
   string,

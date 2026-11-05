@@ -6,6 +6,11 @@ import {
 } from "./assignment";
 
 import { resourceSlugSchema, uuidSchema } from "./common";
+import {
+  manifestSkillTestSchema,
+  SKILL_TEST,
+  skillTestIssues
+} from "./skill-test";
 
 const title = z.string().trim().min(1).max(200);
 const key = z
@@ -165,131 +170,159 @@ export const manifestActivitySchema = z.discriminatedUnion("type", [
     })
 ]);
 
+export type CourseManifestOptions = {
+  /**
+   * Questions a skill bank needs (ADR-0075). Only test fixtures lower it; it never goes
+   * below the size of one draw.
+   */
+  minQuestionsPerSkill?: number;
+};
+
 /** Array order is canonical position; no UUID/actor/organization authority in a manifest. */
-export const courseManifestV1Schema = z
-  .object({
-    schemaVersion: z.literal(1),
-    course: z
-      .object({
-        slug: resourceSlugSchema,
-        title,
-        description: z.string().max(5000).default("")
-      })
-      .strict(),
-    skills: z
-      .array(
-        z
-          .object({
-            key: resourceSlugSchema,
-            title,
-            description: z.string().max(5000).default("")
-          })
-          .strict()
-      )
-      .max(500),
-    activities: z.array(manifestActivitySchema).max(1000),
-    lessons: z.array(manifestLessonSchema).min(1).max(200)
-  })
-  .strict()
-  .superRefine((manifest, context) => {
-    const issue = (path: (string | number)[], message: string) =>
-      context.addIssue({ code: "custom", path, message });
-    function unique(
-      values: string[],
-      path: (string | number)[],
-      field?: string
-    ) {
-      const seen = new Set<string>();
-      values.forEach((value, index) => {
-        if (seen.has(value))
-          issue(
-            [...path, index, ...(field ? [field] : [])],
-            `Duplicate ${field ?? "reference"}: ${value}.`
-          );
-        seen.add(value);
-      });
-      return seen;
-    }
-    const skills = unique(
-      manifest.skills.map((s) => s.key),
-      ["skills"],
-      "key"
-    );
-    const activities = unique(
-      manifest.activities.map((a) => a.slug),
-      ["activities"],
-      "slug"
-    );
-    unique(
-      manifest.lessons.map((l) => l.slug),
-      ["lessons"],
-      "slug"
-    );
-    manifest.activities.forEach((activity, index) => {
-      unique(activity.skillKeys, ["activities", index, "skillKeys"]);
-      activity.skillKeys.forEach((skill, position) => {
-        if (!skills.has(skill))
-          issue(
-            ["activities", index, "skillKeys", position],
-            `Unknown course skill: ${skill}.`
-          );
-      });
-      if (
-        activity.type === "quiz.single_choice" ||
-        activity.type === "quiz.multiple_choice"
+export const courseManifestV1SchemaWith = (
+  options: CourseManifestOptions = {}
+) =>
+  z
+    .object({
+      schemaVersion: z.literal(1),
+      course: z
+        .object({
+          slug: resourceSlugSchema,
+          title,
+          description: z.string().max(5000).default("")
+        })
+        .strict(),
+      skills: z
+        .array(
+          z
+            .object({
+              key: resourceSlugSchema,
+              title,
+              description: z.string().max(5000).default("")
+            })
+            .strict()
+        )
+        .max(500),
+      activities: z.array(manifestActivitySchema).max(1000),
+      lessons: z.array(manifestLessonSchema).min(1).max(200),
+      /** ADR-0075: the protected question bank of each tested skill. */
+      skillTests: z.array(manifestSkillTestSchema).max(500).optional()
+    })
+    .strict()
+    .superRefine((manifest, context) => {
+      const issue = (path: (string | number)[], message: string) =>
+        context.addIssue({ code: "custom", path, message });
+      function unique(
+        values: string[],
+        path: (string | number)[],
+        field?: string
       ) {
-        const options = unique(
-          activity.presentation.options.map((o) => o.id),
-          ["activities", index, "presentation", "options"],
-          "id"
-        );
-        if (activity.type === "quiz.single_choice") {
-          if (!options.has(activity.validation.correctOptionId))
+        const seen = new Set<string>();
+        values.forEach((value, index) => {
+          if (seen.has(value))
             issue(
-              ["activities", index, "validation", "correctOptionId"],
-              "Correct option must exist in presentation.options."
+              [...path, index, ...(field ? [field] : [])],
+              `Duplicate ${field ?? "reference"}: ${value}.`
             );
-        } else {
-          unique(activity.validation.correctOptionIds, [
-            "activities",
-            index,
-            "validation",
-            "correctOptionIds"
-          ]);
-          activity.validation.correctOptionIds.forEach((id, position) => {
-            if (!options.has(id))
+          seen.add(value);
+        });
+        return seen;
+      }
+      const skills = unique(
+        manifest.skills.map((s) => s.key),
+        ["skills"],
+        "key"
+      );
+      const activities = unique(
+        manifest.activities.map((a) => a.slug),
+        ["activities"],
+        "slug"
+      );
+      unique(
+        manifest.lessons.map((l) => l.slug),
+        ["lessons"],
+        "slug"
+      );
+      manifest.activities.forEach((activity, index) => {
+        unique(activity.skillKeys, ["activities", index, "skillKeys"]);
+        activity.skillKeys.forEach((skill, position) => {
+          if (!skills.has(skill))
+            issue(
+              ["activities", index, "skillKeys", position],
+              `Unknown course skill: ${skill}.`
+            );
+        });
+        if (
+          activity.type === "quiz.single_choice" ||
+          activity.type === "quiz.multiple_choice"
+        ) {
+          const options = unique(
+            activity.presentation.options.map((o) => o.id),
+            ["activities", index, "presentation", "options"],
+            "id"
+          );
+          if (activity.type === "quiz.single_choice") {
+            if (!options.has(activity.validation.correctOptionId))
               issue(
-                [
-                  "activities",
-                  index,
-                  "validation",
-                  "correctOptionIds",
-                  position
-                ],
+                ["activities", index, "validation", "correctOptionId"],
                 "Correct option must exist in presentation.options."
               );
-          });
+          } else {
+            unique(activity.validation.correctOptionIds, [
+              "activities",
+              index,
+              "validation",
+              "correctOptionIds"
+            ]);
+            activity.validation.correctOptionIds.forEach((id, position) => {
+              if (!options.has(id))
+                issue(
+                  [
+                    "activities",
+                    index,
+                    "validation",
+                    "correctOptionIds",
+                    position
+                  ],
+                  "Correct option must exist in presentation.options."
+                );
+            });
+          }
         }
-      }
-    });
-    manifest.lessons.forEach((lesson, index) => {
-      lesson.blocks.forEach((block, position) => {
-        if (block.type === "activity" && !activities.has(block.activitySlug))
-          issue(
-            ["lessons", index, "blocks", position, "activitySlug"],
-            `Unknown course activity: ${block.activitySlug}.`
-          );
       });
+      manifest.lessons.forEach((lesson, index) => {
+        lesson.blocks.forEach((block, position) => {
+          if (block.type === "activity" && !activities.has(block.activitySlug))
+            issue(
+              ["lessons", index, "blocks", position, "activitySlug"],
+              `Unknown course activity: ${block.activitySlug}.`
+            );
+        });
+      });
+      for (const found of skillTestIssues(
+        manifest.skillTests ?? [],
+        skills,
+        activities,
+        options.minQuestionsPerSkill ?? SKILL_TEST.minQuestionsPerSkill
+      ))
+        issue(found.path, found.message);
     });
-  });
 
-export const applyCourseManifestRequestSchema = z
-  .object({
-    manifest: courseManifestV1Schema,
-    expectedDraftVersionId: uuidSchema.nullable(),
-    expectedRevision: z.number().int().min(0)
-  })
-  .strict();
+export const courseManifestV1Schema = courseManifestV1SchemaWith();
+
+export const applyCourseManifestRequestSchemaWith = (
+  options: CourseManifestOptions = {}
+) =>
+  z
+    .object({
+      manifest: courseManifestV1SchemaWith(options),
+      expectedDraftVersionId: uuidSchema.nullable(),
+      expectedRevision: z.number().int().min(0)
+    })
+    .strict();
+
+export const applyCourseManifestRequestSchema =
+  applyCourseManifestRequestSchemaWith();
 
 export type CourseManifestV1 = z.infer<typeof courseManifestV1Schema>;
 export type ManifestActivity = z.infer<typeof manifestActivitySchema>;

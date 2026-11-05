@@ -9,15 +9,12 @@ import {
   Post,
   UseGuards
 } from "@nestjs/common";
-import {
-  applyCourseManifestRequestSchema,
-  courseManifestV1Schema,
-  uuidSchema
-} from "@platform/contracts";
+import { uuidSchema } from "@platform/contracts";
 
 import { parseRequest } from "../../http/validation";
 import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
 import { CourseManifestApplicationService } from "./application/course-manifest.service";
+import { applyManifestSchema, manifestSchema } from "./domain/manifest-schema";
 
 @Controller("organizations/:organizationId/courses")
 export class CourseManifestController {
@@ -32,7 +29,7 @@ export class CourseManifestController {
   ) {
     return this.manifests.validate(
       parseRequest(uuidSchema, organizationId),
-      parseRequest(courseManifestV1Schema, body)
+      parseRequest(manifestSchema(), body)
     );
   }
 
@@ -45,7 +42,7 @@ export class CourseManifestController {
   ) {
     return this.manifests.apply(
       parseRequest(uuidSchema, organizationId),
-      parseRequest(applyCourseManifestRequestSchema, body)
+      parseRequest(applyManifestSchema(), body)
     );
   }
 

@@ -241,3 +241,86 @@ const ownSkill = z
 export const clientOwnSkillsSchema = z.strictObject({
   skills: z.array(ownSkill).check(z.maxLength(2000))
 });
+
+// ADR-0075: the skill test page.
+const questionKey = z
+  .string()
+  .check(
+    z.minLength(1),
+    z.maxLength(63),
+    z.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+  );
+const text2000 = z
+  .string()
+  .check(z.trim(), z.minLength(1), z.maxLength(2000));
+const skillTestScope = z.discriminatedUnion("type", [
+  z.strictObject({ type: z.literal("skill"), skillKey: slug }),
+  z.strictObject({ type: z.literal("branch"), branchId: slug })
+]);
+const skillTestKind = z.enum([
+  "single_choice",
+  "multiple_choice",
+  "short_text",
+  "code_output",
+  "find_bug"
+]);
+
+export const clientSkillTestDrawSchema = z.strictObject({
+  drawKey: uuid,
+  scope: skillTestScope,
+  threshold: int(1),
+  questions: z
+    .array(
+      z.strictObject({
+        skillKey: slug,
+        key: questionKey,
+        kind: skillTestKind,
+        prompt: text2000,
+        code: z.optional(
+          z.strictObject({
+            language: z.enum(["html", "css", "js", "ts", "sql", "text"]),
+            source: z.string().check(z.minLength(1), z.maxLength(4000))
+          })
+        ),
+        options: z.optional(
+          z
+            .array(z.strictObject({ id: questionKey, text: text2000 }))
+            .check(z.minLength(2), z.maxLength(8))
+        )
+      })
+    )
+    .check(z.minLength(1), z.maxLength(200))
+});
+
+export const clientSkillTestResultSchema = z.strictObject({
+  drawKey: uuid,
+  scope: skillTestScope,
+  outcome: z.enum(["passed", "failed"]),
+  correctCount: int(0),
+  total: int(1),
+  threshold: int(1),
+  retryAfter: z.nullable(z.iso.datetime()),
+  questions: z
+    .array(
+      z.strictObject({
+        skillKey: slug,
+        key: questionKey,
+        correct: z.boolean(),
+        explanation: text2000,
+        chosen: z
+          .array(z.strictObject({ id: questionKey, explanation: text2000 }))
+          .check(z.maxLength(8))
+      })
+    )
+    .check(z.minLength(1), z.maxLength(200))
+});
+
+export const clientSkillTestCooldownSchema = z.object({
+  code: z.literal("retake_cooldown"),
+  message: z.string(),
+  retryAfter: z.iso.datetime()
+});
+
+export const clientOwnSkillTestsSchema = z.strictObject({
+  skillKeys: z.array(slug).check(z.maxLength(2000))
+});

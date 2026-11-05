@@ -4,6 +4,8 @@ import { StudioRepository } from "./application/studio.repository";
 import { PostgresStudioRepository } from "./infrastructure/postgres-studio.repository";
 import { QuizValidationContentQuery } from "./application/quiz-validation-content.query";
 import { PostgresQuizValidationContentQuery } from "./infrastructure/postgres-quiz-validation-content.query";
+import { SkillTestContentQuery } from "./application/skill-test-content.query";
+import { PostgresSkillTestContentQuery } from "./infrastructure/postgres-skill-test-content.query";
 import { LearnerCourseContentQuery } from "./application/learner-course-content.query";
 import { PostgresLearnerCourseContentQuery } from "./infrastructure/postgres-learner-course-content.query";
 import { PublicLearningContentQuery } from "./application/public-learning-content.query";
@@ -45,6 +47,10 @@ import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
       provide: QuizValidationContentQuery,
       useClass: PostgresQuizValidationContentQuery
     },
+    {
+      provide: SkillTestContentQuery,
+      useClass: PostgresSkillTestContentQuery
+    },
     { provide: SkillKeyQuery, useClass: PostgresSkillKeyQuery },
     {
       provide: LearnerCourseContentQuery,
@@ -82,6 +88,7 @@ import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
   exports: [
     SkillKeyQuery,
     QuizValidationContentQuery,
+    SkillTestContentQuery,
     LearnerCourseContentQuery,
     PublicLearningContentQuery,
     LearningContentApplicationService,

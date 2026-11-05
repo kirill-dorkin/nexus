@@ -11,7 +11,11 @@ import {
   clientOAuthProvidersResponseSchema,
   clientOwnLearningListSchema,
   clientOwnSkillsSchema,
-  clientQuizCheckResultSchema
+  clientOwnSkillTestsSchema,
+  clientQuizCheckResultSchema,
+  clientSkillTestCooldownSchema,
+  clientSkillTestDrawSchema,
+  clientSkillTestResultSchema
 } from "./client";
 import {
   learnerCourseSkillsSchema,
@@ -20,6 +24,51 @@ import {
 } from "./learner-learning";
 import { ownSkillsSchema } from "./own-skills";
 import { quizCheckResultSchema } from "./quiz-check";
+import {
+  ownSkillTestsSchema,
+  skillTestCooldownSchema,
+  skillTestDrawSchema,
+  skillTestResultSchema
+} from "./skill-test";
+
+const choiceQuestion = {
+  skillKey: "tags",
+  key: "q-1",
+  kind: "code_output",
+  prompt: "Что выведет код?",
+  code: { language: "html", source: "<p>Привет</p>" },
+  options: [
+    { id: "a", text: "Привет" },
+    { id: "b", text: "Ничего" }
+  ]
+};
+const draw = {
+  drawKey: "0194f6c2-1b2c-7d3e-8f40-123456789abc",
+  scope: { type: "skill", skillKey: "tags" },
+  threshold: 4,
+  questions: [
+    choiceQuestion,
+    { skillKey: "tags", key: "q-2", kind: "short_text", prompt: "Тег абзаца?" }
+  ]
+};
+const graded = {
+  drawKey: draw.drawKey,
+  scope: { type: "branch", branchId: "html-1" },
+  outcome: "failed",
+  correctCount: 3,
+  total: 5,
+  threshold: 4,
+  retryAfter: "2026-11-04T10:10:00.000Z",
+  questions: [
+    {
+      skillKey: "tags",
+      key: "q-1",
+      correct: false,
+      explanation: "Браузер покажет текст абзаца.",
+      chosen: [{ id: "b", explanation: "Текст внутри p виден." }]
+    }
+  ]
+};
 
 // WP-6: the browser parses with zod/mini copies; they must agree with the full
 // schemas on every sample, valid or not.
@@ -361,6 +410,70 @@ const pairs: [
       { courses: [], nextCursor: id },
       { courses: [], nextCursor: "x" },
       { courses: [{ ...course, entry: {} }], nextCursor: null }
+    ]
+  ],
+  [
+    "skill test draw",
+    skillTestDrawSchema,
+    clientSkillTestDrawSchema,
+    [
+      draw,
+      { ...draw, questions: [] },
+      { ...draw, scope: { type: "lesson", skillKey: "tags" } },
+      { ...draw, questions: [{ ...choiceQuestion, correct: ["a"] }] },
+      {
+        ...draw,
+        questions: [
+          {
+            ...choiceQuestion,
+            options: [
+              { id: "a", text: "Привет", explanation: "x" },
+              choiceQuestion.options[1]
+            ]
+          }
+        ]
+      },
+      { ...draw, questions: [{ ...choiceQuestion, kind: "essay" }] },
+      { ...draw, threshold: 0 }
+    ]
+  ],
+  [
+    "skill test result",
+    skillTestResultSchema,
+    clientSkillTestResultSchema,
+    [
+      graded,
+      { ...graded, outcome: "passed", correctCount: 5, retryAfter: null },
+      { ...graded, retryAfter: "soon" },
+      { ...graded, total: 0 },
+      { ...graded, questions: [] },
+      { ...graded, questions: [{ ...graded.questions[0], explanation: "" }] },
+      { ...graded, extra: true }
+    ]
+  ],
+  [
+    "skill test cooldown",
+    skillTestCooldownSchema,
+    clientSkillTestCooldownSchema,
+    [
+      {
+        code: "retake_cooldown",
+        message: "Позже",
+        retryAfter: "2026-11-04T10:10:00.000Z"
+      },
+      { code: "retake_cooldown", message: "Позже", retryAfter: "soon" },
+      { code: "other", message: "x", retryAfter: "2026-11-04T10:10:00.000Z" }
+    ]
+  ],
+  [
+    "own skill tests",
+    ownSkillTestsSchema,
+    clientOwnSkillTestsSchema,
+    [
+      { skillKeys: [] },
+      { skillKeys: ["tags", "web-tools"] },
+      { skillKeys: ["Tags"] },
+      { skillKeys: [], extra: 1 }
     ]
   ]
 ];

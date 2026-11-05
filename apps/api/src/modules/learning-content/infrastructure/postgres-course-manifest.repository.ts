@@ -1,11 +1,13 @@
 import { ConflictException, Injectable } from "@nestjs/common";
 import {
-  courseManifestV1Schema,
+  SKILL_TEST,
+  skillTestActivitySlug,
   type CourseManifestV1
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
 import { oneRow } from "../../../database/one-row";
+import { manifestSchema } from "../domain/manifest-schema";
 import {
   CourseManifestRepository,
   type ManifestCourseState
@@ -97,10 +99,11 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
     const r = await tx.client.query<{ incompatible: boolean }>(
       `SELECT EXISTS (SELECT 1 FROM learning_content.course_version_activities a
         WHERE a.organization_id=$1 AND a.course_version_id=$2 AND
-          (a.activity_type NOT IN ('quiz.single_choice','quiz.multiple_choice','quiz.short_text','assignment.files')
+          (a.activity_type NOT IN ('quiz.single_choice','quiz.multiple_choice','quiz.short_text','assignment.files','skill.test')
            OR a.config <> jsonb_build_object('presentation',a.config->'presentation','validation',jsonb_build_object('validatorKey',a.activity_type,'validatorVersion',1,'config','{}'::jsonb))
-           OR (a.activity_type<>'assignment.files' AND NOT EXISTS (SELECT 1 FROM learning_content.quiz_validation_configs q WHERE q.organization_id=$1 AND q.activity_version_id=a.id))
-           OR (a.activity_type='assignment.files' AND NOT EXISTS (SELECT 1 FROM learning_content.assignment_check_configs c WHERE c.organization_id=$1 AND c.activity_version_id=a.id))))
+           OR (a.activity_type LIKE 'quiz.%' AND NOT EXISTS (SELECT 1 FROM learning_content.quiz_validation_configs q WHERE q.organization_id=$1 AND q.activity_version_id=a.id))
+           OR (a.activity_type='assignment.files' AND NOT EXISTS (SELECT 1 FROM learning_content.assignment_check_configs c WHERE c.organization_id=$1 AND c.activity_version_id=a.id))
+           OR (a.activity_type='skill.test' AND NOT EXISTS (SELECT 1 FROM learning_content.skill_test_banks b WHERE b.organization_id=$1 AND b.activity_version_id=a.id))))
         OR EXISTS (SELECT 1 FROM learning_content.course_version_skill_remediations WHERE organization_id=$1 AND course_version_id=$2)
         OR EXISTS (SELECT 1 FROM learning_content.activity_skill_mappings WHERE organization_id=$1 AND course_version_id=$2 AND role<>'primary')
         OR EXISTS (SELECT 1 FROM learning_content.guided_build_definitions d JOIN learning_content.course_version_activities a ON a.organization_id=d.organization_id AND a.id=d.activity_version_id WHERE a.organization_id=$1 AND a.course_version_id=$2) AS incompatible`,
@@ -174,6 +177,10 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
       [org, version]
     );
     await tx.client.query(
+      "DELETE FROM learning_content.skill_test_banks WHERE organization_id=$1 AND course_version_id=$2",
+      [org, version]
+    );
+    await tx.client.query(
       "DELETE FROM learning_content.activity_skill_mappings WHERE organization_id=$1 AND course_version_id=$2",
       [org, version]
     );
@@ -215,35 +222,13 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
 
     const activityIds = new Map<string, string>();
     for (const [position, activity] of manifest.activities.entries()) {
-      let stable = (
-        await tx.client.query<{ activity_id: string }>(
-          "SELECT activity_id::text FROM learning_content.manifest_activity_identities WHERE organization_id=$1 AND course_id=$2 AND slug=$3",
-          [org, course, activity.slug]
-        )
-      ).rows[0]?.activity_id;
-      if (!stable) {
-        const history = await tx.client.query<{ activity_id: string }>(
-          "SELECT DISTINCT a.activity_id::text FROM learning_content.course_version_activities a JOIN learning_content.course_versions v ON v.organization_id=a.organization_id AND v.id=a.course_version_id WHERE a.organization_id=$1 AND v.course_id=$2 AND a.slug=$3",
-          [org, course, activity.slug]
-        );
-        if (history.rows.length > 1)
-          throw new ConflictException(
-            "Historical activity slug has ambiguous stable identity."
-          );
-        stable = history.rows[0]?.activity_id;
-        if (!stable)
-          stable = oneRow(
-            await tx.client.query<{ id: string }>(
-              "INSERT INTO learning_content.activities (organization_id,course_id,created_by_user_id) VALUES ($1,$2,$3) RETURNING id::text",
-              [org, course, user]
-            ),
-            "the created activity"
-          ).id;
-        await tx.client.query(
-          "INSERT INTO learning_content.manifest_activity_identities (organization_id,course_id,slug,activity_id) VALUES ($1,$2,$3,$4)",
-          [org, course, activity.slug, stable]
-        );
-      }
+      const stable = await this.stableActivityId(
+        tx,
+        org,
+        course,
+        user,
+        activity.slug
+      );
       activityIds.set(activity.slug, stable);
       const config = {
         presentation: activity.presentation,
@@ -283,6 +268,50 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
           [org, version, stable, skillIds.get(skillKey)]
         );
       }
+    }
+    // ADR-0075: one `skill.test` activity per tested skill, after the manifest's activities.
+    // Its public config is only what the test page needs; the bank is protected.
+    const skillTitles = new Map(manifest.skills.map((s) => [s.key, s.title]));
+    for (const [index, test] of (manifest.skillTests ?? []).entries()) {
+      const slug = skillTestActivitySlug(test.skillKey);
+      const stable = await this.stableActivityId(tx, org, course, user, slug);
+      const config = {
+        presentation: {
+          skillKey: test.skillKey,
+          size: SKILL_TEST.size,
+          threshold: SKILL_TEST.threshold
+        },
+        validation: {
+          validatorKey: SKILL_TEST.validatorKey,
+          validatorVersion: SKILL_TEST.validatorVersion,
+          config: {}
+        }
+      };
+      const title = `Тест навыка: ${skillTitles.get(test.skillKey) ?? test.skillKey}`;
+      const snapshot = oneRow(
+        await tx.client.query<{ id: string }>(
+          "INSERT INTO learning_content.course_version_activities (organization_id,course_version_id,activity_id,slug,activity_type,title,instructions,config,position) VALUES ($1,$2,$3,$4,$5,$6,'',$7::jsonb,$8) RETURNING id::text",
+          [
+            org,
+            version,
+            stable,
+            slug,
+            SKILL_TEST.validatorKey,
+            title.slice(0, 200).trim(),
+            JSON.stringify(config),
+            manifest.activities.length + index
+          ]
+        ),
+        "the skill test activity version"
+      ).id;
+      await tx.client.query(
+        "INSERT INTO learning_content.skill_test_banks (organization_id,course_version_id,activity_version_id,config) VALUES ($1,$2,$3,$4::jsonb)",
+        [org, version, snapshot, JSON.stringify({ questions: test.questions })]
+      );
+      await tx.client.query(
+        "INSERT INTO learning_content.activity_skill_mappings (organization_id,course_version_id,activity_id,skill_id) VALUES ($1,$2,$3,$4)",
+        [org, version, stable, skillIds.get(test.skillKey)]
+      );
     }
     for (const [position, lesson] of manifest.lessons.entries()) {
       await tx.client.query(
@@ -341,6 +370,45 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
     return { revision, createdSkills };
   }
 
+  /** The stable Activity behind a manifest slug, created on first import. */
+  private async stableActivityId(
+    tx: DatabaseTransaction,
+    org: string,
+    course: string,
+    user: string,
+    slug: string
+  ): Promise<string> {
+    const known = (
+      await tx.client.query<{ activity_id: string }>(
+        "SELECT activity_id::text FROM learning_content.manifest_activity_identities WHERE organization_id=$1 AND course_id=$2 AND slug=$3",
+        [org, course, slug]
+      )
+    ).rows[0]?.activity_id;
+    if (known) return known;
+    const history = await tx.client.query<{ activity_id: string }>(
+      "SELECT DISTINCT a.activity_id::text FROM learning_content.course_version_activities a JOIN learning_content.course_versions v ON v.organization_id=a.organization_id AND v.id=a.course_version_id WHERE a.organization_id=$1 AND v.course_id=$2 AND a.slug=$3",
+      [org, course, slug]
+    );
+    if (history.rows.length > 1)
+      throw new ConflictException(
+        "Historical activity slug has ambiguous stable identity."
+      );
+    const stable =
+      history.rows[0]?.activity_id ??
+      oneRow(
+        await tx.client.query<{ id: string }>(
+          "INSERT INTO learning_content.activities (organization_id,course_id,created_by_user_id) VALUES ($1,$2,$3) RETURNING id::text",
+          [org, course, user]
+        ),
+        "the created activity"
+      ).id;
+    await tx.client.query(
+      "INSERT INTO learning_content.manifest_activity_identities (organization_id,course_id,slug,activity_id) VALUES ($1,$2,$3,$4)",
+      [org, course, slug, stable]
+    );
+    return stable;
+  }
+
   async exportVersion(
     tx: DatabaseTransaction,
     org: string,
@@ -395,7 +463,7 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
           WHERE m.organization_id=a.organization_id AND m.course_version_id=a.course_version_id AND m.activity_id=a.activity_id ORDER BY vs.position,s.skill_key) AS "skillKeys"
         FROM learning_content.course_version_activities a LEFT JOIN learning_content.quiz_validation_configs q ON q.organization_id=a.organization_id AND q.activity_version_id=a.id
         LEFT JOIN learning_content.assignment_check_configs ac ON ac.organization_id=a.organization_id AND ac.activity_version_id=a.id
-        WHERE a.organization_id=$1 AND a.course_version_id=$2 ORDER BY a.position,a.slug`,
+        WHERE a.organization_id=$1 AND a.course_version_id=$2 AND a.activity_type<>'skill.test' ORDER BY a.position,a.slug`,
       [org, version]
     );
     const lessons = await tx.client.query<{
@@ -444,7 +512,16 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
         blocks: mapped
       });
     }
-    const result = courseManifestV1Schema.safeParse({
+    const skillTests = await tx.client.query<{
+      skillKey: string;
+      questions: unknown;
+    }>(
+      `SELECT a.config->'presentation'->>'skillKey' AS "skillKey",b.config->'questions' AS questions
+        FROM learning_content.course_version_activities a JOIN learning_content.skill_test_banks b ON b.organization_id=a.organization_id AND b.activity_version_id=a.id
+        WHERE a.organization_id=$1 AND a.course_version_id=$2 AND a.activity_type='skill.test' ORDER BY a.position,a.slug`,
+      [org, version]
+    );
+    const result = manifestSchema().safeParse({
       schemaVersion: 1,
       course: { ...meta, description: meta.description ?? "" },
       skills: skills.rows.map((s) => ({
@@ -455,7 +532,8 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
         ...a,
         instructions: a.instructions ?? ""
       })),
-      lessons: resultLessons
+      lessons: resultLessons,
+      ...(skillTests.rows.length ? { skillTests: skillTests.rows } : {})
     });
     if (!result.success)
       throw new ConflictException({
@@ -499,6 +577,10 @@ export class PostgresCourseManifestRepository extends CourseManifestRepository {
     );
     await tx.client.query(
       "INSERT INTO learning_content.assignment_check_configs (organization_id,course_version_id,activity_version_id,config) SELECT c.organization_id,$3,target.id,c.config FROM learning_content.assignment_check_configs c JOIN learning_content.course_version_activities a ON a.organization_id=c.organization_id AND a.id=c.activity_version_id JOIN learning_content.course_version_activities target ON target.organization_id=a.organization_id AND target.course_version_id=$3 AND target.activity_id=a.activity_id WHERE c.organization_id=$1 AND c.course_version_id=$2",
+      [org, source, version]
+    );
+    await tx.client.query(
+      "INSERT INTO learning_content.skill_test_banks (organization_id,course_version_id,activity_version_id,config) SELECT b.organization_id,$3,target.id,b.config FROM learning_content.skill_test_banks b JOIN learning_content.course_version_activities a ON a.organization_id=b.organization_id AND a.id=b.activity_version_id JOIN learning_content.course_version_activities target ON target.organization_id=a.organization_id AND target.course_version_id=$3 AND target.activity_id=a.activity_id WHERE b.organization_id=$1 AND b.course_version_id=$2",
       [org, source, version]
     );
   }

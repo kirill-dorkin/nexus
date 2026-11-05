@@ -11,6 +11,8 @@ import { LearnerAssignmentService } from "./learner-assignment.service";
 import { LearnerLearningService } from "./learner-learning.service";
 import { OwnSkillsController } from "./own-skills.controller";
 import { OwnSkillsService } from "./own-skills.service";
+import { LearnerSkillTestService } from "./learner-skill-test.service";
+import { SkillTestController } from "./skill-test.controller";
 @Module({
   imports: [
     LearningValidationModule,
@@ -20,12 +22,17 @@ import { OwnSkillsService } from "./own-skills.service";
     LearningDeliveryModule,
     LearningProgressModule
   ],
-  controllers: [LearnerLearningController, OwnSkillsController],
+  controllers: [
+    LearnerLearningController,
+    OwnSkillsController,
+    SkillTestController
+  ],
   providers: [
     BrowserWriteOriginGuard,
     LearnerLearningService,
     LearnerAssignmentService,
-    OwnSkillsService
+    OwnSkillsService,
+    LearnerSkillTestService
   ]
 })
 export class LearnerLearningModule {}

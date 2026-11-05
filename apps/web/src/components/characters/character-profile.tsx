@@ -9,6 +9,10 @@ import {
   type SkillMapSkill
 } from "../../lib/skill-map/skill-map";
 import { useOwnSkillRecords, utcToday } from "../../lib/skill-map/own-skills";
+import {
+  skillTestHref,
+  useOwnSkillTests
+} from "../../lib/skill-map/own-tests";
 import { learningLoginUrl } from "../../lib/learning-return-to";
 import {
   nextActionLabel,
@@ -35,9 +39,16 @@ export function CharacterProfile({
   scenes?: Readonly<Record<string, BranchScene>>;
 }) {
   const { status, records } = useOwnSkillRecords();
+  const tested = useOwnSkillTests();
   const progress = characterProgress(character, records, utcToday());
   const builtOn = requiredCharacters(character);
-  const nextHref = progress.next ? lessonHref(progress.next.skill) : null;
+  // ADR-0075: a skill with a bank is confirmed by its test; otherwise by its lesson.
+  const actionHref = (skill: SkillMapSkill) =>
+    tested.has(skill.key)
+      ? skillTestHref(character.slug, skill.key)
+      : lessonHref(skill);
+  const nextHref = progress.next ? actionHref(progress.next.skill) : null;
+  const nextIsTest = progress.next ? tested.has(progress.next.skill.key) : false;
   return (
     <article className={styles.profile} data-ui-accent={character.accent}>
       <header className={styles.profileHead}>
@@ -99,7 +110,7 @@ export function CharacterProfile({
           </p>
           {nextHref && (
             <Link className={buttonClass({ size: "sm" })} href={nextHref}>
-              К уроку
+              {nextIsTest ? "К тесту" : "К уроку"}
             </Link>
           )}
         </section>
@@ -149,7 +160,7 @@ export function CharacterProfile({
             />
             <ul className={styles.skills}>
               {skills.map((item) => {
-                const href = lessonHref(item.skill);
+                const href = actionHref(item.skill);
                 return (
                   <li
                     key={item.skill.key}

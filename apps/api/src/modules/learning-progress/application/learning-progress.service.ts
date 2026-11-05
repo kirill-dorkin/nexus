@@ -85,7 +85,8 @@ export class LearningProgressApplicationService extends QuizSubmissionCommand {
       activity.courseVersionId !== enrollment.offering.courseVersionId ||
       !(
         activity.activityType.startsWith("quiz.") ||
-        activity.activityType === "assignment.files"
+        activity.activityType === "assignment.files" ||
+        activity.activityType === "skill.test"
       )
     )
       throw new ForbiddenException(

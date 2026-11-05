@@ -1,5 +1,6 @@
 import { AssignmentValidationApplicationService } from "./application/assignment-validation.service";
 import { QuizValidationApplicationService } from "./application/quiz-validation.service";
+import { SkillTestValidationApplicationService } from "./application/skill-test-validation.service";
 import { Module } from "@nestjs/common";
 
 import { OutboxModule } from "../../outbox/outbox.module";
@@ -32,6 +33,7 @@ import { LearningValidationController } from "./learning-validation.controller";
   providers: [
     AssignmentValidationApplicationService,
     QuizValidationApplicationService,
+    SkillTestValidationApplicationService,
     ValidationApplicationService,
     GraderJobApplicationService,
     ValidatorRegistry,
@@ -48,6 +50,7 @@ import { LearningValidationController } from "./learning-validation.controller";
   exports: [
     AssignmentValidationApplicationService,
     QuizValidationApplicationService,
+    SkillTestValidationApplicationService,
     ValidationApplicationService,
     GraderJobApplicationService
   ]

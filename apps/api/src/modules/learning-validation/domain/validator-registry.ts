@@ -5,7 +5,8 @@ export type ValidatorRecordingAuthority =
   | "authorized_user"
   | "system"
   | "deterministic_quiz"
-  | "deterministic_assignment";
+  | "deterministic_assignment"
+  | "deterministic_skill_test";
 
 export type ValidatorDefinition = Readonly<{
   key: string;
@@ -32,6 +33,13 @@ const validatorDefinitions: readonly ValidatorDefinition[] = [
     key: "assignment.files",
     version: 1,
     recordingAuthority: "deterministic_assignment",
+    evidenceTrust: "trusted"
+  },
+  // ADR-0075: `skill_test@1`, a draw of questions from a protected bank.
+  {
+    key: "skill.test",
+    version: 1,
+    recordingAuthority: "deterministic_skill_test",
     evidenceTrust: "trusted"
   },
   {
