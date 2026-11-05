@@ -254,9 +254,7 @@ export const clientCreateFeedbackReportRequestSchema = z
     text: z.string().check(z.trim(), z.minLength(10), z.maxLength(4000)),
     expected: z.optional(feedbackDetail),
     actual: z.optional(feedbackDetail),
-    path: z
-      .string()
-      .check(z.maxLength(300), z.regex(/^\/[A-Za-z0-9._~%/-]*$/)),
+    path: z.string().check(z.maxLength(300), z.regex(/^\/[A-Za-z0-9._~%/-]*$/)),
     device: z.optional(z.enum(["mobile", "desktop"]))
   })
   .check(
@@ -271,3 +269,8 @@ export const clientCreateFeedbackReportRequestSchema = z
 export const clientCreateFeedbackReportResponseSchema = z.strictObject({
   id: uuid
 });
+export {
+  CURRENT_LEGAL_DOCUMENT_VERSIONS,
+  currentRegistrationConsents,
+  type LegalDocument
+} from "./legal-documents";

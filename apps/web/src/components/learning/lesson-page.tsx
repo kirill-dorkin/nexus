@@ -1,6 +1,7 @@
 import { LearnerEntry } from "./learner-entry";
 import { FeedbackLauncher } from "../feedback/feedback-launcher";
 import feedbackStyles from "../feedback/feedback.module.css";
+import { LessonAnalytics } from "../../lib/analytics/lesson-analytics";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LearningShell } from "./learning-shell";
@@ -67,6 +68,11 @@ export function LessonPageView({
   };
   return (
     <>
+      <LessonAnalytics
+        organizationSlug={course.organization.slug}
+        offeringSlug={course.offering.slug}
+        lessonSlug={lessonSlug}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }}

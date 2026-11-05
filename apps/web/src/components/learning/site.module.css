@@ -130,7 +130,8 @@
 }
 .footerNav {
   display: flex;
-  gap: clamp(2.5rem, 8vw, 6rem);
+  flex-wrap: wrap;
+  gap: 1.5rem clamp(2.5rem, 8vw, 6rem);
 }
 .footerNav div {
   display: grid;
