@@ -75,9 +75,11 @@ test.describe.serial("a registered learner", () => {
     await page.getByLabel("Имя").fill(learner.name);
     await page.getByLabel("Электронная почта").fill(learner.email);
     await page.getByLabel("Пароль", { exact: true }).fill(learner.password);
-    await page.getByRole("checkbox", { name: /условия использования/ }).check();
     await page
-      .getByRole("checkbox", { name: /обработку персональных данных/ })
+      .getByRole("checkbox", { name: /пользовательского соглашения/ })
+      .check();
+    await page
+      .getByRole("checkbox", { name: /обработку моих персональных данных/ })
       .check();
     await page.getByRole("button", { name: "Создать аккаунт" }).click();
 
@@ -120,4 +122,39 @@ test.describe.serial("a registered learner", () => {
       page.getByText("Войдите, чтобы увидеть свои курсы.")
     ).toBeVisible();
   });
+});
+
+test("an enrolled learner sees the lesson skill change after a correct quiz", async ({
+  page
+}) => {
+  const learner = newLearner();
+  await page.goto(
+    `/login?returnTo=${encodeURIComponent(course)}&mode=register`
+  );
+  await page.getByLabel("Имя").fill(learner.name);
+  await page.getByLabel("Электронная почта").fill(learner.email);
+  await page.getByLabel("Пароль", { exact: true }).fill(learner.password);
+  await page.getByRole("button", { name: "Создать аккаунт" }).click();
+  await expect(page).toHaveURL(course);
+  await page.getByRole("button", { name: "Начать курс" }).click();
+
+  const skills = page.getByRole("region", { name: "Навыки курса" });
+  await expect(skills.getByText("Теги")).toBeVisible();
+  await expect(skills.getByText("Ещё не проверяли")).toBeVisible();
+
+  await page.goto(lesson);
+  await page.getByRole("radio", { name: "h1" }).check();
+  await page
+    .getByRole("button", { name: "Проверить и сохранить ответ" })
+    .click();
+  await expect(page.getByText("Правильно")).toBeVisible();
+
+  await page.goto(course);
+  await expect(skills.getByText("Освоено на 100 %")).toBeVisible();
+  await expect(
+    skills.getByRole("progressbar", { name: "Теги: Освоено на 100 %" })
+  ).toBeVisible();
+
+  await page.goto("/me/learning");
+  await expect(page.getByText("Освоено навыков: 1 из 1")).toBeVisible();
 });

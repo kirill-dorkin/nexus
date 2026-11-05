@@ -2,6 +2,7 @@
 import type {
   CourseManifestV1,
   LearnerCourseProgress,
+  LearnerCourseSkills,
   LearnerLearningCourse,
   StudioDraft
 } from "@platform/contracts";
@@ -134,5 +135,52 @@ export function studioDraft(overrides: Partial<StudioDraft> = {}): StudioDraft {
     canApply: true,
     canPublish: true,
     ...overrides
+  };
+}
+
+const skillIds = [
+  "0195d9a8-6c8e-7000-8000-0000000000a1",
+  "0195d9a8-6c8e-7000-8000-0000000000a2",
+  "0195d9a8-6c8e-7000-8000-0000000000a3"
+] as const;
+
+/** One skill in each learner-facing state, valid for `learnerCourseSkillsSchema`. */
+export function courseSkills(): LearnerCourseSkills {
+  return {
+    skills: [
+      {
+        skillId: skillIds[0],
+        title: "Структура документа",
+        description: null,
+        position: 0,
+        state: "assessed",
+        masteryScore: 0.85,
+        evidenceCount: 2,
+        scoredEvidenceCount: 2,
+        lastEvidenceAt: "2026-11-03T10:00:00.000Z"
+      },
+      {
+        skillId: skillIds[1],
+        title: "Ссылки",
+        description: null,
+        position: 1,
+        state: "observed_unscored",
+        masteryScore: null,
+        evidenceCount: 1,
+        scoredEvidenceCount: 0,
+        lastEvidenceAt: "2026-11-03T10:00:00.000Z"
+      },
+      {
+        skillId: skillIds[2],
+        title: "Таблицы",
+        description: null,
+        position: 2,
+        state: "unobserved",
+        masteryScore: null,
+        evidenceCount: 0,
+        scoredEvidenceCount: 0,
+        lastEvidenceAt: null
+      }
+    ]
   };
 }

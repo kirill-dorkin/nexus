@@ -35,4 +35,10 @@ describe("learning auth return target", () => {
   ])("rejects unsafe or unrelated target %s", (v) =>
     expect(safeLearningReturnTo(v)).toBe("/me/learning")
   );
+  it("returns to characters and refuses odd character paths", () => {
+    expect(safeLearningReturnTo("/characters")).toBe("/characters");
+    expect(safeLearningReturnTo("/characters/html")).toBe("/characters/html");
+    expect(safeLearningReturnTo("/characters/HTML!")).toBe("/me/learning");
+    expect(safeLearningReturnTo("/characters/html/extra")).toBe("/me/learning");
+  });
 });

@@ -3,7 +3,13 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { browserApiRequest } from "../../lib/public-api";
-import { json, learnerCourse, progress } from "../../test/fixtures";
+import {
+  courseSkills,
+  json,
+  learnerCourse,
+  progress
+} from "../../test/fixtures";
+import { itemAt } from "../../lib/item-at";
 import { CourseProgress } from "./course-progress";
 import { LearnerEntry } from "./learner-entry";
 
@@ -15,6 +21,7 @@ const api = vi.mocked(browserApiRequest);
 const learningPath = "/v1/me/learning/acme/web";
 const joinPath = "/v1/public/organizations/acme/memberships/me";
 const enrollPath = `${learningPath}/enrollment`;
+const skillsPath = `${learningPath}/skills`;
 
 /** Queues responses per request path; an unexpected request fails the test. */
 function routes(table: Record<string, Response[]>) {
@@ -64,7 +71,8 @@ describe("LearnerEntry", () => {
     routes({
       [learningPath]: [json(200, learnerCourse())],
       [joinPath]: [json(200)],
-      [enrollPath]: [json(201, enrolled)]
+      [enrollPath]: [json(201, enrolled)],
+      [skillsPath]: [json(200, courseSkills())]
     });
     renderEntry();
 
@@ -81,10 +89,13 @@ describe("LearnerEntry", () => {
     expect(
       screen.getByRole("link", { name: "Продолжить обучение" })
     ).toHaveAttribute("href", "/learn/acme/web/tags");
+    // Skills appear once the enrollment exists, on the course page only.
+    expect(await screen.findByText("Освоено на 85 %")).toBeInTheDocument();
     expect(api.mock.calls.map(([path]) => path)).toEqual([
       learningPath,
       joinPath,
-      enrollPath
+      enrollPath,
+      skillsPath
     ]);
   });
 
@@ -175,6 +186,8 @@ describe("LearnerEntry", () => {
     expect(
       await screen.findByText("Обязательные задания этого урока выполнены.")
     ).toBeInTheDocument();
+    expect(screen.queryByText("Навыки курса")).not.toBeInTheDocument();
+    expect(api.mock.calls.map(([path]) => path)).toEqual([learningPath]);
   });
 
   it("offers a retry after a failed load and refreshes when progress changes", async () => {
@@ -198,6 +211,12 @@ describe("LearnerEntry", () => {
             passedRequired: 4
           })
         })
+      ],
+      [skillsPath]: [
+        json(200, { skills: [itemAt(courseSkills().skills, 2)] }),
+        json(200, {
+          skills: [{ ...itemAt(courseSkills().skills, 0), position: 2 }]
+        })
       ]
     });
     renderEntry();
@@ -218,6 +237,9 @@ describe("LearnerEntry", () => {
     expect(
       await screen.findByRole("link", { name: "Вернуться к материалам" })
     ).toBeInTheDocument();
+    // The skills block reloads with the course state after new practice.
+    expect(await screen.findByText("Освоено на 85 %")).toBeInTheDocument();
+    expect(screen.queryByText("Ещё не проверяли")).not.toBeInTheDocument();
   });
 });
 

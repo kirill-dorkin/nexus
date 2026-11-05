@@ -75,3 +75,7 @@ Those policies now have a stable lifecycle to target:
 - abandoned Attempts do not distort recommendation retry counts;
 - normalized Evidence cannot precede the learner work it evaluates;
 - historical learning data is preserved through an additive migration.
+
+## Amendment — 2026-11-04: compatibility window closed
+
+Nexus has no external API clients, so the transition paths were removed before launch: the create-Attempt command no longer accepts `submission`, the Evidence-by-Attempt route is gone, and `attempt.submitted` is no longer appended to the outbox. Already written outbox rows stay as they are. The historical `attempts.submission` and `submitted_at` columns stay until a separate, owner-approved migration drops them.

@@ -20,6 +20,7 @@ import {
 } from "./request-context/platform-principal";
 import { OutboxRepository } from "./outbox/outbox.repository";
 import { ValidatorRegistry } from "./modules/learning-validation/domain/validator-registry";
+import type { ManifestQuizActivity } from "@platform/contracts";
 function env(name: string) {
   const v = process.env[name];
   if (!v) throw Error(`${name} required`);
@@ -102,7 +103,7 @@ describe("deterministic learner quiz HTTP + PostgreSQL boundary", () => {
       )
     );
     manifest.course.slug = `entry-course-${randomUUID()}`;
-    const first = manifest.activities[0]!;
+    const first = manifest.activities[0] as ManifestQuizActivity;
     first.validation.explanation = "PRIVATE QUIZ EXPLANATION " + randomUUID();
     manifest.activities.push(
       {
@@ -427,7 +428,10 @@ describe("deterministic learner quiz HTTP + PostgreSQL boundary", () => {
         [key]
       )
     ).rows;
-    expect(events).toHaveLength(5);
+    // attempt.started, submission.submitted, validation and evidence events;
+    // the old attempt.submitted alias is gone (ADR-0018 amendment).
+    expect(events).toHaveLength(4);
+    expect(events.map((r) => r.event_name)).not.toContain("attempt.submitted");
     expect(events.every((r) => r.n === 1)).toBe(true);
   });
   it("rejects changing a submitted answer under the same retry key", async () => {
@@ -813,6 +817,24 @@ describe("deterministic learner quiz HTTP + PostgreSQL boundary", () => {
       `organizations/${f.org}/courses/${f.course}/versions/${v2}/publish`,
       {},
       owner
+    );
+
+    // A republish finds the Offering still on version 1 only with scope=course.
+    const listed = (scope: string) =>
+      request(
+        "GET",
+        `organizations/${f.org}/offerings?courseVersionId=${v2}${scope}`,
+        undefined,
+        owner
+      ).then((r) => r.json().offerings.map((o: { id: string }) => o.id));
+    expect(await listed("")).toEqual([]);
+    expect(await listed("&scope=course")).toContain(f.offering);
+    await request(
+      "GET",
+      `organizations/${f.org}/offerings?courseVersionId=${v2}&scope=all`,
+      undefined,
+      owner,
+      400
     );
 
     const path = `organizations/${f.org}/offerings/${f.offering}/course-version`;

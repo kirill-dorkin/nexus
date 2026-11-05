@@ -127,6 +127,25 @@ describe("QuizForm", () => {
     expect(sentBody(1).attemptKey).not.toBe(sentBody(0).attemptKey);
   });
 
+  it("asks to wait when checks come too fast and keeps the same attempt", async () => {
+    api
+      .mockResolvedValueOnce(json(429))
+      .mockResolvedValueOnce(json(200, passed));
+    renderQuiz();
+
+    await userEvent.click(screen.getByRole("radio", { name: "Язык разметки" }));
+    await userEvent.click(submitButton());
+    expect(
+      await screen.findByText(/Слишком много проверок подряд/)
+    ).toBeInTheDocument();
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Повторить отправку ответа" })
+    );
+    expect(await screen.findByText("Правильно")).toBeInTheDocument();
+    expect(sentBody(1)).toEqual(sentBody(0));
+  });
+
   it("resends the same attempt after a failed check, so the server can deduplicate it", async () => {
     api
       .mockResolvedValueOnce(json(500))

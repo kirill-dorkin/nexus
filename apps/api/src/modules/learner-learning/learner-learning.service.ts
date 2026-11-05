@@ -4,6 +4,7 @@ import {
   NotFoundException
 } from "@nestjs/common";
 import {
+  learnerCourseSkillsSchema,
   learnerLearningCourseSchema,
   ownLearningListSchema,
   type LearnerLearningCourse,
@@ -19,6 +20,7 @@ import { FreeLearningDeliveryPort } from "../learning-delivery/application/free-
 import { PublicLearningContentQuery } from "../learning-content/application/public-learning-content.query";
 import { LearnerCourseContentQuery } from "../learning-content/application/learner-course-content.query";
 import { CourseActivityProgressQuery } from "../learning-progress/application/course-activity-progress.query";
+import { OwnSkillProgressQuery } from "../learning-progress/application/own-skill-progress.query";
 import { QuizSubmissionCommand } from "../learning-progress/application/quiz-submission.command";
 import { LearningContentQuery } from "../learning-content/application/learning-content.query";
 import { QuizValidationApplicationService } from "../learning-validation/application/quiz-validation.service";
@@ -37,7 +39,8 @@ export class LearnerLearningService {
     private readonly progress: CourseActivityProgressQuery,
     private readonly quizSubmissions: QuizSubmissionCommand,
     private readonly activityContent: LearningContentQuery,
-    private readonly quiz: QuizValidationApplicationService
+    private readonly quiz: QuizValidationApplicationService,
+    private readonly skillProgress: OwnSkillProgressQuery
   ) {}
   async checkQuiz(
     organizationSlug: string,
@@ -54,7 +57,7 @@ export class LearnerLearningService {
       const submission = await this.database.userTransaction(
         { userId },
         async (tx) => {
-          const target = await this.quizTarget(
+          const target = await this.ownActivityTarget(
             tx,
             userId,
             organizationSlug,
@@ -80,7 +83,7 @@ export class LearnerLearningService {
       const recorded = await this.database.userTransaction(
         { userId },
         async (tx) => {
-          const target = await this.quizTarget(
+          const target = await this.ownActivityTarget(
             tx,
             userId,
             organizationSlug,
@@ -119,7 +122,8 @@ export class LearnerLearningService {
       throw error;
     }
   }
-  private async quizTarget(
+  /** The caller's own published activity on an open offering, with its active enrollment. */
+  async ownActivityTarget(
     tx: DatabaseTransaction,
     userId: string,
     organizationSlug: string,
@@ -177,6 +181,50 @@ export class LearnerLearningService {
     return this.database.userTransaction(
       { userId },
       (tx) => this.compose(tx, userId, organizationSlug, offeringSlug, false),
+      snapshot
+    );
+  }
+  async skills(organizationSlug: string, offeringSlug: string) {
+    const { userId } = this.requestContext.requirePrincipal();
+    return this.database.userTransaction(
+      { userId },
+      async (tx) => {
+        await this.identity.requireActiveUser(tx, userId);
+        const route = await this.delivery.resolve(
+          tx,
+          organizationSlug,
+          offeringSlug
+        );
+        if (!route) throw new NotFoundException("Learning course not found.");
+        await tx.client.query(
+          "SELECT set_config('app.organization_id',$1,true)",
+          [route.organizationId]
+        );
+        const organization = await this.organizations.read(
+          tx,
+          route.organizationId,
+          userId,
+          false
+        );
+        if (
+          organization?.membershipStatus !== "active" ||
+          !(await this.delivery.offering(tx, route, false))
+        )
+          throw new NotFoundException("Learning course not found.");
+        const enrollment = await this.delivery.ownEnrollment(tx, route, userId);
+        if (
+          enrollment?.status !== "active" &&
+          enrollment?.status !== "completed"
+        )
+          throw new NotFoundException("Own enrollment not found.");
+        return learnerCourseSkillsSchema.parse({
+          skills: await this.skillProgress.ownSkills(
+            tx,
+            route.organizationId,
+            enrollment.id
+          )
+        });
+      },
       snapshot
     );
   }

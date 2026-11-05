@@ -9,6 +9,7 @@ How `apps/web` (Next 16 App Router, React 19) and `@platform/ui` are built, and 
 | `@platform/design-tokens` (`tokens.css`) | Semantic values: colors per theme and accent, radii, spacing, type scale, focus ring | Components, storage, product names |
 | `@platform/ui` | Brand-neutral typed primitives (buttons, forms, layout, typography, feedback, `Dialog`, `PasswordInput`) and their stylesheet | Requests, local storage, routing, business rules |
 | `@platform/contracts` | zod schemas and types of every API payload Web reads or sends | Rendering |
+| `@platform/checks` | Challenge types, parsing and the static HTML/CSS checks, shared with the API's server adapter (ADR-0072) | DOM globals, sandboxed JS/SQL checks, storage, UI |
 | `apps/web` | Routes, product composition, data loading, client state, domain-specific patterns, copy | Canonical business state or authorization: the API decides, Web presents |
 
 Web never reaches into the database or the API's modules; every read and command goes through the HTTP API and is parsed with a contract schema at the boundary.
@@ -71,6 +72,31 @@ Components are Server Components unless they need the browser. A file gets `"use
 | End-to-end scenarios, axe on every page, keyboard checks | `pnpm test:e2e`, CI |
 | JavaScript, LCP and CLS budgets per page | `tests/e2e/budgets.ts`, CI |
 | Client errors and Web Vitals in production logs | ADR-0067 |
+
+### Lint policy
+
+`eslint.config.mjs` applies one policy to the whole workspace:
+
+- **TypeScript:** `strictTypeChecked` + `stylisticTypeChecked` with type information from each package's `tsconfig.json`, plus exhaustive `switch`, `eqeqeq` and no `console.log`.
+- **Web and `@platform/ui`:** React hooks including the React Compiler rules, `jsx-a11y` **strict**, Next.js core-web-vitals.
+- **Scripts and course builders:** plain-JS recommended rules.
+
+The rules that are relaxed are relaxed in one place with a written reason: `type` over `interface`, decorated NestJS modules, async React event props, `||` on strings and booleans, scrollable regions as focus targets, and a short list for test files (deliberately malformed input, vitest mocks, `process.env` restoration). An inline `eslint-disable` must name its rule and say why (dialog backdrop clicks, intentional control-character regex, declaration merging, focus on the safe choice of a confirmation).
+
+Lint runs locally through `pnpm check` before every push (see `../engineering/development-workflow.md`), not on GitHub-hosted runners, because type-aware lint needs about 3 GB of memory.
+
+There is no lint baseline any more: phase 0 kept the React Compiler findings in `eslint-suppressions.json` until phase 3 fixed them, and the file was then deleted. Every violation fails `pnpm check`.
+
+Phase 0 also made two blind spots type-checked: the operator scripts in `apps/api/ops/` (their own `tsconfig.json`, part of `@platform/api` typecheck) and the root-level tests and Vitest configs (root `tsconfig.json`, part of `pnpm typecheck`). Both had type errors that nothing had reported.
+
+### Web Definition of Done
+
+A Web change is done when, in addition to `CONTRIBUTING.md`:
+
+- `pnpm lint` and `pnpm typecheck` pass with no new suppressions;
+- new interactive behaviour has a component test and new routes are covered by an end-to-end path;
+- data from the API or from authored content is parsed with a `@platform/contracts` schema before use, never cast;
+- controls are reachable and operable by keyboard, with visible focus and accessible names.
 
 ## Adding a page
 

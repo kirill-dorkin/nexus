@@ -1,6 +1,6 @@
 import {
   CURRENT_LEGAL_DOCUMENT_VERSIONS,
-  legalDocumentSchema,
+  LEGAL_DOCUMENTS,
   type LegalConsent,
   type LegalDocument
 } from "@platform/contracts";
@@ -12,7 +12,7 @@ import {
 export function documentsWithoutCurrentConsent(
   consents: readonly LegalConsent[]
 ): LegalDocument[] {
-  return legalDocumentSchema.options.filter(
+  return LEGAL_DOCUMENTS.filter(
     (document) =>
       !consents.some(
         (consent) =>

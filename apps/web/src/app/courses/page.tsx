@@ -3,9 +3,10 @@ import { brand } from "@platform/brand";
 import { LearningShell } from "../../components/learning/learning-shell";
 import { Suspense } from "react";
 import { CatalogContent } from "../../components/learning/catalog-content";
-import { CatalogLoading } from "../../components/learning/home-catalog";
-import { LearningPageHeading } from "../../components/learning/learning-page-heading";
-import styles from "../../components/learning/flow.module.css";
+import {
+  CatalogHero,
+  CatalogLoading
+} from "../../components/learning/home-catalog";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Бесплатные IT-курсы",
@@ -16,23 +17,7 @@ export const metadata: Metadata = {
 export default function CoursesPage() {
   return (
     <LearningShell>
-      <div className={styles.catalogHero}>
-        <LearningPageHeading
-          eyebrow="Каталог"
-          title="Веб-разработка с нуля: четыре курса по порядку."
-          description="HTML, затем CSS, JavaScript и SQL. Каждый курс говорит, что нужно знать до него и что вы будете уметь после."
-        />
-        <aside
-          className={styles.catalogPromise}
-          aria-label="Как устроено обучение"
-        >
-          <strong>Сначала посмотрите программу.</strong>
-          <p>
-            Материалы открыты без регистрации. Аккаунт понадобится, только когда
-            вы захотите сохранять результаты и продолжать с нужного места.
-          </p>
-        </aside>
-      </div>
+      <CatalogHero />
       <section aria-label="Доступные курсы">
         <Suspense fallback={<CatalogLoading />}>
           <CatalogContent />

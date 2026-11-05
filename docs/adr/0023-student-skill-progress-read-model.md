@@ -102,3 +102,13 @@ A UI may call those endpoints alongside skill progress, but the backend contract
 - no data duplication or migration is required;
 - historical Enrollment access displays current skill state and must not be interpreted as a completion-time snapshot;
 - future confidence models, readiness semantics, instructor read-others views, and richer recommendation context require explicit later decisions rather than being smuggled into this contract.
+
+## Amendment — 2026-11-04: own skills for role-less free learners
+
+Free self-enrolled learners (ADR-0055) hold no role assignment, so the `mastery.read` rule above never let them see their own skills. Learner Learning now exposes `GET /v1/me/learning/{organizationSlug}/{offeringSlug}/skills`, which reads skill progress on the same relationship basis as own quiz checks:
+
+- the actor is the authenticated principal; the route resolves the public free Offering, requires an active Membership and the actor's own active or completed Enrollment, and answers 404 otherwise (401 when anonymous);
+- Progress serves it through the narrow `OwnSkillProgressQuery` port inside the caller's read-only snapshot and re-checks that the Enrollment belongs to the actor; it grants no role and does not reuse `mastery.read`;
+- the response is the skill list only (`learnerCourseSkillsSchema`): no organization, Enrollment, Offering or CourseVersion ids.
+
+The UUID route with `mastery.read` stays for role-holding learners. States, ordering and organization-wide Mastery semantics are unchanged. Web shows «Навыки курса» on the course page and counts a skill as mastered in «Моё обучение» from the readiness mastery target (0.8, ADR-0041) on; that threshold is presentation only.

@@ -14,6 +14,10 @@ import {
   attachPlatformPrincipal,
   type PlatformPrincipalCarrier
 } from "./request-context/platform-principal";
+import {
+  evidenceUrlForAttempt,
+  startAndSubmitAttempt
+} from "./test-support/start-and-submit-attempt";
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -118,14 +122,11 @@ describe("offering readiness intelligence HTTP lifecycle", () => {
     score: number,
     sequence: number
   ): Promise<void> {
-    const attempt = await app.inject({
-      method: "POST",
+    const attempt = await startAndSubmitAttempt(app, {
       url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/activities/${activityId}/attempts`,
       headers: { "x-test-user-id": userId },
-      payload: {
-        submission: {
-          source: `overview-${userId}-${sequence}`
-        }
+      submission: {
+        source: `overview-${userId}-${sequence}`
       }
     });
     expect(attempt.statusCode).toBe(201);
@@ -133,7 +134,7 @@ describe("offering readiness intelligence HTTP lifecycle", () => {
 
     const evidence = await app.inject({
       method: "POST",
-      url: `/v1/organizations/${organizationId}/attempts/${attemptId}/evidence`,
+      url: evidenceUrlForAttempt(organizationId, attemptId),
       headers: { "x-test-user-id": ownerUserId },
       payload: {
         skillId,
@@ -150,14 +151,11 @@ describe("offering readiness intelligence HTTP lifecycle", () => {
     outcome: "passed" | "failed",
     sequence: number
   ): Promise<void> {
-    const attempt = await app.inject({
-      method: "POST",
+    const attempt = await startAndSubmitAttempt(app, {
       url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/activities/${activityId}/attempts`,
       headers: { "x-test-user-id": userId },
-      payload: {
-        submission: {
-          source: `overview-trusted-${userId}-${sequence}`
-        }
+      submission: {
+        source: `overview-trusted-${userId}-${sequence}`
       }
     });
     expect(attempt.statusCode).toBe(201);

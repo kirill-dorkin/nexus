@@ -1,22 +1,19 @@
 import { z } from "zod";
 
-/**
- * Legal documents a person accepts at registration. The texts and versions come from the owner;
- * until then the versions are placeholders and the pages show placeholder text.
- */
-export const legalDocumentSchema = z.enum(["terms", "personal_data"]);
+import { LEGAL_DOCUMENTS } from "./legal-documents";
+
+export {
+  CURRENT_LEGAL_DOCUMENT_VERSIONS,
+  LEGAL_DOCUMENTS,
+  currentRegistrationConsents,
+  type LegalDocument
+} from "./legal-documents";
+
+export const legalDocumentSchema = z.enum(LEGAL_DOCUMENTS);
 
 export const legalDocumentVersionSchema = z
   .string()
   .regex(/^[a-z0-9][a-z0-9.-]{0,63}$/);
-
-/** Bump a version whenever the owner publishes a changed text; old consents stay recorded. */
-export const CURRENT_LEGAL_DOCUMENT_VERSIONS: Readonly<
-  Record<LegalDocument, string>
-> = Object.freeze({
-  terms: "placeholder-2026-11-04",
-  personal_data: "placeholder-2026-11-04"
-});
 
 export const legalConsentSchema = z
   .object({
@@ -28,15 +25,6 @@ export const legalConsentSchema = z
 export const registrationConsentsSchema = z
   .array(legalConsentSchema)
   .min(1)
-  .max(legalDocumentSchema.options.length);
+  .max(LEGAL_DOCUMENTS.length);
 
-/** The consents the registration form sends for the documents it showed. */
-export function currentRegistrationConsents(): LegalConsent[] {
-  return legalDocumentSchema.options.map((document) => ({
-    document,
-    version: CURRENT_LEGAL_DOCUMENT_VERSIONS[document]
-  }));
-}
-
-export type LegalDocument = z.infer<typeof legalDocumentSchema>;
 export type LegalConsent = z.infer<typeof legalConsentSchema>;

@@ -1,4 +1,9 @@
 import { z } from "zod";
+import {
+  assignmentSpecIssues,
+  fileAssignmentPresentationSchema,
+  fileAssignmentValidationSchema
+} from "./assignment";
 
 import { resourceSlugSchema, uuidSchema } from "./common";
 
@@ -141,7 +146,23 @@ export const manifestActivitySchema = z.discriminatedUnion("type", [
         })
         .strict()
     })
+    .strict(),
+  // ADR-0073: files the learner uploads, checked statically on the server.
+  z
+    .object({
+      ...activityBase,
+      type: z.literal("assignment.files"),
+      presentation: fileAssignmentPresentationSchema,
+      validation: fileAssignmentValidationSchema
+    })
     .strict()
+    .superRefine((activity, context) => {
+      for (const issue of assignmentSpecIssues({
+        ...activity.presentation,
+        ...activity.validation
+      }))
+        context.addIssue({ code: "custom", ...issue });
+    })
 ]);
 
 /** Array order is canonical position; no UUID/actor/organization authority in a manifest. */
@@ -213,7 +234,10 @@ export const courseManifestV1Schema = z
             `Unknown course skill: ${skill}.`
           );
       });
-      if (activity.type !== "quiz.short_text") {
+      if (
+        activity.type === "quiz.single_choice" ||
+        activity.type === "quiz.multiple_choice"
+      ) {
         const options = unique(
           activity.presentation.options.map((o) => o.id),
           ["activities", index, "presentation", "options"],
@@ -304,3 +328,15 @@ export const courseManifestApplyResultSchema = z
 export type CourseManifestApplyResult = z.infer<
   typeof courseManifestApplyResultSchema
 >;
+export type ManifestQuizActivity = Exclude<
+  ManifestActivity,
+  { type: "assignment.files" }
+>;
+export type ManifestAssignmentActivity = Extract<
+  ManifestActivity,
+  { type: "assignment.files" }
+>;
+/** Quizzes are edited field by field; file assignments only through JSON (ADR-0073). */
+export const isQuizActivity = (
+  activity: ManifestActivity
+): activity is ManifestQuizActivity => activity.type !== "assignment.files";

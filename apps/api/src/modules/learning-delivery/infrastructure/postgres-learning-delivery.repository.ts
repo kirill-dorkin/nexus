@@ -316,21 +316,21 @@ export class PostgresLearningDeliveryRepository extends LearningDeliveryReposito
     return row === undefined ? null : mapOffering(row);
   }
 
-  async listOfferingsForCourseVersion(
+  async listOfferingsForCourseVersions(
     transaction: DatabaseTransaction,
     organizationId: string,
-    courseVersionId: string,
+    courseVersionIds: readonly string[],
     after: string | null
   ): Promise<readonly LearningOffering[]> {
     const result = await transaction.client.query<OfferingRow>(
       `SELECT ${offeringSelect}
          FROM learning_delivery.learning_offerings
         WHERE organization_id = $1
-          AND course_version_id = $2
+          AND course_version_id = ANY($2::uuid[])
           AND ($3::uuid IS NULL OR id > $3::uuid)
         ORDER BY id ASC
         LIMIT 51`,
-      [organizationId, courseVersionId, after]
+      [organizationId, courseVersionIds, after]
     );
     return result.rows.map(mapOffering);
   }

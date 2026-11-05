@@ -11,12 +11,12 @@ Last maintained: 2026-11-04.
 | | |
 |---|---|
 | `main` head | `199f95f` — #166, revert of NestJS 12 after a production API outage (2026-11-04) |
-| Latest migration | `000047_lesson_chapters.sql` |
+| Latest migration | `000051_skill_maps.sql` (skill maps, versions and prerequisites, ADR-0078); `000050_skill_tests.sql` (skill test banks and draws, ADR-0075). Both additive; nothing reads them yet |
 | Quality gates | Local before every push: `pnpm check` (brand isolation, Prettier, ESLint strict type-checked + React + jsx-a11y strict + Next, typecheck incl. API operator scripts and root tests, unit and component tests, Web coverage floors). GitHub CI: brand isolation, Prettier, typecheck, unit, integration, launch-performance, browser-launch and Playwright end-to-end tests (axe on every page). No lint baseline: every violation fails. |
-| Latest ADR | ADR-0068 Managed-academy Organization provisioning (renumbered); newest decision ADR-0067 |
-| Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058); daily GitHub-hosted read-only smoke against the production domain |
+| Latest ADR | ADR-0073 Downloadable file assignments with trusted static checks |
+| Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058). Each push to `main` runs `deploy-production.yml`: migrate with `platform_migrator`, then the Vercel deploy hook (ADR-0079). Daily GitHub-hosted read-only smoke against the production domain |
 | Learner-code execution | **Disabled in production.** Grader artifacts exist in the repository but need a separate activation (exact image digest + green real-cluster verification). |
-| Published content | Route «Веб-разработка с нуля»: `html`, `css`, `js`, `sql` manifests in `docs/examples/`, published in production. The four-lesson `computer-basics-first-course` manifest is not published. Check Studio for current versions. |
+| Published content | Route «Веб-разработка с нуля» (HTML and CSS carry 7 + 6 optional file assignments from 2026-11-04 once republished): `html`, `css`, `js`, `sql` manifests in `docs/examples/`, published in production. The four-lesson `computer-basics-first-course` manifest is not published. Check Studio for current versions. |
 
 ## What is built
 
@@ -29,20 +29,26 @@ Each row is implemented on `main`. The ADRs hold the details; the backend areas 
 | F3 Delivery | LearningOffering, Enrollment, CourseRun, Group, Session/Attendance, Assignment | 0010, 0014–0017 |
 | F4 Learner vertical | Attempt → immutable Submission → ValidationResult → normalized Evidence → Mastery projection; LearningEvent history | 0005, 0018–0023 |
 | F5 Guided Build | Protected hints/solutions, Attempt-scoped assistance exposure, compare, transfer | 0024–0026 |
-| F6 GitHub Projects | GitHub App, webhook inbox, Team/Project/repository binding, immutable PR/review/check facts | 0027–0032 |
+| F6 GitHub Projects | GitHub App, webhook inbox, Team/Project/repository binding, immutable PR/review/check facts. **Inactive in production**: processors have no host (ADR-0071) | 0027–0032, 0071 |
 | F7 Grader | Gateway admission, durable job ledger, authenticated dispatch, Kubernetes/gVisor sandbox, trusted Go runner. Repository only, not active | 0007, 0033–0037 |
 | F8 Recommendations | Versioned derived policies: ordered mastery, review scheduling, misconception signals, remediation, readiness, readiness-gated completion | 0013, 0038–0043 |
 | F9 Commerce | Product + immutable Price, Purchase settlement via Paddle webhook, public catalog, customer entry, checkout + return reconciliation, operational/browser/performance launch gates | 0044–0052 |
 | MVP free learning | Lessons + YouTube/Markdown/quiz blocks, strict manifest v1, public course/lesson pages, free self-enrollment, deterministic quiz checks with retries, derived task progress | 0053–0056 |
 | Lesson chapters | Optional `chapter` per manifest lesson; course page and lesson sidebar group the program by chapter | 0063 |
-| In-browser practice | Lesson challenges and concept cards: static HTML/CSS checks; JavaScript in an opaque-origin sandbox; SQL on PostgreSQL (PGlite) in a Web Worker against a neutral store teaching database (`shop`) or an empty one. Practice only, never Evidence | 0064, 0065 |
+| In-browser practice | Lesson challenges and concept cards: static HTML/CSS checks from `@platform/checks`, which also runs on the server with parse5 + css-select and is tested for equal results on every course challenge (for WP-5 assignments, not yet used by the API); JavaScript in an opaque-origin sandbox; SQL on PostgreSQL (PGlite) in a Web Worker against a neutral store teaching database (`shop`) or an empty one. Practice only, never Evidence | 0064, 0065, 0072 |
 | Offering retarget | Free self-paced Offerings move forward to a newer published version of the same Course; Enrollments and progress carry over (`required-activity-passes@2` by stable Activity identity) | 0062 |
+| Web security headers | Content Security Policy (no external scripts, no framing, `connect-src 'self'`), Referrer-Policy, nosniff, Permissions-Policy on every page; Paddle origins only on checkout; zod runs without `eval` in the browser | 0069 |
+| Rate limiting | Login (per address and per email), registration, quiz check and Web telemetry are counted in PostgreSQL by HMAC key; 429 with `Retry-After`; off without `RATE_LIMIT_KEY`, fails open if the counter is unavailable | 0070 |
+| File assignments | ADR-0073: `assignment.files` activities in manifests (protected checks and solution in `learning_content.assignment_check_configs`, migration 000049); import refuses a solution that fails its own checks; public lessons show starter files and check labels only; `POST /v1/me/learning/:org/:offering/assignments/:activity/submissions` evaluates the files on the server (`@platform/checks`, nothing executed), records a ValidationResult and Evidence and answers per check. Studio edits assignments in JSON only. On the lesson page learners download the starter zip (with a README of the task and checks), upload a zip or loose files (fflate, loaded on demand; junk, binary and oversized entries dropped before inflating) and see each check with ✓/✗ and hints | 0073 |
+| Lighter browser parsing | Web parses API responses in the browser with `zod/mini` copies (`@platform/contracts/client`, kept equal to the full schemas by `client.test.ts`) and schema-free helpers (`@platform/contracts/browser`); zod is not loaded on pages that parse nothing; e2e budgets: course/sign-in/my learning 220 KB, lessons 275 KB | — |
 | Client telemetry | Web reports uncaught errors, unhandled rejections, render failures and Web Vitals as `web.client_error` / `web.vital` log events: route template, error name, release — never messages, URLs or identifiers | 0067 |
+| Learner skills | `GET /v1/me/learning/{org}/{offering}/skills` returns the caller's own skill states for an active/completed Enrollment (own Enrollment is the authority, like own quiz checks; no role needed); the course page shows «Навыки курса», «Моё обучение» shows mastered skills per course (score ≥ readiness target 0.8). Presentation of existing Mastery only | 0023, 0055 |
 | Learning route | Web orders the home catalog HTML → CSS → JavaScript → SQL, shows each course's prerequisites, outcome and next course, and links the last lesson to the next course. Presentation only | 0066 |
 | Stable course addresses | Home-organization courses live at `/courses/{course}` (course slug, survives new versions); Delivery resolves the newest public Offering; old Offering addresses redirect permanently | 0061 |
+| Characters (stage 1) | Every technology is a character (ПК, Браузер, HTML, CSS, JavaScript, SQL) built from course manifests by `docs/examples/skill-map/build.mjs`. Skill state comes from `skill-freshness@1` over passing Evidence days: confirmed → fading → forgotten, with terms 3/7/21/60/180/365 days. Level 0–100 counts active skills. `/characters` shows the roster with «Сегодня» (player level, streak, daily quests); `/characters/{slug}` shows the skill tree. Confirmations are read from `GET /v1/me/skills/{org}`. The confirmation lock is shown, not yet enforced. Design: `docs/product/game-design.md`, story: `docs/story/season-1.md` | 0074 |
 | Studio | Manual and JSON authoring over the same draft, preview, export, publication, Offering visibility, Organization customer-entry policy | 0057 |
 | Web UI | `@platform/ui` + design tokens, light/dark themes with accents, public shell, Blog/SEO surfaces, `/ui` gallery | 0059 |
-| Sign-in | Password, optional Google/GitHub OAuth (PKCE) on the same Nexus session | 0060 (Proposed) |
+| Sign-in | Password, optional Google/GitHub OAuth (PKCE) on the same Nexus session | 0060 |
 | Organization provisioning | Organizations are created only by the offline operator command `org:bootstrap-owner` (`platform_migrator` role, `--apply`). Both HTTP create routes return 403/401. | 0068 |
 
 The paid path (F9) for reference:
@@ -62,7 +68,8 @@ Deliberately not built: refunds/disputes and Entitlement reversal, subscriptions
 These are continuation guardrails, not substitutes for accepted ADRs.
 
 - Nexus is a modular monolith. A module owns its business state and application code does not reach into another module's repositories/tables.
-- PostgreSQL is canonical business state. Application authorization plus RLS/transaction-local actor and tenant context provide defense in depth.
+- PostgreSQL is canonical business state.
+- `events.outbox` is written atomically but has no relay or consumer yet (ADR-0071); the first consumer adds the relay. New deferred work uses the same transaction or a lease-fenced processor over the owning module's table. Application authorization plus RLS/transaction-local actor and tenant context provide defense in depth.
 - Cross-module synchronous collaboration targets public application/query interfaces. Deferred consequences use events/outbox.
 - Migrations are ordered and append-only; applied history is never rewritten.
 - Published curriculum is immutable **what**; Delivery is **how / when / to whom**.
@@ -102,27 +109,27 @@ These are continuation guardrails, not substitutes for accepted ADRs.
 - UI primitives own presentation only; no primitive owns requests, storage or business authority.
 - Refund/reversal support requires an explicit canonical Purchase/Entitlement lifecycle decision before provider reversal events may change access.
 
-## Active F4 compatibility windows
+## F4 compatibility windows
 
-Do not remove these without an explicit cleanup slice/migration and proven caller migration.
+Closed on 2026-11-04 (spec WP-2.1): starting an Attempt no longer accepts a submission payload (`startAttemptRequestSchema` is an empty strict object), Evidence-by-Attempt (`POST …/attempts/:id/evidence`) is removed, and the `attempt.submitted` outbox alias is no longer emitted. Canonical paths: `POST …/attempts` → `POST …/attempts/:id/submissions` → `POST …/submissions/:id/evidence`, event `submission.submitted`.
 
-1. Historical `learning_progress.attempts.submission` and `submitted_at` remain for migration compatibility; dedicated `learning_progress.submissions` is source of truth for new writes.
-2. The transition create-Attempt command may still carry a submission payload and must atomically create the dedicated Submission.
-3. `submission.submitted` is the canonical new lifecycle event; deprecated `attempt.submitted` remains only as an integration alias and is not materialized as a learner LearningEvent.
-4. Evidence-by-Submission is canonical API direction; Evidence-by-Attempt remains temporarily for compatibility.
-5. Historical outbox rows are immutable and must not be rewritten to imitate LearningEvent history.
+Still open, needs an owner-approved migration (irreversible):
 
-Nexus has no external API clients yet, so a cleanup slice could close these windows cheaply before launch.
+1. Historical `learning_progress.attempts.submission` and `submitted_at` columns remain; new writes never use them.
 
-## Open work on GitHub (as of 2026-11-04)
+Historical outbox rows (including old `attempt.submitted`) are immutable and are not rewritten.
 
-- **#46** (gVisor provider, Draft since 2026-09-16): superseded by #45, which is merged; close it (spec A7).
-- **Dependabot:** none open. NestJS packages arrive as one group; TypeScript ≥7 is held until typescript-eslint and `@nestjs/swagger` support it; major `@types/node` bumps are ignored while the runtime is Node 24.
+## Open work on GitHub (as of 2026-11-05)
+
+- **#200** — full ПК and Браузер character courses (in CI). The owner publishes them after merge.
+- **Owner decisions:** #170 (course completion), #171 (funnel), #172 (email and password reset), #174 (legal skeleton) — drafts, not to merge without the owner.
+- **#46** (gVisor provider, Draft since 2026-09-16): superseded by #45, which is merged; the owner closes it.
+- **Dependabot:** NestJS packages arrive as one group; TypeScript ≥7 is held until typescript-eslint and `@nestjs/swagger` support it; major `@types/node` bumps are ignored while the runtime is Node 24.
 
 ## Next recommended slice
 
-**Follow [`docs/roadmap/product-development-spec.md`](../roadmap/product-development-spec.md)** (v2, 2026-11-04): capability audit, findings A1–A11, autonomous-work rules and work packages. Order: WP-1 production reliability and security (smoke waits for the release, Web security headers, rate limiting), WP-2 architecture hygiene, WP-3 learner skill progress, WP-4 shared `@platform/checks`, WP-5 downloadable assignments with trusted HTML/CSS checks.
+**Priority (owner, 2026-11-05): the closed learning beta.** 20 learners study and test; the product grows from their feedback. Wave-1 kit: [`docs/beta/`](../beta/README.md) (owner checklist, 4-week HTML/CSS plans, texts, coordinator guide). Next code: B1.3 feedback in the product, then B1.1/B1.2 participation and week counters (`docs/roadmap/beta-launch.md`). Game packages of `spec.md` are paused until two beta weeks are reviewed.
 
-The web quality program ([`web-quality-program.md`](web-quality-program.md)) is complete. The four route courses (HTML, CSS, JavaScript, SQL) are published.
+**Follow the working spec [`docs/roadmap/spec.md`](../roadmap/spec.md)** (2026-11-05). The game design behind it is [`docs/product/game-design.md`](../product/game-design.md); the season-1 script is [`docs/story/season-1.md`](../story/season-1.md). Finished plans are in [`docs/archive/`](../archive/README.md).
 
-Not selected (do not start without an explicit decision): grader production activation, refunds/subscriptions/coupons, more recommendation policies, telemetry backend, load planning.
+Started only after an owner decision (spec section 5): grader in production, subscriptions and prices, a second payment provider, the email provider, background-process hosting.

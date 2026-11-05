@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { resourceSlugSchema, uuidSchema } from "./common";
+import { learnerSkillProgressSchema } from "./mastery";
 import { publicLearningCourseSchema } from "./public-learning";
 
 export const freeSelfEnrollmentRequestSchema = z.object({}).strict();
@@ -65,6 +66,11 @@ export const ownLearningListSchema = z
     nextCursor: uuidSchema.nullable()
   })
   .strict();
+// The caller's own skills in one course; no organization or enrollment ids.
+export const learnerCourseSkillsSchema = z
+  .object({ skills: z.array(learnerSkillProgressSchema).max(500) })
+  .strict();
+export type LearnerCourseSkills = z.infer<typeof learnerCourseSkillsSchema>;
 export type LearnerCourseProgress = z.infer<typeof learnerCourseProgressSchema>;
 export type LearnerLearningCourse = z.infer<typeof learnerLearningCourseSchema>;
 export type OwnLearningList = z.infer<typeof ownLearningListSchema>;

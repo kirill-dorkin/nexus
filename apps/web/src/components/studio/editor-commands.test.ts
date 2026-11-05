@@ -27,7 +27,11 @@ import {
 
 const choice = (d: ReturnType<typeof manifest>) => {
   const activity = d.activities[0];
-  if (!activity || activity.type === "quiz.short_text")
+  if (
+    !activity ||
+    activity.type === "quiz.short_text" ||
+    activity.type === "assignment.files"
+  )
     throw new Error("Not a choice");
   return activity;
 };

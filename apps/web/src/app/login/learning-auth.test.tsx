@@ -137,18 +137,18 @@ describe("LearningAuth", () => {
     respond(null, json(201, user));
     render(<LearningAuth returnTo="/me/learning" initialMode="register" />);
     const terms = screen.getByRole("checkbox", {
-      name: /условия использования/
+      name: /пользовательского соглашения/
     });
     const personalData = screen.getByRole("checkbox", {
-      name: /обработку персональных данных/
+      name: /обработку моих персональных данных/
     });
     expect(terms).toBeRequired();
     expect(personalData).toBeRequired();
     expect(
-      screen.getByRole("link", { name: "условия использования" })
+      screen.getByRole("link", { name: "пользовательского соглашения" })
     ).toHaveAttribute("href", "/terms");
     expect(
-      screen.getByRole("link", { name: "политикой конфиденциальности" })
+      screen.getByRole("link", { name: "политики конфиденциальности" })
     ).toHaveAttribute("href", "/privacy");
   });
 
@@ -169,6 +169,16 @@ describe("LearningAuth", () => {
     respond(null);
     render(<LearningAuth returnTo="/me/learning" />);
     expect(screen.queryAllByRole("checkbox")).toHaveLength(0);
+  });
+
+  it("asks to wait after too many attempts", async () => {
+    respond(null, json(429));
+    render(<LearningAuth returnTo="/me/learning" initialMode="login" />);
+    await fillAndSubmit("Войти");
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Слишком много попыток."
+    );
   });
 
   it("leaves out a blank name and explains an existing account", async () => {

@@ -11,6 +11,10 @@ import {
   attachPlatformPrincipal,
   type PlatformPrincipalCarrier
 } from "./request-context/platform-principal";
+import {
+  evidenceUrlForAttempt,
+  startAndSubmitAttempt
+} from "./test-support/start-and-submit-attempt";
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -393,11 +397,10 @@ describe("adaptive recommendation HTTP lifecycle", () => {
   });
 
   it("counts Attempts without treating an Attempt as Mastery", async () => {
-    const attempt = await app.inject({
-      method: "POST",
+    const attempt = await startAndSubmitAttempt(app, {
       url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/activities/${firstActivityId}/attempts`,
       headers: { "x-test-user-id": learnerUserId },
-      payload: { submission: { repository: "first-practice" } }
+      submission: { repository: "first-practice" }
     });
     expect(attempt.statusCode).toBe(201);
     firstAttemptId = (JSON.parse(attempt.body) as { id: string }).id;
@@ -426,7 +429,7 @@ describe("adaptive recommendation HTTP lifecycle", () => {
   it("moves Activity -> Attempt -> Evidence -> Mastery -> Recommendation -> next Activity", async () => {
     const evidence = await app.inject({
       method: "POST",
-      url: `/v1/organizations/${organizationId}/attempts/${firstAttemptId}/evidence`,
+      url: evidenceUrlForAttempt(organizationId, firstAttemptId),
       headers: { "x-test-user-id": instructorUserId },
       payload: {
         skillId: firstSkillId,
@@ -481,18 +484,17 @@ describe("adaptive recommendation HTTP lifecycle", () => {
   });
 
   it("reports mastery_target_met without completing the Enrollment", async () => {
-    const attempt = await app.inject({
-      method: "POST",
+    const attempt = await startAndSubmitAttempt(app, {
       url: `/v1/organizations/${organizationId}/enrollments/${enrollmentId}/activities/${secondActivityId}/attempts`,
       headers: { "x-test-user-id": learnerUserId },
-      payload: { submission: { repository: "second-practice" } }
+      submission: { repository: "second-practice" }
     });
     expect(attempt.statusCode).toBe(201);
     secondAttemptId = (JSON.parse(attempt.body) as { id: string }).id;
 
     const evidence = await app.inject({
       method: "POST",
-      url: `/v1/organizations/${organizationId}/attempts/${secondAttemptId}/evidence`,
+      url: evidenceUrlForAttempt(organizationId, secondAttemptId),
       headers: { "x-test-user-id": instructorUserId },
       payload: {
         skillId: secondSkillId,

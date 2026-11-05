@@ -1,10 +1,10 @@
 "use client";
+import { type OAuthProvider } from "@platform/contracts";
 import {
-  currentRegistrationConsents,
-  identityUserSchema,
-  oauthProvidersResponseSchema,
-  type OAuthProvider
-} from "@platform/contracts";
+  clientIdentityUserSchema as identityUserSchema,
+  clientOAuthProvidersResponseSchema as oauthProvidersResponseSchema,
+  currentRegistrationConsents
+} from "@platform/contracts/client";
 import { useEffect, useState, type SubmitEvent } from "react";
 import Link from "next/link";
 import { browserApiRequest, publicApiUrl } from "../../lib/public-api";
@@ -119,9 +119,11 @@ export function LearningAuth({
             ? "Проверьте почту и пароль."
             : response.status === 409
               ? "Аккаунт с такой почтой уже существует. Войдите в него."
-              : mode === "login"
-                ? "Не удалось войти. Проверьте данные и попробуйте снова."
-                : "Не удалось создать аккаунт. Проверьте данные и попробуйте снова."
+              : response.status === 429
+                ? "Слишком много попыток. Подождите несколько минут и попробуйте снова."
+                : mode === "login"
+                  ? "Не удалось войти. Проверьте данные и попробуйте снова."
+                  : "Не удалось создать аккаунт. Проверьте данные и попробуйте снова."
         );
         return;
       }

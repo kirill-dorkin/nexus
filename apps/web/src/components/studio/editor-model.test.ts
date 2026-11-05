@@ -6,6 +6,8 @@ import { readFileSync } from "node:fs";
 import { ManualEditor } from "./manual-editor";
 import { DraftPreview } from "./draft-preview";
 import { move, newActivity, parseEditorJson } from "./editor-model";
+import { isQuizActivity } from "@platform/contracts";
+import { quizAt } from "./editor-commands";
 const example = courseManifestV1Schema.parse(
   JSON.parse(
     readFileSync("docs/examples/computer-basics.manifest.json", "utf8")
@@ -28,7 +30,7 @@ describe("Studio document parity and safe author preview", () => {
       text.validation.acceptedAnswers = ["SECRET_TEXT"];
     d.activities.push(multi, text);
     d.activities.forEach((a) => {
-      a.validation.explanation = "SECRET_EXPLANATION";
+      if (isQuizActivity(a)) a.validation.explanation = "SECRET_EXPLANATION";
     });
     const parsed = parseEditorJson(JSON.stringify(d));
     expect(parsed.manifest).toEqual(d);
@@ -57,7 +59,7 @@ describe("Studio document parity and safe author preview", () => {
   });
   it("renders no answer keys, executable HTML or learner check controls in preview", () => {
     const d = structuredClone(example);
-    d.activities[0]!.validation.explanation = "SECRET_EXPLANATION";
+    quizAt(d.activities, 0)!.validation.explanation = "SECRET_EXPLANATION";
     d.lessons[0]!.blocks.push({
       type: "markdown",
       markdown: "<script>alert(1)</script>\n[Bad](javascript:alert%281%29)"

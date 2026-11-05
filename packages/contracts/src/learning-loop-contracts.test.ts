@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 
 import {
   courseVersionActivitySchema,
-  createAttemptRequestSchema,
   createCourseVersionActivityRequestSchema,
   createEvidenceRequestSchema,
   createSkillRequestSchema,
@@ -69,12 +68,12 @@ describe("learning loop contracts", () => {
     ).toBe(attemptId);
   });
 
-  it("keeps the old atomic create-and-submit command during the transition window", () => {
+  it("starts an Attempt without learner work; work is a separate Submission", () => {
     expect(
-      createAttemptRequestSchema.parse({
+      startAttemptRequestSchema.safeParse({
         submission: { answer: "grid-template-columns" }
-      }).submission
-    ).toEqual({ answer: "grid-template-columns" });
+      }).success
+    ).toBe(false);
   });
 
   it("accepts scored evidence and exposes explicit provenance", () => {

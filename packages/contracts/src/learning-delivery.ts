@@ -28,7 +28,9 @@ export const retargetLearningOfferingRequestSchema = z
 export const listLearningOfferingsQuerySchema = z
   .object({
     courseVersionId: uuidSchema,
-    after: uuidSchema.optional()
+    after: uuidSchema.optional(),
+    /** `course`: Offerings on any published version of the same Course. */
+    scope: z.enum(["version", "course"]).optional()
   })
   .strict();
 

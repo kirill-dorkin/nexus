@@ -18,10 +18,11 @@ export class PostgresQuizValidationContentQuery extends QuizValidationContentQue
         config: Record<string, unknown>;
         validation: unknown;
       }>(
-        `SELECT a.slug,a.title,a.instructions,a.activity_type,a.config,q.config AS validation
+        `SELECT a.slug,a.title,a.instructions,a.activity_type,a.config,coalesce(q.config,c.config) AS validation
        FROM learning_content.course_version_activities a
        JOIN learning_content.course_versions v ON v.organization_id=a.organization_id AND v.id=a.course_version_id
-       JOIN learning_content.quiz_validation_configs q ON q.organization_id=a.organization_id AND q.course_version_id=a.course_version_id AND q.activity_version_id=a.id
+       LEFT JOIN learning_content.quiz_validation_configs q ON q.organization_id=a.organization_id AND q.course_version_id=a.course_version_id AND q.activity_version_id=a.id
+       LEFT JOIN learning_content.assignment_check_configs c ON c.organization_id=a.organization_id AND c.course_version_id=a.course_version_id AND c.activity_version_id=a.id
        WHERE a.organization_id=$1 AND a.id=$2 AND v.status='published' AND v.manifest_schema_version=1`,
         [organizationId, activityVersionId]
       )
@@ -38,7 +39,7 @@ export class PostgresQuizValidationContentQuery extends QuizValidationContentQue
         validation: row.validation
       });
     if (!parsed?.success)
-      throw new ConflictException("Quiz definition is unavailable.");
+      throw new ConflictException("Activity definition is unavailable.");
     return parsed.data;
   }
 }

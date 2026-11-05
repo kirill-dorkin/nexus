@@ -1,4 +1,5 @@
 import { Badge, Heading, Inline, Stack, Surface } from "@platform/ui";
+import { AssignmentBlock } from "./assignment/assignment-block";
 import { QuizForm } from "./quiz-form";
 import type { PublicLearningLesson } from "@platform/contracts";
 import { SafeMarkdown } from "./safe-markdown";
@@ -66,15 +67,28 @@ export function LessonBlocks({
                 {block.activity.instructions ? (
                   <SafeMarkdown>{block.activity.instructions}</SafeMarkdown>
                 ) : null}
-                <SafeMarkdown>{block.activity.question}</SafeMarkdown>
-                <QuizForm
-                  key={`${organizationSlug}/${offeringSlug}/${lesson.slug}/${block.activity.slug}`}
-                  activity={block.activity}
-                  organizationSlug={organizationSlug}
-                  offeringSlug={offeringSlug}
-                  courseSlug={courseSlug}
-                  lessonSlug={lesson.slug}
-                />
+                {block.activity.type === "assignment.files" ? (
+                  <AssignmentBlock
+                    key={`${organizationSlug}/${offeringSlug}/${lesson.slug}/${block.activity.slug}`}
+                    activity={block.activity}
+                    organizationSlug={organizationSlug}
+                    offeringSlug={offeringSlug}
+                    courseSlug={courseSlug}
+                    lessonSlug={lesson.slug}
+                  />
+                ) : (
+                  <>
+                    <SafeMarkdown>{block.activity.question}</SafeMarkdown>
+                    <QuizForm
+                      key={`${organizationSlug}/${offeringSlug}/${lesson.slug}/${block.activity.slug}`}
+                      activity={block.activity}
+                      organizationSlug={organizationSlug}
+                      offeringSlug={offeringSlug}
+                      courseSlug={courseSlug}
+                      lessonSlug={lesson.slug}
+                    />
+                  </>
+                )}
               </Stack>
             </Surface>
           </section>

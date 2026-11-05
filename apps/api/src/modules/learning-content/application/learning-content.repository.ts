@@ -52,4 +52,11 @@ export abstract class LearningContentRepository {
     organizationId: string,
     versionId: string
   ): Promise<CourseVersion | null>;
+
+  /** Published version ids of one Course, oldest first. */
+  abstract listPublishedVersionIds(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    courseId: string
+  ): Promise<readonly string[]>;
 }

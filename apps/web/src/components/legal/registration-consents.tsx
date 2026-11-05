@@ -3,8 +3,8 @@ import { Checkbox } from "@platform/ui";
 import styles from "./legal.module.css";
 
 /**
- * Required consent checkboxes for registration. The wording is a placeholder for the owner to
- * confirm; the server records the version of each document (`currentRegistrationConsents`).
+ * Required consent checkboxes for registration; the server records the version of each document
+ * (`currentRegistrationConsents`). There is deliberately no marketing consent.
  * Links open in a new tab so the half-filled form is not lost.
  */
 export function RegistrationConsents({ disabled }: { disabled?: boolean }) {
@@ -16,9 +16,9 @@ export function RegistrationConsents({ disabled }: { disabled?: boolean }) {
         disabled={disabled}
         label={
           <>
-            Я принимаю{" "}
+            Я принимаю условия{" "}
             <Link href="/terms" target="_blank" rel="noopener">
-              условия использования
+              пользовательского соглашения
             </Link>
           </>
         }
@@ -29,9 +29,10 @@ export function RegistrationConsents({ disabled }: { disabled?: boolean }) {
         disabled={disabled}
         label={
           <>
-            Я даю согласие на обработку персональных данных в соответствии с{" "}
+            Я даю согласие на обработку моих персональных данных, в том числе на
+            их передачу за рубеж, на условиях{" "}
             <Link href="/privacy" target="_blank" rel="noopener">
-              политикой конфиденциальности
+              политики конфиденциальности
             </Link>
           </>
         }

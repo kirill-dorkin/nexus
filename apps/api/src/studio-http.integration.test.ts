@@ -19,6 +19,7 @@ import {
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { createApiApplication } from "./app.factory";
 import { OutboxRepository } from "./outbox/outbox.repository";
+import type { ManifestQuizActivity } from "@platform/contracts";
 function env(name: string) {
   const value = process.env[name];
   if (!value) throw Error(`${name} required`);
@@ -160,7 +161,7 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
       )
     );
     manifest.course.slug = `studio-${randomUUID()}`;
-    manifest.activities[0]!.validation.explanation =
+    (manifest.activities[0] as ManifestQuizActivity).validation.explanation =
       "PRIVATE_STUDIO_EXPLANATION";
     manifest.activities.push(
       {
@@ -450,13 +451,16 @@ describe("Studio real-session HTTP + PostgreSQL boundary", () => {
     edit.course.description = "Новое описание";
     edit.skills[0]!.title = "Название навыка";
     edit.skills[0]!.description = "Описание навыка";
-    edit.activities[0]!.title = "Новая практика";
-    edit.activities[0]!.instructions = "## Инструкция";
-    edit.activities[0]!.presentation.question = "Новый вопрос";
-    edit.activities[0]!.validation.explanation = "PRIVATE_UPDATED";
-    if (edit.activities[0]!.type === "quiz.single_choice") {
-      edit.activities[0]!.presentation.options.reverse();
-      edit.activities[0]!.validation.correctOptionId = "ram";
+    (edit.activities[0] as ManifestQuizActivity).title = "Новая практика";
+    (edit.activities[0] as ManifestQuizActivity).instructions = "## Инструкция";
+    (edit.activities[0] as ManifestQuizActivity).presentation.question =
+      "Новый вопрос";
+    (edit.activities[0] as ManifestQuizActivity).validation.explanation =
+      "PRIVATE_UPDATED";
+    const firstActivity = edit.activities[0];
+    if (firstActivity?.type === "quiz.single_choice") {
+      firstActivity.presentation.options.reverse();
+      firstActivity.validation.correctOptionId = "ram";
     }
     if (edit.activities[2]!.type === "quiz.short_text") {
       edit.activities[2]!.validation.acceptedAnswers.push("Третий ответ");

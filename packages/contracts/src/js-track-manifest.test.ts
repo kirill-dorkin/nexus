@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { courseManifestV1Schema } from "./course-manifest";
+import { isQuizActivity } from "./course-manifest";
 
 function jsTrack() {
   const raw = JSON.parse(
@@ -63,7 +64,7 @@ describe("JavaScript full course import", () => {
   });
 
   it("shows markup in questions as inline code, because question Markdown strips raw HTML", () => {
-    for (const activity of jsTrack().activities) {
+    for (const activity of jsTrack().activities.filter(isQuizActivity)) {
       const outsideCode = activity.presentation.question.replace(
         /`[^`]*`/g,
         ""
@@ -135,7 +136,7 @@ describe("JavaScript full course import", () => {
   });
 
   it("keeps quiz answer keys coherent", () => {
-    for (const activity of jsTrack().activities) {
+    for (const activity of jsTrack().activities.filter(isQuizActivity)) {
       if (activity.type === "quiz.short_text") {
         expect(activity.validation.acceptedAnswers.length).toBeGreaterThan(0);
         continue;

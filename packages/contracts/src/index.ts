@@ -36,8 +36,12 @@ export * from "./recommendations";
 
 export * from "./public-learning";
 export * from "./learner-learning";
+export * from "./own-skills";
+export * from "./skill-freshness";
 
 export * from "./quiz-check";
 export * from "./studio";
 export * from "./web-telemetry";
 export * from "./web-telemetry-names";
+
+export * from "./assignment";

@@ -26,6 +26,9 @@ export default tseslint.config(
       "**/coverage/**",
       "**/next-env.d.ts",
       ".tmp/**",
+      // Playwright output, including copies of built pages in traces.
+      "test-results/**",
+      "playwright-report/**",
       "apps/grader-runner/**"
     ]
   },

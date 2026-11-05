@@ -13,7 +13,10 @@ import styles from "../studio.module.css";
 import { Order, TextField, type Edit } from "./controls";
 
 type ShortText = Extract<ManifestActivity, { type: "quiz.short_text" }>;
-type Choice = Exclude<ManifestActivity, ShortText>;
+type Choice = Extract<
+  ManifestActivity,
+  { type: "quiz.single_choice" | "quiz.multiple_choice" }
+>;
 
 /** Accepted answers and case sensitivity of a short-text question. */
 export function ShortTextAnswers({
@@ -119,7 +122,10 @@ export function ChoiceOptions({
             onChange={(v) =>
               edit((d) => {
                 const a = itemAt(d.activities, i);
-                if (a.type !== "quiz.short_text")
+                if (
+                  a.type === "quiz.single_choice" ||
+                  a.type === "quiz.multiple_choice"
+                )
                   itemAt(a.presentation.options, j).text = v;
               })
             }
@@ -146,7 +152,10 @@ export function ChoiceOptions({
             onMove={(o) =>
               edit((d) => {
                 const a = itemAt(d.activities, i);
-                if (a.type !== "quiz.short_text")
+                if (
+                  a.type === "quiz.single_choice" ||
+                  a.type === "quiz.multiple_choice"
+                )
                   move(a.presentation.options, j, o);
               })
             }

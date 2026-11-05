@@ -266,11 +266,14 @@
     color-mix(in srgb, var(--accent-action) 30%, transparent);
 }
 
-.row {
-  display: grid;
-  gap: 0.75rem;
-  padding: 1.25rem;
-  border: 1px solid var(--border-default);
-  border-radius: 1.5rem;
-  background: var(--surface-solid);
+/* Loading placeholders sized like the real search field and course card. */
+.searchSkeleton {
+  height: 52px;
+  border-radius: var(--radius-pill);
+}
+.cardSkeleton {
+  min-height: 27rem;
+}
+.titleSkeleton {
+  height: 1.6rem;
 }

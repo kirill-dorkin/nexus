@@ -18,15 +18,25 @@ export type PublicLaunchHttpEvent = Readonly<{
   durationMs: number;
 }>;
 
-export type PublicLaunchSecurityEvent = Readonly<{
+export type PublicLaunchSecurityEvent =
+  | Readonly<{
+      event: "public_launch.security";
+      operation: "browser_write_origin";
+      outcome: "allowed" | "rejected" | "misconfigured";
+      reason:
+        | "origin_match"
+        | "origin_missing_or_invalid"
+        | "origin_mismatch"
+        | "web_origin_unavailable";
+    }>
+  | RateLimitSecurityEvent;
+
+/** ADR-0070: a request over its limit, or a limiter that could not count. */
+export type RateLimitSecurityEvent = Readonly<{
   event: "public_launch.security";
-  operation: "browser_write_origin";
-  outcome: "allowed" | "rejected" | "misconfigured";
-  reason:
-    | "origin_match"
-    | "origin_missing_or_invalid"
-    | "origin_mismatch"
-    | "web_origin_unavailable";
+  operation: "rate_limit";
+  outcome: "rejected" | "misconfigured";
+  reason: "rate_limit_exceeded" | "rate_limiter_unavailable";
 }>;
 
 export type PurchaseReconciliationAgeBucket =
@@ -95,10 +105,15 @@ export function buildPublicLaunchHttpEvent(
   };
 }
 
+type BrowserWriteOriginEvent = Exclude<
+  PublicLaunchSecurityEvent,
+  RateLimitSecurityEvent
+>;
+
 export function buildPublicLaunchSecurityEvent(
-  outcome: PublicLaunchSecurityEvent["outcome"],
-  reason: PublicLaunchSecurityEvent["reason"]
-): PublicLaunchSecurityEvent {
+  outcome: BrowserWriteOriginEvent["outcome"],
+  reason: BrowserWriteOriginEvent["reason"]
+): BrowserWriteOriginEvent {
   return {
     event: "public_launch.security",
     operation: "browser_write_origin",
@@ -136,10 +151,29 @@ export function buildPublicLaunchReconciliationEvent(
 }
 
 export function recordPublicLaunchSecurityEvent(
-  outcome: PublicLaunchSecurityEvent["outcome"],
-  reason: PublicLaunchSecurityEvent["reason"]
+  outcome: BrowserWriteOriginEvent["outcome"],
+  reason: BrowserWriteOriginEvent["reason"]
 ): void {
   emit(buildPublicLaunchSecurityEvent(outcome, reason));
+}
+
+export function buildRateLimitEvent(
+  outcome: RateLimitSecurityEvent["outcome"],
+  reason: RateLimitSecurityEvent["reason"]
+): RateLimitSecurityEvent {
+  return {
+    event: "public_launch.security",
+    operation: "rate_limit",
+    outcome,
+    reason
+  };
+}
+
+export function recordRateLimitEvent(
+  outcome: RateLimitSecurityEvent["outcome"],
+  reason: RateLimitSecurityEvent["reason"]
+): void {
+  emit(buildRateLimitEvent(outcome, reason));
 }
 
 export function recordPublicLaunchReconciliation(

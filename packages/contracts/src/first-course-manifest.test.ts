@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { courseManifestV1Schema } from "./course-manifest";
+import { isQuizActivity } from "./course-manifest";
 
 function launchManifest() {
   const raw = JSON.parse(
@@ -62,7 +63,7 @@ describe("first public computer basics course import", () => {
   it("never uses fake video IDs or privileged authority and keeps quiz keys coherent", () => {
     const manifest = launchManifest();
     const skillKeys = new Set(manifest.skills.map((s) => s.key));
-    for (const activity of manifest.activities) {
+    for (const activity of manifest.activities.filter(isQuizActivity)) {
       expect(activity.skillKeys.every((key) => skillKeys.has(key))).toBe(true);
       if (activity.type === "quiz.short_text") {
         throw new Error(

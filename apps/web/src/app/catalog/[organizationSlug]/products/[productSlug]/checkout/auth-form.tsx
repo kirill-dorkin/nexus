@@ -1,11 +1,11 @@
 "use client";
 import { useState, type SubmitEvent } from "react";
 import { apiError, browserApiRequest } from "../../../../../../lib/public-api";
+import { type IdentityUser } from "@platform/contracts";
 import {
-  currentRegistrationConsents,
-  identityUserSchema,
-  type IdentityUser
-} from "@platform/contracts";
+  clientIdentityUserSchema as identityUserSchema,
+  currentRegistrationConsents
+} from "@platform/contracts/client";
 import { RegistrationConsents } from "../../../../../../components/legal/registration-consents";
 import styles from "../product.module.css";
 

@@ -1,11 +1,11 @@
 import type { DatabaseTransaction } from "@platform/database";
 
 import {
-  GitHubProjectFactDeliveryRepository,
+  GitHubProjectFactDeliveryPort,
   type GitHubProjectFactDeliveryClaim,
   type GitHubProjectFactEventName,
   type GitHubProjectFactRoutingStatus
-} from "../application/github-project-fact-delivery.repository";
+} from "../application/github-project-fact-delivery.port";
 
 type ClaimRow = {
   inbox_id: string;
@@ -24,10 +24,10 @@ type ClaimRow = {
   failure_count: number;
 };
 
-export class PostgresGitHubProjectFactDeliveryRepository extends GitHubProjectFactDeliveryRepository {
+export class PostgresGitHubProjectFactDeliveryRepository extends GitHubProjectFactDeliveryPort {
   async claim(
     transaction: DatabaseTransaction,
-    input: Parameters<GitHubProjectFactDeliveryRepository["claim"]>[1]
+    input: Parameters<GitHubProjectFactDeliveryPort["claim"]>[1]
   ): Promise<GitHubProjectFactDeliveryClaim | null> {
     const result = await transaction.client.query<ClaimRow>(
       `SELECT
@@ -71,7 +71,7 @@ export class PostgresGitHubProjectFactDeliveryRepository extends GitHubProjectFa
 
   async finish(
     transaction: DatabaseTransaction,
-    input: Parameters<GitHubProjectFactDeliveryRepository["finish"]>[1]
+    input: Parameters<GitHubProjectFactDeliveryPort["finish"]>[1]
   ): Promise<boolean> {
     const result = await transaction.client.query<{ finished: boolean }>(
       `SELECT platform_internal.finish_github_webhook_project_fact($1, $2, $3, $4, $5)

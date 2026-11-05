@@ -639,3 +639,45 @@
 .routeFacts a {
   color: var(--text-accent);
 }
+
+/* File assignments (ADR-0073). */
+.dropZone {
+  display: grid;
+  gap: 0.6rem;
+  padding: 1rem 1.1rem;
+  border: 1px dashed var(--border-default);
+  border-radius: 1rem;
+  background: var(--surface-solid);
+}
+.dropZone:focus-within {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.assignmentReport {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--border-default);
+  border-radius: 1rem;
+}
+.assignmentReport ul {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.assignmentReport li[data-passed="true"] > span:first-child {
+  color: var(--status-success, var(--accent-action));
+}
+.assignmentReport li[data-passed="false"] > span:first-child {
+  color: var(--status-danger, var(--text-primary));
+}
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

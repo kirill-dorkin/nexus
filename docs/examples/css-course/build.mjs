@@ -12,6 +12,7 @@ import responsive from "./c08-responsive.mjs";
 import motion from "./c09-motion.mjs";
 import modern from "./c10-modern.mjs";
 import quality from "./c11-quality.mjs";
+import assignments from "./assignments.mjs";
 
 const chapters = [
   ["Старт CSS", [start]],
@@ -29,7 +30,7 @@ const chapters = [
 
 const challenges = {};
 const recaps = {};
-const course = createCourse(challenges, {}, recaps);
+const course = createCourse(challenges, {}, recaps, {}, assignments);
 for (const [chapter, parts] of chapters) {
   course.chapter(chapter);
   for (const part of parts) part(course, challenges, recaps);

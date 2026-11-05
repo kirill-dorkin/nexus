@@ -38,7 +38,7 @@ The remaining `outline: none` rules in Web are on `<main>` landmarks that receiv
 These need a person and are tracked here rather than claimed:
 
 - **Screen-reader pass.** VoiceOver (macOS, iOS) and NVDA (Windows) through the learner path and Studio: announcement order, live-region updates of practice results and quiz feedback, the modal program.
-- **Zoom and reflow.** 200 % text zoom and 320 px reflow (1.4.4, 1.4.10) were checked by eye on the redesign only (`home-redesign-verification.md`), not on every page.
+- **Zoom and reflow.** 200 % text zoom and 320 px reflow (1.4.4, 1.4.10) were checked by eye on the redesign only (`../archive/home-redesign-verification.md`), not on every page.
 - **Contrast of non-text and states.** axe checks text contrast; hover, disabled and focus-ring contrast against every background (1.4.11) was not measured.
 - **Content.** Lesson texts and images written by authors (alternatives for images, heading order inside lessons) depend on the course; the published courses were not reviewed one by one.
 

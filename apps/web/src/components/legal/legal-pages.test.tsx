@@ -1,39 +1,44 @@
-import { render, screen, within } from "@testing-library/react";
-import { CURRENT_LEGAL_DOCUMENT_VERSIONS } from "@platform/contracts";
+import { render, screen } from "@testing-library/react";
+import { CURRENT_LEGAL_DOCUMENT_VERSIONS } from "@platform/contracts/client";
 import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 
-import PrivacyPage, {
-  metadata as privacyMetadata
-} from "../../app/privacy/page";
-import TermsPage, { metadata as termsMetadata } from "../../app/terms/page";
+import PrivacyPage from "../../app/privacy/page";
+import TermsPage from "../../app/terms/page";
 
 vi.mock("../learning/learning-shell", () => ({
   LearningShell: ({ children }: { children: ReactNode }) => <>{children}</>
 }));
 
-describe("legal document placeholders", () => {
+describe("legal documents", () => {
   it.each([
     ["Политика конфиденциальности", PrivacyPage, "personal_data"],
-    ["Условия использования", TermsPage, "terms"]
-  ] as const)("%s is a marked draft without legal text", (title, Page, doc) => {
-    render(<Page />);
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(title);
-    expect(screen.getByText(/Черновик/)).toBeInTheDocument();
-    expect(
-      screen.getByText(`Версия: ${CURRENT_LEGAL_DOCUMENT_VERSIONS[doc]}`)
-    ).toBeInTheDocument();
-    const sections = screen.getAllByRole("listitem");
-    expect(sections.length).toBeGreaterThan(0);
-    for (const section of sections) {
+    ["Пользовательское соглашение", TermsPage, "terms"]
+  ] as const)(
+    "%s shows its version and the operator contacts",
+    (title, Page, doc) => {
+      render(<Page />);
+      expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+        title
+      );
       expect(
-        within(section).getByText("[Текст раздела предоставит владелец]")
+        screen.getByText(
+          new RegExp(`Редакция ${CURRENT_LEGAL_DOCUMENT_VERSIONS[doc]}`)
+        )
       ).toBeInTheDocument();
+      expect(
+        screen.getAllByRole("link", { name: "kirilldorkin.ru@gmail.com" })[0]
+      ).toHaveAttribute("href", "mailto:kirilldorkin.ru@gmail.com");
+      expect(
+        screen.getByRole("link", { name: "+996 999 901 631" })
+      ).toHaveAttribute("href", "https://wa.me/996999901631");
     }
-  });
+  );
 
-  it("keeps placeholder pages out of search results", () => {
-    expect(privacyMetadata.robots).toMatchObject({ index: false });
-    expect(termsMetadata.robots).toMatchObject({ index: false });
+  it("discloses the processors and the cross-border transfer", () => {
+    render(<PrivacyPage />);
+    expect(screen.getByText(/Vercel Inc\./)).toBeInTheDocument();
+    expect(screen.getByText(/Neon Inc\./)).toBeInTheDocument();
+    expect(screen.getByText(/трансграничную передачу/)).toBeInTheDocument();
   });
 });

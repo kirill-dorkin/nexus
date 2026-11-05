@@ -1,0 +1,601 @@
+.intro {
+  justify-items: start;
+  display: grid;
+  gap: var(--space-3);
+  max-width: 62ch;
+  margin-bottom: var(--space-8);
+}
+
+.roster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  position: relative;
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  padding: var(--space-6);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(
+      120% 80% at 100% 0%,
+      color-mix(in srgb, var(--action-primary) 18%, transparent),
+      transparent 60%
+    ),
+    var(--surface-elevated);
+}
+
+.card:focus-within {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 2px;
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.portrait {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--action-primary) 22%, transparent);
+  color: var(--action-primary);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.portraitLarge {
+  composes: portrait;
+  width: 4.5rem;
+  height: 4.5rem;
+  font-size: 1.35rem;
+}
+
+.name {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* The whole card is the link target; the heading link carries the name. */
+.name a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.role {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--action-primary);
+}
+
+.summary {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.levelLine {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-3);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.levelLine strong {
+  color: var(--text-primary);
+}
+
+.meter {
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--surface-hover);
+  overflow: hidden;
+  accent-color: var(--action-primary);
+}
+.meter::-webkit-progress-bar {
+  background: var(--surface-hover);
+  border-radius: var(--radius-pill);
+}
+.meter::-webkit-progress-value {
+  background: var(--action-primary);
+  border-radius: var(--radius-pill);
+}
+.meter::-moz-progress-bar {
+  background: var(--action-primary);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+}
+
+.tag {
+  padding: 0.15rem 0.6rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+}
+
+.tagWarn {
+  composes: tag;
+  border-color: color-mix(in srgb, var(--status-warning) 60%, transparent);
+  color: var(--text-primary);
+}
+
+.profile {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.profileHead {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(
+      100% 120% at 100% 0%,
+      color-mix(in srgb, var(--action-primary) 20%, transparent),
+      transparent 65%
+    ),
+    var(--surface-elevated);
+}
+
+.profileTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.stat {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.stat dt {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.stat dd {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.next {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  background: color-mix(
+    in srgb,
+    var(--action-primary) 12%,
+    var(--surface-elevated)
+  );
+}
+
+.next p {
+  margin: 0;
+}
+
+.branches {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.branch {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.branchHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-3);
+}
+
+.branchHead h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.branchMeta {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.skills {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.skill {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-elevated);
+}
+
+.skill[data-state="locked"] {
+  opacity: 0.72;
+}
+
+.skill[data-state="fading"] {
+  border-color: color-mix(
+    in srgb,
+    var(--status-warning) 55%,
+    var(--border-default)
+  );
+}
+
+.skill[data-state="forgotten"] {
+  border-style: dashed;
+}
+
+.dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  border: 2px solid var(--text-secondary);
+}
+
+.skill[data-state="open"] .dot {
+  border-color: var(--action-primary);
+}
+
+.skill[data-state="confirmed"] .dot {
+  border-color: var(--action-primary);
+  background: var(--action-primary);
+}
+
+.skill[data-state="fading"] .dot {
+  border-color: var(--status-warning);
+  background: color-mix(in srgb, var(--status-warning) 45%, transparent);
+}
+
+.skillText {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.skillTitle {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.skillState {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.skillAction {
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.requires {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 520px) {
+  .skill {
+    grid-template-columns: auto 1fr;
+  }
+  .skillAction {
+    grid-column: 2;
+  }
+}
+
+.daily {
+  display: grid;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+  padding: var(--space-6);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--surface-elevated);
+}
+
+.dailyHead {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.quests {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.quest {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.questMark {
+  display: grid;
+  place-items: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 2px solid var(--action-primary);
+  border-radius: 50%;
+  color: var(--text-on-action);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.quest[data-done] .questMark {
+  background: var(--action-primary);
+}
+
+.quest[data-done] .skillTitle {
+  color: var(--text-secondary);
+}
+
+.scene {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.scene summary {
+  width: fit-content;
+  cursor: pointer;
+  color: var(--action-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.sceneLines {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sceneLine {
+  display: grid;
+  gap: 0.1rem;
+  padding: var(--space-2) var(--space-3);
+  border-left: 3px solid var(--speaker);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: var(--surface-subtle);
+  color: var(--text-primary);
+}
+
+.speaker {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--speaker);
+}
+
+.sceneLabel {
+  margin: var(--space-3) 0 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.restored {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--action-primary) 10%, transparent);
+}
+
+.city {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 30% 20%, var(--surface-hover), transparent 55%),
+    var(--surface-subtle);
+}
+
+.cityPlan {
+  display: block;
+  width: 100%;
+  min-width: 640px;
+  height: auto;
+}
+
+.road {
+  stroke: var(--border-strong);
+  stroke-width: 6;
+  stroke-dasharray: 2 12;
+  stroke-linecap: round;
+}
+
+.hatch {
+  stroke: color-mix(in srgb, var(--action-primary) 45%, transparent);
+  stroke-width: 3;
+}
+
+.district {
+  cursor: pointer;
+}
+
+.districtBase {
+  fill: var(--surface-elevated);
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  stroke-dasharray: 8 6;
+  transition:
+    fill 400ms ease,
+    stroke 400ms ease;
+}
+
+.district[data-state="scaffolding"] .districtBase {
+  stroke: var(--action-primary);
+  stroke-dasharray: none;
+}
+
+.district[data-state="alive"] .districtBase {
+  fill: color-mix(in srgb, var(--action-primary) 22%, var(--surface-elevated));
+  stroke: var(--action-primary);
+  stroke-width: 3;
+  stroke-dasharray: none;
+}
+
+.districtBadge {
+  fill: color-mix(in srgb, var(--action-primary) 25%, transparent);
+}
+
+.district[data-state="ruined"] .districtBadge {
+  fill: var(--surface-hover);
+}
+
+.districtInitials {
+  fill: var(--action-primary);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.districtName {
+  fill: var(--text-primary);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.districtMeta {
+  fill: var(--text-secondary);
+  font-size: 14px;
+}
+
+a:focus-visible .districtBase {
+  stroke: var(--text-primary);
+  stroke-width: 4;
+  stroke-dasharray: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .districtBase {
+    transition: none;
+  }
+}
+
+.upcoming {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-10);
+}
+
+.upcomingDistrict {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.branchTitle {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.upcomingList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.upcomingCard {
+  display: grid;
+  gap: 0.15rem;
+  padding: var(--space-3) var(--space-4);
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.abilities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ability {
+  display: grid;
+  gap: 0.1rem;
+  padding: var(--space-2) var(--space-3);
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-md);
+}
+
+.ability[data-active] {
+  border-style: solid;
+  border-color: var(--action-primary);
+  background: color-mix(in srgb, var(--action-primary) 16%, transparent);
+}

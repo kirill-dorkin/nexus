@@ -21,18 +21,18 @@ export const PAGES: readonly {
 }[] = [
   { path: "/", name: "home", scriptBudget: 185 * KB },
   { path: "/courses", name: "catalog", scriptBudget: 185 * KB },
-  { path: "/courses/e2e-html", name: "course", scriptBudget: 285 * KB },
+  { path: "/courses/e2e-html", name: "course", scriptBudget: 220 * KB },
   {
     path: "/courses/e2e-html/first-tag",
     name: "lesson",
-    scriptBudget: 340 * KB
+    scriptBudget: 275 * KB
   },
   {
     path: "/courses/e2e-html/query-preview",
     name: "SQL lesson",
-    scriptBudget: 350 * KB,
+    scriptBudget: 275 * KB,
     sql: true
   },
-  { path: "/login", name: "sign-in", scriptBudget: 295 * KB },
-  { path: "/me/learning", name: "my learning", scriptBudget: 295 * KB }
+  { path: "/login", name: "sign-in", scriptBudget: 220 * KB },
+  { path: "/me/learning", name: "my learning", scriptBudget: 220 * KB }
 ];

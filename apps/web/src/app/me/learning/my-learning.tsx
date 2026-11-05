@@ -1,9 +1,7 @@
 "use client";
 import { itemAt } from "../../../lib/item-at";
-import {
-  ownLearningListSchema,
-  type OwnLearningList
-} from "@platform/contracts";
+import { type OwnLearningList } from "@platform/contracts";
+import { clientOwnLearningListSchema as ownLearningListSchema } from "@platform/contracts/client";
 import { useState } from "react";
 import { useApiResource } from "../../../lib/hooks/api-resource";
 import Link from "next/link";
@@ -11,6 +9,7 @@ import { browserApiRequest } from "../../../lib/public-api";
 import { learningLoginUrl } from "../../../lib/learning-return-to";
 import { courseUrl, lessonUrl } from "../../../lib/public-learning-routes";
 import { CourseProgress } from "../../../components/learning/course-progress";
+import { CourseSkillsCount } from "../../../components/learning/course-skills";
 import {
   Alert,
   Badge,
@@ -185,6 +184,10 @@ export function MyLearning() {
                 </div>
                 <div className={styles.savedProgress}>
                   <CourseProgress learning={c} />
+                  <CourseSkillsCount
+                    organizationSlug={c.organization.slug}
+                    offeringSlug={c.offering.slug}
+                  />
                   <Link className={buttonClass()} href={lessonUrl(c, next)}>
                     {c.progress?.allRequiredPassed
                       ? "Вернуться к материалам"
