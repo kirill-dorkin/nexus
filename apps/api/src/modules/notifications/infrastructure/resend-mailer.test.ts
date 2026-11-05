@@ -63,7 +63,9 @@ describe("transactional mail", () => {
     expect(new Headers(init?.headers).get("authorization")).toBe(
       "Bearer re_key"
     );
-    expect(JSON.parse(String(init?.body))).toMatchObject({
+    expect(
+      JSON.parse(typeof init?.body === "string" ? init.body : "null")
+    ).toMatchObject({
       to: ["learner@example.test"],
       from: "Test Academy <noreply@academy.test>"
     });

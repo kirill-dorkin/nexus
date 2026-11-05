@@ -6,7 +6,8 @@ import { browserApiRequest } from "../../lib/public-api";
 import { ForgotPasswordLink } from "./forgot-password-link";
 import {
   PasswordResetConfirmForm,
-  PasswordResetRequestForm
+  PasswordResetRequestForm,
+  forgetLinkToken
 } from "./password-reset-forms";
 
 vi.mock("../../lib/public-api", async (importOriginal) => ({
@@ -22,7 +23,10 @@ beforeEach(() => {
   assign.mockReset();
   vi.spyOn(window.location, "assign").mockImplementation(assign);
 });
-afterEach(() => window.history.replaceState(null, "", "/"));
+afterEach(() => {
+  window.history.replaceState(null, "", "/");
+  forgetLinkToken();
+});
 
 describe("password reset request", () => {
   it("shows the same confirmation after a 202", async () => {

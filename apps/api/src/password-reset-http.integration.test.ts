@@ -32,7 +32,11 @@ describe("password reset HTTP + PostgreSQL boundary (ADR-0082)", () => {
   };
   const sent: SentMail[] = [];
   const provider = vi.fn((_url: string, init?: RequestInit) => {
-    sent.push(JSON.parse(String(init?.body)) as SentMail);
+    sent.push(
+      JSON.parse(
+        typeof init?.body === "string" ? init.body : "null"
+      ) as SentMail
+    );
     return Promise.resolve(new Response("{}", { status: 200 }));
   });
   let app: NestFastifyApplication;

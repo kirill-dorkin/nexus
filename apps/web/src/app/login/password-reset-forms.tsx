@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, useSyncExternalStore, type SubmitEvent } from "react";
 import {
   Alert,
   Button,
@@ -12,9 +12,37 @@ import {
   Text
 } from "@platform/ui";
 import { browserApiRequest } from "../../lib/public-api";
+import { safeLearningReturnTo } from "../../lib/learning-return-to";
 import styles from "./auth.module.css";
 
 const TOKEN = /^[A-Za-z0-9_-]{43}$/;
+
+const field = (form: HTMLFormElement, name: string) => {
+  const value = new FormData(form).get(name);
+  return typeof value === "string" ? value : "";
+};
+
+let captured: string | null | undefined;
+/**
+ * The token of the link, read once from the fragment. The fragment is removed
+ * at once, so the token never stays in the address bar, history or a shared link.
+ */
+function linkToken(): string | null {
+  if (captured === undefined) {
+    const value = new URLSearchParams(window.location.hash.slice(1)).get(
+      "token"
+    );
+    if (window.location.hash)
+      window.history.replaceState(null, "", window.location.pathname);
+    captured = value && TOKEN.test(value) ? value : null;
+  }
+  return captured;
+}
+/** Test seam: forget the token read by an earlier render. */
+export function forgetLinkToken() {
+  captured = undefined;
+}
+const noSubscription = () => () => undefined;
 
 function failure(status: number | null): string {
   if (status === 429) return "Слишком много попыток. Попробуйте через час.";
@@ -28,9 +56,9 @@ export function PasswordResetRequestForm() {
   const [state, setState] = useState<"editing" | "sending" | "sent">("editing");
   const [error, setError] = useState<string | null>(null);
 
-  async function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
-    const email = String(new FormData(event.currentTarget).get("email") ?? "");
+    const email = field(event.currentTarget, "email");
     setState("sending");
     setError(null);
     try {
@@ -99,25 +127,19 @@ export function PasswordResetRequestForm() {
 
 /** Sets a new password with the token from the link's fragment. */
 export function PasswordResetConfirmForm() {
-  const [token, setToken] = useState<string | null | undefined>(undefined);
+  const linked = useSyncExternalStore(
+    noSubscription,
+    linkToken,
+    () => undefined
+  );
+  const [refused, setRefused] = useState(false);
+  const token = refused ? null : linked;
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const value = new URLSearchParams(window.location.hash.slice(1)).get(
-      "token"
-    );
-    // The token never stays in the address bar, history or a shared link.
-    if (window.location.hash)
-      window.history.replaceState(null, "", window.location.pathname);
-    setToken(value && TOKEN.test(value) ? value : null);
-  }, []);
-
-  async function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
-    const password = String(
-      new FormData(event.currentTarget).get("password") ?? ""
-    );
+    const password = field(event.currentTarget, "password");
     setBusy(true);
     setError(null);
     try {
@@ -126,10 +148,10 @@ export function PasswordResetConfirmForm() {
         { method: "POST", body: JSON.stringify({ token, password }) }
       );
       if (response.ok) {
-        window.location.assign("/me/learning");
+        window.location.assign(safeLearningReturnTo("/me/learning"));
         return;
       }
-      if (response.status === 400) setToken(null);
+      if (response.status === 400) setRefused(true);
       else setError(failure(response.status));
     } catch {
       setError(failure(null));
