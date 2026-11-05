@@ -11,8 +11,8 @@ export type LegalDocument = (typeof LEGAL_DOCUMENTS)[number];
 export const CURRENT_LEGAL_DOCUMENT_VERSIONS: Readonly<
   Record<LegalDocument, string>
 > = Object.freeze({
-  terms: "2026-11-05",
-  personal_data: "2026-11-05"
+  terms: "2026-11-06",
+  personal_data: "2026-11-06"
 });
 
 /** The consents the registration form sends for the documents it showed. */

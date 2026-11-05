@@ -49,7 +49,7 @@ Each row is implemented on `main`. The ADRs hold the details; the backend areas 
 | Studio | Manual and JSON authoring over the same draft, preview, export, publication, Offering visibility, Organization customer-entry policy | 0057 |
 | Web UI | `@platform/ui` + design tokens, light/dark themes with accents, public shell, Blog/SEO surfaces, `/ui` gallery | 0059 |
 | Sign-in | Password, optional Google/GitHub OAuth (PKCE) on the same Nexus session | 0060 |
-| Legal minimum | `/privacy` and `/terms` (owner-approved texts, version 2026-11-05), footer links, two required consent checkboxes at registration recorded with document versions in `identity.legal_consents`. OAuth-created accounts do not record consent yet; hosting is outside RF/KG | 0083 |
+| Legal minimum | `/privacy`, `/consent` and `/terms` (edition 2026-11-06: Kyrgyz law, 152-ФЗ for users from Russia, separate consent page), footer links, two required consent checkboxes at registration recorded with document versions in `identity.legal_consents`. OAuth-created accounts do not record consent yet; hosting is outside RF/KG | 0083 |
 | Organization provisioning | Organizations are created only by the offline operator command `org:bootstrap-owner` (`platform_migrator` role, `--apply`). Both HTTP create routes return 403/401. | 0068 |
 
 The paid path (F9) for reference:

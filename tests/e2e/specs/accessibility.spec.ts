@@ -22,6 +22,7 @@ const PUBLIC_ROUTES = [
   "/login",
   "/login?mode=register",
   "/privacy",
+  "/consent",
   "/terms",
   "/me/learning",
   "/ui",

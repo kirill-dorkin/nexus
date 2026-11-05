@@ -29,8 +29,11 @@ export function RegistrationConsents({ disabled }: { disabled?: boolean }) {
         disabled={disabled}
         label={
           <>
-            Я даю согласие на обработку моих персональных данных, в том числе на
-            их передачу за рубеж, на условиях{" "}
+            Я даю{" "}
+            <Link href="/consent" target="_blank" rel="noopener">
+              согласие на обработку моих персональных данных
+            </Link>
+            , в том числе на их передачу за рубеж, на условиях{" "}
             <Link href="/privacy" target="_blank" rel="noopener">
               политики конфиденциальности
             </Link>

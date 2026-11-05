@@ -86,6 +86,7 @@ export function LearningShell({
             <div>
               <span>Документы</span>
               <Link href="/privacy">Политика конфиденциальности</Link>
+              <Link href="/consent">Согласие на обработку данных</Link>
               <Link href="/terms">Пользовательское соглашение</Link>
             </div>
           </nav>

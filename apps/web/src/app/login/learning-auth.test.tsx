@@ -150,6 +150,11 @@ describe("LearningAuth", () => {
     expect(
       screen.getByRole("link", { name: "политики конфиденциальности" })
     ).toHaveAttribute("href", "/privacy");
+    expect(
+      screen.getByRole("link", {
+        name: "согласие на обработку моих персональных данных"
+      })
+    ).toHaveAttribute("href", "/consent");
   });
 
   it("asks to reload when the legal documents changed", async () => {
