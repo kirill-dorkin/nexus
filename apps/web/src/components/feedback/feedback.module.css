@@ -1,0 +1,41 @@
+.dialog {
+  width: min(32rem, calc(100vw - 2rem));
+}
+
+.title {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.body {
+  display: grid;
+  gap: 1rem;
+}
+
+.hint {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.lessonFooter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.lessonFooter p {
+  margin: 0;
+}

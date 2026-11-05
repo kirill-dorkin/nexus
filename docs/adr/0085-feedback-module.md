@@ -23,7 +23,7 @@ The open beta (anyone registers and learns, no participant cap, no weekly norm) 
   - `PATCH /v1/organizations/{organizationId}/feedback/{reportId}`: status and/or owner note; exact Origin.
   - Both Studio routes need the new capability `feedback.manage`, held by `organization_owner` and `organization_admin`.
 - **Not stored:** IP address, user agent, cookies, screenshots, quiz or assignment answers, the URL or its query.
-- **Web.** Every learner page (the shared learner shell: courses, lessons, characters, map, my learning, blog) has a «Сообщить» button that opens an accessible dialog; the dialog code loads only when the button is pressed, so page budgets do not change. The header shows a «Бета» badge next to the brand. The footer and the dialog link to help in WhatsApp (a plain link in a new tab with `rel="noopener noreferrer"`; links are not governed by the CSP). Studio has «Отзывы» per Organization.
+- **Web.** The footer of every learner page (the shared learner shell: courses, lessons, characters, map, my learning, blog, legal pages) and the end of every lesson have a «Сообщить» button that opens an accessible dialog (kind, text, and for problems «what you expected» / «what happened»). The dialog code loads only when the button is pressed, so page budgets do not change. The header stays unchanged: it has no room on phones for another control next to the longer product name. Studio has «Отзывы учеников» per Organization (`/studio/{organizationId}/feedback`): newest first, filter by status, status change in place.
 
 ## Consequences
 

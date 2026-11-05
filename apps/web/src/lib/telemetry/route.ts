@@ -23,6 +23,7 @@ const ROUTES: readonly [RegExp, WebRoute][] = [
   [/^\/purchases\/[^/]+\/?$/, "/purchases/[purchase]"],
   [/^\/studio\/?$/, "/studio"],
   [/^\/studio\/[^/]+\/entry-policy\/?$/, "/studio/[organization]/entry-policy"],
+  [/^\/studio\/[^/]+\/feedback\/?$/, "/studio/[organization]/feedback"],
   [
     /^\/studio\/[^/]+\/[^/]+\/offerings\/?$/,
     "/studio/[organization]/[course]/offerings"

@@ -1,4 +1,6 @@
 import { LearnerEntry } from "./learner-entry";
+import { FeedbackLauncher } from "../feedback/feedback-launcher";
+import feedbackStyles from "../feedback/feedback.module.css";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LearningShell } from "./learning-shell";
@@ -131,6 +133,10 @@ export function LessonPageView({
                 </Link>
               )}
             </nav>
+            <div className={feedbackStyles.lessonFooter}>
+              <p>Что-то непонятно или не работает в этом уроке?</p>
+              <FeedbackLauncher label="Сообщить" />
+            </div>
           </div>
           <aside
             className={styles.lessonAside}

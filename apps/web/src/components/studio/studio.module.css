@@ -613,3 +613,42 @@
 .modeGroup button {
   border-radius: var(--radius-pill);
 }
+
+.feedbackInbox {
+  display: grid;
+  gap: 1rem;
+}
+.feedbackFilter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text-secondary);
+}
+.feedbackList {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.feedbackItem {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+}
+.feedbackItem p {
+  margin: 0;
+}
+.feedbackMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.9rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+.feedbackText {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
