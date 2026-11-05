@@ -126,6 +126,8 @@ Historical outbox rows (including old `attempt.submitted`) are immutable and are
 
 ## Next recommended slice
 
+**Follow [`docs/roadmap/master-plan.md`](../roadmap/master-plan.md)** (2026-11-05): everything left, grouped by area (game core, content, infrastructure, trust, testers, subscription, analytics), in five phases with owner decisions. Phase 1: the skill test (ADR-0075), the skill map in Learning Content (ADR-0078) and the server-side prerequisite lock (ADR-0077).
+
 **Follow [`docs/roadmap/product-development-spec.md`](../roadmap/product-development-spec.md)** (v2, 2026-11-04): capability audit, findings A1–A11, autonomous-work rules and work packages. Order: WP-1 production reliability and security (smoke waits for the release, Web security headers, rate limiting), WP-2 architecture hygiene, WP-3 learner skill progress, WP-4 shared `@platform/checks`, WP-5 downloadable assignments with trusted HTML/CSS checks.
 
 The web quality program ([`web-quality-program.md`](web-quality-program.md)) is complete. The four route courses (HTML, CSS, JavaScript, SQL) are published.
