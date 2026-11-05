@@ -5,7 +5,7 @@
 
 ## Context
 
-Spec v3 (`docs/roadmap/characters-spec.md`, section 5.2): a skill counts only after the learner confirms it by a test. Today each skill has 2–3 fixed quizzes inside its lesson (ADR-0053, ADR-0056). Repeating the same questions on every review does not prove memory. So spaced repetition (ADR-0076) needs a varied test.
+The game design (`docs/product/game-design.md`, section 5.2): a skill counts only after the learner confirms it by a test. Today each skill has 2–3 fixed quizzes inside its lesson (ADR-0053, ADR-0056). Repeating the same questions on every review does not prove memory. So spaced repetition (ADR-0076) needs a varied test.
 
 ## Decision
 

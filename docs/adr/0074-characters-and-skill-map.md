@@ -1,6 +1,6 @@
 # ADR-0074: Characters and the skill map are presentation over Mastery
 
-- Status: Accepted (stage 1). Spec v3 (2026-11-05) refines the progress rules: level 0–100 from **active** confirmed skills, skill confirmation by test, decay `skill-freshness@1`, and confirmation gated by prerequisite skills. These land as ADR-0075–0078; until then the stage-1 rules below apply
+- Status: Accepted (stage 1). Spec v3 (2026-11-05) refines the progress rules: level 0–100 from **active** confirmed skills, skill confirmation by test, decay `skill-freshness@1`, and confirmation gated by prerequisite skills. These are accepted as ADR-0075–0078; where they differ from the stage-1 rules below, they win
 - Date: 2026-11-05
 
 ## Context
@@ -32,7 +32,11 @@ So a learner's level in a subject can be read from existing Mastery. No new lear
      - after the term the skill **fades** for 7 days, then it is **forgotten**;
      - confirming a forgotten skill again steps down one step.
    - **Active** = confirmed or fading.
-   - Level = ⌊active share × 100⌋. It falls when skills are forgotten.
+   - **Level `level@2`** (amended 2026-11-05) is ⌊Σ weight of active skills ÷ Σ weight of all skills × 100⌋. It falls when skills are forgotten.
+     - Each branch has a `depth`: core, practice, advanced, reference or internals.
+     - The depth sets the weight of each of its skills: 3, 2, 1.5, 1 and 1 respectively.
+     - So core and practice make a Практик, and a Легенда needs the whole reference (`docs/product/skill-trees/README.md`, 3.2).
+   - **Abilities:** 5–8 milestone badges per character, each over a set of branches. A badge is lit while every skill of those branches is active and goes out when one is forgotten.
    - Ranks: Новичок 0, Ученик 20, Практик 40, Мастер 60, Эксперт 80, Легенда 95.
    - XP never decreases: 100 for a first confirmation and 25 for each further confirmation day.
    - A branch is unlocked when each required branch is at least `unlockShare` (0.5) active.
@@ -56,4 +60,4 @@ So a learner's level in a subject can be read from existing Mastery. No new lear
 - Characters cost no migration and no new projection. The history of every learner already counts towards their levels.
 - Courses stay the content source. A course page can show which characters it levels up.
 - A skill added to a manifest must be placed in a character, otherwise the build fails. A course republish therefore also needs the map rebuilt.
-- Pricing by character needs its own decision: Products and Entitlements still grant Offerings, not characters (see `docs/roadmap/characters-spec.md`, section 6).
+- Pricing by character needs its own decision: Products and Entitlements still grant Offerings, not characters (see `docs/product/game-design.md`, section 6).

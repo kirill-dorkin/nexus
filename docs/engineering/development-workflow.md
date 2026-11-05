@@ -7,7 +7,7 @@ This document defines the required delivery process for architectural work in Ne
 - `main` is the integration source of truth and must remain releasable.
 - One branch and one PR should represent one coherent architectural slice.
 - Design and invariants come before implementation.
-- CI is the first verification gate; maintainer-local verification is the second.
+- Two gates: the local `pnpm check` before every push and GitHub CI on the PR head. The maintainer verifies only what the PR marks as owner-only.
 - A red existing PR is repaired in place rather than replaced with a second PR.
 - Small causal fixes are preferred over speculative refactors.
 - Architecture documentation changes with the architecture, not later.
@@ -53,6 +53,10 @@ Keep changes inside the owning module and established boundaries. Add or update 
 
 For canonical business mutations, business state and its canonical outbox event must commit atomically when an event is part of the contract.
 
+### 4a. Take ADR and migration numbers only after checking parallel work
+
+Several sessions work in parallel, so the next free number on `main` may already be taken. Before you add an ADR or a migration, check `main`, the open PRs and the `wip/*` branches. Then write the number into the «Reserved numbers» table in `docs/engineering/current-state.md`. When two branches have the same number, the one that merges later renumbers.
+
 ### 5. Open a Draft PR
 
 Open a Draft PR as soon as the slice is reviewable. The PR description should include:
@@ -97,24 +101,24 @@ Inspect the workflow for the exact PR head. If CI fails:
 
 Do not ask the maintainer to run local tests merely to discover a failure that GitHub CI can diagnose.
 
-### 7. Request minimal local verification
+### 7. Owner-only verification
 
-Only after GitHub CI is green, give the maintainer the smallest set of local commands that materially verifies the changed surface. Prefer focused commands over a ritual full-suite rerun when CI has already covered the full suite.
+The author runs the local gate (5a), so the maintainer does not rerun it. Ask the maintainer only for what the author cannot do: production secrets, course publishing with the owner password, and owner decisions. List these as exact steps in the PR.
 
-For migration changes, include the migration command when local schema application is material. Production migrations are applied automatically before each deploy of `main` (ADR-0079), so a merged migration reaches production within minutes: keep it additive and compatible with the release that is still running. For a narrow regression fix, include the directly affected test. A docs-only change may require only repository/text validation if no executable surface changed.
+Production migrations are applied automatically before each deploy of `main` (ADR-0079), so a merged migration reaches production within minutes: keep it additive and compatible with the release that is still running. A docs-only change needs only text and link checks: CI skips Markdown.
 
 ### 8. Mark Ready only after both gates are green
 
 The PR may move from Draft to Ready only when:
 
 - GitHub CI is green on the current head; and
-- the requested maintainer-local verification is green.
+- `pnpm check` passed locally on that head and is recorded in the test plan.
 
-If the head changes after either gate, evaluate whether the changed surface requires the gate to be repeated.
+If the head changes after either gate, decide whether the changed files need the gate again.
 
 ### 9. Squash merge
 
-Use squash merge so the architectural slice lands on `main` as one coherent commit. Protect the merge with the expected PR head SHA when the tooling supports it.
+The author may squash merge their own PR once it is Ready. A PR that waits on an owner decision stays Draft and is not merged. Use squash merge so the architectural slice lands on `main` as one coherent commit. Protect the merge with the expected PR head SHA when the tooling supports it.
 
 Do not merge a red PR or bypass unresolved architecture/security concerns merely because the diff is small.
 

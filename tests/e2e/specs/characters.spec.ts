@@ -25,6 +25,8 @@ test("a visitor browses the characters and a character's skill tree", async ({
     page.getByRole("heading", { level: 1, name: "HTML" })
   ).toBeVisible();
   await expect(page.getByRole("heading", { name: "Навыки" })).toBeVisible();
+  const abilities = page.getByRole("region", { name: "Способности" });
+  await expect(abilities.getByText("Каркас", { exact: true })).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Основы HTML" })
   ).toBeVisible();

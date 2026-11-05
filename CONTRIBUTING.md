@@ -27,7 +27,7 @@ Coding agents обязаны начинать работу с [`AGENTS.md`](AGEN
 - тесты покрывают изменённые invariants;
 - security-sensitive изменения описывают threat impact;
 - `pnpm check` проходит локально: формат, линтер без исключений, типы, тесты, пороги покрытия Web;
-- изменения Web дополнительно следуют Definition of Done из [`docs/engineering/web-quality-program.md`](docs/engineering/web-quality-program.md#web-definition-of-done).
+- изменения Web дополнительно следуют Definition of Done из [`docs/architecture/web.md`](docs/architecture/web.md#web-definition-of-done).
 
 ## Зависимости модулей
 
