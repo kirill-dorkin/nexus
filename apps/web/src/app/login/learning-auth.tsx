@@ -3,7 +3,8 @@ import { type OAuthProvider } from "@platform/contracts";
 import { ForgotPasswordLink } from "./forgot-password-link";
 import {
   clientIdentityUserSchema as identityUserSchema,
-  clientOAuthProvidersResponseSchema as oauthProvidersResponseSchema
+  clientOAuthProvidersResponseSchema as oauthProvidersResponseSchema,
+  currentRegistrationConsents
 } from "@platform/contracts/client";
 import { useEffect, useState, type SubmitEvent } from "react";
 import Link from "next/link";
@@ -23,7 +24,22 @@ import {
   PasswordInput,
   Text
 } from "@platform/ui";
+import { RegistrationConsents } from "../../components/legal/registration-consents";
 import styles from "./auth.module.css";
+async function isLegalConsentConflict(response: Response): Promise<boolean> {
+  try {
+    const body: unknown = await response.json();
+    return (
+      typeof body === "object" &&
+      body !== null &&
+      "code" in body &&
+      body.code === "legal_consent_required"
+    );
+  } catch {
+    return false;
+  }
+}
+
 export function LearningAuth({
   returnTo,
   initialMode = "login",
@@ -82,10 +98,23 @@ export function LearningAuth({
         body: JSON.stringify({
           email: field("email"),
           password: field("password"),
-          ...(mode === "register" && displayName ? { displayName } : {})
+          ...(mode === "register" && displayName ? { displayName } : {}),
+          ...(mode === "register"
+            ? { consents: currentRegistrationConsents() }
+            : {})
         })
       });
       if (!response.ok) {
+        if (
+          mode === "register" &&
+          response.status === 409 &&
+          (await isLegalConsentConflict(response))
+        ) {
+          setError(
+            "Документы обновились. Обновите страницу и примите актуальные условия."
+          );
+          return;
+        }
         setError(
           response.status === 401
             ? "Проверьте почту и пароль."
@@ -219,6 +248,7 @@ export function LearningAuth({
             />
           </Field>
           {mode === "login" && <ForgotPasswordLink />}
+          {mode === "register" && <RegistrationConsents key="consents" />}
         </fieldset>
         <div className={styles.actions}>
           <Button loading={busy} type="submit">

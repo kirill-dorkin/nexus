@@ -1,5 +1,6 @@
 "use client";
 
+import { emitLearningStep } from "../../lib/analytics/lesson-tracker";
 import {
   useEffect,
   useId,
@@ -173,7 +174,10 @@ export function ChallengeBlock({ challenge }: { challenge: Challenge }) {
       <div className={`${codeStyles.snippet} ${styles.workspace}`}>
         <CodeEditor
           value={code}
-          onChange={setCode}
+          onChange={(value) => {
+            setCode(value);
+            emitLearningStep("practice_run");
+          }}
           language={challenge.lang ?? "html"}
           label={`Код задания «${challenge.title}». Tab — отступ, Escape и затем Tab — выйти из редактора`}
         />

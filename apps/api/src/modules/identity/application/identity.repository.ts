@@ -1,4 +1,4 @@
-import type { IdentityUser } from "@platform/contracts";
+import type { IdentityUser, LegalConsent } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
 export type NewIdentityUser = Readonly<{
@@ -23,4 +23,10 @@ export abstract class IdentityRepository {
     transaction: DatabaseTransaction,
     user: NewIdentityUser
   ): Promise<IdentityUser>;
+
+  abstract recordLegalConsents(
+    transaction: DatabaseTransaction,
+    userId: string,
+    consents: readonly LegalConsent[]
+  ): Promise<void>;
 }

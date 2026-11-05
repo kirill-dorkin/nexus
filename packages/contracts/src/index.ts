@@ -17,6 +17,7 @@ export * from "./identity";
 export * from "./organizations";
 export * from "./authorization";
 export * from "./authentication";
+export * from "./legal";
 export * from "./commerce";
 export * from "./public-catalog";
 export * from "./github-integration";
@@ -36,6 +37,7 @@ export * from "./recommendations";
 export * from "./public-learning";
 export * from "./learner-learning";
 export * from "./own-skills";
+export * from "./learning-analytics";
 export * from "./skill-freshness";
 
 export * from "./quiz-check";
@@ -44,3 +46,6 @@ export * from "./web-telemetry";
 export * from "./web-telemetry-names";
 
 export * from "./assignment";
+
+export * from "./feedback";
+export * from "./feedback-page";

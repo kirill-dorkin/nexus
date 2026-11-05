@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { registrationConsentsSchema } from "./legal";
+
 export const authenticationEmailSchema = z
   .string()
   .trim()
@@ -11,7 +13,8 @@ export const passwordSchema = z.string().min(15).max(128);
 export const registerRequestSchema = z.object({
   email: authenticationEmailSchema,
   password: passwordSchema,
-  displayName: z.string().trim().min(1).max(160).optional()
+  displayName: z.string().trim().min(1).max(160).optional(),
+  consents: registrationConsentsSchema
 });
 
 export const loginRequestSchema = z.object({

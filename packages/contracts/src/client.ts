@@ -241,3 +241,36 @@ const ownSkill = z
 export const clientOwnSkillsSchema = z.strictObject({
   skills: z.array(ownSkill).check(z.maxLength(2000))
 });
+
+// Feedback report (ADR-0085): validated in the dialog before it is sent.
+const feedbackDetail = z
+  .string()
+  .check(z.trim(), z.minLength(1), z.maxLength(2000));
+
+export const clientCreateFeedbackReportRequestSchema = z
+  .strictObject({
+    organizationSlug: slug,
+    kind: z.enum(["problem", "unclear", "idea"]),
+    text: z.string().check(z.trim(), z.minLength(10), z.maxLength(4000)),
+    expected: z.optional(feedbackDetail),
+    actual: z.optional(feedbackDetail),
+    path: z.string().check(z.maxLength(300), z.regex(/^\/[A-Za-z0-9._~%/-]*$/)),
+    device: z.optional(z.enum(["mobile", "desktop"]))
+  })
+  .check(
+    z.refine(
+      (report) =>
+        report.kind === "problem" ||
+        (report.expected === undefined && report.actual === undefined),
+      { message: "Only problems have expected and actual.", path: ["kind"] }
+    )
+  );
+
+export const clientCreateFeedbackReportResponseSchema = z.strictObject({
+  id: uuid
+});
+export {
+  CURRENT_LEGAL_DOCUMENT_VERSIONS,
+  currentRegistrationConsents,
+  type LegalDocument
+} from "./legal-documents";

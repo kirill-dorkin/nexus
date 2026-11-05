@@ -1,11 +1,16 @@
-import { ForbiddenException, Injectable } from "@nestjs/common";
-import type { IdentityUser } from "@platform/contracts";
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable
+} from "@nestjs/common";
+import type { IdentityUser, LegalConsent } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
 import {
   IdentityRepository,
   type NewIdentityUser
 } from "./identity.repository";
+import { documentsWithoutCurrentConsent } from "../domain/legal-consent";
 
 function normalizeEmail(email: string): string {
   return email.trim().toLowerCase();
@@ -30,6 +35,24 @@ export class IdentityApplicationService {
       ...user,
       email: normalizeEmail(user.email)
     });
+  }
+
+  /** Records the registration consents; any document without its current version rejects. */
+  async recordRegistrationConsents(
+    transaction: DatabaseTransaction,
+    userId: string,
+    consents: readonly LegalConsent[]
+  ): Promise<void> {
+    const missing = documentsWithoutCurrentConsent(consents);
+    if (missing.length > 0) {
+      throw new ConflictException({
+        message:
+          "Registration requires consent to the current legal documents.",
+        code: "legal_consent_required",
+        documents: missing
+      });
+    }
+    await this.users.recordLegalConsents(transaction, userId, consents);
   }
 
   async findActiveUser(

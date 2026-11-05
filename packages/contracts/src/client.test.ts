@@ -4,7 +4,13 @@ import { assignmentCheckResultSchema } from "./assignment";
 import { identityUserSchema } from "./identity";
 import { oauthProvidersResponseSchema } from "./authentication";
 import {
+  createFeedbackReportRequestSchema,
+  createFeedbackReportResponseSchema
+} from "./feedback";
+import {
   clientAssignmentCheckResultSchema,
+  clientCreateFeedbackReportRequestSchema,
+  clientCreateFeedbackReportResponseSchema,
   clientIdentityUserSchema,
   clientLearnerCourseSkillsSchema,
   clientLearnerLearningCourseSchema,
@@ -70,6 +76,14 @@ const course = {
     ]
   }
 };
+
+const report = (extra: object = {}) => ({
+  organizationSlug: "academy",
+  kind: "problem",
+  text: "Кнопка проверки не отвечает",
+  path: "/courses/html/first-tag",
+  ...extra
+});
 
 const skill = (extra: object) => ({
   skillId: id,
@@ -362,6 +376,33 @@ const pairs: [
       { courses: [], nextCursor: "x" },
       { courses: [{ ...course, entry: {} }], nextCursor: null }
     ]
+  ],
+  [
+    "feedback report request",
+    createFeedbackReportRequestSchema,
+    clientCreateFeedbackReportRequestSchema,
+    [
+      report(),
+      report({ kind: "idea", device: "mobile" }),
+      report({ expected: "Видеть урок", actual: "Пустая страница" }),
+      report({ text: "  коротко   " }),
+      report({ text: "x".repeat(4001) }),
+      report({ kind: "idea", expected: "Видеть урок" }),
+      report({ expected: "   " }),
+      report({ path: "/courses/html?token=1" }),
+      report({ path: "https://example.test/courses" }),
+      report({ path: "/courses#top" }),
+      report({ device: "tablet" }),
+      report({ kind: "bug" }),
+      report({ organizationSlug: "A" }),
+      report({ url: "/courses" })
+    ]
+  ],
+  [
+    "feedback report response",
+    createFeedbackReportResponseSchema,
+    clientCreateFeedbackReportResponseSchema,
+    [{ id }, { id: "x" }, { id, extra: 1 }]
   ]
 ];
 

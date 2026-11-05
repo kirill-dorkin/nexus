@@ -1,4 +1,5 @@
 import { brand } from "@platform/brand";
+import { FeedbackLauncher } from "../feedback/feedback-launcher";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { LearningNavigation } from "./learning-navigation";
@@ -82,6 +83,17 @@ export function LearningShell({
               <span>Проект</span>
               <Link href="/blog">Блог</Link>
               <Link href="/studio">Для авторов</Link>
+              <FeedbackLauncher
+                label="Сообщить о проблеме"
+                variant="ghost"
+                className={styles.footerAction}
+              />
+            </div>
+            <div>
+              <span>Документы</span>
+              <Link href="/privacy">Политика конфиденциальности</Link>
+              <Link href="/consent">Согласие на обработку данных</Link>
+              <Link href="/terms">Пользовательское соглашение</Link>
             </div>
           </nav>
         </div>

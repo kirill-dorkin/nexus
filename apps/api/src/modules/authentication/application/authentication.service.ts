@@ -71,6 +71,11 @@ export class AuthenticationApplicationService {
           displayName: command.displayName ?? null
         });
 
+        await this.identity.recordRegistrationConsents(
+          transaction,
+          userId,
+          command.consents
+        );
         await this.authentication.createPasswordCredential(
           transaction,
           userId,

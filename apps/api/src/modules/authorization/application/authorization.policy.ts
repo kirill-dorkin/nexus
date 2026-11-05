@@ -32,7 +32,8 @@ export const authorizationCapabilities = [
   "recommendation.read_others",
   "readiness.read",
   "readiness.read_others",
-  "progression.complete"
+  "progression.complete",
+  "feedback.manage"
 ] as const;
 
 export type AuthorizationCapability =
@@ -98,7 +99,8 @@ const roleCapabilities: Readonly<
     "recommendation.read",
     "recommendation.read_others",
     "readiness.read",
-    "readiness.read_others"
+    "readiness.read_others",
+    "feedback.manage"
   ]),
   instructor: new Set([
     "organization.read",

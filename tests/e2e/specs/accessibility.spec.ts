@@ -23,6 +23,9 @@ const PUBLIC_ROUTES = [
   "/login?mode=register",
   "/forgot-password",
   "/reset-password",
+  "/privacy",
+  "/consent",
+  "/terms",
   "/me/learning",
   "/ui",
   "/no-such-page"

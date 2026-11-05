@@ -130,7 +130,8 @@
 }
 .footerNav {
   display: flex;
-  gap: clamp(2.5rem, 8vw, 6rem);
+  flex-wrap: wrap;
+  gap: 1.5rem clamp(2.5rem, 8vw, 6rem);
 }
 .footerNav div {
   display: grid;
@@ -155,6 +156,17 @@
   transition: color var(--motion-fast);
 }
 .footerNav a:hover {
+  color: var(--text-primary);
+}
+.footerAction {
+  justify-content: flex-start;
+  min-height: 36px;
+  padding-inline: 0;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  font-weight: inherit;
+}
+.footerAction:hover {
   color: var(--text-primary);
 }
 .copyright {

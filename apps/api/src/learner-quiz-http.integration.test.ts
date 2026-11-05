@@ -7,7 +7,8 @@ import {
   learnerLearningCourseSchema,
   quizCheckResultSchema,
   type QuizAnswer,
-  type CourseManifestV1
+  type CourseManifestV1,
+  currentRegistrationConsents
 } from "@platform/contracts";
 import { createDatabasePool } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
@@ -250,7 +251,8 @@ describe("deterministic learner quiz HTTP + PostgreSQL boundary", () => {
       payload: {
         email: `${randomUUID()}@example.test`,
         password: `EntryVerification!${randomUUID()}`,
-        displayName: "Own learner"
+        displayName: "Own learner",
+        consents: currentRegistrationConsents()
       }
     });
     expect(registered.statusCode, registered.body).toBe(201);
