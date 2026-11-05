@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { browserApiRequest } from "../../lib/public-api";
+import { HOME_ORGANIZATION_SLUG } from "../../lib/public-learning-routes";
 import { FeedbackDialog, feedbackOrganizationSlug } from "./feedback-dialog";
 
 vi.mock("next/navigation", () => ({
@@ -54,7 +55,7 @@ describe("FeedbackDialog", () => {
       expect.objectContaining({ method: "POST" })
     );
     expect(sentBody()).toMatchObject({
-      organizationSlug: "nexus",
+      organizationSlug: HOME_ORGANIZATION_SLUG,
       kind: "problem",
       text: "Кнопка проверки не реагирует",
       expected: "Увидеть результат",
@@ -110,7 +111,9 @@ describe("FeedbackDialog", () => {
 describe("feedbackOrganizationSlug", () => {
   it("takes the organization from /learn pages, otherwise the home one", () => {
     expect(feedbackOrganizationSlug("/learn/acme/html-free/tags")).toBe("acme");
-    expect(feedbackOrganizationSlug("/courses/html")).toBe("nexus");
-    expect(feedbackOrganizationSlug("/")).toBe("nexus");
+    expect(feedbackOrganizationSlug("/courses/html")).toBe(
+      HOME_ORGANIZATION_SLUG
+    );
+    expect(feedbackOrganizationSlug("/")).toBe(HOME_ORGANIZATION_SLUG);
   });
 });
