@@ -19,7 +19,7 @@ export function FeedbackLauncher({
 }: {
   label?: string;
   variant?: ButtonVariant;
-  className?: string;
+  className?: string | undefined;
 }) {
   const [open, setOpen] = useState(false);
   const [requested, setRequested] = useState(false);
