@@ -128,6 +128,8 @@ Historical outbox rows (including old `attempt.submitted`) are immutable and are
 
 ## Next recommended slice
 
+**Priority (owner, 2026-11-05): the closed learning beta.** 20 learners study and test; the product grows from their feedback. Wave-1 kit: [`docs/beta/`](../beta/README.md) (owner checklist, 4-week HTML/CSS plans, texts, coordinator guide). Next code: B1.3 feedback in the product, then B1.1/B1.2 participation and week counters (`docs/roadmap/beta-launch.md`). Game packages of `spec.md` are paused until two beta weeks are reviewed.
+
 **Follow the working spec [`docs/roadmap/spec.md`](../roadmap/spec.md)** (2026-11-05). The game design behind it is [`docs/product/game-design.md`](../product/game-design.md); the season-1 script is [`docs/story/season-1.md`](../story/season-1.md). Finished plans are in [`docs/archive/`](../archive/README.md).
 
 Started only after an owner decision (spec section 5): grader in production, subscriptions and prices, a second payment provider, the email provider, background-process hosting.
