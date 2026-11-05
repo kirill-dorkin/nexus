@@ -148,7 +148,7 @@
 - `sql-replication-basics` — репликация: физическая и логическая, реплики для чтения — на уровне разработчика
 - `sql-connection-pooling` — пулы соединений, PgBouncer, `max_connections`, `statement_timeout`
 
-### Итог
+### Итог (Практика)
 - `sql-final` — Итоговый отчёт (бой)
 
 ## Бои
