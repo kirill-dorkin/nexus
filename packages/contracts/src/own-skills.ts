@@ -7,6 +7,24 @@ import { resourceSlugSchema } from "./common";
  * organization Skill that has Evidence, keyed by `skillKey`. A confirmation is
  * a passing Evidence record; Web derives levels and skill decay from these.
  */
+/** `skill-freshness@1` computed by the API over every confirmation day (ADR-0076). */
+export const ownSkillFreshnessSchema = z
+  .object({
+    policy: z.literal("skill-freshness@1"),
+    state: z.enum(["unconfirmed", "confirmed", "fading", "forgotten"]),
+    step: z.number().int().min(0).max(6),
+    dueOn: z.iso.date().nullable(),
+    forgottenAfter: z.iso.date().nullable()
+  })
+  .strict()
+  .refine(
+    (value) =>
+      (value.state === "unconfirmed") === (value.step === 0) &&
+      (value.step === 0) === (value.dueOn === null) &&
+      (value.dueOn === null) === (value.forgottenAfter === null),
+    { message: "an unconfirmed skill has no step and no dates" }
+  );
+
 export const ownSkillSchema = z
   .object({
     skillKey: resourceSlugSchema,
@@ -18,7 +36,8 @@ export const ownSkillSchema = z
     firstConfirmedAt: z.iso.datetime().nullable(),
     lastConfirmedAt: z.iso.datetime().nullable(),
     /** Distinct UTC dates with a confirmation, ascending, the latest 30. */
-    confirmedDays: z.array(z.iso.date()).max(30)
+    confirmedDays: z.array(z.iso.date()).max(30),
+    freshness: ownSkillFreshnessSchema
   })
   .strict()
   .superRefine((value, context) => {
@@ -49,6 +68,13 @@ export const ownSkillSchema = z
         code: "custom",
         message: "confirmation times are null exactly when there are none",
         path: ["confirmations"]
+      });
+    if (none !== (value.freshness.state === "unconfirmed"))
+      context.addIssue({
+        code: "custom",
+        message:
+          "freshness is unconfirmed exactly when there are no confirmations",
+        path: ["freshness"]
       });
     if (
       none !== (value.confirmedDays.length === 0) ||

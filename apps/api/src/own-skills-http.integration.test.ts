@@ -236,7 +236,14 @@ describe("own organization skills HTTP + PostgreSQL boundary (ADR-0074)", () => 
         confirmations: 0,
         firstConfirmedAt: null,
         lastConfirmedAt: null,
-        confirmedDays: []
+        confirmedDays: [],
+        freshness: {
+          policy: "skill-freshness@1",
+          state: "unconfirmed",
+          step: 0,
+          dueOn: null,
+          forgottenAfter: null
+        }
       }
     ]);
 
@@ -254,6 +261,19 @@ describe("own organization skills HTTP + PostgreSQL boundary (ADR-0074)", () => 
     expect(passed!.confirmedDays).toEqual([
       passed!.lastConfirmedAt!.slice(0, 10)
     ]);
+    // A first confirmation holds for 3 days, then fades for 7 (skill-freshness@1).
+    const day = passed!.confirmedDays[0]!;
+    const plus = (n: number) =>
+      new Date(Date.parse(`${day}T00:00:00Z`) + n * 86_400_000)
+        .toISOString()
+        .slice(0, 10);
+    expect(passed!.freshness).toEqual({
+      policy: "skill-freshness@1",
+      state: "confirmed",
+      step: 1,
+      dueOn: plus(3),
+      forgottenAfter: plus(10)
+    });
     expect(Date.parse(passed!.lastEvidenceAt)).toBeGreaterThanOrEqual(
       Date.parse(failed[0]!.lastEvidenceAt)
     );

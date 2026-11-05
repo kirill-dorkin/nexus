@@ -89,8 +89,22 @@ const own = (extra: object) => ({
   firstConfirmedAt: at,
   lastConfirmedAt: at,
   confirmedDays: ["2026-11-04"],
+  freshness: {
+    policy: "skill-freshness@1",
+    state: "confirmed",
+    step: 1,
+    dueOn: "2026-11-07",
+    forgottenAfter: "2026-11-14"
+  },
   ...extra
 });
+const unconfirmed = {
+  policy: "skill-freshness@1",
+  state: "unconfirmed",
+  step: 0,
+  dueOn: null,
+  forgottenAfter: null
+};
 
 const pairs: [
   string,
@@ -277,10 +291,34 @@ const pairs: [
             confirmations: 0,
             firstConfirmedAt: null,
             lastConfirmedAt: null,
-            confirmedDays: []
+            confirmedDays: [],
+            freshness: unconfirmed
           })
         ]
       },
+      { skills: [own({ freshness: unconfirmed })] },
+      {
+        skills: [own({ freshness: { ...unconfirmed, state: "confirmed" } })]
+      },
+      {
+        skills: [
+          own({
+            freshness: {
+              policy: "skill-freshness@1",
+              state: "forgotten",
+              step: 2,
+              dueOn: "2026-10-01",
+              forgottenAfter: "2026-10-08"
+            }
+          })
+        ]
+      },
+      {
+        skills: [
+          own({ freshness: { ...unconfirmed, policy: "skill-freshness@2" } })
+        ]
+      },
+      { skills: [own({ freshness: undefined })] },
       { skills: [own({ skillKey: "Bad Key" })] },
       { skills: [own({ masteryScore: null })] },
       { skills: [own({ masteryScore: 1.5 })] },
