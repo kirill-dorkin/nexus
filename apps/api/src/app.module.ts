@@ -3,6 +3,7 @@ import { PublicLearningModule } from "./modules/public-learning/public-learning.
 import { Module } from "@nestjs/common";
 
 import { DatabaseModule } from "./database/database.module";
+import { FeedbackModule } from "./modules/feedback/feedback.module";
 import { RateLimitModule } from "./http/rate-limit.module";
 import { HealthController } from "./health.controller";
 import { WebTelemetryController } from "./observability/web-telemetry.controller";
@@ -50,7 +51,8 @@ import { RequestContextModule } from "./request-context/request-context.module";
     LearningValidationModule,
     LearningRecommendationsModule,
     LearningReadinessModule,
-    LearningProgressionModule
+    LearningProgressionModule,
+    FeedbackModule
   ],
   controllers: [HealthController, WebTelemetryController]
 })

@@ -33,6 +33,23 @@ describe("AuthorizationPolicy", () => {
     ).toBe(true);
   });
 
+  it("lets only owners and admins manage feedback (ADR-0083)", () => {
+    for (const [roleKey, allowed] of [
+      ["organization_owner", true],
+      ["organization_admin", true],
+      ["instructor", false],
+      ["mentor", false],
+      ["learner", false]
+    ] as const)
+      expect(
+        policy.allows(
+          [assignment({ roleKey })],
+          "feedback.manage",
+          organizationScope
+        )
+      ).toBe(allowed);
+  });
+
   it("lets an organization-scoped assignment cover child scopes", () => {
     expect(
       policy.allows(

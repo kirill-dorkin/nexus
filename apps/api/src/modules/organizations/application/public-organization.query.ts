@@ -12,4 +12,10 @@ export abstract class PublicOrganizationQuery {
     transaction: DatabaseTransaction,
     slug: string
   ): Promise<PublicOrganization | null>;
+
+  /** The id of an active Organization, for writes a public page may make (ADR-0083). */
+  abstract resolveActiveId(
+    transaction: DatabaseTransaction,
+    slug: string
+  ): Promise<string | null>;
 }

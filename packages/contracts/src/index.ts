@@ -44,3 +44,6 @@ export * from "./web-telemetry";
 export * from "./web-telemetry-names";
 
 export * from "./assignment";
+
+export * from "./feedback";
+export * from "./feedback-page";

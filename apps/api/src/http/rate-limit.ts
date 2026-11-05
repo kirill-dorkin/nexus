@@ -24,7 +24,8 @@ export const RATE_LIMIT_RULES = {
   "learning.assignment_submit": [
     { scope: "ip", limit: 30, windowSeconds: 600 }
   ],
-  "telemetry.web": [{ scope: "ip", limit: 60, windowSeconds: 60 }]
+  "telemetry.web": [{ scope: "ip", limit: 60, windowSeconds: 60 }],
+  "feedback.report": [{ scope: "ip", limit: 10, windowSeconds: 3600 }]
 } as const satisfies Record<
   string,
   readonly { scope: "ip" | "email"; limit: number; windowSeconds: number }[]
