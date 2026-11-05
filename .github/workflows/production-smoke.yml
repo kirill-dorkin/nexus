@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      PUBLIC_ORIGIN: https://nexus-lake-nine-17.vercel.app
+      PUBLIC_ORIGIN: https://www.dorkin.academy
       # On a push to main, wait until production runs that commit; a smoke
       # against the previous deployment once hid a broken API (#166).
       EXPECTED_RELEASE: ${{ github.event_name == 'push' && github.sha || '' }}

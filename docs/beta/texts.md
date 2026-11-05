@@ -48,7 +48,7 @@
 > Отлично, ты в бете! Твой старт — [дата, время]. Первая неделя — до [дата + 7 дней, время].
 >
 > **Как начать (5 минут):**
-> 1. Открой первый урок: [https://nexus-lake-nine-17.vercel.app/courses/html/how-the-web-works — или для CSS /courses/css/what-is-css].
+> 1. Открой первый урок: [https://www.dorkin.academy/courses/html/how-the-web-works — или для CSS /courses/css/what-is-css].
 > 2. Зарегистрируйся: кнопка «Начать бесплатно» или «Войти».
 > 3. Ответь на первый вопрос в уроке — прогресс начнёт сохраняться.
 >
