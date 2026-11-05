@@ -10,7 +10,7 @@ import {
   Textarea
 } from "@platform/ui";
 import { usePathname } from "next/navigation";
-import { useId, useState, type FormEvent } from "react";
+import { useId, useState, type SubmitEvent } from "react";
 import { browserApiRequest } from "../../lib/public-api";
 import { HOME_ORGANIZATION_SLUG } from "../../lib/public-learning-routes";
 import styles from "./feedback.module.css";
@@ -46,7 +46,7 @@ function reportPath(pathname: string): string {
 }
 
 function device(): "mobile" | "desktop" | undefined {
-  if (typeof window === "undefined" || !window.matchMedia) return undefined;
+  if (typeof window === "undefined") return undefined;
   return window.matchMedia("(max-width: 720px)").matches ? "mobile" : "desktop";
 }
 
@@ -64,7 +64,7 @@ export function FeedbackDialog({
   onClose: () => void;
 }) {
   const id = useId();
-  const pathname = usePathname() ?? "/";
+  const pathname = usePathname();
   const [kind, setKind] = useState<Kind>("problem");
   const [state, setState] = useState<State>({ phase: "editing" });
 
@@ -73,14 +73,13 @@ export function FeedbackDialog({
     if (state.phase === "sent") setState({ phase: "editing" });
   };
 
-  async function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const body = {
       organizationSlug: feedbackOrganizationSlug(pathname),
       kind,
-      text:
-        typeof form.get("text") === "string" ? String(form.get("text")) : "",
+      text: optional(form.get("text")) ?? "",
       ...(kind === "problem"
         ? {
             expected: optional(form.get("expected")),
