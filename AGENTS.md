@@ -40,10 +40,11 @@ Follow `docs/engineering/development-workflow.md` exactly. In particular:
 - never develop directly on `main`;
 - use one short-lived branch per coherent slice;
 - open a Draft PR before treating the slice as complete;
-- diagnose and fix GitHub CI before asking for local verification;
-- request only the minimum local verification needed after CI is green;
-- mark the PR Ready only after CI and local verification are green;
-- squash merge only after those gates pass;
+- run `pnpm check` locally before every push, and diagnose and fix GitHub CI in the same PR;
+- check open PRs and `wip/*` branches before you take an ADR or migration number, then reserve it in `current-state.md`;
+- mark the PR Ready only after CI and the local gate are green;
+- squash merge your own PR only after those gates pass; a PR that waits on an owner decision stays Draft;
+- never do owner-only actions yourself (production secrets, course publishing with the owner password); list the exact steps in the PR instead;
 - after merge, synchronize local `main` before starting the next slice.
 
 If an existing PR is red, fix that PR in place unless there is an explicit architectural reason to replace it. Do not create a second PR merely to repair the first one.
