@@ -268,6 +268,31 @@ describe("character progress", () => {
     expect(progress.xp).toBe(150);
   });
 
+  it("prefers the API's freshness over the latest days it lists", () => {
+    // The API saw a long history and says step 4 and fading; the days alone would say forgotten.
+    const progress = characterProgress(
+      base,
+      new Map([
+        [
+          "b1",
+          {
+            confirmedDays: ["2026-09-01"],
+            freshness: {
+              state: "fading" as const,
+              step: 4,
+              dueOn: "2026-11-01",
+              forgottenAfter: "2026-11-08"
+            }
+          }
+        ]
+      ]),
+      today,
+      tiny
+    );
+    expect(progress.branches[0]!.skills[0]!.state).toBe("fading");
+    expect(progress.active).toBe(1);
+  });
+
   it("reaches the top level and rank with every skill active", () => {
     const progress = characterProgress(
       base,

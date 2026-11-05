@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { isActive, skillFreshness } from "./freshness";
+import { isActive, skillFreshness } from "./skill-freshness";
 
 describe("skill freshness (skill-freshness@1)", () => {
   it("is unconfirmed without passing Evidence", () => {

@@ -172,6 +172,23 @@ export const clientOwnLearningListSchema = z.strictObject({
 });
 
 const nullableAt = z.nullable(z.iso.datetime());
+const nullableDay = z.nullable(z.iso.date());
+const ownSkillFreshness = z
+  .strictObject({
+    policy: z.literal("skill-freshness@1"),
+    state: z.enum(["unconfirmed", "confirmed", "fading", "forgotten"]),
+    step: int(0, 6),
+    dueOn: nullableDay,
+    forgottenAfter: nullableDay
+  })
+  .check(
+    z.refine(
+      (value) =>
+        (value.state === "unconfirmed") === (value.step === 0) &&
+        (value.step === 0) === (value.dueOn === null) &&
+        (value.dueOn === null) === (value.forgottenAfter === null)
+    )
+  );
 const ownSkill = z
   .strictObject({
     skillKey: slug,
@@ -182,7 +199,8 @@ const ownSkill = z
     confirmations: int(0),
     firstConfirmedAt: nullableAt,
     lastConfirmedAt: nullableAt,
-    confirmedDays: z.array(z.iso.date()).check(z.maxLength(30))
+    confirmedDays: z.array(z.iso.date()).check(z.maxLength(30)),
+    freshness: ownSkillFreshness
   })
   .check(
     z.refine((value) => value.scoredEvidenceCount <= value.evidenceCount, {
@@ -211,6 +229,12 @@ const ownSkill = z
             index === 0 || day > (value.confirmedDays[index - 1] ?? "")
         ),
       { path: ["confirmedDays"] }
+    ),
+    z.refine(
+      (value) =>
+        (value.confirmations === 0) ===
+        (value.freshness.state === "unconfirmed"),
+      { path: ["freshness"] }
     )
   );
 
