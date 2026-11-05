@@ -2280,7 +2280,9 @@ async function runBrowserVerification(cdp) {
     cdp,
     "document.activeElement?.matches('input[type=\"radio\"]') === true",
     "quiz radio",
-    24
+    // From the top of the page: skip link, header navigation (which grows as
+    // sections are added, e.g. «Персонажи»), lesson navigation, then the quiz.
+    40
   );
   const quizFocus = await evaluate(
     cdp,

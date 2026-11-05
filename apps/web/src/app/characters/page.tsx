@@ -4,6 +4,7 @@ import { Eyebrow, Heading, Text, buttonClass } from "@platform/ui";
 
 import { LearningShell } from "../../components/learning/learning-shell";
 import { CharacterRoster } from "../../components/characters/character-roster";
+import { UpcomingCharacters } from "../../components/characters/upcoming-characters";
 import styles from "../../components/characters/characters.module.css";
 
 export const metadata: Metadata = {
@@ -31,6 +32,7 @@ export default function CharactersPage() {
         </Link>
       </div>
       <CharacterRoster />
+      <UpcomingCharacters />
     </LearningShell>
   );
 }

@@ -10,6 +10,7 @@ import {
   clientLearnerLearningCourseSchema,
   clientOAuthProvidersResponseSchema,
   clientOwnLearningListSchema,
+  clientOwnSkillsSchema,
   clientQuizCheckResultSchema
 } from "./client";
 import {
@@ -17,6 +18,7 @@ import {
   learnerLearningCourseSchema,
   ownLearningListSchema
 } from "./learner-learning";
+import { ownSkillsSchema } from "./own-skills";
 import { quizCheckResultSchema } from "./quiz-check";
 
 // WP-6: the browser parses with zod/mini copies; they must agree with the full
@@ -74,6 +76,19 @@ const skill = (extra: object) => ({
   title: "Заголовки",
   description: null,
   position: 0,
+  ...extra
+});
+
+const own = (extra: object) => ({
+  skillKey: "html-headings",
+  masteryScore: 0.5,
+  evidenceCount: 2,
+  scoredEvidenceCount: 2,
+  lastEvidenceAt: at,
+  confirmations: 1,
+  firstConfirmedAt: at,
+  lastConfirmedAt: at,
+  confirmedDays: ["2026-11-04"],
   ...extra
 });
 
@@ -245,6 +260,58 @@ const pairs: [
       { ...course, offering: { slug: "Bad Slug", name: "x" } },
       { ...course, progress: { ...course.progress, percentage: 101 } },
       { ...course, extra: 1 }
+    ]
+  ],
+  [
+    "own skills",
+    ownSkillsSchema,
+    clientOwnSkillsSchema,
+    [
+      { skills: [] },
+      { skills: [own({})] },
+      {
+        skills: [
+          own({
+            masteryScore: null,
+            scoredEvidenceCount: 0,
+            confirmations: 0,
+            firstConfirmedAt: null,
+            lastConfirmedAt: null,
+            confirmedDays: []
+          })
+        ]
+      },
+      { skills: [own({ skillKey: "Bad Key" })] },
+      { skills: [own({ masteryScore: null })] },
+      { skills: [own({ masteryScore: 1.5 })] },
+      { skills: [own({ scoredEvidenceCount: 3 })] },
+      { skills: [own({ confirmations: 3 })] },
+      { skills: [own({ firstConfirmedAt: null })] },
+      { skills: [own({ confirmations: 0 })] },
+      { skills: [own({ evidenceCount: 0 })] },
+      {
+        skills: [
+          own({
+            evidenceCount: 3,
+            confirmations: 2,
+            confirmedDays: ["2026-11-01", "2026-11-04"]
+          })
+        ]
+      },
+      { skills: [own({ confirmedDays: [] })] },
+      { skills: [own({ confirmedDays: ["2026-11-04", "2026-11-04"] })] },
+      {
+        skills: [
+          own({
+            evidenceCount: 3,
+            confirmations: 2,
+            confirmedDays: ["2026-11-04", "2026-11-01"]
+          })
+        ]
+      },
+      { skills: [own({ confirmedDays: ["2026-11-04T00:00:00Z"] })] },
+      { skills: [own({ extra: 1 })] },
+      { skills: [], extra: 1 }
     ]
   ],
   [

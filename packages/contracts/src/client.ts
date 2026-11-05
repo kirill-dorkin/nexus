@@ -170,3 +170,50 @@ export const clientOwnLearningListSchema = z.strictObject({
   courses: z.array(clientLearnerLearningCourseSchema).check(z.maxLength(100)),
   nextCursor: z.nullable(uuid)
 });
+
+const nullableAt = z.nullable(z.iso.datetime());
+const ownSkill = z
+  .strictObject({
+    skillKey: slug,
+    masteryScore: z.nullable(z.number().check(z.gte(0), z.lte(1))),
+    evidenceCount: int(1),
+    scoredEvidenceCount: int(0),
+    lastEvidenceAt: z.iso.datetime(),
+    confirmations: int(0),
+    firstConfirmedAt: nullableAt,
+    lastConfirmedAt: nullableAt,
+    confirmedDays: z.array(z.iso.date()).check(z.maxLength(30))
+  })
+  .check(
+    z.refine((value) => value.scoredEvidenceCount <= value.evidenceCount, {
+      path: ["scoredEvidenceCount"]
+    }),
+    z.refine(
+      (value) =>
+        (value.masteryScore === null) === (value.scoredEvidenceCount === 0),
+      { path: ["masteryScore"] }
+    ),
+    z.refine((value) => value.confirmations <= value.evidenceCount, {
+      path: ["confirmations"]
+    }),
+    z.refine(
+      (value) =>
+        (value.confirmations === 0) === (value.firstConfirmedAt === null) &&
+        (value.confirmations === 0) === (value.lastConfirmedAt === null),
+      { path: ["confirmations"] }
+    ),
+    z.refine(
+      (value) =>
+        (value.confirmations === 0) === (value.confirmedDays.length === 0) &&
+        value.confirmedDays.length <= value.confirmations &&
+        value.confirmedDays.every(
+          (day, index) =>
+            index === 0 || day > (value.confirmedDays[index - 1] ?? "")
+        ),
+      { path: ["confirmedDays"] }
+    )
+  );
+
+export const clientOwnSkillsSchema = z.strictObject({
+  skills: z.array(ownSkill).check(z.maxLength(2000))
+});
