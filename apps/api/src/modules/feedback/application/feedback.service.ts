@@ -16,7 +16,6 @@ import { OutboxRepository } from "../../../outbox/outbox.repository";
 import { RequestContextService } from "../../../request-context/request-context.service";
 import { AuthorizationApplicationService } from "../../authorization/application/authorization.service";
 import { IdentityApplicationService } from "../../identity/application/identity.service";
-import { PublicOrganizationQuery } from "../../organizations/application/public-organization.query";
 import { FeedbackRepository } from "./feedback.repository";
 
 const PAGE_SIZE = 50;
@@ -29,7 +28,6 @@ export class FeedbackApplicationService {
     private readonly context: RequestContextService,
     private readonly identity: IdentityApplicationService,
     private readonly authorization: AuthorizationApplicationService,
-    private readonly organizations: PublicOrganizationQuery,
     private readonly reports: FeedbackRepository,
     private readonly outbox: OutboxRepository
   ) {}
@@ -45,23 +43,14 @@ export class FeedbackApplicationService {
     const page = feedbackPageContext(command.path);
     const release = apiRelease();
     return this.database.transaction(async (tx) => {
-      const organizationId = await this.organizations.resolveActiveId(
-        tx,
-        command.organizationSlug
-      );
-      if (organizationId === null)
-        throw new NotFoundException("Organization not found.");
-      await tx.client.query(
-        `SELECT set_config('app.organization_id', $1, true),
-                set_config('app.user_id', $2, true)`,
-        [organizationId, userId ?? ""]
-      );
+      // feedback.submit_report takes the author from app.user_id.
+      await tx.client.query(`SELECT set_config('app.user_id', $1, true)`, [
+        userId ?? ""
+      ]);
       if (userId !== null) await this.identity.requireActiveUser(tx, userId);
-
       const problem = command.kind === "problem";
-      const id = await this.reports.insert(tx, {
-        organizationId,
-        userId,
+      const id = await this.reports.submit(tx, {
+        organizationSlug: command.organizationSlug,
         kind: command.kind,
         text: command.text,
         expected: problem ? (command.expected ?? null) : null,
@@ -72,25 +61,7 @@ export class FeedbackApplicationService {
         release,
         device: command.device ?? null
       });
-      await this.outbox.append(tx, {
-        organizationId,
-        eventName: "feedback_report.submitted",
-        eventVersion: 1,
-        aggregateType: "feedback_report",
-        aggregateId: id,
-        actorUserId: userId,
-        payload: {
-          reportId: id,
-          organizationId,
-          kind: command.kind,
-          route: page.route,
-          courseSlug: page.courseSlug,
-          lessonSlug: page.lessonSlug,
-          release,
-          device: command.device ?? null,
-          signedIn: userId !== null
-        }
-      });
+      if (id === null) throw new NotFoundException("Organization not found.");
       return { id };
     });
   }
