@@ -6,6 +6,7 @@ import {
   characterProgress,
   requiredCharacters,
   type Character,
+  type SkillMap,
   type SkillMapSkill
 } from "../../lib/skill-map/skill-map";
 import { useOwnSkillRecords, utcToday } from "../../lib/skill-map/own-skills";
@@ -29,14 +30,16 @@ const lessonHref = (skill: SkillMapSkill) =>
 /** One character: level, rank, what to do next and the whole skill tree with its states. */
 export function CharacterProfile({
   character,
+  map,
   scenes = {}
 }: {
   character: Character;
+  map?: SkillMap;
   scenes?: Readonly<Record<string, BranchScene>>;
 }) {
   const { status, records } = useOwnSkillRecords();
-  const progress = characterProgress(character, records, utcToday());
-  const builtOn = requiredCharacters(character);
+  const progress = characterProgress(character, records, utcToday(), map);
+  const builtOn = requiredCharacters(character, map);
   const nextHref = progress.next ? lessonHref(progress.next.skill) : null;
   return (
     <article className={styles.profile} data-ui-accent={character.accent}>

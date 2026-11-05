@@ -2,6 +2,7 @@
 import Link from "next/link";
 
 import { cityPlan, type DistrictState } from "../../lib/skill-map/city";
+import type { SkillMap } from "../../lib/skill-map/skill-map";
 import { useOwnSkillRecords, utcToday } from "../../lib/skill-map/own-skills";
 import { initials } from "./character-roster";
 import styles from "./characters.module.css";
@@ -13,9 +14,9 @@ const stateLabel: Record<DistrictState, string> = {
 };
 
 /** The city plan: districts by character, roads between them, the look follows active skills. */
-export function CityMap() {
+export function CityMap({ map }: { map?: SkillMap }) {
   const { status, records } = useOwnSkillRecords();
-  const { districts, roads } = cityPlan(records, utcToday());
+  const { districts, roads } = cityPlan(records, utcToday(), map);
   const at = new Map(districts.map((d) => [d.character.slug, d]));
   return (
     <div className={styles.city} aria-busy={status === "loading"}>

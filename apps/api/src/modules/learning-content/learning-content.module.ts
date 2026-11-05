@@ -29,6 +29,13 @@ import { CourseManifestApplicationService } from "./application/course-manifest.
 import { PostgresCourseManifestRepository } from "./infrastructure/postgres-course-manifest.repository";
 import { CourseManifestController } from "./course-manifest.controller";
 import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
+import { SkillMapRepository } from "./application/skill-map.repository";
+import { SkillMapApplicationService } from "./application/skill-map.service";
+import { PostgresSkillMapRepository } from "./infrastructure/postgres-skill-map.repository";
+import {
+  PublicSkillMapController,
+  SkillMapManifestController
+} from "./skill-map.controller";
 
 @Module({
   imports: [IdentityModule, AuthorizationModule, OutboxModule],
@@ -36,7 +43,9 @@ import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
     LearningContentController,
     SkillsController,
     CourseManifestController,
-    StudioController
+    StudioController,
+    SkillMapManifestController,
+    PublicSkillMapController
   ],
   providers: [
     StudioApplicationService,
@@ -56,6 +65,8 @@ import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
     },
     LearningContentApplicationService,
     CourseManifestApplicationService,
+    SkillMapApplicationService,
+    { provide: SkillMapRepository, useClass: PostgresSkillMapRepository },
     BrowserWriteOriginGuard,
     {
       provide: CourseManifestRepository,

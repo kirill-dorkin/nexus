@@ -6,6 +6,7 @@ import { LearningShell } from "../../components/learning/learning-shell";
 import { CharacterRoster } from "../../components/characters/character-roster";
 import { UpcomingCharacters } from "../../components/characters/upcoming-characters";
 import styles from "../../components/characters/characters.module.css";
+import { loadSkillMap } from "../../lib/skill-map/load-skill-map";
 
 export const metadata: Metadata = {
   title: "Персонажи",
@@ -13,7 +14,8 @@ export const metadata: Metadata = {
     "Каждая технология — персонаж, которого вы прокачиваете: изучаете навык, подтверждаете его тестом и повторяете, чтобы не забыть."
 };
 
-export default function CharactersPage() {
+export default async function CharactersPage() {
+  const map = await loadSkillMap();
   return (
     <LearningShell>
       <div className={styles.intro}>
@@ -31,7 +33,7 @@ export default function CharactersPage() {
           Карта города
         </Link>
       </div>
-      <CharacterRoster />
+      <CharacterRoster map={map} />
       <UpcomingCharacters />
     </LearningShell>
   );

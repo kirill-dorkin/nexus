@@ -5,6 +5,7 @@ import { Eyebrow, Heading, Text, buttonClass } from "@platform/ui";
 import { LearningShell } from "../../components/learning/learning-shell";
 import { CityMap } from "../../components/characters/city-map";
 import styles from "../../components/characters/characters.module.css";
+import { loadSkillMap } from "../../lib/skill-map/load-skill-map";
 
 export const metadata: Metadata = {
   title: "Карта города",
@@ -12,7 +13,8 @@ export const metadata: Metadata = {
     "Город Нексус: районы-персонажи оживают, когда вы подтверждаете их навыки."
 };
 
-export default function MapPage() {
+export default async function MapPage() {
+  const map = await loadSkillMap();
   return (
     <LearningShell width="full">
       <div className={styles.intro}>
@@ -33,7 +35,7 @@ export default function MapPage() {
           Все персонажи
         </Link>
       </div>
-      <CityMap />
+      <CityMap map={map} />
     </LearningShell>
   );
 }

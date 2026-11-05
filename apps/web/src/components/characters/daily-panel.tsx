@@ -6,7 +6,7 @@ import {
   streak,
   type DailyQuest
 } from "../../lib/skill-map/daily";
-import type { RecordsByKey } from "../../lib/skill-map/skill-map";
+import type { RecordsByKey, SkillMap } from "../../lib/skill-map/skill-map";
 import styles from "./characters.module.css";
 
 const questVerb: Record<DailyQuest["kind"], string> = {
@@ -26,14 +26,16 @@ function daysWord(n: number) {
 /** «Сегодня»: player level and title, the streak and up to three quests. */
 export function DailyPanel({
   records,
-  today
+  today,
+  map
 }: {
   records: RecordsByKey;
   today: string;
+  map?: SkillMap;
 }) {
-  const player = playerLevel(records, today);
+  const player = playerLevel(records, today, map);
   const days = streak(records, today);
-  const quests = dailyQuests(records, today);
+  const quests = dailyQuests(records, today, map);
   return (
     <section className={styles.daily} aria-labelledby="daily-title">
       <div className={styles.dailyHead}>

@@ -4,7 +4,8 @@ import Link from "next/link";
 import {
   SKILL_MAP,
   characterProgress,
-  type Character
+  type Character,
+  type SkillMap
 } from "../../lib/skill-map/skill-map";
 import { useOwnSkillRecords, utcToday } from "../../lib/skill-map/own-skills";
 import { skillsWord } from "./character-labels";
@@ -16,15 +17,15 @@ export const initials = (character: Character) =>
   character.name.replace(/[^A-Za-zА-Яа-яЁё]/g, "").slice(0, 2);
 
 /** All characters with the learner's level; anonymous visitors see level 0. */
-export function CharacterRoster() {
+export function CharacterRoster({ map = SKILL_MAP }: { map?: SkillMap }) {
   const { status, records } = useOwnSkillRecords();
   const today = utcToday();
   return (
     <>
-      {status === "ready" && <DailyPanel records={records} today={today} />}
+      {status === "ready" && <DailyPanel records={records} today={today} map={map} />}
       <ul className={styles.roster} aria-busy={status === "loading"}>
-        {SKILL_MAP.characters.map((character) => {
-          const progress = characterProgress(character, records, today);
+        {map.characters.map((character) => {
+          const progress = characterProgress(character, records, today, map);
           return (
             <li
               key={character.slug}
