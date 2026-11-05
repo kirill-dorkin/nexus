@@ -9,31 +9,18 @@ export const characters = [
     name: "ПК",
     role: "Знаток компьютера",
     summary:
-      "Как устроен компьютер: детали, память и файлы, загрузка системы и путь от клика до результата.",
+      "Компьютер целиком: железо и двоичные данные, файлы и пути, операционная система и процессы, программы, клавиатура, командная строка, домашняя сеть, безопасность и диагностика.",
     accent: "rose",
-    sources: [
-      {
-        manifest: "computer-basics-first-course.manifest.json",
-        published: false,
-        branch: "Устройство компьютера"
-      }
-    ]
+    sources: [{ manifest: "pc-track.manifest.json", published: false }]
   },
   {
     slug: "browser",
     name: "Браузер",
     role: "Проводник по вебу",
     summary:
-      "Что происходит между адресной строкой и готовой страницей, и какими инструментами пользуется веб-разработчик.",
+      "Путь от адреса до страницы: URL и DNS, HTTP и HTTPS, коды ответа, кэш, cookies и хранилища, безопасность, отрисовка, все панели DevTools, дерево доступности и адаптивный режим.",
     accent: "blue",
-    sources: [
-      {
-        manifest: "html-track.manifest.json",
-        published: true,
-        skills: ["web-how-it-works", "web-tools"],
-        branch: "Как работает веб"
-      }
-    ]
+    sources: [{ manifest: "browser-track.manifest.json", published: false }]
   },
   {
     slug: "html",
@@ -76,8 +63,10 @@ export const characters = [
 // Branch → branches whose skills must be at least `unlockShare` active before its skills can be
 // confirmed ("character/branch title").
 // Inside a character every branch also requires the previous one.
+// A requirement on an unpublished character would lock its target for everyone, so
+// "html/Старт" gets ["browser/Что такое браузер"] once the Браузер course is published.
 export const requires = {
-  "html/Старт": ["browser/Как работает веб"],
+  "browser/DNS": ["pc/Домашняя сеть"],
   "html/HTML и JavaScript": ["js/Старт JavaScript"],
   "css/Старт CSS": ["html/Основы HTML"],
   "js/Старт JavaScript": ["html/Основы HTML", "css/Старт CSS"],

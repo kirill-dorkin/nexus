@@ -31,7 +31,8 @@ const manifests = [
   "css-track",
   "js-track",
   "sql-track",
-  "computer-basics-first-course"
+  "pc-track",
+  "browser-track"
 ].map(
   (name) =>
     JSON.parse(
@@ -287,7 +288,7 @@ describe("character progress", () => {
       requiredCharacters(structuredClone(findCharacter("html")!)).map(
         (c) => c.slug
       )
-    ).toEqual(["browser", "js"]);
+    ).toEqual(["js"]);
     expect(requiredCharacters(findCharacter("js")!).map((c) => c.slug)).toEqual(
       ["html", "css"]
     );

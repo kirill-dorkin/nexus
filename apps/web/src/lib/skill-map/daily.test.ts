@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { dailyQuests, playerLevel, streak } from "./daily";
+import { findCharacter } from "./skill-map";
 
 const records = (entries: Record<string, string[]>) =>
   new Map(
@@ -14,7 +15,8 @@ describe("daily quests", () => {
   it("offers the first open skills to a newcomer", () => {
     const quests = dailyQuests(records({}), "2026-11-05");
     expect(quests.map((q) => q.kind)).toEqual(["confirm", "confirm"]);
-    expect(quests[0]!.character.slug).toBe("browser");
+    // ПК and Браузер are not published yet, so the route starts with HTML.
+    expect(quests[0]!.character.slug).toBe("html");
     expect(quests.every((q) => !q.done)).toBe(true);
   });
 
@@ -65,14 +67,17 @@ describe("player level", () => {
       level: 0,
       title: "Новичок"
     });
-    const browser = playerLevel(
-      records({
-        "web-how-it-works": ["2026-11-05"],
-        "web-tools": ["2026-11-05"]
-      }),
+    const sql = playerLevel(
+      records(
+        Object.fromEntries(
+          findCharacter("sql")!.branches.flatMap((b) =>
+            b.skills.map((s) => [s.key, ["2026-11-05"]])
+          )
+        )
+      ),
       "2026-11-05"
     );
-    expect(browser.level).toBeGreaterThanOrEqual(100);
-    expect(browser.title).toBe("Подмастерье");
+    expect(sql.level).toBeGreaterThanOrEqual(100);
+    expect(sql.title).toBe("Подмастерье");
   });
 });
