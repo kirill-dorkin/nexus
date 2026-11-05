@@ -7,6 +7,8 @@ import * as config from "./characters.mjs";
 import { parseStory } from "./story.mjs";
 
 const examples = join(dirname(fileURLToPath(import.meta.url)), "..");
+const DEPTHS = new Set(["core", "practice", "advanced", "reference", "internals"]);
+
 export const outputPath = join(
   examples,
   "../../apps/web/src/lib/skill-map/skill-map.json"
@@ -67,9 +69,13 @@ export function buildSkillMap(
         const title = source.branch ?? lesson.chapter ?? manifest.course.title;
         let branch = branches.find((b) => b.title === title);
         if (!branch) {
+          const depth = character.depth?.[title] ?? "practice";
+          if (!DEPTHS.has(depth))
+            throw new Error(`${character.slug}/${title}: unknown depth ${depth}`);
           branch = {
             id: `${character.slug}-${branches.length + 1}`,
             title,
+            depth,
             requires: [],
             skills: []
           };
@@ -94,6 +100,20 @@ export function buildSkillMap(
     branches.forEach((branch, index) => {
       if (index > 0) branch.requires.push(branches[index - 1].id);
     });
+    for (const title of Object.keys(character.depth ?? {}))
+      if (!branches.some((b) => b.title === title))
+        throw new Error(`${character.slug}: depth for unknown branch ${title}`);
+    const abilities = (character.abilities ?? []).map((ability) => ({
+      title: ability.title,
+      branches: ability.branches.map((title) => {
+        const branch = branches.find((b) => b.title === title);
+        if (!branch)
+          throw new Error(
+            `${character.slug}: ability ${ability.title} names unknown branch ${title}`
+          );
+        return branch.id;
+      })
+    }));
     return {
       slug: character.slug,
       name: character.name,
@@ -101,6 +121,7 @@ export function buildSkillMap(
       summary: character.summary,
       accent: character.accent,
       published: character.sources.some((s) => s.published),
+      abilities,
       branches
     };
   });

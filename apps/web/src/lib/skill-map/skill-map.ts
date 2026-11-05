@@ -20,13 +20,29 @@ export type SkillMapSkill = {
   /** Null while the character's course is not published. */
   lesson: SkillMapLesson | null;
 };
+/** Branch tier; weights its skills in `level@2` (docs/product/skill-trees/README.md, 3.2). */
+export type BranchDepth =
+  "core" | "practice" | "advanced" | "reference" | "internals";
+
+export const DEPTH_WEIGHTS: Record<BranchDepth, number> = {
+  core: 3,
+  practice: 2,
+  advanced: 1.5,
+  reference: 1,
+  internals: 1
+};
+
 export type SkillMapBranch = {
   id: string;
   title: string;
+  depth: BranchDepth;
   /** Branches that should be at least `unlockShare` mastered first. */
   requires: string[];
   skills: SkillMapSkill[];
 };
+/** A milestone badge: active while every skill of its branches is active. */
+export type CharacterAbility = { title: string; branches: string[] };
+
 export type Character = {
   slug: string;
   name: string;
@@ -34,6 +50,7 @@ export type Character = {
   summary: string;
   accent: string;
   published: boolean;
+  abilities: CharacterAbility[];
   branches: SkillMapBranch[];
 };
 export type SkillMap = {
@@ -97,9 +114,19 @@ export function rankOf(level: number): string {
   return title;
 }
 
+export type AbilityProgress = {
+  ability: CharacterAbility;
+  active: boolean;
+  activeSkills: number;
+  totalSkills: number;
+};
+
 export type CharacterProgress = {
   character: Character;
-  /** 0…maxLevel: share of active skills. Falls when skills are forgotten. */
+  /**
+   * `level@2`: 0…maxLevel by the weighted share of active skills (core counts three times as
+   * much as reference). Falls when skills are forgotten.
+   */
   level: number;
   maxLevel: number;
   rank: string;
@@ -110,6 +137,7 @@ export type CharacterProgress = {
   forgotten: number;
   total: number;
   branches: BranchProgress[];
+  abilities: AbilityProgress[];
   /**
    * What to do next: repeat a fading skill first, then recall a forgotten one, then confirm the
    * first open skill.
@@ -167,8 +195,33 @@ export function characterProgress(
   const all = branches.flatMap((b) => b.skills);
   const total = all.length;
   const active = all.filter((s) => isActive(s.freshness.state)).length;
+  const weightOf = (b: BranchProgress) => DEPTH_WEIGHTS[b.branch.depth];
+  const totalWeight = branches.reduce(
+    (sum, b) => sum + weightOf(b) * b.skills.length,
+    0
+  );
+  const activeWeight = branches.reduce(
+    (sum, b) => sum + weightOf(b) * b.active,
+    0
+  );
   const level =
-    total === 0 ? 0 : Math.floor((active / total) * map.maxLevel + 1e-9);
+    totalWeight === 0
+      ? 0
+      : Math.floor((activeWeight / totalWeight) * map.maxLevel + 1e-9);
+  const byBranch = new Map(branches.map((b) => [b.branch.id, b] as const));
+  const abilities = character.abilities.map((ability): AbilityProgress => {
+    const parts = ability.branches
+      .map((id) => byBranch.get(id))
+      .filter((b): b is BranchProgress => b !== undefined);
+    const totalSkills = parts.reduce((sum, b) => sum + b.skills.length, 0);
+    const activeSkills = parts.reduce((sum, b) => sum + b.active, 0);
+    return {
+      ability,
+      active: totalSkills > 0 && activeSkills === totalSkills,
+      activeSkills,
+      totalSkills
+    };
+  });
   const xp = character.branches
     .flatMap((b) => b.skills)
     .reduce((sum, skill) => {
@@ -198,6 +251,7 @@ export function characterProgress(
     forgotten: all.filter((s) => s.state === "forgotten").length,
     total,
     branches,
+    abilities,
     next
   };
 }

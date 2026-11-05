@@ -32,7 +32,11 @@ So a learner's level in a subject can be read from existing Mastery. No new lear
      - after the term the skill **fades** for 7 days, then it is **forgotten**;
      - confirming a forgotten skill again steps down one step.
    - **Active** = confirmed or fading.
-   - Level = ⌊active share × 100⌋. It falls when skills are forgotten.
+   - **Level `level@2`** (amended 2026-11-05) is ⌊Σ weight of active skills ÷ Σ weight of all skills × 100⌋. It falls when skills are forgotten.
+     - Each branch has a `depth`: core, practice, advanced, reference or internals.
+     - The depth sets the weight of each of its skills: 3, 2, 1.5, 1 and 1 respectively.
+     - So core and practice make a Практик, and a Легенда needs the whole reference (`docs/product/skill-trees/README.md`, 3.2).
+   - **Abilities:** 5–8 milestone badges per character, each over a set of branches. A badge is lit while every skill of those branches is active and goes out when one is forgotten.
    - Ranks: Новичок 0, Ученик 20, Практик 40, Мастер 60, Эксперт 80, Легенда 95.
    - XP never decreases: 100 for a first confirmation and 25 for each further confirmation day.
    - A branch is unlocked when each required branch is at least `unlockShare` (0.5) active.
