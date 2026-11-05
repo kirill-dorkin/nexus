@@ -208,6 +208,7 @@ describe("password reset HTTP + PostgreSQL boundary (ADR-0082)", () => {
       "UPDATE identity.users SET status = 'suspended' WHERE id = $1",
       [userId]
     );
+    provider.mockClear();
     try {
       await post("auth/password-reset/request", { email });
       expect(provider).not.toHaveBeenCalled();
