@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { organizationSlugSchema, resourceSlugSchema, uuidSchema } from "./common";
+import {
+  organizationSlugSchema,
+  resourceSlugSchema,
+  uuidSchema
+} from "./common";
 import { FEEDBACK_ROUTES } from "./feedback-page";
 
 /*

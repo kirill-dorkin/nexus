@@ -11,9 +11,24 @@ describe("feedback page context (ADR-0085)", () => {
     ["/", "/", null, null],
     ["/courses", "/courses", null, null],
     ["/courses/html", "/courses/[course]", "html", null],
-    ["/courses/html/first-tag", "/courses/[course]/[lesson]", "html", "first-tag"],
-    ["/courses/html/first-tag/", "/courses/[course]/[lesson]", "html", "first-tag"],
-    ["/learn/academy/html-free", "/learn/[organization]/[offering]", null, null],
+    [
+      "/courses/html/first-tag",
+      "/courses/[course]/[lesson]",
+      "html",
+      "first-tag"
+    ],
+    [
+      "/courses/html/first-tag/",
+      "/courses/[course]/[lesson]",
+      "html",
+      "first-tag"
+    ],
+    [
+      "/learn/academy/html-free",
+      "/learn/[organization]/[offering]",
+      null,
+      null
+    ],
     [
       "/learn/academy/html-free/first-tag",
       "/learn/[organization]/[offering]/[lesson]",
@@ -32,7 +47,11 @@ describe("feedback page context (ADR-0085)", () => {
     ["courses/html", "other", null, null],
     ["/a/b/c/d/e", "other", null, null]
   ])("%s → %s", (path, route, courseSlug, lessonSlug) => {
-    expect(feedbackPageContext(path)).toEqual({ route, courseSlug, lessonSlug });
+    expect(feedbackPageContext(path)).toEqual({
+      route,
+      courseSlug,
+      lessonSlug
+    });
   });
 });
 
