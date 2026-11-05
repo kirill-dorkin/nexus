@@ -63,3 +63,10 @@ test("a visitor opens the city map and goes to a district", async ({
   await district.click();
   await expect(page).toHaveURL("/characters/html");
 });
+
+test("the roster announces upcoming characters", async ({ page }) => {
+  await page.goto("/characters");
+  const upcoming = page.getByRole("region", { name: "Скоро в городе" });
+  await expect(upcoming.getByText("React", { exact: true })).toBeVisible();
+  await expect(upcoming.getByText("Next.js", { exact: true })).toBeVisible();
+});
