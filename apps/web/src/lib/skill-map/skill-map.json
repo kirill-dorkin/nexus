@@ -10,10 +10,19 @@
       "summary": "Как устроен компьютер: детали, память и файлы, загрузка системы и путь от клика до результата.",
       "accent": "rose",
       "published": false,
+      "abilities": [
+        {
+          "title": "Устройство компьютера",
+          "branches": [
+            "pc-1"
+          ]
+        }
+      ],
       "branches": [
         {
           "id": "pc-1",
           "title": "Устройство компьютера",
+          "depth": "practice",
           "requires": [],
           "skills": [
             {
@@ -47,10 +56,19 @@
       "summary": "Что происходит между адресной строкой и готовой страницей, и какими инструментами пользуется веб-разработчик.",
       "accent": "blue",
       "published": true,
+      "abilities": [
+        {
+          "title": "Как работает веб",
+          "branches": [
+            "browser-1"
+          ]
+        }
+      ],
       "branches": [
         {
           "id": "browser-1",
           "title": "Как работает веб",
+          "depth": "practice",
           "requires": [],
           "skills": [
             {
@@ -82,10 +100,55 @@
       "summary": "Разметка страниц целиком: текст, ссылки, медиа, таблицы, формы, структура, метаданные и доступность.",
       "accent": "lime",
       "published": true,
+      "abilities": [
+        {
+          "title": "Каркас",
+          "branches": [
+            "html-2"
+          ]
+        },
+        {
+          "title": "Смысл текста",
+          "branches": [
+            "html-3"
+          ]
+        },
+        {
+          "title": "Медиа",
+          "branches": [
+            "html-5"
+          ]
+        },
+        {
+          "title": "Формы",
+          "branches": [
+            "html-7"
+          ]
+        },
+        {
+          "title": "Структура",
+          "branches": [
+            "html-8"
+          ]
+        },
+        {
+          "title": "Метаданные",
+          "branches": [
+            "html-9"
+          ]
+        },
+        {
+          "title": "Доступность",
+          "branches": [
+            "html-11"
+          ]
+        }
+      ],
       "branches": [
         {
           "id": "html-1",
           "title": "Старт",
+          "depth": "core",
           "requires": [
             "browser-1"
           ],
@@ -113,6 +176,7 @@
         {
           "id": "html-2",
           "title": "Основы HTML",
+          "depth": "core",
           "requires": [
             "html-1"
           ],
@@ -185,6 +249,7 @@
         {
           "id": "html-3",
           "title": "Текст",
+          "depth": "core",
           "requires": [
             "html-2"
           ],
@@ -266,6 +331,7 @@
         {
           "id": "html-4",
           "title": "Ссылки и пути",
+          "depth": "core",
           "requires": [
             "html-3"
           ],
@@ -302,6 +368,7 @@
         {
           "id": "html-5",
           "title": "Картинки, видео и встраивание",
+          "depth": "practice",
           "requires": [
             "html-4"
           ],
@@ -401,6 +468,7 @@
         {
           "id": "html-6",
           "title": "Таблицы",
+          "depth": "practice",
           "requires": [
             "html-5"
           ],
@@ -428,6 +496,7 @@
         {
           "id": "html-7",
           "title": "Формы",
+          "depth": "practice",
           "requires": [
             "html-6"
           ],
@@ -545,6 +614,7 @@
         {
           "id": "html-8",
           "title": "Структура страницы",
+          "depth": "practice",
           "requires": [
             "html-7"
           ],
@@ -599,6 +669,7 @@
         {
           "id": "html-9",
           "title": "Head, поиск и безопасность",
+          "depth": "advanced",
           "requires": [
             "html-8"
           ],
@@ -671,6 +742,7 @@
         {
           "id": "html-10",
           "title": "HTML и JavaScript",
+          "depth": "advanced",
           "requires": [
             "html-9",
             "js-1"
@@ -708,6 +780,7 @@
         {
           "id": "html-11",
           "title": "Доступность",
+          "depth": "practice",
           "requires": [
             "html-10"
           ],
@@ -753,6 +826,7 @@
         {
           "id": "html-12",
           "title": "Качество и финал",
+          "depth": "reference",
           "requires": [
             "html-11"
           ],
@@ -813,10 +887,56 @@
       "summary": "Оформление и вёрстка: каскад и селекторы, цвет и шрифты, блочная модель, Flexbox, Grid, адаптивность и анимации.",
       "accent": "violet",
       "published": true,
+      "abilities": [
+        {
+          "title": "Каскад",
+          "branches": [
+            "css-1"
+          ]
+        },
+        {
+          "title": "Цвет и типографика",
+          "branches": [
+            "css-2"
+          ]
+        },
+        {
+          "title": "Раскладка",
+          "branches": [
+            "css-5",
+            "css-6"
+          ]
+        },
+        {
+          "title": "Адаптивность",
+          "branches": [
+            "css-8"
+          ]
+        },
+        {
+          "title": "Движение",
+          "branches": [
+            "css-9"
+          ]
+        },
+        {
+          "title": "Современный CSS",
+          "branches": [
+            "css-10"
+          ]
+        },
+        {
+          "title": "Доступный дизайн",
+          "branches": [
+            "css-11"
+          ]
+        }
+      ],
       "branches": [
         {
           "id": "css-1",
           "title": "Старт CSS",
+          "depth": "core",
           "requires": [
             "html-2"
           ],
@@ -880,6 +1000,7 @@
         {
           "id": "css-2",
           "title": "Цвет и текст",
+          "depth": "core",
           "requires": [
             "css-1"
           ],
@@ -943,6 +1064,7 @@
         {
           "id": "css-3",
           "title": "Блочная модель",
+          "depth": "core",
           "requires": [
             "css-2"
           ],
@@ -1015,6 +1137,7 @@
         {
           "id": "css-4",
           "title": "Селекторы",
+          "depth": "practice",
           "requires": [
             "css-3"
           ],
@@ -1060,6 +1183,7 @@
         {
           "id": "css-5",
           "title": "Flexbox",
+          "depth": "practice",
           "requires": [
             "css-4"
           ],
@@ -1105,6 +1229,7 @@
         {
           "id": "css-6",
           "title": "Grid",
+          "depth": "practice",
           "requires": [
             "css-5"
           ],
@@ -1159,6 +1284,7 @@
         {
           "id": "css-7",
           "title": "Позиционирование",
+          "depth": "practice",
           "requires": [
             "css-6"
           ],
@@ -1195,6 +1321,7 @@
         {
           "id": "css-8",
           "title": "Адаптивность",
+          "depth": "practice",
           "requires": [
             "css-7"
           ],
@@ -1240,6 +1367,7 @@
         {
           "id": "css-9",
           "title": "Анимации",
+          "depth": "practice",
           "requires": [
             "css-8"
           ],
@@ -1285,6 +1413,7 @@
         {
           "id": "css-10",
           "title": "Современный CSS",
+          "depth": "advanced",
           "requires": [
             "css-9"
           ],
@@ -1348,6 +1477,7 @@
         {
           "id": "css-11",
           "title": "Доступность и качество",
+          "depth": "practice",
           "requires": [
             "css-10"
           ],
@@ -1399,10 +1529,64 @@
       "summary": "Язык, который оживляет страницы: данные, функции, события, формы, асинхронность и весь стандарт ECMAScript.",
       "accent": "amber",
       "published": true,
+      "abilities": [
+        {
+          "title": "Значения и логика",
+          "branches": [
+            "js-1",
+            "js-2",
+            "js-3"
+          ]
+        },
+        {
+          "title": "Функции",
+          "branches": [
+            "js-4"
+          ]
+        },
+        {
+          "title": "Данные",
+          "branches": [
+            "js-5",
+            "js-6",
+            "js-17"
+          ]
+        },
+        {
+          "title": "Страница",
+          "branches": [
+            "js-7",
+            "js-8",
+            "js-9"
+          ]
+        },
+        {
+          "title": "Асинхронность",
+          "branches": [
+            "js-10",
+            "js-20"
+          ]
+        },
+        {
+          "title": "Весь язык",
+          "branches": [
+            "js-12"
+          ]
+        },
+        {
+          "title": "Изнутри",
+          "branches": [
+            "js-13",
+            "js-19",
+            "js-23"
+          ]
+        }
+      ],
       "branches": [
         {
           "id": "js-1",
           "title": "Старт JavaScript",
+          "depth": "core",
           "requires": [
             "html-2",
             "css-1"
@@ -1458,6 +1642,7 @@
         {
           "id": "js-2",
           "title": "Значения и операторы",
+          "depth": "core",
           "requires": [
             "js-1"
           ],
@@ -1512,6 +1697,7 @@
         {
           "id": "js-3",
           "title": "Условия и циклы",
+          "depth": "core",
           "requires": [
             "js-2"
           ],
@@ -1566,6 +1752,7 @@
         {
           "id": "js-4",
           "title": "Функции",
+          "depth": "core",
           "requires": [
             "js-3"
           ],
@@ -1620,6 +1807,7 @@
         {
           "id": "js-5",
           "title": "Массивы",
+          "depth": "core",
           "requires": [
             "js-4"
           ],
@@ -1683,6 +1871,7 @@
         {
           "id": "js-6",
           "title": "Объекты",
+          "depth": "core",
           "requires": [
             "js-5"
           ],
@@ -1737,6 +1926,7 @@
         {
           "id": "js-7",
           "title": "DOM",
+          "depth": "practice",
           "requires": [
             "js-6",
             "html-8"
@@ -1792,6 +1982,7 @@
         {
           "id": "js-8",
           "title": "События",
+          "depth": "practice",
           "requires": [
             "js-7"
           ],
@@ -1855,6 +2046,7 @@
         {
           "id": "js-9",
           "title": "Формы",
+          "depth": "practice",
           "requires": [
             "js-8",
             "html-7"
@@ -1892,6 +2084,7 @@
         {
           "id": "js-10",
           "title": "Асинхронность",
+          "depth": "practice",
           "requires": [
             "js-9"
           ],
@@ -1955,6 +2148,7 @@
         {
           "id": "js-11",
           "title": "Хранение и финал",
+          "depth": "practice",
           "requires": [
             "js-10"
           ],
@@ -2009,6 +2203,7 @@
         {
           "id": "js-12",
           "title": "Синтаксис полностью",
+          "depth": "reference",
           "requires": [
             "js-11"
           ],
@@ -2099,6 +2294,7 @@
         {
           "id": "js-13",
           "title": "Объекты и функции изнутри",
+          "depth": "internals",
           "requires": [
             "js-12"
           ],
@@ -2171,6 +2367,7 @@
         {
           "id": "js-14",
           "title": "Строки полностью",
+          "depth": "reference",
           "requires": [
             "js-13"
           ],
@@ -2216,6 +2413,7 @@
         {
           "id": "js-15",
           "title": "Числа и Math полностью",
+          "depth": "reference",
           "requires": [
             "js-14"
           ],
@@ -2270,6 +2468,7 @@
         {
           "id": "js-16",
           "title": "Массивы и итераторы полностью",
+          "depth": "reference",
           "requires": [
             "js-15"
           ],
@@ -2315,6 +2514,7 @@
         {
           "id": "js-17",
           "title": "Коллекции",
+          "depth": "reference",
           "requires": [
             "js-16"
           ],
@@ -2360,6 +2560,7 @@
         {
           "id": "js-18",
           "title": "Регулярные выражения",
+          "depth": "reference",
           "requires": [
             "js-17"
           ],
@@ -2396,6 +2597,7 @@
         {
           "id": "js-19",
           "title": "Symbol, Proxy и Reflect",
+          "depth": "internals",
           "requires": [
             "js-18"
           ],
@@ -2441,6 +2643,7 @@
         {
           "id": "js-20",
           "title": "Ошибки, ресурсы и промисы",
+          "depth": "reference",
           "requires": [
             "js-19"
           ],
@@ -2486,6 +2689,7 @@
         {
           "id": "js-21",
           "title": "Даты полностью",
+          "depth": "reference",
           "requires": [
             "js-20"
           ],
@@ -2522,6 +2726,7 @@
         {
           "id": "js-22",
           "title": "Intl полностью",
+          "depth": "reference",
           "requires": [
             "js-21"
           ],
@@ -2567,6 +2772,7 @@
         {
           "id": "js-23",
           "title": "Бинарные данные и общая память",
+          "depth": "internals",
           "requires": [
             "js-22"
           ],
@@ -2621,6 +2827,7 @@
         {
           "id": "js-24",
           "title": "Устаревшее: как читать старый код",
+          "depth": "reference",
           "requires": [
             "js-23"
           ],
@@ -2654,10 +2861,63 @@
       "summary": "Запросы к PostgreSQL: выборки и фильтры, агрегаты, соединения, подзапросы, изменение данных и свои таблицы.",
       "accent": "teal",
       "published": true,
+      "abilities": [
+        {
+          "title": "Вопросы к данным",
+          "branches": [
+            "sql-1",
+            "sql-2",
+            "sql-3"
+          ]
+        },
+        {
+          "title": "Агрегаты",
+          "branches": [
+            "sql-5"
+          ]
+        },
+        {
+          "title": "Соединения",
+          "branches": [
+            "sql-6"
+          ]
+        },
+        {
+          "title": "Подзапросы",
+          "branches": [
+            "sql-7"
+          ]
+        },
+        {
+          "title": "Изменение данных",
+          "branches": [
+            "sql-8"
+          ]
+        },
+        {
+          "title": "Проектирование",
+          "branches": [
+            "sql-9"
+          ]
+        },
+        {
+          "title": "Аналитика",
+          "branches": [
+            "sql-10"
+          ]
+        },
+        {
+          "title": "Скорость",
+          "branches": [
+            "sql-11"
+          ]
+        }
+      ],
       "branches": [
         {
           "id": "sql-1",
           "title": "Старт SQL",
+          "depth": "core",
           "requires": [],
           "skills": [
             {
@@ -2710,6 +2970,7 @@
         {
           "id": "sql-2",
           "title": "Фильтры",
+          "depth": "core",
           "requires": [
             "sql-1"
           ],
@@ -2764,6 +3025,7 @@
         {
           "id": "sql-3",
           "title": "Сортировка и порции",
+          "depth": "core",
           "requires": [
             "sql-2"
           ],
@@ -2791,6 +3053,7 @@
         {
           "id": "sql-4",
           "title": "Функции и выражения",
+          "depth": "practice",
           "requires": [
             "sql-3"
           ],
@@ -2854,6 +3117,7 @@
         {
           "id": "sql-5",
           "title": "Агрегаты и группы",
+          "depth": "practice",
           "requires": [
             "sql-4"
           ],
@@ -2899,6 +3163,7 @@
         {
           "id": "sql-6",
           "title": "Соединения таблиц",
+          "depth": "practice",
           "requires": [
             "sql-5"
           ],
@@ -2962,6 +3227,7 @@
         {
           "id": "sql-7",
           "title": "Подзапросы и множества",
+          "depth": "practice",
           "requires": [
             "sql-6"
           ],
@@ -3025,6 +3291,7 @@
         {
           "id": "sql-8",
           "title": "Изменение данных",
+          "depth": "practice",
           "requires": [
             "sql-7"
           ],
@@ -3088,6 +3355,7 @@
         {
           "id": "sql-9",
           "title": "Свои таблицы",
+          "depth": "practice",
           "requires": [
             "sql-8"
           ],
@@ -3142,6 +3410,7 @@
         {
           "id": "sql-10",
           "title": "Аналитика",
+          "depth": "advanced",
           "requires": [
             "sql-9"
           ],
@@ -3187,6 +3456,7 @@
         {
           "id": "sql-11",
           "title": "Скорость и безопасность",
+          "depth": "advanced",
           "requires": [
             "sql-10"
           ],

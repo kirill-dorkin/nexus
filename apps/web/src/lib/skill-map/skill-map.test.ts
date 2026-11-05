@@ -149,10 +149,12 @@ const tiny: SkillMap = {
       summary: "s",
       accent: "lime",
       published: true,
+      abilities: [{ title: "Base", branches: ["base-1"] }],
       branches: [
         {
           id: "base-1",
           title: "B1",
+          depth: "practice",
           requires: [],
           skills: [
             { key: "b1", title: "b1", lesson: null },
@@ -168,10 +170,12 @@ const tiny: SkillMap = {
       summary: "s",
       accent: "violet",
       published: true,
+      abilities: [],
       branches: [
         {
           id: "top-1",
           title: "T1",
+          depth: "practice",
           requires: ["base-1"],
           skills: Array.from({ length: 10 }, (_, i) => ({
             key: `t${i}`,
@@ -303,6 +307,80 @@ describe("character progress", () => {
     expect(progress.level).toBe(100);
     expect(progress.rank).toBe("Легенда");
     expect(progress.next).toBeNull();
+  });
+
+  it("weights core skills three times as much as reference ones (level@2)", () => {
+    const weighted: SkillMap = {
+      ...tiny,
+      characters: [
+        {
+          ...base,
+          abilities: [],
+          branches: [
+            {
+              id: "w-1",
+              title: "Core",
+              depth: "core",
+              requires: [],
+              skills: [{ key: "c1", title: "c1", lesson: null }]
+            },
+            {
+              id: "w-2",
+              title: "Reference",
+              depth: "reference",
+              requires: [],
+              skills: [{ key: "r1", title: "r1", lesson: null }]
+            }
+          ]
+        }
+      ]
+    };
+    const character = weighted.characters[0]!;
+    expect(
+      characterProgress(character, records({ c1: [today] }), today, weighted)
+        .level
+    ).toBe(75);
+    expect(
+      characterProgress(character, records({ r1: [today] }), today, weighted)
+        .level
+    ).toBe(25);
+  });
+
+  it("lights an ability only while every skill of its branches is active", () => {
+    const half = characterProgress(base, records({ b1: [today] }), today, tiny);
+    expect(half.abilities[0]).toMatchObject({
+      active: false,
+      activeSkills: 1,
+      totalSkills: 2
+    });
+    const full = characterProgress(
+      base,
+      records({ b1: [today], b2: [today] }),
+      today,
+      tiny
+    );
+    expect(full.abilities[0]?.active).toBe(true);
+    const forgotten = characterProgress(
+      base,
+      records({ b1: [today], b2: ["2026-09-01"] }),
+      today,
+      tiny
+    );
+    expect(forgotten.abilities[0]?.active).toBe(false);
+  });
+
+  it("every real character has abilities and every branch a depth", () => {
+    for (const character of SKILL_MAP.characters) {
+      expect(character.abilities.length).toBeGreaterThan(0);
+      for (const branch of character.branches)
+        expect([
+          "core",
+          "practice",
+          "advanced",
+          "reference",
+          "internals"
+        ]).toContain(branch.depth);
+    }
   });
 
   it("names the characters a character builds on", () => {

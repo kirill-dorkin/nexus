@@ -91,6 +91,32 @@ export function CharacterProfile({
         )}
       </header>
 
+      {progress.abilities.length > 0 && (
+        <section aria-labelledby="abilities-title">
+          <h2 id="abilities-title" className={styles.name}>
+            Способности
+          </h2>
+          <ul className={styles.abilities}>
+            {progress.abilities.map(
+              ({ ability, active, activeSkills, totalSkills }) => (
+                <li
+                  key={ability.title}
+                  className={styles.ability}
+                  data-active={active || undefined}
+                >
+                  <span className={styles.skillTitle}>{ability.title}</span>
+                  <span className={styles.skillState}>
+                    {active
+                      ? "Активна"
+                      : `${activeSkills} из ${totalSkills} ${skillsWord(totalSkills)}`}
+                  </span>
+                </li>
+              )
+            )}
+          </ul>
+        </section>
+      )}
+
       {progress.next && (
         <section className={styles.next} aria-label="Что дальше">
           <p>
