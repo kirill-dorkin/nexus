@@ -6,7 +6,7 @@ It is **not live telemetry**. Before working, check the current `main`, open PRs
 
 ## Snapshot
 
-Last maintained: 2026-11-04.
+Last maintained: 2026-11-05.
 
 | | |
 |---|---|
@@ -128,6 +128,10 @@ Historical outbox rows (including old `attempt.submitted`) are immutable and are
 
 ## Next recommended slice
 
-**Follow the working spec [`docs/roadmap/spec.md`](../roadmap/spec.md)** (2026-11-05). The game design behind it is [`docs/product/game-design.md`](../product/game-design.md); the season-1 script is [`docs/story/season-1.md`](../story/season-1.md). Finished plans are in [`docs/archive/`](../archive/README.md).
+**Start with B0 in [`docs/roadmap/beta-launch.md`](../roadmap/beta-launch.md)** (2026-11-05): a closed, free learning beta on already published material, first 5 learners and then up to 20, with a weekly learning plan, practice and feedback. Prepare and verify the real learner path and give the owner the invitation/runbook steps. The owner contacts learners and publishes courses.
+
+The document is a specification, not an implemented beta feature or evidence that a cohort has started. B0 uses existing free-learning access and a private coordinator log. B1 adds own participation/week counters and feedback while the first cohort learns; no subscription, new Entitlement source, grader or outbox relay is required to start. Closing a beta place does not revoke public free learning or erase progress.
+
+The working queue is [`docs/roadmap/spec.md`](../roadmap/spec.md) v2. Full skill tests, the character pipeline and later seasons remain follow-up work and do not block the first cohort. The game design is [`docs/product/game-design.md`](../product/game-design.md); the season-1 script is [`docs/story/season-1.md`](../story/season-1.md). Finished plans are in [`docs/archive/`](../archive/README.md).
 
 Started only after an owner decision (spec section 5): grader in production, subscriptions and prices, a second payment provider, the email provider, background-process hosting.
