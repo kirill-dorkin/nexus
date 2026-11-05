@@ -1,6 +1,6 @@
 # ADR-0077: Confirming a skill requires active prerequisite skills
 
-- Status: Proposed (depends on ADR-0078)
+- Status: Accepted (owner, 2026-11-05)
 - Date: 2026-11-05
 
 ## Context

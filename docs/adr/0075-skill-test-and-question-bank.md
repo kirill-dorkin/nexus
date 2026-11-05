@@ -1,6 +1,6 @@
 # ADR-0075: Skill test drawn from a protected question bank
 
-- Status: Proposed (owner decision and a migration needed)
+- Status: Accepted (owner, 2026-11-05)
 - Date: 2026-11-05
 
 ## Context

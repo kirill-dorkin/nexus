@@ -1,6 +1,6 @@
 # ADR-0076: Skill freshness `skill-freshness@1` as a server policy
 
-- Status: Proposed
+- Status: Accepted (owner, 2026-11-05)
 - Date: 2026-11-05
 
 ## Context

@@ -1,6 +1,6 @@
 # ADR-0078: The skill map becomes a published version in Learning Content
 
-- Status: Proposed (owner decision and a migration needed)
+- Status: Accepted (owner, 2026-11-05)
 - Date: 2026-11-05
 
 ## Context
