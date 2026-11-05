@@ -1,3 +1,4 @@
+import type { Page } from "@playwright/test";
 // Test-only accounts that exist solely in the disposable e2e database.
 export const OWNER = {
   email: "e2e-owner@example.test",
@@ -12,4 +13,14 @@ export function newLearner() {
     password: "e2e-learner-password-0001",
     name: "Ученик E2E"
   } as const;
+}
+
+/** Ticks both required consents of the registration form (ADR-0083). */
+export async function acceptLegalDocuments(page: Page) {
+  await page
+    .getByRole("checkbox", { name: /пользовательского соглашения/ })
+    .check();
+  await page
+    .getByRole("checkbox", { name: /обработку моих персональных данных/ })
+    .check();
 }

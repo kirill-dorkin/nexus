@@ -394,15 +394,19 @@ describe("feedback HTTP + PostgreSQL boundary", () => {
     ).toBe(403);
     expect(
       (
-        await studio("PATCH", `${otherOrg.id}/feedback/${target.id}`, otherOwner, {
-          status: "done"
-        })
+        await studio(
+          "PATCH",
+          `${otherOrg.id}/feedback/${target.id}`,
+          otherOwner,
+          {
+            status: "done"
+          }
+        )
       ).statusCode
     ).toBe(404);
     expect(
-      (
-        await studio("PATCH", `${org.id}/feedback/${target.id}`, owner, {})
-      ).statusCode
+      (await studio("PATCH", `${org.id}/feedback/${target.id}`, owner, {}))
+        .statusCode
     ).toBe(400);
     const foreignOrigin = await app.inject({
       method: "PATCH",
