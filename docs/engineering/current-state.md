@@ -11,7 +11,7 @@ Last maintained: 2026-11-04.
 | | |
 |---|---|
 | `main` head | `199f95f` — #166, revert of NestJS 12 after a production API outage (2026-11-04) |
-| Latest migration | `000048_rate_limit_buckets.sql` |
+| Latest migration | `000050_skill_tests.sql` (skill test banks and draws, ADR-0075; additive, nothing reads it yet) |
 | Quality gates | Local before every push: `pnpm check` (brand isolation, Prettier, ESLint strict type-checked + React + jsx-a11y strict + Next, typecheck incl. API operator scripts and root tests, unit and component tests, Web coverage floors). GitHub CI: brand isolation, Prettier, typecheck, unit, integration, launch-performance, browser-launch and Playwright end-to-end tests (axe on every page). No lint baseline: every violation fails. |
 | Latest ADR | ADR-0073 Downloadable file assignments with trusted static checks |
 | Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058); daily GitHub-hosted read-only smoke against the production domain |
