@@ -63,6 +63,60 @@ CREATE POLICY reports_tenant_update ON feedback.reports
 GRANT SELECT, INSERT ON feedback.reports TO platform_app;
 GRANT UPDATE (status, owner_note, updated_at) ON feedback.reports TO platform_app;
 
--- Anonymous reports need the Organization id of a public page.
-GRANT EXECUTE ON FUNCTION organizations.resolve_active_public_organization_id(text)
-  TO platform_app;
+-- Reports arrive from public pages, often without a session. The runtime role
+-- never turns an Organization slug into its id (the tenant-id resolver stays
+-- closed, see the public catalog boundary test). This function resolves the
+-- active public Organization itself, stores the report and its outbox event in
+-- the caller's transaction and returns only the report id, or NULL when the
+-- Organization is not active and public. The user comes from app.user_id, which
+-- the API sets only after it has checked the session.
+CREATE FUNCTION feedback.submit_report(
+  p_organization_slug text,
+  p_kind text,
+  p_body text,
+  p_expected text,
+  p_actual text,
+  p_page_route text,
+  p_course_slug text,
+  p_lesson_slug text,
+  p_release text,
+  p_device text
+) RETURNS uuid LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog AS $$
+DECLARE
+  v_organization uuid :=
+    organizations.resolve_active_public_organization_id(p_organization_slug);
+  v_user uuid := platform_internal.current_user_id();
+  v_report uuid;
+BEGIN
+  IF v_organization IS NULL THEN
+    RETURN NULL;
+  END IF;
+  INSERT INTO feedback.reports
+    (organization_id, user_id, kind, body, expected, actual, page_route,
+     course_slug, lesson_slug, release, device)
+  VALUES
+    (v_organization, v_user, p_kind, p_body, p_expected, p_actual, p_page_route,
+     p_course_slug, p_lesson_slug, p_release, p_device)
+  RETURNING id INTO v_report;
+  INSERT INTO events.outbox
+    (organization_id, event_name, event_version, aggregate_type, aggregate_id,
+     actor_user_id, payload)
+  VALUES
+    (v_organization, 'feedback_report.submitted', 1, 'feedback_report', v_report,
+     v_user, jsonb_build_object(
+       'reportId', v_report,
+       'organizationId', v_organization,
+       'kind', p_kind,
+       'route', p_page_route,
+       'courseSlug', p_course_slug,
+       'lessonSlug', p_lesson_slug,
+       'release', p_release,
+       'device', p_device,
+       'signedIn', v_user IS NOT NULL
+     ));
+  RETURN v_report;
+END
+$$;
+
+REVOKE ALL ON FUNCTION feedback.submit_report(text, text, text, text, text, text, text, text, text, text) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION feedback.submit_report(text, text, text, text, text, text, text, text, text, text) TO platform_app;

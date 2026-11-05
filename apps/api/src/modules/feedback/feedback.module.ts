@@ -5,7 +5,6 @@ import { ExactWebOriginGuard } from "../../http/exact-web-origin.guard";
 import { OutboxModule } from "../../outbox/outbox.module";
 import { AuthorizationModule } from "../authorization/authorization.module";
 import { IdentityModule } from "../identity/identity.module";
-import { OrganizationsModule } from "../organizations/organizations.module";
 import { FeedbackRepository } from "./application/feedback.repository";
 import { FeedbackApplicationService } from "./application/feedback.service";
 import {
@@ -16,12 +15,7 @@ import { PostgresFeedbackRepository } from "./infrastructure/postgres-feedback.r
 
 /** Learner feedback reports (ADR-0085). */
 @Module({
-  imports: [
-    IdentityModule,
-    AuthorizationModule,
-    OrganizationsModule,
-    OutboxModule
-  ],
+  imports: [IdentityModule, AuthorizationModule, OutboxModule],
   controllers: [FeedbackController, StudioFeedbackController],
   providers: [
     FeedbackApplicationService,

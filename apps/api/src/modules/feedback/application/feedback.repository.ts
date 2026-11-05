@@ -9,8 +9,7 @@ import type {
 import type { DatabaseTransaction } from "@platform/database";
 
 export type NewFeedbackReport = Readonly<{
-  organizationId: string;
-  userId: string | null;
+  organizationSlug: string;
   kind: FeedbackKind;
   text: string;
   expected: string | null;
@@ -29,10 +28,15 @@ export type FeedbackReportChange = Readonly<{
 
 /** Owned by the Feedback module (ADR-0085); every call runs under tenant RLS. */
 export abstract class FeedbackRepository {
-  abstract insert(
+  /**
+   * Stores a report and its `feedback_report.submitted` event for the active
+   * public Organization of the slug; null when there is none. The user is the
+   * one of the transaction (`app.user_id`).
+   */
+  abstract submit(
     transaction: DatabaseTransaction,
     report: NewFeedbackReport
-  ): Promise<string>;
+  ): Promise<string | null>;
 
   /** Newest first; returns up to `limit` rows. */
   abstract list(

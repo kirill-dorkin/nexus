@@ -41,15 +41,4 @@ export class PostgresPublicOrganizationQuery extends PublicOrganizationQuery {
           )
         };
   }
-
-  async resolveActiveId(
-    transaction: DatabaseTransaction,
-    slug: string
-  ): Promise<string | null> {
-    const result = await transaction.client.query<{ id: string | null }>(
-      "SELECT organizations.resolve_active_public_organization_id($1)::text AS id",
-      [slug]
-    );
-    return result.rows[0]?.id ?? null;
-  }
 }

@@ -56,19 +56,14 @@ function toReport(row: ReportRow): FeedbackReport {
 
 @Injectable()
 export class PostgresFeedbackRepository extends FeedbackRepository {
-  async insert(
+  async submit(
     transaction: DatabaseTransaction,
     report: NewFeedbackReport
-  ): Promise<string> {
-    const result = await transaction.client.query<{ id: string }>(
-      `INSERT INTO feedback.reports
-         (organization_id, user_id, kind, body, expected, actual, page_route,
-          course_slug, lesson_slug, release, device)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-       RETURNING id::text`,
+  ): Promise<string | null> {
+    const result = await transaction.client.query<{ id: string | null }>(
+      `SELECT feedback.submit_report($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)::text AS id`,
       [
-        report.organizationId,
-        report.userId,
+        report.organizationSlug,
         report.kind,
         report.text,
         report.expected,
@@ -80,9 +75,7 @@ export class PostgresFeedbackRepository extends FeedbackRepository {
         report.device
       ]
     );
-    const id = result.rows[0]?.id;
-    if (id === undefined) throw new Error("Feedback insert returned no id.");
-    return id;
+    return result.rows[0]?.id ?? null;
   }
 
   async list(
