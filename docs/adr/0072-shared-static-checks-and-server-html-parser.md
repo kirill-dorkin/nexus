@@ -8,7 +8,7 @@
 
 Lesson challenges (```challenge fences, 351 in the published courses) are checked only in the learner's browser. The checks for HTML and CSS are static: a CSS selector must match the parsed page, a source fragment must appear, a CSS declaration must be written for a selector. They never execute the learner's code.
 
-The next feature (downloadable assignments, WP-5 of `docs/roadmap/product-development-spec.md`) needs the same checks as a **trusted** server-side validator whose result becomes a ValidationResult and Evidence. Two implementations of the same rules would drift, and a learner would see a preview that the server then contradicts. The browser implementation used `DOMParser`, which does not exist in Node.
+The next feature (downloadable assignments, WP-5 of `docs/archive/product-development-spec.md`) needs the same checks as a **trusted** server-side validator whose result becomes a ValidationResult and Evidence. Two implementations of the same rules would drift, and a learner would see a preview that the server then contradicts. The browser implementation used `DOMParser`, which does not exist in Node.
 
 ## Decision
 

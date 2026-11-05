@@ -38,7 +38,7 @@ pnpm test:integration apps/api/src/public-learning-http.integration.test.ts
 pnpm test packages/contracts/src/public-learning.test.ts apps/web/src/components/learning/safe-markdown.test.ts
 ```
 
-The existing `pnpm test:browser-launch` now includes production-build public learning pages with Chrome mobile/keyboard/navigation/Markdown containment and safe empty/404 checks. It uses a deterministic public projection seam; full learner persistence through real sessions/PostgreSQL is the launch slice's separate gate. See ADR-0054 and docs/roadmap/mvp-launch.md.
+The existing `pnpm test:browser-launch` now includes production-build public learning pages with Chrome mobile/keyboard/navigation/Markdown containment and safe empty/404 checks. It uses a deterministic public projection seam; full learner persistence through real sessions/PostgreSQL is the launch slice's separate gate. See ADR-0054 and docs/archive/mvp-launch.md.
 
 ## Authenticated free learner entry (ADR-0055)
 
