@@ -260,6 +260,60 @@ describe("database security foundation", () => {
     ]);
   });
 
+  it("protects the skill map tables (ADR-0078, migration 000051)", async () => {
+    const tables = await migrationPool.query<{
+      name: string;
+      rls: boolean;
+      policies: number;
+    }>(`
+      SELECT c.relname AS name, c.relrowsecurity AS rls,
+             (SELECT count(*)::int FROM pg_policies p
+               WHERE p.schemaname = 'learning_content' AND p.tablename = c.relname) AS policies
+        FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
+       WHERE n.nspname = 'learning_content'
+         AND c.relname IN ('skill_maps', 'skill_map_versions', 'skill_map_prerequisites')
+       ORDER BY 1
+    `);
+    expect(tables.rows).toEqual([
+      { name: "skill_map_prerequisites", rls: true, policies: 1 },
+      { name: "skill_map_versions", rls: true, policies: 1 },
+      { name: "skill_maps", rls: true, policies: 1 }
+    ]);
+
+    // A published version is protected by a trigger; the runtime role updates only the
+    // publication columns of a draft and may not touch the map's identity.
+    const columns = await migrationPool.query<{ column: string }>(`
+      SELECT column_name AS column
+        FROM information_schema.column_privileges
+       WHERE grantee = 'platform_app' AND privilege_type = 'UPDATE'
+         AND table_schema = 'learning_content' AND table_name = 'skill_map_versions'
+       ORDER BY 1
+    `);
+    expect(columns.rows.map((row) => row.column)).toEqual([
+      "document",
+      "published_at",
+      "published_by_user_id",
+      "status"
+    ]);
+    const triggers = await migrationPool.query<{ name: string }>(`
+      SELECT tgname AS name FROM pg_trigger
+       WHERE NOT tgisinternal
+         AND tgrelid IN ('learning_content.skill_map_versions'::regclass,
+                         'learning_content.skill_map_prerequisites'::regclass)
+       ORDER BY 1
+    `);
+    expect(triggers.rows.map((row) => row.name)).toEqual([
+      "skill_map_prerequisites_require_draft",
+      "skill_map_versions_protect"
+    ]);
+
+    // An unknown organization's public map reads as null for the runtime role.
+    const map = await appPool.query<{ document: unknown }>(
+      "SELECT learning_content.read_public_skill_map('no-such-org', 'main') AS document"
+    );
+    expect(map.rows[0]?.document ?? null).toBeNull();
+  });
+
   it("does not expose tenant rows without transaction-local organization context", async () => {
     requireFixture();
 

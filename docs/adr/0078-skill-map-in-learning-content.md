@@ -27,3 +27,16 @@ Stage 1 keeps the map as a file built into Web (`skill-map@1`, ADR-0074). The se
 
 - One migration: tables `skill_maps` and `skill_map_versions` with the document as checked JSON, plus normalized `skill_prerequisites`, with RLS. The owner applies it.
 - `launch-course.mjs` gains a step to publish the map after the courses.
+
+## Storage (migration 000051)
+
+- **`skill_maps`** — one per organization and slug (`main`).
+- **`skill_map_versions`** — draft or published, with the validated `skill-map@2` document (`schemaVersion: 2`, `characters`).
+  - At most one draft per map.
+  - A trigger keeps published versions immutable.
+  - The runtime role may update only the publication columns.
+- **`skill_map_prerequisites`** — normalized skill → required skill per version, for ADR-0077.
+  - Changes are allowed only while the version is a draft.
+  - Foreign keys point to organization Skills.
+- All three tables have tenant RLS.
+- **`read_public_skill_map(org_slug, map_slug)`** returns the latest published document of an active organization's map, or null.
