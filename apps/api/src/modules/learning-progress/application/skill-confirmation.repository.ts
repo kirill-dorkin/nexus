@@ -6,7 +6,7 @@ export type SkillConfirmationAggregate = Readonly<{
   confirmations: number;
   firstConfirmedAt: string;
   lastConfirmedAt: string;
-  /** Distinct UTC dates (`YYYY-MM-DD`) with a confirmation, ascending, the latest 30. */
+  /** Every distinct UTC date (`YYYY-MM-DD`) with a confirmation, ascending. */
   confirmedDays: readonly string[];
 }>;
 

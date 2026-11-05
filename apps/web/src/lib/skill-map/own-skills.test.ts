@@ -18,6 +18,33 @@ describe("own skill records", () => {
     expect(records.get("html-elements")?.confirmedDays).toEqual(["2026-11-01"]);
   });
 
+  it("keeps the API's freshness and ignores a malformed one", () => {
+    const freshness = {
+      policy: "skill-freshness@1",
+      state: "fading",
+      step: 4,
+      dueOn: "2026-11-01",
+      forgottenAfter: "2026-11-08"
+    };
+    const records = ownSkillRecordsParser.parse({
+      skills: [
+        { skillKey: "a", confirmedDays: ["2026-09-01"], freshness },
+        {
+          skillKey: "b",
+          confirmedDays: [],
+          freshness: { ...freshness, policy: "skill-freshness@9" }
+        }
+      ]
+    });
+    expect(records.get("a")?.freshness).toEqual({
+      state: "fading",
+      step: 4,
+      dueOn: "2026-11-01",
+      forgottenAfter: "2026-11-08"
+    });
+    expect(records.get("b")?.freshness).toBeUndefined();
+  });
+
   it("refuses a response without a skills list", () => {
     expect(() => ownSkillRecordsParser.parse({})).toThrow();
     expect(() => ownSkillRecordsParser.parse(null)).toThrow();

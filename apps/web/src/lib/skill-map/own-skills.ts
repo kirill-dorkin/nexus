@@ -1,9 +1,38 @@
 "use client";
 import { HOME_ORGANIZATION_SLUG } from "../public-learning-routes";
 import { useApiResource, type Resource } from "../hooks/api-resource";
+import type { FreshnessState } from "./freshness";
 import type { RecordsByKey, SkillRecord } from "./skill-map";
 
 const DAY = /^\d{4}-\d{2}-\d{2}$/;
+const STATES = new Set(["unconfirmed", "confirmed", "fading", "forgotten"]);
+const dayOrNull = (value: unknown) =>
+  value === null || (typeof value === "string" && DAY.test(value));
+
+/** The API's `skill-freshness@1` result, or undefined when absent or malformed. */
+function parseFreshness(value: unknown): FreshnessState | undefined {
+  if (typeof value !== "object" || value === null) return undefined;
+  const { policy, state, step, dueOn, forgottenAfter } = value as Record<
+    string,
+    unknown
+  >;
+  if (
+    policy !== "skill-freshness@1" ||
+    typeof state !== "string" ||
+    !STATES.has(state) ||
+    typeof step !== "number" ||
+    !Number.isInteger(step) ||
+    !dayOrNull(dueOn) ||
+    !dayOrNull(forgottenAfter)
+  )
+    return undefined;
+  return {
+    state: state as FreshnessState["state"],
+    step,
+    dueOn: dueOn as string | null,
+    forgottenAfter: forgottenAfter as string | null
+  };
+}
 
 /**
  * Parses `GET /v1/me/skills/{org}` down to what the skill map needs: the confirmation days per
@@ -20,13 +49,17 @@ export const ownSkillRecordsParser = {
     if (!Array.isArray(skills)) throw new Error("Unexpected skills response.");
     for (const item of skills as unknown[]) {
       if (typeof item !== "object" || item === null) continue;
-      const { skillKey, confirmedDays } = item as Record<string, unknown>;
+      const { skillKey, confirmedDays, freshness } = item as Record<
+        string,
+        unknown
+      >;
       if (typeof skillKey !== "string" || !Array.isArray(confirmedDays))
         continue;
       records.set(skillKey, {
         confirmedDays: confirmedDays.filter(
           (day): day is string => typeof day === "string" && DAY.test(day)
-        )
+        ),
+        freshness: parseFreshness(freshness)
       });
     }
     return records;

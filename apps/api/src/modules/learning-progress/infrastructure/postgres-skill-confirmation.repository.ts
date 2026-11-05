@@ -14,8 +14,6 @@ type ConfirmationRow = {
   confirmed_days: string[];
 };
 
-const maxConfirmedDays = 30;
-
 @Injectable()
 export class PostgresSkillConfirmationRepository extends SkillConfirmationRepository {
   async aggregateConfirmations(
@@ -51,7 +49,7 @@ export class PostgresSkillConfirmationRepository extends SkillConfirmationReposi
       confirmations: row.confirmations,
       firstConfirmedAt: row.first_confirmed_at.toISOString(),
       lastConfirmedAt: row.last_confirmed_at.toISOString(),
-      confirmedDays: row.confirmed_days.slice(-maxConfirmedDays)
+      confirmedDays: row.confirmed_days
     }));
   }
 }

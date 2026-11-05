@@ -1,5 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import type { OwnSkill } from "@platform/contracts";
+import {
+  FRESHNESS_POLICY,
+  skillFreshness,
+  type OwnSkill
+} from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
 import { RequestContextService } from "../../../request-context/request-context.service";
@@ -8,6 +12,9 @@ import { LearningDeliveryQuery } from "../../learning-delivery/application/learn
 import { MasteryQuery } from "./mastery.query";
 import { OwnSkillsQuery } from "./own-skills.query";
 import { SkillConfirmationRepository } from "./skill-confirmation.repository";
+
+/** The response lists only the latest confirmation days. */
+const MAX_CONFIRMED_DAYS = 30;
 
 @Injectable()
 export class OwnSkillsApplicationService implements OwnSkillsQuery {
@@ -47,6 +54,10 @@ export class OwnSkillsApplicationService implements OwnSkillsQuery {
         .filter((enrollment) => enrollment.userId === userId)
         .map((enrollment) => enrollment.id)
     );
+    // skill-freshness@1 over the whole history (ADR-0076); the response keeps the latest 30 days.
+    const today = new Date().toISOString().slice(0, 10);
+    const policy =
+      `${FRESHNESS_POLICY.key}@${FRESHNESS_POLICY.version}` as const;
     const confirmationsBySkill = new Map(
       confirmations.map((aggregate) => [aggregate.skillId, aggregate] as const)
     );
@@ -66,7 +77,13 @@ export class OwnSkillsApplicationService implements OwnSkillsQuery {
             confirmations: confirmed?.confirmations ?? 0,
             firstConfirmedAt: confirmed?.firstConfirmedAt ?? null,
             lastConfirmedAt: confirmed?.lastConfirmedAt ?? null,
-            confirmedDays: [...(confirmed?.confirmedDays ?? [])]
+            confirmedDays: (confirmed?.confirmedDays ?? []).slice(
+              -MAX_CONFIRMED_DAYS
+            ),
+            freshness: {
+              policy,
+              ...skillFreshness(confirmed?.confirmedDays ?? [], today)
+            }
           }
         ];
       })
