@@ -680,7 +680,9 @@
         {
           "id": "html-1",
           "title": "Старт",
-          "requires": [],
+          "requires": [
+            "browser-2"
+          ],
           "skills": [
             {
               "key": "web-how-it-works",

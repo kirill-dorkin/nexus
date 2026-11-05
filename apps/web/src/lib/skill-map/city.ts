@@ -84,7 +84,6 @@ export function cityPlan(
       }
   // The script's main street: the machine room opens the gates.
   roads.set("browser|pc", { from: "pc", to: "browser" });
-  roads.set("browser|html", { from: "browser", to: "html" });
   roads.set("browser|sql", { from: "browser", to: "sql" });
   return { districts, roads: [...roads.values()] };
 }

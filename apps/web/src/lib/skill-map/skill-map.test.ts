@@ -217,6 +217,18 @@ describe("character progress", () => {
     });
   });
 
+  it("does not lock a published branch behind a character that is not published yet", () => {
+    const draft = {
+      ...tiny,
+      characters: [{ ...base, published: false }, top]
+    };
+    const progress = characterProgress(top, records({}), today, draft);
+    expect(progress.branches[0]!.unlocked).toBe(true);
+    expect(findCharacter("html")!.branches[0]!.requires).toContain("browser-2");
+    const html = characterProgress(findCharacter("html")!, records({}), today);
+    expect(html.branches[0]!.unlocked).toBe(true);
+  });
+
   it("counts only active skills into the level, and forgetting lowers it", () => {
     const progress = characterProgress(
       top,
@@ -313,7 +325,7 @@ describe("character progress", () => {
       requiredCharacters(structuredClone(findCharacter("html")!)).map(
         (c) => c.slug
       )
-    ).toEqual(["js"]);
+    ).toEqual(["browser", "js"]);
     expect(requiredCharacters(findCharacter("js")!).map((c) => c.slug)).toEqual(
       ["html", "css"]
     );

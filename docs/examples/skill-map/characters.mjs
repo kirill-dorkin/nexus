@@ -63,9 +63,9 @@ export const characters = [
 // Branch → branches whose skills must be at least `unlockShare` active before its skills can be
 // confirmed ("character/branch title").
 // Inside a character every branch also requires the previous one.
-// A requirement on an unpublished character would lock its target for everyone, so
-// "html/Старт" gets ["browser/Что такое браузер"] once the Браузер course is published.
+// A requirement on an unpublished character does not lock a published one (skill-map.ts).
 export const requires = {
+  "html/Старт": ["browser/Адрес страницы"],
   "browser/DNS": ["pc/Домашняя сеть"],
   "html/HTML и JavaScript": ["js/Старт JavaScript"],
   "css/Старт CSS": ["html/Основы HTML"],

@@ -135,6 +135,12 @@ export function characterProgress(
   const branchById = new Map(
     map.characters.flatMap((c) => c.branches.map((b) => [b.id, b] as const))
   );
+  // A branch of an unpublished character cannot be studied yet, so it does not lock anything.
+  const unpublished = new Set(
+    map.characters
+      .filter((c) => !c.published)
+      .flatMap((c) => c.branches.map((b) => b.id))
+  );
   const activeShare = (branch: SkillMapBranch) =>
     branch.skills.length === 0
       ? 1
@@ -144,7 +150,11 @@ export function characterProgress(
   const branches = character.branches.map((branch): BranchProgress => {
     const unlocked = branch.requires.every((id) => {
       const required = branchById.get(id);
-      return required === undefined || activeShare(required) >= map.unlockShare;
+      return (
+        required === undefined ||
+        (unpublished.has(id) && character.published) ||
+        activeShare(required) >= map.unlockShare
+      );
     });
     const skills = branch.skills.map((skill): SkillProgress => {
       const freshness = freshnessOf(skill.key);
