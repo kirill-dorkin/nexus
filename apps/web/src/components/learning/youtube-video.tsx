@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { emitLearningStep } from "../../lib/analytics/lesson-tracker";
 import { Button } from "@platform/ui";
 import styles from "./youtube-video.module.css";
 
@@ -61,6 +62,7 @@ export function YouTubeVideo({
               onClick={() => {
                 setLoaded(false);
                 setActive(true);
+                emitLearningStep("video_started");
               }}
             >
               <svg

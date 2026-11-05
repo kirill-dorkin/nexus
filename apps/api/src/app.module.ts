@@ -1,5 +1,6 @@
 import { LearnerLearningModule } from "./modules/learner-learning/learner-learning.module";
 import { PublicLearningModule } from "./modules/public-learning/public-learning.module";
+import { LearningAnalyticsModule } from "./modules/learning-analytics/learning-analytics.module";
 import { Module } from "@nestjs/common";
 
 import { DatabaseModule } from "./database/database.module";
@@ -40,6 +41,7 @@ import { RequestContextModule } from "./request-context/request-context.module";
     PaymentCheckoutModule,
     PublicCatalogModule,
     PublicLearningModule,
+    LearningAnalyticsModule,
     LearnerLearningModule,
     ProjectsModule,
     LearningContentModule,
