@@ -1,0 +1,68 @@
+name: Deploy production
+
+# ADR-0079: every push to main first applies pending database migrations to
+# production and only then asks Vercel to deploy that commit. If a migration
+# fails, nothing is deployed and the previous release keeps serving.
+# Migrations are additive and backward-aware, so the running release works
+# with the new schema until the new one is live.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One deploy at a time, in order; a newer push waits instead of cancelling a
+# migration halfway.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  migrate-and-deploy:
+    name: Migrate the production database, then deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Require the deploy secrets
+        env:
+          MIGRATION_URL: ${{ secrets.PRODUCTION_DATABASE_MIGRATION_URL }}
+          DEPLOY_HOOK: ${{ secrets.VERCEL_PRODUCTION_DEPLOY_HOOK }}
+        run: |
+          missing=""
+          [ -n "$MIGRATION_URL" ] || missing="$missing PRODUCTION_DATABASE_MIGRATION_URL"
+          [ -n "$DEPLOY_HOOK" ] || missing="$missing VERCEL_PRODUCTION_DEPLOY_HOOK"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing repository secrets:$missing (see docs/adr/0079-migrate-before-deploy.md). Nothing was migrated or deployed."
+            exit 1
+          fi
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Activate repository-pinned pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.34.5 --activate
+          test "$(pnpm --version)" = "10.34.5"
+
+      - name: Install the migrator only
+        run: pnpm install --frozen-lockfile --filter "@platform/database..."
+
+      - name: Apply pending migrations
+        env:
+          DATABASE_MIGRATION_URL: ${{ secrets.PRODUCTION_DATABASE_MIGRATION_URL }}
+        run: pnpm db:migrate
+
+      - name: Deploy this commit to Vercel production
+        env:
+          DEPLOY_HOOK: ${{ secrets.VERCEL_PRODUCTION_DEPLOY_HOOK }}
+        run: curl --fail --silent --show-error --max-time 30 -X POST "$DEPLOY_HOOK" > /dev/null

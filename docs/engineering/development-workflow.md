@@ -101,7 +101,7 @@ Do not ask the maintainer to run local tests merely to discover a failure that G
 
 Only after GitHub CI is green, give the maintainer the smallest set of local commands that materially verifies the changed surface. Prefer focused commands over a ritual full-suite rerun when CI has already covered the full suite.
 
-For migration changes, include the migration command when local schema application is material. For a narrow regression fix, include the directly affected test. A docs-only change may require only repository/text validation if no executable surface changed.
+For migration changes, include the migration command when local schema application is material. Production migrations are applied automatically before each deploy of `main` (ADR-0079), so a merged migration reaches production within minutes: keep it additive and compatible with the release that is still running. For a narrow regression fix, include the directly affected test. A docs-only change may require only repository/text validation if no executable surface changed.
 
 ### 8. Mark Ready only after both gates are green
 

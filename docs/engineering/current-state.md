@@ -11,10 +11,10 @@ Last maintained: 2026-11-04.
 | | |
 |---|---|
 | `main` head | `199f95f` — #166, revert of NestJS 12 after a production API outage (2026-11-04) |
-| Latest migration | `000048_rate_limit_buckets.sql` |
+| Latest migration | `000051_skill_maps.sql` (skill maps, versions and prerequisites, ADR-0078); `000050_skill_tests.sql` (skill test banks and draws, ADR-0075). Both additive; nothing reads them yet |
 | Quality gates | Local before every push: `pnpm check` (brand isolation, Prettier, ESLint strict type-checked + React + jsx-a11y strict + Next, typecheck incl. API operator scripts and root tests, unit and component tests, Web coverage floors). GitHub CI: brand isolation, Prettier, typecheck, unit, integration, launch-performance, browser-launch and Playwright end-to-end tests (axe on every page). No lint baseline: every violation fails. |
 | Latest ADR | ADR-0073 Downloadable file assignments with trusted static checks |
-| Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058); daily GitHub-hosted read-only smoke against the production domain |
+| Production | Vercel Services Web + API with managed PostgreSQL (ADR-0058). Each push to `main` runs `deploy-production.yml`: migrate with `platform_migrator`, then the Vercel deploy hook (ADR-0079). Daily GitHub-hosted read-only smoke against the production domain |
 | Learner-code execution | **Disabled in production.** Grader artifacts exist in the repository but need a separate activation (exact image digest + green real-cluster verification). |
 | Published content | Route «Веб-разработка с нуля» (HTML and CSS carry 7 + 6 optional file assignments from 2026-11-04 once republished): `html`, `css`, `js`, `sql` manifests in `docs/examples/`, published in production. The ПК and Браузер character courses (`pc-track` 40 lessons, `browser-track` 43 lessons, characters spec 6.1) are written but not published; the four-lesson `computer-basics-first-course` manifest is superseded by `pc-track` and not published. Check Studio for current versions. |
 

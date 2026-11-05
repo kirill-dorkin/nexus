@@ -29,3 +29,13 @@ Spec v3 (`docs/roadmap/characters-spec.md`, section 5.2): a skill counts only af
 - One migration: the `skill_question_configs` table with RLS, plus grants.
 - Content work: HTML, CSS, JS and SQL need 12+ questions for each of 289 skills, about 3,500 questions, produced by the content pipeline of spec 5.8.
 - The test route is a new write path for learners. It needs the same Origin, rate-limit and own-Enrollment checks as quiz checks.
+
+## Storage (migration 000050)
+
+- **A skill test is an Activity of type `skill.test`**, one per skill in a course version, so Attempt → Submission → ValidationResult → Evidence work unchanged. Its public config holds only the skill key and the test size.
+- **`learning_content.skill_test_banks`** — the protected bank per `skill.test` activity version: questions with answers and explanations, 1–400 per bank. It follows the pattern of `assignment_check_configs`: tenant RLS, draft-only trigger, authoring revision.
+- **`learning_progress.skill_test_draws`** — which questions the server showed for one learner's draw key and Enrollment.
+  - The question keys and draw time are immutable.
+  - `attempt_id` links the draw to its Attempt exactly once: a trigger enforces it, and the runtime role may update only that column.
+  - The submission is evaluated against exactly the drawn keys, so a learner cannot choose questions.
+  - The index on (enrollment, activity, drawn_at) serves the 10-minute retake cooldown and the «least recently seen» draw.
