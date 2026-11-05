@@ -14,7 +14,7 @@ import {
 } from "./feedback.controller";
 import { PostgresFeedbackRepository } from "./infrastructure/postgres-feedback.repository";
 
-/** Learner feedback reports (ADR-0083). */
+/** Learner feedback reports (ADR-0085). */
 @Module({
   imports: [
     IdentityModule,

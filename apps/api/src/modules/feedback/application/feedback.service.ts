@@ -21,7 +21,7 @@ import { FeedbackRepository } from "./feedback.repository";
 
 const PAGE_SIZE = 50;
 
-/** Learner feedback for the open beta (ADR-0083). */
+/** Learner feedback for the open beta (ADR-0085). */
 @Injectable()
 export class FeedbackApplicationService {
   constructor(

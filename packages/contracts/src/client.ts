@@ -242,7 +242,7 @@ export const clientOwnSkillsSchema = z.strictObject({
   skills: z.array(ownSkill).check(z.maxLength(2000))
 });
 
-// Feedback report (ADR-0083): validated in the dialog before it is sent.
+// Feedback report (ADR-0085): validated in the dialog before it is sent.
 const feedbackDetail = z
   .string()
   .check(z.trim(), z.minLength(1), z.maxLength(2000));

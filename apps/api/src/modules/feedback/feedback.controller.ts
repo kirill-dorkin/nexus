@@ -25,7 +25,7 @@ import { parseRequest } from "../../http/validation";
 import type { PlatformPrincipalCarrier } from "../../request-context/platform-principal";
 import { FeedbackApplicationService } from "./application/feedback.service";
 
-/** `POST /v1/feedback`: a report from any learner page, session optional (ADR-0083). */
+/** `POST /v1/feedback`: a report from any learner page, session optional (ADR-0085). */
 @Controller("feedback")
 export class FeedbackController {
   constructor(private readonly feedback: FeedbackApplicationService) {}

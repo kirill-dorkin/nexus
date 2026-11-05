@@ -27,7 +27,7 @@ export type FeedbackReportChange = Readonly<{
   ownerNote: string | null;
 }>;
 
-/** Owned by the Feedback module (ADR-0083); every call runs under tenant RLS. */
+/** Owned by the Feedback module (ADR-0085); every call runs under tenant RLS. */
 export abstract class FeedbackRepository {
   abstract insert(
     transaction: DatabaseTransaction,

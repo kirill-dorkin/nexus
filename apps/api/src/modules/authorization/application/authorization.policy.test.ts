@@ -33,7 +33,7 @@ describe("AuthorizationPolicy", () => {
     ).toBe(true);
   });
 
-  it("lets only owners and admins manage feedback (ADR-0083)", () => {
+  it("lets only owners and admins manage feedback (ADR-0085)", () => {
     for (const [roleKey, allowed] of [
       ["organization_owner", true],
       ["organization_admin", true],

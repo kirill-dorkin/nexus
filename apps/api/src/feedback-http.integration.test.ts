@@ -22,7 +22,7 @@ function env(name: string) {
   return value;
 }
 
-// ADR-0083: anonymous and signed-in reports, exact Origin, rate limit,
+// ADR-0085: anonymous and signed-in reports, exact Origin, rate limit,
 // server-set page context, tenant RLS and owner/admin-only Studio access.
 describe("feedback HTTP + PostgreSQL boundary", () => {
   const migration = createDatabasePool(env("DATABASE_MIGRATION_URL"));

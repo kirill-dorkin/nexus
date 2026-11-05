@@ -1,4 +1,4 @@
-# ADR-0083: Feedback module for the open beta
+# ADR-0085: Feedback module for the open beta
 
 - Status: Accepted
 - Date: 2026-11-05
@@ -9,7 +9,7 @@ The open beta (anyone registers and learns, no participant cap, no weekly norm) 
 
 ## Decision
 
-- **Module.** A new module `feedback` owns `feedback.reports` (migration 000052 or the next free number). It does not own users, organizations, curriculum or analytics. It reads nothing from other modules' tables: the Organization is resolved through `PublicOrganizationQuery.resolveActiveId` (Organizations), the signed-in user through `IdentityApplicationService.requireActiveUser`, and Studio access through `AuthorizationApplicationService.requireCapability`.
+- **Module.** A new module `feedback` owns `feedback.reports` (migration 000054). It does not own users, organizations, curriculum or analytics. It reads nothing from other modules' tables: the Organization is resolved through `PublicOrganizationQuery.resolveActiveId` (Organizations), the signed-in user through `IdentityApplicationService.requireActiveUser`, and Studio access through `AuthorizationApplicationService.requireCapability`.
 - **A report** has: id, Organization, optional user id (when signed in), kind `problem` | `unclear` | `idea`, text (10..4000 after trimming), optional «what you expected» / «what happened» (problem only, up to 2000 each), page context, release, optional coarse device `mobile` | `desktop`, status `new` | `accepted` | `duplicate` | `rejected` | `done`, owner note (up to 2000), `created_at`, `updated_at`.
 - **Page context is set by the server.** Web sends the pathname only (no query, no fragment). The API matches it against a closed list of route templates (`feedbackPageContext` in `@platform/contracts`) and stores the template plus the course and lesson slugs when the template has them. Anything else is stored as `other`. The pathname itself is never stored.
 - **Release** is the API's `VERCEL_GIT_COMMIT_SHA` cut to 12 characters (`local` elsewhere), the same value as `/v1/health`. Web cannot set it.

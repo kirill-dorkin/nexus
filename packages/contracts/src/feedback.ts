@@ -4,7 +4,7 @@ import { organizationSlugSchema, resourceSlugSchema, uuidSchema } from "./common
 import { FEEDBACK_ROUTES } from "./feedback-page";
 
 /*
- * Learner feedback for the open beta (ADR-0083). The browser keeps an equal
+ * Learner feedback for the open beta (ADR-0085). The browser keeps an equal
  * `zod/mini` copy of the request in client.ts.
  */
 

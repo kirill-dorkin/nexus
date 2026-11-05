@@ -1,4 +1,4 @@
--- Learner feedback reports for the open beta (ADR-0083). Additive: a new
+-- Learner feedback reports for the open beta (ADR-0085). Additive: a new
 -- schema and table; the running release never reads them.
 -- Stores no IP address, user agent, cookies, screenshots, answers or URLs:
 -- page context is a route template plus course and lesson slugs set by the API.
