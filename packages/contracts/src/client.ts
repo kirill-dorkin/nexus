@@ -241,3 +241,9 @@ const ownSkill = z
 export const clientOwnSkillsSchema = z.strictObject({
   skills: z.array(ownSkill).check(z.maxLength(2000))
 });
+
+export {
+  CURRENT_LEGAL_DOCUMENT_VERSIONS,
+  currentRegistrationConsents,
+  type LegalDocument
+} from "./legal-documents";

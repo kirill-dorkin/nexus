@@ -21,6 +21,9 @@ const PUBLIC_ROUTES = [
   "/blog/kompyuternaya-gramotnost-s-nulya",
   "/login",
   "/login?mode=register",
+  "/privacy",
+  "/consent",
+  "/terms",
   "/me/learning",
   "/ui",
   "/no-such-page"

@@ -2,7 +2,11 @@
 import { useState, type SubmitEvent } from "react";
 import { apiError, browserApiRequest } from "../../../../../../lib/public-api";
 import { type IdentityUser } from "@platform/contracts";
-import { clientIdentityUserSchema as identityUserSchema } from "@platform/contracts/client";
+import {
+  clientIdentityUserSchema as identityUserSchema,
+  currentRegistrationConsents
+} from "@platform/contracts/client";
+import { RegistrationConsents } from "../../../../../../components/legal/registration-consents";
 import styles from "../product.module.css";
 
 type AuthMode = "login" | "register";
@@ -37,7 +41,12 @@ export function CheckoutAuthForm({
           body: JSON.stringify(
             mode === "login"
               ? { email, password }
-              : { email, password, ...(name ? { displayName: name } : {}) }
+              : {
+                  email,
+                  password,
+                  ...(name ? { displayName: name } : {}),
+                  consents: currentRegistrationConsents()
+                }
           )
         }
       );
@@ -116,6 +125,7 @@ export function CheckoutAuthForm({
             maxLength={128}
           />
         </label>
+        {mode === "register" ? <RegistrationConsents disabled={busy} /> : null}
         <button className={styles.button} type="submit" disabled={busy}>
           {mode === "login" ? "Войти" : "Создать аккаунт"}
         </button>

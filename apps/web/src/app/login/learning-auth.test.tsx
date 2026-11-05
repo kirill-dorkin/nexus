@@ -2,6 +2,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { currentRegistrationConsents } from "@platform/contracts";
+
 import { browserApiRequest } from "../../lib/public-api";
 import { LearningAuth } from "./learning-auth";
 
@@ -37,6 +39,9 @@ function respond(providers: string[] | null, ...form: (Response | Error)[]) {
 async function fillAndSubmit(button: string) {
   await userEvent.type(screen.getByLabelText("Электронная почта"), user.email);
   await userEvent.type(screen.getByLabelText("Пароль"), password);
+  for (const consent of screen.queryAllByRole("checkbox")) {
+    await userEvent.click(consent);
+  }
   await userEvent.click(screen.getByRole("button", { name: button }));
 }
 function sentBody() {
@@ -123,8 +128,52 @@ describe("LearningAuth", () => {
     expect(sentBody()).toEqual({
       email: user.email,
       password,
-      displayName: "Ника"
+      displayName: "Ника",
+      consents: currentRegistrationConsents()
     });
+  });
+
+  it("requires both legal consents before creating an account", async () => {
+    respond(null, json(201, user));
+    render(<LearningAuth returnTo="/me/learning" initialMode="register" />);
+    const terms = screen.getByRole("checkbox", {
+      name: /пользовательского соглашения/
+    });
+    const personalData = screen.getByRole("checkbox", {
+      name: /обработку моих персональных данных/
+    });
+    expect(terms).toBeRequired();
+    expect(personalData).toBeRequired();
+    expect(
+      screen.getByRole("link", { name: "пользовательского соглашения" })
+    ).toHaveAttribute("href", "/terms");
+    expect(
+      screen.getByRole("link", { name: "политики конфиденциальности" })
+    ).toHaveAttribute("href", "/privacy");
+    expect(
+      screen.getByRole("link", {
+        name: "согласие на обработку моих персональных данных"
+      })
+    ).toHaveAttribute("href", "/consent");
+  });
+
+  it("asks to reload when the legal documents changed", async () => {
+    respond(
+      null,
+      json(409, { code: "legal_consent_required", documents: ["terms"] })
+    );
+    render(<LearningAuth returnTo="/me/learning" initialMode="register" />);
+    await fillAndSubmit("Создать аккаунт");
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Документы обновились"
+    );
+  });
+
+  it("does not show consent checkboxes for sign-in", () => {
+    respond(null);
+    render(<LearningAuth returnTo="/me/learning" />);
+    expect(screen.queryAllByRole("checkbox")).toHaveLength(0);
   });
 
   it("asks to wait after too many attempts", async () => {

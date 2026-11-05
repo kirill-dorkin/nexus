@@ -5,20 +5,40 @@ import {
   oauthProvidersResponseSchema,
   registerRequestSchema
 } from "./authentication";
+import { currentRegistrationConsents } from "./legal";
 
 describe("authentication contracts", () => {
   it("accepts long passphrases without composition rules", () => {
     const parsed = registerRequestSchema.parse({
       email: " learner@example.test ",
       password: "a long passphrase with spaces",
-      displayName: " Learner "
+      displayName: " Learner ",
+      consents: currentRegistrationConsents()
     });
 
     expect(parsed).toEqual({
       email: "learner@example.test",
       password: "a long passphrase with spaces",
-      displayName: "Learner"
+      displayName: "Learner",
+      consents: currentRegistrationConsents()
     });
+  });
+
+  it("requires legal consents at registration and rejects unknown documents", () => {
+    const base = {
+      email: "learner@example.test",
+      password: "a long passphrase with spaces"
+    };
+    expect(registerRequestSchema.safeParse(base).success).toBe(false);
+    expect(
+      registerRequestSchema.safeParse({ ...base, consents: [] }).success
+    ).toBe(false);
+    expect(
+      registerRequestSchema.safeParse({
+        ...base,
+        consents: [{ document: "marketing", version: "v1" }]
+      }).success
+    ).toBe(false);
   });
 
   it("rejects passwords shorter than the minimum", () => {

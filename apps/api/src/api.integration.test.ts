@@ -1,6 +1,10 @@
 import { randomUUID } from "node:crypto";
 
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
+import {
+  CURRENT_LEGAL_DOCUMENT_VERSIONS,
+  currentRegistrationConsents
+} from "@platform/contracts";
 import { createDatabasePool, withTransaction } from "@platform/database";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
@@ -134,7 +138,8 @@ describe("Foundation 1 HTTP API", () => {
       payload: {
         email: ` ${registeredEmail} `,
         password: registeredPassword,
-        displayName: " Auth Learner "
+        displayName: " Auth Learner ",
+        consents: currentRegistrationConsents()
       }
     });
 
@@ -162,6 +167,64 @@ describe("Foundation 1 HTTP API", () => {
     expect(setCookie).not.toContain("Domain=");
     expect(response.headers["cache-control"]).toBe("no-store");
     registeredCookie = cookiePair(response.headers["set-cookie"]);
+  });
+
+  it("records the accepted version of every legal document at registration", async () => {
+    const consents = await migrationPool.query<{
+      document: string;
+      version: string;
+    }>(
+      `SELECT document, version
+         FROM identity.legal_consents
+        WHERE user_id = $1
+        ORDER BY document`,
+      [registeredUserId]
+    );
+
+    expect(consents.rows).toEqual([
+      {
+        document: "personal_data",
+        version: CURRENT_LEGAL_DOCUMENT_VERSIONS.personal_data
+      },
+      { document: "terms", version: CURRENT_LEGAL_DOCUMENT_VERSIONS.terms }
+    ]);
+  });
+
+  it("refuses registration without consent to the current legal documents", async () => {
+    const email = `consent-${randomUUID()}@example.test`;
+    const withoutConsents = await app.inject({
+      method: "POST",
+      url: "/v1/auth/register",
+      payload: { email, password: registeredPassword }
+    });
+    expect(withoutConsents.statusCode).toBe(400);
+
+    const staleConsent = await app.inject({
+      method: "POST",
+      url: "/v1/auth/register",
+      payload: {
+        email,
+        password: registeredPassword,
+        consents: [
+          { document: "terms", version: "outdated-1" },
+          {
+            document: "personal_data",
+            version: CURRENT_LEGAL_DOCUMENT_VERSIONS.personal_data
+          }
+        ]
+      }
+    });
+    expect(staleConsent.statusCode).toBe(409);
+    expect(staleConsent.json()).toMatchObject({
+      code: "legal_consent_required",
+      documents: ["terms"]
+    });
+
+    const created = await migrationPool.query(
+      `SELECT 1 FROM identity.users WHERE email = $1`,
+      [email]
+    );
+    expect(created.rowCount).toBe(0);
   });
 
   it("authenticates the current identity from the server-side session", async () => {

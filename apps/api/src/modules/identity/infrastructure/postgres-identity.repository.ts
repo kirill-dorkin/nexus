@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import type { IdentityUser } from "@platform/contracts";
+import type { IdentityUser, LegalConsent } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
 import {
@@ -71,5 +71,23 @@ export class PostgresIdentityRepository extends IdentityRepository {
     }
 
     return mapIdentityUser(row);
+  }
+
+  async recordLegalConsents(
+    transaction: DatabaseTransaction,
+    userId: string,
+    consents: readonly LegalConsent[]
+  ): Promise<void> {
+    await transaction.client.query(
+      `INSERT INTO identity.legal_consents (user_id, document, version)
+       SELECT $1, consent.document, consent.version
+         FROM unnest($2::text[], $3::text[]) AS consent(document, version)
+       ON CONFLICT DO NOTHING`,
+      [
+        userId,
+        consents.map((consent) => consent.document),
+        consents.map((consent) => consent.version)
+      ]
+    );
   }
 }

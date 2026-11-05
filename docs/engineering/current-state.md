@@ -11,9 +11,9 @@ Last maintained: 2026-11-05.
 | | |
 |---|---|
 | `main` head | `28bcfa4` — #208, beta wave-1 kit (2026-11-05). Production `/v1/health` reports this release |
-| Latest migration | `000051_skill_maps.sql` (skill maps, versions and prerequisites, ADR-0078); `000050_skill_tests.sql` (skill test banks and draws, ADR-0075). Both additive; nothing reads them on `main` yet (readers are in `wip/skill-test-api` and `wip/skill-map-api`) |
+| Latest migration | `000052_identity_legal_consents.sql` (append-only registration consents, ADR-0083); `000051_skill_maps.sql` (skill maps, versions and prerequisites, ADR-0078); `000050_skill_tests.sql` (skill test banks and draws, ADR-0075). Both additive; nothing reads them on `main` yet (readers are in `wip/skill-test-api` and `wip/skill-map-api`) |
 | Quality gates | Local before every push: `pnpm check` (brand isolation, Prettier, ESLint strict type-checked + React + jsx-a11y strict + Next, typecheck incl. API operator scripts and root tests, unit and component tests, Web coverage floors). GitHub CI: brand isolation, Prettier, typecheck, unit, integration, launch-performance, browser-launch and Playwright end-to-end tests (axe on every page). No lint baseline: every violation fails. |
-| Latest ADR | ADR-0079 Migrate production before every deploy of `main`. ADR-0075–0078 (skill tests, server freshness, prerequisite lock, map in Learning Content) are accepted |
+| Latest ADR | ADR-0083 Recorded legal consent at registration. ADR-0079 Migrate production before every deploy of `main`. ADR-0075–0078 (skill tests, server freshness, prerequisite lock, map in Learning Content) are accepted |
 | Production | `https://www.dorkin.academy` (the apex `dorkin.academy` and the old `nexus-lake-nine-17.vercel.app` redirect to it; DNS at Namecheap). Vercel Services Web + API with managed PostgreSQL (ADR-0058). Each push to `main` runs `deploy-production.yml`: migrate with `platform_migrator`, then the Vercel deploy hook (ADR-0079). Daily GitHub-hosted read-only smoke against the production domain |
 | Learner-code execution | **Disabled in production.** Grader artifacts exist in the repository but need a separate activation (exact image digest + green real-cluster verification). |
 | Published content | Route «Веб-разработка с нуля» (HTML and CSS carry 7 + 6 optional file assignments from 2026-11-04 once republished): `html`, `css`, `js`, `sql` manifests in `docs/examples/`, published in production. The four-lesson `computer-basics-first-course` manifest is not published. Check Studio for current versions. |
@@ -50,6 +50,7 @@ Each row is implemented on `main`. The ADRs hold the details; the backend areas 
 | Studio | Manual and JSON authoring over the same draft, preview, export, publication, Offering visibility, Organization customer-entry policy | 0057 |
 | Web UI | `@platform/ui` + design tokens, light/dark themes with accents, public shell, Blog/SEO surfaces, `/ui` gallery | 0059 |
 | Sign-in | Password, optional Google/GitHub OAuth (PKCE) on the same Nexus session | 0060 |
+| Legal minimum | `/privacy`, `/consent` and `/terms` (edition 2026-11-06: Kyrgyz law, 152-ФЗ for users from Russia, separate consent page), footer links, two required consent checkboxes at registration recorded with document versions in `identity.legal_consents`. OAuth-created accounts do not record consent yet; hosting is outside RF/KG | 0083 |
 | Organization provisioning | Organizations are created only by the offline operator command `org:bootstrap-owner` (`platform_migrator` role, `--apply`). Both HTTP create routes return 403/401. | 0068 |
 
 The paid path (F9) for reference:

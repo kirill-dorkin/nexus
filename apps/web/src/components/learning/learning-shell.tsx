@@ -83,6 +83,12 @@ export function LearningShell({
               <Link href="/blog">Блог</Link>
               <Link href="/studio">Для авторов</Link>
             </div>
+            <div>
+              <span>Документы</span>
+              <Link href="/privacy">Политика конфиденциальности</Link>
+              <Link href="/consent">Согласие на обработку данных</Link>
+              <Link href="/terms">Пользовательское соглашение</Link>
+            </div>
           </nav>
         </div>
         <p className={styles.copyright}>

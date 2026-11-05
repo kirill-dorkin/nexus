@@ -314,6 +314,20 @@ describe("database security foundation", () => {
     expect(map.rows[0]?.document ?? null).toBeNull();
   });
 
+  it("keeps registration consents append-only (ADR-0083, migration 000052)", async () => {
+    const privileges = await migrationPool.query<{ privilege: string }>(`
+      SELECT privilege_type AS privilege
+        FROM information_schema.table_privileges
+       WHERE grantee = 'platform_app'
+         AND table_schema = 'identity' AND table_name = 'legal_consents'
+       ORDER BY 1
+    `);
+    expect(privileges.rows.map((row) => row.privilege)).toEqual([
+      "INSERT",
+      "SELECT"
+    ]);
+  });
+
   it("does not expose tenant rows without transaction-local organization context", async () => {
     requireFixture();
 
