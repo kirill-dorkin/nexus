@@ -15,6 +15,12 @@ export type NewOAuthLoginState = Readonly<{
   expiresAt: Date;
 }>;
 
+export type NewPasswordResetToken = Readonly<{
+  userId: string;
+  tokenHash: string;
+  expiresAt: Date;
+}>;
+
 export type OAuthLoginState = Readonly<{
   codeVerifier: string;
   returnTo: string;
@@ -75,5 +81,29 @@ export abstract class AuthenticationRepository {
     transaction: DatabaseTransaction,
     provider: OAuthProvider,
     subject: string
+  ): Promise<void>;
+
+  /** Supersedes the user's open tokens and stores a new one (ADR-0082). */
+  abstract createPasswordResetToken(
+    transaction: DatabaseTransaction,
+    token: NewPasswordResetToken
+  ): Promise<void>;
+
+  /** Marks an open, unexpired token used and returns its user, or null. */
+  abstract consumePasswordResetToken(
+    transaction: DatabaseTransaction,
+    tokenHash: string
+  ): Promise<string | null>;
+
+  /** Sets the password, creating the credential for an external-only account. */
+  abstract setPasswordHash(
+    transaction: DatabaseTransaction,
+    userId: string,
+    passwordHash: string
+  ): Promise<void>;
+
+  abstract revokeUserSessions(
+    transaction: DatabaseTransaction,
+    userId: string
   ): Promise<void>;
 }

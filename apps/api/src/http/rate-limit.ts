@@ -20,6 +20,13 @@ export const RATE_LIMIT_RULES = {
     { scope: "email", limit: 10, windowSeconds: 600 }
   ],
   "auth.register": [{ scope: "ip", limit: 5, windowSeconds: 3600 }],
+  "auth.password_reset_request": [
+    { scope: "ip", limit: 20, windowSeconds: 3600 },
+    { scope: "email", limit: 5, windowSeconds: 3600 }
+  ],
+  "auth.password_reset_confirm": [
+    { scope: "ip", limit: 20, windowSeconds: 600 }
+  ],
   "learning.quiz_check": [{ scope: "ip", limit: 120, windowSeconds: 600 }],
   "learning.assignment_submit": [
     { scope: "ip", limit: 30, windowSeconds: 600 }

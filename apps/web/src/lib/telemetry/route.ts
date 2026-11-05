@@ -19,6 +19,8 @@ const ROUTES: readonly [RegExp, WebRoute][] = [
     "/learn/[organization]/[offering]/[lesson]"
   ],
   [/^\/login\/?$/, "/login"],
+  [/^\/forgot-password\/?$/, "/forgot-password"],
+  [/^\/reset-password\/?$/, "/reset-password"],
   [/^\/me\/learning\/?$/, "/me/learning"],
   [/^\/purchases\/[^/]+\/?$/, "/purchases/[purchase]"],
   [/^\/studio\/?$/, "/studio"],

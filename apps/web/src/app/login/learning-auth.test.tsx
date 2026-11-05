@@ -26,6 +26,9 @@ const assign = vi.fn();
 /** Answers provider discovery, then the given responses for the form. */
 function respond(providers: string[] | null, ...form: (Response | Error)[]) {
   api.mockImplementation((path) => {
+    if (path === "/v1/auth/password-reset") {
+      return Promise.resolve(json(200, { available: false }));
+    }
     if (path === "/v1/auth/oauth/providers") {
       return Promise.resolve(providers ? json(200, { providers }) : json(503));
     }
@@ -41,7 +44,10 @@ async function fillAndSubmit(button: string) {
 }
 function sentBody() {
   const call = api.mock.calls.find(
-    ([path]) => path.startsWith("/v1/auth/") && !path.includes("oauth")
+    ([path]) =>
+      path.startsWith("/v1/auth/") &&
+      !path.includes("oauth") &&
+      !path.includes("password-reset")
   );
   return JSON.parse(call?.[1]?.body as string) as Record<string, unknown>;
 }
