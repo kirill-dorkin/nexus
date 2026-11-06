@@ -5,9 +5,9 @@ import {
   SKILL_MAP,
   characterProgress,
   findCharacter,
-  requiredCharacters,
   type SkillMap
 } from "./skill-map";
+import { requiredCharacters } from "./required-characters";
 
 // The builder is plain JavaScript beside the course sources (docs/examples is not typed).
 type Builder = {

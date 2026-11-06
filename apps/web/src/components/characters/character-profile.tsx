@@ -4,10 +4,10 @@ import { buttonClass } from "@platform/ui";
 
 import {
   characterProgress,
-  requiredCharacters,
   type Character,
   type SkillMapSkill
 } from "../../lib/skill-map/skill-map";
+import { requiredCharacters } from "../../lib/skill-map/required-characters";
 import { useOwnSkillRecords, utcToday } from "../../lib/skill-map/own-skills";
 import { learningLoginUrl } from "../../lib/learning-return-to";
 import {

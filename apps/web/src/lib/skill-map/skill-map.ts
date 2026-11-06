@@ -5,6 +5,9 @@ import {
   type Freshness,
   type FreshnessState
 } from "./freshness";
+import { rankOf } from "./ranks";
+
+export { RANKS, rankOf } from "./ranks";
 
 /**
  * The skill map (ADR-0074): characters a learner levels up, each a set of the organization's
@@ -108,21 +111,6 @@ export type BranchProgress = {
   active: number;
   skills: SkillProgress[];
 };
-
-export const RANKS = [
-  { from: 0, title: "Новичок" },
-  { from: 20, title: "Ученик" },
-  { from: 40, title: "Практик" },
-  { from: 60, title: "Мастер" },
-  { from: 80, title: "Эксперт" },
-  { from: 95, title: "Легенда" }
-] as const;
-
-export function rankOf(level: number): string {
-  let title: string = RANKS[0].title;
-  for (const rank of RANKS) if (level >= rank.from) title = rank.title;
-  return title;
-}
 
 export type AbilityProgress = {
   ability: CharacterAbility;
@@ -295,23 +283,4 @@ export function characterProgress(
     abilities,
     next
   };
-}
-
-/** Characters whose branches this character's branches require, in map order. */
-export function requiredCharacters(
-  character: Character,
-  map: SkillMap = SKILL_MAP
-): Character[] {
-  const owner = new Map(
-    map.characters.flatMap((c) => c.branches.map((b) => [b.id, c] as const))
-  );
-  const needed = new Set(
-    character.branches
-      .flatMap((b) => b.requires)
-      .map((id) => owner.get(id))
-      .filter(
-        (c): c is Character => c !== undefined && c.slug !== character.slug
-      )
-  );
-  return map.characters.filter((c) => needed.has(c));
 }
