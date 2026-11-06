@@ -8,6 +8,7 @@ import {
 import type { PublicLearningCourse } from "@platform/contracts";
 import { Alert, ButtonLink, Skeleton } from "@platform/ui";
 import { loadLearningCatalog, courseUrl } from "../../lib/public-learning";
+import { orderByRoute } from "../../lib/learning-route";
 import { CatalogRetry } from "./catalog-retry";
 import { CourseCard, CoursesEmpty } from "./course-list";
 import styles from "./home-discovery.module.css";
@@ -16,7 +17,8 @@ import styles from "./home-discovery.module.css";
 async function HeroActions() {
   let first: PublicLearningCourse | undefined;
   try {
-    first = (await loadLearningCatalog()).courses[0];
+    // The route's first published course (ПК), not the API's alphabetical first.
+    first = orderByRoute((await loadLearningCatalog()).courses)[0];
   } catch {
     first = undefined;
   }
