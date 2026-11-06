@@ -19,7 +19,7 @@ export const CHARACTERS = {
   nika: {
     name: "Ника",
     role: "наставница",
-    color: "#c5f23a",
+    color: "#ffa15c",
     Icon: SparkleIcon
   },
   lev: {

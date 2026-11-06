@@ -15,8 +15,8 @@ describe("daily quests", () => {
   it("offers the first open skills to a newcomer", () => {
     const quests = dailyQuests(records({}), "2026-11-05");
     expect(quests.map((q) => q.kind)).toEqual(["confirm", "confirm"]);
-    // ПК and Браузер are not published yet, so the route starts with HTML.
-    expect(quests[0]!.character.slug).toBe("html");
+    // The route starts with ПК (published 2026-11-06).
+    expect(quests[0]!.character.slug).toBe("pc");
     expect(quests.every((q) => !q.done)).toBe(true);
   });
 
@@ -24,7 +24,7 @@ describe("daily quests", () => {
     const quests = dailyQuests(
       records({
         "web-how-it-works": ["2026-10-30"],
-        "web-tools": ["2026-11-05"]
+        "pc-what-is": ["2026-11-05"]
       }),
       "2026-11-05"
     );
@@ -33,7 +33,7 @@ describe("daily quests", () => {
       skill: { key: "web-how-it-works" },
       done: false
     });
-    expect(quests.find((q) => q.skill.key === "web-tools")?.done).toBe(true);
+    expect(quests.find((q) => q.skill.key === "pc-what-is")?.done).toBe(true);
   });
 
   it("asks to recall a forgotten skill when nothing fades", () => {
