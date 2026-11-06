@@ -7,7 +7,7 @@ This document defines the required delivery process for architectural work in Ne
 - `main` is the integration source of truth and must remain releasable.
 - One branch and one PR should represent one coherent architectural slice.
 - Design and invariants come before implementation.
-- Two gates: the local `pnpm check` before every push and GitHub CI on the PR head. The maintainer verifies only what the PR marks as owner-only.
+- Two gates: the quick local `pnpm check:fast` before every push and the full GitHub CI on the PR head. The maintainer verifies only what the PR marks as owner-only.
 - A red existing PR is repaired in place rather than replaced with a second PR.
 - Small causal fixes are preferred over speculative refactors.
 - Architecture documentation changes with the architecture, not later.
@@ -72,7 +72,7 @@ Keep the PR Draft while CI or required local verification is unresolved.
 
 ### 5a. Run the local gate before every push
 
-Run `pnpm check` (brand isolation, formatting, lint, typecheck, unit and component tests, Web coverage floors) on the developer machine before pushing. Type-aware lint holds every package's TypeScript program in memory (about 3 GB), so it runs locally rather than on GitHub-hosted runners; GitHub CI keeps the database, integration, launch and browser gates. Record the local result in the PR test plan.
+Run `pnpm check:fast` on the developer machine before pushing: brand isolation, then formatting and lint of the changed files, the whole typecheck, unit tests related to the changed files and the architecture rules (a few minutes). GitHub CI runs the full suite on every PR head: everything in `pnpm check` (including type-aware lint and the Web coverage floors) plus the database, integration, launch, build, browser and end-to-end gates. Run the full `pnpm check` locally for cross-cutting changes (shared packages, lint or TypeScript configs, migrations). Owner decision of 2026-11-06: the full local run duplicated CI and doubled the time to production. Record the local result in the PR test plan.
 
 ### 5b. End-to-end tests
 
@@ -112,7 +112,7 @@ Production migrations are applied automatically before each deploy of `main` (AD
 The PR may move from Draft to Ready only when:
 
 - GitHub CI is green on the current head; and
-- `pnpm check` passed locally on that head and is recorded in the test plan.
+- `pnpm check:fast` (or the full `pnpm check` for a cross-cutting change) passed locally on that head and is recorded in the test plan.
 
 If the head changes after either gate, decide whether the changed files need the gate again.
 

@@ -40,7 +40,7 @@ Follow `docs/engineering/development-workflow.md` exactly. In particular:
 - never develop directly on `main`;
 - use one short-lived branch per coherent slice;
 - open a Draft PR before treating the slice as complete;
-- run `pnpm check` locally before every push, and diagnose and fix GitHub CI in the same PR;
+- run `pnpm check:fast` locally before every push (what the branch changed: formatting, lint, typecheck, related tests, architecture rules); GitHub CI runs the full suite, so diagnose and fix it in the same PR. Run the full `pnpm check` locally when a change is cross-cutting (shared packages, configs, migrations);
 - check open PRs and `wip/*` branches before you take an ADR or migration number, then reserve it in `current-state.md`;
 - mark the PR Ready only after CI and the local gate are green;
 - squash merge your own PR only after those gates pass; a PR that waits on an owner decision stays Draft;

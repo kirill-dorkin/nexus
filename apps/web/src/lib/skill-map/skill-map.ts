@@ -5,6 +5,9 @@ import {
   type Freshness,
   type FreshnessState
 } from "./freshness";
+import { rankOf } from "./ranks";
+
+export { RANKS, rankOf } from "./ranks";
 
 /**
  * The skill map (ADR-0074): characters a learner levels up, each a set of the organization's
@@ -92,27 +95,22 @@ export type SkillProgress = {
   freshness: FreshnessState;
 };
 
+/** A branch a locked branch still waits for, named for the learner. */
+export type BranchRequirement = {
+  branchId: string;
+  branchTitle: string;
+  characterSlug: string;
+  characterName: string;
+};
+
 export type BranchProgress = {
   branch: SkillMapBranch;
   unlocked: boolean;
+  /** Unmet requirements of a locked branch; empty when unlocked. */
+  waitsFor: BranchRequirement[];
   active: number;
   skills: SkillProgress[];
 };
-
-export const RANKS = [
-  { from: 0, title: "Новичок" },
-  { from: 20, title: "Ученик" },
-  { from: 40, title: "Практик" },
-  { from: 60, title: "Мастер" },
-  { from: 80, title: "Эксперт" },
-  { from: 95, title: "Легенда" }
-] as const;
-
-export function rankOf(level: number): string {
-  let title: string = RANKS[0].title;
-  for (const rank of RANKS) if (level >= rank.from) title = rank.title;
-  return title;
-}
 
 export type AbilityProgress = {
   ability: CharacterAbility;
@@ -163,6 +161,9 @@ export function characterProgress(
   const branchById = new Map(
     map.characters.flatMap((c) => c.branches.map((b) => [b.id, b] as const))
   );
+  const ownerOf = new Map(
+    map.characters.flatMap((c) => c.branches.map((b) => [b.id, c] as const))
+  );
   // A branch of an unpublished character cannot be studied yet, so it does not lock anything.
   const unpublished = new Set(
     map.characters
@@ -176,14 +177,31 @@ export function characterProgress(
         branch.skills.length;
 
   const branches = character.branches.map((branch): BranchProgress => {
-    const unlocked = branch.requires.every((id) => {
+    const met = (id: string) => {
       const required = branchById.get(id);
       return (
         required === undefined ||
         (unpublished.has(id) && character.published) ||
         activeShare(required) >= map.unlockShare
       );
-    });
+    };
+    const unlocked = branch.requires.every(met);
+    const waitsFor = branch.requires
+      .filter((id) => !met(id))
+      .flatMap((id): BranchRequirement[] => {
+        const required = branchById.get(id);
+        const owner = ownerOf.get(id);
+        return required && owner
+          ? [
+              {
+                branchId: id,
+                branchTitle: required.title,
+                characterSlug: owner.slug,
+                characterName: owner.name
+              }
+            ]
+          : [];
+      });
     const skills = branch.skills.map((skill): SkillProgress => {
       const freshness = freshnessOf(skill.key);
       const state: SkillState =
@@ -197,6 +215,7 @@ export function characterProgress(
     return {
       branch,
       unlocked,
+      waitsFor,
       active: skills.filter((s) => isActive(s.freshness.state)).length,
       skills
     };
@@ -264,23 +283,4 @@ export function characterProgress(
     abilities,
     next
   };
-}
-
-/** Characters whose branches this character's branches require, in map order. */
-export function requiredCharacters(
-  character: Character,
-  map: SkillMap = SKILL_MAP
-): Character[] {
-  const owner = new Map(
-    map.characters.flatMap((c) => c.branches.map((b) => [b.id, c] as const))
-  );
-  const needed = new Set(
-    character.branches
-      .flatMap((b) => b.requires)
-      .map((id) => owner.get(id))
-      .filter(
-        (c): c is Character => c !== undefined && c.slug !== character.slug
-      )
-  );
-  return map.characters.filter((c) => needed.has(c));
 }

@@ -164,8 +164,14 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: Lint
+        run: pnpm lint
+
       - name: Unit tests
         run: pnpm test
+
+      - name: Web coverage
+        run: pnpm test:web-coverage
 
       - name: Database integration tests
         run: pnpm test:integration
