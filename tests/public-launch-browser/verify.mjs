@@ -750,6 +750,7 @@ async function navigate(cdp, url) {
 }
 
 async function tabUntil(cdp, expression, label, maxTabs = 16) {
+  const trail = [];
   for (let index = 0; index < maxTabs; index += 1) {
     await cdp.send("Input.dispatchKeyEvent", {
       type: "keyDown",
@@ -764,8 +765,16 @@ async function tabUntil(cdp, expression, label, maxTabs = 16) {
       windowsVirtualKeyCode: 9
     });
     if (await evaluate(cdp, expression)) return;
+    trail.push(
+      await evaluate(
+        cdp,
+        `(() => { const e = document.activeElement; if (!e || e === document.body) return "body"; const text = (e.getAttribute("aria-label") || e.textContent || e.getAttribute("name") || "").trim().slice(0, 30); return e.tagName.toLowerCase() + (e.type ? "[" + e.type + "]" : "") + (text ? " " + JSON.stringify(text) : ""); })()`
+      )
+    );
   }
-  throw new Error(`Keyboard focus never reached ${label}.`);
+  throw new Error(
+    `Keyboard focus never reached ${label}. Focus went: ${trail.join(" → ")}`
+  );
 }
 
 async function fill(cdp, selector, value) {
