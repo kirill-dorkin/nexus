@@ -119,18 +119,27 @@ export function CharacterStage({
         <span className={styles.hint}>Потяните, чтобы повернуть</span>
       </div>
       {ready && !compact && (
+        <p className={styles.lookCaption}>
+          {preview === null
+            ? "Ваш облик сейчас"
+            : `Облик на ранге «${LOOKS[preview]?.title ?? ""}»`}
+        </p>
+      )}
+      {ready && !compact && (
         <div
           className={styles.ranks}
           role="group"
           aria-label="Как персонаж выглядит на каждом ранге"
         >
-          <button
-            type="button"
-            aria-pressed={preview === null}
-            onClick={() => setPicked(null)}
-          >
-            Мой уровень
-          </button>
+          {!guest && (
+            <button
+              type="button"
+              aria-pressed={preview === null}
+              onClick={() => setPicked(null)}
+            >
+              Мой уровень
+            </button>
+          )}
           {LOOKS.map(({ title: name }, i) => (
             <button
               key={name}

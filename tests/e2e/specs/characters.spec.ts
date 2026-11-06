@@ -27,17 +27,27 @@ test("a visitor browses the characters and a character's skill tree", async ({
   await expect(page.getByRole("heading", { name: "Навыки" })).toBeVisible();
   const abilities = page.getByRole("region", { name: "Способности" });
   await expect(abilities.getByText("Каркас", { exact: true })).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: "Основы HTML" })
-  ).toBeVisible();
+  // Branches fold: the current one (for a visitor, the first) is open, the others open on demand.
+  const basics = page.locator("details", {
+    has: page.locator("summary", { hasText: "Основы HTML" })
+  });
+  await expect(basics).toBeVisible();
+  await expect(basics).not.toHaveAttribute("open");
+  await basics.locator(":scope > summary").click();
+  await expect(basics).toHaveAttribute("open");
   // The season-1 scene of a branch opens on demand and is plain text for screen readers.
-  const start = page.getByRole("region", { name: "Старт" });
+  const start = page.locator("details", {
+    has: page.locator("summary", { hasText: "Старт" })
+  });
+  await expect(start).toHaveAttribute("open");
   await start.getByText("Сцена", { exact: true }).click();
   await expect(
     start.getByText("Стой. По стройке без каски не ходят.")
   ).toBeVisible();
 
-  const builtOn = page.getByRole("region", { name: "Стоит на персонажах" });
+  const builtOn = page.getByRole("navigation", {
+    name: "Стоит на персонажах"
+  });
   await expect(
     builtOn.getByRole("link", { name: "Браузер", exact: true })
   ).toBeVisible();

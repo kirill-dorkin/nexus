@@ -12,7 +12,7 @@ export const formatDay = (day: string) =>
 export function skillStateText({ state, freshness }: SkillProgress): string {
   switch (state) {
     case "locked":
-      return "Закрыт: сначала подтвердите навыки, на которых он стоит";
+      return "Закрыт: откроется вместе с веткой";
     case "open":
       return "Открыт: изучите и подтвердите";
     case "confirmed":

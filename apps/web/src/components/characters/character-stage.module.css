@@ -105,3 +105,17 @@
     transition: none;
   }
 }
+
+.lookCaption {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* On a phone the character's name and rank stay close to the top. */
+@media (max-width: 860px) {
+  .stage:not(.compact) {
+    height: min(44vh, 360px);
+    min-height: 260px;
+  }
+}

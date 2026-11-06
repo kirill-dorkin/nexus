@@ -9,7 +9,7 @@
 .roster {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
-  gap: var(--space-5);
+  gap: var(--space-4);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -158,6 +158,79 @@
   gap: var(--space-8);
 }
 
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-6);
+}
+
+@media (max-width: 860px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kicker {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--action-primary);
+}
+
+.heroName {
+  margin: 0.15rem 0 0;
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.rankRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--text-secondary);
+}
+
+.rankRow strong {
+  color: var(--text-primary);
+}
+
+.rankBadge {
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--action-primary) 22%, transparent);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.lookHint {
+  margin: calc(var(--space-2) * -1) 0 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.heroActions {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-2);
+}
+
+.nextLine,
+.note {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.note a {
+  color: var(--text-accent);
+}
+
 .profileHead {
   display: grid;
   gap: var(--space-4);
@@ -203,47 +276,100 @@
   color: var(--text-primary);
 }
 
-.next {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  padding: var(--space-4) var(--space-5);
-  border-radius: var(--radius-md);
-  background: color-mix(
-    in srgb,
-    var(--action-primary) 12%,
-    var(--surface-elevated)
-  );
-}
-
-.next p {
-  margin: 0;
-}
-
 .branches {
   display: grid;
-  gap: var(--space-6);
+  gap: var(--space-3);
+}
+
+.sectionTitle {
+  margin: 0 0 var(--space-1);
+  font-size: 1.35rem;
+  color: var(--text-primary);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 .branch {
-  display: grid;
-  gap: var(--space-3);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--surface-elevated);
+  scroll-margin-top: 6rem;
+}
+
+.branch[data-locked] {
+  background: transparent;
+  border-style: dashed;
 }
 
 .branchHead {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-1) var(--space-3);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  cursor: pointer;
+  list-style: none;
 }
 
-.branchHead h3 {
-  margin: 0;
-  font-size: 1.1rem;
+.branchHead::-webkit-details-marker {
+  display: none;
+}
+
+.branchHead:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-lg);
+}
+
+.branchName {
+  font-size: 1.05rem;
+  font-weight: 700;
   color: var(--text-primary);
+}
+
+.branchName::before {
+  content: "";
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  margin: 0 0.7em 0.15em 0.1em;
+  border-right: 2px solid var(--text-secondary);
+  border-bottom: 2px solid var(--text-secondary);
+  transform: rotate(-45deg);
+  transition: transform 0.15s ease;
+}
+
+.branch[open] .branchName::before {
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .branchName::before {
+    transition: none;
+  }
+}
+
+.branchMeter {
+  composes: meter;
+  grid-column: 1 / -1;
+  height: 4px;
+}
+
+.branch[data-locked] .branchMeter {
+  display: none;
+}
+
+.branchBody {
+  display: grid;
+  gap: var(--space-3);
+  padding: 0 var(--space-6) var(--space-6);
 }
 
 .branchMeta {
@@ -326,15 +452,6 @@
 .skillAction {
   font-size: 0.85rem;
   white-space: nowrap;
-}
-
-.requires {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
 }
 
 @media (max-width: 520px) {
@@ -578,8 +695,8 @@ a:focus-visible .districtBase {
 }
 
 .abilities {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr));
   gap: var(--space-2);
   margin: var(--space-3) 0 0;
   padding: 0;
@@ -588,7 +705,7 @@ a:focus-visible .districtBase {
 
 .ability {
   display: grid;
-  gap: 0.1rem;
+  gap: 0.25rem;
   padding: var(--space-2) var(--space-3);
   border: 1px dashed var(--border-default);
   border-radius: var(--radius-md);
@@ -598,6 +715,16 @@ a:focus-visible .districtBase {
   border-style: solid;
   border-color: var(--action-primary);
   background: color-mix(in srgb, var(--action-primary) 16%, transparent);
+}
+
+/* Which branch a locked branch waits for, with a link to it. */
+.waitsFor {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+.waitsFor a {
+  color: var(--text-accent);
 }
 
 /* On a phone the city plan is wider than the screen and scrolls sideways. */
