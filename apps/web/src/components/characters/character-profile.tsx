@@ -164,57 +164,76 @@ export function CharacterProfile({
         <h2 id="skill-tree" className={styles.name}>
           Навыки
         </h2>
-        {progress.branches.map(({ branch, unlocked, active, skills }) => (
-          <section
-            key={branch.id}
-            className={styles.branch}
-            aria-labelledby={`branch-${branch.id}`}
-          >
-            <div className={styles.branchHead}>
-              <h3 id={`branch-${branch.id}`}>{branch.title}</h3>
-              <span className={styles.branchMeta}>
-                {unlocked
-                  ? `Активно ${active} из ${skills.length}`
-                  : `Закрыта: ${skills.length} ${skillsWord(skills.length)}`}
-              </span>
-            </div>
-            <BranchSceneView
-              scene={scenes[branch.id]}
-              restored={active === skills.length && skills.length > 0}
-            />
-            <ul className={styles.skills}>
-              {skills.map((item) => {
-                const href = lessonHref(item.skill);
-                return (
-                  <li
-                    key={item.skill.key}
-                    className={styles.skill}
-                    data-state={item.state}
-                  >
-                    <span className={styles.dot} aria-hidden="true" />
-                    <span className={styles.skillText}>
-                      <span className={styles.skillTitle}>
-                        {item.skill.title}
-                      </span>
-                      <span className={styles.skillState}>
-                        {skillStateText(item)}
-                      </span>
-                    </span>
-                    {href && (
+        {progress.branches.map(
+          ({ branch, unlocked, waitsFor, active, skills }) => (
+            <section
+              key={branch.id}
+              className={styles.branch}
+              aria-labelledby={`branch-${branch.id}`}
+            >
+              <div className={styles.branchHead}>
+                <h3 id={`branch-${branch.id}`}>{branch.title}</h3>
+                <span className={styles.branchMeta}>
+                  {unlocked
+                    ? `Активно ${active} из ${skills.length}`
+                    : `Закрыта: ${skills.length} ${skillsWord(skills.length)}`}
+                </span>
+              </div>
+              {waitsFor.length > 0 && (
+                <p className={styles.waitsFor}>
+                  Откроется после:{" "}
+                  {waitsFor.map((need, i) => (
+                    <span key={need.branchId}>
+                      {i > 0 && ", "}
                       <Link
-                        className={styles.skillAction}
-                        href={href}
-                        aria-label={`${skillActionLabel[item.state]}: ${item.skill.title}`}
+                        href={`/characters/${need.characterSlug}#branch-${need.branchId}`}
                       >
-                        {skillActionLabel[item.state]}
+                        {need.characterSlug === character.slug
+                          ? `ветки «${need.branchTitle}»`
+                          : `${need.characterName} — ветка «${need.branchTitle}»`}
                       </Link>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-        ))}
+                    </span>
+                  ))}
+                </p>
+              )}
+              <BranchSceneView
+                scene={scenes[branch.id]}
+                restored={active === skills.length && skills.length > 0}
+              />
+              <ul className={styles.skills}>
+                {skills.map((item) => {
+                  const href = lessonHref(item.skill);
+                  return (
+                    <li
+                      key={item.skill.key}
+                      className={styles.skill}
+                      data-state={item.state}
+                    >
+                      <span className={styles.dot} aria-hidden="true" />
+                      <span className={styles.skillText}>
+                        <span className={styles.skillTitle}>
+                          {item.skill.title}
+                        </span>
+                        <span className={styles.skillState}>
+                          {skillStateText(item)}
+                        </span>
+                      </span>
+                      {href && (
+                        <Link
+                          className={styles.skillAction}
+                          href={href}
+                          aria-label={`${skillActionLabel[item.state]}: ${item.skill.title}`}
+                        >
+                          {skillActionLabel[item.state]}
+                        </Link>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          )
+        )}
       </section>
     </article>
   );

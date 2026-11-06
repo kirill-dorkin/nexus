@@ -599,3 +599,13 @@ a:focus-visible .districtBase {
   border-color: var(--action-primary);
   background: color-mix(in srgb, var(--action-primary) 16%, transparent);
 }
+
+/* Which branch a locked branch waits for, with a link to it. */
+.waitsFor {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+.waitsFor a {
+  color: var(--text-accent);
+}

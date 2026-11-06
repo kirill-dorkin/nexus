@@ -236,6 +236,15 @@ describe("character progress", () => {
     expect(findCharacter("html")!.branches[0]!.requires).toContain("browser-2");
     const html = characterProgress(findCharacter("html")!, records({}), today);
     expect(html.branches[0]!.unlocked).toBe(false);
+    // A locked branch names what it waits for, so the page can link to it.
+    expect(html.branches[0]!.waitsFor).toContainEqual(
+      expect.objectContaining({
+        branchId: "browser-2",
+        characterSlug: "browser",
+        characterName: "Браузер"
+      })
+    );
+    expect(progress.branches[0]!.waitsFor).toEqual([]);
   });
 
   it("counts only active skills into the level, and forgetting lowers it", () => {

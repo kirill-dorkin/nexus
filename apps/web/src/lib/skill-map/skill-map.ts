@@ -92,9 +92,19 @@ export type SkillProgress = {
   freshness: FreshnessState;
 };
 
+/** A branch a locked branch still waits for, named for the learner. */
+export type BranchRequirement = {
+  branchId: string;
+  branchTitle: string;
+  characterSlug: string;
+  characterName: string;
+};
+
 export type BranchProgress = {
   branch: SkillMapBranch;
   unlocked: boolean;
+  /** Unmet requirements of a locked branch; empty when unlocked. */
+  waitsFor: BranchRequirement[];
   active: number;
   skills: SkillProgress[];
 };
@@ -163,6 +173,9 @@ export function characterProgress(
   const branchById = new Map(
     map.characters.flatMap((c) => c.branches.map((b) => [b.id, b] as const))
   );
+  const ownerOf = new Map(
+    map.characters.flatMap((c) => c.branches.map((b) => [b.id, c] as const))
+  );
   // A branch of an unpublished character cannot be studied yet, so it does not lock anything.
   const unpublished = new Set(
     map.characters
@@ -176,14 +189,31 @@ export function characterProgress(
         branch.skills.length;
 
   const branches = character.branches.map((branch): BranchProgress => {
-    const unlocked = branch.requires.every((id) => {
+    const met = (id: string) => {
       const required = branchById.get(id);
       return (
         required === undefined ||
         (unpublished.has(id) && character.published) ||
         activeShare(required) >= map.unlockShare
       );
-    });
+    };
+    const unlocked = branch.requires.every(met);
+    const waitsFor = branch.requires
+      .filter((id) => !met(id))
+      .flatMap((id): BranchRequirement[] => {
+        const required = branchById.get(id);
+        const owner = ownerOf.get(id);
+        return required && owner
+          ? [
+              {
+                branchId: id,
+                branchTitle: required.title,
+                characterSlug: owner.slug,
+                characterName: owner.name
+              }
+            ]
+          : [];
+      });
     const skills = branch.skills.map((skill): SkillProgress => {
       const freshness = freshnessOf(skill.key);
       const state: SkillState =
@@ -197,6 +227,7 @@ export function characterProgress(
     return {
       branch,
       unlocked,
+      waitsFor,
       active: skills.filter((s) => isActive(s.freshness.state)).length,
       skills
     };
