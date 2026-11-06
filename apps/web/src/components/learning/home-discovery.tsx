@@ -225,8 +225,8 @@ export function HomeContent() {
             <span className={styles.accentText}>По 15 минут в день.</span>
           </h1>
           <p className={styles.lead}>
-            Маршрут «Веб-разработка с нуля»: HTML, CSS, JavaScript и SQL по
-            порядку. Понятные уроки, живые примеры и задания с мгновенной
+            Маршрут «IT с нуля»: компьютер, браузер, HTML, CSS, JavaScript и SQL
+            по порядку. Понятные уроки, живые примеры и задания с мгновенной
             проверкой. Аккаунт нужен, только чтобы сохранить прогресс.
           </p>
           <Suspense fallback={<HeroButtons href="/courses" />}>

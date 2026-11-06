@@ -10,7 +10,7 @@ import {
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Бесплатные IT-курсы",
-  description: `Открытые курсы ${brand.name}: HTML, CSS, JavaScript и SQL с нуля — по порядку, с практикой прямо в браузере.`,
+  description: `Открытые курсы ${brand.name}: компьютер, браузер, HTML, CSS, JavaScript и SQL с нуля — по порядку, с практикой прямо в браузере.`,
   alternates: { canonical: "/courses" },
   openGraph: { url: "/courses", title: `Бесплатные IT-курсы · ${brand.name}` }
 };

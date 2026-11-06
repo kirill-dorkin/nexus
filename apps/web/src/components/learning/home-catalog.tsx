@@ -12,8 +12,8 @@ export function CatalogHero() {
     <div className={flow.catalogHero}>
       <LearningPageHeading
         eyebrow="Каталог"
-        title="Веб-разработка с нуля: четыре курса по порядку."
-        description="HTML, затем CSS, JavaScript и SQL. Каждый курс говорит, что нужно знать до него и что вы будете уметь после."
+        title="IT с нуля: шесть курсов по порядку."
+        description="Сначала компьютер и браузер, затем HTML, CSS, JavaScript и SQL. Каждый курс говорит, что нужно знать до него и что вы будете уметь после."
       />
       <aside className={flow.catalogPromise} aria-label="Как устроено обучение">
         <strong>Сначала посмотрите программу.</strong>

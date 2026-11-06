@@ -34,8 +34,10 @@ describe("character roster", () => {
   it("levels a character from confirmations and lists today's quests", async () => {
     api.mockResolvedValue(
       json({
-        skills: findCharacter("html")!.branches.flatMap((b) =>
-          b.skills.map((s) => ({ skillKey: s.key, confirmedDays: [today] }))
+        skills: ["pc", "html"].flatMap((slug) =>
+          findCharacter(slug)!.branches.flatMap((b) =>
+            b.skills.map((s) => ({ skillKey: s.key, confirmedDays: [today] }))
+          )
         )
       })
     );

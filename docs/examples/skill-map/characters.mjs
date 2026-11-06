@@ -24,7 +24,7 @@ export const characters = [
     summary:
       "Компьютер целиком: железо и двоичные данные, файлы и пути, операционная система и процессы, программы, клавиатура, командная строка, домашняя сеть, безопасность и диагностика.",
     accent: "rose",
-    sources: [{ manifest: "pc-track.manifest.json", published: false }]
+    sources: [{ manifest: "pc-track.manifest.json", published: true }]
   },
   {
     slug: "browser",
@@ -43,7 +43,7 @@ export const characters = [
     summary:
       "Путь от адреса до страницы: URL и DNS, HTTP и HTTPS, коды ответа, кэш, cookies и хранилища, безопасность, отрисовка, все панели DevTools, дерево доступности и адаптивный режим.",
     accent: "blue",
-    sources: [{ manifest: "browser-track.manifest.json", published: false }]
+    sources: [{ manifest: "browser-track.manifest.json", published: true }]
   },
   {
     slug: "html",
