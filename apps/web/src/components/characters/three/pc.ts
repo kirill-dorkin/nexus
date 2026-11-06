@@ -1,5 +1,6 @@
 import type * as THREE from "three";
 import type { Kit } from "./kit";
+import { BODY_UI } from "./meta";
 import type { CharacterDef } from "./types";
 
 /** ПК: tank treads, a tower torso, a monitor head and claw arms; steel and cyan neon. */
@@ -12,7 +13,7 @@ export const pc: CharacterDef = {
     glow: 0x38e1ff,
     aura: 0x8ff3ff
   },
-  ui: ["#38e1ff", "#a5f3fc", "#0e7490", "#083344"],
+  ui: BODY_UI.pc,
   master: "Мастер железа",
   stages: [
     "Пыльный системник на гусеницах, экран еле светится.",

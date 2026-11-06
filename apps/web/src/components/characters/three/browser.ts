@@ -1,5 +1,6 @@
 import type * as THREE from "three";
 import { cracks, type Kit } from "./kit";
+import { BODY_UI } from "./meta";
 import type { CharacterDef } from "./types";
 
 /** Браузер: no legs, a long coat, a big globe head, a compass and a staff; navy, brass, sky light. */
@@ -12,7 +13,7 @@ export const browser: CharacterDef = {
     glow: 0x5aa9ff,
     aura: 0xa8d4ff
   },
-  ui: ["#5aa9ff", "#bfdbfe", "#1e3a8a", "#0b1a3a"],
+  ui: BODY_UI.browser,
   master: "Мастер протоколов",
   stages: [
     "Путник в пыльном плаще, глобус погас.",

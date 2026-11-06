@@ -1,5 +1,6 @@
 import type * as THREE from "three";
 import { cracks, type Kit } from "./kit";
+import { BODY_UI } from "./meta";
 import type { CharacterDef } from "./types";
 
 /** JavaScript: spring legs, a thin arm and a gear arm, a big gear on the back, a lightning antenna; black and JS yellow. */
@@ -12,7 +13,7 @@ export const js: CharacterDef = {
     glow: 0xf7df1e,
     aura: 0xfff59d
   },
-  ui: ["#f7df1e", "#fef9c3", "#a16207", "#3f2f00"],
+  ui: BODY_UI.js,
   master: "Мастер событий",
   stages: [
     "Ржавый механизм, пружины сжаты, шестерня стоит.",
