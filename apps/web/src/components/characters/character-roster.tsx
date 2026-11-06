@@ -9,7 +9,10 @@ import {
 import { useOwnSkillRecords, utcToday } from "../../lib/skill-map/own-skills";
 import { skillsWord } from "./character-labels";
 import { DailyPanel } from "./daily-panel";
+import { stageColours, usePortraits } from "./character-stage";
+import { hasBody } from "./three/roster";
 import styles from "./characters.module.css";
+import stageStyles from "./character-stage.module.css";
 
 /** Two letters for the portrait until characters get their illustrations. */
 export const initials = (character: Character) =>
@@ -19,22 +22,55 @@ export const initials = (character: Character) =>
 export function CharacterRoster() {
   const { status, records } = useOwnSkillRecords();
   const today = utcToday();
+  const levels = SKILL_MAP.characters.map((character) => {
+    const progress = characterProgress(character, records, today);
+    return { character, progress };
+  });
+  const portraits = usePortraits(
+    status === "loading"
+      ? []
+      : levels
+          .filter(({ character }) => hasBody(character.slug))
+          .map(({ character, progress }) => ({
+            slug: character.slug,
+            // Without the learner's own records (a guest, or the API unreachable) the card
+            // shows what the character grows into (Мастер); learners see their own level.
+            level:
+              status === "ready"
+                ? (progress.level / progress.maxLevel) * 100
+                : 70
+          }))
+  );
   return (
     <>
       {status === "ready" && <DailyPanel records={records} today={today} />}
       <ul className={styles.roster} aria-busy={status === "loading"}>
-        {SKILL_MAP.characters.map((character) => {
-          const progress = characterProgress(character, records, today);
+        {levels.map(({ character, progress }) => {
+          const portrait = portraits[character.slug];
           return (
             <li
               key={character.slug}
               className={styles.card}
               data-ui-accent={character.accent}
             >
+              {portrait && (
+                // A data URL drawn in the browser; next/image cannot optimise it.
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  className={stageStyles.portrait}
+                  style={stageColours(character.slug)}
+                  src={portrait}
+                  alt=""
+                  width={360}
+                  height={360}
+                />
+              )}
               <div className={styles.cardHead}>
-                <span className={styles.portrait} aria-hidden="true">
-                  {initials(character)}
-                </span>
+                {!portrait && (
+                  <span className={styles.portrait} aria-hidden="true">
+                    {initials(character)}
+                  </span>
+                )}
                 <div>
                   <h2 className={styles.name}>
                     <Link href={`/characters/${character.slug}`}>
