@@ -22,7 +22,8 @@ export const DISTRICT_NAMES: Record<string, string> = {
   css: "Галерея",
   js: "Мастерские",
   sql: "Архив",
-  terminal: "Пульт"
+  terminal: "Пульт",
+  git: "Архив времени"
 };
 
 /** Positions on a 1000×600 plan; characters without one are laid out on the bottom row. */
@@ -33,7 +34,8 @@ const LAYOUT: Record<string, { x: number; y: number }> = {
   css: { x: 680, y: 330 },
   js: { x: 680, y: 510 },
   sql: { x: 400, y: 420 },
-  terminal: { x: 130, y: 330 }
+  terminal: { x: 130, y: 330 },
+  git: { x: 130, y: 510 }
 };
 
 export type District = {

@@ -1,0 +1,195 @@
+{
+  "note": "Every item is taught by its own concept card; the contracts test keeps the index and the cards in sync.",
+  "source": "Course design by chapter (branches of the character).",
+  "topics": {
+    "start": {
+      "title": "Старт Git",
+      "items": [
+        "Контроль версий",
+        "Git",
+        "Снимок",
+        "Git и GitHub",
+        "git config --global",
+        "git init",
+        "git clone",
+        "Папка .git",
+        "Ветка по умолчанию",
+        "git status",
+        "Неотслеживаемый файл",
+        "Изменённый файл",
+        "Подготовленный файл",
+        "git status -s"
+      ]
+    },
+    "commits": {
+      "title": "Снимки и коммиты",
+      "items": [
+        "git add файл",
+        "git add .",
+        "git add -p",
+        "git restore --staged",
+        "git commit -m",
+        "Что внутри коммита",
+        "Атомарный коммит",
+        "Сообщение коммита",
+        "git commit -am",
+        "Conventional Commits",
+        "Ссылка на задачу",
+        "Коммит как документация",
+        "Подписанный коммит"
+      ]
+    },
+    "history": {
+      "title": "История и различия",
+      "items": [
+        "git log",
+        "git log --oneline",
+        "git log фильтры",
+        "HEAD",
+        "git diff",
+        "Как читать diff",
+        "git diff A B",
+        "git show",
+        "git blame",
+        "Blame без обвинений",
+        "git bisect",
+        "git bisect run"
+      ]
+    },
+    "undo": {
+      "title": "Отмена изменений",
+      "items": [
+        "git restore",
+        "git restore --source",
+        "git commit --amend",
+        "Нельзя amend после push",
+        "git reset --soft",
+        "git reset --hard",
+        "git revert",
+        "reset или revert",
+        "git reflog",
+        "Восстановить коммит",
+        "Что reflog не спасёт"
+      ]
+    },
+    "branches": {
+      "title": "Ветки и слияние",
+      "items": [
+        "Ветка",
+        "git switch -c",
+        "git switch",
+        "git branch",
+        "git merge",
+        "Fast-forward",
+        "Коммит слияния",
+        "--no-ff",
+        "GitHub Flow",
+        "Trunk-based development",
+        "git flow",
+        "Имена веток"
+      ]
+    },
+    "conflicts": {
+      "title": "Конфликты",
+      "items": [
+        "Конфликт слияния",
+        "Маркеры конфликта",
+        "git status при конфликте",
+        "git add после правки",
+        "git merge --abort",
+        "--ours и --theirs",
+        "Редактор для конфликтов",
+        "Проверить после",
+        "Обновляйся от main",
+        "Маленькие изменения",
+        "Общий форматтер",
+        "rerere"
+      ]
+    },
+    "remotes": {
+      "title": "Удалённые репозитории",
+      "items": [
+        "Удалённый репозиторий",
+        "git remote",
+        "git push -u",
+        "Отслеживаемая ветка",
+        "Доступ по SSH",
+        "git fetch",
+        "git pull",
+        "git pull --rebase",
+        "rejected при push",
+        "Перезапись истории",
+        "--force-with-lease",
+        "Своя ветка — можно",
+        "Защищённая ветка"
+      ]
+    },
+    "github": {
+      "title": "Командная работа на GitHub",
+      "items": [
+        "Pull request",
+        "Описание PR",
+        "Черновик PR",
+        "Squash merge",
+        "gh pr create",
+        "Ревью кода",
+        "Предложение правки",
+        "Как писать замечания",
+        "Как принимать замечания",
+        "CODEOWNERS",
+        "Fork",
+        "upstream",
+        "Issues",
+        "GitHub Actions",
+        "Обязательные проверки"
+      ]
+    },
+    "rebase": {
+      "title": "Rebase и чистая история",
+      "items": [
+        "git rebase main",
+        "Конфликт при rebase",
+        "Золотое правило rebase",
+        "git rebase -i",
+        "Команды rebase -i",
+        "--fixup и --autosquash",
+        "git cherry-pick",
+        "Дубли коммитов",
+        "Тег"
+      ]
+    },
+    "config": {
+      "title": "Настройки, stash и .gitignore",
+      "items": [
+        ".gitignore",
+        "Что не хранят в Git",
+        "git rm --cached",
+        "Утёкший секрет",
+        "git stash",
+        "git stash pop",
+        "git stash list",
+        "Глобальные настройки Git",
+        "git alias",
+        "Хуки Git",
+        "husky и lint-staged"
+      ]
+    },
+    "internals": {
+      "title": "Как Git устроен внутри",
+      "items": [
+        "blob",
+        "tree",
+        "Хеш объекта",
+        "git cat-file",
+        "Ветка на диске",
+        "Отделённый HEAD",
+        "origin/main",
+        "Слита ли ветка",
+        "Двоичные файлы в Git",
+        "Git LFS",
+        "git clone --depth 1",
+        "git gc"
+      ]
+    }
+  }
+}

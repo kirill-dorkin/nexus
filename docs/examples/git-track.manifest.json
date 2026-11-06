@@ -1,0 +1,4446 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "git",
+    "title": "Git: история кода и командная работа",
+    "description": "Git так, как им пользуются в командах. Репозиторий и первые коммиты, индекс и хорошие сообщения, история и различия, отмена любых изменений, ветки и слияние, разрешение конфликтов, удалённые репозитории и GitHub, pull request и ревью, rebase и чистая история, stash и .gitignore и то, как Git устроен внутри. Каждое понятие объясняется карточкой с примером, каждый урок закрепляется вопросами."
+  },
+  "skills": [
+    {
+      "key": "git-why",
+      "title": "Контроль версий",
+      "description": "Объяснять, зачем нужен контроль версий и как Git хранит историю."
+    },
+    {
+      "key": "git-setup",
+      "title": "Первый репозиторий",
+      "description": "Настроить Git и создать или склонировать репозиторий."
+    },
+    {
+      "key": "git-status",
+      "title": "Состояние репозитория",
+      "description": "Читать git status и понимать, в каком состоянии файлы."
+    },
+    {
+      "key": "git-add",
+      "title": "Индекс",
+      "description": "Выбирать, какие изменения войдут в следующий коммит."
+    },
+    {
+      "key": "git-commit",
+      "title": "Коммиты",
+      "description": "Делать понятные атомарные коммиты с хорошими сообщениями."
+    },
+    {
+      "key": "git-conventions",
+      "title": "Соглашения о коммитах",
+      "description": "Писать коммиты по соглашениям команды."
+    },
+    {
+      "key": "git-log",
+      "title": "История",
+      "description": "Находить нужные коммиты в истории."
+    },
+    {
+      "key": "git-diff",
+      "title": "Различия",
+      "description": "Смотреть и читать различия между версиями."
+    },
+    {
+      "key": "git-blame",
+      "title": "Расследование",
+      "description": "Находить происхождение строк и коммит, внёсший ошибку."
+    },
+    {
+      "key": "git-restore",
+      "title": "Отмена правок",
+      "description": "Отменять незакоммиченные правки и исправлять последний коммит."
+    },
+    {
+      "key": "git-reset",
+      "title": "reset и revert",
+      "description": "Отменять коммиты, выбирая между reset и revert."
+    },
+    {
+      "key": "git-reflog",
+      "title": "reflog",
+      "description": "Восстанавливать потерянные коммиты и ветки."
+    },
+    {
+      "key": "git-branch",
+      "title": "Ветки",
+      "description": "Создавать ветки и переключаться между ними."
+    },
+    {
+      "key": "git-merge",
+      "title": "Слияние",
+      "description": "Сливать ветки и понимать, какой вид слияния получится."
+    },
+    {
+      "key": "git-flow",
+      "title": "Модели ветвления",
+      "description": "Выбирать и соблюдать модель ветвления команды."
+    },
+    {
+      "key": "git-conflict-read",
+      "title": "Чтение конфликта",
+      "description": "Понимать причину конфликта и читать маркеры в файле."
+    },
+    {
+      "key": "git-conflict-resolve",
+      "title": "Разрешение конфликтов",
+      "description": "Разрешать конфликты и завершать или отменять слияние."
+    },
+    {
+      "key": "git-conflict-avoid",
+      "title": "Профилактика конфликтов",
+      "description": "Работать так, чтобы конфликтов было мало и они были простыми."
+    },
+    {
+      "key": "git-push",
+      "title": "push",
+      "description": "Подключать удалённый репозиторий и отправлять в него ветки."
+    },
+    {
+      "key": "git-pull",
+      "title": "fetch и pull",
+      "description": "Получать изменения коллег и объединять их со своими."
+    },
+    {
+      "key": "git-force",
+      "title": "Перезапись истории на сервере",
+      "description": "Безопасно перезаписывать свою ветку на сервере и не трогать общие."
+    },
+    {
+      "key": "git-pr",
+      "title": "Pull request",
+      "description": "Открывать понятные pull request и доводить их до слияния."
+    },
+    {
+      "key": "git-review",
+      "title": "Ревью кода",
+      "description": "Проводить и проходить ревью кода."
+    },
+    {
+      "key": "git-forks",
+      "title": "Форки и задачи",
+      "description": "Вносить вклад в чужие проекты и пользоваться задачами и проверками GitHub."
+    },
+    {
+      "key": "git-rebase",
+      "title": "Rebase",
+      "description": "Перекладывать ветку на свежий main и понимать риски."
+    },
+    {
+      "key": "git-rebase-i",
+      "title": "Интерактивный rebase",
+      "description": "Приводить коммиты ветки в порядок перед pull request."
+    },
+    {
+      "key": "git-cherry-pick",
+      "title": "cherry-pick",
+      "description": "Переносить отдельные коммиты между ветками."
+    },
+    {
+      "key": "git-ignore",
+      "title": ".gitignore",
+      "description": "Не допускать в репозиторий зависимости, сборку и секреты."
+    },
+    {
+      "key": "git-stash",
+      "title": "stash",
+      "description": "Откладывать незаконченные правки и возвращать их."
+    },
+    {
+      "key": "git-tools",
+      "title": "Настройки и хуки",
+      "description": "Настраивать Git под себя и автоматизировать проверки перед коммитом."
+    },
+    {
+      "key": "git-objects",
+      "title": "Объекты Git",
+      "description": "Понимать, как Git хранит файлы, папки и коммиты."
+    },
+    {
+      "key": "git-refs",
+      "title": "Ссылки Git",
+      "description": "Понимать ветки, HEAD и удалённые ветки как ссылки на коммиты."
+    },
+    {
+      "key": "git-large",
+      "title": "Большие репозитории",
+      "description": "Работать с большими файлами и тяжёлыми репозиториями."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "why-snap",
+      "type": "quiz.single_choice",
+      "title": "Что хранит",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-why"
+      ],
+      "presentation": {
+        "question": "Что Git сохраняет при каждом коммите?",
+        "options": [
+          {
+            "id": "snap",
+            "text": "Снимок состояния файлов проекта"
+          },
+          {
+            "id": "zip",
+            "text": "Архив папки на сервер"
+          },
+          {
+            "id": "diff",
+            "text": "Только письмо с описанием"
+          },
+          {
+            "id": "backup",
+            "text": "Копию всего диска"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "snap",
+        "explanation": "Коммит — снимок проекта, связанный с предыдущим снимком."
+      }
+    },
+    {
+      "slug": "why-hub",
+      "type": "quiz.single_choice",
+      "title": "GitHub",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-why"
+      ],
+      "presentation": {
+        "question": "Чем Git отличается от GitHub?",
+        "options": [
+          {
+            "id": "tool",
+            "text": "Git — программа для истории, GitHub — сервис для хранения и совместной работы"
+          },
+          {
+            "id": "same",
+            "text": "Это одно и то же"
+          },
+          {
+            "id": "paid",
+            "text": "Git платный, GitHub бесплатный"
+          },
+          {
+            "id": "old",
+            "text": "GitHub — старая версия Git"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "tool",
+        "explanation": "Git работает и без GitHub."
+      }
+    },
+    {
+      "slug": "why-gives",
+      "type": "quiz.multiple_choice",
+      "title": "Что даёт",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "git-why"
+      ],
+      "presentation": {
+        "question": "Что даёт контроль версий?",
+        "options": [
+          {
+            "id": "undo",
+            "text": "Вернуть любое прошлое состояние"
+          },
+          {
+            "id": "who",
+            "text": "Узнать, кто и зачем менял строку"
+          },
+          {
+            "id": "team",
+            "text": "Работать вместе без пересылки архивов"
+          },
+          {
+            "id": "speed",
+            "text": "Ускоряет работу сайта для посетителей"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "undo",
+          "who",
+          "team"
+        ],
+        "explanation": "На скорость сайта Git не влияет."
+      }
+    },
+    {
+      "slug": "setup-config",
+      "type": "quiz.single_choice",
+      "title": "Подпись",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-setup"
+      ],
+      "presentation": {
+        "question": "Что нужно настроить в Git один раз, прежде чем делать коммиты?",
+        "options": [
+          {
+            "id": "name",
+            "text": "Имя и почту: user.name и user.email"
+          },
+          {
+            "id": "pass",
+            "text": "Пароль от GitHub"
+          },
+          {
+            "id": "port",
+            "text": "Порт сервера"
+          },
+          {
+            "id": "theme",
+            "text": "Цветовую тему"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "name",
+        "explanation": "Имя и почта записываются в каждый коммит."
+      }
+    },
+    {
+      "slug": "setup-git",
+      "type": "quiz.single_choice",
+      "title": ".git",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-setup"
+      ],
+      "presentation": {
+        "question": "Что будет, если удалить папку .git?",
+        "options": [
+          {
+            "id": "history",
+            "text": "Пропадёт вся история, останутся текущие файлы"
+          },
+          {
+            "id": "files",
+            "text": "Удалятся все файлы проекта"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          },
+          {
+            "id": "github",
+            "text": "Удалится репозиторий на GitHub"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "history",
+        "explanation": "В .git хранятся все коммиты и ветки."
+      }
+    },
+    {
+      "slug": "setup-clone",
+      "type": "quiz.short_text",
+      "title": "Скачать",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "git-setup"
+      ],
+      "presentation": {
+        "question": "Какая команда Git скачивает существующий репозиторий со всей историей? Одно слово после git."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "clone",
+          "git clone"
+        ],
+        "caseSensitive": false,
+        "explanation": "git clone адрес."
+      }
+    },
+    {
+      "slug": "st-untracked",
+      "type": "quiz.single_choice",
+      "title": "Новый файл",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-status"
+      ],
+      "presentation": {
+        "question": "Ты создал style.css, но Git пишет «Untracked files». Что это значит?",
+        "options": [
+          {
+            "id": "new",
+            "text": "Git ещё не отслеживает файл; его нужно добавить"
+          },
+          {
+            "id": "deleted",
+            "text": "Файл удалён"
+          },
+          {
+            "id": "ignored",
+            "text": "Файл в .gitignore"
+          },
+          {
+            "id": "error",
+            "text": "В файле ошибка"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "new",
+        "explanation": "Untracked — файл есть в папке, но не в истории."
+      }
+    },
+    {
+      "slug": "st-short",
+      "type": "quiz.single_choice",
+      "title": "Коротко",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-status"
+      ],
+      "presentation": {
+        "question": "Что означает `??` в выводе `git status -s`?",
+        "options": [
+          {
+            "id": "untracked",
+            "text": "Новый неотслеживаемый файл"
+          },
+          {
+            "id": "conflict",
+            "text": "Конфликт"
+          },
+          {
+            "id": "staged",
+            "text": "Подготовлен к коммиту"
+          },
+          {
+            "id": "deleted",
+            "text": "Удалён"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "untracked",
+        "explanation": "Две вопросительные — Git не знает этот файл."
+      }
+    },
+    {
+      "slug": "st-when",
+      "type": "quiz.single_choice",
+      "title": "Когда",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-status"
+      ],
+      "presentation": {
+        "question": "Когда полезнее всего запускать git status?",
+        "options": [
+          {
+            "id": "always",
+            "text": "Перед add, commit и push — чтобы видеть, что происходит"
+          },
+          {
+            "id": "never",
+            "text": "Никогда, он устарел"
+          },
+          {
+            "id": "once",
+            "text": "Один раз после установки"
+          },
+          {
+            "id": "server",
+            "text": "Только на сервере"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "always",
+        "explanation": "status ничего не меняет и всегда отвечает на вопрос «что сейчас»."
+      }
+    },
+    {
+      "slug": "add-what",
+      "type": "quiz.single_choice",
+      "title": "Что войдёт",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-add"
+      ],
+      "presentation": {
+        "question": "Ты добавил файл в индекс, а потом ещё раз его изменил. Что войдёт в коммит?",
+        "options": [
+          {
+            "id": "old",
+            "text": "Версия на момент git add; новую правку нужно добавить снова"
+          },
+          {
+            "id": "new",
+            "text": "Последняя версия из папки"
+          },
+          {
+            "id": "both",
+            "text": "Обе версии"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "old",
+        "explanation": "Индекс хранит снимок файла на момент add."
+      }
+    },
+    {
+      "slug": "add-part",
+      "type": "quiz.single_choice",
+      "title": "Частично",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-add"
+      ],
+      "presentation": {
+        "question": "Как добавить в коммит только часть изменений файла?",
+        "options": [
+          {
+            "id": "p",
+            "text": "`git add -p`"
+          },
+          {
+            "id": "dot",
+            "text": "`git add .`"
+          },
+          {
+            "id": "all",
+            "text": "`git add -A`"
+          },
+          {
+            "id": "f",
+            "text": "`git add -f`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "p",
+        "explanation": "-p — patch, по кусочкам."
+      }
+    },
+    {
+      "slug": "add-undo",
+      "type": "quiz.single_choice",
+      "title": "Лишнее",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-add"
+      ],
+      "presentation": {
+        "question": "Ты случайно добавил .env в индекс. Как убрать его оттуда, не удалив файл?",
+        "options": [
+          {
+            "id": "restore",
+            "text": "`git restore --staged .env`"
+          },
+          {
+            "id": "rm",
+            "text": "`rm .env`"
+          },
+          {
+            "id": "reset",
+            "text": "`git reset --hard`"
+          },
+          {
+            "id": "commit",
+            "text": "`git commit`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "restore",
+        "explanation": "--staged трогает только индекс. reset --hard уничтожил бы и правки."
+      }
+    },
+    {
+      "slug": "cm-msg",
+      "type": "quiz.single_choice",
+      "title": "Сообщение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-commit"
+      ],
+      "presentation": {
+        "question": "Какое сообщение коммита лучше?",
+        "options": [
+          {
+            "id": "good",
+            "text": "«Исправить расчёт скидки для корзины без товаров»"
+          },
+          {
+            "id": "fix",
+            "text": "«fix»"
+          },
+          {
+            "id": "date",
+            "text": "«правки 7 ноября»"
+          },
+          {
+            "id": "dots",
+            "text": "«...»"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "good",
+        "explanation": "Сообщение объясняет, что изменилось, без чтения кода."
+      }
+    },
+    {
+      "slug": "cm-atomic",
+      "type": "quiz.single_choice",
+      "title": "Атомарный",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-commit"
+      ],
+      "presentation": {
+        "question": "Что такое атомарный коммит?",
+        "options": [
+          {
+            "id": "one",
+            "text": "Коммит, который решает одну задачу целиком"
+          },
+          {
+            "id": "small",
+            "text": "Коммит меньше 10 строк"
+          },
+          {
+            "id": "fast",
+            "text": "Коммит, сделанный за минуту"
+          },
+          {
+            "id": "all",
+            "text": "Коммит со всеми изменениями дня"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "Важен смысл, а не размер."
+      }
+    },
+    {
+      "slug": "cm-a",
+      "type": "quiz.single_choice",
+      "title": "Флаг -a",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-commit"
+      ],
+      "presentation": {
+        "question": "Ты создал новый файл about.html и сделал `git commit -am \"Добавить страницу\"`. Что произошло?",
+        "options": [
+          {
+            "id": "missing",
+            "text": "Новый файл не попал в коммит: -a берёт только уже отслеживаемые"
+          },
+          {
+            "id": "ok",
+            "text": "Файл попал в коммит"
+          },
+          {
+            "id": "error",
+            "text": "Git выдал ошибку и ничего не сделал"
+          },
+          {
+            "id": "deleted",
+            "text": "Файл удалился"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "missing",
+        "explanation": "Новые файлы нужно сначала добавить через git add."
+      }
+    },
+    {
+      "slug": "cv-type",
+      "type": "quiz.single_choice",
+      "title": "Тип",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-conventions"
+      ],
+      "presentation": {
+        "question": "Какой тип по Conventional Commits у коммита, который исправляет ошибку?",
+        "options": [
+          {
+            "id": "fix",
+            "text": "fix"
+          },
+          {
+            "id": "feat",
+            "text": "feat"
+          },
+          {
+            "id": "docs",
+            "text": "docs"
+          },
+          {
+            "id": "chore",
+            "text": "chore"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fix",
+        "explanation": "feat — новая возможность, docs — документация, chore — служебные правки."
+      }
+    },
+    {
+      "slug": "cv-why",
+      "type": "quiz.single_choice",
+      "title": "Почему",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-conventions"
+      ],
+      "presentation": {
+        "question": "Что важнее всего записать в подробную часть сообщения коммита?",
+        "options": [
+          {
+            "id": "why",
+            "text": "Почему выбрано такое решение"
+          },
+          {
+            "id": "code",
+            "text": "Код целиком"
+          },
+          {
+            "id": "time",
+            "text": "Сколько часов ушло"
+          },
+          {
+            "id": "mood",
+            "text": "Настроение автора"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "why",
+        "explanation": "Что изменилось, видно в коде; почему — только в сообщении."
+      }
+    },
+    {
+      "slug": "cv-feat",
+      "type": "quiz.short_text",
+      "title": "Новая возможность",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "git-conventions"
+      ],
+      "presentation": {
+        "question": "Какой тип Conventional Commits у коммита с новой возможностью? Одно слово латиницей."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "feat"
+        ],
+        "caseSensitive": false,
+        "explanation": "От слова feature."
+      }
+    },
+    {
+      "slug": "log-short",
+      "type": "quiz.single_choice",
+      "title": "Коротко",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-log"
+      ],
+      "presentation": {
+        "question": "Как показать историю по одной строке на коммит?",
+        "options": [
+          {
+            "id": "oneline",
+            "text": "`git log --oneline`"
+          },
+          {
+            "id": "short",
+            "text": "`git log -s`"
+          },
+          {
+            "id": "status",
+            "text": "`git status`"
+          },
+          {
+            "id": "show",
+            "text": "`git show`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "oneline",
+        "explanation": "--oneline — короткий хеш и заголовок."
+      }
+    },
+    {
+      "slug": "log-file",
+      "type": "quiz.single_choice",
+      "title": "Файл",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-log"
+      ],
+      "presentation": {
+        "question": "Как увидеть только коммиты, которые меняли style.css?",
+        "options": [
+          {
+            "id": "path",
+            "text": "`git log -- style.css`"
+          },
+          {
+            "id": "grep",
+            "text": "`git log --grep=style.css`"
+          },
+          {
+            "id": "author",
+            "text": "`git log --author=style.css`"
+          },
+          {
+            "id": "count",
+            "text": "`git log -n style.css`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "path",
+        "explanation": "--grep ищет в сообщениях, а не в файлах."
+      }
+    },
+    {
+      "slug": "log-head",
+      "type": "quiz.short_text",
+      "title": "Предыдущий",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "git-log"
+      ],
+      "presentation": {
+        "question": "Как в Git записать ссылку на коммит, предшествующий текущему? Формат как HEAD~3."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "HEAD~1",
+          "HEAD~",
+          "HEAD^"
+        ],
+        "caseSensitive": false,
+        "explanation": "HEAD~1 — на один коммит назад."
+      }
+    },
+    {
+      "slug": "diff-staged",
+      "type": "quiz.single_choice",
+      "title": "Что войдёт",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-diff"
+      ],
+      "presentation": {
+        "question": "Как увидеть изменения, которые уже в индексе и войдут в коммит?",
+        "options": [
+          {
+            "id": "staged",
+            "text": "`git diff --staged`"
+          },
+          {
+            "id": "plain",
+            "text": "`git diff`"
+          },
+          {
+            "id": "show",
+            "text": "`git show`"
+          },
+          {
+            "id": "log",
+            "text": "`git log -p`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "staged",
+        "explanation": "Просто git diff показывает то, что ещё не добавлено."
+      }
+    },
+    {
+      "slug": "diff-sign",
+      "type": "quiz.single_choice",
+      "title": "Знаки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-diff"
+      ],
+      "presentation": {
+        "question": "Что означает строка, начинающаяся с `+` в diff?",
+        "options": [
+          {
+            "id": "added",
+            "text": "Добавленная строка"
+          },
+          {
+            "id": "removed",
+            "text": "Удалённая строка"
+          },
+          {
+            "id": "comment",
+            "text": "Комментарий"
+          },
+          {
+            "id": "moved",
+            "text": "Перемещённая строка"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "added",
+        "explanation": "Плюс — добавлено, минус — удалено."
+      }
+    },
+    {
+      "slug": "diff-old",
+      "type": "quiz.single_choice",
+      "title": "Старая версия",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-diff"
+      ],
+      "presentation": {
+        "question": "Как посмотреть файл index.html в том виде, каким он был в коммите 3f2a91c?",
+        "options": [
+          {
+            "id": "show",
+            "text": "`git show 3f2a91c:index.html`"
+          },
+          {
+            "id": "cat",
+            "text": "`cat 3f2a91c index.html`"
+          },
+          {
+            "id": "log",
+            "text": "`git log index.html`"
+          },
+          {
+            "id": "diff",
+            "text": "`git diff index.html`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "show",
+        "explanation": "Формат коммит:путь даёт содержимое файла в той версии."
+      }
+    },
+    {
+      "slug": "bl-what",
+      "type": "quiz.single_choice",
+      "title": "blame",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-blame"
+      ],
+      "presentation": {
+        "question": "Что показывает `git blame файл`?",
+        "options": [
+          {
+            "id": "lines",
+            "text": "Для каждой строки — коммит, автора и дату последнего изменения"
+          },
+          {
+            "id": "errors",
+            "text": "Ошибки в файле"
+          },
+          {
+            "id": "size",
+            "text": "Размер файла по коммитам"
+          },
+          {
+            "id": "delete",
+            "text": "Удалённые строки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lines",
+        "explanation": "blame — происхождение каждой строки."
+      }
+    },
+    {
+      "slug": "bl-bisect",
+      "type": "quiz.single_choice",
+      "title": "Сломалось",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-blame"
+      ],
+      "presentation": {
+        "question": "Тест сломан, а месяц назад работал. Что быстрее всего найдёт виновный коммит?",
+        "options": [
+          {
+            "id": "bisect",
+            "text": "`git bisect`"
+          },
+          {
+            "id": "log",
+            "text": "Читать `git log` вручную"
+          },
+          {
+            "id": "blame",
+            "text": "`git blame` всех файлов"
+          },
+          {
+            "id": "revert",
+            "text": "`git revert` всех коммитов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bisect",
+        "explanation": "Двоичный поиск делит диапазон пополам на каждом шаге."
+      }
+    },
+    {
+      "slug": "bl-run",
+      "type": "quiz.single_choice",
+      "title": "Автоматически",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-blame"
+      ],
+      "presentation": {
+        "question": "Как поручить bisect самому проверять каждый шаг?",
+        "options": [
+          {
+            "id": "run",
+            "text": "`git bisect run npm test`"
+          },
+          {
+            "id": "auto",
+            "text": "`git bisect --auto`"
+          },
+          {
+            "id": "good",
+            "text": "`git bisect good`"
+          },
+          {
+            "id": "reset",
+            "text": "`git bisect reset`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "run",
+        "explanation": "Код 0 — good, иначе — bad."
+      }
+    },
+    {
+      "slug": "rs-file",
+      "type": "quiz.single_choice",
+      "title": "Откатить файл",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-restore"
+      ],
+      "presentation": {
+        "question": "Как отменить все незакоммиченные правки в app.js?",
+        "options": [
+          {
+            "id": "restore",
+            "text": "`git restore app.js`"
+          },
+          {
+            "id": "revert",
+            "text": "`git revert app.js`"
+          },
+          {
+            "id": "rm",
+            "text": "`git rm app.js`"
+          },
+          {
+            "id": "log",
+            "text": "`git log app.js`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "restore",
+        "explanation": "restore возвращает файл к последнему сохранённому состоянию."
+      }
+    },
+    {
+      "slug": "rs-amend",
+      "type": "quiz.single_choice",
+      "title": "Забыл файл",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-restore"
+      ],
+      "presentation": {
+        "question": "Ты сделал коммит и понял, что забыл добавить файл. Коммит ещё не отправлен. Что сделать?",
+        "options": [
+          {
+            "id": "amend",
+            "text": "`git add файл && git commit --amend --no-edit`"
+          },
+          {
+            "id": "new",
+            "text": "Удалить репозиторий и начать заново"
+          },
+          {
+            "id": "reset",
+            "text": "`git reset --hard`"
+          },
+          {
+            "id": "push",
+            "text": "`git push --force`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "amend",
+        "explanation": "amend заменит последний коммит на исправленный."
+      }
+    },
+    {
+      "slug": "rs-pushed",
+      "type": "quiz.single_choice",
+      "title": "Уже отправлен",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-restore"
+      ],
+      "presentation": {
+        "question": "Почему нельзя делать amend коммита, который уже отправлен в общую ветку?",
+        "options": [
+          {
+            "id": "rewrite",
+            "text": "amend создаёт коммит с новым хешем, и история у коллег разойдётся"
+          },
+          {
+            "id": "slow",
+            "text": "Это медленно"
+          },
+          {
+            "id": "forbidden",
+            "text": "GitHub это запрещает всегда"
+          },
+          {
+            "id": "lost",
+            "text": "Удалится репозиторий"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rewrite",
+        "explanation": "Переписывай только неопубликованную историю."
+      }
+    },
+    {
+      "slug": "rr-published",
+      "type": "quiz.single_choice",
+      "title": "Уже в main",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-reset"
+      ],
+      "presentation": {
+        "question": "Ошибочный коммит уже в общей ветке main. Как его отменить?",
+        "options": [
+          {
+            "id": "revert",
+            "text": "`git revert хеш`"
+          },
+          {
+            "id": "hard",
+            "text": "`git reset --hard хеш~1` и push --force"
+          },
+          {
+            "id": "amend",
+            "text": "`git commit --amend`"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить репозиторий"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "revert",
+        "explanation": "revert добавляет отменяющий коммит и не ломает историю коллег."
+      }
+    },
+    {
+      "slug": "rr-soft",
+      "type": "quiz.single_choice",
+      "title": "Объединить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-reset"
+      ],
+      "presentation": {
+        "question": "Как превратить три последних неотправленных коммита в один?",
+        "options": [
+          {
+            "id": "soft",
+            "text": "`git reset --soft HEAD~3`, затем `git commit`"
+          },
+          {
+            "id": "hard",
+            "text": "`git reset --hard HEAD~3`"
+          },
+          {
+            "id": "revert",
+            "text": "`git revert HEAD~3`"
+          },
+          {
+            "id": "log",
+            "text": "`git log -3`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "soft",
+        "explanation": "--soft оставит все изменения в индексе для нового коммита."
+      }
+    },
+    {
+      "slug": "rr-hard",
+      "type": "quiz.single_choice",
+      "title": "Опасно",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-reset"
+      ],
+      "presentation": {
+        "question": "Что делает `git reset --hard`?",
+        "options": [
+          {
+            "id": "destroy",
+            "text": "Переносит ветку и уничтожает незакоммиченные изменения"
+          },
+          {
+            "id": "safe",
+            "text": "Безопасно отменяет коммит новым коммитом"
+          },
+          {
+            "id": "stage",
+            "text": "Убирает файлы из индекса"
+          },
+          {
+            "id": "log",
+            "text": "Показывает историю"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "destroy",
+        "explanation": "Незакоммиченные правки после --hard не восстановить."
+      }
+    },
+    {
+      "slug": "rl-what",
+      "type": "quiz.single_choice",
+      "title": "reflog",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-reflog"
+      ],
+      "presentation": {
+        "question": "Что хранит `git reflog`?",
+        "options": [
+          {
+            "id": "moves",
+            "text": "Журнал перемещений HEAD: коммиты, переключения, reset"
+          },
+          {
+            "id": "remote",
+            "text": "Историю удалённого репозитория"
+          },
+          {
+            "id": "errors",
+            "text": "Ошибки Git"
+          },
+          {
+            "id": "files",
+            "text": "Удалённые файлы"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "moves",
+        "explanation": "reflog локальный и хранит, где был HEAD."
+      }
+    },
+    {
+      "slug": "rl-save",
+      "type": "quiz.single_choice",
+      "title": "Спасти",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-reflog"
+      ],
+      "presentation": {
+        "question": "После `git reset --hard HEAD~1` пропал нужный коммит. Как его вернуть?",
+        "options": [
+          {
+            "id": "reflog",
+            "text": "Найти его в `git reflog` и вернуться к нему"
+          },
+          {
+            "id": "never",
+            "text": "Никак, он удалён"
+          },
+          {
+            "id": "revert",
+            "text": "`git revert HEAD`"
+          },
+          {
+            "id": "clone",
+            "text": "Склонировать репозиторий заново"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "reflog",
+        "explanation": "Коммит остаётся в базе, reflog покажет его хеш."
+      }
+    },
+    {
+      "slug": "rl-lost",
+      "type": "quiz.single_choice",
+      "title": "Не спасти",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-reflog"
+      ],
+      "presentation": {
+        "question": "Что reflog НЕ поможет вернуть?",
+        "options": [
+          {
+            "id": "uncommitted",
+            "text": "Правки, которые ни разу не были закоммичены"
+          },
+          {
+            "id": "commit",
+            "text": "Коммит после reset --hard"
+          },
+          {
+            "id": "branch",
+            "text": "Удалённую локальную ветку"
+          },
+          {
+            "id": "rebase",
+            "text": "Состояние до rebase"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "uncommitted",
+        "explanation": "reflog знает только коммиты."
+      }
+    },
+    {
+      "slug": "br-what",
+      "type": "quiz.single_choice",
+      "title": "Что такое ветка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-branch"
+      ],
+      "presentation": {
+        "question": "Что такое ветка в Git?",
+        "options": [
+          {
+            "id": "pointer",
+            "text": "Имя, которое указывает на коммит и сдвигается с новыми коммитами"
+          },
+          {
+            "id": "copy",
+            "text": "Полная копия папки проекта"
+          },
+          {
+            "id": "server",
+            "text": "Отдельный сервер"
+          },
+          {
+            "id": "file",
+            "text": "Отдельный файл с кодом"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pointer",
+        "explanation": "Поэтому ветки создаются мгновенно и ничего не весят."
+      }
+    },
+    {
+      "slug": "br-new",
+      "type": "quiz.single_choice",
+      "title": "Новая",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-branch"
+      ],
+      "presentation": {
+        "question": "Как создать ветку feature/menu и сразу на неё переключиться?",
+        "options": [
+          {
+            "id": "switch",
+            "text": "`git switch -c feature/menu`"
+          },
+          {
+            "id": "branch",
+            "text": "`git branch feature/menu`"
+          },
+          {
+            "id": "commit",
+            "text": "`git commit feature/menu`"
+          },
+          {
+            "id": "init",
+            "text": "`git init feature/menu`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "switch",
+        "explanation": "git branch создаст ветку, но не переключит на неё."
+      }
+    },
+    {
+      "slug": "br-delete",
+      "type": "quiz.single_choice",
+      "title": "Удалить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-branch"
+      ],
+      "presentation": {
+        "question": "Как удалить уже слитую ветку feature/menu?",
+        "options": [
+          {
+            "id": "d",
+            "text": "`git branch -d feature/menu`"
+          },
+          {
+            "id": "rm",
+            "text": "`git rm feature/menu`"
+          },
+          {
+            "id": "reset",
+            "text": "`git reset feature/menu`"
+          },
+          {
+            "id": "revert",
+            "text": "`git revert feature/menu`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "d",
+        "explanation": "-d откажется удалять неслитую ветку, -D удалит принудительно."
+      }
+    },
+    {
+      "slug": "mg-ff",
+      "type": "quiz.single_choice",
+      "title": "Перемотка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-merge"
+      ],
+      "presentation": {
+        "question": "Когда при слиянии получается fast-forward?",
+        "options": [
+          {
+            "id": "ahead",
+            "text": "Когда в целевой ветке нет новых коммитов с момента ответвления"
+          },
+          {
+            "id": "conflict",
+            "text": "Когда есть конфликт"
+          },
+          {
+            "id": "always",
+            "text": "Всегда"
+          },
+          {
+            "id": "remote",
+            "text": "Только при git pull"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ahead",
+        "explanation": "Тогда достаточно сдвинуть метку вперёд."
+      }
+    },
+    {
+      "slug": "mg-parents",
+      "type": "quiz.single_choice",
+      "title": "Два родителя",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-merge"
+      ],
+      "presentation": {
+        "question": "Чем коммит слияния отличается от обычного?",
+        "options": [
+          {
+            "id": "two",
+            "text": "У него два родительских коммита"
+          },
+          {
+            "id": "empty",
+            "text": "Он всегда пустой"
+          },
+          {
+            "id": "hash",
+            "text": "У него нет хеша"
+          },
+          {
+            "id": "remote",
+            "text": "Он хранится только на сервере"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "two",
+        "explanation": "Он соединяет две линии истории."
+      }
+    },
+    {
+      "slug": "mg-where",
+      "type": "quiz.single_choice",
+      "title": "Куда сливать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-merge"
+      ],
+      "presentation": {
+        "question": "Ты хочешь влить feature/cart в main. Где нужно находиться?",
+        "options": [
+          {
+            "id": "main",
+            "text": "В main, затем `git merge feature/cart`"
+          },
+          {
+            "id": "feature",
+            "text": "В feature/cart, затем `git merge feature/cart`"
+          },
+          {
+            "id": "any",
+            "text": "Неважно"
+          },
+          {
+            "id": "detached",
+            "text": "Ни в какой ветке"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "main",
+        "explanation": "merge вливает указанную ветку в текущую."
+      }
+    },
+    {
+      "slug": "bm-ghflow",
+      "type": "quiz.single_choice",
+      "title": "GitHub Flow",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-flow"
+      ],
+      "presentation": {
+        "question": "Что характерно для GitHub Flow?",
+        "options": [
+          {
+            "id": "main",
+            "text": "Рабочая main и ветка с pull request на каждую задачу"
+          },
+          {
+            "id": "develop",
+            "text": "Обязательная ветка develop"
+          },
+          {
+            "id": "no-branch",
+            "text": "Работа без веток"
+          },
+          {
+            "id": "release",
+            "text": "Ветка release на каждую задачу"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "main",
+        "explanation": "develop и release — признаки git flow."
+      }
+    },
+    {
+      "slug": "bm-short",
+      "type": "quiz.single_choice",
+      "title": "Короткие ветки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-flow"
+      ],
+      "presentation": {
+        "question": "Почему короткоживущие ветки лучше долгих?",
+        "options": [
+          {
+            "id": "conflicts",
+            "text": "Меньше конфликтов и изменения быстрее доходят до main"
+          },
+          {
+            "id": "space",
+            "text": "Занимают меньше места"
+          },
+          {
+            "id": "secret",
+            "text": "Их не видно коллегам"
+          },
+          {
+            "id": "speed",
+            "text": "Git работает быстрее"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "conflicts",
+        "explanation": "Чем дольше ветка живёт отдельно, тем больше она расходится с main."
+      }
+    },
+    {
+      "slug": "bm-name",
+      "type": "quiz.single_choice",
+      "title": "Имя",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-flow"
+      ],
+      "presentation": {
+        "question": "Какое имя ветки лучше для исправления ошибки входа?",
+        "options": [
+          {
+            "id": "fix",
+            "text": "`fix/login-redirect`"
+          },
+          {
+            "id": "my",
+            "text": "`my-branch`"
+          },
+          {
+            "id": "date",
+            "text": "`7-ноября`"
+          },
+          {
+            "id": "space",
+            "text": "`fix login`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fix",
+        "explanation": "Тип и короткое описание латиницей через дефис."
+      }
+    },
+    {
+      "slug": "cr-why",
+      "type": "quiz.single_choice",
+      "title": "Почему",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-conflict-read"
+      ],
+      "presentation": {
+        "question": "Когда возникает конфликт слияния?",
+        "options": [
+          {
+            "id": "same",
+            "text": "Обе ветки по-разному изменили одни и те же строки"
+          },
+          {
+            "id": "different",
+            "text": "Ветки изменили разные файлы"
+          },
+          {
+            "id": "big",
+            "text": "Ветка слишком большая"
+          },
+          {
+            "id": "old",
+            "text": "Ветке больше недели"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "same",
+        "explanation": "Разные файлы и разные места Git сливает сам."
+      }
+    },
+    {
+      "slug": "cr-head",
+      "type": "quiz.single_choice",
+      "title": "Чья версия",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-conflict-read"
+      ],
+      "presentation": {
+        "question": "Что находится между `<<<<<<< HEAD` и `=======`?",
+        "options": [
+          {
+            "id": "current",
+            "text": "Версия текущей ветки"
+          },
+          {
+            "id": "incoming",
+            "text": "Версия вливаемой ветки"
+          },
+          {
+            "id": "base",
+            "text": "Исходная версия до обеих правок"
+          },
+          {
+            "id": "both",
+            "text": "Обе версии"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "current",
+        "explanation": "HEAD — там, где ты сейчас."
+      }
+    },
+    {
+      "slug": "cr-markers",
+      "type": "quiz.single_choice",
+      "title": "Маркеры",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-conflict-read"
+      ],
+      "presentation": {
+        "question": "Что нужно сделать с маркерами `<<<<<<<`, `=======` и `>>>>>>>` при разрешении?",
+        "options": [
+          {
+            "id": "remove",
+            "text": "Удалить их, оставив правильный код"
+          },
+          {
+            "id": "keep",
+            "text": "Оставить, Git удалит сам"
+          },
+          {
+            "id": "comment",
+            "text": "Закомментировать"
+          },
+          {
+            "id": "move",
+            "text": "Перенести в конец файла"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "remove",
+        "explanation": "Маркеры в коммите сломают файл."
+      }
+    },
+    {
+      "slug": "rv-done",
+      "type": "quiz.single_choice",
+      "title": "Отметить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-conflict-resolve"
+      ],
+      "presentation": {
+        "question": "Ты убрал маркеры из файла. Что дальше?",
+        "options": [
+          {
+            "id": "add",
+            "text": "`git add файл`, затем `git commit`"
+          },
+          {
+            "id": "push",
+            "text": "Сразу `git push`"
+          },
+          {
+            "id": "abort",
+            "text": "`git merge --abort`"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего, Git поймёт сам"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "add",
+        "explanation": "git add отмечает конфликт разрешённым."
+      }
+    },
+    {
+      "slug": "rv-abort",
+      "type": "quiz.single_choice",
+      "title": "Передумал",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-conflict-resolve"
+      ],
+      "presentation": {
+        "question": "Как отменить слияние с конфликтами и вернуться к состоянию до merge?",
+        "options": [
+          {
+            "id": "abort",
+            "text": "`git merge --abort`"
+          },
+          {
+            "id": "revert",
+            "text": "`git revert HEAD`"
+          },
+          {
+            "id": "restore",
+            "text": "`git restore .`"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить ветку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "abort",
+        "explanation": "--abort возвращает всё как было."
+      }
+    },
+    {
+      "slug": "rv-lock",
+      "type": "quiz.single_choice",
+      "title": "lock-файл",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-conflict-resolve"
+      ],
+      "presentation": {
+        "question": "Конфликт в package-lock.json. Как проще всего поступить?",
+        "options": [
+          {
+            "id": "side",
+            "text": "Взять одну сторону и заново выполнить npm install"
+          },
+          {
+            "id": "manual",
+            "text": "Вручную объединять тысячи строк"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить lock-файл навсегда"
+          },
+          {
+            "id": "ignore",
+            "text": "Закоммитить с маркерами"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "side",
+        "explanation": "Сгенерированный файл проще пересоздать, чем сливать руками."
+      }
+    },
+    {
+      "slug": "av-update",
+      "type": "quiz.single_choice",
+      "title": "Привычка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-conflict-avoid"
+      ],
+      "presentation": {
+        "question": "Что сильнее всего уменьшает число больших конфликтов?",
+        "options": [
+          {
+            "id": "often",
+            "text": "Регулярно обновлять свою ветку от main"
+          },
+          {
+            "id": "late",
+            "text": "Сливать всё в конце месяца"
+          },
+          {
+            "id": "solo",
+            "text": "Работать без веток"
+          },
+          {
+            "id": "force",
+            "text": "Всегда делать push --force"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "often",
+        "explanation": "Маленькие конфликты по ходу проще одного большого."
+      }
+    },
+    {
+      "slug": "av-format",
+      "type": "quiz.single_choice",
+      "title": "Форматтер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-conflict-avoid"
+      ],
+      "presentation": {
+        "question": "Как форматтер вроде Prettier уменьшает конфликты?",
+        "options": [
+          {
+            "id": "same",
+            "text": "Код у всех оформлен одинаково, и правки отступов не спорят"
+          },
+          {
+            "id": "merge",
+            "text": "Он сам сливает ветки"
+          },
+          {
+            "id": "lock",
+            "text": "Он блокирует файлы"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "same",
+        "explanation": "Конфликты остаются только из-за смысловых правок."
+      }
+    },
+    {
+      "slug": "av-rerere",
+      "type": "quiz.short_text",
+      "title": "Запомнить",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "git-conflict-avoid"
+      ],
+      "presentation": {
+        "question": "Как называется настройка Git, которая запоминает решения конфликтов и повторяет их? Одно слово."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "rerere"
+        ],
+        "caseSensitive": false,
+        "explanation": "Reuse recorded resolution."
+      }
+    },
+    {
+      "slug": "rp-origin",
+      "type": "quiz.single_choice",
+      "title": "origin",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-push"
+      ],
+      "presentation": {
+        "question": "Что такое origin?",
+        "options": [
+          {
+            "id": "name",
+            "text": "Обычное имя главного удалённого репозитория"
+          },
+          {
+            "id": "main",
+            "text": "Главная ветка"
+          },
+          {
+            "id": "first",
+            "text": "Первый коммит"
+          },
+          {
+            "id": "github",
+            "text": "Сайт GitHub"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "name",
+        "explanation": "Имя можно поменять, но так принято."
+      }
+    },
+    {
+      "slug": "rp-u",
+      "type": "quiz.single_choice",
+      "title": "Флаг -u",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-push"
+      ],
+      "presentation": {
+        "question": "Зачем при первой отправке ветки пишут `git push -u origin ветка`?",
+        "options": [
+          {
+            "id": "track",
+            "text": "Чтобы связать локальную ветку с удалённой и дальше писать просто git push"
+          },
+          {
+            "id": "update",
+            "text": "Чтобы обновить Git"
+          },
+          {
+            "id": "user",
+            "text": "Чтобы указать пользователя"
+          },
+          {
+            "id": "undo",
+            "text": "Чтобы можно было отменить push"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "track",
+        "explanation": "-u — set upstream."
+      }
+    },
+    {
+      "slug": "rp-ahead",
+      "type": "quiz.single_choice",
+      "title": "ahead",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-push"
+      ],
+      "presentation": {
+        "question": "status пишет «ahead of 'origin/main' by 2 commits». Что это значит?",
+        "options": [
+          {
+            "id": "unpushed",
+            "text": "Два твоих коммита ещё не отправлены"
+          },
+          {
+            "id": "behind",
+            "text": "На сервере два новых коммита, которых нет у тебя"
+          },
+          {
+            "id": "conflict",
+            "text": "Два конфликта"
+          },
+          {
+            "id": "deleted",
+            "text": "Удалены два коммита"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "unpushed",
+        "explanation": "behind означало бы, что отстаёшь ты."
+      }
+    },
+    {
+      "slug": "fp-fetch",
+      "type": "quiz.single_choice",
+      "title": "fetch",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-pull"
+      ],
+      "presentation": {
+        "question": "Чем `git fetch` отличается от `git pull`?",
+        "options": [
+          {
+            "id": "nomerge",
+            "text": "fetch только скачивает, не меняя твои ветки; pull ещё и вливает"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          },
+          {
+            "id": "push",
+            "text": "fetch отправляет коммиты"
+          },
+          {
+            "id": "delete",
+            "text": "fetch удаляет старые ветки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "nomerge",
+        "explanation": "pull = fetch + merge (или rebase)."
+      }
+    },
+    {
+      "slug": "fp-rejected",
+      "type": "quiz.single_choice",
+      "title": "Отклонено",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-pull"
+      ],
+      "presentation": {
+        "question": "push отклонён: «Updates were rejected… fetch first». Что делать?",
+        "options": [
+          {
+            "id": "pull",
+            "text": "`git pull --rebase`, затем снова `git push`"
+          },
+          {
+            "id": "force",
+            "text": "`git push --force`"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить удалённую ветку"
+          },
+          {
+            "id": "clone",
+            "text": "Склонировать заново"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pull",
+        "explanation": "force перезаписал бы коммиты коллег."
+      }
+    },
+    {
+      "slug": "fp-rebase",
+      "type": "quiz.single_choice",
+      "title": "Без лишних слияний",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-pull"
+      ],
+      "presentation": {
+        "question": "Что делает `git pull --rebase`?",
+        "options": [
+          {
+            "id": "replay",
+            "text": "Переносит твои неотправленные коммиты поверх свежих удалённых"
+          },
+          {
+            "id": "reset",
+            "text": "Удаляет твои коммиты"
+          },
+          {
+            "id": "merge",
+            "text": "Всегда создаёт коммит слияния"
+          },
+          {
+            "id": "push",
+            "text": "Отправляет коммиты"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "replay",
+        "explanation": "История остаётся прямой."
+      }
+    },
+    {
+      "slug": "fo-lease",
+      "type": "quiz.single_choice",
+      "title": "Безопаснее",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-force"
+      ],
+      "presentation": {
+        "question": "Чем `--force-with-lease` лучше `--force`?",
+        "options": [
+          {
+            "id": "check",
+            "text": "Откажет, если на сервере появились чужие коммиты, которых ты не видел"
+          },
+          {
+            "id": "faster",
+            "text": "Быстрее отправляет"
+          },
+          {
+            "id": "undo",
+            "text": "Позволяет отменить push"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "check",
+        "explanation": "Чужая работа не будет молча стёрта."
+      }
+    },
+    {
+      "slug": "fo-main",
+      "type": "quiz.single_choice",
+      "title": "main",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-force"
+      ],
+      "presentation": {
+        "question": "Можно ли делать force push в общую ветку main?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет: это сломает историю у всей команды"
+          },
+          {
+            "id": "yes",
+            "text": "Да, если очень нужно"
+          },
+          {
+            "id": "night",
+            "text": "Только ночью"
+          },
+          {
+            "id": "admin",
+            "text": "Да, если ты администратор"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Ошибки в main отменяют через revert."
+      }
+    },
+    {
+      "slug": "fo-protect",
+      "type": "quiz.single_choice",
+      "title": "Защита",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-force"
+      ],
+      "presentation": {
+        "question": "Что даёт защита ветки main на GitHub?",
+        "options": [
+          {
+            "id": "rules",
+            "text": "Запрет force push и слияние только через проверенный pull request"
+          },
+          {
+            "id": "hide",
+            "text": "Скрывает ветку от людей"
+          },
+          {
+            "id": "backup",
+            "text": "Резервную копию на диск"
+          },
+          {
+            "id": "speed",
+            "text": "Ускоряет сборку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rules",
+        "explanation": "Защита работает как предохранитель."
+      }
+    },
+    {
+      "slug": "pr-what",
+      "type": "quiz.single_choice",
+      "title": "Что такое PR",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-pr"
+      ],
+      "presentation": {
+        "question": "Что такое pull request?",
+        "options": [
+          {
+            "id": "proposal",
+            "text": "Предложение влить ветку в другую, с обсуждением и проверками"
+          },
+          {
+            "id": "download",
+            "text": "Скачивание репозитория"
+          },
+          {
+            "id": "backup",
+            "text": "Резервная копия ветки"
+          },
+          {
+            "id": "command",
+            "text": "Команда git pull"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "proposal",
+        "explanation": "Несмотря на название, это не git pull."
+      }
+    },
+    {
+      "slug": "pr-squash",
+      "type": "quiz.single_choice",
+      "title": "Squash",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-pr"
+      ],
+      "presentation": {
+        "question": "Что делает squash merge?",
+        "options": [
+          {
+            "id": "one",
+            "text": "Сжимает все коммиты ветки в один коммит в main"
+          },
+          {
+            "id": "delete",
+            "text": "Удаляет ветку без слияния"
+          },
+          {
+            "id": "all",
+            "text": "Переносит все коммиты как есть"
+          },
+          {
+            "id": "revert",
+            "text": "Отменяет PR"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "Один коммит на задачу — чистая история main."
+      }
+    },
+    {
+      "slug": "pr-desc",
+      "type": "quiz.multiple_choice",
+      "title": "Описание",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "git-pr"
+      ],
+      "presentation": {
+        "question": "Что стоит написать в описании pull request?",
+        "options": [
+          {
+            "id": "what",
+            "text": "Что изменилось"
+          },
+          {
+            "id": "why",
+            "text": "Зачем"
+          },
+          {
+            "id": "how",
+            "text": "Как проверить"
+          },
+          {
+            "id": "password",
+            "text": "Пароль от базы для удобства ревьюера"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "what",
+          "why",
+          "how"
+        ],
+        "explanation": "Секреты никогда не пишут в PR."
+      }
+    },
+    {
+      "slug": "rv-tone",
+      "type": "quiz.single_choice",
+      "title": "Тон",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-review"
+      ],
+      "presentation": {
+        "question": "Какой комментарий в ревью лучше?",
+        "options": [
+          {
+            "id": "kind",
+            "text": "«Здесь упадёт при пустом списке — может, проверим длину?»"
+          },
+          {
+            "id": "rude",
+            "text": "«Ты опять всё сломал»"
+          },
+          {
+            "id": "vague",
+            "text": "«Плохо»"
+          },
+          {
+            "id": "none",
+            "text": "Молча отклонить PR"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "kind",
+        "explanation": "Конкретно, о коде и с предложением."
+      }
+    },
+    {
+      "slug": "rv-nit",
+      "type": "quiz.single_choice",
+      "title": "nit",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-review"
+      ],
+      "presentation": {
+        "question": "Что обычно означает пометка «nit:» в комментарии ревью?",
+        "options": [
+          {
+            "id": "minor",
+            "text": "Мелочь, которую можно не исправлять, если не согласен"
+          },
+          {
+            "id": "block",
+            "text": "Блокирующая ошибка"
+          },
+          {
+            "id": "security",
+            "text": "Уязвимость"
+          },
+          {
+            "id": "approve",
+            "text": "Одобрение"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "minor",
+        "explanation": "От nitpick — придирка."
+      }
+    },
+    {
+      "slug": "rv-owners",
+      "type": "quiz.short_text",
+      "title": "Ответственные",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "git-review"
+      ],
+      "presentation": {
+        "question": "Как называется файл GitHub, который назначает ревьюеров для папок? Латиницей, как пишется."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "CODEOWNERS"
+        ],
+        "caseSensitive": false,
+        "explanation": "Лежит в .github/CODEOWNERS."
+      }
+    },
+    {
+      "slug": "fi-fork",
+      "type": "quiz.single_choice",
+      "title": "Форк",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-forks"
+      ],
+      "presentation": {
+        "question": "Зачем делают fork чужого репозитория?",
+        "options": [
+          {
+            "id": "contribute",
+            "text": "Чтобы вносить изменения без прав на запись в оригинал и предложить их через PR"
+          },
+          {
+            "id": "steal",
+            "text": "Чтобы забрать проект себе"
+          },
+          {
+            "id": "backup",
+            "text": "Чтобы сделать резервную копию GitHub"
+          },
+          {
+            "id": "speed",
+            "text": "Чтобы проект работал быстрее"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "contribute",
+        "explanation": "Изменения из форка возвращаются в оригинал через pull request."
+      }
+    },
+    {
+      "slug": "fi-close",
+      "type": "quiz.single_choice",
+      "title": "Закрыть задачу",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-forks"
+      ],
+      "presentation": {
+        "question": "Как автоматически закрыть задачу #12 при слиянии PR?",
+        "options": [
+          {
+            "id": "fixes",
+            "text": "Написать «Fixes #12» в описании или коммите"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить задачу"
+          },
+          {
+            "id": "label",
+            "text": "Поставить метку bug"
+          },
+          {
+            "id": "star",
+            "text": "Поставить звезду репозиторию"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fixes",
+        "explanation": "Ключевые слова fixes, closes, resolves."
+      }
+    },
+    {
+      "slug": "fi-actions",
+      "type": "quiz.single_choice",
+      "title": "Actions",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-forks"
+      ],
+      "presentation": {
+        "question": "Где описывают проверки GitHub Actions?",
+        "options": [
+          {
+            "id": "workflows",
+            "text": "В файлах .github/workflows/*.yml"
+          },
+          {
+            "id": "readme",
+            "text": "В README.md"
+          },
+          {
+            "id": "gitignore",
+            "text": "В .gitignore"
+          },
+          {
+            "id": "package",
+            "text": "В package-lock.json"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "workflows",
+        "explanation": "Каждый файл — отдельный workflow."
+      }
+    },
+    {
+      "slug": "rb-what",
+      "type": "quiz.single_choice",
+      "title": "Что делает",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-rebase"
+      ],
+      "presentation": {
+        "question": "Что делает `git rebase main` в ветке feature?",
+        "options": [
+          {
+            "id": "replay",
+            "text": "Переносит коммиты feature поверх свежего main, создавая новые коммиты"
+          },
+          {
+            "id": "merge",
+            "text": "Вливает feature в main"
+          },
+          {
+            "id": "delete",
+            "text": "Удаляет main"
+          },
+          {
+            "id": "copy",
+            "text": "Копирует main в новую папку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "replay",
+        "explanation": "Коммиты применяются заново, поэтому у них новые хеши."
+      }
+    },
+    {
+      "slug": "rb-continue",
+      "type": "quiz.single_choice",
+      "title": "Конфликт",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-rebase"
+      ],
+      "presentation": {
+        "question": "Во время rebase возник конфликт, ты его разрешил и сделал git add. Что дальше?",
+        "options": [
+          {
+            "id": "continue",
+            "text": "`git rebase --continue`"
+          },
+          {
+            "id": "commit",
+            "text": "`git commit -m`"
+          },
+          {
+            "id": "push",
+            "text": "`git push`"
+          },
+          {
+            "id": "merge",
+            "text": "`git merge --continue`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "continue",
+        "explanation": "Rebase продолжит переносить следующие коммиты."
+      }
+    },
+    {
+      "slug": "rb-golden",
+      "type": "quiz.single_choice",
+      "title": "Золотое правило",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-rebase"
+      ],
+      "presentation": {
+        "question": "Когда rebase делать НЕЛЬЗЯ?",
+        "options": [
+          {
+            "id": "shared",
+            "text": "Когда коммиты уже в общей ветке, на которой работают другие"
+          },
+          {
+            "id": "own",
+            "text": "В своей ветке до PR"
+          },
+          {
+            "id": "local",
+            "text": "Когда ничего не отправлено"
+          },
+          {
+            "id": "morning",
+            "text": "Утром"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "shared",
+        "explanation": "Переписывай только свою, неопубликованную историю."
+      }
+    },
+    {
+      "slug": "ri-fixup",
+      "type": "quiz.single_choice",
+      "title": "fixup",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-rebase-i"
+      ],
+      "presentation": {
+        "question": "Чем `fixup` отличается от `squash` в rebase -i?",
+        "options": [
+          {
+            "id": "msg",
+            "text": "fixup склеивает коммит и отбрасывает его сообщение, squash объединяет сообщения"
+          },
+          {
+            "id": "delete",
+            "text": "fixup удаляет коммит"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          },
+          {
+            "id": "move",
+            "text": "fixup переносит коммит в конец"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "msg",
+        "explanation": "Для «опечатка» подходит fixup."
+      }
+    },
+    {
+      "slug": "ri-reword",
+      "type": "quiz.single_choice",
+      "title": "Сообщение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-rebase-i"
+      ],
+      "presentation": {
+        "question": "Как поменять только сообщение старого коммита в rebase -i?",
+        "options": [
+          {
+            "id": "reword",
+            "text": "Заменить pick на reword"
+          },
+          {
+            "id": "drop",
+            "text": "Заменить на drop"
+          },
+          {
+            "id": "edit",
+            "text": "Удалить строку"
+          },
+          {
+            "id": "squash",
+            "text": "Заменить на squash"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "reword",
+        "explanation": "reword откроет редактор для сообщения."
+      }
+    },
+    {
+      "slug": "ri-drop",
+      "type": "quiz.short_text",
+      "title": "Удалить",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "git-rebase-i"
+      ],
+      "presentation": {
+        "question": "Какое слово в rebase -i удаляет коммит из истории?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "drop"
+        ],
+        "caseSensitive": false,
+        "explanation": "Можно и просто удалить строку."
+      }
+    },
+    {
+      "slug": "cp-what",
+      "type": "quiz.single_choice",
+      "title": "cherry-pick",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-cherry-pick"
+      ],
+      "presentation": {
+        "question": "Что делает `git cherry-pick хеш`?",
+        "options": [
+          {
+            "id": "apply",
+            "text": "Применяет изменения одного коммита к текущей ветке новым коммитом"
+          },
+          {
+            "id": "move",
+            "text": "Перемещает коммит, удаляя его из старой ветки"
+          },
+          {
+            "id": "merge",
+            "text": "Сливает две ветки целиком"
+          },
+          {
+            "id": "tag",
+            "text": "Ставит тег"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "apply",
+        "explanation": "Исходный коммит остаётся на месте."
+      }
+    },
+    {
+      "slug": "cp-when",
+      "type": "quiz.single_choice",
+      "title": "Когда",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-cherry-pick"
+      ],
+      "presentation": {
+        "question": "Когда cherry-pick уместен?",
+        "options": [
+          {
+            "id": "hotfix",
+            "text": "Нужно перенести срочное исправление в ветку выпуска"
+          },
+          {
+            "id": "always",
+            "text": "Вместо любого слияния"
+          },
+          {
+            "id": "delete",
+            "text": "Чтобы удалить коммит"
+          },
+          {
+            "id": "review",
+            "text": "Чтобы провести ревью"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hotfix",
+        "explanation": "Для отдельных коммитов, а не целых веток."
+      }
+    },
+    {
+      "slug": "cp-tag",
+      "type": "quiz.short_text",
+      "title": "Метка версии",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "git-cherry-pick"
+      ],
+      "presentation": {
+        "question": "Какая команда Git ставит неподвижную метку версии на коммит? Одно слово после git."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "tag",
+          "git tag"
+        ],
+        "caseSensitive": false,
+        "explanation": "git tag -a v1.0.0."
+      }
+    },
+    {
+      "slug": "gi-what",
+      "type": "quiz.single_choice",
+      "title": "Не хранить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-ignore"
+      ],
+      "presentation": {
+        "question": "Что обычно добавляют в .gitignore?",
+        "options": [
+          {
+            "id": "deps",
+            "text": "node_modules, dist, .env, журналы"
+          },
+          {
+            "id": "src",
+            "text": "Папку src"
+          },
+          {
+            "id": "readme",
+            "text": "README.md"
+          },
+          {
+            "id": "git",
+            "text": "Папку .git"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "deps",
+        "explanation": "Восстановимое и секретное не хранят."
+      }
+    },
+    {
+      "slug": "gi-tracked",
+      "type": "quiz.single_choice",
+      "title": "Уже отслеживается",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-ignore"
+      ],
+      "presentation": {
+        "question": "Ты добавил .env в .gitignore, но Git всё равно показывает его изменения. Почему?",
+        "options": [
+          {
+            "id": "tracked",
+            "text": "Файл уже отслеживается; нужно `git rm --cached .env`"
+          },
+          {
+            "id": "typo",
+            "text": "Ошибка в Git"
+          },
+          {
+            "id": "restart",
+            "text": "Нужно перезагрузить компьютер"
+          },
+          {
+            "id": "github",
+            "text": "GitHub игнорирует .gitignore"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "tracked",
+        "explanation": ".gitignore влияет только на неотслеживаемые файлы."
+      }
+    },
+    {
+      "slug": "gi-leak",
+      "type": "quiz.single_choice",
+      "title": "Утечка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-ignore"
+      ],
+      "presentation": {
+        "question": "API-ключ попал в отправленный коммит. Что важнее всего сделать?",
+        "options": [
+          {
+            "id": "rotate",
+            "text": "Сразу отозвать и заменить ключ"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить файл следующим коммитом и забыть"
+          },
+          {
+            "id": "private",
+            "text": "Ничего, если репозиторий частный"
+          },
+          {
+            "id": "rename",
+            "text": "Переименовать файл"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rotate",
+        "explanation": "Удаление файла не убирает ключ из истории."
+      }
+    },
+    {
+      "slug": "st-hide",
+      "type": "quiz.single_choice",
+      "title": "Спрятать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-stash"
+      ],
+      "presentation": {
+        "question": "Нужно срочно переключиться на main, но правки не готовы для коммита. Что сделать?",
+        "options": [
+          {
+            "id": "stash",
+            "text": "`git stash`, переключиться, потом `git stash pop`"
+          },
+          {
+            "id": "reset",
+            "text": "`git reset --hard`"
+          },
+          {
+            "id": "commit",
+            "text": "Закоммитить «asdf» в main"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить изменения"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "stash",
+        "explanation": "stash сохранит правки, не создавая коммит."
+      }
+    },
+    {
+      "slug": "st-pop",
+      "type": "quiz.single_choice",
+      "title": "pop и apply",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-stash"
+      ],
+      "presentation": {
+        "question": "Чем `stash pop` отличается от `stash apply`?",
+        "options": [
+          {
+            "id": "remove",
+            "text": "pop удаляет запись из стопки, apply оставляет"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          },
+          {
+            "id": "branch",
+            "text": "apply создаёт ветку"
+          },
+          {
+            "id": "push",
+            "text": "pop отправляет на сервер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "remove",
+        "explanation": "apply удобен, если те же правки нужны в нескольких ветках."
+      }
+    },
+    {
+      "slug": "st-new",
+      "type": "quiz.single_choice",
+      "title": "Новые файлы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-stash"
+      ],
+      "presentation": {
+        "question": "Почему после `git stash` новый файл остался в папке?",
+        "options": [
+          {
+            "id": "u",
+            "text": "Неотслеживаемые файлы прячутся только с флагом -u"
+          },
+          {
+            "id": "bug",
+            "text": "Это ошибка"
+          },
+          {
+            "id": "ignored",
+            "text": "Файл в .gitignore"
+          },
+          {
+            "id": "big",
+            "text": "Файл слишком большой"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "u",
+        "explanation": "git stash -u включает новые файлы."
+      }
+    },
+    {
+      "slug": "ct-alias",
+      "type": "quiz.single_choice",
+      "title": "Псевдоним",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-tools"
+      ],
+      "presentation": {
+        "question": "Как сделать короткую команду `git lg` для графа истории?",
+        "options": [
+          {
+            "id": "alias",
+            "text": "`git config --global alias.lg \"log --oneline --graph --all\"`"
+          },
+          {
+            "id": "bash",
+            "text": "Это невозможно"
+          },
+          {
+            "id": "rename",
+            "text": "Переименовать git в lg"
+          },
+          {
+            "id": "hook",
+            "text": "Написать хук pre-commit"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "alias",
+        "explanation": "Псевдонимы Git хранятся в config."
+      }
+    },
+    {
+      "slug": "ct-hook",
+      "type": "quiz.single_choice",
+      "title": "Хук",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-tools"
+      ],
+      "presentation": {
+        "question": "Какой хук запускается перед созданием коммита?",
+        "options": [
+          {
+            "id": "pre",
+            "text": "pre-commit"
+          },
+          {
+            "id": "post",
+            "text": "post-merge"
+          },
+          {
+            "id": "push",
+            "text": "pre-push"
+          },
+          {
+            "id": "msg",
+            "text": "post-checkout"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pre",
+        "explanation": "Если pre-commit вернёт ошибку, коммит не создастся."
+      }
+    },
+    {
+      "slug": "ct-husky",
+      "type": "quiz.single_choice",
+      "title": "husky",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-tools"
+      ],
+      "presentation": {
+        "question": "Зачем в проекте пакет husky?",
+        "options": [
+          {
+            "id": "share",
+            "text": "Хранить хуки в репозитории, чтобы они работали у всей команды"
+          },
+          {
+            "id": "speed",
+            "text": "Ускорить Git"
+          },
+          {
+            "id": "github",
+            "text": "Подключить GitHub"
+          },
+          {
+            "id": "backup",
+            "text": "Делать резервные копии"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "share",
+        "explanation": ".git/hooks не попадает в репозиторий, husky решает это."
+      }
+    },
+    {
+      "slug": "ob-blob",
+      "type": "quiz.single_choice",
+      "title": "blob",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-objects"
+      ],
+      "presentation": {
+        "question": "Что хранит объект blob?",
+        "options": [
+          {
+            "id": "content",
+            "text": "Содержимое одного файла"
+          },
+          {
+            "id": "name",
+            "text": "Имя файла"
+          },
+          {
+            "id": "folder",
+            "text": "Список файлов папки"
+          },
+          {
+            "id": "author",
+            "text": "Автора коммита"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "content",
+        "explanation": "Имена хранит tree."
+      }
+    },
+    {
+      "slug": "ob-hash",
+      "type": "quiz.single_choice",
+      "title": "Хеш",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-objects"
+      ],
+      "presentation": {
+        "question": "Почему нельзя незаметно изменить старый коммит в истории?",
+        "options": [
+          {
+            "id": "hash",
+            "text": "Его хеш изменится, а вместе с ним и хеши всех последующих коммитов"
+          },
+          {
+            "id": "lock",
+            "text": "Коммиты заблокированы паролем"
+          },
+          {
+            "id": "server",
+            "text": "Сервер запрещает"
+          },
+          {
+            "id": "readonly",
+            "text": "Файлы истории только для чтения"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hash",
+        "explanation": "Каждый коммит ссылается на хеш родителя."
+      }
+    },
+    {
+      "slug": "ob-dup",
+      "type": "quiz.single_choice",
+      "title": "Дубликаты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-objects"
+      ],
+      "presentation": {
+        "question": "Сколько места займут два одинаковых файла в разных папках?",
+        "options": [
+          {
+            "id": "one",
+            "text": "Как один: одинаковое содержимое хранится одним blob"
+          },
+          {
+            "id": "two",
+            "text": "Вдвое больше"
+          },
+          {
+            "id": "zero",
+            "text": "Нисколько"
+          },
+          {
+            "id": "ten",
+            "text": "В десять раз больше"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "Имя объекта — хеш содержимого."
+      }
+    },
+    {
+      "slug": "rf-branch",
+      "type": "quiz.single_choice",
+      "title": "Ветка на диске",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-refs"
+      ],
+      "presentation": {
+        "question": "Что хранится в файле ветки .git/refs/heads/main?",
+        "options": [
+          {
+            "id": "hash",
+            "text": "Хеш последнего коммита ветки"
+          },
+          {
+            "id": "files",
+            "text": "Все файлы ветки"
+          },
+          {
+            "id": "log",
+            "text": "Вся история ветки"
+          },
+          {
+            "id": "name",
+            "text": "Имя автора"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hash",
+        "explanation": "Поэтому ветки ничего не весят."
+      }
+    },
+    {
+      "slug": "rf-detached",
+      "type": "quiz.single_choice",
+      "title": "Detached HEAD",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-refs"
+      ],
+      "presentation": {
+        "question": "Ты в состоянии detached HEAD и сделал коммит. Как его не потерять?",
+        "options": [
+          {
+            "id": "branch",
+            "text": "Создать ветку: `git switch -c имя`"
+          },
+          {
+            "id": "push",
+            "text": "Сразу `git push`"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего, он сохранится в main"
+          },
+          {
+            "id": "stash",
+            "text": "`git stash`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "branch",
+        "explanation": "Без ветки на коммит ничто не будет указывать."
+      }
+    },
+    {
+      "slug": "rf-merged",
+      "type": "quiz.short_text",
+      "title": "Слитые ветки",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "git-refs"
+      ],
+      "presentation": {
+        "question": "Какой флаг git branch показывает ветки, уже слитые в текущую? Напиши с двумя дефисами."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "--merged"
+        ],
+        "caseSensitive": false,
+        "explanation": "git branch --merged main."
+      }
+    },
+    {
+      "slug": "bg-why",
+      "type": "quiz.single_choice",
+      "title": "Почему тяжело",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-large"
+      ],
+      "presentation": {
+        "question": "Почему большие двоичные файлы раздувают репозиторий?",
+        "options": [
+          {
+            "id": "copies",
+            "text": "Каждая версия хранится целиком, и история есть у каждого участника"
+          },
+          {
+            "id": "compress",
+            "text": "Git их не сжимает вообще никогда"
+          },
+          {
+            "id": "remote",
+            "text": "Они хранятся только на сервере"
+          },
+          {
+            "id": "text",
+            "text": "Git превращает их в текст"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "copies",
+        "explanation": "Для таких файлов есть Git LFS."
+      }
+    },
+    {
+      "slug": "bg-lfs",
+      "type": "quiz.single_choice",
+      "title": "LFS",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "git-large"
+      ],
+      "presentation": {
+        "question": "Что делает Git LFS?",
+        "options": [
+          {
+            "id": "pointer",
+            "text": "Хранит большие файлы отдельно, а в репозитории — маленький указатель"
+          },
+          {
+            "id": "delete",
+            "text": "Удаляет большие файлы"
+          },
+          {
+            "id": "zip",
+            "text": "Архивирует весь репозиторий"
+          },
+          {
+            "id": "speed",
+            "text": "Ускоряет интернет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pointer",
+        "explanation": "Сам файл скачивается по требованию."
+      }
+    },
+    {
+      "slug": "bg-depth",
+      "type": "quiz.short_text",
+      "title": "Без истории",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "git-large"
+      ],
+      "presentation": {
+        "question": "Какой флаг git clone скачивает только последний коммит? Напиши с числом."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "--depth 1",
+          "--depth=1"
+        ],
+        "caseSensitive": false,
+        "explanation": "Неглубокий клон."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "why-git",
+      "title": "Зачем нужен Git",
+      "summary": "Контроль версий, снимки проекта, распределённая работа и чем Git отличается от папок «final_v2».",
+      "chapter": "Старт Git",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Начинаем курс: разбираемся, какую задачу решает Git.\",\"cast\":[\"nika\"]}\n```\n\nБез контроля версий проект живёт в папках «site», «site-old», «site-final-2». Непонятно, что изменилось, кто это сделал и как вернуть вчерашний вариант.\n\n```concept\n{\n  \"name\": \"Контроль версий\",\n  \"title\": \"История проекта\",\n  \"what\": \"Система, которая запоминает состояние файлов в отдельные моменты и позволяет сравнивать, возвращать и объединять эти состояния.\",\n  \"why\": \"Любую ошибку можно отменить, любое изменение — объяснить, а работать вместе можно без пересылки архивов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Git\",\n  \"title\": \"Распределённая система версий\",\n  \"what\": \"Самая распространённая система контроля версий. Полная история хранится у каждого участника, а не только на сервере. Создана в 2005 году для разработки ядра Linux.\",\n  \"why\": \"Работает без интернета, быстро и надёжно. Её используют почти все команды и сервисы: GitHub, GitLab, Bitbucket.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Снимок\",\n  \"title\": \"Commit\",\n  \"what\": \"Git хранит не разницу между файлами, а снимки всего проекта в моменты, которые ты выбираешь. Каждый снимок — коммит — знает, какой снимок был перед ним.\",\n  \"why\": \"История — цепочка снимков. Вернуться можно к любому из них.\",\n  \"kind\": \"idea\"\n}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Три места, где живут изменения\",\n  \"steps\": [\n    {\n      \"title\": \"Рабочая папка\",\n      \"text\": \"Файлы, которые ты правишь\"\n    },\n    {\n      \"title\": \"Индекс\",\n      \"text\": \"Что войдёт в следующий снимок\"\n    },\n    {\n      \"title\": \"Репозиторий\",\n      \"text\": \"Сохранённые снимки — история\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Git и GitHub\",\n  \"title\": \"Программа и сервис\",\n  \"what\": \"Git — программа на твоём компьютере. GitHub — сайт, где хранят копии репозиториев и работают вместе: обсуждают, проверяют и принимают изменения.\",\n  \"why\": \"Git работает и без GitHub. GitHub нужен, чтобы делиться и работать в команде.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Git — это история снимков проекта у тебя на компьютере. GitHub — место, где этой историей делятся."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "why-snap",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "why-hub",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "why-gives",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "first-repo",
+      "title": "Первый репозиторий",
+      "summary": "Установка, git config с именем и почтой, git init, git clone и папка .git.",
+      "chapter": "Старт Git",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем, зачем Git, и создаём первый репозиторий.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"git config --global\",\n  \"title\": \"Кто ты\",\n  \"what\": \"`git config --global user.name \\\"Аня Иванова\\\"` и `git config --global user.email ann@example.com` — один раз на компьютере. Эти данные попадут в каждый коммит.\",\n  \"why\": \"Без имени и почты Git не даст сделать коммит, а с чужими — коммиты будут подписаны не тобой.\",\n  \"how\": \"git config --global user.name \\\"Аня Иванова\\\"\\ngit config --global user.email ann@example.com\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"git init\",\n  \"title\": \"Начать историю\",\n  \"what\": \"`git init` в папке проекта создаёт пустой репозиторий: скрытую папку `.git`, где будет жить вся история.\",\n  \"why\": \"Любая папка за секунду становится проектом с историей.\",\n  \"how\": \"mkdir site && cd site\\ngit init\\nInitialized empty Git repository in /Users/ann/site/.git/\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"git clone\",\n  \"title\": \"Скопировать чужой\",\n  \"what\": \"`git clone адрес` скачивает репозиторий целиком — со всей историей — в новую папку.\",\n  \"why\": \"Так начинают работу над существующим проектом: клонировал и сразу видишь всё, что было.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Папка .git\",\n  \"title\": \"Где живёт история\",\n  \"what\": \"Вся история, ветки и настройки репозитория лежат в `.git`. Удалишь её — останутся только текущие файлы без истории.\",\n  \"why\": \"Не трогай `.git` руками: всё делается командами Git.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ветка по умолчанию\",\n  \"title\": \"main\",\n  \"what\": \"Первая ветка нового репозитория называется `main` (в старых проектах — `master`). Настроить имя по умолчанию: `git config --global init.defaultBranch main`.\",\n  \"why\": \"Так ветки называются одинаково у тебя и на GitHub.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Один раз: `git config --global` с именем и почтой. Для каждого проекта: `git init` или `git clone`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "setup-config",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "setup-git",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "setup-clone",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "status",
+      "title": "git status: где я",
+      "summary": "Неотслеживаемые, изменённые и подготовленные файлы и как читать вывод git status.",
+      "chapter": "Старт Git",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Создали репозиторий и учимся смотреть, что в нём происходит.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"git status\",\n  \"title\": \"Самая частая команда\",\n  \"what\": \"Показывает текущую ветку, подготовленные к коммиту файлы, изменённые и новые неотслеживаемые файлы. Подсказывает, какую команду выполнить дальше.\",\n  \"why\": \"Перед каждым add, commit и push — status. Он отвечает на вопрос «что сейчас происходит?».\",\n  \"how\": \"git status\\nOn branch main\\nChanges not staged for commit:\\n  modified:   index.html\\nUntracked files:\\n  style.css\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"Неотслеживаемый файл\",\n  \"title\": \"Untracked\",\n  \"what\": \"Новый файл, о котором Git ещё ничего не знает. В историю он не попадёт, пока ты его не добавишь.\",\n  \"why\": \"Новый файл, забытый при коммите, — частая причина «у меня работает, а у коллеги нет».\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Изменённый файл\",\n  \"title\": \"Modified\",\n  \"what\": \"Файл уже есть в истории и отличается от последнего снимка.\",\n  \"why\": \"Изменения ещё не сохранены в истории — их легко потерять или случайно отменить.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Подготовленный файл\",\n  \"title\": \"Staged\",\n  \"what\": \"Изменение добавлено в индекс и войдёт в следующий коммит.\",\n  \"why\": \"Можно поменять три файла, а в коммит отправить только два.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"git status -s\",\n  \"title\": \"Коротко\",\n  \"what\": \"Короткий вид: по две буквы на файл. `??` — новый, ` M` — изменён, `M ` — подготовлен, `A ` — добавлен новый.\",\n  \"why\": \"Быстро окинуть взглядом большой список изменений.\",\n  \"how\": \"git status -s\\n M index.html\\n?? style.css\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n**Главное.** Не уверен, что происходит, — `git status`. Он ещё и подскажет следующую команду."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-untracked",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-short",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-when",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "add",
+      "title": "Индекс и git add",
+      "summary": "Подготовить к коммиту файл, папку, часть файла; что делает git add . и git add -p.",
+      "chapter": "Снимки и коммиты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Читаем git status и учимся собирать следующий снимок.\",\"cast\":[\"nika\"]}\n```\n\nИндекс (staging area) — черновик следующего коммита. Ты сам решаешь, что в него положить.\n\n```concept\n{\n  \"name\": \"git add файл\",\n  \"title\": \"Добавить файл\",\n  \"what\": \"`git add index.html` кладёт текущее состояние файла в индекс. Если потом снова поменять файл, в индексе останется старая версия — добавь ещё раз.\",\n  \"why\": \"Коммит содержит ровно то, что в индексе, а не то, что в папке.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git add .\",\n  \"title\": \"Всё в текущей папке\",\n  \"what\": \"Добавляет все новые и изменённые файлы текущей папки и вложенных. `git add -A` — все изменения в репозитории, включая удаления.\",\n  \"why\": \"Быстро, но легко захватить лишнее: временные файлы, пароли из .env. Перед этим — `git status`.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git add -p\",\n  \"title\": \"По кусочкам\",\n  \"what\": \"Показывает каждое изменение отдельно и спрашивает: добавить (`y`), пропустить (`n`), разбить (`s`).\",\n  \"why\": \"Из одной правки делаешь два понятных коммита: исправление ошибки отдельно, переименование отдельно.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git restore --staged\",\n  \"title\": \"Убрать из индекса\",\n  \"what\": \"`git restore --staged файл` убирает файл из индекса, изменения в папке остаются.\",\n  \"why\": \"Случайно добавил лишнее — вернул, ничего не потеряв.\",\n  \"kind\": \"statement\"\n}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Путь изменения в историю\",\n  \"steps\": [\n    {\n      \"title\": \"Правка\",\n      \"text\": \"Файл изменён в рабочей папке\"\n    },\n    {\n      \"title\": \"git add\",\n      \"text\": \"Изменение в индексе\"\n    },\n    {\n      \"title\": \"git commit\",\n      \"text\": \"Снимок в истории\"\n    }\n  ]\n}\n```\n\n**Главное.** Коммит берёт то, что в индексе. Перед `git add .` смотри `git status`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "add-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "add-part",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "add-undo",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "commit",
+      "title": "Коммит и хорошее сообщение",
+      "summary": "git commit -m, что входит в коммит, атомарные коммиты и как писать сообщения.",
+      "chapter": "Снимки и коммиты",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Собираем индекс и сохраняем его снимком в историю.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"git commit -m\",\n  \"title\": \"Сохранить снимок\",\n  \"what\": \"`git commit -m \\\"Сообщение\\\"` сохраняет индекс как новый коммит. Без `-m` откроется редактор для длинного сообщения.\",\n  \"why\": \"Коммит — точка, к которой всегда можно вернуться.\",\n  \"how\": \"git commit -m \\\"Добавить форму подписки\\\"\\n[main 3f2a91c] Добавить форму подписки\\n 2 files changed, 41 insertions(+)\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что внутри коммита\",\n  \"title\": \"Снимок и подпись\",\n  \"what\": \"Снимок файлов, автор и почта, время, сообщение и ссылка на предыдущий коммит. Всё вместе даёт уникальный хеш вроде 3f2a91c.\",\n  \"why\": \"По хешу коммит можно найти, показать, отменить или перенести.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Атомарный коммит\",\n  \"title\": \"Одно дело — один коммит\",\n  \"what\": \"Коммит решает одну задачу целиком: исправляет одну ошибку или добавляет одну возможность. Не «правки за неделю».\",\n  \"why\": \"Такой коммит легко понять, проверить и при необходимости отменить, не задев остальное.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сообщение коммита\",\n  \"title\": \"Что и зачем\",\n  \"what\": \"Первая строка до ~50 символов — что сделано, в повелительном наклонении: «Исправить расчёт скидки». Ниже, через пустую строку, — зачем и подробности.\",\n  \"why\": \"Через полгода история читается как журнал решений, а не как «fix», «fix2», «asdf».\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"git commit -am\",\n  \"title\": \"Добавить и сохранить\",\n  \"what\": \"`-a` автоматически добавляет изменения уже отслеживаемых файлов. Новые файлы всё равно нужно добавить через `git add`.\",\n  \"why\": \"Удобно для мелких правок, но новый файл так легко забыть.\",\n  \"kind\": \"statement\"\n}\n```\n\n**Главное.** Один коммит — одно дело. Первая строка сообщения говорит, что изменилось."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-msg",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-atomic",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-a",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "commit-conventions",
+      "title": "Соглашения о коммитах",
+      "summary": "Conventional Commits, ссылки на задачи, коммиты как документация и подписанные коммиты.",
+      "chapter": "Снимки и коммиты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем делать коммиты и узнаём, как о них договариваются в командах.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Conventional Commits\",\n  \"title\": \"Тип в начале\",\n  \"what\": \"Соглашение: `тип(область): описание`. Типы: `feat` — новая возможность, `fix` — исправление, `docs`, `refactor`, `test`, `chore`.\",\n  \"why\": \"Из таких сообщений автоматически собирают журнал изменений и номер следующей версии.\",\n  \"how\": \"feat(cart): скидка по промокоду\\nfix(auth): выход после смены пароля\",\n  \"kind\": \"idea\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ссылка на задачу\",\n  \"title\": \"Связь с обсуждением\",\n  \"what\": \"В сообщение добавляют номер задачи: `Fix #42` или `Refs PROJ-17`. GitHub закрывает задачу, когда такой коммит попадает в main.\",\n  \"why\": \"Из истории можно перейти к обсуждению: почему решили именно так.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Коммит как документация\",\n  \"title\": \"Почему, а не что\",\n  \"what\": \"Код показывает, что сделано. Сообщение коммита хранит то, чего в коде нет: почему выбрано это решение, что пробовали и отвергли.\",\n  \"why\": \"`git blame` приведёт к коммиту, и сообщение объяснит строку, которая выглядит странно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Подписанный коммит\",\n  \"title\": \"Доказательство авторства\",\n  \"what\": \"Коммит можно подписать SSH- или GPG-ключом: `git config --global commit.gpgsign true`. GitHub показывает метку Verified.\",\n  \"why\": \"Любой может написать в config чужое имя. Подпись доказывает, что коммит сделал владелец ключа.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Договорись с командой о формате один раз — и история станет читаемой для людей и программ."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cv-type",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cv-why",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cv-feat",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "log",
+      "title": "История: git log",
+      "summary": "Читать историю коротко и графом, фильтровать по автору, дате, файлу и тексту.",
+      "chapter": "История и различия",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Делаем коммиты и учимся читать накопленную историю.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"git log\",\n  \"title\": \"Вся история\",\n  \"what\": \"Показывает коммиты от новых к старым: хеш, автор, дата, сообщение. Листать — пробелом, выйти — `q`.\",\n  \"why\": \"Понять, что происходило в проекте и в каком порядке.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git log --oneline\",\n  \"title\": \"Коротко\",\n  \"what\": \"Одна строка на коммит: короткий хеш и первая строка сообщения. `--graph --all` рисует ветки и слияния псевдографикой.\",\n  \"why\": \"Самый удобный вид на каждый день.\",\n  \"how\": \"git log --oneline --graph\\n* 3f2a91c Добавить форму подписки\\n* 9b1c004 Исправить меню на телефоне\\n* 51d7e2a Первая версия сайта\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"История одного файла\",\n  \"file\": \"Терминал\",\n  \"scenes\": [\n    {\n      \"input\": \"git log --oneline -- style.css\",\n      \"key\": \"Enter\",\n      \"output\": \"$ git log --oneline -- style.css\\n7c40de1 Тёмная тема\\n51d7e2a Первая версия сайта\",\n      \"caption\": \"После двух дефисов — путь: только коммиты, которые меняли этот файл\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"git log фильтры\",\n  \"title\": \"Найти нужное\",\n  \"what\": \"`--author=Аня`, `--since=\\\"2 weeks ago\\\"`, `-n 5` (последние пять), `--grep=скидка` (по сообщению), `-S \\\"fetchUser\\\"` (коммиты, которые добавили или убрали строку).\",\n  \"why\": \"Найти, когда появилась функция или кто трогал оплату на прошлой неделе.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"HEAD\",\n  \"title\": \"Где ты сейчас\",\n  \"what\": \"HEAD — указатель на текущий коммит, обычно через текущую ветку. `HEAD~1` — коммит перед ним, `HEAD~3` — на три назад.\",\n  \"why\": \"Так ссылаются на недавние коммиты без копирования хешей.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** `git log --oneline --graph` — обзор, `-- путь` — история файла, `-S текст` — когда появилась строка."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "log-short",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "log-file",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "log-head",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "diff",
+      "title": "Различия: git diff и git show",
+      "summary": "Что изменилось в папке, в индексе, между коммитами и ветками и как читать diff.",
+      "chapter": "История и различия",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Находим коммиты в истории и учимся видеть, что именно в них изменилось.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"git diff\",\n  \"title\": \"Что изменено\",\n  \"what\": \"Без аргументов — изменения в папке, ещё не добавленные в индекс. `git diff --staged` — то, что уже в индексе и войдёт в коммит.\",\n  \"why\": \"Перечитать свои правки перед коммитом — лучший способ поймать ошибку.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Как читать diff\",\n  \"title\": \"Плюсы и минусы\",\n  \"what\": \"Строки с `-` удалены, с `+` добавлены. Заголовок `@@ -12,4 +12,6 @@` — где фрагмент: с 12-й строки, было 4 строки, стало 6.\",\n  \"why\": \"В ревью кода и на GitHub ты будешь читать diff постоянно.\",\n  \"how\": \"-  color: red;\\n+  color: var(--danger);\",\n  \"kind\": \"idea\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"git diff A B\",\n  \"title\": \"Между версиями\",\n  \"what\": \"`git diff main feature` — разница между ветками, `git diff 3f2a91c HEAD` — между коммитом и текущим состоянием. `--stat` — только список файлов и число строк.\",\n  \"why\": \"Понять, что принесёт ветка, прежде чем её сливать.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git show\",\n  \"title\": \"Один коммит целиком\",\n  \"what\": \"`git show 3f2a91c` — сообщение коммита и его изменения. `git show HEAD:index.html` — файл в том виде, каким он был в коммите.\",\n  \"why\": \"Разобрать один подозрительный коммит или посмотреть старую версию файла, не переключаясь.\",\n  \"kind\": \"statement\"\n}\n```\n\n**Главное.** Перед коммитом — `git diff --staged`. Перед слиянием — `git diff main ветка --stat`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "diff-staged",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "diff-sign",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "diff-old",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "blame-bisect",
+      "title": "Кто и когда: blame и bisect",
+      "summary": "Найти автора и коммит каждой строки и вычислить коммит, который сломал проект, двоичным поиском.",
+      "chapter": "История и различия",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Читаем различия и учимся расследовать, откуда взялась строка или ошибка.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"git blame\",\n  \"title\": \"Происхождение строк\",\n  \"what\": \"`git blame файл` показывает для каждой строки коммит, автора и дату последнего изменения. `-L 10,20` — только строки с 10 по 20.\",\n  \"why\": \"Странная строка? blame приведёт к коммиту, а его сообщение объяснит, зачем она.\",\n  \"how\": \"git blame -L 40,42 cart.js\\n7c40de1 (Тимур 2026-10-02) if (items.length === 0) {\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"Blame без обвинений\",\n  \"title\": \"Для понимания\",\n  \"what\": \"Название пугает, но цель — понять контекст, а не найти виноватого. В редакторах и на GitHub blame встроен прямо рядом с кодом.\",\n  \"why\": \"Команды, где ищут причины, а не виноватых, быстрее чинят ошибки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"git bisect\",\n  \"title\": \"Двоичный поиск ошибки\",\n  \"what\": \"`git bisect start`, затем `git bisect bad` (сейчас сломано) и `git bisect good v1.0` (тогда работало). Git переключает на середину, ты проверяешь и отвечаешь good или bad, пока не останется один коммит. В конце — `git bisect reset`.\",\n  \"why\": \"Среди тысячи коммитов виновника находишь примерно за десять проверок.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git bisect run\",\n  \"title\": \"Автоматически\",\n  \"what\": \"`git bisect run npm test` сам запускает проверку на каждом шаге и сам отвечает good или bad по коду возврата.\",\n  \"why\": \"Поиск коммита, сломавшего тест, идёт без твоего участия.\",\n  \"kind\": \"statement\"\n}\n```\n\n**Главное.** Откуда строка — `git blame`. Какой коммит сломал — `git bisect`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bl-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bl-bisect",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bl-run",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "restore-amend",
+      "title": "Отменить правку и поправить коммит",
+      "summary": "git restore для файла, git commit --amend для последнего коммита и когда amend нельзя.",
+      "chapter": "Отмена изменений",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Расследуем историю и учимся отменять то, что пошло не так.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"git restore\",\n  \"title\": \"Вернуть файл\",\n  \"what\": \"`git restore файл` возвращает файл к состоянию из индекса или последнего коммита. `git restore .` — все файлы.\",\n  \"why\": \"Эксперимент не удался — одна команда, и всё как было. Но незакоммиченные правки при этом теряются навсегда.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git restore --source\",\n  \"title\": \"Версия из прошлого\",\n  \"what\": \"`git restore --source=HEAD~3 style.css` достаёт файл таким, каким он был три коммита назад.\",\n  \"why\": \"Вернуть один файл, не трогая остальной проект.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git commit --amend\",\n  \"title\": \"Поправить последний коммит\",\n  \"what\": \"Заменяет последний коммит новым: с исправленным сообщением или добавленными файлами (`git add забытый && git commit --amend --no-edit`).\",\n  \"why\": \"Опечатка в сообщении или забытый файл — без лишнего коммита «забыл файл».\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Нельзя amend после push\",\n  \"title\": \"Переписывание истории\",\n  \"what\": \"amend создаёт новый коммит с другим хешем. Если старый уже отправлен и его скачали коллеги, их история разойдётся с твоей.\",\n  \"why\": \"Правило: переписывать можно только то, что ещё не отправлено в общую ветку.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Правка не нужна — `git restore`. Последний коммит неудачный и ещё не отправлен — `--amend`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-file",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-amend",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-pushed",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "reset-revert",
+      "title": "reset и revert",
+      "summary": "Три режима reset, отмена опубликованного коммита через revert и как выбрать между ними.",
+      "chapter": "Отмена изменений",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Отменяем правки и последний коммит и переходим к отмене коммитов вообще.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Три режима git reset\",\n  \"steps\": [\n    {\n      \"title\": \"--soft\",\n      \"text\": \"Ветка назад, изменения остаются в индексе\"\n    },\n    {\n      \"title\": \"--mixed\",\n      \"text\": \"По умолчанию: ветка назад, изменения в папке\"\n    },\n    {\n      \"title\": \"--hard\",\n      \"text\": \"Ветка назад, изменения уничтожены\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"git reset --soft\",\n  \"title\": \"Пересобрать коммиты\",\n  \"what\": \"`git reset --soft HEAD~3` убирает три последних коммита, но все их изменения остаются подготовленными. Можно сделать из них один коммит.\",\n  \"why\": \"Собрать несколько «WIP»-коммитов в один осмысленный.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git reset --hard\",\n  \"title\": \"Выбросить всё\",\n  \"what\": \"`git reset --hard HEAD~1` переносит ветку на коммит назад и стирает все изменения в папке и индексе.\",\n  \"why\": \"Самая опасная команда Git: незакоммиченные правки после неё не вернуть.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git revert\",\n  \"title\": \"Отменить опубликованное\",\n  \"what\": \"`git revert 3f2a91c` создаёт новый коммит, который делает обратные изменения. История не переписывается.\",\n  \"why\": \"Единственный безопасный способ отменить коммит, который уже в общей ветке: коллегам ничего не нужно чинить.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"reset или revert\",\n  \"title\": \"Как выбрать\",\n  \"what\": \"Коммит только у тебя — reset (история чище). Коммит уже отправлен — revert (история честная и не ломается у других).\",\n  \"why\": \"Ошибка в выборе стоит команде часов на распутывание истории.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Своё и неотправленное — `reset`. Общее — только `revert`. Перед `--hard` — `git status`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rr-published",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rr-soft",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rr-hard",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "reflog",
+      "title": "reflog: машина времени",
+      "summary": "Журнал перемещений HEAD, восстановление «потерянных» коммитов и удалённых веток.",
+      "chapter": "Отмена изменений",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем reset и revert и учимся спасать то, что, казалось, потеряно.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"git reflog\",\n  \"title\": \"Журнал HEAD\",\n  \"what\": \"Записывает каждое перемещение HEAD: коммиты, переключения, reset, rebase. Хранится локально около 90 дней.\",\n  \"why\": \"После неудачного reset --hard или rebase коммиты не исчезают сразу — reflog помнит, где они были.\",\n  \"how\": \"git reflog\\n9b1c004 HEAD@{0}: reset: moving to HEAD~1\\n3f2a91c HEAD@{1}: commit: Добавить форму подписки\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"Восстановить коммит\",\n  \"title\": \"Вернуть ветку назад\",\n  \"what\": \"Найди в reflog строку до ошибки и выполни `git reset --hard HEAD@{1}` или создай ветку: `git branch rescue 3f2a91c`.\",\n  \"why\": \"Почти любую ошибку с закоммиченными данными можно отменить.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что reflog не спасёт\",\n  \"title\": \"Незакоммиченное\",\n  \"what\": \"reflog знает только коммиты. Правки, которые ни разу не были закоммичены или хотя бы добавлены в индекс, после `restore` или `reset --hard` не вернуть.\",\n  \"why\": \"Отсюда привычка: коммить часто, хотя бы во временную ветку.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** «Потерял коммит» — почти всегда неправда: открой `git reflog`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rl-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rl-save",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rl-lost",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "branch",
+      "title": "Ветки: что это и зачем",
+      "summary": "Ветка как указатель на коммит, git branch, git switch и работа над задачей в отдельной ветке.",
+      "chapter": "Ветки и слияние",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем отменять что угодно и учимся работать в параллельных ветках.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Ветка\",\n  \"title\": \"Подвижная метка\",\n  \"what\": \"Ветка — просто имя, которое указывает на коммит. Новый коммит в ветке сдвигает метку вперёд. Создать ветку — значит создать 41-байтовый файл, это мгновенно.\",\n  \"why\": \"Ветки дешёвые, поэтому на каждую задачу заводят свою и не мешают друг другу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"git switch -c\",\n  \"title\": \"Новая ветка\",\n  \"what\": \"`git switch -c feature/cart` создаёт ветку от текущего коммита и переключается на неё. Старый вариант: `git checkout -b`.\",\n  \"why\": \"Задачу начинают в своей ветке, а main остаётся рабочей.\",\n  \"how\": \"git switch -c feature/cart\\nSwitched to a new branch 'feature/cart'\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"git switch\",\n  \"title\": \"Переключиться\",\n  \"what\": \"`git switch main` — перейти на ветку: файлы в папке меняются на её версию. Незакоммиченные правки Git либо переносит, либо отказывается переключаться, если они конфликтуют.\",\n  \"why\": \"Переключись на main, чтобы срочно исправить ошибку, и вернись к своей задаче.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git branch\",\n  \"title\": \"Список веток\",\n  \"what\": \"`git branch` — локальные ветки, звёздочка — текущая. `-a` — вместе с удалёнными, `-d имя` — удалить слитую ветку, `-D` — удалить принудительно.\",\n  \"why\": \"Порядок в ветках: слитые удаляй, чтобы список не разрастался.\",\n  \"kind\": \"statement\"\n}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Работа над задачей в ветке\",\n  \"steps\": [\n    {\n      \"title\": \"switch -c\",\n      \"text\": \"Ветка для задачи от свежего main\"\n    },\n    {\n      \"title\": \"Коммиты\",\n      \"text\": \"Работа идёт в ветке, main не трогается\"\n    },\n    {\n      \"title\": \"Слияние\",\n      \"text\": \"Готовая задача вливается в main\"\n    },\n    {\n      \"title\": \"branch -d\",\n      \"text\": \"Ветка удаляется\"\n    }\n  ]\n}\n```\n\n**Главное.** Одна задача — одна ветка от свежего main. Имя ветки говорит, что в ней: `fix/login-redirect`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "br-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "br-new",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "br-delete",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "merge",
+      "title": "Слияние веток",
+      "summary": "git merge, перемотка вперёд и коммит слияния, --no-ff и как читать граф после слияния.",
+      "chapter": "Ветки и слияние",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем в ветках и учимся объединять сделанное.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"git merge\",\n  \"title\": \"Влить ветку\",\n  \"what\": \"Находясь в main, `git merge feature/cart` вливает изменения ветки в текущую.\",\n  \"why\": \"Готовая задача становится частью основной версии.\",\n  \"how\": \"git switch main\\ngit merge feature/cart\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"Fast-forward\",\n  \"title\": \"Перемотка\",\n  \"what\": \"Если в main с момента ответвления ничего не появилось, Git просто передвигает метку main вперёд на коммиты ветки. Нового коммита нет.\",\n  \"why\": \"История остаётся прямой линией.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Коммит слияния\",\n  \"title\": \"Merge commit\",\n  \"what\": \"Если в обеих ветках были новые коммиты, Git создаёт коммит с двумя родителями, который соединяет обе линии истории.\",\n  \"why\": \"В графе видно, где ветка начиналась и где влилась.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"--no-ff\",\n  \"title\": \"Всегда коммит слияния\",\n  \"what\": \"`git merge --no-ff ветка` создаёт коммит слияния даже там, где можно было перемотать.\",\n  \"why\": \"Группа коммитов задачи остаётся видна как одно целое.\",\n  \"kind\": \"statement\"\n}\n```\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Как выглядит история после слияния\",\n  \"file\": \"Терминал\",\n  \"scenes\": [\n    {\n      \"input\": \"git log --oneline --graph\",\n      \"key\": \"Enter\",\n      \"output\": \"$ git log --oneline --graph\\n*   a4e1f20 Merge branch 'feature/cart'\\n|\\\\\\n| * 7d2c013 Кнопка «В корзину»\\n* | 51c9ab0 Исправить шапку\\n|/\\n* 9b1c004 Меню на телефоне\",\n      \"caption\": \"Две линии истории сошлись в коммите слияния\"\n    }\n  ]\n}\n```\n\n**Главное.** Сначала обнови ветку, в которую сливаешь, потом `git merge`. Граф — `git log --oneline --graph`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mg-ff",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mg-parents",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mg-where",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "branching-models",
+      "title": "Как команды ведут ветки",
+      "summary": "Короткоживущие ветки, trunk-based development, GitHub Flow, git flow и имена веток.",
+      "chapter": "Ветки и слияние",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем сливать ветки и узнаём, как о них договариваются в командах.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"GitHub Flow\",\n  \"title\": \"main и ветки задач\",\n  \"what\": \"Есть только main, которая всегда рабочая. Каждая задача — ветка, затем pull request, ревью и слияние в main, после чего main выкладывается.\",\n  \"why\": \"Самая популярная модель для веб-проектов: просто и быстро.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Trunk-based development\",\n  \"title\": \"Всё в ствол часто\",\n  \"what\": \"Ветки живут часы или день, сливаются в main несколько раз в день. Незаконченные возможности прячут за переключателями.\",\n  \"why\": \"Чем короче ветка, тем меньше конфликтов и тем быстрее изменения доходят до людей.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"git flow\",\n  \"title\": \"Ветки на всё\",\n  \"what\": \"Ветки develop, feature, release и hotfix. Подходит для продуктов с редкими версиями, например коробочных программ.\",\n  \"why\": \"Для сайта, который выкладывается каждый день, обычно избыточна.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Имена веток\",\n  \"title\": \"Тип и смысл\",\n  \"what\": \"`feat/cart-promo`, `fix/login-redirect`, `docs/readme`. Латиница, дефисы, без пробелов.\",\n  \"why\": \"По имени ясно, что в ветке, и инструменты могут сортировать ветки по типу.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Короткие ветки, частые слияния, main всегда рабочая."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bm-ghflow",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bm-short",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bm-name",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "conflict-markers",
+      "title": "Откуда конфликт и как он выглядит",
+      "summary": "Почему Git не может слить автоматически и как читать маркеры <<<<<<<, ======= и >>>>>>>.",
+      "chapter": "Конфликты",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем модели ветвления и разбираемся, что делать, когда ветки спорят.\",\"cast\":[\"nika\"]}\n```\n\nКонфликт — не ошибка и не поломка. Git честно говорит: две ветки изменили одно и то же место по-разному, решить должен человек.\n\n```concept\n{\n  \"name\": \"Конфликт слияния\",\n  \"title\": \"Merge conflict\",\n  \"what\": \"Возникает, когда обе ветки изменили одни и те же строки файла или одна ветка изменила файл, а другая его удалила.\",\n  \"why\": \"Git останавливает слияние и помечает спорные места прямо в файлах.\",\n  \"kind\": \"idea\"\n}\n```\n\n```text\n<<<<<<< HEAD\n  color: var(--accent);\n=======\n  color: #ff6a21;\n>>>>>>> feature/theme\n```\n\n```concept\n{\n  \"name\": \"Маркеры конфликта\",\n  \"title\": \"Две версии рядом\",\n  \"what\": \"Между `<<<<<<< HEAD` и `=======` — версия текущей ветки, между `=======` и `>>>>>>> ветка` — версия вливаемой ветки.\",\n  \"why\": \"Нужно оставить правильный вариант (или объединить оба) и удалить все три строки маркеров.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"git status при конфликте\",\n  \"title\": \"Что не слито\",\n  \"what\": \"Во время конфликта status показывает файлы в разделе «both modified» и подсказывает, как продолжить или отменить слияние.\",\n  \"why\": \"Сразу видно, сколько файлов нужно разобрать.\",\n  \"kind\": \"statement\"\n}\n```\n\n**Главное.** Конфликт — вопрос к тебе, а не авария. Между <<< и === — твоё, между === и >>> — чужое."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cr-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cr-head",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cr-markers",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "resolve",
+      "title": "Разрешить конфликт",
+      "summary": "Отредактировать, добавить и завершить слияние, отменить его через --abort, взять одну сторону целиком.",
+      "chapter": "Конфликты",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Читаем маркеры и доводим слияние с конфликтом до конца.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Разрешение конфликта\",\n  \"steps\": [\n    {\n      \"title\": \"Открыть файл\",\n      \"text\": \"Найти маркеры конфликта\"\n    },\n    {\n      \"title\": \"Решить\",\n      \"text\": \"Оставить нужный код, убрать маркеры\"\n    },\n    {\n      \"title\": \"git add\",\n      \"text\": \"Отметить файл разрешённым\"\n    },\n    {\n      \"title\": \"git commit\",\n      \"text\": \"Завершить слияние\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"git add после правки\",\n  \"title\": \"Отметить разрешённым\",\n  \"what\": \"Когда маркеров не осталось, `git add файл` говорит Git, что конфликт в файле разрешён. Затем `git commit` (или `git merge --continue`) завершает слияние.\",\n  \"why\": \"Пока файл не добавлен, Git считает конфликт открытым.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git merge --abort\",\n  \"title\": \"Передумать\",\n  \"what\": \"Отменяет слияние и возвращает всё как было до `git merge`.\",\n  \"why\": \"Конфликт оказался сложнее, чем ожидал? Отступи, обсуди с коллегой, вернись позже.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"--ours и --theirs\",\n  \"title\": \"Взять одну сторону\",\n  \"what\": \"`git checkout --ours файл` — оставить версию текущей ветки целиком, `--theirs` — версию вливаемой.\",\n  \"why\": \"Для сгенерированных файлов (например, lock-файла) проще взять одну сторону и пересобрать.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Редактор для конфликтов\",\n  \"title\": \"Кнопки вместо маркеров\",\n  \"what\": \"VS Code подсвечивает конфликт и предлагает кнопки «Accept Current», «Accept Incoming», «Accept Both». Есть и трёхпанельный режим слияния.\",\n  \"why\": \"Разбирать конфликт глазами в редакторе проще и надёжнее, чем вручную удалять маркеры.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проверить после\",\n  \"title\": \"Слито — не значит работает\",\n  \"what\": \"После разрешения конфликта запусти проект и тесты: оба изменения по отдельности были правильными, но вместе могут сломать логику.\",\n  \"why\": \"Самые коварные ошибки появляются именно на стыке двух веток.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Убрал маркеры → `git add` → `git commit`. Слишком сложно → `git merge --abort`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rv-done",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rv-abort",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rv-lock",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "avoid-conflicts",
+      "title": "Как конфликтов становится меньше",
+      "summary": "Частые слияния, маленькие ветки, обновление от main, форматтер и договорённости в команде.",
+      "chapter": "Конфликты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Разрешаем конфликты и учимся сталкиваться с ними реже.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Обновляйся от main\",\n  \"title\": \"Не уходи далеко\",\n  \"what\": \"Регулярно вливай свежий main в свою ветку (или делай rebase), особенно перед pull request.\",\n  \"why\": \"Мелкие конфликты по ходу дела разрешаются за минуту, большой в конце — за час.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Маленькие изменения\",\n  \"title\": \"Меньше пересечений\",\n  \"what\": \"Чем меньше файлов и строк трогает ветка, тем ниже шанс пересечься с коллегами.\",\n  \"why\": \"Большую задачу дели на несколько небольших pull request.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Общий форматтер\",\n  \"title\": \"Нет войн пробелов\",\n  \"what\": \"Prettier или аналог форматирует код одинаково у всех. Без него конфликт возникает из-за отступов и кавычек.\",\n  \"why\": \"Конфликты остаются только там, где люди действительно меняли смысл.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"rerere\",\n  \"title\": \"Запомнить решение\",\n  \"what\": \"`git config --global rerere.enabled true` запоминает, как ты разрешил конфликт, и повторяет решение, если такой же конфликт встретится снова.\",\n  \"why\": \"Помогает при частых rebase одной и той же ветки.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Часто обновляйся от main, делай маленькие ветки, форматируй код одинаково."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "av-update",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "av-format",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "av-rerere",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "remote-push",
+      "title": "Удалённый репозиторий и push",
+      "summary": "git remote и origin, первая отправка с -u, отслеживаемые ветки и доступ по SSH.",
+      "chapter": "Удалённые репозитории",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем избегать конфликтов и выходим за пределы своего компьютера.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Удалённый репозиторий\",\n  \"title\": \"Remote\",\n  \"what\": \"Копия репозитория на сервере (GitHub, GitLab, свой сервер). У локального репозитория может быть несколько удалённых; главный обычно называется `origin`.\",\n  \"why\": \"Удалённый репозиторий — место, через которое команда обменивается коммитами.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"git remote\",\n  \"title\": \"Подключить и посмотреть\",\n  \"what\": \"`git remote -v` — список удалённых с адресами, `git remote add origin адрес` — подключить, `git remote set-url origin новый-адрес` — сменить адрес.\",\n  \"why\": \"После `git clone` origin уже настроен; для нового проекта его добавляют вручную.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git push -u\",\n  \"title\": \"Первая отправка ветки\",\n  \"what\": \"`git push -u origin feature/cart` отправляет ветку и запоминает связь с удалённой веткой. Дальше достаточно `git push`.\",\n  \"why\": \"-u (upstream) делают один раз на ветку.\",\n  \"how\": \"git push -u origin feature/cart\\nbranch 'feature/cart' set up to track 'origin/feature/cart'\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"Отслеживаемая ветка\",\n  \"title\": \"Upstream\",\n  \"what\": \"Локальная ветка, связанная с удалённой. `git status` пишет «Your branch is ahead of 'origin/main' by 2 commits» — значит, два коммита ещё не отправлены.\",\n  \"why\": \"Сразу видно, отправлено ли сделанное.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Доступ по SSH\",\n  \"title\": \"Ключ вместо пароля\",\n  \"what\": \"GitHub не принимает пароль аккаунта для push. Нужен SSH-ключ в настройках GitHub (адрес вида `git@github.com:user/repo.git`) или токен для HTTPS.\",\n  \"why\": \"Один раз добавил ключ — дальше push работает без вопросов. Как создать ключ — в курсе «Терминал».\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Первый push ветки — с `-u`. «ahead by N» в status — N коммитов ещё не отправлены."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rp-origin",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rp-u",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rp-ahead",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "fetch-pull",
+      "title": "fetch и pull",
+      "summary": "Скачать чужие коммиты, посмотреть их, влить или переложить свои поверх, и что значит behind.",
+      "chapter": "Удалённые репозитории",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Отправляем свои коммиты и учимся получать чужие.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"pull = fetch + слияние\",\n  \"steps\": [\n    {\n      \"title\": \"git fetch\",\n      \"text\": \"Скачать новые коммиты в origin/main, ничего не трогая\"\n    },\n    {\n      \"title\": \"Посмотреть\",\n      \"text\": \"git log main..origin/main — что пришло\"\n    },\n    {\n      \"title\": \"Объединить\",\n      \"text\": \"merge или rebase своей ветки\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"git fetch\",\n  \"title\": \"Скачать без слияния\",\n  \"what\": \"Загружает новые коммиты и ветки с сервера в `origin/…`, но твои ветки и файлы не меняет.\",\n  \"why\": \"Безопасно в любой момент: можно посмотреть, что пришло, прежде чем вливать.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git pull\",\n  \"title\": \"Скачать и влить\",\n  \"what\": \"`git pull` = fetch + merge удалённой ветки в текущую. Если ты и коллега сделали коммиты, получится коммит слияния или конфликт.\",\n  \"why\": \"Начинай день и каждую новую задачу с `git pull` в main.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git pull --rebase\",\n  \"title\": \"Свои поверх чужих\",\n  \"what\": \"Вместо коммита слияния переносит твои неотправленные коммиты поверх свежих. Включить по умолчанию: `git config --global pull.rebase true`.\",\n  \"why\": \"История остаётся прямой, без лишних «Merge branch main».\",\n  \"how\": \"git pull --rebase\\nSuccessfully rebased and updated refs/heads/main.\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"rejected при push\",\n  \"title\": \"Сначала забери\",\n  \"what\": \"Сообщение «rejected — fetch first» значит, что на сервере есть коммиты, которых нет у тебя. Нужно `git pull` (лучше с rebase), разрешить конфликты и снова `git push`.\",\n  \"why\": \"Не путай с поводом для `push --force`: это перезапишет чужую работу.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Посмотреть, что пришло, — `fetch`. Забрать — `pull --rebase`. Push отклонён — сначала pull."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fp-fetch",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fp-rejected",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fp-rebase",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "force-push",
+      "title": "Осторожно: push --force",
+      "summary": "Когда перезапись удалённой истории допустима, --force-with-lease и защищённые ветки.",
+      "chapter": "Удалённые репозитории",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Получаем чужие изменения и разбираемся, когда можно переписать историю на сервере.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Перезапись истории\",\n  \"title\": \"Что делает --force\",\n  \"what\": \"После amend или rebase у твоей ветки другие коммиты, чем на сервере. Обычный push откажет, `git push --force` заменит удалённую ветку твоей версией.\",\n  \"why\": \"Всё, что было на сервере и чего нет у тебя, исчезнет из ветки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"--force-with-lease\",\n  \"title\": \"Безопасная перезапись\",\n  \"what\": \"`git push --force-with-lease` перезапишет ветку, только если на сервере она не изменилась с твоего последнего fetch. Если коллега что-то добавил — откажет.\",\n  \"why\": \"Всегда используй его вместо голого --force.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Своя ветка — можно\",\n  \"title\": \"Правило\",\n  \"what\": \"Переписывать можно свою ветку задачи, в которую больше никто не коммитит (например, после rebase перед pull request). main и общие ветки — никогда.\",\n  \"why\": \"Перезапись main ломает историю у всей команды.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Защищённая ветка\",\n  \"title\": \"Branch protection\",\n  \"what\": \"На GitHub для main включают защиту: запрет force push и удаления, обязательный pull request с ревью и зелёными проверками.\",\n  \"why\": \"Даже по ошибке никто не сломает main одной командой.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Только своя ветка и только `--force-with-lease`. main защищают на GitHub."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fo-lease",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fo-main",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fo-protect",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "pull-request",
+      "title": "Pull request",
+      "summary": "Предложить изменения, описать их, привязать задачу, черновик и слияние после проверок.",
+      "chapter": "Командная работа на GitHub",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем с удалёнными ветками и переходим к командной работе на GitHub.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Pull request\",\n  \"title\": \"Предложение изменений\",\n  \"what\": \"Запрос на слияние твоей ветки в main. На странице видны все коммиты и diff, там обсуждают код, запускаются автоматические проверки, и там же нажимают «Merge».\",\n  \"why\": \"Код попадает в main только после того, как его увидел ещё кто-то и проверки прошли.\",\n  \"kind\": \"idea\"\n}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Жизнь pull request\",\n  \"steps\": [\n    {\n      \"title\": \"Ветка и push\",\n      \"text\": \"Коммиты задачи на GitHub\"\n    },\n    {\n      \"title\": \"Открыть PR\",\n      \"text\": \"Описание: что, зачем, как проверить\"\n    },\n    {\n      \"title\": \"Проверки и ревью\",\n      \"text\": \"CI и комментарии коллег\"\n    },\n    {\n      \"title\": \"Слияние\",\n      \"text\": \"Merge, squash или rebase в main\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Описание PR\",\n  \"title\": \"Что, зачем, как проверить\",\n  \"what\": \"Хорошее описание отвечает: что изменилось, зачем, как проверить, есть ли риски. Скриншоты для изменений интерфейса.\",\n  \"why\": \"Ревьюер тратит минуты, а не час, а через год описание объясняет решение.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Черновик PR\",\n  \"title\": \"Draft\",\n  \"what\": \"Pull request в статусе Draft виден команде, но слить его нельзя. Удобно показать работу пораньше и получить совет.\",\n  \"why\": \"Раннее обсуждение дешевле переделки в конце.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Squash merge\",\n  \"title\": \"Один коммит в main\",\n  \"what\": \"При слиянии все коммиты ветки сжимаются в один с заголовком PR. Другие варианты: merge commit (сохранить все коммиты) и rebase merge.\",\n  \"why\": \"В main остаётся по одному понятному коммиту на задачу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"gh pr create\",\n  \"title\": \"PR из терминала\",\n  \"what\": \"Утилита GitHub CLI: `gh pr create --fill` открывает pull request по текущей ветке, `gh pr checks` — статус проверок, `gh pr merge --squash` — слить.\",\n  \"why\": \"Не нужно переключаться в браузер для рутинных действий.\",\n  \"kind\": \"statement\"\n}\n```\n\n**Главное.** Маленький PR с хорошим описанием проверяют быстро. Большой — долго и хуже."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-squash",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-desc",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "code-review",
+      "title": "Ревью кода",
+      "summary": "Как проверять чужой код и как принимать замечания: комментарии, предложения правок, approve.",
+      "chapter": "Командная работа на GitHub",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Открываем pull request и учимся проверять код друг друга.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Ревью кода\",\n  \"title\": \"Вторые глаза\",\n  \"what\": \"Коллега читает diff, задаёт вопросы и предлагает улучшения до слияния. Итог — Approve, Request changes или просто комментарии.\",\n  \"why\": \"Ловит ошибки до пользователей и распространяет знание кода по команде.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Предложение правки\",\n  \"title\": \"Suggestion\",\n  \"what\": \"В комментарии на GitHub можно предложить конкретный код; автор принимает его одной кнопкой.\",\n  \"why\": \"Мелкие исправления не требуют переписки «поправь, пожалуйста, вот тут».\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Как писать замечания\",\n  \"title\": \"О коде, а не о человеке\",\n  \"what\": \"«Здесь может упасть при пустом списке — давай проверим длину?» вместо «ты опять забыл». Отмечай, что обязательно, а что вкусовщина («nit:»).\",\n  \"why\": \"Ревью, после которого не хочется спорить, проходит быстрее и улучшает код.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Как принимать замечания\",\n  \"title\": \"Код — не ты\",\n  \"what\": \"Отвечай на каждый комментарий: исправил, объяснил, почему так, или договорились сделать позже отдельной задачей.\",\n  \"why\": \"Хороший ответ на ревью ценится не меньше хорошего кода.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"CODEOWNERS\",\n  \"title\": \"Кто проверяет\",\n  \"what\": \"Файл `.github/CODEOWNERS` назначает ответственных за папки: изменения в `/payments` автоматически запрашивают ревью у нужных людей.\",\n  \"why\": \"Важный код всегда смотрит тот, кто в нём разбирается.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Комментируй код, а не автора. Помечай мелочи как «nit:»."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rv-tone",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rv-nit",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rv-owners",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "forks-issues",
+      "title": "Форки, задачи и проверки",
+      "summary": "Fork для чужих проектов, issues и метки, GitHub Actions и статусы проверок в PR.",
+      "chapter": "Командная работа на GitHub",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проводим ревью и узнаём, как участвовать в чужих проектах и автоматизировать проверки.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Fork\",\n  \"title\": \"Своя копия чужого проекта\",\n  \"what\": \"Копия чужого репозитория в твоём аккаунте. В неё можно пушить, а изменения предлагают оригиналу через pull request из форка.\",\n  \"why\": \"Так вносят вклад в открытые проекты, не имея прав на запись в оригинал.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"upstream\",\n  \"title\": \"Оригинал форка\",\n  \"what\": \"`git remote add upstream адрес-оригинала`, затем `git fetch upstream` и `git rebase upstream/main` — чтобы держать форк свежим.\",\n  \"why\": \"Форк быстро устаревает; без обновления PR будет конфликтовать.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Issues\",\n  \"title\": \"Задачи и ошибки\",\n  \"what\": \"Задачи на GitHub: описание, обсуждение, метки (bug, enhancement, good first issue), исполнитель. Коммит или PR с «Fixes #12» закрывает задачу при слиянии.\",\n  \"why\": \"Вся история решения — от сообщения об ошибке до кода — связана.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"GitHub Actions\",\n  \"title\": \"Проверки на каждый push\",\n  \"what\": \"Файлы в `.github/workflows/` описывают, что запускать: тесты, линтер, сборку. Результат виден в PR зелёной или красной отметкой.\",\n  \"why\": \"Сломанный код не попадёт в main: красный PR сразу видно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Обязательные проверки\",\n  \"title\": \"Required checks\",\n  \"what\": \"В защите ветки отмечают, какие проверки должны быть зелёными, прежде чем можно слить PR.\",\n  \"why\": \"Правило «сначала зелёный» соблюдается автоматически, а не по памяти.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Чужой проект: fork → ветка → PR. Свой: Actions проверяют каждый push."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fi-fork",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fi-close",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fi-actions",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "rebase",
+      "title": "Rebase: переложить ветку",
+      "summary": "Что делает git rebase, чем он отличается от merge, конфликты при rebase и золотое правило.",
+      "chapter": "Rebase и чистая история",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем GitHub и учимся держать историю прямой и чистой.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"git rebase main\",\n  \"title\": \"Переложить ветку\",\n  \"what\": \"Находясь в своей ветке, `git rebase main` берёт её коммиты и по одному применяет поверх свежего main. Получаются новые коммиты с новыми хешами.\",\n  \"why\": \"История выглядит так, будто ты начал работу с последней версии main: прямая линия без коммитов слияния.\",\n  \"kind\": \"statement\"\n}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"merge и rebase\",\n  \"steps\": [\n    {\n      \"title\": \"merge\",\n      \"text\": \"Сохраняет обе линии и добавляет коммит слияния\"\n    },\n    {\n      \"title\": \"rebase\",\n      \"text\": \"Переписывает твои коммиты поверх main, история прямая\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Конфликт при rebase\",\n  \"title\": \"По коммиту за раз\",\n  \"what\": \"Конфликт разрешают для каждого переносимого коммита: исправил, `git add`, затем `git rebase --continue`. Передумал — `git rebase --abort`.\",\n  \"why\": \"Шагов может быть несколько, но каждый проще одного большого слияния.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Золотое правило rebase\",\n  \"title\": \"Только неопубликованное\",\n  \"what\": \"Не делай rebase коммитов, на которых уже работают другие (общие ветки, main). Своя ветка задачи перед PR — можно, затем `push --force-with-lease`.\",\n  \"why\": \"Rebase общей истории заставит всех коллег распутывать дубликаты коммитов.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Свою ветку — `git rebase main` перед PR. Общие ветки — никогда."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rb-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rb-continue",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rb-golden",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "interactive-rebase",
+      "title": "Интерактивный rebase",
+      "summary": "Склеить, переименовать, переставить и удалить коммиты перед pull request через git rebase -i.",
+      "chapter": "Rebase и чистая история",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем перекладывать ветку и учимся приводить её коммиты в порядок.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"git rebase -i\",\n  \"title\": \"Редактор истории\",\n  \"what\": \"`git rebase -i HEAD~4` открывает список последних четырёх коммитов. Меняя слово в начале строки, говоришь Git, что сделать с каждым коммитом.\",\n  \"why\": \"«WIP», «опечатка», «ещё правка» превращаются в два аккуратных коммита.\",\n  \"kind\": \"statement\"\n}\n```\n\n```text\npick 51c9ab0 Форма подписки\nsquash 7d2c013 опечатка\nfixup 9e01a77 ещё правка\nreword a4e1f20 Валидация почты\n```\n\n```concept\n{\n  \"name\": \"Команды rebase -i\",\n  \"title\": \"pick, squash, fixup, reword, drop\",\n  \"what\": \"`pick` — оставить, `reword` — поменять сообщение, `squash` — склеить с предыдущим и объединить сообщения, `fixup` — склеить и выбросить сообщение, `drop` — удалить. Строки можно переставлять.\",\n  \"why\": \"Пять слов покрывают почти любую уборку истории.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"--fixup и --autosquash\",\n  \"title\": \"Уборка автоматически\",\n  \"what\": \"`git commit --fixup 51c9ab0` создаёт коммит-поправку к нужному коммиту, а `git rebase -i --autosquash main` сам расставит fixup.\",\n  \"why\": \"Поправки к старым коммитам не нужно расставлять руками.\",\n  \"kind\": \"statement\"\n}\n```\n\n**Главное.** Перед PR: `git rebase -i main`, склей мелочь через fixup, затем `push --force-with-lease`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ri-fixup",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ri-reword",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ri-drop",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "cherry-pick",
+      "title": "cherry-pick и перенос коммитов",
+      "summary": "Перенести один коммит в другую ветку, срочные исправления и чем cherry-pick отличается от merge.",
+      "chapter": "Rebase и чистая история",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Чистим историю ветки и учимся переносить отдельные коммиты.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"git cherry-pick\",\n  \"title\": \"Взять один коммит\",\n  \"what\": \"`git cherry-pick 7d2c013` применяет изменения этого коммита к текущей ветке новым коммитом. Можно сразу несколько: `A..B`.\",\n  \"why\": \"Срочное исправление из ветки разработки нужно в выпущенной версии прямо сейчас.\",\n  \"kind\": \"statement\"\n}\n```\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Перенос исправления в ветку выпуска\",\n  \"file\": \"Терминал\",\n  \"scenes\": [\n    {\n      \"input\": \"git switch release/2.1 && git cherry-pick 7d2c013\",\n      \"key\": \"Enter\",\n      \"output\": \"$ git switch release/2.1 && git cherry-pick 7d2c013\\n[release/2.1 e5f8a10] Исправить расчёт скидки\",\n      \"caption\": \"Новый коммит с теми же изменениями, но своим хешем\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Дубли коммитов\",\n  \"title\": \"Обратная сторона\",\n  \"what\": \"Перенесённый коммит — копия с другим хешем. Если потом слить ветки, Git обычно справится, но история покажет одно изменение дважды.\",\n  \"why\": \"cherry-pick — для отдельных случаев, а не замена нормальному слиянию.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тег\",\n  \"title\": \"Метка версии\",\n  \"what\": \"`git tag -a v2.1.0 -m \\\"Выпуск 2.1\\\"` ставит неподвижную метку на коммит. `git push --tags` отправляет теги. GitHub делает из тегов страницы Releases.\",\n  \"why\": \"Всегда можно вернуться к точной выпущенной версии и сравнить с ней.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Один коммит в другую ветку — `cherry-pick`. Выпуск — аннотированный тег."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-when",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-tag",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "gitignore",
+      "title": ".gitignore",
+      "summary": "Какие файлы не хранят в Git, шаблоны .gitignore, глобальный ignore и как перестать отслеживать файл.",
+      "chapter": "Настройки, stash и .gitignore",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Переносим коммиты между ветками и наводим порядок в том, что попадает в репозиторий.\",\"cast\":[\"nika\"]}\n```\n\n```text\nnode_modules/\ndist/\n.env\n*.log\n.DS_Store\n```\n\n```concept\n{\n  \"name\": \".gitignore\",\n  \"title\": \"Что не отслеживать\",\n  \"what\": \"Файл в корне проекта со списком шаблонов: папки со слешем на конце, `*.log` — по расширению, `!keep.log` — исключение из правила.\",\n  \"why\": \"Зависимости, сборка, журналы и секреты не засоряют историю и не утекают в публичный репозиторий.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что не хранят в Git\",\n  \"title\": \"Восстановимое и секретное\",\n  \"what\": \"`node_modules` и сборку (восстанавливаются командой), `.env` и ключи (секреты), файлы редактора и системы (`.idea`, `.DS_Store`).\",\n  \"why\": \"Пароль, однажды попавший в историю, остаётся в ней, даже если удалить файл следующим коммитом.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"git rm --cached\",\n  \"title\": \"Перестать отслеживать\",\n  \"what\": \"`.gitignore` не действует на уже отслеживаемые файлы. `git rm --cached .env` убирает файл из Git, оставляя его на диске; затем добавь его в .gitignore.\",\n  \"why\": \"Исправить ситуацию, когда файл попал в репозиторий раньше, чем в .gitignore.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Утёкший секрет\",\n  \"title\": \"Сменить, а не только удалить\",\n  \"what\": \"Если пароль или ключ попал в отправленный коммит, удаления недостаточно: его нужно сразу сменить (отозвать) там, где он действует.\",\n  \"why\": \"Публичные репозитории сканируют боты; ключ находят за минуты.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Создай .gitignore до первого коммита. Секрет попал в историю — меняй секрет."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gi-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gi-tracked",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gi-leak",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "stash",
+      "title": "stash: отложить работу",
+      "summary": "Спрятать незаконченные правки, переключиться, вернуть их, список и именованные stash.",
+      "chapter": "Настройки, stash и .gitignore",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Держим репозиторий чистым и учимся откладывать незаконченную работу.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"git stash\",\n  \"title\": \"Спрятать правки\",\n  \"what\": \"`git stash` убирает незакоммиченные изменения в стопку и возвращает папку к последнему коммиту. `-u` — вместе с новыми файлами, `push -m \\\"описание\\\"` — с подписью.\",\n  \"why\": \"Срочно переключиться на другую ветку, не делая коммит из полуготовой работы.\",\n  \"kind\": \"statement\"\n}\n```\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Срочное дело посреди работы\",\n  \"file\": \"Терминал\",\n  \"scenes\": [\n    {\n      \"input\": \"git stash push -u -m \\\"форма: полуготово\\\"\",\n      \"key\": \"Enter\",\n      \"output\": \"$ git stash push -u -m \\\"форма: полуготово\\\"\\nSaved working directory and index state On feature/form: форма: полуготово\",\n      \"caption\": \"Папка чистая, можно переключаться на срочную ветку\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"git stash pop\",\n  \"title\": \"Вернуть правки\",\n  \"what\": \"`git stash pop` возвращает последние спрятанные правки и удаляет их из стопки. `git stash apply` — вернуть, но оставить копию в стопке.\",\n  \"why\": \"Вернулся к задаче — продолжил с того же места.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git stash list\",\n  \"title\": \"Что отложено\",\n  \"what\": \"`git stash list` — стопка с подписями, `git stash show -p stash@{1}` — что внутри, `git stash drop stash@{1}` — удалить.\",\n  \"why\": \"Старые stash легко забыть; подписи и список спасают.\",\n  \"kind\": \"statement\"\n}\n```\n\n**Главное.** Короткая пауза — `stash`. Долгая — лучше коммит во временную ветку."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-hide",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-pop",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-new",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "git-config-tools",
+      "title": "Настройки, псевдонимы и хуки",
+      "summary": "Полезные глобальные настройки, псевдонимы Git, хуки pre-commit и husky.",
+      "chapter": "Настройки, stash и .gitignore",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Откладываем работу через stash и настраиваем Git, чтобы работать быстрее.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Глобальные настройки Git\",\n  \"title\": \"Полезные настройки\",\n  \"what\": \"`pull.rebase true` — pull без лишних слияний, `push.autoSetupRemote true` — не писать -u, `core.editor \\\"code --wait\\\"` — редактор VS Code, `init.defaultBranch main`.\",\n  \"why\": \"Пять строк настройки экономят сотни лишних команд.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git alias\",\n  \"title\": \"Свои команды\",\n  \"what\": \"`git config --global alias.lg \\\"log --oneline --graph --all\\\"` — теперь `git lg` рисует граф всех веток.\",\n  \"why\": \"Длинные частые команды становятся короткими.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Хуки Git\",\n  \"title\": \"Скрипты на события\",\n  \"what\": \"Скрипты в `.git/hooks`, которые Git запускает в моменты: `pre-commit` — перед коммитом, `commit-msg` — проверить сообщение, `pre-push` — перед отправкой. Ненулевой код возврата отменяет действие.\",\n  \"why\": \"Форматирование и быстрые проверки происходят сами, до того как ошибка попала в историю.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"husky и lint-staged\",\n  \"title\": \"Хуки для всей команды\",\n  \"what\": \"Папка `.git/hooks` не попадает в репозиторий. Пакет husky хранит хуки в проекте, а lint-staged запускает линтер только на изменённых файлах.\",\n  \"why\": \"У всех в команде одинаковые проверки без ручной настройки.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Настрой `pull.rebase` и `push.autoSetupRemote` один раз. Формат и линтер — в pre-commit."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ct-alias",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ct-hook",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ct-husky",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "objects",
+      "title": "Объекты Git: blob, tree, commit",
+      "summary": "Из чего состоит репозиторий: содержимое файлов, деревья папок, коммиты и их хеши.",
+      "chapter": "Как Git устроен внутри",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Владеем инструментами и заглядываем внутрь: как Git хранит историю.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Коммит изнутри\",\n  \"steps\": [\n    {\n      \"title\": \"commit\",\n      \"text\": \"Автор, время, сообщение, родитель и ссылка на дерево\"\n    },\n    {\n      \"title\": \"tree\",\n      \"text\": \"Папка: имена файлов и вложенных папок\"\n    },\n    {\n      \"title\": \"blob\",\n      \"text\": \"Содержимое одного файла\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"blob\",\n  \"title\": \"Содержимое файла\",\n  \"what\": \"Объект с содержимым файла, без имени и прав. Одинаковые файлы хранятся одним blob.\",\n  \"why\": \"Тысяча копий одинаковой картинки в разных коммитах не занимают в тысячу раз больше места.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"tree\",\n  \"title\": \"Снимок папки\",\n  \"what\": \"Список имён: какой blob у каждого файла и какое tree у каждой вложенной папки.\",\n  \"why\": \"Коммит указывает на одно дерево — состояние всего проекта целиком.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Хеш объекта\",\n  \"title\": \"Имя по содержимому\",\n  \"what\": \"Каждый объект называется хешем своего содержимого (SHA-1 или SHA-256). Изменился хоть один байт — изменился хеш, а значит и хеши всех коммитов после.\",\n  \"why\": \"Историю нельзя тихо подменить: любое изменение видно по хешам.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"git cat-file\",\n  \"title\": \"Заглянуть в объект\",\n  \"what\": \"`git cat-file -p HEAD` печатает коммит: дерево, родителя, автора. `git cat-file -p` с хешем дерева — его содержимое.\",\n  \"why\": \"Видишь своими глазами, что коммит — это просто текст со ссылками.\",\n  \"how\": \"git cat-file -p HEAD\\ntree 4b825dc\\nparent 9b1c004\\nauthor Аня Иванова <ann@example.com>\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n**Главное.** Коммит → дерево → blob. Имя каждого объекта — хеш его содержимого."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ob-blob",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ob-hash",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ob-dup",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "refs",
+      "title": "Ссылки: ветки, HEAD и теги внутри",
+      "summary": "Что такое ветка на диске, отделённый HEAD, origin/main и как Git понимает, что слито.",
+      "chapter": "Как Git устроен внутри",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем объекты Git и разбираемся, как на них указывают ветки и HEAD.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Ветка на диске\",\n  \"title\": \"Файл с хешем\",\n  \"what\": \"Ветка `main` — файл `.git/refs/heads/main`, внутри которого один хеш коммита. Новый коммит просто переписывает хеш в этом файле.\",\n  \"why\": \"Поэтому создание и удаление веток мгновенны.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Отделённый HEAD\",\n  \"title\": \"Detached HEAD\",\n  \"what\": \"Если переключиться на конкретный коммит или тег (`git switch --detach v1.0`), HEAD указывает прямо на коммит, а не на ветку. Новые коммиты здесь не принадлежат никакой ветке.\",\n  \"why\": \"Хочешь сохранить работу из такого состояния — создай ветку: `git switch -c fix-from-old`.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"origin/main\",\n  \"title\": \"Удалённая ветка у тебя\",\n  \"what\": \"Локальная копия положения ветки на сервере на момент последнего fetch. Её нельзя менять напрямую, она обновляется при fetch и pull.\",\n  \"why\": \"`git log main..origin/main` показывает, что пришло с сервера, но ещё не влито.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Слита ли ветка\",\n  \"title\": \"Достижимость\",\n  \"what\": \"Ветка слита, если её последний коммит достижим из main по ссылкам на родителей. `git branch --merged main` перечисляет такие ветки.\",\n  \"why\": \"Безопасно удалять можно ровно эти ветки.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ветка — файл с хешем, HEAD — указатель на ветку. Detached HEAD — создай ветку, чтобы не потерять коммиты."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rf-branch",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rf-detached",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rf-merged",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "big-repos",
+      "title": "Большие файлы и большие репозитории",
+      "summary": "Почему Git плохо хранит большие двоичные файлы, Git LFS, неглубокий клон и уборка.",
+      "chapter": "Как Git устроен внутри",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем устройство Git и учимся справляться с большими файлами и репозиториями.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Двоичные файлы в Git\",\n  \"title\": \"Каждая версия целиком\",\n  \"what\": \"Изменённое видео или архив хранится новой полной копией, а история хранится вечно у каждого. Десять правок 200-мегабайтного файла — два гигабайта у каждого участника.\",\n  \"why\": \"Тяжёлые файлы делают clone и pull мучительно долгими для всех.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Git LFS\",\n  \"title\": \"Большие файлы отдельно\",\n  \"what\": \"Git Large File Storage хранит большие файлы на отдельном сервере, а в репозитории оставляет маленький указатель. `git lfs track \\\"*.psd\\\"`.\",\n  \"why\": \"Дизайн-макеты и видео можно держать рядом с кодом без раздувания истории.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"git clone --depth 1\",\n  \"title\": \"Неглубокий клон\",\n  \"what\": \"Скачивает только последний коммит без истории. `--filter=blob:none` — историю без содержимого старых файлов, оно подгрузится по требованию.\",\n  \"why\": \"CI и разовые сборки получают код за секунды, а не минуты.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"git gc\",\n  \"title\": \"Уборка\",\n  \"what\": \"Упаковывает объекты и удаляет недостижимые. Git обычно запускает её сам; вручную — `git gc` после большой чистки.\",\n  \"why\": \"Репозиторий занимает меньше места и работает быстрее.\",\n  \"kind\": \"statement\"\n}\n```\n\n**Главное.** Видео, архивы и макеты — в Git LFS, CI — `clone --depth 1`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bg-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bg-lfs",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bg-depth",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    }
+  ]
+}
