@@ -36,6 +36,9 @@ const LANGUAGE_NAMES: Record<string, string> = {
   javascript: "JavaScript",
   json: "JSON",
   sql: "SQL",
+  http: "HTTP",
+  shell: "Терминал",
+  bash: "Терминал",
   text: "Текст"
 };
 
