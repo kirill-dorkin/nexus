@@ -257,3 +257,12 @@
   border-radius: 0;
   box-shadow: none;
 }
+
+/* Touch screens: iOS zooms into any field under 16px on focus, and the layer must match
+   the textarea exactly, so both grow to 16px there. Pinch zoom stays available. */
+@media (pointer: coarse) {
+  .editor .layer,
+  .editor .input {
+    font-size: 1rem;
+  }
+}
