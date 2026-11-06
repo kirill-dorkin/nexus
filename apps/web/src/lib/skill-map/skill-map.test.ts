@@ -34,6 +34,7 @@ const manifests = [
   "terminal-track",
   "git-track",
   "ts-track",
+  "node-track",
   "pc-track",
   "browser-track"
 ].map(
@@ -73,7 +74,8 @@ describe("skill map data (ADR-0074)", () => {
       "sql",
       "terminal",
       "git",
-      "ts"
+      "ts",
+      "node"
     ]);
     for (const c of SKILL_MAP.characters) {
       expect(c.branches.length).toBeGreaterThan(0);

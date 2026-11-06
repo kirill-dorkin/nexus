@@ -1,0 +1,188 @@
+{
+  "note": "Every item is taught by its own concept card; the contracts test keeps the index and the cards in sync.",
+  "source": "Course design by chapter (branches of the character).",
+  "topics": {
+    "start": {
+      "title": "Старт Node.js",
+      "items": [
+        "Node.js",
+        "Чего нет в Node.js",
+        "Где используют Node.js",
+        "LTS-версия",
+        "node файл.js",
+        "node без файла",
+        "node --watch",
+        "nvm",
+        "npm run",
+        "process.argv",
+        "process.env",
+        "process.exit и exitCode",
+        "process.cwd",
+        "Сигналы процесса"
+      ]
+    },
+    "modules": {
+      "title": "Модули и npm",
+      "items": [
+        "ES-модули",
+        "CommonJS",
+        "Встроенные модули",
+        "Расширение в импорте",
+        "npm init -y",
+        "npm install пакет",
+        "npm install",
+        "npx",
+        "node_modules",
+        "SemVer",
+        "^ и ~",
+        "package-lock.json",
+        "npm audit",
+        "Обновления без страха"
+      ]
+    },
+    "async": {
+      "title": "Асинхронность и цикл событий",
+      "items": [
+        "Один поток",
+        "Блокировка цикла",
+        "Микрозадачи и таймеры",
+        "Колбэки",
+        "async/await",
+        "Promise.all",
+        "Promise.allSettled",
+        "AbortSignal.timeout",
+        "try/catch с await",
+        "Необработанное отклонение",
+        "Свои классы ошибок",
+        "cause"
+      ]
+    },
+    "fs": {
+      "title": "Файлы и пути",
+      "items": [
+        "readFile",
+        "writeFile",
+        "Синхронные версии",
+        "Ошибка ENOENT",
+        "path.join",
+        "import.meta.dirname",
+        "path.resolve",
+        "mkdir, readdir, rm",
+        "JSON-файл",
+        "Атомарная запись",
+        "Файл — не база данных"
+      ]
+    },
+    "streams": {
+      "title": "Потоки и буферы",
+      "items": [
+        "Buffer",
+        "Длина в байтах",
+        "base64",
+        "Поток",
+        "pipeline",
+        "Построчное чтение",
+        "Обратное давление",
+        "highWaterMark",
+        "Web Streams"
+      ]
+    },
+    "http": {
+      "title": "HTTP-сервер",
+      "items": [
+        "createServer",
+        "req.method и req.url",
+        "Ответ",
+        "Тело запроса",
+        "Ответ JSON",
+        "Коды ошибок API",
+        "Лимит тела",
+        "Отдать файл",
+        "Выход из папки",
+        "Заголовки CORS",
+        "Готовые решения"
+      ]
+    },
+    "express": {
+      "title": "Express и REST API",
+      "items": [
+        "npm install express",
+        "Маршрут",
+        "Параметры пути и query",
+        "express.json",
+        "Middleware",
+        "Авторизация",
+        "Обработчик ошибок",
+        "REST",
+        "Коды успеха",
+        "Проверка входа",
+        "Пагинация"
+      ]
+    },
+    "database": {
+      "title": "Базы данных",
+      "items": [
+        "Драйвер pg",
+        "Пул соединений",
+        "Строка подключения",
+        "Закрыть пул",
+        "SQL-инъекция",
+        "Параметры",
+        "Экранирование не спасает",
+        "Транзакция",
+        "ORM и query builder",
+        "Миграции"
+      ]
+    },
+    "security": {
+      "title": "Конфигурация и безопасность",
+      "items": [
+        "Двенадцать факторов",
+        "--env-file",
+        "Проверка при старте",
+        "Хеш пароля",
+        "Почему не SHA-256",
+        "Сессия в cookie",
+        "JWT",
+        "Ограничение частоты",
+        "Заголовки безопасности",
+        "Наименьшие права",
+        "Журнал без секретов"
+      ]
+    },
+    "testing": {
+      "title": "Тесты и отладка",
+      "items": [
+        "node:test",
+        "Vitest",
+        "Что тестировать",
+        "Структура AAA",
+        "Тест маршрута",
+        "Тестовая база",
+        "Мок",
+        "Мокать границы",
+        "node --inspect",
+        "Отладка в VS Code",
+        "console.time",
+        "Утечка памяти"
+      ]
+    },
+    "production": {
+      "title": "В продакшене",
+      "items": [
+        "Структурированный лог",
+        "Уровни",
+        "ID запроса",
+        "/health",
+        "Graceful shutdown",
+        "Несколько экземпляров",
+        "Состояние вне процесса",
+        "worker_threads",
+        "NODE_ENV=production",
+        "Docker-образ",
+        "Платформы",
+        "Проверка после выкладки"
+      ]
+    }
+  }
+}
