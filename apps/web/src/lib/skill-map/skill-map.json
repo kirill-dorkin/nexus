@@ -5017,6 +5017,466 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "git",
+      "name": "Git",
+      "role": "Хронист",
+      "summary": "История кода и командная работа: коммиты и индекс, история и различия, отмена любых изменений, ветки и слияние, конфликты, удалённые репозитории, pull request и ревью на GitHub, rebase и чистая история, stash и .gitignore, устройство Git изнутри.",
+      "accent": "amber",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Снимки",
+          "branches": [
+            "git-1",
+            "git-2"
+          ]
+        },
+        {
+          "title": "История",
+          "branches": [
+            "git-3",
+            "git-4"
+          ]
+        },
+        {
+          "title": "Ветки",
+          "branches": [
+            "git-5",
+            "git-6"
+          ]
+        },
+        {
+          "title": "Команда",
+          "branches": [
+            "git-7",
+            "git-8"
+          ]
+        },
+        {
+          "title": "Чистая история",
+          "branches": [
+            "git-9"
+          ]
+        },
+        {
+          "title": "Мастерство",
+          "branches": [
+            "git-10",
+            "git-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "git-1",
+          "title": "Старт Git",
+          "depth": "practice",
+          "requires": [
+            "terminal-2"
+          ],
+          "skills": [
+            {
+              "key": "git-why",
+              "title": "Контроль версий",
+              "lesson": {
+                "course": "git",
+                "slug": "why-git",
+                "title": "Зачем нужен Git"
+              }
+            },
+            {
+              "key": "git-setup",
+              "title": "Первый репозиторий",
+              "lesson": {
+                "course": "git",
+                "slug": "first-repo",
+                "title": "Первый репозиторий"
+              }
+            },
+            {
+              "key": "git-status",
+              "title": "Состояние репозитория",
+              "lesson": {
+                "course": "git",
+                "slug": "status",
+                "title": "git status: где я"
+              }
+            }
+          ]
+        },
+        {
+          "id": "git-2",
+          "title": "Снимки и коммиты",
+          "depth": "practice",
+          "requires": [
+            "git-1"
+          ],
+          "skills": [
+            {
+              "key": "git-add",
+              "title": "Индекс",
+              "lesson": {
+                "course": "git",
+                "slug": "add",
+                "title": "Индекс и git add"
+              }
+            },
+            {
+              "key": "git-commit",
+              "title": "Коммиты",
+              "lesson": {
+                "course": "git",
+                "slug": "commit",
+                "title": "Коммит и хорошее сообщение"
+              }
+            },
+            {
+              "key": "git-conventions",
+              "title": "Соглашения о коммитах",
+              "lesson": {
+                "course": "git",
+                "slug": "commit-conventions",
+                "title": "Соглашения о коммитах"
+              }
+            }
+          ]
+        },
+        {
+          "id": "git-3",
+          "title": "История и различия",
+          "depth": "practice",
+          "requires": [
+            "git-2"
+          ],
+          "skills": [
+            {
+              "key": "git-log",
+              "title": "История",
+              "lesson": {
+                "course": "git",
+                "slug": "log",
+                "title": "История: git log"
+              }
+            },
+            {
+              "key": "git-diff",
+              "title": "Различия",
+              "lesson": {
+                "course": "git",
+                "slug": "diff",
+                "title": "Различия: git diff и git show"
+              }
+            },
+            {
+              "key": "git-blame",
+              "title": "Расследование",
+              "lesson": {
+                "course": "git",
+                "slug": "blame-bisect",
+                "title": "Кто и когда: blame и bisect"
+              }
+            }
+          ]
+        },
+        {
+          "id": "git-4",
+          "title": "Отмена изменений",
+          "depth": "practice",
+          "requires": [
+            "git-3"
+          ],
+          "skills": [
+            {
+              "key": "git-restore",
+              "title": "Отмена правок",
+              "lesson": {
+                "course": "git",
+                "slug": "restore-amend",
+                "title": "Отменить правку и поправить коммит"
+              }
+            },
+            {
+              "key": "git-reset",
+              "title": "reset и revert",
+              "lesson": {
+                "course": "git",
+                "slug": "reset-revert",
+                "title": "reset и revert"
+              }
+            },
+            {
+              "key": "git-reflog",
+              "title": "reflog",
+              "lesson": {
+                "course": "git",
+                "slug": "reflog",
+                "title": "reflog: машина времени"
+              }
+            }
+          ]
+        },
+        {
+          "id": "git-5",
+          "title": "Ветки и слияние",
+          "depth": "practice",
+          "requires": [
+            "git-4"
+          ],
+          "skills": [
+            {
+              "key": "git-branch",
+              "title": "Ветки",
+              "lesson": {
+                "course": "git",
+                "slug": "branch",
+                "title": "Ветки: что это и зачем"
+              }
+            },
+            {
+              "key": "git-merge",
+              "title": "Слияние",
+              "lesson": {
+                "course": "git",
+                "slug": "merge",
+                "title": "Слияние веток"
+              }
+            },
+            {
+              "key": "git-flow",
+              "title": "Модели ветвления",
+              "lesson": {
+                "course": "git",
+                "slug": "branching-models",
+                "title": "Как команды ведут ветки"
+              }
+            }
+          ]
+        },
+        {
+          "id": "git-6",
+          "title": "Конфликты",
+          "depth": "practice",
+          "requires": [
+            "git-5"
+          ],
+          "skills": [
+            {
+              "key": "git-conflict-read",
+              "title": "Чтение конфликта",
+              "lesson": {
+                "course": "git",
+                "slug": "conflict-markers",
+                "title": "Откуда конфликт и как он выглядит"
+              }
+            },
+            {
+              "key": "git-conflict-resolve",
+              "title": "Разрешение конфликтов",
+              "lesson": {
+                "course": "git",
+                "slug": "resolve",
+                "title": "Разрешить конфликт"
+              }
+            },
+            {
+              "key": "git-conflict-avoid",
+              "title": "Профилактика конфликтов",
+              "lesson": {
+                "course": "git",
+                "slug": "avoid-conflicts",
+                "title": "Как конфликтов становится меньше"
+              }
+            }
+          ]
+        },
+        {
+          "id": "git-7",
+          "title": "Удалённые репозитории",
+          "depth": "practice",
+          "requires": [
+            "git-6"
+          ],
+          "skills": [
+            {
+              "key": "git-push",
+              "title": "push",
+              "lesson": {
+                "course": "git",
+                "slug": "remote-push",
+                "title": "Удалённый репозиторий и push"
+              }
+            },
+            {
+              "key": "git-pull",
+              "title": "fetch и pull",
+              "lesson": {
+                "course": "git",
+                "slug": "fetch-pull",
+                "title": "fetch и pull"
+              }
+            },
+            {
+              "key": "git-force",
+              "title": "Перезапись истории на сервере",
+              "lesson": {
+                "course": "git",
+                "slug": "force-push",
+                "title": "Осторожно: push --force"
+              }
+            }
+          ]
+        },
+        {
+          "id": "git-8",
+          "title": "Командная работа на GitHub",
+          "depth": "practice",
+          "requires": [
+            "git-7"
+          ],
+          "skills": [
+            {
+              "key": "git-pr",
+              "title": "Pull request",
+              "lesson": {
+                "course": "git",
+                "slug": "pull-request",
+                "title": "Pull request"
+              }
+            },
+            {
+              "key": "git-review",
+              "title": "Ревью кода",
+              "lesson": {
+                "course": "git",
+                "slug": "code-review",
+                "title": "Ревью кода"
+              }
+            },
+            {
+              "key": "git-forks",
+              "title": "Форки и задачи",
+              "lesson": {
+                "course": "git",
+                "slug": "forks-issues",
+                "title": "Форки, задачи и проверки"
+              }
+            }
+          ]
+        },
+        {
+          "id": "git-9",
+          "title": "Rebase и чистая история",
+          "depth": "practice",
+          "requires": [
+            "git-8"
+          ],
+          "skills": [
+            {
+              "key": "git-rebase",
+              "title": "Rebase",
+              "lesson": {
+                "course": "git",
+                "slug": "rebase",
+                "title": "Rebase: переложить ветку"
+              }
+            },
+            {
+              "key": "git-rebase-i",
+              "title": "Интерактивный rebase",
+              "lesson": {
+                "course": "git",
+                "slug": "interactive-rebase",
+                "title": "Интерактивный rebase"
+              }
+            },
+            {
+              "key": "git-cherry-pick",
+              "title": "cherry-pick",
+              "lesson": {
+                "course": "git",
+                "slug": "cherry-pick",
+                "title": "cherry-pick и перенос коммитов"
+              }
+            }
+          ]
+        },
+        {
+          "id": "git-10",
+          "title": "Настройки, stash и .gitignore",
+          "depth": "practice",
+          "requires": [
+            "git-9"
+          ],
+          "skills": [
+            {
+              "key": "git-ignore",
+              "title": ".gitignore",
+              "lesson": {
+                "course": "git",
+                "slug": "gitignore",
+                "title": ".gitignore"
+              }
+            },
+            {
+              "key": "git-stash",
+              "title": "stash",
+              "lesson": {
+                "course": "git",
+                "slug": "stash",
+                "title": "stash: отложить работу"
+              }
+            },
+            {
+              "key": "git-tools",
+              "title": "Настройки и хуки",
+              "lesson": {
+                "course": "git",
+                "slug": "git-config-tools",
+                "title": "Настройки, псевдонимы и хуки"
+              }
+            }
+          ]
+        },
+        {
+          "id": "git-11",
+          "title": "Как Git устроен внутри",
+          "depth": "practice",
+          "requires": [
+            "git-10"
+          ],
+          "skills": [
+            {
+              "key": "git-objects",
+              "title": "Объекты Git",
+              "lesson": {
+                "course": "git",
+                "slug": "objects",
+                "title": "Объекты Git: blob, tree, commit"
+              }
+            },
+            {
+              "key": "git-refs",
+              "title": "Ссылки Git",
+              "lesson": {
+                "course": "git",
+                "slug": "refs",
+                "title": "Ссылки: ветки, HEAD и теги внутри"
+              }
+            },
+            {
+              "key": "git-large",
+              "title": "Большие репозитории",
+              "lesson": {
+                "course": "git",
+                "slug": "big-repos",
+                "title": "Большие файлы и большие репозитории"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

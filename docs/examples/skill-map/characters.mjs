@@ -202,6 +202,24 @@ export const characters = [
       "Командная строка всерьёз: оболочки, поиск файлов, ссылки, потоки и конвейеры, grep, sed и awk, процессы и сигналы, переменные окружения, права доступа, скрипты на bash, SSH и удалённая работа, архивы, cron и приёмы продуктивности.",
     accent: "lime",
     sources: [{ manifest: "terminal-track.manifest.json", published: true }]
+  },
+  {
+    slug: "git",
+    depth: {},
+    abilities: [
+      { title: "Снимки", branches: ["Старт Git", "Снимки и коммиты"] },
+      { title: "История", branches: ["История и различия", "Отмена изменений"] },
+      { title: "Ветки", branches: ["Ветки и слияние", "Конфликты"] },
+      { title: "Команда", branches: ["Удалённые репозитории", "Командная работа на GitHub"] },
+      { title: "Чистая история", branches: ["Rebase и чистая история"] },
+      { title: "Мастерство", branches: ["Настройки, stash и .gitignore", "Как Git устроен внутри"] }
+    ],
+    name: "Git",
+    role: "Хронист",
+    summary:
+      "История кода и командная работа: коммиты и индекс, история и различия, отмена любых изменений, ветки и слияние, конфликты, удалённые репозитории, pull request и ревью на GitHub, rebase и чистая история, stash и .gitignore, устройство Git изнутри.",
+    accent: "amber",
+    sources: [{ manifest: "git-track.manifest.json", published: true }]
   }
 ];
 
@@ -217,7 +235,8 @@ export const requires = {
   "js/Старт JavaScript": ["html/Основы HTML", "css/Старт CSS"],
   "js/DOM": ["html/Структура страницы"],
   "js/Формы": ["html/Формы"],
-  "terminal/Оболочка": ["pc/Командная строка"]
+  "terminal/Оболочка": ["pc/Командная строка"],
+  "git/Старт Git": ["terminal/Файловая система в терминале"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */
