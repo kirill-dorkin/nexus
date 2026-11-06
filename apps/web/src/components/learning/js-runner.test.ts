@@ -61,7 +61,9 @@ describe("runner sandbox", () => {
       code: 'async function load() {\n  window.products = await (await fetch("/api/products")).json();\n  window.user = await (await fetch("/api/users/2")).json();\n  window.missing = (await fetch("/api/todos/99")).status;\n  window.created = await (await fetch("/api/todos", { method: "POST", body: JSON.stringify({ title: "x" }) })).json();\n  window.legacy = await (await fetch("/api/menu")).json();\n}\nload();',
       checks: [
         {
-          js: 'await wait(600) || (window.products.length === 6 && window.user.name === "Борис" && window.missing === 404 && window.created.id === 101 && window.created.title === "x")'
+          // Wait for the last of the five sequential requests (up to 4 s) instead of a fixed
+          // 600 ms, which a loaded machine sometimes missed.
+          js: 'await (async () => { for (let i = 0; i < 200 && window.legacy === undefined; i++) await wait(20); })() || (window.products.length === 6 && window.user.name === "Борис" && window.missing === 404 && window.created.id === 101 && window.created.title === "x")'
         },
         { js: "window.legacy.length === 6" }
       ]
