@@ -9,7 +9,7 @@
       "role": "Знаток компьютера",
       "summary": "Компьютер целиком: железо и двоичные данные, файлы и пути, операционная система и процессы, программы, клавиатура, командная строка, домашняя сеть, безопасность и диагностика.",
       "accent": "rose",
-      "published": false,
+      "published": true,
       "abilities": [
         {
           "title": "Железо",
@@ -68,32 +68,56 @@
             {
               "key": "pc-what-is",
               "title": "Что такое компьютер",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "what-is-computer",
+                "title": "Что такое компьютер"
+              }
             },
             {
               "key": "pc-cpu",
               "title": "Процессор",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "cpu",
+                "title": "Процессор"
+              }
             },
             {
               "key": "pc-ram",
               "title": "Оперативная память",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "ram",
+                "title": "Оперативная память"
+              }
             },
             {
               "key": "pc-storage",
               "title": "Накопители",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "storage",
+                "title": "Накопители: HDD, SSD, флешки и облако"
+              }
             },
             {
               "key": "pc-board",
               "title": "Внутреннее устройство",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "motherboard-gpu-power",
+                "title": "Плата, видеокарта, питание и охлаждение"
+              }
             },
             {
               "key": "pc-peripherals",
               "title": "Периферия и порты",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "peripherals",
+                "title": "Порты, экраны и периферия"
+              }
             }
           ]
         },
@@ -108,22 +132,38 @@
             {
               "key": "pc-binary",
               "title": "Двоичная система",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "binary",
+                "title": "Биты и двоичная система"
+              }
             },
             {
               "key": "pc-units",
               "title": "Единицы данных",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "data-units",
+                "title": "Байты, килобайты и скорость"
+              }
             },
             {
               "key": "pc-encoding",
               "title": "Кодировки текста",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "text-encoding",
+                "title": "Как хранится текст: кодировки"
+              }
             },
             {
               "key": "pc-media",
               "title": "Медиаданные",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "media-data",
+                "title": "Картинки, звук и видео в цифрах"
+              }
             }
           ]
         },
@@ -138,17 +178,29 @@
             {
               "key": "pc-files",
               "title": "Файлы и расширения",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "files",
+                "title": "Файл, имя и расширение"
+              }
             },
             {
               "key": "pc-formats",
               "title": "Форматы файлов",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "file-formats",
+                "title": "Форматы файлов"
+              }
             },
             {
               "key": "pc-file-ops",
               "title": "Операции с файлами",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "file-operations",
+                "title": "Работа с файлами"
+              }
             }
           ]
         },
@@ -163,17 +215,29 @@
             {
               "key": "pc-folders",
               "title": "Папки",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "folders",
+                "title": "Папки и дерево папок"
+              }
             },
             {
               "key": "pc-paths",
               "title": "Пути к файлам",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "paths",
+                "title": "Пути: абсолютные и относительные"
+              }
             },
             {
               "key": "pc-filesystems",
               "title": "Файловые системы",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "file-systems",
+                "title": "Файловые системы, разделы и правила имён"
+              }
             }
           ]
         },
@@ -188,27 +252,47 @@
             {
               "key": "pc-os",
               "title": "Операционная система",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "operating-system",
+                "title": "Что делает операционная система"
+              }
             },
             {
               "key": "pc-boot",
               "title": "Загрузка системы",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "boot",
+                "title": "Загрузка, сон и выключение"
+              }
             },
             {
               "key": "pc-processes",
               "title": "Процессы",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "processes",
+                "title": "Программы, процессы и Диспетчер задач"
+              }
             },
             {
               "key": "pc-users",
               "title": "Учётные записи и права",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "users-permissions",
+                "title": "Пользователи и права"
+              }
             },
             {
               "key": "pc-drivers",
               "title": "Драйверы и обновления",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "drivers-updates",
+                "title": "Драйверы и обновления"
+              }
             }
           ]
         },
@@ -223,17 +307,29 @@
             {
               "key": "pc-install",
               "title": "Установка программ",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "install-software",
+                "title": "Как устанавливать и удалять программы"
+              }
             },
             {
               "key": "pc-sources",
               "title": "Выбор программ",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "software-sources",
+                "title": "Источники, версии и лицензии"
+              }
             },
             {
               "key": "pc-dev-setup",
               "title": "Рабочее место",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "developer-setup",
+                "title": "Рабочее место веб-разработчика"
+              }
             }
           ]
         },
@@ -248,17 +344,29 @@
             {
               "key": "pc-keyboard",
               "title": "Клавиатура",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "keyboard",
+                "title": "Клавиатура программиста"
+              }
             },
             {
               "key": "pc-shortcuts",
               "title": "Сочетания клавиш",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "shortcuts",
+                "title": "Главные сочетания клавиш"
+              }
             },
             {
               "key": "pc-windows",
               "title": "Управление окнами",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "windows-and-desktops",
+                "title": "Окна, рабочие столы и переключение"
+              }
             }
           ]
         },
@@ -273,22 +381,38 @@
             {
               "key": "pc-terminal",
               "title": "Терминал",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "terminal",
+                "title": "Терминал и оболочка"
+              }
             },
             {
               "key": "pc-cli-nav",
               "title": "Навигация в терминале",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "cli-navigation",
+                "title": "Навигация в терминале"
+              }
             },
             {
               "key": "pc-cli-files",
               "title": "Файлы в терминале",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "cli-files",
+                "title": "Файлы в терминале"
+              }
             },
             {
               "key": "pc-cli-env",
               "title": "Окружение командной строки",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "cli-environment",
+                "title": "Программы, PATH и переменные окружения"
+              }
             }
           ]
         },
@@ -303,17 +427,29 @@
             {
               "key": "pc-home-net",
               "title": "Домашняя сеть",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "home-network",
+                "title": "Как устроена домашняя сеть"
+              }
             },
             {
               "key": "pc-ip",
               "title": "Адреса в сети",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "ip-addresses",
+                "title": "IP-адреса, порты и localhost"
+              }
             },
             {
               "key": "pc-net-check",
               "title": "Проверка сети",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "network-speed",
+                "title": "Скорость, задержка и проверка связи"
+              }
             }
           ]
         },
@@ -328,17 +464,29 @@
             {
               "key": "pc-passwords",
               "title": "Защита учётных записей",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "passwords-2fa",
+                "title": "Пароли, менеджеры паролей и двухфакторная защита"
+              }
             },
             {
               "key": "pc-threats",
               "title": "Угрозы",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "threats",
+                "title": "Угрозы: вредоносные программы и фишинг"
+              }
             },
             {
               "key": "pc-protection",
               "title": "Защита данных",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "protection",
+                "title": "Резервные копии, шифрование и защита устройства"
+              }
             }
           ]
         },
@@ -353,17 +501,29 @@
             {
               "key": "pc-troubleshoot",
               "title": "Метод диагностики",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "troubleshooting",
+                "title": "Как искать причину проблемы"
+              }
             },
             {
               "key": "pc-diag-tools",
               "title": "Инструменты диагностики",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "diagnostic-tools",
+                "title": "Инструменты диагностики"
+              }
             },
             {
               "key": "pc-common-problems",
               "title": "Типичные неполадки",
-              "lesson": null
+              "lesson": {
+                "course": "pc",
+                "slug": "common-problems",
+                "title": "Частые проблемы и что делать"
+              }
             }
           ]
         }
@@ -375,7 +535,7 @@
       "role": "Проводник по вебу",
       "summary": "Путь от адреса до страницы: URL и DNS, HTTP и HTTPS, коды ответа, кэш, cookies и хранилища, безопасность, отрисовка, все панели DevTools, дерево доступности и адаптивный режим.",
       "accent": "blue",
-      "published": false,
+      "published": true,
       "abilities": [
         {
           "title": "Адреса",
@@ -438,12 +598,20 @@
             {
               "key": "browser-what-is",
               "title": "Что такое браузер",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "what-is-browser",
+                "title": "Что такое браузер"
+              }
             },
             {
               "key": "browser-interface",
               "title": "Интерфейс браузера",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "browser-interface",
+                "title": "Интерфейс браузера"
+              }
             }
           ]
         },
@@ -458,17 +626,29 @@
             {
               "key": "browser-url",
               "title": "Строение URL",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "url-anatomy",
+                "title": "Анатомия адреса"
+              }
             },
             {
               "key": "browser-domains",
               "title": "Домены и кодирование URL",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "domains-encoding",
+                "title": "Домены и кодирование адресов"
+              }
             },
             {
               "key": "browser-origin",
               "title": "Источник (origin)",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "origin",
+                "title": "Источник и сайт"
+              }
             }
           ]
         },
@@ -484,12 +664,20 @@
             {
               "key": "browser-dns",
               "title": "Разрешение имён",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "dns",
+                "title": "Как работает DNS"
+              }
             },
             {
               "key": "browser-dns-records",
               "title": "Записи DNS",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "dns-records",
+                "title": "Записи DNS и проверка"
+              }
             }
           ]
         },
@@ -504,12 +692,20 @@
             {
               "key": "browser-http",
               "title": "Протокол HTTP",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "http",
+                "title": "HTTP: язык браузера и сервера"
+              }
             },
             {
               "key": "browser-https",
               "title": "HTTPS",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "https",
+                "title": "HTTPS, TLS и сертификаты"
+              }
             }
           ]
         },
@@ -524,22 +720,38 @@
             {
               "key": "browser-request",
               "title": "HTTP-запрос",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "http-request",
+                "title": "Запрос: метод, путь и заголовки"
+              }
             },
             {
               "key": "browser-response",
               "title": "HTTP-ответ",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "http-response",
+                "title": "Ответ: статус, заголовки, тело и MIME-тип"
+              }
             },
             {
               "key": "browser-sending",
               "title": "Отправка данных",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "sending-data",
+                "title": "Как браузер отправляет данные"
+              }
             },
             {
               "key": "browser-cors",
               "title": "CORS",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "cors",
+                "title": "Запросы к другим источникам: CORS"
+              }
             }
           ]
         },
@@ -554,17 +766,29 @@
             {
               "key": "browser-status-2xx",
               "title": "Коды 1xx–2xx",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "status-success",
+                "title": "Классы кодов и успешные ответы"
+              }
             },
             {
               "key": "browser-status-3xx",
               "title": "Перенаправления",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "status-redirects",
+                "title": "Перенаправления: 3xx"
+              }
             },
             {
               "key": "browser-status-errors",
               "title": "Коды ошибок",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "status-errors",
+                "title": "Ошибки клиента и сервера: 4xx и 5xx"
+              }
             }
           ]
         },
@@ -579,12 +803,20 @@
             {
               "key": "browser-cache",
               "title": "HTTP-кэш",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "http-cache",
+                "title": "Кэш браузера и Cache-Control"
+              }
             },
             {
               "key": "browser-cache-validation",
               "title": "Проверка и сброс кэша",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "cache-validation",
+                "title": "Проверка кэша и обновление файлов"
+              }
             }
           ]
         },
@@ -599,17 +831,29 @@
             {
               "key": "browser-cookies",
               "title": "Cookies",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "cookies",
+                "title": "Cookies"
+              }
             },
             {
               "key": "browser-cookie-attrs",
               "title": "Атрибуты cookies",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "cookie-attributes",
+                "title": "Атрибуты cookies и сторонние cookies"
+              }
             },
             {
               "key": "browser-storage",
               "title": "Веб-хранилища",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "web-storage",
+                "title": "Хранилища браузера"
+              }
             }
           ]
         },
@@ -624,12 +868,20 @@
             {
               "key": "browser-tabs",
               "title": "Вкладки и приватный режим",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "tabs-processes",
+                "title": "Вкладки, процессы и приватные окна"
+              }
             },
             {
               "key": "browser-history",
               "title": "История и навигация",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "history-navigation",
+                "title": "История, переходы и закладки"
+              }
             }
           ]
         },
@@ -644,7 +896,11 @@
             {
               "key": "browser-extensions",
               "title": "Расширения",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "extensions",
+                "title": "Расширения браузера"
+              }
             }
           ]
         },
@@ -659,12 +915,20 @@
             {
               "key": "browser-privacy",
               "title": "Приватность",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "privacy",
+                "title": "Приватность: отслеживание и разрешения сайтов"
+              }
             },
             {
               "key": "browser-security",
               "title": "Защита в браузере",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "web-security",
+                "title": "Безопасность: как браузер защищает"
+              }
             }
           ]
         },
@@ -679,22 +943,38 @@
             {
               "key": "browser-parsing",
               "title": "Разбор страницы",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "parsing",
+                "title": "Разбор HTML и CSS: DOM и CSSOM"
+              }
             },
             {
               "key": "browser-pipeline",
               "title": "Конвейер отрисовки",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "render-pipeline",
+                "title": "Конвейер отрисовки"
+              }
             },
             {
               "key": "browser-loading",
               "title": "Загрузка и скорость",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "page-loading",
+                "title": "Загрузка страницы и её скорость"
+              }
             },
             {
               "key": "browser-js-engine",
               "title": "Выполнение JavaScript",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "js-engine",
+                "title": "Движок JavaScript и основной поток"
+              }
             }
           ]
         },
@@ -709,42 +989,74 @@
             {
               "key": "browser-devtools",
               "title": "Основы DevTools",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "devtools-intro",
+                "title": "Инструменты разработчика"
+              }
             },
             {
               "key": "browser-elements",
               "title": "Панель Elements",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "devtools-elements",
+                "title": "Elements: дерево, стили и блочная модель"
+              }
             },
             {
               "key": "browser-console",
               "title": "Панель Console",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "devtools-console",
+                "title": "Console: ошибки и выполнение кода"
+              }
             },
             {
               "key": "browser-network",
               "title": "Панель Network",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "devtools-network",
+                "title": "Network: все запросы страницы"
+              }
             },
             {
               "key": "browser-sources",
               "title": "Отладчик",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "devtools-sources",
+                "title": "Sources: файлы и отладчик"
+              }
             },
             {
               "key": "browser-application",
               "title": "Панель Application",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "devtools-application",
+                "title": "Application: хранилища и сервис-воркеры"
+              }
             },
             {
               "key": "browser-performance",
               "title": "Анализ производительности",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "devtools-performance",
+                "title": "Performance, Lighthouse и Memory"
+              }
             },
             {
               "key": "browser-devtools-more",
               "title": "Дополнительные инструменты",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "devtools-more",
+                "title": "Ещё инструменты: Rendering, Security, Sensors и другие"
+              }
             }
           ]
         },
@@ -759,12 +1071,20 @@
             {
               "key": "browser-a11y-tree",
               "title": "Дерево доступности",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "accessibility-tree",
+                "title": "Дерево доступности"
+              }
             },
             {
               "key": "browser-a11y-check",
               "title": "Проверка доступности",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "accessibility-devtools",
+                "title": "Проверка доступности в браузере"
+              }
             }
           ]
         },
@@ -779,17 +1099,29 @@
             {
               "key": "browser-device-mode",
               "title": "Адаптивный режим",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "device-mode",
+                "title": "Адаптивный режим и область просмотра"
+              }
             },
             {
               "key": "browser-responsive-testing",
               "title": "Проверка адаптивности",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "responsive-testing",
+                "title": "Проверка адаптивности"
+              }
             },
             {
               "key": "browser-compat",
               "title": "Совместимость браузеров",
-              "lesson": null
+              "lesson": {
+                "course": "browser",
+                "slug": "cross-browser",
+                "title": "Разные браузеры и поддержка возможностей"
+              }
             }
           ]
         }

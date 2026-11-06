@@ -76,11 +76,15 @@ describe("skill map data (ADR-0074)", () => {
     }
   });
 
-  it("links published skills to their lessons and hides unpublished ones", () => {
+  it("links published skills to their own course's lessons", () => {
     const html = findCharacter("html")!;
     expect(html.branches[0]!.skills[0]!.lesson?.course).toBe("html");
-    for (const skill of findCharacter("pc")!.branches.flatMap((b) => b.skills))
-      expect(skill.lesson).toBeNull();
+    // ПК and Браузер were published on 2026-11-06.
+    for (const slug of ["pc", "browser"])
+      for (const skill of findCharacter(slug)!.branches.flatMap(
+        (b) => b.skills
+      ))
+        expect(skill.lesson?.course).toBe(slug);
   });
 
   it("refuses a cycle and unknown references", () => {
@@ -228,9 +232,10 @@ describe("character progress", () => {
     };
     const progress = characterProgress(top, records({}), today, draft);
     expect(progress.branches[0]!.unlocked).toBe(true);
+    // With Браузер published, HTML's first branch waits for Браузер's second branch.
     expect(findCharacter("html")!.branches[0]!.requires).toContain("browser-2");
     const html = characterProgress(findCharacter("html")!, records({}), today);
-    expect(html.branches[0]!.unlocked).toBe(true);
+    expect(html.branches[0]!.unlocked).toBe(false);
   });
 
   it("counts only active skills into the level, and forgetting lowers it", () => {
