@@ -26,9 +26,10 @@ const publicDestinations = [
   { href: "/blog", label: "Блог" }
 ] as const;
 
+// Studio is for authors only and stays at its direct address (/studio); learners never need it
+// in the menu (owner, 2026-11-06).
 const privateDestinations = [
-  { href: "/me/learning", label: "Моё обучение" },
-  { href: "/studio", label: "Studio" }
+  { href: "/me/learning", label: "Моё обучение" }
 ] as const;
 
 export function LearningNavigation({
