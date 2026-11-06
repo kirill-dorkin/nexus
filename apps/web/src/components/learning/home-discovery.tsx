@@ -11,6 +11,7 @@ import { loadLearningCatalog, courseUrl } from "../../lib/public-learning";
 import { orderByRoute } from "../../lib/learning-route";
 import { CatalogRetry } from "./catalog-retry";
 import { CourseCard, CoursesEmpty } from "./course-list";
+import { RouteCharacters } from "../characters/route-characters";
 import styles from "./home-discovery.module.css";
 
 /** The primary action goes straight to the first real course when one exists. */
@@ -238,11 +239,12 @@ export function HomeContent() {
         <LessonPreview />
       </section>
       <div className={styles.container}>
+        <RouteCharacters />
         <CourseDiscovery />
         <HowItWorks />
         <section className={styles.finalCta} aria-labelledby="final-title">
           <h2 id="final-title">Первый урок — через минуту.</h2>
-          <p>Начните с HTML — первый шаг маршрута. Регистрация не нужна.</p>
+          <p>Начните с ПК — первый шаг маршрута. Регистрация не нужна.</p>
           <ButtonLink size="lg" href="/courses">
             Выбрать курс <ArrowRightIcon size={20} aria-hidden="true" />
           </ButtonLink>

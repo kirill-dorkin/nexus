@@ -1,0 +1,134 @@
+/* The route's six characters on the home page. */
+.section {
+  padding-top: clamp(3.5rem, 8vw, 6rem);
+}
+
+.head {
+  display: grid;
+  gap: 0.6rem;
+  max-width: 46rem;
+  margin-bottom: 2rem;
+}
+
+.head h2 {
+  margin: 0;
+  font-size: clamp(1.9rem, 4.2vw, 3.1rem);
+  font-weight: 750;
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+}
+
+.kicker {
+  margin: 0;
+  color: var(--text-accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.lead {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.cast {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 10.5rem), 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  justify-items: center;
+  gap: 0.2rem;
+  padding: 1rem 0.75rem 1.1rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: radial-gradient(
+    70% 60% at 50% 45%,
+    color-mix(in srgb, var(--glow) 22%, var(--deep)),
+    #0a0909 75%
+  );
+  text-align: center;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.card:hover,
+.card:focus-within {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--glow) 60%, var(--border-default));
+}
+
+.step {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.8rem;
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.figure {
+  width: 100%;
+  max-width: 11rem;
+  height: auto;
+  aspect-ratio: 1;
+  margin: -0.5rem 0 -0.75rem;
+  /* The portrait leaves room around the figure; show it larger in the card. */
+  transform: scale(1.18);
+}
+
+.name {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.name a {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+/* The whole card opens the course. */
+.name a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.name a:focus-visible {
+  outline: none;
+}
+
+.card:has(a:focus-visible) {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.role {
+  margin: 0;
+  color: var(--glow);
+  font-size: 0.85rem;
+}
+
+.more {
+  display: inline-block;
+  margin-top: 1.25rem;
+  color: var(--text-accent);
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}
