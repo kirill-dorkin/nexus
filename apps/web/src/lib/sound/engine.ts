@@ -19,8 +19,10 @@ import { nextBarAfter } from "./timeline";
  *   - settings (on/off, volume) persist and stay in sync across tabs;
  *   - browsers allow audio only after a real gesture, so playback starts on the first click,
  *     tap or key press, and keeps trying until the browser actually lets it run;
- *   - a worker clock keeps time in background tabs, where page timers are throttled, and a
- *     late clock skips ahead instead of firing a pile of missed notes at once;
+ *   - music plays only while the page is visible: hiding the tab or leaving the site fades it
+ *     out, coming back resumes it (owner decision, 2026-11-06);
+ *   - a late clock (a sleeping laptop, a frozen tab) skips ahead instead of firing a pile of
+ *     missed notes at once;
  *   - only one tab plays: the one the learner last interacted with;
  *   - start and stop fade, and a stopped context is suspended to save battery.
  * A module singleton, so it keeps playing across client-side navigation.
@@ -46,6 +48,11 @@ function load() {
   if (loaded || typeof window === "undefined") return;
   loaded = true;
   settings = readSoundSettings();
+  // Music plays only on a visible page: a hidden tab or a page being left fades it out.
+  const followVisibility = () => music.apply();
+  document.addEventListener("visibilitychange", followVisibility);
+  window.addEventListener("pagehide", () => music.apply(true));
+  window.addEventListener("pageshow", followVisibility);
   // Another tab changed the settings: follow them.
   window.addEventListener("storage", (event) => {
     if (event.key !== SOUND_KEY) return;
@@ -150,10 +157,11 @@ class Player {
   }
 
   /** Follows the settings and the tab state: starts, stops or changes volume. */
-  apply() {
+  apply(leaving = false) {
     if (!unlocked) return;
     const s = getSoundSettings();
-    if (s.music && !this.elsewhere) void this.start();
+    const visible = !leaving && document.visibilityState !== "hidden";
+    if (s.music && !this.elsewhere && visible) void this.start();
     else this.stop();
     this.level(FADE_IN / 4);
   }
