@@ -5,7 +5,11 @@ import { brand } from "@platform/brand";
 import Link from "next/link";
 import { LearningShell } from "./learning-shell";
 import type { PublicLearningCourse } from "@platform/contracts";
-import { courseUrl, lessonUrl, organizationName } from "../../lib/public-learning-routes";
+import {
+  courseUrl,
+  lessonUrl,
+  organizationName
+} from "../../lib/public-learning-routes";
 import { Heading, Text, buttonClass } from "@platform/ui";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { LearningPageHeading } from "./learning-page-heading";

@@ -71,7 +71,9 @@ export default async function PublicProductPage({
   return (
     <main className={styles.page}>
       <header className={styles.header}>
-        <p className={styles.eyebrow}>{organizationName(catalog.organization)}</p>
+        <p className={styles.eyebrow}>
+          {organizationName(catalog.organization)}
+        </p>
         <h1 className={styles.title}>{catalog.product.name}</h1>
         <p className={styles.lead}>
           {catalog.product.offering.name}. Актуальная цена и доступность ещё раз
