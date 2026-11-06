@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { appearanceBootScript } from "../components/appearance/preferences";
 import { siteUrl } from "../lib/site";
 import { ClientTelemetry } from "../components/telemetry/client-telemetry";
+import { AnalyticsConsent } from "../components/consent/analytics-consent";
 import "@fontsource-variable/onest";
 import "./globals.css";
 
@@ -56,6 +57,7 @@ export default function RootLayout({
       <body>
         {children}
         <ClientTelemetry />
+        <AnalyticsConsent />
       </body>
     </html>
   );
