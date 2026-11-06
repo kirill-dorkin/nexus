@@ -1,5 +1,5 @@
 ---
-name: "Nexus — learner interface"
+name: "Dorkin Academy — learner interface"
 description: "Dark, bold learner-facing pages: home, catalog, course, lesson, auth, my learning, 404."
 colors:
   canvas: "#08090b"

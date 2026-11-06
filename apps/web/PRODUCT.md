@@ -14,7 +14,7 @@ the existing Studio; this design slice concerns public discovery only.
 
 ## Product Purpose
 
-Nexus brings courses, video, structured notes, practice, quizzes and progress
+Dorkin Academy brings courses, video, structured notes, practice, quizzes and progress
 into one learning environment. Success means selecting a real course and
 understanding that learning includes doing and checking, not just watching.
 
