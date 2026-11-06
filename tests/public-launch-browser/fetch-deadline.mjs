@@ -6,7 +6,10 @@ if (NativeFetch === undefined) {
 
 const fetchTimeoutMs = 5_000;
 
-globalThis.fetch = async function fetchWithDeadline(input, init = {}) {
+// `deadlineMs` lets one call wait longer than the default (Chrome's first target can be slow on a
+// loaded runner); it is not passed on to the native fetch.
+globalThis.fetch = async function fetchWithDeadline(input, options = {}) {
+  const { deadlineMs = fetchTimeoutMs, ...init } = options;
   const controller = new AbortController();
   const upstreamSignal = init.signal;
   const method =
@@ -24,10 +27,10 @@ globalThis.fetch = async function fetchWithDeadline(input, init = {}) {
   }
 
   const timeout = setTimeout(() => {
-    const message = `Node fetch ${method} ${url} exceeded ${fetchTimeoutMs / 1000}s.`;
+    const message = `Node fetch ${method} ${url} exceeded ${deadlineMs / 1000}s.`;
     console.error(`[browser-launch] ${message}`);
     controller.abort(new Error(message));
-  }, fetchTimeoutMs);
+  }, deadlineMs);
   timeout.unref();
 
   try {
