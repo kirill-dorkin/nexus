@@ -9,7 +9,7 @@ import {
 } from "../../lib/skill-map/skill-map";
 import { useOwnSkillRecords, utcToday } from "../../lib/skill-map/own-skills";
 import { CharacterStage, stageColours } from "./character-stage";
-import { hasBody } from "./three/roster";
+import { hasBody } from "./three/meta";
 import styles from "./lesson-companion.module.css";
 
 /** The next rank's threshold above a level, or null at the top. */

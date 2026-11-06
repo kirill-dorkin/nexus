@@ -22,15 +22,19 @@ export const PAGES: readonly {
   { path: "/", name: "home", scriptBudget: 185 * KB },
   { path: "/courses", name: "catalog", scriptBudget: 185 * KB },
   { path: "/courses/e2e-html", name: "course", scriptBudget: 220 * KB },
+  // Lessons were 275 KB. Since 2026-11-06 the course's character lives beside every lesson
+  // (owner decision), and its 3D scene adds three.js (~110 KB) once it is on screen; the
+  // measured 383 KB on a desktop viewport plus 15 % gives 440 KB. On phones the aside sits
+  // below the lesson, so reading a lesson does not load it.
   {
     path: "/courses/e2e-html/first-tag",
     name: "lesson",
-    scriptBudget: 275 * KB
+    scriptBudget: 440 * KB
   },
   {
     path: "/courses/e2e-html/query-preview",
     name: "SQL lesson",
-    scriptBudget: 275 * KB,
+    scriptBudget: 440 * KB,
     sql: true
   },
   { path: "/login", name: "sign-in", scriptBudget: 220 * KB },

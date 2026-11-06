@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import type { Kit } from "./kit";
+import { BODY_UI } from "./meta";
 import type { CharacterDef } from "./types";
 
 const PAINTS = [0xff5d8f, 0x2dd4bf, 0xffd166, 0xb388ff] as const;
@@ -20,7 +21,7 @@ export const css: CharacterDef = {
     glow: 0xb388ff,
     aura: 0xe0ccff
   },
-  ui: ["#a78bfa", "#ddd6fe", "#6d28d9", "#2e1065"],
+  ui: BODY_UI.css,
   master: "Мастер стилей",
   stages: [
     "Тонкая серая фигура, рамки тусклые.",

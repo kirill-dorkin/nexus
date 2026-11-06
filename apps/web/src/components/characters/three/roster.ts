@@ -19,4 +19,4 @@ export const CHARACTER_DEFS: readonly CharacterDef[] = [
 export const characterDef = (slug: string) =>
   CHARACTER_DEFS.find((def) => def.slug === slug) ?? null;
 
-export const hasBody = (slug: string) => characterDef(slug) !== null;
+export { hasBody } from "./meta";

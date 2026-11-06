@@ -4,7 +4,7 @@ import type { Stage } from "./three/stage";
 import type { PortraitRequest } from "./three/portraits";
 import type { CSSProperties } from "react";
 import { RANKS } from "../../lib/skill-map/skill-map";
-import { characterDef, hasBody } from "./three/roster";
+import { BODY_UI, hasBody } from "./three/meta";
 import { rankIndex } from "./three/types";
 
 /** The site's own rank titles; the five looks change at the same levels (0, 20, 40, 60, 80). */
@@ -12,12 +12,9 @@ const LOOKS = RANKS.slice(0, 5);
 
 /** The character's own colours for the stage and portrait backgrounds. */
 export function stageColours(slug: string): CSSProperties | undefined {
-  const def = characterDef(slug);
-  if (!def) return undefined;
-  return {
-    "--stage-glow": def.ui[0],
-    "--stage-deep": def.ui[3]
-  } as CSSProperties;
+  if (!hasBody(slug)) return undefined;
+  const [glow, , , deep] = BODY_UI[slug];
+  return { "--stage-glow": glow, "--stage-deep": deep } as CSSProperties;
 }
 import styles from "./character-stage.module.css";
 
@@ -69,15 +66,28 @@ export function CharacterStage({
     const el = host.current;
     if (!enabled || !el || !canDraw3d()) return;
     let cancelled = false;
-    void import("./three/stage").then(({ createStage }) => {
-      if (cancelled) return;
-      const created = createStage(el, reducedMotion());
-      created.show(slug);
-      stage.current = created;
-      setReady(true);
-    });
+    const load = () =>
+      void import("./three/stage").then(({ createStage }) => {
+        if (cancelled) return;
+        const created = createStage(el, reducedMotion());
+        created.show(slug);
+        stage.current = created;
+        setReady(true);
+      });
+    // three.js loads only once the stage is (nearly) on screen: on a phone the lesson aside
+    // sits below the lesson, so reading a lesson never downloads it.
+    const watcher = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        watcher.disconnect();
+        load();
+      },
+      { rootMargin: "200px" }
+    );
+    watcher.observe(el);
     return () => {
       cancelled = true;
+      watcher.disconnect();
       stage.current?.dispose();
       stage.current = null;
     };

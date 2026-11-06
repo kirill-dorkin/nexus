@@ -19,7 +19,7 @@ import {
 import { initials } from "./character-roster";
 import { BranchSceneView } from "./branch-scene";
 import { CharacterStage } from "./character-stage";
-import { hasBody } from "./three/roster";
+import { hasBody } from "./three/meta";
 import type { BranchScene } from "../../lib/skill-map/story";
 import styles from "./characters.module.css";
 
