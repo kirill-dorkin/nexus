@@ -9,6 +9,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@platform/ui";
 import { highlight, type Token } from "./code-highlight";
+import { CodeKeys } from "./code-keys";
 import { useSqlRun } from "./sql/sql-client";
 import { SqlOutput } from "./sql/sql-output";
 import styles from "./code.module.css";
@@ -67,6 +68,7 @@ export function CodeEditor({
   const layer = useRef<HTMLPreElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
   const releaseTab = useRef(false);
+  const [focused, setFocused] = useState(false);
   useEffect(() => {
     if (focusOnMount) input.current?.focus({ preventScroll: true });
   }, [focusOnMount]);
@@ -110,11 +112,19 @@ export function CodeEditor({
         aria-label={label}
         onChange={(event) => onChange(event.target.value)}
         onKeyDown={keyDown}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         onScroll={(event) => {
           if (!layer.current) return;
           layer.current.scrollTop = event.currentTarget.scrollTop;
           layer.current.scrollLeft = event.currentTarget.scrollLeft;
         }}
+      />
+      <CodeKeys
+        target={input}
+        language={language}
+        visible={focused}
+        onChange={onChange}
       />
     </div>
   );
