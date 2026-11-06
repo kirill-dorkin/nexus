@@ -1,0 +1,1939 @@
+<title>Персонажи Dorkin Academy</title>
+<meta name="claude:viewport-fit-sides" content="cover" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap"
+/>
+<style>
+  /* Layout: a game roster screen — character tabs, the 3D stage, the level panel. Single dark look by choice. */
+  :root {
+    --ember: #f26a21;
+    --ember-hi: #ffa15c;
+    --flame: #d9441c;
+    --maroon: #8a1a12;
+    --ink: #0d0b0a;
+    --panel: #161210;
+    --line: #2b221d;
+    --text: #f3eee9;
+    --muted: #a89c93;
+    --display: "Unbounded", "Arial Black", system-ui, sans-serif;
+    --body: "Golos Text", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+    color-scheme: dark;
+  }
+  html,
+  body {
+    height: 100%;
+  }
+  body {
+    background:
+      radial-gradient(120% 70% at 50% 0%, #2a120a 0%, var(--ink) 55%) fixed,
+      var(--ink);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 15px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 20px 32px;
+  }
+  .wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    gap: 16px;
+  }
+  .tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .tabs button {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font: 600 14px var(--body);
+    color: var(--muted);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 14px 8px 8px;
+    cursor: pointer;
+  }
+  .tabs button i {
+    font: 700 11px/1 var(--mono);
+    font-style: normal;
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #241b16;
+    color: var(--ember-hi);
+  }
+  .tabs button[aria-pressed="true"] {
+    color: var(--text);
+    border-color: var(--ember);
+    background: #22140d;
+  }
+  .tabs button[aria-pressed="true"] i {
+    background: var(--ember);
+    color: #160701;
+  }
+  header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .eyebrow {
+    font: 600 11px/1 var(--body);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ember-hi);
+  }
+  h1 {
+    margin: 6px 0 0;
+    font: 700 clamp(30px, 6vw, 52px)/1 var(--display);
+    letter-spacing: -0.02em;
+  }
+  .role {
+    color: var(--muted);
+    margin-top: 6px;
+    max-width: 60ch;
+  }
+  .stage-pill {
+    font: 500 13px/1 var(--mono);
+    padding: 9px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--ember-hi);
+    white-space: nowrap;
+  }
+  .scene {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: radial-gradient(60% 60% at 50% 70%, #24130c 0%, #0b0908 70%);
+    height: min(60vh, 540px);
+    min-height: 360px;
+    touch-action: none;
+    cursor: grab;
+  }
+  .scene:active {
+    cursor: grabbing;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .hint {
+    position: absolute;
+    left: 14px;
+    bottom: 12px;
+    font: 500 12px var(--body);
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .flash {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      50% 50% at 50% 55%,
+      rgba(255, 140, 60, 0.55),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.6s;
+  }
+  .flash.on {
+    opacity: 1;
+    transition: none;
+  }
+  .toast {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font: 700 14px var(--display);
+    color: var(--ink);
+    background: var(--ember-hi);
+    padding: 8px 14px;
+    border-radius: 999px;
+    opacity: 0;
+    transition:
+      opacity 0.4s,
+      transform 0.4s;
+    white-space: nowrap;
+  }
+  .toast.on {
+    opacity: 1;
+    transform: translateX(-50%) translateY(4px);
+  }
+  .panel {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 720px) {
+    .panel {
+      grid-template-columns: 1fr;
+    }
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 18px;
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+    align-content: start;
+  }
+  .level-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .level {
+    font: 700 44px/1 var(--display);
+    font-variant-numeric: tabular-nums;
+  }
+  .level small {
+    font: 500 14px var(--body);
+    color: var(--muted);
+    margin-left: 6px;
+  }
+  .skills {
+    font: 500 13px var(--mono);
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  input[type="range"] {
+    width: 100%;
+    accent-color: var(--ember);
+    height: 28px;
+  }
+  .bar {
+    height: 10px;
+    border-radius: 99px;
+    background: #241b16;
+    overflow: hidden;
+  }
+  .bar > span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(
+      90deg,
+      var(--maroon),
+      var(--flame),
+      var(--ember-hi)
+    );
+    transition: width 0.3s;
+  }
+  .buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .buttons button {
+    font: 600 14px var(--body);
+    border-radius: 12px;
+    padding: 11px 16px;
+    cursor: pointer;
+    border: 1px solid var(--line);
+    background: #1f1814;
+    color: var(--text);
+  }
+  .buttons button.primary {
+    background: var(--ember);
+    color: #160701;
+    border-color: transparent;
+  }
+  button:focus-visible,
+  input:focus-visible {
+    outline: 2px solid var(--ember-hi);
+    outline-offset: 2px;
+  }
+  ol.stages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  ol.stages li {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  ol.stages li b {
+    font: 500 12px var(--mono);
+    padding-top: 2px;
+  }
+  ol.stages li.done,
+  ol.stages li.now {
+    color: var(--text);
+  }
+  ol.stages li.done b {
+    color: var(--ember-hi);
+  }
+  ol.stages li.now b {
+    color: var(--ink);
+    background: var(--ember-hi);
+    border-radius: 6px;
+    padding: 2px 6px;
+    justify-self: start;
+  }
+  .note {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .toast,
+    .flash,
+    .bar > span {
+      transition: none;
+    }
+  }
+</style>
+
+<div class="wrap">
+  <nav class="tabs" id="tabs" aria-label="Персонажи"></nav>
+  <header>
+    <div>
+      <div class="eyebrow">Персонаж · технология</div>
+      <h1 id="name">HTML</h1>
+      <div class="role" id="role"></div>
+    </div>
+    <div class="stage-pill" id="stagePill"></div>
+  </header>
+  <div class="scene" id="scene">
+    <div class="flash" id="flash"></div>
+    <div class="toast" id="toast"></div>
+    <div class="hint">Потяните, чтобы повернуть</div>
+  </div>
+  <div class="panel">
+    <section class="card" aria-label="Уровень персонажа">
+      <div class="level-row">
+        <div class="level"><span id="lvl">0</span><small>уровень</small></div>
+        <div class="skills" id="skills"></div>
+      </div>
+      <div class="bar"><span id="bar"></span></div>
+      <label for="level" class="note"
+        >Подвигайте уровень, чтобы увидеть, как меняется персонаж</label
+      >
+      <input id="level" type="range" min="0" max="100" value="12" />
+      <div class="buttons">
+        <button class="primary" id="plus" type="button">
+          + Подтвердить навык
+        </button>
+        <button id="reset" type="button">Сбросить</button>
+        <button id="max" type="button">Максимум</button>
+      </div>
+    </section>
+    <section class="card" aria-label="Ранги">
+      <div class="eyebrow">Ранги</div>
+      <ol class="stages" id="stages"></ol>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  (() => {
+    // ================= shared scene =================
+    const host = document.getElementById("scene");
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+    host.prepend(renderer.domElement);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 50);
+    const LOOK_Y = 2.2;
+    const hemi = new THREE.HemisphereLight(0xfff4ea, 0x120c08, 0.45);
+    scene.add(hemi);
+    const key = new THREE.DirectionalLight(0xffffff, 1.1);
+    key.position.set(3, 5, 4);
+    scene.add(key);
+    const rim = new THREE.PointLight(0xffffff, 0, 14);
+    rim.position.set(-2.2, 3, -2.4);
+    scene.add(rim);
+    const rim2 = new THREE.PointLight(0xffffff, 0, 14);
+    rim2.position.set(2.4, 2, -2);
+    scene.add(rim2);
+    const coreLight = new THREE.PointLight(0xffffff, 0, 5);
+    scene.add(coreLight);
+
+    const canvasTex = (size, draw) => {
+      const c = document.createElement("canvas");
+      c.width = c.height = size;
+      draw(c.getContext("2d"), size);
+      return new THREE.CanvasTexture(c);
+    };
+    const ground = new THREE.Mesh(
+      new THREE.CircleGeometry(2.6, 64),
+      new THREE.MeshStandardMaterial({ color: 0x0f0d0c, roughness: 0.95 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    scene.add(ground);
+    // White textures, tinted per character through material colour
+    const ringMat = new THREE.MeshBasicMaterial({
+      map: canvasTex(256, (g) => {
+        const r = g.createRadialGradient(128, 128, 20, 128, 128, 128);
+        r.addColorStop(0, "rgba(255,255,255,0)");
+        r.addColorStop(0.62, "rgba(255,255,255,0.05)");
+        r.addColorStop(0.8, "rgba(255,255,255,0.9)");
+        r.addColorStop(0.86, "rgba(255,255,255,0.25)");
+        r.addColorStop(1, "rgba(0,0,0,0)");
+        g.fillStyle = r;
+        g.fillRect(0, 0, 256, 256);
+      }),
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      opacity: 0
+    });
+    const ring = new THREE.Mesh(new THREE.PlaneGeometry(5.6, 5.6), ringMat);
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.y = 0.01;
+    scene.add(ring);
+    const shadow = new THREE.Mesh(
+      new THREE.CircleGeometry(1, 48),
+      new THREE.MeshBasicMaterial({
+        color: 0,
+        transparent: true,
+        opacity: 0.55,
+        depthWrite: false
+      })
+    );
+    shadow.rotation.x = -Math.PI / 2;
+    shadow.position.y = 0.015;
+    scene.add(shadow);
+    const N = 360,
+      pGeo = new THREE.BufferGeometry(),
+      pos = new Float32Array(N * 3),
+      seed = new Float32Array(N);
+    for (let i = 0; i < N; i++) {
+      seed[i] = Math.random();
+      pos[i * 3 + 1] = -10;
+    }
+    pGeo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    const pMat = new THREE.PointsMaterial({
+      size: 0.17,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      opacity: 0,
+      map: canvasTex(64, (g) => {
+        const r = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+        r.addColorStop(0, "rgba(255,255,255,1)");
+        r.addColorStop(0.35, "rgba(255,255,255,0.7)");
+        r.addColorStop(1, "rgba(255,255,255,0)");
+        g.fillStyle = r;
+        g.fillRect(0, 0, 64, 64);
+      })
+    });
+    scene.add(new THREE.Points(pGeo, pMat));
+
+    // ================= kit =================
+    const hex = (n) => "#" + n.toString(16).padStart(6, "0");
+    function makeKit(pal) {
+      const m = {
+        stone: new THREE.MeshStandardMaterial({
+          color: 0x55524f,
+          roughness: 0.85,
+          metalness: 0.05
+        }),
+        plate: new THREE.MeshStandardMaterial({
+          color: pal.plate,
+          roughness: 0.32,
+          metalness: 0.75
+        }),
+        trim: new THREE.MeshStandardMaterial({
+          color: pal.trim,
+          roughness: 0.35,
+          metalness: 0.55
+        }),
+        glow: new THREE.MeshStandardMaterial({
+          color: 0x111111,
+          emissive: pal.glow,
+          emissiveIntensity: 0,
+          roughness: 0.4
+        }),
+        crack: new THREE.MeshBasicMaterial({ color: 0x1b1714 }),
+        seam: new THREE.MeshBasicMaterial({
+          color: pal.aura,
+          transparent: true,
+          opacity: 0
+        }),
+        hot: new THREE.MeshStandardMaterial({
+          color: 0x111111,
+          emissive: pal.glow,
+          emissiveIntensity: 2.2,
+          roughness: 0.3
+        })
+      };
+      const grow = [];
+      const place = (mesh, x, y, z, p) => {
+        mesh.position.set(x, y, z);
+        p.add(mesh);
+        return mesh;
+      };
+      return {
+        m,
+        grow,
+        pal,
+        box: (w, h, d, mat, x, y, z, p) =>
+          place(
+            new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat),
+            x,
+            y,
+            z,
+            p
+          ),
+        cyl: (rt, rb, h, seg, mat, x, y, z, p) =>
+          place(
+            new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg), mat),
+            x,
+            y,
+            z,
+            p
+          ),
+        cone: (r, h, seg, mat, x, y, z, p) =>
+          place(
+            new THREE.Mesh(new THREE.ConeGeometry(r, h, seg), mat),
+            x,
+            y,
+            z,
+            p
+          ),
+        torus: (r, t, mat, x, y, z, p, seg = 24) =>
+          place(
+            new THREE.Mesh(new THREE.TorusGeometry(r, t, 6, seg), mat),
+            x,
+            y,
+            z,
+            p
+          ),
+        ico: (r, mat, x, y, z, p, d = 1) =>
+          place(
+            new THREE.Mesh(new THREE.IcosahedronGeometry(r, d), mat),
+            x,
+            y,
+            z,
+            p
+          ),
+        oct: (r, mat, x, y, z, p) =>
+          place(
+            new THREE.Mesh(new THREE.OctahedronGeometry(r), mat),
+            x,
+            y,
+            z,
+            p
+          ),
+        gear(mesh, a, b) {
+          mesh.scale.setScalar(0.001);
+          grow.push([mesh, a, b]);
+          return mesh;
+        },
+        group: (x, y, z, p) => {
+          const g = new THREE.Group();
+          g.position.set(x, y, z);
+          p.add(g);
+          return g;
+        },
+        slab(text, w = 0.5) {
+          const tex = canvasTex(128, (g, s) => {
+            g.fillStyle = "#0e0c0b";
+            g.fillRect(0, 0, s, s);
+            g.strokeStyle = hex(pal.glow);
+            g.lineWidth = 6;
+            g.strokeRect(5, 5, s - 10, s - 10);
+            g.fillStyle = "#ffffff";
+            const size = text.length > 5 ? 22 : text.length > 3 ? 28 : 36;
+            g.font = `700 ${size}px JetBrains Mono, monospace`;
+            g.textAlign = "center";
+            g.textBaseline = "middle";
+            g.fillText(text, s / 2, s / 2 + 2);
+          });
+          return new THREE.Mesh(
+            new THREE.BoxGeometry(w, w, 0.06),
+            new THREE.MeshStandardMaterial({
+              map: tex,
+              emissive: pal.glow,
+              emissiveMap: tex,
+              emissiveIntensity: 0.8,
+              roughness: 0.4
+            })
+          );
+        },
+        bar(w, x, y, rot, p, mat, t = 0.075) {
+          const b = new THREE.Mesh(
+            new THREE.BoxGeometry(w, t, t),
+            mat || this.m.hot
+          );
+          b.position.set(x, y, 0);
+          b.rotation.z = rot;
+          p.add(b);
+          return b;
+        }
+      };
+    }
+    function cracksOn(K, p, z, s = 1) {
+      for (const [w, h, x, y, r] of [
+        [0.5, 0.035, -0.38, 0.28, 0.35],
+        [0.035, 0.34, -0.15, 0.06, 0],
+        [0.42, 0.035, 0.36, -0.05, -0.3],
+        [0.3, 0.035, -0.36, -0.4, 0.5]
+      ])
+        K.box(w * s, h, 0.02, K.m.crack, x * s, y * s, z, p).rotation.z = r;
+    }
+    function frameOutline(K, w, h, d, mat, p, t = 0.05) {
+      // a hollow box made of 12 bars
+      const g = new THREE.Group();
+      p.add(g);
+      for (const [x, y] of [
+        [-1, -1],
+        [1, -1],
+        [-1, 1],
+        [1, 1]
+      ]) {
+        K.box(t, h, t, mat, (x * w) / 2, 0, (y * d) / 2, g);
+        K.box(w, t, t, mat, 0, (x * h) / 2, (y * d) / 2, g);
+        K.box(t, t, d, mat, (x * w) / 2, (y * h) / 2, 0, g);
+      }
+      return g;
+    }
+
+    // ================= characters =================
+    const RANKS = [0, 20, 40, 60, 80];
+    const CHARACTERS = [
+      {
+        key: "pc",
+        tab: "ПК",
+        name: "ПК",
+        role: "Знаток компьютера. Железо, файлы, система и сеть.",
+        skills: 40,
+        master: "Мастер железа",
+        pal: {
+          base: 0x3f5f86,
+          plate: 0x1b2633,
+          trim: 0xa9bccf,
+          glow: 0x38e1ff,
+          aura: 0x8ff3ff,
+          ui: ["#38e1ff", "#a5f3fc", "#0e7490", "#083344"]
+        },
+        stages: [
+          "Пыльный системник на гусеницах, экран еле светится.",
+          "Экран-лицо оживает голубым, мигает питание.",
+          "Броня-панели, радиаторы, клешни в латах.",
+          "Парит; вокруг CPU, RAM, SSD; над головой вентилятор.",
+          "Крылья из шлейфов, из вентиляции бьёт свет."
+        ],
+        orbit: ["CPU", "RAM", "SSD", "GPU", "USB", "OS"],
+        build(K, body) {
+          // Tank treads instead of legs
+          const wheels = [];
+          for (const side of [-1, 1]) {
+            const tr = K.group(side * 0.55, 0.3, 0, body);
+            K.box(0.42, 0.5, 1.5, K.m.plate, 0, 0, 0, tr);
+            for (let i = 0; i < 4; i++) {
+              const w = K.cyl(
+                0.2,
+                0.2,
+                0.46,
+                10,
+                K.m.stone,
+                0,
+                -0.02,
+                -0.54 + i * 0.36,
+                tr
+              );
+              w.rotation.z = Math.PI / 2;
+              wheels.push(w);
+            }
+            K.gear(K.box(0.48, 0.12, 1.56, K.m.trim, 0, 0.28, 0, tr), 42, 52);
+          }
+          const torso = K.group(0, 1.35, 0, body);
+          K.box(1.3, 1.1, 0.95, K.m.stone, 0, 0, 0, torso);
+          for (let i = 0; i < 3; i++)
+            K.box(
+              0.66,
+              0.1,
+              0.04,
+              K.m.plate,
+              -0.2,
+              0.3 - i * 0.15,
+              0.49,
+              torso
+            );
+          for (let i = 0; i < 4; i++)
+            K.box(
+              0.5,
+              0.03,
+              0.02,
+              K.m.crack,
+              -0.2,
+              -0.18 - i * 0.08,
+              0.485,
+              torso
+            );
+          const core = K.box(
+            0.12,
+            0.12,
+            0.04,
+            K.m.glow,
+            0.42,
+            0.34,
+            0.49,
+            torso
+          );
+          K.gear(K.box(0.06, 1.0, 0.98, K.m.trim, -0.68, 0, 0, torso), 40, 48);
+          K.gear(K.box(0.06, 1.0, 0.98, K.m.trim, 0.68, 0, 0, torso), 40, 48);
+          const seams = [
+            K.box(1.34, 0.03, 0.99, K.m.seam, 0, 0.12, 0, torso),
+            K.box(1.34, 0.03, 0.99, K.m.seam, 0, -0.3, 0, torso)
+          ];
+          const head = K.group(0, 2.35, 0, body);
+          K.box(0.22, 0.24, 0.22, K.m.plate, 0, -0.44, 0, head);
+          K.box(1.25, 0.82, 0.22, K.m.stone, 0, 0, 0, head);
+          K.box(1.06, 0.66, 0.04, K.m.plate, 0, 0, 0.12, head);
+          const eyeL = K.box(
+              0.18,
+              0.18,
+              0.03,
+              K.m.glow,
+              -0.22,
+              0.06,
+              0.145,
+              head
+            ),
+            eyeR = K.box(0.18, 0.18, 0.03, K.m.glow, 0.22, 0.06, 0.145, head);
+          const mouth = K.box(0.4, 0.05, 0.03, K.m.glow, 0, -0.17, 0.145, head);
+          const deadEye = K.box(
+            0.18,
+            0.18,
+            0.035,
+            K.m.crack,
+            -0.22,
+            0.06,
+            0.145,
+            head
+          );
+          for (let i = 0; i < 5; i++) {
+            const c = K.box(
+              0.05,
+              0.55,
+              0.05,
+              K.m.trim,
+              -0.4 + i * 0.2,
+              0.6,
+              -0.08,
+              head
+            );
+            c.rotation.x = -0.45;
+            K.gear(c, 46, 56);
+          }
+          // Claw arms
+          const arms = [];
+          for (const side of [-1, 1]) {
+            const arm = K.group(side * 0.82, 1.7, 0, body);
+            K.box(0.24, 0.6, 0.24, K.m.plate, 0, -0.3, 0, arm);
+            K.box(0.34, 0.2, 0.34, K.m.stone, 0, -0.66, 0, arm);
+            K.box(
+              0.06,
+              0.3,
+              0.12,
+              K.m.trim,
+              -0.1,
+              -0.88,
+              0.05,
+              arm
+            ).rotation.z = 0.3;
+            K.box(0.06, 0.3, 0.12, K.m.trim, 0.1, -0.88, 0.05, arm).rotation.z =
+              -0.3;
+            for (let i = 0; i < 4; i++)
+              K.gear(
+                K.box(0.04, 0.24, 0.5, K.m.trim, -0.15 + i * 0.1, 0.12, 0, arm),
+                44 + i,
+                54 + i
+              );
+            arms.push(arm);
+          }
+          const kb = K.gear(
+            K.box(0.72, 0.06, 0.32, K.m.trim, 0, -0.6, 0.3, arms[0]),
+            44,
+            54
+          );
+          kb.rotation.x = 1.2;
+          return {
+            torso,
+            head,
+            armL: arms[0],
+            armR: arms[1],
+            eyes: [eyeL, eyeR, mouth],
+            deadEye,
+            core,
+            seams,
+            headY: 2.35,
+            wheels
+          };
+        },
+        crest(K, g) {
+          K.torus(0.42, 0.04, K.m.hot, 0, 0, 0, g, 32);
+          const b = K.group(0, 0, 0, g);
+          g.userData.spin = b;
+          for (let i = 0; i < 5; i++) {
+            const a = (i / 5) * Math.PI * 2;
+            const bl = K.box(
+              0.32,
+              0.1,
+              0.03,
+              K.m.hot,
+              Math.cos(a) * 0.18,
+              Math.sin(a) * 0.18,
+              0,
+              b
+            );
+            bl.rotation.z = a;
+          }
+        },
+        wing(K, side, p) {
+          for (let k = 0; k < 5; k++) {
+            const f = K.group(
+              side * (0.2 + k * 0.22),
+              0.1 - k * 0.14,
+              -k * 0.04,
+              p
+            );
+            K.bar(
+              1.1 - k * 0.12,
+              side * (0.55 - k * 0.06),
+              0,
+              side * (0.6 - k * 0.1),
+              f,
+              K.m.hot,
+              0.1
+            );
+          }
+        }
+      },
+      {
+        key: "browser",
+        tab: "Бр",
+        name: "Браузер",
+        role: "Проводник по вебу. От адреса до готовой страницы.",
+        skills: 43,
+        master: "Мастер протоколов",
+        pal: {
+          base: 0x1f4fa0,
+          plate: 0x111f36,
+          trim: 0xd9a441,
+          glow: 0x5aa9ff,
+          aura: 0xa8d4ff,
+          ui: ["#5aa9ff", "#bfdbfe", "#1e3a8a", "#0b1a3a"]
+        },
+        stages: [
+          "Путник в пыльном плаще, глобус погас.",
+          "Глобус светится синим, загорается визор-адресная строка.",
+          "Латунные наплечники-вкладки, щит-компас, посох.",
+          "Взлетает; вокруг 200, 301, 404; над головой фонарь DNS.",
+          "Крылья из вкладок, меридианы горят."
+        ],
+        orbit: ["200", "301", "404", "DNS", "HTTPS", "URL"],
+        build(K, body) {
+          // A long coat down to the ground, no legs
+          const coat = K.cyl(0.45, 0.85, 1.3, 8, K.m.stone, 0, 0.7, 0, body);
+          for (let i = 0; i < 6; i++) {
+            const a = (i / 6) * Math.PI * 2;
+            K.gear(
+              K.box(
+                0.26,
+                0.2,
+                0.06,
+                i % 2 ? K.m.trim : K.m.plate,
+                Math.sin(a) * 0.8,
+                0.14,
+                Math.cos(a) * 0.8,
+                body
+              ),
+              42 + i,
+              52 + i
+            ).rotation.y = a;
+          }
+          const torso = K.group(0, 1.65, 0, body);
+          K.box(1.0, 0.75, 0.6, K.m.stone, 0, 0, 0, torso);
+          cracksOn(K, torso, 0.31, 0.8);
+          const core = K.ico(0.13, K.m.glow, 0, 0, 0.32, torso, 0);
+          K.gear(K.box(0.86, 0.12, 0.66, K.m.trim, 0, -0.32, 0, torso), 44, 54);
+          const seams = [
+            K.box(0.03, 0.75, 0.64, K.m.seam, 0, 0, 0, torso),
+            K.box(1.04, 0.03, 0.64, K.m.seam, 0, 0.2, 0, torso)
+          ];
+          const head = K.group(0, 2.55, 0, body);
+          const globe = K.ico(0.58, K.m.stone, 0, 0.05, 0, head, 1);
+          const m1 = K.torus(0.6, 0.03, K.m.seam, 0, 0.05, 0, head, 32);
+          m1.rotation.y = Math.PI / 2;
+          K.torus(0.6, 0.03, K.m.seam, 0, 0.05, 0, head, 32).rotation.x =
+            Math.PI / 2;
+          K.box(0.8, 0.14, 0.14, K.m.plate, 0, 0.08, 0.5, head);
+          const eyeL = K.box(
+              0.2,
+              0.06,
+              0.04,
+              K.m.glow,
+              -0.18,
+              0.08,
+              0.58,
+              head
+            ),
+            eyeR = K.box(0.2, 0.06, 0.04, K.m.glow, 0.18, 0.08, 0.58, head);
+          const deadEye = K.box(
+            0.2,
+            0.06,
+            0.045,
+            K.m.crack,
+            -0.18,
+            0.08,
+            0.58,
+            head
+          );
+          const arms = [];
+          for (const side of [-1, 1]) {
+            const arm = K.group(side * 0.66, 1.9, 0, body);
+            K.box(0.26, 0.7, 0.28, K.m.stone, 0, -0.36, 0, arm);
+            K.box(0.3, 0.26, 0.3, K.m.plate, 0, -0.8, 0, arm);
+            for (let i = 0; i < 3; i++)
+              K.gear(
+                K.box(
+                  0.2,
+                  0.14,
+                  0.5,
+                  i % 2 ? K.m.trim : K.m.plate,
+                  -0.18 + i * 0.18,
+                  0.1,
+                  0,
+                  arm
+                ),
+                40 + i * 2,
+                50 + i * 2
+              );
+            arms.push(arm);
+          }
+          const shield = K.gear(
+            K.cyl(0.38, 0.38, 0.08, 16, K.m.trim, 0, -0.6, 0.3, arms[0]),
+            42,
+            52
+          );
+          shield.rotation.x = Math.PI / 2;
+          const needle = K.gear(
+            K.box(0.06, 0.5, 0.04, K.m.hot, 0, -0.6, 0.36, arms[0]),
+            46,
+            56
+          );
+          const staff = K.gear(K.group(0, -0.85, 0.15, arms[1]), 40, 50);
+          K.cyl(0.04, 0.04, 2.2, 6, K.m.trim, 0, 0.4, 0, staff);
+          K.box(0.22, 0.22, 0.22, K.m.hot, 0, 1.55, 0, staff);
+          return {
+            torso,
+            head,
+            armL: arms[0],
+            armR: arms[1],
+            eyes: [eyeL, eyeR],
+            deadEye,
+            core,
+            seams,
+            headY: 2.55,
+            globe,
+            needle,
+            floats: 0.12
+          };
+        },
+        crest(K, g) {
+          K.box(0.22, 0.22, 0.22, K.m.hot, 0, 0, 0, g);
+          for (const [x, z] of [
+            [-0.16, -0.16],
+            [0.16, -0.16],
+            [-0.16, 0.16],
+            [0.16, 0.16]
+          ])
+            K.box(0.03, 0.4, 0.03, K.m.trim, x, 0, z, g);
+          K.cone(0.24, 0.16, 4, K.m.trim, 0, 0.26, 0, g).rotation.y =
+            Math.PI / 4;
+        },
+        wing(K, side, p) {
+          for (let k = 0; k < 4; k++) {
+            const f = K.group(
+              side * (0.35 + k * 0.32),
+              0.15 - k * 0.12,
+              -k * 0.06,
+              p
+            );
+            const r = side * (0.35 - k * 0.12);
+            K.box(0.44, 0.3, 0.04, K.m.hot, 0, 0, 0, f).rotation.z = r;
+            K.box(0.38, 0.06, 0.05, K.m.trim, 0, 0.1, 0.01, f).rotation.z = r;
+          }
+        }
+      },
+      {
+        key: "html",
+        tab: "HT",
+        name: "HTML",
+        role: "Строитель страниц. Разметка, структура и доступность.",
+        skills: 70,
+        master: "Мастер тегов",
+        pal: {
+          base: 0x9a3a1c,
+          plate: 0x2a1a14,
+          trim: 0xe34f26,
+          glow: 0xff6a21,
+          aura: 0xffa15c,
+          ui: ["#f26a21", "#ffa15c", "#d9441c", "#8a1a12"]
+        },
+        stages: [
+          "Маленький и сутулый, в трещинах. Горит один глаз.",
+          "Трещины раскаляются оранжевым, загораются глаза и ядро.",
+          "Наплечники с шипами, нагрудник, латы и гребень.",
+          "Парит; вокруг теги, над головой </>.",
+          "Крылья из скобок, голова в огне, тело раскалено."
+        ],
+        orbit: ["<div>", "<p>", "<a>", "<img>", "<ul>", "<h1>"],
+        build(K, body) {
+          for (const side of [-1, 1]) {
+            const leg = K.group(side * 0.32, 0.9, 0, body);
+            K.box(0.36, 0.8, 0.42, K.m.stone, 0, -0.42, 0, leg);
+            K.box(0.46, 0.16, 0.6, K.m.stone, 0, -0.82, 0.06, leg);
+            K.gear(
+              K.box(0.5, 0.42, 0.52, K.m.plate, 0, -0.52, 0.02, leg),
+              42,
+              52
+            );
+            K.gear(
+              K.box(0.54, 0.1, 0.66, K.m.trim, 0, -0.72, 0.06, leg),
+              44,
+              54
+            );
+          }
+          const torso = K.group(0, 1.55, 0, body);
+          K.box(1.3, 0.5, 0.78, K.m.stone, 0, -0.42, 0, torso);
+          K.box(1.46, 0.62, 0.86, K.m.stone, 0, 0.14, 0, torso);
+          K.box(1.0, 0.18, 0.7, K.m.stone, 0, 0.53, 0, torso);
+          cracksOn(K, torso, 0.435);
+          const core = K.ico(0.17, K.m.glow, 0, 0.12, 0.5, torso, 0);
+          K.gear(
+            K.box(1.12, 0.46, 0.1, K.m.plate, 0, 0.12, 0.47, torso),
+            40,
+            50
+          );
+          K.gear(
+            K.box(1.2, 0.08, 0.12, K.m.trim, 0, 0.38, 0.48, torso),
+            42,
+            52
+          );
+          K.gear(K.box(1.36, 0.14, 0.9, K.m.trim, 0, -0.17, 0, torso), 44, 54);
+          const seams = [
+            K.box(1.5, 0.03, 0.9, K.m.seam, 0, -0.17, 0, torso),
+            K.box(1.34, 0.03, 0.82, K.m.seam, 0, 0.45, 0, torso),
+            K.box(0.03, 0.62, 0.9, K.m.seam, 0, 0.14, 0, torso)
+          ];
+          const head = K.group(0, 2.45, 0, body);
+          K.box(0.86, 0.66, 0.74, K.m.stone, 0, 0, 0, head);
+          K.box(0.92, 0.12, 0.8, K.m.stone, 0, 0.36, 0, head);
+          K.box(0.74, 0.2, 0.06, K.m.plate, 0, 0.02, 0.39, head);
+          const eyeL = K.box(
+              0.14,
+              0.07,
+              0.04,
+              K.m.glow,
+              -0.18,
+              0.02,
+              0.43,
+              head
+            ),
+            eyeR = K.box(0.14, 0.07, 0.04, K.m.glow, 0.18, 0.02, 0.43, head);
+          const deadEye = K.box(
+            0.14,
+            0.07,
+            0.045,
+            K.m.crack,
+            -0.18,
+            0.02,
+            0.43,
+            head
+          );
+          K.gear(K.box(0.98, 0.12, 0.86, K.m.plate, 0, 0.44, 0, head), 42, 52);
+          K.gear(
+            K.box(0.12, 0.34, 0.66, K.m.trim, 0, 0.66, -0.02, head),
+            46,
+            56
+          );
+          K.gear(K.box(0.08, 0.5, 0.08, K.m.plate, -0.5, 0.3, 0, head), 46, 56);
+          K.gear(K.box(0.08, 0.5, 0.08, K.m.plate, 0.5, 0.3, 0, head), 46, 56);
+          const arms = [];
+          for (const side of [-1, 1]) {
+            const arm = K.group(side * 0.92, 1.9, 0, body);
+            K.box(0.32, 0.72, 0.36, K.m.stone, 0, -0.38, 0, arm);
+            K.box(0.38, 0.32, 0.4, K.m.stone, 0, -0.86, 0.02, arm);
+            K.gear(K.box(0.62, 0.28, 0.62, K.m.plate, 0, 0.08, 0, arm), 40, 48);
+            K.gear(K.box(0.66, 0.06, 0.66, K.m.trim, 0, 0.24, 0, arm), 42, 50);
+            K.gear(
+              K.cone(0.1, 0.42, 4, K.m.plate, side * 0.16, 0.42, 0, arm),
+              46,
+              56
+            ).rotation.z = -side * 0.35;
+            K.gear(
+              K.box(0.46, 0.4, 0.48, K.m.plate, 0, -0.84, 0.02, arm),
+              42,
+              52
+            );
+            arms.push(arm);
+          }
+          return {
+            torso,
+            head,
+            armL: arms[0],
+            armR: arms[1],
+            eyes: [eyeL, eyeR],
+            deadEye,
+            core,
+            seams,
+            headY: 2.45
+          };
+        },
+        crest(K, g) {
+          K.bar(0.26, -0.36, 0.08, 0.6, g);
+          K.bar(0.26, -0.36, -0.08, -0.6, g);
+          K.bar(0.26, 0.36, 0.08, -0.6, g);
+          K.bar(0.26, 0.36, -0.08, 0.6, g);
+          K.bar(0.42, 0, 0, 1.15, g);
+        },
+        wing(K, side, p) {
+          for (let k = 0; k < 4; k++) {
+            const f = K.group(
+              side * (0.22 + k * 0.32),
+              0.05 - k * 0.2,
+              -k * 0.05,
+              p
+            );
+            const len = 1.25 - k * 0.2;
+            K.bar(len, (side * len) / 2, 0, side * (0.75 - k * 0.12), f);
+          }
+        }
+      },
+      {
+        key: "css",
+        tab: "CS",
+        name: "CSS",
+        role: "Художник интерфейсов. Цвет, сетки, анимации.",
+        skills: 53,
+        master: "Мастер стилей",
+        pal: {
+          base: 0x4a2fb0,
+          plate: 0x1a1640,
+          trim: 0x2dd4bf,
+          glow: 0xb388ff,
+          aura: 0xe0ccff,
+          ui: ["#a78bfa", "#ddd6fe", "#6d28d9", "#2e1065"]
+        },
+        stages: [
+          "Тонкая серая фигура, рамки тусклые.",
+          "Рамки box model загораются фиолетовым, голова-кристалл светится.",
+          "Длинные ноги в латах, пояс flexbox, щит-палитра.",
+          "Парит; вокруг flex, grid, rem; над головой { }.",
+          "Плащ из цветных полос, кисть оставляет след."
+        ],
+        orbit: ["flex", "grid", "rem", "hover", "::after", "z-index"],
+        build(K, body) {
+          // Long slender legs
+          for (const side of [-1, 1]) {
+            const leg = K.group(side * 0.24, 1.25, 0, body);
+            K.box(0.18, 1.2, 0.22, K.m.stone, 0, -0.62, 0, leg);
+            K.box(0.26, 0.1, 0.42, K.m.stone, 0, -1.2, 0.08, leg);
+            K.gear(
+              K.box(0.26, 0.5, 0.3, K.m.plate, 0, -0.4, 0.02, leg),
+              42,
+              52
+            );
+            K.gear(
+              K.box(0.3, 0.06, 0.34, K.m.trim, 0, -0.66, 0.02, leg),
+              44,
+              54
+            );
+          }
+          // Torso: a small core inside nested box-model frames (margin, border, padding)
+          const torso = K.group(0, 1.85, 0, body);
+          K.box(0.5, 0.7, 0.36, K.m.stone, 0, 0, 0, torso);
+          const core = K.oct(0.13, K.m.glow, 0, 0.05, 0.2, torso);
+          frameOutline(K, 0.72, 0.9, 0.52, K.m.plate, torso, 0.05);
+          const f2 = frameOutline(K, 0.92, 1.08, 0.66, K.m.trim, torso, 0.04);
+          K.gear(f2, 40, 50);
+          const seamFrame = frameOutline(
+            K,
+            1.1,
+            1.26,
+            0.8,
+            K.m.seam,
+            torso,
+            0.03
+          );
+          K.gear(K.box(0.9, 0.1, 0.5, K.m.trim, 0, -0.5, 0, torso), 44, 54);
+          const head = K.group(0, 2.85, 0, body);
+          const crystal = K.oct(0.34, K.m.stone, 0, 0.1, 0, head);
+          crystal.scale.y = 1.4;
+          const eyeL = K.box(0.1, 0.05, 0.04, K.m.glow, -0.1, 0.08, 0.26, head),
+            eyeR = K.box(0.1, 0.05, 0.04, K.m.glow, 0.1, 0.08, 0.26, head);
+          const deadEye = K.box(
+            0.1,
+            0.05,
+            0.045,
+            K.m.crack,
+            -0.1,
+            0.08,
+            0.26,
+            head
+          );
+          const arms = [];
+          for (const side of [-1, 1]) {
+            const arm = K.group(side * 0.56, 2.2, 0, body);
+            K.box(0.14, 0.9, 0.16, K.m.stone, 0, -0.45, 0, arm);
+            K.box(0.2, 0.16, 0.2, K.m.plate, 0, -0.95, 0, arm);
+            K.gear(K.box(0.34, 0.12, 0.34, K.m.trim, 0, 0.04, 0, arm), 40, 48);
+            arms.push(arm);
+          }
+          const staff = K.group(0, -0.95, 0.12, arms[1]);
+          K.cyl(0.035, 0.035, 2.2, 6, K.m.plate, 0, 0.45, 0, staff);
+          const bristle = K.cone(0.1, 0.32, 6, K.m.stone, 0, 1.68, 0, staff);
+          const pal = K.gear(
+            K.cyl(0.4, 0.4, 0.05, 12, K.m.plate, 0, -0.7, 0.24, arms[0]),
+            42,
+            52
+          );
+          pal.rotation.x = Math.PI / 2;
+          [0xff5d8f, 0x2dd4bf, 0xffd166, 0xb388ff].forEach(
+            (c, i) =>
+              (K.gear(
+                K.cyl(
+                  0.07,
+                  0.07,
+                  0.04,
+                  8,
+                  new THREE.MeshStandardMaterial({
+                    color: c,
+                    emissive: c,
+                    emissiveIntensity: 0.7
+                  }),
+                  -0.2 + i * 0.13,
+                  -0.6,
+                  0.28,
+                  arms[0]
+                ),
+                44,
+                54
+              ).rotation.x = Math.PI / 2)
+          );
+          return {
+            torso,
+            head,
+            armL: arms[0],
+            armR: arms[1],
+            eyes: [eyeL, eyeR],
+            deadEye,
+            core,
+            seams: [],
+            headY: 2.85,
+            paint: bristle,
+            frames: [f2, seamFrame],
+            crystal
+          };
+        },
+        crest(K, g) {
+          for (const side of [-1, 1]) {
+            K.bar(0.24, side * 0.22, 0.14, side * 1.3, g);
+            K.bar(0.24, side * 0.22, -0.14, -side * 1.3, g);
+            K.bar(0.1, side * 0.3, 0, 0, g);
+          }
+        },
+        wing(K, side, p) {
+          [0xff5d8f, 0xffd166, 0x2dd4bf, 0xb388ff].forEach((c, k) => {
+            const f = K.group(
+              side * (0.12 + k * 0.16),
+              -0.1 - k * 0.08,
+              -0.1,
+              p
+            );
+            K.box(
+              0.15,
+              1.7 - k * 0.15,
+              0.04,
+              new THREE.MeshStandardMaterial({
+                color: c,
+                emissive: c,
+                emissiveIntensity: 0.8
+              }),
+              0,
+              -0.5,
+              0,
+              f
+            ).rotation.z = side * 0.16;
+          });
+        }
+      },
+      {
+        key: "js",
+        tab: "Ja",
+        name: "JavaScript",
+        role: "Механик страниц. Логика, события и данные.",
+        skills: 114,
+        master: "Мастер событий",
+        pal: {
+          base: 0x3a3518,
+          plate: 0x0f0f0f,
+          trim: 0xf7df1e,
+          glow: 0xf7df1e,
+          aura: 0xfff59d,
+          ui: ["#f7df1e", "#fef9c3", "#a16207", "#3f2f00"]
+        },
+        stages: [
+          "Ржавый механизм, пружины сжаты, шестерня стоит.",
+          "В трещинах бегают жёлтые искры, шестерня на спине крутится.",
+          "Чёрно-жёлтые латы, рука-шестерня, поршни.",
+          "Парит; вокруг =>, await, { }.",
+          "Крылья из колец event loop, всё в молниях."
+        ],
+        orbit: ["=>", "{ }", "( )", "await", "[ ]", "fn"],
+        build(K, body) {
+          // Spring legs: thigh, coil, shin, foot
+          const springs = [];
+          for (const side of [-1, 1]) {
+            const leg = K.group(side * 0.3, 1.1, 0, body);
+            const th = K.box(0.24, 0.5, 0.28, K.m.stone, 0, -0.2, 0.08, leg);
+            th.rotation.x = -0.4;
+            const coil = K.group(0, -0.62, 0.12, leg);
+            springs.push(coil);
+            for (let i = 0; i < 4; i++) {
+              const r = K.torus(0.12, 0.03, K.m.trim, 0, i * 0.08, 0, coil, 12);
+              r.rotation.x = Math.PI / 2;
+            }
+            K.box(0.2, 0.36, 0.22, K.m.stone, 0, -0.92, 0, leg);
+            K.box(0.34, 0.1, 0.5, K.m.plate, 0, -1.08, 0.1, leg);
+            K.gear(K.box(0.3, 0.3, 0.34, K.m.trim, 0, -0.9, 0.02, leg), 42, 52);
+          }
+          const torso = K.group(0, 1.65, 0, body);
+          K.box(1.0, 0.8, 0.66, K.m.stone, 0, 0, 0, torso);
+          cracksOn(K, torso, 0.335, 0.85);
+          const core = K.torus(0.14, 0.05, K.m.glow, 0, 0.05, 0.36, torso, 8);
+          // Stripes and armour
+          for (let i = 0; i < 4; i++)
+            K.gear(
+              K.box(
+                0.14,
+                0.82,
+                0.04,
+                i % 2 ? K.m.trim : K.m.plate,
+                -0.36 + i * 0.24,
+                0,
+                0.35,
+                torso
+              ),
+              40 + i,
+              50 + i
+            );
+          const backGear = K.torus(
+            0.5,
+            0.12,
+            K.m.plate,
+            0,
+            0.15,
+            -0.42,
+            torso,
+            10
+          );
+          for (let i = 0; i < 8; i++) {
+            const a = (i / 8) * Math.PI * 2;
+            K.box(
+              0.12,
+              0.16,
+              0.12,
+              K.m.plate,
+              Math.cos(a) * 0.62,
+              0.15 + Math.sin(a) * 0.62,
+              -0.42,
+              torso
+            );
+          }
+          const seams = [
+            K.box(1.04, 0.03, 0.7, K.m.seam, 0, -0.2, 0, torso),
+            K.box(0.03, 0.8, 0.7, K.m.seam, 0.3, 0, 0, torso)
+          ];
+          const head = K.group(0.05, 2.45, 0, body);
+          K.box(0.7, 0.54, 0.62, K.m.stone, 0, 0, 0, head);
+          K.box(0.6, 0.18, 0.06, K.m.plate, 0, 0.02, 0.32, head);
+          const eyeL = K.box(
+              0.12,
+              0.12,
+              0.04,
+              K.m.glow,
+              -0.14,
+              0.02,
+              0.36,
+              head
+            ),
+            eyeR = K.box(0.2, 0.06, 0.04, K.m.glow, 0.14, 0.02, 0.36, head);
+          const deadEye = K.box(
+            0.12,
+            0.12,
+            0.045,
+            K.m.crack,
+            -0.14,
+            0.02,
+            0.36,
+            head
+          );
+          const bolt = K.group(0.22, 0.3, 0, head);
+          [
+            [0, 0.12, 0.4],
+            [0.06, 0.3, -0.5],
+            [0, 0.48, 0.4]
+          ].forEach(
+            ([x, y, r]) =>
+              (K.box(0.06, 0.22, 0.06, K.m.trim, x, y, 0, bolt).rotation.z = r)
+          );
+          K.gear(bolt, 20, 30);
+          // Asymmetric arms: a thin left arm, a heavy gear arm on the right
+          const armL = K.group(-0.62, 1.95, 0, body);
+          K.box(0.18, 0.8, 0.2, K.m.stone, 0, -0.4, 0, armL);
+          K.box(0.24, 0.2, 0.24, K.m.plate, 0, -0.86, 0, armL);
+          K.gear(K.box(0.34, 0.16, 0.34, K.m.trim, 0, 0.04, 0, armL), 40, 48);
+          const armR = K.group(0.7, 1.95, 0, body);
+          K.box(0.36, 0.6, 0.4, K.m.stone, 0, -0.3, 0, armR);
+          const armGear = K.torus(0.24, 0.1, K.m.trim, 0, -0.78, 0, armR, 8);
+          K.gear(K.box(0.56, 0.3, 0.56, K.m.plate, 0, 0.1, 0, armR), 40, 48);
+          for (let i = 0; i < 2; i++)
+            K.gear(
+              K.cyl(
+                0.05,
+                0.05,
+                0.6,
+                6,
+                K.m.trim,
+                -0.12 + i * 0.24,
+                -0.3,
+                0.24,
+                armR
+              ),
+              44,
+              54
+            );
+          return {
+            torso,
+            head,
+            armL,
+            armR,
+            eyes: [eyeL, eyeR],
+            deadEye,
+            core,
+            seams,
+            headY: 2.45,
+            spinners: [backGear, armGear],
+            springs
+          };
+        },
+        crest(K, g) {
+          K.bar(0.4, -0.05, 0, 0, g);
+          K.bar(0.2, 0.22, 0.06, -0.6, g);
+          K.bar(0.2, 0.22, -0.06, 0.6, g);
+        },
+        wing(K, side, p) {
+          for (let k = 0; k < 3; k++) {
+            const r = K.torus(
+              0.45 - k * 0.08,
+              0.04,
+              K.m.hot,
+              side * (0.5 + k * 0.45),
+              -k * 0.15,
+              -0.1,
+              p,
+              20
+            );
+            r.rotation.y = side * 0.5;
+          }
+        }
+      },
+      {
+        key: "sql",
+        tab: "SQ",
+        name: "SQL",
+        role: "Хранитель данных. Запросы, таблицы и связи.",
+        skills: 52,
+        master: "Мастер запросов",
+        pal: {
+          base: 0x13756b,
+          plate: 0x0d2b28,
+          trim: 0xc59a5b,
+          glow: 0x2dd4bf,
+          aura: 0x99f6e4,
+          ui: ["#2dd4bf", "#99f6e4", "#0f766e", "#042f2e"]
+        },
+        stages: [
+          "Тяжёлая серая бочка, данные спят.",
+          "Кольца и строки загораются бирюзой.",
+          "Бронзовые обручи, ключ PRIMARY KEY, щит-индекс.",
+          "Парит; вокруг SELECT, JOIN, WHERE; корона из бочек.",
+          "Из ядра бьёт столб света, связи горят."
+        ],
+        orbit: ["SELECT", "JOIN", "WHERE", "INDEX", "KEY", "GROUP"],
+        build(K, body) {
+          for (const side of [-1, 1]) {
+            const leg = K.group(side * 0.42, 0.5, 0, body);
+            K.box(0.46, 0.42, 0.5, K.m.stone, 0, -0.2, 0, leg);
+            K.box(0.56, 0.12, 0.64, K.m.stone, 0, -0.44, 0.06, leg);
+            K.gear(K.box(0.6, 0.24, 0.6, K.m.trim, 0, -0.24, 0, leg), 42, 52);
+          }
+          const torso = K.group(0, 1.35, 0, body);
+          K.cyl(0.95, 0.95, 1.35, 12, K.m.stone, 0, 0, 0, torso);
+          const rings = [0.5, 0.05, -0.4].map((y) => {
+            const r = K.torus(0.96, 0.045, K.m.seam, 0, y, 0, torso, 24);
+            r.rotation.x = Math.PI / 2;
+            return r;
+          });
+          const rows = [];
+          for (let i = 0; i < 4; i++)
+            rows.push(
+              K.box(0.8, 0.06, 0.02, K.m.glow, 0, 0.36 - i * 0.18, 0.95, torso)
+            );
+          K.gear(
+            K.cyl(1.02, 1.02, 0.18, 12, K.m.trim, 0, 0.55, 0, torso),
+            40,
+            48
+          );
+          K.gear(
+            K.cyl(1.02, 1.02, 0.16, 12, K.m.trim, 0, -0.55, 0, torso),
+            42,
+            50
+          );
+          const head = K.group(0, 2.3, 0, body);
+          K.cyl(0.45, 0.45, 0.55, 12, K.m.stone, 0, 0, 0, head);
+          K.box(0.66, 0.16, 0.14, K.m.plate, 0, 0.04, 0.4, head);
+          const eyeL = K.box(
+              0.14,
+              0.06,
+              0.04,
+              K.m.glow,
+              -0.16,
+              0.04,
+              0.48,
+              head
+            ),
+            eyeR = K.box(0.14, 0.06, 0.04, K.m.glow, 0.16, 0.04, 0.48, head);
+          const deadEye = K.box(
+            0.14,
+            0.06,
+            0.045,
+            K.m.crack,
+            -0.16,
+            0.04,
+            0.48,
+            head
+          );
+          const arms = [];
+          for (const side of [-1, 1]) {
+            const arm = K.group(side * 1.12, 1.75, 0, body);
+            K.box(0.4, 0.7, 0.44, K.m.stone, 0, -0.32, 0, arm);
+            K.box(0.48, 0.36, 0.5, K.m.stone, 0, -0.8, 0.02, arm);
+            K.gear(
+              K.cyl(0.38, 0.38, 0.22, 10, K.m.trim, 0, 0.05, 0, arm),
+              40,
+              48
+            );
+            arms.push(arm);
+          }
+          const keyG = K.gear(K.group(0, -0.95, 0.25, arms[1]), 42, 52);
+          K.box(0.08, 1.0, 0.08, K.m.trim, 0, 0.3, 0, keyG);
+          K.torus(0.16, 0.05, K.m.trim, 0, 0.9, 0, keyG, 12);
+          K.box(0.22, 0.06, 0.08, K.m.trim, 0.1, -0.1, 0, keyG);
+          K.box(0.14, 0.06, 0.08, K.m.trim, 0.07, 0.05, 0, keyG);
+          K.gear(
+            K.box(0.62, 0.44, 0.06, K.m.plate, 0, -0.6, 0.3, arms[0]),
+            44,
+            54
+          );
+          for (let i = 0; i < 3; i++)
+            K.gear(
+              K.box(0.5, 0.03, 0.02, K.m.hot, 0, -0.5 - i * 0.1, 0.34, arms[0]),
+              46,
+              56
+            );
+          const column = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.05, 0.25, 2.6, 12, 1, true),
+            new THREE.MeshBasicMaterial({
+              color: K.pal.aura,
+              transparent: true,
+              opacity: 0,
+              blending: THREE.AdditiveBlending,
+              depthWrite: false,
+              side: THREE.DoubleSide,
+              fog: false
+            })
+          );
+          column.position.y = 3.9;
+          body.add(column);
+          return {
+            torso,
+            head,
+            armL: arms[0],
+            armR: arms[1],
+            eyes: [eyeL, eyeR, ...rows],
+            deadEye,
+            core: null,
+            seams: rings,
+            headY: 2.3,
+            rows,
+            column,
+            seamAlways: true
+          };
+        },
+        crest(K, g) {
+          for (let i = 0; i < 5; i++) {
+            const a = (i / 5) * Math.PI * 2;
+            K.cyl(
+              0.08,
+              0.08,
+              0.16,
+              8,
+              K.m.hot,
+              Math.cos(a) * 0.32,
+              0,
+              Math.sin(a) * 0.32,
+              g
+            );
+          }
+        },
+        wing(K, side, p) {
+          for (let k = 0; k < 3; k++) {
+            const f = K.group(side * (0.6 + k * 0.42), 0.2 - k * 0.25, -0.1, p);
+            K.box(0.36, 0.26, 0.04, K.m.hot, 0, 0, 0, f);
+            K.box(0.3, 0.02, 0.05, K.m.plate, 0, 0.04, 0.01, f);
+            K.box(0.3, 0.02, 0.05, K.m.plate, 0, -0.04, 0.01, f);
+            if (k)
+              K.bar(0.36, -side * 0.24, 0.12, side * 0.6, f, K.m.hot, 0.03);
+          }
+        }
+      }
+    ];
+
+    // ================= look by level =================
+    const grey = new THREE.Color(0x55524f),
+      crackDark = new THREE.Color(0x1b1714);
+    const clamp = (x) => Math.max(0, Math.min(1, x)),
+      s01 = (l, a, b) => clamp((l - a) / (b - a));
+    let C,
+      P,
+      K,
+      hero,
+      hover = 0,
+      target = 12,
+      shown = 12;
+    const tmp = new THREE.Color();
+
+    function assemble(ch) {
+      if (hero) {
+        scene.remove(hero);
+        hero.traverse((o) => o.geometry?.dispose());
+      }
+      K = makeKit(ch.pal);
+      hero = new THREE.Group();
+      scene.add(hero);
+      const body = K.group(0, 0, 0, hero);
+      P = ch.build(K, body);
+      P.body = body;
+      P.orbit = K.group(0, 1.7, 0, hero);
+      P.tags = ch.orbit.map((t, i) => {
+        const m = K.slab(t);
+        P.orbit.add(m);
+        return {
+          m,
+          phase: (i / ch.orbit.length) * Math.PI * 2,
+          tilt: i % 2 ? 0.35 : -0.25
+        };
+      });
+      P.orbit.scale.setScalar(0.001);
+      P.crest = K.group(0, 0, 0, hero);
+      ch.crest(K, P.crest);
+      P.crest.scale.setScalar(0.001);
+      P.wings = [-1, 1].map((side) => {
+        const pivot = K.group(side * 0.35, 2.05, -0.55, body);
+        ch.wing(K, side, pivot);
+        pivot.scale.setScalar(0.001);
+        return { pivot, side };
+      });
+      // Scene colours follow the character
+      for (const l of [rim, coreLight]) l.color.setHex(ch.pal.glow);
+      rim2.color.setHex(ch.pal.aura);
+      ringMat.color.setHex(ch.pal.glow);
+      pMat.color.setHex(ch.pal.aura);
+      const bg = new THREE.Color(ch.pal.glow).multiplyScalar(0.07);
+      scene.fog = new THREE.Fog(bg.getHex(), 10, 20);
+      const [a, hi, deep, bgDeep] = ch.pal.ui,
+        root = document.documentElement.style;
+      root.setProperty("--ember", a);
+      root.setProperty("--ember-hi", hi);
+      root.setProperty("--flame", deep);
+      root.setProperty("--maroon", bgDeep);
+      host.style.background = `radial-gradient(60% 60% at 50% 70%, ${bgDeep} 0%, #0a0909 72%)`;
+      document.body.style.background = `radial-gradient(120% 70% at 50% 0%, ${bgDeep} 0%, #0d0b0a 55%) fixed, #0d0b0a`;
+      C = ch;
+    }
+
+    function applyLook(l) {
+      const r2 = s01(l, 18, 28),
+        r3 = s01(l, 38, 50),
+        r4 = s01(l, 58, 70),
+        r5 = s01(l, 78, 92);
+      const m = K.m,
+        pal = K.pal;
+      P.body.scale.setScalar(
+        0.8 + 0.12 * r2 + 0.14 * r3 + 0.04 * r4 + 0.06 * r5
+      );
+      P.torso.rotation.x = 0.28 * (1 - r2);
+      P.head.position.z = 0.2 * (1 - r2);
+      P.armL.rotation.z = -0.06 - 0.25 * r5;
+      P.armR.rotation.z = 0.06 + 0.25 * r5;
+      // Grey stone takes the character's own colour, then gets brighter
+      m.stone.color.copy(grey).lerp(tmp.setHex(pal.base), r2);
+      m.stone.emissive.setHex(pal.glow).multiplyScalar(r5 * 0.06);
+      m.plate.emissive.setHex(pal.glow).multiplyScalar(r5 * 0.08);
+      m.trim.emissive.setHex(pal.trim).multiplyScalar(r4 * 0.3);
+      m.crack.color.copy(crackDark).lerp(tmp.setHex(pal.glow), r2);
+      m.glow.emissiveIntensity = 0.5 + 1.8 * r2 + 1.4 * r5;
+      P.deadEye.visible = r2 < 0.5;
+      if (P.core) P.core.scale.setScalar(0.6 + 0.6 * r2 + 0.4 * r5);
+      coreLight.intensity = 0.3 + 2 * r2 + 2 * r5;
+      for (const [mesh, a, b] of K.grow)
+        mesh.scale.setScalar(Math.max(0.001, s01(l, a, b)));
+      m.seam.opacity = P.seamAlways || P.frames ? 0.1 + 0.85 * r2 : r4 * 0.95;
+      P.orbit.scale.setScalar(Math.max(0.001, r4));
+      P.crest.scale.setScalar(Math.max(0.001, s01(l, 62, 70)));
+      P.wings.forEach((w) => w.pivot.scale.setScalar(Math.max(0.001, r5)));
+      if (P.column) P.column.material.opacity = 0.18 * r5;
+      pMat.opacity = Math.max(r5, 0.35 * r4);
+      hover = (P.floats || 0) + 0.18 * r4 + 0.22 * r5;
+      rim.intensity = 1.5 * r2 + 3 * r3 + 2.5 * r5;
+      rim2.intensity = 2 * r4 + 2 * r5;
+      ringMat.opacity = 0.05 + 0.35 * r2 + 0.6 * r4;
+      shadow.scale.setScalar(1.15 - 0.35 * (hover / 0.5));
+      shadow.material.opacity = 0.55 - hover * 0.8;
+      return { r2, r5 };
+    }
+
+    // ================= input, resize, loop =================
+    let yaw = -0.4,
+      yawVel = 0,
+      dragging = false,
+      lastX = 0;
+    host.addEventListener("pointerdown", (e) => {
+      dragging = true;
+      lastX = e.clientX;
+      host.setPointerCapture(e.pointerId);
+    });
+    host.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - lastX;
+      lastX = e.clientX;
+      yaw += dx * 0.01;
+      yawVel = dx * 0.01;
+    });
+    const stop = () => (dragging = false);
+    host.addEventListener("pointerup", stop);
+    host.addEventListener("pointercancel", stop);
+    function resize() {
+      const w = host.clientWidth,
+        h = host.clientHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.position.set(0, 2.9, w < 520 ? 13.6 : 11.8);
+      camera.lookAt(0, LOOK_Y, 0);
+      camera.updateProjectionMatrix();
+    }
+    new ResizeObserver(resize).observe(host);
+    resize();
+
+    const clock = new THREE.Clock();
+    function frame() {
+      const t = clock.getElapsedTime();
+      shown += (target - shown) * 0.08;
+      const { r2, r5 } = applyLook(shown);
+      const mo = reduced ? 0 : 1,
+        live = r2 > 0.5 ? 1 : 0.15;
+      if (!dragging) {
+        yaw += yawVel;
+        yawVel *= 0.94;
+        if (Math.abs(yawVel) < 0.0005) yaw += 0.0025 * mo;
+      }
+      hero.rotation.y = yaw;
+      hero.position.y = hover + Math.sin(t * 1.6) * (0.04 + hover * 0.2) * mo;
+      P.torso.scale.y = 1 + Math.sin(t * 1.6) * 0.012 * mo;
+      P.head.rotation.y = Math.sin(t * 0.7) * 0.18 * mo;
+      P.armL.rotation.x = Math.sin(t * 1.6) * 0.08 * mo;
+      P.armR.rotation.x = -Math.sin(t * 1.6) * 0.08 * mo;
+      if (P.core) P.core.rotation.y = t * 1.4;
+      if (P.wheels) P.wheels.forEach((w) => (w.rotation.x = t * 2 * live * mo));
+      if (P.globe) P.globe.rotation.y = t * (0.2 + r2) * mo;
+      if (P.needle) P.needle.rotation.z = Math.sin(t * 1.3) * 0.8 * mo;
+      if (P.spinners)
+        P.spinners.forEach(
+          (s, i) => (s.rotation.z = t * (i ? -2 : 1.2) * live * mo)
+        );
+      if (P.springs)
+        P.springs.forEach(
+          (s, i) => (s.scale.y = 1 + Math.sin(t * 3.2 + i) * 0.15 * mo)
+        );
+      if (P.rows)
+        P.rows.forEach(
+          (row, i) => (row.visible = r2 < 0.5 ? i === 0 : (t * 2 + i) % 4 < 3.4)
+        );
+      if (P.paint) P.paint.material = r2 > 0.5 ? K.m.hot : K.m.stone;
+      if (P.frames)
+        P.frames.forEach(
+          (f, i) => (f.rotation.y = Math.sin(t * 0.8 + i) * 0.25 * mo)
+        );
+      if (P.crystal) P.crystal.rotation.y = t * 0.8 * mo;
+      P.orbit.rotation.y = t * 0.5 * mo;
+      P.tags.forEach((g, i) => {
+        const a = g.phase + t * 0.3 * mo;
+        g.m.position.set(
+          Math.cos(a) * 1.8,
+          Math.sin(a * 2 + i) * 0.35 + g.tilt,
+          Math.sin(a) * 1.8
+        );
+        g.m.lookAt(0, g.m.position.y, 0);
+        g.m.rotation.y += Math.PI;
+      });
+      P.crest.position.set(
+        0,
+        (P.headY + 0.95) * P.body.scale.y + hover + Math.sin(t * 2) * 0.08 * mo,
+        0
+      );
+      P.crest.rotation.y = t * 0.9 * mo;
+      if (P.crest.userData.spin) P.crest.userData.spin.rotation.z = t * 6 * mo;
+      P.wings.forEach(
+        (w) =>
+          (w.pivot.rotation.y = w.side * (0.45 + Math.sin(t * 1.8) * 0.18 * mo))
+      );
+      if (pMat.opacity > 0.01) {
+        const headY = (P.headY + 0.45) * P.body.scale.y + hover;
+        for (let i = 0; i < N; i++) {
+          const k = (seed[i] + t * (0.18 + seed[i] * 0.25)) % 1;
+          if (i < N * 0.3 * r5) {
+            const a = seed[i] * 50,
+              r = (0.35 - k * 0.3) * (0.6 + 0.4 * Math.sin(seed[i] * 31));
+            pos[i * 3] = Math.cos(a) * r;
+            pos[i * 3 + 1] = headY + k * 1.1;
+            pos[i * 3 + 2] = Math.sin(a) * r;
+          } else {
+            const a = seed[i] * 40 + t * 0.6,
+              r = 0.8 + 0.6 * Math.sin(seed[i] * 17) ** 2 + k * 0.3;
+            pos[i * 3] = Math.cos(a) * r;
+            pos[i * 3 + 1] = 0.1 + k * 4;
+            pos[i * 3 + 2] = Math.sin(a) * r;
+          }
+        }
+        pGeo.attributes.position.needsUpdate = true;
+      }
+      if (shown > 80) ringMat.opacity *= 0.8 + 0.2 * Math.sin(t * 3) * mo;
+      renderer.render(scene, camera);
+      requestAnimationFrame(frame);
+    }
+
+    // ================= UI =================
+    const $ = (id) => document.getElementById(id);
+    const names = (ch) => [
+      "Каменный",
+      "Пробуждённый",
+      "Бронированный",
+      ch.master,
+      "Легендарный"
+    ];
+    const stageOf = (l) => RANKS.reduce((s, from, i) => (l >= from ? i : s), 0);
+    let lastStage = 0;
+    function setLevel(l, celebrate = true) {
+      target = Math.max(0, Math.min(100, Math.round(l)));
+      $("level").value = target;
+      $("lvl").textContent = target;
+      $("bar").style.width = target + "%";
+      $("skills").textContent =
+        `${Math.round((target / 100) * C.skills)} из ${C.skills} навыков`;
+      const st = stageOf(target),
+        n = names(C);
+      $("stagePill").textContent = "Ранг: " + n[st];
+      [...$("stages").children].forEach(
+        (li, i) => (li.className = i < st ? "done" : i === st ? "now" : "")
+      );
+      if (celebrate && st > lastStage) {
+        $("toast").textContent = "Новый ранг: " + n[st];
+        $("flash").classList.add("on");
+        $("toast").classList.add("on");
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => $("flash").classList.remove("on"))
+        );
+        setTimeout(() => $("toast").classList.remove("on"), 1600);
+      }
+      lastStage = st;
+    }
+    function select(key) {
+      const ch = CHARACTERS.find((c) => c.key === key) || CHARACTERS[0];
+      assemble(ch);
+      $("name").textContent = ch.name;
+      $("role").textContent = ch.role;
+      [...$("tabs").children].forEach((b) =>
+        b.setAttribute("aria-pressed", String(b.dataset.key === ch.key))
+      );
+      const n = names(ch);
+      $("stages").innerHTML = ch.stages
+        .map(
+          (text, i) =>
+            `<li><b>${RANKS[i]}+</b><span><strong>${n[i]}.</strong> ${text}</span></li>`
+        )
+        .join("");
+      shown = target;
+      lastStage = stageOf(target);
+      setLevel(target, false);
+      if (location.hash.slice(1) !== ch.key)
+        history.replaceState(null, "", "#" + ch.key);
+    }
+    $("tabs").innerHTML = CHARACTERS.map(
+      (c) =>
+        `<button type="button" data-key="${c.key}" aria-pressed="false"><i>${c.tab}</i>${c.name}</button>`
+    ).join("");
+    $("tabs").addEventListener("click", (e) => {
+      const b = e.target.closest("button");
+      if (b) select(b.dataset.key);
+    });
+    window.addEventListener("hashchange", () => select(location.hash.slice(1)));
+    $("level").addEventListener("input", (e) => setLevel(+e.target.value));
+    $("plus").addEventListener("click", () =>
+      setLevel(target + (100 / C.skills) * 3)
+    );
+    $("reset").addEventListener("click", () => setLevel(0, false));
+    $("max").addEventListener("click", () => setLevel(100));
+    select(location.hash.slice(1) || "pc");
+    requestAnimationFrame(frame);
+  })();
+</script>

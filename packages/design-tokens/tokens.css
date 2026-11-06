@@ -169,7 +169,7 @@
   --accent-night: #f1ce83;
   --art-filter: grayscale(1) sepia(1) saturate(2);
 }
-/* Learner-facing default: one electric accent with dark text on actions. */
+/* Earlier learner-facing accent, kept for saved preferences. */
 [data-ui-accent="lime"] {
   --art-tint-strength: 0.5;
   --accent-action: #c5f23a;
@@ -181,4 +181,19 @@
   --action-danger: #fb7185;
   --action-danger-hover: #fda4af;
   --art-filter: grayscale(1) sepia(1) saturate(2.4) hue-rotate(40deg);
+}
+/* Learner-facing default (owner, 2026-11-06): ember orange on a near-black canvas,
+   dark text on actions. Palette: #ec8b2a orange, #d9441c red-orange, #8a1a12 maroon. */
+[data-ui-accent="ember"] {
+  --art-tint-strength: 0.6;
+  --accent-action: #f26a21;
+  --accent-hover: #ff8a3d;
+  --accent-day: #b23c0e;
+  --accent-night: #ffa15c;
+  --text-on-action: #160701;
+  --page-glow: color-mix(in srgb, #d9441c 14%, transparent);
+  /* Dark action labels need a lighter danger fill to stay readable. */
+  --action-danger: #fb7185;
+  --action-danger-hover: #fda4af;
+  --art-filter: grayscale(1) sepia(1) saturate(3) hue-rotate(-12deg);
 }

@@ -13,7 +13,7 @@ export function StudioShell({ children }: { children: ReactNode }) {
       className={`${site.scope} ${styles.shell}`}
       data-learner-scope=""
       data-ui-theme="dark"
-      data-ui-accent="lime"
+      data-ui-accent="ember"
     >
       <a className={site.skip} href="#studio-main">
         Перейти к содержимому
