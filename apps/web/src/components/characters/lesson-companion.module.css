@@ -1,0 +1,41 @@
+/* The course's character beside a lesson, in the character's own colours. */
+.companion {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--surface-elevated);
+}
+
+.head {
+  display: grid;
+  gap: 2px;
+}
+
+.title {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.title a {
+  color: var(--stage-glow, var(--text-accent));
+}
+
+.rank {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.meter {
+  width: 100%;
+  height: 8px;
+  accent-color: var(--stage-glow, var(--action-primary));
+}
+
+.note {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}

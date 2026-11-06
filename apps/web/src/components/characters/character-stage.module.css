@@ -56,6 +56,12 @@
   touch-action: pan-y;
 }
 
+.compact {
+  composes: stage;
+  height: 15rem;
+  min-height: 0;
+}
+
 .stage:active {
   cursor: grabbing;
 }

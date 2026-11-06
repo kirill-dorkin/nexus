@@ -13,6 +13,8 @@ import { characterDef } from "./roster";
 export type Stage = {
   show(slug: string): boolean;
   setLevel(level: number): void;
+  /** A short burst of joy: a hop, a spin and sparks (a confirmed skill). */
+  celebrate(): void;
   dispose(): void;
 };
 
@@ -108,6 +110,9 @@ export function createStage(host: HTMLElement, reducedMotion: boolean): Stage {
     dragging = false,
     lastX = 0;
   const motion = reducedMotion ? 0 : 1;
+  /** Clock time until which the character celebrates. */
+  let partyUntil = 0;
+  const PARTY = 1.6;
 
   function show(slug: string) {
     const def = characterDef(slug);
@@ -203,9 +208,16 @@ export function createStage(host: HTMLElement, reducedMotion: boolean): Stage {
       spin *= 0.94;
       if (Math.abs(spin) < 0.0005) yaw += 0.0025 * motion;
     }
+    const party = Math.max(0, (partyUntil - t) / PARTY);
+    if (party > 0) {
+      figure.root.position.y +=
+        Math.abs(Math.sin(t * 9)) * 0.45 * party * motion;
+      yaw += 0.18 * party * motion;
+    }
     figure.root.rotation.y = yaw;
-    sparkMat.opacity = Math.max(glow.r5, 0.35 * glow.r4);
-    if (sparkMat.opacity > 0.01) sparks(t, glow.r5, glow.hover);
+    sparkMat.opacity = Math.max(glow.r5, 0.35 * glow.r4, party);
+    if (sparkMat.opacity > 0.01)
+      sparks(t, Math.max(glow.r5, party), glow.hover);
     coreLight.intensity = 0.3 + 2 * glow.r2 + 2 * glow.r5;
     rim.intensity = 1.5 * glow.r2 + 3 * glow.r3 + 2.5 * glow.r5;
     rim2.intensity = 2 * glow.r4 + 2 * glow.r5;
@@ -227,6 +239,10 @@ export function createStage(host: HTMLElement, reducedMotion: boolean): Stage {
       const ok = show(slug);
       wake();
       return ok;
+    },
+    celebrate() {
+      partyUntil = clock.getElapsedTime() + PARTY;
+      wake();
     },
     setLevel(level) {
       target = Math.max(0, Math.min(100, level));

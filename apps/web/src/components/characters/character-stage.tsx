@@ -43,11 +43,14 @@ const reducedMotion = () =>
  */
 export function CharacterStage({
   slug,
-  level
+  level,
+  compact = false
 }: {
   slug: string;
   /** 0–100. */
   level: number;
+  /** A small stage without the rank preview, beside a lesson. */
+  compact?: boolean;
 }) {
   const host = useRef<HTMLDivElement>(null);
   const stage = useRef<Stage | null>(null);
@@ -80,19 +83,28 @@ export function CharacterStage({
     if (ready) stage.current?.setLevel(shownLevel);
   }, [ready, shownLevel]);
 
+  // The learner's own level went up (a confirmed skill): the character celebrates.
+  const lastLevel = useRef<number | null>(null);
+  useEffect(() => {
+    if (!ready) return;
+    const before = lastLevel.current;
+    lastLevel.current = level;
+    if (before !== null && level > before) stage.current?.celebrate();
+  }, [ready, level]);
+
   if (!enabled) return null;
   const own = rankIndex(level);
   return (
     <div className={styles.wrap} style={stageColours(slug)}>
       <div
         ref={host}
-        className={styles.stage}
+        className={compact ? styles.compact : styles.stage}
         data-ready={ready || undefined}
         aria-hidden="true"
       >
         <span className={styles.hint}>Потяните, чтобы повернуть</span>
       </div>
-      {ready && (
+      {ready && !compact && (
         <div
           className={styles.ranks}
           role="group"
