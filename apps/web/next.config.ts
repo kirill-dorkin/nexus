@@ -94,6 +94,9 @@ function securityHeaders(
   ];
 }
 
+/** PostHog project key (EU cloud, project 338129). Public by design: it can only send events. */
+const POSTHOG_PROJECT_KEY = "phc_uqy8VeUZzduBcKf9D3csPNFrVFDbjKfvxrZsMGJWMEHk";
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   agentRules: false,
@@ -101,7 +104,13 @@ const nextConfig: NextConfig = {
   env: {
     // Client telemetry names the deployed build (ADR-0067), never the visitor.
     NEXT_PUBLIC_RELEASE:
-      process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 12) ?? "local"
+      process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 12) ?? "local",
+    // Product analytics (ADR-0086) runs only in the production build: previews, CI and local
+    // runs never show the consent banner or send events. The project key is public by design.
+    NEXT_PUBLIC_POSTHOG_KEY:
+      process.env.VERCEL_ENV === "production"
+        ? (process.env.NEXT_PUBLIC_POSTHOG_KEY ?? POSTHOG_PROJECT_KEY)
+        : ""
   },
   headers() {
     return Promise.resolve([
