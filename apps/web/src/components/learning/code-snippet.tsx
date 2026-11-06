@@ -41,6 +41,9 @@ const LANGUAGE_NAMES: Record<string, string> = {
   json: "JSON",
   sql: "SQL",
   http: "HTTP",
+  dockerfile: "Dockerfile",
+  yaml: "YAML",
+  yml: "YAML",
   shell: "Терминал",
   bash: "Терминал",
   text: "Текст"

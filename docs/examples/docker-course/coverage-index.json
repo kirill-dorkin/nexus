@@ -1,0 +1,202 @@
+{
+  "note": "Every item is taught by its own concept card; the contracts test keeps the index and the cards in sync.",
+  "source": "Course design by chapter (branches of the character).",
+  "topics": {
+    "why": {
+      "title": "Зачем контейнеры",
+      "items": [
+        "«У меня работает»",
+        "Контейнер",
+        "Образ",
+        "Где используют",
+        "Виртуальная машина",
+        "Контейнер изнутри",
+        "Docker на macOS и Windows",
+        "Изоляция",
+        "Docker Desktop и Engine",
+        "docker version",
+        "hello-world",
+        "Права на Linux"
+      ]
+    },
+    "images": {
+      "title": "Образы и контейнеры",
+      "items": [
+        "docker run",
+        "-it",
+        "-d и --name",
+        "--rm",
+        "Что происходит",
+        "Слои",
+        "Слой записи",
+        "docker images",
+        "docker history",
+        "Реестр",
+        "docker pull",
+        "Имя и тег",
+        "Почему не latest",
+        "Slim и alpine"
+      ]
+    },
+    "lifecycle": {
+      "title": "Жизнь контейнера",
+      "items": [
+        "docker ps",
+        "stop и start",
+        "docker rm",
+        "Состояния",
+        "--restart",
+        "docker logs",
+        "Логи в stdout",
+        "docker exec",
+        "docker cp",
+        "-p",
+        "localhost в контейнере",
+        "-e",
+        "--env-file"
+      ]
+    },
+    "dockerfile": {
+      "title": "Dockerfile",
+      "items": [
+        "Dockerfile",
+        "FROM и WORKDIR",
+        "COPY и RUN",
+        "docker build",
+        "EXPOSE",
+        "Контекст сборки",
+        ".dockerignore",
+        "Секреты в образе",
+        "Ошибка COPY",
+        "CMD",
+        "ENTRYPOINT",
+        "Exec-форма",
+        "PID 1"
+      ]
+    },
+    "build": {
+      "title": "Хорошие образы",
+      "items": [
+        "Кэш слоёв",
+        "Зависимости до кода",
+        "Объединять RUN",
+        "--no-cache",
+        "Несколько FROM",
+        "Что выигрываем",
+        "Go и distroless",
+        "--target",
+        "USER",
+        "Базовый образ",
+        "docker scout",
+        "Фиксация версий"
+      ]
+    },
+    "data": {
+      "title": "Данные и тома",
+      "items": [
+        "Проблема данных",
+        "Именованный том",
+        "docker volume",
+        "--mount",
+        "Bind mount",
+        "Том или папка",
+        ":ro",
+        "Права файлов",
+        "tmpfs",
+        "Дамп базы",
+        "Архив тома",
+        "Восстановление",
+        "3-2-1"
+      ]
+    },
+    "network": {
+      "title": "Сети контейнеров",
+      "items": [
+        "bridge",
+        "docker network create",
+        "network connect",
+        "network ls и inspect",
+        "Встроенный DNS",
+        "Строка подключения",
+        "Ловушка localhost",
+        "host.docker.internal",
+        "Минимум наружу",
+        "127.0.0.1:5432:5432",
+        "Docker и файрвол",
+        "--network host и none",
+        "Обратный прокси"
+      ]
+    },
+    "compose": {
+      "title": "Docker Compose",
+      "items": [
+        "compose.yaml",
+        "docker compose up",
+        "docker compose down",
+        "Сеть проекта",
+        "depends_on",
+        "restart",
+        "profiles",
+        "Несколько файлов",
+        "Код в контейнере",
+        "Анонимный том для зависимостей",
+        "compose watch",
+        "logs, exec, run"
+      ]
+    },
+    "config": {
+      "title": "Настройки и здоровье",
+      "items": [
+        "Настройки снаружи",
+        "Подстановка",
+        "ARG и ENV",
+        "Не в ENV",
+        "Где утекают секреты",
+        "secrets в Compose",
+        "Секрет при сборке",
+        ".gitignore",
+        "HEALTHCHECK",
+        "Эндпоинт /health",
+        "Лимиты",
+        "OOM",
+        "docker stats"
+      ]
+    },
+    "debug": {
+      "title": "Отладка и обслуживание",
+      "items": [
+        "docker inspect",
+        "--format",
+        "docker events",
+        "top, diff, port",
+        "Сразу завершился",
+        "Перезапуск по кругу",
+        "Порт занят",
+        "Нет места",
+        "Медленно на Mac",
+        "docker system df",
+        "prune по частям",
+        "docker system prune",
+        "Безопасный порядок"
+      ]
+    },
+    "practice": {
+      "title": "Docker на практике",
+      "items": [
+        "docker login",
+        "tag и push",
+        "Схема тегов",
+        "Многоплатформенные образы",
+        "Конвейер",
+        "GitHub Actions",
+        "Кэш в CI",
+        "Сервисы для тестов",
+        "Compose на сервере",
+        "Обновление без простоя",
+        "Логи и мониторинг",
+        "Kubernetes",
+        "Управляемые платформы"
+      ]
+    }
+  }
+}

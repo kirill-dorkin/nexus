@@ -1,0 +1,4561 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "docker",
+    "title": "Docker: приложения в контейнерах",
+    "description": "Docker с нуля до своих образов и многосервисных проектов. Зачем контейнеры и чем они отличаются от виртуальных машин, образы и слои, жизнь контейнера, Dockerfile, кэш сборки и многоэтапные образы, тома и данные, сети контейнеров, Docker Compose, настройки, секреты и проверки здоровья, отладка и обслуживание, реестры и Docker в CI. Каждое понятие объясняется карточкой с примером, каждый урок закрепляется вопросами."
+  },
+  "skills": [
+    {
+      "key": "dk-why",
+      "title": "Зачем контейнеры",
+      "description": "Объяснять, какую проблему решают контейнеры."
+    },
+    {
+      "key": "dk-vm",
+      "title": "Контейнеры и ВМ",
+      "description": "Отличать контейнер от виртуальной машины."
+    },
+    {
+      "key": "dk-install",
+      "title": "Установка Docker",
+      "description": "Устанавливать Docker и проверять, что он работает."
+    },
+    {
+      "key": "dk-run",
+      "title": "Запуск контейнеров",
+      "description": "Запускать контейнеры командой docker run с нужными флагами."
+    },
+    {
+      "key": "dk-layers",
+      "title": "Слои образа",
+      "description": "Понимать, как образ устроен из слоёв."
+    },
+    {
+      "key": "dk-tags",
+      "title": "Реестры и теги",
+      "description": "Скачивать образы из реестров и выбирать правильный тег."
+    },
+    {
+      "key": "dk-ps",
+      "title": "Управление контейнерами",
+      "description": "Смотреть, останавливать, запускать и удалять контейнеры."
+    },
+    {
+      "key": "dk-logs",
+      "title": "Логи и exec",
+      "description": "Читать логи контейнера и выполнять в нём команды."
+    },
+    {
+      "key": "dk-ports",
+      "title": "Порты и окружение",
+      "description": "Публиковать порты и передавать настройки через переменные окружения."
+    },
+    {
+      "key": "dk-dockerfile",
+      "title": "Dockerfile",
+      "description": "Описывать образ приложения в Dockerfile."
+    },
+    {
+      "key": "dk-context",
+      "title": "Контекст сборки",
+      "description": "Управлять контекстом сборки через .dockerignore."
+    },
+    {
+      "key": "dk-cmd",
+      "title": "CMD и ENTRYPOINT",
+      "description": "Задавать команду запуска контейнера правильно."
+    },
+    {
+      "key": "dk-cache",
+      "title": "Кэш сборки",
+      "description": "Ускорять сборку правильным порядком инструкций."
+    },
+    {
+      "key": "dk-multistage",
+      "title": "Многоэтапная сборка",
+      "description": "Собирать компактные образы многоэтапной сборкой."
+    },
+    {
+      "key": "dk-secure",
+      "title": "Безопасность образов",
+      "description": "Делать образы маленькими и безопасными."
+    },
+    {
+      "key": "dk-volumes",
+      "title": "Тома",
+      "description": "Хранить данные контейнеров в томах."
+    },
+    {
+      "key": "dk-bind",
+      "title": "Привязка папок",
+      "description": "Подключать папки хоста к контейнеру для разработки."
+    },
+    {
+      "key": "dk-backup",
+      "title": "Резервные копии",
+      "description": "Делать и восстанавливать резервные копии данных контейнеров."
+    },
+    {
+      "key": "dk-networks",
+      "title": "Сети Docker",
+      "description": "Создавать сети и подключать к ним контейнеры."
+    },
+    {
+      "key": "dk-dns",
+      "title": "DNS контейнеров",
+      "description": "Подключать сервисы друг к другу по именам."
+    },
+    {
+      "key": "dk-publish",
+      "title": "Публикация портов",
+      "description": "Открывать наружу только нужные порты."
+    },
+    {
+      "key": "dk-compose",
+      "title": "Docker Compose",
+      "description": "Описывать многоконтейнерное приложение в compose-файле."
+    },
+    {
+      "key": "dk-services",
+      "title": "Сервисы Compose",
+      "description": "Настраивать порядок запуска, перезапуск и профили сервисов."
+    },
+    {
+      "key": "dk-composedev",
+      "title": "Разработка с Compose",
+      "description": "Вести повседневную разработку через Compose."
+    },
+    {
+      "key": "dk-env",
+      "title": "Настройки окружения",
+      "description": "Настраивать приложения в контейнерах через переменные окружения."
+    },
+    {
+      "key": "dk-secrets",
+      "title": "Секреты",
+      "description": "Передавать пароли и ключи в контейнеры безопасно."
+    },
+    {
+      "key": "dk-health",
+      "title": "Здоровье и ресурсы",
+      "description": "Настраивать проверки здоровья и лимиты ресурсов."
+    },
+    {
+      "key": "dk-inspect",
+      "title": "Диагностика",
+      "description": "Получать подробности о контейнерах и событиях Docker."
+    },
+    {
+      "key": "dk-troubleshoot",
+      "title": "Типичные поломки",
+      "description": "Находить причины типичных проблем с контейнерами."
+    },
+    {
+      "key": "dk-cleanup",
+      "title": "Уборка Docker",
+      "description": "Освобождать место, не теряя нужных данных."
+    },
+    {
+      "key": "dk-push",
+      "title": "Публикация образов",
+      "description": "Тегировать и публиковать образы в реестр."
+    },
+    {
+      "key": "dk-ci",
+      "title": "Docker в CI",
+      "description": "Собирать, проверять и публиковать образы в CI."
+    },
+    {
+      "key": "dk-deploy",
+      "title": "Запуск на сервере",
+      "description": "Запускать контейнеры на сервере и понимать следующие шаги."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "wc-problem",
+      "type": "quiz.single_choice",
+      "title": "Проблема",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-why"
+      ],
+      "presentation": {
+        "question": "Какую главную проблему решают контейнеры?",
+        "options": [
+          {
+            "id": "env",
+            "text": "Разное окружение на разных машинах"
+          },
+          {
+            "id": "speed",
+            "text": "Медленный процессор"
+          },
+          {
+            "id": "design",
+            "text": "Некрасивый интерфейс"
+          },
+          {
+            "id": "internet",
+            "text": "Отсутствие интернета"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "env",
+        "explanation": "Контейнер несёт окружение с собой."
+      }
+    },
+    {
+      "slug": "wc-image",
+      "type": "quiz.single_choice",
+      "title": "Образ и контейнер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-why"
+      ],
+      "presentation": {
+        "question": "Как связаны образ и контейнер?",
+        "options": [
+          {
+            "id": "template",
+            "text": "Образ — шаблон, контейнер — запущенный экземпляр"
+          },
+          {
+            "id": "same",
+            "text": "Это одно и то же"
+          },
+          {
+            "id": "reverse",
+            "text": "Контейнер — шаблон образа"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "template",
+        "explanation": "Из одного образа — много контейнеров."
+      }
+    },
+    {
+      "slug": "wc-where",
+      "type": "quiz.multiple_choice",
+      "title": "Применение",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "dk-why"
+      ],
+      "presentation": {
+        "question": "Где обычно используют контейнеры?",
+        "options": [
+          {
+            "id": "dev",
+            "text": "Локальная разработка"
+          },
+          {
+            "id": "ci",
+            "text": "Проверки в CI"
+          },
+          {
+            "id": "prod",
+            "text": "Развёртывание на серверах"
+          },
+          {
+            "id": "print",
+            "text": "Печать документов на принтере"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "dev",
+          "ci",
+          "prod"
+        ],
+        "explanation": "Принтеру контейнеры не нужны."
+      }
+    },
+    {
+      "slug": "cv-kernel",
+      "type": "quiz.single_choice",
+      "title": "Ядро",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-vm"
+      ],
+      "presentation": {
+        "question": "Чем контейнер принципиально отличается от ВМ?",
+        "options": [
+          {
+            "id": "kernel",
+            "text": "Использует ядро хоста, а не своё"
+          },
+          {
+            "id": "gui",
+            "text": "У контейнера есть окна"
+          },
+          {
+            "id": "disk",
+            "text": "Контейнер всегда больше"
+          },
+          {
+            "id": "net",
+            "text": "У контейнера нет сети"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "kernel",
+        "explanation": "Поэтому он лёгкий и быстрый."
+      }
+    },
+    {
+      "slug": "cv-cgroups",
+      "type": "quiz.single_choice",
+      "title": "Ограничения",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-vm"
+      ],
+      "presentation": {
+        "question": "Что в Linux ограничивает память и процессор контейнера?",
+        "options": [
+          {
+            "id": "cgroups",
+            "text": "cgroups"
+          },
+          {
+            "id": "dns",
+            "text": "DNS"
+          },
+          {
+            "id": "ssh",
+            "text": "SSH"
+          },
+          {
+            "id": "cron",
+            "text": "cron"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cgroups",
+        "explanation": "namespaces отвечают за видимость."
+      }
+    },
+    {
+      "slug": "cv-mac",
+      "type": "quiz.single_choice",
+      "title": "macOS",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-vm"
+      ],
+      "presentation": {
+        "question": "Как Docker Desktop запускает Linux-контейнеры на Mac?",
+        "options": [
+          {
+            "id": "vm",
+            "text": "Внутри небольшой Linux-ВМ"
+          },
+          {
+            "id": "native",
+            "text": "Прямо на ядре macOS"
+          },
+          {
+            "id": "cloud",
+            "text": "В облаке"
+          },
+          {
+            "id": "browser",
+            "text": "В браузере"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "vm",
+        "explanation": "Контейнерам нужно ядро Linux."
+      }
+    },
+    {
+      "slug": "id-daemon",
+      "type": "quiz.single_choice",
+      "title": "Демон",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-install"
+      ],
+      "presentation": {
+        "question": "Кто на самом деле запускает контейнеры?",
+        "options": [
+          {
+            "id": "daemon",
+            "text": "Демон dockerd"
+          },
+          {
+            "id": "client",
+            "text": "Команда docker сама"
+          },
+          {
+            "id": "browser",
+            "text": "Браузер"
+          },
+          {
+            "id": "kernel",
+            "text": "BIOS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "daemon",
+        "explanation": "Клиент только отправляет запросы."
+      }
+    },
+    {
+      "slug": "id-error",
+      "type": "quiz.single_choice",
+      "title": "Ошибка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-install"
+      ],
+      "presentation": {
+        "question": "Что значит «Cannot connect to the Docker daemon»?",
+        "options": [
+          {
+            "id": "down",
+            "text": "Демон Docker не запущен или недоступен"
+          },
+          {
+            "id": "net",
+            "text": "Нет интернета"
+          },
+          {
+            "id": "image",
+            "text": "Образ не найден"
+          },
+          {
+            "id": "disk",
+            "text": "Диск полон"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "down",
+        "explanation": "Запусти Docker Desktop или службу docker."
+      }
+    },
+    {
+      "slug": "id-hello",
+      "type": "quiz.short_text",
+      "title": "Проверка",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "dk-install"
+      ],
+      "presentation": {
+        "question": "Как называется образ для проверки установки Docker?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "hello-world"
+        ],
+        "caseSensitive": false,
+        "explanation": "docker run hello-world."
+      }
+    },
+    {
+      "slug": "dr-it",
+      "type": "quiz.single_choice",
+      "title": "Оболочка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-run"
+      ],
+      "presentation": {
+        "question": "Как запустить bash внутри контейнера ubuntu интерактивно?",
+        "options": [
+          {
+            "id": "it",
+            "text": "`docker run -it ubuntu bash`"
+          },
+          {
+            "id": "d",
+            "text": "`docker run -d ubuntu bash`"
+          },
+          {
+            "id": "rm",
+            "text": "`docker run --rm ubuntu`"
+          },
+          {
+            "id": "exec",
+            "text": "`docker bash ubuntu`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "it",
+        "explanation": "-i и -t вместе."
+      }
+    },
+    {
+      "slug": "dr-life",
+      "type": "quiz.single_choice",
+      "title": "Жизнь",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-run"
+      ],
+      "presentation": {
+        "question": "Когда контейнер останавливается?",
+        "options": [
+          {
+            "id": "proc",
+            "text": "Когда завершается его главный процесс"
+          },
+          {
+            "id": "hour",
+            "text": "Через час"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "close",
+            "text": "Когда закрыт терминал Docker Desktop"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "proc",
+        "explanation": "Главный процесс — это и есть контейнер."
+      }
+    },
+    {
+      "slug": "dr-rm",
+      "type": "quiz.single_choice",
+      "title": "--rm",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-run"
+      ],
+      "presentation": {
+        "question": "Что делает флаг --rm?",
+        "options": [
+          {
+            "id": "auto",
+            "text": "Удаляет контейнер после завершения"
+          },
+          {
+            "id": "image",
+            "text": "Удаляет образ"
+          },
+          {
+            "id": "root",
+            "text": "Запускает без root"
+          },
+          {
+            "id": "restart",
+            "text": "Перезапускает при сбое"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "auto",
+        "explanation": "Образ при этом остаётся."
+      }
+    },
+    {
+      "slug": "il-share",
+      "type": "quiz.single_choice",
+      "title": "Общие слои",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-layers"
+      ],
+      "presentation": {
+        "question": "Два образа основаны на одном python:3.13. Сколько раз скачается базовый слой?",
+        "options": [
+          {
+            "id": "once",
+            "text": "Один раз"
+          },
+          {
+            "id": "twice",
+            "text": "Дважды"
+          },
+          {
+            "id": "each",
+            "text": "Для каждого контейнера"
+          },
+          {
+            "id": "never",
+            "text": "Ни разу"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "once",
+        "explanation": "Одинаковые слои общие."
+      }
+    },
+    {
+      "slug": "il-lost",
+      "type": "quiz.single_choice",
+      "title": "Изменения",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-layers"
+      ],
+      "presentation": {
+        "question": "Что будет с файлом, созданным внутри контейнера, после docker rm?",
+        "options": [
+          {
+            "id": "gone",
+            "text": "Исчезнет вместе со слоем записи"
+          },
+          {
+            "id": "image",
+            "text": "Попадёт в образ"
+          },
+          {
+            "id": "host",
+            "text": "Окажется на хосте"
+          },
+          {
+            "id": "kept",
+            "text": "Сохранится навсегда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "gone",
+        "explanation": "Для данных нужны тома."
+      }
+    },
+    {
+      "slug": "il-history",
+      "type": "quiz.single_choice",
+      "title": "Слои",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-layers"
+      ],
+      "presentation": {
+        "question": "Какая команда покажет слои образа и их размер?",
+        "options": [
+          {
+            "id": "history",
+            "text": "`docker history образ`"
+          },
+          {
+            "id": "ps",
+            "text": "`docker ps`"
+          },
+          {
+            "id": "logs",
+            "text": "`docker logs`"
+          },
+          {
+            "id": "top",
+            "text": "`docker top`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "history",
+        "explanation": "Удобно искать «тяжёлые» шаги."
+      }
+    },
+    {
+      "slug": "rt-default",
+      "type": "quiz.single_choice",
+      "title": "Без тега",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-tags"
+      ],
+      "presentation": {
+        "question": "Какой тег используется, если его не указать?",
+        "options": [
+          {
+            "id": "latest",
+            "text": "latest"
+          },
+          {
+            "id": "stable",
+            "text": "stable"
+          },
+          {
+            "id": "v1",
+            "text": "1.0"
+          },
+          {
+            "id": "none",
+            "text": "Никакой — ошибка"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "latest",
+        "explanation": "И это может быть неожиданная версия."
+      }
+    },
+    {
+      "slug": "rt-pin",
+      "type": "quiz.single_choice",
+      "title": "Версия",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-tags"
+      ],
+      "presentation": {
+        "question": "Почему в проекте лучше писать postgres:17, а не postgres?",
+        "options": [
+          {
+            "id": "pin",
+            "text": "Чтобы версия не сменилась без спроса"
+          },
+          {
+            "id": "short",
+            "text": "Так короче"
+          },
+          {
+            "id": "faster",
+            "text": "Так быстрее работает"
+          },
+          {
+            "id": "required",
+            "text": "Без тега не скачается"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pin",
+        "explanation": "latest плавает."
+      }
+    },
+    {
+      "slug": "rt-hub",
+      "type": "quiz.single_choice",
+      "title": "Реестр",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-tags"
+      ],
+      "presentation": {
+        "question": "Откуда Docker по умолчанию скачивает образы?",
+        "options": [
+          {
+            "id": "hub",
+            "text": "Из Docker Hub"
+          },
+          {
+            "id": "github",
+            "text": "Из GitHub"
+          },
+          {
+            "id": "npm",
+            "text": "Из npm"
+          },
+          {
+            "id": "pypi",
+            "text": "Из PyPI"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hub",
+        "explanation": "Другие реестры указывают в имени."
+      }
+    },
+    {
+      "slug": "ps-all",
+      "type": "quiz.single_choice",
+      "title": "Все контейнеры",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-ps"
+      ],
+      "presentation": {
+        "question": "Как увидеть и остановленные контейнеры?",
+        "options": [
+          {
+            "id": "a",
+            "text": "`docker ps -a`"
+          },
+          {
+            "id": "ps",
+            "text": "`docker ps`"
+          },
+          {
+            "id": "ls",
+            "text": "`docker ls`"
+          },
+          {
+            "id": "images",
+            "text": "`docker images`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "a",
+        "explanation": "Без -a — только работающие."
+      }
+    },
+    {
+      "slug": "ps-137",
+      "type": "quiz.single_choice",
+      "title": "Код 137",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-ps"
+      ],
+      "presentation": {
+        "question": "Контейнер завершился с кодом 137. Что вероятнее всего случилось?",
+        "options": [
+          {
+            "id": "kill",
+            "text": "Его убили SIGKILL, часто из-за нехватки памяти"
+          },
+          {
+            "id": "ok",
+            "text": "Всё прошло успешно"
+          },
+          {
+            "id": "net",
+            "text": "Пропала сеть"
+          },
+          {
+            "id": "tag",
+            "text": "Неверный тег"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "kill",
+        "explanation": "128 + 9 = 137."
+      }
+    },
+    {
+      "slug": "ps-restart",
+      "type": "quiz.single_choice",
+      "title": "Перезапуск",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-ps"
+      ],
+      "presentation": {
+        "question": "Какая политика поднимет контейнер после перезагрузки сервера?",
+        "options": [
+          {
+            "id": "unless",
+            "text": "`--restart unless-stopped`"
+          },
+          {
+            "id": "rm",
+            "text": "`--rm`"
+          },
+          {
+            "id": "d",
+            "text": "`-d`"
+          },
+          {
+            "id": "it",
+            "text": "`-it`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "unless",
+        "explanation": "Пока его не остановили вручную."
+      }
+    },
+    {
+      "slug": "le-follow",
+      "type": "quiz.single_choice",
+      "title": "Следить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-logs"
+      ],
+      "presentation": {
+        "question": "Как смотреть логи контейнера web в реальном времени?",
+        "options": [
+          {
+            "id": "f",
+            "text": "`docker logs -f web`"
+          },
+          {
+            "id": "tail",
+            "text": "`tail web`"
+          },
+          {
+            "id": "exec",
+            "text": "`docker exec web logs`"
+          },
+          {
+            "id": "ps",
+            "text": "`docker ps web`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "f",
+        "explanation": "-f — follow."
+      }
+    },
+    {
+      "slug": "le-exec",
+      "type": "quiz.single_choice",
+      "title": "Оболочка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-logs"
+      ],
+      "presentation": {
+        "question": "Как открыть оболочку в уже работающем контейнере web?",
+        "options": [
+          {
+            "id": "exec",
+            "text": "`docker exec -it web sh`"
+          },
+          {
+            "id": "run",
+            "text": "`docker run -it web sh`"
+          },
+          {
+            "id": "attach",
+            "text": "`docker open web`"
+          },
+          {
+            "id": "ssh",
+            "text": "`ssh web`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "exec",
+        "explanation": "run создал бы новый контейнер."
+      }
+    },
+    {
+      "slug": "le-stdout",
+      "type": "quiz.single_choice",
+      "title": "Куда писать логи",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-logs"
+      ],
+      "presentation": {
+        "question": "Куда приложению в контейнере лучше писать логи?",
+        "options": [
+          {
+            "id": "stdout",
+            "text": "В stdout и stderr"
+          },
+          {
+            "id": "file",
+            "text": "В файл внутри контейнера"
+          },
+          {
+            "id": "mail",
+            "text": "На почту"
+          },
+          {
+            "id": "none",
+            "text": "Никуда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "stdout",
+        "explanation": "Их увидит docker logs."
+      }
+    },
+    {
+      "slug": "pe-order",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-ports"
+      ],
+      "presentation": {
+        "question": "Что значит `-p 3000:8080`?",
+        "options": [
+          {
+            "id": "host",
+            "text": "Порт 3000 на хосте ведёт на 8080 в контейнере"
+          },
+          {
+            "id": "cont",
+            "text": "Порт 3000 в контейнере ведёт на 8080 на хосте"
+          },
+          {
+            "id": "range",
+            "text": "Открыты порты с 3000 по 8080"
+          },
+          {
+            "id": "both",
+            "text": "Оба порта на хосте"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "host",
+        "explanation": "Слева — хост."
+      }
+    },
+    {
+      "slug": "pe-listen",
+      "type": "quiz.single_choice",
+      "title": "Нет ответа",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-ports"
+      ],
+      "presentation": {
+        "question": "Приложение в контейнере слушает 127.0.0.1:3000, порт опубликован, но снаружи не отвечает. Почему?",
+        "options": [
+          {
+            "id": "bind",
+            "text": "Нужно слушать 0.0.0.0, а не localhost контейнера"
+          },
+          {
+            "id": "port",
+            "text": "Порт 3000 запрещён"
+          },
+          {
+            "id": "image",
+            "text": "Неверный образ"
+          },
+          {
+            "id": "dns",
+            "text": "Ошибка DNS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bind",
+        "explanation": "localhost контейнера — это сам контейнер."
+      }
+    },
+    {
+      "slug": "pe-env",
+      "type": "quiz.single_choice",
+      "title": "Настройка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-ports"
+      ],
+      "presentation": {
+        "question": "Как передать контейнеру переменную окружения MODE=dev?",
+        "options": [
+          {
+            "id": "e",
+            "text": "`-e MODE=dev`"
+          },
+          {
+            "id": "p",
+            "text": "`-p MODE=dev`"
+          },
+          {
+            "id": "v",
+            "text": "`-v MODE=dev`"
+          },
+          {
+            "id": "set",
+            "text": "`--set MODE dev`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "e",
+        "explanation": "Или списком через --env-file."
+      }
+    },
+    {
+      "slug": "db-from",
+      "type": "quiz.single_choice",
+      "title": "Основа",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-dockerfile"
+      ],
+      "presentation": {
+        "question": "Какая инструкция задаёт базовый образ?",
+        "options": [
+          {
+            "id": "from",
+            "text": "FROM"
+          },
+          {
+            "id": "base",
+            "text": "BASE"
+          },
+          {
+            "id": "image",
+            "text": "IMAGE"
+          },
+          {
+            "id": "run",
+            "text": "RUN"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "from",
+        "explanation": "Это первая инструкция Dockerfile."
+      }
+    },
+    {
+      "slug": "db-run",
+      "type": "quiz.single_choice",
+      "title": "Когда выполняется",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-dockerfile"
+      ],
+      "presentation": {
+        "question": "Когда выполняется команда из инструкции RUN?",
+        "options": [
+          {
+            "id": "build",
+            "text": "При сборке образа"
+          },
+          {
+            "id": "start",
+            "text": "При каждом запуске контейнера"
+          },
+          {
+            "id": "stop",
+            "text": "При остановке"
+          },
+          {
+            "id": "pull",
+            "text": "При скачивании"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "build",
+        "explanation": "При запуске — CMD."
+      }
+    },
+    {
+      "slug": "db-expose",
+      "type": "quiz.single_choice",
+      "title": "EXPOSE",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-dockerfile"
+      ],
+      "presentation": {
+        "question": "Публикует ли EXPOSE 8000 порт на хосте?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, это документация; публикует -p"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "random",
+            "text": "Публикует на случайный порт"
+          },
+          {
+            "id": "udp",
+            "text": "Только UDP"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Порт публикуют при запуске."
+      }
+    },
+    {
+      "slug": "bc-dot",
+      "type": "quiz.single_choice",
+      "title": "Точка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-context"
+      ],
+      "presentation": {
+        "question": "Что значит точка в `docker build -t app .`?",
+        "options": [
+          {
+            "id": "context",
+            "text": "Текущая папка — контекст сборки"
+          },
+          {
+            "id": "tag",
+            "text": "Тег по умолчанию"
+          },
+          {
+            "id": "root",
+            "text": "Корень диска"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "context",
+        "explanation": "Её содержимое уходит сборщику."
+      }
+    },
+    {
+      "slug": "bc-secret",
+      "type": "quiz.single_choice",
+      "title": "Секрет",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-context"
+      ],
+      "presentation": {
+        "question": "Ключ скопировали в образ, а следующей командой RUN удалили. Он в безопасности?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, он остался в предыдущем слое"
+          },
+          {
+            "id": "yes",
+            "text": "Да, файл удалён"
+          },
+          {
+            "id": "half",
+            "text": "Только в alpine"
+          },
+          {
+            "id": "hidden",
+            "text": "Да, слои скрыты"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Слои неизменяемы."
+      }
+    },
+    {
+      "slug": "bc-ignore",
+      "type": "quiz.multiple_choice",
+      "title": ".dockerignore",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "dk-context"
+      ],
+      "presentation": {
+        "question": "Что обычно добавляют в .dockerignore?",
+        "options": [
+          {
+            "id": "nm",
+            "text": "node_modules"
+          },
+          {
+            "id": "git",
+            "text": ".git"
+          },
+          {
+            "id": "env",
+            "text": ".env"
+          },
+          {
+            "id": "src",
+            "text": "Исходный код приложения"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "nm",
+          "git",
+          "env"
+        ],
+        "explanation": "Код как раз нужен в образе."
+      }
+    },
+    {
+      "slug": "ce-override",
+      "type": "quiz.single_choice",
+      "title": "Замена",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-cmd"
+      ],
+      "presentation": {
+        "question": "Что заменяют аргументы после имени образа в docker run?",
+        "options": [
+          {
+            "id": "cmd",
+            "text": "CMD"
+          },
+          {
+            "id": "entry",
+            "text": "ENTRYPOINT"
+          },
+          {
+            "id": "from",
+            "text": "FROM"
+          },
+          {
+            "id": "both",
+            "text": "Весь Dockerfile"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cmd",
+        "explanation": "ENTRYPOINT меняют флагом --entrypoint."
+      }
+    },
+    {
+      "slug": "ce-exec",
+      "type": "quiz.single_choice",
+      "title": "Форма",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-cmd"
+      ],
+      "presentation": {
+        "question": "Почему лучше `CMD [\"node\", \"server.js\"]`, чем `CMD node server.js`?",
+        "options": [
+          {
+            "id": "signals",
+            "text": "Процесс получает сигналы остановки напрямую"
+          },
+          {
+            "id": "short",
+            "text": "Короче"
+          },
+          {
+            "id": "faster",
+            "text": "Быстрее собирается"
+          },
+          {
+            "id": "same",
+            "text": "Разницы нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "signals",
+        "explanation": "Строковая форма запускает через sh."
+      }
+    },
+    {
+      "slug": "ce-slow",
+      "type": "quiz.single_choice",
+      "title": "Долгая остановка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-cmd"
+      ],
+      "presentation": {
+        "question": "docker stop всегда ждёт 10 секунд. Вероятная причина?",
+        "options": [
+          {
+            "id": "sigterm",
+            "text": "Приложение не обрабатывает SIGTERM"
+          },
+          {
+            "id": "disk",
+            "text": "Медленный диск"
+          },
+          {
+            "id": "net",
+            "text": "Медленная сеть"
+          },
+          {
+            "id": "tag",
+            "text": "Старый тег"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "sigterm",
+        "explanation": "Через 10 секунд приходит SIGKILL."
+      }
+    },
+    {
+      "slug": "lc-order",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-cache"
+      ],
+      "presentation": {
+        "question": "Почему COPY package.json и npm ci ставят перед COPY . .?",
+        "options": [
+          {
+            "id": "cache",
+            "text": "Правка кода не сбросит кэш установки зависимостей"
+          },
+          {
+            "id": "required",
+            "text": "Иначе npm не работает"
+          },
+          {
+            "id": "size",
+            "text": "Образ станет в 10 раз меньше"
+          },
+          {
+            "id": "security",
+            "text": "Так безопаснее"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cache",
+        "explanation": "Зависимости меняются реже кода."
+      }
+    },
+    {
+      "slug": "lc-chain",
+      "type": "quiz.single_choice",
+      "title": "Цепочка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-cache"
+      ],
+      "presentation": {
+        "question": "Изменился слой в середине Dockerfile. Что с остальными?",
+        "options": [
+          {
+            "id": "rebuild",
+            "text": "Все следующие слои пересобираются"
+          },
+          {
+            "id": "keep",
+            "text": "Все берутся из кэша"
+          },
+          {
+            "id": "first",
+            "text": "Пересобирается только первый"
+          },
+          {
+            "id": "error",
+            "text": "Сборка падает"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rebuild",
+        "explanation": "Кэш работает до первого изменения."
+      }
+    },
+    {
+      "slug": "lc-clean",
+      "type": "quiz.single_choice",
+      "title": "Очистка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-cache"
+      ],
+      "presentation": {
+        "question": "Уменьшит ли образ отдельная инструкция RUN rm -rf /var/lib/apt/lists/*?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, файлы остались в предыдущем слое"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "half",
+            "text": "Наполовину"
+          },
+          {
+            "id": "alpine",
+            "text": "Только в alpine"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Чистить нужно в том же RUN."
+      }
+    },
+    {
+      "slug": "ms-from",
+      "type": "quiz.single_choice",
+      "title": "Копирование",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-multistage"
+      ],
+      "presentation": {
+        "question": "Как взять файлы из предыдущего этапа сборки?",
+        "options": [
+          {
+            "id": "from",
+            "text": "`COPY --from=build ...`"
+          },
+          {
+            "id": "stage",
+            "text": "`COPY build:/app ...`"
+          },
+          {
+            "id": "import",
+            "text": "`IMPORT build`"
+          },
+          {
+            "id": "run",
+            "text": "`RUN cp build ...`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "from",
+        "explanation": "Этап называют через AS."
+      }
+    },
+    {
+      "slug": "ms-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-multistage"
+      ],
+      "presentation": {
+        "question": "Главная польза многоэтапной сборки?",
+        "options": [
+          {
+            "id": "small",
+            "text": "Финальный образ без инструментов сборки — меньше и безопаснее"
+          },
+          {
+            "id": "fast",
+            "text": "Сборка всегда быстрее"
+          },
+          {
+            "id": "gui",
+            "text": "Появляется интерфейс"
+          },
+          {
+            "id": "cache",
+            "text": "Отключается кэш"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "small",
+        "explanation": "В финал попадает только результат."
+      }
+    },
+    {
+      "slug": "ms-target",
+      "type": "quiz.single_choice",
+      "title": "Один этап",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-multistage"
+      ],
+      "presentation": {
+        "question": "Какой флаг собирает только определённый этап?",
+        "options": [
+          {
+            "id": "target",
+            "text": "`--target`"
+          },
+          {
+            "id": "stage",
+            "text": "`--stage`"
+          },
+          {
+            "id": "only",
+            "text": "`--only`"
+          },
+          {
+            "id": "from",
+            "text": "`--from`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "target",
+        "explanation": "docker build --target build ."
+      }
+    },
+    {
+      "slug": "si-user",
+      "type": "quiz.single_choice",
+      "title": "Пользователь",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-secure"
+      ],
+      "presentation": {
+        "question": "Зачем в Dockerfile инструкция USER app?",
+        "options": [
+          {
+            "id": "root",
+            "text": "Чтобы процесс работал не от root"
+          },
+          {
+            "id": "login",
+            "text": "Чтобы требовался вход"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "tag",
+            "text": "Чтобы задать автора образа"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "root",
+        "explanation": "Меньше прав — меньше ущерб."
+      }
+    },
+    {
+      "slug": "si-alpine",
+      "type": "quiz.single_choice",
+      "title": "alpine",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-secure"
+      ],
+      "presentation": {
+        "question": "Чем alpine может удивить в проекте на Python?",
+        "options": [
+          {
+            "id": "musl",
+            "text": "Другая библиотека C (musl), некоторые пакеты собираются иначе"
+          },
+          {
+            "id": "nopy",
+            "text": "Python там запрещён"
+          },
+          {
+            "id": "big",
+            "text": "Он огромный"
+          },
+          {
+            "id": "gui",
+            "text": "Он требует экран"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "musl",
+        "explanation": "Часто проще взять slim."
+      }
+    },
+    {
+      "slug": "si-scan",
+      "type": "quiz.single_choice",
+      "title": "Уязвимости",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-secure"
+      ],
+      "presentation": {
+        "question": "Что делает docker scout cves?",
+        "options": [
+          {
+            "id": "cve",
+            "text": "Ищет известные уязвимости в пакетах образа"
+          },
+          {
+            "id": "build",
+            "text": "Собирает образ"
+          },
+          {
+            "id": "push",
+            "text": "Публикует образ"
+          },
+          {
+            "id": "logs",
+            "text": "Показывает логи"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cve",
+        "explanation": "Или сканер Trivy."
+      }
+    },
+    {
+      "slug": "vo-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-volumes"
+      ],
+      "presentation": {
+        "question": "Что будет с таблицами Postgres без тома после docker rm?",
+        "options": [
+          {
+            "id": "lost",
+            "text": "Пропадут вместе с контейнером"
+          },
+          {
+            "id": "kept",
+            "text": "Сохранятся в образе"
+          },
+          {
+            "id": "host",
+            "text": "Окажутся в домашней папке"
+          },
+          {
+            "id": "cloud",
+            "text": "Уйдут в облако"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lost",
+        "explanation": "Слой записи удаляется с контейнером."
+      }
+    },
+    {
+      "slug": "vo-survive",
+      "type": "quiz.single_choice",
+      "title": "Жизнь тома",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-volumes"
+      ],
+      "presentation": {
+        "question": "Удаляется ли именованный том вместе с контейнером?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, он живёт отдельно"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "stop",
+            "text": "При остановке"
+          },
+          {
+            "id": "image",
+            "text": "При удалении образа"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Удаляют его явно."
+      }
+    },
+    {
+      "slug": "vo-prune",
+      "type": "quiz.single_choice",
+      "title": "Осторожно",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-volumes"
+      ],
+      "presentation": {
+        "question": "Чем опасна команда docker volume prune?",
+        "options": [
+          {
+            "id": "data",
+            "text": "Удаляет неиспользуемые тома с данными безвозвратно"
+          },
+          {
+            "id": "images",
+            "text": "Удаляет все образы"
+          },
+          {
+            "id": "net",
+            "text": "Отключает сеть"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "data",
+        "explanation": "Проверь список томов заранее."
+      }
+    },
+    {
+      "slug": "bm-dev",
+      "type": "quiz.single_choice",
+      "title": "Разработка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-bind"
+      ],
+      "presentation": {
+        "question": "Как сделать, чтобы правки кода сразу были видны в контейнере?",
+        "options": [
+          {
+            "id": "bind",
+            "text": "Подключить папку проекта через -v \"$(pwd)\":/app"
+          },
+          {
+            "id": "rebuild",
+            "text": "Пересобирать образ на каждое сохранение"
+          },
+          {
+            "id": "cp",
+            "text": "Копировать docker cp каждый раз"
+          },
+          {
+            "id": "none",
+            "text": "Это невозможно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bind",
+        "explanation": "Bind mount."
+      }
+    },
+    {
+      "slug": "bm-ro",
+      "type": "quiz.single_choice",
+      "title": "Защита",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-bind"
+      ],
+      "presentation": {
+        "question": "Что значит :ro в конце -v?",
+        "options": [
+          {
+            "id": "readonly",
+            "text": "Подключено только для чтения"
+          },
+          {
+            "id": "root",
+            "text": "Только для root"
+          },
+          {
+            "id": "remote",
+            "text": "Удалённая папка"
+          },
+          {
+            "id": "rotate",
+            "text": "Ротация логов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "readonly",
+        "explanation": "Контейнер не изменит файл."
+      }
+    },
+    {
+      "slug": "bm-owner",
+      "type": "quiz.single_choice",
+      "title": "Права",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-bind"
+      ],
+      "presentation": {
+        "question": "Почему файлы из контейнера на Linux-хосте принадлежат root?",
+        "options": [
+          {
+            "id": "user",
+            "text": "Процесс в контейнере работал от root"
+          },
+          {
+            "id": "docker",
+            "text": "Docker всегда так делает с любым пользователем"
+          },
+          {
+            "id": "disk",
+            "text": "Особенность диска"
+          },
+          {
+            "id": "git",
+            "text": "Из-за git"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "user",
+        "explanation": "Запускай с --user."
+      }
+    },
+    {
+      "slug": "bk-dump",
+      "type": "quiz.single_choice",
+      "title": "Копия базы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-backup"
+      ],
+      "presentation": {
+        "question": "Как надёжнее сделать копию работающей Postgres в контейнере?",
+        "options": [
+          {
+            "id": "dump",
+            "text": "pg_dump через docker exec"
+          },
+          {
+            "id": "cp",
+            "text": "Скопировать файлы тома на лету"
+          },
+          {
+            "id": "commit",
+            "text": "docker commit"
+          },
+          {
+            "id": "image",
+            "text": "Сохранить образ"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dump",
+        "explanation": "Дамп согласован."
+      }
+    },
+    {
+      "slug": "bk-tmp",
+      "type": "quiz.single_choice",
+      "title": "Архив тома",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-backup"
+      ],
+      "presentation": {
+        "question": "Зачем для архивации тома запускают временный alpine-контейнер?",
+        "options": [
+          {
+            "id": "mount",
+            "text": "Чтобы подключить том и папку хоста и запустить tar"
+          },
+          {
+            "id": "speed",
+            "text": "alpine ускоряет диск"
+          },
+          {
+            "id": "required",
+            "text": "Без alpine Docker не работает"
+          },
+          {
+            "id": "net",
+            "text": "Для сети"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mount",
+        "explanation": "--rm уберёт контейнер после."
+      }
+    },
+    {
+      "slug": "bk-check",
+      "type": "quiz.single_choice",
+      "title": "Проверка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-backup"
+      ],
+      "presentation": {
+        "question": "Что обязательно делать с резервными копиями?",
+        "options": [
+          {
+            "id": "restore",
+            "text": "Регулярно проверять восстановление"
+          },
+          {
+            "id": "delete",
+            "text": "Удалять через день"
+          },
+          {
+            "id": "rename",
+            "text": "Переименовывать"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "restore",
+        "explanation": "Непроверенная копия может не сработать."
+      }
+    },
+    {
+      "slug": "bn-own",
+      "type": "quiz.single_choice",
+      "title": "Своя сеть",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-networks"
+      ],
+      "presentation": {
+        "question": "Зачем создавать свою сеть вместо стандартной bridge?",
+        "options": [
+          {
+            "id": "dns",
+            "text": "В ней контейнеры находят друг друга по имени"
+          },
+          {
+            "id": "speed",
+            "text": "Она в 10 раз быстрее"
+          },
+          {
+            "id": "internet",
+            "text": "Без неё нет интернета"
+          },
+          {
+            "id": "ports",
+            "text": "Она открывает все порты"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dns",
+        "explanation": "И изолирует проект."
+      }
+    },
+    {
+      "slug": "bn-flag",
+      "type": "quiz.single_choice",
+      "title": "Подключение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-networks"
+      ],
+      "presentation": {
+        "question": "Каким флагом запустить контейнер в сети app-net?",
+        "options": [
+          {
+            "id": "network",
+            "text": "`--network app-net`"
+          },
+          {
+            "id": "net",
+            "text": "`-n app-net`"
+          },
+          {
+            "id": "link",
+            "text": "`--link app-net`"
+          },
+          {
+            "id": "p",
+            "text": "`-p app-net`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "network",
+        "explanation": "Или network connect потом."
+      }
+    },
+    {
+      "slug": "bn-multi",
+      "type": "quiz.single_choice",
+      "title": "Несколько сетей",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-networks"
+      ],
+      "presentation": {
+        "question": "Может ли контейнер быть подключён к двум сетям?",
+        "options": [
+          {
+            "id": "yes",
+            "text": "Да"
+          },
+          {
+            "id": "no",
+            "text": "Нет"
+          },
+          {
+            "id": "swarm",
+            "text": "Только в Swarm"
+          },
+          {
+            "id": "root",
+            "text": "Только от root"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "yes",
+        "explanation": "Так строят изоляцию слоями."
+      }
+    },
+    {
+      "slug": "sd-host",
+      "type": "quiz.single_choice",
+      "title": "Хост базы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-dns"
+      ],
+      "presentation": {
+        "question": "Какой хост указать API, чтобы подключиться к контейнеру db в той же сети?",
+        "options": [
+          {
+            "id": "db",
+            "text": "db"
+          },
+          {
+            "id": "localhost",
+            "text": "localhost"
+          },
+          {
+            "id": "ip",
+            "text": "127.0.0.1"
+          },
+          {
+            "id": "docker",
+            "text": "docker"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "db",
+        "explanation": "Встроенный DNS знает имена."
+      }
+    },
+    {
+      "slug": "sd-refused",
+      "type": "quiz.single_choice",
+      "title": "Ошибка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-dns"
+      ],
+      "presentation": {
+        "question": "API в контейнере пишет «connection refused localhost:5432». Почему?",
+        "options": [
+          {
+            "id": "self",
+            "text": "localhost — это сам контейнер API, базы там нет"
+          },
+          {
+            "id": "pass",
+            "text": "Неверный пароль"
+          },
+          {
+            "id": "disk",
+            "text": "Диск полон"
+          },
+          {
+            "id": "tag",
+            "text": "Неверный тег"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "self",
+        "explanation": "Нужно имя контейнера базы."
+      }
+    },
+    {
+      "slug": "sd-ip",
+      "type": "quiz.single_choice",
+      "title": "IP или имя",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-dns"
+      ],
+      "presentation": {
+        "question": "Почему лучше имя, а не IP контейнера?",
+        "options": [
+          {
+            "id": "change",
+            "text": "IP меняется при пересоздании контейнера"
+          },
+          {
+            "id": "short",
+            "text": "Имя короче"
+          },
+          {
+            "id": "secure",
+            "text": "IP небезопасен"
+          },
+          {
+            "id": "same",
+            "text": "Разницы нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "change",
+        "explanation": "Имя стабильно."
+      }
+    },
+    {
+      "slug": "pe2-db",
+      "type": "quiz.single_choice",
+      "title": "База",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-publish"
+      ],
+      "presentation": {
+        "question": "Нужно ли публиковать порт базы, если к ней ходит только API в той же сети?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, API достучится по сети Docker"
+          },
+          {
+            "id": "yes",
+            "text": "Да, обязательно"
+          },
+          {
+            "id": "udp",
+            "text": "Только UDP"
+          },
+          {
+            "id": "random",
+            "text": "Только на случайный порт"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Меньше открытого — безопаснее."
+      }
+    },
+    {
+      "slug": "pe2-local",
+      "type": "quiz.single_choice",
+      "title": "Только локально",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-publish"
+      ],
+      "presentation": {
+        "question": "Как открыть порт 5432 только для своего компьютера?",
+        "options": [
+          {
+            "id": "lo",
+            "text": "`-p 127.0.0.1:5432:5432`"
+          },
+          {
+            "id": "all",
+            "text": "`-p 5432:5432`"
+          },
+          {
+            "id": "expose",
+            "text": "`EXPOSE 5432`"
+          },
+          {
+            "id": "host",
+            "text": "`--network none`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lo",
+        "explanation": "Без адреса — на всех интерфейсах."
+      }
+    },
+    {
+      "slug": "pe2-ufw",
+      "type": "quiz.single_choice",
+      "title": "Файрвол",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-publish"
+      ],
+      "presentation": {
+        "question": "Что важно знать о Docker и ufw на Linux?",
+        "options": [
+          {
+            "id": "bypass",
+            "text": "Опубликованные порты могут открываться в обход ufw"
+          },
+          {
+            "id": "block",
+            "text": "ufw блокирует Docker целиком"
+          },
+          {
+            "id": "none",
+            "text": "Они не связаны и ничего не меняют"
+          },
+          {
+            "id": "speed",
+            "text": "ufw ускоряет контейнеры"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bypass",
+        "explanation": "Docker пишет свои правила iptables."
+      }
+    },
+    {
+      "slug": "cb-up",
+      "type": "quiz.single_choice",
+      "title": "Поднять",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-compose"
+      ],
+      "presentation": {
+        "question": "Какая команда поднимает все сервисы проекта в фоне?",
+        "options": [
+          {
+            "id": "up",
+            "text": "`docker compose up -d`"
+          },
+          {
+            "id": "run",
+            "text": "`docker run compose`"
+          },
+          {
+            "id": "start",
+            "text": "`docker start all`"
+          },
+          {
+            "id": "build",
+            "text": "`docker compose build`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "up",
+        "explanation": "build только собирает."
+      }
+    },
+    {
+      "slug": "cb-down",
+      "type": "quiz.single_choice",
+      "title": "Тома",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-compose"
+      ],
+      "presentation": {
+        "question": "Удалит ли docker compose down данные в именованных томах?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, только с флагом -v"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "half",
+            "text": "Удалит половину"
+          },
+          {
+            "id": "images",
+            "text": "Удалит только образы"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "down -v стирает тома."
+      }
+    },
+    {
+      "slug": "cb-dns",
+      "type": "quiz.single_choice",
+      "title": "Имя сервиса",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-compose"
+      ],
+      "presentation": {
+        "question": "Как сервис api обращается к сервису db из того же compose-файла?",
+        "options": [
+          {
+            "id": "name",
+            "text": "По имени db"
+          },
+          {
+            "id": "ip",
+            "text": "По IP хоста"
+          },
+          {
+            "id": "localhost",
+            "text": "Через localhost"
+          },
+          {
+            "id": "link",
+            "text": "Только через links"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "name",
+        "explanation": "Compose создаёт общую сеть."
+      }
+    },
+    {
+      "slug": "cs-ready",
+      "type": "quiz.single_choice",
+      "title": "Готовность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-services"
+      ],
+      "presentation": {
+        "question": "Что гарантирует простой depends_on: [db]?",
+        "options": [
+          {
+            "id": "order",
+            "text": "Только порядок запуска, не готовность базы"
+          },
+          {
+            "id": "ready",
+            "text": "Что база готова принимать подключения"
+          },
+          {
+            "id": "data",
+            "text": "Что в базе есть данные"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "order",
+        "explanation": "Для готовности — service_healthy."
+      }
+    },
+    {
+      "slug": "cs-profile",
+      "type": "quiz.single_choice",
+      "title": "Профиль",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-services"
+      ],
+      "presentation": {
+        "question": "Как запустить сервисы из профиля tools?",
+        "options": [
+          {
+            "id": "profile",
+            "text": "`docker compose --profile tools up`"
+          },
+          {
+            "id": "tools",
+            "text": "`docker compose tools`"
+          },
+          {
+            "id": "f",
+            "text": "`docker compose -f tools up`"
+          },
+          {
+            "id": "env",
+            "text": "`TOOLS=1 docker up`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "profile",
+        "explanation": "Без флага такие сервисы не стартуют."
+      }
+    },
+    {
+      "slug": "cs-override",
+      "type": "quiz.single_choice",
+      "title": "override",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-services"
+      ],
+      "presentation": {
+        "question": "Что делает файл compose.override.yaml?",
+        "options": [
+          {
+            "id": "merge",
+            "text": "Автоматически дополняет основной compose-файл"
+          },
+          {
+            "id": "replace",
+            "text": "Полностью заменяет его"
+          },
+          {
+            "id": "backup",
+            "text": "Хранит резервную копию"
+          },
+          {
+            "id": "nothing",
+            "text": "Игнорируется"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "merge",
+        "explanation": "Удобно для локальных настроек."
+      }
+    },
+    {
+      "slug": "cd-run",
+      "type": "quiz.single_choice",
+      "title": "Одноразовая задача",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-composedev"
+      ],
+      "presentation": {
+        "question": "Как запустить тесты в новом временном контейнере сервиса api?",
+        "options": [
+          {
+            "id": "run",
+            "text": "`docker compose run --rm api npm test`"
+          },
+          {
+            "id": "exec",
+            "text": "`docker compose exec api`"
+          },
+          {
+            "id": "up",
+            "text": "`docker compose up test`"
+          },
+          {
+            "id": "start",
+            "text": "`docker compose start npm`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "run",
+        "explanation": "exec — в уже работающем."
+      }
+    },
+    {
+      "slug": "cd-nm",
+      "type": "quiz.single_choice",
+      "title": "node_modules",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-composedev"
+      ],
+      "presentation": {
+        "question": "Зачем в volumes строка /app/node_modules?",
+        "options": [
+          {
+            "id": "keep",
+            "text": "Чтобы папка хоста не перекрыла зависимости из образа"
+          },
+          {
+            "id": "speed",
+            "text": "Чтобы ускорить сеть"
+          },
+          {
+            "id": "delete",
+            "text": "Чтобы удалить зависимости"
+          },
+          {
+            "id": "backup",
+            "text": "Для резервной копии"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "keep",
+        "explanation": "Анонимный том поверх bind mount."
+      }
+    },
+    {
+      "slug": "cd-logs",
+      "type": "quiz.single_choice",
+      "title": "Логи сервиса",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-composedev"
+      ],
+      "presentation": {
+        "question": "Как следить за логами только сервиса api?",
+        "options": [
+          {
+            "id": "logs",
+            "text": "`docker compose logs -f api`"
+          },
+          {
+            "id": "all",
+            "text": "`docker logs compose`"
+          },
+          {
+            "id": "tail",
+            "text": "`tail -f api`"
+          },
+          {
+            "id": "ps",
+            "text": "`docker compose ps api`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "logs",
+        "explanation": "Без имени — логи всех сервисов."
+      }
+    },
+    {
+      "slug": "ec-arg",
+      "type": "quiz.single_choice",
+      "title": "ARG",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-env"
+      ],
+      "presentation": {
+        "question": "Когда доступна переменная из ARG?",
+        "options": [
+          {
+            "id": "build",
+            "text": "Только во время сборки образа"
+          },
+          {
+            "id": "run",
+            "text": "Только при запуске"
+          },
+          {
+            "id": "both",
+            "text": "Всегда"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "build",
+        "explanation": "ENV остаётся в образе."
+      }
+    },
+    {
+      "slug": "ec-default",
+      "type": "quiz.single_choice",
+      "title": "Значение по умолчанию",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-env"
+      ],
+      "presentation": {
+        "question": "Что значит ${TAG:-dev} в compose-файле?",
+        "options": [
+          {
+            "id": "default",
+            "text": "Значение TAG, а если не задано — dev"
+          },
+          {
+            "id": "minus",
+            "text": "TAG минус dev"
+          },
+          {
+            "id": "only",
+            "text": "Только dev"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка, если нет TAG"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "default",
+        "explanation": "Как в оболочке."
+      }
+    },
+    {
+      "slug": "ec-one",
+      "type": "quiz.single_choice",
+      "title": "Один образ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-env"
+      ],
+      "presentation": {
+        "question": "Почему хорошо иметь один образ для тестов и сервера?",
+        "options": [
+          {
+            "id": "same",
+            "text": "На сервер уходит ровно то, что проверили"
+          },
+          {
+            "id": "small",
+            "text": "Он меньше"
+          },
+          {
+            "id": "fast",
+            "text": "Быстрее сборка"
+          },
+          {
+            "id": "secret",
+            "text": "Он хранит пароли"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "same",
+        "explanation": "Различия — только в настройках."
+      }
+    },
+    {
+      "slug": "se-where",
+      "type": "quiz.single_choice",
+      "title": "Где лежит",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-secrets"
+      ],
+      "presentation": {
+        "question": "Где сервис видит секрет из раздела secrets в Compose?",
+        "options": [
+          {
+            "id": "file",
+            "text": "Файлом в /run/secrets/"
+          },
+          {
+            "id": "env",
+            "text": "В переменной окружения"
+          },
+          {
+            "id": "image",
+            "text": "В образе"
+          },
+          {
+            "id": "logs",
+            "text": "В логах"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "file",
+        "explanation": "Пароль читают из файла."
+      }
+    },
+    {
+      "slug": "se-build",
+      "type": "quiz.single_choice",
+      "title": "При сборке",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-secrets"
+      ],
+      "presentation": {
+        "question": "Как передать токен в RUN, чтобы он не остался в слое?",
+        "options": [
+          {
+            "id": "mount",
+            "text": "`RUN --mount=type=secret,...`"
+          },
+          {
+            "id": "env",
+            "text": "Через ENV"
+          },
+          {
+            "id": "copy",
+            "text": "COPY и потом rm"
+          },
+          {
+            "id": "arg",
+            "text": "Через ARG"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mount",
+        "explanation": "ARG тоже виден в истории образа."
+      }
+    },
+    {
+      "slug": "se-git",
+      "type": "quiz.single_choice",
+      "title": "Ключ в git",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-secrets"
+      ],
+      "presentation": {
+        "question": "Ключ случайно закоммитили и удалили следующим коммитом. Что делать?",
+        "options": [
+          {
+            "id": "rotate",
+            "text": "Считать ключ утёкшим и выпустить новый"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего, его уже нет"
+          },
+          {
+            "id": "rename",
+            "text": "Переименовать файл"
+          },
+          {
+            "id": "force",
+            "text": "Только сделать force push"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rotate",
+        "explanation": "История git хранит всё."
+      }
+    },
+    {
+      "slug": "hl-unhealthy",
+      "type": "quiz.single_choice",
+      "title": "unhealthy",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-health"
+      ],
+      "presentation": {
+        "question": "Процесс работает, но проверка здоровья трижды упала. Какой статус?",
+        "options": [
+          {
+            "id": "unhealthy",
+            "text": "unhealthy"
+          },
+          {
+            "id": "healthy",
+            "text": "healthy"
+          },
+          {
+            "id": "exited",
+            "text": "exited"
+          },
+          {
+            "id": "paused",
+            "text": "paused"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "unhealthy",
+        "explanation": "Docker видит, что сервис не отвечает."
+      }
+    },
+    {
+      "slug": "hl-oom",
+      "type": "quiz.single_choice",
+      "title": "OOMKilled",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-health"
+      ],
+      "presentation": {
+        "question": "Что значит OOMKilled: true в docker inspect?",
+        "options": [
+          {
+            "id": "memory",
+            "text": "Процесс убит из-за превышения лимита памяти"
+          },
+          {
+            "id": "ok",
+            "text": "Всё в порядке"
+          },
+          {
+            "id": "net",
+            "text": "Сеть отключена"
+          },
+          {
+            "id": "disk",
+            "text": "Кончился диск"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "memory",
+        "explanation": "Код выхода 137."
+      }
+    },
+    {
+      "slug": "hl-stats",
+      "type": "quiz.single_choice",
+      "title": "Потребление",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-health"
+      ],
+      "presentation": {
+        "question": "Какая команда покажет память и CPU контейнеров вживую?",
+        "options": [
+          {
+            "id": "stats",
+            "text": "`docker stats`"
+          },
+          {
+            "id": "top",
+            "text": "`docker images`"
+          },
+          {
+            "id": "ps",
+            "text": "`docker ps -a`"
+          },
+          {
+            "id": "logs",
+            "text": "`docker logs`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "stats",
+        "explanation": "--no-stream — один снимок."
+      }
+    },
+    {
+      "slug": "in-exit",
+      "type": "quiz.single_choice",
+      "title": "Причина",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-inspect"
+      ],
+      "presentation": {
+        "question": "Как узнать код выхода остановленного контейнера?",
+        "options": [
+          {
+            "id": "inspect",
+            "text": "`docker inspect` (State.ExitCode) или docker ps -a"
+          },
+          {
+            "id": "logs",
+            "text": "Только по логам"
+          },
+          {
+            "id": "images",
+            "text": "`docker images`"
+          },
+          {
+            "id": "pull",
+            "text": "`docker pull`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "inspect",
+        "explanation": "OOMKilled тоже там."
+      }
+    },
+    {
+      "slug": "in-events",
+      "type": "quiz.single_choice",
+      "title": "Хронология",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-inspect"
+      ],
+      "presentation": {
+        "question": "Какая команда покажет поток событий запуска и остановки?",
+        "options": [
+          {
+            "id": "events",
+            "text": "`docker events`"
+          },
+          {
+            "id": "stats",
+            "text": "`docker stats`"
+          },
+          {
+            "id": "history",
+            "text": "`docker history`"
+          },
+          {
+            "id": "top",
+            "text": "`docker top`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "events",
+        "explanation": "Видны перезапуски по кругу."
+      }
+    },
+    {
+      "slug": "in-diff",
+      "type": "quiz.single_choice",
+      "title": "Изменения",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-inspect"
+      ],
+      "presentation": {
+        "question": "Что показывает docker diff?",
+        "options": [
+          {
+            "id": "files",
+            "text": "Файлы, изменённые в контейнере относительно образа"
+          },
+          {
+            "id": "code",
+            "text": "Изменения кода в git"
+          },
+          {
+            "id": "images",
+            "text": "Разницу двух образов"
+          },
+          {
+            "id": "logs",
+            "text": "Новые строки логов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "files",
+        "explanation": "A — добавлен, C — изменён, D — удалён."
+      }
+    },
+    {
+      "slug": "tr-exit0",
+      "type": "quiz.single_choice",
+      "title": "Сразу Exited (0)",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-troubleshoot"
+      ],
+      "presentation": {
+        "question": "Контейнер сразу завершился с кодом 0. Что вероятнее?",
+        "options": [
+          {
+            "id": "done",
+            "text": "Его команда просто выполнилась и закончилась"
+          },
+          {
+            "id": "crash",
+            "text": "Он упал с ошибкой"
+          },
+          {
+            "id": "oom",
+            "text": "Не хватило памяти"
+          },
+          {
+            "id": "net",
+            "text": "Нет сети"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "done",
+        "explanation": "Нужен долгоживущий процесс."
+      }
+    },
+    {
+      "slug": "tr-port",
+      "type": "quiz.single_choice",
+      "title": "Порт занят",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-troubleshoot"
+      ],
+      "presentation": {
+        "question": "«port is already allocated» при запуске. Что делать?",
+        "options": [
+          {
+            "id": "find",
+            "text": "Найти, кто занял порт, или опубликовать на другой"
+          },
+          {
+            "id": "rebuild",
+            "text": "Пересобрать образ"
+          },
+          {
+            "id": "prune",
+            "text": "Удалить все тома"
+          },
+          {
+            "id": "reinstall",
+            "text": "Переустановить Docker"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "find",
+        "explanation": "docker ps или lsof."
+      }
+    },
+    {
+      "slug": "tr-loop",
+      "type": "quiz.single_choice",
+      "title": "Перезапуск по кругу",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-troubleshoot"
+      ],
+      "presentation": {
+        "question": "Контейнер в статусе Restarting. Первый шаг?",
+        "options": [
+          {
+            "id": "logs",
+            "text": "Посмотреть docker logs --tail 50"
+          },
+          {
+            "id": "rm",
+            "text": "Удалить Docker"
+          },
+          {
+            "id": "pull",
+            "text": "Скачать latest"
+          },
+          {
+            "id": "wait",
+            "text": "Подождать сутки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "logs",
+        "explanation": "Причина почти всегда в логах."
+      }
+    },
+    {
+      "slug": "cu-df",
+      "type": "quiz.single_choice",
+      "title": "Сначала",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-cleanup"
+      ],
+      "presentation": {
+        "question": "Какая команда покажет, что занимает место?",
+        "options": [
+          {
+            "id": "df",
+            "text": "`docker system df`"
+          },
+          {
+            "id": "du",
+            "text": "`docker du`"
+          },
+          {
+            "id": "ls",
+            "text": "`docker ls`"
+          },
+          {
+            "id": "size",
+            "text": "`docker size`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "df",
+        "explanation": "И сколько можно освободить."
+      }
+    },
+    {
+      "slug": "cu-volumes",
+      "type": "quiz.single_choice",
+      "title": "Опасный флаг",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-cleanup"
+      ],
+      "presentation": {
+        "question": "Что опасного в docker system prune --volumes?",
+        "options": [
+          {
+            "id": "data",
+            "text": "Удалит неиспользуемые тома с данными"
+          },
+          {
+            "id": "images",
+            "text": "Удалит все образы из реестра"
+          },
+          {
+            "id": "engine",
+            "text": "Удалит сам Docker"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "data",
+        "explanation": "Данные не вернуть."
+      }
+    },
+    {
+      "slug": "cu-builder",
+      "type": "quiz.single_choice",
+      "title": "Кэш сборки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-cleanup"
+      ],
+      "presentation": {
+        "question": "Как удалить только кэш сборки?",
+        "options": [
+          {
+            "id": "builder",
+            "text": "`docker builder prune`"
+          },
+          {
+            "id": "image",
+            "text": "`docker image rm cache`"
+          },
+          {
+            "id": "rm",
+            "text": "`docker rm cache`"
+          },
+          {
+            "id": "volume",
+            "text": "`docker volume prune`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "builder",
+        "explanation": "Безопасно: соберётся заново."
+      }
+    },
+    {
+      "slug": "pr-format",
+      "type": "quiz.single_choice",
+      "title": "exec format error",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-push"
+      ],
+      "presentation": {
+        "question": "Образ, собранный на Mac M1, падает на сервере с «exec format error». Почему?",
+        "options": [
+          {
+            "id": "arch",
+            "text": "Образ под arm64, а сервер — amd64"
+          },
+          {
+            "id": "tag",
+            "text": "Неверный тег"
+          },
+          {
+            "id": "net",
+            "text": "Нет сети"
+          },
+          {
+            "id": "perm",
+            "text": "Нет прав"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "arch",
+        "explanation": "Собирай нужную платформу через buildx."
+      }
+    },
+    {
+      "slug": "pr-sha",
+      "type": "quiz.single_choice",
+      "title": "Тег коммита",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-push"
+      ],
+      "presentation": {
+        "question": "Зачем тегировать образ sha коммита?",
+        "options": [
+          {
+            "id": "trace",
+            "text": "Чтобы точно знать, какой код в образе"
+          },
+          {
+            "id": "short",
+            "text": "Так короче"
+          },
+          {
+            "id": "required",
+            "text": "Без этого push не работает"
+          },
+          {
+            "id": "secure",
+            "text": "Для шифрования"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "trace",
+        "explanation": "Связь образа с кодом."
+      }
+    },
+    {
+      "slug": "pr-order",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-push"
+      ],
+      "presentation": {
+        "question": "Что нужно сделать перед docker push в закрытый реестр?",
+        "options": [
+          {
+            "id": "login",
+            "text": "docker login и тег с адресом реестра"
+          },
+          {
+            "id": "prune",
+            "text": "docker system prune"
+          },
+          {
+            "id": "stop",
+            "text": "Остановить все контейнеры"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "login",
+        "explanation": "Имя образа указывает, куда отправлять."
+      }
+    },
+    {
+      "slug": "ci-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-ci"
+      ],
+      "presentation": {
+        "question": "Почему образ для сервера собирают в CI, а не на ноутбуке?",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "Сборка воспроизводима и проверена тестами"
+          },
+          {
+            "id": "fast",
+            "text": "Ноутбук не умеет собирать"
+          },
+          {
+            "id": "free",
+            "text": "CI всегда бесплатен"
+          },
+          {
+            "id": "size",
+            "text": "Образ получается меньше"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "repeat",
+        "explanation": "Один путь для всех изменений."
+      }
+    },
+    {
+      "slug": "ci-cache",
+      "type": "quiz.single_choice",
+      "title": "Кэш",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-ci"
+      ],
+      "presentation": {
+        "question": "Почему в CI нужно явно настраивать кэш слоёв?",
+        "options": [
+          {
+            "id": "ephemeral",
+            "text": "Машины CI одноразовые и кэш теряется"
+          },
+          {
+            "id": "forbidden",
+            "text": "Кэш в CI запрещён"
+          },
+          {
+            "id": "size",
+            "text": "Чтобы образ был больше"
+          },
+          {
+            "id": "none",
+            "text": "Не нужно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ephemeral",
+        "explanation": "cache-from и cache-to."
+      }
+    },
+    {
+      "slug": "ci-order",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-ci"
+      ],
+      "presentation": {
+        "question": "В каком порядке правильный конвейер?",
+        "options": [
+          {
+            "id": "right",
+            "text": "Сборка → тесты → сканирование → публикация"
+          },
+          {
+            "id": "push",
+            "text": "Публикация → тесты"
+          },
+          {
+            "id": "scan",
+            "text": "Сканирование → сборка"
+          },
+          {
+            "id": "any",
+            "text": "Любой"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "right",
+        "explanation": "Публикуется только проверенное."
+      }
+    },
+    {
+      "slug": "dn-update",
+      "type": "quiz.single_choice",
+      "title": "Обновить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-deploy"
+      ],
+      "presentation": {
+        "question": "Как обновить сервисы на сервере до новых образов через Compose?",
+        "options": [
+          {
+            "id": "pullup",
+            "text": "`docker compose pull`, затем `docker compose up -d`"
+          },
+          {
+            "id": "down",
+            "text": "Только `docker compose down`"
+          },
+          {
+            "id": "build",
+            "text": "Собрать образы прямо на сервере вручную"
+          },
+          {
+            "id": "restart",
+            "text": "Перезагрузить сервер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pullup",
+        "explanation": "Пересоздаются только изменённые сервисы."
+      }
+    },
+    {
+      "slug": "dn-k8s",
+      "type": "quiz.single_choice",
+      "title": "Kubernetes",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-deploy"
+      ],
+      "presentation": {
+        "question": "Когда действительно нужен Kubernetes?",
+        "options": [
+          {
+            "id": "many",
+            "text": "Когда много серверов и сервисов, нужен автоматический масштаб"
+          },
+          {
+            "id": "always",
+            "text": "Всегда, даже для одного сайта"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "dev",
+            "text": "Только для разработки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "many",
+        "explanation": "Одному серверу хватает Compose."
+      }
+    },
+    {
+      "slug": "dn-zero",
+      "type": "quiz.single_choice",
+      "title": "Без простоя",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "dk-deploy"
+      ],
+      "presentation": {
+        "question": "Как обновить сервис без ошибок для пользователей?",
+        "options": [
+          {
+            "id": "health",
+            "text": "Поднять новый экземпляр, дождаться healthy, потом убрать старый"
+          },
+          {
+            "id": "stop",
+            "text": "Остановить старый и подождать"
+          },
+          {
+            "id": "night",
+            "text": "Обновлять только ночью"
+          },
+          {
+            "id": "prune",
+            "text": "Сделать prune"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "health",
+        "explanation": "Прокси переключает трафик."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "why-containers",
+      "title": "Зачем нужны контейнеры",
+      "summary": "«У меня работает»: зависимости, версии и окружение, и как контейнер упаковывает приложение целиком.",
+      "chapter": "Зачем контейнеры",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Начинаем курс: разбираемся, почему приложение работает у одного и ломается у другого.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"«У меня работает»\",\n  \"title\": \"Проблема окружения\",\n  \"what\": \"Приложению нужны определённые версии языка, библиотек, системных пакетов и настроек. На другом компьютере что-то из этого отличается — и программа падает.\",\n  \"why\": \"Половина времени новичка в проекте уходит на «настроить окружение».\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Контейнер\",\n  \"title\": \"Приложение со всем нужным\",\n  \"what\": \"Изолированный процесс, который получает свою файловую систему с приложением и всеми зависимостями. Запускается одинаково на ноутбуке, сервере и в облаке.\",\n  \"why\": \"Запустил одну команду — получил рабочее приложение, без ручной установки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Образ\",\n  \"title\": \"Шаблон контейнера\",\n  \"what\": \"Неизменяемый снимок файловой системы и настроек запуска. Из одного образа можно запустить сколько угодно контейнеров.\",\n  \"why\": \"Образ собирают один раз и раздают всем: разработчикам, тестам, серверу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Где используют\",\n  \"title\": \"Почти везде\",\n  \"what\": \"Локальная разработка с базами данных, CI, развёртывание на серверах, Kubernetes и облачные платформы.\",\n  \"why\": \"Docker — базовый инструмент разработчика и DevOps-инженера.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Образ — шаблон, контейнер — запущенный экземпляр. Контейнер везде работает одинаково."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wc-problem",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wc-image",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wc-where",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "containers-vs-vm",
+      "title": "Контейнер и виртуальная машина",
+      "summary": "Ядро ОС общее, изоляция через namespaces и cgroups, размер и скорость запуска.",
+      "chapter": "Зачем контейнеры",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем, зачем контейнеры, и сравниваем их с виртуальными машинами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Виртуальная машина\",\n  \"title\": \"Целый компьютер\",\n  \"what\": \"ВМ эмулирует железо, внутри — своя полная ОС с ядром. Занимает гигабайты, запускается минутами.\",\n  \"why\": \"Сильная изоляция, но тяжело и медленно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Контейнер изнутри\",\n  \"title\": \"Обычный процесс\",\n  \"what\": \"Контейнер использует ядро хоста. Ядро Linux изолирует его: namespaces скрывают чужие процессы, сеть и файлы, cgroups ограничивают память и процессор.\",\n  \"why\": \"Запуск за доли секунды и мегабайты вместо гигабайт.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Docker на macOS и Windows\",\n  \"title\": \"Скрытая Linux-ВМ\",\n  \"what\": \"Контейнерам нужно ядро Linux, поэтому Docker Desktop запускает маленькую Linux-ВМ, а контейнеры работают в ней.\",\n  \"why\": \"Отсюда разница в скорости файлов между хостом и контейнером на Mac.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Изоляция\",\n  \"title\": \"Не абсолютная\",\n  \"what\": \"Ядро общее, поэтому изоляция контейнера слабее, чем у ВМ. Не запускай чужие образы с лишними правами.\",\n  \"why\": \"Безопасность контейнера — это ещё и настройки запуска.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** ВМ — своё ядро и железо, контейнер — изолированный процесс на общем ядре."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cv-kernel",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cv-cgroups",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cv-mac",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "install-docker",
+      "title": "Установка Docker",
+      "summary": "Docker Desktop и Docker Engine, docker version, hello-world, клиент и демон.",
+      "chapter": "Зачем контейнеры",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Сравнили контейнеры и ВМ и ставим Docker на свой компьютер.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Docker Desktop и Engine\",\n  \"title\": \"Что ставить\",\n  \"what\": \"На macOS и Windows — Docker Desktop (с WSL 2 в Windows). На Linux-сервере — Docker Engine из официального репозитория.\",\n  \"why\": \"Desktop даёт графическую панель, Engine — только то, что нужно серверу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker version\",\n  \"title\": \"Клиент и демон\",\n  \"what\": \"Команда docker — клиент. Он отправляет запросы демону dockerd, который и запускает контейнеры. `docker version` показывает обе части.\",\n  \"why\": \"Если демон не запущен, любая команда скажет «Cannot connect to the Docker daemon».\",\n  \"how\": \"$ docker version\\nClient: Version 28.0.1\\nServer: Docker Engine Version 28.0.1\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"hello-world\",\n  \"title\": \"Первый контейнер\",\n  \"what\": \"`docker run hello-world` скачивает маленький образ и запускает его: он печатает приветствие и завершается.\",\n  \"why\": \"Проверка, что всё работает: скачивание, запуск, вывод.\",\n  \"how\": \"$ docker run hello-world\\nHello from Docker!\\nThis message shows that your installation appears to be working correctly.\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Права на Linux\",\n  \"title\": \"Группа docker\",\n  \"what\": \"Без sudo команды работают, если пользователь в группе docker. Эта группа фактически даёт права root — добавляй только себя.\",\n  \"why\": \"Удобно, но помни о правах.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** docker — клиент, dockerd — демон. Проверка установки — docker run hello-world."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "id-daemon",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "id-error",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "id-hello",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "docker-run",
+      "title": "docker run",
+      "summary": "Запуск контейнера: -it, -d, --name, --rm, что происходит при запуске.",
+      "chapter": "Образы и контейнеры",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Поставили Docker и запускаем первые настоящие контейнеры.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"docker run\",\n  \"title\": \"Запустить контейнер\",\n  \"what\": \"`docker run образ команда` — скачать образ, если его нет, создать контейнер и запустить в нём команду.\",\n  \"why\": \"Одна команда вместо установки программы.\",\n  \"how\": \"$ docker run alpine echo \\\"привет из контейнера\\\"\\nпривет из контейнера\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"-it\",\n  \"title\": \"Интерактивно\",\n  \"what\": \"`-i` держит ввод открытым, `-t` даёт терминал. `docker run -it ubuntu bash` — оболочка внутри контейнера.\",\n  \"why\": \"Посмотреть, что внутри образа, поэкспериментировать.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"-d и --name\",\n  \"title\": \"В фоне и с именем\",\n  \"what\": \"`-d` запускает контейнер в фоне, `--name web` даёт понятное имя вместо случайного.\",\n  \"why\": \"Серверы и базы работают в фоне, а обращаться к ним удобнее по имени.\",\n  \"how\": \"$ docker run -d --name web nginx\\n3f9c2a1b7e4d...\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"--rm\",\n  \"title\": \"Удалить после выхода\",\n  \"what\": \"Контейнер удалится сам, когда команда завершится.\",\n  \"why\": \"Одноразовые запуски не копят мусор.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что происходит\",\n  \"title\": \"Под капотом run\",\n  \"what\": \"Docker ищет образ локально → скачивает из реестра → создаёт слой для записи → настраивает сеть → запускает главный процесс. Когда процесс завершается, останавливается и контейнер.\",\n  \"why\": \"Контейнер живёт, пока живёт его главный процесс.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Фоновый сервис — `-d --name`, разовая команда — `--rm`, зайти внутрь — `-it`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dr-it",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dr-life",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dr-rm",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "image-layers",
+      "title": "Слои образа",
+      "summary": "Образ из слоёв, общие слои, слой записи контейнера, docker images и history.",
+      "chapter": "Образы и контейнеры",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Запускаем контейнеры и заглядываем внутрь образов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Слои\",\n  \"title\": \"Образ как стопка\",\n  \"what\": \"Образ состоит из слоёв только для чтения: базовая система, установленные пакеты, код приложения. Каждый слой — изменения относительно предыдущего.\",\n  \"why\": \"Одинаковые слои хранятся и скачиваются один раз для всех образов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Слой записи\",\n  \"title\": \"Изменения контейнера\",\n  \"what\": \"Поверх слоёв образа контейнер получает тонкий слой для записи. Удалил контейнер — изменения исчезли.\",\n  \"why\": \"Данные, которые нужно сохранить, хранят в томах (об этом дальше).\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker images\",\n  \"title\": \"Список образов\",\n  \"what\": \"Показывает локальные образы с тегами и размерами. `docker image ls` — то же самое.\",\n  \"why\": \"Понять, что занимает место на диске.\",\n  \"how\": \"$ docker images\\nREPOSITORY   TAG       SIZE\\nnginx        1.27      192MB\\nalpine       3.21      7.8MB\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker history\",\n  \"title\": \"Из чего собран\",\n  \"what\": \"`docker history nginx` показывает слои образа, их размер и команды, которые их создали.\",\n  \"why\": \"Найти, какой шаг раздувает образ.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Слои образа только читаются и общие. Изменения контейнера живут в его слое записи до удаления."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "il-share",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "il-lost",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "il-history",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "registry-tags",
+      "title": "Реестры и теги",
+      "summary": "Docker Hub, docker pull, имя образа и тег, latest, официальные образы и дайджест.",
+      "chapter": "Образы и контейнеры",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем устройство образа и учимся находить и выбирать нужные образы.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Реестр\",\n  \"title\": \"Склад образов\",\n  \"what\": \"Docker Hub — публичный реестр по умолчанию. Есть GitHub Container Registry, реестры облаков и свои.\",\n  \"why\": \"Образы публикуют один раз, скачивают везде.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker pull\",\n  \"title\": \"Скачать образ\",\n  \"what\": \"`docker pull postgres:17` — скачать образ заранее.\",\n  \"why\": \"Сервер не ждёт загрузки при первом запуске.\",\n  \"how\": \"$ docker pull postgres:17\\n17: Pulling from library/postgres\\nStatus: Downloaded newer image for postgres:17\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Имя и тег\",\n  \"title\": \"реестр/автор/имя:тег\",\n  \"what\": \"`ghcr.io/team/app:1.4.2`. Без реестра — Docker Hub, без тега — `latest`. Официальные образы (nginx, postgres) — без автора.\",\n  \"why\": \"Тег выбирает версию образа.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Почему не latest\",\n  \"title\": \"Плавающий тег\",\n  \"what\": \"latest — просто тег, который указывает на последнюю сборку. Завтра это будет другая версия.\",\n  \"why\": \"Фиксируй версию: postgres:17, а не postgres — иначе обновление случится без спроса.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Slim и alpine\",\n  \"title\": \"Варианты образа\",\n  \"what\": \"Теги вроде `python:3.13-slim` и `node:22-alpine` — облегчённые варианты: меньше размер и меньше уязвимостей.\",\n  \"why\": \"Образ в 50 МБ вместо 1 ГБ быстрее качается и безопаснее.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Всегда указывай конкретный тег. Облегчённые варианты — slim или alpine."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rt-default",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rt-pin",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rt-hub",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "ps-stop-rm",
+      "title": "Список, остановка, удаление",
+      "summary": "docker ps и ps -a, stop и start, rm, состояния контейнера и политика перезапуска.",
+      "chapter": "Жизнь контейнера",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем запускать контейнеры и учимся управлять ими.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"docker ps\",\n  \"title\": \"Что запущено\",\n  \"what\": \"`docker ps` — работающие контейнеры, `docker ps -a` — все, включая остановленные.\",\n  \"why\": \"Остановленные контейнеры занимают место, пока их не удалишь.\",\n  \"how\": \"$ docker ps\\nCONTAINER ID  IMAGE      STATUS        PORTS                 NAMES\\n3f9c2a1b7e4d  nginx:1.27 Up 5 minutes  0.0.0.0:8080->80/tcp  web\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"stop и start\",\n  \"title\": \"Остановить и запустить снова\",\n  \"what\": \"`docker stop web` посылает SIGTERM и через 10 секунд SIGKILL. `docker start web` запускает тот же контейнер снова.\",\n  \"why\": \"Остановленный контейнер сохраняет свой слой записи.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker rm\",\n  \"title\": \"Удалить\",\n  \"what\": \"`docker rm web` удаляет остановленный контейнер, `docker rm -f web` — даже работающий.\",\n  \"why\": \"Освобождает имя и место на диске.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Состояния\",\n  \"title\": \"created, running, exited\",\n  \"what\": \"Контейнер создан → работает → завершён (с кодом выхода). Код 0 — успех, другой — ошибка, 137 — убит SIGKILL (часто нехватка памяти).\",\n  \"why\": \"Код выхода в `docker ps -a` подсказывает причину остановки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"--restart\",\n  \"title\": \"Политика перезапуска\",\n  \"what\": \"`--restart unless-stopped` поднимает контейнер после сбоя и перезагрузки сервера, пока его не остановили вручную.\",\n  \"why\": \"Сервис сам переживает падения и перезагрузки.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** ps -a — все контейнеры, stop — мягко, rm -f — сразу. Для сервисов — --restart unless-stopped."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ps-all",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ps-137",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ps-restart",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "logs-exec",
+      "title": "Логи и вход внутрь",
+      "summary": "docker logs -f, docker exec -it, docker cp и как смотреть, что происходит в контейнере.",
+      "chapter": "Жизнь контейнера",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Управляем контейнерами и заглядываем внутрь работающих.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"docker logs\",\n  \"title\": \"Что пишет приложение\",\n  \"what\": \"Docker собирает всё, что процесс пишет в stdout и stderr. `-f` — следить в реальном времени, `--tail 100` — последние строки.\",\n  \"why\": \"Первое, что смотрят при любой проблеме.\",\n  \"how\": \"$ docker logs -f --tail 20 web\\n172.17.0.1 - - \\\"GET / HTTP/1.1\\\" 200 615\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Логи в stdout\",\n  \"title\": \"Правило контейнеров\",\n  \"what\": \"Приложение в контейнере пишет логи в консоль, а не в файлы: так их видит docker logs и собирают системы мониторинга.\",\n  \"why\": \"Логи в файле внутри контейнера исчезнут вместе с ним.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker exec\",\n  \"title\": \"Команда в работающем контейнере\",\n  \"what\": \"`docker exec -it web sh` — открыть оболочку внутри, `docker exec db psql -U app` — запустить программу.\",\n  \"why\": \"Проверить файлы, настройки и связь изнутри.\",\n  \"how\": \"$ docker exec -it web sh\\n/ # ls /usr/share/nginx/html\\nindex.html\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker cp\",\n  \"title\": \"Копировать файлы\",\n  \"what\": \"`docker cp web:/etc/nginx/nginx.conf ./` — из контейнера, и наоборот — в контейнер.\",\n  \"why\": \"Достать конфиг или дамп без лишних томов.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Проблема — сначала `docker logs -f`, потом `docker exec -it имя sh`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "le-follow",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "le-exec",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "le-stdout",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "ports-env",
+      "title": "Порты и переменные окружения",
+      "summary": "-p хост:контейнер, localhost внутри и снаружи, -e и --env-file.",
+      "chapter": "Жизнь контейнера",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Смотрим логи и открываем контейнер для внешнего мира.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"-p\",\n  \"title\": \"Опубликовать порт\",\n  \"what\": \"`-p 8080:80` — порт 8080 на хосте ведёт на порт 80 в контейнере. Слева — хост, справа — контейнер.\",\n  \"why\": \"Без публикации сервис внутри недоступен с твоего компьютера.\",\n  \"how\": \"$ docker run -d -p 8080:80 --name web nginx\\n$ curl -s localhost:8080 | head -1\\n<!DOCTYPE html>\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"localhost в контейнере\",\n  \"title\": \"Свой localhost\",\n  \"what\": \"Внутри контейнера localhost — это сам контейнер. Приложение должно слушать 0.0.0.0, иначе к нему не достучаться снаружи.\",\n  \"why\": \"Частая причина «порт открыт, а ответа нет».\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"-e\",\n  \"title\": \"Переменная окружения\",\n  \"what\": \"`-e POSTGRES_PASSWORD=secret` передаёт настройку внутрь. Так образы настраивают без пересборки.\",\n  \"why\": \"Один образ — разные настройки для разработки и сервера.\",\n  \"how\": \"$ docker run -d -e POSTGRES_PASSWORD=devpass -p 5432:5432 postgres:17\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"--env-file\",\n  \"title\": \"Настройки из файла\",\n  \"what\": \"`--env-file .env` читает переменные из файла построчно: KEY=value.\",\n  \"why\": \"Длинный список настроек не загромождает команду; файл .env не кладут в git.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** -p ХОСТ:КОНТЕЙНЕР. Приложение слушает 0.0.0.0. Настройки — через -e и --env-file."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pe-order",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pe-listen",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pe-env",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "dockerfile-basics",
+      "title": "Первый Dockerfile",
+      "summary": "FROM, WORKDIR, COPY, RUN, EXPOSE, CMD и сборка docker build -t.",
+      "chapter": "Dockerfile",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Запускаем чужие образы и собираем свой собственный.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Dockerfile\",\n  \"title\": \"Рецепт образа\",\n  \"what\": \"Текстовый файл с инструкциями: от какого образа начать, что скопировать, что установить и что запускать.\",\n  \"why\": \"Сборка образа становится воспроизводимой — кто угодно соберёт тот же образ.\",\n  \"how\": \"FROM python:3.13-slim\\nWORKDIR /app\\nCOPY requirements.txt .\\nRUN pip install --no-cache-dir -r requirements.txt\\nCOPY . .\\nEXPOSE 8000\\nCMD [\\\"python\\\", \\\"app.py\\\"]\",\n  \"kind\": \"idea\",\n  \"lang\": \"dockerfile\"\n}\n```\n\n```concept\n{\n  \"name\": \"FROM и WORKDIR\",\n  \"title\": \"Основа и папка\",\n  \"what\": \"FROM задаёт базовый образ, WORKDIR — рабочую папку для следующих команд (создаётся сама).\",\n  \"why\": \"Не нужно писать cd в каждой команде.\",\n  \"kind\": \"idea\",\n  \"lang\": \"dockerfile\"\n}\n```\n\n```concept\n{\n  \"name\": \"COPY и RUN\",\n  \"title\": \"Файлы и команды\",\n  \"what\": \"COPY переносит файлы из контекста сборки в образ, RUN выполняет команду при сборке и сохраняет результат слоем.\",\n  \"why\": \"Установка зависимостей — RUN, код приложения — COPY.\",\n  \"kind\": \"idea\",\n  \"lang\": \"dockerfile\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker build\",\n  \"title\": \"Собрать образ\",\n  \"what\": \"`docker build -t myapp:1.0 .` — собрать образ из Dockerfile в текущей папке и дать ему имя с тегом.\",\n  \"why\": \"Точка в конце — контекст сборки, о нём в следующем уроке.\",\n  \"how\": \"$ docker build -t myapp:1.0 .\\n[+] Building 12.4s (10/10) FINISHED\\n => naming to docker.io/library/myapp:1.0\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"EXPOSE\",\n  \"title\": \"Документация порта\",\n  \"what\": \"EXPOSE сообщает, какой порт слушает приложение, но сам порт не публикует — это делает -p.\",\n  \"why\": \"Подсказка тем, кто будет запускать образ.\",\n  \"kind\": \"idea\",\n  \"lang\": \"dockerfile\"\n}\n```\n\n**Главное.** Порядок: FROM → WORKDIR → зависимости → код → CMD. Сборка — docker build -t имя:тег ."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-from",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-run",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-expose",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "build-context",
+      "title": "Контекст сборки и .dockerignore",
+      "summary": "Что такое контекст, почему сборка медленная, .dockerignore и секреты, которые утекли в образ.",
+      "chapter": "Dockerfile",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем Dockerfile и разбираемся, какие файлы попадают в сборку.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Контекст сборки\",\n  \"title\": \"Папка, которую видит сборка\",\n  \"what\": \"Точка в `docker build .` — контекст: вся папка отправляется сборщику. COPY может взять только то, что в контексте.\",\n  \"why\": \"Огромная папка node_modules или .git замедляет каждую сборку.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \".dockerignore\",\n  \"title\": \"Что не отправлять\",\n  \"what\": \"Файл с шаблонами, как .gitignore: node_modules, .git, .env, *.log. Эти файлы не попадут в контекст.\",\n  \"why\": \"Сборка быстрее, а секреты не утекают в образ.\",\n  \"how\": \"node_modules\\n.git\\n.env\\n*.log\\ndist\",\n  \"kind\": \"idea\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"Секреты в образе\",\n  \"title\": \"Навсегда в слое\",\n  \"what\": \"Скопированный .env или ключ остаётся в слое образа, даже если позже удалить его командой RUN rm. Любой, кто скачал образ, его достанет.\",\n  \"why\": \"Секреты передают при запуске, а не при сборке.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ошибка COPY\",\n  \"title\": \"file not found\",\n  \"what\": \"«COPY failed: file not found in build context» — файл вне контекста или исключён .dockerignore.\",\n  \"why\": \"Проверь путь относительно контекста и .dockerignore.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Всегда заводи .dockerignore. Секреты никогда не копируй в образ."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bc-dot",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bc-secret",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bc-ignore",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "cmd-entrypoint",
+      "title": "CMD и ENTRYPOINT",
+      "summary": "Что запускается в контейнере, exec-форма и shell-форма, переопределение команды, PID 1 и сигналы.",
+      "chapter": "Dockerfile",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Управляем контекстом сборки и решаем, что запускается в контейнере.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"CMD\",\n  \"title\": \"Команда по умолчанию\",\n  \"what\": \"CMD задаёт команду запуска. Её можно заменить при запуске: `docker run myapp python manage.py migrate`.\",\n  \"why\": \"Один образ — разные задачи.\",\n  \"how\": \"CMD [\\\"python\\\", \\\"app.py\\\"]\",\n  \"kind\": \"idea\",\n  \"lang\": \"dockerfile\"\n}\n```\n\n```concept\n{\n  \"name\": \"ENTRYPOINT\",\n  \"title\": \"Неизменная часть\",\n  \"what\": \"ENTRYPOINT задаёт программу, а CMD — её аргументы по умолчанию. Аргументы из docker run заменяют только CMD.\",\n  \"why\": \"Образ ведёт себя как программа: `docker run tool --help`.\",\n  \"how\": \"ENTRYPOINT [\\\"curl\\\"]\\nCMD [\\\"--help\\\"]\",\n  \"kind\": \"idea\",\n  \"lang\": \"dockerfile\"\n}\n```\n\n```concept\n{\n  \"name\": \"Exec-форма\",\n  \"title\": \"Массив, а не строка\",\n  \"what\": \"`CMD [\\\"node\\\", \\\"server.js\\\"]` запускает процесс напрямую. Строковая форма `CMD node server.js` запускает через sh, и приложение не получает сигналы остановки.\",\n  \"why\": \"С exec-формой docker stop завершает приложение мягко, а не через 10 секунд.\",\n  \"kind\": \"idea\",\n  \"lang\": \"dockerfile\"\n}\n```\n\n```concept\n{\n  \"name\": \"PID 1\",\n  \"title\": \"Главный процесс\",\n  \"what\": \"Процесс из CMD получает номер 1 и должен корректно обрабатывать SIGTERM. Иначе остановка занимает 10 секунд и заканчивается SIGKILL.\",\n  \"why\": \"Мягкая остановка сохраняет незавершённые запросы и данные.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Пиши CMD и ENTRYPOINT массивом. ENTRYPOINT — программа, CMD — аргументы по умолчанию."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ce-override",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ce-exec",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ce-slow",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "layer-cache",
+      "title": "Кэш сборки",
+      "summary": "Как работает кэш слоёв, порядок инструкций, зависимости до кода, объединение RUN.",
+      "chapter": "Хорошие образы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Собираем свои образы и делаем сборку быстрой.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Кэш слоёв\",\n  \"title\": \"Не делать дважды\",\n  \"what\": \"Если инструкция и её входные файлы не изменились, Docker берёт готовый слой из кэша. Изменился слой — все следующие пересобираются.\",\n  \"why\": \"Правильный порядок превращает сборку из минут в секунды.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Зависимости до кода\",\n  \"title\": \"Главный приём\",\n  \"what\": \"Сначала копируют только файл зависимостей и ставят их, потом — весь код. Правка кода не сбрасывает кэш установки зависимостей.\",\n  \"why\": \"Установка пакетов — самый долгий шаг; он повторяется только при смене зависимостей.\",\n  \"how\": \"FROM node:22-slim\\nWORKDIR /app\\nCOPY package.json package-lock.json ./\\nRUN npm ci\\nCOPY . .\\nCMD [\\\"node\\\", \\\"server.js\\\"]\",\n  \"kind\": \"idea\",\n  \"lang\": \"dockerfile\"\n}\n```\n\n```concept\n{\n  \"name\": \"Объединять RUN\",\n  \"title\": \"Меньше слоёв и мусора\",\n  \"what\": \"`RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*` — одной инструкцией. Очистка в отдельном RUN не уменьшит образ.\",\n  \"why\": \"Мусор, записанный в слой, остаётся в нём навсегда.\",\n  \"kind\": \"idea\",\n  \"lang\": \"dockerfile\"\n}\n```\n\n```concept\n{\n  \"name\": \"--no-cache\",\n  \"title\": \"Собрать с нуля\",\n  \"what\": \"`docker build --no-cache` игнорирует кэш.\",\n  \"why\": \"Когда нужно точно получить свежие пакеты.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Редко меняется — выше, часто меняется — ниже. Установку и очистку — в одном RUN."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lc-order",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lc-chain",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lc-clean",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "multi-stage",
+      "title": "Многоэтапная сборка",
+      "summary": "Этап сборки и этап запуска, COPY --from, маленький финальный образ для Go, Node и фронтенда.",
+      "chapter": "Хорошие образы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Ускорили сборку и убираем инструменты сборки из итогового образа.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Несколько FROM\",\n  \"title\": \"Этапы\",\n  \"what\": \"В Dockerfile может быть несколько FROM. Первый этап собирает приложение со всеми инструментами, финальный берёт только результат через `COPY --from=build`.\",\n  \"why\": \"Компиляторы и dev-зависимости не попадают в итоговый образ.\",\n  \"how\": \"FROM node:22 AS build\\nWORKDIR /app\\nCOPY package*.json ./\\nRUN npm ci\\nCOPY . .\\nRUN npm run build\\n\\nFROM nginx:1.27-alpine\\nCOPY --from=build /app/dist /usr/share/nginx/html\",\n  \"kind\": \"idea\",\n  \"lang\": \"dockerfile\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что выигрываем\",\n  \"title\": \"Размер и безопасность\",\n  \"what\": \"Образ фронтенда — 50 МБ вместо 1 ГБ, нет исходников и инструментов, через которые можно атаковать.\",\n  \"why\": \"Быстрее загрузка на сервер, меньше уязвимостей.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Go и distroless\",\n  \"title\": \"Только бинарник\",\n  \"what\": \"Скомпилированную программу на Go кладут в почти пустой образ (distroless или scratch).\",\n  \"why\": \"Образ в несколько мегабайт.\",\n  \"how\": \"FROM golang:1.24 AS build\\nWORKDIR /src\\nCOPY . .\\nRUN CGO_ENABLED=0 go build -o /app\\n\\nFROM gcr.io/distroless/static\\nCOPY --from=build /app /app\\nENTRYPOINT [\\\"/app\\\"]\",\n  \"kind\": \"idea\",\n  \"lang\": \"dockerfile\"\n}\n```\n\n```concept\n{\n  \"name\": \"--target\",\n  \"title\": \"Собрать один этап\",\n  \"what\": \"`docker build --target build .` останавливается на нужном этапе.\",\n  \"why\": \"Отдельный образ для тестов или разработки из того же Dockerfile.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Собирай в одном этапе, запускай в другом. В финал — только результат сборки."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ms-from",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ms-why",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ms-target",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "secure-images",
+      "title": "Маленькие и безопасные образы",
+      "summary": "Базовые образы slim и alpine, пользователь не root, сканирование уязвимостей, фиксация версий.",
+      "chapter": "Хорошие образы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Собираем многоэтапные образы и делаем их безопасными.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"USER\",\n  \"title\": \"Не от root\",\n  \"what\": \"По умолчанию процесс в контейнере работает от root. Создай пользователя и переключись на него.\",\n  \"why\": \"Взломанное приложение не получит права администратора контейнера.\",\n  \"how\": \"RUN useradd --create-home app\\nUSER app\",\n  \"kind\": \"idea\",\n  \"lang\": \"dockerfile\"\n}\n```\n\n```concept\n{\n  \"name\": \"Базовый образ\",\n  \"title\": \"Меньше — лучше\",\n  \"what\": \"slim и alpine содержат меньше пакетов — меньше уязвимостей. alpine использует musl вместо glibc: некоторые пакеты Python и Node там ведут себя иначе.\",\n  \"why\": \"Для Python и Node чаще берут slim, для статических бинарников — distroless.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker scout\",\n  \"title\": \"Поиск уязвимостей\",\n  \"what\": \"`docker scout cves myapp:1.0` или сканер Trivy показывают известные уязвимости в пакетах образа.\",\n  \"why\": \"Обновить базовый образ — часто достаточно, чтобы закрыть десятки уязвимостей.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Фиксация версий\",\n  \"title\": \"Воспроизводимость\",\n  \"what\": \"Конкретные теги базового образа и lock-файлы зависимостей. Для полной точности — дайджест: `python:3.13-slim@sha256:…`.\",\n  \"why\": \"Сборка через месяц даёт тот же результат.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Не root, slim-основа, зафиксированные версии и регулярное сканирование."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "si-user",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "si-alpine",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "si-scan",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "volumes",
+      "title": "Тома",
+      "summary": "Именованные тома для данных баз, docker volume, -v и --mount, жизнь тома отдельно от контейнера.",
+      "chapter": "Данные и тома",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Делаем безопасные образы и учимся не терять данные.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Проблема данных\",\n  \"title\": \"Контейнер одноразовый\",\n  \"what\": \"Удалил или пересоздал контейнер базы данных — исчезли все таблицы, если они лежали в слое записи.\",\n  \"why\": \"Данные должны жить отдельно от контейнера.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Именованный том\",\n  \"title\": \"Хранилище Docker\",\n  \"what\": \"`-v pgdata:/var/lib/postgresql/data` — том pgdata монтируется в папку данных. Том переживает удаление контейнера.\",\n  \"why\": \"Обновил образ базы — данные на месте.\",\n  \"how\": \"$ docker run -d --name db -e POSTGRES_PASSWORD=devpass \\\\\\n    -v pgdata:/var/lib/postgresql/data postgres:17\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker volume\",\n  \"title\": \"Управление томами\",\n  \"what\": \"`docker volume ls`, `inspect`, `rm`. Неиспользуемые тома удаляет `docker volume prune`.\",\n  \"why\": \"prune удаляет данные безвозвратно — смотри список перед этим.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"--mount\",\n  \"title\": \"Подробная запись\",\n  \"what\": \"`--mount type=volume,source=pgdata,target=/var/lib/postgresql/data` — то же, что -v, но явно.\",\n  \"why\": \"Понятнее в сложных случаях и в документации.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Данные баз — только в именованных томах. Том живёт дольше контейнера."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vo-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vo-survive",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vo-prune",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "bind-mounts",
+      "title": "Привязка папок",
+      "summary": "Bind mount для разработки, живые правки кода, права файлов, tmpfs и только для чтения.",
+      "chapter": "Данные и тома",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Храним данные в томах и подключаем к контейнеру свой код.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Bind mount\",\n  \"title\": \"Папка хоста внутри\",\n  \"what\": \"`-v \\\"$(pwd)\\\":/app` — текущая папка видна в контейнере как /app. Изменения видны сразу в обе стороны.\",\n  \"why\": \"Правишь код в редакторе — сервер в контейнере перезагружается сам.\",\n  \"how\": \"$ docker run --rm -it -v \\\"$(pwd)\\\":/app -w /app -p 3000:3000 node:22 npm run dev\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Том или папка\",\n  \"title\": \"Что выбрать\",\n  \"what\": \"Том — для данных, которыми управляет Docker (базы). Папка хоста — для кода и конфигов при разработке.\",\n  \"why\": \"На сервере код живёт в образе, а не в подключённой папке.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \":ro\",\n  \"title\": \"Только чтение\",\n  \"what\": \"`-v ./nginx.conf:/etc/nginx/nginx.conf:ro` — контейнер не сможет изменить файл.\",\n  \"why\": \"Конфиги защищены от случайной записи.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Права файлов\",\n  \"title\": \"Чей файл\",\n  \"what\": \"Файлы, созданные в контейнере от root, на Linux-хосте окажутся принадлежащими root. Запускай с `--user \\\"$(id -u):$(id -g)\\\"`.\",\n  \"why\": \"Иначе потом не удалить собственные файлы без sudo.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"tmpfs\",\n  \"title\": \"Временные файлы в памяти\",\n  \"what\": \"`--tmpfs /tmp` — папка в оперативной памяти, исчезает при остановке.\",\n  \"why\": \"Быстро и не оставляет следов на диске.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Код при разработке — bind mount, данные — тома, конфиги — с :ro."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bm-dev",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bm-ro",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bm-owner",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "backups",
+      "title": "Резервные копии данных",
+      "summary": "Дамп базы через exec, архив тома через временный контейнер, восстановление и проверка.",
+      "chapter": "Данные и тома",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Подключаем папки и защищаем данные резервными копиями.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Дамп базы\",\n  \"title\": \"Правильная копия\",\n  \"what\": \"`docker exec db pg_dump -U postgres app > backup.sql` — согласованная копия базы через её собственный инструмент.\",\n  \"why\": \"Копирование файлов работающей базы может дать испорченную копию.\",\n  \"how\": \"$ docker exec db pg_dump -U postgres app > backup-2026-11-07.sql\\n$ ls -lh backup-2026-11-07.sql\\n-rw-r--r--  1 dev  staff  2.1M backup-2026-11-07.sql\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Архив тома\",\n  \"title\": \"Временный контейнер\",\n  \"what\": \"`docker run --rm -v pgdata:/data -v \\\"$(pwd)\\\":/backup alpine tar czf /backup/pgdata.tgz -C /data .` — упаковать содержимое тома.\",\n  \"why\": \"Подходит для любых томов, не только баз.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Восстановление\",\n  \"title\": \"Обратный путь\",\n  \"what\": \"`docker exec -i db psql -U postgres app < backup.sql`. Для тома — распаковать архив в новый том тем же приёмом.\",\n  \"why\": \"Копия, которую ни разу не восстанавливали, — не копия.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"3-2-1\",\n  \"title\": \"Правило копий\",\n  \"what\": \"Три копии, на двух разных носителях, одна — в другом месте.\",\n  \"why\": \"Сервер может сгореть вместе со своими копиями.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** База — через её дамп. Регулярно проверяй восстановление."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bk-dump",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bk-tmp",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bk-check",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "bridge-networks",
+      "title": "Сети Docker",
+      "summary": "Сеть bridge по умолчанию, свои сети, docker network create и connect.",
+      "chapter": "Сети контейнеров",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Защищаем данные и соединяем контейнеры между собой.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"bridge\",\n  \"title\": \"Сеть по умолчанию\",\n  \"what\": \"Каждый контейнер получает внутренний IP в виртуальной сети на хосте. В стандартной сети контейнеры не находят друг друга по имени.\",\n  \"why\": \"Поэтому для своих проектов создают свою сеть.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker network create\",\n  \"title\": \"Своя сеть\",\n  \"what\": \"`docker network create app-net`, затем `--network app-net` при запуске.\",\n  \"why\": \"Контейнеры одного проекта видят друг друга и изолированы от остальных.\",\n  \"how\": \"$ docker network create app-net\\n$ docker run -d --name db --network app-net -e POSTGRES_PASSWORD=devpass postgres:17\\n$ docker run -d --name api --network app-net myapi:1.0\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"network connect\",\n  \"title\": \"Подключить к сети\",\n  \"what\": \"`docker network connect app-net web` — добавить работающий контейнер в сеть. Контейнер может быть в нескольких сетях.\",\n  \"why\": \"Прокси видит и фронтенд, и API, а база доступна только API.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"network ls и inspect\",\n  \"title\": \"Что в сети\",\n  \"what\": \"`docker network inspect app-net` покажет подключённые контейнеры и их адреса.\",\n  \"why\": \"Диагностика «почему не видят друг друга».\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Для проекта — своя сеть. Изоляция: база только в сети с API."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bn-own",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bn-flag",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bn-multi",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "service-dns",
+      "title": "Имена вместо адресов",
+      "summary": "Встроенный DNS, имя контейнера как хост, строки подключения, частые ошибки localhost.",
+      "chapter": "Сети контейнеров",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Создаём сети и соединяем сервисы по именам.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Встроенный DNS\",\n  \"title\": \"Имя — это адрес\",\n  \"what\": \"В своей сети Docker отвечает на запрос имени контейнера его IP. API подключается к базе по адресу `db:5432`.\",\n  \"why\": \"IP контейнеров меняются при пересоздании, имена — нет.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Строка подключения\",\n  \"title\": \"DATABASE_URL\",\n  \"what\": \"`postgres://app:devpass@db:5432/app` — хост db, а не localhost.\",\n  \"why\": \"Одна переменная окружения настраивает подключение.\",\n  \"how\": \"DATABASE_URL=postgres://app:devpass@db:5432/app\",\n  \"kind\": \"idea\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ловушка localhost\",\n  \"title\": \"Не тот компьютер\",\n  \"what\": \"localhost внутри API — сам контейнер API, а не база и не хост. Ошибка «connection refused» на localhost — почти всегда это.\",\n  \"why\": \"Используй имя сервиса.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"host.docker.internal\",\n  \"title\": \"Достучаться до хоста\",\n  \"what\": \"Из контейнера на Docker Desktop хост доступен по имени host.docker.internal.\",\n  \"why\": \"Контейнер обращается к программе, запущенной прямо на твоём компьютере.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Внутри сети — имя контейнера. localhost — это сам контейнер."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sd-host",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sd-refused",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sd-ip",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "publish-expose",
+      "title": "Что открывать наружу",
+      "summary": "Публиковать только нужное, 127.0.0.1:порт, сеть host и none, обратный прокси.",
+      "chapter": "Сети контейнеров",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Соединяем сервисы по именам и решаем, что видно снаружи.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Минимум наружу\",\n  \"title\": \"Только вход\",\n  \"what\": \"Наружу публикуют только вход — веб-сервер или прокси. База и внутренние сервисы общаются через сеть Docker без -p.\",\n  \"why\": \"Открытая наружу база — частая причина утечек.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"127.0.0.1:5432:5432\",\n  \"title\": \"Только для своего компьютера\",\n  \"what\": \"Если указать адрес, порт откроется только на нём. Без адреса — на всех интерфейсах, видно из сети.\",\n  \"why\": \"Базу при разработке открывай только на localhost.\",\n  \"how\": \"$ docker run -d -p 127.0.0.1:5432:5432 -e POSTGRES_PASSWORD=devpass postgres:17\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Docker и файрвол\",\n  \"title\": \"Обход ufw\",\n  \"what\": \"На Linux опубликованный порт открывается правилами iptables Docker в обход ufw.\",\n  \"why\": \"Думай, что публикуешь: файрвол хоста может не спасти.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"--network host и none\",\n  \"title\": \"Особые режимы\",\n  \"what\": \"`host` — контейнер использует сеть хоста напрямую (без -p), `none` — без сети вообще.\",\n  \"why\": \"host — для особой производительности, none — для изолированных задач.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Обратный прокси\",\n  \"title\": \"Один вход\",\n  \"what\": \"Caddy, nginx или Traefik принимают все запросы на 80 и 443 и раздают их сервисам по именам.\",\n  \"why\": \"HTTPS и маршрутизация в одном месте.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Наружу — только прокси. Базы — без -p или на 127.0.0.1."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pe2-db",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pe2-local",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pe2-ufw",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "compose-basics",
+      "title": "Первый compose-файл",
+      "summary": "compose.yaml, services, image и build, ports, docker compose up и down.",
+      "chapter": "Docker Compose",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем сети и тома и описываем весь проект одним файлом.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"compose.yaml\",\n  \"title\": \"Проект в одном файле\",\n  \"what\": \"Все сервисы, тома, сети и настройки описаны в YAML. Вместо пяти длинных docker run — одна команда.\",\n  \"why\": \"Любой разработчик поднимает весь проект за минуту.\",\n  \"how\": \"services:\\n  api:\\n    build: .\\n    ports:\\n      - \\\"8000:8000\\\"\\n    environment:\\n      DATABASE_URL: postgres://app:devpass@db:5432/app\\n    depends_on:\\n      - db\\n  db:\\n    image: postgres:17\\n    environment:\\n      POSTGRES_USER: app\\n      POSTGRES_PASSWORD: devpass\\n    volumes:\\n      - pgdata:/var/lib/postgresql/data\\n\\nvolumes:\\n  pgdata:\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker compose up\",\n  \"title\": \"Поднять всё\",\n  \"what\": \"`docker compose up -d` собирает, создаёт сеть и тома и запускает сервисы в фоне. `--build` — пересобрать образы.\",\n  \"why\": \"Одна команда на весь проект.\",\n  \"how\": \"$ docker compose up -d\\n[+] Running 3/3\\n ✔ Network shop_default  Created\\n ✔ Container shop-db-1   Started\\n ✔ Container shop-api-1  Started\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker compose down\",\n  \"title\": \"Остановить и убрать\",\n  \"what\": \"Удаляет контейнеры и сеть. Тома остаются; `down -v` удалит и их.\",\n  \"why\": \"-v стирает данные базы — осторожно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сеть проекта\",\n  \"title\": \"Создаётся сама\",\n  \"what\": \"Compose создаёт отдельную сеть, и сервисы находят друг друга по именам из файла: api ходит в db.\",\n  \"why\": \"Не нужно создавать сети вручную.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** compose up -d — поднять, down — убрать, down -v — убрать с данными."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cb-up",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cb-down",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cb-dns",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "compose-services",
+      "title": "Сервисы, зависимости и масштаб",
+      "summary": "depends_on с условием, healthcheck, restart, profiles, несколько файлов и override.",
+      "chapter": "Docker Compose",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем compose-файлы и настраиваем порядок запуска сервисов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"depends_on\",\n  \"title\": \"Порядок запуска\",\n  \"what\": \"depends_on только задаёт порядок старта. Чтобы ждать готовности базы, нужен healthcheck и `condition: service_healthy`.\",\n  \"why\": \"Иначе API стартует раньше, чем база начала принимать подключения.\",\n  \"how\": \"services:\\n  api:\\n    depends_on:\\n      db:\\n        condition: service_healthy\\n  db:\\n    image: postgres:17\\n    healthcheck:\\n      test: [\\\"CMD\\\", \\\"pg_isready\\\", \\\"-U\\\", \\\"app\\\"]\\n      interval: 5s\\n      retries: 10\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"restart\",\n  \"title\": \"Перезапуск\",\n  \"what\": \"`restart: unless-stopped` — то же, что флаг --restart.\",\n  \"why\": \"Сервисы поднимаются после сбоя сами.\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"profiles\",\n  \"title\": \"Необязательные сервисы\",\n  \"what\": \"Сервис с `profiles: [tools]` запускается только с `docker compose --profile tools up`.\",\n  \"why\": \"Админка базы или почтовый перехватчик не мешают в обычной работе.\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Несколько файлов\",\n  \"title\": \"override\",\n  \"what\": \"compose.override.yaml подхватывается автоматически и дополняет основной файл. Для сервера — `-f compose.yaml -f compose.prod.yaml`.\",\n  \"why\": \"Общая часть одна, различия — в отдельных файлах.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ждать готовности — healthcheck + service_healthy. Различия окружений — в override-файлах."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cs-ready",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cs-profile",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cs-override",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "compose-dev",
+      "title": "Разработка с Compose",
+      "summary": "Код через bind mount, горячая перезагрузка, compose watch, logs, exec и run для одноразовых задач.",
+      "chapter": "Docker Compose",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Настраиваем сервисы и работаем с Compose каждый день.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Код в контейнере\",\n  \"title\": \"Живые правки\",\n  \"what\": \"volumes с папкой проекта и команда сервера разработки с перезагрузкой.\",\n  \"why\": \"Редактор на хосте, окружение в контейнере.\",\n  \"how\": \"services:\\n  web:\\n    build: .\\n    command: npm run dev\\n    volumes:\\n      - .:/app\\n      - /app/node_modules\\n    ports:\\n      - \\\"3000:3000\\\"\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Анонимный том для зависимостей\",\n  \"title\": \"/app/node_modules\",\n  \"what\": \"Вторая строка volumes оставляет node_modules из образа, иначе папка проекта с хоста её перекроет.\",\n  \"why\": \"Зависимости, собранные под Linux, не смешиваются с хостовыми.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"compose watch\",\n  \"title\": \"Синхронизация\",\n  \"what\": \"`docker compose watch` синхронизирует файлы или пересобирает сервис по правилам из раздела develop.\",\n  \"why\": \"Быстрее bind mount на macOS и не трогает node_modules.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"logs, exec, run\",\n  \"title\": \"Повседневные команды\",\n  \"what\": \"`docker compose logs -f api`, `docker compose exec db psql -U app`, `docker compose run --rm api npm test` — одноразовая задача в новом контейнере.\",\n  \"why\": \"Миграции, тесты и консоль — без установки на хост.\",\n  \"how\": \"$ docker compose run --rm api python manage.py migrate\\nApplying migrations... OK\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n**Главное.** Длинные процессы — up, одноразовые задачи — run --rm, консоль сервиса — exec."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cd-run",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cd-nm",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cd-logs",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "env-config",
+      "title": "Настройки через окружение",
+      "summary": "Двенадцатифакторный подход, .env в Compose, подстановка ${VAR}, ARG и ENV.",
+      "chapter": "Настройки и здоровье",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем с Compose каждый день и выносим настройки из кода.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Настройки снаружи\",\n  \"title\": \"Один образ на все среды\",\n  \"what\": \"Адреса, ключи и режимы работы приходят из переменных окружения, а не зашиты в образ. Образ один — для теста и для сервера.\",\n  \"why\": \"Протестировали образ — на сервер уходит именно он, а не пересобранный.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Подстановка\",\n  \"title\": \"${VAR}\",\n  \"what\": \"Compose подставляет переменные из файла .env рядом с compose.yaml: `image: myapp:${TAG:-latest}`. `env_file:` передаёт файл целиком в контейнер.\",\n  \"why\": \"Версия и настройки меняются без правки compose-файла.\",\n  \"how\": \"services:\\n  api:\\n    image: registry.example.com/shop/api:${TAG:-dev}\\n    env_file: .env.api\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"ARG и ENV\",\n  \"title\": \"При сборке и при запуске\",\n  \"what\": \"ARG доступна только во время сборки, ENV остаётся в образе и видна при запуске.\",\n  \"why\": \"Версию для сборки — через ARG, значение по умолчанию для приложения — через ENV.\",\n  \"how\": \"ARG NODE_VERSION=22\\nFROM node:${NODE_VERSION}-slim\\nENV NODE_ENV=production\",\n  \"kind\": \"idea\",\n  \"lang\": \"dockerfile\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не в ENV\",\n  \"title\": \"Секреты\",\n  \"what\": \"Пароли через ENV в Dockerfile попадают в образ и видны в docker inspect.\",\n  \"why\": \"Секреты передают при запуске, а лучше — через secrets.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Образ один, настройки — снаружи. ARG — сборка, ENV — запуск. Секреты не в Dockerfile."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ec-arg",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ec-default",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ec-one",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "secrets",
+      "title": "Секреты",
+      "summary": "Почему не ENV, secrets в Compose как файлы, секреты сборки --mount=type=secret.",
+      "chapter": "Настройки и здоровье",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Вынесли настройки наружу и отдельно разбираемся с паролями и ключами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Где утекают секреты\",\n  \"title\": \"Слои, inspect, логи\",\n  \"what\": \"Секрет в слое образа, в ENV (виден в docker inspect), в истории команд или в выводе логов.\",\n  \"why\": \"Утечка ключа к облаку стоит дороже любого сервера.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"secrets в Compose\",\n  \"title\": \"Секрет как файл\",\n  \"what\": \"Секрет монтируется в контейнер файлом /run/secrets/имя. Многие образы читают пароль из файла: POSTGRES_PASSWORD_FILE.\",\n  \"why\": \"Пароля нет ни в переменных, ни в образе.\",\n  \"how\": \"services:\\n  db:\\n    image: postgres:17\\n    environment:\\n      POSTGRES_PASSWORD_FILE: /run/secrets/db_password\\n    secrets:\\n      - db_password\\n\\nsecrets:\\n  db_password:\\n    file: ./secrets/db_password.txt\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Секрет при сборке\",\n  \"title\": \"--mount=type=secret\",\n  \"what\": \"Токен к закрытому реестру пакетов нужен только во время RUN и не должен остаться в слое.\",\n  \"why\": \"Сборка получает ключ, а образ — нет.\",\n  \"how\": \"RUN --mount=type=secret,id=npmrc,target=/root/.npmrc npm ci\",\n  \"kind\": \"idea\",\n  \"lang\": \"dockerfile\"\n}\n```\n\n```concept\n{\n  \"name\": \".gitignore\",\n  \"title\": \"Не в репозиторий\",\n  \"what\": \"Файлы .env и папка secrets — в .gitignore. В репозитории — только пример .env.example без настоящих значений.\",\n  \"why\": \"Закоммиченный ключ считается утёкшим, даже если коммит удалили.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Секреты — файлами из secrets, при сборке — через --mount=type=secret, в git — никогда."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "se-where",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "se-build",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "se-git",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "health-limits",
+      "title": "Проверки здоровья и ресурсы",
+      "summary": "HEALTHCHECK, состояния healthy и unhealthy, лимиты памяти и процессора, OOM.",
+      "chapter": "Настройки и здоровье",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Защитили секреты и следим, чтобы сервис был жив и не съел весь сервер.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"HEALTHCHECK\",\n  \"title\": \"Жив ли сервис\",\n  \"what\": \"Docker периодически выполняет команду проверки. Код 0 — healthy, иначе после нескольких попыток — unhealthy.\",\n  \"why\": \"Процесс работает, но завис — проверка это заметит.\",\n  \"how\": \"HEALTHCHECK --interval=10s --timeout=3s --retries=3 \\\\\\n  CMD curl -fsS http://localhost:8000/health || exit 1\",\n  \"kind\": \"idea\",\n  \"lang\": \"dockerfile\"\n}\n```\n\n```concept\n{\n  \"name\": \"Эндпоинт /health\",\n  \"title\": \"Что проверять\",\n  \"what\": \"Лёгкий адрес, который отвечает 200, если приложение готово: подключение к базе есть, очередь доступна.\",\n  \"why\": \"Прокси и оркестраторы направляют запросы только на здоровые экземпляры.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Лимиты\",\n  \"title\": \"--memory и --cpus\",\n  \"what\": \"`--memory 512m --cpus 1.5` — контейнер не съест больше. В Compose — `deploy.resources.limits`.\",\n  \"why\": \"Утечка памяти в одном сервисе не уронит весь сервер.\",\n  \"how\": \"$ docker run -d --memory 512m --cpus 1.5 myapi:1.0\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"OOM\",\n  \"title\": \"Нехватка памяти\",\n  \"what\": \"Превысил лимит памяти — ядро убивает процесс (код 137, OOMKilled: true в inspect).\",\n  \"why\": \"Видишь 137 — смотри лимиты и потребление памяти.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker stats\",\n  \"title\": \"Потребление вживую\",\n  \"what\": \"Показывает CPU, память, сеть и диск каждого контейнера в реальном времени.\",\n  \"why\": \"Подобрать лимиты по реальным цифрам.\",\n  \"how\": \"$ docker stats --no-stream\\nNAME   CPU %   MEM USAGE / LIMIT\\napi    2.31%   148MiB / 512MiB\\ndb     0.45%   61MiB / 1GiB\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n**Главное.** У каждого сервиса — /health и HEALTHCHECK. У каждого — лимит памяти."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hl-unhealthy",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hl-oom",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hl-stats",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "inspect",
+      "title": "Заглянуть в детали",
+      "summary": "docker inspect и --format, docker events, docker top, diff и port.",
+      "chapter": "Отладка и обслуживание",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Следим за здоровьем сервисов и учимся смотреть в подробности.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"docker inspect\",\n  \"title\": \"Всё о контейнере\",\n  \"what\": \"JSON с настройками: переменные, тома, сети, IP, политика перезапуска, причина остановки.\",\n  \"why\": \"Ответ на «с какими настройками он на самом деле запущен».\",\n  \"how\": \"$ docker inspect -f '{{.State.Status}} {{.State.ExitCode}} {{.State.OOMKilled}}' api\\nexited 137 true\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"--format\",\n  \"title\": \"Достать одно поле\",\n  \"what\": \"`-f '{{.NetworkSettings.Networks}}'` — шаблон Go вытаскивает нужное поле.\",\n  \"why\": \"Удобно в скриптах и при быстрой проверке.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker events\",\n  \"title\": \"Что происходит\",\n  \"what\": \"Поток событий: создание, запуск, остановка, смерть, health_status.\",\n  \"why\": \"Видно, что контейнер перезапускается по кругу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"top, diff, port\",\n  \"title\": \"Мелкие помощники\",\n  \"what\": \"`docker top api` — процессы, `docker diff api` — изменённые файлы, `docker port api` — опубликованные порты.\",\n  \"why\": \"Быстрые ответы без входа в контейнер.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Настройки и причина смерти — inspect. Хронология — events."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "in-exit",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "in-events",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "in-diff",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "troubleshooting",
+      "title": "Типичные поломки",
+      "summary": "Контейнер сразу завершается, перезапуск по кругу, порт занят, нет места, медленные файлы на Mac.",
+      "chapter": "Отладка и обслуживание",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем смотреть детали и разбираем частые поломки по шагам.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Сразу завершился\",\n  \"title\": \"Exited (0) или (1)\",\n  \"what\": \"Главный процесс закончился: команда отработала (код 0) или упала (код 1). Смотри docker logs.\",\n  \"why\": \"Контейнер «не держится», если его команда не долгоживущая.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Перезапуск по кругу\",\n  \"title\": \"Restarting\",\n  \"what\": \"Приложение падает при старте, а политика перезапуска поднимает его снова. Часто — неверная настройка или недоступная база.\",\n  \"why\": \"Логи последнего запуска: docker logs --tail 50.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Порт занят\",\n  \"title\": \"address already in use\",\n  \"what\": \"«Bind for 0.0.0.0:5432 failed: port is already allocated» — порт занят другим контейнером или программой на хосте.\",\n  \"why\": \"Найди виновника или опубликуй на другой порт.\",\n  \"how\": \"$ docker ps --filter publish=5432\\n$ lsof -i :5432\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Нет места\",\n  \"title\": \"no space left on device\",\n  \"what\": \"Старые образы, остановленные контейнеры и кэш сборки съедают десятки гигабайт.\",\n  \"why\": \"Очистка — следующий урок.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Медленно на Mac\",\n  \"title\": \"Файлы через ВМ\",\n  \"what\": \"Bind mount большой папки на macOS медленный из-за общей ВМ. Помогают compose watch, тома для зависимостей и VirtioFS.\",\n  \"why\": \"Не держи node_modules в подключённой папке.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Порядок: ps -a → logs → inspect → exec. Код выхода подскажет направление."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tr-exit0",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tr-port",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tr-loop",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "cleanup",
+      "title": "Уборка",
+      "summary": "docker system df, prune для контейнеров, образов, кэша сборки и томов, что безопасно удалять.",
+      "chapter": "Отладка и обслуживание",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Разбираем поломки и наводим порядок на диске.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"docker system df\",\n  \"title\": \"Что занимает место\",\n  \"what\": \"Показывает размер образов, контейнеров, томов и кэша сборки, и сколько можно освободить.\",\n  \"why\": \"Сначала смотри, потом удаляй.\",\n  \"how\": \"$ docker system df\\nTYPE            TOTAL  ACTIVE  SIZE     RECLAIMABLE\\nImages          34     6       18.2GB   14.9GB (81%)\\nBuild Cache     212    0       6.4GB    6.4GB\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"prune по частям\",\n  \"title\": \"Точечно\",\n  \"what\": \"`docker container prune` — остановленные контейнеры, `docker image prune` — безымянные образы, `-a` — все неиспользуемые, `docker builder prune` — кэш сборки.\",\n  \"why\": \"Каждая команда спрашивает подтверждение.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"docker system prune\",\n  \"title\": \"Всё сразу\",\n  \"what\": \"Удаляет остановленные контейнеры, неиспользуемые сети, висячие образы и кэш. С `--volumes` — и тома.\",\n  \"why\": \"Тома с --volumes — это данные. Без нужды этот флаг не ставь.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Безопасный порядок\",\n  \"title\": \"Сначала мусор\",\n  \"what\": \"Кэш сборки и висячие образы — безопасно. Неиспользуемые образы — скачаются снова. Тома — только если уверен.\",\n  \"why\": \"Данные базы не восстановить из реестра.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Сначала system df, потом prune по частям. Тома удаляй только сознательно."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cu-df",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cu-volumes",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cu-builder",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "push-registry",
+      "title": "Публикация образа",
+      "summary": "docker tag и push, вход в реестр, закрытые реестры, теги версий и sha коммита.",
+      "chapter": "Docker на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Навели порядок на диске и публикуем свои образы.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"docker login\",\n  \"title\": \"Вход в реестр\",\n  \"what\": \"`docker login registry.example.com` — для закрытых реестров. В CI вход делают токеном, а не паролем.\",\n  \"why\": \"Без входа push в закрытый реестр не пройдёт.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"tag и push\",\n  \"title\": \"Опубликовать\",\n  \"what\": \"Образ получает полное имя с реестром и тегом, потом отправляется.\",\n  \"why\": \"Сервер и коллеги скачивают тот же образ.\",\n  \"how\": \"$ docker tag shop-api:dev registry.example.com/shop/api:1.4.0\\n$ docker push registry.example.com/shop/api:1.4.0\\n1.4.0: digest: sha256:9b1c… size: 1786\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Схема тегов\",\n  \"title\": \"Версия и коммит\",\n  \"what\": \"Тег версии (1.4.0) для людей, тег с sha коммита (git-3f9c2a1) для точной связи с кодом. Теги не перезаписывают.\",\n  \"why\": \"Всегда понятно, какой код работает на сервере.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Многоплатформенные образы\",\n  \"title\": \"amd64 и arm64\",\n  \"what\": \"Mac на Apple Silicon собирает arm64, а сервер часто amd64. `docker buildx build --platform linux/amd64,linux/arm64` собирает оба варианта.\",\n  \"why\": \"Иначе на сервере — «exec format error».\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Тег версии и тег коммита. Под сервер — нужная платформа."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-format",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-sha",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-order",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "ci-images",
+      "title": "Docker в CI",
+      "summary": "Сборка и тесты в контейнерах, кэш сборки в CI, сканирование, публикация из GitHub Actions.",
+      "chapter": "Docker на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Публикуем образы вручную и переносим это в автоматический конвейер.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Конвейер\",\n  \"title\": \"Сборка → тесты → публикация\",\n  \"what\": \"CI собирает образ на каждый коммит, запускает в нём тесты, сканирует и публикует только при успехе.\",\n  \"why\": \"На сервер попадает только проверенный образ.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"GitHub Actions\",\n  \"title\": \"Сборка и публикация\",\n  \"what\": \"Готовые действия docker/login-action и docker/build-push-action собирают и публикуют образ с кэшем.\",\n  \"why\": \"Несколько строк настройки вместо скриптов.\",\n  \"how\": \"- uses: docker/login-action@v3\\n  with:\\n    registry: ghcr.io\\n    username: ${{ github.actor }}\\n    password: ${{ secrets.GITHUB_TOKEN }}\\n- uses: docker/build-push-action@v6\\n  with:\\n    push: true\\n    tags: ghcr.io/team/api:${{ github.sha }}\\n    cache-from: type=gha\\n    cache-to: type=gha,mode=max\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Кэш в CI\",\n  \"title\": \"Иначе каждый раз с нуля\",\n  \"what\": \"Машины CI одноразовые, поэтому кэш слоёв выгружают в хранилище CI или реестр.\",\n  \"why\": \"Сборка за минуту вместо десяти.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сервисы для тестов\",\n  \"title\": \"База в CI\",\n  \"what\": \"Тесты поднимают базу и очередь через Compose или сервисные контейнеры CI.\",\n  \"why\": \"Тесты работают с настоящей базой, а не с заглушкой.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** CI собирает, тестирует, сканирует и только потом публикует. Кэш — обязательно."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ci-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ci-cache",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ci-order",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "deploy-next",
+      "title": "Запуск на сервере и что дальше",
+      "summary": "Compose на сервере, обновление без простоя, логи и мониторинг, Kubernetes и управляемые платформы.",
+      "chapter": "Docker на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Собираем образы в CI и запускаем их на сервере.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Compose на сервере\",\n  \"title\": \"Просто и надёжно\",\n  \"what\": \"Для одного сервера хватает Compose: `docker compose pull && docker compose up -d` обновляет сервисы до новых образов.\",\n  \"why\": \"Небольшому проекту не нужен оркестратор.\",\n  \"how\": \"$ export TAG=1.4.0\\n$ docker compose pull\\n$ docker compose up -d\\n ✔ Container shop-api-1  Recreated\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Обновление без простоя\",\n  \"title\": \"Два экземпляра\",\n  \"what\": \"Пока новый экземпляр не прошёл проверку здоровья, прокси держит старый. Затем старый останавливают.\",\n  \"why\": \"Пользователи не видят ошибок при выкладке.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Логи и мониторинг\",\n  \"title\": \"Что видно на сервере\",\n  \"what\": \"Логи из stdout собирают в одно место (Loki, облачные журналы), метрики — Prometheus и cAdvisor.\",\n  \"why\": \"Узнать о проблеме раньше пользователей.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Kubernetes\",\n  \"title\": \"Флот контейнеров\",\n  \"what\": \"Оркестратор запускает контейнеры на многих серверах, сам перезапускает, масштабирует и обновляет их. Учится после уверенного Docker.\",\n  \"why\": \"Нужен, когда серверов и сервисов много.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Управляемые платформы\",\n  \"title\": \"Без своего сервера\",\n  \"what\": \"Многие облака принимают готовый образ и сами запускают его: Cloud Run, Fly и подобные.\",\n  \"why\": \"Образ — универсальный формат доставки приложения.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Один сервер — Compose. Много серверов — оркестратор. Образ — единица доставки везде."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dn-update",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dn-k8s",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dn-zero",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    }
+  ]
+}
