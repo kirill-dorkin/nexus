@@ -220,6 +220,19 @@ export function MyLearning() {
         </Surface>
       )}
       {!anonymous && !loading && !shownError && (
+        <Inline gap="sm">
+          <Link className={buttonClass({ variant: "secondary" })} href="/map">
+            Карта навыков
+          </Link>
+          <Link
+            className={buttonClass({ variant: "secondary" })}
+            href="/characters"
+          >
+            Персонажи и уровни
+          </Link>
+        </Inline>
+      )}
+      {!anonymous && !loading && !shownError && (
         <Inline gap="sm" className={styles.savedGrid}>
           <Button variant="secondary" disabled={busy} onClick={reload}>
             Обновить обучение

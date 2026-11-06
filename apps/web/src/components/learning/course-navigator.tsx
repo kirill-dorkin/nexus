@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { ListBulletsIcon, XIcon } from "@phosphor-icons/react/dist/ssr";
+import { useOwnProgress } from "./navigator/own-progress";
 import { Program } from "./navigator/program";
 import type { ProgramItem } from "./navigator/visited";
 import styles from "./course-navigator.module.css";
@@ -11,20 +12,26 @@ export { matchesQuery, type ProgramItem } from "./navigator/visited";
  * Course program next to a lesson. Built for long courses (100+ lessons):
  *   - the panel scrolls on its own and opens at the current lesson;
  *   - progress, the current chapter and a search field sit at the top;
- *   - lessons the visitor has opened are ticked (kept in this browser only);
+ *   - a learner who started the course sees lessons with a passed test ticked and the next
+ *     lesson marked; a guest sees the lessons opened in this browser;
  *   - on narrow screens the same panel opens as a full-height sheet from a floating button.
  */
 
 /** Desktop side panel plus, on narrow screens, a floating button that opens the same program as a sheet. */
 export function CourseNavigator({
+  organizationSlug,
+  offeringSlug,
   courseSlug,
   items,
   current
 }: {
+  organizationSlug: string;
+  offeringSlug: string;
   courseSlug: string;
   items: ProgramItem[];
   current: string;
 }) {
+  const progress = useOwnProgress(organizationSlug, offeringSlug);
   const dialog = useRef<HTMLDialogElement>(null);
   const [sheet, setSheet] = useState(false);
   const index = items.findIndex((i) => i.slug === current);
@@ -37,7 +44,12 @@ export function CourseNavigator({
   return (
     <>
       <nav className={styles.panel} aria-label="Уроки курса">
-        <Program courseSlug={courseSlug} items={items} current={current} />
+        <Program
+          courseSlug={courseSlug}
+          items={items}
+          current={current}
+          progress={progress}
+        />
       </nav>
       <button
         type="button"
@@ -76,6 +88,7 @@ export function CourseNavigator({
               courseSlug={courseSlug}
               items={items}
               current={current}
+              progress={progress}
               onNavigate={close}
             />
           </div>

@@ -225,6 +225,10 @@
 .lesson[data-visited] .title {
   color: var(--text-secondary);
 }
+.lesson[data-next] .minutes {
+  color: var(--accent-action);
+  font-weight: 700;
+}
 .minutes {
   color: var(--text-disabled);
   font-size: 0.72rem;
