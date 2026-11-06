@@ -784,6 +784,14 @@ async function clickText(cdp, text) {
   assert(clicked, `Could not click button '${text}'.`);
 }
 
+async function acceptRegistrationConsents(cdp) {
+  const accepted = await evaluate(
+    cdp,
+    `(() => { const boxes=[...document.querySelectorAll('input[type="checkbox"][name^="consent"]')]; boxes.forEach((box)=>{ if (!box.checked) box.click(); }); return boxes.length > 0 && boxes.every((box)=>box.checked); })()`
+  );
+  assert(accepted, "Could not accept the registration consents.");
+}
+
 async function accessibilityAudit(cdp, label) {
   const { nodes = [] } = await cdp.send("Accessibility.getFullAXTree");
   const interactiveRoles = new Set([
@@ -927,6 +935,7 @@ async function verifyStudio(cdp) {
     `studio-browser-${Date.now()}@example.test`
   );
   await fill(cdp, 'input[name="password"]', PASSWORD);
+  await acceptRegistrationConsents(cdp);
   await clickText(cdp, "Создать аккаунт");
   await waitForExpression(
     cdp,
@@ -1552,6 +1561,7 @@ async function verifyCanonicalLearner(cdp, authored) {
     const email = `canonical-learner-${Date.now()}@example.test`;
     await fill(cdp, 'input[name="email"]', email);
     await fill(cdp, 'input[name="password"]', PASSWORD);
+    await acceptRegistrationConsents(cdp);
     await clickText(cdp, "Создать аккаунт");
     await waitForExpression(
       cdp,
@@ -1752,6 +1762,7 @@ async function verifyCanonicalLearner(cdp, authored) {
       `other-canonical-${Date.now()}@example.test`
     );
     await fill(cdp, 'input[name="password"]', PASSWORD);
+    await acceptRegistrationConsents(cdp);
     await clickText(cdp, "Создать аккаунт");
     await waitForExpression(
       cdp,
@@ -2233,6 +2244,7 @@ async function runBrowserVerification(cdp) {
     !(await evaluate(cdp, "document.documentElement.scrollWidth > innerWidth")),
     "Learning registration overflows desktop."
   );
+  await acceptRegistrationConsents(cdp);
   await clickText(cdp, "Создать аккаунт");
   await waitForExpression(
     cdp,
@@ -2417,6 +2429,7 @@ async function runBrowserVerification(cdp) {
   await fill(cdp, `input[type="email"]`, email);
   await fill(cdp, `input[autocomplete="name"]`, "Browser Verification");
   await fill(cdp, `input[type="password"]`, PASSWORD);
+  await acceptRegistrationConsents(cdp);
   await clickText(cdp, "Создать аккаунт");
   await waitForExpression(
     cdp,

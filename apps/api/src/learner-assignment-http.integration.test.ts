@@ -5,6 +5,7 @@ import {
   assignmentCheckResultSchema,
   courseManifestV1Schema,
   publicLearningLessonSchema,
+  currentRegistrationConsents,
   type CourseManifestV1
 } from "@platform/contracts";
 import { createDatabasePool } from "@platform/database";
@@ -227,7 +228,8 @@ describe("learner file assignment HTTP + PostgreSQL boundary", () => {
       payload: {
         email: `${randomUUID()}@example.test`,
         password: `AssignmentLearner!${randomUUID()}`,
-        displayName: "Learner"
+        displayName: "Learner",
+        consents: currentRegistrationConsents()
       }
     });
     expect(registered.statusCode, registered.body).toBe(201);

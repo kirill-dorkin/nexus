@@ -17,6 +17,7 @@ export * from "./identity";
 export * from "./organizations";
 export * from "./authorization";
 export * from "./authentication";
+export * from "./legal";
 export * from "./commerce";
 export * from "./public-catalog";
 export * from "./github-integration";

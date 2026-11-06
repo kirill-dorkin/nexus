@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 import { expectAccessible } from "../a11y";
-import { newLearner } from "../fixtures/accounts";
+import { newLearner, acceptLegalDocuments } from "../fixtures/accounts";
 
 const course = "/courses/e2e-html";
 const lesson = `${course}/first-tag`;
@@ -75,6 +75,12 @@ test.describe.serial("a registered learner", () => {
     await page.getByLabel("Имя").fill(learner.name);
     await page.getByLabel("Электронная почта").fill(learner.email);
     await page.getByLabel("Пароль", { exact: true }).fill(learner.password);
+    await page
+      .getByRole("checkbox", { name: /пользовательского соглашения/ })
+      .check();
+    await page
+      .getByRole("checkbox", { name: /обработку моих персональных данных/ })
+      .check();
     await page.getByRole("button", { name: "Создать аккаунт" }).click();
 
     await expect(page).toHaveURL(lesson);
@@ -128,6 +134,7 @@ test("an enrolled learner sees the lesson skill change after a correct quiz", as
   await page.getByLabel("Имя").fill(learner.name);
   await page.getByLabel("Электронная почта").fill(learner.email);
   await page.getByLabel("Пароль", { exact: true }).fill(learner.password);
+  await acceptLegalDocuments(page);
   await page.getByRole("button", { name: "Создать аккаунт" }).click();
   await expect(page).toHaveURL(course);
   await page.getByRole("button", { name: "Начать курс" }).click();

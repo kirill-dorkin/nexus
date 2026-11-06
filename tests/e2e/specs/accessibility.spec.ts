@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { expectAccessible } from "../a11y";
-import { OWNER, newLearner } from "../fixtures/accounts";
+import { OWNER, newLearner, acceptLegalDocuments } from "../fixtures/accounts";
 
 /*
  * Accessibility audit (web quality phase 8): axe on every route a visitor or
@@ -21,6 +21,9 @@ const PUBLIC_ROUTES = [
   "/blog/kompyuternaya-gramotnost-s-nulya",
   "/login",
   "/login?mode=register",
+  "/privacy",
+  "/consent",
+  "/terms",
   "/me/learning",
   "/ui",
   "/no-such-page"
@@ -43,6 +46,7 @@ test("axe: /courses/e2e-html as an enrolled learner", async ({ page }) => {
   await page.getByLabel("Имя").fill(learner.name);
   await page.getByLabel("Электронная почта").fill(learner.email);
   await page.getByLabel("Пароль", { exact: true }).fill(learner.password);
+  await acceptLegalDocuments(page);
   await page.getByRole("button", { name: "Создать аккаунт" }).click();
   await expect(page).toHaveURL("/courses/e2e-html");
   await page.getByRole("button", { name: "Начать курс" }).click();
