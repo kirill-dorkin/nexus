@@ -26,7 +26,7 @@ Coding agents обязаны начинать работу с [`AGENTS.md`](AGEN
 - schema/API/event changes versioned или backward-compatible;
 - тесты покрывают изменённые invariants;
 - security-sensitive изменения описывают threat impact;
-- `pnpm check` проходит локально: формат, линтер без исключений, типы, тесты, пороги покрытия Web;
+- `pnpm check:fast` проходит локально (изменённые файлы: формат, линтер, типы, связанные тесты, архитектурные правила); полный набор, включая линтер и пороги покрытия Web, гоняет GitHub CI;
 - изменения Web дополнительно следуют Definition of Done из [`docs/architecture/web.md`](docs/architecture/web.md#web-definition-of-done).
 
 ## Зависимости модулей
