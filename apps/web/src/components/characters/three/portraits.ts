@@ -27,8 +27,9 @@ export function renderPortraits(
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.1;
   const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 50);
-  camera.position.set(2.4, 3, 10.5);
-  camera.lookAt(0, 2, 0);
+  // Room above the head for the crest at Мастер and above (the PC fan was clipped).
+  camera.position.set(2.4, 3.3, 11.8);
+  camera.lookAt(0, 2.3, 0);
   const out: Record<string, string> = {};
   try {
     for (const { slug, level } of requests) {

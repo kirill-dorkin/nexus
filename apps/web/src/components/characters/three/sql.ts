@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import type { Kit } from "./kit";
+import { BODY_UI } from "./meta";
 import type { CharacterDef } from "./types";
 
 /** SQL: a squat drum with glowing rings and data rows, a PRIMARY KEY and an index shield; teal and bronze. */
@@ -12,7 +13,7 @@ export const sql: CharacterDef = {
     glow: 0x2dd4bf,
     aura: 0x99f6e4
   },
-  ui: ["#2dd4bf", "#99f6e4", "#0f766e", "#042f2e"],
+  ui: BODY_UI.sql,
   master: "Мастер запросов",
   stages: [
     "Тяжёлая серая бочка, данные спят.",

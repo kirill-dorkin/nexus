@@ -10,7 +10,7 @@ import { useOwnSkillRecords, utcToday } from "../../lib/skill-map/own-skills";
 import { skillsWord } from "./character-labels";
 import { DailyPanel } from "./daily-panel";
 import { stageColours, usePortraits } from "./character-stage";
-import { hasBody } from "./three/roster";
+import { hasBody } from "./three/meta";
 import styles from "./characters.module.css";
 import stageStyles from "./character-stage.module.css";
 

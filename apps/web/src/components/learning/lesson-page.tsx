@@ -15,6 +15,7 @@ import { courseUrl, lessonUrl } from "../../lib/public-learning-routes";
 import { LearningPageHeading } from "./learning-page-heading";
 import { CourseNavigator } from "./course-navigator";
 import { LessonOrderHint } from "./lesson-order-hint";
+import { LessonCompanion } from "../characters/lesson-companion";
 import { SignupNudge } from "./signup-nudge";
 import styles from "./flow.module.css";
 import { absoluteUrl, jsonLd } from "../../lib/site";
@@ -174,6 +175,7 @@ export function LessonPageView({
                 href: lessonUrl(course, lesson.slug)
               }))}
             />
+            <LessonCompanion courseSlug={course.course.slug} />
             <LearnerEntry
               organizationSlug={course.organization.slug}
               offeringSlug={course.offering.slug}

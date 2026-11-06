@@ -1,5 +1,6 @@
 import type * as THREE from "three";
 import { cracks, type Kit } from "./kit";
+import { BODY_UI } from "./meta";
 import type { CharacterDef } from "./types";
 
 /** HTML: the block builder with helmet and spiked pauldrons; brick fire, the HTML5 orange. */
@@ -12,7 +13,7 @@ export const html: CharacterDef = {
     glow: 0xff6a21,
     aura: 0xffa15c
   },
-  ui: ["#f26a21", "#ffa15c", "#d9441c", "#3a1208"],
+  ui: BODY_UI.html,
   master: "Мастер тегов",
   stages: [
     "Маленький и сутулый, в трещинах. Горит один глаз.",

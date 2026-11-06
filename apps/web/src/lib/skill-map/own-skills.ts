@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import { HOME_ORGANIZATION_SLUG } from "../public-learning-routes";
 import { useApiResource, type Resource } from "../hooks/api-resource";
 import type { FreshnessState } from "./freshness";
@@ -76,7 +77,25 @@ export function useOwnSkillRecords(): {
   status: Resource<RecordsByKey>["status"];
   records: RecordsByKey;
 } {
-  const [resource] = useApiResource(ownSkillsPath(), ownSkillRecordsParser);
+  // Re-read after a checked quiz or assignment, so characters level up on the same page.
+  const [version, setVersion] = useState(0);
+  useEffect(() => {
+    const refresh = () => setVersion((v) => v + 1);
+    window.addEventListener("learning-progress-changed", refresh);
+    return () =>
+      window.removeEventListener("learning-progress-changed", refresh);
+  }, []);
+  const [resource] = useApiResource(
+    ownSkillsPath(),
+    ownSkillRecordsParser,
+    version
+  );
+  // While a refresh is loading, keep the last answer: a level must never dip to 0 and back.
+  const [last, setLast] = useState<RecordsByKey | null>(null);
+  if (resource.status === "ready" && last !== resource.data)
+    setLast(resource.data);
+  if (resource.status === "loading" && last)
+    return { status: "ready", records: last };
   return {
     status: resource.status,
     records: resource.status === "ready" ? resource.data : EMPTY
