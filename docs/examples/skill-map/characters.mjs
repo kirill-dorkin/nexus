@@ -220,6 +220,25 @@ export const characters = [
       "История кода и командная работа: коммиты и индекс, история и различия, отмена любых изменений, ветки и слияние, конфликты, удалённые репозитории, pull request и ревью на GitHub, rebase и чистая история, stash и .gitignore, устройство Git изнутри.",
     accent: "amber",
     sources: [{ manifest: "git-track.manifest.json", published: true }]
+  },
+  {
+    slug: "ts",
+    depth: {},
+    abilities: [
+      { title: "Основы типов", branches: ["Старт TypeScript", "Базовые типы"] },
+      { title: "Формы данных", branches: ["Объекты и интерфейсы", "Функции"] },
+      { title: "Сужение", branches: ["Объединения и сужение"] },
+      { title: "Дженерики", branches: ["Дженерики", "Утилитные типы"] },
+      { title: "Магия типов", branches: ["Типы из типов"] },
+      { title: "Архитектура", branches: ["Классы, модули и декларации", "TypeScript в проекте"] },
+      { title: "Практика", branches: ["TypeScript на практике"] }
+    ],
+    name: "TypeScript",
+    role: "Страж типов",
+    summary:
+      "JavaScript с типами: компилятор и tsconfig, примитивы и вывод типов, объекты и интерфейсы, функции, объединения и сужение, дженерики, утилитные, отображённые и условные типы, классы и модули, строгий режим, проверка данных из сети и типы DOM.",
+    accent: "blue",
+    sources: [{ manifest: "ts-track.manifest.json", published: true }]
   }
 ];
 
@@ -236,7 +255,8 @@ export const requires = {
   "js/DOM": ["html/Структура страницы"],
   "js/Формы": ["html/Формы"],
   "terminal/Оболочка": ["pc/Командная строка"],
-  "git/Старт Git": ["terminal/Файловая система в терминале"]
+  "git/Старт Git": ["terminal/Файловая система в терминале"],
+  "ts/Старт TypeScript": ["js/Старт JavaScript"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */

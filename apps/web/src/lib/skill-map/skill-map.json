@@ -5477,6 +5477,471 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "ts",
+      "name": "TypeScript",
+      "role": "Страж типов",
+      "summary": "JavaScript с типами: компилятор и tsconfig, примитивы и вывод типов, объекты и интерфейсы, функции, объединения и сужение, дженерики, утилитные, отображённые и условные типы, классы и модули, строгий режим, проверка данных из сети и типы DOM.",
+      "accent": "blue",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Основы типов",
+          "branches": [
+            "ts-1",
+            "ts-2"
+          ]
+        },
+        {
+          "title": "Формы данных",
+          "branches": [
+            "ts-3",
+            "ts-4"
+          ]
+        },
+        {
+          "title": "Сужение",
+          "branches": [
+            "ts-5"
+          ]
+        },
+        {
+          "title": "Дженерики",
+          "branches": [
+            "ts-6",
+            "ts-7"
+          ]
+        },
+        {
+          "title": "Магия типов",
+          "branches": [
+            "ts-8"
+          ]
+        },
+        {
+          "title": "Архитектура",
+          "branches": [
+            "ts-9",
+            "ts-10"
+          ]
+        },
+        {
+          "title": "Практика",
+          "branches": [
+            "ts-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "ts-1",
+          "title": "Старт TypeScript",
+          "depth": "practice",
+          "requires": [
+            "js-1"
+          ],
+          "skills": [
+            {
+              "key": "ts-why",
+              "title": "Зачем TypeScript",
+              "lesson": {
+                "course": "ts",
+                "slug": "why-ts",
+                "title": "Зачем JavaScript типы"
+              }
+            },
+            {
+              "key": "ts-compiler",
+              "title": "Компилятор",
+              "lesson": {
+                "course": "ts",
+                "slug": "compiler",
+                "title": "Компилятор tsc и первый проект"
+              }
+            },
+            {
+              "key": "ts-editor",
+              "title": "Работа в редакторе",
+              "lesson": {
+                "course": "ts",
+                "slug": "editor",
+                "title": "Типы в редакторе"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ts-2",
+          "title": "Базовые типы",
+          "depth": "practice",
+          "requires": [
+            "ts-1"
+          ],
+          "skills": [
+            {
+              "key": "ts-primitives",
+              "title": "Примитивы",
+              "lesson": {
+                "course": "ts",
+                "slug": "primitives",
+                "title": "Примитивы и аннотации"
+              }
+            },
+            {
+              "key": "ts-arrays",
+              "title": "Массивы и кортежи",
+              "lesson": {
+                "course": "ts",
+                "slug": "arrays-tuples",
+                "title": "Массивы и кортежи"
+              }
+            },
+            {
+              "key": "ts-special",
+              "title": "any, unknown, never",
+              "lesson": {
+                "course": "ts",
+                "slug": "any-unknown",
+                "title": "any, unknown и never"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ts-3",
+          "title": "Объекты и интерфейсы",
+          "depth": "practice",
+          "requires": [
+            "ts-2"
+          ],
+          "skills": [
+            {
+              "key": "ts-objects",
+              "title": "Типы объектов",
+              "lesson": {
+                "course": "ts",
+                "slug": "object-types",
+                "title": "Типы объектов"
+              }
+            },
+            {
+              "key": "ts-optional",
+              "title": "Необязательные поля",
+              "lesson": {
+                "course": "ts",
+                "slug": "optional-readonly",
+                "title": "Необязательные и неизменяемые поля"
+              }
+            },
+            {
+              "key": "ts-extend",
+              "title": "Расширение типов",
+              "lesson": {
+                "course": "ts",
+                "slug": "extend-index",
+                "title": "Расширение и словари"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ts-4",
+          "title": "Функции",
+          "depth": "practice",
+          "requires": [
+            "ts-3"
+          ],
+          "skills": [
+            {
+              "key": "ts-functions",
+              "title": "Функции",
+              "lesson": {
+                "course": "ts",
+                "slug": "function-types",
+                "title": "Типы параметров и результата"
+              }
+            },
+            {
+              "key": "ts-callbacks",
+              "title": "Типы функций",
+              "lesson": {
+                "course": "ts",
+                "slug": "callbacks",
+                "title": "Функции как значения"
+              }
+            },
+            {
+              "key": "ts-async",
+              "title": "Асинхронные функции",
+              "lesson": {
+                "course": "ts",
+                "slug": "overloads-this",
+                "title": "Перегрузки и асинхронные функции"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ts-5",
+          "title": "Объединения и сужение",
+          "depth": "practice",
+          "requires": [
+            "ts-4"
+          ],
+          "skills": [
+            {
+              "key": "ts-narrowing",
+              "title": "Сужение типов",
+              "lesson": {
+                "course": "ts",
+                "slug": "union-narrowing",
+                "title": "Объединения и сужение"
+              }
+            },
+            {
+              "key": "ts-discriminated",
+              "title": "Размеченные объединения",
+              "lesson": {
+                "course": "ts",
+                "slug": "discriminated",
+                "title": "Размеченные объединения"
+              }
+            },
+            {
+              "key": "ts-exhaustive",
+              "title": "Полнота проверки",
+              "lesson": {
+                "course": "ts",
+                "slug": "exhaustive",
+                "title": "Проверка всех вариантов"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ts-6",
+          "title": "Дженерики",
+          "depth": "practice",
+          "requires": [
+            "ts-5"
+          ],
+          "skills": [
+            {
+              "key": "ts-generics",
+              "title": "Дженерик-функции",
+              "lesson": {
+                "course": "ts",
+                "slug": "generic-functions",
+                "title": "Дженерики в функциях"
+              }
+            },
+            {
+              "key": "ts-constraints",
+              "title": "Ограничения",
+              "lesson": {
+                "course": "ts",
+                "slug": "constraints",
+                "title": "Ограничения дженериков"
+              }
+            },
+            {
+              "key": "ts-generic-types",
+              "title": "Дженерик-типы",
+              "lesson": {
+                "course": "ts",
+                "slug": "generic-types",
+                "title": "Дженерик-типы"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ts-7",
+          "title": "Утилитные типы",
+          "depth": "practice",
+          "requires": [
+            "ts-6"
+          ],
+          "skills": [
+            {
+              "key": "ts-utility-shape",
+              "title": "Утилиты формы",
+              "lesson": {
+                "course": "ts",
+                "slug": "partial-pick",
+                "title": "Partial, Required, Pick и Omit"
+              }
+            },
+            {
+              "key": "ts-utility-sets",
+              "title": "Утилиты множеств",
+              "lesson": {
+                "course": "ts",
+                "slug": "record-exclude",
+                "title": "Record, Readonly, Exclude и Extract"
+              }
+            },
+            {
+              "key": "ts-utility-fn",
+              "title": "Утилиты функций",
+              "lesson": {
+                "course": "ts",
+                "slug": "function-utilities",
+                "title": "ReturnType, Parameters и Awaited"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ts-8",
+          "title": "Типы из типов",
+          "depth": "practice",
+          "requires": [
+            "ts-7"
+          ],
+          "skills": [
+            {
+              "key": "ts-keyof",
+              "title": "keyof и typeof",
+              "lesson": {
+                "course": "ts",
+                "slug": "keyof-typeof",
+                "title": "keyof, typeof и доступ по индексу"
+              }
+            },
+            {
+              "key": "ts-mapped",
+              "title": "Mapped и conditional",
+              "lesson": {
+                "course": "ts",
+                "slug": "mapped-conditional",
+                "title": "Отображённые и условные типы"
+              }
+            },
+            {
+              "key": "ts-template",
+              "title": "Шаблонные типы",
+              "lesson": {
+                "course": "ts",
+                "slug": "template-literals",
+                "title": "Шаблонные строковые типы"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ts-9",
+          "title": "Классы, модули и декларации",
+          "depth": "practice",
+          "requires": [
+            "ts-8"
+          ],
+          "skills": [
+            {
+              "key": "ts-classes",
+              "title": "Классы",
+              "lesson": {
+                "course": "ts",
+                "slug": "classes",
+                "title": "Классы в TypeScript"
+              }
+            },
+            {
+              "key": "ts-modules",
+              "title": "Модули",
+              "lesson": {
+                "course": "ts",
+                "slug": "modules",
+                "title": "Модули и импорт типов"
+              }
+            },
+            {
+              "key": "ts-declarations",
+              "title": "Файлы объявлений",
+              "lesson": {
+                "course": "ts",
+                "slug": "declarations",
+                "title": "Файлы объявлений и @types"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ts-10",
+          "title": "TypeScript в проекте",
+          "depth": "practice",
+          "requires": [
+            "ts-9"
+          ],
+          "skills": [
+            {
+              "key": "ts-tsconfig",
+              "title": "tsconfig",
+              "lesson": {
+                "course": "ts",
+                "slug": "tsconfig",
+                "title": "tsconfig.json по делу"
+              }
+            },
+            {
+              "key": "ts-strict",
+              "title": "Строгий режим",
+              "lesson": {
+                "course": "ts",
+                "slug": "strict",
+                "title": "Строгий режим"
+              }
+            },
+            {
+              "key": "ts-migrate",
+              "title": "Переход и линтер",
+              "lesson": {
+                "course": "ts",
+                "slug": "migrate-lint",
+                "title": "Переход с JavaScript и линтинг"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ts-11",
+          "title": "TypeScript на практике",
+          "depth": "practice",
+          "requires": [
+            "ts-10"
+          ],
+          "skills": [
+            {
+              "key": "ts-api",
+              "title": "Данные API",
+              "lesson": {
+                "course": "ts",
+                "slug": "api-data",
+                "title": "Данные из сети"
+              }
+            },
+            {
+              "key": "ts-dom",
+              "title": "Типы DOM",
+              "lesson": {
+                "course": "ts",
+                "slug": "dom-types",
+                "title": "Типы DOM"
+              }
+            },
+            {
+              "key": "ts-satisfies",
+              "title": "satisfies и метки",
+              "lesson": {
+                "course": "ts",
+                "slug": "satisfies-brands",
+                "title": "satisfies и типы-метки"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,4499 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "ts",
+    "title": "TypeScript: JavaScript с типами",
+    "description": "TypeScript от первых аннотаций до типов, которые проверяют сами себя. Зачем нужны типы и как работает компилятор, примитивы и вывод типов, объекты и интерфейсы, функции, объединения и сужение, дженерики, утилитные типы, keyof, mapped и conditional types, классы и модули, tsconfig и строгий режим, типизация API, DOM и асинхронного кода. Каждое понятие объясняется карточкой с примером, каждый урок закрепляется вопросами."
+  },
+  "skills": [
+    {
+      "key": "ts-why",
+      "title": "Зачем TypeScript",
+      "description": "Объяснять, какие ошибки ловит TypeScript и почему его используют."
+    },
+    {
+      "key": "ts-compiler",
+      "title": "Компилятор",
+      "description": "Создать TypeScript-проект и проверять его компилятором."
+    },
+    {
+      "key": "ts-editor",
+      "title": "Работа в редакторе",
+      "description": "Пользоваться подсказками TypeScript и читать его ошибки."
+    },
+    {
+      "key": "ts-primitives",
+      "title": "Примитивы",
+      "description": "Аннотировать простые значения и пользоваться выводом типов."
+    },
+    {
+      "key": "ts-arrays",
+      "title": "Массивы и кортежи",
+      "description": "Описывать массивы и кортежи."
+    },
+    {
+      "key": "ts-special",
+      "title": "any, unknown, never",
+      "description": "Выбирать между any и unknown и понимать never."
+    },
+    {
+      "key": "ts-objects",
+      "title": "Типы объектов",
+      "description": "Описывать форму объектов через type и interface."
+    },
+    {
+      "key": "ts-optional",
+      "title": "Необязательные поля",
+      "description": "Описывать необязательные и неизменяемые поля и безопасно их читать."
+    },
+    {
+      "key": "ts-extend",
+      "title": "Расширение типов",
+      "description": "Собирать типы из других и описывать словари."
+    },
+    {
+      "key": "ts-functions",
+      "title": "Функции",
+      "description": "Типизировать параметры и результат функций."
+    },
+    {
+      "key": "ts-callbacks",
+      "title": "Типы функций",
+      "description": "Описывать функции, которые передают как значения."
+    },
+    {
+      "key": "ts-async",
+      "title": "Асинхронные функции",
+      "description": "Типизировать async-функции и при необходимости — перегрузки."
+    },
+    {
+      "key": "ts-narrowing",
+      "title": "Сужение типов",
+      "description": "Работать с объединениями, сужая тип проверками."
+    },
+    {
+      "key": "ts-discriminated",
+      "title": "Размеченные объединения",
+      "description": "Описывать состояния через объединения с полем-меткой."
+    },
+    {
+      "key": "ts-exhaustive",
+      "title": "Полнота проверки",
+      "description": "Гарантировать, что обработаны все варианты объединения."
+    },
+    {
+      "key": "ts-generics",
+      "title": "Дженерик-функции",
+      "description": "Писать функции, которые работают с любым типом и сохраняют его."
+    },
+    {
+      "key": "ts-constraints",
+      "title": "Ограничения",
+      "description": "Ограничивать параметры типа нужной формой."
+    },
+    {
+      "key": "ts-generic-types",
+      "title": "Дженерик-типы",
+      "description": "Описывать обобщённые структуры данных."
+    },
+    {
+      "key": "ts-utility-shape",
+      "title": "Утилиты формы",
+      "description": "Строить производные типы объектов через Partial, Pick и Omit."
+    },
+    {
+      "key": "ts-utility-sets",
+      "title": "Утилиты множеств",
+      "description": "Пользоваться Record, Readonly, Exclude и Extract."
+    },
+    {
+      "key": "ts-utility-fn",
+      "title": "Утилиты функций",
+      "description": "Получать типы из функций и промисов."
+    },
+    {
+      "key": "ts-keyof",
+      "title": "keyof и typeof",
+      "description": "Получать ключи, типы значений и полей."
+    },
+    {
+      "key": "ts-mapped",
+      "title": "Mapped и conditional",
+      "description": "Читать и писать отображённые и условные типы."
+    },
+    {
+      "key": "ts-template",
+      "title": "Шаблонные типы",
+      "description": "Описывать строки по шаблону."
+    },
+    {
+      "key": "ts-classes",
+      "title": "Классы",
+      "description": "Писать типизированные классы с модификаторами доступа."
+    },
+    {
+      "key": "ts-modules",
+      "title": "Модули",
+      "description": "Делить типы и код по модулям и импортировать типы правильно."
+    },
+    {
+      "key": "ts-declarations",
+      "title": "Файлы объявлений",
+      "description": "Подключать типы библиотек и описывать недостающие."
+    },
+    {
+      "key": "ts-tsconfig",
+      "title": "tsconfig",
+      "description": "Читать и настраивать tsconfig.json."
+    },
+    {
+      "key": "ts-strict",
+      "title": "Строгий режим",
+      "description": "Включать строгие проверки и понимать, что каждая ловит."
+    },
+    {
+      "key": "ts-migrate",
+      "title": "Переход и линтер",
+      "description": "Переводить проект на TypeScript и настраивать typescript-eslint."
+    },
+    {
+      "key": "ts-api",
+      "title": "Данные API",
+      "description": "Безопасно типизировать данные, пришедшие из сети."
+    },
+    {
+      "key": "ts-dom",
+      "title": "Типы DOM",
+      "description": "Типизировать работу с элементами страницы и событиями."
+    },
+    {
+      "key": "ts-satisfies",
+      "title": "satisfies и метки",
+      "description": "Проверять значения через satisfies и различать похожие значения метками."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "why-when",
+      "type": "quiz.single_choice",
+      "title": "Когда",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-why"
+      ],
+      "presentation": {
+        "question": "Когда TypeScript находит ошибку типа?",
+        "options": [
+          {
+            "id": "build",
+            "text": "При проверке и сборке, ещё до запуска кода"
+          },
+          {
+            "id": "runtime",
+            "text": "Только когда код выполняется у пользователя"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "server",
+            "text": "Только на сервере"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "build",
+        "explanation": "Это и есть статическая типизация."
+      }
+    },
+    {
+      "slug": "why-browser",
+      "type": "quiz.single_choice",
+      "title": "Браузер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-why"
+      ],
+      "presentation": {
+        "question": "Что получает браузер из TypeScript-проекта?",
+        "options": [
+          {
+            "id": "js",
+            "text": "Обычный JavaScript без типов"
+          },
+          {
+            "id": "ts",
+            "text": "Файлы .ts как есть"
+          },
+          {
+            "id": "binary",
+            "text": "Двоичный код"
+          },
+          {
+            "id": "both",
+            "text": "JavaScript и отдельно типы"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "js",
+        "explanation": "Типы стираются при компиляции."
+      }
+    },
+    {
+      "slug": "why-network",
+      "type": "quiz.single_choice",
+      "title": "Данные из сети",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-why"
+      ],
+      "presentation": {
+        "question": "Проверит ли TypeScript, что сервер прислал правильные данные?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет: типы существуют только при сборке, ответ сервера нужно проверять отдельно"
+          },
+          {
+            "id": "yes",
+            "text": "Да, автоматически"
+          },
+          {
+            "id": "fetch",
+            "text": "Да, если использовать fetch"
+          },
+          {
+            "id": "json",
+            "text": "Да, если ответ в JSON"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Во время работы типов уже нет."
+      }
+    },
+    {
+      "slug": "cp-noemit",
+      "type": "quiz.single_choice",
+      "title": "Только проверка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-compiler"
+      ],
+      "presentation": {
+        "question": "Как проверить типы во всём проекте, ничего не собирая?",
+        "options": [
+          {
+            "id": "noemit",
+            "text": "`npx tsc --noEmit`"
+          },
+          {
+            "id": "init",
+            "text": "`npx tsc --init`"
+          },
+          {
+            "id": "node",
+            "text": "`node app.ts`"
+          },
+          {
+            "id": "npm",
+            "text": "`npm start`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "noemit",
+        "explanation": "--noEmit — без вывода файлов."
+      }
+    },
+    {
+      "slug": "cp-config",
+      "type": "quiz.single_choice",
+      "title": "Настройки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-compiler"
+      ],
+      "presentation": {
+        "question": "В каком файле хранятся настройки TypeScript для проекта?",
+        "options": [
+          {
+            "id": "tsconfig",
+            "text": "tsconfig.json"
+          },
+          {
+            "id": "package",
+            "text": "package.json"
+          },
+          {
+            "id": "env",
+            "text": ".env"
+          },
+          {
+            "id": "gitignore",
+            "text": ".gitignore"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "tsconfig",
+        "explanation": "Его создаёт `tsc --init`."
+      }
+    },
+    {
+      "slug": "cp-node",
+      "type": "quiz.single_choice",
+      "title": "Запуск в Node.js",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-compiler"
+      ],
+      "presentation": {
+        "question": "Проверяет ли типы запуск `node app.ts` в современном Node.js?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет: типы просто вырезаются, проверку делает tsc"
+          },
+          {
+            "id": "yes",
+            "text": "Да, полностью"
+          },
+          {
+            "id": "half",
+            "text": "Да, но только в строгом режиме"
+          },
+          {
+            "id": "error",
+            "text": "Такой запуск невозможен"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Запуск и проверка — разные вещи."
+      }
+    },
+    {
+      "slug": "ed-rename",
+      "type": "quiz.single_choice",
+      "title": "Переименовать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-editor"
+      ],
+      "presentation": {
+        "question": "Как безопасно переименовать функцию во всём проекте в VS Code?",
+        "options": [
+          {
+            "id": "f2",
+            "text": "Клавиша F2 на имени функции"
+          },
+          {
+            "id": "find",
+            "text": "Найти и заменить текст во всех файлах"
+          },
+          {
+            "id": "manual",
+            "text": "Вручную в каждом файле"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить и написать заново"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "f2",
+        "explanation": "F2 переименовывает именно этот символ, а не все совпадения текста."
+      }
+    },
+    {
+      "slug": "ed-read",
+      "type": "quiz.single_choice",
+      "title": "Читать ошибку",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-editor"
+      ],
+      "presentation": {
+        "question": "С какого места лучше читать длинное сообщение об ошибке TypeScript?",
+        "options": [
+          {
+            "id": "last",
+            "text": "С последней строки: там конкретная причина"
+          },
+          {
+            "id": "first",
+            "text": "Только первую строку"
+          },
+          {
+            "id": "code",
+            "text": "Только номер ошибки"
+          },
+          {
+            "id": "skip",
+            "text": "Не читать, а добавить any"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "last",
+        "explanation": "Верхние строки описывают путь, нижняя — суть."
+      }
+    },
+    {
+      "slug": "ed-prop",
+      "type": "quiz.short_text",
+      "title": "Нет свойства",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "ts-editor"
+      ],
+      "presentation": {
+        "question": "Какой код ошибки TypeScript означает «у типа нет такого свойства»? Формат TS0000."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "TS2339",
+          "ts2339"
+        ],
+        "caseSensitive": false,
+        "explanation": "Например, опечатка в имени поля."
+      }
+    },
+    {
+      "slug": "pr-infer",
+      "type": "quiz.single_choice",
+      "title": "Вывод",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-primitives"
+      ],
+      "presentation": {
+        "question": "Какой тип у `let total = 10`?",
+        "options": [
+          {
+            "id": "number",
+            "text": "number"
+          },
+          {
+            "id": "any",
+            "text": "any"
+          },
+          {
+            "id": "ten",
+            "text": "10"
+          },
+          {
+            "id": "unknown",
+            "text": "unknown"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "number",
+        "explanation": "let может измениться, поэтому тип расширяется до number."
+      }
+    },
+    {
+      "slug": "pr-case",
+      "type": "quiz.single_choice",
+      "title": "Регистр",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-primitives"
+      ],
+      "presentation": {
+        "question": "Как правильно указать тип строки?",
+        "options": [
+          {
+            "id": "lower",
+            "text": "`string`"
+          },
+          {
+            "id": "upper",
+            "text": "`String`"
+          },
+          {
+            "id": "text",
+            "text": "`text`"
+          },
+          {
+            "id": "str",
+            "text": "`str`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lower",
+        "explanation": "String с большой — объект-обёртка."
+      }
+    },
+    {
+      "slug": "pr-literal",
+      "type": "quiz.single_choice",
+      "title": "Литерал",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-primitives"
+      ],
+      "presentation": {
+        "question": "Что допускает тип `\"s\" | \"m\" | \"l\"`?",
+        "options": [
+          {
+            "id": "three",
+            "text": "Только одну из трёх строк: \"s\", \"m\" или \"l\""
+          },
+          {
+            "id": "any",
+            "text": "Любую строку"
+          },
+          {
+            "id": "one",
+            "text": "Только строку \"s\""
+          },
+          {
+            "id": "number",
+            "text": "Числа от 1 до 3"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "three",
+        "explanation": "Это объединение литеральных типов."
+      }
+    },
+    {
+      "slug": "ar-push",
+      "type": "quiz.single_choice",
+      "title": "Добавить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-arrays"
+      ],
+      "presentation": {
+        "question": "Что будет при `const ids: number[] = []; ids.push(\"7\")`?",
+        "options": [
+          {
+            "id": "error",
+            "text": "Ошибка: строка не подходит в массив чисел"
+          },
+          {
+            "id": "ok",
+            "text": "Всё в порядке"
+          },
+          {
+            "id": "convert",
+            "text": "Строка превратится в число"
+          },
+          {
+            "id": "runtime",
+            "text": "Ошибка только при запуске"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "error",
+        "explanation": "Тип элемента проверяется при каждом добавлении."
+      }
+    },
+    {
+      "slug": "ar-tuple",
+      "type": "quiz.single_choice",
+      "title": "Кортеж",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-arrays"
+      ],
+      "presentation": {
+        "question": "Что описывает тип `[string, number]`?",
+        "options": [
+          {
+            "id": "pair",
+            "text": "Массив ровно из двух элементов: строки и числа"
+          },
+          {
+            "id": "many",
+            "text": "Массив строк и чисел любой длины"
+          },
+          {
+            "id": "object",
+            "text": "Объект с двумя полями"
+          },
+          {
+            "id": "union",
+            "text": "Строку или число"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pair",
+        "explanation": "Длина и порядок кортежа фиксированы."
+      }
+    },
+    {
+      "slug": "ar-readonly",
+      "type": "quiz.single_choice",
+      "title": "Только чтение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-arrays"
+      ],
+      "presentation": {
+        "question": "Что запрещает `readonly number[]`?",
+        "options": [
+          {
+            "id": "change",
+            "text": "Менять массив: push, pop, присваивание элементов"
+          },
+          {
+            "id": "read",
+            "text": "Читать элементы"
+          },
+          {
+            "id": "map",
+            "text": "Использовать map"
+          },
+          {
+            "id": "length",
+            "text": "Узнавать длину"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "change",
+        "explanation": "Читать и создавать новые массивы через map можно."
+      }
+    },
+    {
+      "slug": "sp-unknown",
+      "type": "quiz.single_choice",
+      "title": "Безопасно",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-special"
+      ],
+      "presentation": {
+        "question": "Что лучше для результата JSON.parse?",
+        "options": [
+          {
+            "id": "unknown",
+            "text": "unknown, а потом проверка типа"
+          },
+          {
+            "id": "any",
+            "text": "any — так проще"
+          },
+          {
+            "id": "string",
+            "text": "string"
+          },
+          {
+            "id": "never",
+            "text": "never"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "unknown",
+        "explanation": "unknown заставит проверить данные перед использованием."
+      }
+    },
+    {
+      "slug": "sp-any",
+      "type": "quiz.single_choice",
+      "title": "any",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-special"
+      ],
+      "presentation": {
+        "question": "Чем опасен any?",
+        "options": [
+          {
+            "id": "off",
+            "text": "Он отключает проверку, и ошибки всплывают только при запуске"
+          },
+          {
+            "id": "slow",
+            "text": "Замедляет код"
+          },
+          {
+            "id": "big",
+            "text": "Увеличивает размер файла"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "off",
+        "explanation": "any распространяется дальше по коду."
+      }
+    },
+    {
+      "slug": "sp-never",
+      "type": "quiz.single_choice",
+      "title": "never",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-special"
+      ],
+      "presentation": {
+        "question": "Какой тип у функции, которая всегда бросает исключение?",
+        "options": [
+          {
+            "id": "never",
+            "text": "never"
+          },
+          {
+            "id": "void",
+            "text": "void"
+          },
+          {
+            "id": "undefined",
+            "text": "undefined"
+          },
+          {
+            "id": "any",
+            "text": "any"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "never",
+        "explanation": "Она никогда не возвращает значение."
+      }
+    },
+    {
+      "slug": "ob-missing",
+      "type": "quiz.single_choice",
+      "title": "Нет поля",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-objects"
+      ],
+      "presentation": {
+        "question": "Тип User требует id и name. Что будет при `const u: User = { id: 1 }`?",
+        "options": [
+          {
+            "id": "error",
+            "text": "Ошибка: нет обязательного поля name"
+          },
+          {
+            "id": "ok",
+            "text": "Всё в порядке"
+          },
+          {
+            "id": "undefined",
+            "text": "name станет undefined без ошибки"
+          },
+          {
+            "id": "runtime",
+            "text": "Ошибка только при запуске"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "error",
+        "explanation": "Обязательные поля проверяются."
+      }
+    },
+    {
+      "slug": "ob-union",
+      "type": "quiz.single_choice",
+      "title": "Объединение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-objects"
+      ],
+      "presentation": {
+        "question": "Чем можно описать тип `\"draft\" | \"published\"`?",
+        "options": [
+          {
+            "id": "type",
+            "text": "Только через type"
+          },
+          {
+            "id": "interface",
+            "text": "Только через interface"
+          },
+          {
+            "id": "both",
+            "text": "И type, и interface"
+          },
+          {
+            "id": "class",
+            "text": "Только через class"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "type",
+        "explanation": "interface описывает только объекты."
+      }
+    },
+    {
+      "slug": "ob-typo",
+      "type": "quiz.single_choice",
+      "title": "Опечатка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-objects"
+      ],
+      "presentation": {
+        "question": "Что поймает TypeScript в `const u: User = { id: 1, nmae: \"Аня\" }`?",
+        "options": [
+          {
+            "id": "typo",
+            "text": "Лишнее поле nmae и отсутствие name"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          },
+          {
+            "id": "id",
+            "text": "Ошибку в id"
+          },
+          {
+            "id": "const",
+            "text": "Что нужно let"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "typo",
+        "explanation": "Проверка лишних полей работает для литералов объектов."
+      }
+    },
+    {
+      "slug": "op-type",
+      "type": "quiz.single_choice",
+      "title": "Тип поля",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-optional"
+      ],
+      "presentation": {
+        "question": "Какой тип у поля `avatar?: string` при чтении?",
+        "options": [
+          {
+            "id": "union",
+            "text": "string | undefined"
+          },
+          {
+            "id": "string",
+            "text": "string"
+          },
+          {
+            "id": "any",
+            "text": "any"
+          },
+          {
+            "id": "null",
+            "text": "null"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "union",
+        "explanation": "Поле может отсутствовать — значит, undefined."
+      }
+    },
+    {
+      "slug": "op-nullish",
+      "type": "quiz.single_choice",
+      "title": "По умолчанию",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-optional"
+      ],
+      "presentation": {
+        "question": "Что вернёт `name ?? \"Аноним\"`, если name равно пустой строке \"\"?",
+        "options": [
+          {
+            "id": "empty",
+            "text": "Пустую строку: ?? срабатывает только на null и undefined"
+          },
+          {
+            "id": "guest",
+            "text": "\"Аноним\""
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          },
+          {
+            "id": "undefined",
+            "text": "undefined"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "empty",
+        "explanation": "|| заменил бы и пустую строку, ?? — нет."
+      }
+    },
+    {
+      "slug": "op-readonly",
+      "type": "quiz.single_choice",
+      "title": "readonly",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-optional"
+      ],
+      "presentation": {
+        "question": "Что запрещает `readonly id: number`?",
+        "options": [
+          {
+            "id": "assign",
+            "text": "Присваивать полю новое значение"
+          },
+          {
+            "id": "read",
+            "text": "Читать поле"
+          },
+          {
+            "id": "create",
+            "text": "Создавать объект"
+          },
+          {
+            "id": "number",
+            "text": "Хранить числа больше 100"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "assign",
+        "explanation": "Читать можно, менять — нет."
+      }
+    },
+    {
+      "slug": "ex-and",
+      "type": "quiz.single_choice",
+      "title": "Пересечение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-extend"
+      ],
+      "presentation": {
+        "question": "Какие поля должны быть у значения типа `A & B`?",
+        "options": [
+          {
+            "id": "both",
+            "text": "Все поля A и все поля B"
+          },
+          {
+            "id": "either",
+            "text": "Поля A или поля B"
+          },
+          {
+            "id": "common",
+            "text": "Только общие поля"
+          },
+          {
+            "id": "none",
+            "text": "Никакие"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "both",
+        "explanation": "Пересечение — это «и то, и другое»."
+      }
+    },
+    {
+      "slug": "ex-record",
+      "type": "quiz.single_choice",
+      "title": "Все ключи",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-extend"
+      ],
+      "presentation": {
+        "question": "Чем полезен `Record<\"ru\" | \"en\", string>`?",
+        "options": [
+          {
+            "id": "keys",
+            "text": "TypeScript проверит, что заданы оба ключа ru и en"
+          },
+          {
+            "id": "any",
+            "text": "Разрешает любые ключи"
+          },
+          {
+            "id": "speed",
+            "text": "Ускоряет доступ"
+          },
+          {
+            "id": "array",
+            "text": "Превращает объект в массив"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "keys",
+        "explanation": "Забытый перевод станет ошибкой."
+      }
+    },
+    {
+      "slug": "ex-extends",
+      "type": "quiz.single_choice",
+      "title": "Расширение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-extend"
+      ],
+      "presentation": {
+        "question": "Что значит `interface Admin extends User`?",
+        "options": [
+          {
+            "id": "inherit",
+            "text": "Admin содержит все поля User плюс свои"
+          },
+          {
+            "id": "replace",
+            "text": "Admin заменяет User"
+          },
+          {
+            "id": "subset",
+            "text": "Admin содержит часть полей User"
+          },
+          {
+            "id": "class",
+            "text": "Admin — класс"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "inherit",
+        "explanation": "extends добавляет поля к уже описанным."
+      }
+    },
+    {
+      "slug": "fn-params",
+      "type": "quiz.single_choice",
+      "title": "Обязательно",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-functions"
+      ],
+      "presentation": {
+        "question": "Почему параметры функции нужно аннотировать?",
+        "options": [
+          {
+            "id": "infer",
+            "text": "TypeScript не может угадать, что передадут в функцию"
+          },
+          {
+            "id": "speed",
+            "text": "Чтобы код работал быстрее"
+          },
+          {
+            "id": "browser",
+            "text": "Так требует браузер"
+          },
+          {
+            "id": "never",
+            "text": "Не нужно никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "infer",
+        "explanation": "Без аннотации параметр получит неявный any."
+      }
+    },
+    {
+      "slug": "fn-optional",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-functions"
+      ],
+      "presentation": {
+        "question": "Где ставят необязательные параметры?",
+        "options": [
+          {
+            "id": "after",
+            "text": "После обязательных"
+          },
+          {
+            "id": "before",
+            "text": "Перед обязательными"
+          },
+          {
+            "id": "anywhere",
+            "text": "Где угодно"
+          },
+          {
+            "id": "last",
+            "text": "Только самым первым"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "after",
+        "explanation": "Иначе непонятно, какой аргумент к какому параметру относится."
+      }
+    },
+    {
+      "slug": "fn-default",
+      "type": "quiz.single_choice",
+      "title": "По умолчанию",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-functions"
+      ],
+      "presentation": {
+        "question": "Какой тип у параметра в `function page(size = 20)`?",
+        "options": [
+          {
+            "id": "number",
+            "text": "number, и параметр необязательный"
+          },
+          {
+            "id": "any",
+            "text": "any"
+          },
+          {
+            "id": "twenty",
+            "text": "Только 20"
+          },
+          {
+            "id": "string",
+            "text": "string"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "number",
+        "explanation": "Тип выводится из значения по умолчанию."
+      }
+    },
+    {
+      "slug": "cb-type",
+      "type": "quiz.single_choice",
+      "title": "Тип функции",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-callbacks"
+      ],
+      "presentation": {
+        "question": "Что описывает `(id: number) => void`?",
+        "options": [
+          {
+            "id": "fn",
+            "text": "Функцию, которая принимает число и результат которой не используется"
+          },
+          {
+            "id": "value",
+            "text": "Число или ничего"
+          },
+          {
+            "id": "object",
+            "text": "Объект с полем id"
+          },
+          {
+            "id": "promise",
+            "text": "Promise"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fn",
+        "explanation": "Стрелка в типе означает функцию."
+      }
+    },
+    {
+      "slug": "cb-context",
+      "type": "quiz.single_choice",
+      "title": "Вывод",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-callbacks"
+      ],
+      "presentation": {
+        "question": "Нужно ли писать тип u в `users.map(u => u.name)`, если users — User[]?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, TypeScript выведет u как User"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "any",
+            "text": "Да, иначе будет any"
+          },
+          {
+            "id": "never",
+            "text": "Нельзя использовать map"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Это контекстная типизация."
+      }
+    },
+    {
+      "slug": "cb-event",
+      "type": "quiz.single_choice",
+      "title": "Событие",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-callbacks"
+      ],
+      "presentation": {
+        "question": "Какой тип у e в `button.addEventListener(\"click\", e => …)`?",
+        "options": [
+          {
+            "id": "mouse",
+            "text": "MouseEvent"
+          },
+          {
+            "id": "any",
+            "text": "any"
+          },
+          {
+            "id": "event",
+            "text": "string"
+          },
+          {
+            "id": "key",
+            "text": "KeyboardEvent"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mouse",
+        "explanation": "TypeScript знает типы событий DOM."
+      }
+    },
+    {
+      "slug": "as-return",
+      "type": "quiz.single_choice",
+      "title": "Результат",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-async"
+      ],
+      "presentation": {
+        "question": "Что возвращает `async function f(): Promise<number>`?",
+        "options": [
+          {
+            "id": "promise",
+            "text": "Промис, который выполнится числом"
+          },
+          {
+            "id": "number",
+            "text": "Число сразу"
+          },
+          {
+            "id": "void",
+            "text": "Ничего"
+          },
+          {
+            "id": "any",
+            "text": "any"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "promise",
+        "explanation": "async всегда оборачивает результат в Promise."
+      }
+    },
+    {
+      "slug": "as-await",
+      "type": "quiz.single_choice",
+      "title": "Забыл await",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-async"
+      ],
+      "presentation": {
+        "question": "`const user = loadUser(1); console.log(user.name)` — что скажет TypeScript?",
+        "options": [
+          {
+            "id": "error",
+            "text": "Ошибка: у Promise<User> нет поля name"
+          },
+          {
+            "id": "ok",
+            "text": "Всё в порядке"
+          },
+          {
+            "id": "undefined",
+            "text": "Выведет undefined без ошибки"
+          },
+          {
+            "id": "warning",
+            "text": "Только предупреждение в консоли"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "error",
+        "explanation": "Тип Promise не равен типу данных."
+      }
+    },
+    {
+      "slug": "as-overload",
+      "type": "quiz.single_choice",
+      "title": "Перегрузки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-async"
+      ],
+      "presentation": {
+        "question": "Когда нужны перегрузки функций?",
+        "options": [
+          {
+            "id": "rare",
+            "text": "Редко: когда тип результата зависит от типа аргумента и объединения не хватает"
+          },
+          {
+            "id": "always",
+            "text": "Всегда для каждой функции"
+          },
+          {
+            "id": "async",
+            "text": "Для любой async-функции"
+          },
+          {
+            "id": "never",
+            "text": "Они запрещены"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rare",
+        "explanation": "Часто задачу проще решить дженериком."
+      }
+    },
+    {
+      "slug": "nr-union",
+      "type": "quiz.single_choice",
+      "title": "Что доступно",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-narrowing"
+      ],
+      "presentation": {
+        "question": "Какие методы можно вызвать у `id: string | number` без проверки?",
+        "options": [
+          {
+            "id": "common",
+            "text": "Только общие для string и number, например toString()"
+          },
+          {
+            "id": "all",
+            "text": "Все методы строк и чисел"
+          },
+          {
+            "id": "string",
+            "text": "Только методы строк"
+          },
+          {
+            "id": "none",
+            "text": "Никакие"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "common",
+        "explanation": "Пока тип не сужен, доступно только общее."
+      }
+    },
+    {
+      "slug": "nr-typeof",
+      "type": "quiz.single_choice",
+      "title": "Сужение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-narrowing"
+      ],
+      "presentation": {
+        "question": "Какой тип у id внутри `if (typeof id === \"number\") { … }`, если id: string | number?",
+        "options": [
+          {
+            "id": "number",
+            "text": "number"
+          },
+          {
+            "id": "union",
+            "text": "string | number"
+          },
+          {
+            "id": "string",
+            "text": "string"
+          },
+          {
+            "id": "unknown",
+            "text": "unknown"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "number",
+        "explanation": "Проверка typeof сужает тип внутри ветки."
+      }
+    },
+    {
+      "slug": "nr-guard",
+      "type": "quiz.short_text",
+      "title": "Проверка-функция",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "ts-narrowing"
+      ],
+      "presentation": {
+        "question": "Как пишется тип результата функции-проверки, которая сужает x до User? Формат: x ___ User."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "x is User",
+          "is"
+        ],
+        "caseSensitive": false,
+        "explanation": "Это пользовательский type guard."
+      }
+    },
+    {
+      "slug": "ds-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-discriminated"
+      ],
+      "presentation": {
+        "question": "Чем объединение с полем status лучше трёх флагов isLoading, error, data?",
+        "options": [
+          {
+            "id": "impossible",
+            "text": "Не позволяет описать невозможные комбинации, например загрузку и ошибку сразу"
+          },
+          {
+            "id": "short",
+            "text": "Короче пишется"
+          },
+          {
+            "id": "fast",
+            "text": "Быстрее работает"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "impossible",
+        "explanation": "Каждый вариант содержит ровно свои поля."
+      }
+    },
+    {
+      "slug": "ds-access",
+      "type": "quiz.single_choice",
+      "title": "Доступ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-discriminated"
+      ],
+      "presentation": {
+        "question": "Можно ли прочитать state.data, не проверив state.status?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет: data есть только у варианта status: \"ok\""
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "any",
+            "text": "Да, если state — any"
+          },
+          {
+            "id": "undefined",
+            "text": "Да, вернётся undefined без ошибки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Сначала сужение по метке."
+      }
+    },
+    {
+      "slug": "ds-tag",
+      "type": "quiz.single_choice",
+      "title": "Метка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-discriminated"
+      ],
+      "presentation": {
+        "question": "Каким должно быть поле-метка в каждом варианте?",
+        "options": [
+          {
+            "id": "literal",
+            "text": "Литеральным значением, разным у вариантов"
+          },
+          {
+            "id": "string",
+            "text": "Любой строкой"
+          },
+          {
+            "id": "number",
+            "text": "Числом"
+          },
+          {
+            "id": "optional",
+            "text": "Необязательным"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "literal",
+        "explanation": "По литералу TypeScript различает варианты."
+      }
+    },
+    {
+      "slug": "ex-never",
+      "type": "quiz.single_choice",
+      "title": "never",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-exhaustive"
+      ],
+      "presentation": {
+        "question": "Какой тип у значения в default, если все варианты объединения обработаны?",
+        "options": [
+          {
+            "id": "never",
+            "text": "never"
+          },
+          {
+            "id": "unknown",
+            "text": "unknown"
+          },
+          {
+            "id": "any",
+            "text": "any"
+          },
+          {
+            "id": "union",
+            "text": "Исходное объединение"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "never",
+        "explanation": "Вариантов не осталось."
+      }
+    },
+    {
+      "slug": "ex-new",
+      "type": "quiz.single_choice",
+      "title": "Новый вариант",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-exhaustive"
+      ],
+      "presentation": {
+        "question": "Ты добавил вариант \"archived\" в объединение. Чем поможет проверка с never?",
+        "options": [
+          {
+            "id": "errors",
+            "text": "Сборка покажет все switch, где новый вариант не обработан"
+          },
+          {
+            "id": "auto",
+            "text": "TypeScript сам допишет обработку"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          },
+          {
+            "id": "runtime",
+            "text": "Ошибка будет только при запуске"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "errors",
+        "explanation": "Значение archived не подходит к never."
+      }
+    },
+    {
+      "slug": "ex-enum",
+      "type": "quiz.single_choice",
+      "title": "enum или объединение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-exhaustive"
+      ],
+      "presentation": {
+        "question": "Чем объединение строк удобнее enum?",
+        "options": [
+          {
+            "id": "nocode",
+            "text": "Не создаёт кода в JavaScript и работает как обычные строки"
+          },
+          {
+            "id": "fast",
+            "text": "Работает быстрее процессора"
+          },
+          {
+            "id": "numbers",
+            "text": "Хранит числа"
+          },
+          {
+            "id": "always",
+            "text": "enum запрещён в TypeScript"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "nocode",
+        "explanation": "enum — один из немногих элементов TypeScript, который остаётся в JS-коде."
+      }
+    },
+    {
+      "slug": "gf-infer",
+      "type": "quiz.single_choice",
+      "title": "Вывод T",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-generics"
+      ],
+      "presentation": {
+        "question": "Какой тип вернёт `first([\"a\", \"b\"])` для `function first<T>(items: T[]): T | undefined`?",
+        "options": [
+          {
+            "id": "string",
+            "text": "string | undefined"
+          },
+          {
+            "id": "any",
+            "text": "any"
+          },
+          {
+            "id": "array",
+            "text": "string[]"
+          },
+          {
+            "id": "unknown",
+            "text": "unknown"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "string",
+        "explanation": "T выводится из аргумента как string."
+      }
+    },
+    {
+      "slug": "gf-any",
+      "type": "quiz.single_choice",
+      "title": "Против any",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-generics"
+      ],
+      "presentation": {
+        "question": "Почему `<T>` лучше, чем any, в универсальной функции?",
+        "options": [
+          {
+            "id": "keep",
+            "text": "Тип результата связан с типом аргумента и не теряется"
+          },
+          {
+            "id": "fast",
+            "text": "Код быстрее"
+          },
+          {
+            "id": "short",
+            "text": "Короче писать"
+          },
+          {
+            "id": "same",
+            "text": "Разницы нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "keep",
+        "explanation": "any обрывает проверку дальше по коду."
+      }
+    },
+    {
+      "slug": "gf-explicit",
+      "type": "quiz.single_choice",
+      "title": "Явно",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-generics"
+      ],
+      "presentation": {
+        "question": "Зачем писать `useState<User | null>(null)`?",
+        "options": [
+          {
+            "id": "widen",
+            "text": "Иначе тип выведется как null, и записать User будет нельзя"
+          },
+          {
+            "id": "style",
+            "text": "Только для красоты"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "react",
+            "text": "Так требует React всегда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "widen",
+        "explanation": "Начальное значение не описывает все будущие."
+      }
+    },
+    {
+      "slug": "cn-extends",
+      "type": "quiz.single_choice",
+      "title": "Ограничение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-constraints"
+      ],
+      "presentation": {
+        "question": "Что подойдёт в `longest<T extends { length: number }>`?",
+        "options": [
+          {
+            "id": "length",
+            "text": "Любое значение с полем length: строка, массив"
+          },
+          {
+            "id": "number",
+            "text": "Только числа"
+          },
+          {
+            "id": "object",
+            "text": "Любой объект"
+          },
+          {
+            "id": "any",
+            "text": "Что угодно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "length",
+        "explanation": "У числа нет length."
+      }
+    },
+    {
+      "slug": "cn-keyof",
+      "type": "quiz.single_choice",
+      "title": "Ключ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-constraints"
+      ],
+      "presentation": {
+        "question": "Что даст `get(user, \"emial\")` при сигнатуре `get<T, K extends keyof T>`?",
+        "options": [
+          {
+            "id": "error",
+            "text": "Ошибку: такого ключа у user нет"
+          },
+          {
+            "id": "undefined",
+            "text": "undefined без ошибки"
+          },
+          {
+            "id": "any",
+            "text": "Значение типа any"
+          },
+          {
+            "id": "string",
+            "text": "Пустую строку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "error",
+        "explanation": "keyof перечисляет только существующие ключи."
+      }
+    },
+    {
+      "slug": "cn-default",
+      "type": "quiz.single_choice",
+      "title": "По умолчанию",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-constraints"
+      ],
+      "presentation": {
+        "question": "Какой тип у data в `Response` при `type Response<T = unknown> = { data: T }`?",
+        "options": [
+          {
+            "id": "unknown",
+            "text": "unknown"
+          },
+          {
+            "id": "any",
+            "text": "any"
+          },
+          {
+            "id": "never",
+            "text": "never"
+          },
+          {
+            "id": "object",
+            "text": "object"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "unknown",
+        "explanation": "Параметр по умолчанию используется, когда T не указан."
+      }
+    },
+    {
+      "slug": "gt-what",
+      "type": "quiz.single_choice",
+      "title": "Что это",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-generic-types"
+      ],
+      "presentation": {
+        "question": "Что такое `ApiResponse<User>`?",
+        "options": [
+          {
+            "id": "filled",
+            "text": "Тип ApiResponse, где T заменено на User"
+          },
+          {
+            "id": "array",
+            "text": "Массив пользователей"
+          },
+          {
+            "id": "function",
+            "text": "Функция"
+          },
+          {
+            "id": "class",
+            "text": "Класс"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "filled",
+        "explanation": "Параметр типа подставляется как аргумент."
+      }
+    },
+    {
+      "slug": "gt-map",
+      "type": "quiz.single_choice",
+      "title": "Map",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-generic-types"
+      ],
+      "presentation": {
+        "question": "Что описывает `Map<string, number>`?",
+        "options": [
+          {
+            "id": "map",
+            "text": "Словарь со строковыми ключами и числовыми значениями"
+          },
+          {
+            "id": "array",
+            "text": "Массив строк и чисел"
+          },
+          {
+            "id": "tuple",
+            "text": "Пару строка-число"
+          },
+          {
+            "id": "union",
+            "text": "Строку или число"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "map",
+        "explanation": "K — тип ключа, V — тип значения."
+      }
+    },
+    {
+      "slug": "gt-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-generic-types"
+      ],
+      "presentation": {
+        "question": "Когда стоит сделать тип обобщённым?",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "Когда одна форма повторяется с разными данными внутри"
+          },
+          {
+            "id": "always",
+            "text": "Всегда"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "big",
+            "text": "Когда тип больше 10 строк"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "repeat",
+        "explanation": "Иначе пришлось бы копировать тип для каждого случая."
+      }
+    },
+    {
+      "slug": "us-partial",
+      "type": "quiz.single_choice",
+      "title": "Обновление",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-utility-shape"
+      ],
+      "presentation": {
+        "question": "Какой тип подходит для частичного обновления пользователя?",
+        "options": [
+          {
+            "id": "partial",
+            "text": "`Partial<User>`"
+          },
+          {
+            "id": "required",
+            "text": "`Required<User>`"
+          },
+          {
+            "id": "user",
+            "text": "`User`"
+          },
+          {
+            "id": "any",
+            "text": "`any`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "partial",
+        "explanation": "Все поля становятся необязательными."
+      }
+    },
+    {
+      "slug": "us-omit",
+      "type": "quiz.single_choice",
+      "title": "Без пароля",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-utility-shape"
+      ],
+      "presentation": {
+        "question": "Как описать пользователя без поля password?",
+        "options": [
+          {
+            "id": "omit",
+            "text": "`Omit<User, \"password\">`"
+          },
+          {
+            "id": "pick",
+            "text": "`Pick<User, \"password\">`"
+          },
+          {
+            "id": "partial",
+            "text": "`Partial<User>`"
+          },
+          {
+            "id": "exclude",
+            "text": "`User - password`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "omit",
+        "explanation": "Pick, наоборот, оставил бы только пароль."
+      }
+    },
+    {
+      "slug": "us-source",
+      "type": "quiz.single_choice",
+      "title": "Источник",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-utility-shape"
+      ],
+      "presentation": {
+        "question": "Почему лучше выводить UserPreview через Pick, чем копировать поля?",
+        "options": [
+          {
+            "id": "sync",
+            "text": "Изменения в User автоматически отразятся в производном типе"
+          },
+          {
+            "id": "short",
+            "text": "Только потому что короче"
+          },
+          {
+            "id": "fast",
+            "text": "Быстрее компилируется"
+          },
+          {
+            "id": "runtime",
+            "text": "Pick работает при запуске"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "sync",
+        "explanation": "Один источник правды."
+      }
+    },
+    {
+      "slug": "rx-exclude",
+      "type": "quiz.single_choice",
+      "title": "Exclude",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-utility-sets"
+      ],
+      "presentation": {
+        "question": "Что даст `Exclude<\"a\" | \"b\" | \"c\", \"c\">`?",
+        "options": [
+          {
+            "id": "ab",
+            "text": "\"a\" | \"b\""
+          },
+          {
+            "id": "c",
+            "text": "\"c\""
+          },
+          {
+            "id": "abc",
+            "text": "\"a\" | \"b\" | \"c\""
+          },
+          {
+            "id": "never",
+            "text": "never"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ab",
+        "explanation": "Exclude убирает подходящие варианты."
+      }
+    },
+    {
+      "slug": "rx-extract",
+      "type": "quiz.single_choice",
+      "title": "Extract",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-utility-sets"
+      ],
+      "presentation": {
+        "question": "Что делает Extract`<T, U>`?",
+        "options": [
+          {
+            "id": "keep",
+            "text": "Оставляет варианты T, подходящие под U"
+          },
+          {
+            "id": "remove",
+            "text": "Удаляет варианты T, подходящие под U"
+          },
+          {
+            "id": "merge",
+            "text": "Склеивает T и U"
+          },
+          {
+            "id": "keys",
+            "text": "Возвращает ключи T"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "keep",
+        "explanation": "Противоположность Exclude."
+      }
+    },
+    {
+      "slug": "rx-nonnull",
+      "type": "quiz.short_text",
+      "title": "Без null",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "ts-utility-sets"
+      ],
+      "presentation": {
+        "question": "Какая утилита убирает null и undefined из типа?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "NonNullable"
+        ],
+        "caseSensitive": false,
+        "explanation": "NonNullable<string | null> — string."
+      }
+    },
+    {
+      "slug": "fu-return",
+      "type": "quiz.single_choice",
+      "title": "Результат",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-utility-fn"
+      ],
+      "presentation": {
+        "question": "Как получить тип результата функции createStore?",
+        "options": [
+          {
+            "id": "return",
+            "text": "`ReturnType<typeof createStore>`"
+          },
+          {
+            "id": "typeof",
+            "text": "`typeof createStore`"
+          },
+          {
+            "id": "params",
+            "text": "`Parameters<typeof createStore>`"
+          },
+          {
+            "id": "awaited",
+            "text": "`Awaited<createStore>`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "return",
+        "explanation": "typeof даёт тип самой функции, а не результата."
+      }
+    },
+    {
+      "slug": "fu-awaited",
+      "type": "quiz.single_choice",
+      "title": "Промис",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-utility-fn"
+      ],
+      "presentation": {
+        "question": "Какой тип у `Awaited<Promise<User>>`?",
+        "options": [
+          {
+            "id": "user",
+            "text": "User"
+          },
+          {
+            "id": "promise",
+            "text": "Promise<User>"
+          },
+          {
+            "id": "any",
+            "text": "any"
+          },
+          {
+            "id": "void",
+            "text": "void"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "user",
+        "explanation": "Awaited разворачивает промис."
+      }
+    },
+    {
+      "slug": "fu-params",
+      "type": "quiz.single_choice",
+      "title": "Параметры",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-utility-fn"
+      ],
+      "presentation": {
+        "question": "Что возвращает `Parameters<typeof f>`?",
+        "options": [
+          {
+            "id": "tuple",
+            "text": "Кортеж типов параметров функции f"
+          },
+          {
+            "id": "object",
+            "text": "Объект с именами параметров"
+          },
+          {
+            "id": "return",
+            "text": "Тип результата"
+          },
+          {
+            "id": "count",
+            "text": "Число параметров"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "tuple",
+        "explanation": "Например, [url: string, init?: RequestInit]."
+      }
+    },
+    {
+      "slug": "ko-keyof",
+      "type": "quiz.single_choice",
+      "title": "keyof",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-keyof"
+      ],
+      "presentation": {
+        "question": "Что такое `keyof { id: number; name: string }`?",
+        "options": [
+          {
+            "id": "keys",
+            "text": "\"id\" | \"name\""
+          },
+          {
+            "id": "values",
+            "text": "number | string"
+          },
+          {
+            "id": "object",
+            "text": "Объект с ключами"
+          },
+          {
+            "id": "count",
+            "text": "2"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "keys",
+        "explanation": "keyof даёт объединение имён полей."
+      }
+    },
+    {
+      "slug": "ko-index",
+      "type": "quiz.single_choice",
+      "title": "Тип поля",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-keyof"
+      ],
+      "presentation": {
+        "question": "Как получить тип поля email из типа User?",
+        "options": [
+          {
+            "id": "index",
+            "text": "`User[\"email\"]`"
+          },
+          {
+            "id": "dot",
+            "text": "`User.email`"
+          },
+          {
+            "id": "keyof",
+            "text": "`keyof User.email`"
+          },
+          {
+            "id": "typeof",
+            "text": "`typeof email`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "index",
+        "explanation": "В типах используют квадратные скобки."
+      }
+    },
+    {
+      "slug": "ko-const",
+      "type": "quiz.single_choice",
+      "title": "as const",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-keyof"
+      ],
+      "presentation": {
+        "question": "Что даёт `typeof ROLES[number]` для `const ROLES = [\"admin\", \"user\"] as const`?",
+        "options": [
+          {
+            "id": "union",
+            "text": "\"admin\" | \"user\""
+          },
+          {
+            "id": "string",
+            "text": "string"
+          },
+          {
+            "id": "array",
+            "text": "string[]"
+          },
+          {
+            "id": "number",
+            "text": "number"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "union",
+        "explanation": "as const сохраняет литералы."
+      }
+    },
+    {
+      "slug": "mc-mapped",
+      "type": "quiz.single_choice",
+      "title": "Отображённый",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-mapped"
+      ],
+      "presentation": {
+        "question": "Что создаёт `{ [K in keyof T]?: string }`?",
+        "options": [
+          {
+            "id": "same",
+            "text": "Тип с теми же ключами, что у T, и необязательными строковыми значениями"
+          },
+          {
+            "id": "array",
+            "text": "Массив ключей"
+          },
+          {
+            "id": "union",
+            "text": "Объединение ключей"
+          },
+          {
+            "id": "copy",
+            "text": "Точную копию T"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "same",
+        "explanation": "Это перебор ключей T."
+      }
+    },
+    {
+      "slug": "mc-cond",
+      "type": "quiz.single_choice",
+      "title": "Условный",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-mapped"
+      ],
+      "presentation": {
+        "question": "Чему равен `IsString<number>` для `type IsString<T> = T extends string ? \"да\" : \"нет\"`?",
+        "options": [
+          {
+            "id": "no",
+            "text": "\"нет\""
+          },
+          {
+            "id": "yes",
+            "text": "\"да\""
+          },
+          {
+            "id": "never",
+            "text": "never"
+          },
+          {
+            "id": "boolean",
+            "text": "boolean"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "number не подходит под string."
+      }
+    },
+    {
+      "slug": "mc-infer",
+      "type": "quiz.short_text",
+      "title": "Извлечь",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "ts-mapped"
+      ],
+      "presentation": {
+        "question": "Какое ключевое слово в условном типе извлекает часть типа, например содержимое Promise?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "infer"
+        ],
+        "caseSensitive": false,
+        "explanation": "T extends Promise<infer R> ? R : T."
+      }
+    },
+    {
+      "slug": "tl-combo",
+      "type": "quiz.single_choice",
+      "title": "Комбинации",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-template"
+      ],
+      "presentation": {
+        "question": "Сколько вариантов у `${\"a\" | \"b\"}-${\"1\" | \"2\"}`?",
+        "options": [
+          {
+            "id": "four",
+            "text": "Четыре: a-1, a-2, b-1, b-2"
+          },
+          {
+            "id": "two",
+            "text": "Два"
+          },
+          {
+            "id": "one",
+            "text": "Один"
+          },
+          {
+            "id": "any",
+            "text": "Любая строка"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "four",
+        "explanation": "Шаблон перебирает все сочетания."
+      }
+    },
+    {
+      "slug": "tl-px",
+      "type": "quiz.single_choice",
+      "title": "Пиксели",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-template"
+      ],
+      "presentation": {
+        "question": "Подходит ли \"12em\" к типу `${number}px`?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет: строка должна заканчиваться на px"
+          },
+          {
+            "id": "yes",
+            "text": "Да"
+          },
+          {
+            "id": "number",
+            "text": "Да, потому что 12 — число"
+          },
+          {
+            "id": "any",
+            "text": "Подходит любая строка"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Шаблон проверяет и число, и суффикс."
+      }
+    },
+    {
+      "slug": "tl-cap",
+      "type": "quiz.short_text",
+      "title": "Заглавная",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "ts-template"
+      ],
+      "presentation": {
+        "question": "Какая встроенная утилита делает первую букву литерального типа заглавной?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "Capitalize"
+        ],
+        "caseSensitive": false,
+        "explanation": "Capitalize<\"click\"> — \"Click\"."
+      }
+    },
+    {
+      "slug": "cl-private",
+      "type": "quiz.single_choice",
+      "title": "private",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-classes"
+      ],
+      "presentation": {
+        "question": "Где доступно поле с модификатором private?",
+        "options": [
+          {
+            "id": "inside",
+            "text": "Только внутри самого класса"
+          },
+          {
+            "id": "children",
+            "text": "В классе и наследниках"
+          },
+          {
+            "id": "everywhere",
+            "text": "Везде"
+          },
+          {
+            "id": "module",
+            "text": "Во всём файле"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "inside",
+        "explanation": "protected добавил бы наследников."
+      }
+    },
+    {
+      "slug": "cl-implements",
+      "type": "quiz.single_choice",
+      "title": "implements",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-classes"
+      ],
+      "presentation": {
+        "question": "Что проверяет `class A implements B`?",
+        "options": [
+          {
+            "id": "contract",
+            "text": "Что в классе A есть всё, что требует интерфейс B"
+          },
+          {
+            "id": "inherit",
+            "text": "Что A наследует код B"
+          },
+          {
+            "id": "runtime",
+            "text": "Что B существует при запуске"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "contract",
+        "explanation": "implements не добавляет код, только проверяет."
+      }
+    },
+    {
+      "slug": "cl-hash",
+      "type": "quiz.single_choice",
+      "title": "Настоящий private",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-classes"
+      ],
+      "presentation": {
+        "question": "Чем `#value` отличается от `private value`?",
+        "options": [
+          {
+            "id": "runtime",
+            "text": "#value скрыто и при выполнении JavaScript, private — только проверка TypeScript"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          },
+          {
+            "id": "public",
+            "text": "#value — публичное поле"
+          },
+          {
+            "id": "static",
+            "text": "#value — статическое поле"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "runtime",
+        "explanation": "Типы стираются, а # — часть самого JavaScript."
+      }
+    },
+    {
+      "slug": "md-importtype",
+      "type": "quiz.single_choice",
+      "title": "import type",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-modules"
+      ],
+      "presentation": {
+        "question": "Зачем писать `import type { User }`?",
+        "options": [
+          {
+            "id": "erase",
+            "text": "Импорт гарантированно исчезнет из JavaScript и не попадёт в сборку"
+          },
+          {
+            "id": "faster",
+            "text": "Ускоряет выполнение кода"
+          },
+          {
+            "id": "runtime",
+            "text": "Делает тип доступным при запуске"
+          },
+          {
+            "id": "global",
+            "text": "Делает тип глобальным"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "erase",
+        "explanation": "Типы при выполнении не существуют."
+      }
+    },
+    {
+      "slug": "md-paths",
+      "type": "quiz.single_choice",
+      "title": "Псевдонимы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-modules"
+      ],
+      "presentation": {
+        "question": "Где настраивают короткие пути импорта вроде `@/ui/button`?",
+        "options": [
+          {
+            "id": "paths",
+            "text": "В paths внутри tsconfig.json (и в сборщике)"
+          },
+          {
+            "id": "package",
+            "text": "Только в package.json"
+          },
+          {
+            "id": "env",
+            "text": "В .env"
+          },
+          {
+            "id": "gitignore",
+            "text": "В .gitignore"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "paths",
+        "explanation": "Сборщик должен знать те же псевдонимы."
+      }
+    },
+    {
+      "slug": "md-namespace",
+      "type": "quiz.single_choice",
+      "title": "namespace",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-modules"
+      ],
+      "presentation": {
+        "question": "Что использовать в новом коде вместо namespace?",
+        "options": [
+          {
+            "id": "modules",
+            "text": "Обычные модули с import и export"
+          },
+          {
+            "id": "global",
+            "text": "Глобальные переменные"
+          },
+          {
+            "id": "class",
+            "text": "Статические классы"
+          },
+          {
+            "id": "enum",
+            "text": "enum"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "modules",
+        "explanation": "namespace остался от времён до модулей ES."
+      }
+    },
+    {
+      "slug": "dc-dts",
+      "type": "quiz.single_choice",
+      "title": ".d.ts",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-declarations"
+      ],
+      "presentation": {
+        "question": "Что содержит файл .d.ts?",
+        "options": [
+          {
+            "id": "types",
+            "text": "Только объявления типов, без кода"
+          },
+          {
+            "id": "code",
+            "text": "Скомпилированный код"
+          },
+          {
+            "id": "tests",
+            "text": "Тесты"
+          },
+          {
+            "id": "config",
+            "text": "Настройки компилятора"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "types",
+        "explanation": "Это описание API модуля."
+      }
+    },
+    {
+      "slug": "dc-types",
+      "type": "quiz.single_choice",
+      "title": "@types",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-declarations"
+      ],
+      "presentation": {
+        "question": "У пакета express нет встроенных типов. Что сделать?",
+        "options": [
+          {
+            "id": "install",
+            "text": "`npm install -D @types/express`"
+          },
+          {
+            "id": "any",
+            "text": "Объявить всё как any"
+          },
+          {
+            "id": "rewrite",
+            "text": "Переписать express на TypeScript"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего, TypeScript догадается"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "install",
+        "explanation": "Типы сообщества лежат в пакетах @types."
+      }
+    },
+    {
+      "slug": "dc-svg",
+      "type": "quiz.single_choice",
+      "title": "Импорт картинок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-declarations"
+      ],
+      "presentation": {
+        "question": "Как разрешить `import logo from \"./logo.svg\"` в TypeScript?",
+        "options": [
+          {
+            "id": "declare",
+            "text": "Объявить модуль \"*.svg\" в файле .d.ts"
+          },
+          {
+            "id": "rename",
+            "text": "Переименовать в logo.ts"
+          },
+          {
+            "id": "any",
+            "text": "Написать // any"
+          },
+          {
+            "id": "json",
+            "text": "Сохранить картинку как JSON"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "declare",
+        "explanation": "declare module описывает, что возвращает такой импорт."
+      }
+    },
+    {
+      "slug": "tc-lib",
+      "type": "quiz.single_choice",
+      "title": "lib",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-tsconfig"
+      ],
+      "presentation": {
+        "question": "Почему в серверном проекте убирают DOM из lib?",
+        "options": [
+          {
+            "id": "catch",
+            "text": "Чтобы обращение к document или window было ошибкой при сборке"
+          },
+          {
+            "id": "speed",
+            "text": "Сервер работает быстрее"
+          },
+          {
+            "id": "size",
+            "text": "Уменьшается размер кода"
+          },
+          {
+            "id": "css",
+            "text": "Чтобы отключить CSS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "catch",
+        "explanation": "На сервере нет DOM."
+      }
+    },
+    {
+      "slug": "tc-bundler",
+      "type": "quiz.single_choice",
+      "title": "moduleResolution",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-tsconfig"
+      ],
+      "presentation": {
+        "question": "Какой moduleResolution выбирают в проекте на Vite?",
+        "options": [
+          {
+            "id": "bundler",
+            "text": "Bundler"
+          },
+          {
+            "id": "classic",
+            "text": "Classic"
+          },
+          {
+            "id": "none",
+            "text": "None"
+          },
+          {
+            "id": "browser",
+            "text": "Browser"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bundler",
+        "explanation": "NodeNext — для чистого Node.js без сборщика."
+      }
+    },
+    {
+      "slug": "tc-include",
+      "type": "quiz.single_choice",
+      "title": "include",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-tsconfig"
+      ],
+      "presentation": {
+        "question": "Что делает `\"include\": [\"src\"]`?",
+        "options": [
+          {
+            "id": "only",
+            "text": "Проверять только файлы из папки src"
+          },
+          {
+            "id": "exclude",
+            "text": "Исключить src"
+          },
+          {
+            "id": "copy",
+            "text": "Скопировать src"
+          },
+          {
+            "id": "build",
+            "text": "Собрать src в один файл"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "only",
+        "explanation": "Остальные файлы TypeScript не проверяет."
+      }
+    },
+    {
+      "slug": "st-null",
+      "type": "quiz.single_choice",
+      "title": "strictNullChecks",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-strict"
+      ],
+      "presentation": {
+        "question": "Что меняет strictNullChecks?",
+        "options": [
+          {
+            "id": "separate",
+            "text": "null и undefined больше не входят в другие типы автоматически"
+          },
+          {
+            "id": "forbid",
+            "text": "Запрещает null в коде"
+          },
+          {
+            "id": "any",
+            "text": "Превращает null в any"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "separate",
+        "explanation": "string — только строка, без null."
+      }
+    },
+    {
+      "slug": "st-index",
+      "type": "quiz.single_choice",
+      "title": "Индекс",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-strict"
+      ],
+      "presentation": {
+        "question": "Какой тип у `items[0]` при включённом noUncheckedIndexedAccess, если items: Item[]?",
+        "options": [
+          {
+            "id": "maybe",
+            "text": "Item | undefined"
+          },
+          {
+            "id": "item",
+            "text": "Item"
+          },
+          {
+            "id": "any",
+            "text": "any"
+          },
+          {
+            "id": "never",
+            "text": "never"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "maybe",
+        "explanation": "Массив может быть пустым."
+      }
+    },
+    {
+      "slug": "st-old",
+      "type": "quiz.single_choice",
+      "title": "Старый проект",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-strict"
+      ],
+      "presentation": {
+        "question": "Как включать строаноним в большом старом проекте?",
+        "options": [
+          {
+            "id": "step",
+            "text": "Постепенно, по флагу и по папкам"
+          },
+          {
+            "id": "all",
+            "text": "Всё сразу и чинить тысячу ошибок за ночь"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "any",
+            "text": "Заменить всё на any"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "step",
+        "explanation": "Маленькими шагами — без остановки разработки."
+      }
+    },
+    {
+      "slug": "mg-allow",
+      "type": "quiz.single_choice",
+      "title": "allowJs",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-migrate"
+      ],
+      "presentation": {
+        "question": "Зачем нужен allowJs при переходе на TypeScript?",
+        "options": [
+          {
+            "id": "mix",
+            "text": "Чтобы .js и .ts жили в проекте вместе, пока файлы переводятся по одному"
+          },
+          {
+            "id": "speed",
+            "text": "Чтобы ускорить JavaScript"
+          },
+          {
+            "id": "disable",
+            "text": "Чтобы отключить TypeScript"
+          },
+          {
+            "id": "minify",
+            "text": "Чтобы сжать код"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mix",
+        "explanation": "Переход идёт постепенно."
+      }
+    },
+    {
+      "slug": "mg-expect",
+      "type": "quiz.single_choice",
+      "title": "Исключение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-migrate"
+      ],
+      "presentation": {
+        "question": "Чем @ts-expect-error лучше @ts-ignore?",
+        "options": [
+          {
+            "id": "stale",
+            "text": "Сам станет ошибкой, когда исключение больше не нужно"
+          },
+          {
+            "id": "silent",
+            "text": "Молчит всегда"
+          },
+          {
+            "id": "fast",
+            "text": "Быстрее компилируется"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "stale",
+        "explanation": "Ненужные заплатки не останутся незамеченными."
+      }
+    },
+    {
+      "slug": "mg-floating",
+      "type": "quiz.single_choice",
+      "title": "Забытый await",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-migrate"
+      ],
+      "presentation": {
+        "question": "Какое правило typescript-eslint ловит промисы, которые никто не ждёт?",
+        "options": [
+          {
+            "id": "floating",
+            "text": "no-floating-promises"
+          },
+          {
+            "id": "unused",
+            "text": "no-unused-vars"
+          },
+          {
+            "id": "any",
+            "text": "no-explicit-any"
+          },
+          {
+            "id": "console",
+            "text": "no-console"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "floating",
+        "explanation": "Такой промис может молча упасть."
+      }
+    },
+    {
+      "slug": "api-as",
+      "type": "quiz.single_choice",
+      "title": "as User",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-api"
+      ],
+      "presentation": {
+        "question": "Чем опасно `const user = (await res.json()) as User`?",
+        "options": [
+          {
+            "id": "trust",
+            "text": "TypeScript поверит на слово, а данные могут оказаться другими"
+          },
+          {
+            "id": "slow",
+            "text": "Медленно работает"
+          },
+          {
+            "id": "error",
+            "text": "Всегда ошибка компиляции"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "trust",
+        "explanation": "Утверждение типа ничего не проверяет."
+      }
+    },
+    {
+      "slug": "api-infer",
+      "type": "quiz.single_choice",
+      "title": "Тип из схемы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-api"
+      ],
+      "presentation": {
+        "question": "Как получить тип из схемы Zod UserSchema?",
+        "options": [
+          {
+            "id": "infer",
+            "text": "`z.infer<typeof UserSchema>`"
+          },
+          {
+            "id": "typeof",
+            "text": "`typeof UserSchema`"
+          },
+          {
+            "id": "return",
+            "text": "`ReturnType<UserSchema>`"
+          },
+          {
+            "id": "as",
+            "text": "`UserSchema as Type`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "infer",
+        "explanation": "Схема — источник правды и для проверки, и для типа."
+      }
+    },
+    {
+      "slug": "api-safe",
+      "type": "quiz.single_choice",
+      "title": "safeParse",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-api"
+      ],
+      "presentation": {
+        "question": "Что возвращает safeParse?",
+        "options": [
+          {
+            "id": "union",
+            "text": "Объект с success: true и data или success: false и error"
+          },
+          {
+            "id": "throw",
+            "text": "Бросает исключение"
+          },
+          {
+            "id": "boolean",
+            "text": "Только true или false"
+          },
+          {
+            "id": "any",
+            "text": "any"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "union",
+        "explanation": "Это размеченное объединение."
+      }
+    },
+    {
+      "slug": "dom-null",
+      "type": "quiz.single_choice",
+      "title": "null",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-dom"
+      ],
+      "presentation": {
+        "question": "Почему TypeScript не даёт сразу написать `document.querySelector(\".price\").textContent = …`?",
+        "options": [
+          {
+            "id": "null",
+            "text": "querySelector может вернуть null, если элемента нет"
+          },
+          {
+            "id": "readonly",
+            "text": "textContent только для чтения"
+          },
+          {
+            "id": "string",
+            "text": "textContent — не строка"
+          },
+          {
+            "id": "dom",
+            "text": "TypeScript не знает DOM"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "null",
+        "explanation": "Сначала проверь, что элемент найден."
+      }
+    },
+    {
+      "slug": "dom-input",
+      "type": "quiz.single_choice",
+      "title": "value",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-dom"
+      ],
+      "presentation": {
+        "question": "Как получить доступ к value у поля, найденного по классу .email?",
+        "options": [
+          {
+            "id": "generic",
+            "text": "`querySelector<HTMLInputElement>(\".email\")`"
+          },
+          {
+            "id": "any",
+            "text": "`querySelector(\".email\") as any`"
+          },
+          {
+            "id": "value",
+            "text": "`querySelector(\".email\").value` без изменений"
+          },
+          {
+            "id": "byid",
+            "text": "Это невозможно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "generic",
+        "explanation": "Тип элемента указывают параметром дженерика."
+      }
+    },
+    {
+      "slug": "dom-tag",
+      "type": "quiz.single_choice",
+      "title": "По тегу",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-dom"
+      ],
+      "presentation": {
+        "question": "Какой тип вернёт `document.querySelector(\"input\")`?",
+        "options": [
+          {
+            "id": "input",
+            "text": "HTMLInputElement | null"
+          },
+          {
+            "id": "element",
+            "text": "Element"
+          },
+          {
+            "id": "any",
+            "text": "any"
+          },
+          {
+            "id": "node",
+            "text": "Node"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "input",
+        "explanation": "По имени тега TypeScript знает конкретный тип."
+      }
+    },
+    {
+      "slug": "sb-satisfies",
+      "type": "quiz.single_choice",
+      "title": "satisfies",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-satisfies"
+      ],
+      "presentation": {
+        "question": "Чем `satisfies` отличается от аннотации типа?",
+        "options": [
+          {
+            "id": "keep",
+            "text": "Проверяет форму, но сохраняет точный выведенный тип"
+          },
+          {
+            "id": "skip",
+            "text": "Отключает проверку"
+          },
+          {
+            "id": "runtime",
+            "text": "Проверяет при выполнении"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "keep",
+        "explanation": "Аннотация расширила бы тип до указанного."
+      }
+    },
+    {
+      "slug": "sb-brand",
+      "type": "quiz.single_choice",
+      "title": "Метки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ts-satisfies"
+      ],
+      "presentation": {
+        "question": "Зачем делать UserId и OrderId разными типами-метками?",
+        "options": [
+          {
+            "id": "mixup",
+            "text": "Чтобы TypeScript не дал перепутать id пользователя и заказа"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "db",
+            "text": "Так требует база данных"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mixup",
+        "explanation": "Оба — числа, но смысл разный."
+      }
+    },
+    {
+      "slug": "sb-docs",
+      "type": "quiz.multiple_choice",
+      "title": "Польза типов",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "ts-satisfies"
+      ],
+      "presentation": {
+        "question": "Что дают точные типы в проекте?",
+        "options": [
+          {
+            "id": "docs",
+            "text": "Документацию, которая не устаревает"
+          },
+          {
+            "id": "errors",
+            "text": "Ошибки до запуска"
+          },
+          {
+            "id": "refactor",
+            "text": "Безопасные переименования"
+          },
+          {
+            "id": "speed",
+            "text": "Более быстрый JavaScript в браузере"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "docs",
+          "errors",
+          "refactor"
+        ],
+        "explanation": "На скорость выполнения типы не влияют — их нет при запуске."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "why-ts",
+      "title": "Зачем JavaScript типы",
+      "summary": "Какие ошибки ловит TypeScript, что такое статическая типизация и чем TypeScript остаётся JavaScript.",
+      "chapter": "Старт TypeScript",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Начинаем курс: разбираемся, зачем JavaScript понадобились типы.\",\"cast\":[\"nika\"]}\n```\n\nJavaScript узнаёт об ошибке, только когда строка выполняется: `user.nmae` вернёт undefined, а `total.toFixed` упадёт у пользователя. TypeScript находит такие ошибки ещё в редакторе.\n\n```concept\n{\n  \"name\": \"TypeScript\",\n  \"title\": \"JavaScript с типами\",\n  \"what\": \"Язык от Microsoft: весь JavaScript плюс описание типов. Браузер TypeScript не понимает — код компилируется в обычный JavaScript, а типы при этом стираются.\",\n  \"why\": \"Ошибки находятся до запуска, редактор точно подсказывает поля и методы, а код легче менять большим командам.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Статическая типизация\",\n  \"title\": \"Проверка до запуска\",\n  \"what\": \"Типы проверяются при сборке, без выполнения кода. Если функция ждёт число, а ей передали строку, сборка остановится с понятной ошибкой.\",\n  \"why\": \"Ошибка в одном файле видна сразу во всех местах, где он используется.\",\n  \"how\": \"function total(price: number, count: number) {\\n  return price * count;\\n}\\ntotal(\\\"100\\\", 2); // Ошибка: string не подходит для number\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Надмножество JavaScript\",\n  \"title\": \"Любой JS — уже TS\",\n  \"what\": \"Корректный JavaScript почти всегда является корректным TypeScript. Типы можно добавлять постепенно, файл за файлом.\",\n  \"why\": \"Проект на JavaScript переводят на TypeScript по частям, не останавливая работу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Типы стираются\",\n  \"title\": \"Во время работы их нет\",\n  \"what\": \"После компиляции от типов не остаётся ничего: проверки происходят только при сборке. Данные из сети TypeScript проверить не может.\",\n  \"why\": \"Ответ сервера нужно проверять отдельно — этому посвящён урок в конце курса.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** TypeScript ловит ошибки до запуска, но в браузер уходит обычный JavaScript без типов."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "why-when",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "why-browser",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "why-network",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "compiler",
+      "title": "Компилятор tsc и первый проект",
+      "summary": "Установка TypeScript, tsc, tsconfig.json, проверка без сборки и запуск TypeScript в Node.js.",
+      "chapter": "Старт TypeScript",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем, зачем TypeScript, и собираем первый проект.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"npm install -D typescript\",\n  \"title\": \"Установить в проект\",\n  \"what\": \"TypeScript ставят в проект как зависимость для разработки. Компилятор вызывается командой `npx tsc`.\",\n  \"why\": \"У всей команды одна версия TypeScript, записанная в package.json.\",\n  \"how\": \"npm install -D typescript\\nnpx tsc --version\\nVersion 5.9.3\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"tsc --init\",\n  \"title\": \"Создать tsconfig.json\",\n  \"what\": \"Создаёт файл настроек с подробными комментариями. В нём указывают, какие файлы проверять, во что компилировать и насколько строгими быть.\",\n  \"why\": \"Один файл описывает правила для всего проекта и для редактора.\",\n  \"kind\": \"statement\"\n}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Путь TypeScript-кода\",\n  \"steps\": [\n    {\n      \"title\": \"app.ts\",\n      \"text\": \"Код с типами\"\n    },\n    {\n      \"title\": \"Проверка\",\n      \"text\": \"tsc ищет ошибки типов\"\n    },\n    {\n      \"title\": \"Компиляция\",\n      \"text\": \"Типы стираются, синтаксис приводится к нужной версии\"\n    },\n    {\n      \"title\": \"app.js\",\n      \"text\": \"Обычный JavaScript для браузера или Node.js\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"tsc --noEmit\",\n  \"title\": \"Только проверить\",\n  \"what\": \"Проверяет типы во всём проекте и ничего не записывает на диск.\",\n  \"why\": \"В проектах на Vite, Next.js и подобных сборку делает другой инструмент, а `tsc --noEmit` остаётся проверкой — его запускают в CI.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"TypeScript в Node.js\",\n  \"title\": \"Запустить .ts напрямую\",\n  \"what\": \"Современный Node.js умеет выполнять .ts-файлы, просто вырезая типы: `node app.ts`. Для старых версий используют tsx: `npx tsx app.ts`.\",\n  \"why\": \"Скрипты и серверы можно писать на TypeScript без отдельного шага сборки. Но проверку типов это не заменяет.\",\n  \"kind\": \"idea\"\n}\n```\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Проверка находит ошибку\",\n  \"file\": \"Терминал\",\n  \"scenes\": [\n    {\n      \"input\": \"npx tsc --noEmit\",\n      \"key\": \"Enter\",\n      \"output\": \"$ npx tsc --noEmit\\nsrc/cart.ts:12:18 - error TS2345: Argument of type 'string'\\n  is not assignable to parameter of type 'number'.\",\n      \"caption\": \"Файл, строка, столбец и понятное объяснение\"\n    }\n  ]\n}\n```\n\n**Главное.** `tsc --noEmit` — проверка проекта. Запускай её в CI, чтобы ошибки типов не попадали в main."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-noemit",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-config",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-node",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "editor",
+      "title": "Типы в редакторе",
+      "summary": "Подсказки, переход к определению, переименование и как читать сообщения об ошибках TypeScript.",
+      "chapter": "Старт TypeScript",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Собираем проект и учимся получать от TypeScript помощь прямо в редакторе.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Подсказки по типам\",\n  \"title\": \"Редактор знает всё\",\n  \"what\": \"VS Code показывает тип любой переменной при наведении, подсказывает поля объекта после точки и параметры функции при вызове.\",\n  \"why\": \"Не нужно держать в голове, какие поля есть у ответа сервера: редактор помнит за тебя.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Переход и переименование\",\n  \"title\": \"F12 и F2\",\n  \"what\": \"F12 — перейти к определению, Shift+F12 — все использования, F2 — переименовать во всём проекте без ошибок.\",\n  \"why\": \"Безопасный рефакторинг большого кода — главная причина, по которой команды выбирают TypeScript.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сообщение об ошибке\",\n  \"title\": \"Как читать\",\n  \"what\": \"Сообщение говорит, что ожидалось и что получено, и показывает путь до несовпадения. Читай с последней строки — там конкретная причина.\",\n  \"why\": \"Длинные сообщения пугают, но в них почти всегда есть точный ответ.\",\n  \"how\": \"Type '{ name: string; }' is not assignable to type 'User'.\\n  Property 'email' is missing in type '{ name: string; }'.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Код ошибки\",\n  \"title\": \"TS2345 и другие\",\n  \"what\": \"У каждой ошибки есть номер: TS2322 — значение не подходит типу, TS2345 — неверный аргумент, TS2339 — нет такого свойства.\",\n  \"why\": \"По номеру легко узнать типичную ошибку и вспомнить, как её исправляли.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Наведи мышь — увидишь тип. Сообщение об ошибке читай снизу вверх."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ed-rename",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ed-read",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ed-prop",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "primitives",
+      "title": "Примитивы и аннотации",
+      "summary": "string, number, boolean, null и undefined, аннотация через двоеточие и вывод типов.",
+      "chapter": "Базовые типы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Подготовили проект и пишем первые типы.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Аннотация типа\",\n  \"title\": \"Двоеточие после имени\",\n  \"what\": \"`let name: string = \\\"Аня\\\"` — переменная может хранить только строки. Тип пишут через двоеточие после имени переменной или параметра.\",\n  \"why\": \"Попытка записать туда число станет ошибкой ещё в редакторе.\",\n  \"how\": \"let name: string = \\\"Аня\\\";\\nlet age: number = 24;\\nlet isAdmin: boolean = false;\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Примитивные типы\",\n  \"title\": \"Пять основных\",\n  \"what\": \"`string`, `number` (и целые, и дробные), `boolean`, `null`, `undefined`. Реже — `bigint` и `symbol`. Пишутся строчными буквами.\",\n  \"why\": \"`String` с большой буквы — это обёртка-объект, а не строка; использовать нужно строчные.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Вывод типов\",\n  \"title\": \"TypeScript догадывается сам\",\n  \"what\": \"`let count = 0` — TypeScript сам поймёт, что это number. Аннотацию пишут там, где тип не выводится или нужен строже.\",\n  \"why\": \"Код остаётся коротким, как обычный JavaScript, а проверка — полной.\",\n  \"how\": \"let count = 0;      // number\\nconst title = \\\"Hi\\\"; // тип \\\"Hi\\\" — константа не меняется\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Литеральный тип\",\n  \"title\": \"Конкретное значение\",\n  \"what\": \"Тип может быть не «любая строка», а конкретная: `let dir: \\\"left\\\" | \\\"right\\\"`. У `const` тип выводится как литерал.\",\n  \"why\": \"Опечатка `\\\"lefft\\\"` станет ошибкой, а редактор подскажет варианты.\",\n  \"how\": \"let size: \\\"s\\\" | \\\"m\\\" | \\\"l\\\" = \\\"m\\\";\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Пиши аннотации на границах — параметры и возвращаемые значения функций, а внутри доверяй выводу."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-infer",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-case",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-literal",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "arrays-tuples",
+      "title": "Массивы и кортежи",
+      "summary": "Массив с типом элементов, readonly-массивы и кортежи с фиксированной длиной.",
+      "chapter": "Базовые типы",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем примитивы и описываем коллекции значений.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Массив\",\n  \"title\": \"string[] или Array<string>\",\n  \"what\": \"`string[]` — массив строк. Добавить в него число не получится. Вторая запись — `Array<string>` — то же самое.\",\n  \"why\": \"Методы массива сразу знают тип элемента: `names.map(n => n.toUpperCase())` подскажет методы строки.\",\n  \"how\": \"const names: string[] = [\\\"Аня\\\", \\\"Тимур\\\"];\\nnames.push(42); // Ошибка\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"readonly-массив\",\n  \"title\": \"Только для чтения\",\n  \"what\": \"`readonly string[]` запрещает push, pop и присваивание элементов.\",\n  \"why\": \"Функция, которая принимает readonly-массив, гарантирует, что не испортит данные вызывающего кода.\",\n  \"how\": \"function sum(values: readonly number[]) {\\n  return values.reduce((a, b) => a + b, 0);\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Кортеж\",\n  \"title\": \"Массив фиксированной формы\",\n  \"what\": \"`[string, number]` — ровно два элемента: строка и число. Можно подписать: `[name: string, age: number]`.\",\n  \"why\": \"Так возвращают пару значений, как `useState` в React: `[value, setValue]`.\",\n  \"how\": \"const point: [number, number] = [10, 20];\\nconst entry: [name: string, age: number] = [\\\"Аня\\\", 24];\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Список однотипных значений — `T[]`. Пара или тройка разных — кортеж."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ar-push",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ar-tuple",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ar-readonly",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "any-unknown",
+      "title": "any, unknown и never",
+      "summary": "Почему any отключает проверку, как безопасно работать с unknown и где встречается never.",
+      "chapter": "Базовые типы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Описываем коллекции и разбираемся с особыми типами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"any\",\n  \"title\": \"Выключить проверку\",\n  \"what\": \"Значение типа any можно использовать как угодно, и TypeScript молчит. Ошибки снова всплывают только при запуске.\",\n  \"why\": \"Каждый any — дыра в проверке. Строгий режим и линтер ловят неявные any.\",\n  \"how\": \"let data: any = getData();\\ndata.anything.goes(); // TypeScript молчит\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"unknown\",\n  \"title\": \"Безопасный «что угодно»\",\n  \"what\": \"unknown тоже принимает любое значение, но использовать его нельзя, пока не проверишь тип.\",\n  \"why\": \"Для данных из JSON.parse, ответа сервера и catch — unknown вместо any.\",\n  \"how\": \"const raw: unknown = JSON.parse(text);\\nif (typeof raw === \\\"string\\\") raw.toUpperCase(); // можно\\nraw.toUpperCase(); // Ошибка: сначала проверь\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"never\",\n  \"title\": \"Невозможное значение\",\n  \"what\": \"Тип, у которого нет ни одного значения: так обозначают функцию, которая всегда бросает ошибку, и ветку, до которой код никогда не дойдёт.\",\n  \"why\": \"never помогает проверять, что обработаны все варианты — это будет в главе про объединения.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"void\",\n  \"title\": \"Ничего не возвращает\",\n  \"what\": \"Тип результата функции, которая ничего не возвращает: `function log(m: string): void`.\",\n  \"why\": \"Отличается от undefined по смыслу: «результат не важен».\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Не знаешь тип — `unknown` и проверка. `any` — только как временная заплатка."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sp-unknown",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sp-any",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sp-never",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "object-types",
+      "title": "Типы объектов",
+      "summary": "Описать форму объекта, type и interface, лишние и недостающие поля.",
+      "chapter": "Объекты и интерфейсы",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем базовые типы и описываем объекты — основу любых данных.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Тип объекта\",\n  \"title\": \"Форма данных\",\n  \"what\": \"Тип объекта перечисляет поля и их типы: `{ id: number; name: string }`. Объект должен иметь все обязательные поля нужных типов.\",\n  \"why\": \"Опечатка в имени поля или забытое поле становятся ошибкой при сборке.\",\n  \"how\": \"const user: { id: number; name: string } = { id: 1, name: \\\"Аня\\\" };\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"type\",\n  \"title\": \"Псевдоним типа\",\n  \"what\": \"`type User = { id: number; name: string }` даёт типу имя, чтобы использовать его везде. type описывает что угодно: объекты, объединения, кортежи.\",\n  \"why\": \"Один раз описал — используешь в функциях, компонентах, запросах.\",\n  \"how\": \"type User = {\\n  id: number;\\n  name: string;\\n};\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"interface\",\n  \"title\": \"Описание объекта\",\n  \"what\": \"`interface User { id: number; name: string }` — другой способ описать объект. Интерфейсы можно расширять через extends и дополнять повторным объявлением.\",\n  \"why\": \"Для формы объектов type и interface почти равноценны; в команде выбирают один стиль.\",\n  \"how\": \"interface User {\\n  id: number;\\n  name: string;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"type или interface\",\n  \"title\": \"Как выбрать\",\n  \"what\": \"interface — только для объектов и классов, умеет слияние объявлений. type — для всего, включая объединения `\\\"a\\\" | \\\"b\\\"` и кортежи.\",\n  \"why\": \"Простое правило: объединения и утилиты — type, публичные формы объектов библиотеки — interface.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проверка лишних полей\",\n  \"title\": \"Опечатка в литерале\",\n  \"what\": \"Если сразу передать литерал объекта с полем, которого нет в типе (`{ id: 1, nmae: \\\"Аня\\\" }`), TypeScript сообщит об ошибке.\",\n  \"why\": \"Опечатки в именах полей ловятся там, где объект создаётся.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Дай типу имя через type или interface и используй его во всех местах, где ходят эти данные."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ob-missing",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ob-union",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ob-typo",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "optional-readonly",
+      "title": "Необязательные и неизменяемые поля",
+      "summary": "Знак ?, readonly, работа с возможным undefined через ?. и ??.",
+      "chapter": "Объекты и интерфейсы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Описываем объекты и уточняем, какие поля можно не указывать или нельзя менять.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Необязательное поле\",\n  \"title\": \"Знак вопроса\",\n  \"what\": \"`avatar?: string` — поле может отсутствовать. Его тип внутри — `string | undefined`.\",\n  \"why\": \"TypeScript не даст обратиться к avatar.length, пока ты не проверишь, что значение есть.\",\n  \"how\": \"type User = {\\n  name: string;\\n  avatar?: string;\\n};\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"?. и ??\",\n  \"title\": \"Безопасное чтение\",\n  \"what\": \"`user.address?.city` — вернёт undefined, если address нет. `name ?? \\\"Аноним\\\"` — подставит значение, если слева null или undefined.\",\n  \"why\": \"Короткая запись вместо цепочки if, и TypeScript понимает её.\",\n  \"how\": \"const city = user.address?.city ?? \\\"не указан\\\";\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"readonly-поле\",\n  \"title\": \"Нельзя менять\",\n  \"what\": \"`readonly id: number` — поле можно прочитать, но нельзя присвоить новое значение после создания объекта.\",\n  \"why\": \"Идентификаторы и настройки не поменяются случайно где-то в середине кода.\",\n  \"how\": \"type Order = { readonly id: number; total: number };\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Неявный undefined\",\n  \"title\": \"strictNullChecks\",\n  \"what\": \"В строгом режиме null и undefined не входят в другие типы: `string` — это только строка. Без строгого режима любое значение может оказаться null, и TypeScript не предупредит.\",\n  \"why\": \"Строгий режим ловит самую частую ошибку JavaScript — «cannot read properties of undefined».\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Поле может отсутствовать — `?`. Читаешь такое поле — `?.` и `??`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "op-type",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "op-nullish",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "op-readonly",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "extend-index",
+      "title": "Расширение и словари",
+      "summary": "extends и пересечение &, индексная сигнатура и Record для словарей.",
+      "chapter": "Объекты и интерфейсы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Владеем полями объектов и учимся собирать большие типы из маленьких.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"extends\",\n  \"title\": \"Расширить интерфейс\",\n  \"what\": \"`interface Admin extends User { rights: string[] }` — Admin имеет все поля User и свои.\",\n  \"why\": \"Общие поля описываются один раз.\",\n  \"how\": \"interface Admin extends User {\\n  rights: string[];\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Пересечение &\",\n  \"title\": \"Склеить типы\",\n  \"what\": \"`type Admin = User & { rights: string[] }` — значение должно соответствовать обоим типам сразу.\",\n  \"why\": \"Так комбинируют type: например, данные плюс метки времени `Post & Timestamps`.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Индексная сигнатура\",\n  \"title\": \"Любые ключи\",\n  \"what\": \"`{ [key: string]: number }` — объект с любыми строковыми ключами и числовыми значениями.\",\n  \"why\": \"Словарь «слово → количество» или настройки с заранее неизвестными именами.\",\n  \"how\": \"const counts: { [word: string]: number } = { html: 3, css: 2 };\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Record\",\n  \"title\": \"Словарь короче\",\n  \"what\": \"`Record<string, number>` — то же, что индексная сигнатура. `Record<\\\"ru\\\" | \\\"en\\\", string>` требует ровно эти ключи.\",\n  \"why\": \"Переводы, цены по тарифам, настройки по средам — с проверкой, что ни один ключ не забыт.\",\n  \"how\": \"const titles: Record<\\\"ru\\\" | \\\"en\\\", string> = { ru: \\\"Курсы\\\", en: \\\"Courses\\\" };\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Общее выноси в базовый тип и расширяй. Фиксированный набор ключей — `Record<\"a\" | \"b\", T>`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ex-and",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ex-record",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ex-extends",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "function-types",
+      "title": "Типы параметров и результата",
+      "summary": "Аннотации параметров, возвращаемый тип, необязательные параметры, значения по умолчанию и rest.",
+      "chapter": "Функции",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Собираем типы объектов и переходим к функциям — главному месту для аннотаций.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Параметры и результат\",\n  \"title\": \"На входе и на выходе\",\n  \"what\": \"Параметры аннотируют всегда: TypeScript не угадывает, что передадут. Результат обычно выводится, но для публичных функций его пишут явно.\",\n  \"why\": \"Сигнатура функции — договор: что дать на вход и что получить.\",\n  \"how\": \"function formatPrice(value: number, currency: string): string {\\n  return `${value} ${currency}`;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Необязательный параметр\",\n  \"title\": \"Можно не передавать\",\n  \"what\": \"`function greet(name?: string)` — параметр может отсутствовать, внутри он `string | undefined`. Необязательные параметры идут после обязательных.\",\n  \"why\": \"Вызов без аргумента разрешён, но функция обязана обработать undefined.\",\n  \"how\": \"function greet(name?: string) {\\n  return `Привет, ${name ?? \\\"аноним\\\"}`;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Значение по умолчанию\",\n  \"title\": \"И тип выводится\",\n  \"what\": \"`function page(size = 20)` — параметр необязателен, тип number выводится из значения.\",\n  \"why\": \"Короче, чем `size?: number` плюс проверка внутри.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Rest-параметры\",\n  \"title\": \"Сколько угодно аргументов\",\n  \"what\": \"`function sum(...values: number[])` собирает все аргументы в массив нужного типа.\",\n  \"why\": \"Удобные функции вроде sum(1, 2, 3) остаются строго типизированными.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Параметры аннотируй всегда, результат — у публичных функций. Необязательное — `?` или значение по умолчанию."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fn-params",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fn-optional",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fn-default",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "callbacks",
+      "title": "Функции как значения",
+      "summary": "Тип функции, колбэки, void в колбэках и типизация обработчиков событий.",
+      "chapter": "Функции",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Типизируем обычные функции и описываем функции, которые передают другим функциям.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Тип функции\",\n  \"title\": \"Стрелочная запись\",\n  \"what\": \"`(price: number) => string` — функция, которая принимает число и возвращает строку. Можно дать имя: `type Formatter = (price: number) => string`.\",\n  \"why\": \"Так описывают колбэки, обработчики и стратегии.\",\n  \"how\": \"type Formatter = (price: number) => string;\\nconst rub: Formatter = (p) => `${p} ₽`;\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Контекстная типизация\",\n  \"title\": \"Параметры колбэка выводятся\",\n  \"what\": \"Когда стрелочная функция передаётся туда, где тип уже известен, её параметры типизировать не нужно: `users.map(u => u.name)` — u уже User.\",\n  \"why\": \"Аннотации внутри колбэков почти никогда не нужны.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"void в колбэке\",\n  \"title\": \"Результат не важен\",\n  \"what\": \"`onSave: (data: Form) => void` значит: что бы ни вернула функция, результат не используется. Поэтому туда можно передать и функцию, которая что-то возвращает.\",\n  \"why\": \"Обработчики событий описывают именно так.\",\n  \"how\": \"type Props = { onClick: (id: number) => void };\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Обработчик события DOM\",\n  \"title\": \"Event-типы\",\n  \"what\": \"`button.addEventListener(\\\"click\\\", (e) => …)` — e автоматически MouseEvent. Для input — `(e: Event)` и `e.target as HTMLInputElement`.\",\n  \"why\": \"Редактор подсказывает clientX, key и другие поля нужного события.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Повторяющуюся сигнатуру — в `type`. Параметры колбэков пусть выводятся сами."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cb-type",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cb-context",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cb-event",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "overloads-this",
+      "title": "Перегрузки и асинхронные функции",
+      "summary": "Перегрузки сигнатур, Promise<T> и async, типизация функций, которые возвращают промис.",
+      "chapter": "Функции",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Описываем функции-значения и разбираем асинхронный код и перегрузки.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Promise<T>\",\n  \"title\": \"Будущее значение\",\n  \"what\": \"async-функция всегда возвращает `Promise<T>`, где T — то, что она вернёт через return. `await` достаёт T.\",\n  \"why\": \"Забытый await сразу виден: у значения тип Promise, а не данные.\",\n  \"how\": \"async function loadUser(id: number): Promise<User> {\\n  const res = await fetch(`/api/users/${id}`);\\n  return res.json();\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Забытый await\",\n  \"title\": \"Промис вместо данных\",\n  \"what\": \"`const user = loadUser(1); user.name` — ошибка: у Promise нет поля name. Линтер правилом no-floating-promises ловит и промисы, которые никто не ждёт.\",\n  \"why\": \"Одна из самых частых ошибок в асинхронном коде ловится на этапе сборки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Перегрузки\",\n  \"title\": \"Несколько сигнатур\",\n  \"what\": \"Несколько объявлений функции без тела и одна реализация: `function parse(x: string): number; function parse(x: number): string;`.\",\n  \"why\": \"Нужны редко — когда тип результата зависит от типа аргумента и объединения недостаточно. Чаще хватает дженериков.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** async-функция возвращает `Promise<T>`. Увидел Promise там, где ждал данные, — забыт await."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "as-return",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "as-await",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "as-overload",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "union-narrowing",
+      "title": "Объединения и сужение",
+      "summary": "Тип «то или другое», typeof, in, instanceof и как TypeScript сужает тип в ветках if.",
+      "chapter": "Объединения и сужение",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Типизируем функции и учим значения быть одного из нескольких типов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Объединение\",\n  \"title\": \"A | B\",\n  \"what\": \"`string | number` — значение может быть строкой или числом. Использовать можно только то, что есть у обоих, пока тип не уточнён.\",\n  \"why\": \"Описывает реальность: id из URL — строка, из базы — число.\",\n  \"how\": \"function show(id: string | number) {\\n  id.toUpperCase(); // Ошибка: у number нет toUpperCase\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сужение через typeof\",\n  \"title\": \"Проверка внутри if\",\n  \"what\": \"После `if (typeof id === \\\"string\\\")` внутри ветки id — string, в else — number. TypeScript следит за проверками сам.\",\n  \"why\": \"Обычный JavaScript-код проверок становится основой типизации.\",\n  \"how\": \"if (typeof id === \\\"string\\\") {\\n  return id.toUpperCase();\\n}\\nreturn id.toFixed(0);\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"in и instanceof\",\n  \"title\": \"Другие проверки\",\n  \"what\": \"`\\\"email\\\" in contact` сужает до вариантов с полем email; `err instanceof Error` — до класса Error.\",\n  \"why\": \"Так различают объекты разной формы и ошибки в catch.\",\n  \"how\": \"catch (err) {\\n  if (err instanceof Error) console.log(err.message);\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Функция-проверка\",\n  \"title\": \"Пользовательский type guard\",\n  \"what\": \"`function isUser(x: unknown): x is User` — после `if (isUser(data))` data становится User.\",\n  \"why\": \"Проверку формы данных пишут один раз и переиспользуют, а TypeScript ей доверяет.\",\n  \"how\": \"function isUser(x: unknown): x is User {\\n  return typeof x === \\\"object\\\" && x !== null && \\\"id\\\" in x;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Объединение плюс проверка в if — главный приём TypeScript. Тип сужается сам."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "nr-union",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "nr-typeof",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "nr-guard",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "discriminated",
+      "title": "Размеченные объединения",
+      "summary": "Общее поле-метка, switch по метке и состояния загрузки без невозможных комбинаций.",
+      "chapter": "Объединения и сужение",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Сужаем простые объединения и описываем состояния, в которых не бывает противоречий.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Поле-метка\",\n  \"title\": \"kind или status\",\n  \"what\": \"У каждого варианта общее поле с литеральным значением: `{ status: \\\"loading\\\" } | { status: \\\"error\\\"; message: string } | { status: \\\"ok\\\"; data: User }`.\",\n  \"why\": \"Проверив status, TypeScript точно знает, какие ещё поля есть.\",\n  \"how\": \"type State =\\n  | { status: \\\"loading\\\" }\\n  | { status: \\\"error\\\"; message: string }\\n  | { status: \\\"ok\\\"; data: User };\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"switch по метке\",\n  \"title\": \"Ветка — вариант\",\n  \"what\": \"`switch (state.status)` — в каждой ветке state сужен до своего варианта: в \\\"error\\\" доступно message, в \\\"ok\\\" — data.\",\n  \"why\": \"Невозможно прочитать data, пока загрузка не завершилась.\",\n  \"how\": \"switch (state.status) {\\n  case \\\"ok\\\": return state.data.name;\\n  case \\\"error\\\": return state.message;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Невозможные состояния\",\n  \"title\": \"Флаги против объединения\",\n  \"what\": \"Три флага `isLoading`, `error`, `data` допускают бессмыслицу: загрузка и ошибка одновременно. Объединение с меткой разрешает только реальные состояния.\",\n  \"why\": \"Целый класс ошибок интерфейса исчезает: невозможное просто не описывается.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Состояния описывай объединением с общим полем `status`, а не набором флагов."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ds-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ds-access",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ds-tag",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "exhaustive",
+      "title": "Проверка всех вариантов",
+      "summary": "never в default, satisfies never и как TypeScript напоминает обработать новый вариант.",
+      "chapter": "Объединения и сужение",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Описываем состояния объединениями и заставляем TypeScript следить, что ни одно не забыто.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"never в default\",\n  \"title\": \"Ничего не осталось\",\n  \"what\": \"Если все варианты обработаны, в default значение имеет тип never. Присвоение `const _x: never = state` — ошибка, как только появится необработанный вариант.\",\n  \"why\": \"Добавил новый статус — сборка покажет все switch, где его забыли обработать.\",\n  \"how\": \"default: {\\n  const unreachable: never = state;\\n  throw new Error(`Неизвестное состояние: ${unreachable}`);\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"satisfies never\",\n  \"title\": \"Короткая запись\",\n  \"what\": \"`state satisfies never` в default делает ту же проверку одной строкой.\",\n  \"why\": \"Читается как «здесь не должно остаться вариантов».\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Объединения против enum\",\n  \"title\": \"Что выбрать\",\n  \"what\": \"Объединение строк `\\\"draft\\\" | \\\"published\\\"` не создаёт кода в JavaScript и сравнивается как обычная строка. enum создаёт объект и имеет подводные камни у числовых значений.\",\n  \"why\": \"В современных проектах для наборов значений обычно выбирают объединения строк.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** В каждом switch по объединению — default с never. Новый вариант не останется незамеченным."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ex-never",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ex-new",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ex-enum",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "generic-functions",
+      "title": "Дженерики в функциях",
+      "summary": "Параметр типа <T>, вывод T из аргументов и зачем это лучше any.",
+      "chapter": "Дженерики",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Обрабатываем все варианты объединений и учимся писать код, общий для разных типов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Параметр типа\",\n  \"title\": \"<T>\",\n  \"what\": \"`function first<T>(items: T[]): T | undefined` — T подставляется при вызове. Для `first([1, 2])` T — number, для `first([\\\"a\\\"])` — string.\",\n  \"why\": \"Одна функция для всех типов, и тип результата не теряется.\",\n  \"how\": \"function first<T>(items: T[]): T | undefined {\\n  return items[0];\\n}\\nconst n = first([10, 20]); // number | undefined\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Дженерик против any\",\n  \"title\": \"Тип сохраняется\",\n  \"what\": \"С any функция `first` вернула бы any, и дальше проверка исчезла бы. С T связь «что дали — то и получили» остаётся.\",\n  \"why\": \"Именно так типизированы map, filter, Promise, useState и почти вся стандартная библиотека.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Явный аргумент типа\",\n  \"title\": \"Когда вывод не справился\",\n  \"what\": \"Обычно T выводится из аргументов. Если нет — указывают явно: `useState<User | null>(null)`.\",\n  \"why\": \"Без явного T начальное null дало бы тип null навсегда.\",\n  \"how\": \"const [user, setUser] = useState<User | null>(null);\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Видишь `any` в универсальной функции — замени на `<T>`. Тип пусть выводится из аргументов."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gf-infer",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gf-any",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gf-explicit",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "constraints",
+      "title": "Ограничения дженериков",
+      "summary": "extends в параметре типа, keyof в ограничении и значение по умолчанию для T.",
+      "chapter": "Дженерики",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем дженерик-функции и учимся требовать от T нужных свойств.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"T extends\",\n  \"title\": \"Требование к типу\",\n  \"what\": \"`function longest<T extends { length: number }>(a: T, b: T)` — подойдёт любой тип с полем length: строки, массивы.\",\n  \"why\": \"Внутри можно обращаться к a.length, а снаружи тип не теряется.\",\n  \"how\": \"function longest<T extends { length: number }>(a: T, b: T): T {\\n  return a.length >= b.length ? a : b;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"K extends keyof T\",\n  \"title\": \"Только существующий ключ\",\n  \"what\": \"`function pick<T, K extends keyof T>(obj: T, key: K): T[K]` — ключ должен быть одним из ключей объекта, а результат — типа этого поля.\",\n  \"why\": \"`pick(user, \\\"emial\\\")` — ошибка с подсказкой правильного имени.\",\n  \"how\": \"function get<T, K extends keyof T>(obj: T, key: K): T[K] {\\n  return obj[key];\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тип по умолчанию\",\n  \"title\": \"T = …\",\n  \"what\": \"`type Response<T = unknown> = { data: T }` — если T не указан, будет unknown.\",\n  \"why\": \"Удобно для библиотечных типов: простое использование без лишних угловых скобок.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Нужны свойства у T — `T extends {…}`. Нужен ключ объекта — `K extends keyof T`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cn-extends",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cn-keyof",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cn-default",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "generic-types",
+      "title": "Дженерик-типы",
+      "summary": "Обобщённые type и interface, обёртки ответа API и типизированные коллекции.",
+      "chapter": "Дженерики",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Ограничиваем параметры типов и делаем обобщёнными сами типы.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Обобщённый тип\",\n  \"title\": \"type Box<T>\",\n  \"what\": \"`type ApiResponse<T> = { data: T; error: string | null }` — одна обёртка для всех ответов: `ApiResponse<User>`, `ApiResponse<Order[]>`.\",\n  \"why\": \"Формат ответа описывается один раз, а данные внутри — свои для каждого запроса.\",\n  \"how\": \"type ApiResponse<T> = {\\n  data: T;\\n  error: string | null;\\n};\\ntype UserResponse = ApiResponse<User>;\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Пагинация\",\n  \"title\": \"Page<T>\",\n  \"what\": \"`type Page<T> = { items: T[]; total: number; next: string | null }` — общая форма страницы любых данных.\",\n  \"why\": \"Компонент списка с подгрузкой пишется один раз для пользователей, заказов и курсов.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Встроенные дженерики\",\n  \"title\": \"Уже знакомые\",\n  \"what\": \"`Array<T>`, `Promise<T>`, `Map<K, V>`, `Set<T>`, `Record<K, V>` — всё это дженерик-типы стандартной библиотеки.\",\n  \"why\": \"Читая их подсказки в редакторе, ты уже пользуешься дженериками.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Повторяется форма с разными данными внутри — сделай тип с параметром `<T>`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gt-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gt-map",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gt-why",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "partial-pick",
+      "title": "Partial, Required, Pick и Omit",
+      "summary": "Новые типы из существующего: все поля необязательны, обязательны, выбранные или все кроме.",
+      "chapter": "Утилитные типы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем обобщённые типы и знакомимся с готовыми — утилитными.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Partial<T>\",\n  \"title\": \"Все поля необязательны\",\n  \"what\": \"Превращает каждое поле T в необязательное.\",\n  \"why\": \"Обновление объекта: передают только изменённые поля.\",\n  \"how\": \"function updateUser(id: number, patch: Partial<User>) { /* … */ }\\nupdateUser(1, { name: \\\"Аня\\\" });\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Required<T>\",\n  \"title\": \"Все поля обязательны\",\n  \"what\": \"Обратное Partial: убирает `?` у всех полей.\",\n  \"why\": \"После заполнения формы значения по умолчанию гарантированно есть.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Pick<T, K>\",\n  \"title\": \"Только выбранные поля\",\n  \"what\": \"`Pick<User, \\\"id\\\" | \\\"name\\\">` — тип с двумя полями из User.\",\n  \"why\": \"Карточке в списке нужны два поля, а не весь объект.\",\n  \"how\": \"type UserPreview = Pick<User, \\\"id\\\" | \\\"name\\\">;\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Omit<T, K>\",\n  \"title\": \"Все, кроме\",\n  \"what\": \"`Omit<User, \\\"password\\\">` — User без пароля.\",\n  \"why\": \"Ответ API, который никогда не должен содержать секрет, описывается одной строкой.\",\n  \"how\": \"type PublicUser = Omit<User, \\\"password\\\">;\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Один источник правды\",\n  \"title\": \"Производные типы\",\n  \"what\": \"Новые типы выводят из основного, а не копируют поля. Добавил поле в User — оно само появится в Partial<User> и Pick с ним.\",\n  \"why\": \"Нет рассинхронизации, когда в одном типе поле переименовали, а в копии забыли.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Не копируй поля — выводи: `Partial`, `Pick`, `Omit` от основного типа."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "us-partial",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "us-omit",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "us-source",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "record-exclude",
+      "title": "Record, Readonly, Exclude и Extract",
+      "summary": "Словари, неизменяемые объекты и фильтрация объединений.",
+      "chapter": "Утилитные типы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Строим формы объектов утилитами и переходим к словарям и объединениям.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Readonly<T>\",\n  \"title\": \"Неизменяемый объект\",\n  \"what\": \"Делает все поля readonly.\",\n  \"why\": \"Настройки и состояние, которые нельзя менять напрямую, описываются одной утилитой.\",\n  \"how\": \"const config: Readonly<Config> = loadConfig();\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Exclude<T, U>\",\n  \"title\": \"Убрать из объединения\",\n  \"what\": \"`Exclude<\\\"draft\\\" | \\\"published\\\" | \\\"archived\\\", \\\"archived\\\">` — `\\\"draft\\\" | \\\"published\\\"`.\",\n  \"why\": \"Подмножество статусов без копирования строк.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Extract<T, U>\",\n  \"title\": \"Оставить подходящие\",\n  \"what\": \"`Extract<Event, { type: \\\"click\\\" }>` — только варианты объединения, подходящие под условие.\",\n  \"why\": \"Достать нужный вариант из размеченного объединения.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"NonNullable<T>\",\n  \"title\": \"Без null и undefined\",\n  \"what\": \"`NonNullable<string | null>` — string.\",\n  \"why\": \"После проверки на null описываешь гарантированно заполненное значение.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Объединения фильтруют `Exclude` и `Extract`, объекты замораживают `Readonly`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rx-exclude",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rx-extract",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rx-nonnull",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "function-utilities",
+      "title": "ReturnType, Parameters и Awaited",
+      "summary": "Типы из функций и промисов: результат, параметры и содержимое Promise.",
+      "chapter": "Утилитные типы",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Фильтруем объединения и учимся вытаскивать типы из функций.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"ReturnType<T>\",\n  \"title\": \"Что возвращает функция\",\n  \"what\": \"`ReturnType<typeof createStore>` — тип результата функции без ручного описания.\",\n  \"why\": \"Тип объекта, который собирает функция, всегда совпадает с тем, что она реально возвращает.\",\n  \"how\": \"function createStore() {\\n  return { items: [] as string[], add(x: string) {} };\\n}\\ntype Store = ReturnType<typeof createStore>;\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Parameters<T>\",\n  \"title\": \"Параметры функции\",\n  \"what\": \"`Parameters<typeof fetch>` — кортеж типов аргументов функции.\",\n  \"why\": \"Обёртка над чужой функцией принимает ровно те же аргументы.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Awaited<T>\",\n  \"title\": \"Что внутри промиса\",\n  \"what\": \"`Awaited<ReturnType<typeof loadUser>>` — тип данных, которые вернёт async-функция после await.\",\n  \"why\": \"Тип результата запроса без отдельного описания.\",\n  \"how\": \"type LoadedUser = Awaited<ReturnType<typeof loadUser>>;\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Тип уже есть в коде функции — достань его через `ReturnType` и `Awaited`, а не переписывай руками."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fu-return",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fu-awaited",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fu-params",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "keyof-typeof",
+      "title": "keyof, typeof и доступ по индексу",
+      "summary": "Ключи типа, тип значения переменной, тип поля T[K] и as const.",
+      "chapter": "Типы из типов",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пользуемся утилитами и узнаём, из чего они построены.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"keyof\",\n  \"title\": \"Ключи типа\",\n  \"what\": \"`keyof User` — объединение имён полей: `\\\"id\\\" | \\\"name\\\" | \\\"email\\\"`.\",\n  \"why\": \"Функция сортировки по полю принимает только существующие поля.\",\n  \"how\": \"type UserKey = keyof User; // \\\"id\\\" | \\\"name\\\" | \\\"email\\\"\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"typeof в типе\",\n  \"title\": \"Тип из значения\",\n  \"what\": \"`typeof config` в позиции типа даёт тип переменной. Значение — источник правды, тип выводится из него.\",\n  \"why\": \"Настройки описал один раз объектом — тип получил бесплатно.\",\n  \"how\": \"const config = { theme: \\\"dark\\\", pageSize: 20 };\\ntype Config = typeof config;\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Доступ по индексу\",\n  \"title\": \"T[K]\",\n  \"what\": \"`User[\\\"email\\\"]` — тип поля email. `Order[\\\"items\\\"][number]` — тип элемента массива items.\",\n  \"why\": \"Не нужно отдельно описывать тип вложенных данных.\",\n  \"how\": \"type Item = Order[\\\"items\\\"][number];\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"as const\",\n  \"title\": \"Самые узкие типы\",\n  \"what\": \"`const roles = [\\\"admin\\\", \\\"user\\\"] as const` — readonly-кортеж литералов. `typeof roles[number]` — `\\\"admin\\\" | \\\"user\\\"`.\",\n  \"why\": \"Список значений один, объединение типов выводится из него — нельзя забыть синхронизировать.\",\n  \"how\": \"const ROLES = [\\\"admin\\\", \\\"editor\\\", \\\"user\\\"] as const;\\ntype Role = typeof ROLES[number];\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Значения — источник правды: `as const` и `typeof` вместо ручного дублирования строк."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ko-keyof",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ko-index",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ko-const",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "mapped-conditional",
+      "title": "Отображённые и условные типы",
+      "summary": "Перебор ключей [K in keyof T], модификаторы, условные типы и infer.",
+      "chapter": "Типы из типов",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Получаем типы из типов и учимся их преобразовывать.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Отображённый тип\",\n  \"title\": \"Перебор ключей\",\n  \"what\": \"`{ [K in keyof T]: … }` создаёт тип с теми же ключами и новым типом значений. Так устроены Partial, Readonly, Record.\",\n  \"why\": \"Например, тип ошибок формы: те же поля, что у формы, но значения — строки с ошибкой.\",\n  \"how\": \"type FormErrors<T> = { [K in keyof T]?: string };\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Модификаторы\",\n  \"title\": \"+? и -readonly\",\n  \"what\": \"В отображённом типе можно добавить или убрать `?` и `readonly`: `-?` делает поля обязательными (так устроен Required).\",\n  \"why\": \"Понятно, как работают встроенные утилиты, и можно сделать свою.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Условный тип\",\n  \"title\": \"T extends U ? X : Y\",\n  \"what\": \"Тип-развилка: если T подходит под U, то X, иначе Y. На объединениях применяется к каждому варианту.\",\n  \"why\": \"Так устроены Exclude, Extract и NonNullable.\",\n  \"how\": \"type IsString<T> = T extends string ? \\\"да\\\" : \\\"нет\\\";\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"infer\",\n  \"title\": \"Достать часть типа\",\n  \"what\": \"Внутри условного типа `infer R` извлекает фрагмент: `T extends Promise<infer R> ? R : T` — содержимое промиса.\",\n  \"why\": \"Так устроены ReturnType и Awaited.\",\n  \"how\": \"type Unwrap<T> = T extends Promise<infer R> ? R : T;\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Встроенные утилиты — это mapped и conditional types. Свою пиши, когда утилиты не хватает."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mc-mapped",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mc-cond",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mc-infer",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "template-literals",
+      "title": "Шаблонные строковые типы",
+      "summary": "Типы вида `${A}-${B}`, имена событий и CSS-значения, встроенные Uppercase и Capitalize.",
+      "chapter": "Типы из типов",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем mapped и conditional types и описываем строки, собранные по правилу.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Шаблонный тип\",\n  \"title\": \"Строка по правилу\",\n  \"what\": \"`type Size = \\\"s\\\" | \\\"m\\\"; type Color = \\\"red\\\" | \\\"blue\\\"; type Variant = `${Color}-${Size}`` — все комбинации: \\\"red-s\\\", \\\"red-m\\\", \\\"blue-s\\\", \\\"blue-m\\\".\",\n  \"why\": \"Имена вариантов компонента или ключи переводов проверяются без ручного списка.\",\n  \"how\": \"type Spacing = `${number}px` | `${number}rem`;\\nconst gap: Spacing = \\\"12px\\\";\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Имена событий\",\n  \"title\": \"on + Имя\",\n  \"what\": \"`type Handler<E extends string> = `on${Capitalize<E>}`` — из \\\"click\\\" получится \\\"onClick\\\".\",\n  \"why\": \"Так типизируют обработчики в библиотеках компонентов.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Встроенные строковые утилиты\",\n  \"title\": \"Регистр\",\n  \"what\": \"`Uppercase`, `Lowercase`, `Capitalize`, `Uncapitalize` меняют регистр литеральных типов.\",\n  \"why\": \"Ключи и имена приводятся к единому стилю прямо в системе типов.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Строка собирается по правилу — опиши правило шаблонным типом, а не списком вариантов."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tl-combo",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tl-px",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tl-cap",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "classes",
+      "title": "Классы в TypeScript",
+      "summary": "Поля и конструктор, public, private и protected, readonly, implements и abstract.",
+      "chapter": "Классы, модули и декларации",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Описываем строки по шаблону и переходим к классам.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Поля класса\",\n  \"title\": \"Объявить и инициализировать\",\n  \"what\": \"Поля класса объявляют с типами; в строгом режиме каждое должно получить значение в конструкторе или при объявлении.\",\n  \"why\": \"Забытая инициализация поля становится ошибкой, а не undefined в работе.\",\n  \"how\": \"class Cart {\\n  items: string[] = [];\\n  constructor(readonly owner: string) {}\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Модификаторы доступа\",\n  \"title\": \"public, private, protected\",\n  \"what\": \"`private` — только внутри класса, `protected` — ещё и в наследниках, `public` — везде (по умолчанию). Это проверка TypeScript; настоящие приватные поля JavaScript пишутся через `#`.\",\n  \"why\": \"Внутреннее состояние нельзя случайно поменять снаружи.\",\n  \"how\": \"class Counter {\\n  #value = 0;\\n  increment() { this.#value++; }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"implements\",\n  \"title\": \"Класс по договору\",\n  \"what\": \"`class FileLogger implements Logger` — TypeScript проверит, что в классе есть все методы интерфейса Logger.\",\n  \"why\": \"Можно подменять реализации (в тестах, в разных средах), сохраняя договор.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"abstract\",\n  \"title\": \"Шаблон для наследников\",\n  \"what\": \"Абстрактный класс нельзя создать напрямую; его абстрактные методы обязаны реализовать наследники.\",\n  \"why\": \"Общая логика в базовом классе, обязательные детали — в наследниках.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Внутреннее состояние — `#поле` или `private`. Договор о методах — interface и `implements`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cl-private",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cl-implements",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cl-hash",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "modules",
+      "title": "Модули и импорт типов",
+      "summary": "export и import типов, import type, пространства имён против модулей и пути импорта.",
+      "chapter": "Классы, модули и декларации",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем классы и раскладываем код по модулям.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Экспорт типов\",\n  \"title\": \"Как и значения\",\n  \"what\": \"Типы экспортируют и импортируют так же, как функции: `export type User = …`, `import { User } from \\\"./types\\\"`.\",\n  \"why\": \"Общие типы живут в одном файле и используются по всему проекту.\",\n  \"how\": \"// types.ts\\nexport type User = { id: number; name: string };\\n// app.ts\\nimport type { User } from \\\"./types\\\";\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"import type\",\n  \"title\": \"Только тип\",\n  \"what\": \"`import type { User }` гарантирует, что импорт исчезнет из JavaScript: ничего лишнего не попадёт в сборку.\",\n  \"why\": \"Сборщики вроде Vite и esbuild обрабатывают файлы по одному и иначе не знают, тип это или значение.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Псевдонимы путей\",\n  \"title\": \"paths в tsconfig\",\n  \"what\": \"`\\\"paths\\\": { \\\"@/*\\\": [\\\"src/*\\\"] }` позволяет писать `import { Button } from \\\"@/ui/button\\\"` вместо `../../../ui/button`.\",\n  \"why\": \"Импорты не ломаются при переносе файлов; сборщик должен знать те же псевдонимы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"namespace\",\n  \"title\": \"Устаревший способ\",\n  \"what\": \"Пространства имён `namespace X {}` пришли из времён до модулей ES. В новом коде вместо них используют обычные модули.\",\n  \"why\": \"Встретишь их в старых проектах и файлах объявлений.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Типы импортируй через `import type`. Общие типы — в отдельном модуле."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "md-importtype",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "md-paths",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "md-namespace",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "declarations",
+      "title": "Файлы объявлений и @types",
+      "summary": "Что такое .d.ts, пакеты @types, declare и как типизировать библиотеку без типов.",
+      "chapter": "Классы, модули и декларации",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Раскладываем код по модулям и разбираемся, откуда берутся типы чужих библиотек.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Файл .d.ts\",\n  \"title\": \"Только типы\",\n  \"what\": \"Файл объявлений описывает типы модуля без кода. Библиотеки публикуют .d.ts рядом с JavaScript, и редактор знает их API.\",\n  \"why\": \"Подсказки для React, lodash или Express появляются именно из .d.ts.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"@types\",\n  \"title\": \"Типы от сообщества\",\n  \"what\": \"Если библиотека написана на JavaScript без типов, их часто можно поставить отдельно: `npm install -D @types/express`.\",\n  \"why\": \"Проект DefinitelyTyped содержит типы для тысяч пакетов.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"declare module\",\n  \"title\": \"Своё описание\",\n  \"what\": \"Для библиотеки без типов создают файл `types/lib.d.ts`: `declare module \\\"old-lib\\\" { export function run(x: string): void; }`.\",\n  \"why\": \"Описываешь только то, что используешь, и вместо any получаешь проверку.\",\n  \"how\": \"declare module \\\"*.svg\\\" {\\n  const url: string;\\n  export default url;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"declare global\",\n  \"title\": \"Глобальные дополнения\",\n  \"what\": \"Расширить глобальный тип, например добавить поле в Window: `declare global { interface Window { analytics: Analytics } }`.\",\n  \"why\": \"Скрипты, которые подключаются тегом script, получают типы.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Нет типов у пакета — попробуй `@types/имя`. Нет и их — опиши нужное в своём .d.ts."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dc-dts",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dc-types",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dc-svg",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "tsconfig",
+      "title": "tsconfig.json по делу",
+      "summary": "target, module, include, lib, outDir и где настройки берутся у фреймворков.",
+      "chapter": "TypeScript в проекте",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Подключаем типы библиотек и разбираем настройки проекта.\",\"cast\":[\"nika\"]}\n```\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"ESNext\",\n    \"moduleResolution\": \"Bundler\",\n    \"strict\": true,\n    \"noEmit\": true,\n    \"lib\": [\"ES2022\", \"DOM\"]\n  },\n  \"include\": [\"src\"]\n}\n```\n\n```concept\n{\n  \"name\": \"target и lib\",\n  \"title\": \"Какой JavaScript\",\n  \"what\": \"target — до какой версии JavaScript понизить синтаксис, lib — какие встроенные API доступны (DOM для браузера, без DOM — для сервера).\",\n  \"why\": \"В серверном проекте без DOM `document` станет ошибкой, а не падением в работе.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"module и moduleResolution\",\n  \"title\": \"Как искать импорты\",\n  \"what\": \"Как писать и искать модули: `Bundler` — для проектов со сборщиком (Vite, Next.js), `NodeNext` — для чистого Node.js.\",\n  \"why\": \"Неверная настройка даёт ошибки «cannot find module», хотя файл на месте.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"include и exclude\",\n  \"title\": \"Какие файлы проверять\",\n  \"what\": \"`include: [\\\"src\\\"]` — проверять только папку src. node_modules исключается по умолчанию.\",\n  \"why\": \"Проверка не тратит время на сборку и чужой код.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"extends в tsconfig\",\n  \"title\": \"Готовые основы\",\n  \"what\": \"`\\\"extends\\\": \\\"@tsconfig/node22/tsconfig.json\\\"` берёт проверенные настройки и позволяет дописать свои. Фреймворки генерируют tsconfig сами.\",\n  \"why\": \"Не нужно подбирать два десятка флагов вручную.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** В проекте со сборщиком: `moduleResolution: Bundler`, `noEmit: true`, `strict: true`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tc-lib",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tc-bundler",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tc-include",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "strict",
+      "title": "Строгий режим",
+      "summary": "strict и что он включает, noUncheckedIndexedAccess, exactOptionalPropertyTypes и почему строже — лучше.",
+      "chapter": "TypeScript в проекте",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Настраиваем проект и включаем проверки, ради которых TypeScript и нужен.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"strict\",\n  \"title\": \"Набор строгих проверок\",\n  \"what\": \"`\\\"strict\\\": true` включает сразу несколько флагов: strictNullChecks (null отдельно), noImplicitAny (никаких скрытых any), strictFunctionTypes и другие.\",\n  \"why\": \"Без strict TypeScript пропускает большую часть ошибок, ради которых его ставят.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"noUncheckedIndexedAccess\",\n  \"title\": \"Элемент может отсутствовать\",\n  \"what\": \"С этим флагом `items[0]` имеет тип `T | undefined`: массив может быть пустым, ключа в словаре может не быть.\",\n  \"why\": \"Ловит «cannot read properties of undefined» на пустых списках.\",\n  \"how\": \"const first = items[0]; // Item | undefined\\nfirst.name; // Ошибка: проверь, что элемент есть\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"noImplicitAny\",\n  \"title\": \"Без скрытого any\",\n  \"what\": \"Параметр без аннотации, тип которого нельзя вывести, становится ошибкой, а не тихим any.\",\n  \"why\": \"any не расползается по проекту незаметно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Включать постепенно\",\n  \"title\": \"В старом проекте\",\n  \"what\": \"В большом проекте строаноним включают по флагу: сначала noImplicitAny, потом strictNullChecks, исправляя ошибки по папкам.\",\n  \"why\": \"Тысяча ошибок разом пугает, десяток за раз — нормальная работа.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Новый проект — сразу `strict: true` и `noUncheckedIndexedAccess`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-null",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-index",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-old",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "migrate-lint",
+      "title": "Переход с JavaScript и линтинг",
+      "summary": "allowJs и checkJs, JSDoc-типы, typescript-eslint и правила, которые ловят опасный код.",
+      "chapter": "TypeScript в проекте",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Включили строаноним и разбираем, как перевести существующий проект и усилить проверки линтером.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"allowJs и checkJs\",\n  \"title\": \"JavaScript рядом с TypeScript\",\n  \"what\": \"`allowJs` разрешает .js-файлы в проекте, `checkJs` проверяет и их. Файлы переименовывают в .ts по одному.\",\n  \"why\": \"Переход идёт параллельно обычной работе, без «большого переписывания».\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"JSDoc-типы\",\n  \"title\": \"Типы в комментариях\",\n  \"what\": \"В .js-файле типы можно описать комментариями `/** @param {number} price */` — TypeScript их проверит.\",\n  \"why\": \"Проекты, которые остаются на JavaScript, тоже получают проверку.\",\n  \"how\": \"/** @param {number} price @returns {string} */\\nfunction format(price) { return `${price} ₽`; }\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"typescript-eslint\",\n  \"title\": \"Линтер с типами\",\n  \"what\": \"Плагин ESLint, который знает типы: правила no-floating-promises (забытый await), no-unsafe-assignment (расползание any), strict-boolean-expressions.\",\n  \"why\": \"Ловит ошибки, которые компилятор считает допустимыми.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"@ts-expect-error\",\n  \"title\": \"Осознанное исключение\",\n  \"what\": \"Комментарий над строкой разрешает ошибку типа и сам становится ошибкой, когда её больше нет. Лучше, чем @ts-ignore, который молчит всегда.\",\n  \"why\": \"Временные заплатки не остаются в коде навсегда.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Переходи файл за файлом через allowJs. Вместо @ts-ignore — @ts-expect-error с пояснением."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mg-allow",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mg-expect",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mg-floating",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "api-data",
+      "title": "Данные из сети",
+      "summary": "Почему ответ fetch — это unknown, проверка схемой (Zod) и тип, выведенный из схемы.",
+      "chapter": "TypeScript на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Подключаем линтер и решаем главную практическую задачу: данные, которых TypeScript не видит.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Граница доверия\",\n  \"title\": \"Сеть, формы, localStorage\",\n  \"what\": \"Всё, что приходит извне, может иметь любую форму. Написать `as User` — значит пообещать TypeScript то, что никто не проверял.\",\n  \"why\": \"Ошибки «undefined is not a function» чаще всего начинаются именно на границе.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Схема проверки\",\n  \"title\": \"Zod\",\n  \"what\": \"Библиотека Zod описывает форму данных схемой и проверяет её при выполнении: `UserSchema.parse(json)` либо вернёт данные, либо бросит понятную ошибку.\",\n  \"why\": \"Проверка и тип — из одного описания.\",\n  \"how\": \"import { z } from \\\"zod\\\";\\nconst UserSchema = z.object({ id: z.number(), name: z.string() });\\ntype User = z.infer<typeof UserSchema>;\\nconst user = UserSchema.parse(await res.json());\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"safeParse\",\n  \"title\": \"Без исключений\",\n  \"what\": \"`UserSchema.safeParse(data)` возвращает `{ success: true, data }` или `{ success: false, error }` — размеченное объединение.\",\n  \"why\": \"Ошибку данных можно показать пользователю, а не уронить страницу.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Один тип на клиенте и сервере\",\n  \"title\": \"Общий контракт\",\n  \"what\": \"Схемы выносят в общий пакет: сервер проверяет входящие запросы, клиент — ответы, а тип выводится из той же схемы.\",\n  \"why\": \"Поменял поле на сервере — сборка клиента сразу покажет, где его использовали.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Внешние данные — `unknown` и проверка схемой. `as User` на ответе сервера — обещание без гарантии."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "api-as",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "api-infer",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "api-safe",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "dom-types",
+      "title": "Типы DOM",
+      "summary": "querySelector и null, HTMLInputElement, обобщённый querySelector<T> и события форм.",
+      "chapter": "TypeScript на практике",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проверяем данные из сети и типизируем работу со страницей.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"querySelector и null\",\n  \"title\": \"Элемента может не быть\",\n  \"what\": \"`document.querySelector(\\\".price\\\")` возвращает `Element | null`. Без проверки обратиться к нему нельзя.\",\n  \"why\": \"Страница без нужного элемента не уронит скрипт ошибкой «cannot read properties of null».\",\n  \"how\": \"const price = document.querySelector(\\\".price\\\");\\nif (price) price.textContent = \\\"990 ₽\\\";\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Конкретный тип элемента\",\n  \"title\": \"HTMLInputElement\",\n  \"what\": \"По тегу TypeScript знает тип: `querySelector(\\\"input\\\")` — HTMLInputElement. По классу — только Element, поэтому указывают: `querySelector<HTMLInputElement>(\\\".email\\\")`.\",\n  \"why\": \"Поле value и checked становятся доступны с подсказками.\",\n  \"how\": \"const email = document.querySelector<HTMLInputElement>(\\\".email\\\");\\nconsole.log(email?.value);\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"События форм\",\n  \"title\": \"currentTarget\",\n  \"what\": \"В обработчике `form.addEventListener(\\\"submit\\\", (e) => …)` используют `e.currentTarget as HTMLFormElement` и `new FormData(form)`.\",\n  \"why\": \"Данные формы собираются без ручного поиска полей.\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** `querySelector` может вернуть null — проверь. Нужен конкретный элемент — `querySelector<HTMLInputElement>`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dom-null",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dom-input",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dom-tag",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "satisfies-brands",
+      "title": "satisfies и типы-метки",
+      "summary": "Проверить значение без потери точного типа, и как отличать ID пользователя от ID заказа.",
+      "chapter": "TypeScript на практике",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Типизируем DOM и завершаем курс приёмами, которые делают типы ещё точнее.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"satisfies\",\n  \"title\": \"Проверить, не расширяя\",\n  \"what\": \"`const routes = { home: \\\"/\\\", course: \\\"/courses\\\" } satisfies Record<string, string>` — TypeScript проверит форму, но сохранит точные ключи.\",\n  \"why\": \"С аннотацией `: Record<string, string>` ключи home и course потерялись бы.\",\n  \"how\": \"const theme = {\\n  accent: \\\"#f26a21\\\",\\n  radius: 12\\n} satisfies Record<string, string | number>;\\ntheme.accent.toUpperCase(); // знает, что это строка\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тип-метка\",\n  \"title\": \"Branded type\",\n  \"what\": \"`type UserId = number & { readonly brand: \\\"UserId\\\" }` — число, которое нельзя перепутать с OrderId.\",\n  \"why\": \"Функция `deleteUser(id: UserId)` не примет id заказа, хотя оба — числа.\",\n  \"how\": \"type UserId = number & { readonly __brand: \\\"UserId\\\" };\\nconst asUserId = (n: number) => n as UserId;\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Типы как документация\",\n  \"title\": \"Код объясняет себя\",\n  \"what\": \"Точные типы — это документация, которая не устаревает: сигнатура функции говорит, что она принимает и возвращает, а компилятор следит за правдой.\",\n  \"why\": \"Через год код понятен без поиска «а что тут приходит?».\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Проверить форму и не потерять точность — `satisfies`. Похожие числа разного смысла — метки."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sb-satisfies",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sb-brand",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sb-docs",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    }
+  ]
+}
