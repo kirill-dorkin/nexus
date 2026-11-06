@@ -335,6 +335,25 @@ export const characters = [
       "Приложения в контейнерах: образы и слои, жизнь контейнера, Dockerfile, кэш и многоэтапная сборка, безопасные образы, тома и резервные копии, сети, Docker Compose, настройки и секреты, проверки здоровья, диагностика и уборка, реестры, CI и запуск на сервере.",
     accent: "blue",
     sources: [{ manifest: "docker-track.manifest.json", published: true }]
+  },
+  {
+    slug: "next",
+    depth: {},
+    abilities: [
+      { title: "Основы", branches: ["Старт Next.js", "Маршруты и макеты"] },
+      { title: "Компоненты", branches: ["Серверные и клиентские компоненты"] },
+      { title: "Данные", branches: ["Получение данных", "Формы и Server Actions"] },
+      { title: "Рендеринг", branches: ["Рендеринг и кэш"] },
+      { title: "Сервер", branches: ["API и прокси", "База данных и вход"] },
+      { title: "Интерфейс", branches: ["Стили, медиа и метаданные"] },
+      { title: "Выпуск", branches: ["Ошибки, скорость и тесты", "Выпуск приложения"] }
+    ],
+    name: "Next.js",
+    role: "Архитектор React",
+    summary:
+      "Полноценные приложения на React: App Router, маршруты и макеты, серверные и клиентские компоненты, данные и потоковая отрисовка, формы и Server Actions, рендеринг и кэш, API и прокси, стили, картинки и метаданные, база данных и вход, ошибки, скорость и тесты, выпуск на платформу и свой сервер.",
+    accent: "rose",
+    sources: [{ manifest: "next-track.manifest.json", published: true }]
   }
 ];
 
@@ -358,7 +377,8 @@ export const requires = {
   "network/Как устроена сеть": ["browser/HTTP и HTTPS"],
   "python/Старт Python": ["pc/Командная строка"],
   "docker/Зачем контейнеры": ["terminal/Процессы и сигналы"],
-  "docker/Сети контейнеров": ["network/IP-адреса и подсети"]
+  "docker/Сети контейнеров": ["network/IP-адреса и подсети"],
+  "next/Старт Next.js": ["react/Маршруты и структура приложения"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */

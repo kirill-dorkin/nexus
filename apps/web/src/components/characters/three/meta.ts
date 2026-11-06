@@ -17,7 +17,8 @@ export const BODY_UI = {
   react: ["#61dafb", "#c4f4ff", "#0e7490", "#06202a"],
   network: ["#818cf8", "#d6d9ff", "#3730a3", "#0e0f2e"],
   python: ["#ffd43b", "#fff3b0", "#2b5b8c", "#0b1a2b"],
-  docker: ["#2496ed", "#bfe3ff", "#1d4f91", "#071a33"]
+  docker: ["#2496ed", "#bfe3ff", "#1d4f91", "#071a33"],
+  next: ["#f5f5f5", "#ffffff", "#3f3f46", "#0a0a0c"]
 } as const satisfies Record<string, readonly [string, string, string, string]>;
 
 export type BodySlug = keyof typeof BODY_UI;

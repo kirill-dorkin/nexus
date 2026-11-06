@@ -1,0 +1,4576 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "next",
+    "title": "Next.js: полноценные приложения на React",
+    "description": "Next.js с нуля до приложения в интернете. App Router, маршруты и макеты, серверные и клиентские компоненты, получение данных и потоковая отрисовка, формы и Server Actions, статический и динамический рендеринг и кэш, обработчики маршрутов и прокси, стили, картинки, шрифты и метаданные, база данных и вход пользователей, ошибки, скорость и тесты, выпуск на хостинг и на свой сервер. Каждое понятие объясняется карточкой с примером, каждый урок закрепляется вопросами."
+  },
+  "skills": [
+    {
+      "key": "nx-why",
+      "title": "Что такое Next.js",
+      "description": "Объяснять, что Next.js добавляет к React."
+    },
+    {
+      "key": "nx-create",
+      "title": "Создание проекта",
+      "description": "Создавать и запускать проект Next.js."
+    },
+    {
+      "key": "nx-structure",
+      "title": "Структура проекта",
+      "description": "Ориентироваться в файлах проекта Next.js."
+    },
+    {
+      "key": "nx-routes",
+      "title": "Маршруты",
+      "description": "Создавать страницы и вложенные маршруты папками."
+    },
+    {
+      "key": "nx-layouts",
+      "title": "Макеты",
+      "description": "Строить общие части страниц вложенными макетами."
+    },
+    {
+      "key": "nx-dynamic",
+      "title": "Динамические маршруты",
+      "description": "Создавать страницы с параметрами в адресе."
+    },
+    {
+      "key": "nx-rsc",
+      "title": "Серверные компоненты",
+      "description": "Писать серверные компоненты и понимать, где они выполняются."
+    },
+    {
+      "key": "nx-client",
+      "title": "Клиентские компоненты",
+      "description": "Выделять интерактивные части в клиентские компоненты."
+    },
+    {
+      "key": "nx-compose",
+      "title": "Композиция компонентов",
+      "description": "Сочетать серверные и клиентские компоненты правильно."
+    },
+    {
+      "key": "nx-fetch",
+      "title": "Получение данных",
+      "description": "Получать данные в серверных компонентах."
+    },
+    {
+      "key": "nx-streaming",
+      "title": "Потоковая отрисовка",
+      "description": "Показывать страницу по частям с loading и Suspense."
+    },
+    {
+      "key": "nx-clientdata",
+      "title": "Данные на клиенте",
+      "description": "Получать данные в клиентских компонентах, когда это нужно."
+    },
+    {
+      "key": "nx-actions",
+      "title": "Server Actions",
+      "description": "Изменять данные формами и Server Actions."
+    },
+    {
+      "key": "nx-validate",
+      "title": "Проверка форм",
+      "description": "Проверять данные форм на сервере и показывать ошибки."
+    },
+    {
+      "key": "nx-optimistic",
+      "title": "Отзывчивые формы",
+      "description": "Показывать ожидание и оптимистичные обновления."
+    },
+    {
+      "key": "nx-render",
+      "title": "Виды рендеринга",
+      "description": "Отличать статические и динамические страницы."
+    },
+    {
+      "key": "nx-revalidate",
+      "title": "Обновление данных",
+      "description": "Обновлять статические страницы по времени и по событию."
+    },
+    {
+      "key": "nx-cache",
+      "title": "Кэширование",
+      "description": "Понимать и настраивать кэширование в Next.js."
+    },
+    {
+      "key": "nx-route",
+      "title": "Обработчики маршрутов",
+      "description": "Писать API-эндпоинты в файлах route.ts."
+    },
+    {
+      "key": "nx-proxy",
+      "title": "Прокси",
+      "description": "Перехватывать запросы до маршрутов в proxy.ts."
+    },
+    {
+      "key": "nx-env",
+      "title": "Cookies и окружение",
+      "description": "Работать с cookies, заголовками и переменными окружения."
+    },
+    {
+      "key": "nx-styles",
+      "title": "Стили",
+      "description": "Подключать и организовывать стили в приложении Next.js."
+    },
+    {
+      "key": "nx-media",
+      "title": "Картинки и шрифты",
+      "description": "Оптимизировать картинки и шрифты встроенными компонентами."
+    },
+    {
+      "key": "nx-seo",
+      "title": "Метаданные",
+      "description": "Настраивать заголовки, превью и файлы для поисковиков."
+    },
+    {
+      "key": "nx-db",
+      "title": "База данных",
+      "description": "Подключать базу данных к приложению Next.js."
+    },
+    {
+      "key": "nx-auth",
+      "title": "Аутентификация",
+      "description": "Добавлять вход пользователей в приложение."
+    },
+    {
+      "key": "nx-authz",
+      "title": "Авторизация",
+      "description": "Проверять права пользователя на каждом уровне."
+    },
+    {
+      "key": "nx-errors",
+      "title": "Обработка ошибок",
+      "description": "Показывать понятные страницы ошибок и 404."
+    },
+    {
+      "key": "nx-perf",
+      "title": "Производительность",
+      "description": "Измерять и улучшать скорость приложения."
+    },
+    {
+      "key": "nx-testing",
+      "title": "Тестирование",
+      "description": "Покрывать приложение Next.js тестами разного уровня."
+    },
+    {
+      "key": "nx-hosting",
+      "title": "Выпуск на платформу",
+      "description": "Выпускать приложение на хостинг-платформу."
+    },
+    {
+      "key": "nx-selfhost",
+      "title": "Свой сервер",
+      "description": "Запускать приложение Next.js на своём сервере или в Docker."
+    },
+    {
+      "key": "nx-prod",
+      "title": "Боевой запуск",
+      "description": "Готовить приложение к работе с настоящими пользователями."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "wn-what",
+      "type": "quiz.single_choice",
+      "title": "Отношение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-why"
+      ],
+      "presentation": {
+        "question": "Как связаны React и Next.js?",
+        "options": [
+          {
+            "id": "framework",
+            "text": "Next.js — фреймворк, построенный на React"
+          },
+          {
+            "id": "rival",
+            "text": "Это конкурирующие библиотеки"
+          },
+          {
+            "id": "same",
+            "text": "Это одно и то же"
+          },
+          {
+            "id": "css",
+            "text": "Next.js — библиотека стилей"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "framework",
+        "explanation": "Компоненты пишутся на React."
+      }
+    },
+    {
+      "slug": "wn-router",
+      "type": "quiz.single_choice",
+      "title": "Маршрутизатор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-why"
+      ],
+      "presentation": {
+        "question": "Какой маршрутизатор рекомендуют для новых проектов?",
+        "options": [
+          {
+            "id": "app",
+            "text": "App Router (папка app/)"
+          },
+          {
+            "id": "pages",
+            "text": "Pages Router (папка pages/)"
+          },
+          {
+            "id": "none",
+            "text": "Никакой"
+          },
+          {
+            "id": "express",
+            "text": "Express"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "app",
+        "explanation": "Pages Router — наследие."
+      }
+    },
+    {
+      "slug": "wn-adds",
+      "type": "quiz.multiple_choice",
+      "title": "Что добавляет",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "nx-why"
+      ],
+      "presentation": {
+        "question": "Что Next.js добавляет к React?",
+        "options": [
+          {
+            "id": "routes",
+            "text": "Маршруты по файлам"
+          },
+          {
+            "id": "server",
+            "text": "Код на сервере и получение данных"
+          },
+          {
+            "id": "images",
+            "text": "Оптимизацию картинок и шрифтов"
+          },
+          {
+            "id": "db",
+            "text": "Встроенную базу данных"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "routes",
+          "server",
+          "images"
+        ],
+        "explanation": "Базу подключают отдельно."
+      }
+    },
+    {
+      "slug": "ca-cmd",
+      "type": "quiz.single_choice",
+      "title": "Создание",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-create"
+      ],
+      "presentation": {
+        "question": "Какой командой создают новый проект?",
+        "options": [
+          {
+            "id": "create",
+            "text": "`npx create-next-app@latest`"
+          },
+          {
+            "id": "new",
+            "text": "`next new app`"
+          },
+          {
+            "id": "init",
+            "text": "`npm init react`"
+          },
+          {
+            "id": "git",
+            "text": "`git clone next`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "create",
+        "explanation": "Мастер задаст вопросы о настройках."
+      }
+    },
+    {
+      "slug": "ca-port",
+      "type": "quiz.single_choice",
+      "title": "Порт",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-create"
+      ],
+      "presentation": {
+        "question": "На каком адресе по умолчанию открывается dev-сервер?",
+        "options": [
+          {
+            "id": "3000",
+            "text": "localhost:3000"
+          },
+          {
+            "id": "80",
+            "text": "localhost:80"
+          },
+          {
+            "id": "8080",
+            "text": "localhost:8080"
+          },
+          {
+            "id": "5173",
+            "text": "localhost:5173"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "3000",
+        "explanation": "Порт можно сменить флагом -p."
+      }
+    },
+    {
+      "slug": "ca-build",
+      "type": "quiz.single_choice",
+      "title": "Сборка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-create"
+      ],
+      "presentation": {
+        "question": "Что делает npm run build?",
+        "options": [
+          {
+            "id": "prod",
+            "text": "Собирает оптимизированное приложение для выпуска"
+          },
+          {
+            "id": "dev",
+            "text": "Запускает dev-сервер"
+          },
+          {
+            "id": "test",
+            "text": "Запускает тесты"
+          },
+          {
+            "id": "deploy",
+            "text": "Публикует в интернет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "prod",
+        "explanation": "Запуск собранного — npm run start."
+      }
+    },
+    {
+      "slug": "ps-page",
+      "type": "quiz.single_choice",
+      "title": "Страница",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-structure"
+      ],
+      "presentation": {
+        "question": "Какой файл делает папку адресом страницы?",
+        "options": [
+          {
+            "id": "page",
+            "text": "page.tsx"
+          },
+          {
+            "id": "index",
+            "text": "index.html"
+          },
+          {
+            "id": "route",
+            "text": "router.ts"
+          },
+          {
+            "id": "view",
+            "text": "view.tsx"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "page",
+        "explanation": "Без page.tsx папка — не страница."
+      }
+    },
+    {
+      "slug": "ps-public",
+      "type": "quiz.single_choice",
+      "title": "Статика",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-structure"
+      ],
+      "presentation": {
+        "question": "По какому адресу доступен файл public/logo.svg?",
+        "options": [
+          {
+            "id": "root",
+            "text": "/logo.svg"
+          },
+          {
+            "id": "public",
+            "text": "/public/logo.svg"
+          },
+          {
+            "id": "static",
+            "text": "/static/logo.svg"
+          },
+          {
+            "id": "none",
+            "text": "Он недоступен"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "root",
+        "explanation": "public — корень сайта."
+      }
+    },
+    {
+      "slug": "ps-layout",
+      "type": "quiz.single_choice",
+      "title": "Макет",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-structure"
+      ],
+      "presentation": {
+        "question": "Что обязательно содержит корневой layout.tsx?",
+        "options": [
+          {
+            "id": "html",
+            "text": "Теги html и body"
+          },
+          {
+            "id": "head",
+            "text": "Только тег head"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          },
+          {
+            "id": "router",
+            "text": "Настройки маршрутов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "html",
+        "explanation": "Это обёртка всего приложения."
+      }
+    },
+    {
+      "slug": "fr-addr",
+      "type": "quiz.single_choice",
+      "title": "Адрес",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-routes"
+      ],
+      "presentation": {
+        "question": "Какой адрес у файла app/blog/news/page.tsx?",
+        "options": [
+          {
+            "id": "path",
+            "text": "/blog/news"
+          },
+          {
+            "id": "page",
+            "text": "/blog/news/page"
+          },
+          {
+            "id": "app",
+            "text": "/app/blog/news"
+          },
+          {
+            "id": "news",
+            "text": "/news"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "path",
+        "explanation": "page.tsx — сама страница."
+      }
+    },
+    {
+      "slug": "fr-group",
+      "type": "quiz.single_choice",
+      "title": "Группа",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-routes"
+      ],
+      "presentation": {
+        "question": "Какой адрес у app/(shop)/cart/page.tsx?",
+        "options": [
+          {
+            "id": "cart",
+            "text": "/cart"
+          },
+          {
+            "id": "shop",
+            "text": "/shop/cart"
+          },
+          {
+            "id": "paren",
+            "text": "/(shop)/cart"
+          },
+          {
+            "id": "none",
+            "text": "Страницы не будет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cart",
+        "explanation": "Скобки не попадают в адрес."
+      }
+    },
+    {
+      "slug": "fr-link",
+      "type": "quiz.single_choice",
+      "title": "Ссылка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-routes"
+      ],
+      "presentation": {
+        "question": "Чем Link лучше обычного тега a для внутренних ссылок?",
+        "options": [
+          {
+            "id": "spa",
+            "text": "Переход без перезагрузки страницы и с предзагрузкой"
+          },
+          {
+            "id": "color",
+            "text": "Другой цвет"
+          },
+          {
+            "id": "seo",
+            "text": "Только Link видят поисковики"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "spa",
+        "explanation": "Link всё равно рисует тег a."
+      }
+    },
+    {
+      "slug": "ly-scope",
+      "type": "quiz.single_choice",
+      "title": "Область",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-layouts"
+      ],
+      "presentation": {
+        "question": "Какие страницы оборачивает app/dashboard/layout.tsx?",
+        "options": [
+          {
+            "id": "section",
+            "text": "Все страницы внутри app/dashboard"
+          },
+          {
+            "id": "all",
+            "text": "Все страницы сайта"
+          },
+          {
+            "id": "one",
+            "text": "Только app/dashboard/page.tsx"
+          },
+          {
+            "id": "none",
+            "text": "Никакие"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "section",
+        "explanation": "И вкладывается в корневой макет."
+      }
+    },
+    {
+      "slug": "ly-state",
+      "type": "quiz.single_choice",
+      "title": "Состояние",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-layouts"
+      ],
+      "presentation": {
+        "question": "Что происходит с макетом при переходе между страницами раздела?",
+        "options": [
+          {
+            "id": "kept",
+            "text": "Он остаётся, состояние сохраняется"
+          },
+          {
+            "id": "reset",
+            "text": "Создаётся заново"
+          },
+          {
+            "id": "hidden",
+            "text": "Скрывается"
+          },
+          {
+            "id": "reload",
+            "text": "Перезагружается вся страница"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "kept",
+        "explanation": "template — создаётся заново."
+      }
+    },
+    {
+      "slug": "ly-path",
+      "type": "quiz.single_choice",
+      "title": "Текущий путь",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-layouts"
+      ],
+      "presentation": {
+        "question": "Каким хуком узнать текущий путь для подсветки меню?",
+        "options": [
+          {
+            "id": "pathname",
+            "text": "usePathname"
+          },
+          {
+            "id": "router",
+            "text": "useLocation"
+          },
+          {
+            "id": "path",
+            "text": "usePath"
+          },
+          {
+            "id": "url",
+            "text": "useUrl"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pathname",
+        "explanation": "Из next/navigation."
+      }
+    },
+    {
+      "slug": "dy-folder",
+      "type": "quiz.single_choice",
+      "title": "Папка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-dynamic"
+      ],
+      "presentation": {
+        "question": "Как назвать папку, чтобы адрес /courses/любой-курс обрабатывался одной страницей?",
+        "options": [
+          {
+            "id": "brackets",
+            "text": "app/courses/[slug]"
+          },
+          {
+            "id": "colon",
+            "text": "app/courses/:slug"
+          },
+          {
+            "id": "star",
+            "text": "app/courses/*"
+          },
+          {
+            "id": "braces",
+            "text": "app/courses/{slug}"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "brackets",
+        "explanation": "Квадратные скобки — параметр."
+      }
+    },
+    {
+      "slug": "dy-await",
+      "type": "quiz.single_choice",
+      "title": "params",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-dynamic"
+      ],
+      "presentation": {
+        "question": "Как получить slug в серверной странице?",
+        "options": [
+          {
+            "id": "await",
+            "text": "`const { slug } = await params`"
+          },
+          {
+            "id": "sync",
+            "text": "`params.slug` без ожидания всегда"
+          },
+          {
+            "id": "hook",
+            "text": "`useParams()` в серверном компоненте"
+          },
+          {
+            "id": "query",
+            "text": "`router.query.slug`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "await",
+        "explanation": "params — Promise."
+      }
+    },
+    {
+      "slug": "dy-404",
+      "type": "quiz.single_choice",
+      "title": "Нет записи",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-dynamic"
+      ],
+      "presentation": {
+        "question": "Как показать 404, если курс не найден?",
+        "options": [
+          {
+            "id": "notfound",
+            "text": "Вызвать notFound()"
+          },
+          {
+            "id": "null",
+            "text": "Вернуть null"
+          },
+          {
+            "id": "throw",
+            "text": "Бросить любую ошибку"
+          },
+          {
+            "id": "redirect",
+            "text": "Перенаправить на главную"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "notfound",
+        "explanation": "Ответ будет с кодом 404."
+      }
+    },
+    {
+      "slug": "sc-default",
+      "type": "quiz.single_choice",
+      "title": "По умолчанию",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-rsc"
+      ],
+      "presentation": {
+        "question": "Какими являются компоненты в папке app по умолчанию?",
+        "options": [
+          {
+            "id": "server",
+            "text": "Серверными"
+          },
+          {
+            "id": "client",
+            "text": "Клиентскими"
+          },
+          {
+            "id": "static",
+            "text": "Только статическими"
+          },
+          {
+            "id": "none",
+            "text": "Никакими"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "server",
+        "explanation": "Клиентские помечают директивой."
+      }
+    },
+    {
+      "slug": "sc-state",
+      "type": "quiz.single_choice",
+      "title": "Ограничение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-rsc"
+      ],
+      "presentation": {
+        "question": "Что нельзя использовать в серверном компоненте?",
+        "options": [
+          {
+            "id": "state",
+            "text": "useState и onClick"
+          },
+          {
+            "id": "async",
+            "text": "async и await"
+          },
+          {
+            "id": "db",
+            "text": "Запрос к базе"
+          },
+          {
+            "id": "jsx",
+            "text": "JSX"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "state",
+        "explanation": "Интерактивность — на клиенте."
+      }
+    },
+    {
+      "slug": "sc-secret",
+      "type": "quiz.single_choice",
+      "title": "Секреты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-rsc"
+      ],
+      "presentation": {
+        "question": "Попадёт ли ключ API, использованный в серверном компоненте, в браузер?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, код остаётся на сервере"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "dev",
+            "text": "Только в режиме разработки"
+          },
+          {
+            "id": "half",
+            "text": "Попадёт частично"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Если не передать его в props клиентского компонента."
+      }
+    },
+    {
+      "slug": "cc-where",
+      "type": "quiz.single_choice",
+      "title": "Директива",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-client"
+      ],
+      "presentation": {
+        "question": "Где пишут \"use client\"?",
+        "options": [
+          {
+            "id": "top",
+            "text": "Первой строкой файла компонента"
+          },
+          {
+            "id": "jsx",
+            "text": "Внутри JSX"
+          },
+          {
+            "id": "config",
+            "text": "В next.config"
+          },
+          {
+            "id": "layout",
+            "text": "Только в layout"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "top",
+        "explanation": "Она отмечает границу."
+      }
+    },
+    {
+      "slug": "cc-imports",
+      "type": "quiz.single_choice",
+      "title": "Импорты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-client"
+      ],
+      "presentation": {
+        "question": "Что становится клиентским, если файл помечен \"use client\"?",
+        "options": [
+          {
+            "id": "tree",
+            "text": "Сам компонент и всё, что он импортирует"
+          },
+          {
+            "id": "only",
+            "text": "Только этот компонент"
+          },
+          {
+            "id": "page",
+            "text": "Вся страница"
+          },
+          {
+            "id": "app",
+            "text": "Всё приложение"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "tree",
+        "explanation": "Поэтому границу ставят пониже."
+      }
+    },
+    {
+      "slug": "cc-hydr",
+      "type": "quiz.single_choice",
+      "title": "Гидратация",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-client"
+      ],
+      "presentation": {
+        "question": "Почему Date.now() в разметке может вызвать ошибку гидратации?",
+        "options": [
+          {
+            "id": "mismatch",
+            "text": "Сервер и браузер получат разные значения"
+          },
+          {
+            "id": "slow",
+            "text": "Это медленно"
+          },
+          {
+            "id": "forbidden",
+            "text": "Date запрещён в React"
+          },
+          {
+            "id": "none",
+            "text": "Не вызовет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mismatch",
+        "explanation": "HTML должен совпасть."
+      }
+    },
+    {
+      "slug": "cm-children",
+      "type": "quiz.single_choice",
+      "title": "Вложение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-compose"
+      ],
+      "presentation": {
+        "question": "Как показать серверный компонент внутри клиентского?",
+        "options": [
+          {
+            "id": "children",
+            "text": "Передать его как children из серверного родителя"
+          },
+          {
+            "id": "import",
+            "text": "Импортировать в клиентском файле"
+          },
+          {
+            "id": "iframe",
+            "text": "Через iframe"
+          },
+          {
+            "id": "no",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "children",
+        "explanation": "Он придёт уже отрисованным."
+      }
+    },
+    {
+      "slug": "cm-fn",
+      "type": "quiz.single_choice",
+      "title": "Пропсы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-compose"
+      ],
+      "presentation": {
+        "question": "Что нельзя передать из серверного компонента в клиентский через props?",
+        "options": [
+          {
+            "id": "fn",
+            "text": "Обычную функцию"
+          },
+          {
+            "id": "str",
+            "text": "Строку"
+          },
+          {
+            "id": "arr",
+            "text": "Массив"
+          },
+          {
+            "id": "obj",
+            "text": "Простой объект"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fn",
+        "explanation": "Только сериализуемые данные (кроме Server Actions)."
+      }
+    },
+    {
+      "slug": "cm-so",
+      "type": "quiz.single_choice",
+      "title": "server-only",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-compose"
+      ],
+      "presentation": {
+        "question": "Зачем импорт \"server-only\"?",
+        "options": [
+          {
+            "id": "guard",
+            "text": "Сборка упадёт, если модуль попадёт в клиентский код"
+          },
+          {
+            "id": "speed",
+            "text": "Ускоряет сервер"
+          },
+          {
+            "id": "cache",
+            "text": "Включает кэш"
+          },
+          {
+            "id": "auth",
+            "text": "Включает вход"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "guard",
+        "explanation": "Защита секретов."
+      }
+    },
+    {
+      "slug": "fd-how",
+      "type": "quiz.single_choice",
+      "title": "Как",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-fetch"
+      ],
+      "presentation": {
+        "question": "Как серверный компонент получает данные?",
+        "options": [
+          {
+            "id": "await",
+            "text": "Сразу через await в теле компонента"
+          },
+          {
+            "id": "effect",
+            "text": "Только через useEffect"
+          },
+          {
+            "id": "swr",
+            "text": "Только через SWR"
+          },
+          {
+            "id": "none",
+            "text": "Не может"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "await",
+        "explanation": "Компонент может быть async."
+      }
+    },
+    {
+      "slug": "fd-parallel",
+      "type": "quiz.single_choice",
+      "title": "Скорость",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-fetch"
+      ],
+      "presentation": {
+        "question": "Как ускорить два независимых запроса?",
+        "options": [
+          {
+            "id": "all",
+            "text": "Запустить их вместе через Promise.all"
+          },
+          {
+            "id": "seq",
+            "text": "Ждать по очереди"
+          },
+          {
+            "id": "timeout",
+            "text": "Добавить setTimeout"
+          },
+          {
+            "id": "client",
+            "text": "Перенести в браузер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "all",
+        "explanation": "Время — по самому долгому."
+      }
+    },
+    {
+      "slug": "fd-api",
+      "type": "quiz.single_choice",
+      "title": "Свой API",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-fetch"
+      ],
+      "presentation": {
+        "question": "Нужно ли серверному компоненту делать fetch к API своего же приложения?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, можно вызвать функцию доступа к данным напрямую"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "only",
+            "text": "Только так и можно"
+          },
+          {
+            "id": "post",
+            "text": "Только POST"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Лишний сетевой переход не нужен."
+      }
+    },
+    {
+      "slug": "st-loading",
+      "type": "quiz.single_choice",
+      "title": "loading.tsx",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-streaming"
+      ],
+      "presentation": {
+        "question": "Когда показывается loading.tsx?",
+        "options": [
+          {
+            "id": "wait",
+            "text": "Сразу, пока страница раздела получает данные"
+          },
+          {
+            "id": "error",
+            "text": "При ошибке"
+          },
+          {
+            "id": "always",
+            "text": "Всегда вместе со страницей"
+          },
+          {
+            "id": "404",
+            "text": "При 404"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "wait",
+        "explanation": "Он оборачивает страницу в Suspense."
+      }
+    },
+    {
+      "slug": "st-suspense",
+      "type": "quiz.single_choice",
+      "title": "Suspense",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-streaming"
+      ],
+      "presentation": {
+        "question": "Что делает Suspense вокруг медленного компонента?",
+        "options": [
+          {
+            "id": "fallback",
+            "text": "Показывает запасной интерфейс, пока компонент не готов"
+          },
+          {
+            "id": "cache",
+            "text": "Кэширует его навсегда"
+          },
+          {
+            "id": "hide",
+            "text": "Прячет его"
+          },
+          {
+            "id": "error",
+            "text": "Ловит ошибки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fallback",
+        "explanation": "Остальная страница не ждёт."
+      }
+    },
+    {
+      "slug": "st-stream",
+      "type": "quiz.single_choice",
+      "title": "Стриминг",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-streaming"
+      ],
+      "presentation": {
+        "question": "Что значит потоковая отрисовка?",
+        "options": [
+          {
+            "id": "chunks",
+            "text": "HTML отправляется частями по мере готовности"
+          },
+          {
+            "id": "video",
+            "text": "Показ видео"
+          },
+          {
+            "id": "ws",
+            "text": "WebSocket-соединение"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "chunks",
+        "explanation": "Первый показ быстрее."
+      }
+    },
+    {
+      "slug": "cd-when",
+      "type": "quiz.single_choice",
+      "title": "Когда",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-clientdata"
+      ],
+      "presentation": {
+        "question": "В каком случае данные разумно запрашивать из браузера?",
+        "options": [
+          {
+            "id": "search",
+            "text": "Поиск, который обновляется при вводе"
+          },
+          {
+            "id": "title",
+            "text": "Заголовок статьи"
+          },
+          {
+            "id": "menu",
+            "text": "Пункты меню"
+          },
+          {
+            "id": "footer",
+            "text": "Текст подвала"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "search",
+        "explanation": "Статичное — на сервере."
+      }
+    },
+    {
+      "slug": "cd-lib",
+      "type": "quiz.single_choice",
+      "title": "Библиотеки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-clientdata"
+      ],
+      "presentation": {
+        "question": "Что дают SWR и TanStack Query?",
+        "options": [
+          {
+            "id": "cache",
+            "text": "Кэш, повторы и обновление данных на клиенте"
+          },
+          {
+            "id": "db",
+            "text": "Базу данных"
+          },
+          {
+            "id": "css",
+            "text": "Стили"
+          },
+          {
+            "id": "router",
+            "text": "Маршрутизацию"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cache",
+        "explanation": "Меньше ручного кода."
+      }
+    },
+    {
+      "slug": "cd-use",
+      "type": "quiz.single_choice",
+      "title": "use()",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-clientdata"
+      ],
+      "presentation": {
+        "question": "Что делает хук use(promise)?",
+        "options": [
+          {
+            "id": "read",
+            "text": "Читает результат Promise внутри Suspense"
+          },
+          {
+            "id": "create",
+            "text": "Создаёт Promise"
+          },
+          {
+            "id": "cancel",
+            "text": "Отменяет запрос"
+          },
+          {
+            "id": "state",
+            "text": "Создаёт состояние"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "read",
+        "explanation": "Пока Promise не готов — показывается fallback."
+      }
+    },
+    {
+      "slug": "sa-dir",
+      "type": "quiz.single_choice",
+      "title": "Директива",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-actions"
+      ],
+      "presentation": {
+        "question": "Какая директива делает функцию Server Action?",
+        "options": [
+          {
+            "id": "server",
+            "text": "\"use server\""
+          },
+          {
+            "id": "client",
+            "text": "\"use client\""
+          },
+          {
+            "id": "action",
+            "text": "\"use action\""
+          },
+          {
+            "id": "api",
+            "text": "\"use api\""
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "server",
+        "explanation": "В начале файла или функции."
+      }
+    },
+    {
+      "slug": "sa-data",
+      "type": "quiz.single_choice",
+      "title": "Данные формы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-actions"
+      ],
+      "presentation": {
+        "question": "В каком виде действие получает данные формы?",
+        "options": [
+          {
+            "id": "formdata",
+            "text": "FormData"
+          },
+          {
+            "id": "json",
+            "text": "Строка JSON"
+          },
+          {
+            "id": "event",
+            "text": "Событие submit"
+          },
+          {
+            "id": "state",
+            "text": "Состояние React"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "formdata",
+        "explanation": "formData.get(\"имя поля\")."
+      }
+    },
+    {
+      "slug": "sa-reval",
+      "type": "quiz.single_choice",
+      "title": "Обновление",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-actions"
+      ],
+      "presentation": {
+        "question": "Зачем вызывать revalidatePath после сохранения?",
+        "options": [
+          {
+            "id": "fresh",
+            "text": "Чтобы страница показала новые данные"
+          },
+          {
+            "id": "delete",
+            "text": "Чтобы удалить кэш браузера"
+          },
+          {
+            "id": "auth",
+            "text": "Для входа"
+          },
+          {
+            "id": "log",
+            "text": "Для логов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fresh",
+        "explanation": "Иначе может показаться старая версия."
+      }
+    },
+    {
+      "slug": "va-trust",
+      "type": "quiz.single_choice",
+      "title": "Доверие",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-validate"
+      ],
+      "presentation": {
+        "question": "Достаточно ли проверки required в HTML-форме?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, действие можно вызвать в обход формы — нужна проверка на сервере"
+          },
+          {
+            "id": "yes",
+            "text": "Да, браузер всё проверит"
+          },
+          {
+            "id": "https",
+            "text": "Да, если сайт на HTTPS"
+          },
+          {
+            "id": "ts",
+            "text": "Да, если есть TypeScript"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Сервер проверяет всегда."
+      }
+    },
+    {
+      "slug": "va-zod",
+      "type": "quiz.single_choice",
+      "title": "safeParse",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-validate"
+      ],
+      "presentation": {
+        "question": "Что возвращает schema.safeParse(data)?",
+        "options": [
+          {
+            "id": "result",
+            "text": "Успех с данными или ошибки по полям"
+          },
+          {
+            "id": "throw",
+            "text": "Всегда бросает исключение"
+          },
+          {
+            "id": "bool",
+            "text": "Только true или false"
+          },
+          {
+            "id": "string",
+            "text": "Строку JSON"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "result",
+        "explanation": "parse — бросает исключение."
+      }
+    },
+    {
+      "slug": "va-state",
+      "type": "quiz.single_choice",
+      "title": "Ошибки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-validate"
+      ],
+      "presentation": {
+        "question": "Какой хук хранит результат действия для показа ошибок?",
+        "options": [
+          {
+            "id": "action",
+            "text": "useActionState"
+          },
+          {
+            "id": "state",
+            "text": "useState"
+          },
+          {
+            "id": "effect",
+            "text": "useEffect"
+          },
+          {
+            "id": "form",
+            "text": "useForm из React"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "action",
+        "explanation": "Третий элемент — pending."
+      }
+    },
+    {
+      "slug": "po-status",
+      "type": "quiz.single_choice",
+      "title": "Ожидание",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-optimistic"
+      ],
+      "presentation": {
+        "question": "Какой хук сообщает кнопке, что форма отправляется?",
+        "options": [
+          {
+            "id": "status",
+            "text": "useFormStatus"
+          },
+          {
+            "id": "pending",
+            "text": "usePending"
+          },
+          {
+            "id": "loading",
+            "text": "useLoading"
+          },
+          {
+            "id": "submit",
+            "text": "useSubmit"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "status",
+        "explanation": "Из react-dom."
+      }
+    },
+    {
+      "slug": "po-optimistic",
+      "type": "quiz.single_choice",
+      "title": "Оптимизм",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-optimistic"
+      ],
+      "presentation": {
+        "question": "Что делает useOptimistic?",
+        "options": [
+          {
+            "id": "instant",
+            "text": "Показывает ожидаемый результат до ответа сервера"
+          },
+          {
+            "id": "cache",
+            "text": "Кэширует страницу"
+          },
+          {
+            "id": "retry",
+            "text": "Повторяет запрос"
+          },
+          {
+            "id": "block",
+            "text": "Блокирует форму"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "instant",
+        "explanation": "При ошибке откатывается."
+      }
+    },
+    {
+      "slug": "po-errors",
+      "type": "quiz.single_choice",
+      "title": "Ошибки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-optimistic"
+      ],
+      "presentation": {
+        "question": "Как лучше вернуть ошибку «неверный email» из действия?",
+        "options": [
+          {
+            "id": "state",
+            "text": "Объектом состояния, который покажет форма"
+          },
+          {
+            "id": "throw",
+            "text": "Бросить исключение и показать белый экран"
+          },
+          {
+            "id": "alert",
+            "text": "Через alert на сервере"
+          },
+          {
+            "id": "log",
+            "text": "Только записать в лог"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "state",
+        "explanation": "error.tsx — для неожиданных."
+      }
+    },
+    {
+      "slug": "sd-static",
+      "type": "quiz.single_choice",
+      "title": "Статика",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-render"
+      ],
+      "presentation": {
+        "question": "Когда собирается статическая страница?",
+        "options": [
+          {
+            "id": "build",
+            "text": "Заранее, при сборке"
+          },
+          {
+            "id": "request",
+            "text": "На каждый запрос"
+          },
+          {
+            "id": "click",
+            "text": "При клике"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "build",
+        "explanation": "Отдаётся как готовый файл."
+      }
+    },
+    {
+      "slug": "sd-cookies",
+      "type": "quiz.single_choice",
+      "title": "Динамика",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-render"
+      ],
+      "presentation": {
+        "question": "Что сделает маршрут динамическим?",
+        "options": [
+          {
+            "id": "cookies",
+            "text": "Чтение cookies() или headers()"
+          },
+          {
+            "id": "css",
+            "text": "Подключение CSS"
+          },
+          {
+            "id": "link",
+            "text": "Компонент Link"
+          },
+          {
+            "id": "image",
+            "text": "Картинка"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cookies",
+        "explanation": "Ответ зависит от запроса."
+      }
+    },
+    {
+      "slug": "sd-symbol",
+      "type": "quiz.single_choice",
+      "title": "Вывод сборки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-render"
+      ],
+      "presentation": {
+        "question": "Что значит ○ рядом с маршрутом в выводе npm run build?",
+        "options": [
+          {
+            "id": "static",
+            "text": "Маршрут статический"
+          },
+          {
+            "id": "dynamic",
+            "text": "Маршрут динамический"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка"
+          },
+          {
+            "id": "api",
+            "text": "Это API"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "static",
+        "explanation": "ƒ — динамический."
+      }
+    },
+    {
+      "slug": "rv-time",
+      "type": "quiz.single_choice",
+      "title": "По времени",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-revalidate"
+      ],
+      "presentation": {
+        "question": "Что значит export const revalidate = 60?",
+        "options": [
+          {
+            "id": "min",
+            "text": "Страница обновляется не чаще раза в 60 секунд"
+          },
+          {
+            "id": "always",
+            "text": "Страница всегда динамическая"
+          },
+          {
+            "id": "hour",
+            "text": "Раз в 60 часов"
+          },
+          {
+            "id": "never",
+            "text": "Никогда не обновляется"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "min",
+        "explanation": "По первому запросу после срока."
+      }
+    },
+    {
+      "slug": "rv-event",
+      "type": "quiz.single_choice",
+      "title": "По событию",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-revalidate"
+      ],
+      "presentation": {
+        "question": "Статью опубликовали. Как сразу обновить список статей?",
+        "options": [
+          {
+            "id": "tag",
+            "text": "Вызвать revalidateTag или revalidatePath после сохранения"
+          },
+          {
+            "id": "rebuild",
+            "text": "Пересобрать сайт целиком"
+          },
+          {
+            "id": "wait",
+            "text": "Подождать сутки"
+          },
+          {
+            "id": "refresh",
+            "text": "Попросить пользователей обновить страницу"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "tag",
+        "explanation": "Обновление по требованию."
+      }
+    },
+    {
+      "slug": "rv-new",
+      "type": "quiz.single_choice",
+      "title": "Новые адреса",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-revalidate"
+      ],
+      "presentation": {
+        "question": "Что по умолчанию происходит с адресом, которого не было в generateStaticParams?",
+        "options": [
+          {
+            "id": "ondemand",
+            "text": "Он собирается при первом запросе и сохраняется"
+          },
+          {
+            "id": "404",
+            "text": "Всегда 404"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка сборки"
+          },
+          {
+            "id": "client",
+            "text": "Рисуется только в браузере"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ondemand",
+        "explanation": "Можно запретить через dynamicParams = false."
+      }
+    },
+    {
+      "slug": "ch-default",
+      "type": "quiz.single_choice",
+      "title": "По умолчанию",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-cache"
+      ],
+      "presentation": {
+        "question": "Кэшируется ли fetch в серверном компоненте по умолчанию в современных версиях?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, кэш включают явно"
+          },
+          {
+            "id": "yes",
+            "text": "Да, навсегда"
+          },
+          {
+            "id": "hour",
+            "text": "Да, на час"
+          },
+          {
+            "id": "dev",
+            "text": "Только в режиме разработки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Явное лучше неявного."
+      }
+    },
+    {
+      "slug": "ch-use",
+      "type": "quiz.single_choice",
+      "title": "Директива",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-cache"
+      ],
+      "presentation": {
+        "question": "Что делает \"use cache\" в начале функции?",
+        "options": [
+          {
+            "id": "store",
+            "text": "Сохраняет её результат для повторных вызовов"
+          },
+          {
+            "id": "client",
+            "text": "Переносит её в браузер"
+          },
+          {
+            "id": "server",
+            "text": "Делает её Server Action"
+          },
+          {
+            "id": "delete",
+            "text": "Сбрасывает кэш"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "store",
+        "explanation": "Срок — cacheLife."
+      }
+    },
+    {
+      "slug": "ch-private",
+      "type": "quiz.single_choice",
+      "title": "Личные данные",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-cache"
+      ],
+      "presentation": {
+        "question": "Почему корзину пользователя нельзя класть в общий кэш?",
+        "options": [
+          {
+            "id": "leak",
+            "text": "Её может увидеть другой пользователь"
+          },
+          {
+            "id": "slow",
+            "text": "Это медленно"
+          },
+          {
+            "id": "size",
+            "text": "Она слишком большая"
+          },
+          {
+            "id": "none",
+            "text": "Можно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "leak",
+        "explanation": "Общий кэш — для общих данных."
+      }
+    },
+    {
+      "slug": "rh-file",
+      "type": "quiz.single_choice",
+      "title": "Файл",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-route"
+      ],
+      "presentation": {
+        "question": "Как назвать файл обработчика API в папке app/api/courses?",
+        "options": [
+          {
+            "id": "route",
+            "text": "route.ts"
+          },
+          {
+            "id": "api",
+            "text": "api.ts"
+          },
+          {
+            "id": "page",
+            "text": "page.ts"
+          },
+          {
+            "id": "handler",
+            "text": "handler.ts"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "route",
+        "explanation": "Функции называются по методам HTTP."
+      }
+    },
+    {
+      "slug": "rh-both",
+      "type": "quiz.single_choice",
+      "title": "Вместе",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-route"
+      ],
+      "presentation": {
+        "question": "Можно ли в одной папке иметь page.tsx и route.ts?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, адрес — либо страница, либо API"
+          },
+          {
+            "id": "yes",
+            "text": "Да"
+          },
+          {
+            "id": "dev",
+            "text": "Только в разработке"
+          },
+          {
+            "id": "get",
+            "text": "Только для GET"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Будет конфликт маршрутов."
+      }
+    },
+    {
+      "slug": "rh-webhook",
+      "type": "quiz.single_choice",
+      "title": "Вебхук",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-route"
+      ],
+      "presentation": {
+        "question": "Что обязательно проверять во входящем вебхуке оплаты?",
+        "options": [
+          {
+            "id": "sig",
+            "text": "Подпись запроса"
+          },
+          {
+            "id": "color",
+            "text": "Цвет кнопки"
+          },
+          {
+            "id": "ua",
+            "text": "Только User-Agent"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "sig",
+        "explanation": "Иначе запрос можно подделать."
+      }
+    },
+    {
+      "slug": "px-when",
+      "type": "quiz.single_choice",
+      "title": "Когда",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-proxy"
+      ],
+      "presentation": {
+        "question": "Когда выполняется proxy.ts?",
+        "options": [
+          {
+            "id": "before",
+            "text": "До маршрутов, на каждый подходящий запрос"
+          },
+          {
+            "id": "after",
+            "text": "После отрисовки страницы"
+          },
+          {
+            "id": "build",
+            "text": "Только при сборке"
+          },
+          {
+            "id": "client",
+            "text": "В браузере"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "before",
+        "explanation": "Раньше — middleware.ts."
+      }
+    },
+    {
+      "slug": "px-rewrite",
+      "type": "quiz.single_choice",
+      "title": "rewrite",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-proxy"
+      ],
+      "presentation": {
+        "question": "Чем rewrite отличается от redirect?",
+        "options": [
+          {
+            "id": "url",
+            "text": "rewrite показывает другую страницу, не меняя адрес в браузере"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          },
+          {
+            "id": "slow",
+            "text": "rewrite медленнее"
+          },
+          {
+            "id": "post",
+            "text": "rewrite только для POST"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "url",
+        "explanation": "redirect меняет адрес."
+      }
+    },
+    {
+      "slug": "px-auth",
+      "type": "quiz.single_choice",
+      "title": "Только прокси",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-proxy"
+      ],
+      "presentation": {
+        "question": "Достаточно ли проверки входа в proxy.ts для защиты данных?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, права проверяют и в слое данных"
+          },
+          {
+            "id": "yes",
+            "text": "Да, полностью"
+          },
+          {
+            "id": "https",
+            "text": "Да, на HTTPS"
+          },
+          {
+            "id": "dev",
+            "text": "Только в разработке нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Защита в глубину."
+      }
+    },
+    {
+      "slug": "ck-set",
+      "type": "quiz.single_choice",
+      "title": "Установка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-env"
+      ],
+      "presentation": {
+        "question": "Где можно установить cookie?",
+        "options": [
+          {
+            "id": "action",
+            "text": "В Server Action или route.ts"
+          },
+          {
+            "id": "rsc",
+            "text": "В любом серверном компоненте при отрисовке"
+          },
+          {
+            "id": "css",
+            "text": "В CSS"
+          },
+          {
+            "id": "layout",
+            "text": "Только в корневом layout"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "action",
+        "explanation": "При отрисовке cookie только читают."
+      }
+    },
+    {
+      "slug": "ck-public",
+      "type": "quiz.single_choice",
+      "title": "Префикс",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-env"
+      ],
+      "presentation": {
+        "question": "Какие переменные окружения попадают в браузер?",
+        "options": [
+          {
+            "id": "public",
+            "text": "Только с префиксом NEXT_PUBLIC_"
+          },
+          {
+            "id": "all",
+            "text": "Все"
+          },
+          {
+            "id": "none",
+            "text": "Никакие"
+          },
+          {
+            "id": "secret",
+            "text": "Только с префиксом SECRET_"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "public",
+        "explanation": "Их видит каждый посетитель."
+      }
+    },
+    {
+      "slug": "ck-git",
+      "type": "quiz.single_choice",
+      "title": "Секреты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-env"
+      ],
+      "presentation": {
+        "question": "Где хранить ключи при разработке?",
+        "options": [
+          {
+            "id": "local",
+            "text": "В .env.local, который не попадает в git"
+          },
+          {
+            "id": "code",
+            "text": "Прямо в коде"
+          },
+          {
+            "id": "readme",
+            "text": "В README"
+          },
+          {
+            "id": "public",
+            "text": "В папке public"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "local",
+        "explanation": "На сервере — в настройках хостинга."
+      }
+    },
+    {
+      "slug": "sy-global",
+      "type": "quiz.single_choice",
+      "title": "Глобальный CSS",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-styles"
+      ],
+      "presentation": {
+        "question": "Где импортируют globals.css?",
+        "options": [
+          {
+            "id": "layout",
+            "text": "В корневом layout"
+          },
+          {
+            "id": "each",
+            "text": "В каждой странице"
+          },
+          {
+            "id": "public",
+            "text": "Кладут в public"
+          },
+          {
+            "id": "config",
+            "text": "В next.config"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "layout",
+        "explanation": "Один раз для всего приложения."
+      }
+    },
+    {
+      "slug": "sy-module",
+      "type": "quiz.single_choice",
+      "title": "Модули",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-styles"
+      ],
+      "presentation": {
+        "question": "Зачем CSS-модули?",
+        "options": [
+          {
+            "id": "scope",
+            "text": "Имена классов уникальны для компонента — нет конфликтов"
+          },
+          {
+            "id": "speed",
+            "text": "Только для скорости"
+          },
+          {
+            "id": "js",
+            "text": "Чтобы писать CSS на JavaScript"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "scope",
+        "explanation": "Файл *.module.css."
+      }
+    },
+    {
+      "slug": "sy-flash",
+      "type": "quiz.single_choice",
+      "title": "Мигание",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-styles"
+      ],
+      "presentation": {
+        "question": "Как избежать мигания светлой темы при загрузке?",
+        "options": [
+          {
+            "id": "server",
+            "text": "Определить тему на сервере и сразу поставить класс на html"
+          },
+          {
+            "id": "effect",
+            "text": "Поставить тему в useEffect"
+          },
+          {
+            "id": "timeout",
+            "text": "Задержать показ на секунду"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "server",
+        "explanation": "Или prefers-color-scheme в CSS."
+      }
+    },
+    {
+      "slug": "if-size",
+      "type": "quiz.single_choice",
+      "title": "Размеры",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-media"
+      ],
+      "presentation": {
+        "question": "Что обязательно указать в next/image для обычной картинки?",
+        "options": [
+          {
+            "id": "wh",
+            "text": "width и height (или fill)"
+          },
+          {
+            "id": "format",
+            "text": "Формат файла"
+          },
+          {
+            "id": "cdn",
+            "text": "Адрес CDN"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "wh",
+        "explanation": "Иначе макет будет прыгать."
+      }
+    },
+    {
+      "slug": "if-priority",
+      "type": "quiz.single_choice",
+      "title": "Первый экран",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-media"
+      ],
+      "presentation": {
+        "question": "Зачем priority на главной картинке?",
+        "options": [
+          {
+            "id": "lcp",
+            "text": "Чтобы она грузилась сразу и ускорила LCP"
+          },
+          {
+            "id": "hide",
+            "text": "Чтобы скрыть её"
+          },
+          {
+            "id": "cache",
+            "text": "Чтобы не кэшировать"
+          },
+          {
+            "id": "seo",
+            "text": "Чтобы её не видели поисковики"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lcp",
+        "explanation": "Остальные грузятся лениво."
+      }
+    },
+    {
+      "slug": "if-font",
+      "type": "quiz.single_choice",
+      "title": "Шрифты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-media"
+      ],
+      "presentation": {
+        "question": "Что делает next/font со шрифтом Google?",
+        "options": [
+          {
+            "id": "self",
+            "text": "Скачивает при сборке и раздаёт с твоего домена"
+          },
+          {
+            "id": "cdn",
+            "text": "Подключает с серверов Google при каждом показе"
+          },
+          {
+            "id": "svg",
+            "text": "Превращает в SVG"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "self",
+        "explanation": "Быстрее и приватнее."
+      }
+    },
+    {
+      "slug": "md-dynamic",
+      "type": "quiz.single_choice",
+      "title": "Из данных",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-seo"
+      ],
+      "presentation": {
+        "question": "Как задать title страницы курса по его названию из базы?",
+        "options": [
+          {
+            "id": "gen",
+            "text": "Функцией generateMetadata"
+          },
+          {
+            "id": "head",
+            "text": "Тегом head в JSX вручную"
+          },
+          {
+            "id": "effect",
+            "text": "document.title в useEffect"
+          },
+          {
+            "id": "config",
+            "text": "В next.config"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "gen",
+        "explanation": "Она получает params."
+      }
+    },
+    {
+      "slug": "md-og",
+      "type": "quiz.single_choice",
+      "title": "Превью",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-seo"
+      ],
+      "presentation": {
+        "question": "За что отвечает openGraph в metadata?",
+        "options": [
+          {
+            "id": "preview",
+            "text": "За превью ссылки в соцсетях и мессенджерах"
+          },
+          {
+            "id": "speed",
+            "text": "За скорость"
+          },
+          {
+            "id": "auth",
+            "text": "За вход"
+          },
+          {
+            "id": "css",
+            "text": "За стили"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "preview",
+        "explanation": "Картинка, заголовок и описание."
+      }
+    },
+    {
+      "slug": "md-sitemap",
+      "type": "quiz.single_choice",
+      "title": "Карта сайта",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-seo"
+      ],
+      "presentation": {
+        "question": "Как сгенерировать sitemap.xml?",
+        "options": [
+          {
+            "id": "file",
+            "text": "Файлом app/sitemap.ts"
+          },
+          {
+            "id": "manual",
+            "text": "Только вручную в public"
+          },
+          {
+            "id": "plugin",
+            "text": "Только плагином"
+          },
+          {
+            "id": "none",
+            "text": "Нельзя"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "file",
+        "explanation": "robots.txt — app/robots.ts."
+      }
+    },
+    {
+      "slug": "db-orm",
+      "type": "quiz.single_choice",
+      "title": "ORM",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-db"
+      ],
+      "presentation": {
+        "question": "Что даёт ORM вроде Prisma или Drizzle?",
+        "options": [
+          {
+            "id": "types",
+            "text": "Схему в коде, типы и построение запросов"
+          },
+          {
+            "id": "hosting",
+            "text": "Хостинг базы"
+          },
+          {
+            "id": "css",
+            "text": "Стили"
+          },
+          {
+            "id": "cache",
+            "text": "CDN"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "types",
+        "explanation": "Ошибки ловятся до запуска."
+      }
+    },
+    {
+      "slug": "db-client",
+      "type": "quiz.single_choice",
+      "title": "Подключения",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-db"
+      ],
+      "presentation": {
+        "question": "Почему клиент базы создают один раз на приложение?",
+        "options": [
+          {
+            "id": "limit",
+            "text": "Чтобы не превысить лимит подключений к базе"
+          },
+          {
+            "id": "style",
+            "text": "Так красивее"
+          },
+          {
+            "id": "required",
+            "text": "Иначе ORM не работает"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "limit",
+        "explanation": "Особенно при горячей перезагрузке."
+      }
+    },
+    {
+      "slug": "db-deploy",
+      "type": "quiz.single_choice",
+      "title": "На сервере",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-db"
+      ],
+      "presentation": {
+        "question": "Какой командой Prisma применяют миграции на сервере?",
+        "options": [
+          {
+            "id": "deploy",
+            "text": "`prisma migrate deploy`"
+          },
+          {
+            "id": "dev",
+            "text": "`prisma migrate dev`"
+          },
+          {
+            "id": "push",
+            "text": "`prisma db drop`"
+          },
+          {
+            "id": "reset",
+            "text": "`prisma migrate reset`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "deploy",
+        "explanation": "dev — для разработки, reset стирает данные."
+      }
+    },
+    {
+      "slug": "au-httponly",
+      "type": "quiz.single_choice",
+      "title": "httpOnly",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-auth"
+      ],
+      "presentation": {
+        "question": "Зачем cookie сессии флаг httpOnly?",
+        "options": [
+          {
+            "id": "js",
+            "text": "JavaScript страницы не может её прочитать"
+          },
+          {
+            "id": "http",
+            "text": "Работает только без HTTPS"
+          },
+          {
+            "id": "speed",
+            "text": "Ускоряет загрузку"
+          },
+          {
+            "id": "size",
+            "text": "Уменьшает размер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "js",
+        "explanation": "Защита от кражи через XSS."
+      }
+    },
+    {
+      "slug": "au-pass",
+      "type": "quiz.single_choice",
+      "title": "Пароли",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-auth"
+      ],
+      "presentation": {
+        "question": "Как правильно хранить пароли?",
+        "options": [
+          {
+            "id": "hash",
+            "text": "Хэшем медленной функции вроде argon2"
+          },
+          {
+            "id": "plain",
+            "text": "Открытым текстом"
+          },
+          {
+            "id": "base64",
+            "text": "В base64"
+          },
+          {
+            "id": "cookie",
+            "text": "В cookie"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hash",
+        "explanation": "Хэш нельзя обратить."
+      }
+    },
+    {
+      "slug": "au-lib",
+      "type": "quiz.single_choice",
+      "title": "Решение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-auth"
+      ],
+      "presentation": {
+        "question": "Почему вход лучше делать готовым решением?",
+        "options": [
+          {
+            "id": "security",
+            "text": "Безопасность входа сложна, ошибки дорого стоят"
+          },
+          {
+            "id": "required",
+            "text": "Next.js запрещает свой код"
+          },
+          {
+            "id": "free",
+            "text": "Только они бесплатны"
+          },
+          {
+            "id": "design",
+            "text": "Ради дизайна"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "security",
+        "explanation": "Сброс пароля, провайдеры, сессии — уже сделаны."
+      }
+    },
+    {
+      "slug": "az-diff",
+      "type": "quiz.single_choice",
+      "title": "Разница",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-authz"
+      ],
+      "presentation": {
+        "question": "Чем авторизация отличается от аутентификации?",
+        "options": [
+          {
+            "id": "what",
+            "text": "Авторизация — что можно, аутентификация — кто ты"
+          },
+          {
+            "id": "same",
+            "text": "Это одно и то же"
+          },
+          {
+            "id": "reverse",
+            "text": "Наоборот"
+          },
+          {
+            "id": "password",
+            "text": "Авторизация — это пароль"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "what",
+        "explanation": "Две разные проверки."
+      }
+    },
+    {
+      "slug": "az-hide",
+      "type": "quiz.single_choice",
+      "title": "Скрытая кнопка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-authz"
+      ],
+      "presentation": {
+        "question": "Достаточно ли скрыть кнопку «Удалить» от обычных пользователей?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, действие нужно защитить проверкой на сервере"
+          },
+          {
+            "id": "yes",
+            "text": "Да"
+          },
+          {
+            "id": "css",
+            "text": "Да, если через CSS"
+          },
+          {
+            "id": "https",
+            "text": "Да, на HTTPS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Действие можно вызвать напрямую."
+      }
+    },
+    {
+      "slug": "az-where",
+      "type": "quiz.single_choice",
+      "title": "Где проверять",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-authz"
+      ],
+      "presentation": {
+        "question": "Где надёжнее всего проверять, что заказ принадлежит пользователю?",
+        "options": [
+          {
+            "id": "data",
+            "text": "В функции доступа к данным"
+          },
+          {
+            "id": "css",
+            "text": "В стилях"
+          },
+          {
+            "id": "link",
+            "text": "В компоненте Link"
+          },
+          {
+            "id": "client",
+            "text": "Только в браузере"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "data",
+        "explanation": "Одна проверка для всех путей."
+      }
+    },
+    {
+      "slug": "ep-type",
+      "type": "quiz.single_choice",
+      "title": "error.tsx",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-errors"
+      ],
+      "presentation": {
+        "question": "Каким должен быть компонент error.tsx?",
+        "options": [
+          {
+            "id": "client",
+            "text": "Клиентским (\"use client\")"
+          },
+          {
+            "id": "server",
+            "text": "Только серверным"
+          },
+          {
+            "id": "route",
+            "text": "Обработчиком route.ts"
+          },
+          {
+            "id": "any",
+            "text": "Любым"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "client",
+        "explanation": "Ему нужна кнопка reset."
+      }
+    },
+    {
+      "slug": "ep-scope",
+      "type": "quiz.single_choice",
+      "title": "Область",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-errors"
+      ],
+      "presentation": {
+        "question": "Что перехватывает app/dashboard/error.tsx?",
+        "options": [
+          {
+            "id": "section",
+            "text": "Ошибки страниц раздела dashboard"
+          },
+          {
+            "id": "all",
+            "text": "Все ошибки сайта"
+          },
+          {
+            "id": "404",
+            "text": "Только 404"
+          },
+          {
+            "id": "build",
+            "text": "Ошибки сборки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "section",
+        "explanation": "Корневой макет ловит global-error."
+      }
+    },
+    {
+      "slug": "ep-stack",
+      "type": "quiz.single_choice",
+      "title": "Стек",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-errors"
+      ],
+      "presentation": {
+        "question": "Почему не показывать пользователю стек ошибки?",
+        "options": [
+          {
+            "id": "leak",
+            "text": "Он раскрывает устройство приложения"
+          },
+          {
+            "id": "ugly",
+            "text": "Только потому что некрасиво"
+          },
+          {
+            "id": "slow",
+            "text": "Он замедляет сайт"
+          },
+          {
+            "id": "none",
+            "text": "Показывать можно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "leak",
+        "explanation": "Подробности — в логи."
+      }
+    },
+    {
+      "slug": "pf-cls",
+      "type": "quiz.single_choice",
+      "title": "CLS",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-perf"
+      ],
+      "presentation": {
+        "question": "Что измеряет CLS?",
+        "options": [
+          {
+            "id": "shift",
+            "text": "Неожиданные сдвиги макета"
+          },
+          {
+            "id": "load",
+            "text": "Время загрузки сервера"
+          },
+          {
+            "id": "size",
+            "text": "Размер страницы"
+          },
+          {
+            "id": "clicks",
+            "text": "Число кликов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "shift",
+        "explanation": "Картинки с размерами помогают."
+      }
+    },
+    {
+      "slug": "pf-dynamic",
+      "type": "quiz.single_choice",
+      "title": "Тяжёлый компонент",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-perf"
+      ],
+      "presentation": {
+        "question": "Как не грузить тяжёлый редактор, пока он не нужен?",
+        "options": [
+          {
+            "id": "dynamic",
+            "text": "Динамический импорт через next/dynamic"
+          },
+          {
+            "id": "css",
+            "text": "Скрыть через CSS"
+          },
+          {
+            "id": "server",
+            "text": "Сделать серверным, сохранив интерактивность"
+          },
+          {
+            "id": "preload",
+            "text": "Загрузить заранее"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dynamic",
+        "explanation": "Код придёт по требованию."
+      }
+    },
+    {
+      "slug": "pf-lever",
+      "type": "quiz.single_choice",
+      "title": "Главный рычаг",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-perf"
+      ],
+      "presentation": {
+        "question": "Что сильнее всего уменьшает JavaScript на странице?",
+        "options": [
+          {
+            "id": "rsc",
+            "text": "Больше серверных компонентов, меньше \"use client\""
+          },
+          {
+            "id": "minify",
+            "text": "Короткие имена переменных"
+          },
+          {
+            "id": "comments",
+            "text": "Удаление комментариев"
+          },
+          {
+            "id": "font",
+            "text": "Другой шрифт"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rsc",
+        "explanation": "Код серверных компонентов не уходит в браузер."
+      }
+    },
+    {
+      "slug": "ts-pyramid",
+      "type": "quiz.single_choice",
+      "title": "Пирамида",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-testing"
+      ],
+      "presentation": {
+        "question": "Каких тестов должно быть больше всего?",
+        "options": [
+          {
+            "id": "unit",
+            "text": "Быстрых модульных"
+          },
+          {
+            "id": "e2e",
+            "text": "Сквозных"
+          },
+          {
+            "id": "manual",
+            "text": "Ручных"
+          },
+          {
+            "id": "none",
+            "text": "Никаких"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "unit",
+        "explanation": "Сквозных — немного, для главного."
+      }
+    },
+    {
+      "slug": "ts-e2e",
+      "type": "quiz.single_choice",
+      "title": "Сквозной тест",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-testing"
+      ],
+      "presentation": {
+        "question": "Что делает сквозной тест в Playwright?",
+        "options": [
+          {
+            "id": "browser",
+            "text": "Проходит сценарий в настоящем браузере"
+          },
+          {
+            "id": "types",
+            "text": "Проверяет типы"
+          },
+          {
+            "id": "lint",
+            "text": "Проверяет стиль кода"
+          },
+          {
+            "id": "build",
+            "text": "Собирает проект"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "browser",
+        "explanation": "Как реальный пользователь."
+      }
+    },
+    {
+      "slug": "ts-actions",
+      "type": "quiz.single_choice",
+      "title": "Действия",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-testing"
+      ],
+      "presentation": {
+        "question": "Как проще всего тестировать Server Action с проверкой прав?",
+        "options": [
+          {
+            "id": "direct",
+            "text": "Вызывать как обычную асинхронную функцию с тестовой базой"
+          },
+          {
+            "id": "manual",
+            "text": "Только вручную"
+          },
+          {
+            "id": "css",
+            "text": "Через снимки CSS"
+          },
+          {
+            "id": "none",
+            "text": "Их нельзя тестировать"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "direct",
+        "explanation": "Это просто функция."
+      }
+    },
+    {
+      "slug": "ho-preview",
+      "type": "quiz.single_choice",
+      "title": "Превью",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-hosting"
+      ],
+      "presentation": {
+        "question": "Что такое превью-развёртывание?",
+        "options": [
+          {
+            "id": "branch",
+            "text": "Отдельный адрес с версией из ветки или PR"
+          },
+          {
+            "id": "prod",
+            "text": "Боевой сайт"
+          },
+          {
+            "id": "local",
+            "text": "Локальный сервер"
+          },
+          {
+            "id": "image",
+            "text": "Картинка сайта"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "branch",
+        "explanation": "Смотрят до слияния."
+      }
+    },
+    {
+      "slug": "ho-env",
+      "type": "quiz.single_choice",
+      "title": "Окружения",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-hosting"
+      ],
+      "presentation": {
+        "question": "Почему переменные превью и боевого выпуска разделяют?",
+        "options": [
+          {
+            "id": "safe",
+            "text": "Чтобы превью не меняло боевые данные"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "required",
+            "text": "Иначе сборка невозможна"
+          },
+          {
+            "id": "none",
+            "text": "Не разделяют"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "safe",
+        "explanation": "Отдельная база для превью."
+      }
+    },
+    {
+      "slug": "ho-https",
+      "type": "quiz.single_choice",
+      "title": "Сертификат",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-hosting"
+      ],
+      "presentation": {
+        "question": "Нужно ли вручную получать сертификат HTTPS на платформе?",
+        "options": [
+          {
+            "id": "auto",
+            "text": "Нет, он выдаётся автоматически"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда вручную"
+          },
+          {
+            "id": "paid",
+            "text": "Только платно"
+          },
+          {
+            "id": "no",
+            "text": "HTTPS не поддерживается"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "auto",
+        "explanation": "После подключения домена."
+      }
+    },
+    {
+      "slug": "sh-standalone",
+      "type": "quiz.single_choice",
+      "title": "standalone",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-selfhost"
+      ],
+      "presentation": {
+        "question": "Что даёт output: \"standalone\"?",
+        "options": [
+          {
+            "id": "small",
+            "text": "Компактную папку с сервером и нужными зависимостями"
+          },
+          {
+            "id": "static",
+            "text": "Только HTML-файлы"
+          },
+          {
+            "id": "dev",
+            "text": "Режим разработки"
+          },
+          {
+            "id": "cdn",
+            "text": "Загрузку на CDN"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "small",
+        "explanation": "Образ Docker меньше."
+      }
+    },
+    {
+      "slug": "sh-export",
+      "type": "quiz.single_choice",
+      "title": "Экспорт",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-selfhost"
+      ],
+      "presentation": {
+        "question": "Когда подходит output: \"export\"?",
+        "options": [
+          {
+            "id": "static",
+            "text": "Когда нет серверных функций и динамики"
+          },
+          {
+            "id": "always",
+            "text": "Всегда"
+          },
+          {
+            "id": "auth",
+            "text": "Для сайтов со входом"
+          },
+          {
+            "id": "db",
+            "text": "Для работы с базой"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "static",
+        "explanation": "Получаются обычные HTML-файлы."
+      }
+    },
+    {
+      "slug": "sh-multi",
+      "type": "quiz.single_choice",
+      "title": "Несколько серверов",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-selfhost"
+      ],
+      "presentation": {
+        "question": "Что важно при нескольких экземплярах приложения?",
+        "options": [
+          {
+            "id": "cache",
+            "text": "Общий кэш, иначе экземпляры покажут разное"
+          },
+          {
+            "id": "ports",
+            "text": "Разные порты в коде"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          },
+          {
+            "id": "fonts",
+            "text": "Разные шрифты"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cache",
+        "explanation": "Например, Redis."
+      }
+    },
+    {
+      "slug": "pd-headers",
+      "type": "quiz.single_choice",
+      "title": "Заголовки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-prod"
+      ],
+      "presentation": {
+        "question": "Где удобно задать заголовки безопасности для всего сайта?",
+        "options": [
+          {
+            "id": "config",
+            "text": "В headers() в next.config"
+          },
+          {
+            "id": "each",
+            "text": "В каждой странице вручную"
+          },
+          {
+            "id": "css",
+            "text": "В CSS"
+          },
+          {
+            "id": "none",
+            "text": "Нигде"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "config",
+        "explanation": "Или в proxy.ts."
+      }
+    },
+    {
+      "slug": "pd-monitor",
+      "type": "quiz.single_choice",
+      "title": "Мониторинг",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "nx-prod"
+      ],
+      "presentation": {
+        "question": "Зачем отслеживание ошибок в боевом приложении?",
+        "options": [
+          {
+            "id": "first",
+            "text": "Узнать о сбое раньше пользователей"
+          },
+          {
+            "id": "speed",
+            "text": "Ускорить сборку"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "first",
+        "explanation": "С подробностями, которые не видит пользователь."
+      }
+    },
+    {
+      "slug": "pd-check",
+      "type": "quiz.multiple_choice",
+      "title": "Проверка",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "nx-prod"
+      ],
+      "presentation": {
+        "question": "Что стоит проверить перед запуском?",
+        "options": [
+          {
+            "id": "authz",
+            "text": "Проверку прав во всех действиях и API"
+          },
+          {
+            "id": "secrets",
+            "text": "Что секреты не публичны"
+          },
+          {
+            "id": "headers",
+            "text": "Заголовки безопасности"
+          },
+          {
+            "id": "color",
+            "text": "Что кнопки синие"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "authz",
+          "secrets",
+          "headers"
+        ],
+        "explanation": "Цвет кнопок — дело вкуса."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "why-next",
+      "title": "Что такое Next.js",
+      "summary": "Фреймворк поверх React: маршруты, сервер, рендеринг, оптимизация и чем он отличается от «голого» React.",
+      "chapter": "Старт Next.js",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Начинаем курс: знаем React и смотрим, что даёт фреймворк поверх него.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Next.js\",\n  \"title\": \"Фреймворк для React\",\n  \"what\": \"React рисует интерфейс, а Next.js добавляет всё вокруг: маршруты по файлам, код на сервере, получение данных, оптимизацию картинок и шрифтов, сборку и развёртывание.\",\n  \"why\": \"Не нужно собирать приложение из десятка отдельных библиотек.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сервер и браузер\",\n  \"title\": \"Код в двух местах\",\n  \"what\": \"Часть компонентов выполняется на сервере и присылает готовый HTML, часть — в браузере для интерактивности.\",\n  \"why\": \"Страница открывается быстро и хорошо видна поисковикам, а кнопки работают как в React.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"App Router\",\n  \"title\": \"Современный способ\",\n  \"what\": \"Маршрутизатор на папке app/ с серверными компонентами, макетами и потоковой отрисовкой. Старый Pages Router (папка pages/) ещё встречается в проектах.\",\n  \"why\": \"Курс учит App Router — его выбирают для новых проектов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Где используют\",\n  \"title\": \"От блога до магазина\",\n  \"what\": \"Сайты компаний, интернет-магазины, личные кабинеты, документация, панели управления.\",\n  \"why\": \"Один фреймворк закрывает и маркетинговые страницы, и сложное приложение.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** React — интерфейс, Next.js — приложение целиком: маршруты, сервер, данные, сборка."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wn-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wn-router",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wn-adds",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "create-app",
+      "title": "Новый проект",
+      "summary": "create-next-app, режим разработки, сборка и запуск, Turbopack.",
+      "chapter": "Старт Next.js",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем, что такое Next, и создаём первый проект.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"create-next-app\",\n  \"title\": \"Создать проект\",\n  \"what\": \"`npx create-next-app@latest my-app` задаёт пару вопросов (TypeScript, ESLint, Tailwind, App Router) и создаёт готовый проект.\",\n  \"why\": \"Через минуту есть рабочее приложение со всеми настройками.\",\n  \"how\": \"$ npx create-next-app@latest my-app\\n✔ Would you like to use TypeScript? Yes\\n✔ Would you like to use App Router? Yes\\nSuccess! Created my-app\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"npm run dev\",\n  \"title\": \"Режим разработки\",\n  \"what\": \"Запускает сервер на localhost:3000 с мгновенной перезагрузкой при сохранении. Сборщик — Turbopack.\",\n  \"why\": \"Правишь файл — видишь результат через доли секунды.\",\n  \"how\": \"$ npm run dev\\n▲ Next.js\\n- Local: http://localhost:3000\\n✓ Ready in 1.1s\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"build и start\",\n  \"title\": \"Боевая сборка\",\n  \"what\": \"`npm run build` собирает оптимизированное приложение и показывает, какие страницы статические. `npm run start` запускает собранное.\",\n  \"why\": \"Ошибки типов и сборки ловятся до выпуска.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"TypeScript\",\n  \"title\": \"По умолчанию\",\n  \"what\": \"Проект создаётся с TypeScript: файлы .tsx и .ts. Next.js сам настраивает tsconfig.\",\n  \"why\": \"Ошибки в пропсах и данных видны в редакторе.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** dev — для разработки, build + start — как на сервере."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ca-cmd",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ca-port",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ca-build",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "project-structure",
+      "title": "Структура проекта",
+      "summary": "app/, page.tsx и layout.tsx, public/, next.config, специальные файлы и алиас @/.",
+      "chapter": "Старт Next.js",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Запустили проект и разбираемся, где что лежит.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"app/page.tsx\",\n  \"title\": \"Главная страница\",\n  \"what\": \"Файл page.tsx в папке app — страница адреса /. Компонент экспортируется по умолчанию.\",\n  \"why\": \"Добавить страницу — значит создать файл.\",\n  \"how\": \"export default function Home() {\\n  return <h1>Добро пожаловать</h1>;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"app/layout.tsx\",\n  \"title\": \"Корневой макет\",\n  \"what\": \"Обёртка всех страниц: теги html и body, шрифты, общая шапка. Обязателен в корне app.\",\n  \"why\": \"Общее для всех страниц пишется один раз.\",\n  \"how\": \"export default function RootLayout({ children }) {\\n  return (\\n    <html lang=\\\"ru\\\">\\n      <body>{children}</body>\\n    </html>\\n  );\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"public/\",\n  \"title\": \"Статические файлы\",\n  \"what\": \"Файлы из public доступны по корневому адресу: public/logo.svg → /logo.svg.\",\n  \"why\": \"Иконки, robots.txt и картинки, которые не нужно обрабатывать.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Специальные файлы\",\n  \"title\": \"Соглашения\",\n  \"what\": \"page, layout, loading, error, not-found, route — имена с особым смыслом. Остальные файлы в app можно класть рядом, они не станут страницами.\",\n  \"why\": \"Структура проекта сама описывает поведение приложения.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"next.config.ts\",\n  \"title\": \"Настройки\",\n  \"what\": \"Настройки фреймворка: разрешённые домены картинок, перенаправления, заголовки, экспериментальные возможности.\",\n  \"why\": \"Поведение сборки меняется без своего сервера.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Страница — page.tsx, обёртка — layout.tsx, статика — public/."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ps-page",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ps-public",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ps-layout",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "file-routes",
+      "title": "Маршруты из папок",
+      "summary": "Папка — сегмент адреса, вложенность, группы маршрутов (скобки), приватные папки.",
+      "chapter": "Маршруты и макеты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем структуру проекта и строим адреса сайта папками.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Папка — сегмент\",\n  \"title\": \"Адрес из пути\",\n  \"what\": \"app/courses/page.tsx — адрес /courses, app/courses/python/page.tsx — /courses/python.\",\n  \"why\": \"Карта сайта видна в дереве файлов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Группы маршрутов\",\n  \"title\": \"(marketing)\",\n  \"what\": \"Папка в круглых скобках не попадает в адрес: app/(marketing)/about/page.tsx — /about. Группы дают разным разделам свои макеты.\",\n  \"why\": \"Лендинг и личный кабинет живут в одном приложении с разным оформлением.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Приватные папки\",\n  \"title\": \"_components\",\n  \"what\": \"Папка с подчёркиванием не становится маршрутом — для компонентов и утилит рядом со страницами.\",\n  \"why\": \"Код лежит рядом с тем, где используется.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Link\",\n  \"title\": \"Переход без перезагрузки\",\n  \"what\": \"Компонент Link из next/link меняет страницу без полной перезагрузки и заранее подгружает видимые ссылки.\",\n  \"why\": \"Переходы мгновенные, как в приложении.\",\n  \"how\": \"import Link from \\\"next/link\\\";\\n\\n<Link href=\\\"/courses\\\">Все курсы</Link>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"useRouter\",\n  \"title\": \"Переход из кода\",\n  \"what\": \"`const router = useRouter(); router.push(\\\"/done\\\")` — переход после действия. Хук из next/navigation, только в клиентских компонентах.\",\n  \"why\": \"Перенаправить после отправки формы.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Папка — сегмент адреса, (группа) — без адреса, _папка — не маршрут. Ссылки — через Link."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fr-addr",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fr-group",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fr-link",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "layouts",
+      "title": "Макеты и шаблоны",
+      "summary": "Вложенные layout, сохранение состояния при переходах, общая навигация, template.",
+      "chapter": "Маршруты и макеты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Создаём маршруты и выносим общие части страниц в макеты.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Вложенный layout\",\n  \"title\": \"Обёртка раздела\",\n  \"what\": \"layout.tsx в папке оборачивает все страницы этого раздела и вкладывается в родительский макет.\",\n  \"why\": \"Боковое меню кабинета пишется один раз для всех его страниц.\",\n  \"how\": \"// app/dashboard/layout.tsx\\nexport default function DashboardLayout({ children }) {\\n  return (\\n    <div className=\\\"grid\\\">\\n      <Sidebar />\\n      <main>{children}</main>\\n    </div>\\n  );\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сохранение состояния\",\n  \"title\": \"Макет не перерисовывается\",\n  \"what\": \"При переходе между страницами раздела макет остаётся на месте: состояние, прокрутка меню и открытые панели сохраняются.\",\n  \"why\": \"Плеер или чат в макете не прерывается при навигации.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"template.tsx\",\n  \"title\": \"Каждый раз заново\",\n  \"what\": \"Как layout, но создаётся заново при каждом переходе.\",\n  \"why\": \"Анимация входа страницы или сброс формы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"usePathname\",\n  \"title\": \"Активная ссылка\",\n  \"what\": \"Хук возвращает текущий путь — подсветить активный пункт меню.\",\n  \"why\": \"Пользователь видит, где он находится.\",\n  \"how\": \"\\\"use client\\\";\\nimport { usePathname } from \\\"next/navigation\\\";\\n\\nconst active = usePathname() === href;\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Общее для раздела — в его layout. Макет живёт между переходами."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ly-scope",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ly-state",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ly-path",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "dynamic-routes",
+      "title": "Динамические маршруты",
+      "summary": "[slug], params как Promise, catch-all [...slug], searchParams, generateStaticParams.",
+      "chapter": "Маршруты и макеты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Строим макеты и делаем страницы для тысяч записей одним файлом.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"[slug]\",\n  \"title\": \"Параметр в адресе\",\n  \"what\": \"Папка в квадратных скобках — переменная часть адреса. Значение приходит в props.params, это Promise — его ждут через await.\",\n  \"why\": \"Одна страница показывает любой курс по его адресу.\",\n  \"how\": \"// app/courses/[slug]/page.tsx\\nexport default async function Course({ params }) {\\n  const { slug } = await params;\\n  const course = await getCourse(slug);\\n  return <h1>{course.title}</h1>;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"[...slug]\",\n  \"title\": \"Любая глубина\",\n  \"what\": \"Catch-all-сегмент ловит /docs/a, /docs/a/b/c и отдаёт массив частей. [[...slug]] — ещё и сам /docs.\",\n  \"why\": \"Документация и вложенные категории.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"searchParams\",\n  \"title\": \"Параметры запроса\",\n  \"what\": \"`?page=2&sort=new` приходит в searchParams страницы (тоже Promise).\",\n  \"why\": \"Фильтры и пагинация в адресе — ссылкой можно поделиться.\",\n  \"how\": \"export default async function List({ searchParams }) {\\n  const { page = \\\"1\\\" } = await searchParams;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"generateStaticParams\",\n  \"title\": \"Заранее известные адреса\",\n  \"what\": \"Функция возвращает список параметров — эти страницы собираются заранее, при сборке.\",\n  \"why\": \"Тысячи статей отдаются как готовые файлы.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"notFound()\",\n  \"title\": \"Нет такой записи\",\n  \"what\": \"Вызов notFound() из next/navigation показывает страницу 404.\",\n  \"why\": \"Неверный адрес — честный ответ 404, а не пустая страница.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** [параметр] — переменная часть адреса. params и searchParams ждут через await."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dy-folder",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dy-await",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dy-404",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "server-components",
+      "title": "Серверные компоненты",
+      "summary": "Компоненты по умолчанию выполняются на сервере: async, доступ к базе и секретам, ноль JavaScript в браузере.",
+      "chapter": "Серверные и клиентские компоненты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Владеем маршрутами и разбираемся, где выполняется код компонентов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"По умолчанию — сервер\",\n  \"title\": \"Server Components\",\n  \"what\": \"Каждый компонент в app — серверный, пока не сказано иное. Он может быть async и сразу читать данные.\",\n  \"why\": \"Данные получаются рядом с базой, а в браузер приходит готовый HTML.\",\n  \"how\": \"export default async function Courses() {\\n  const courses = await db.course.findMany();\\n  return <ul>{courses.map((c) => <li key={c.id}>{c.title}</li>)}</ul>;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Без JavaScript в браузере\",\n  \"title\": \"Лёгкие страницы\",\n  \"what\": \"Код серверного компонента и его библиотеки не отправляются в браузер.\",\n  \"why\": \"Тяжёлая библиотека разметки Markdown не увеличит вес страницы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Секреты на сервере\",\n  \"title\": \"Безопасно\",\n  \"what\": \"Серверный компонент может использовать ключи API и подключение к базе: они не попадут в браузер.\",\n  \"why\": \"Не нужен отдельный API ради чтения данных.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Чего нельзя\",\n  \"title\": \"Нет интерактивности\",\n  \"what\": \"В серверных компонентах нет useState, useEffect, обработчиков onClick и API браузера (window, localStorage).\",\n  \"why\": \"Для этого нужен клиентский компонент.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Серверный компонент — данные и разметка. Интерактивность — в клиентском."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sc-default",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sc-state",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sc-secret",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "client-components",
+      "title": "Клиентские компоненты",
+      "summary": "Директива \"use client\", граница, что попадает в бандл, гидратация.",
+      "chapter": "Серверные и клиентские компоненты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем серверные компоненты и добавляем интерактивность.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"\\\"use client\\\"\",\n  \"title\": \"Граница\",\n  \"what\": \"Строка в начале файла делает компонент и всё, что он импортирует, клиентским: появляются хуки и обработчики событий.\",\n  \"why\": \"Кнопка «В избранное» работает в браузере.\",\n  \"how\": \"\\\"use client\\\";\\nimport { useState } from \\\"react\\\";\\n\\nexport function LikeButton() {\\n  const [liked, setLiked] = useState(false);\\n  return <button onClick={() => setLiked(!liked)}>{liked ? \\\"♥\\\" : \\\"♡\\\"}</button>;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Гидратация\",\n  \"title\": \"HTML оживает\",\n  \"what\": \"Клиентский компонент тоже сначала рисуется на сервере в HTML, затем в браузере React подключает к нему обработчики.\",\n  \"why\": \"Содержимое видно сразу, а клики работают после загрузки JavaScript.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Граница пониже\",\n  \"title\": \"Как можно меньше клиента\",\n  \"what\": \"Помечай \\\"use client\\\" только маленькие интерактивные «листья», а не всю страницу.\",\n  \"why\": \"Меньше JavaScript — быстрее страница на телефоне.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ошибка гидратации\",\n  \"title\": \"HTML не совпал\",\n  \"what\": \"Если сервер и браузер нарисовали разное (Date.now(), Math.random(), window в разметке), React предупреждает об ошибке гидратации.\",\n  \"why\": \"Значения, зависящие от браузера, вычисляют в useEffect.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** \"use client\" — только на интерактивных листьях дерева."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cc-where",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cc-imports",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cc-hydr",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "composition",
+      "title": "Сочетание компонентов",
+      "summary": "Серверный компонент внутри клиентского через children, передача данных через props, server-only.",
+      "chapter": "Серверные и клиентские компоненты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем оба вида компонентов и учимся их сочетать.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Через children\",\n  \"title\": \"Сервер внутри клиента\",\n  \"what\": \"Клиентский компонент не может импортировать серверный, но может получить его готовым через children или другой проп.\",\n  \"why\": \"Клиентская модалка показывает серверный список.\",\n  \"how\": \"// page.tsx (серверный)\\n<Modal>\\n  <CourseList />\\n</Modal>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Данные через props\",\n  \"title\": \"Только сериализуемое\",\n  \"what\": \"Серверный компонент передаёт клиентскому данные пропсами: строки, числа, объекты, массивы. Функции и классы передать нельзя.\",\n  \"why\": \"Данные получены на сервере, интерактивность — в браузере.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"server-only\",\n  \"title\": \"Защита от утечки\",\n  \"what\": \"`import \\\"server-only\\\"` в модуле с секретами вызовет ошибку сборки, если его импортируют в клиентский компонент.\",\n  \"why\": \"Ключ к базе не уедет в браузер по ошибке.\",\n  \"how\": \"import \\\"server-only\\\";\\nexport async function getSecretStats() { /* ... */ }\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Контекст\",\n  \"title\": \"Провайдер — клиентский\",\n  \"what\": \"React Context работает только в клиентских компонентах. Провайдер выносят в отдельный клиентский файл и оборачивают им children в layout.\",\n  \"why\": \"Тема и корзина доступны всему приложению.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Сервер в клиент — через children. Данные — через сериализуемые props. Секреты — под server-only."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-children",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-fn",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-so",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "fetch-data",
+      "title": "Данные на сервере",
+      "summary": "await fetch и запросы к базе в серверном компоненте, параллельные запросы, слой доступа к данным.",
+      "chapter": "Получение данных",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Сочетаем компоненты и получаем данные прямо на сервере.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"await в компоненте\",\n  \"title\": \"Без useEffect\",\n  \"what\": \"Серверный компонент просто ждёт данные: `const res = await fetch(url)`. Нет состояний загрузки и лишних запросов из браузера.\",\n  \"why\": \"Код короче, страница приходит уже с данными.\",\n  \"how\": \"export default async function Weather() {\\n  const res = await fetch(\\\"https://api.example.com/weather\\\");\\n  const data = await res.json();\\n  return <p>{data.temp}°</p>;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Параллельно\",\n  \"title\": \"Promise.all\",\n  \"what\": \"Независимые запросы запускают одновременно, а не по очереди.\",\n  \"why\": \"Две секунды вместо четырёх.\",\n  \"how\": \"const [user, courses] = await Promise.all([getUser(id), getCourses(id)]);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Слой данных\",\n  \"title\": \"Функции доступа\",\n  \"what\": \"Запросы к базе выносят в функции (getCourse, getUser) в отдельной папке с server-only, там же проверяют права.\",\n  \"why\": \"Логика данных в одном месте, а не размазана по страницам.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Без своего API\",\n  \"title\": \"Прямо к базе\",\n  \"what\": \"Серверному компоненту не нужен fetch к собственному API: можно вызвать функцию доступа к базе напрямую.\",\n  \"why\": \"Меньше лишних сетевых переходов.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Данные — в серверном компоненте через await. Независимые запросы — параллельно."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fd-how",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fd-parallel",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fd-api",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "streaming",
+      "title": "Потоковая отрисовка",
+      "summary": "loading.tsx, Suspense и запасной интерфейс, страница по частям, скелетоны.",
+      "chapter": "Получение данных",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Получаем данные и не заставляем пользователя ждать самую медленную часть.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"loading.tsx\",\n  \"title\": \"Загрузка раздела\",\n  \"what\": \"Файл loading.tsx рядом с page.tsx показывается сразу, пока страница получает данные.\",\n  \"why\": \"Пользователь видит отклик мгновенно.\",\n  \"how\": \"export default function Loading() {\\n  return <div className=\\\"skeleton\\\" aria-busy=\\\"true\\\" />;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Suspense\",\n  \"title\": \"Медленная часть отдельно\",\n  \"what\": \"Обёрнутый в Suspense медленный компонент приходит позже, а остальная страница — сразу.\",\n  \"why\": \"Шапка и курс видны, а рекомендации догружаются.\",\n  \"how\": \"import { Suspense } from \\\"react\\\";\\n\\n<Suspense fallback={<p>Загружаем отзывы…</p>}>\\n  <Reviews />\\n</Suspense>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Стриминг\",\n  \"title\": \"HTML по частям\",\n  \"what\": \"Сервер отправляет HTML кусками по мере готовности, не дожидаясь всей страницы.\",\n  \"why\": \"Быстрый первый показ даже при медленной базе.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Скелетон\",\n  \"title\": \"Форма без данных\",\n  \"what\": \"Серые блоки на месте будущего содержимого не дают странице прыгать.\",\n  \"why\": \"Меньше смещения макета — лучше впечатление.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Медленное — в Suspense, у раздела — loading.tsx. Отдавай быстрое сразу."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-loading",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-suspense",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-stream",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "client-data",
+      "title": "Данные в браузере",
+      "summary": "Когда данные нужны на клиенте: SWR или TanStack Query, use() и Promise из сервера, опрос.",
+      "chapter": "Получение данных",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Отдаём страницу частями и разбираем случаи, когда данные нужны в браузере.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Когда на клиенте\",\n  \"title\": \"Живые данные\",\n  \"what\": \"Поиск по мере ввода, бесконечная лента, данные, которые часто обновляются, — их запрашивают из браузера.\",\n  \"why\": \"Остальное лучше получить на сервере.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"SWR и TanStack Query\",\n  \"title\": \"Кэш на клиенте\",\n  \"what\": \"Библиотеки кэшируют ответы, повторяют запросы, обновляют данные при возврате на вкладку.\",\n  \"why\": \"Не нужно вручную писать загрузку и ошибки в useEffect.\",\n  \"how\": \"\\\"use client\\\";\\nimport useSWR from \\\"swr\\\";\\n\\nconst { data, error, isLoading } = useSWR(`/api/search?q=${q}`, fetcher);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"use()\",\n  \"title\": \"Promise с сервера\",\n  \"what\": \"Серверный компонент начинает запрос и передаёт Promise клиентскому, а тот читает его хуком use() внутри Suspense.\",\n  \"why\": \"Запрос стартует на сервере, а результат показывает интерактивный компонент.\",\n  \"how\": \"const stats = use(statsPromise);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Без лишних запросов\",\n  \"title\": \"Не дублируй\",\n  \"what\": \"Если данные уже получены на сервере, передай их в props, а не запрашивай снова в браузере.\",\n  \"why\": \"Меньше запросов — быстрее и дешевле.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** По умолчанию — сервер. Клиент — для живого поиска, лент и частых обновлений."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cd-when",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cd-lib",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cd-use",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "server-actions",
+      "title": "Server Actions",
+      "summary": "\"use server\", форма с action, FormData, revalidatePath и redirect.",
+      "chapter": "Формы и Server Actions",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Получаем данные и учимся их менять без отдельного API.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"\\\"use server\\\"\",\n  \"title\": \"Функция на сервере\",\n  \"what\": \"Асинхронная функция с директивой \\\"use server\\\" выполняется на сервере, а вызывается из формы или кнопки.\",\n  \"why\": \"Не нужен отдельный обработчик API для каждой формы.\",\n  \"how\": \"// app/actions.ts\\n\\\"use server\\\";\\nimport { revalidatePath } from \\\"next/cache\\\";\\n\\nexport async function addComment(formData: FormData) {\\n  const text = String(formData.get(\\\"text\\\") ?? \\\"\\\");\\n  await db.comment.create({ data: { text } });\\n  revalidatePath(\\\"/blog\\\");\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"form action\",\n  \"title\": \"Форма вызывает действие\",\n  \"what\": \"`<form action={addComment}>` — данные полей приходят в FormData. Форма работает даже до загрузки JavaScript.\",\n  \"why\": \"Простейший и надёжный путь отправки данных.\",\n  \"how\": \"<form action={addComment}>\\n  <textarea name=\\\"text\\\" required />\\n  <button>Отправить</button>\\n</form>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"revalidatePath\",\n  \"title\": \"Обновить страницу\",\n  \"what\": \"После изменения данных говорим, какие страницы показать заново: revalidatePath(\\\"/blog\\\").\",\n  \"why\": \"Новый комментарий сразу появляется в списке.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"redirect\",\n  \"title\": \"Перейти после действия\",\n  \"what\": \"redirect(\\\"/orders/42\\\") из next/navigation отправляет на другую страницу после успешного сохранения.\",\n  \"why\": \"После оформления заказа — страница заказа.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Изменение данных — Server Action. После изменения — revalidatePath или redirect."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sa-dir",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sa-data",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sa-reval",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "validation",
+      "title": "Проверка данных",
+      "summary": "Сервер не доверяет форме: схема Zod, ошибки полей через useActionState, проверка прав.",
+      "chapter": "Формы и Server Actions",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Отправляем формы и защищаемся от неверных данных.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Не доверяй форме\",\n  \"title\": \"Проверка на сервере\",\n  \"what\": \"Server Action — публичная точка входа: её можно вызвать с любыми данными, минуя форму. Проверка в браузере — только для удобства.\",\n  \"why\": \"Злоумышленник отправит что угодно, не открывая твою форму.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Zod\",\n  \"title\": \"Схема данных\",\n  \"what\": \"Схема описывает, какие данные допустимы, а safeParse возвращает либо данные, либо ошибки по полям.\",\n  \"why\": \"Одна схема для проверки и типов TypeScript.\",\n  \"how\": \"import { z } from \\\"zod\\\";\\n\\nconst Signup = z.object({\\n  email: z.string().email(),\\n  name: z.string().min(2)\\n});\\nconst result = Signup.safeParse(Object.fromEntries(formData));\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"useActionState\",\n  \"title\": \"Ошибки в форме\",\n  \"what\": \"Хук хранит результат последнего вызова действия: ошибки полей, сообщение об успехе.\",\n  \"why\": \"Пользователь видит, что исправить, рядом с полем.\",\n  \"how\": \"\\\"use client\\\";\\nconst [state, formAction, pending] = useActionState(signup, { errors: {} });\\n\\n<form action={formAction}>\\n  <input name=\\\"email\\\" />\\n  {state.errors.email && <p>{state.errors.email}</p>}\\n</form>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Права\",\n  \"title\": \"Кто вызывает\",\n  \"what\": \"Внутри действия проверяют, вошёл ли пользователь и может ли он менять эту запись.\",\n  \"why\": \"Иначе любой удалит чужой комментарий.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Каждое действие: проверь вход, права и данные по схеме."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "va-trust",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "va-zod",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "va-state",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "pending-optimistic",
+      "title": "Отклик интерфейса",
+      "summary": "useFormStatus и кнопка отправки, useOptimistic, обработка ошибок действия.",
+      "chapter": "Формы и Server Actions",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проверяем данные и делаем формы отзывчивыми.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"useFormStatus\",\n  \"title\": \"Кнопка знает о отправке\",\n  \"what\": \"Хук внутри формы возвращает pending — пока действие выполняется.\",\n  \"why\": \"Кнопка блокируется, и форму не отправят дважды.\",\n  \"how\": \"\\\"use client\\\";\\nimport { useFormStatus } from \\\"react-dom\\\";\\n\\nexport function Submit() {\\n  const { pending } = useFormStatus();\\n  return <button disabled={pending}>{pending ? \\\"Сохраняем…\\\" : \\\"Сохранить\\\"}</button>;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"useOptimistic\",\n  \"title\": \"Сразу показать результат\",\n  \"what\": \"Интерфейс показывает ожидаемый результат до ответа сервера, а при ошибке возвращается назад.\",\n  \"why\": \"Лайк и новое сообщение появляются мгновенно.\",\n  \"how\": \"const [optimistic, addOptimistic] = useOptimistic(messages, (list, m) => [...list, m]);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ошибки действия\",\n  \"title\": \"Не роняй страницу\",\n  \"what\": \"Ожидаемые ошибки (неверный ввод, нет прав) возвращают объектом состояния. Неожиданные ловит error.tsx.\",\n  \"why\": \"Пользователь видит понятное сообщение, а не белый экран.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ожидание — useFormStatus, мгновенный отклик — useOptimistic, ожидаемые ошибки — в состоянии."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "po-status",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "po-optimistic",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "po-errors",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "static-dynamic",
+      "title": "Статика и динамика",
+      "summary": "Статический рендеринг при сборке, динамический на запрос, что делает страницу динамической.",
+      "chapter": "Рендеринг и кэш",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Делаем отзывчивые формы и выясняем, когда страница собирается.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Статический рендеринг\",\n  \"title\": \"Готовый файл\",\n  \"what\": \"Страница собирается заранее, при сборке, и отдаётся как файл с CDN.\",\n  \"why\": \"Самая быстрая и дешёвая страница: о сервере даже не нужно спрашивать.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Динамический рендеринг\",\n  \"title\": \"На каждый запрос\",\n  \"what\": \"Страница рисуется заново для каждого запроса. Нужна, когда содержимое зависит от пользователя или запроса.\",\n  \"why\": \"Личный кабинет у каждого свой.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что делает динамической\",\n  \"title\": \"cookies, headers, searchParams\",\n  \"what\": \"Чтение cookies(), headers(), searchParams или некэшируемых данных делает маршрут динамическим.\",\n  \"why\": \"Одна строка cookies() в макете делает динамическим весь раздел.\",\n  \"how\": \"import { cookies } from \\\"next/headers\\\";\\n\\nconst theme = (await cookies()).get(\\\"theme\\\")?.value;\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Вывод сборки\",\n  \"title\": \"Что получилось\",\n  \"what\": \"npm run build показывает значками, какие маршруты статические (○), а какие динамические (ƒ).\",\n  \"why\": \"Проверяй, не стала ли главная случайно динамической.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Всё общее — статикой, личное — динамикой. Смотри значки в выводе сборки."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sd-static",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sd-cookies",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sd-symbol",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "revalidation",
+      "title": "Обновление статики",
+      "summary": "Инкрементальное обновление по времени и по требованию, revalidateTag, generateStaticParams и новые страницы.",
+      "chapter": "Рендеринг и кэш",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Различаем статику и динамику и учимся обновлять статику без пересборки.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"По времени\",\n  \"title\": \"revalidate\",\n  \"what\": \"`export const revalidate = 3600` — страница пересобирается не чаще раза в час, по первому запросу после срока.\",\n  \"why\": \"Каталог статичный и быстрый, но не устаревает надолго.\",\n  \"how\": \"// app/courses/page.tsx\\nexport const revalidate = 3600;\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"По требованию\",\n  \"title\": \"revalidatePath и revalidateTag\",\n  \"what\": \"После изменения данных вызывают revalidatePath(\\\"/courses\\\") или revalidateTag(\\\"courses\\\") — страница обновится при следующем запросе.\",\n  \"why\": \"Опубликовал статью — она сразу видна, без ожидания часа.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Теги данных\",\n  \"title\": \"Метка запроса\",\n  \"what\": \"Запрос помечают тегом, чтобы потом сбросить все его копии разом.\",\n  \"why\": \"Один вызов обновляет все страницы с этими данными.\",\n  \"how\": \"await fetch(\\\"https://api.example.com/courses\\\", { next: { tags: [\\\"courses\\\"] } });\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Новые адреса\",\n  \"title\": \"dynamicParams\",\n  \"what\": \"Адреса, которых не было в generateStaticParams, по умолчанию собираются при первом запросе и сохраняются.\",\n  \"why\": \"Новая статья доступна сразу, без пересборки сайта.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Редко меняется — revalidate по времени. Изменилось по событию — revalidateTag или revalidatePath."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rv-time",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rv-event",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rv-new",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "caching",
+      "title": "Модель кэширования",
+      "summary": "Что кэшируется, fetch не кэшируется по умолчанию, директива \"use cache\", кэш маршрутизатора в браузере.",
+      "chapter": "Рендеринг и кэш",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Обновляем статику и разбираемся, что и где кэширует фреймворк.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Явный кэш\",\n  \"title\": \"Ничего не кэшируется молча\",\n  \"what\": \"В современных версиях fetch и запросы к базе по умолчанию не кэшируются: кэш включают явно.\",\n  \"why\": \"Меньше сюрпризов вроде «почему данные не обновились».\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"\\\"use cache\\\"\",\n  \"title\": \"Кэшировать функцию или компонент\",\n  \"what\": \"Директива в начале функции сохраняет её результат. cacheLife задаёт срок жизни, cacheTag — тег для сброса.\",\n  \"why\": \"Дорогой запрос выполняется раз в час, а не на каждый показ.\",\n  \"how\": \"import { cacheLife, cacheTag } from \\\"next/cache\\\";\\n\\nexport async function getCourses() {\\n  \\\"use cache\\\";\\n  cacheLife(\\\"hours\\\");\\n  cacheTag(\\\"courses\\\");\\n  return db.course.findMany();\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Кэш в браузере\",\n  \"title\": \"Маршрутизатор помнит\",\n  \"what\": \"Клиентский маршрутизатор хранит уже посещённые страницы и предзагруженные ссылки — возврат назад мгновенный.\",\n  \"why\": \"router.refresh() заставит перечитать текущую страницу с сервера.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что не кэшировать\",\n  \"title\": \"Личное\",\n  \"what\": \"Данные конкретного пользователя (корзина, профиль) не кладут в общий кэш.\",\n  \"why\": \"Иначе один пользователь увидит данные другого.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Кэш включают явно: \"use cache\" с cacheLife и cacheTag. Личные данные — никогда в общий кэш."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-default",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-use",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-private",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "route-handlers",
+      "title": "Обработчики маршрутов",
+      "summary": "route.ts с GET и POST, Request и Response, JSON, вебхуки и когда нужен свой API.",
+      "chapter": "API и прокси",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем кэширование и пишем собственные API-адреса.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"route.ts\",\n  \"title\": \"Свой эндпоинт\",\n  \"what\": \"Файл route.ts экспортирует функции по HTTP-методам: GET, POST, DELETE. Они получают стандартный Request и возвращают Response.\",\n  \"why\": \"API для мобильного приложения, вебхуков и чужих сервисов.\",\n  \"how\": \"// app/api/courses/route.ts\\nexport async function GET() {\\n  const courses = await getCourses();\\n  return Response.json(courses);\\n}\\n\\nexport async function POST(request: Request) {\\n  const body = await request.json();\\n  return Response.json({ ok: true }, { status: 201 });\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"route или page\",\n  \"title\": \"Не вместе\",\n  \"what\": \"В одной папке не может быть одновременно page.tsx и route.ts: адрес — либо страница, либо API.\",\n  \"why\": \"Обычно API кладут в app/api/.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Вебхуки\",\n  \"title\": \"Входящие события\",\n  \"what\": \"Платёжная система или GitHub отправляют POST на твой route.ts. Подпись запроса обязательно проверяют.\",\n  \"why\": \"Иначе кто угодно «оплатит» заказ поддельным запросом.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Когда свой API не нужен\",\n  \"title\": \"Server Actions и компоненты\",\n  \"what\": \"Для собственных форм и страниц хватает Server Actions и серверных компонентов. route.ts — для внешних клиентов.\",\n  \"why\": \"Меньше кода и меньше точек для ошибок.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** route.ts — для внешних клиентов и вебхуков. Своим страницам — серверные компоненты и действия."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rh-file",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rh-both",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rh-webhook",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "proxy",
+      "title": "Прокси перед маршрутами",
+      "summary": "Файл proxy.ts (раньше middleware), matcher, перенаправления, переписывание адресов и проверка входа.",
+      "chapter": "API и прокси",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем API и перехватываем запросы до того, как они дойдут до страниц.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"proxy.ts\",\n  \"title\": \"Код перед каждым запросом\",\n  \"what\": \"Файл в корне проекта выполняется до маршрутов: может перенаправить, переписать адрес, добавить заголовки. В старых версиях назывался middleware.ts.\",\n  \"why\": \"Перенаправить неавторизованного пользователя ещё до отрисовки страницы.\",\n  \"how\": \"// proxy.ts\\nimport { NextResponse } from \\\"next/server\\\";\\n\\nexport function proxy(request) {\\n  if (!request.cookies.has(\\\"session\\\")) {\\n    return NextResponse.redirect(new URL(\\\"/login\\\", request.url));\\n  }\\n}\\n\\nexport const config = { matcher: [\\\"/dashboard/:path*\\\"] };\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"matcher\",\n  \"title\": \"Для каких адресов\",\n  \"what\": \"config.matcher ограничивает, на каких путях работает прокси.\",\n  \"why\": \"Статика и картинки не проходят лишнюю проверку.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"redirect и rewrite\",\n  \"title\": \"Куда отправить\",\n  \"what\": \"redirect меняет адрес в браузере, rewrite показывает другую страницу под тем же адресом.\",\n  \"why\": \"A/B-тест или язык по заголовку — через rewrite.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Лёгкая проверка\",\n  \"title\": \"Не вся авторизация\",\n  \"what\": \"Прокси быстро проверяет наличие сессии, но настоящая проверка прав — в слое данных и действиях.\",\n  \"why\": \"Прокси можно обойти ошибкой в matcher, а проверку у данных — нет.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** proxy.ts — быстрые перенаправления и заголовки. Права всё равно проверяй у данных."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "px-when",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "px-rewrite",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "px-auth",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "cookies-headers",
+      "title": "Cookies, заголовки и окружение",
+      "summary": "cookies() и headers(), установка cookie в действии, переменные окружения и NEXT_PUBLIC_.",
+      "chapter": "API и прокси",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Перехватываем запросы и работаем с cookies и настройками.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"cookies()\",\n  \"title\": \"Читать и писать\",\n  \"what\": \"`(await cookies()).get(\\\"theme\\\")` в серверном компоненте; установить — `.set()` в Server Action или route.ts.\",\n  \"why\": \"Тема, язык, сессия.\",\n  \"how\": \"\\\"use server\\\";\\nimport { cookies } from \\\"next/headers\\\";\\n\\nexport async function setTheme(theme: string) {\\n  (await cookies()).set(\\\"theme\\\", theme, { httpOnly: true, sameSite: \\\"lax\\\", secure: true });\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"headers()\",\n  \"title\": \"Заголовки запроса\",\n  \"what\": \"`(await headers()).get(\\\"accept-language\\\")` — язык браузера, user-agent и прочие заголовки.\",\n  \"why\": \"Подобрать язык по умолчанию.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Переменные окружения\",\n  \"title\": \".env.local\",\n  \"what\": \"Файл .env.local с ключами не попадает в git. На сервере переменные задают в панели хостинга.\",\n  \"why\": \"Секреты отдельно от кода.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"NEXT_PUBLIC_\",\n  \"title\": \"Видно в браузере\",\n  \"what\": \"Только переменные с префиксом NEXT_PUBLIC_ попадают в клиентский код — и их видит любой посетитель.\",\n  \"why\": \"Ключ к базе с этим префиксом — утечка.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Секреты — без префикса и только на сервере. NEXT_PUBLIC_ — только для публичного."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ck-set",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ck-public",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ck-git",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "styling",
+      "title": "Стили",
+      "summary": "Глобальный CSS, CSS-модули, Tailwind CSS, тёмная тема без мигания.",
+      "chapter": "Стили, медиа и метаданные",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем с cookies и окружением и оформляем интерфейс.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Глобальный CSS\",\n  \"title\": \"Только в макете\",\n  \"what\": \"globals.css импортируют в корневой layout: сброс стилей, переменные, базовая типографика.\",\n  \"why\": \"Общие правила — в одном месте.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"CSS-модули\",\n  \"title\": \"Классы без конфликтов\",\n  \"what\": \"Файл Card.module.css даёт уникальные имена классов для компонента.\",\n  \"why\": \"Класс .title в двух компонентах не конфликтует.\",\n  \"how\": \"import styles from \\\"./Card.module.css\\\";\\n\\n<article className={styles.card}>…</article>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Tailwind CSS\",\n  \"title\": \"Утилитарные классы\",\n  \"what\": \"Стили пишут классами прямо в разметке. Настраивается при создании проекта.\",\n  \"why\": \"Быстро собирать интерфейс без переключения между файлами.\",\n  \"how\": \"<button className=\\\"rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700\\\">Записаться</button>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тёмная тема\",\n  \"title\": \"Без мигания\",\n  \"what\": \"Тему из cookie читают на сервере и ставят класс на html сразу, или используют prefers-color-scheme.\",\n  \"why\": \"Страница не мигает светлой при загрузке.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Глобальное — globals.css, компонентное — модули или Tailwind."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sy-global",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sy-module",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sy-flash",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "image-font",
+      "title": "Картинки и шрифты",
+      "summary": "next/image: размеры, lazy, форматы, priority; next/font: свои шрифты без скачков.",
+      "chapter": "Стили, медиа и метаданные",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Оформляем интерфейс и ускоряем загрузку картинок и шрифтов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"next/image\",\n  \"title\": \"Оптимизированная картинка\",\n  \"what\": \"Компонент сжимает и отдаёт картинку в современном формате и нужном размере, грузит лениво. width и height обязательны (или fill).\",\n  \"why\": \"Страница быстрее, макет не прыгает при загрузке.\",\n  \"how\": \"import Image from \\\"next/image\\\";\\n\\n<Image src=\\\"/hero.jpg\\\" alt=\\\"Ученик за ноутбуком\\\" width={1200} height={630} priority />\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"priority\",\n  \"title\": \"Главная картинка\",\n  \"what\": \"Первую большую картинку экрана помечают priority — она грузится сразу, а не лениво.\",\n  \"why\": \"Улучшает время отрисовки главного содержимого (LCP).\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Чужие картинки\",\n  \"title\": \"remotePatterns\",\n  \"what\": \"Картинки с других доменов разрешают в next.config в images.remotePatterns.\",\n  \"why\": \"Защита от использования оптимизатора как бесплатного прокси.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"next/font\",\n  \"title\": \"Шрифты без скачков\",\n  \"what\": \"Шрифт Google или свой файл скачивается при сборке и отдаётся с твоего домена, с правильным запасным шрифтом.\",\n  \"why\": \"Текст не прыгает, а к Google не уходят запросы посетителей.\",\n  \"how\": \"import { Inter } from \\\"next/font/google\\\";\\nconst inter = Inter({ subsets: [\\\"latin\\\", \\\"cyrillic\\\"] });\\n\\n<body className={inter.className}>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Картинки — next/image с размерами, главная — priority. Шрифты — next/font с cyrillic."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "if-size",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "if-priority",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "if-font",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "metadata",
+      "title": "Метаданные и поисковики",
+      "summary": "metadata и generateMetadata, Open Graph, sitemap и robots, канонический адрес.",
+      "chapter": "Стили, медиа и метаданные",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Ускорили картинки и шрифты и готовим страницы для поисковиков и соцсетей.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"metadata\",\n  \"title\": \"Заголовок и описание\",\n  \"what\": \"Объект metadata в page или layout задаёт title, description и превью для соцсетей.\",\n  \"why\": \"Красивая карточка при отправке ссылки и понятный сниппет в поиске.\",\n  \"how\": \"export const metadata = {\\n  title: \\\"Курс Python\\\",\\n  description: \\\"Python с нуля: 33 урока с тестами\\\",\\n  openGraph: { images: [\\\"/og/python.png\\\"] }\\n};\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"generateMetadata\",\n  \"title\": \"Метаданные из данных\",\n  \"what\": \"Асинхронная функция строит метаданные из параметров страницы: название курса в title.\",\n  \"why\": \"У каждой страницы — свой заголовок.\",\n  \"how\": \"export async function generateMetadata({ params }) {\\n  const { slug } = await params;\\n  const course = await getCourse(slug);\\n  return { title: course.title };\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"sitemap и robots\",\n  \"title\": \"Файлы для поисковиков\",\n  \"what\": \"app/sitemap.ts и app/robots.ts генерируют sitemap.xml и robots.txt из кода.\",\n  \"why\": \"Поисковик быстро находит все страницы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Шаблон заголовка\",\n  \"title\": \"title.template\",\n  \"what\": \"В корневом макете `title: { template: \\\"%s · Академия\\\", default: \\\"Академия\\\" }` добавляет название сайта ко всем страницам.\",\n  \"why\": \"Единый вид заголовков без повторов.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** У каждой страницы — свой title и description. sitemap и robots — из кода."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "md-dynamic",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "md-og",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "md-sitemap",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "database",
+      "title": "База данных",
+      "summary": "Подключение Postgres через ORM (Prisma или Drizzle), один клиент на приложение, миграции.",
+      "chapter": "База данных и вход",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Готовим страницы для поисковиков и подключаем настоящую базу данных.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"ORM\",\n  \"title\": \"Таблицы как объекты\",\n  \"what\": \"Prisma или Drizzle описывают схему в коде, генерируют типы и строят SQL-запросы.\",\n  \"why\": \"Опечатка в имени поля — ошибка TypeScript, а не падение на сервере.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Запрос из компонента\",\n  \"title\": \"Прямо к базе\",\n  \"what\": \"Серверный компонент вызывает ORM напрямую.\",\n  \"why\": \"Никаких промежуточных API для своих страниц.\",\n  \"how\": \"const lessons = await db.lesson.findMany({\\n  where: { courseSlug: slug },\\n  orderBy: { position: \\\"asc\\\" }\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Один клиент\",\n  \"title\": \"Не плодить подключения\",\n  \"what\": \"Клиент базы создают один раз в модуле и переиспользуют. В режиме разработки его кладут в globalThis, иначе перезагрузка создаёт новые подключения.\",\n  \"why\": \"Иначе база упрётся в лимит соединений.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Миграции\",\n  \"title\": \"Изменения схемы\",\n  \"what\": \"`npx prisma migrate dev` создаёт файл миграции и применяет его. На сервере — `prisma migrate deploy`.\",\n  \"why\": \"Схема базы меняется вместе с кодом и предсказуемо.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Схема — в ORM, запросы — в слое данных, изменения схемы — миграциями."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-orm",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-client",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-deploy",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "authentication",
+      "title": "Вход пользователей",
+      "summary": "Сессии в httpOnly cookie, готовые решения (Auth.js, Clerk, Better Auth), вход через провайдеров, хранение паролей.",
+      "chapter": "База данных и вход",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Подключили базу и добавляем вход пользователей.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Сессия\",\n  \"title\": \"Кто ты\",\n  \"what\": \"После входа сервер выдаёт сессию в cookie с флагами httpOnly, secure и sameSite. JavaScript страницы её не видит.\",\n  \"why\": \"Украсть сессию через XSS становится гораздо труднее.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Готовые решения\",\n  \"title\": \"Не пиши сам\",\n  \"what\": \"Auth.js, Better Auth, Clerk и подобные берут на себя вход по паролю, через провайдеров, сессии и сброс пароля.\",\n  \"why\": \"Безопасность входа — область, где ошибки стоят дорого.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Пароли\",\n  \"title\": \"Только хэш\",\n  \"what\": \"Пароли хранят хэшем медленной функции (argon2, bcrypt), никогда открытым текстом.\",\n  \"why\": \"Утечка базы не раскроет пароли.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Текущий пользователь\",\n  \"title\": \"getSession\",\n  \"what\": \"Функция в слое данных читает сессию и возвращает пользователя или null. Её вызывают компоненты и действия.\",\n  \"why\": \"Один способ узнать, кто сейчас на сайте.\",\n  \"how\": \"export async function requireUser() {\\n  const user = await getCurrentUser();\\n  if (!user) redirect(\\\"/login\\\");\\n  return user;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Вход — готовым решением. Сессия — в httpOnly cookie. Пароли — только хэшем."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "au-httponly",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "au-pass",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "au-lib",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "authorization",
+      "title": "Права доступа",
+      "summary": "Аутентификация и авторизация, проверка прав у данных, роли, защищённые разделы.",
+      "chapter": "База данных и вход",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пользователи входят на сайт, и мы проверяем, что каждому можно.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Кто и что\",\n  \"title\": \"Две проверки\",\n  \"what\": \"Аутентификация — кто ты. Авторизация — что тебе можно: читать этот заказ, удалять этот комментарий.\",\n  \"why\": \"Вошедший пользователь ещё не значит «можно всё».\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проверка у данных\",\n  \"title\": \"Ближе к базе\",\n  \"what\": \"Функция доступа к данным сама проверяет, что запись принадлежит пользователю.\",\n  \"why\": \"Страница, действие и API защищены одной проверкой.\",\n  \"how\": \"export async function getOrder(id: string) {\\n  const user = await requireUser();\\n  const order = await db.order.findUnique({ where: { id } });\\n  if (!order || order.userId !== user.id) notFound();\\n  return order;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Роли\",\n  \"title\": \"Ученик, автор, админ\",\n  \"what\": \"Роль хранится у пользователя, разрешения проверяются функциями вроде canEdit(user, course).\",\n  \"why\": \"Правила доступа в одном месте и легко тестируются.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Скрыть — не защитить\",\n  \"title\": \"Кнопка — не проверка\",\n  \"what\": \"Если скрыть кнопку «Удалить», действие всё равно можно вызвать напрямую.\",\n  \"why\": \"Проверка прав всегда на сервере.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Права проверяются у данных и в каждом действии. Скрытая кнопка — не защита."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "az-diff",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "az-hide",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "az-where",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "error-pages",
+      "title": "Ошибки и 404",
+      "summary": "error.tsx как граница ошибок, not-found.tsx, global-error, что видит пользователь и что видно в логах.",
+      "chapter": "Ошибки, скорость и тесты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проверяем права и готовимся к тому, что что-то сломается.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"error.tsx\",\n  \"title\": \"Граница ошибок раздела\",\n  \"what\": \"Клиентский компонент рядом с page.tsx перехватывает ошибки раздела и показывает запасной интерфейс с кнопкой «Попробовать снова».\",\n  \"why\": \"Ошибка в одном блоке не роняет весь сайт.\",\n  \"how\": \"\\\"use client\\\";\\nexport default function Error({ error, reset }) {\\n  return (\\n    <div>\\n      <p>Что-то пошло не так.</p>\\n      <button onClick={() => reset()}>Попробовать снова</button>\\n    </div>\\n  );\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"not-found.tsx\",\n  \"title\": \"Своя 404\",\n  \"what\": \"Показывается при notFound() и для несуществующих адресов.\",\n  \"why\": \"Полезная 404 с поиском и ссылками удерживает посетителя.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"global-error.tsx\",\n  \"title\": \"Последний рубеж\",\n  \"what\": \"Ловит ошибки в корневом макете. Должен сам содержать html и body.\",\n  \"why\": \"Даже при сбое макета пользователь видит страницу, а не пустоту.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Детали — в логи\",\n  \"title\": \"Не показывай стек\",\n  \"what\": \"Пользователю — короткое сообщение, подробности — в журнал и систему отслеживания ошибок (Sentry и подобные).\",\n  \"why\": \"Стек ошибки помогает атакующему.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** У важных разделов — error.tsx, у сайта — своя not-found.tsx. Подробности — в логи."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ep-type",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ep-scope",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ep-stack",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "performance",
+      "title": "Скорость",
+      "summary": "Core Web Vitals, размер клиентского JavaScript, динамический импорт, анализ бандла, Script.",
+      "chapter": "Ошибки, скорость и тесты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Обрабатываем ошибки и делаем приложение быстрым.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Core Web Vitals\",\n  \"title\": \"Метрики скорости\",\n  \"what\": \"LCP — когда виден главный контент, INP — отклик на действия, CLS — прыжки макета.\",\n  \"why\": \"Поисковики учитывают их, а пользователи уходят с медленных страниц.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Меньше клиента\",\n  \"title\": \"Главный рычаг\",\n  \"what\": \"Каждый \\\"use client\\\" и тяжёлая библиотека добавляют JavaScript. Чем больше серверных компонентов, тем быстрее страница на телефоне.\",\n  \"why\": \"Скорость на слабом телефоне определяет опыт большинства.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Динамический импорт\",\n  \"title\": \"Грузить по требованию\",\n  \"what\": \"next/dynamic загружает тяжёлый компонент (редактор, график) только когда он нужен.\",\n  \"why\": \"Первая загрузка легче.\",\n  \"how\": \"import dynamic from \\\"next/dynamic\\\";\\n\\nconst Chart = dynamic(() => import(\\\"./Chart\\\"), { loading: () => <p>Загружаем график…</p> });\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Анализ бандла\",\n  \"title\": \"Что тяжёлое\",\n  \"what\": \"Анализатор бандла показывает карту модулей клиентского кода по размеру.\",\n  \"why\": \"Видно, какая библиотека раздула страницу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"next/script\",\n  \"title\": \"Сторонние скрипты\",\n  \"what\": \"Компонент Script со стратегией afterInteractive или lazyOnload не блокирует отрисовку.\",\n  \"why\": \"Счётчики и чаты не тормозят первый показ.\",\n  \"how\": \"import Script from \\\"next/script\\\";\\n\\n<Script src=\\\"https://widget.example.com/chat.js\\\" strategy=\\\"lazyOnload\\\" />\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Меньше клиентского JavaScript, тяжёлое — динамически, сторонние скрипты — лениво."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pf-cls",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pf-dynamic",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pf-lever",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "testing",
+      "title": "Тесты",
+      "summary": "Модульные тесты Vitest и Testing Library, проверка Server Actions и слоя данных, сквозные тесты Playwright.",
+      "chapter": "Ошибки, скорость и тесты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Ускорили приложение и защищаем его тестами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Пирамида тестов\",\n  \"title\": \"Много быстрых, мало медленных\",\n  \"what\": \"Много модульных тестов для функций и компонентов, меньше интеграционных, немного сквозных для главных сценариев.\",\n  \"why\": \"Быстрая обратная связь и уверенность в главном.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Vitest и Testing Library\",\n  \"title\": \"Компоненты и функции\",\n  \"what\": \"Тест рендерит клиентский компонент и проверяет, что видит пользователь.\",\n  \"why\": \"Проверка поведения, а не внутренностей.\",\n  \"how\": \"import { render, screen } from \\\"@testing-library/react\\\";\\n\\ntest(\\\"кнопка показывает число лайков\\\", () => {\\n  render(<LikeButton count={3} />);\\n  expect(screen.getByRole(\\\"button\\\")).toHaveTextContent(\\\"3\\\");\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Слой данных и действия\",\n  \"title\": \"Обычные функции\",\n  \"what\": \"Server Actions и функции доступа — асинхронные функции: их тестируют напрямую с тестовой базой.\",\n  \"why\": \"Проверки прав и валидации покрыты без браузера.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Playwright\",\n  \"title\": \"Как пользователь\",\n  \"what\": \"Сквозной тест открывает настоящий браузер, проходит вход, заполняет форму и проверяет результат.\",\n  \"why\": \"Ловит поломки, которые видны только целиком.\",\n  \"how\": \"test(\\\"ученик записывается на курс\\\", async ({ page }) => {\\n  await page.goto(\\\"/courses/python\\\");\\n  await page.getByRole(\\\"button\\\", { name: \\\"Записаться\\\" }).click();\\n  await expect(page.getByText(\\\"Вы записаны\\\")).toBeVisible();\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Функции и компоненты — Vitest, главные сценарии — Playwright."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ts-pyramid",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ts-e2e",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ts-actions",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "hosting",
+      "title": "Выпуск на платформу",
+      "summary": "Развёртывание из git, превью для каждой ветки, переменные окружения, домен.",
+      "chapter": "Выпуск приложения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Покрыли приложение тестами и выпускаем его в интернет.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Из git\",\n  \"title\": \"Каждый push — выпуск\",\n  \"what\": \"Платформы вроде Vercel и Netlify подключаются к репозиторию: каждый push в main собирает и выпускает приложение.\",\n  \"why\": \"Выпуск без ручных шагов и с откатом в один клик.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Превью\",\n  \"title\": \"Ссылка на каждую ветку\",\n  \"what\": \"Каждая ветка и PR получают свой адрес с собранной версией.\",\n  \"why\": \"Изменения смотрят до слияния, а не после.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Секреты окружений\",\n  \"title\": \"В панели платформы\",\n  \"what\": \"Секреты задают отдельно для превью и для боевого выпуска.\",\n  \"why\": \"Превью не трогает боевую базу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Домен\",\n  \"title\": \"Свой адрес\",\n  \"what\": \"Домен подключают DNS-записью, сертификат HTTPS выдаётся автоматически.\",\n  \"why\": \"Сайт на своём адресе за минуты.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** main — боевой выпуск, ветки — превью. Секреты — отдельно для каждого окружения."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ho-preview",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ho-env",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ho-https",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "self-host",
+      "title": "Свой сервер",
+      "summary": "next start на Node, режим standalone и Docker, кэш и картинки на своём сервере, статический экспорт.",
+      "chapter": "Выпуск приложения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем выпускать на платформу и запускаем приложение на своём сервере.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"next start\",\n  \"title\": \"Обычный Node-сервер\",\n  \"what\": \"`npm run build && npm run start` — приложение работает на любом сервере с Node.js за обратным прокси.\",\n  \"why\": \"Все возможности фреймворка без платформы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"standalone\",\n  \"title\": \"Компактная сборка\",\n  \"what\": \"`output: \\\"standalone\\\"` в next.config собирает папку с сервером и только нужными зависимостями.\",\n  \"why\": \"Образ Docker в разы меньше.\",\n  \"how\": \"// next.config.ts\\nexport default { output: \\\"standalone\\\" };\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Dockerfile\",\n  \"title\": \"Многоэтапная сборка\",\n  \"what\": \"Этап сборки ставит зависимости и собирает, финальный копирует standalone и статику.\",\n  \"why\": \"Один образ для любого сервера.\",\n  \"how\": \"FROM node:22-slim AS build\\nWORKDIR /app\\nCOPY package*.json ./\\nRUN npm ci\\nCOPY . .\\nRUN npm run build\\n\\nFROM node:22-slim\\nWORKDIR /app\\nCOPY --from=build /app/.next/standalone ./\\nCOPY --from=build /app/.next/static ./.next/static\\nCOPY --from=build /app/public ./public\\nCMD [\\\"node\\\", \\\"server.js\\\"]\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Статический экспорт\",\n  \"title\": \"output: \\\"export\\\"\",\n  \"what\": \"Если нет серверных функций, сайт собирается в папку HTML-файлов для любого хостинга.\",\n  \"why\": \"Документация и лендинги — без сервера вообще.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Несколько экземпляров\",\n  \"title\": \"Общий кэш\",\n  \"what\": \"При нескольких серверах кэш данных хранят в общем месте (обработчик кэша, Redis).\",\n  \"why\": \"Иначе экземпляры показывают разные версии страниц.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Свой сервер — standalone в Docker. Нет серверной логики — статический экспорт."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sh-standalone",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sh-export",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sh-multi",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "production",
+      "title": "Готовность к запуску",
+      "summary": "Проверочный список: безопасность, заголовки, аналитика и мониторинг, логи, что учить дальше.",
+      "chapter": "Выпуск приложения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Запускаем на своём сервере и проверяем готовность к настоящим пользователям.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Безопасность\",\n  \"title\": \"Перед запуском\",\n  \"what\": \"Все действия и API проверяют права и данные, секреты не имеют префикса NEXT_PUBLIC_, зависимости обновлены.\",\n  \"why\": \"Большинство взломов — по известным простым ошибкам.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Заголовки безопасности\",\n  \"title\": \"headers в next.config\",\n  \"what\": \"Content-Security-Policy, X-Frame-Options, Referrer-Policy задаются один раз для всего сайта.\",\n  \"why\": \"Защита от встраивания и XSS.\",\n  \"how\": \"async headers() {\\n  return [{ source: \\\"/(.*)\\\", headers: [{ key: \\\"X-Frame-Options\\\", value: \\\"DENY\\\" }] }];\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Мониторинг\",\n  \"title\": \"Знать о проблемах первым\",\n  \"what\": \"Отслеживание ошибок, метрики скорости реальных пользователей, журналы и аналитика с согласием пользователя.\",\n  \"why\": \"Узнать о сбое из уведомления, а не из жалоб.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что дальше\",\n  \"title\": \"Куда расти\",\n  \"what\": \"Глубже — кэш и потоковая отрисовка, интернационализация, платежи, очереди фоновых задач. Главное — своё приложение до первых пользователей.\",\n  \"why\": \"Фреймворк закрепляется только на реальном проекте.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Перед запуском: права, секреты, заголовки, мониторинг. Потом — реальные пользователи."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-headers",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-monitor",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-check",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

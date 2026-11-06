@@ -1,0 +1,197 @@
+{
+  "note": "Every item is taught by its own concept card; the contracts test keeps the index and the cards in sync.",
+  "source": "Course design by chapter (branches of the character).",
+  "topics": {
+    "start": {
+      "title": "Старт Next.js",
+      "items": [
+        "Next.js",
+        "Сервер и браузер",
+        "App Router",
+        "Где используют",
+        "create-next-app",
+        "npm run dev",
+        "build и start",
+        "TypeScript",
+        "app/page.tsx",
+        "app/layout.tsx",
+        "public/",
+        "Специальные файлы",
+        "next.config.ts"
+      ]
+    },
+    "routing": {
+      "title": "Маршруты и макеты",
+      "items": [
+        "Папка — сегмент",
+        "Группы маршрутов",
+        "Приватные папки",
+        "Link",
+        "useRouter",
+        "Вложенный layout",
+        "Сохранение состояния",
+        "template.tsx",
+        "usePathname",
+        "[slug]",
+        "[...slug]",
+        "searchParams",
+        "generateStaticParams",
+        "notFound()"
+      ]
+    },
+    "components": {
+      "title": "Серверные и клиентские компоненты",
+      "items": [
+        "По умолчанию — сервер",
+        "Без JavaScript в браузере",
+        "Секреты на сервере",
+        "Чего нельзя",
+        "\"use client\"",
+        "Гидратация",
+        "Граница пониже",
+        "Ошибка гидратации",
+        "Через children",
+        "Данные через props",
+        "server-only",
+        "Контекст"
+      ]
+    },
+    "data": {
+      "title": "Получение данных",
+      "items": [
+        "await в компоненте",
+        "Параллельно",
+        "Слой данных",
+        "Без своего API",
+        "loading.tsx",
+        "Suspense",
+        "Стриминг",
+        "Скелетон",
+        "Когда на клиенте",
+        "SWR и TanStack Query",
+        "use()",
+        "Без лишних запросов"
+      ]
+    },
+    "actions": {
+      "title": "Формы и Server Actions",
+      "items": [
+        "\"use server\"",
+        "form action",
+        "revalidatePath",
+        "redirect",
+        "Не доверяй форме",
+        "Zod",
+        "useActionState",
+        "Права",
+        "useFormStatus",
+        "useOptimistic",
+        "Ошибки действия"
+      ]
+    },
+    "rendering": {
+      "title": "Рендеринг и кэш",
+      "items": [
+        "Статический рендеринг",
+        "Динамический рендеринг",
+        "Что делает динамической",
+        "Вывод сборки",
+        "По времени",
+        "По требованию",
+        "Теги данных",
+        "Новые адреса",
+        "Явный кэш",
+        "\"use cache\"",
+        "Кэш в браузере",
+        "Что не кэшировать"
+      ]
+    },
+    "api": {
+      "title": "API и прокси",
+      "items": [
+        "route.ts",
+        "route или page",
+        "Вебхуки",
+        "Когда свой API не нужен",
+        "proxy.ts",
+        "matcher",
+        "redirect и rewrite",
+        "Лёгкая проверка",
+        "cookies()",
+        "headers()",
+        "Переменные окружения",
+        "NEXT_PUBLIC_"
+      ]
+    },
+    "ui": {
+      "title": "Стили, медиа и метаданные",
+      "items": [
+        "Глобальный CSS",
+        "CSS-модули",
+        "Tailwind CSS",
+        "Тёмная тема",
+        "next/image",
+        "priority",
+        "Чужие картинки",
+        "next/font",
+        "metadata",
+        "generateMetadata",
+        "sitemap и robots",
+        "Шаблон заголовка"
+      ]
+    },
+    "auth": {
+      "title": "База данных и вход",
+      "items": [
+        "ORM",
+        "Запрос из компонента",
+        "Один клиент",
+        "Миграции",
+        "Сессия",
+        "Готовые решения",
+        "Пароли",
+        "Текущий пользователь",
+        "Кто и что",
+        "Проверка у данных",
+        "Роли",
+        "Скрыть — не защитить"
+      ]
+    },
+    "quality": {
+      "title": "Ошибки, скорость и тесты",
+      "items": [
+        "error.tsx",
+        "not-found.tsx",
+        "global-error.tsx",
+        "Детали — в логи",
+        "Core Web Vitals",
+        "Меньше клиента",
+        "Динамический импорт",
+        "Анализ бандла",
+        "next/script",
+        "Пирамида тестов",
+        "Vitest и Testing Library",
+        "Слой данных и действия",
+        "Playwright"
+      ]
+    },
+    "deploy": {
+      "title": "Выпуск приложения",
+      "items": [
+        "Из git",
+        "Превью",
+        "Секреты окружений",
+        "Домен",
+        "next start",
+        "standalone",
+        "Dockerfile",
+        "Статический экспорт",
+        "Несколько экземпляров",
+        "Безопасность",
+        "Заголовки безопасности",
+        "Мониторинг",
+        "Что дальше"
+      ]
+    }
+  }
+}

@@ -8273,6 +8273,471 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "next",
+      "name": "Next.js",
+      "role": "Архитектор React",
+      "summary": "Полноценные приложения на React: App Router, маршруты и макеты, серверные и клиентские компоненты, данные и потоковая отрисовка, формы и Server Actions, рендеринг и кэш, API и прокси, стили, картинки и метаданные, база данных и вход, ошибки, скорость и тесты, выпуск на платформу и свой сервер.",
+      "accent": "rose",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Основы",
+          "branches": [
+            "next-1",
+            "next-2"
+          ]
+        },
+        {
+          "title": "Компоненты",
+          "branches": [
+            "next-3"
+          ]
+        },
+        {
+          "title": "Данные",
+          "branches": [
+            "next-4",
+            "next-5"
+          ]
+        },
+        {
+          "title": "Рендеринг",
+          "branches": [
+            "next-6"
+          ]
+        },
+        {
+          "title": "Сервер",
+          "branches": [
+            "next-7",
+            "next-9"
+          ]
+        },
+        {
+          "title": "Интерфейс",
+          "branches": [
+            "next-8"
+          ]
+        },
+        {
+          "title": "Выпуск",
+          "branches": [
+            "next-10",
+            "next-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "next-1",
+          "title": "Старт Next.js",
+          "depth": "practice",
+          "requires": [
+            "react-9"
+          ],
+          "skills": [
+            {
+              "key": "nx-why",
+              "title": "Что такое Next.js",
+              "lesson": {
+                "course": "next",
+                "slug": "why-next",
+                "title": "Что такое Next.js"
+              }
+            },
+            {
+              "key": "nx-create",
+              "title": "Создание проекта",
+              "lesson": {
+                "course": "next",
+                "slug": "create-app",
+                "title": "Новый проект"
+              }
+            },
+            {
+              "key": "nx-structure",
+              "title": "Структура проекта",
+              "lesson": {
+                "course": "next",
+                "slug": "project-structure",
+                "title": "Структура проекта"
+              }
+            }
+          ]
+        },
+        {
+          "id": "next-2",
+          "title": "Маршруты и макеты",
+          "depth": "practice",
+          "requires": [
+            "next-1"
+          ],
+          "skills": [
+            {
+              "key": "nx-routes",
+              "title": "Маршруты",
+              "lesson": {
+                "course": "next",
+                "slug": "file-routes",
+                "title": "Маршруты из папок"
+              }
+            },
+            {
+              "key": "nx-layouts",
+              "title": "Макеты",
+              "lesson": {
+                "course": "next",
+                "slug": "layouts",
+                "title": "Макеты и шаблоны"
+              }
+            },
+            {
+              "key": "nx-dynamic",
+              "title": "Динамические маршруты",
+              "lesson": {
+                "course": "next",
+                "slug": "dynamic-routes",
+                "title": "Динамические маршруты"
+              }
+            }
+          ]
+        },
+        {
+          "id": "next-3",
+          "title": "Серверные и клиентские компоненты",
+          "depth": "practice",
+          "requires": [
+            "next-2"
+          ],
+          "skills": [
+            {
+              "key": "nx-rsc",
+              "title": "Серверные компоненты",
+              "lesson": {
+                "course": "next",
+                "slug": "server-components",
+                "title": "Серверные компоненты"
+              }
+            },
+            {
+              "key": "nx-client",
+              "title": "Клиентские компоненты",
+              "lesson": {
+                "course": "next",
+                "slug": "client-components",
+                "title": "Клиентские компоненты"
+              }
+            },
+            {
+              "key": "nx-compose",
+              "title": "Композиция компонентов",
+              "lesson": {
+                "course": "next",
+                "slug": "composition",
+                "title": "Сочетание компонентов"
+              }
+            }
+          ]
+        },
+        {
+          "id": "next-4",
+          "title": "Получение данных",
+          "depth": "practice",
+          "requires": [
+            "next-3"
+          ],
+          "skills": [
+            {
+              "key": "nx-fetch",
+              "title": "Получение данных",
+              "lesson": {
+                "course": "next",
+                "slug": "fetch-data",
+                "title": "Данные на сервере"
+              }
+            },
+            {
+              "key": "nx-streaming",
+              "title": "Потоковая отрисовка",
+              "lesson": {
+                "course": "next",
+                "slug": "streaming",
+                "title": "Потоковая отрисовка"
+              }
+            },
+            {
+              "key": "nx-clientdata",
+              "title": "Данные на клиенте",
+              "lesson": {
+                "course": "next",
+                "slug": "client-data",
+                "title": "Данные в браузере"
+              }
+            }
+          ]
+        },
+        {
+          "id": "next-5",
+          "title": "Формы и Server Actions",
+          "depth": "practice",
+          "requires": [
+            "next-4"
+          ],
+          "skills": [
+            {
+              "key": "nx-actions",
+              "title": "Server Actions",
+              "lesson": {
+                "course": "next",
+                "slug": "server-actions",
+                "title": "Server Actions"
+              }
+            },
+            {
+              "key": "nx-validate",
+              "title": "Проверка форм",
+              "lesson": {
+                "course": "next",
+                "slug": "validation",
+                "title": "Проверка данных"
+              }
+            },
+            {
+              "key": "nx-optimistic",
+              "title": "Отзывчивые формы",
+              "lesson": {
+                "course": "next",
+                "slug": "pending-optimistic",
+                "title": "Отклик интерфейса"
+              }
+            }
+          ]
+        },
+        {
+          "id": "next-6",
+          "title": "Рендеринг и кэш",
+          "depth": "practice",
+          "requires": [
+            "next-5"
+          ],
+          "skills": [
+            {
+              "key": "nx-render",
+              "title": "Виды рендеринга",
+              "lesson": {
+                "course": "next",
+                "slug": "static-dynamic",
+                "title": "Статика и динамика"
+              }
+            },
+            {
+              "key": "nx-revalidate",
+              "title": "Обновление данных",
+              "lesson": {
+                "course": "next",
+                "slug": "revalidation",
+                "title": "Обновление статики"
+              }
+            },
+            {
+              "key": "nx-cache",
+              "title": "Кэширование",
+              "lesson": {
+                "course": "next",
+                "slug": "caching",
+                "title": "Модель кэширования"
+              }
+            }
+          ]
+        },
+        {
+          "id": "next-7",
+          "title": "API и прокси",
+          "depth": "practice",
+          "requires": [
+            "next-6"
+          ],
+          "skills": [
+            {
+              "key": "nx-route",
+              "title": "Обработчики маршрутов",
+              "lesson": {
+                "course": "next",
+                "slug": "route-handlers",
+                "title": "Обработчики маршрутов"
+              }
+            },
+            {
+              "key": "nx-proxy",
+              "title": "Прокси",
+              "lesson": {
+                "course": "next",
+                "slug": "proxy",
+                "title": "Прокси перед маршрутами"
+              }
+            },
+            {
+              "key": "nx-env",
+              "title": "Cookies и окружение",
+              "lesson": {
+                "course": "next",
+                "slug": "cookies-headers",
+                "title": "Cookies, заголовки и окружение"
+              }
+            }
+          ]
+        },
+        {
+          "id": "next-8",
+          "title": "Стили, медиа и метаданные",
+          "depth": "practice",
+          "requires": [
+            "next-7"
+          ],
+          "skills": [
+            {
+              "key": "nx-styles",
+              "title": "Стили",
+              "lesson": {
+                "course": "next",
+                "slug": "styling",
+                "title": "Стили"
+              }
+            },
+            {
+              "key": "nx-media",
+              "title": "Картинки и шрифты",
+              "lesson": {
+                "course": "next",
+                "slug": "image-font",
+                "title": "Картинки и шрифты"
+              }
+            },
+            {
+              "key": "nx-seo",
+              "title": "Метаданные",
+              "lesson": {
+                "course": "next",
+                "slug": "metadata",
+                "title": "Метаданные и поисковики"
+              }
+            }
+          ]
+        },
+        {
+          "id": "next-9",
+          "title": "База данных и вход",
+          "depth": "practice",
+          "requires": [
+            "next-8"
+          ],
+          "skills": [
+            {
+              "key": "nx-db",
+              "title": "База данных",
+              "lesson": {
+                "course": "next",
+                "slug": "database",
+                "title": "База данных"
+              }
+            },
+            {
+              "key": "nx-auth",
+              "title": "Аутентификация",
+              "lesson": {
+                "course": "next",
+                "slug": "authentication",
+                "title": "Вход пользователей"
+              }
+            },
+            {
+              "key": "nx-authz",
+              "title": "Авторизация",
+              "lesson": {
+                "course": "next",
+                "slug": "authorization",
+                "title": "Права доступа"
+              }
+            }
+          ]
+        },
+        {
+          "id": "next-10",
+          "title": "Ошибки, скорость и тесты",
+          "depth": "practice",
+          "requires": [
+            "next-9"
+          ],
+          "skills": [
+            {
+              "key": "nx-errors",
+              "title": "Обработка ошибок",
+              "lesson": {
+                "course": "next",
+                "slug": "error-pages",
+                "title": "Ошибки и 404"
+              }
+            },
+            {
+              "key": "nx-perf",
+              "title": "Производительность",
+              "lesson": {
+                "course": "next",
+                "slug": "performance",
+                "title": "Скорость"
+              }
+            },
+            {
+              "key": "nx-testing",
+              "title": "Тестирование",
+              "lesson": {
+                "course": "next",
+                "slug": "testing",
+                "title": "Тесты"
+              }
+            }
+          ]
+        },
+        {
+          "id": "next-11",
+          "title": "Выпуск приложения",
+          "depth": "practice",
+          "requires": [
+            "next-10"
+          ],
+          "skills": [
+            {
+              "key": "nx-hosting",
+              "title": "Выпуск на платформу",
+              "lesson": {
+                "course": "next",
+                "slug": "hosting",
+                "title": "Выпуск на платформу"
+              }
+            },
+            {
+              "key": "nx-selfhost",
+              "title": "Свой сервер",
+              "lesson": {
+                "course": "next",
+                "slug": "self-host",
+                "title": "Свой сервер"
+              }
+            },
+            {
+              "key": "nx-prod",
+              "title": "Боевой запуск",
+              "lesson": {
+                "course": "next",
+                "slug": "production",
+                "title": "Готовность к запуску"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
