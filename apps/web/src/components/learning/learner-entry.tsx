@@ -6,7 +6,11 @@ import { useApiResource } from "../../lib/hooks/api-resource";
 import Link from "next/link";
 import { browserApiRequest } from "../../lib/public-api";
 import { learningLoginUrl } from "../../lib/learning-return-to";
-import { courseUrl, lessonUrl } from "../../lib/public-learning-routes";
+import {
+  courseUrl,
+  lessonUrl,
+  organizationName
+} from "../../lib/public-learning-routes";
 import { CourseProgress } from "./course-progress";
 import { CourseSkills } from "./course-skills";
 import {
@@ -206,8 +210,9 @@ export function LearnerEntry({
                   <>
                     <p>
                       Курс бесплатный. Нажимая кнопку, вы вступаете в
-                      организацию «{learning.organization.name}» и записываетесь
-                      на курс, чтобы сохранять результаты практики.
+                      организацию «{organizationName(learning.organization)}» и
+                      записываетесь на курс, чтобы сохранять результаты
+                      практики.
                     </p>
                     <Button loading={busy} onClick={() => void action("start")}>
                       Начать курс
@@ -216,7 +221,7 @@ export function LearnerEntry({
                 ) : (
                   <p>
                     Самостоятельное вступление закрыто. Обратитесь в организацию
-                    «{learning.organization.name}» за приглашением.
+                    «{organizationName(learning.organization)}» за приглашением.
                   </p>
                 )
               ) : learning.entry.membershipStatus !== "active" ? (

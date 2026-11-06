@@ -34,3 +34,13 @@ export function courseAddress(course: CourseAddress): CourseAddress {
     course: { slug: course.course.slug }
   };
 }
+
+/**
+ * The name shown for an organization. The home organization is this site itself, so it carries
+ * the brand name whatever display name its database row was created with.
+ */
+export function organizationName(organization: { slug: string; name: string }) {
+  return organization.slug === HOME_ORGANIZATION_SLUG
+    ? brand.name
+    : organization.name;
+}

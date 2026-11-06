@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // One-command launch of a course on a deployed Nexus (operator use only).
 //
-//   node scripts/launch-course.mjs [manifest] [--origin https://…] [--org-slug nexus] [--org-name Nexus]
+//   node scripts/launch-course.mjs [manifest] [--origin https://…] [--org-slug nexus] [--org-name "<brand name>"]
 //
 // Steps, all idempotent (safe to re-run):
 //   1. apply ordered migrations with the local platform_migrator checkpoint;
@@ -17,6 +17,10 @@ import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { createInterface } from "node:readline";
 
+const brand = JSON.parse(
+  readFileSync(new URL("../packages/brand/brand.json", import.meta.url), "utf8")
+);
+
 const args = process.argv.slice(2);
 const flag = (name, fallback) => {
   const i = args.indexOf(name);
@@ -27,7 +31,7 @@ const ORIGIN = flag("--origin", "https://www.dorkin.academy").replace(
   ""
 );
 const ORG_SLUG = flag("--org-slug", "nexus");
-const ORG_NAME = flag("--org-name", "Nexus");
+const ORG_NAME = flag("--org-name", brand.name);
 const OFFERING_SLUG = flag("--offering-slug", null);
 // --new-version publishes the manifest as the next version of an already published course and
 // moves the existing public Offering forward to it (ADR-0062), keeping learners' Enrollments and
