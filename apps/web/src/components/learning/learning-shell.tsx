@@ -82,7 +82,6 @@ export function LearningShell({
             <div>
               <span>Проект</span>
               <Link href="/blog">Блог</Link>
-              <Link href="/studio">Для авторов</Link>
               <FeedbackLauncher
                 label="Сообщить о проблеме"
                 variant="ghost"
