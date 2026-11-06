@@ -1,0 +1,184 @@
+{
+  "note": "Every item is taught by its own concept card; the contracts test keeps the index and the cards in sync.",
+  "source": "Course design by chapter (branches of the character).",
+  "topics": {
+    "start": {
+      "title": "Старт TypeScript",
+      "items": [
+        "TypeScript",
+        "Статическая типизация",
+        "Надмножество JavaScript",
+        "Типы стираются",
+        "npm install -D typescript",
+        "tsc --init",
+        "tsc --noEmit",
+        "TypeScript в Node.js",
+        "Подсказки по типам",
+        "Переход и переименование",
+        "Сообщение об ошибке",
+        "Код ошибки"
+      ]
+    },
+    "basics": {
+      "title": "Базовые типы",
+      "items": [
+        "Аннотация типа",
+        "Примитивные типы",
+        "Вывод типов",
+        "Литеральный тип",
+        "Массив",
+        "readonly-массив",
+        "Кортеж",
+        "any",
+        "unknown",
+        "never",
+        "void"
+      ]
+    },
+    "objects": {
+      "title": "Объекты и интерфейсы",
+      "items": [
+        "Тип объекта",
+        "type",
+        "interface",
+        "type или interface",
+        "Проверка лишних полей",
+        "Необязательное поле",
+        "?. и ??",
+        "readonly-поле",
+        "Неявный undefined",
+        "extends",
+        "Пересечение &",
+        "Индексная сигнатура",
+        "Record"
+      ]
+    },
+    "functions": {
+      "title": "Функции",
+      "items": [
+        "Параметры и результат",
+        "Необязательный параметр",
+        "Значение по умолчанию",
+        "Rest-параметры",
+        "Тип функции",
+        "Контекстная типизация",
+        "void в колбэке",
+        "Обработчик события DOM",
+        "Promise<T>",
+        "Забытый await",
+        "Перегрузки"
+      ]
+    },
+    "unions": {
+      "title": "Объединения и сужение",
+      "items": [
+        "Объединение",
+        "Сужение через typeof",
+        "in и instanceof",
+        "Функция-проверка",
+        "Поле-метка",
+        "switch по метке",
+        "Невозможные состояния",
+        "never в default",
+        "satisfies never",
+        "Объединения против enum"
+      ]
+    },
+    "generics": {
+      "title": "Дженерики",
+      "items": [
+        "Параметр типа",
+        "Дженерик против any",
+        "Явный аргумент типа",
+        "T extends",
+        "K extends keyof T",
+        "Тип по умолчанию",
+        "Обобщённый тип",
+        "Пагинация",
+        "Встроенные дженерики"
+      ]
+    },
+    "utility": {
+      "title": "Утилитные типы",
+      "items": [
+        "Partial<T>",
+        "Required<T>",
+        "Pick<T, K>",
+        "Omit<T, K>",
+        "Один источник правды",
+        "Readonly<T>",
+        "Exclude<T, U>",
+        "Extract<T, U>",
+        "NonNullable<T>",
+        "ReturnType<T>",
+        "Parameters<T>",
+        "Awaited<T>"
+      ]
+    },
+    "type-ops": {
+      "title": "Типы из типов",
+      "items": [
+        "keyof",
+        "typeof в типе",
+        "Доступ по индексу",
+        "as const",
+        "Отображённый тип",
+        "Модификаторы",
+        "Условный тип",
+        "infer",
+        "Шаблонный тип",
+        "Имена событий",
+        "Встроенные строковые утилиты"
+      ]
+    },
+    "classes": {
+      "title": "Классы, модули и декларации",
+      "items": [
+        "Поля класса",
+        "Модификаторы доступа",
+        "implements",
+        "abstract",
+        "Экспорт типов",
+        "import type",
+        "Псевдонимы путей",
+        "namespace",
+        "Файл .d.ts",
+        "@types",
+        "declare module",
+        "declare global"
+      ]
+    },
+    "project": {
+      "title": "TypeScript в проекте",
+      "items": [
+        "target и lib",
+        "module и moduleResolution",
+        "include и exclude",
+        "extends в tsconfig",
+        "strict",
+        "noUncheckedIndexedAccess",
+        "noImplicitAny",
+        "Включать постепенно",
+        "allowJs и checkJs",
+        "JSDoc-типы",
+        "typescript-eslint",
+        "@ts-expect-error"
+      ]
+    },
+    "practice": {
+      "title": "TypeScript на практике",
+      "items": [
+        "Граница доверия",
+        "Схема проверки",
+        "safeParse",
+        "Один тип на клиенте и сервере",
+        "querySelector и null",
+        "Конкретный тип элемента",
+        "События форм",
+        "satisfies",
+        "Тип-метка",
+        "Типы как документация"
+      ]
+    }
+  }
+}
