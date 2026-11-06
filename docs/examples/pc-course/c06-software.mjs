@@ -14,8 +14,8 @@ export default function software(c, rc) {
       idea("Магазин приложений", "Microsoft Store, App Store", "Встроенный в систему каталог проверенных программ. Установка и обновление в один клик, программы работают в более строгой изоляции.", "Самый безопасный способ для обычных программ: магазин проверяет приложения и сам их обновляет."),
       idea("Пакетный менеджер", "Установка одной командой", "Программа, которая ставит другие программы из проверенного каталога командой в терминале: `winget install` в Windows, `brew install` (Homebrew) в macOS, `apt install` в Ubuntu и Debian. Она сама скачивает нужную версию, зависимости и умеет обновлять всё разом.", "Разработчики ставят инструменты именно так: быстро, повторяемо и без поиска установщиков по сайтам.", "winget install Git.Git\nbrew install git\nsudo apt install git"),
       demo({ kind: "typing", title: "Установка одной командой", file: "Терминал", scenes: [
-        { input: "brew install node", key: "Enter", output: "==> Downloading node...\n==> Installing node\n🍺  node is installed", caption: "macOS: Homebrew скачал, проверил и установил программу" },
-        { input: "winget install OpenJS.NodeJS", key: "Enter", output: "Найдено Node.js [OpenJS.NodeJS]\nУспешно установлено", caption: "Windows: то же самое делает winget" }
+        { input: "brew install node", key: "Enter", output: "$ brew install node\n==> Downloading node...\n==> Installing node\n🍺  node is installed", caption: "macOS: Homebrew скачал, проверил и установил программу" },
+        { input: "winget install OpenJS.NodeJS", key: "Enter", output: "$ winget install OpenJS.NodeJS\nНайдено Node.js [OpenJS.NodeJS]\nУспешно установлено", caption: "Windows: то же самое делает winget" }
       ] }),
       idea("Портативная программа", "Без установки", "Программа, которая работает прямо из своей папки: распаковал и запустил. Ничего не прописывает в систему, её можно носить на флешке.", "Удобно для разовых утилит. Но такие программы не обновляются сами — следить за версией придётся вручную."),
       idea("Удаление программы", "Деинсталляция", "Windows — Параметры → Приложения → Установленные приложения → Удалить. macOS — перетащить программу из Программ в Корзину (или её собственный деинсталлятор). Пакетный менеджер: `winget uninstall`, `brew uninstall`, `apt remove`.", "Простое удаление ярлыка ничего не удаляет. Неиспользуемые программы лучше удалять полностью: они занимают место и могут содержать уязвимости."),
@@ -72,9 +72,9 @@ export default function software(c, rc) {
       idea("Папка проектов", "Одно место для кода", "Заведи в домашней папке отдельную папку для кода, например `~/projects`, и держи каждый проект в своей подпапке с именем латиницей без пробелов.", "Так проекты легко найти из терминала, их не путает синхронизация рабочего стола, а резервная копия забирает всё сразу."),
       idea("Расширения редактора", "Помощники внутри VS Code", "Редактор расширяется дополнениями из встроенного каталога: Prettier выравнивает код при сохранении, ESLint показывает ошибки в JavaScript, Live Server открывает страницу и обновляет её после каждого сохранения. Ставь их из каталога самого редактора.", "Несколько проверенных расширений делают работу заметно быстрее. Десятки случайных — замедляют редактор и могут быть небезопасны."),
       demo({ kind: "typing", title: "Проверяем, что всё установилось", file: "Терминал", scenes: [
-        { input: "git --version", key: "Enter", output: "git version 2.47.0", caption: "Git на месте" },
-        { input: "node -v", key: "Enter", output: "v22.11.0", caption: "Node.js установлен, это LTS-версия" },
-        { input: "npm -v", key: "Enter", output: "10.9.0", caption: "npm приходит вместе с Node.js" }
+        { input: "git --version", key: "Enter", output: "$ git --version\ngit version 2.47.0", caption: "Git на месте" },
+        { input: "node -v", key: "Enter", output: "$ node -v\nv22.11.0", caption: "Node.js установлен, это LTS-версия" },
+        { input: "npm -v", key: "Enter", output: "$ npm -v\n10.9.0", caption: "npm приходит вместе с Node.js" }
       ] }),
       tip("Редактор кода, два браузера, терминал, Git и папка `~/projects` — этого достаточно, чтобы начать.")
     ],

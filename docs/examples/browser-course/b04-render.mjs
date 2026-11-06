@@ -190,9 +190,9 @@ export function devtools(c, rc) {
       js("console.log()", "Напечатать в консоль", "Выводит значения в консоль. Есть и другие методы: `console.warn` и `console.error` — сообщения уровня предупреждения и ошибки, `console.table` — массив объектов таблицей.", "Самый простой способ узнать, дошёл ли код до нужного места и что лежит в переменной.", "console.log(\"Привет из консоли\", 2 + 2);\nconsole.warn(\"Это предупреждение\");\nconsole.table([{ name: \"Анна\", age: 30 }, { name: \"Борис\", age: 25 }]);", { show: 120 }),
       idea("Выполнение кода в консоли", "Проверить прямо на странице", "Введи выражение и нажми Enter — консоль сразу покажет результат: `document.title`, `document.querySelectorAll(\"img\").length`, `location.href`. Стрелка вверх возвращает предыдущие команды, Shift+Enter — новая строка.", "Так быстро проверяют гипотезы: сколько картинок на странице, какой у элемента класс, что вернёт функция."),
       demo({ kind: "typing", title: "Консоль отвечает на каждую строку", file: "Консоль", scenes: [
-        { input: "document.title", key: "Enter", output: "\"Каталог — Магазин\"", caption: "Заголовок текущей страницы" },
-        { input: "location.hostname", key: "Enter", output: "\"shop.example.com\"", caption: "Хост из адресной строки" },
-        { input: "document.querySelectorAll(\"a\").length", key: "Enter", output: "42", caption: "Сколько ссылок на странице" }
+        { input: "document.title", key: "Enter", output: "> document.title\n\"Каталог — Магазин\"", caption: "Заголовок текущей страницы" },
+        { input: "location.hostname", key: "Enter", output: "> location.hostname\n\"shop.example.com\"", caption: "Хост из адресной строки" },
+        { input: "document.querySelectorAll(\"a\").length", key: "Enter", output: "> document.querySelectorAll(\"a\").length\n42", caption: "Сколько ссылок на странице" }
       ] }),
       idea("$0", "Выбранный элемент", "В консоли `$0` — элемент, выбранный сейчас на панели Elements, `$1` — выбранный перед ним. `$(\"селектор\")` и `$$(\"селектор\")` — быстрые аналоги `querySelector` и `querySelectorAll` (работают только в консоли).", "Выбрал элемент мышью — и сразу работаешь с ним из кода: `$0.textContent`, `$0.getBoundingClientRect()`."),
       idea("Фильтр и сохранение журнала", "Не потерять сообщение", "Поле фильтра оставляет только сообщения с нужным текстом. Флажок Preserve log сохраняет сообщения при переходе на другую страницу или перезагрузке.", "Без Preserve log ошибка, случившаяся прямо перед переходом, пропадает, и её не успеть прочитать."),
