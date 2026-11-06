@@ -15,6 +15,7 @@ import { parseConcept, parseRecap, parseStory } from "./story";
 import { needsModule } from "./js-runner";
 import { runInWindow } from "./runner-harness.test-utils";
 import { runSqlJob } from "./sql/sql-engine";
+import { parseVisual } from "./visuals/model";
 import { openTestDatabase } from "./sql/sql-test-db.test-utils";
 
 type Manifest = {
@@ -218,6 +219,67 @@ for (const [name, manifest] of courses) {
           .map((l) => l.slug)
       ).toEqual([]);
     });
+  });
+}
+
+// Card courses without scenes or hands-on tasks (characters spec 6.1): ПК and Браузер.
+for (const [name, file] of [
+  ["ПК", "docs/examples/pc-track.manifest.json"],
+  ["Браузер", "docs/examples/browser-track.manifest.json"]
+] as const) {
+  const manifest = JSON.parse(readFileSync(file, "utf8")) as Manifest;
+  const blocks = (lang: string) =>
+    manifest.lessons.flatMap((lesson) =>
+      lesson.blocks.flatMap((block) =>
+        [
+          ...(block.markdown ?? "").matchAll(
+            new RegExp("```" + lang + "\\n([\\s\\S]*?)\\n```", "g")
+          )
+        ].map((m) => ({ lesson: lesson.slug, source: m[1]! }))
+      )
+    );
+
+  describe(`${name} course blocks`, () => {
+    it("every card, diagram and recap is valid, so none falls back to raw JSON", () => {
+      for (const [lang, parse] of [
+        ["concept", parseConcept],
+        ["diagram", parseVisual],
+        ["recap", parseRecap]
+      ] as const)
+        expect(
+          blocks(lang)
+            .filter((b) => !parse(b.source))
+            .map((b) => b.lesson),
+          lang
+        ).toEqual([]);
+      expect(blocks("recap").map((b) => b.lesson)).toEqual(
+        manifest.lessons.map((l) => l.slug)
+      );
+    });
+
+    const examples = blocks("concept")
+      .map((b) => ({ lesson: b.lesson, concept: parseConcept(b.source) }))
+      .filter((e) => e.concept?.lang === "js" && e.concept.show);
+    it.each(
+      examples.map(
+        (e) => [`${e.lesson}: ${e.concept!.name}`, e.concept!] as const
+      )
+    )(
+      "%s runs and prints without errors",
+      async (_, concept) => {
+        const { logs } = await runInWindow({
+          code: concept.how!,
+          lang: "js",
+          checks: [{ js: "await wait(300) || true" }]
+        });
+        expect(
+          logs.filter((l) => l.level === "error"),
+          concept.how
+        ).toEqual([]);
+        expect(logs.length, concept.how).toBeGreaterThan(0);
+      },
+      15000
+    );
   });
 }
 

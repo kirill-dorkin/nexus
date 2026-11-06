@@ -10,37 +10,40 @@ export const characters = [
   {
     slug: "pc",
     depth: {},
-    abilities: [{ title: "Устройство компьютера", branches: ["Устройство компьютера"] }],
+    abilities: [
+      { title: "Железо", branches: ["Железо"] },
+      { title: "Данные в двоичном виде", branches: ["Двоичный мир и данные"] },
+      { title: "Файлы и пути", branches: ["Файлы", "Папки, пути и файловые системы"] },
+      { title: "Система и процессы", branches: ["Операционная система", "Установка программ"] },
+      { title: "Командная строка", branches: ["Клавиатура и сочетания клавиш", "Командная строка"] },
+      { title: "Безопасность", branches: ["Домашняя сеть", "Безопасность"] },
+      { title: "Диагностика", branches: ["Диагностика"] }
+    ],
     name: "ПК",
     role: "Знаток компьютера",
     summary:
-      "Как устроен компьютер: детали, память и файлы, загрузка системы и путь от клика до результата.",
+      "Компьютер целиком: железо и двоичные данные, файлы и пути, операционная система и процессы, программы, клавиатура, командная строка, домашняя сеть, безопасность и диагностика.",
     accent: "rose",
-    sources: [
-      {
-        manifest: "computer-basics-first-course.manifest.json",
-        published: false,
-        branch: "Устройство компьютера"
-      }
-    ]
+    sources: [{ manifest: "pc-track.manifest.json", published: false }]
   },
   {
     slug: "browser",
     depth: {},
-    abilities: [{ title: "Как работает веб", branches: ["Как работает веб"] }],
+    abilities: [
+      { title: "Адреса", branches: ["Что такое браузер", "Адрес страницы", "DNS"] },
+      { title: "HTTP", branches: ["HTTP и HTTPS", "Запросы и ответы", "Коды ответа"] },
+      { title: "Кэш и хранилища", branches: ["Кэширование", "Cookies и хранилища", "Вкладки и история"] },
+      { title: "Безопасность", branches: ["Расширения", "Приватность и безопасность"] },
+      { title: "Отрисовка", branches: ["Как браузер рисует страницу"] },
+      { title: "DevTools", branches: ["Инструменты разработчика"] },
+      { title: "Доступность", branches: ["Дерево доступности", "Адаптивный режим"] }
+    ],
     name: "Браузер",
     role: "Проводник по вебу",
     summary:
-      "Что происходит между адресной строкой и готовой страницей, и какими инструментами пользуется веб-разработчик.",
+      "Путь от адреса до страницы: URL и DNS, HTTP и HTTPS, коды ответа, кэш, cookies и хранилища, безопасность, отрисовка, все панели DevTools, дерево доступности и адаптивный режим.",
     accent: "blue",
-    sources: [
-      {
-        manifest: "html-track.manifest.json",
-        published: true,
-        skills: ["web-how-it-works", "web-tools"],
-        branch: "Как работает веб"
-      }
-    ]
+    sources: [{ manifest: "browser-track.manifest.json", published: false }]
   },
   {
     slug: "html",
@@ -186,8 +189,10 @@ export const characters = [
 // Branch → branches whose skills must be at least `unlockShare` active before its skills can be
 // confirmed ("character/branch title").
 // Inside a character every branch also requires the previous one.
+// A requirement on an unpublished character does not lock a published one (skill-map.ts).
 export const requires = {
-  "html/Старт": ["browser/Как работает веб"],
+  "html/Старт": ["browser/Адрес страницы"],
+  "browser/DNS": ["pc/Домашняя сеть"],
   "html/HTML и JavaScript": ["js/Старт JavaScript"],
   "css/Старт CSS": ["html/Основы HTML"],
   "js/Старт JavaScript": ["html/Основы HTML", "css/Старт CSS"],
