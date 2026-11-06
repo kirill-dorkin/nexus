@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { emitLearningStep } from "../../lib/analytics/lesson-tracker";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { brand } from "@platform/brand";
@@ -159,6 +160,9 @@ export function SignupNudge({ returnTo }: { returnTo: string }) {
         <Link
           className={styles.primary}
           href={`${learningLoginUrl(returnTo)}&mode=register`}
+          onClickCapture={() => {
+            emitLearningStep("signup_clicked");
+          }}
         >
           Создать аккаунт
         </Link>
@@ -182,7 +186,12 @@ export function SaveProgressHint() {
   return (
     <p className={styles.hint}>
       Решения хранятся только в этом браузере.{" "}
-      <Link href={`${learningLoginUrl(returnTo)}&mode=register`}>
+      <Link
+        href={`${learningLoginUrl(returnTo)}&mode=register`}
+        onClickCapture={() => {
+          emitLearningStep("signup_clicked");
+        }}
+      >
         Создай аккаунт
       </Link>
       , чтобы не потерять прогресс.

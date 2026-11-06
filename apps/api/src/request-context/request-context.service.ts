@@ -33,6 +33,11 @@ export class RequestContextService {
     return principal;
   }
 
+  /** The signed-in principal, if the request carries a valid session (public routes). */
+  optionalPrincipal(): PlatformPrincipal | null {
+    return this.request.platformPrincipal ?? null;
+  }
+
   tenantContext(organizationId: string): TenantRequestContext {
     if (organizationId.trim().length === 0) {
       throw new Error("organizationId is required for tenant request context.");
