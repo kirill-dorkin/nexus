@@ -2,6 +2,7 @@ import { render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { browserApiRequest } from "../../lib/public-api";
+import { findCharacter } from "../../lib/skill-map/skill-map";
 import { CharacterRoster } from "./character-roster";
 
 vi.mock("../../lib/public-api", () => ({
@@ -33,16 +34,15 @@ describe("character roster", () => {
   it("levels a character from confirmations and lists today's quests", async () => {
     api.mockResolvedValue(
       json({
-        skills: [
-          { skillKey: "web-how-it-works", confirmedDays: [today] },
-          { skillKey: "web-tools", confirmedDays: [today] }
-        ]
+        skills: findCharacter("html")!.branches.flatMap((b) =>
+          b.skills.map((s) => ({ skillKey: s.key, confirmedDays: [today] }))
+        )
       })
     );
     render(<CharacterRoster />);
     expect(
       await screen.findByRole("progressbar", {
-        name: "Браузер: уровень 100 из 100"
+        name: "HTML: уровень 100 из 100"
       })
     ).toBeTruthy();
     const daily = screen.getByRole("region", { name: "Сегодня" });
