@@ -750,6 +750,7 @@ async function navigate(cdp, url) {
 }
 
 async function tabUntil(cdp, expression, label, maxTabs = 16) {
+  const trail = [];
   for (let index = 0; index < maxTabs; index += 1) {
     await cdp.send("Input.dispatchKeyEvent", {
       type: "keyDown",
@@ -764,8 +765,16 @@ async function tabUntil(cdp, expression, label, maxTabs = 16) {
       windowsVirtualKeyCode: 9
     });
     if (await evaluate(cdp, expression)) return;
+    trail.push(
+      await evaluate(
+        cdp,
+        `(() => { const e = document.activeElement; if (!e || e === document.body) return "body"; const text = (e.getAttribute("aria-label") || e.textContent || e.getAttribute("name") || "").trim().slice(0, 30); return e.tagName.toLowerCase() + (e.type ? "[" + e.type + "]" : "") + (text ? " " + JSON.stringify(text) : ""); })()`
+      )
+    );
   }
-  throw new Error(`Keyboard focus never reached ${label}.`);
+  throw new Error(
+    `Keyboard focus never reached ${label}. Focus went: ${trail.join(" → ")}`
+  );
 }
 
 async function fill(cdp, selector, value) {
@@ -886,11 +895,30 @@ async function launchChrome(tempDirectory) {
     `[browser-launch] Chrome DevTools ready on port ${devtools.port} after ${Date.now() - startedAt} ms`
   );
 
-  const target = await fetch(
-    `http://127.0.0.1:${devtools.port}/json/new?about%3Ablank`,
-    { method: "PUT" }
-  ).then((response) => response.json());
+  const target = await openDevtoolsTarget(devtools.port);
   return CdpClient.connect(target.webSocketDebuggerUrl);
+}
+
+// A loaded CI runner can take well over the default fetch deadline to create Chrome's first tab
+// (seen 2026-11-06: DevTools ready after 19 s, then `/json/new` silent for 5 s). Give this one
+// call a longer deadline and a few attempts; every other request keeps the default deadline.
+async function openDevtoolsTarget(port, attempts = 3) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:${port}/json/new?about%3Ablank`,
+        { method: "PUT", deadlineMs: 15_000 }
+      );
+      return await response.json();
+    } catch (error) {
+      lastError = error;
+      console.error(
+        `[browser-launch] DevTools target attempt ${attempt}/${attempts} failed.`
+      );
+    }
+  }
+  throw lastError;
 }
 
 async function fillLabel(cdp, label, value, index = 0) {
