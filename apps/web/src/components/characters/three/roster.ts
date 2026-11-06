@@ -8,6 +8,7 @@ import { terminal } from "./terminal";
 import { git } from "./git";
 import { ts } from "./ts";
 import { node } from "./node";
+import { react } from "./react";
 import type { CharacterDef } from "./types";
 
 /** Characters that have a 3D body. The rest of the roster keeps its text card for now. */
@@ -21,7 +22,8 @@ export const CHARACTER_DEFS: readonly CharacterDef[] = [
   terminal,
   git,
   ts,
-  node
+  node,
+  react
 ];
 
 export const characterDef = (slug: string) =>

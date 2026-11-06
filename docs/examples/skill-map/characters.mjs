@@ -258,6 +258,25 @@ export const characters = [
       "JavaScript на сервере: процессы и модули, npm и версии, цикл событий и async/await, файлы и потоки, HTTP без фреймворков, Express и REST API, базы данных и защита от инъекций, конфигурация и аутентификация, тесты и отладка, журналы, масштабирование и развёртывание.",
     accent: "lime",
     sources: [{ manifest: "node-track.manifest.json", published: true }]
+  },
+  {
+    slug: "react",
+    depth: {},
+    abilities: [
+      { title: "Компоненты", branches: ["Старт React", "JSX и компоненты", "Props и композиция"] },
+      { title: "Состояние", branches: ["Состояние", "События и формы"] },
+      { title: "Интерфейс", branches: ["Списки и условия"] },
+      { title: "Данные", branches: ["Эффекты и данные", "Контекст и свои хуки"] },
+      { title: "Приложение", branches: ["Маршруты и структура приложения"] },
+      { title: "Скорость", branches: ["Производительность"] },
+      { title: "Качество", branches: ["Тесты и практика"] }
+    ],
+    name: "React",
+    role: "Сборщик интерфейсов",
+    summary:
+      "Интерфейсы из компонентов: JSX и компоненты, props и композиция, состояние и его правила, события и формы, списки и условия, эффекты и загрузка данных, контекст, редьюсеры и свои хуки, маршруты и структура приложения, производительность, тесты и доступность.",
+    accent: "blue",
+    sources: [{ manifest: "react-track.manifest.json", published: true }]
   }
 ];
 
@@ -276,7 +295,8 @@ export const requires = {
   "terminal/Оболочка": ["pc/Командная строка"],
   "git/Старт Git": ["terminal/Файловая система в терминале"],
   "ts/Старт TypeScript": ["js/Старт JavaScript"],
-  "node/Старт Node.js": ["js/Старт JavaScript"]
+  "node/Старт Node.js": ["js/Старт JavaScript"],
+  "react/Старт React": ["js/Старт JavaScript"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */

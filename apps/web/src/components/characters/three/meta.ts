@@ -13,7 +13,8 @@ export const BODY_UI = {
   terminal: ["#39ff6a", "#b6ffc8", "#15803d", "#052e16"],
   git: ["#f05032", "#ffb199", "#9a2c16", "#2a0d06"],
   ts: ["#3178c6", "#b3d4ff", "#1e3a8a", "#0a1830"],
-  node: ["#5fa04e", "#c7f2a8", "#2f6b22", "#0d1f0a"]
+  node: ["#5fa04e", "#c7f2a8", "#2f6b22", "#0d1f0a"],
+  react: ["#61dafb", "#c4f4ff", "#0e7490", "#06202a"]
 } as const satisfies Record<string, readonly [string, string, string, string]>;
 
 export type BodySlug = keyof typeof BODY_UI;

@@ -1,0 +1,4482 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "react",
+    "title": "React: интерфейсы из компонентов",
+    "description": "React от первого компонента до приложения. Зачем нужны компоненты и как React обновляет страницу, JSX, props и композиция, состояние и его правила, события и управляемые формы, списки и ключи, эффекты и загрузка данных, контекст и свои хуки, маршруты и структура приложения, производительность и мемоизация, тестирование компонентов и доступность. Каждое понятие объясняется карточкой с примером, каждый урок закрепляется вопросами."
+  },
+  "skills": [
+    {
+      "key": "react-why",
+      "title": "Зачем React",
+      "description": "Объяснять, какую задачу решает React."
+    },
+    {
+      "key": "react-setup",
+      "title": "Проект на React",
+      "description": "Создать проект на React и понимать его структуру."
+    },
+    {
+      "key": "react-devtools",
+      "title": "React DevTools",
+      "description": "Исследовать приложение через React Developer Tools."
+    },
+    {
+      "key": "react-jsx",
+      "title": "JSX",
+      "description": "Писать разметку в JSX и вставлять в неё выражения."
+    },
+    {
+      "key": "react-components",
+      "title": "Компоненты",
+      "description": "Создавать компоненты и собирать из них интерфейс."
+    },
+    {
+      "key": "react-styles",
+      "title": "Стили",
+      "description": "Выбирать способ стилизации компонентов."
+    },
+    {
+      "key": "react-props",
+      "title": "Props",
+      "description": "Передавать данные в компоненты через props."
+    },
+    {
+      "key": "react-children",
+      "title": "Композиция",
+      "description": "Собирать компоненты через children и слоты."
+    },
+    {
+      "key": "react-data-flow",
+      "title": "Поток данных",
+      "description": "Передавать данные вниз и события вверх."
+    },
+    {
+      "key": "react-usestate",
+      "title": "useState",
+      "description": "Хранить и менять состояние компонента через useState."
+    },
+    {
+      "key": "react-immutable",
+      "title": "Обновление состояния",
+      "description": "Обновлять объекты и массивы в состоянии без мутаций."
+    },
+    {
+      "key": "react-lifting",
+      "title": "Проектирование состояния",
+      "description": "Решать, где хранить состояние, и не дублировать его."
+    },
+    {
+      "key": "react-events",
+      "title": "События",
+      "description": "Обрабатывать события в компонентах."
+    },
+    {
+      "key": "react-controlled",
+      "title": "Управляемые поля",
+      "description": "Связывать поля формы с состоянием."
+    },
+    {
+      "key": "react-form-submit",
+      "title": "Отправка формы",
+      "description": "Отправлять формы с проверкой и понятными ошибками."
+    },
+    {
+      "key": "react-lists",
+      "title": "Списки",
+      "description": "Выводить списки с правильными ключами."
+    },
+    {
+      "key": "react-conditional",
+      "title": "Условный рендер",
+      "description": "Показывать разное содержимое в зависимости от условий."
+    },
+    {
+      "key": "react-ui-states",
+      "title": "Состояния экрана",
+      "description": "Показывать загрузку, ошибку, пустоту и данные."
+    },
+    {
+      "key": "react-effect",
+      "title": "useEffect",
+      "description": "Синхронизировать компонент с внешними системами через эффекты."
+    },
+    {
+      "key": "react-fetch",
+      "title": "Загрузка данных",
+      "description": "Загружать данные с сервера без гонок и лишних запросов."
+    },
+    {
+      "key": "react-refs",
+      "title": "useRef",
+      "description": "Обращаться к DOM-элементам и хранить значения без перерисовки."
+    },
+    {
+      "key": "react-context",
+      "title": "Контекст",
+      "description": "Передавать общие данные через контекст."
+    },
+    {
+      "key": "react-reducer",
+      "title": "useReducer",
+      "description": "Описывать сложные изменения состояния редьюсером."
+    },
+    {
+      "key": "react-custom-hooks",
+      "title": "Свои хуки",
+      "description": "Выносить повторяющуюся логику в собственные хуки."
+    },
+    {
+      "key": "react-router",
+      "title": "Маршруты",
+      "description": "Строить многостраничное приложение с маршрутизацией."
+    },
+    {
+      "key": "react-url-state",
+      "title": "Состояние в адресе",
+      "description": "Хранить фильтры и вкладки в адресе страницы."
+    },
+    {
+      "key": "react-structure",
+      "title": "Структура приложения",
+      "description": "Раскладывать код приложения так, чтобы его было легко развивать."
+    },
+    {
+      "key": "react-rerender",
+      "title": "Перерисовки",
+      "description": "Понимать причины перерисовок и уменьшать их без мемоизации."
+    },
+    {
+      "key": "react-memo",
+      "title": "Мемоизация",
+      "description": "Применять memo, useMemo и useCallback там, где это помогает."
+    },
+    {
+      "key": "react-lazy",
+      "title": "Ленивая загрузка",
+      "description": "Делить код на части и рисовать длинные списки быстро."
+    },
+    {
+      "key": "react-testing",
+      "title": "Тесты компонентов",
+      "description": "Писать тесты компонентов глазами пользователя."
+    },
+    {
+      "key": "react-a11y",
+      "title": "Доступность",
+      "description": "Делать React-интерфейсы доступными для клавиатуры и скринридеров."
+    },
+    {
+      "key": "react-project",
+      "title": "Проект на React",
+      "description": "Собирать приложение на React с TypeScript от плана до выкладки."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "wr-decl",
+      "type": "quiz.single_choice",
+      "title": "Декларативно",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-why"
+      ],
+      "presentation": {
+        "question": "Что значит «декларативный» подход React?",
+        "options": [
+          {
+            "id": "describe",
+            "text": "Описываешь, как интерфейс выглядит при текущих данных, а React сам обновляет DOM"
+          },
+          {
+            "id": "manual",
+            "text": "Вручную меняешь каждый элемент DOM"
+          },
+          {
+            "id": "css",
+            "text": "Пишешь только CSS"
+          },
+          {
+            "id": "server",
+            "text": "Всё делается на сервере"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "describe",
+        "explanation": "Ручные изменения DOM — императивный подход."
+      }
+    },
+    {
+      "slug": "wr-component",
+      "type": "quiz.single_choice",
+      "title": "Компонент",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-why"
+      ],
+      "presentation": {
+        "question": "Что такое компонент React?",
+        "options": [
+          {
+            "id": "fn",
+            "text": "Функция, которая получает данные и возвращает разметку"
+          },
+          {
+            "id": "file",
+            "text": "Любой файл CSS"
+          },
+          {
+            "id": "tag",
+            "text": "Встроенный HTML-тег"
+          },
+          {
+            "id": "server",
+            "text": "Сервер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fn",
+        "explanation": "Компоненты собираются друг из друга."
+      }
+    },
+    {
+      "slug": "wr-update",
+      "type": "quiz.single_choice",
+      "title": "Что меняется",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-why"
+      ],
+      "presentation": {
+        "question": "Что React меняет в DOM при обновлении данных?",
+        "options": [
+          {
+            "id": "diff",
+            "text": "Только то, что действительно изменилось"
+          },
+          {
+            "id": "all",
+            "text": "Всю страницу целиком"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего — нужна перезагрузка"
+          },
+          {
+            "id": "css",
+            "text": "Только стили"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "diff",
+        "explanation": "React сравнивает новое описание с прошлым."
+      }
+    },
+    {
+      "slug": "fp-root",
+      "type": "quiz.single_choice",
+      "title": "Корень",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-setup"
+      ],
+      "presentation": {
+        "question": "Что делает createRoot(...).render(`<App />`)?",
+        "options": [
+          {
+            "id": "mount",
+            "text": "Рисует приложение внутри указанного элемента страницы"
+          },
+          {
+            "id": "server",
+            "text": "Запускает сервер"
+          },
+          {
+            "id": "build",
+            "text": "Собирает проект"
+          },
+          {
+            "id": "test",
+            "text": "Запускает тесты"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mount",
+        "explanation": "Обычно это div с id root."
+      }
+    },
+    {
+      "slug": "fp-strict",
+      "type": "quiz.single_choice",
+      "title": "StrictMode",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-setup"
+      ],
+      "presentation": {
+        "question": "Почему в режиме разработки console.log в компоненте срабатывает дважды?",
+        "options": [
+          {
+            "id": "strict",
+            "text": "StrictMode специально вызывает компоненты дважды, чтобы найти побочные эффекты"
+          },
+          {
+            "id": "bug",
+            "text": "Это ошибка React"
+          },
+          {
+            "id": "browser",
+            "text": "Браузер дублирует логи"
+          },
+          {
+            "id": "prod",
+            "text": "Так будет и в продакшене"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "strict",
+        "explanation": "В продакшене двойного вызова нет."
+      }
+    },
+    {
+      "slug": "fp-vite",
+      "type": "quiz.single_choice",
+      "title": "Создать проект",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-setup"
+      ],
+      "presentation": {
+        "question": "Какой командой удобно создать учебный проект на React с TypeScript?",
+        "options": [
+          {
+            "id": "vite",
+            "text": "`npm create vite@latest my-app -- --template react-ts`"
+          },
+          {
+            "id": "init",
+            "text": "`npm init react`"
+          },
+          {
+            "id": "install",
+            "text": "`npm install react` в пустой папке"
+          },
+          {
+            "id": "git",
+            "text": "`git clone react`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "vite",
+        "explanation": "Vite настроит сборку и сервер разработки."
+      }
+    },
+    {
+      "slug": "dv-what",
+      "type": "quiz.single_choice",
+      "title": "Что показывает",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-devtools"
+      ],
+      "presentation": {
+        "question": "Что показывает вкладка Components в React Developer Tools?",
+        "options": [
+          {
+            "id": "tree",
+            "text": "Дерево компонентов с их props, state и хуками"
+          },
+          {
+            "id": "network",
+            "text": "Сетевые запросы"
+          },
+          {
+            "id": "css",
+            "text": "Только стили"
+          },
+          {
+            "id": "console",
+            "text": "Консоль"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "tree",
+        "explanation": "Это рентген приложения."
+      }
+    },
+    {
+      "slug": "dv-highlight",
+      "type": "quiz.single_choice",
+      "title": "Подсветка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-devtools"
+      ],
+      "presentation": {
+        "question": "Зачем включать подсветку рендеров?",
+        "options": [
+          {
+            "id": "rerender",
+            "text": "Чтобы увидеть, какие компоненты лишний раз перерисовываются"
+          },
+          {
+            "id": "style",
+            "text": "Для красоты"
+          },
+          {
+            "id": "debug",
+            "text": "Чтобы включить отладчик"
+          },
+          {
+            "id": "test",
+            "text": "Чтобы запустить тесты"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rerender",
+        "explanation": "Лишние рендеры — частая причина тормозов."
+      }
+    },
+    {
+      "slug": "dv-prof",
+      "type": "quiz.short_text",
+      "title": "Замер",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "react-devtools"
+      ],
+      "presentation": {
+        "question": "Как называется вкладка React DevTools для замера времени рендера?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "Profiler",
+          "профайлер"
+        ],
+        "caseSensitive": false,
+        "explanation": "Profiler записывает и показывает длительность рендеров."
+      }
+    },
+    {
+      "slug": "jx-class",
+      "type": "quiz.single_choice",
+      "title": "Класс",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-jsx"
+      ],
+      "presentation": {
+        "question": "Как задать CSS-класс элементу в JSX?",
+        "options": [
+          {
+            "id": "classname",
+            "text": "`className=\"card\"`"
+          },
+          {
+            "id": "class",
+            "text": "`class=\"card\"`"
+          },
+          {
+            "id": "css",
+            "text": "`css=\"card\"`"
+          },
+          {
+            "id": "style",
+            "text": "`style=\"card\"`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "classname",
+        "explanation": "class — зарезервированное слово JavaScript."
+      }
+    },
+    {
+      "slug": "jx-expr",
+      "type": "quiz.single_choice",
+      "title": "Выражение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-jsx"
+      ],
+      "presentation": {
+        "question": "Что можно написать внутри фигурных скобок в JSX?",
+        "options": [
+          {
+            "id": "expr",
+            "text": "Любое выражение: переменную, вызов, тернарный оператор"
+          },
+          {
+            "id": "if",
+            "text": "Инструкцию if"
+          },
+          {
+            "id": "for",
+            "text": "Цикл for"
+          },
+          {
+            "id": "import",
+            "text": "import"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "expr",
+        "explanation": "Инструкции не возвращают значение."
+      }
+    },
+    {
+      "slug": "jx-xss",
+      "type": "quiz.single_choice",
+      "title": "Безопасность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-jsx"
+      ],
+      "presentation": {
+        "question": "Что будет, если вывести в JSX строку `<script>alert(1)</script>` через `{text}`?",
+        "options": [
+          {
+            "id": "text",
+            "text": "Она отобразится как текст и не выполнится"
+          },
+          {
+            "id": "run",
+            "text": "Скрипт выполнится"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка сборки"
+          },
+          {
+            "id": "hidden",
+            "text": "Ничего не отобразится"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "text",
+        "explanation": "React экранирует вывод."
+      }
+    },
+    {
+      "slug": "cm-case",
+      "type": "quiz.single_choice",
+      "title": "Регистр",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-components"
+      ],
+      "presentation": {
+        "question": "Почему компонент называют CourseCard, а не courseCard?",
+        "options": [
+          {
+            "id": "upper",
+            "text": "С маленькой буквы React считает тег встроенным HTML"
+          },
+          {
+            "id": "style",
+            "text": "Так красивее"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "ts",
+            "text": "Так требует TypeScript"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "upper",
+        "explanation": "<courseCard> React попытается создать как HTML-элемент."
+      }
+    },
+    {
+      "slug": "cm-pure",
+      "type": "quiz.single_choice",
+      "title": "Чистота",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-components"
+      ],
+      "presentation": {
+        "question": "Что нельзя делать во время рендера компонента?",
+        "options": [
+          {
+            "id": "mutate",
+            "text": "Менять внешние переменные и делать запросы"
+          },
+          {
+            "id": "jsx",
+            "text": "Возвращать JSX"
+          },
+          {
+            "id": "props",
+            "text": "Читать props"
+          },
+          {
+            "id": "calc",
+            "text": "Считать значения из props"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mutate",
+        "explanation": "Побочные эффекты — в обработчики событий и эффекты."
+      }
+    },
+    {
+      "slug": "cm-tree",
+      "type": "quiz.single_choice",
+      "title": "Дерево",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-components"
+      ],
+      "presentation": {
+        "question": "Как устроено приложение на React?",
+        "options": [
+          {
+            "id": "tree",
+            "text": "Дерево компонентов, где одни используют другие"
+          },
+          {
+            "id": "list",
+            "text": "Плоский список файлов"
+          },
+          {
+            "id": "one",
+            "text": "Один огромный компонент"
+          },
+          {
+            "id": "html",
+            "text": "Набор HTML-страниц"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "tree",
+        "explanation": "Корень — App."
+      }
+    },
+    {
+      "slug": "sy-module",
+      "type": "quiz.single_choice",
+      "title": "Модули",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-styles"
+      ],
+      "presentation": {
+        "question": "Чем хороши CSS-модули?",
+        "options": [
+          {
+            "id": "unique",
+            "text": "Имена классов становятся уникальными, и стили компонентов не конфликтуют"
+          },
+          {
+            "id": "fast",
+            "text": "Ускоряют JavaScript"
+          },
+          {
+            "id": "inline",
+            "text": "Превращают стили в инлайн"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "unique",
+        "explanation": "Сборщик переименовывает классы."
+      }
+    },
+    {
+      "slug": "sy-inline",
+      "type": "quiz.single_choice",
+      "title": "style",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-styles"
+      ],
+      "presentation": {
+        "question": "Как правильно задать фон через атрибут style?",
+        "options": [
+          {
+            "id": "obj",
+            "text": "`style={{ backgroundColor: \"red\" }}`"
+          },
+          {
+            "id": "str",
+            "text": "`style=\"background-color: red\"`"
+          },
+          {
+            "id": "kebab",
+            "text": "`style={{ \"background-color\": \"red\" }}`"
+          },
+          {
+            "id": "css",
+            "text": "`css={{ bg: \"red\" }}`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "obj",
+        "explanation": "Объект с camelCase-свойствами."
+      }
+    },
+    {
+      "slug": "sy-cond",
+      "type": "quiz.single_choice",
+      "title": "Условный класс",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-styles"
+      ],
+      "presentation": {
+        "question": "Как добавить класс active только когда isActive истинно?",
+        "options": [
+          {
+            "id": "ternary",
+            "text": "`className={isActive ? styles.active : undefined}`"
+          },
+          {
+            "id": "if",
+            "text": "`className={if (isActive) styles.active}`"
+          },
+          {
+            "id": "always",
+            "text": "`className=\"active\"`"
+          },
+          {
+            "id": "js",
+            "text": "Через document.querySelector"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ternary",
+        "explanation": "В JSX — выражения, а не инструкции."
+      }
+    },
+    {
+      "slug": "pp-pass",
+      "type": "quiz.single_choice",
+      "title": "Передать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-props"
+      ],
+      "presentation": {
+        "question": "Как передать число 70 в prop lessons?",
+        "options": [
+          {
+            "id": "braces",
+            "text": "`lessons={70}`"
+          },
+          {
+            "id": "quotes",
+            "text": "`lessons=\"70\"` — это тоже число"
+          },
+          {
+            "id": "paren",
+            "text": "`lessons=(70)`"
+          },
+          {
+            "id": "colon",
+            "text": "`lessons:70`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "braces",
+        "explanation": "В кавычках будет строка \"70\"."
+      }
+    },
+    {
+      "slug": "pp-mutate",
+      "type": "quiz.single_choice",
+      "title": "Менять props",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-props"
+      ],
+      "presentation": {
+        "question": "Можно ли внутри компонента написать `props.title = \"Новый\"`?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет: props только для чтения, для изменяемых данных есть состояние"
+          },
+          {
+            "id": "yes",
+            "text": "Да"
+          },
+          {
+            "id": "sometimes",
+            "text": "Только в StrictMode"
+          },
+          {
+            "id": "ts",
+            "text": "Только без TypeScript"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Props принадлежат родителю."
+      }
+    },
+    {
+      "slug": "pp-default",
+      "type": "quiz.single_choice",
+      "title": "По умолчанию",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-props"
+      ],
+      "presentation": {
+        "question": "Что будет с size в `function Button({ size = \"md\" })`, если его не передать?",
+        "options": [
+          {
+            "id": "md",
+            "text": "\"md\""
+          },
+          {
+            "id": "undefined",
+            "text": "undefined"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка"
+          },
+          {
+            "id": "null",
+            "text": "null"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "md",
+        "explanation": "Значение по умолчанию из деструктуризации."
+      }
+    },
+    {
+      "slug": "ch-what",
+      "type": "quiz.single_choice",
+      "title": "children",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-children"
+      ],
+      "presentation": {
+        "question": "Что приходит в prop children?",
+        "options": [
+          {
+            "id": "inside",
+            "text": "Содержимое между открывающим и закрывающим тегом компонента"
+          },
+          {
+            "id": "kids",
+            "text": "Список дочерних компонентов приложения"
+          },
+          {
+            "id": "props",
+            "text": "Все props"
+          },
+          {
+            "id": "state",
+            "text": "Состояние"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "inside",
+        "explanation": "Так делаются обёртки."
+      }
+    },
+    {
+      "slug": "ch-inherit",
+      "type": "quiz.single_choice",
+      "title": "Наследование",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-children"
+      ],
+      "presentation": {
+        "question": "Как в React сделать особую кнопку на основе общей?",
+        "options": [
+          {
+            "id": "compose",
+            "text": "Компонент, который рисует общую кнопку с нужными props"
+          },
+          {
+            "id": "extends",
+            "text": "class DangerButton extends Button"
+          },
+          {
+            "id": "copy",
+            "text": "Скопировать код кнопки"
+          },
+          {
+            "id": "css",
+            "text": "Только через CSS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "compose",
+        "explanation": "Композиция вместо наследования."
+      }
+    },
+    {
+      "slug": "ch-slot",
+      "type": "quiz.single_choice",
+      "title": "Слот",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-children"
+      ],
+      "presentation": {
+        "question": "Как передать в макет и шапку, и боковую панель?",
+        "options": [
+          {
+            "id": "props",
+            "text": "Отдельными props с разметкой: header={…} aside={…}"
+          },
+          {
+            "id": "two",
+            "text": "Двумя children"
+          },
+          {
+            "id": "global",
+            "text": "Через глобальную переменную"
+          },
+          {
+            "id": "no",
+            "text": "Это невозможно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "props",
+        "explanation": "Разметка — обычное значение, её можно передать в prop."
+      }
+    },
+    {
+      "slug": "df-up",
+      "type": "quiz.single_choice",
+      "title": "Сообщить родителю",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-data-flow"
+      ],
+      "presentation": {
+        "question": "Как дочерний компонент сообщает родителю, что пользователь выбрал курс?",
+        "options": [
+          {
+            "id": "callback",
+            "text": "Вызывает функцию, которую родитель передал через props"
+          },
+          {
+            "id": "mutate",
+            "text": "Меняет переменную родителя"
+          },
+          {
+            "id": "dom",
+            "text": "Ищет родителя в DOM"
+          },
+          {
+            "id": "global",
+            "text": "Пишет в window"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "callback",
+        "explanation": "Например, onSelect(slug)."
+      }
+    },
+    {
+      "slug": "df-flow",
+      "type": "quiz.single_choice",
+      "title": "Направление",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-data-flow"
+      ],
+      "presentation": {
+        "question": "Как текут данные в React?",
+        "options": [
+          {
+            "id": "down",
+            "text": "Сверху вниз: от родителя к детям через props"
+          },
+          {
+            "id": "up",
+            "text": "Снизу вверх"
+          },
+          {
+            "id": "any",
+            "text": "В любом направлении"
+          },
+          {
+            "id": "global",
+            "text": "Через глобальные переменные"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "down",
+        "explanation": "События поднимаются вверх через функции."
+      }
+    },
+    {
+      "slug": "df-drill",
+      "type": "quiz.single_choice",
+      "title": "Глубоко",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-data-flow"
+      ],
+      "presentation": {
+        "question": "Значение нужно компоненту на 6 уровней ниже. Что обычно делают?",
+        "options": [
+          {
+            "id": "context",
+            "text": "Используют контекст"
+          },
+          {
+            "id": "drill",
+            "text": "Пробрасывают через все 6 уровней"
+          },
+          {
+            "id": "global",
+            "text": "Кладут в window"
+          },
+          {
+            "id": "copy",
+            "text": "Дублируют данные в каждом компоненте"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "context",
+        "explanation": "Проброс на пару уровней нормален, глубже — контекст."
+      }
+    },
+    {
+      "slug": "us-var",
+      "type": "quiz.single_choice",
+      "title": "Переменная",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-usestate"
+      ],
+      "presentation": {
+        "question": "Почему `let count = 0; count++` в компоненте не обновляет экран?",
+        "options": [
+          {
+            "id": "render",
+            "text": "Изменение переменной не вызывает перерисовку, а при рендере она создаётся заново"
+          },
+          {
+            "id": "const",
+            "text": "Нужно const"
+          },
+          {
+            "id": "number",
+            "text": "Нельзя числа"
+          },
+          {
+            "id": "slow",
+            "text": "Нужно подождать"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "render",
+        "explanation": "Перерисовку запускает только set-функция состояния."
+      }
+    },
+    {
+      "slug": "us-rules",
+      "type": "quiz.single_choice",
+      "title": "Правила хуков",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-usestate"
+      ],
+      "presentation": {
+        "question": "Где нельзя вызывать useState?",
+        "options": [
+          {
+            "id": "if",
+            "text": "Внутри if, циклов и вложенных функций"
+          },
+          {
+            "id": "top",
+            "text": "На верхнем уровне компонента"
+          },
+          {
+            "id": "component",
+            "text": "В функции-компоненте"
+          },
+          {
+            "id": "custom",
+            "text": "В своём хуке"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "if",
+        "explanation": "Порядок вызовов хуков должен быть одинаковым."
+      }
+    },
+    {
+      "slug": "us-set",
+      "type": "quiz.short_text",
+      "title": "Обновить",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "react-usestate"
+      ],
+      "presentation": {
+        "question": "Как называется функция из `const [count, setCount] = useState(0)`, которая меняет значение?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "setCount"
+        ],
+        "caseSensitive": false,
+        "explanation": "Её вызов запускает перерисовку."
+      }
+    },
+    {
+      "slug": "su-push",
+      "type": "quiz.single_choice",
+      "title": "push",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-immutable"
+      ],
+      "presentation": {
+        "question": "Почему `items.push(x); setItems(items)` не обновляет экран?",
+        "options": [
+          {
+            "id": "same",
+            "text": "Массив тот же по ссылке, React не видит изменения"
+          },
+          {
+            "id": "slow",
+            "text": "Нужно подождать"
+          },
+          {
+            "id": "push",
+            "text": "push не работает в React"
+          },
+          {
+            "id": "error",
+            "text": "Будет ошибка"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "same",
+        "explanation": "Нужен новый массив: [...items, x]."
+      }
+    },
+    {
+      "slug": "su-fn",
+      "type": "quiz.single_choice",
+      "title": "Функция",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-immutable"
+      ],
+      "presentation": {
+        "question": "Когда в set передают функцию, а не значение?",
+        "options": [
+          {
+            "id": "prev",
+            "text": "Когда новое значение зависит от предыдущего"
+          },
+          {
+            "id": "always",
+            "text": "Всегда"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "async",
+            "text": "Только в async-функциях"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "prev",
+        "explanation": "Так обновления не теряются."
+      }
+    },
+    {
+      "slug": "su-log",
+      "type": "quiz.single_choice",
+      "title": "Старое значение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-immutable"
+      ],
+      "presentation": {
+        "question": "Что выведет console.log(count) сразу после setCount(5), если count был 0?",
+        "options": [
+          {
+            "id": "old",
+            "text": "0 — новое значение будет при следующем рендере"
+          },
+          {
+            "id": "new",
+            "text": "5"
+          },
+          {
+            "id": "undefined",
+            "text": "undefined"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "old",
+        "explanation": "Переменная текущего рендера не меняется."
+      }
+    },
+    {
+      "slug": "lf-lift",
+      "type": "quiz.single_choice",
+      "title": "Общее значение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-lifting"
+      ],
+      "presentation": {
+        "question": "Фильтр и список курсов в разных компонентах должны видеть один выбранный уровень. Где хранить уровень?",
+        "options": [
+          {
+            "id": "parent",
+            "text": "В общем родителе и передать обоим через props"
+          },
+          {
+            "id": "both",
+            "text": "В обоих компонентах отдельно"
+          },
+          {
+            "id": "window",
+            "text": "В window"
+          },
+          {
+            "id": "css",
+            "text": "В CSS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "parent",
+        "explanation": "Один источник правды."
+      }
+    },
+    {
+      "slug": "lf-derived",
+      "type": "quiz.single_choice",
+      "title": "Сумма",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-lifting"
+      ],
+      "presentation": {
+        "question": "Нужно ли хранить сумму корзины в отдельном состоянии?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, её считают при рендере из списка товаров"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "effect",
+            "text": "Да, и обновлять в useEffect"
+          },
+          {
+            "id": "server",
+            "text": "Только на сервере"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Иначе её легко забыть обновить."
+      }
+    },
+    {
+      "slug": "lf-min",
+      "type": "quiz.single_choice",
+      "title": "Минимум",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-lifting"
+      ],
+      "presentation": {
+        "question": "Что такое минимальное состояние?",
+        "options": [
+          {
+            "id": "source",
+            "text": "Наименьший набор данных, из которого выводится всё остальное"
+          },
+          {
+            "id": "small",
+            "text": "Состояние меньше 1 КБ"
+          },
+          {
+            "id": "one",
+            "text": "Один useState на приложение"
+          },
+          {
+            "id": "none",
+            "text": "Отсутствие состояния"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "source",
+        "explanation": "Всё выводимое — вычисляется."
+      }
+    },
+    {
+      "slug": "ev-call",
+      "type": "quiz.single_choice",
+      "title": "Вызов",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-events"
+      ],
+      "presentation": {
+        "question": "Что не так с `<button onClick={save()}>`?",
+        "options": [
+          {
+            "id": "now",
+            "text": "save вызовется при рендере, а не по клику"
+          },
+          {
+            "id": "ok",
+            "text": "Всё правильно"
+          },
+          {
+            "id": "syntax",
+            "text": "Синтаксическая ошибка"
+          },
+          {
+            "id": "twice",
+            "text": "save вызовется дважды по клику"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "now",
+        "explanation": "Нужно onClick={save} или onClick={() => save()}."
+      }
+    },
+    {
+      "slug": "ev-arg",
+      "type": "quiz.single_choice",
+      "title": "С аргументом",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-events"
+      ],
+      "presentation": {
+        "question": "Как вызвать select(id) по клику?",
+        "options": [
+          {
+            "id": "arrow",
+            "text": "`onClick={() => select(id)}`"
+          },
+          {
+            "id": "direct",
+            "text": "`onClick={select(id)}`"
+          },
+          {
+            "id": "string",
+            "text": "`onClick=\"select(id)\"`"
+          },
+          {
+            "id": "bind",
+            "text": "Это невозможно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "arrow",
+        "explanation": "Стрелка создаёт функцию, которая вызовется по клику."
+      }
+    },
+    {
+      "slug": "ev-prevent",
+      "type": "quiz.short_text",
+      "title": "Отменить",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "react-events"
+      ],
+      "presentation": {
+        "question": "Какой метод события отменяет действие браузера по умолчанию, например отправку формы?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "preventDefault",
+          "e.preventDefault()",
+          "preventDefault()"
+        ],
+        "caseSensitive": false,
+        "explanation": "e.preventDefault()."
+      }
+    },
+    {
+      "slug": "ct-what",
+      "type": "quiz.single_choice",
+      "title": "Управляемое",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-controlled"
+      ],
+      "presentation": {
+        "question": "Что значит «управляемое поле»?",
+        "options": [
+          {
+            "id": "state",
+            "text": "Его value берётся из состояния, а onChange обновляет состояние"
+          },
+          {
+            "id": "css",
+            "text": "Поле со стилями"
+          },
+          {
+            "id": "server",
+            "text": "Поле, которое проверяет сервер"
+          },
+          {
+            "id": "readonly",
+            "text": "Поле только для чтения"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "state",
+        "explanation": "Состояние — источник правды."
+      }
+    },
+    {
+      "slug": "ct-frozen",
+      "type": "quiz.single_choice",
+      "title": "Не вводится",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-controlled"
+      ],
+      "presentation": {
+        "question": "Поле с `value={email}` не реагирует на ввод. Чего не хватает?",
+        "options": [
+          {
+            "id": "onchange",
+            "text": "onChange, который обновляет состояние"
+          },
+          {
+            "id": "name",
+            "text": "Атрибута name"
+          },
+          {
+            "id": "type",
+            "text": "Атрибута type"
+          },
+          {
+            "id": "form",
+            "text": "Тега form"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "onchange",
+        "explanation": "Без onChange значение всегда равно состоянию."
+      }
+    },
+    {
+      "slug": "ct-check",
+      "type": "quiz.single_choice",
+      "title": "Чекбокс",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-controlled"
+      ],
+      "presentation": {
+        "question": "Какое свойство события читают у чекбокса?",
+        "options": [
+          {
+            "id": "checked",
+            "text": "`e.target.checked`"
+          },
+          {
+            "id": "value",
+            "text": "`e.target.value`"
+          },
+          {
+            "id": "selected",
+            "text": "`e.target.selected`"
+          },
+          {
+            "id": "on",
+            "text": "`e.target.on`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "checked",
+        "explanation": "value у чекбокса не меняется при нажатии."
+      }
+    },
+    {
+      "slug": "sv-where",
+      "type": "quiz.single_choice",
+      "title": "Куда вешать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-form-submit"
+      ],
+      "presentation": {
+        "question": "Куда лучше вешать обработчик отправки?",
+        "options": [
+          {
+            "id": "form",
+            "text": "На форму: onSubmit"
+          },
+          {
+            "id": "button",
+            "text": "На кнопку: onClick"
+          },
+          {
+            "id": "input",
+            "text": "На каждое поле"
+          },
+          {
+            "id": "window",
+            "text": "На window"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "form",
+        "explanation": "Так срабатывает и Enter."
+      }
+    },
+    {
+      "slug": "sv-reload",
+      "type": "quiz.single_choice",
+      "title": "Перезагрузка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-form-submit"
+      ],
+      "presentation": {
+        "question": "Почему после отправки формы страница перезагружается?",
+        "options": [
+          {
+            "id": "prevent",
+            "text": "Не вызван e.preventDefault()"
+          },
+          {
+            "id": "react",
+            "text": "Так всегда в React"
+          },
+          {
+            "id": "button",
+            "text": "Кнопка без onClick"
+          },
+          {
+            "id": "server",
+            "text": "Сервер вернул ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "prevent",
+        "explanation": "Браузер по умолчанию отправляет форму и перезагружает страницу."
+      }
+    },
+    {
+      "slug": "sv-a11y",
+      "type": "quiz.single_choice",
+      "title": "Доступность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-form-submit"
+      ],
+      "presentation": {
+        "question": "Как связать сообщение об ошибке с полем для скринридера?",
+        "options": [
+          {
+            "id": "describedby",
+            "text": "aria-describedby на поле с id сообщения"
+          },
+          {
+            "id": "color",
+            "text": "Покрасить поле в красный"
+          },
+          {
+            "id": "title",
+            "text": "Атрибут title"
+          },
+          {
+            "id": "alert",
+            "text": "window.alert"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "describedby",
+        "explanation": "Цвет скринридер не увидит."
+      }
+    },
+    {
+      "slug": "lk-key",
+      "type": "quiz.single_choice",
+      "title": "Ключ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-lists"
+      ],
+      "presentation": {
+        "question": "Что лучше всего подходит для key в списке курсов?",
+        "options": [
+          {
+            "id": "slug",
+            "text": "Уникальный slug курса"
+          },
+          {
+            "id": "index",
+            "text": "Индекс в массиве"
+          },
+          {
+            "id": "random",
+            "text": "Math.random()"
+          },
+          {
+            "id": "title",
+            "text": "Номер строки на экране"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "slug",
+        "explanation": "Ключ должен быть стабильным и уникальным."
+      }
+    },
+    {
+      "slug": "lk-random",
+      "type": "quiz.single_choice",
+      "title": "Случайный ключ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-lists"
+      ],
+      "presentation": {
+        "question": "Чем плох key={Math.random()}?",
+        "options": [
+          {
+            "id": "remount",
+            "text": "Ключ меняется при каждом рендере, и React пересоздаёт все элементы"
+          },
+          {
+            "id": "slow",
+            "text": "Медленно считается"
+          },
+          {
+            "id": "ok",
+            "text": "Ничем"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка сборки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "remount",
+        "explanation": "Состояние элементов будет теряться."
+      }
+    },
+    {
+      "slug": "lk-index",
+      "type": "quiz.single_choice",
+      "title": "Индекс",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-lists"
+      ],
+      "presentation": {
+        "question": "Когда индекс в качестве ключа особенно опасен?",
+        "options": [
+          {
+            "id": "reorder",
+            "text": "Когда элементы удаляют, добавляют в середину или сортируют"
+          },
+          {
+            "id": "static",
+            "text": "Когда список никогда не меняется"
+          },
+          {
+            "id": "short",
+            "text": "Когда в списке 3 элемента"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "reorder",
+        "explanation": "Для неизменного списка индекс допустим."
+      }
+    },
+    {
+      "slug": "cd-zero",
+      "type": "quiz.single_choice",
+      "title": "Ноль",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-conditional"
+      ],
+      "presentation": {
+        "question": "Что выведет `{count && <Badge />}`, если count равен 0?",
+        "options": [
+          {
+            "id": "zero",
+            "text": "Число 0"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          },
+          {
+            "id": "badge",
+            "text": "Badge"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "zero",
+        "explanation": "Нужно count > 0 && …"
+      }
+    },
+    {
+      "slug": "cd-either",
+      "type": "quiz.single_choice",
+      "title": "Одно из двух",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-conditional"
+      ],
+      "presentation": {
+        "question": "Как показать Profile для вошедшего и LoginButton для анонима?",
+        "options": [
+          {
+            "id": "ternary",
+            "text": "`{user ? <Profile /> : <LoginButton />}`"
+          },
+          {
+            "id": "and",
+            "text": "`{user && <Profile /> && <LoginButton />}`"
+          },
+          {
+            "id": "if",
+            "text": "`{if (user) <Profile />}`"
+          },
+          {
+            "id": "both",
+            "text": "Показать оба"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ternary",
+        "explanation": "if — инструкция и в JSX не работает."
+      }
+    },
+    {
+      "slug": "cd-early",
+      "type": "quiz.single_choice",
+      "title": "Ранний return",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-conditional"
+      ],
+      "presentation": {
+        "question": "Зачем писать `if (!course) return <NotFound />;` в начале компонента?",
+        "options": [
+          {
+            "id": "guard",
+            "text": "Чтобы дальше работать с гарантированными данными без вложенных условий"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "style",
+            "text": "Ради стиля"
+          },
+          {
+            "id": "rule",
+            "text": "Так требуют правила хуков"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "guard",
+        "explanation": "Особые случаи — первыми."
+      }
+    },
+    {
+      "slug": "us-states",
+      "type": "quiz.multiple_choice",
+      "title": "Состояния",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "react-ui-states"
+      ],
+      "presentation": {
+        "question": "Какие состояния нужно продумать для экрана списка курсов?",
+        "options": [
+          {
+            "id": "loading",
+            "text": "Загрузка"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка с возможностью повторить"
+          },
+          {
+            "id": "empty",
+            "text": "Пустой список с подсказкой"
+          },
+          {
+            "id": "data",
+            "text": "Список с данными"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "loading",
+          "error",
+          "empty",
+          "data"
+        ],
+        "explanation": "Все четыре."
+      }
+    },
+    {
+      "slug": "us-skeleton",
+      "type": "quiz.single_choice",
+      "title": "Скелетон",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-ui-states"
+      ],
+      "presentation": {
+        "question": "Чем скелетон лучше спиннера?",
+        "options": [
+          {
+            "id": "shape",
+            "text": "Показывает форму будущего контента и не даёт странице прыгать"
+          },
+          {
+            "id": "fast",
+            "text": "Ускоряет сеть"
+          },
+          {
+            "id": "pretty",
+            "text": "Только красивее"
+          },
+          {
+            "id": "seo",
+            "text": "Улучшает SEO"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "shape",
+        "explanation": "Меньше сдвигов вёрстки."
+      }
+    },
+    {
+      "slug": "us-empty",
+      "type": "quiz.single_choice",
+      "title": "Пусто",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-ui-states"
+      ],
+      "presentation": {
+        "question": "Что лучше показать, если у ученика ещё нет курсов?",
+        "options": [
+          {
+            "id": "cta",
+            "text": "Подсказку и кнопку, с чего начать"
+          },
+          {
+            "id": "blank",
+            "text": "Пустую страницу"
+          },
+          {
+            "id": "error",
+            "text": "Сообщение об ошибке"
+          },
+          {
+            "id": "spinner",
+            "text": "Бесконечный спиннер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cta",
+        "explanation": "Пустое состояние — повод направить пользователя."
+      }
+    },
+    {
+      "slug": "ef-deps",
+      "type": "quiz.single_choice",
+      "title": "Пустой массив",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-effect"
+      ],
+      "presentation": {
+        "question": "Когда выполнится эффект с массивом зависимостей []?",
+        "options": [
+          {
+            "id": "once",
+            "text": "Один раз после появления компонента"
+          },
+          {
+            "id": "every",
+            "text": "После каждого рендера"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "click",
+            "text": "По клику"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "once",
+        "explanation": "Без массива — после каждого рендера."
+      }
+    },
+    {
+      "slug": "ef-cleanup",
+      "type": "quiz.single_choice",
+      "title": "Очистка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-effect"
+      ],
+      "presentation": {
+        "question": "Зачем возвращать функцию из эффекта с setInterval?",
+        "options": [
+          {
+            "id": "stop",
+            "text": "Чтобы остановить таймер при удалении компонента или перезапуске эффекта"
+          },
+          {
+            "id": "result",
+            "text": "Чтобы вернуть результат"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "rule",
+            "text": "Так требует синтаксис"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "stop",
+        "explanation": "Иначе таймеры будут копиться."
+      }
+    },
+    {
+      "slug": "ef-not",
+      "type": "quiz.single_choice",
+      "title": "Без эффекта",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-effect"
+      ],
+      "presentation": {
+        "question": "Как правильно получить отфильтрованный список из состояния?",
+        "options": [
+          {
+            "id": "render",
+            "text": "Посчитать при рендере, без эффекта"
+          },
+          {
+            "id": "effect",
+            "text": "В useEffect записывать в отдельное состояние"
+          },
+          {
+            "id": "server",
+            "text": "Запросом на сервер"
+          },
+          {
+            "id": "ref",
+            "text": "Хранить в useRef"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "render",
+        "explanation": "Эффект здесь лишний."
+      }
+    },
+    {
+      "slug": "fd-race",
+      "type": "quiz.single_choice",
+      "title": "Гонка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-fetch"
+      ],
+      "presentation": {
+        "question": "Пользователь быстро переключил курс A → B, но на экране данные A. Почему?",
+        "options": [
+          {
+            "id": "race",
+            "text": "Ответ на старый запрос пришёл позже и перезаписал новый"
+          },
+          {
+            "id": "cache",
+            "text": "Браузер закешировал"
+          },
+          {
+            "id": "key",
+            "text": "Неправильный key"
+          },
+          {
+            "id": "css",
+            "text": "Ошибка стилей"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "race",
+        "explanation": "Решение — отменять старый запрос."
+      }
+    },
+    {
+      "slug": "fd-abort",
+      "type": "quiz.single_choice",
+      "title": "Отмена",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-fetch"
+      ],
+      "presentation": {
+        "question": "Что отменяет fetch в очистке эффекта?",
+        "options": [
+          {
+            "id": "abort",
+            "text": "AbortController и ctrl.abort()"
+          },
+          {
+            "id": "clear",
+            "text": "clearTimeout"
+          },
+          {
+            "id": "return",
+            "text": "return null"
+          },
+          {
+            "id": "nothing",
+            "text": "fetch нельзя отменить"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "abort",
+        "explanation": "Сигнал передаётся в fetch."
+      }
+    },
+    {
+      "slug": "fd-query",
+      "type": "quiz.single_choice",
+      "title": "TanStack Query",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-fetch"
+      ],
+      "presentation": {
+        "question": "Что берёт на себя TanStack Query?",
+        "options": [
+          {
+            "id": "cache",
+            "text": "Кэш, повторы, фоновое обновление и состояния загрузки"
+          },
+          {
+            "id": "css",
+            "text": "Стили"
+          },
+          {
+            "id": "routing",
+            "text": "Маршруты"
+          },
+          {
+            "id": "forms",
+            "text": "Только формы"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cache",
+        "explanation": "Данные сервера — отдельный вид состояния."
+      }
+    },
+    {
+      "slug": "rf-focus",
+      "type": "quiz.single_choice",
+      "title": "Фокус",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-refs"
+      ],
+      "presentation": {
+        "question": "Как поставить фокус в поле ввода по нажатию кнопки?",
+        "options": [
+          {
+            "id": "ref",
+            "text": "Сохранить ref на input и вызвать ref.current.focus()"
+          },
+          {
+            "id": "state",
+            "text": "Хранить фокус в useState"
+          },
+          {
+            "id": "query",
+            "text": "document.querySelector в рендере"
+          },
+          {
+            "id": "css",
+            "text": "Через CSS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ref",
+        "explanation": "Фокус — императивное действие с DOM."
+      }
+    },
+    {
+      "slug": "rf-rerender",
+      "type": "quiz.single_choice",
+      "title": "Перерисовка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-refs"
+      ],
+      "presentation": {
+        "question": "Вызывает ли изменение ref.current перерисовку компонента?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "sometimes",
+            "text": "Только в StrictMode"
+          },
+          {
+            "id": "dev",
+            "text": "Только в разработке"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Поэтому то, что видно на экране, хранят в состоянии."
+      }
+    },
+    {
+      "slug": "rf-text",
+      "type": "quiz.single_choice",
+      "title": "Текст через ref",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-refs"
+      ],
+      "presentation": {
+        "question": "Почему не стоит менять текст элемента через ref.current.textContent?",
+        "options": [
+          {
+            "id": "overwrite",
+            "text": "React перезапишет его при следующем рендере"
+          },
+          {
+            "id": "slow",
+            "text": "Это медленно"
+          },
+          {
+            "id": "error",
+            "text": "Будет ошибка"
+          },
+          {
+            "id": "ok",
+            "text": "Это нормальный способ"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "overwrite",
+        "explanation": "Видимое — через состояние."
+      }
+    },
+    {
+      "slug": "cx-what",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-context"
+      ],
+      "presentation": {
+        "question": "Какую проблему решает контекст?",
+        "options": [
+          {
+            "id": "drilling",
+            "text": "Проброс одних и тех же props через много уровней"
+          },
+          {
+            "id": "speed",
+            "text": "Медленный рендер"
+          },
+          {
+            "id": "css",
+            "text": "Конфликты стилей"
+          },
+          {
+            "id": "fetch",
+            "text": "Загрузку данных"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "drilling",
+        "explanation": "Потомки читают значение напрямую."
+      }
+    },
+    {
+      "slug": "cx-read",
+      "type": "quiz.single_choice",
+      "title": "Прочитать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-context"
+      ],
+      "presentation": {
+        "question": "Как компонент читает значение контекста?",
+        "options": [
+          {
+            "id": "use",
+            "text": "`useContext(MyContext)`"
+          },
+          {
+            "id": "props",
+            "text": "Через props.context"
+          },
+          {
+            "id": "global",
+            "text": "Через window"
+          },
+          {
+            "id": "import",
+            "text": "Импортом значения из файла"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "use",
+        "explanation": "Значение задаёт ближайший Provider выше."
+      }
+    },
+    {
+      "slug": "cx-cost",
+      "type": "quiz.single_choice",
+      "title": "Цена",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-context"
+      ],
+      "presentation": {
+        "question": "Что происходит при изменении значения контекста?",
+        "options": [
+          {
+            "id": "rerender",
+            "text": "Перерисовываются все компоненты, которые его читают"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          },
+          {
+            "id": "reload",
+            "text": "Перезагружается страница"
+          },
+          {
+            "id": "parent",
+            "text": "Перерисовывается только Provider"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rerender",
+        "explanation": "Поэтому часто меняющееся выносят отдельно."
+      }
+    },
+    {
+      "slug": "rd-what",
+      "type": "quiz.single_choice",
+      "title": "Редьюсер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-reducer"
+      ],
+      "presentation": {
+        "question": "Что делает функция-редьюсер?",
+        "options": [
+          {
+            "id": "next",
+            "text": "По текущему состоянию и действию возвращает новое состояние"
+          },
+          {
+            "id": "fetch",
+            "text": "Загружает данные"
+          },
+          {
+            "id": "render",
+            "text": "Рисует компонент"
+          },
+          {
+            "id": "route",
+            "text": "Меняет маршрут"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "next",
+        "explanation": "Она чистая и легко тестируется."
+      }
+    },
+    {
+      "slug": "rd-when",
+      "type": "quiz.single_choice",
+      "title": "Когда",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-reducer"
+      ],
+      "presentation": {
+        "question": "Когда useReducer удобнее useState?",
+        "options": [
+          {
+            "id": "many",
+            "text": "Когда одно состояние меняется многими разными действиями"
+          },
+          {
+            "id": "simple",
+            "text": "Для одного флага true/false"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "css",
+            "text": "Для стилей"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "many",
+        "explanation": "Логика собирается в одном месте."
+      }
+    },
+    {
+      "slug": "rd-send",
+      "type": "quiz.short_text",
+      "title": "Отправить действие",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "react-reducer"
+      ],
+      "presentation": {
+        "question": "Как называется функция из useReducer, которой отправляют действие?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "dispatch"
+        ],
+        "caseSensitive": false,
+        "explanation": "dispatch({ type: \"add\", course })."
+      }
+    },
+    {
+      "slug": "ch-name",
+      "type": "quiz.single_choice",
+      "title": "Имя",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-custom-hooks"
+      ],
+      "presentation": {
+        "question": "С чего должно начинаться имя своего хука?",
+        "options": [
+          {
+            "id": "use",
+            "text": "С use"
+          },
+          {
+            "id": "hook",
+            "text": "С hook"
+          },
+          {
+            "id": "get",
+            "text": "С get"
+          },
+          {
+            "id": "any",
+            "text": "С чего угодно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "use",
+        "explanation": "Так React и линтер узнают хук и проверяют правила."
+      }
+    },
+    {
+      "slug": "ch-share",
+      "type": "quiz.single_choice",
+      "title": "Общее",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-custom-hooks"
+      ],
+      "presentation": {
+        "question": "Два компонента вызывают один и тот же свой хук с useState. Общее ли у них состояние?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет: у каждого вызова своё состояние, общая только логика"
+          },
+          {
+            "id": "yes",
+            "text": "Да, одно на двоих"
+          },
+          {
+            "id": "first",
+            "text": "Только у первого"
+          },
+          {
+            "id": "global",
+            "text": "Да, оно глобальное"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Для общего состояния нужен контекст или поднятие."
+      }
+    },
+    {
+      "slug": "ch-debounce",
+      "type": "quiz.single_choice",
+      "title": "Debounce",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-custom-hooks"
+      ],
+      "presentation": {
+        "question": "Зачем поиску useDebounce?",
+        "options": [
+          {
+            "id": "pause",
+            "text": "Отправлять запрос после паузы во вводе, а не на каждую букву"
+          },
+          {
+            "id": "cache",
+            "text": "Кэшировать ответы"
+          },
+          {
+            "id": "style",
+            "text": "Подсвечивать результаты"
+          },
+          {
+            "id": "focus",
+            "text": "Ставить фокус"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pause",
+        "explanation": "Меньше запросов и мерцания результатов."
+      }
+    },
+    {
+      "slug": "rt-link",
+      "type": "quiz.single_choice",
+      "title": "Ссылка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-router"
+      ],
+      "presentation": {
+        "question": "Чем `<Link to=\"/courses\">` лучше `<a href=\"/courses\">` внутри приложения?",
+        "options": [
+          {
+            "id": "spa",
+            "text": "Переход без перезагрузки страницы и без потери состояния"
+          },
+          {
+            "id": "seo",
+            "text": "Лучше для поисковиков"
+          },
+          {
+            "id": "style",
+            "text": "Красивее"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "spa",
+        "explanation": "a перезагрузит приложение целиком."
+      }
+    },
+    {
+      "slug": "rt-param",
+      "type": "quiz.single_choice",
+      "title": "Параметр",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-router"
+      ],
+      "presentation": {
+        "question": "Как получить slug в маршруте `/courses/:slug`?",
+        "options": [
+          {
+            "id": "params",
+            "text": "`const { slug } = useParams()`"
+          },
+          {
+            "id": "query",
+            "text": "`useSearchParams().slug`"
+          },
+          {
+            "id": "props",
+            "text": "`props.slug` всегда"
+          },
+          {
+            "id": "window",
+            "text": "`window.slug`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "params",
+        "explanation": "useParams читает параметры пути."
+      }
+    },
+    {
+      "slug": "rt-outlet",
+      "type": "quiz.short_text",
+      "title": "Место для страницы",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "react-router"
+      ],
+      "presentation": {
+        "question": "Какой компонент React Router показывает дочерний маршрут внутри макета?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "Outlet",
+          "<Outlet />"
+        ],
+        "caseSensitive": false,
+        "explanation": "Родитель рисует <Outlet />."
+      }
+    },
+    {
+      "slug": "us-share",
+      "type": "quiz.single_choice",
+      "title": "Поделиться",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-url-state"
+      ],
+      "presentation": {
+        "question": "Почему фильтр каталога удобно хранить в query-параметрах?",
+        "options": [
+          {
+            "id": "share",
+            "text": "Ссылкой можно поделиться, а «Назад» вернёт прошлый фильтр"
+          },
+          {
+            "id": "speed",
+            "text": "Это быстрее useState"
+          },
+          {
+            "id": "secure",
+            "text": "Это безопаснее"
+          },
+          {
+            "id": "seo",
+            "text": "Только ради SEO"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "share",
+        "explanation": "Адрес — часть интерфейса."
+      }
+    },
+    {
+      "slug": "us-not",
+      "type": "quiz.single_choice",
+      "title": "Не в адрес",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-url-state"
+      ],
+      "presentation": {
+        "question": "Что не стоит хранить в адресе?",
+        "options": [
+          {
+            "id": "draft",
+            "text": "Черновик формы и открыт ли выпадающий список"
+          },
+          {
+            "id": "filter",
+            "text": "Фильтр"
+          },
+          {
+            "id": "page",
+            "text": "Номер страницы"
+          },
+          {
+            "id": "tab",
+            "text": "Открытую вкладку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "draft",
+        "explanation": "Это локальное временное состояние."
+      }
+    },
+    {
+      "slug": "us-kinds",
+      "type": "quiz.single_choice",
+      "title": "Данные сервера",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-url-state"
+      ],
+      "presentation": {
+        "question": "Где удобнее держать данные, пришедшие с сервера?",
+        "options": [
+          {
+            "id": "query",
+            "text": "В кэше запросов, например TanStack Query"
+          },
+          {
+            "id": "url",
+            "text": "В адресе"
+          },
+          {
+            "id": "ls",
+            "text": "В localStorage"
+          },
+          {
+            "id": "ref",
+            "text": "В useRef"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "query",
+        "explanation": "Кэш сам обновляет и повторяет запросы."
+      }
+    },
+    {
+      "slug": "st-feature",
+      "type": "quiz.single_choice",
+      "title": "Папки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-structure"
+      ],
+      "presentation": {
+        "question": "Почему код раскладывают по фичам, а не по типу файлов?",
+        "options": [
+          {
+            "id": "together",
+            "text": "То, что меняется вместе, лежит рядом"
+          },
+          {
+            "id": "fast",
+            "text": "Так быстрее собирается"
+          },
+          {
+            "id": "rule",
+            "text": "Так требует React"
+          },
+          {
+            "id": "size",
+            "text": "Так меньше файлов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "together",
+        "explanation": "Изменение фичи — в одной папке."
+      }
+    },
+    {
+      "slug": "st-global",
+      "type": "quiz.single_choice",
+      "title": "Глобально",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-structure"
+      ],
+      "presentation": {
+        "question": "Что выбрать для темы оформления и текущего пользователя?",
+        "options": [
+          {
+            "id": "context",
+            "text": "Контекст"
+          },
+          {
+            "id": "redux",
+            "text": "Redux сразу"
+          },
+          {
+            "id": "url",
+            "text": "Адрес страницы"
+          },
+          {
+            "id": "ls",
+            "text": "Только localStorage"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "context",
+        "explanation": "Они меняются редко."
+      }
+    },
+    {
+      "slug": "st-shared",
+      "type": "quiz.single_choice",
+      "title": "Общие детали",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-structure"
+      ],
+      "presentation": {
+        "question": "Где хранить кнопки и поля, которые используются по всему приложению?",
+        "options": [
+          {
+            "id": "shared",
+            "text": "В общей папке компонентов дизайн-системы, например shared/ui"
+          },
+          {
+            "id": "each",
+            "text": "Копировать в каждую фичу"
+          },
+          {
+            "id": "global",
+            "text": "В window"
+          },
+          {
+            "id": "css",
+            "text": "Только в CSS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "shared",
+        "explanation": "Единый вид и доступность."
+      }
+    },
+    {
+      "slug": "rr-why",
+      "type": "quiz.multiple_choice",
+      "title": "Причины",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "react-rerender"
+      ],
+      "presentation": {
+        "question": "Почему компонент может перерисоваться?",
+        "options": [
+          {
+            "id": "state",
+            "text": "Изменилось его состояние"
+          },
+          {
+            "id": "parent",
+            "text": "Перерисовался родитель"
+          },
+          {
+            "id": "context",
+            "text": "Изменился контекст, который он читает"
+          },
+          {
+            "id": "css",
+            "text": "Изменился CSS-файл"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "state",
+          "parent",
+          "context"
+        ],
+        "explanation": "CSS не вызывает рендер React."
+      }
+    },
+    {
+      "slug": "rr-dom",
+      "type": "quiz.single_choice",
+      "title": "DOM",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-rerender"
+      ],
+      "presentation": {
+        "question": "Значит ли каждый рендер изменение DOM?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет: в DOM попадают только реальные изменения"
+          },
+          {
+            "id": "yes",
+            "text": "Да, DOM пересоздаётся целиком"
+          },
+          {
+            "id": "half",
+            "text": "Да, наполовину"
+          },
+          {
+            "id": "css",
+            "text": "Только стили"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Рендер — это расчёт, а не перерисовка экрана."
+      }
+    },
+    {
+      "slug": "rr-lower",
+      "type": "quiz.single_choice",
+      "title": "Поиск тормозит",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-rerender"
+      ],
+      "presentation": {
+        "question": "Ввод в поиск перерисовывает всю страницу. Первый шаг?",
+        "options": [
+          {
+            "id": "move",
+            "text": "Вынести состояние поиска в маленький отдельный компонент"
+          },
+          {
+            "id": "memo",
+            "text": "Обернуть всё в memo"
+          },
+          {
+            "id": "redux",
+            "text": "Переписать на Redux"
+          },
+          {
+            "id": "class",
+            "text": "Переписать на классы"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "move",
+        "explanation": "Изоляция часто решает проблему целиком."
+      }
+    },
+    {
+      "slug": "mm-memo",
+      "type": "quiz.single_choice",
+      "title": "memo",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-memo"
+      ],
+      "presentation": {
+        "question": "Что делает memo(Component)?",
+        "options": [
+          {
+            "id": "skip",
+            "text": "Пропускает рендер, если props не изменились"
+          },
+          {
+            "id": "cache",
+            "text": "Кэширует запросы"
+          },
+          {
+            "id": "faster",
+            "text": "Ускоряет любые компоненты всегда"
+          },
+          {
+            "id": "state",
+            "text": "Сохраняет состояние при перезагрузке"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "skip",
+        "explanation": "Сравнение props — по ссылке."
+      }
+    },
+    {
+      "slug": "mm-callback",
+      "type": "quiz.single_choice",
+      "title": "useCallback",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-memo"
+      ],
+      "presentation": {
+        "question": "Когда нужен useCallback?",
+        "options": [
+          {
+            "id": "memo",
+            "text": "Когда функцию передают в memo-компонент или в зависимости эффекта"
+          },
+          {
+            "id": "always",
+            "text": "Для каждой функции"
+          },
+          {
+            "id": "async",
+            "text": "Для async-функций"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "memo",
+        "explanation": "Иначе он только усложняет код."
+      }
+    },
+    {
+      "slug": "mm-compiler",
+      "type": "quiz.single_choice",
+      "title": "Компилятор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-memo"
+      ],
+      "presentation": {
+        "question": "Что делает React Compiler?",
+        "options": [
+          {
+            "id": "auto",
+            "text": "Автоматически добавляет мемоизацию при сборке"
+          },
+          {
+            "id": "ts",
+            "text": "Компилирует TypeScript"
+          },
+          {
+            "id": "css",
+            "text": "Сжимает CSS"
+          },
+          {
+            "id": "server",
+            "text": "Запускает сервер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "auto",
+        "explanation": "Ручная мемоизация становится редкостью."
+      }
+    },
+    {
+      "slug": "bl-lazy",
+      "type": "quiz.single_choice",
+      "title": "lazy",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-lazy"
+      ],
+      "presentation": {
+        "question": "Что даёт `lazy(() => import(\"./Editor\"))`?",
+        "options": [
+          {
+            "id": "split",
+            "text": "Код редактора загрузится только когда компонент понадобится"
+          },
+          {
+            "id": "fast",
+            "text": "Редактор будет рендериться быстрее"
+          },
+          {
+            "id": "cache",
+            "text": "Кэширует данные"
+          },
+          {
+            "id": "ssr",
+            "text": "Рендерит на сервере"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "split",
+        "explanation": "Первая загрузка становится легче."
+      }
+    },
+    {
+      "slug": "bl-virtual",
+      "type": "quiz.single_choice",
+      "title": "Виртуализация",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-lazy"
+      ],
+      "presentation": {
+        "question": "Что делает виртуализация списка?",
+        "options": [
+          {
+            "id": "visible",
+            "text": "Рисует только видимые элементы"
+          },
+          {
+            "id": "all",
+            "text": "Рисует все элементы заранее"
+          },
+          {
+            "id": "server",
+            "text": "Рисует список на сервере"
+          },
+          {
+            "id": "css",
+            "text": "Скрывает элементы через CSS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "visible",
+        "explanation": "Число DOM-узлов остаётся маленьким."
+      }
+    },
+    {
+      "slug": "bl-fallback",
+      "type": "quiz.short_text",
+      "title": "Заглушка",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "react-lazy"
+      ],
+      "presentation": {
+        "question": "Как называется проп Suspense с содержимым на время загрузки?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "fallback"
+        ],
+        "caseSensitive": false,
+        "explanation": "<Suspense fallback={<Spinner />}>."
+      }
+    },
+    {
+      "slug": "tl-role",
+      "type": "quiz.single_choice",
+      "title": "Поиск",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-testing"
+      ],
+      "presentation": {
+        "question": "Как лучше найти кнопку «Сохранить» в тесте?",
+        "options": [
+          {
+            "id": "role",
+            "text": "`screen.getByRole(\"button\", { name: \"Сохранить\" })`"
+          },
+          {
+            "id": "class",
+            "text": "`container.querySelector(\".btn-save\")`"
+          },
+          {
+            "id": "id",
+            "text": "По data-id"
+          },
+          {
+            "id": "index",
+            "text": "Третья кнопка на странице"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "role",
+        "explanation": "Так находит пользователь и скринридер."
+      }
+    },
+    {
+      "slug": "tl-what",
+      "type": "quiz.single_choice",
+      "title": "Что проверять",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-testing"
+      ],
+      "presentation": {
+        "question": "Что стоит проверять в тесте компонента?",
+        "options": [
+          {
+            "id": "behavior",
+            "text": "Что видит пользователь после действий"
+          },
+          {
+            "id": "state",
+            "text": "Значение внутреннего state"
+          },
+          {
+            "id": "calls",
+            "text": "Сколько раз вызвался useEffect"
+          },
+          {
+            "id": "css",
+            "text": "Имена CSS-классов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "behavior",
+        "explanation": "Поведение, а не внутренности."
+      }
+    },
+    {
+      "slug": "tl-event",
+      "type": "quiz.short_text",
+      "title": "Действие",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "react-testing"
+      ],
+      "presentation": {
+        "question": "Какая библиотека Testing Library имитирует клики и ввод как настоящий пользователь? Формат userEvent."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "userEvent",
+          "user-event",
+          "@testing-library/user-event"
+        ],
+        "caseSensitive": false,
+        "explanation": "await userEvent.click(button)."
+      }
+    },
+    {
+      "slug": "ay-div",
+      "type": "quiz.single_choice",
+      "title": "div с кликом",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-a11y"
+      ],
+      "presentation": {
+        "question": "Чем плох `<div onClick={open}>Открыть</div>`?",
+        "options": [
+          {
+            "id": "keyboard",
+            "text": "Не получает фокус с клавиатуры и не объявляется скринридером как кнопка"
+          },
+          {
+            "id": "slow",
+            "text": "Медленный"
+          },
+          {
+            "id": "style",
+            "text": "Некрасивый"
+          },
+          {
+            "id": "ok",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "keyboard",
+        "explanation": "Нужен <button>."
+      }
+    },
+    {
+      "slug": "ay-focus",
+      "type": "quiz.single_choice",
+      "title": "Фокус",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-a11y"
+      ],
+      "presentation": {
+        "question": "Куда вернуть фокус после закрытия модального окна?",
+        "options": [
+          {
+            "id": "trigger",
+            "text": "На кнопку, которая окно открыла"
+          },
+          {
+            "id": "top",
+            "text": "В начало страницы"
+          },
+          {
+            "id": "nowhere",
+            "text": "Никуда"
+          },
+          {
+            "id": "body",
+            "text": "На body"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "trigger",
+        "explanation": "Пользователь продолжает с того же места."
+      }
+    },
+    {
+      "slug": "ay-dialog",
+      "type": "quiz.single_choice",
+      "title": "dialog",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-a11y"
+      ],
+      "presentation": {
+        "question": "Что даёт встроенный элемент dialog с showModal()?",
+        "options": [
+          {
+            "id": "trap",
+            "text": "Удержание фокуса внутри и закрытие по Escape"
+          },
+          {
+            "id": "style",
+            "text": "Только стили"
+          },
+          {
+            "id": "fetch",
+            "text": "Загрузку данных"
+          },
+          {
+            "id": "route",
+            "text": "Новый маршрут"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "trap",
+        "explanation": "Меньше ручного кода."
+      }
+    },
+    {
+      "slug": "rp-event",
+      "type": "quiz.single_choice",
+      "title": "Тип события",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-project"
+      ],
+      "presentation": {
+        "question": "Какой тип у события onChange поля input?",
+        "options": [
+          {
+            "id": "change",
+            "text": "`React.ChangeEvent<HTMLInputElement>`"
+          },
+          {
+            "id": "mouse",
+            "text": "`React.MouseEvent`"
+          },
+          {
+            "id": "any",
+            "text": "`any`"
+          },
+          {
+            "id": "string",
+            "text": "`string`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "change",
+        "explanation": "Тогда e.target.value — строка."
+      }
+    },
+    {
+      "slug": "rp-generic",
+      "type": "quiz.single_choice",
+      "title": "Generic",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "react-project"
+      ],
+      "presentation": {
+        "question": "Зачем делать компонент List`<T>` обобщённым?",
+        "options": [
+          {
+            "id": "types",
+            "text": "Чтобы один компонент работал с любыми данными без потери типов"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "css",
+            "text": "Для стилей"
+          },
+          {
+            "id": "ssr",
+            "text": "Для серверного рендера"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "types",
+        "explanation": "render получит точный тип элемента."
+      }
+    },
+    {
+      "slug": "rp-check",
+      "type": "quiz.multiple_choice",
+      "title": "Перед выкладкой",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "react-project"
+      ],
+      "presentation": {
+        "question": "Что стоит проверить перед выкладкой проекта?",
+        "options": [
+          {
+            "id": "states",
+            "text": "Загрузку, ошибку, пустоту и данные на экранах"
+          },
+          {
+            "id": "keyboard",
+            "text": "Работу с клавиатуры"
+          },
+          {
+            "id": "tests",
+            "text": "Зелёные тесты и проверку типов"
+          },
+          {
+            "id": "lines",
+            "text": "Что в каждом файле ровно 100 строк"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "states",
+          "keyboard",
+          "tests"
+        ],
+        "explanation": "Число строк — не критерий качества."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "why-react",
+      "title": "Зачем нужен React",
+      "summary": "Декларативный интерфейс, компоненты и почему вручную менять DOM в больших приложениях тяжело.",
+      "chapter": "Старт React",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Начинаем курс: разбираемся, зачем интерфейсы собирают из компонентов.\",\"cast\":[\"nika\"]}\n```\n\nВ курсе JavaScript ты менял страницу вручную: нашёл элемент, поменял текст, добавил класс. Когда таких мест сотни, легко забыть обновить одно из них — и интерфейс начинает врать.\n\n```concept\n{\n  \"name\": \"Декларативный подход\",\n  \"title\": \"Описать, а не менять\",\n  \"what\": \"Ты описываешь, как интерфейс должен выглядеть при текущих данных, а React сам решает, какие изменения внести в DOM.\",\n  \"why\": \"Интерфейс всегда соответствует данным: нельзя забыть обновить счётчик в шапке, когда товар добавлен в корзину.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Компонент\",\n  \"title\": \"Кирпичик интерфейса\",\n  \"what\": \"Функция, которая получает данные и возвращает разметку: Button, CourseCard, Header. Из компонентов собирают страницы, как из деталей конструктора.\",\n  \"why\": \"Один раз сделал карточку курса — используешь её в каталоге, на главной и в поиске.\",\n  \"kind\": \"idea\"\n}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Как React обновляет экран\",\n  \"steps\": [\n    {\n      \"title\": \"Данные изменились\",\n      \"text\": \"Например, пользователь нажал «В корзину»\"\n    },\n    {\n      \"title\": \"Рендер\",\n      \"text\": \"React вызывает компоненты и получает новое описание интерфейса\"\n    },\n    {\n      \"title\": \"Сравнение\",\n      \"text\": \"Новое описание сравнивается с прошлым\"\n    },\n    {\n      \"title\": \"Обновление DOM\",\n      \"text\": \"В браузере меняется только то, что действительно изменилось\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Экосистема\",\n  \"title\": \"Почему React\",\n  \"what\": \"Самая распространённая библиотека интерфейсов: огромное число готовых компонентов, вакансий и фреймворков поверх (Next.js, Remix). React Native переносит те же идеи на телефоны.\",\n  \"why\": \"Знания React нужны в большинстве фронтенд-вакансий.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** В React ты описываешь, как должно быть при текущих данных. Как обновить DOM, решает React."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wr-decl",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wr-component",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wr-update",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "first-project",
+      "title": "Первый проект",
+      "summary": "Создать проект на Vite, структура папок, точка входа, createRoot и режим разработки.",
+      "chapter": "Старт React",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем, зачем React, и создаём первый проект.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"npm create vite\",\n  \"title\": \"Новый проект\",\n  \"what\": \"`npm create vite@latest my-app -- --template react-ts` создаёт проект на React с TypeScript. Затем `npm install` и `npm run dev`.\",\n  \"why\": \"Через минуту в браузере работает приложение с мгновенным обновлением при сохранении.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"createRoot\",\n  \"title\": \"Точка входа\",\n  \"what\": \"`main.tsx` находит пустой `<div id=\\\"root\\\">` в index.html и отдаёт его React: всё приложение рисуется внутри.\",\n  \"why\": \"Вся страница — дерево компонентов, растущее из одного корня.\",\n  \"how\": \"import { createRoot } from \\\"react-dom/client\\\";\\nimport App from \\\"./App\\\";\\ncreateRoot(document.getElementById(\\\"root\\\")!).render(<App />);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Структура проекта\",\n  \"title\": \"src и компоненты\",\n  \"what\": \"`src/main.tsx` — вход, `src/App.tsx` — корневой компонент, `src/components/` — свои компоненты, `public/` — файлы как есть.\",\n  \"why\": \"Понятная структура помогает найти нужный компонент за секунды.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Строгий режим\",\n  \"title\": \"StrictMode\",\n  \"what\": \"`<StrictMode>` в разработке вызывает компоненты и эффекты дважды, чтобы раньше показать ошибки с побочными эффектами. В продакшене двойного вызова нет.\",\n  \"why\": \"Двойной console.log в разработке — это не ошибка, а проверка.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Фреймворки\",\n  \"title\": \"Когда нужен Next.js\",\n  \"what\": \"Vite — для приложений, которые работают в браузере. Для сайтов, где важны поиск и первая загрузка, React используют внутри фреймворка: Next.js, Remix.\",\n  \"why\": \"Начинают с Vite, чтобы понять сам React без лишних слоёв.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Учебный проект — `npm create vite` с шаблоном react-ts. Двойной вызов в разработке — работа StrictMode."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fp-root",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fp-strict",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fp-vite",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "devtools-react",
+      "title": "Как смотреть на приложение",
+      "summary": "React Developer Tools, дерево компонентов, props и state в инспекторе и подсветка рендеров.",
+      "chapter": "Старт React",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Создали проект и знакомимся с инструментом, который показывает приложение изнутри.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"React Developer Tools\",\n  \"title\": \"Расширение браузера\",\n  \"what\": \"Добавляет в DevTools вкладки Components и Profiler: дерево компонентов, их props, state и хуки.\",\n  \"why\": \"Видно, какие данные получил компонент, без единого console.log.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Подсветка рендеров\",\n  \"title\": \"Highlight updates\",\n  \"what\": \"Настройка в Components подсвечивает на странице компоненты, которые перерисовались.\",\n  \"why\": \"Сразу заметно, если при вводе одной буквы перерисовывается вся страница.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Profiler\",\n  \"title\": \"Сколько стоит рендер\",\n  \"what\": \"Записывает взаимодействие и показывает, какие компоненты сколько времени рендерились и почему.\",\n  \"why\": \"Медленное место ищется по данным, а не по догадкам — об этом глава про производительность.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Компонент ведёт себя странно — открой Components и посмотри его props и state."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dv-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dv-highlight",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dv-prof",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "jsx",
+      "title": "JSX",
+      "summary": "Разметка внутри JavaScript, выражения в фигурных скобках, className, один корень и фрагменты.",
+      "chapter": "JSX и компоненты",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Создали проект и учимся главному синтаксису React — JSX.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"JSX\",\n  \"title\": \"HTML в JavaScript\",\n  \"what\": \"JSX выглядит как HTML, но это JavaScript: сборщик превращает `<h1>Привет</h1>` в вызов функции, создающей элемент.\",\n  \"why\": \"Разметка и логика компонента живут рядом и проверяются вместе.\",\n  \"how\": \"function Hello() {\\n  return <h1 className=\\\"title\\\">Привет, React!</h1>;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Фигурные скобки\",\n  \"title\": \"Выражения в разметке\",\n  \"what\": \"`{выражение}` вставляет значение JavaScript: переменную, вызов функции, расчёт. Внутри — выражения, но не инструкции вроде if или for.\",\n  \"why\": \"Данные попадают в интерфейс без ручного обновления DOM.\",\n  \"how\": \"const user = { name: \\\"Аня\\\", lessons: 12 };\\nreturn <p>{user.name} прошла {user.lessons} уроков</p>;\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Отличия от HTML\",\n  \"title\": \"className и camelCase\",\n  \"what\": \"`class` пишется `className`, `for` — `htmlFor`, атрибуты в camelCase: `onClick`, `tabIndex`. Пустые теги закрываются: `<img />`, `<br />`.\",\n  \"why\": \"Большинство ошибок новичков в JSX — именно эти отличия.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Один корень и фрагмент\",\n  \"title\": \"<>…</>\",\n  \"what\": \"Компонент возвращает один корневой элемент. Если обёртка не нужна, используют фрагмент `<>…</>` — он не появится в DOM.\",\n  \"why\": \"Не нужно засорять страницу лишними div.\",\n  \"how\": \"return (\\n  <>\\n    <h2>Курсы</h2>\\n    <CourseList />\\n  </>\\n);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Безопасный вывод\",\n  \"title\": \"Экранирование\",\n  \"what\": \"Текст в `{}` React экранирует: строка `<script>` выведется как текст, а не выполнится.\",\n  \"why\": \"Защита от XSS по умолчанию. Опасный путь — dangerouslySetInnerHTML — назван так нарочно.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** В JSX: `className`, camelCase-атрибуты, закрытые теги и один корень (или фрагмент)."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "jx-class",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "jx-expr",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "jx-xss",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "components",
+      "title": "Компоненты",
+      "summary": "Функция-компонент, имя с большой буквы, вложенность, файлы и экспорт.",
+      "chapter": "JSX и компоненты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем JSX и выносим его в переиспользуемые компоненты.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Функция-компонент\",\n  \"title\": \"Имя с большой буквы\",\n  \"what\": \"Компонент — функция, возвращающая JSX. Имя пишут с большой буквы: `<CourseCard />`. С маленькой React решит, что это HTML-тег.\",\n  \"why\": \"Одна функция — один кусок интерфейса.\",\n  \"how\": \"function CourseCard() {\\n  return (\\n    <article className=\\\"card\\\">\\n      <h3>HTML с нуля</h3>\\n    </article>\\n  );\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Вложенность\",\n  \"title\": \"Дерево компонентов\",\n  \"what\": \"Компоненты используют друг друга: App рисует Header, CourseList и Footer, а CourseList — несколько CourseCard.\",\n  \"why\": \"Сложная страница раскладывается на простые части.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Один компонент — один файл\",\n  \"title\": \"Организация\",\n  \"what\": \"Обычно каждый заметный компонент лежит в своём файле с тем же именем и экспортируется: `export function CourseCard`.\",\n  \"why\": \"Компонент легко найти, переиспользовать и протестировать.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Чистота\",\n  \"title\": \"Компонент как функция\",\n  \"what\": \"Компонент не должен менять внешние переменные во время рендера: при одних и тех же входных данных — одинаковый результат.\",\n  \"why\": \"React может вызывать компоненты сколько угодно раз; побочные эффекты при рендере дают непредсказуемые ошибки.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Компонент — функция с большой буквы, без побочных эффектов при рендере."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-case",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-pure",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-tree",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "styling",
+      "title": "Стили компонентов",
+      "summary": "Глобальный CSS, CSS-модули, инлайн-стили style={{}} и Tailwind.",
+      "chapter": "JSX и компоненты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Собираем компоненты и придаём им внешний вид.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"CSS-модули\",\n  \"title\": \"Классы без конфликтов\",\n  \"what\": \"Файл `Card.module.css` импортируется как объект: `styles.card`. Сборщик делает имена классов уникальными.\",\n  \"why\": \"Класс .title в двух компонентах не конфликтует.\",\n  \"how\": \"import styles from \\\"./Card.module.css\\\";\\nreturn <article className={styles.card}>…</article>;\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Инлайн-стиль\",\n  \"title\": \"style={{ }}\",\n  \"what\": \"Атрибут style принимает объект с camelCase-свойствами: `style={{ backgroundColor: color }}`. Двойные скобки — выражение плюс объект.\",\n  \"why\": \"Удобно для значений, вычисленных в коде, например цвета персонажа.\",\n  \"how\": \"<div style={{ width: `${progress}%` }} />\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Tailwind CSS\",\n  \"title\": \"Классы-утилиты\",\n  \"what\": \"Стили пишут готовыми классами прямо в разметке: `className=\\\"p-4 rounded-lg bg-zinc-900\\\"`.\",\n  \"why\": \"Быстро и без переключения между файлами; популярен в новых проектах.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Условные классы\",\n  \"title\": \"Активное состояние\",\n  \"what\": \"Класс собирают из условий: `className={isActive ? styles.active : undefined}` или утилитой clsx.\",\n  \"why\": \"Внешний вид следует за состоянием компонента автоматически.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Компоненту — свой CSS-модуль. Вычисляемые значения — через style, остальное — классами."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sy-module",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sy-inline",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sy-cond",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "props",
+      "title": "Props: данные в компонент",
+      "summary": "Передать данные компоненту, деструктуризация, значения по умолчанию и типы props.",
+      "chapter": "Props и композиция",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Стилизуем компоненты и учимся передавать им данные.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Props\",\n  \"title\": \"Атрибуты компонента\",\n  \"what\": \"Данные передают как атрибуты: `<CourseCard title=\\\"HTML\\\" lessons={70} />`. Компонент получает их объектом и обычно сразу деструктурирует.\",\n  \"why\": \"Одна карточка показывает любой курс.\",\n  \"how\": \"function CourseCard({ title, lessons }: { title: string; lessons: number }) {\\n  return <h3>{title} · {lessons} уроков</h3>;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Только для чтения\",\n  \"title\": \"Props не меняют\",\n  \"what\": \"Компонент не изменяет свои props: они принадлежат родителю. Нужно менять — это уже состояние.\",\n  \"why\": \"Данные текут предсказуемо: сверху вниз.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Значение по умолчанию\",\n  \"title\": \"В деструктуризации\",\n  \"what\": \"`function Button({ size = \\\"md\\\" })` — если size не передан, будет \\\"md\\\".\",\n  \"why\": \"Компонент работает без лишних атрибутов в простых случаях.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Типы props\",\n  \"title\": \"TypeScript\",\n  \"what\": \"Props описывают типом: `type Props = { title: string; onSelect?: (id: string) => void }`. Редактор подсказывает атрибуты при использовании.\",\n  \"why\": \"Опечатка в имени атрибута или неверный тип — ошибка ещё в редакторе.\",\n  \"how\": \"type Props = { title: string; lessons: number; level?: \\\"easy\\\" | \\\"hard\\\" };\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Данные — через props, сверху вниз. Компонент свои props только читает."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pp-pass",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pp-mutate",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pp-default",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "children-composition",
+      "title": "children и композиция",
+      "summary": "Вложенное содержимое через children, компоненты-обёртки и слоты вместо наследования.",
+      "chapter": "Props и композиция",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Передаём данные через props и учимся вкладывать компоненты друг в друга.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"children\",\n  \"title\": \"Что внутри тегов\",\n  \"what\": \"Всё, что написано между открывающим и закрывающим тегом компонента, приходит в prop children.\",\n  \"why\": \"Обёртки вроде Card или Modal не знают, что внутри, и подходят для любого содержимого.\",\n  \"how\": \"function Card({ children }: { children: React.ReactNode }) {\\n  return <div className=\\\"card\\\">{children}</div>;\\n}\\n<Card><h3>HTML</h3><p>70 уроков</p></Card>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Слоты\",\n  \"title\": \"Несколько мест для содержимого\",\n  \"what\": \"Кроме children можно передать разметку в обычные props: `<Layout header={<Header />} aside={<Program />}>`.\",\n  \"why\": \"Макет задаёт расположение, а содержимое решает тот, кто его использует.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Композиция вместо наследования\",\n  \"title\": \"Собирать, а не расширять\",\n  \"what\": \"В React не наследуют компоненты друг от друга. Специализированный компонент оборачивает общий: `DangerButton` рисует `<Button variant=\\\"danger\\\">`.\",\n  \"why\": \"Компоненты остаются маленькими и независимыми.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Обёртка — через `children`, несколько областей — через props-слоты."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-inherit",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-slot",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "data-flow",
+      "title": "Поток данных сверху вниз",
+      "summary": "Однонаправленный поток, функции в props для событий снизу вверх и проброс через уровни.",
+      "chapter": "Props и композиция",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Вкладываем компоненты и разбираемся, как данные и события ходят по дереву.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Однонаправленный поток\",\n  \"title\": \"Сверху вниз\",\n  \"what\": \"Данные передаются от родителя к детям через props. Дети не меняют данные родителя напрямую.\",\n  \"why\": \"Всегда понятно, откуда пришло значение: ищешь вверх по дереву.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"События вверх\",\n  \"title\": \"Функция в props\",\n  \"what\": \"Чтобы ребёнок сообщил о событии, родитель передаёт ему функцию: `<CourseCard onSelect={setCurrent} />`, а ребёнок её вызывает.\",\n  \"why\": \"Данные остаются у родителя, а дети только сообщают о действиях.\",\n  \"how\": \"function CourseCard({ slug, onSelect }: { slug: string; onSelect: (s: string) => void }) {\\n  return <button onClick={() => onSelect(slug)}>Выбрать</button>;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проброс props\",\n  \"title\": \"Prop drilling\",\n  \"what\": \"Когда значение нужно глубоко внизу, его передают через несколько промежуточных компонентов, которым оно не нужно.\",\n  \"why\": \"Два-три уровня — нормально. Глубже — признак, что пора использовать контекст (глава 8).\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Данные — вниз через props, события — вверх через функции из props."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "df-up",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "df-flow",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "df-drill",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "use-state",
+      "title": "useState",
+      "summary": "Состояние компонента, функция обновления, перерисовка и почему обычная переменная не работает.",
+      "chapter": "Состояние",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем поток данных и даём компонентам собственную память.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"useState\",\n  \"title\": \"Память компонента\",\n  \"what\": \"`const [count, setCount] = useState(0)` — значение и функция, которая его меняет. Вызов setCount сообщает React: перерисуй компонент с новым значением.\",\n  \"why\": \"Интерфейс сам обновляется при изменении данных.\",\n  \"how\": \"function Counter() {\\n  const [count, setCount] = useState(0);\\n  return <button onClick={() => setCount(count + 1)}>Нажато: {count}</button>;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Почему не переменная\",\n  \"title\": \"let count не работает\",\n  \"what\": \"Обычная переменная создаётся заново при каждом рендере, а её изменение не сообщает React, что пора перерисовать.\",\n  \"why\": \"Частая первая ошибка: число меняется в консоли, но не на экране.\",\n  \"kind\": \"idea\"\n}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Что происходит после setCount\",\n  \"steps\": [\n    {\n      \"title\": \"setCount(1)\",\n      \"text\": \"React запоминает новое значение\"\n    },\n    {\n      \"title\": \"Рендер\",\n      \"text\": \"Компонент вызывается заново, count = 1\"\n    },\n    {\n      \"title\": \"Обновление\",\n      \"text\": \"В DOM меняется только текст кнопки\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Хуки\",\n  \"title\": \"Правила хуков\",\n  \"what\": \"Функции use… вызывают только на верхнем уровне компонента: не внутри if, циклов и вложенных функций.\",\n  \"why\": \"React опознаёт состояние по порядку вызовов хуков; условный вызов ломает этот порядок.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Данные, которые меняются и видны на экране, — в `useState`. Хуки — только на верхнем уровне."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "us-var",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "us-rules",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "us-set",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "state-updates",
+      "title": "Обновление состояния правильно",
+      "summary": "Функциональное обновление, асинхронность set, неизменяемость объектов и массивов.",
+      "chapter": "Состояние",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем хранить состояние и учимся менять его так, чтобы React это заметил.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Функциональное обновление\",\n  \"title\": \"setCount(c => c + 1)\",\n  \"what\": \"Если новое значение зависит от старого, передают функцию: React подставит актуальное значение.\",\n  \"why\": \"Несколько обновлений подряд не потеряются.\",\n  \"how\": \"setCount((c) => c + 1);\\nsetCount((c) => c + 1); // +2, а не +1\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Новое значение — на следующем рендере\",\n  \"title\": \"set не меняет сразу\",\n  \"what\": \"После setCount(5) переменная count в текущем вызове функции остаётся старой. Новое значение будет при следующем рендере.\",\n  \"why\": \"console.log сразу после set показывает старое значение — это нормально.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Неизменяемость\",\n  \"title\": \"Новый объект вместо правки\",\n  \"what\": \"Состояние-объект или массив не меняют на месте. Создают новый: `setUser({ ...user, name })`, `setItems([...items, item])`, `items.filter(...)`.\",\n  \"why\": \"React сравнивает ссылки: изменённый на месте объект — та же ссылка, и экран не обновится.\",\n  \"how\": \"setCart((cart) => [...cart, course]);\\nsetCart((cart) => cart.filter((c) => c.slug !== slug));\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Зависит от прошлого — передай функцию в set. Объекты и массивы — только новые копии."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "su-push",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "su-fn",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "su-log",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "lifting-derived",
+      "title": "Где хранить состояние",
+      "summary": "Подъём состояния к общему родителю, вычисляемые значения без лишнего state и минимум состояния.",
+      "chapter": "Состояние",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Меняем состояние правильно и решаем, где ему жить.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Подъём состояния\",\n  \"title\": \"Lifting state up\",\n  \"what\": \"Если два компонента должны видеть одно и то же значение, его переносят в ближайшего общего родителя и передают обоим через props.\",\n  \"why\": \"Один источник правды: фильтр и список всегда согласованы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Вычисляемое значение\",\n  \"title\": \"Не храни то, что можно посчитать\",\n  \"what\": \"Количество товаров, сумма корзины, отфильтрованный список — считают при рендере из имеющегося состояния, а не хранят отдельно.\",\n  \"why\": \"Не бывает рассинхронизации, когда список обновили, а счётчик забыли.\",\n  \"how\": \"const total = cart.reduce((sum, c) => sum + c.price, 0);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Минимальное состояние\",\n  \"title\": \"Только то, что меняется\",\n  \"what\": \"Состояние — минимальный набор данных, из которого выводится всё остальное. Props и вычисления в state не копируют.\",\n  \"why\": \"Меньше состояния — меньше ошибок «показывает старое».\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Общее — в общего родителя. Что можно посчитать — считай при рендере."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lf-lift",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lf-derived",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lf-min",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "events",
+      "title": "События",
+      "summary": "onClick и другие обработчики, передача функции а не вызова, объект события и preventDefault.",
+      "chapter": "События и формы",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проектируем состояние и связываем его с действиями пользователя.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Обработчик события\",\n  \"title\": \"onClick={функция}\",\n  \"what\": \"Передают саму функцию: `onClick={handleClick}` или стрелку `onClick={() => select(id)}`. Не вызов: `onClick={handleClick()}` выполнится сразу при рендере.\",\n  \"why\": \"Самая частая ошибка: функция срабатывает при загрузке, а не по клику.\",\n  \"how\": \"<button onClick={() => addToCart(course)}>В корзину</button>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Объект события\",\n  \"title\": \"e\",\n  \"what\": \"Обработчик получает событие: `e.target`, `e.key`, `e.preventDefault()`. Это обёртка React над событием браузера с тем же API.\",\n  \"why\": \"Знания событий из курса JavaScript работают и здесь.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Имена обработчиков\",\n  \"title\": \"handle и on\",\n  \"what\": \"Внутри компонента функцию называют `handleClick`, а prop для неё снаружи — `onClick`.\",\n  \"why\": \"Сразу видно, где обработчик определён, а где передан.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** В onClick — функция, а не её вызов. Аргументы — через стрелку."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ev-call",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ev-arg",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ev-prevent",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "controlled",
+      "title": "Управляемые поля",
+      "summary": "value и onChange, состояние формы одним объектом, чекбоксы и select.",
+      "chapter": "События и формы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Обрабатываем события и подключаем к состоянию поля ввода.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Управляемое поле\",\n  \"title\": \"value + onChange\",\n  \"what\": \"Значение поля берётся из состояния, а каждое изменение записывается обратно: `<input value={email} onChange={(e) => setEmail(e.target.value)} />`.\",\n  \"why\": \"Состояние всегда знает, что введено: можно проверять, форматировать, блокировать кнопку.\",\n  \"how\": \"const [email, setEmail] = useState(\\\"\\\");\\n<input value={email} onChange={(e) => setEmail(e.target.value)} />\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Форма одним объектом\",\n  \"title\": \"name и обновление поля\",\n  \"what\": \"Для многих полей — один объект состояния и общий обработчик по атрибуту name.\",\n  \"why\": \"Не нужно заводить отдельный useState на каждое поле.\",\n  \"how\": \"const [form, setForm] = useState({ name: \\\"\\\", email: \\\"\\\" });\\nconst onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Чекбокс и select\",\n  \"title\": \"checked и value\",\n  \"what\": \"У чекбокса связывают `checked` и `e.target.checked`; у select — `value` как у input.\",\n  \"why\": \"Все поля формы работают по одному принципу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Неуправляемое поле\",\n  \"title\": \"defaultValue и FormData\",\n  \"what\": \"Иногда поле не связывают с состоянием: задают `defaultValue`, а значения читают при отправке через `new FormData(form)`.\",\n  \"why\": \"Проще для больших форм без живой проверки.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Нужна живая проверка — управляемое поле. Просто отправить — FormData при submit."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ct-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ct-frozen",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ct-check",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "submit-validate",
+      "title": "Отправка и проверка формы",
+      "summary": "onSubmit, preventDefault, проверка полей, сообщения об ошибках и доступность формы.",
+      "chapter": "События и формы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Связали поля с состоянием и доводим форму до отправки.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"onSubmit\",\n  \"title\": \"Отправка формы\",\n  \"what\": \"Обработчик вешают на форму, а не на кнопку: так работает и Enter. Первым делом — `e.preventDefault()`, чтобы страница не перезагрузилась.\",\n  \"why\": \"Форма отправляется одинаково с клавиатуры и мышью.\",\n  \"how\": \"<form onSubmit={(e) => { e.preventDefault(); save(form); }}>\\n  …\\n  <button type=\\\"submit\\\">Сохранить</button>\\n</form>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проверка\",\n  \"title\": \"Перед отправкой\",\n  \"what\": \"Ошибки собирают в объект `{ email: \\\"Неверный адрес\\\" }` и показывают рядом с полями. Для сложных форм используют react-hook-form со схемой Zod.\",\n  \"why\": \"Пользователь видит, что исправить, до запроса на сервер. Сервер всё равно проверяет снова.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Доступная форма\",\n  \"title\": \"label и aria\",\n  \"what\": \"У каждого поля — `<label htmlFor>`; ошибка связана с полем через `aria-describedby`, а поле с ошибкой — `aria-invalid`.\",\n  \"why\": \"Скринридер прочитает, что за поле и что с ним не так.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Состояние отправки\",\n  \"title\": \"Кнопка не жмётся дважды\",\n  \"what\": \"Во время запроса кнопка показывает «Сохраняем…» и становится disabled.\",\n  \"why\": \"Двойная отправка заказа или комментария исчезает.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** onSubmit на форме + preventDefault, ошибки рядом с полями, кнопка заблокирована на время запроса."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sv-where",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sv-reload",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sv-a11y",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "lists-keys",
+      "title": "Списки и ключи",
+      "summary": "Рендер массива через map, проп key, почему индекс — плохой ключ и фильтрация списка.",
+      "chapter": "Списки и условия",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Отправляем формы и выводим на экран списки данных.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"map в JSX\",\n  \"title\": \"Массив в разметку\",\n  \"what\": \"`{courses.map((c) => <CourseCard key={c.slug} course={c} />)}` превращает массив данных в массив элементов.\",\n  \"why\": \"Каталог из 6 или 600 курсов выводится одной строкой.\",\n  \"how\": \"<ul>\\n  {courses.map((course) => (\\n    <li key={course.slug}>{course.title}</li>\\n  ))}\\n</ul>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"key\",\n  \"title\": \"Паспорт элемента\",\n  \"what\": \"Каждому элементу списка нужен уникальный среди соседей и стабильный ключ — обычно id или slug из данных.\",\n  \"why\": \"По ключу React понимает, какой элемент добавили, удалили или переставили, и сохраняет их состояние.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Индекс — плохой ключ\",\n  \"title\": \"Когда список меняется\",\n  \"what\": \"`key={index}` ломается при удалении и сортировке: состояние (например, введённый текст) переезжает к соседнему элементу.\",\n  \"why\": \"Классическая ошибка «удалил вторую строку — пропал текст в третьей».\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Фильтр и сортировка\",\n  \"title\": \"Перед map\",\n  \"what\": \"Отбирают и сортируют массив перед выводом: `courses.filter(c => c.free).sort(byTitle).map(...)`. Не меняя исходный массив (sort — на копии).\",\n  \"why\": \"Список на экране всегда выводится из состояния, без отдельных копий.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Ключ — стабильный id из данных, не индекс. Фильтруй и сортируй копию перед map."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lk-key",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lk-random",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lk-index",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "conditional",
+      "title": "Условный рендер",
+      "summary": "&&, тернарный оператор, ранний return и ловушка с нулём.",
+      "chapter": "Списки и условия",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Выводим списки и учимся показывать или прятать части интерфейса.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"&&\",\n  \"title\": \"Показать, если\",\n  \"what\": \"`{isAdmin && <AdminPanel />}` — панель появится только для администратора.\",\n  \"why\": \"Короткая запись для «есть или нет».\",\n  \"how\": \"{cart.length > 0 && <CartBadge count={cart.length} />}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тернарный оператор\",\n  \"title\": \"Или то, или другое\",\n  \"what\": \"`{user ? <Profile /> : <LoginButton />}` — один из двух вариантов.\",\n  \"why\": \"Кнопка входа и профиль не показываются одновременно.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ловушка с нулём\",\n  \"title\": \"0 на экране\",\n  \"what\": \"`{items.length && <List />}` при пустом списке выведет «0»: React рисует число 0. Пишут сравнение: `items.length > 0 &&`.\",\n  \"why\": \"Загадочный 0 в углу страницы — почти всегда эта ловушка.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ранний return\",\n  \"title\": \"Особые случаи сначала\",\n  \"what\": \"В начале компонента обрабатывают особые случаи: `if (!course) return <NotFound />;` — дальше код работает с гарантированными данными.\",\n  \"why\": \"Основная разметка не тонет в условиях.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Условие с числом — всегда сравнение (`> 0`), иначе на экране появится 0."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cd-zero",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cd-either",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cd-early",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "ui-states",
+      "title": "Состояния интерфейса",
+      "summary": "Загрузка, ошибка, пусто и данные: четыре состояния любого экрана и скелетоны.",
+      "chapter": "Списки и условия",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Владеем условным рендером и продумываем все состояния экрана.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Четыре состояния\",\n  \"title\": \"Не только «данные есть»\",\n  \"what\": \"У каждого экрана с данными: загрузка, ошибка (с кнопкой «Повторить»), пусто (с подсказкой, что делать) и данные.\",\n  \"why\": \"Экран, продуманный только для удачного случая, выглядит сломанным при медленной сети.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Скелетон\",\n  \"title\": \"Форма вместо спиннера\",\n  \"what\": \"Серые блоки на месте будущего контента показывают, что сейчас появится, и не дают странице прыгать.\",\n  \"why\": \"Загрузка ощущается быстрее, а вёрстка не сдвигается (CLS).\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Пустое состояние\",\n  \"title\": \"Что делать дальше\",\n  \"what\": \"Пустой список — повод подсказать действие: «Курсов пока нет — начните с ПК».\",\n  \"why\": \"Новый пользователь не видит пустую страницу и знает, куда нажать.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Проверь каждый экран в четырёх состояниях: загрузка, ошибка, пусто, данные."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "us-states",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "us-skeleton",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "us-empty",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "use-effect",
+      "title": "useEffect",
+      "summary": "Синхронизация с внешним миром, массив зависимостей, очистка и когда эффект не нужен.",
+      "chapter": "Эффекты и данные",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Продумали состояния экрана и учимся общаться с внешним миром.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"useEffect\",\n  \"title\": \"После рендера\",\n  \"what\": \"`useEffect(() => { … }, [deps])` выполняет код после того, как React обновил экран: подписаться на событие, запустить таймер, синхронизировать заголовок вкладки.\",\n  \"why\": \"Побочные эффекты уходят из рендера туда, где им место.\",\n  \"how\": \"useEffect(() => {\\n  document.title = `Корзина (${cart.length})`;\\n}, [cart.length]);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Зависимости\",\n  \"title\": \"Когда перезапускать\",\n  \"what\": \"Массив зависимостей перечисляет значения, при изменении которых эффект выполняется снова. `[]` — один раз после появления, без массива — после каждого рендера.\",\n  \"why\": \"Забытая зависимость — эффект работает со старыми данными; линтер правилом exhaustive-deps подсказывает их.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Очистка\",\n  \"title\": \"return () => …\",\n  \"what\": \"Функция, возвращённая из эффекта, вызывается перед повторным запуском и при удалении компонента: отписаться, остановить таймер, отменить запрос.\",\n  \"why\": \"Без очистки подписки копятся и вызывают утечки.\",\n  \"how\": \"useEffect(() => {\\n  const id = setInterval(tick, 1000);\\n  return () => clearInterval(id);\\n}, []);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Эффект не нужен\",\n  \"title\": \"Вычисления и события\",\n  \"what\": \"Пересчитать значение из состояния — при рендере, без эффекта. Отреагировать на клик — в обработчике. Эффект — только для синхронизации с чем-то вне React.\",\n  \"why\": \"Лишние эффекты — главный источник лишних рендеров и запутанного кода.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Эффект — для внешнего мира, с правильными зависимостями и очисткой. Вычисления и клики — без эффектов."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ef-deps",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ef-cleanup",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ef-not",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "fetch-data",
+      "title": "Загрузка данных",
+      "summary": "Запрос в эффекте с отменой, гонки ответов и почему для данных берут TanStack Query.",
+      "chapter": "Эффекты и данные",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем эффекты и загружаем данные с сервера.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Запрос в эффекте\",\n  \"title\": \"С отменой\",\n  \"what\": \"Запрос запускают в эффекте и отменяют в очистке через AbortController: если пользователь быстро переключил курс, старый ответ не перезапишет новый.\",\n  \"why\": \"Гонки ответов — тонкая ошибка, которую видят только на медленной сети.\",\n  \"how\": \"useEffect(() => {\\n  const ctrl = new AbortController();\\n  fetch(`/api/courses/${slug}`, { signal: ctrl.signal })\\n    .then((r) => r.json())\\n    .then(setCourse)\\n    .catch(() => {});\\n  return () => ctrl.abort();\\n}, [slug]);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Гонка ответов\",\n  \"title\": \"Race condition\",\n  \"what\": \"Запрос A ушёл раньше B, но ответ A пришёл позже — на экране окажутся старые данные. Отмена или проверка актуальности решает это.\",\n  \"why\": \"Особенно часто в поиске по мере ввода.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"TanStack Query\",\n  \"title\": \"Данные сервера — отдельно\",\n  \"what\": \"Библиотека `useQuery({ queryKey: [\\\"course\\\", slug], queryFn })` сама кэширует, повторяет при ошибке, обновляет в фоне и убирает гонки.\",\n  \"why\": \"Состояние загрузки, ошибки и кэш — без десятков строк эффектов.\",\n  \"how\": \"const { data, isPending, error } = useQuery({\\n  queryKey: [\\\"course\\\", slug],\\n  queryFn: () => fetchCourse(slug)\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Данные во фреймворке\",\n  \"title\": \"Загрузка на сервере\",\n  \"what\": \"Next.js и другие фреймворки загружают данные на сервере ещё до отправки страницы — эффект для первой загрузки не нужен.\",\n  \"why\": \"Страница приходит уже с данными: быстрее и лучше для поисковиков.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Данные сервера — через TanStack Query или загрузку во фреймворке. Свой fetch в эффекте — только с отменой."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fd-race",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fd-abort",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fd-query",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "refs",
+      "title": "useRef и доступ к DOM",
+      "summary": "Ссылка на элемент, фокус и прокрутка, хранение значений без перерисовки.",
+      "chapter": "Эффекты и данные",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Загружаем данные и разбираемся, когда нужен прямой доступ к элементам.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Ссылка на элемент\",\n  \"title\": \"ref={inputRef}\",\n  \"what\": \"`const inputRef = useRef<HTMLInputElement>(null)` и `<input ref={inputRef} />` — затем `inputRef.current?.focus()`.\",\n  \"why\": \"Поставить фокус, прокрутить к элементу, измерить размер — то, что не выразить через состояние.\",\n  \"how\": \"const searchRef = useRef<HTMLInputElement>(null);\\n<button onClick={() => searchRef.current?.focus()}>Искать</button>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Значение без перерисовки\",\n  \"title\": \"ref как ящик\",\n  \"what\": \"`useRef(0)` хранит значение между рендерами, и его изменение не вызывает перерисовку: id таймера, предыдущее значение, флаг.\",\n  \"why\": \"Не нужно состояние там, где экран от значения не зависит.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не злоупотреблять\",\n  \"title\": \"DOM через ref — исключение\",\n  \"what\": \"Менять текст и классы через ref нельзя: React перезапишет их при следующем рендере. Для того, что видно, — состояние.\",\n  \"why\": \"Ref — запасной выход, а не основной путь.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Фокус, прокрутка, размеры — ref. Всё, что влияет на экран, — состояние."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rf-focus",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rf-rerender",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rf-text",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "context",
+      "title": "Контекст",
+      "summary": "createContext, Provider и useContext: данные для всего поддерева без проброса через props.",
+      "chapter": "Контекст и свои хуки",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем ref и избавляемся от проброса props через десяток уровней.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Контекст\",\n  \"title\": \"Данные для поддерева\",\n  \"what\": \"`const ThemeContext = createContext(\\\"dark\\\")`, затем `<ThemeContext value={theme}>…</ThemeContext>` — и любой потомок читает значение через `useContext(ThemeContext)`.\",\n  \"why\": \"Тема, текущий пользователь, язык доступны везде без проброса.\",\n  \"how\": \"const UserContext = createContext<User | null>(null);\\nfunction Avatar() {\\n  const user = useContext(UserContext);\\n  return <img src={user?.avatar} alt=\\\"\\\" />;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Когда нужен контекст\",\n  \"title\": \"Глобальное, но редко меняется\",\n  \"what\": \"Тема, язык, текущий пользователь, настройки. Не нужен для данных, которые нужны двум соседям — их проще поднять в родителя.\",\n  \"why\": \"Контекст — не замена всем props.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Цена контекста\",\n  \"title\": \"Перерисовка потребителей\",\n  \"what\": \"При изменении значения перерисовываются все компоненты, читающие контекст. Часто меняющиеся данные выносят в отдельный контекст или в менеджер состояния.\",\n  \"why\": \"Корзина в одном контексте с темой заставит перерисовываться всё при каждом добавлении товара.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Контекст — для редко меняющегося общего: тема, пользователь, язык."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cx-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cx-read",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cx-cost",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "reducer",
+      "title": "useReducer",
+      "summary": "Состояние со сложной логикой: действия, редьюсер и когда он лучше useState.",
+      "chapter": "Контекст и свои хуки",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Делимся состоянием через контекст и упорядочиваем сложную логику его изменений.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Редьюсер\",\n  \"title\": \"Состояние + действие = новое состояние\",\n  \"what\": \"`function cartReducer(state, action)` возвращает новое состояние для действия `{ type: \\\"add\\\", course }`. В компоненте: `const [cart, dispatch] = useReducer(cartReducer, [])`.\",\n  \"why\": \"Вся логика изменений в одном месте и легко тестируется отдельно.\",\n  \"how\": \"function cartReducer(cart, action) {\\n  switch (action.type) {\\n    case \\\"add\\\": return [...cart, action.course];\\n    case \\\"remove\\\": return cart.filter((c) => c.slug !== action.slug);\\n    default: return cart;\\n  }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Когда редьюсер\",\n  \"title\": \"Много связанных изменений\",\n  \"what\": \"Когда разные события меняют одно состояние по-разному (добавить, удалить, очистить, применить промокод) — редьюсер читается лучше, чем пять set-функций.\",\n  \"why\": \"Как в курсе TypeScript: действия удобно описать размеченным объединением.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Контекст + редьюсер\",\n  \"title\": \"Мини-хранилище\",\n  \"what\": \"Состояние из useReducer и dispatch кладут в контекст — получается простое глобальное хранилище без библиотек.\",\n  \"why\": \"Для многих приложений этого хватает вместо Redux.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Много способов менять одно состояние — useReducer. Нужно всем — положи в контекст."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rd-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rd-when",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rd-send",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "custom-hooks",
+      "title": "Свои хуки",
+      "summary": "Вынести логику с хуками в функцию use…, переиспользование и примеры useLocalStorage и useDebounce.",
+      "chapter": "Контекст и свои хуки",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Управляем сложным состоянием и учимся упаковывать логику в свои хуки.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Свой хук\",\n  \"title\": \"Функция use…\",\n  \"what\": \"Функция, имя которой начинается с use и внутри которой вызываются другие хуки. Компоненты делят логику, а не состояние: у каждого вызова своё.\",\n  \"why\": \"Одна реализация «загрузить, обработать ошибку, повторить» — во всех компонентах.\",\n  \"how\": \"function useOnline() {\\n  const [online, setOnline] = useState(navigator.onLine);\\n  useEffect(() => {\\n    const update = () => setOnline(navigator.onLine);\\n    window.addEventListener(\\\"online\\\", update);\\n    window.addEventListener(\\\"offline\\\", update);\\n    return () => {\\n      window.removeEventListener(\\\"online\\\", update);\\n      window.removeEventListener(\\\"offline\\\", update);\\n    };\\n  }, []);\\n  return online;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"useDebounce\",\n  \"title\": \"Подождать паузу\",\n  \"what\": \"Хук возвращает значение, обновлённое только после паузы во вводе. Поиск отправляет запрос, когда пользователь перестал печатать.\",\n  \"why\": \"Вместо запроса на каждую букву — один запрос.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"useLocalStorage\",\n  \"title\": \"Состояние, которое помнит\",\n  \"what\": \"Как useState, но значение сохраняется в localStorage и восстанавливается при следующем визите (в try/catch на случай запрета).\",\n  \"why\": \"Выбранная тема и черновик формы переживают перезагрузку.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Повторяется связка хуков — вынеси в `useЧтоТо`. Имя обязательно начинается с use."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-name",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-share",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-debounce",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "router",
+      "title": "Маршруты",
+      "summary": "Клиентская маршрутизация, React Router, Link, параметры пути и вложенные макеты.",
+      "chapter": "Маршруты и структура приложения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем свои хуки и превращаем приложение в несколько страниц.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Клиентская маршрутизация\",\n  \"title\": \"Без перезагрузки\",\n  \"what\": \"Приложение меняет адрес в строке браузера и показывает другой компонент, не загружая страницу заново. История «Назад» работает как обычно.\",\n  \"why\": \"Переходы мгновенные, а состояние приложения сохраняется.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"React Router\",\n  \"title\": \"Маршрут — компонент\",\n  \"what\": \"Маршруты описывают путём и элементом: `{ path: \\\"/courses/:slug\\\", element: <CoursePage /> }`. Ссылки — `<Link to=\\\"/courses/html\\\">`, параметры — `useParams()`.\",\n  \"why\": \"Стандартная библиотека маршрутов для приложений на Vite.\",\n  \"how\": \"const { slug } = useParams();\\n<Link to={`/courses/${slug}/lessons/1`}>Начать</Link>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Вложенные маршруты\",\n  \"title\": \"Общий макет\",\n  \"what\": \"Родительский маршрут рисует шапку и меню, а на месте `<Outlet />` — дочернюю страницу.\",\n  \"why\": \"Макет не перерисовывается при переходах внутри раздела.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Link вместо a\",\n  \"title\": \"Не перезагружать\",\n  \"what\": \"`<a href>` перезагрузит всё приложение; `<Link>` перейдёт внутри. Для внешних сайтов — обычный `<a>`.\",\n  \"why\": \"Состояние и кэш данных не теряются при переходе.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Внутри приложения — `<Link>`, параметры пути — `useParams`, общий макет — `<Outlet />`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rt-link",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rt-param",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rt-outlet",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "url-state",
+      "title": "Адрес как состояние",
+      "summary": "Фильтры и вкладки в query-параметрах, useSearchParams и почему это удобно пользователю.",
+      "chapter": "Маршруты и структура приложения",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Строим маршруты и учимся класть часть состояния прямо в адрес.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"useSearchParams\",\n  \"title\": \"Состояние в адресе\",\n  \"what\": \"`?level=easy&page=2` читают и меняют через `useSearchParams`. Фильтр меняет адрес, а список читает фильтр из адреса.\",\n  \"why\": \"Ссылкой с фильтром можно поделиться, а кнопка «Назад» возвращает прошлый фильтр.\",\n  \"how\": \"const [params, setParams] = useSearchParams();\\nconst level = params.get(\\\"level\\\") ?? \\\"all\\\";\\nsetParams({ level: \\\"easy\\\" });\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что класть в адрес\",\n  \"title\": \"Делиться и возвращаться\",\n  \"what\": \"Фильтры, сортировку, номер страницы, открытую вкладку, поисковый запрос. Не класть: черновики форм и временные состояния.\",\n  \"why\": \"Пользователь получает работающие закладки и ссылки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Состояние сервера, клиента, адреса\",\n  \"title\": \"Три вида\",\n  \"what\": \"Данные с сервера — TanStack Query, то, чем можно поделиться ссылкой, — адрес, локальное (открыт ли выпадающий список) — useState.\",\n  \"why\": \"Каждый вид данных живёт там, где ему удобнее всего.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Можно поделиться ссылкой — значит, это адрес. Пришло с сервера — кэш запросов. Остальное — useState."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "us-share",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "us-not",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "us-kinds",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "structure",
+      "title": "Структура приложения",
+      "summary": "Папки по фичам, общие компоненты, глобальное состояние: контекст, Zustand или Redux.",
+      "chapter": "Маршруты и структура приложения",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Держим состояние в нужных местах и раскладываем само приложение.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"tree\",\n  \"title\": \"Структура по фичам\",\n  \"items\": [\n    {\n      \"name\": \"src/\",\n      \"depth\": 0\n    },\n    {\n      \"name\": \"features/\",\n      \"depth\": 1,\n      \"note\": \"крупные части приложения\"\n    },\n    {\n      \"name\": \"courses/\",\n      \"depth\": 2,\n      \"note\": \"компоненты, хуки, api курсов\"\n    },\n    {\n      \"name\": \"cart/\",\n      \"depth\": 2,\n      \"note\": \"всё про корзину\"\n    },\n    {\n      \"name\": \"shared/\",\n      \"depth\": 1,\n      \"note\": \"общее: ui, утилиты\"\n    },\n    {\n      \"name\": \"app/\",\n      \"depth\": 1,\n      \"note\": \"маршруты и провайдеры\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Папки по фичам\",\n  \"title\": \"Рядом то, что меняется вместе\",\n  \"what\": \"Компоненты, хуки, запросы и тесты одной фичи лежат в одной папке, а не разбросаны по components/, hooks/, api/.\",\n  \"why\": \"Изменение корзины затрагивает одну папку.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Общие компоненты\",\n  \"title\": \"Дизайн-система\",\n  \"what\": \"Кнопки, поля, карточки — в shared/ui с едиными стилями и доступностью.\",\n  \"why\": \"Новая страница собирается из готовых деталей и выглядит единообразно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Глобальное состояние\",\n  \"title\": \"Когда нужна библиотека\",\n  \"what\": \"Контекста хватает для темы и пользователя. Для частых изменений общего состояния берут лёгкий Zustand; Redux Toolkit — в больших командах с жёсткими правилами.\",\n  \"why\": \"Не тащи тяжёлую библиотеку раньше, чем почувствуешь боль без неё.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Папки — по фичам, детали — в shared/ui, библиотеку состояния — только когда контекста стало мало."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-feature",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-global",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-shared",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "rerenders",
+      "title": "Почему компонент перерисовался",
+      "summary": "Причины рендера, рендер против обновления DOM, перенос состояния вниз и измерение Profiler.",
+      "chapter": "Производительность",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Разложили приложение по папкам и разбираемся, почему оно может тормозить.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Три причины рендера\",\n  \"title\": \"Состояние, родитель, контекст\",\n  \"what\": \"Компонент перерисовывается, когда меняется его состояние, когда перерисовался родитель или когда изменился контекст, который он читает.\",\n  \"why\": \"Зная причины, ищешь лишний рендер по цепочке вверх.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Рендер — не обновление DOM\",\n  \"title\": \"Дешевле, чем кажется\",\n  \"what\": \"Рендер — вызов функции и сравнение. В DOM попадают только реальные изменения. Большинство перерисовок незаметны.\",\n  \"why\": \"Оптимизируют то, что действительно медленно по замеру, а не всё подряд.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Состояние ниже\",\n  \"title\": \"Изолировать часто меняющееся\",\n  \"what\": \"Если поле поиска перерисовывает всю страницу при каждой букве, его состояние выносят в маленький компонент SearchBox.\",\n  \"why\": \"Часто это убирает тормоза без единого memo.\",\n  \"how\": \"function SearchBox() {\\n  const [q, setQ] = useState(\\\"\\\");\\n  return <input value={q} onChange={(e) => setQ(e.target.value)} />;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Сначала замер Profiler-ом, потом перенос состояния ниже, и только потом memo."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rr-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rr-dom",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rr-lower",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "memo",
+      "title": "memo, useMemo и useCallback",
+      "summary": "Мемоизация компонентов и значений, стабильные функции и React Compiler.",
+      "chapter": "Производительность",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем причины рендера и разбираем инструменты, которые их пропускают.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"memo\",\n  \"title\": \"Не рендерить при тех же props\",\n  \"what\": \"`export default memo(CourseCard)` — компонент пропустит рендер, если props не изменились (сравнение по ссылке).\",\n  \"why\": \"Помогает тяжёлым элементам длинных списков.\",\n  \"how\": \"const CourseCard = memo(function CourseCard({ course }: { course: Course }) {\\n  return <article>{course.title}</article>;\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"useMemo\",\n  \"title\": \"Запомнить результат\",\n  \"what\": \"`const sorted = useMemo(() => sortCourses(list), [list])` пересчитывает только при изменении list.\",\n  \"why\": \"Дорогие вычисления не повторяются на каждый рендер.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"useCallback\",\n  \"title\": \"Стабильная функция\",\n  \"what\": \"Новая стрелка при каждом рендере ломает memo у ребёнка. `useCallback(fn, deps)` сохраняет ту же функцию между рендерами.\",\n  \"why\": \"Нужен, только когда функция уходит в memo-компонент или в зависимости эффекта.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"React Compiler\",\n  \"title\": \"Мемоизация автоматически\",\n  \"what\": \"Компилятор React сам расставляет мемоизацию при сборке. В проектах с ним ручные memo, useMemo и useCallback почти не нужны.\",\n  \"why\": \"Код остаётся простым, а лишние рендеры исчезают.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Мемоизируй измеренно медленное. С React Compiler — почти никогда вручную."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mm-memo",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mm-callback",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mm-compiler",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "bundle-lists",
+      "title": "Ленивая загрузка и длинные списки",
+      "summary": "lazy и Suspense для разделения кода, виртуализация длинных списков и переходы useTransition.",
+      "chapter": "Производительность",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем мемоизацию и уменьшаем то, что загружается и рисуется.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"lazy и Suspense\",\n  \"title\": \"Код по требованию\",\n  \"what\": \"`const Editor = lazy(() => import(\\\"./Editor\\\"))` грузит тяжёлый компонент только когда он нужен; `<Suspense fallback={<Spinner />}>` показывает заглушку на время загрузки.\",\n  \"why\": \"Первая страница грузится быстрее, а редактор или 3D-сцена — потом.\",\n  \"how\": \"const Stage = lazy(() => import(\\\"./CharacterStage\\\"));\\n<Suspense fallback={<Skeleton />}>\\n  <Stage />\\n</Suspense>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Виртуализация\",\n  \"title\": \"Рисовать только видимое\",\n  \"what\": \"Для списка на тысячи строк рисуют только видимые элементы плюс небольшой запас (TanStack Virtual, react-window).\",\n  \"why\": \"Тысячи DOM-узлов больше не тормозят прокрутку на телефоне.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"useTransition\",\n  \"title\": \"Несрочное обновление\",\n  \"what\": \"`startTransition(() => setQuery(q))` помечает обновление как несрочное: ввод остаётся отзывчивым, а тяжёлый список обновится чуть позже.\",\n  \"why\": \"Поле ввода не подвисает, даже если фильтрация тяжёлая.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Тяжёлое и редкое — через lazy, длинное — виртуализацией, тяжёлый фильтр — через transition."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bl-lazy",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bl-virtual",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bl-fallback",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "testing-library",
+      "title": "Тесты компонентов",
+      "summary": "Testing Library и Vitest, поиск по ролям, события пользователя и что проверять.",
+      "chapter": "Тесты и практика",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Ускорили приложение и учимся проверять компоненты тестами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Testing Library\",\n  \"title\": \"Тестировать как пользователь\",\n  \"what\": \"`render(<Counter />)`, затем найти кнопку по роли и тексту: `screen.getByRole(\\\"button\\\", { name: /нажато/i })` и кликнуть через `userEvent.click`.\",\n  \"why\": \"Тест не ломается от переименования классов, но ломается, если пользователь не сможет найти кнопку.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тест счётчика\",\n  \"title\": \"Пример\",\n  \"what\": \"Тест рендерит компонент, кликает и проверяет текст на экране.\",\n  \"why\": \"Проверяется поведение, а не внутренности.\",\n  \"how\": \"test(\\\"считает нажатия\\\", async () => {\\n  render(<Counter />);\\n  await userEvent.click(screen.getByRole(\\\"button\\\"));\\n  expect(screen.getByRole(\\\"button\\\")).toHaveTextContent(\\\"Нажато: 1\\\");\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Поиск по ролям\",\n  \"title\": \"getByRole\",\n  \"what\": \"Элементы ищут так, как их находит скринридер: по роли и доступному имени. Если тест не может найти кнопку — её не найдёт и незрячий пользователь.\",\n  \"why\": \"Тесты одновременно проверяют доступность.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что не тестировать\",\n  \"title\": \"Внутренности\",\n  \"what\": \"Не проверяют значение state и вызовы внутренних функций — только то, что видит и делает пользователь.\",\n  \"why\": \"Рефакторинг без изменения поведения не ломает тесты.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ищи по ролям, действуй через userEvent, проверяй то, что видно на экране."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tl-role",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tl-what",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tl-event",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "a11y-react",
+      "title": "Доступность в React",
+      "summary": "Семантические элементы, фокус после действий, модальные окна и проверка axe.",
+      "chapter": "Тесты и практика",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Тестируем компоненты и проверяем, что ими может пользоваться каждый.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Семантика\",\n  \"title\": \"button, а не div\",\n  \"what\": \"Кликабельное — `<button>`, переход — `<a>`/Link, список — `<ul>`. `<div onClick>` не получает фокус с клавиатуры и не объявляется скринридером.\",\n  \"why\": \"Доступность почти бесплатна, если брать правильные элементы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Управление фокусом\",\n  \"title\": \"Куда перейти после действия\",\n  \"what\": \"После открытия модального окна фокус — внутрь него, после закрытия — обратно на кнопку, которая его открыла.\",\n  \"why\": \"Пользователь клавиатуры не теряется на странице.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Модальные окна\",\n  \"title\": \"dialog\",\n  \"what\": \"Встроенный `<dialog>` с `showModal()` сам удерживает фокус внутри и закрывается по Escape.\",\n  \"why\": \"Не нужно писать ловушку фокуса вручную.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Автоматическая проверка\",\n  \"title\": \"axe\",\n  \"what\": \"Библиотека axe проверяет контраст, подписи полей, роли и находит частые нарушения в тестах и браузере.\",\n  \"why\": \"Половина ошибок доступности ловится автоматически, вторая — проверкой с клавиатуры.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Правильный элемент, видимый фокус и фокус в нужное место после действий."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ay-div",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ay-focus",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ay-dialog",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "react-ts-project",
+      "title": "React с TypeScript и итоговый проект",
+      "summary": "Типы props, событий и хуков, generic-компоненты и план итогового проекта.",
+      "chapter": "Тесты и практика",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Делаем интерфейсы доступными и собираем всё в итоговый проект.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Типы событий\",\n  \"title\": \"React.ChangeEvent\",\n  \"what\": \"`(e: React.ChangeEvent<HTMLInputElement>) => setQ(e.target.value)` — тип события поля ввода; для формы — `React.FormEvent<HTMLFormElement>`.\",\n  \"why\": \"Редактор подсказывает e.target.value и не даёт ошибиться в элементе.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Generic-компонент\",\n  \"title\": \"Список любых элементов\",\n  \"what\": \"`function List<T>({ items, render }: { items: T[]; render: (item: T) => React.ReactNode })` — один компонент для любого типа данных.\",\n  \"why\": \"Типы проходят насквозь: render получает именно Course или User.\",\n  \"how\": \"function List<T>({ items, render }: { items: T[]; render: (item: T) => React.ReactNode }) {\\n  return <ul>{items.map((item, i) => <li key={i}>{render(item)}</li>)}</ul>;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Итоговый проект\",\n  \"title\": \"Каталог курсов\",\n  \"what\": \"Список курсов с фильтром в адресе, страница курса по slug, корзина в контексте с редьюсером, загрузка через TanStack Query, тесты ключевых сценариев, выкладка на хостинг статики.\",\n  \"why\": \"Проект собирает все главы курса в одно работающее приложение для портфолио.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Чек-лист перед выкладкой\",\n  \"title\": \"Готово ли\",\n  \"what\": \"Четыре состояния экранов, работа с клавиатуры, нет ошибок в консоли, Lighthouse без красного, тесты и `tsc --noEmit` зелёные.\",\n  \"why\": \"Проект, который не стыдно показать на собеседовании.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Типизируй props и события, собирай из маленьких компонентов, проверяй чек-листом перед выкладкой."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rp-event",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rp-generic",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rp-check",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    }
+  ]
+}
