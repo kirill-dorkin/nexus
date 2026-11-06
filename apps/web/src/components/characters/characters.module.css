@@ -739,3 +739,23 @@ a:focus-visible .districtBase {
     display: block;
   }
 }
+
+/* The character's place in the «IT с нуля» route, over the portrait. */
+.stepBadge {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  z-index: 1;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, #0a0909 70%, transparent);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
