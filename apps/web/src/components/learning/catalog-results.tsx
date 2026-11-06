@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { PublicLearningCourse } from "@platform/contracts";
 import { Button, EmptyState, Field, Input, Text } from "@platform/ui";
 import { CourseList } from "./course-list";
+import { organizationName } from "../../lib/public-learning-routes";
 import styles from "./flow.module.css";
 
 function formatCourseCount(count: number) {
@@ -23,7 +24,7 @@ export function CatalogResults({
   const [query, setQuery] = useState("");
   const search = query.trim().toLocaleLowerCase("ru-RU");
   const matches = courses.filter((c) =>
-    `${c.course.title} ${c.course.description} ${c.organization.name}`
+    `${c.course.title} ${c.course.description} ${organizationName(c.organization)}`
       .toLocaleLowerCase("ru-RU")
       .includes(search)
   );

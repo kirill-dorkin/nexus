@@ -4,6 +4,7 @@ import {
 } from "@platform/contracts";
 import { notFound } from "next/navigation";
 
+import { organizationName } from "../../../../../lib/public-learning-routes";
 import { serverApiUrl } from "../../../../../lib/server-api";
 import { CheckoutPanel } from "./checkout-panel";
 import styles from "./product.module.css";
@@ -70,7 +71,7 @@ export default async function PublicProductPage({
   return (
     <main className={styles.page}>
       <header className={styles.header}>
-        <p className={styles.eyebrow}>{catalog.organization.name}</p>
+        <p className={styles.eyebrow}>{organizationName(catalog.organization)}</p>
         <h1 className={styles.title}>{catalog.product.name}</h1>
         <p className={styles.lead}>
           {catalog.product.offering.name}. Актуальная цена и доступность ещё раз

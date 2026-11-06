@@ -5,7 +5,7 @@ import { brand } from "@platform/brand";
 import Link from "next/link";
 import { LearningShell } from "./learning-shell";
 import type { PublicLearningCourse } from "@platform/contracts";
-import { courseUrl, lessonUrl } from "../../lib/public-learning-routes";
+import { courseUrl, lessonUrl, organizationName } from "../../lib/public-learning-routes";
 import { Heading, Text, buttonClass } from "@platform/ui";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { LearningPageHeading } from "./learning-page-heading";
@@ -49,7 +49,7 @@ export function CoursePageView({
     inLanguage: "ru",
     provider: {
       "@type": "Organization",
-      name: course.organization.name
+      name: organizationName(course.organization)
     },
     hasCourseInstance: {
       "@type": "CourseInstance",
@@ -71,7 +71,7 @@ export function CoursePageView({
         <div className={styles.courseLayout}>
           <div className={styles.courseHeroCopy}>
             <LearningPageHeading
-              eyebrow={course.organization.name}
+              eyebrow={organizationName(course.organization)}
               title={course.course.title}
               description={course.course.description}
             >

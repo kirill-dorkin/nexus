@@ -7,7 +7,7 @@ import { useApiResource } from "../../../lib/hooks/api-resource";
 import Link from "next/link";
 import { browserApiRequest } from "../../../lib/public-api";
 import { learningLoginUrl } from "../../../lib/learning-return-to";
-import { courseUrl, lessonUrl } from "../../../lib/public-learning-routes";
+import { courseUrl, lessonUrl, organizationName } from "../../../lib/public-learning-routes";
 import { CourseProgress } from "../../../components/learning/course-progress";
 import { CourseSkillsCount } from "../../../components/learning/course-skills";
 import {
@@ -174,7 +174,7 @@ export function MyLearning() {
                       <Badge tone="success">Обучение завершено</Badge>
                     )}
                   </Inline>
-                  <Eyebrow>{c.organization.name}</Eyebrow>
+                  <Eyebrow>{organizationName(c.organization)}</Eyebrow>
                   <h2>
                     <Link href={courseUrl(c)}>{c.course.title}</Link>
                   </h2>

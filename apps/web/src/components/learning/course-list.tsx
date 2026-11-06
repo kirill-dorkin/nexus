@@ -2,7 +2,7 @@ import type { PublicLearningCourse } from "@platform/contracts";
 import Link from "next/link";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { ButtonLink } from "@platform/ui";
-import { courseUrl } from "../../lib/public-learning-routes";
+import { courseUrl, organizationName } from "../../lib/public-learning-routes";
 import { LEARNING_ROUTE, routeStepNumber } from "../../lib/learning-route";
 import { durationLabel, lessonCount } from "./learning-labels";
 import styles from "./course-list.module.css";
@@ -64,7 +64,7 @@ export function CourseCard({
         <p className={styles.organization}>
           {step
             ? `Шаг ${step} · ${LEARNING_ROUTE.title}`
-            : course.organization.name}
+            : organizationName(course.organization)}
         </p>
         <h3 className={styles.title}>
           <Link href={href}>{course.course.title}</Link>
