@@ -3,7 +3,7 @@
   isolation: isolate;
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
+  min-height: 100svh;
   background: var(--page-background);
   color: var(--text-primary);
   overflow-x: clip;

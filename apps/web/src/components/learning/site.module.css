@@ -6,7 +6,9 @@
   isolation: isolate;
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
+  /* svh, not dvh: dvh changes while a phone's address bar hides and shows during
+     scrolling, which re-lays out the page mid-scroll and made the header jitter. */
+  min-height: 100svh;
   background: var(--page-background);
   color: var(--text-primary);
   overflow-x: clip;
@@ -56,6 +58,15 @@
   backdrop-filter: saturate(1.4) blur(16px);
   -webkit-backdrop-filter: saturate(1.4) blur(16px);
   border-bottom-color: var(--border-glass);
+}
+/* Phones: a solid header without backdrop blur. Blur under a sticky bar is costly on mobile
+   Safari and stutters while scrolling (owner report, 2026-11-06). */
+@media (max-width: 860px) {
+  .header {
+    background: color-mix(in srgb, var(--page-background) 96%, transparent);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
 .headerInner {
   display: flex;
