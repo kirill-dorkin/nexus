@@ -485,10 +485,10 @@ button.button {
   max-width: var(--content-width);
 }
 
-/* Single-section routes fill the dynamic viewport and grow when content needs it. */
+/* Single-section routes fill the small (stable) viewport and grow when content needs it. */
 .viewportShell {
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
 }
