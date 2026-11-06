@@ -264,11 +264,16 @@
   position: sticky;
   top: 92px;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  /* Program, the course's character, saved learning. The program keeps at least a few
+     lessons visible; it scrolls inside its panel, and the column itself scrolls if the
+     screen is too short for all three (the character squeezed the program to nothing). */
+  grid-template-rows: minmax(16rem, 1fr) auto auto;
   gap: 1rem;
   min-width: 0;
-  /* The program scrolls inside the panel, so the whole column always fits the screen. */
   max-height: calc(100dvh - 92px - 1.5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
 }
 .lessonNav {
   display: grid;

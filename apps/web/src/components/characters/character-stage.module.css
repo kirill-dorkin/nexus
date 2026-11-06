@@ -58,7 +58,7 @@
 
 .compact {
   composes: stage;
-  height: 15rem;
+  height: 11rem;
   min-height: 0;
 }
 
