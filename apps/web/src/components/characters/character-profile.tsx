@@ -19,6 +19,7 @@ import {
 import { initials } from "./character-roster";
 import { BranchSceneView } from "./branch-scene";
 import { CharacterStage } from "./character-stage";
+import { hasBody } from "./three/roster";
 import type { BranchScene } from "../../lib/skill-map/story";
 import styles from "./characters.module.css";
 
@@ -44,12 +45,15 @@ export function CharacterProfile({
       <CharacterStage
         slug={character.slug}
         level={(progress.level / progress.maxLevel) * 100}
+        guest={status === "anonymous" || status === "error"}
       />
       <header className={styles.profileHead}>
         <div className={styles.profileTitle}>
-          <span className={styles.portraitLarge} aria-hidden="true">
-            {initials(character)}
-          </span>
+          {!hasBody(character.slug) && (
+            <span className={styles.portraitLarge} aria-hidden="true">
+              {initials(character)}
+            </span>
+          )}
           <div>
             <h1 className={styles.name}>{character.name}</h1>
             <p className={styles.role}>{character.role}</p>

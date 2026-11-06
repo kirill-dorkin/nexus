@@ -44,19 +44,23 @@ const reducedMotion = () =>
 export function CharacterStage({
   slug,
   level,
-  compact = false
+  compact = false,
+  guest = false
 }: {
   slug: string;
   /** 0–100. */
   level: number;
   /** A small stage without the rank preview, beside a lesson. */
   compact?: boolean;
+  /** No own level to show: start on the Мастер look, so the page shows what the character becomes. */
+  guest?: boolean;
 }) {
   const host = useRef<HTMLDivElement>(null);
   const stage = useRef<Stage | null>(null);
   const [ready, setReady] = useState(false);
-  /** A rank the viewer is previewing; null shows their own level. */
-  const [preview, setPreview] = useState<number | null>(null);
+  /** A rank the viewer picked; null shows their own level; undefined means not picked yet. */
+  const [picked, setPicked] = useState<number | null | undefined>(undefined);
+  const preview = picked === undefined ? (guest ? 3 : null) : picked;
   const enabled = hasBody(slug);
   const shownLevel =
     preview === null ? level : (LOOKS[preview]?.from ?? 0) + 12;
@@ -113,7 +117,7 @@ export function CharacterStage({
           <button
             type="button"
             aria-pressed={preview === null}
-            onClick={() => setPreview(null)}
+            onClick={() => setPicked(null)}
           >
             Мой уровень
           </button>
@@ -123,7 +127,7 @@ export function CharacterStage({
               type="button"
               aria-pressed={preview === i}
               data-own={i === own || undefined}
-              onClick={() => setPreview(i)}
+              onClick={() => setPicked(i)}
             >
               {name}
             </button>
