@@ -1,7 +1,9 @@
 import { brand } from "@platform/brand";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import { json, learnerCourse, progress } from "../../test/fixtures";
 
 import {
   CourseNavigator,
@@ -25,12 +27,31 @@ const items = [
 const storageKey = `${brand.slug}:visited:html`;
 
 function renderNavigator(current = "tags") {
-  render(<CourseNavigator courseSlug="html" items={items} current={current} />);
+  render(
+    <CourseNavigator
+      organizationSlug="acme"
+      offeringSlug="web"
+      courseSlug="html"
+      items={items}
+      current={current}
+    />
+  );
   return within(screen.getByRole("navigation", { name: "Уроки курса" }));
 }
 
+const fetchMock = vi.fn<typeof fetch>();
+
 beforeEach(() => {
   localStorage.clear();
+  vi.stubEnv("NEXT_PUBLIC_API_ORIGIN", "https://api.example.test");
+  // A guest by default: the program falls back to the lessons opened in this browser.
+  fetchMock.mockReset();
+  fetchMock.mockResolvedValue(json(401));
+  vi.stubGlobal("fetch", fetchMock);
+});
+afterEach(() => {
+  vi.unstubAllEnvs();
+  vi.unstubAllGlobals();
 });
 
 describe("CourseNavigator", () => {
@@ -136,4 +157,52 @@ describe("program search", () => {
     expect(matchesQuery(item, "массивы")).toBe(true);
     expect(matchesQuery(item, "   ")).toBe(true);
   });
+
+  it("ticks lessons with a passed test and marks the next one for a learner", async () => {
+    fetchMock.mockResolvedValue(
+      json(200, learnerCourse({ progress: progress() }))
+    );
+    const panel = renderNavigator("intro");
+    expect(
+      await panel.findByText("Пройдено уроков: 1 из 4")
+    ).toBeInTheDocument();
+    expect(panel.getByRole("link", { name: /Что такое HTML/ })).toHaveAttribute(
+      "data-visited"
+    );
+    expect(
+      panel.getByRole("link", { name: /Теги и атрибуты/ })
+    ).toHaveTextContent("Следующий");
+  });
+
+  it("refreshes the ticks after a checked quiz", async () => {
+    fetchMock.mockResolvedValueOnce(
+      json(200, learnerCourse({ progress: progress() }))
+    );
+    const panel = renderNavigator("links");
+    await panel.findByText("Пройдено уроков: 1 из 4");
+    fetchMock.mockResolvedValue(
+      json(
+        200,
+        learnerCourse({
+          progress: progress({
+            nextLessonSlug: "links",
+            lessons: [
+              ...progress().lessons.slice(0, 1),
+              { ...itemAtTags(), requiredPassed: true }
+            ]
+          })
+        })
+      )
+    );
+    window.dispatchEvent(new Event("learning-progress-changed"));
+    expect(
+      await panel.findByText("Пройдено уроков: 2 из 4")
+    ).toBeInTheDocument();
+  });
 });
+
+function itemAtTags() {
+  const tags = progress().lessons[1];
+  if (!tags) throw new Error("fixture changed");
+  return tags;
+}
