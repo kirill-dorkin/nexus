@@ -4,6 +4,7 @@ import { html } from "./html";
 import { js } from "./js";
 import { pc } from "./pc";
 import { sql } from "./sql";
+import { terminal } from "./terminal";
 import type { CharacterDef } from "./types";
 
 /** Characters that have a 3D body. The rest of the roster keeps its text card for now. */
@@ -13,7 +14,8 @@ export const CHARACTER_DEFS: readonly CharacterDef[] = [
   html,
   css,
   js,
-  sql
+  sql,
+  terminal
 ];
 
 export const characterDef = (slug: string) =>

@@ -5,14 +5,15 @@ import { CHARACTER_DEFS, characterDef, hasBody } from "./roster";
 import { rankIndex, rankNames } from "./types";
 
 describe("character roster", () => {
-  it("has the six launch characters, each with its own palette", () => {
+  it("has the launch characters, each with its own palette", () => {
     expect(CHARACTER_DEFS.map((d) => d.slug)).toEqual([
       "pc",
       "browser",
       "html",
       "css",
       "js",
-      "sql"
+      "sql",
+      "terminal"
     ]);
     // Owner decision 2026-11-06: characters differ in body and colour.
     const bases = new Set(CHARACTER_DEFS.map((d) => d.pal.base));

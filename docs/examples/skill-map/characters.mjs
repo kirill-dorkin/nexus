@@ -183,6 +183,25 @@ export const characters = [
       "Запросы к PostgreSQL: выборки и фильтры, агрегаты, соединения, подзапросы, изменение данных и свои таблицы.",
     accent: "teal",
     sources: [{ manifest: "sql-track.manifest.json", published: true }]
+  },
+  {
+    slug: "terminal",
+    depth: {},
+    abilities: [
+      { title: "Оболочка", branches: ["Оболочка"] },
+      { title: "Файлы", branches: ["Файловая система в терминале", "Файлы, ссылки и место на диске"] },
+      { title: "Потоки", branches: ["Потоки и перенаправления", "Обработка текста"] },
+      { title: "Процессы", branches: ["Процессы и сигналы"] },
+      { title: "Окружение и права", branches: ["Переменные и окружение", "Права доступа"] },
+      { title: "Скрипты", branches: ["Скрипты"] },
+      { title: "Сервер", branches: ["Сеть и удалённая работа", "Архивы и продуктивность"] }
+    ],
+    name: "Терминал",
+    role: "Заклинатель",
+    summary:
+      "Командная строка всерьёз: оболочки, поиск файлов, ссылки, потоки и конвейеры, grep, sed и awk, процессы и сигналы, переменные окружения, права доступа, скрипты на bash, SSH и удалённая работа, архивы, cron и приёмы продуктивности.",
+    accent: "lime",
+    sources: [{ manifest: "terminal-track.manifest.json", published: true }]
   }
 ];
 
@@ -197,7 +216,8 @@ export const requires = {
   "css/Старт CSS": ["html/Основы HTML"],
   "js/Старт JavaScript": ["html/Основы HTML", "css/Старт CSS"],
   "js/DOM": ["html/Структура страницы"],
-  "js/Формы": ["html/Формы"]
+  "js/Формы": ["html/Формы"],
+  "terminal/Оболочка": ["pc/Командная строка"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */

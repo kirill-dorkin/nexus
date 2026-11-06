@@ -4543,6 +4543,480 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "terminal",
+      "name": "Терминал",
+      "role": "Заклинатель",
+      "summary": "Командная строка всерьёз: оболочки, поиск файлов, ссылки, потоки и конвейеры, grep, sed и awk, процессы и сигналы, переменные окружения, права доступа, скрипты на bash, SSH и удалённая работа, архивы, cron и приёмы продуктивности.",
+      "accent": "lime",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Оболочка",
+          "branches": [
+            "terminal-1"
+          ]
+        },
+        {
+          "title": "Файлы",
+          "branches": [
+            "terminal-2",
+            "terminal-3"
+          ]
+        },
+        {
+          "title": "Потоки",
+          "branches": [
+            "terminal-4",
+            "terminal-5"
+          ]
+        },
+        {
+          "title": "Процессы",
+          "branches": [
+            "terminal-6"
+          ]
+        },
+        {
+          "title": "Окружение и права",
+          "branches": [
+            "terminal-7",
+            "terminal-8"
+          ]
+        },
+        {
+          "title": "Скрипты",
+          "branches": [
+            "terminal-9"
+          ]
+        },
+        {
+          "title": "Сервер",
+          "branches": [
+            "terminal-10",
+            "terminal-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "terminal-1",
+          "title": "Оболочка",
+          "depth": "practice",
+          "requires": [
+            "pc-8"
+          ],
+          "skills": [
+            {
+              "key": "term-shells",
+              "title": "Оболочки",
+              "lesson": {
+                "course": "terminal",
+                "slug": "shells",
+                "title": "Оболочки: bash, zsh и другие"
+              }
+            },
+            {
+              "key": "term-commands",
+              "title": "Поиск команды",
+              "lesson": {
+                "course": "terminal",
+                "slug": "command-anatomy",
+                "title": "Как оболочка находит и запускает команду"
+              }
+            },
+            {
+              "key": "term-help",
+              "title": "Справка",
+              "lesson": {
+                "course": "terminal",
+                "slug": "help",
+                "title": "Справка без интернета"
+              }
+            }
+          ]
+        },
+        {
+          "id": "terminal-2",
+          "title": "Файловая система в терминале",
+          "depth": "practice",
+          "requires": [
+            "terminal-1"
+          ],
+          "skills": [
+            {
+              "key": "term-nav",
+              "title": "Навигация",
+              "lesson": {
+                "course": "terminal",
+                "slug": "navigation-pro",
+                "title": "Навигация быстрее"
+              }
+            },
+            {
+              "key": "term-glob",
+              "title": "Шаблоны имён",
+              "lesson": {
+                "course": "terminal",
+                "slug": "globbing",
+                "title": "Шаблоны имён: *, ? и {}"
+              }
+            },
+            {
+              "key": "term-find",
+              "title": "Поиск файлов",
+              "lesson": {
+                "course": "terminal",
+                "slug": "find",
+                "title": "Поиск файлов: find"
+              }
+            }
+          ]
+        },
+        {
+          "id": "terminal-3",
+          "title": "Файлы, ссылки и место на диске",
+          "depth": "practice",
+          "requires": [
+            "terminal-2"
+          ],
+          "skills": [
+            {
+              "key": "term-safe-ops",
+              "title": "Безопасные операции",
+              "lesson": {
+                "course": "terminal",
+                "slug": "copy-move-safe",
+                "title": "Копировать и удалять без потерь"
+              }
+            },
+            {
+              "key": "term-links",
+              "title": "Ссылки",
+              "lesson": {
+                "course": "terminal",
+                "slug": "links",
+                "title": "Ссылки: ln и ln -s"
+              }
+            },
+            {
+              "key": "term-disk",
+              "title": "Место на диске",
+              "lesson": {
+                "course": "terminal",
+                "slug": "disk-space",
+                "title": "Место на диске: df и du"
+              }
+            }
+          ]
+        },
+        {
+          "id": "terminal-4",
+          "title": "Потоки и перенаправления",
+          "depth": "practice",
+          "requires": [
+            "terminal-3"
+          ],
+          "skills": [
+            {
+              "key": "term-streams",
+              "title": "Стандартные потоки",
+              "lesson": {
+                "course": "terminal",
+                "slug": "std-streams",
+                "title": "Три потока: вход, выход, ошибки"
+              }
+            },
+            {
+              "key": "term-redirect",
+              "title": "Перенаправление",
+              "lesson": {
+                "course": "terminal",
+                "slug": "redirection",
+                "title": "Перенаправление: >, >>, 2> и <"
+              }
+            },
+            {
+              "key": "term-pipes",
+              "title": "Конвейеры",
+              "lesson": {
+                "course": "terminal",
+                "slug": "pipes",
+                "title": "Конвейеры и цепочки команд"
+              }
+            }
+          ]
+        },
+        {
+          "id": "terminal-5",
+          "title": "Обработка текста",
+          "depth": "practice",
+          "requires": [
+            "terminal-4"
+          ],
+          "skills": [
+            {
+              "key": "term-view",
+              "title": "Просмотр файлов",
+              "lesson": {
+                "course": "terminal",
+                "slug": "view-text",
+                "title": "Смотреть файлы: less, head и tail"
+              }
+            },
+            {
+              "key": "term-grep",
+              "title": "grep",
+              "lesson": {
+                "course": "terminal",
+                "slug": "grep",
+                "title": "Поиск текста: grep"
+              }
+            },
+            {
+              "key": "term-sort",
+              "title": "Сортировка и столбцы",
+              "lesson": {
+                "course": "terminal",
+                "slug": "sort-cut",
+                "title": "Сортировать, резать, считать"
+              }
+            },
+            {
+              "key": "term-sed-awk",
+              "title": "sed и awk",
+              "lesson": {
+                "course": "terminal",
+                "slug": "sed-awk",
+                "title": "sed и awk: правка потока"
+              }
+            }
+          ]
+        },
+        {
+          "id": "terminal-6",
+          "title": "Процессы и сигналы",
+          "depth": "practice",
+          "requires": [
+            "terminal-5"
+          ],
+          "skills": [
+            {
+              "key": "term-ps",
+              "title": "Список процессов",
+              "lesson": {
+                "course": "terminal",
+                "slug": "ps-top",
+                "title": "Какие процессы работают"
+              }
+            },
+            {
+              "key": "term-signals",
+              "title": "Сигналы",
+              "lesson": {
+                "course": "terminal",
+                "slug": "signals",
+                "title": "Сигналы: остановить процесс"
+              }
+            },
+            {
+              "key": "term-jobs",
+              "title": "Фоновые задачи",
+              "lesson": {
+                "course": "terminal",
+                "slug": "jobs",
+                "title": "Фоновые задачи и порты"
+              }
+            }
+          ]
+        },
+        {
+          "id": "terminal-7",
+          "title": "Переменные и окружение",
+          "depth": "practice",
+          "requires": [
+            "terminal-6"
+          ],
+          "skills": [
+            {
+              "key": "term-quoting",
+              "title": "Переменные и кавычки",
+              "lesson": {
+                "course": "terminal",
+                "slug": "variables-quoting",
+                "title": "Переменные и кавычки"
+              }
+            },
+            {
+              "key": "term-env",
+              "title": "Переменные окружения",
+              "lesson": {
+                "course": "terminal",
+                "slug": "env-path",
+                "title": "Окружение и PATH"
+              }
+            },
+            {
+              "key": "term-config",
+              "title": "Настройки оболочки",
+              "lesson": {
+                "course": "terminal",
+                "slug": "shell-config",
+                "title": "Настройка оболочки"
+              }
+            }
+          ]
+        },
+        {
+          "id": "terminal-8",
+          "title": "Права доступа",
+          "depth": "practice",
+          "requires": [
+            "terminal-7"
+          ],
+          "skills": [
+            {
+              "key": "term-rwx",
+              "title": "Права rwx",
+              "lesson": {
+                "course": "terminal",
+                "slug": "read-permissions",
+                "title": "Читать права: rwx"
+              }
+            },
+            {
+              "key": "term-chmod",
+              "title": "chmod и chown",
+              "lesson": {
+                "course": "terminal",
+                "slug": "chmod-chown",
+                "title": "Менять права: chmod и chown"
+              }
+            },
+            {
+              "key": "term-sudo",
+              "title": "sudo и root",
+              "lesson": {
+                "course": "terminal",
+                "slug": "sudo-users",
+                "title": "sudo, root и пользователи"
+              }
+            }
+          ]
+        },
+        {
+          "id": "terminal-9",
+          "title": "Скрипты",
+          "depth": "practice",
+          "requires": [
+            "terminal-8"
+          ],
+          "skills": [
+            {
+              "key": "term-script-basics",
+              "title": "Основы скриптов",
+              "lesson": {
+                "course": "terminal",
+                "slug": "first-script",
+                "title": "Первый скрипт"
+              }
+            },
+            {
+              "key": "term-control",
+              "title": "Условия и циклы",
+              "lesson": {
+                "course": "terminal",
+                "slug": "conditions-loops",
+                "title": "Условия и циклы"
+              }
+            },
+            {
+              "key": "term-robust",
+              "title": "Надёжные скрипты",
+              "lesson": {
+                "course": "terminal",
+                "slug": "robust-scripts",
+                "title": "Надёжные скрипты"
+              }
+            }
+          ]
+        },
+        {
+          "id": "terminal-10",
+          "title": "Сеть и удалённая работа",
+          "depth": "practice",
+          "requires": [
+            "terminal-9"
+          ],
+          "skills": [
+            {
+              "key": "term-curl",
+              "title": "curl",
+              "lesson": {
+                "course": "terminal",
+                "slug": "curl",
+                "title": "HTTP из терминала: curl"
+              }
+            },
+            {
+              "key": "term-ssh",
+              "title": "SSH",
+              "lesson": {
+                "course": "terminal",
+                "slug": "ssh",
+                "title": "SSH: работа на сервере"
+              }
+            },
+            {
+              "key": "term-ssh-files",
+              "title": "Файлы по SSH",
+              "lesson": {
+                "course": "terminal",
+                "slug": "ssh-files",
+                "title": "Конфиг SSH и копирование файлов"
+              }
+            }
+          ]
+        },
+        {
+          "id": "terminal-11",
+          "title": "Архивы и продуктивность",
+          "depth": "practice",
+          "requires": [
+            "terminal-10"
+          ],
+          "skills": [
+            {
+              "key": "term-archives",
+              "title": "Архивы",
+              "lesson": {
+                "course": "terminal",
+                "slug": "archives",
+                "title": "Архивы: tar, gzip и zip"
+              }
+            },
+            {
+              "key": "term-cron",
+              "title": "cron",
+              "lesson": {
+                "course": "terminal",
+                "slug": "cron",
+                "title": "Расписание: cron"
+              }
+            },
+            {
+              "key": "term-productivity",
+              "title": "Продуктивность",
+              "lesson": {
+                "course": "terminal",
+                "slug": "productivity",
+                "title": "Приёмы, которые экономят часы"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
