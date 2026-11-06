@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { cityPlan, districtState } from "./city";
+import { findCharacter } from "./skill-map";
 
 describe("city map", () => {
   it("rebuilds a district as its skills become active", () => {
@@ -12,13 +13,10 @@ describe("city map", () => {
   });
 
   it("places every character and draws roads where one builds on another", () => {
-    const plan = cityPlan(
-      new Map([
-        ["web-how-it-works", { confirmedDays: ["2026-11-05"] }],
-        ["web-tools", { confirmedDays: ["2026-11-05"] }]
-      ]),
-      "2026-11-05"
+    const browserSkills = findCharacter("browser")!.branches.flatMap((b) =>
+      b.skills.map((s) => [s.key, { confirmedDays: ["2026-11-05"] }] as const)
     );
+    const plan = cityPlan(new Map(browserSkills), "2026-11-05");
     expect(plan.districts.map((d) => d.character.slug)).toEqual([
       "pc",
       "browser",
