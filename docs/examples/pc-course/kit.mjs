@@ -1,7 +1,7 @@
 // Authoring kit for the ПК and Браузер courses: concept cards, diagrams and quizzes, no scenes.
 // Lessons explain everything themselves; the story lives only in docs/story/season-1.md.
-import { card, diagram, code } from "../html-course/stories/kit.mjs";
-export { diagram, code };
+import { card, diagram, demo, code } from "../html-course/stories/kit.mjs";
+export { diagram, demo, code };
 
 /**
  * A concept card. `how` is a static example (plain text by default); `extra.lang` changes
