@@ -51,7 +51,6 @@ export const UPCOMING: UpcomingDistrict[] = [
         role: "Командир модулей",
         needs: "Node.js, TypeScript"
       },
-      { name: "Python", role: "Мудрец", needs: "ПК" },
       { name: "Go", role: "Бегун", needs: "ПК" }
     ]
   },

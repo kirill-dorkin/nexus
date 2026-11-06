@@ -27,7 +27,8 @@ export const DISTRICT_NAMES: Record<string, string> = {
   ts: "Сторожевая башня",
   node: "Машинное отделение",
   react: "Мастерская интерфейсов",
-  network: "Почтамт"
+  network: "Почтамт",
+  python: "Библиотека"
 };
 
 /** Positions on a 1000×600 plan; characters without one are laid out on the bottom row. */
@@ -43,7 +44,8 @@ const LAYOUT: Record<string, { x: number; y: number }> = {
   ts: { x: 860, y: 510 },
   node: { x: 860, y: 330 },
   react: { x: 680, y: 420 },
-  network: { x: 400, y: 330 }
+  network: { x: 400, y: 330 },
+  python: { x: 860, y: 140 }
 };
 
 export type District = {

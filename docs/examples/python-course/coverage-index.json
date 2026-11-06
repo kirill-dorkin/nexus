@@ -1,0 +1,194 @@
+{
+  "note": "Every item is taught by its own concept card; the contracts test keeps the index and the cards in sync.",
+  "source": "Course design by chapter (branches of the character).",
+  "topics": {
+    "start": {
+      "title": "Старт Python",
+      "items": [
+        "Python",
+        "Где используют Python",
+        "Интерпретатор",
+        "Python 3",
+        "python3 --version",
+        "REPL",
+        "Первый скрипт",
+        "Редактор",
+        "print",
+        "input",
+        "Комментарий",
+        "PEP 8"
+      ]
+    },
+    "types": {
+      "title": "Значения и типы",
+      "items": [
+        "Переменная",
+        "int и float",
+        "Операции",
+        "round",
+        "Строка",
+        "f-строка",
+        "Индексы и срезы",
+        "len и in",
+        "bool",
+        "Истинность",
+        "None",
+        "Преобразование"
+      ]
+    },
+    "flow": {
+      "title": "Условия и циклы",
+      "items": [
+        "if, elif, else",
+        "Отступ — это синтаксис",
+        "Тернарный оператор",
+        "Цепочка сравнений",
+        "for",
+        "range",
+        "enumerate",
+        "while",
+        "break и continue",
+        "match",
+        "Образцы",
+        "Ранний выход"
+      ]
+    },
+    "collections": {
+      "title": "Коллекции",
+      "items": [
+        "list",
+        "Удаление",
+        "Сортировка",
+        "Копия списка",
+        "dict",
+        "get",
+        "Перебор",
+        "Подсчёт",
+        "tuple",
+        "Распаковка",
+        "set",
+        "Операции множеств"
+      ]
+    },
+    "functions": {
+      "title": "Функции",
+      "items": [
+        "def",
+        "return",
+        "Несколько значений",
+        "docstring",
+        "Значение по умолчанию",
+        "Именованные аргументы",
+        "*args и **kwargs",
+        "Ловушка",
+        "Область видимости",
+        "Функция — значение",
+        "lambda",
+        "map и filter"
+      ]
+    },
+    "files": {
+      "title": "Строки и файлы",
+      "items": [
+        "Очистка",
+        "split и join",
+        "replace и find",
+        "Проверки",
+        "with open",
+        "Режимы",
+        "Кодировка",
+        "pathlib",
+        "csv.DictReader",
+        "json.load",
+        "json.dump",
+        "Числа из CSV"
+      ]
+    },
+    "errors": {
+      "title": "Ошибки и отладка",
+      "items": [
+        "Traceback",
+        "Частые ошибки",
+        "SyntaxError",
+        "try/except",
+        "Конкретный тип",
+        "else и finally",
+        "raise",
+        "print-отладка",
+        "breakpoint()",
+        "Отладчик VS Code",
+        "assert",
+        "logging"
+      ]
+    },
+    "modules": {
+      "title": "Модули и окружения",
+      "items": [
+        "import",
+        "Свой модуль",
+        "__main__",
+        "Стандартная библиотека",
+        "python3 -m venv .venv",
+        "pip install",
+        "requirements.txt",
+        "uv",
+        "Не ставь глобально",
+        "random",
+        "datetime",
+        "Counter",
+        "defaultdict",
+        "re"
+      ]
+    },
+    "classes": {
+      "title": "Классы",
+      "items": [
+        "class",
+        "__init__ и self",
+        "Когда нужен класс",
+        "@dataclass",
+        "__str__ и __repr__",
+        "@property",
+        "Особые методы",
+        "Наследование",
+        "super()",
+        "Композиция",
+        "Утиная типизация"
+      ]
+    },
+    "idioms": {
+      "title": "Идиомы Python",
+      "items": [
+        "List comprehension",
+        "Dict comprehension",
+        "zip",
+        "any и all",
+        "sum, min, max",
+        "yield",
+        "Выражение-генератор",
+        "Итератор",
+        "itertools",
+        "Аннотации",
+        "Составные типы",
+        "mypy"
+      ]
+    },
+    "practice": {
+      "title": "Python на практике",
+      "items": [
+        "requests.get",
+        "raise_for_status",
+        "requests.post",
+        "Таймаут",
+        "Переименование файлов",
+        "argparse",
+        "Сначала пробный прогон",
+        "cron",
+        "pytest",
+        "Структура проекта",
+        "ruff",
+        "Что дальше"
+      ]
+    }
+  }
+}
