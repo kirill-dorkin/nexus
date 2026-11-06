@@ -277,6 +277,25 @@ export const characters = [
       "Интерфейсы из компонентов: JSX и компоненты, props и композиция, состояние и его правила, события и формы, списки и условия, эффекты и загрузка данных, контекст, редьюсеры и свои хуки, маршруты и структура приложения, производительность, тесты и доступность.",
     accent: "blue",
     sources: [{ manifest: "react-track.manifest.json", published: true }]
+  },
+  {
+    slug: "network",
+    depth: {},
+    abilities: [
+      { title: "Пакеты", branches: ["Как устроена сеть", "IP-адреса и подсети"] },
+      { title: "Транспорт", branches: ["TCP и UDP"] },
+      { title: "Имена и защита", branches: ["DNS изнутри", "TLS и сертификаты"] },
+      { title: "HTTP", branches: ["HTTP в деталях", "Реальное время"] },
+      { title: "API", branches: ["Проектирование API"] },
+      { title: "Инфраструктура", branches: ["CDN, кэш и балансировка", "Прокси, NAT и файрволы"] },
+      { title: "Диагностика", branches: ["Диагностика сети"] }
+    ],
+    name: "Сеть и HTTP",
+    role: "Почтальон",
+    summary:
+      "Как данные путешествуют: пакеты и уровни сети, IP-адреса и подсети, TCP, UDP и QUIC, DNS изнутри, TLS и сертификаты, версии HTTP, WebSocket и SSE, проектирование API, CDN и балансировка, прокси, NAT и VPN, диагностика сети.",
+    accent: "amber",
+    sources: [{ manifest: "network-track.manifest.json", published: true }]
   }
 ];
 
@@ -296,7 +315,8 @@ export const requires = {
   "git/Старт Git": ["terminal/Файловая система в терминале"],
   "ts/Старт TypeScript": ["js/Старт JavaScript"],
   "node/Старт Node.js": ["js/Старт JavaScript"],
-  "react/Старт React": ["js/Старт JavaScript"]
+  "react/Старт React": ["js/Старт JavaScript"],
+  "network/Как устроена сеть": ["browser/HTTP и HTTPS"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */

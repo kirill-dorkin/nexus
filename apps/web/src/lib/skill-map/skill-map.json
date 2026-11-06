@@ -6872,6 +6872,471 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "network",
+      "name": "Сеть и HTTP",
+      "role": "Почтальон",
+      "summary": "Как данные путешествуют: пакеты и уровни сети, IP-адреса и подсети, TCP, UDP и QUIC, DNS изнутри, TLS и сертификаты, версии HTTP, WebSocket и SSE, проектирование API, CDN и балансировка, прокси, NAT и VPN, диагностика сети.",
+      "accent": "amber",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Пакеты",
+          "branches": [
+            "network-1",
+            "network-2"
+          ]
+        },
+        {
+          "title": "Транспорт",
+          "branches": [
+            "network-3"
+          ]
+        },
+        {
+          "title": "Имена и защита",
+          "branches": [
+            "network-4",
+            "network-5"
+          ]
+        },
+        {
+          "title": "HTTP",
+          "branches": [
+            "network-6",
+            "network-7"
+          ]
+        },
+        {
+          "title": "API",
+          "branches": [
+            "network-8"
+          ]
+        },
+        {
+          "title": "Инфраструктура",
+          "branches": [
+            "network-9",
+            "network-10"
+          ]
+        },
+        {
+          "title": "Диагностика",
+          "branches": [
+            "network-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "network-1",
+          "title": "Как устроена сеть",
+          "depth": "practice",
+          "requires": [
+            "browser-4"
+          ],
+          "skills": [
+            {
+              "key": "net-packets",
+              "title": "Пакеты",
+              "lesson": {
+                "course": "network",
+                "slug": "packets",
+                "title": "Пакеты и коммутация"
+              }
+            },
+            {
+              "key": "net-layers",
+              "title": "Уровни сети",
+              "lesson": {
+                "course": "network",
+                "slug": "layer-model",
+                "title": "Модель уровней"
+              }
+            },
+            {
+              "key": "net-routing",
+              "title": "Маршрутизация",
+              "lesson": {
+                "course": "network",
+                "slug": "routing",
+                "title": "Маршрутизация"
+              }
+            }
+          ]
+        },
+        {
+          "id": "network-2",
+          "title": "IP-адреса и подсети",
+          "depth": "practice",
+          "requires": [
+            "network-1"
+          ],
+          "skills": [
+            {
+              "key": "net-ipv4",
+              "title": "IPv4",
+              "lesson": {
+                "course": "network",
+                "slug": "ipv4",
+                "title": "IPv4 изнутри"
+              }
+            },
+            {
+              "key": "net-cidr",
+              "title": "CIDR",
+              "lesson": {
+                "course": "network",
+                "slug": "subnets",
+                "title": "Подсети и CIDR"
+              }
+            },
+            {
+              "key": "net-ipv6",
+              "title": "Частные адреса и IPv6",
+              "lesson": {
+                "course": "network",
+                "slug": "private-ipv6",
+                "title": "Частные адреса и IPv6"
+              }
+            }
+          ]
+        },
+        {
+          "id": "network-3",
+          "title": "TCP и UDP",
+          "depth": "practice",
+          "requires": [
+            "network-2"
+          ],
+          "skills": [
+            {
+              "key": "net-ports",
+              "title": "Порты",
+              "lesson": {
+                "course": "network",
+                "slug": "ports-sockets",
+                "title": "Порты и сокеты"
+              }
+            },
+            {
+              "key": "net-tcp",
+              "title": "TCP",
+              "lesson": {
+                "course": "network",
+                "slug": "tcp",
+                "title": "TCP: надёжная доставка"
+              }
+            },
+            {
+              "key": "net-udp",
+              "title": "UDP и QUIC",
+              "lesson": {
+                "course": "network",
+                "slug": "udp-quic",
+                "title": "UDP и QUIC"
+              }
+            }
+          ]
+        },
+        {
+          "id": "network-4",
+          "title": "DNS изнутри",
+          "depth": "practice",
+          "requires": [
+            "network-3"
+          ],
+          "skills": [
+            {
+              "key": "net-dns-chain",
+              "title": "Разрешение имён",
+              "lesson": {
+                "course": "network",
+                "slug": "dns-chain",
+                "title": "Как разрешается имя"
+              }
+            },
+            {
+              "key": "net-dns-records",
+              "title": "DNS-записи",
+              "lesson": {
+                "course": "network",
+                "slug": "dns-records-deep",
+                "title": "Записи для сайта и почты"
+              }
+            },
+            {
+              "key": "net-dns-tools",
+              "title": "Диагностика DNS",
+              "lesson": {
+                "course": "network",
+                "slug": "ttl-tools",
+                "title": "TTL и инструменты DNS"
+              }
+            }
+          ]
+        },
+        {
+          "id": "network-5",
+          "title": "TLS и сертификаты",
+          "depth": "practice",
+          "requires": [
+            "network-4"
+          ],
+          "skills": [
+            {
+              "key": "net-crypto",
+              "title": "Основы шифрования",
+              "lesson": {
+                "course": "network",
+                "slug": "crypto-basics",
+                "title": "Шифрование для веба"
+              }
+            },
+            {
+              "key": "net-certs",
+              "title": "Сертификаты",
+              "lesson": {
+                "course": "network",
+                "slug": "certificates",
+                "title": "Сертификаты и цепочка доверия"
+              }
+            },
+            {
+              "key": "net-https-setup",
+              "title": "Настройка HTTPS",
+              "lesson": {
+                "course": "network",
+                "slug": "https-setup",
+                "title": "HTTPS на своём сайте"
+              }
+            }
+          ]
+        },
+        {
+          "id": "network-6",
+          "title": "HTTP в деталях",
+          "depth": "practice",
+          "requires": [
+            "network-5"
+          ],
+          "skills": [
+            {
+              "key": "net-http-versions",
+              "title": "Версии HTTP",
+              "lesson": {
+                "course": "network",
+                "slug": "http-versions",
+                "title": "HTTP/1.1, HTTP/2 и HTTP/3"
+              }
+            },
+            {
+              "key": "net-negotiation",
+              "title": "Согласование",
+              "lesson": {
+                "course": "network",
+                "slug": "negotiation",
+                "title": "Сжатие и согласование содержимого"
+              }
+            },
+            {
+              "key": "net-idempotency",
+              "title": "Семантика HTTP",
+              "lesson": {
+                "course": "network",
+                "slug": "semantics",
+                "title": "Семантика методов"
+              }
+            }
+          ]
+        },
+        {
+          "id": "network-7",
+          "title": "Реальное время",
+          "depth": "practice",
+          "requires": [
+            "network-6"
+          ],
+          "skills": [
+            {
+              "key": "net-sse",
+              "title": "Опрос и SSE",
+              "lesson": {
+                "course": "network",
+                "slug": "polling-sse",
+                "title": "Опрос и Server-Sent Events"
+              }
+            },
+            {
+              "key": "net-websocket",
+              "title": "WebSocket",
+              "lesson": {
+                "course": "network",
+                "slug": "websocket",
+                "title": "WebSocket"
+              }
+            },
+            {
+              "key": "net-webrtc",
+              "title": "WebRTC",
+              "lesson": {
+                "course": "network",
+                "slug": "webrtc",
+                "title": "WebRTC и звонки"
+              }
+            }
+          ]
+        },
+        {
+          "id": "network-8",
+          "title": "Проектирование API",
+          "depth": "practice",
+          "requires": [
+            "network-7"
+          ],
+          "skills": [
+            {
+              "key": "net-rest",
+              "title": "REST",
+              "lesson": {
+                "course": "network",
+                "slug": "rest-design",
+                "title": "Хороший REST API"
+              }
+            },
+            {
+              "key": "net-api-versioning",
+              "title": "Развитие API",
+              "lesson": {
+                "course": "network",
+                "slug": "api-evolution",
+                "title": "Версии, совместимость и документация"
+              }
+            },
+            {
+              "key": "net-api-styles",
+              "title": "Стили API",
+              "lesson": {
+                "course": "network",
+                "slug": "graphql-grpc",
+                "title": "GraphQL, gRPC и вебхуки"
+              }
+            }
+          ]
+        },
+        {
+          "id": "network-9",
+          "title": "CDN, кэш и балансировка",
+          "depth": "practice",
+          "requires": [
+            "network-8"
+          ],
+          "skills": [
+            {
+              "key": "net-cdn",
+              "title": "CDN",
+              "lesson": {
+                "course": "network",
+                "slug": "cdn",
+                "title": "CDN"
+              }
+            },
+            {
+              "key": "net-cache-strategy",
+              "title": "Стратегии кэша",
+              "lesson": {
+                "course": "network",
+                "slug": "cache-strategy",
+                "title": "Стратегии кэша и сброс"
+              }
+            },
+            {
+              "key": "net-lb",
+              "title": "Балансировка",
+              "lesson": {
+                "course": "network",
+                "slug": "load-balancing",
+                "title": "Балансировка нагрузки"
+              }
+            }
+          ]
+        },
+        {
+          "id": "network-10",
+          "title": "Прокси, NAT и файрволы",
+          "depth": "practice",
+          "requires": [
+            "network-9"
+          ],
+          "skills": [
+            {
+              "key": "net-proxy",
+              "title": "Прокси",
+              "lesson": {
+                "course": "network",
+                "slug": "proxies",
+                "title": "Прямые и обратные прокси"
+              }
+            },
+            {
+              "key": "net-nat",
+              "title": "NAT и файрволы",
+              "lesson": {
+                "course": "network",
+                "slug": "nat-firewall",
+                "title": "NAT и файрволы"
+              }
+            },
+            {
+              "key": "net-vpn",
+              "title": "VPN",
+              "lesson": {
+                "course": "network",
+                "slug": "vpn",
+                "title": "VPN и частные сети"
+              }
+            }
+          ]
+        },
+        {
+          "id": "network-11",
+          "title": "Диагностика сети",
+          "depth": "practice",
+          "requires": [
+            "network-10"
+          ],
+          "skills": [
+            {
+              "key": "net-ping",
+              "title": "ping и traceroute",
+              "lesson": {
+                "course": "network",
+                "slug": "ping-trace",
+                "title": "ping, traceroute и mtr"
+              }
+            },
+            {
+              "key": "net-timing",
+              "title": "Тайминги и порты",
+              "lesson": {
+                "course": "network",
+                "slug": "curl-ports",
+                "title": "curl по секундам и проверка портов"
+              }
+            },
+            {
+              "key": "net-method",
+              "title": "Поиск сетевых проблем",
+              "lesson": {
+                "course": "network",
+                "slug": "wireshark-method",
+                "title": "Wireshark и метод поиска проблем"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
