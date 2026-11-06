@@ -1,11 +1,24 @@
-/* The course's character beside a lesson, in the character's own colours. */
+/* The course's character beside a lesson, in the character's own colours: a compact strip
+   under the course programme, the live figure on the left and level on the right. */
 .companion {
   display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  align-items: center;
   gap: var(--space-3);
-  padding: var(--space-4);
+  padding: var(--space-3);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   background: var(--surface-elevated);
+}
+
+.figure {
+  width: 7.5rem;
+}
+
+.info {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
 }
 
 .head {
@@ -30,12 +43,13 @@
 
 .meter {
   width: 100%;
-  height: 8px;
+  height: 6px;
   accent-color: var(--stage-glow, var(--action-primary));
 }
 
 .note {
   margin: 0;
   color: var(--text-secondary);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  line-height: 1.35;
 }
