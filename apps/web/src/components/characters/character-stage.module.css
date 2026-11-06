@@ -1,0 +1,101 @@
+/* The live 3D character on its page and the still portraits on the roster cards. */
+.wrap {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.ranks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.ranks button {
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  background: var(--surface-elevated);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.ranks button[data-own] {
+  color: var(--text-primary);
+}
+
+.ranks button[aria-pressed="true"] {
+  border-color: var(--stage-glow, var(--action-primary));
+  background: var(--stage-glow, var(--action-primary));
+  color: #0a0909;
+}
+
+.ranks button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.stage {
+  position: relative;
+  overflow: hidden;
+  height: min(58vh, 520px);
+  min-height: 340px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: radial-gradient(
+    60% 60% at 50% 70%,
+    color-mix(
+      in srgb,
+      var(--stage-glow, var(--action-primary)) 18%,
+      var(--stage-deep, #0a0909)
+    ),
+    #0a0909 72%
+  );
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.stage:active {
+  cursor: grabbing;
+}
+
+.hint {
+  position: absolute;
+  left: var(--space-4);
+  bottom: var(--space-3);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.stage[data-ready] .hint {
+  opacity: 1;
+}
+
+.portrait {
+  display: block;
+  width: calc(100% + var(--space-6) * 2);
+  max-width: none;
+  aspect-ratio: 1;
+  margin: calc(var(--space-6) * -1) calc(var(--space-6) * -1) 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: radial-gradient(
+    60% 60% at 50% 65%,
+    color-mix(
+      in srgb,
+      var(--stage-glow, var(--action-primary)) 22%,
+      var(--stage-deep, #0a0909)
+    ),
+    #0a0909 75%
+  );
+  object-fit: contain;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hint {
+    transition: none;
+  }
+}

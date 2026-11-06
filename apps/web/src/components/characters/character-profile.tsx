@@ -18,6 +18,7 @@ import {
 } from "./character-labels";
 import { initials } from "./character-roster";
 import { BranchSceneView } from "./branch-scene";
+import { CharacterStage } from "./character-stage";
 import type { BranchScene } from "../../lib/skill-map/story";
 import styles from "./characters.module.css";
 
@@ -40,6 +41,10 @@ export function CharacterProfile({
   const nextHref = progress.next ? lessonHref(progress.next.skill) : null;
   return (
     <article className={styles.profile} data-ui-accent={character.accent}>
+      <CharacterStage
+        slug={character.slug}
+        level={(progress.level / progress.maxLevel) * 100}
+      />
       <header className={styles.profileHead}>
         <div className={styles.profileTitle}>
           <span className={styles.portraitLarge} aria-hidden="true">
