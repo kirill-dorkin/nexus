@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { readConsent, writeConsent } from "./product-analytics";
+import {
+  identifyLearner,
+  productAnalytics,
+  readConsent,
+  setConsent,
+  track,
+  writeConsent
+} from "./product-analytics";
 
 const memory = () => {
   const data = new Map<string, string>();
@@ -40,5 +47,15 @@ describe("analytics consent", () => {
         "granted"
       )
     ).not.toThrow();
+  });
+
+  it("stays off without a project key: nothing loads, calls are no-ops", async () => {
+    await expect(productAnalytics()).resolves.toBeNull();
+    await expect(setConsent("granted")).resolves.toBeUndefined();
+    await expect(setConsent("denied")).resolves.toBeUndefined();
+    await expect(identifyLearner("user-1")).resolves.toBeUndefined();
+    await expect(
+      track("lesson_completed", { lesson: "x" })
+    ).resolves.toBeUndefined();
   });
 });
