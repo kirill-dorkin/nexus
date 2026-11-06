@@ -34,7 +34,7 @@ await page.goto(file.startsWith("http") ? file : "file://" + file);
 await page.waitForTimeout(2500);
 for (const level of [0, 30, 50, 70, 100]) {
   await page.evaluate((v) => {
-    const range = document.getElementById("level");
+    const range = globalThis.document.getElementById("level");
     range.value = String(v);
     range.dispatchEvent(new Event("input"));
   }, level);
