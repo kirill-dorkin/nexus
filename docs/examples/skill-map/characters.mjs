@@ -354,6 +354,26 @@ export const characters = [
       "Полноценные приложения на React: App Router, маршруты и макеты, серверные и клиентские компоненты, данные и потоковая отрисовка, формы и Server Actions, рендеринг и кэш, API и прокси, стили, картинки и метаданные, база данных и вход, ошибки, скорость и тесты, выпуск на платформу и свой сервер.",
     accent: "rose",
     sources: [{ manifest: "next-track.manifest.json", published: true }]
+  },
+  {
+    slug: "go",
+    depth: {},
+    abilities: [
+      { title: "Основы", branches: ["Старт Go", "Типы и переменные", "Управление потоком"] },
+      { title: "Данные", branches: ["Срезы и карты"] },
+      { title: "Надёжность", branches: ["Функции и ошибки"] },
+      { title: "Типы", branches: ["Структуры и методы", "Интерфейсы и обобщения"] },
+      { title: "Проект", branches: ["Пакеты и модули"] },
+      { title: "Скорость", branches: ["Горутины и каналы"] },
+      { title: "Качество", branches: ["Тесты и инструменты"] },
+      { title: "Практика", branches: ["Go на практике"] }
+    ],
+    name: "Go",
+    role: "Бегун",
+    summary:
+      "Быстрые программы и серверы: типы и переменные, условия и циклы, срезы и карты, функции и ошибки, структуры и методы, интерфейсы и обобщения, пакеты и модули, горутины, каналы и контекст, тесты и бенчмарки, HTTP-сервер, JSON и база данных.",
+    accent: "teal",
+    sources: [{ manifest: "go-track.manifest.json", published: true }]
   }
 ];
 
@@ -378,7 +398,8 @@ export const requires = {
   "python/Старт Python": ["pc/Командная строка"],
   "docker/Зачем контейнеры": ["terminal/Процессы и сигналы"],
   "docker/Сети контейнеров": ["network/IP-адреса и подсети"],
-  "next/Старт Next.js": ["react/Маршруты и структура приложения"]
+  "next/Старт Next.js": ["react/Маршруты и структура приложения"],
+  "go/Старт Go": ["pc/Командная строка"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */

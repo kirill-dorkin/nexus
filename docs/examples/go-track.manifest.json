@@ -1,0 +1,4543 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "go",
+    "title": "Go: быстрые программы и серверы",
+    "description": "Go с нуля до своего HTTP-сервиса. Установка и первая программа, типы и переменные, условия и циклы, срезы и карты, функции и обработка ошибок, структуры и методы, интерфейсы и обобщения, пакеты и модули, горутины, каналы и контекст, тесты, бенчмарки и инструменты, HTTP-сервер, JSON и база данных. Каждое понятие объясняется карточкой с примером, каждый урок закрепляется вопросами."
+  },
+  "skills": [
+    {
+      "key": "go-why",
+      "title": "Что такое Go",
+      "description": "Объяснять, что такое Go и где его используют."
+    },
+    {
+      "key": "go-hello",
+      "title": "Первая программа",
+      "description": "Писать и запускать программу на Go."
+    },
+    {
+      "key": "go-tools",
+      "title": "Инструменты Go",
+      "description": "Пользоваться стандартными инструментами Go."
+    },
+    {
+      "key": "go-vars",
+      "title": "Переменные",
+      "description": "Объявлять переменные и понимать нулевые значения."
+    },
+    {
+      "key": "go-types",
+      "title": "Базовые типы",
+      "description": "Использовать базовые типы и явные преобразования."
+    },
+    {
+      "key": "go-strings",
+      "title": "Строки и руны",
+      "description": "Работать со строками, рунами и форматированием."
+    },
+    {
+      "key": "go-if",
+      "title": "Ветвления",
+      "description": "Писать условия с if и switch."
+    },
+    {
+      "key": "go-for",
+      "title": "Цикл for",
+      "description": "Писать циклы for во всех формах."
+    },
+    {
+      "key": "go-defer",
+      "title": "defer",
+      "description": "Освобождать ресурсы с помощью defer."
+    },
+    {
+      "key": "go-slices",
+      "title": "Срезы",
+      "description": "Работать со срезами и понимать их устройство."
+    },
+    {
+      "key": "go-maps",
+      "title": "Карты",
+      "description": "Хранить данные по ключам в картах."
+    },
+    {
+      "key": "go-pointers",
+      "title": "Указатели",
+      "description": "Понимать указатели и передачу по значению."
+    },
+    {
+      "key": "go-funcs",
+      "title": "Функции",
+      "description": "Писать функции с несколькими результатами и замыканиями."
+    },
+    {
+      "key": "go-errors",
+      "title": "Ошибки",
+      "description": "Обрабатывать, оборачивать и проверять ошибки."
+    },
+    {
+      "key": "go-panic",
+      "title": "panic и recover",
+      "description": "Отличать ошибки от паник и обрабатывать панику."
+    },
+    {
+      "key": "go-structs",
+      "title": "Структуры",
+      "description": "Описывать данные структурами."
+    },
+    {
+      "key": "go-methods",
+      "title": "Методы",
+      "description": "Добавлять методы к типам и выбирать получатель."
+    },
+    {
+      "key": "go-embed",
+      "title": "Встраивание и теги",
+      "description": "Использовать встраивание структур и теги полей."
+    },
+    {
+      "key": "go-interfaces",
+      "title": "Интерфейсы",
+      "description": "Описывать поведение интерфейсами."
+    },
+    {
+      "key": "go-typeswitch",
+      "title": "Проверки типов",
+      "description": "Работать с any и проверять конкретный тип."
+    },
+    {
+      "key": "go-generics",
+      "title": "Обобщения",
+      "description": "Писать обобщённые функции с ограничениями типов."
+    },
+    {
+      "key": "go-packages",
+      "title": "Пакеты",
+      "description": "Разбивать код на пакеты."
+    },
+    {
+      "key": "go-modules",
+      "title": "Модули",
+      "description": "Создавать модуль и управлять зависимостями."
+    },
+    {
+      "key": "go-layout",
+      "title": "Структура проекта",
+      "description": "Организовывать файлы проекта на Go."
+    },
+    {
+      "key": "go-goroutines",
+      "title": "Горутины",
+      "description": "Запускать горутины и синхронизировать их."
+    },
+    {
+      "key": "go-channels",
+      "title": "Каналы",
+      "description": "Передавать данные между горутинами каналами."
+    },
+    {
+      "key": "go-context",
+      "title": "Контекст",
+      "description": "Отменять операции и задавать тайм-ауты через context."
+    },
+    {
+      "key": "go-tests",
+      "title": "Тесты",
+      "description": "Писать и запускать тесты встроенным пакетом testing."
+    },
+    {
+      "key": "go-tabletests",
+      "title": "Табличные тесты",
+      "description": "Писать табличные тесты и тестировать через интерфейсы."
+    },
+    {
+      "key": "go-bench",
+      "title": "Бенчмарки и профилирование",
+      "description": "Измерять скорость кода и находить узкие места."
+    },
+    {
+      "key": "go-http",
+      "title": "HTTP-сервер",
+      "description": "Писать HTTP-сервер на стандартной библиотеке."
+    },
+    {
+      "key": "go-api",
+      "title": "JSON и база",
+      "description": "Писать JSON API с базой данных."
+    },
+    {
+      "key": "go-ship",
+      "title": "Утилиты и выпуск",
+      "description": "Писать утилиты и выпускать программы на Go."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "wg-compiled",
+      "type": "quiz.single_choice",
+      "title": "Тип языка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-why"
+      ],
+      "presentation": {
+        "question": "Какой Go язык?",
+        "options": [
+          {
+            "id": "compiled",
+            "text": "Компилируемый со статической типизацией"
+          },
+          {
+            "id": "interp",
+            "text": "Интерпретируемый без типов"
+          },
+          {
+            "id": "markup",
+            "text": "Язык разметки"
+          },
+          {
+            "id": "query",
+            "text": "Язык запросов к базе"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "compiled",
+        "explanation": "Типы проверяются при компиляции."
+      }
+    },
+    {
+      "slug": "wg-written",
+      "type": "quiz.multiple_choice",
+      "title": "Написано на Go",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "go-why"
+      ],
+      "presentation": {
+        "question": "Какие инструменты написаны на Go?",
+        "options": [
+          {
+            "id": "docker",
+            "text": "Docker"
+          },
+          {
+            "id": "k8s",
+            "text": "Kubernetes"
+          },
+          {
+            "id": "terraform",
+            "text": "Terraform"
+          },
+          {
+            "id": "photoshop",
+            "text": "Photoshop"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "docker",
+          "k8s",
+          "terraform"
+        ],
+        "explanation": "Go — язык облачной инфраструктуры."
+      }
+    },
+    {
+      "slug": "wg-binary",
+      "type": "quiz.single_choice",
+      "title": "Результат сборки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-why"
+      ],
+      "presentation": {
+        "question": "Что получается после go build?",
+        "options": [
+          {
+            "id": "binary",
+            "text": "Один исполняемый файл без внешних зависимостей"
+          },
+          {
+            "id": "folder",
+            "text": "Папка с исходниками"
+          },
+          {
+            "id": "jar",
+            "text": "Архив для виртуальной машины"
+          },
+          {
+            "id": "script",
+            "text": "Скрипт для интерпретатора"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "binary",
+        "explanation": "Его копируют на сервер и запускают."
+      }
+    },
+    {
+      "slug": "fp-entry",
+      "type": "quiz.single_choice",
+      "title": "Точка входа",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-hello"
+      ],
+      "presentation": {
+        "question": "С какой функции начинается выполнение программы?",
+        "options": [
+          {
+            "id": "main",
+            "text": "func main() в package main"
+          },
+          {
+            "id": "init",
+            "text": "func start()"
+          },
+          {
+            "id": "first",
+            "text": "С первой строки файла"
+          },
+          {
+            "id": "run",
+            "text": "func run()"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "main",
+        "explanation": "Как в C и многих других языках."
+      }
+    },
+    {
+      "slug": "fp-run",
+      "type": "quiz.single_choice",
+      "title": "Запуск",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-hello"
+      ],
+      "presentation": {
+        "question": "Чем go run отличается от go build?",
+        "options": [
+          {
+            "id": "temp",
+            "text": "go run собирает во временную папку и сразу запускает"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          },
+          {
+            "id": "interp",
+            "text": "go run интерпретирует без компиляции"
+          },
+          {
+            "id": "test",
+            "text": "go run запускает тесты"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "temp",
+        "explanation": "go build оставляет файл."
+      }
+    },
+    {
+      "slug": "fp-cross",
+      "type": "quiz.short_text",
+      "title": "Другая ОС",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "go-hello"
+      ],
+      "presentation": {
+        "question": "Какую переменную окружения задают, чтобы собрать программу под Linux? Только имя."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "GOOS"
+        ],
+        "caseSensitive": false,
+        "explanation": "GOOS=linux GOARCH=amd64 go build."
+      }
+    },
+    {
+      "slug": "gt-unused",
+      "type": "quiz.single_choice",
+      "title": "Неиспользуемое",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-tools"
+      ],
+      "presentation": {
+        "question": "Что будет, если объявить переменную и не использовать её?",
+        "options": [
+          {
+            "id": "error",
+            "text": "Ошибка компиляции"
+          },
+          {
+            "id": "warn",
+            "text": "Только предупреждение"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          },
+          {
+            "id": "delete",
+            "text": "Компилятор удалит её молча"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "error",
+        "explanation": "Go строг к мусору."
+      }
+    },
+    {
+      "slug": "gt-fmt",
+      "type": "quiz.single_choice",
+      "title": "Форматирование",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-tools"
+      ],
+      "presentation": {
+        "question": "Какой инструмент форматирует код Go?",
+        "options": [
+          {
+            "id": "gofmt",
+            "text": "gofmt"
+          },
+          {
+            "id": "prettier",
+            "text": "prettier"
+          },
+          {
+            "id": "black",
+            "text": "black"
+          },
+          {
+            "id": "eslint",
+            "text": "eslint"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "gofmt",
+        "explanation": "Один стиль на всех."
+      }
+    },
+    {
+      "slug": "gt-vet",
+      "type": "quiz.single_choice",
+      "title": "go vet",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-tools"
+      ],
+      "presentation": {
+        "question": "Что делает go vet?",
+        "options": [
+          {
+            "id": "suspicious",
+            "text": "Ищет подозрительные конструкции, которые пропускает компилятор"
+          },
+          {
+            "id": "build",
+            "text": "Собирает программу"
+          },
+          {
+            "id": "format",
+            "text": "Форматирует код"
+          },
+          {
+            "id": "deps",
+            "text": "Ставит зависимости"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "suspicious",
+        "explanation": "Например, неверный формат в Printf."
+      }
+    },
+    {
+      "slug": "vr-zero",
+      "type": "quiz.single_choice",
+      "title": "Нулевое значение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-vars"
+      ],
+      "presentation": {
+        "question": "Чему равна `var s string` до присваивания?",
+        "options": [
+          {
+            "id": "empty",
+            "text": "Пустой строке \"\""
+          },
+          {
+            "id": "nil",
+            "text": "nil"
+          },
+          {
+            "id": "garbage",
+            "text": "Случайному мусору"
+          },
+          {
+            "id": "error",
+            "text": "Это ошибка"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "empty",
+        "explanation": "У каждого типа свой ноль."
+      }
+    },
+    {
+      "slug": "vr-short",
+      "type": "quiz.single_choice",
+      "title": ":=",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-vars"
+      ],
+      "presentation": {
+        "question": "Где можно использовать :=?",
+        "options": [
+          {
+            "id": "func",
+            "text": "Только внутри функций"
+          },
+          {
+            "id": "pkg",
+            "text": "Только на уровне пакета"
+          },
+          {
+            "id": "both",
+            "text": "Везде"
+          },
+          {
+            "id": "const",
+            "text": "Только для констант"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "func",
+        "explanation": "На уровне пакета — var."
+      }
+    },
+    {
+      "slug": "vr-redecl",
+      "type": "quiz.single_choice",
+      "title": "Повтор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-vars"
+      ],
+      "presentation": {
+        "question": "Что будет при повторном `x := 2` для уже объявленной x в той же области?",
+        "options": [
+          {
+            "id": "error",
+            "text": "Ошибка: слева нет новых переменных"
+          },
+          {
+            "id": "ok",
+            "text": "Просто присвоение"
+          },
+          {
+            "id": "shadow",
+            "text": "Создастся вторая x"
+          },
+          {
+            "id": "warn",
+            "text": "Предупреждение"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "error",
+        "explanation": "Для присвоения — =."
+      }
+    },
+    {
+      "slug": "bt-mix",
+      "type": "quiz.single_choice",
+      "title": "Смешение типов",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-types"
+      ],
+      "presentation": {
+        "question": "Что будет при `n + price`, где n int, price float64?",
+        "options": [
+          {
+            "id": "error",
+            "text": "Ошибка компиляции"
+          },
+          {
+            "id": "float",
+            "text": "Результат float64"
+          },
+          {
+            "id": "int",
+            "text": "Результат int"
+          },
+          {
+            "id": "string",
+            "text": "Строка"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "error",
+        "explanation": "Нужно float64(n)."
+      }
+    },
+    {
+      "slug": "bt-iota",
+      "type": "quiz.single_choice",
+      "title": "iota",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-types"
+      ],
+      "presentation": {
+        "question": "Чему равна Expert в примере с Novice = iota, Master, Expert?",
+        "options": [
+          {
+            "id": "2",
+            "text": "2"
+          },
+          {
+            "id": "0",
+            "text": "0"
+          },
+          {
+            "id": "1",
+            "text": "1"
+          },
+          {
+            "id": "3",
+            "text": "3"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "2",
+        "explanation": "iota растёт с каждой строкой."
+      }
+    },
+    {
+      "slug": "bt-bool",
+      "type": "quiz.single_choice",
+      "title": "Условие",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-types"
+      ],
+      "presentation": {
+        "question": "Можно ли написать `if count {` для int count?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, нужно сравнение вроде count > 0"
+          },
+          {
+            "id": "yes",
+            "text": "Да, ноль — ложь"
+          },
+          {
+            "id": "warn",
+            "text": "Да, с предупреждением"
+          },
+          {
+            "id": "nil",
+            "text": "Только если count nil"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Только bool в условии."
+      }
+    },
+    {
+      "slug": "sr-len",
+      "type": "quiz.single_choice",
+      "title": "Длина",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-strings"
+      ],
+      "presentation": {
+        "question": "Что вернёт len(\"Мир\")?",
+        "options": [
+          {
+            "id": "6",
+            "text": "6 — байтов в UTF-8"
+          },
+          {
+            "id": "3",
+            "text": "3"
+          },
+          {
+            "id": "1",
+            "text": "1"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "6",
+        "explanation": "Символов — len([]rune(s))."
+      }
+    },
+    {
+      "slug": "sr-atoi",
+      "type": "quiz.single_choice",
+      "title": "Число из строки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-strings"
+      ],
+      "presentation": {
+        "question": "Что возвращает strconv.Atoi?",
+        "options": [
+          {
+            "id": "two",
+            "text": "Число и ошибку"
+          },
+          {
+            "id": "int",
+            "text": "Только число"
+          },
+          {
+            "id": "string",
+            "text": "Строку"
+          },
+          {
+            "id": "bool",
+            "text": "true или false"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "two",
+        "explanation": "Ошибку нужно проверить."
+      }
+    },
+    {
+      "slug": "sr-range",
+      "type": "quiz.single_choice",
+      "title": "Обход",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-strings"
+      ],
+      "presentation": {
+        "question": "Что даёт `for i, r := range s` по строке?",
+        "options": [
+          {
+            "id": "runes",
+            "text": "Индекс байта и руну (символ)"
+          },
+          {
+            "id": "bytes",
+            "text": "Индекс и байт"
+          },
+          {
+            "id": "words",
+            "text": "Слова"
+          },
+          {
+            "id": "lines",
+            "text": "Строки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "runes",
+        "explanation": "range декодирует UTF-8."
+      }
+    },
+    {
+      "slug": "is-init",
+      "type": "quiz.single_choice",
+      "title": "Инициализация",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-if"
+      ],
+      "presentation": {
+        "question": "Где видна переменная err в `if err := f(); err != nil { }`?",
+        "options": [
+          {
+            "id": "inside",
+            "text": "Только внутри if и его else"
+          },
+          {
+            "id": "func",
+            "text": "Во всей функции"
+          },
+          {
+            "id": "pkg",
+            "text": "Во всём пакете"
+          },
+          {
+            "id": "none",
+            "text": "Нигде"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "inside",
+        "explanation": "Область видимости — блок if."
+      }
+    },
+    {
+      "slug": "is-break",
+      "type": "quiz.single_choice",
+      "title": "break в switch",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-if"
+      ],
+      "presentation": {
+        "question": "Нужен ли break в конце case?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, case завершается сам"
+          },
+          {
+            "id": "yes",
+            "text": "Да, иначе провалится"
+          },
+          {
+            "id": "last",
+            "text": "Только в последнем"
+          },
+          {
+            "id": "default",
+            "text": "Только в default"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Проваливание — только через fallthrough."
+      }
+    },
+    {
+      "slug": "is-paren",
+      "type": "quiz.single_choice",
+      "title": "Скобки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-if"
+      ],
+      "presentation": {
+        "question": "Как правильно записать условие?",
+        "options": [
+          {
+            "id": "nobr",
+            "text": "`if x > 0 {`"
+          },
+          {
+            "id": "br",
+            "text": "`if (x > 0)` без фигурных скобок"
+          },
+          {
+            "id": "then",
+            "text": "`if x > 0 then`"
+          },
+          {
+            "id": "colon",
+            "text": "`if x > 0:`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "nobr",
+        "explanation": "Фигурные скобки обязательны."
+      }
+    },
+    {
+      "slug": "fl-while",
+      "type": "quiz.single_choice",
+      "title": "while",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-for"
+      ],
+      "presentation": {
+        "question": "Как в Go записать цикл «пока условие истинно»?",
+        "options": [
+          {
+            "id": "for",
+            "text": "`for условие { }`"
+          },
+          {
+            "id": "while",
+            "text": "`while условие { }`"
+          },
+          {
+            "id": "do",
+            "text": "`do { } while условие`"
+          },
+          {
+            "id": "loop",
+            "text": "`loop условие { }`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "for",
+        "explanation": "while в Go нет."
+      }
+    },
+    {
+      "slug": "fl-blank",
+      "type": "quiz.single_choice",
+      "title": "Без индекса",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-for"
+      ],
+      "presentation": {
+        "question": "Как пройти по срезу, не используя индекс?",
+        "options": [
+          {
+            "id": "blank",
+            "text": "`for _, v := range items`"
+          },
+          {
+            "id": "skip",
+            "text": "`for v := range items` всегда даёт значение"
+          },
+          {
+            "id": "each",
+            "text": "`items.each(v)`"
+          },
+          {
+            "id": "foreach",
+            "text": "`foreach v in items`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "blank",
+        "explanation": "Одна переменная в range — это индекс."
+      }
+    },
+    {
+      "slug": "fl-int",
+      "type": "quiz.single_choice",
+      "title": "range по числу",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-for"
+      ],
+      "presentation": {
+        "question": "Что даёт `for i := range 3`?",
+        "options": [
+          {
+            "id": "012",
+            "text": "0, 1, 2"
+          },
+          {
+            "id": "123",
+            "text": "1, 2, 3"
+          },
+          {
+            "id": "3",
+            "text": "Только 3"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "012",
+        "explanation": "Появилось в Go 1.22."
+      }
+    },
+    {
+      "slug": "df-when",
+      "type": "quiz.single_choice",
+      "title": "Когда",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-defer"
+      ],
+      "presentation": {
+        "question": "Когда выполняется отложенный вызов?",
+        "options": [
+          {
+            "id": "exit",
+            "text": "При выходе из функции"
+          },
+          {
+            "id": "now",
+            "text": "Сразу"
+          },
+          {
+            "id": "end",
+            "text": "В конце программы"
+          },
+          {
+            "id": "loop",
+            "text": "В конце итерации цикла"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "exit",
+        "explanation": "Даже при панике."
+      }
+    },
+    {
+      "slug": "df-order",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-defer"
+      ],
+      "presentation": {
+        "question": "В каком порядке выполнятся defer A(), defer B(), defer C()?",
+        "options": [
+          {
+            "id": "cba",
+            "text": "C, B, A"
+          },
+          {
+            "id": "abc",
+            "text": "A, B, C"
+          },
+          {
+            "id": "random",
+            "text": "Случайно"
+          },
+          {
+            "id": "bac",
+            "text": "B, A, C"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cba",
+        "explanation": "Стек: последним пришёл — первым ушёл."
+      }
+    },
+    {
+      "slug": "df-loop",
+      "type": "quiz.single_choice",
+      "title": "В цикле",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-defer"
+      ],
+      "presentation": {
+        "question": "Чем опасен defer f.Close() в цикле на 10 000 файлов?",
+        "options": [
+          {
+            "id": "open",
+            "text": "Все файлы останутся открытыми до выхода из функции"
+          },
+          {
+            "id": "slow",
+            "text": "Ничем, только медленнее"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка компиляции"
+          },
+          {
+            "id": "skip",
+            "text": "Close не выполнится вовсе"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "open",
+        "explanation": "Вынеси тело в функцию."
+      }
+    },
+    {
+      "slug": "sl-append",
+      "type": "quiz.single_choice",
+      "title": "append",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-slices"
+      ],
+      "presentation": {
+        "question": "Как правильно добавить элемент в срез?",
+        "options": [
+          {
+            "id": "assign",
+            "text": "`items = append(items, x)`"
+          },
+          {
+            "id": "method",
+            "text": "`items.append(x)`"
+          },
+          {
+            "id": "push",
+            "text": "`items.push(x)`"
+          },
+          {
+            "id": "plus",
+            "text": "`items += x`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "assign",
+        "explanation": "append возвращает новый срез."
+      }
+    },
+    {
+      "slug": "sl-share",
+      "type": "quiz.single_choice",
+      "title": "Общая память",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-slices"
+      ],
+      "presentation": {
+        "question": "b := a[0:2]; b[0] = 99. Что с a[0]?",
+        "options": [
+          {
+            "id": "changed",
+            "text": "Тоже станет 99"
+          },
+          {
+            "id": "same",
+            "text": "Не изменится"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка"
+          },
+          {
+            "id": "copy",
+            "text": "a скопируется"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "changed",
+        "explanation": "Срез среза смотрит в тот же массив."
+      }
+    },
+    {
+      "slug": "sl-cap",
+      "type": "quiz.single_choice",
+      "title": "cap",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-slices"
+      ],
+      "presentation": {
+        "question": "Что показывает cap(s)?",
+        "options": [
+          {
+            "id": "capacity",
+            "text": "Сколько элементов поместится без перевыделения памяти"
+          },
+          {
+            "id": "len",
+            "text": "Сколько элементов сейчас"
+          },
+          {
+            "id": "bytes",
+            "text": "Размер в байтах"
+          },
+          {
+            "id": "max",
+            "text": "Максимальное значение"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "capacity",
+        "explanation": "len — сколько есть."
+      }
+    },
+    {
+      "slug": "mp-missing",
+      "type": "quiz.single_choice",
+      "title": "Нет ключа",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-maps"
+      ],
+      "presentation": {
+        "question": "Что вернёт m[\"x\"] для map[string]int без ключа x?",
+        "options": [
+          {
+            "id": "zero",
+            "text": "0"
+          },
+          {
+            "id": "nil",
+            "text": "nil"
+          },
+          {
+            "id": "panic",
+            "text": "Панику"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "zero",
+        "explanation": "Для проверки — запятая ok."
+      }
+    },
+    {
+      "slug": "mp-nil",
+      "type": "quiz.single_choice",
+      "title": "nil-карта",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-maps"
+      ],
+      "presentation": {
+        "question": "Что будет при записи в объявленную, но не созданную карту?",
+        "options": [
+          {
+            "id": "panic",
+            "text": "Паника"
+          },
+          {
+            "id": "ok",
+            "text": "Запишется"
+          },
+          {
+            "id": "ignore",
+            "text": "Ничего"
+          },
+          {
+            "id": "compile",
+            "text": "Ошибка компиляции"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "panic",
+        "explanation": "Сначала make."
+      }
+    },
+    {
+      "slug": "mp-order",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-maps"
+      ],
+      "presentation": {
+        "question": "В каком порядке range обходит карту?",
+        "options": [
+          {
+            "id": "random",
+            "text": "В неопределённом, случайном"
+          },
+          {
+            "id": "insert",
+            "text": "В порядке добавления"
+          },
+          {
+            "id": "sorted",
+            "text": "По возрастанию ключей"
+          },
+          {
+            "id": "reverse",
+            "text": "В обратном порядке"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "random",
+        "explanation": "Отсортируй ключи сам."
+      }
+    },
+    {
+      "slug": "pt-copy",
+      "type": "quiz.single_choice",
+      "title": "Копия",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-pointers"
+      ],
+      "presentation": {
+        "question": "Функция получила int и увеличила его. Изменится ли переменная вызывающего?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, функция работала с копией"
+          },
+          {
+            "id": "yes",
+            "text": "Да"
+          },
+          {
+            "id": "sometimes",
+            "text": "Иногда"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Нужен указатель."
+      }
+    },
+    {
+      "slug": "pt-amp",
+      "type": "quiz.single_choice",
+      "title": "Адрес",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-pointers"
+      ],
+      "presentation": {
+        "question": "Что значит &score?",
+        "options": [
+          {
+            "id": "addr",
+            "text": "Адрес переменной score"
+          },
+          {
+            "id": "and",
+            "text": "Логическое И"
+          },
+          {
+            "id": "copy",
+            "text": "Копию score"
+          },
+          {
+            "id": "ref",
+            "text": "Удаление score"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "addr",
+        "explanation": "*p — значение по адресу."
+      }
+    },
+    {
+      "slug": "pt-nil",
+      "type": "quiz.single_choice",
+      "title": "nil",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-pointers"
+      ],
+      "presentation": {
+        "question": "Что будет при разыменовании nil-указателя?",
+        "options": [
+          {
+            "id": "panic",
+            "text": "Паника"
+          },
+          {
+            "id": "zero",
+            "text": "Вернётся ноль"
+          },
+          {
+            "id": "ignore",
+            "text": "Ничего"
+          },
+          {
+            "id": "compile",
+            "text": "Ошибка компиляции"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "panic",
+        "explanation": "Проверяй на nil."
+      }
+    },
+    {
+      "slug": "fn-sig",
+      "type": "quiz.single_choice",
+      "title": "Сигнатура",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-funcs"
+      ],
+      "presentation": {
+        "question": "Как объявить функцию, которая принимает два int и возвращает int?",
+        "options": [
+          {
+            "id": "go",
+            "text": "`func add(a, b int) int`"
+          },
+          {
+            "id": "c",
+            "text": "`int add(int a, int b)`"
+          },
+          {
+            "id": "ts",
+            "text": "`func add(a: int, b: int): int`"
+          },
+          {
+            "id": "py",
+            "text": "`def add(a, b) -> int`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "go",
+        "explanation": "Тип после имени."
+      }
+    },
+    {
+      "slug": "fn-pattern",
+      "type": "quiz.single_choice",
+      "title": "Шаблон",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-funcs"
+      ],
+      "presentation": {
+        "question": "Что обычно возвращает функция, которая может ошибиться?",
+        "options": [
+          {
+            "id": "valerr",
+            "text": "Результат и error"
+          },
+          {
+            "id": "panic",
+            "text": "Только панику"
+          },
+          {
+            "id": "bool",
+            "text": "Только bool"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "valerr",
+        "explanation": "Ошибку проверяют сразу."
+      }
+    },
+    {
+      "slug": "fn-closure",
+      "type": "quiz.single_choice",
+      "title": "Замыкание",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-funcs"
+      ],
+      "presentation": {
+        "question": "Что выведут два вызова c() для c := counter()?",
+        "options": [
+          {
+            "id": "12",
+            "text": "1, затем 2"
+          },
+          {
+            "id": "11",
+            "text": "1 и 1"
+          },
+          {
+            "id": "00",
+            "text": "0 и 0"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "12",
+        "explanation": "Замыкание помнит n."
+      }
+    },
+    {
+      "slug": "er-wrap",
+      "type": "quiz.single_choice",
+      "title": "Обёртка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-errors"
+      ],
+      "presentation": {
+        "question": "Какой глагол fmt.Errorf сохраняет исходную ошибку для errors.Is?",
+        "options": [
+          {
+            "id": "w",
+            "text": "%w"
+          },
+          {
+            "id": "v",
+            "text": "%v"
+          },
+          {
+            "id": "s",
+            "text": "%s"
+          },
+          {
+            "id": "e",
+            "text": "%e"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "w",
+        "explanation": "%v только печатает текст."
+      }
+    },
+    {
+      "slug": "er-is",
+      "type": "quiz.single_choice",
+      "title": "Сравнение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-errors"
+      ],
+      "presentation": {
+        "question": "Как проверить, что ошибка в цепочке — os.ErrNotExist?",
+        "options": [
+          {
+            "id": "is",
+            "text": "`errors.Is(err, os.ErrNotExist)`"
+          },
+          {
+            "id": "eq",
+            "text": "Только `err == os.ErrNotExist`"
+          },
+          {
+            "id": "str",
+            "text": "Сравнить строки"
+          },
+          {
+            "id": "type",
+            "text": "`typeof(err)`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "is",
+        "explanation": "Is проходит по обёрткам."
+      }
+    },
+    {
+      "slug": "er-ignore",
+      "type": "quiz.single_choice",
+      "title": "Игнор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-errors"
+      ],
+      "presentation": {
+        "question": "Чем плоха запись `v, _ := strconv.Atoi(s)` для пользовательского ввода?",
+        "options": [
+          {
+            "id": "hidden",
+            "text": "Ошибка ввода будет проглочена, v станет 0"
+          },
+          {
+            "id": "slow",
+            "text": "Это медленно"
+          },
+          {
+            "id": "compile",
+            "text": "Не скомпилируется"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hidden",
+        "explanation": "Ввод может быть любым."
+      }
+    },
+    {
+      "slug": "pr-when",
+      "type": "quiz.single_choice",
+      "title": "Когда паника",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-panic"
+      ],
+      "presentation": {
+        "question": "Когда уместен panic?",
+        "options": [
+          {
+            "id": "bug",
+            "text": "При ошибке программиста, невозможном состоянии"
+          },
+          {
+            "id": "file",
+            "text": "Когда файл не найден"
+          },
+          {
+            "id": "input",
+            "text": "При неверном вводе пользователя"
+          },
+          {
+            "id": "net",
+            "text": "При сбое сети"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bug",
+        "explanation": "Остальное — error."
+      }
+    },
+    {
+      "slug": "pr-where",
+      "type": "quiz.single_choice",
+      "title": "recover",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-panic"
+      ],
+      "presentation": {
+        "question": "Где работает recover?",
+        "options": [
+          {
+            "id": "defer",
+            "text": "Внутри отложенной функции"
+          },
+          {
+            "id": "anywhere",
+            "text": "В любом месте"
+          },
+          {
+            "id": "main",
+            "text": "Только в main"
+          },
+          {
+            "id": "init",
+            "text": "Только в init"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "defer",
+        "explanation": "Во время размотки стека."
+      }
+    },
+    {
+      "slug": "pr-index",
+      "type": "quiz.single_choice",
+      "title": "Выход за границы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-panic"
+      ],
+      "presentation": {
+        "question": "Что произойдёт при items[10] для среза из 3 элементов?",
+        "options": [
+          {
+            "id": "panic",
+            "text": "Паника"
+          },
+          {
+            "id": "zero",
+            "text": "Вернётся ноль"
+          },
+          {
+            "id": "error",
+            "text": "Вернётся error"
+          },
+          {
+            "id": "grow",
+            "text": "Срез увеличится"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "panic",
+        "explanation": "Проверяй len."
+      }
+    },
+    {
+      "slug": "st-export",
+      "type": "quiz.single_choice",
+      "title": "Видимость",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-structs"
+      ],
+      "presentation": {
+        "question": "Когда поле структуры видно из другого пакета?",
+        "options": [
+          {
+            "id": "upper",
+            "text": "Если имя начинается с заглавной буквы"
+          },
+          {
+            "id": "public",
+            "text": "Если написать public"
+          },
+          {
+            "id": "always",
+            "text": "Всегда"
+          },
+          {
+            "id": "tag",
+            "text": "Если есть тег"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "upper",
+        "explanation": "Строчная — только внутри пакета."
+      }
+    },
+    {
+      "slug": "st-ctor",
+      "type": "quiz.single_choice",
+      "title": "Конструктор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-structs"
+      ],
+      "presentation": {
+        "question": "Как в Go принято создавать значения с проверкой?",
+        "options": [
+          {
+            "id": "new",
+            "text": "Функцией NewX, возвращающей значение и ошибку"
+          },
+          {
+            "id": "ctor",
+            "text": "Методом constructor"
+          },
+          {
+            "id": "init",
+            "text": "Методом __init__"
+          },
+          {
+            "id": "class",
+            "text": "Через class"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "new",
+        "explanation": "Конструкторов в языке нет."
+      }
+    },
+    {
+      "slug": "st-zero",
+      "type": "quiz.single_choice",
+      "title": "Нулевая структура",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-structs"
+      ],
+      "presentation": {
+        "question": "Чему равны поля `var c Course`?",
+        "options": [
+          {
+            "id": "zeros",
+            "text": "Нулевым значениям своих типов"
+          },
+          {
+            "id": "nil",
+            "text": "Все nil"
+          },
+          {
+            "id": "random",
+            "text": "Случайным значениям"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка компиляции"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "zeros",
+        "explanation": "Пустая строка для string, 0 для int."
+      }
+    },
+    {
+      "slug": "mt-ptr",
+      "type": "quiz.single_choice",
+      "title": "Изменение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-methods"
+      ],
+      "presentation": {
+        "question": "Метод с получателем-значением увеличил c.Lessons. Изменится ли исходный курс?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, метод работал с копией"
+          },
+          {
+            "id": "yes",
+            "text": "Да"
+          },
+          {
+            "id": "panic",
+            "text": "Будет паника"
+          },
+          {
+            "id": "compile",
+            "text": "Не скомпилируется"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Нужен получатель *Course."
+      }
+    },
+    {
+      "slug": "mt-call",
+      "type": "quiz.single_choice",
+      "title": "Вызов",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-methods"
+      ],
+      "presentation": {
+        "question": "Как вызвать метод IsLong у переменной pc?",
+        "options": [
+          {
+            "id": "dot",
+            "text": "`pc.IsLong()`"
+          },
+          {
+            "id": "func",
+            "text": "`IsLong(pc)`"
+          },
+          {
+            "id": "arrow",
+            "text": "`pc->IsLong()`"
+          },
+          {
+            "id": "colon",
+            "text": "`pc::IsLong()`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dot",
+        "explanation": "Через точку."
+      }
+    },
+    {
+      "slug": "mt-any",
+      "type": "quiz.single_choice",
+      "title": "Свой тип",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-methods"
+      ],
+      "presentation": {
+        "question": "Можно ли объявить метод для type Level int?",
+        "options": [
+          {
+            "id": "yes",
+            "text": "Да, для любого своего типа"
+          },
+          {
+            "id": "no",
+            "text": "Нет, только для struct"
+          },
+          {
+            "id": "builtin",
+            "text": "Только для встроенных типов"
+          },
+          {
+            "id": "iface",
+            "text": "Только для интерфейсов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "yes",
+        "explanation": "Например, String()."
+      }
+    },
+    {
+      "slug": "et-promote",
+      "type": "quiz.single_choice",
+      "title": "Доступ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-embed"
+      ],
+      "presentation": {
+        "question": "Lesson встраивает Timestamps с полем CreatedAt. Как получить его?",
+        "options": [
+          {
+            "id": "direct",
+            "text": "`l.CreatedAt`"
+          },
+          {
+            "id": "super",
+            "text": "`l.super.CreatedAt` обязательно"
+          },
+          {
+            "id": "parent",
+            "text": "`l.parent.CreatedAt`"
+          },
+          {
+            "id": "no",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "direct",
+        "explanation": "Поля продвигаются."
+      }
+    },
+    {
+      "slug": "et-tag",
+      "type": "quiz.single_choice",
+      "title": "Тег",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-embed"
+      ],
+      "presentation": {
+        "question": "Что делает тег json:\"title\"?",
+        "options": [
+          {
+            "id": "name",
+            "text": "Задаёт имя поля в JSON"
+          },
+          {
+            "id": "type",
+            "text": "Меняет тип поля"
+          },
+          {
+            "id": "required",
+            "text": "Делает поле обязательным"
+          },
+          {
+            "id": "hide",
+            "text": "Скрывает поле"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "name",
+        "explanation": "omitempty — пропустить пустое."
+      }
+    },
+    {
+      "slug": "et-lower",
+      "type": "quiz.single_choice",
+      "title": "Строчное поле",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-embed"
+      ],
+      "presentation": {
+        "question": "Попадёт ли поле secret (со строчной буквы) в json.Marshal?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, оно не экспортировано"
+          },
+          {
+            "id": "yes",
+            "text": "Да"
+          },
+          {
+            "id": "tag",
+            "text": "Да, если есть тег"
+          },
+          {
+            "id": "empty",
+            "text": "Только пустым"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Пакет json видит только экспортированные поля."
+      }
+    },
+    {
+      "slug": "if-implicit",
+      "type": "quiz.single_choice",
+      "title": "Реализация",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-interfaces"
+      ],
+      "presentation": {
+        "question": "Как тип реализует интерфейс в Go?",
+        "options": [
+          {
+            "id": "implicit",
+            "text": "Автоматически, если у него есть все методы"
+          },
+          {
+            "id": "implements",
+            "text": "Словом implements"
+          },
+          {
+            "id": "extends",
+            "text": "Словом extends"
+          },
+          {
+            "id": "register",
+            "text": "Регистрацией в init"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "implicit",
+        "explanation": "Неявная реализация."
+      }
+    },
+    {
+      "slug": "if-reader",
+      "type": "quiz.single_choice",
+      "title": "io.Reader",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-interfaces"
+      ],
+      "presentation": {
+        "question": "Почему функция, принимающая io.Reader, удобна?",
+        "options": [
+          {
+            "id": "any",
+            "text": "Читает из файла, сети, строки — из чего угодно с методом Read"
+          },
+          {
+            "id": "fast",
+            "text": "Она быстрее"
+          },
+          {
+            "id": "files",
+            "text": "Работает только с файлами"
+          },
+          {
+            "id": "none",
+            "text": "Не удобна"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "any",
+        "explanation": "Маленький интерфейс — много реализаций."
+      }
+    },
+    {
+      "slug": "if-stringer",
+      "type": "quiz.single_choice",
+      "title": "Печать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-interfaces"
+      ],
+      "presentation": {
+        "question": "Какой метод определяет, как fmt печатает твой тип?",
+        "options": [
+          {
+            "id": "string",
+            "text": "String() string"
+          },
+          {
+            "id": "print",
+            "text": "Print()"
+          },
+          {
+            "id": "tostring",
+            "text": "toString()"
+          },
+          {
+            "id": "format",
+            "text": "Format()"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "string",
+        "explanation": "Интерфейс fmt.Stringer."
+      }
+    },
+    {
+      "slug": "tw-ok",
+      "type": "quiz.single_choice",
+      "title": "Без ok",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-typeswitch"
+      ],
+      "presentation": {
+        "question": "Что будет при `s := v.(string)`, если v — число?",
+        "options": [
+          {
+            "id": "panic",
+            "text": "Паника"
+          },
+          {
+            "id": "empty",
+            "text": "Пустая строка"
+          },
+          {
+            "id": "convert",
+            "text": "Число превратится в строку"
+          },
+          {
+            "id": "nil",
+            "text": "nil"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "panic",
+        "explanation": "С ok — безопасно."
+      }
+    },
+    {
+      "slug": "tw-switch",
+      "type": "quiz.single_choice",
+      "title": "Выбор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-typeswitch"
+      ],
+      "presentation": {
+        "question": "Как обработать значение по-разному для int и string?",
+        "options": [
+          {
+            "id": "switch",
+            "text": "type switch: `switch v := x.(type)`"
+          },
+          {
+            "id": "typeof",
+            "text": "`typeof(x)`"
+          },
+          {
+            "id": "instanceof",
+            "text": "`x instanceof int`"
+          },
+          {
+            "id": "is",
+            "text": "`x is int`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "switch",
+        "explanation": "Каждый case получает v нужного типа."
+      }
+    },
+    {
+      "slug": "tw-nil",
+      "type": "quiz.single_choice",
+      "title": "Ловушка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-typeswitch"
+      ],
+      "presentation": {
+        "question": "Функция вернула типизированный nil-указатель как error. Будет ли err == nil?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, интерфейс хранит тип и не равен nil"
+          },
+          {
+            "id": "yes",
+            "text": "Да"
+          },
+          {
+            "id": "panic",
+            "text": "Паника"
+          },
+          {
+            "id": "compile",
+            "text": "Не скомпилируется"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Возвращай просто nil."
+      }
+    },
+    {
+      "slug": "gn-syntax",
+      "type": "quiz.single_choice",
+      "title": "Синтаксис",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-generics"
+      ],
+      "presentation": {
+        "question": "Как объявить параметр типа T у функции?",
+        "options": [
+          {
+            "id": "square",
+            "text": "`func F[T any](x T)`"
+          },
+          {
+            "id": "angle",
+            "text": "`func F<T>(x T)`"
+          },
+          {
+            "id": "paren",
+            "text": "`func F(T type, x T)`"
+          },
+          {
+            "id": "generic",
+            "text": "`generic func F(x T)`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "square",
+        "explanation": "Квадратные скобки."
+      }
+    },
+    {
+      "slug": "gn-ordered",
+      "type": "quiz.single_choice",
+      "title": "Сравнение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-generics"
+      ],
+      "presentation": {
+        "question": "Какое ограничение нужно, чтобы сравнивать значения знаком <?",
+        "options": [
+          {
+            "id": "ordered",
+            "text": "cmp.Ordered"
+          },
+          {
+            "id": "any",
+            "text": "any"
+          },
+          {
+            "id": "comparable",
+            "text": "comparable"
+          },
+          {
+            "id": "error",
+            "text": "error"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ordered",
+        "explanation": "comparable — только ==."
+      }
+    },
+    {
+      "slug": "gn-when",
+      "type": "quiz.single_choice",
+      "title": "Когда",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-generics"
+      ],
+      "presentation": {
+        "question": "Когда обобщения особенно уместны?",
+        "options": [
+          {
+            "id": "algo",
+            "text": "Для контейнеров и алгоритмов над коллекциями"
+          },
+          {
+            "id": "always",
+            "text": "Всегда вместо интерфейсов"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "errors",
+            "text": "Для обработки ошибок"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "algo",
+        "explanation": "Простота важнее."
+      }
+    },
+    {
+      "slug": "pk-folder",
+      "type": "quiz.single_choice",
+      "title": "Пакет",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-packages"
+      ],
+      "presentation": {
+        "question": "Что такое пакет в Go?",
+        "options": [
+          {
+            "id": "folder",
+            "text": "Все .go-файлы одной папки"
+          },
+          {
+            "id": "file",
+            "text": "Один файл"
+          },
+          {
+            "id": "module",
+            "text": "Весь репозиторий"
+          },
+          {
+            "id": "class",
+            "text": "Класс"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "folder",
+        "explanation": "Модуль — набор пакетов."
+      }
+    },
+    {
+      "slug": "pk-internal",
+      "type": "quiz.single_choice",
+      "title": "internal",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-packages"
+      ],
+      "presentation": {
+        "question": "Кто может импортировать пакет из папки internal?",
+        "options": [
+          {
+            "id": "parent",
+            "text": "Только код того же модуля выше этой папки"
+          },
+          {
+            "id": "anyone",
+            "text": "Кто угодно"
+          },
+          {
+            "id": "none",
+            "text": "Никто"
+          },
+          {
+            "id": "tests",
+            "text": "Только тесты"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "parent",
+        "explanation": "Защита внутренних деталей."
+      }
+    },
+    {
+      "slug": "pk-init",
+      "type": "quiz.single_choice",
+      "title": "init",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-packages"
+      ],
+      "presentation": {
+        "question": "Когда выполняется func init()?",
+        "options": [
+          {
+            "id": "load",
+            "text": "Автоматически при загрузке пакета"
+          },
+          {
+            "id": "call",
+            "text": "Только при явном вызове"
+          },
+          {
+            "id": "exit",
+            "text": "При выходе"
+          },
+          {
+            "id": "test",
+            "text": "Только в тестах"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "load",
+        "explanation": "Ещё до вызова main."
+      }
+    },
+    {
+      "slug": "md-sum",
+      "type": "quiz.single_choice",
+      "title": "go.sum",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-modules"
+      ],
+      "presentation": {
+        "question": "Зачем нужен go.sum?",
+        "options": [
+          {
+            "id": "hash",
+            "text": "Хранит контрольные суммы зависимостей, защищает от подмены"
+          },
+          {
+            "id": "list",
+            "text": "Список файлов проекта"
+          },
+          {
+            "id": "test",
+            "text": "Результаты тестов"
+          },
+          {
+            "id": "none",
+            "text": "Ни зачем, его удаляют"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hash",
+        "explanation": "Его коммитят."
+      }
+    },
+    {
+      "slug": "md-tidy",
+      "type": "quiz.single_choice",
+      "title": "tidy",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-modules"
+      ],
+      "presentation": {
+        "question": "Что делает go mod tidy?",
+        "options": [
+          {
+            "id": "sync",
+            "text": "Добавляет нужные и убирает лишние зависимости"
+          },
+          {
+            "id": "format",
+            "text": "Форматирует код"
+          },
+          {
+            "id": "update",
+            "text": "Обновляет Go"
+          },
+          {
+            "id": "build",
+            "text": "Собирает программу"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "sync",
+        "explanation": "Перед коммитом."
+      }
+    },
+    {
+      "slug": "md-init",
+      "type": "quiz.short_text",
+      "title": "Создание",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "go-modules"
+      ],
+      "presentation": {
+        "question": "Какой командой создают модуль? Два слова после go."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "mod init",
+          "go mod init"
+        ],
+        "caseSensitive": false,
+        "explanation": "go mod init путь/модуля."
+      }
+    },
+    {
+      "slug": "pl-cmd",
+      "type": "quiz.single_choice",
+      "title": "cmd",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-layout"
+      ],
+      "presentation": {
+        "question": "Что обычно лежит в папке cmd/?",
+        "options": [
+          {
+            "id": "main",
+            "text": "Точки входа программ (main.go)"
+          },
+          {
+            "id": "tests",
+            "text": "Тесты"
+          },
+          {
+            "id": "docs",
+            "text": "Документация"
+          },
+          {
+            "id": "deps",
+            "text": "Зависимости"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "main",
+        "explanation": "Каждая программа — своя папка."
+      }
+    },
+    {
+      "slug": "pl-utils",
+      "type": "quiz.single_choice",
+      "title": "Имена",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-layout"
+      ],
+      "presentation": {
+        "question": "Почему пакет utils — плохая идея?",
+        "options": [
+          {
+            "id": "vague",
+            "text": "Имя ничего не говорит, туда сваливают всё подряд"
+          },
+          {
+            "id": "reserved",
+            "text": "Это зарезервированное слово"
+          },
+          {
+            "id": "slow",
+            "text": "Он медленный"
+          },
+          {
+            "id": "none",
+            "text": "Это хорошая идея"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "vague",
+        "explanation": "Лучше по предметной области."
+      }
+    },
+    {
+      "slug": "pl-std",
+      "type": "quiz.single_choice",
+      "title": "Сначала",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-layout"
+      ],
+      "presentation": {
+        "question": "С чего лучше начинать при выборе инструментов?",
+        "options": [
+          {
+            "id": "std",
+            "text": "Со стандартной библиотеки"
+          },
+          {
+            "id": "framework",
+            "text": "С самого популярного фреймворка"
+          },
+          {
+            "id": "many",
+            "text": "С десятка библиотек"
+          },
+          {
+            "id": "own",
+            "text": "С написания своих"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "std",
+        "explanation": "Её хватает для многого."
+      }
+    },
+    {
+      "slug": "gr-wait",
+      "type": "quiz.single_choice",
+      "title": "Ожидание",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-goroutines"
+      ],
+      "presentation": {
+        "question": "Почему программа может завершиться, не дождавшись горутин?",
+        "options": [
+          {
+            "id": "main",
+            "text": "main не ждёт их — нужен WaitGroup или канал"
+          },
+          {
+            "id": "bug",
+            "text": "Это ошибка Go"
+          },
+          {
+            "id": "os",
+            "text": "Так решает ОС"
+          },
+          {
+            "id": "never",
+            "text": "Такого не бывает"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "main",
+        "explanation": "Конец main — конец программы."
+      }
+    },
+    {
+      "slug": "gr-race",
+      "type": "quiz.single_choice",
+      "title": "Гонка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-goroutines"
+      ],
+      "presentation": {
+        "question": "Как найти гонки данных?",
+        "options": [
+          {
+            "id": "race",
+            "text": "Запустить с флагом -race"
+          },
+          {
+            "id": "vet",
+            "text": "Только go fmt"
+          },
+          {
+            "id": "print",
+            "text": "Расставить Println"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "race",
+        "explanation": "Детектор гонок встроен."
+      }
+    },
+    {
+      "slug": "gr-mutex",
+      "type": "quiz.single_choice",
+      "title": "Защита",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-goroutines"
+      ],
+      "presentation": {
+        "question": "Что защищает общую переменную от одновременной записи?",
+        "options": [
+          {
+            "id": "mutex",
+            "text": "sync.Mutex"
+          },
+          {
+            "id": "defer",
+            "text": "defer"
+          },
+          {
+            "id": "const",
+            "text": "const"
+          },
+          {
+            "id": "iota",
+            "text": "iota"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mutex",
+        "explanation": "Или передача данных через канал."
+      }
+    },
+    {
+      "slug": "ch-block",
+      "type": "quiz.single_choice",
+      "title": "Ожидание",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-channels"
+      ],
+      "presentation": {
+        "question": "Что происходит при отправке в небуферизованный канал, пока никто не читает?",
+        "options": [
+          {
+            "id": "block",
+            "text": "Отправитель ждёт получателя"
+          },
+          {
+            "id": "drop",
+            "text": "Значение теряется"
+          },
+          {
+            "id": "panic",
+            "text": "Паника"
+          },
+          {
+            "id": "buffer",
+            "text": "Значение копится"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "block",
+        "explanation": "Обе стороны встречаются."
+      }
+    },
+    {
+      "slug": "ch-close",
+      "type": "quiz.single_choice",
+      "title": "Кто закрывает",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-channels"
+      ],
+      "presentation": {
+        "question": "Кто должен закрывать канал?",
+        "options": [
+          {
+            "id": "sender",
+            "text": "Отправитель"
+          },
+          {
+            "id": "receiver",
+            "text": "Получатель"
+          },
+          {
+            "id": "both",
+            "text": "Оба"
+          },
+          {
+            "id": "gc",
+            "text": "Сборщик мусора"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "sender",
+        "explanation": "Отправка в закрытый канал — паника."
+      }
+    },
+    {
+      "slug": "ch-select",
+      "type": "quiz.single_choice",
+      "title": "Тайм-аут",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-channels"
+      ],
+      "presentation": {
+        "question": "Как ограничить ожидание результата двумя секундами?",
+        "options": [
+          {
+            "id": "select",
+            "text": "select с case <-time.After(2 * time.Second)"
+          },
+          {
+            "id": "sleep",
+            "text": "time.Sleep и надеяться"
+          },
+          {
+            "id": "for",
+            "text": "Бесконечный for"
+          },
+          {
+            "id": "none",
+            "text": "Нельзя"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "select",
+        "explanation": "Первый готовый case побеждает."
+      }
+    },
+    {
+      "slug": "cx-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-context"
+      ],
+      "presentation": {
+        "question": "Для чего context.Context?",
+        "options": [
+          {
+            "id": "cancel",
+            "text": "Передавать отмену и сроки по цепочке вызовов"
+          },
+          {
+            "id": "global",
+            "text": "Хранить глобальные переменные"
+          },
+          {
+            "id": "log",
+            "text": "Писать логи"
+          },
+          {
+            "id": "db",
+            "text": "Подключаться к базе"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cancel",
+        "explanation": "И немного данных запроса."
+      }
+    },
+    {
+      "slug": "cx-cancel",
+      "type": "quiz.single_choice",
+      "title": "cancel",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-context"
+      ],
+      "presentation": {
+        "question": "Зачем вызывать defer cancel() после WithTimeout?",
+        "options": [
+          {
+            "id": "free",
+            "text": "Освободить ресурсы контекста, когда работа закончена"
+          },
+          {
+            "id": "start",
+            "text": "Запустить таймер"
+          },
+          {
+            "id": "nothing",
+            "text": "Не нужно"
+          },
+          {
+            "id": "panic",
+            "text": "Чтобы вызвать панику"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "free",
+        "explanation": "Иначе утечка таймера."
+      }
+    },
+    {
+      "slug": "cx-arg",
+      "type": "quiz.single_choice",
+      "title": "Позиция",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-context"
+      ],
+      "presentation": {
+        "question": "Каким параметром принято передавать context?",
+        "options": [
+          {
+            "id": "first",
+            "text": "Первым"
+          },
+          {
+            "id": "last",
+            "text": "Последним"
+          },
+          {
+            "id": "field",
+            "text": "Полем структуры"
+          },
+          {
+            "id": "global",
+            "text": "Глобальной переменной"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "first",
+        "explanation": "func Do(ctx context.Context, ...)."
+      }
+    },
+    {
+      "slug": "ut-file",
+      "type": "quiz.single_choice",
+      "title": "Файл",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-tests"
+      ],
+      "presentation": {
+        "question": "Как должен называться файл с тестами для price.go?",
+        "options": [
+          {
+            "id": "test",
+            "text": "price_test.go"
+          },
+          {
+            "id": "spec",
+            "text": "price.spec.go"
+          },
+          {
+            "id": "tests",
+            "text": "tests/price.go"
+          },
+          {
+            "id": "any",
+            "text": "Как угодно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "test",
+        "explanation": "Суффикс _test.go."
+      }
+    },
+    {
+      "slug": "ut-fatal",
+      "type": "quiz.single_choice",
+      "title": "Fatal",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-tests"
+      ],
+      "presentation": {
+        "question": "Чем t.Fatal отличается от t.Errorf?",
+        "options": [
+          {
+            "id": "stop",
+            "text": "Fatal сразу останавливает тест, Errorf — продолжает"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          },
+          {
+            "id": "panic",
+            "text": "Fatal роняет всю программу"
+          },
+          {
+            "id": "log",
+            "text": "Fatal только пишет в лог"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "stop",
+        "explanation": "Оба отмечают провал."
+      }
+    },
+    {
+      "slug": "ut-all",
+      "type": "quiz.single_choice",
+      "title": "Все тесты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-tests"
+      ],
+      "presentation": {
+        "question": "Как запустить все тесты проекта?",
+        "options": [
+          {
+            "id": "all",
+            "text": "`go test ./...`"
+          },
+          {
+            "id": "test",
+            "text": "`go run tests`"
+          },
+          {
+            "id": "npm",
+            "text": "`npm test`"
+          },
+          {
+            "id": "make",
+            "text": "`make all`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "all",
+        "explanation": "Три точки — все пакеты."
+      }
+    },
+    {
+      "slug": "tt-run",
+      "type": "quiz.single_choice",
+      "title": "Подтесты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-tabletests"
+      ],
+      "presentation": {
+        "question": "Зачем t.Run внутри табличного теста?",
+        "options": [
+          {
+            "id": "named",
+            "text": "У каждого случая своё имя и отдельный результат"
+          },
+          {
+            "id": "fast",
+            "text": "Ускоряет тест в 10 раз"
+          },
+          {
+            "id": "required",
+            "text": "Без него таблица не работает"
+          },
+          {
+            "id": "parallel",
+            "text": "Только для параллельности"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "named",
+        "explanation": "Видно, какой случай упал."
+      }
+    },
+    {
+      "slug": "tt-mock",
+      "type": "quiz.single_choice",
+      "title": "Без базы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-tabletests"
+      ],
+      "presentation": {
+        "question": "Как протестировать функцию, которая работает с базой, без базы?",
+        "options": [
+          {
+            "id": "iface",
+            "text": "Принимать интерфейс и подставить реализацию в памяти"
+          },
+          {
+            "id": "skip",
+            "text": "Пропустить тест"
+          },
+          {
+            "id": "prod",
+            "text": "Подключить боевую базу"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "iface",
+        "explanation": "Поэтому принимают интерфейсы."
+      }
+    },
+    {
+      "slug": "tt-http",
+      "type": "quiz.single_choice",
+      "title": "Обработчик",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-tabletests"
+      ],
+      "presentation": {
+        "question": "Чем проверить HTTP-обработчик без запуска сервера?",
+        "options": [
+          {
+            "id": "httptest",
+            "text": "Пакетом httptest"
+          },
+          {
+            "id": "curl",
+            "text": "Только curl"
+          },
+          {
+            "id": "browser",
+            "text": "Браузером"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "httptest",
+        "explanation": "NewRecorder и NewRequest."
+      }
+    },
+    {
+      "slug": "bp-mem",
+      "type": "quiz.single_choice",
+      "title": "Память",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-bench"
+      ],
+      "presentation": {
+        "question": "Какой флаг добавляет к бенчмарку статистику выделений памяти?",
+        "options": [
+          {
+            "id": "benchmem",
+            "text": "-benchmem"
+          },
+          {
+            "id": "mem",
+            "text": "-mem"
+          },
+          {
+            "id": "race",
+            "text": "-race"
+          },
+          {
+            "id": "cover",
+            "text": "-cover"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "benchmem",
+        "explanation": "B/op и allocs/op."
+      }
+    },
+    {
+      "slug": "bp-pprof",
+      "type": "quiz.single_choice",
+      "title": "pprof",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-bench"
+      ],
+      "presentation": {
+        "question": "Что показывает pprof?",
+        "options": [
+          {
+            "id": "hot",
+            "text": "Какие функции тратят больше всего времени или памяти"
+          },
+          {
+            "id": "tests",
+            "text": "Какие тесты упали"
+          },
+          {
+            "id": "deps",
+            "text": "Список зависимостей"
+          },
+          {
+            "id": "style",
+            "text": "Ошибки стиля"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hot",
+        "explanation": "Оптимизируй найденное."
+      }
+    },
+    {
+      "slug": "bp-first",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-bench"
+      ],
+      "presentation": {
+        "question": "Что делать перед оптимизацией?",
+        "options": [
+          {
+            "id": "measure",
+            "text": "Измерить бенчмарком или профилем"
+          },
+          {
+            "id": "rewrite",
+            "text": "Переписать всё на ассемблере"
+          },
+          {
+            "id": "guess",
+            "text": "Угадать медленное место"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "measure",
+        "explanation": "Без измерений — гадание."
+      }
+    },
+    {
+      "slug": "hs-param",
+      "type": "quiz.single_choice",
+      "title": "Параметр",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-http"
+      ],
+      "presentation": {
+        "question": "Как получить {slug} из маршрута \"GET /courses/{slug}\"?",
+        "options": [
+          {
+            "id": "pathvalue",
+            "text": "`r.PathValue(\"slug\")`"
+          },
+          {
+            "id": "query",
+            "text": "`r.URL.Query().Get(\"slug\")`"
+          },
+          {
+            "id": "params",
+            "text": "`r.Params[\"slug\"]`"
+          },
+          {
+            "id": "form",
+            "text": "`r.FormValue(\"slug\")` всегда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pathvalue",
+        "explanation": "Появилось в Go 1.22."
+      }
+    },
+    {
+      "slug": "hs-timeout",
+      "type": "quiz.single_choice",
+      "title": "Тайм-ауты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-http"
+      ],
+      "presentation": {
+        "question": "Почему важно задать тайм-ауты http.Server?",
+        "options": [
+          {
+            "id": "hang",
+            "text": "Медленные клиенты иначе держат соединения бесконечно"
+          },
+          {
+            "id": "speed",
+            "text": "Чтобы ускорить ответы"
+          },
+          {
+            "id": "tls",
+            "text": "Без них нет HTTPS"
+          },
+          {
+            "id": "none",
+            "text": "Не важно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hang",
+        "explanation": "ListenAndServe без настроек — без тайм-аутов."
+      }
+    },
+    {
+      "slug": "hs-goroutine",
+      "type": "quiz.single_choice",
+      "title": "Запросы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-http"
+      ],
+      "presentation": {
+        "question": "Как сервер net/http обрабатывает одновременные запросы?",
+        "options": [
+          {
+            "id": "goroutine",
+            "text": "Каждый в своей горутине"
+          },
+          {
+            "id": "queue",
+            "text": "По одному в очереди"
+          },
+          {
+            "id": "process",
+            "text": "В отдельном процессе"
+          },
+          {
+            "id": "thread",
+            "text": "В одном потоке по очереди"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "goroutine",
+        "explanation": "Поэтому общие данные защищают."
+      }
+    },
+    {
+      "slug": "jd-param",
+      "type": "quiz.single_choice",
+      "title": "Параметры",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-api"
+      ],
+      "presentation": {
+        "question": "Как безопасно передать slug в SQL-запрос?",
+        "options": [
+          {
+            "id": "param",
+            "text": "Параметром $1 в QueryRowContext"
+          },
+          {
+            "id": "sprintf",
+            "text": "Через fmt.Sprintf"
+          },
+          {
+            "id": "concat",
+            "text": "Склейкой строк"
+          },
+          {
+            "id": "escape",
+            "text": "Заменой кавычек вручную"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "param",
+        "explanation": "Защита от инъекций."
+      }
+    },
+    {
+      "slug": "jd-decode",
+      "type": "quiz.single_choice",
+      "title": "Тело запроса",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-api"
+      ],
+      "presentation": {
+        "question": "Как прочитать JSON из тела запроса?",
+        "options": [
+          {
+            "id": "decoder",
+            "text": "`json.NewDecoder(r.Body).Decode(&in)`"
+          },
+          {
+            "id": "read",
+            "text": "`r.JSON()`"
+          },
+          {
+            "id": "parse",
+            "text": "`JSON.parse(r.Body)`"
+          },
+          {
+            "id": "form",
+            "text": "`r.FormValue(\"json\")`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "decoder",
+        "explanation": "Ошибку декодирования проверяют."
+      }
+    },
+    {
+      "slug": "jd-tx",
+      "type": "quiz.single_choice",
+      "title": "Транзакция",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-api"
+      ],
+      "presentation": {
+        "question": "Зачем транзакция при создании заказа и списании оплаты?",
+        "options": [
+          {
+            "id": "atomic",
+            "text": "Чтобы оба изменения прошли вместе или не прошли вовсе"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "log",
+            "text": "Для логов"
+          },
+          {
+            "id": "none",
+            "text": "Не нужна"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "atomic",
+        "explanation": "Rollback при ошибке."
+      }
+    },
+    {
+      "slug": "cs-flag",
+      "type": "quiz.single_choice",
+      "title": "Флаги",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-ship"
+      ],
+      "presentation": {
+        "question": "Какой пакет стандартной библиотеки разбирает аргументы командной строки?",
+        "options": [
+          {
+            "id": "flag",
+            "text": "flag"
+          },
+          {
+            "id": "args",
+            "text": "args"
+          },
+          {
+            "id": "cli",
+            "text": "cli"
+          },
+          {
+            "id": "os",
+            "text": "Только os.Args вручную"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "flag",
+        "explanation": "И пишет --help."
+      }
+    },
+    {
+      "slug": "cs-cross",
+      "type": "quiz.single_choice",
+      "title": "Под Windows",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-ship"
+      ],
+      "presentation": {
+        "question": "Как на Mac собрать программу для Windows?",
+        "options": [
+          {
+            "id": "env",
+            "text": "`GOOS=windows GOARCH=amd64 go build`"
+          },
+          {
+            "id": "vm",
+            "text": "Только в виртуальной машине Windows"
+          },
+          {
+            "id": "wine",
+            "text": "Через Wine"
+          },
+          {
+            "id": "no",
+            "text": "Нельзя"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "env",
+        "explanation": "Кросс-компиляция встроена."
+      }
+    },
+    {
+      "slug": "cs-image",
+      "type": "quiz.single_choice",
+      "title": "Образ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "go-ship"
+      ],
+      "presentation": {
+        "question": "Почему сервис на Go легко упаковать в крошечный образ?",
+        "options": [
+          {
+            "id": "static",
+            "text": "Это один статический бинарник без зависимостей"
+          },
+          {
+            "id": "interp",
+            "text": "Go не нужен интерпретатор только в Docker"
+          },
+          {
+            "id": "small",
+            "text": "Код на Go короче"
+          },
+          {
+            "id": "none",
+            "text": "Нельзя"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "static",
+        "explanation": "distroless или scratch."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "why-go",
+      "title": "Что такое Go",
+      "summary": "Компилируемый язык от Google: простота, скорость, встроенная конкурентность, где его применяют.",
+      "chapter": "Старт Go",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Начинаем курс: знакомимся с простым и быстрым языком для серверов и утилит.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Go\",\n  \"title\": \"Простой и быстрый\",\n  \"what\": \"Компилируемый язык со статической типизацией. Небольшой набор возможностей, быстрая компиляция, один стиль кода для всех.\",\n  \"why\": \"Код легко читать даже в чужом большом проекте.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Где используют\",\n  \"title\": \"Серверы и инфраструктура\",\n  \"what\": \"Веб-сервисы и API, утилиты командной строки, облачная инфраструктура: Docker, Kubernetes, Terraform написаны на Go.\",\n  \"why\": \"Язык инфраструктуры, который ценят в бэкенде и DevOps.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Один файл на выходе\",\n  \"title\": \"Статический бинарник\",\n  \"what\": \"go build собирает программу в один исполняемый файл без зависимостей. Его просто копируют на сервер.\",\n  \"why\": \"Не нужно ставить на сервер интерпретатор и библиотеки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Конкурентность\",\n  \"title\": \"Горутины\",\n  \"what\": \"Тысячи лёгких параллельных задач запускаются словом go. Об этом — отдельная глава.\",\n  \"why\": \"Сервер обрабатывает много запросов одновременно без сложного кода.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Go — простота, скорость компиляции, один бинарник и встроенная конкурентность."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wg-compiled",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wg-written",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wg-binary",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "first-program",
+      "title": "Первая программа",
+      "summary": "Установка, package main, import, func main, fmt.Println, go run.",
+      "chapter": "Старт Go",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем, что такое Go, и пишем первую программу.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"go version\",\n  \"title\": \"Проверить установку\",\n  \"what\": \"Go ставят с официального установщика или через Homebrew. `go version` показывает версию.\",\n  \"why\": \"Первая проверка, что всё готово.\",\n  \"how\": \"$ go version\\ngo version go1.25.3 darwin/arm64\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"main.go\",\n  \"title\": \"Скелет программы\",\n  \"what\": \"`package main` — исполняемая программа, `import` — подключение пакетов, `func main()` — точка входа.\",\n  \"why\": \"У каждой программы на Go такая основа.\",\n  \"how\": \"package main\\n\\nimport \\\"fmt\\\"\\n\\nfunc main() {\\n    fmt.Println(\\\"Привет, Go!\\\")\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"go run\",\n  \"title\": \"Запустить сразу\",\n  \"what\": \"`go run main.go` компилирует во временную папку и запускает.\",\n  \"why\": \"Быстрый цикл «написал — проверил».\",\n  \"how\": \"$ go run main.go\\nПривет, Go!\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"go build\",\n  \"title\": \"Собрать файл\",\n  \"what\": \"`go build -o hello` создаёт исполняемый файл hello. Для другой системы: `GOOS=linux GOARCH=amd64 go build`.\",\n  \"why\": \"Собрал на Mac — запустил на Linux-сервере.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** package main + func main — программа. go run — проверить, go build — собрать."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fp-entry",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fp-run",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fp-cross",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "go-tooling",
+      "title": "Инструменты Go",
+      "summary": "gofmt, go vet, go doc, редактор с gopls, правило неиспользуемых импортов и переменных.",
+      "chapter": "Старт Go",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Запустили первую программу и знакомимся со встроенными инструментами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"gofmt\",\n  \"title\": \"Один стиль\",\n  \"what\": \"`gofmt -w .` или `go fmt ./...` форматирует код единым стилем. Споров о табах нет.\",\n  \"why\": \"Любой код на Go выглядит одинаково.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"go vet\",\n  \"title\": \"Подозрительный код\",\n  \"what\": \"Находит ошибки, которые компилятор пропускает: неверные аргументы Printf, недостижимый код.\",\n  \"why\": \"Ловит ошибки до запуска.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Строгий компилятор\",\n  \"title\": \"Неиспользуемое — ошибка\",\n  \"what\": \"Неиспользуемая переменная или импорт — ошибка компиляции, а не предупреждение.\",\n  \"why\": \"Код не зарастает мусором.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"gopls\",\n  \"title\": \"Подсказки в редакторе\",\n  \"what\": \"Языковой сервер для VS Code и других редакторов: подсказки, переход к определению, переименование, форматирование при сохранении.\",\n  \"why\": \"Редактор понимает код так же, как компилятор.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"go doc\",\n  \"title\": \"Документация\",\n  \"what\": \"`go doc strings.Split` показывает описание функции прямо в терминале.\",\n  \"why\": \"Документация всегда под рукой.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Форматирует gofmt, проверяет go vet. Неиспользуемое — ошибка."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gt-unused",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gt-fmt",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gt-vet",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "variables",
+      "title": "Переменные",
+      "summary": "var и короткое объявление :=, вывод типа, нулевые значения, область видимости.",
+      "chapter": "Типы и переменные",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем инструменты и объявляем первые переменные.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \":=\",\n  \"title\": \"Короткое объявление\",\n  \"what\": \"`count := 3` объявляет переменную и выводит тип из значения. Работает только внутри функций.\",\n  \"why\": \"Самый частый способ объявить переменную.\",\n  \"how\": \"name := \\\"Аня\\\"\\nlessons := 12\\nprice := 990.5\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"var\",\n  \"title\": \"Явное объявление\",\n  \"what\": \"`var total int` — переменная с типом и нулевым значением. На уровне пакета — только var.\",\n  \"why\": \"Когда значение появится позже.\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Нулевые значения\",\n  \"title\": \"Не бывает «мусора»\",\n  \"what\": \"Без значения переменная получает ноль своего типа: 0, \\\"\\\", false, nil.\",\n  \"why\": \"Нет неинициализированных переменных — меньше странных ошибок.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Несколько значений\",\n  \"title\": \"a, b := 1, 2\",\n  \"what\": \"Можно объявить и присвоить несколько переменных сразу; обмен — `a, b = b, a`.\",\n  \"why\": \"Часто используется с функциями, возвращающими два значения.\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n**Главное.** Внутри функций — :=, вне функций и без значения — var. Пустое значение — ноль типа."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vr-zero",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vr-short",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vr-redecl",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "basic-types",
+      "title": "Базовые типы",
+      "summary": "int и float64, bool, явные преобразования, константы и iota.",
+      "chapter": "Типы и переменные",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Объявляем переменные и разбираемся с числами и константами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Числа\",\n  \"title\": \"int, int64, float64\",\n  \"what\": \"int — целые размером с машинное слово (обычно 64 бита), float64 — дробные. Есть uint, int32, byte (это uint8).\",\n  \"why\": \"Обычно хватает int и float64.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Явные преобразования\",\n  \"title\": \"Только руками\",\n  \"what\": \"Go не смешивает типы: int + float64 — ошибка. Нужно `float64(n) * price`.\",\n  \"why\": \"Никаких тихих превращений, которые теряют точность.\",\n  \"how\": \"count := 3\\nprice := 990.5\\ntotal := float64(count) * price\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"const и iota\",\n  \"title\": \"Константы\",\n  \"what\": \"`const Max = 100`. iota нумерует константы в группе: 0, 1, 2…\",\n  \"why\": \"Перечисления без магических чисел.\",\n  \"how\": \"type Level int\\n\\nconst (\\n    Novice Level = iota\\n    Master\\n    Expert\\n)\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"bool\",\n  \"title\": \"true и false\",\n  \"what\": \"Логический тип с операциями &&, ||, !. Числа и строки не превращаются в bool сами.\",\n  \"why\": \"`if count` — ошибка, нужно `if count > 0`.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Типы не смешиваются сами — преобразуй явно. Перечисления — через const и iota."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bt-mix",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bt-iota",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bt-bool",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "strings-runes",
+      "title": "Строки и руны",
+      "summary": "Строка как байты UTF-8, len и руны, range по строке, strings и strconv, fmt.Sprintf.",
+      "chapter": "Типы и переменные",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем числа и константы и переходим к тексту.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Строка — байты\",\n  \"title\": \"UTF-8\",\n  \"what\": \"Строка в Go — неизменяемая последовательность байтов в UTF-8. Русская буква занимает 2 байта.\",\n  \"why\": \"len(\\\"Привет\\\") — 12, а не 6.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Руна\",\n  \"title\": \"Символ Unicode\",\n  \"what\": \"rune — один символ. `[]rune(s)` даёт символы, `for i, r := range s` проходит по символам.\",\n  \"why\": \"Правильная работа с кириллицей и эмодзи.\",\n  \"how\": \"s := \\\"Привет\\\"\\nfmt.Println(len(s))          // 12\\nfmt.Println(len([]rune(s)))  // 6\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"strings\",\n  \"title\": \"Пакет для строк\",\n  \"what\": \"strings.Split, Join, Contains, ToLower, TrimSpace, Builder для сборки длинных строк.\",\n  \"why\": \"Всё нужное уже есть в стандартной библиотеке.\",\n  \"how\": \"parts := strings.Split(\\\"a,b,c\\\", \\\",\\\")\\nfmt.Println(strings.Join(parts, \\\" | \\\"))\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"strconv и Sprintf\",\n  \"title\": \"Числа и текст\",\n  \"what\": \"`strconv.Atoi(\\\"42\\\")` — строка в число (с ошибкой), `strconv.Itoa(42)` — обратно. `fmt.Sprintf(\\\"%d уроков\\\", n)` — форматирование.\",\n  \"why\": \"Ввод и вывод программ — всегда строки.\",\n  \"how\": \"n, err := strconv.Atoi(\\\"42\\\")\\nmsg := fmt.Sprintf(\\\"%s прошла %d уроков\\\", name, n)\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n**Главное.** len — байты, []rune — символы. Строки — пакет strings, числа из строк — strconv."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sr-len",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sr-atoi",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sr-range",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "if-switch",
+      "title": "if и switch",
+      "summary": "if без скобок, if с инициализацией, switch без break, switch без условия.",
+      "chapter": "Управление потоком",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем со строками и учим программу принимать решения.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"if\",\n  \"title\": \"Без скобок\",\n  \"what\": \"Условие без круглых скобок, фигурные скобки обязательны. else пишут на той же строке, что и закрывающая скобка.\",\n  \"why\": \"Единый стиль без вариантов.\",\n  \"how\": \"if score >= 90 {\\n    grade = \\\"Эксперт\\\"\\n} else if score >= 60 {\\n    grade = \\\"Мастер\\\"\\n} else {\\n    grade = \\\"Ученик\\\"\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"if с инициализацией\",\n  \"title\": \"Короткая переменная\",\n  \"what\": \"`if err := save(); err != nil { … }` — переменная живёт только внутри if.\",\n  \"why\": \"Самый частый приём при обработке ошибок.\",\n  \"how\": \"if n, err := strconv.Atoi(input); err == nil {\\n    fmt.Println(n * 2)\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"switch\",\n  \"title\": \"Без break\",\n  \"what\": \"Каждый case завершается сам, без break. В одном case можно перечислить несколько значений через запятую.\",\n  \"why\": \"Нет случайного «проваливания» в следующую ветку.\",\n  \"how\": \"switch day {\\ncase \\\"сб\\\", \\\"вс\\\":\\n    fmt.Println(\\\"выходной\\\")\\ndefault:\\n    fmt.Println(\\\"будни\\\")\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"switch без условия\",\n  \"title\": \"Цепочка проверок\",\n  \"what\": \"`switch { case x < 0: … case x == 0: … }` — понятная замена длинной цепочке if-else.\",\n  \"why\": \"Условия читаются как таблица.\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n**Главное.** if без скобок, с инициализацией для ошибок. switch не требует break."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "is-init",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "is-break",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "is-paren",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "for-loops",
+      "title": "Цикл for",
+      "summary": "Единственный цикл: классический, как while, бесконечный, range по срезам, картам и числам.",
+      "chapter": "Управление потоком",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Принимаем решения и учимся повторять действия.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Классический for\",\n  \"title\": \"i := 0; i < n; i++\",\n  \"what\": \"В Go нет while и do-while — только for в разных формах.\",\n  \"why\": \"Одна конструкция на все случаи.\",\n  \"how\": \"for i := 0; i < 3; i++ {\\n    fmt.Println(\\\"шаг\\\", i)\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"for как while\",\n  \"title\": \"Только условие\",\n  \"what\": \"`for attempts < 3 { … }` — повторять, пока условие истинно. `for { … }` — бесконечный цикл до break.\",\n  \"why\": \"Серверный цикл обработки или повтор до успеха.\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"range\",\n  \"title\": \"По элементам\",\n  \"what\": \"`for i, v := range items` — индекс и значение; `for _, v := range items` — только значение; `for i := range 10` — числа от 0 до 9.\",\n  \"why\": \"Обход любой коллекции одной формой.\",\n  \"how\": \"for _, course := range []string{\\\"ПК\\\", \\\"Go\\\"} {\\n    fmt.Println(course)\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"_\",\n  \"title\": \"Пустой идентификатор\",\n  \"what\": \"Подчёркивание принимает ненужное значение, чтобы компилятор не ругался на неиспользуемую переменную.\",\n  \"why\": \"Не нужен индекс — пиши `_`.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Один for на всё. Не нужен индекс — `_`. Числа — `range n`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fl-while",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fl-blank",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fl-int",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "defer",
+      "title": "defer",
+      "summary": "Отложенный вызов при выходе из функции, порядок LIFO, закрытие ресурсов, вычисление аргументов.",
+      "chapter": "Управление потоком",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем циклы и учимся гарантированно освобождать ресурсы.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"defer\",\n  \"title\": \"Выполнить при выходе\",\n  \"what\": \"`defer f.Close()` выполнится при выходе из функции — обычном, по ошибке или при панике.\",\n  \"why\": \"Файл закроется, даже если дальше что-то пошло не так.\",\n  \"how\": \"f, err := os.Open(\\\"notes.txt\\\")\\nif err != nil {\\n    return err\\n}\\ndefer f.Close()\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Порядок\",\n  \"title\": \"Последним пришёл — первым ушёл\",\n  \"what\": \"Несколько defer выполняются в обратном порядке.\",\n  \"why\": \"Ресурсы закрываются в порядке, обратном открытию.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Аргументы сразу\",\n  \"title\": \"Вычисляются при defer\",\n  \"what\": \"Аргументы отложенного вызова вычисляются в момент defer, а сам вызов — при выходе.\",\n  \"why\": \"`defer fmt.Println(i)` напечатает значение i на момент defer.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не в цикле\",\n  \"title\": \"Осторожно\",\n  \"what\": \"defer в длинном цикле копит вызовы до выхода из функции — файлы останутся открытыми.\",\n  \"why\": \"В цикле выноси работу в отдельную функцию.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Открыл ресурс — сразу defer Close. defer выполняются в обратном порядке."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "df-when",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "df-order",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "df-loop",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "slices",
+      "title": "Срезы",
+      "summary": "Массивы фиксированной длины, срезы, append, len и cap, make, срез среза и общая память.",
+      "chapter": "Срезы и карты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Управляем ходом программы и храним много значений.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Массив\",\n  \"title\": \"Фиксированная длина\",\n  \"what\": \"`[3]int` — ровно три числа, длина — часть типа. В обычном коде массивы встречаются редко.\",\n  \"why\": \"Срезы удобнее почти всегда.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Срез\",\n  \"title\": \"Гибкий список\",\n  \"what\": \"`[]string{\\\"ПК\\\", \\\"Go\\\"}`. append добавляет элементы и возвращает новый срез — результат нужно присвоить.\",\n  \"why\": \"Основная коллекция в Go.\",\n  \"how\": \"courses := []string{\\\"ПК\\\", \\\"Браузер\\\"}\\ncourses = append(courses, \\\"Go\\\")\\nfmt.Println(len(courses), courses[2])\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"make, len, cap\",\n  \"title\": \"Заранее выделить\",\n  \"what\": \"`make([]int, 0, 100)` — пустой срез с местом на 100 элементов. len — сколько есть, cap — сколько поместится без перевыделения.\",\n  \"why\": \"Меньше копирований при большом числе append.\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Общая память\",\n  \"title\": \"Срез среза\",\n  \"what\": \"`b := a[1:3]` не копирует данные — b смотрит в тот же массив. Изменил b[0] — изменился a[1].\",\n  \"why\": \"Источник неожиданных ошибок; копия — через copy или slices.Clone.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"slices\",\n  \"title\": \"Пакет помощников\",\n  \"what\": \"slices.Sort, slices.Contains, slices.Index — готовые функции для срезов.\",\n  \"why\": \"Не нужно писать сортировку вручную.\",\n  \"how\": \"slices.Sort(scores)\\nfmt.Println(slices.Contains(tags, \\\"go\\\"))\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n**Главное.** append всегда присваивай обратно. Срез среза — общая память, копия — slices.Clone."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sl-append",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sl-share",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sl-cap",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "maps",
+      "title": "Карты",
+      "summary": "map[ключ]значение, make, проверка наличия через запятую ok, delete, обход в случайном порядке.",
+      "chapter": "Срезы и карты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем со срезами и храним данные по ключам.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"map\",\n  \"title\": \"Ключ → значение\",\n  \"what\": \"`progress := map[string]int{\\\"pc\\\": 40}`. Чтение отсутствующего ключа даёт нулевое значение.\",\n  \"why\": \"Быстрый поиск по имени, счётчики, индексы.\",\n  \"how\": \"progress := map[string]int{\\\"pc\\\": 40, \\\"go\\\": 12}\\nprogress[\\\"html\\\"] = 5\\nfmt.Println(progress[\\\"go\\\"])\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Запятая ok\",\n  \"title\": \"Есть ли ключ\",\n  \"what\": \"`v, ok := m[key]` — ok равен false, если ключа нет.\",\n  \"why\": \"Отличить «нет ключа» от «значение ноль».\",\n  \"how\": \"if n, ok := progress[\\\"sql\\\"]; ok {\\n    fmt.Println(\\\"уроков:\\\", n)\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"nil-карта\",\n  \"title\": \"Сначала make\",\n  \"what\": \"Объявленная `var m map[string]int` равна nil: читать можно, записывать — паника.\",\n  \"why\": \"Создавай через make или литерал.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Порядок обхода\",\n  \"title\": \"Не гарантирован\",\n  \"what\": \"Обход карты через range идёт в случайном порядке.\",\n  \"why\": \"Нужен порядок — отсортируй ключи.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"delete\",\n  \"title\": \"Удалить ключ\",\n  \"what\": \"`delete(m, key)` — без ошибки, даже если ключа нет.\",\n  \"why\": \"Удаление безопасно.\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n**Главное.** Проверка ключа — `v, ok := m[k]`. Карту создавай make. Порядок обхода случайный."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mp-missing",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mp-nil",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mp-order",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "pointers",
+      "title": "Указатели",
+      "summary": "& и *, передача по значению, когда нужен указатель, nil и new.",
+      "chapter": "Срезы и карты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем коллекции и разбираемся, как значения передаются в функции.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"По значению\",\n  \"title\": \"Копия\",\n  \"what\": \"В Go всё передаётся по значению: функция получает копию. Изменение копии не меняет оригинал.\",\n  \"why\": \"Предсказуемо: функция не испортит твои данные неожиданно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"& и *\",\n  \"title\": \"Адрес и значение\",\n  \"what\": \"`&x` — адрес переменной, `*p` — значение по адресу. Функция с параметром *int может изменить оригинал.\",\n  \"why\": \"Изменить данные вызывающего или не копировать большую структуру.\",\n  \"how\": \"func addBonus(score *int) {\\n    *score += 10\\n}\\n\\nscore := 80\\naddBonus(&score)\\nfmt.Println(score) // 90\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Срезы и карты\",\n  \"title\": \"Уже ссылки внутри\",\n  \"what\": \"Срез и карта содержат ссылку на данные: изменение элементов внутри функции видно снаружи. Но append в функции требует вернуть срез.\",\n  \"why\": \"Указатель на срез почти никогда не нужен.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"nil\",\n  \"title\": \"Указатель в никуда\",\n  \"what\": \"Нулевое значение указателя — nil. Разыменование nil — паника.\",\n  \"why\": \"Проверяй указатель, если он может быть пустым.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** По умолчанию — копия. Нужно изменить оригинал — указатель. Срезы и карты уже ссылаются на данные."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pt-copy",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pt-amp",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pt-nil",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "functions",
+      "title": "Функции",
+      "summary": "Параметры и типы, несколько возвращаемых значений, именованные результаты, функции как значения и замыкания.",
+      "chapter": "Функции и ошибки",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем указатели и упаковываем код в функции.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"func\",\n  \"title\": \"Объявление\",\n  \"what\": \"Тип пишется после имени: `func add(a, b int) int`. Несколько результатов — в скобках.\",\n  \"why\": \"Сигнатура сразу говорит, что функция принимает и возвращает.\",\n  \"how\": \"func divide(a, b float64) (float64, error) {\\n    if b == 0 {\\n        return 0, errors.New(\\\"деление на ноль\\\")\\n    }\\n    return a / b, nil\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Два результата\",\n  \"title\": \"Значение и ошибка\",\n  \"what\": \"Самый частый шаблон: функция возвращает результат и error. Вызывающий обязан решить, что делать с ошибкой.\",\n  \"why\": \"Ошибки видны в коде, а не прячутся.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Замыкание\",\n  \"title\": \"Функция с памятью\",\n  \"what\": \"Функция может захватить переменные вокруг и помнить их между вызовами.\",\n  \"why\": \"Счётчики, генераторы, обработчики с настройками.\",\n  \"how\": \"func counter() func() int {\\n    n := 0\\n    return func() int {\\n        n++\\n        return n\\n    }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Вариативные\",\n  \"title\": \"...\",\n  \"what\": \"`func sum(nums ...int) int` принимает любое число аргументов; срез передают как `sum(xs...)`.\",\n  \"why\": \"Как fmt.Println.\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n**Главное.** Тип — после имени. Результат и ошибку возвращают вместе."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fn-sig",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fn-pattern",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fn-closure",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "errors",
+      "title": "Обработка ошибок",
+      "summary": "if err != nil, errors.New и fmt.Errorf с %w, errors.Is и errors.As, свои типы ошибок.",
+      "chapter": "Функции и ошибки",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем функции и обрабатываем ошибки по-гошному.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"if err != nil\",\n  \"title\": \"Проверка сразу\",\n  \"what\": \"После каждого вызова, который может ошибиться, проверяют err и возвращают её выше или обрабатывают.\",\n  \"why\": \"Путь ошибки виден в каждой строке.\",\n  \"how\": \"data, err := os.ReadFile(\\\"config.json\\\")\\nif err != nil {\\n    return fmt.Errorf(\\\"читаем настройки: %w\\\", err)\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Обёртка %w\",\n  \"title\": \"Контекст ошибки\",\n  \"what\": \"`fmt.Errorf(\\\"сохраняем заказ %d: %w\\\", id, err)` добавляет контекст и сохраняет исходную ошибку.\",\n  \"why\": \"В логе видно всю цепочку: где и почему.\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"errors.Is и As\",\n  \"title\": \"Что за ошибка\",\n  \"what\": \"`errors.Is(err, os.ErrNotExist)` — сравнение по цепочке обёрток, `errors.As(err, &target)` — достать ошибку нужного типа.\",\n  \"why\": \"Разная реакция на «нет файла» и «нет прав».\",\n  \"how\": \"if errors.Is(err, os.ErrNotExist) {\\n    return defaultConfig, nil\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не игнорируй\",\n  \"title\": \"_ для ошибки\",\n  \"what\": \"`v, _ := f()` прячет ошибку. Это допустимо, только если ты точно знаешь, что ошибки быть не может.\",\n  \"why\": \"Проглоченные ошибки ищут дольше всего.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Проверяй err сразу, оборачивай с %w и контекстом, сравнивай через errors.Is."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "er-wrap",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "er-is",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "er-ignore",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "panic-recover",
+      "title": "panic и recover",
+      "summary": "Когда паника уместна, recover в defer, ошибки против паник, must-функции.",
+      "chapter": "Функции и ошибки",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Обрабатываем ошибки и разбираемся с исключительными ситуациями.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"panic\",\n  \"title\": \"Программа в невозможном состоянии\",\n  \"what\": \"Паника прерывает выполнение и разматывает стек, выполняя defer. Причины: выход за границы среза, nil-указатель, явный panic().\",\n  \"why\": \"Это ошибка в самой программе, а не ожидаемая ситуация.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ошибка или паника\",\n  \"title\": \"Правило\",\n  \"what\": \"Ожидаемые проблемы (нет файла, неверный ввод, сеть) — error. Паника — только для ошибок программиста.\",\n  \"why\": \"Библиотека не должна ронять программу пользователя.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"recover\",\n  \"title\": \"Поймать панику\",\n  \"what\": \"recover() в отложенной функции останавливает панику и возвращает её значение.\",\n  \"why\": \"HTTP-сервер ловит панику одного обработчика и не падает целиком.\",\n  \"how\": \"func safe(handler func()) {\\n    defer func() {\\n        if r := recover(); r != nil {\\n            log.Println(\\\"паника:\\\", r)\\n        }\\n    }()\\n    handler()\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Must-функции\",\n  \"title\": \"Паника при старте\",\n  \"what\": \"regexp.MustCompile и подобные паникуют, если ошибка возможна только из-за неверного кода, — удобно для констант при запуске.\",\n  \"why\": \"Ошибка видна сразу при старте программы.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ожидаемое — error. Ошибка программиста — panic. recover — только в defer и на границе (обработчик, горутина)."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-when",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-where",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-index",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "structs",
+      "title": "Структуры",
+      "summary": "type и struct, литералы, поля, конструкторы New, экспорт по заглавной букве.",
+      "chapter": "Структуры и методы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Обрабатываем ошибки и описываем собственные типы данных.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"struct\",\n  \"title\": \"Свой тип данных\",\n  \"what\": \"`type Course struct { Slug string; Lessons int }` — набор именованных полей.\",\n  \"why\": \"Данные о курсе живут вместе, а не в пяти переменных.\",\n  \"how\": \"type Course struct {\\n    Slug    string\\n    Title   string\\n    Lessons int\\n}\\n\\npc := Course{Slug: \\\"pc\\\", Title: \\\"ПК\\\", Lessons: 40}\\nfmt.Println(pc.Title)\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Заглавная буква\",\n  \"title\": \"Экспорт\",\n  \"what\": \"Поле или функция с заглавной буквы видны из других пакетов, со строчной — только внутри своего.\",\n  \"why\": \"Видимость задаётся именем, без слов public и private.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Конструктор\",\n  \"title\": \"Функция New\",\n  \"what\": \"В Go нет конструкторов: пишут функцию NewCourse, которая проверяет данные и возвращает значение или указатель.\",\n  \"why\": \"Нельзя создать курс с пустым slug.\",\n  \"how\": \"func NewCourse(slug, title string) (*Course, error) {\\n    if slug == \\\"\\\" {\\n        return nil, errors.New(\\\"пустой slug\\\")\\n    }\\n    return &Course{Slug: slug, Title: title}, nil\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Нулевая структура\",\n  \"title\": \"Все поля — нули\",\n  \"what\": \"`var c Course` — структура с пустыми строками и нулями. Хорошие типы полезны и в нулевом виде.\",\n  \"why\": \"sync.Mutex и bytes.Buffer работают без инициализации.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Данные — структурой, видимость — регистром первой буквы, проверки — в NewX."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-export",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-ctor",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-zero",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "methods",
+      "title": "Методы",
+      "summary": "Метод — функция с получателем, получатель-значение и получатель-указатель, когда какой.",
+      "chapter": "Структуры и методы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Описываем структуры и добавляем им поведение.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Метод\",\n  \"title\": \"Функция с получателем\",\n  \"what\": \"`func (c Course) IsLong() bool` — метод типа Course. Вызов — `pc.IsLong()`.\",\n  \"why\": \"Поведение рядом с данными.\",\n  \"how\": \"func (c Course) IsLong() bool {\\n    return c.Lessons > 30\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Указатель-получатель\",\n  \"title\": \"Изменить объект\",\n  \"what\": \"`func (c *Course) AddLesson()` меняет сам объект. С получателем-значением метод работал бы с копией.\",\n  \"why\": \"Методы, меняющие состояние, — с указателем.\",\n  \"how\": \"func (c *Course) AddLesson() {\\n    c.Lessons++\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Какой выбрать\",\n  \"title\": \"Правило\",\n  \"what\": \"Меняет данные или структура большая — указатель. Маленький неизменяемый тип — значение. В одном типе получатели обычно одного вида.\",\n  \"why\": \"Единообразие избавляет от тонких ошибок.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Методы любых типов\",\n  \"title\": \"Не только struct\",\n  \"what\": \"Метод можно объявить для любого своего типа: `type Level int` с методом String().\",\n  \"why\": \"Числовой уровень печатается словом «Мастер».\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Меняешь объект — получатель *T. Не меняешь и тип маленький — T."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mt-ptr",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mt-call",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mt-any",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "embedding-tags",
+      "title": "Встраивание и теги",
+      "summary": "Встраивание структур вместо наследования, продвижение полей и методов, теги json и сериализация.",
+      "chapter": "Структуры и методы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем методы и собираем типы из других типов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Встраивание\",\n  \"title\": \"Композиция вместо наследования\",\n  \"what\": \"Поле без имени встраивает тип: его поля и методы доступны напрямую.\",\n  \"why\": \"Повторное использование без иерархий классов.\",\n  \"how\": \"type Timestamps struct {\\n    CreatedAt time.Time\\n}\\n\\ntype Lesson struct {\\n    Timestamps\\n    Title string\\n}\\n\\nl.CreatedAt // поле встроенной структуры\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не наследование\",\n  \"title\": \"Нет родителя\",\n  \"what\": \"Lesson не становится Timestamps: это просто удобный доступ к полям. Полиморфизм в Go — через интерфейсы.\",\n  \"why\": \"Нет хрупких иерархий.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Теги полей\",\n  \"title\": \"Подсказки библиотекам\",\n  \"what\": \"Строка после типа поля: `json:\\\"title\\\"` задаёт имя в JSON, `omitempty` — пропустить пустое.\",\n  \"why\": \"Поле Go называется Title, а в JSON — title.\",\n  \"how\": \"type Course struct {\\n    Slug    string `json:\\\"slug\\\"`\\n    Lessons int    `json:\\\"lessons,omitempty\\\"`\\n    secret  string // не попадёт в JSON: строчная буква\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"encoding/json\",\n  \"title\": \"Marshal и Unmarshal\",\n  \"what\": \"`json.Marshal(v)` — в JSON, `json.Unmarshal(data, &v)` — из JSON в структуру.\",\n  \"why\": \"API и файлы настроек в пару строк.\",\n  \"how\": \"data, err := json.Marshal(course)\\nvar c Course\\nerr = json.Unmarshal(data, &c)\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n**Главное.** Повтор кода — встраивание. Имена в JSON — тегами. Строчные поля в JSON не попадают."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "et-promote",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "et-tag",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "et-lower",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "interfaces",
+      "title": "Интерфейсы",
+      "summary": "Неявная реализация, маленькие интерфейсы io.Reader и fmt.Stringer, принимай интерфейсы, возвращай структуры.",
+      "chapter": "Интерфейсы и обобщения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Собираем типы из структур и описываем поведение интерфейсами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"interface\",\n  \"title\": \"Набор методов\",\n  \"what\": \"Интерфейс перечисляет методы. Тип реализует его автоматически, если у него есть эти методы — без слова implements.\",\n  \"why\": \"Код зависит от поведения, а не от конкретного типа.\",\n  \"how\": \"type Notifier interface {\\n    Notify(msg string) error\\n}\\n\\ntype Email struct{ To string }\\n\\nfunc (e Email) Notify(msg string) error { /* отправка */ return nil }\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Маленькие интерфейсы\",\n  \"title\": \"Один-два метода\",\n  \"what\": \"io.Reader (Read), io.Writer (Write), fmt.Stringer (String). Чем меньше интерфейс, тем больше типов его реализуют.\",\n  \"why\": \"Функция, принимающая io.Reader, читает и файл, и сеть, и строку.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Принимай интерфейсы\",\n  \"title\": \"Возвращай структуры\",\n  \"what\": \"Параметры функций — интерфейсы (что нужно), результаты — конкретные типы.\",\n  \"why\": \"Функцию легко тестировать подставным типом.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Stringer\",\n  \"title\": \"Как печатается\",\n  \"what\": \"Метод String() string делает тип красиво печатаемым в fmt.\",\n  \"why\": \"Уровень печатается словом.\",\n  \"how\": \"func (l Level) String() string {\\n    return [...]string{\\\"Ученик\\\", \\\"Мастер\\\", \\\"Эксперт\\\"}[l]\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n**Главное.** Интерфейсы маленькие и реализуются неявно. Принимай интерфейс, возвращай структуру."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "if-implicit",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "if-reader",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "if-stringer",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "type-switch",
+      "title": "Пустой интерфейс и проверки типов",
+      "summary": "any, утверждение типа v.(T) с ok, type switch, nil-интерфейс.",
+      "chapter": "Интерфейсы и обобщения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Описываем поведение интерфейсами и учимся узнавать конкретный тип.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"any\",\n  \"title\": \"Что угодно\",\n  \"what\": \"any (interface{}) принимает значение любого типа. Нужен для JSON неизвестной формы и универсальных контейнеров.\",\n  \"why\": \"Используй редко: теряется проверка типов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"v.(T)\",\n  \"title\": \"Утверждение типа\",\n  \"what\": \"`s, ok := v.(string)` — достать строку, ok сообщает, удалось ли.\",\n  \"why\": \"Без ok при неверном типе — паника.\",\n  \"how\": \"if s, ok := value.(string); ok {\\n    fmt.Println(\\\"строка:\\\", s)\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"type switch\",\n  \"title\": \"Выбор по типу\",\n  \"what\": \"`switch v := x.(type) { case int: … case string: … }`.\",\n  \"why\": \"Обработка значений разных типов в одном месте.\",\n  \"how\": \"switch v := value.(type) {\\ncase int:\\n    fmt.Println(\\\"число\\\", v)\\ncase string:\\n    fmt.Println(\\\"строка\\\", v)\\ndefault:\\n    fmt.Println(\\\"другое\\\")\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"nil-интерфейс\",\n  \"title\": \"Ловушка\",\n  \"what\": \"Интерфейс с nil-указателем внутри не равен nil: у него есть тип. Функция, вернувшая `var p *MyErr = nil` как error, вернёт не-nil ошибку.\",\n  \"why\": \"Возвращай просто nil, а не типизированный nil-указатель.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** any — редко. Тип проверяй через `v, ok := x.(T)` или type switch."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tw-ok",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tw-switch",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tw-nil",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "generics",
+      "title": "Обобщения",
+      "summary": "Параметры типов, ограничения any и comparable, cmp.Ordered, когда обобщения не нужны.",
+      "chapter": "Интерфейсы и обобщения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проверяем типы и пишем код, который работает с разными типами без any.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Параметр типа\",\n  \"title\": \"[T any]\",\n  \"what\": \"Функция объявляет параметр типа в квадратных скобках и работает с любым подходящим типом, сохраняя проверку типов.\",\n  \"why\": \"Одна функция Map для срезов любых типов.\",\n  \"how\": \"func Map[T, R any](items []T, f func(T) R) []R {\\n    out := make([]R, 0, len(items))\\n    for _, it := range items {\\n        out = append(out, f(it))\\n    }\\n    return out\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ограничения\",\n  \"title\": \"comparable и cmp.Ordered\",\n  \"what\": \"comparable — типы, которые можно сравнить ==, cmp.Ordered — которые можно сравнить < и >.\",\n  \"why\": \"Функция Max работает с числами и строками, но не со срезами.\",\n  \"how\": \"func Max[T cmp.Ordered](a, b T) T {\\n    if a > b {\\n        return a\\n    }\\n    return b\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Свой набор\",\n  \"title\": \"~int | ~float64\",\n  \"what\": \"Интерфейс-ограничение может перечислить типы: `type Number interface { ~int | ~float64 }`.\",\n  \"why\": \"Сумма для любых числовых типов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не злоупотребляй\",\n  \"title\": \"Интерфейсы проще\",\n  \"what\": \"Если хватает обычного интерфейса — используй его. Обобщения — для контейнеров и алгоритмов над коллекциями.\",\n  \"why\": \"Код на Go ценят за простоту.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Обобщения — для алгоритмов над коллекциями. Поведение — по-прежнему интерфейсами."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gn-syntax",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gn-ordered",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gn-when",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "packages",
+      "title": "Пакеты",
+      "summary": "Папка — пакет, имя пакета, импорт по пути модуля, internal, init.",
+      "chapter": "Пакеты и модули",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем обобщённый код и раскладываем программу по пакетам.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Папка — пакет\",\n  \"title\": \"Единица кода\",\n  \"what\": \"Все файлы в одной папке принадлежат одному пакету и видят друг друга. Имя пакета — короткое, строчное: course, store.\",\n  \"why\": \"Код делится на понятные части.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"import\",\n  \"title\": \"Подключить пакет\",\n  \"what\": \"Свой пакет импортируют по пути модуля: `import \\\"example.com/academy/internal/course\\\"`.\",\n  \"why\": \"Путь однозначно указывает, откуда код.\",\n  \"how\": \"import (\\n    \\\"fmt\\\"\\n\\n    \\\"example.com/academy/internal/course\\\"\\n)\\n\\nc := course.New(\\\"go\\\")\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"internal\",\n  \"title\": \"Только для своих\",\n  \"what\": \"Пакеты внутри папки internal можно импортировать только из родительского модуля.\",\n  \"why\": \"Чужой код не завяжется на твои внутренности.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"init\",\n  \"title\": \"Код при загрузке\",\n  \"what\": \"Функция init() выполняется автоматически при загрузке пакета. Используй редко: скрытая логика трудна для отладки.\",\n  \"why\": \"Явная инициализация в main понятнее.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Папка — пакет, имя — короткое. Внутреннее — в internal."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pk-folder",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pk-internal",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pk-init",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "modules",
+      "title": "Модули и зависимости",
+      "summary": "go mod init, go.mod и go.sum, go get, go mod tidy, версии и прокси модулей.",
+      "chapter": "Пакеты и модули",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Раскладываем код по пакетам и подключаем сторонние библиотеки.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"go mod init\",\n  \"title\": \"Создать модуль\",\n  \"what\": \"`go mod init example.com/academy` создаёт go.mod с путём модуля и версией Go.\",\n  \"why\": \"С этого начинается любой проект.\",\n  \"how\": \"$ go mod init example.com/academy\\ngo: creating new go.mod: module example.com/academy\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"go get\",\n  \"title\": \"Добавить зависимость\",\n  \"what\": \"`go get github.com/jackc/pgx/v5` скачивает библиотеку и записывает версию в go.mod.\",\n  \"why\": \"Версии зафиксированы — сборка воспроизводима.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"go.sum\",\n  \"title\": \"Контрольные суммы\",\n  \"what\": \"Файл с хэшами всех зависимостей. Если кто-то подменит код библиотеки, сборка упадёт.\",\n  \"why\": \"go.mod и go.sum всегда коммитят.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"go mod tidy\",\n  \"title\": \"Навести порядок\",\n  \"what\": \"Добавляет нужные и удаляет неиспользуемые зависимости.\",\n  \"why\": \"Запускай перед коммитом.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Семантические версии\",\n  \"title\": \"v1, v2\",\n  \"what\": \"Мажорная версия от v2 входит в путь импорта: /v5. Обновление патча и минорной — безопасно.\",\n  \"why\": \"Ломающие изменения не придут незаметно.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** go mod init в начале, go get для библиотек, go mod tidy перед коммитом. go.sum — в git."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "md-sum",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "md-tidy",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "md-init",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "project-layout",
+      "title": "Структура проекта",
+      "summary": "cmd/ для программ, internal/ для логики, разделение по смыслу, стандартная библиотека прежде всего.",
+      "chapter": "Пакеты и модули",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Подключаем зависимости и раскладываем проект по папкам.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"cmd/\",\n  \"title\": \"Точки входа\",\n  \"what\": \"cmd/server/main.go, cmd/migrate/main.go — каждая программа проекта в своей папке.\",\n  \"why\": \"Сервер и утилиты собираются отдельно из одного репозитория.\",\n  \"how\": \"academy/\\n├── go.mod\\n├── cmd/\\n│   └── server/main.go\\n└── internal/\\n    ├── course/\\n    ├── store/\\n    └── httpapi/\",\n  \"kind\": \"idea\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"По смыслу\",\n  \"title\": \"Не по слоям\",\n  \"what\": \"Пакеты называют по предметной области (course, billing), а не models, utils, helpers.\",\n  \"why\": \"Связанный код лежит вместе.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Начни просто\",\n  \"title\": \"Один пакет\",\n  \"what\": \"Маленькой программе хватит main.go и пары файлов. Структуру добавляют, когда кода становится много.\",\n  \"why\": \"Лишние папки только мешают.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Стандартная библиотека\",\n  \"title\": \"Сначала она\",\n  \"what\": \"net/http, encoding/json, database/sql, log/slog закрывают большинство задач.\",\n  \"why\": \"Меньше зависимостей — меньше обновлений и уязвимостей.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Программы — в cmd/, логика — в internal/ по смыслу. Начни с малого."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pl-cmd",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pl-utils",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pl-std",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "goroutines",
+      "title": "Горутины",
+      "summary": "Слово go, лёгкие потоки, sync.WaitGroup, гонки данных и флаг -race, Mutex.",
+      "chapter": "Горутины и каналы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Организовали проект и учимся делать много дел одновременно.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"go\",\n  \"title\": \"Запустить параллельно\",\n  \"what\": \"`go fetch(url)` запускает функцию в горутине — лёгком потоке. Их могут быть тысячи.\",\n  \"why\": \"Десять запросов к API идут одновременно, а не по очереди.\",\n  \"how\": \"var wg sync.WaitGroup\\nfor _, url := range urls {\\n    wg.Go(func() {\\n        fetch(url)\\n    })\\n}\\nwg.Wait()\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"WaitGroup\",\n  \"title\": \"Дождаться всех\",\n  \"what\": \"main не ждёт горутины: программа завершится раньше. WaitGroup ждёт, пока все закончат (wg.Go или Add/Done).\",\n  \"why\": \"Без ожидания результаты потеряются.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Гонка данных\",\n  \"title\": \"Два писателя\",\n  \"what\": \"Две горутины пишут одну переменную без синхронизации — результат непредсказуем.\",\n  \"why\": \"`go test -race` и `go run -race` находят гонки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"sync.Mutex\",\n  \"title\": \"Замок\",\n  \"what\": \"`mu.Lock()` и `defer mu.Unlock()` защищают общие данные.\",\n  \"why\": \"Счётчик посещений не теряет значения.\",\n  \"how\": \"type Counter struct {\\n    mu sync.Mutex\\n    n  int\\n}\\n\\nfunc (c *Counter) Inc() {\\n    c.mu.Lock()\\n    defer c.mu.Unlock()\\n    c.n++\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n**Главное.** go — запустить, WaitGroup — дождаться, Mutex — защитить общее, -race — проверить."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gr-wait",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gr-race",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gr-mutex",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "channels",
+      "title": "Каналы",
+      "summary": "chan, отправка и приём, буфер, close и range, select, тайм-ауты.",
+      "chapter": "Горутины и каналы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Запускаем горутины и учим их обмениваться данными.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"chan\",\n  \"title\": \"Труба между горутинами\",\n  \"what\": \"`ch := make(chan int)`; `ch <- 5` — отправить, `v := <-ch` — получить. Небуферизованный канал ждёт обе стороны.\",\n  \"why\": \"Данные передаются, а не делятся — меньше гонок.\",\n  \"how\": \"results := make(chan string)\\ngo func() {\\n    results <- fetch(url)\\n}()\\nfmt.Println(<-results)\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Буфер\",\n  \"title\": \"make(chan T, n)\",\n  \"what\": \"Буферизованный канал принимает n значений без ожидания получателя.\",\n  \"why\": \"Сглаживает разницу в скорости производителя и потребителя.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"close и range\",\n  \"title\": \"Конец данных\",\n  \"what\": \"Отправитель закрывает канал, получатель читает `for v := range ch` до закрытия.\",\n  \"why\": \"Чёткий сигнал «больше ничего не будет».\",\n  \"how\": \"for line := range lines {\\n    fmt.Println(line)\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"select\",\n  \"title\": \"Ждать несколько каналов\",\n  \"what\": \"select ждёт первый готовый канал. С time.After — тайм-аут.\",\n  \"why\": \"Запрос не висит вечно.\",\n  \"how\": \"select {\\ncase r := <-results:\\n    fmt.Println(r)\\ncase <-time.After(2 * time.Second):\\n    fmt.Println(\\\"тайм-аут\\\")\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n**Главное.** Не делись памятью — передавай данные каналами. Закрывает отправитель."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-block",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-close",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-select",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "context",
+      "title": "Контекст",
+      "summary": "context.Context для отмены и тайм-аутов, WithTimeout, передача первым аргументом, ctx.Done().",
+      "chapter": "Горутины и каналы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Передаём данные каналами и учимся вовремя останавливать работу.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Зачем context\",\n  \"title\": \"Отмена по цепочке\",\n  \"what\": \"Пользователь закрыл страницу — запрос к базе и к API должен остановиться. Context несёт сигнал отмены и срок.\",\n  \"why\": \"Сервер не тратит ресурсы на никому не нужную работу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"WithTimeout\",\n  \"title\": \"Срок операции\",\n  \"what\": \"`ctx, cancel := context.WithTimeout(ctx, 3*time.Second)` и `defer cancel()`.\",\n  \"why\": \"Медленный внешний сервис не повесит обработчик.\",\n  \"how\": \"ctx, cancel := context.WithTimeout(r.Context(), 3*time.Second)\\ndefer cancel()\\n\\nrows, err := db.QueryContext(ctx, \\\"SELECT title FROM courses\\\")\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Первый аргумент\",\n  \"title\": \"ctx context.Context\",\n  \"what\": \"Функции, которые ходят в сеть или базу, принимают ctx первым параметром.\",\n  \"why\": \"Отмена доходит до самого низа.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"ctx.Done()\",\n  \"title\": \"Слушать отмену\",\n  \"what\": \"В долгом цикле проверяют `select { case <-ctx.Done(): return ctx.Err() default: }`.\",\n  \"why\": \"Своя долгая работа тоже останавливается.\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n**Главное.** Сеть и база — с ctx первым аргументом. Тайм-аут — WithTimeout и defer cancel()."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cx-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cx-cancel",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cx-arg",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "unit-tests",
+      "title": "Тесты",
+      "summary": "Файлы _test.go, func TestX(t *testing.T), t.Errorf и t.Fatal, go test ./..., покрытие.",
+      "chapter": "Тесты и инструменты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Управляем горутинами и защищаем код тестами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"_test.go\",\n  \"title\": \"Тест рядом с кодом\",\n  \"what\": \"Файл price_test.go, функция TestTotal(t *testing.T). Никаких внешних библиотек не нужно.\",\n  \"why\": \"Тесты встроены в язык и инструменты.\",\n  \"how\": \"func TestTotal(t *testing.T) {\\n    got := Total(990, 3)\\n    if got != 2970 {\\n        t.Errorf(\\\"Total(990, 3) = %d, ожидали 2970\\\", got)\\n    }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"go test\",\n  \"title\": \"Запуск\",\n  \"what\": \"`go test ./...` — все тесты проекта, `-run TestTotal` — один, `-v` — подробно, `-cover` — покрытие.\",\n  \"why\": \"Одна команда для всего проекта.\",\n  \"how\": \"$ go test ./...\\nok   example.com/academy/internal/course  0.012s\\nok   example.com/academy/internal/store   0.034s\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Errorf и Fatal\",\n  \"title\": \"Продолжить или остановиться\",\n  \"what\": \"t.Errorf отмечает провал и продолжает тест, t.Fatal — останавливает его сразу.\",\n  \"why\": \"Fatal — когда дальше проверять бессмысленно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Пакет и черный ящик\",\n  \"title\": \"package x_test\",\n  \"what\": \"Тест в пакете x_test видит только экспортированное — как настоящий пользователь пакета.\",\n  \"why\": \"Тесты не завязаны на внутренности.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Тест — функция TestX в _test.go. Запуск — go test ./... с -race в CI."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ut-file",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ut-fatal",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ut-all",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "table-tests",
+      "title": "Табличные тесты",
+      "summary": "Срез случаев, t.Run для подтестов, моки через интерфейсы, httptest для обработчиков.",
+      "chapter": "Тесты и инструменты",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем первые тесты и покрываем много случаев компактно.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Таблица случаев\",\n  \"title\": \"Срез структур\",\n  \"what\": \"Входы и ожидания — в срезе, проверка — в одном цикле с t.Run для каждого случая.\",\n  \"why\": \"Новый случай — одна строка, а не новый тест.\",\n  \"how\": \"tests := []struct {\\n    name string\\n    in   string\\n    want int\\n}{\\n    {\\\"число\\\", \\\"42\\\", 42},\\n    {\\\"пробелы\\\", \\\" 7 \\\", 7},\\n}\\nfor _, tt := range tests {\\n    t.Run(tt.name, func(t *testing.T) {\\n        if got := Parse(tt.in); got != tt.want {\\n            t.Errorf(\\\"got %d, want %d\\\", got, tt.want)\\n        }\\n    })\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Подставные типы\",\n  \"title\": \"Через интерфейсы\",\n  \"what\": \"Функция принимает интерфейс Store — в тесте передают простую реализацию в памяти.\",\n  \"why\": \"Тесты быстрые и не требуют базы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"httptest\",\n  \"title\": \"Тест обработчика\",\n  \"what\": \"httptest.NewRecorder и NewRequest вызывают HTTP-обработчик без сети.\",\n  \"why\": \"Проверка статуса и тела ответа за миллисекунды.\",\n  \"how\": \"req := httptest.NewRequest(\\\"GET\\\", \\\"/health\\\", nil)\\nrec := httptest.NewRecorder()\\nhandler.ServeHTTP(rec, req)\\nif rec.Code != 200 { t.Fatal(rec.Code) }\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n**Главное.** Много случаев — таблица и t.Run. Внешние зависимости — интерфейсы и подставные реализации."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tt-run",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tt-mock",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tt-http",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "bench-profile",
+      "title": "Бенчмарки и профилирование",
+      "summary": "func BenchmarkX(b *testing.B), b.Loop, -benchmem, pprof, линтер golangci-lint.",
+      "chapter": "Тесты и инструменты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем табличные тесты и измеряем скорость кода.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Бенчмарк\",\n  \"title\": \"Сколько стоит операция\",\n  \"what\": \"Функция BenchmarkX(b *testing.B) с циклом `for b.Loop()` измеряет время одной операции.\",\n  \"why\": \"Сравнить два решения цифрами, а не на глаз.\",\n  \"how\": \"func BenchmarkParse(b *testing.B) {\\n    for b.Loop() {\\n        Parse(\\\"42\\\")\\n    }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"go test -bench\",\n  \"title\": \"Запуск\",\n  \"what\": \"`go test -bench=. -benchmem` — время и число выделений памяти на операцию.\",\n  \"why\": \"Выделения памяти часто важнее процессора.\",\n  \"how\": \"$ go test -bench=. -benchmem\\nBenchmarkParse-8   52000000   22.4 ns/op   0 B/op   0 allocs/op\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"pprof\",\n  \"title\": \"Где тратится время\",\n  \"what\": \"Профиль процессора и памяти показывает, какие функции дороже всего. `go tool pprof` строит отчёт и граф.\",\n  \"why\": \"Оптимизируют то, что реально медленно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"golangci-lint\",\n  \"title\": \"Набор линтеров\",\n  \"what\": \"Запускает десятки проверок сразу: ошибки без обработки, неиспользуемый код, стиль.\",\n  \"why\": \"Стандарт для CI проектов на Go.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Сначала измерь (bench, pprof), потом оптимизируй. В CI — тесты с -race и golangci-lint."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bp-mem",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bp-pprof",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bp-first",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "http-server",
+      "title": "HTTP-сервер",
+      "summary": "net/http, маршруты с методами и параметрами в ServeMux, обработчики, тайм-ауты сервера, slog.",
+      "chapter": "Go на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Измеряем скорость и пишем настоящий веб-сервер.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"ServeMux\",\n  \"title\": \"Маршруты\",\n  \"what\": \"Стандартный маршрутизатор понимает метод и параметры: `\\\"GET /courses/{slug}\\\"`, значение — r.PathValue(\\\"slug\\\").\",\n  \"why\": \"Для большинства API фреймворк не нужен.\",\n  \"how\": \"mux := http.NewServeMux()\\nmux.HandleFunc(\\\"GET /courses/{slug}\\\", func(w http.ResponseWriter, r *http.Request) {\\n    slug := r.PathValue(\\\"slug\\\")\\n    fmt.Fprintf(w, \\\"курс %s\\\", slug)\\n})\\nlog.Fatal(http.ListenAndServe(\\\":8080\\\", mux))\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Каждый запрос — горутина\",\n  \"title\": \"Конкурентность даром\",\n  \"what\": \"Сервер обрабатывает каждый запрос в своей горутине. Общие данные защищают Mutex.\",\n  \"why\": \"Тысячи одновременных запросов без настройки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тайм-ауты\",\n  \"title\": \"http.Server\",\n  \"what\": \"Сервер без тайм-аутов можно повесить медленными клиентами. Задают ReadTimeout, WriteTimeout, IdleTimeout.\",\n  \"why\": \"Защита от зависших соединений.\",\n  \"how\": \"srv := &http.Server{\\n    Addr:         \\\":8080\\\",\\n    Handler:      mux,\\n    ReadTimeout:  5 * time.Second,\\n    WriteTimeout: 10 * time.Second,\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"slog\",\n  \"title\": \"Структурные логи\",\n  \"what\": \"log/slog пишет логи с полями в JSON: `slog.Info(\\\"запрос\\\", \\\"path\\\", r.URL.Path)`.\",\n  \"why\": \"Логи удобно искать и фильтровать.\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n**Главное.** Маршруты — ServeMux с методами и {параметрами}. У сервера — тайм-ауты, логи — slog."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hs-param",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hs-timeout",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hs-goroutine",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "json-db",
+      "title": "JSON API и база данных",
+      "summary": "Чтение и запись JSON в обработчике, database/sql и pgx, запросы с параметрами, транзакции.",
+      "chapter": "Go на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем сервер и подключаем к нему JSON и базу данных.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"JSON в обработчике\",\n  \"title\": \"Decoder и Encoder\",\n  \"what\": \"`json.NewDecoder(r.Body).Decode(&in)` — прочитать тело, `json.NewEncoder(w).Encode(out)` — ответить.\",\n  \"why\": \"API без лишних библиотек.\",\n  \"how\": \"var in struct{ Title string `json:\\\"title\\\"` }\\nif err := json.NewDecoder(r.Body).Decode(&in); err != nil {\\n    http.Error(w, \\\"неверный JSON\\\", http.StatusBadRequest)\\n    return\\n}\\nw.Header().Set(\\\"Content-Type\\\", \\\"application/json\\\")\\njson.NewEncoder(w).Encode(map[string]string{\\\"status\\\": \\\"ok\\\"})\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"database/sql и pgx\",\n  \"title\": \"Запросы к Postgres\",\n  \"what\": \"Пул подключений открывают один раз, запросы — с контекстом и параметрами $1, $2.\",\n  \"why\": \"Параметры защищают от SQL-инъекций.\",\n  \"how\": \"row := db.QueryRowContext(ctx, \\\"SELECT title FROM courses WHERE slug = $1\\\", slug)\\nvar title string\\nif err := row.Scan(&title); err != nil {\\n    return err\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Транзакции\",\n  \"title\": \"Всё или ничего\",\n  \"what\": \"BeginTx, несколько запросов, Commit; при ошибке — Rollback (через defer).\",\n  \"why\": \"Деньги не спишутся без создания заказа.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Без конкатенации\",\n  \"title\": \"Только параметры\",\n  \"what\": \"Никогда не вставляй ввод пользователя в SQL через fmt.Sprintf.\",\n  \"why\": \"Классическая уязвимость SQL-инъекции.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** JSON — Decoder и Encoder. SQL — только с параметрами и контекстом. Связанные изменения — в транзакции."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "jd-param",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "jd-decode",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "jd-tx",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "cli-ship",
+      "title": "Утилиты и выпуск",
+      "summary": "Утилита командной строки с flag, сборка под разные ОС, маленький Docker-образ, что учить дальше.",
+      "chapter": "Go на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем API с базой и выпускаем программы на Go.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"flag\",\n  \"title\": \"Аргументы командной строки\",\n  \"what\": \"Пакет flag разбирает флаги и сам пишет --help.\",\n  \"why\": \"Удобная утилита за пару строк.\",\n  \"how\": \"dir := flag.String(\\\"dir\\\", \\\".\\\", \\\"папка для отчёта\\\")\\nverbose := flag.Bool(\\\"v\\\", false, \\\"подробный вывод\\\")\\nflag.Parse()\",\n  \"kind\": \"idea\",\n  \"lang\": \"go\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сборка под все системы\",\n  \"title\": \"GOOS и GOARCH\",\n  \"what\": \"Одной машиной собирают версии для Linux, macOS и Windows.\",\n  \"why\": \"Раздать утилиту всем коллегам.\",\n  \"how\": \"$ GOOS=linux GOARCH=amd64 go build -o dist/report-linux ./cmd/report\\n$ GOOS=windows GOARCH=amd64 go build -o dist/report.exe ./cmd/report\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Крошечный образ\",\n  \"title\": \"distroless\",\n  \"what\": \"Статический бинарник кладут в образ distroless или scratch — образ весит единицы мегабайт.\",\n  \"why\": \"Быстрая доставка и минимум уязвимостей.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что дальше\",\n  \"title\": \"Куда расти\",\n  \"what\": \"Глубже в конкурентность и профилирование, gRPC, очереди сообщений, Kubernetes-операторы. Главное — свой сервис до реальной нагрузки.\",\n  \"why\": \"Язык закрепляется на настоящих задачах.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Утилита — flag и один бинарник. Сервер — статический бинарник в маленьком образе."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cs-flag",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cs-cross",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cs-image",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

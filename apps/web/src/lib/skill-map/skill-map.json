@@ -8738,6 +8738,476 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "go",
+      "name": "Go",
+      "role": "Бегун",
+      "summary": "Быстрые программы и серверы: типы и переменные, условия и циклы, срезы и карты, функции и ошибки, структуры и методы, интерфейсы и обобщения, пакеты и модули, горутины, каналы и контекст, тесты и бенчмарки, HTTP-сервер, JSON и база данных.",
+      "accent": "teal",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Основы",
+          "branches": [
+            "go-1",
+            "go-2",
+            "go-3"
+          ]
+        },
+        {
+          "title": "Данные",
+          "branches": [
+            "go-4"
+          ]
+        },
+        {
+          "title": "Надёжность",
+          "branches": [
+            "go-5"
+          ]
+        },
+        {
+          "title": "Типы",
+          "branches": [
+            "go-6",
+            "go-7"
+          ]
+        },
+        {
+          "title": "Проект",
+          "branches": [
+            "go-8"
+          ]
+        },
+        {
+          "title": "Скорость",
+          "branches": [
+            "go-9"
+          ]
+        },
+        {
+          "title": "Качество",
+          "branches": [
+            "go-10"
+          ]
+        },
+        {
+          "title": "Практика",
+          "branches": [
+            "go-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "go-1",
+          "title": "Старт Go",
+          "depth": "practice",
+          "requires": [
+            "pc-8"
+          ],
+          "skills": [
+            {
+              "key": "go-why",
+              "title": "Что такое Go",
+              "lesson": {
+                "course": "go",
+                "slug": "why-go",
+                "title": "Что такое Go"
+              }
+            },
+            {
+              "key": "go-hello",
+              "title": "Первая программа",
+              "lesson": {
+                "course": "go",
+                "slug": "first-program",
+                "title": "Первая программа"
+              }
+            },
+            {
+              "key": "go-tools",
+              "title": "Инструменты Go",
+              "lesson": {
+                "course": "go",
+                "slug": "go-tooling",
+                "title": "Инструменты Go"
+              }
+            }
+          ]
+        },
+        {
+          "id": "go-2",
+          "title": "Типы и переменные",
+          "depth": "practice",
+          "requires": [
+            "go-1"
+          ],
+          "skills": [
+            {
+              "key": "go-vars",
+              "title": "Переменные",
+              "lesson": {
+                "course": "go",
+                "slug": "variables",
+                "title": "Переменные"
+              }
+            },
+            {
+              "key": "go-types",
+              "title": "Базовые типы",
+              "lesson": {
+                "course": "go",
+                "slug": "basic-types",
+                "title": "Базовые типы"
+              }
+            },
+            {
+              "key": "go-strings",
+              "title": "Строки и руны",
+              "lesson": {
+                "course": "go",
+                "slug": "strings-runes",
+                "title": "Строки и руны"
+              }
+            }
+          ]
+        },
+        {
+          "id": "go-3",
+          "title": "Управление потоком",
+          "depth": "practice",
+          "requires": [
+            "go-2"
+          ],
+          "skills": [
+            {
+              "key": "go-if",
+              "title": "Ветвления",
+              "lesson": {
+                "course": "go",
+                "slug": "if-switch",
+                "title": "if и switch"
+              }
+            },
+            {
+              "key": "go-for",
+              "title": "Цикл for",
+              "lesson": {
+                "course": "go",
+                "slug": "for-loops",
+                "title": "Цикл for"
+              }
+            },
+            {
+              "key": "go-defer",
+              "title": "defer",
+              "lesson": {
+                "course": "go",
+                "slug": "defer",
+                "title": "defer"
+              }
+            }
+          ]
+        },
+        {
+          "id": "go-4",
+          "title": "Срезы и карты",
+          "depth": "practice",
+          "requires": [
+            "go-3"
+          ],
+          "skills": [
+            {
+              "key": "go-slices",
+              "title": "Срезы",
+              "lesson": {
+                "course": "go",
+                "slug": "slices",
+                "title": "Срезы"
+              }
+            },
+            {
+              "key": "go-maps",
+              "title": "Карты",
+              "lesson": {
+                "course": "go",
+                "slug": "maps",
+                "title": "Карты"
+              }
+            },
+            {
+              "key": "go-pointers",
+              "title": "Указатели",
+              "lesson": {
+                "course": "go",
+                "slug": "pointers",
+                "title": "Указатели"
+              }
+            }
+          ]
+        },
+        {
+          "id": "go-5",
+          "title": "Функции и ошибки",
+          "depth": "practice",
+          "requires": [
+            "go-4"
+          ],
+          "skills": [
+            {
+              "key": "go-funcs",
+              "title": "Функции",
+              "lesson": {
+                "course": "go",
+                "slug": "functions",
+                "title": "Функции"
+              }
+            },
+            {
+              "key": "go-errors",
+              "title": "Ошибки",
+              "lesson": {
+                "course": "go",
+                "slug": "errors",
+                "title": "Обработка ошибок"
+              }
+            },
+            {
+              "key": "go-panic",
+              "title": "panic и recover",
+              "lesson": {
+                "course": "go",
+                "slug": "panic-recover",
+                "title": "panic и recover"
+              }
+            }
+          ]
+        },
+        {
+          "id": "go-6",
+          "title": "Структуры и методы",
+          "depth": "practice",
+          "requires": [
+            "go-5"
+          ],
+          "skills": [
+            {
+              "key": "go-structs",
+              "title": "Структуры",
+              "lesson": {
+                "course": "go",
+                "slug": "structs",
+                "title": "Структуры"
+              }
+            },
+            {
+              "key": "go-methods",
+              "title": "Методы",
+              "lesson": {
+                "course": "go",
+                "slug": "methods",
+                "title": "Методы"
+              }
+            },
+            {
+              "key": "go-embed",
+              "title": "Встраивание и теги",
+              "lesson": {
+                "course": "go",
+                "slug": "embedding-tags",
+                "title": "Встраивание и теги"
+              }
+            }
+          ]
+        },
+        {
+          "id": "go-7",
+          "title": "Интерфейсы и обобщения",
+          "depth": "practice",
+          "requires": [
+            "go-6"
+          ],
+          "skills": [
+            {
+              "key": "go-interfaces",
+              "title": "Интерфейсы",
+              "lesson": {
+                "course": "go",
+                "slug": "interfaces",
+                "title": "Интерфейсы"
+              }
+            },
+            {
+              "key": "go-typeswitch",
+              "title": "Проверки типов",
+              "lesson": {
+                "course": "go",
+                "slug": "type-switch",
+                "title": "Пустой интерфейс и проверки типов"
+              }
+            },
+            {
+              "key": "go-generics",
+              "title": "Обобщения",
+              "lesson": {
+                "course": "go",
+                "slug": "generics",
+                "title": "Обобщения"
+              }
+            }
+          ]
+        },
+        {
+          "id": "go-8",
+          "title": "Пакеты и модули",
+          "depth": "practice",
+          "requires": [
+            "go-7"
+          ],
+          "skills": [
+            {
+              "key": "go-packages",
+              "title": "Пакеты",
+              "lesson": {
+                "course": "go",
+                "slug": "packages",
+                "title": "Пакеты"
+              }
+            },
+            {
+              "key": "go-modules",
+              "title": "Модули",
+              "lesson": {
+                "course": "go",
+                "slug": "modules",
+                "title": "Модули и зависимости"
+              }
+            },
+            {
+              "key": "go-layout",
+              "title": "Структура проекта",
+              "lesson": {
+                "course": "go",
+                "slug": "project-layout",
+                "title": "Структура проекта"
+              }
+            }
+          ]
+        },
+        {
+          "id": "go-9",
+          "title": "Горутины и каналы",
+          "depth": "practice",
+          "requires": [
+            "go-8"
+          ],
+          "skills": [
+            {
+              "key": "go-goroutines",
+              "title": "Горутины",
+              "lesson": {
+                "course": "go",
+                "slug": "goroutines",
+                "title": "Горутины"
+              }
+            },
+            {
+              "key": "go-channels",
+              "title": "Каналы",
+              "lesson": {
+                "course": "go",
+                "slug": "channels",
+                "title": "Каналы"
+              }
+            },
+            {
+              "key": "go-context",
+              "title": "Контекст",
+              "lesson": {
+                "course": "go",
+                "slug": "context",
+                "title": "Контекст"
+              }
+            }
+          ]
+        },
+        {
+          "id": "go-10",
+          "title": "Тесты и инструменты",
+          "depth": "practice",
+          "requires": [
+            "go-9"
+          ],
+          "skills": [
+            {
+              "key": "go-tests",
+              "title": "Тесты",
+              "lesson": {
+                "course": "go",
+                "slug": "unit-tests",
+                "title": "Тесты"
+              }
+            },
+            {
+              "key": "go-tabletests",
+              "title": "Табличные тесты",
+              "lesson": {
+                "course": "go",
+                "slug": "table-tests",
+                "title": "Табличные тесты"
+              }
+            },
+            {
+              "key": "go-bench",
+              "title": "Бенчмарки и профилирование",
+              "lesson": {
+                "course": "go",
+                "slug": "bench-profile",
+                "title": "Бенчмарки и профилирование"
+              }
+            }
+          ]
+        },
+        {
+          "id": "go-11",
+          "title": "Go на практике",
+          "depth": "practice",
+          "requires": [
+            "go-10"
+          ],
+          "skills": [
+            {
+              "key": "go-http",
+              "title": "HTTP-сервер",
+              "lesson": {
+                "course": "go",
+                "slug": "http-server",
+                "title": "HTTP-сервер"
+              }
+            },
+            {
+              "key": "go-api",
+              "title": "JSON и база",
+              "lesson": {
+                "course": "go",
+                "slug": "json-db",
+                "title": "JSON API и база данных"
+              }
+            },
+            {
+              "key": "go-ship",
+              "title": "Утилиты и выпуск",
+              "lesson": {
+                "course": "go",
+                "slug": "cli-ship",
+                "title": "Утилиты и выпуск"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

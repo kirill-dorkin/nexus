@@ -1,0 +1,196 @@
+{
+  "note": "Every item is taught by its own concept card; the contracts test keeps the index and the cards in sync.",
+  "source": "Course design by chapter (branches of the character).",
+  "topics": {
+    "start": {
+      "title": "Старт Go",
+      "items": [
+        "Go",
+        "Где используют",
+        "Один файл на выходе",
+        "Конкурентность",
+        "go version",
+        "main.go",
+        "go run",
+        "go build",
+        "gofmt",
+        "go vet",
+        "Строгий компилятор",
+        "gopls",
+        "go doc"
+      ]
+    },
+    "types": {
+      "title": "Типы и переменные",
+      "items": [
+        ":=",
+        "var",
+        "Нулевые значения",
+        "Несколько значений",
+        "Числа",
+        "Явные преобразования",
+        "const и iota",
+        "bool",
+        "Строка — байты",
+        "Руна",
+        "strings",
+        "strconv и Sprintf"
+      ]
+    },
+    "flow": {
+      "title": "Управление потоком",
+      "items": [
+        "if",
+        "if с инициализацией",
+        "switch",
+        "switch без условия",
+        "Классический for",
+        "for как while",
+        "range",
+        "_",
+        "defer",
+        "Порядок",
+        "Аргументы сразу",
+        "Не в цикле"
+      ]
+    },
+    "collections": {
+      "title": "Срезы и карты",
+      "items": [
+        "Массив",
+        "Срез",
+        "make, len, cap",
+        "Общая память",
+        "slices",
+        "map",
+        "Запятая ok",
+        "nil-карта",
+        "Порядок обхода",
+        "delete",
+        "По значению",
+        "& и *",
+        "Срезы и карты",
+        "nil"
+      ]
+    },
+    "functions": {
+      "title": "Функции и ошибки",
+      "items": [
+        "func",
+        "Два результата",
+        "Замыкание",
+        "Вариативные",
+        "if err != nil",
+        "Обёртка %w",
+        "errors.Is и As",
+        "Не игнорируй",
+        "panic",
+        "Ошибка или паника",
+        "recover",
+        "Must-функции"
+      ]
+    },
+    "structs": {
+      "title": "Структуры и методы",
+      "items": [
+        "struct",
+        "Заглавная буква",
+        "Конструктор",
+        "Нулевая структура",
+        "Метод",
+        "Указатель-получатель",
+        "Какой выбрать",
+        "Методы любых типов",
+        "Встраивание",
+        "Не наследование",
+        "Теги полей",
+        "encoding/json"
+      ]
+    },
+    "interfaces": {
+      "title": "Интерфейсы и обобщения",
+      "items": [
+        "interface",
+        "Маленькие интерфейсы",
+        "Принимай интерфейсы",
+        "Stringer",
+        "any",
+        "v.(T)",
+        "type switch",
+        "nil-интерфейс",
+        "Параметр типа",
+        "Ограничения",
+        "Свой набор",
+        "Не злоупотребляй"
+      ]
+    },
+    "packages": {
+      "title": "Пакеты и модули",
+      "items": [
+        "Папка — пакет",
+        "import",
+        "internal",
+        "init",
+        "go mod init",
+        "go get",
+        "go.sum",
+        "go mod tidy",
+        "Семантические версии",
+        "cmd/",
+        "По смыслу",
+        "Начни просто",
+        "Стандартная библиотека"
+      ]
+    },
+    "concurrency": {
+      "title": "Горутины и каналы",
+      "items": [
+        "go",
+        "WaitGroup",
+        "Гонка данных",
+        "sync.Mutex",
+        "chan",
+        "Буфер",
+        "close и range",
+        "select",
+        "Зачем context",
+        "WithTimeout",
+        "Первый аргумент",
+        "ctx.Done()"
+      ]
+    },
+    "testing": {
+      "title": "Тесты и инструменты",
+      "items": [
+        "_test.go",
+        "go test",
+        "Errorf и Fatal",
+        "Пакет и черный ящик",
+        "Таблица случаев",
+        "Подставные типы",
+        "httptest",
+        "Бенчмарк",
+        "go test -bench",
+        "pprof",
+        "golangci-lint"
+      ]
+    },
+    "practice": {
+      "title": "Go на практике",
+      "items": [
+        "ServeMux",
+        "Каждый запрос — горутина",
+        "Тайм-ауты",
+        "slog",
+        "JSON в обработчике",
+        "database/sql и pgx",
+        "Транзакции",
+        "Без конкатенации",
+        "flag",
+        "Сборка под все системы",
+        "Крошечный образ",
+        "Что дальше"
+      ]
+    }
+  }
+}

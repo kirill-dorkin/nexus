@@ -37,6 +37,7 @@ const LANGUAGE_NAMES: Record<string, string> = {
   ts: "TypeScript",
   typescript: "TypeScript",
   python: "Python",
+  go: "Go",
   py: "Python",
   json: "JSON",
   sql: "SQL",
