@@ -17,12 +17,8 @@ import { nextBarAfter } from "./timeline";
  * Lesson music: generative "coffee shop" lo-fi in Web Audio — no files, no licences.
  * composer.ts decides the notes, band.ts makes the sound, this module runs it in the page:
  *   - settings (on/off, volume) persist and stay in sync across tabs;
- *   - browsers allow audio only after a real gesture, so playback starts on the first click,
- *     tap or key press, and keeps trying until the browser actually lets it run;
- *   - music plays only while the page is visible: hiding the tab or leaving the site fades it
- *     out, coming back resumes it (owner decision, 2026-11-06);
- *   - a late clock (a sleeping laptop, a frozen tab) skips ahead instead of firing a pile of
- *     missed notes at once;
+ *   - audio needs a real gesture: playback starts on the first click, tap or key press;
+ *   - music plays only on a visible page (owner, 2026-11-06); a late clock skips ahead;
  *   - only one tab plays: the one the learner last interacted with;
  *   - start and stop fade, and a stopped context is suspended to save battery.
  * A module singleton, so it keeps playing across client-side navigation.
@@ -48,11 +44,8 @@ function load() {
   if (loaded || typeof window === "undefined") return;
   loaded = true;
   settings = readSoundSettings();
-  // Music plays only on a visible page: a hidden tab or a page being left fades it out.
-  const followVisibility = () => music.apply();
-  document.addEventListener("visibilitychange", followVisibility);
+  document.addEventListener("visibilitychange", () => music.apply());
   window.addEventListener("pagehide", () => music.apply(true));
-  window.addEventListener("pageshow", followVisibility);
   // Another tab changed the settings: follow them.
   window.addEventListener("storage", (event) => {
     if (event.key !== SOUND_KEY) return;
