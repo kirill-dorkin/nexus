@@ -1,0 +1,890 @@
+<title>Персонаж HTML</title>
+<meta name="claude:viewport-fit-sides" content="cover" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap"
+/>
+<style>
+  /* Layout: a game character screen — the 3D stage fills the top, the level panel sits under it. Single dark look by choice. */
+  :root {
+    --ember: #f26a21;
+    --ember-hi: #ffa15c;
+    --flame: #d9441c;
+    --maroon: #8a1a12;
+    --ink: #0d0b0a;
+    --panel: #161210;
+    --line: #2b221d;
+    --text: #f3eee9;
+    --muted: #a89c93;
+    --display: "Unbounded", "Arial Black", system-ui, sans-serif;
+    --body: "Golos Text", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+    color-scheme: dark;
+  }
+  html,
+  body {
+    height: 100%;
+  }
+  body {
+    background:
+      radial-gradient(120% 70% at 50% 0%, #2a120a 0%, var(--ink) 55%) fixed,
+      var(--ink);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 15px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 20px 32px;
+  }
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    display: grid;
+    gap: 18px;
+  }
+  header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .eyebrow {
+    font: 600 11px/1 var(--body);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ember-hi);
+  }
+  h1 {
+    margin: 6px 0 0;
+    font: 700 clamp(30px, 6vw, 52px)/1 var(--display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .role {
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .stage-pill {
+    font: 500 13px/1 var(--mono);
+    padding: 9px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--ember-hi);
+    white-space: nowrap;
+  }
+  .scene {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: radial-gradient(60% 60% at 50% 70%, #24130c 0%, #0b0908 70%);
+    height: min(62vh, 560px);
+    min-height: 360px;
+    touch-action: none;
+    cursor: grab;
+  }
+  .scene:active {
+    cursor: grabbing;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .hint {
+    position: absolute;
+    left: 14px;
+    bottom: 12px;
+    font: 500 12px var(--body);
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .flash {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      50% 50% at 50% 55%,
+      rgba(255, 140, 60, 0.55),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.6s;
+  }
+  .flash.on {
+    opacity: 1;
+    transition: none;
+  }
+  .toast {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font: 700 14px var(--display);
+    color: var(--ink);
+    background: var(--ember-hi);
+    padding: 8px 14px;
+    border-radius: 999px;
+    opacity: 0;
+    transition:
+      opacity 0.4s,
+      transform 0.4s;
+    white-space: nowrap;
+  }
+  .toast.on {
+    opacity: 1;
+    transform: translateX(-50%) translateY(4px);
+  }
+  .panel {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 18px;
+  }
+  @media (max-width: 720px) {
+    .panel {
+      grid-template-columns: 1fr;
+    }
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 18px;
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+  }
+  .level-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .level {
+    font: 700 44px/1 var(--display);
+    font-variant-numeric: tabular-nums;
+  }
+  .level small {
+    font: 500 14px var(--body);
+    color: var(--muted);
+    margin-left: 6px;
+  }
+  .skills {
+    font: 500 13px var(--mono);
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  input[type="range"] {
+    width: 100%;
+    accent-color: var(--ember);
+    height: 28px;
+  }
+  .bar {
+    height: 10px;
+    border-radius: 99px;
+    background: #241b16;
+    overflow: hidden;
+  }
+  .bar > span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(
+      90deg,
+      var(--maroon),
+      var(--flame),
+      var(--ember-hi)
+    );
+    transition: width 0.3s;
+  }
+  .buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  button {
+    font: 600 14px var(--body);
+    border-radius: 12px;
+    padding: 11px 16px;
+    cursor: pointer;
+    border: 1px solid var(--line);
+    background: #1f1814;
+    color: var(--text);
+  }
+  button.primary {
+    background: var(--ember);
+    color: #160701;
+    border-color: transparent;
+  }
+  button:focus-visible,
+  input:focus-visible {
+    outline: 2px solid var(--ember-hi);
+    outline-offset: 2px;
+  }
+  ol.stages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  ol.stages li {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 10px;
+    align-items: start;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  ol.stages li b {
+    font: 500 12px var(--mono);
+    color: var(--muted);
+    padding-top: 2px;
+  }
+  ol.stages li.done {
+    color: var(--text);
+  }
+  ol.stages li.done b {
+    color: var(--ember-hi);
+  }
+  ol.stages li.now {
+    color: var(--text);
+  }
+  ol.stages li.now b {
+    color: var(--ink);
+    background: var(--ember-hi);
+    border-radius: 6px;
+    padding: 2px 6px;
+    justify-self: start;
+  }
+  .note {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .toast,
+    .flash,
+    .bar > span {
+      transition: none;
+    }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Персонаж · технология</div>
+      <h1>HTML</h1>
+      <div class="role">
+        Строитель страниц. Растёт, когда вы подтверждаете навыки тестами.
+      </div>
+    </div>
+    <div class="stage-pill" id="stagePill">Ранг: Каменный</div>
+  </header>
+
+  <div class="scene" id="scene">
+    <div class="flash" id="flash"></div>
+    <div class="toast" id="toast">Новый ранг!</div>
+    <div class="hint">Потяните, чтобы повернуть</div>
+  </div>
+
+  <div class="panel">
+    <section class="card" aria-label="Уровень персонажа">
+      <div class="level-row">
+        <div class="level"><span id="lvl">0</span><small>уровень</small></div>
+        <div class="skills" id="skills">0 из 70 навыков</div>
+      </div>
+      <div class="bar"><span id="bar"></span></div>
+      <label for="level" class="note"
+        >Подвигайте уровень, чтобы увидеть, как меняется персонаж</label
+      >
+      <input id="level" type="range" min="0" max="100" value="12" />
+      <div class="buttons">
+        <button class="primary" id="plus" type="button">
+          + Подтвердить навык
+        </button>
+        <button id="reset" type="button">Сбросить</button>
+        <button id="max" type="button">Максимум</button>
+      </div>
+    </section>
+    <section class="card" aria-label="Ранги">
+      <div class="eyebrow">Ранги</div>
+      <ol class="stages" id="stages"></ol>
+      <p class="note">
+        В продукте уровень считается по реальным навыкам: 70 навыков HTML,
+        каждый подтверждается тестом урока и тускнеет без повторения.
+      </p>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  /*
+   * CHARACTER FORGE TEMPLATE — the HTML character, rank 1–5.
+   * Shared, keep as is: renderer/camera/light, ground ring, materials palette, drag to rotate,
+   *   resize, the loop skeleton (idle breathing, bob, hover), sparks, UI and rank-up flash.
+   * Per character, replace: STAGES texts, TOTAL_SKILLS, the "the character" section (body parts,
+   *   gear(...) pieces with their level windows, signature props like orbiting tags / crest /
+   *   wings), applyLook() for anything not driven by gear(), and the prop animation in frame().
+   */
+  (() => {
+    const STAGES = [
+      {
+        from: 0,
+        name: "Каменный",
+        text: "Маленький и сутулый, в трещинах. Горит один глаз."
+      },
+      {
+        from: 20,
+        name: "Тлеющий",
+        text: "Трещины раскаляются, оба глаза и ядро горят, он выпрямляется."
+      },
+      {
+        from: 40,
+        name: "Бронированный",
+        text: "Вырастает. Наплечники с шипами, нагрудник, латы и гребень."
+      },
+      {
+        from: 60,
+        name: "Мастер тегов",
+        text: "Парит над землёй, вокруг летают теги, над головой </>."
+      },
+      {
+        from: 80,
+        name: "Пламенный",
+        text: "Крылья из скобок, голова в огне, тело раскалено."
+      }
+    ];
+    const TOTAL_SKILLS = 70;
+    const stageOf = (l) =>
+      STAGES.reduce((s, st, i) => (l >= st.from ? i : s), 0);
+
+    const host = document.getElementById("scene");
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    // ---------- renderer, camera, light ----------
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+    host.prepend(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x0b0908, 10, 20);
+    const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 50);
+    const LOOK_Y = 2.25;
+
+    const hemi = new THREE.HemisphereLight(0xffe2cc, 0x1a0c06, 0.55);
+    scene.add(hemi);
+    const key = new THREE.DirectionalLight(0xfff1e6, 1.1);
+    key.position.set(3, 5, 4);
+    scene.add(key);
+    const rim = new THREE.PointLight(0xff6a21, 0, 14);
+    rim.position.set(-2.2, 3, -2.4);
+    scene.add(rim);
+    const rim2 = new THREE.PointLight(0xd9441c, 0, 14);
+    rim2.position.set(2.4, 2, -2);
+    scene.add(rim2);
+    const coreLight = new THREE.PointLight(0xff8a3d, 0, 5);
+    scene.add(coreLight);
+
+    const canvasTex = (size, draw) => {
+      const c = document.createElement("canvas");
+      c.width = c.height = size;
+      draw(c.getContext("2d"), size);
+      return new THREE.CanvasTexture(c);
+    };
+
+    // Ground and a glowing ring
+    const ground = new THREE.Mesh(
+      new THREE.CircleGeometry(2.6, 64),
+      new THREE.MeshStandardMaterial({ color: 0x120c09, roughness: 0.95 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    scene.add(ground);
+    const ringTex = canvasTex(256, (g) => {
+      const grd = g.createRadialGradient(128, 128, 20, 128, 128, 128);
+      grd.addColorStop(0, "rgba(255,120,50,0)");
+      grd.addColorStop(0.62, "rgba(255,110,40,0.05)");
+      grd.addColorStop(0.8, "rgba(255,120,50,0.9)");
+      grd.addColorStop(0.86, "rgba(255,90,30,0.25)");
+      grd.addColorStop(1, "rgba(0,0,0,0)");
+      g.fillStyle = grd;
+      g.fillRect(0, 0, 256, 256);
+    });
+    const ringMat = new THREE.MeshBasicMaterial({
+      map: ringTex,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      opacity: 0
+    });
+    const ring = new THREE.Mesh(new THREE.PlaneGeometry(5.6, 5.6), ringMat);
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.y = 0.01;
+    scene.add(ring);
+    const shadow = new THREE.Mesh(
+      new THREE.CircleGeometry(1, 48),
+      new THREE.MeshBasicMaterial({
+        color: 0x000000,
+        transparent: true,
+        opacity: 0.55,
+        depthWrite: false
+      })
+    );
+    shadow.rotation.x = -Math.PI / 2;
+    shadow.position.y = 0.015;
+    scene.add(shadow);
+
+    // ---------- materials ----------
+    const stone = new THREE.MeshStandardMaterial({
+      color: 0x5b5652,
+      roughness: 0.9,
+      metalness: 0.02
+    });
+    const plate = new THREE.MeshStandardMaterial({
+      color: 0x2a201b,
+      roughness: 0.32,
+      metalness: 0.75
+    });
+    const trim = new THREE.MeshStandardMaterial({
+      color: 0x8a1a12,
+      roughness: 0.35,
+      metalness: 0.5,
+      emissive: 0x000000
+    });
+    const glow = new THREE.MeshStandardMaterial({
+      color: 0x1a1210,
+      emissive: 0xff6a21,
+      emissiveIntensity: 0,
+      roughness: 0.4
+    });
+    const crack = new THREE.MeshBasicMaterial({ color: 0x1b1714 });
+    const seam = new THREE.MeshBasicMaterial({
+      color: 0xffa15c,
+      transparent: true,
+      opacity: 0
+    });
+    const hot = new THREE.MeshStandardMaterial({
+      color: 0x2a1408,
+      emissive: 0xff8a3d,
+      emissiveIntensity: 2.4,
+      roughness: 0.3
+    });
+
+    // ---------- the character ----------
+    const hero = new THREE.Group();
+    scene.add(hero);
+    const body = new THREE.Group();
+    hero.add(body);
+    const box = (w, h, d, mat, x, y, z, parent) => {
+      const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+      m.position.set(x, y, z);
+      parent.add(m);
+      return m;
+    };
+    const grow = []; // [mesh, fromLevel, toLevel] — scaled in from nothing
+    const gear = (m, a, b) => {
+      m.scale.setScalar(0.001);
+      grow.push([m, a, b]);
+      return m;
+    };
+
+    // Legs
+    const legL = new THREE.Group();
+    legL.position.set(-0.32, 0.9, 0);
+    body.add(legL);
+    const legR = new THREE.Group();
+    legR.position.set(0.32, 0.9, 0);
+    body.add(legR);
+    for (const leg of [legL, legR]) {
+      box(0.36, 0.8, 0.42, stone, 0, -0.42, 0, leg);
+      box(0.46, 0.16, 0.6, stone, 0, -0.82, 0.06, leg);
+      gear(box(0.5, 0.42, 0.52, plate, 0, -0.52, 0.02, leg), 42, 52); // greaves
+      gear(box(0.54, 0.1, 0.66, trim, 0, -0.72, 0.06, leg), 44, 54);
+    }
+    // Torso
+    const torso = new THREE.Group();
+    torso.position.y = 1.55;
+    body.add(torso);
+    box(1.3, 0.5, 0.78, stone, 0, -0.42, 0, torso);
+    box(1.46, 0.62, 0.86, stone, 0, 0.14, 0, torso);
+    box(1.0, 0.18, 0.7, stone, 0, 0.53, 0, torso);
+    const coreGem = new THREE.Mesh(new THREE.OctahedronGeometry(0.17), glow);
+    coreGem.position.set(0, 0.12, 0.5);
+    torso.add(coreGem);
+    // Cracks on the stone: dark at first, molten from rank 2
+    const cracks = [
+      box(0.5, 0.035, 0.02, crack, -0.38, 0.28, 0.435, torso),
+      box(0.035, 0.34, 0.02, crack, -0.15, 0.06, 0.435, torso),
+      box(0.42, 0.035, 0.02, crack, 0.36, -0.05, 0.435, torso),
+      box(0.035, 0.28, 0.02, crack, 0.42, -0.42, 0.395, torso),
+      box(0.3, 0.035, 0.02, crack, -0.36, -0.5, 0.395, torso)
+    ];
+    cracks[0].rotation.z = 0.35;
+    cracks[2].rotation.z = -0.3;
+    cracks[4].rotation.z = 0.5;
+    // Armour on the torso (rank 3)
+    gear(box(1.12, 0.46, 0.1, plate, 0, 0.12, 0.47, torso), 40, 50);
+    gear(box(1.2, 0.08, 0.12, trim, 0, 0.38, 0.48, torso), 42, 52);
+    gear(box(1.36, 0.14, 0.9, trim, 0, -0.17, 0, torso), 44, 54); // belt
+    // Molten seams (rank 4)
+    const seams = [
+      box(1.5, 0.03, 0.9, seam, 0, -0.17, 0, torso),
+      box(1.34, 0.03, 0.82, seam, 0, 0.45, 0, torso),
+      box(0.03, 0.62, 0.9, seam, 0, 0.14, 0, torso)
+    ];
+    // Head
+    const head = new THREE.Group();
+    head.position.y = 2.45;
+    body.add(head);
+    box(0.86, 0.66, 0.74, stone, 0, 0, 0, head);
+    box(0.92, 0.12, 0.8, stone, 0, 0.36, 0, head);
+    box(0.74, 0.2, 0.06, plate, 0, 0.02, 0.39, head);
+    const eyeL = box(0.14, 0.07, 0.04, glow, -0.18, 0.02, 0.43, head);
+    const eyeR = box(0.14, 0.07, 0.04, glow, 0.18, 0.02, 0.43, head);
+    const deadEye = box(0.14, 0.07, 0.045, crack, -0.18, 0.02, 0.43, head); // the left eye is dark at rank 1
+    gear(box(0.98, 0.12, 0.86, plate, 0, 0.44, 0, head), 42, 52); // helmet
+    gear(box(0.12, 0.34, 0.66, trim, 0, 0.66, -0.02, head), 46, 56); // crest
+    gear(box(0.08, 0.5, 0.08, plate, -0.5, 0.3, 0, head), 46, 56); // horns
+    gear(box(0.08, 0.5, 0.08, plate, 0.5, 0.3, 0, head), 46, 56);
+    // Arms
+    const armL = new THREE.Group();
+    armL.position.set(-0.92, 1.9, 0);
+    body.add(armL);
+    const armR = new THREE.Group();
+    armR.position.set(0.92, 1.9, 0);
+    body.add(armR);
+    for (const [arm, side] of [
+      [armL, -1],
+      [armR, 1]
+    ]) {
+      box(0.32, 0.72, 0.36, stone, 0, -0.38, 0, arm);
+      box(0.38, 0.32, 0.4, stone, 0, -0.86, 0.02, arm);
+      gear(box(0.62, 0.28, 0.62, plate, 0, 0.08, 0, arm), 40, 48); // pauldron
+      gear(box(0.66, 0.06, 0.66, trim, 0, 0.24, 0, arm), 42, 50);
+      const spike = gear(
+        new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.42, 4), plate),
+        46,
+        56
+      );
+      spike.position.set(side * 0.16, 0.42, 0);
+      spike.rotation.z = -side * 0.35;
+      arm.add(spike);
+      gear(box(0.46, 0.4, 0.48, plate, 0, -0.84, 0.02, arm), 42, 52); // gauntlet
+    }
+
+    // Orbiting tags (rank 4): small slabs with a label
+    const orbit = new THREE.Group();
+    orbit.position.y = 1.7;
+    hero.add(orbit);
+    const tagNames = ["<div>", "<p>", "<a>", "<img>", "<ul>", "<h1>"];
+    const tags = tagNames.map((name, i) => {
+      const tex = canvasTex(128, (g, s) => {
+        g.fillStyle = "#1d0f08";
+        g.fillRect(0, 0, s, s);
+        g.strokeStyle = "#ff8a3d";
+        g.lineWidth = 6;
+        g.strokeRect(5, 5, s - 10, s - 10);
+        g.fillStyle = "#ffd2a8";
+        g.font = "700 30px JetBrains Mono, monospace";
+        g.textAlign = "center";
+        g.textBaseline = "middle";
+        g.fillText(name, s / 2, s / 2 + 2);
+      });
+      const mat = new THREE.MeshStandardMaterial({
+        map: tex,
+        emissive: 0xff7a2a,
+        emissiveMap: tex,
+        emissiveIntensity: 0.9,
+        roughness: 0.4
+      });
+      const m = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.46, 0.06), mat);
+      orbit.add(m);
+      return {
+        m,
+        phase: (i / tagNames.length) * Math.PI * 2,
+        tilt: i % 2 ? 0.35 : -0.25
+      };
+    });
+    orbit.scale.setScalar(0.001);
+
+    // The </> crest above the head (rank 4)
+    const crest = new THREE.Group();
+    hero.add(crest);
+    const bar = (w, x, y, rot, parent) => {
+      const m = new THREE.Mesh(new THREE.BoxGeometry(w, 0.075, 0.075), hot);
+      m.position.set(x, y, 0);
+      m.rotation.z = rot;
+      parent.add(m);
+    };
+    bar(0.26, -0.36, 0.08, 0.6, crest);
+    bar(0.26, -0.36, -0.08, -0.6, crest);
+    bar(0.26, 0.36, 0.08, -0.6, crest);
+    bar(0.26, 0.36, -0.08, 0.6, crest);
+    bar(0.42, 0, 0, 1.15, crest);
+    crest.scale.setScalar(0.001);
+
+    // Wings of angle brackets (rank 5)
+    const wings = [];
+    for (const side of [-1, 1]) {
+      const pivot = new THREE.Group();
+      pivot.position.set(side * 0.35, 2.05, -0.5);
+      body.add(pivot);
+      for (let k = 0; k < 4; k++) {
+        const len = 1.25 - k * 0.2;
+        const feather = new THREE.Group();
+        feather.position.set(
+          side * (0.22 + k * 0.32),
+          0.05 - k * 0.2,
+          -k * 0.05
+        );
+        const a = new THREE.Mesh(new THREE.BoxGeometry(len, 0.07, 0.07), hot);
+        a.position.x = (side * len) / 2;
+        a.rotation.z = side * (0.75 - k * 0.12);
+        feather.add(a);
+        pivot.add(feather);
+      }
+      pivot.scale.setScalar(0.001);
+      wings.push({ pivot, side });
+    }
+
+    // Sparks: an aura around the body and fire on the head (rank 5)
+    const N = 360;
+    const pGeo = new THREE.BufferGeometry();
+    const pos = new Float32Array(N * 3),
+      seed = new Float32Array(N);
+    for (let i = 0; i < N; i++) {
+      seed[i] = Math.random();
+      pos[i * 3 + 1] = -10;
+    }
+    pGeo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    const sparkTex = canvasTex(64, (g) => {
+      const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grd.addColorStop(0, "rgba(255,235,190,1)");
+      grd.addColorStop(0.35, "rgba(255,120,40,0.85)");
+      grd.addColorStop(1, "rgba(255,60,10,0)");
+      g.fillStyle = grd;
+      g.fillRect(0, 0, 64, 64);
+    });
+    const pMat = new THREE.PointsMaterial({
+      size: 0.17,
+      map: sparkTex,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      opacity: 0
+    });
+    scene.add(new THREE.Points(pGeo, pMat));
+
+    // ---------- level → look ----------
+    const greyStone = new THREE.Color(0x4f4b48),
+      warmStone = new THREE.Color(0x3b2a22),
+      moltenStone = new THREE.Color(0x4a2216);
+    const crackDark = new THREE.Color(0x1b1714),
+      crackHot = new THREE.Color(0xff7a2a);
+    const clamp = (x) => Math.max(0, Math.min(1, x));
+    const s01 = (l, a, b) => clamp((l - a) / (b - a));
+    let target = 12,
+      shown = 12,
+      hover = 0;
+
+    function applyLook(l) {
+      const r2 = s01(l, 18, 28),
+        r3 = s01(l, 38, 50),
+        r4 = s01(l, 58, 70),
+        r5 = s01(l, 78, 92);
+      // Size and posture: small and hunched at first, tall and upright later
+      body.scale.setScalar(0.8 + 0.12 * r2 + 0.14 * r3 + 0.04 * r4 + 0.06 * r5);
+      torso.rotation.x = 0.32 * (1 - r2);
+      head.position.z = 0.22 * (1 - r2);
+      head.position.y = 2.45 - 0.12 * (1 - r2);
+      armL.rotation.z = -0.06 - 0.25 * r5;
+      armR.rotation.z = 0.06 + 0.25 * r5;
+      // Stone: grey, then warm, then molten
+      stone.color.copy(greyStone).lerp(warmStone, r2).lerp(moltenStone, r5);
+      stone.emissive.setRGB(0.5, 0.12, 0.03).multiplyScalar(r5 * 0.22);
+      plate.emissive.setRGB(0.6, 0.18, 0.04).multiplyScalar(r5 * 0.25);
+      trim.emissive.setRGB(0.8, 0.2, 0.05).multiplyScalar(r4 * 0.6);
+      crack.color.copy(crackDark).lerp(crackHot, r2);
+      // Eyes and core
+      glow.emissiveIntensity = 0.6 + 1.8 * r2 + 1.6 * r5;
+      deadEye.visible = r2 < 0.5;
+      coreGem.scale.setScalar(0.5 + 0.7 * r2 + 0.4 * r5);
+      coreLight.intensity = 0.3 + 2 * r2 + 2 * r5;
+      // Armour pieces scale in one after another
+      for (const [m, a, b] of grow)
+        m.scale.setScalar(Math.max(0.001, s01(l, a, b)));
+      // Seams, tags, crest, wings, fire
+      seam.opacity = r4 * 0.95;
+      seams.forEach((m) => (m.visible = seam.opacity > 0.01));
+      orbit.scale.setScalar(Math.max(0.001, r4));
+      crest.scale.setScalar(Math.max(0.001, s01(l, 62, 70)));
+      wings.forEach((w) => w.pivot.scale.setScalar(Math.max(0.001, r5)));
+      pMat.opacity = Math.max(r5, 0.35 * r4);
+      hover = 0.18 * r4 + 0.22 * r5;
+      rim.intensity = 1.5 * r2 + 3 * r3 + 2.5 * r5;
+      rim2.intensity = 2 * r4 + 2 * r5;
+      hemi.intensity = 0.55 - 0.15 * r5;
+      ringMat.opacity = 0.05 + 0.35 * r2 + 0.6 * r4;
+      shadow.scale.setScalar(1.1 - 0.35 * (hover / 0.4));
+    }
+
+    // ---------- drag to rotate ----------
+    let yaw = -0.4,
+      yawVel = 0,
+      dragging = false,
+      lastX = 0;
+    host.addEventListener("pointerdown", (e) => {
+      dragging = true;
+      lastX = e.clientX;
+      host.setPointerCapture(e.pointerId);
+    });
+    host.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - lastX;
+      lastX = e.clientX;
+      yaw += dx * 0.01;
+      yawVel = dx * 0.01;
+    });
+    const stop = () => (dragging = false);
+    host.addEventListener("pointerup", stop);
+    host.addEventListener("pointercancel", stop);
+
+    function resize() {
+      const w = host.clientWidth,
+        h = host.clientHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      const dist = w < 520 ? 13 : 11.2;
+      camera.position.set(0, 2.9, dist);
+      camera.lookAt(0, LOOK_Y, 0);
+      camera.updateProjectionMatrix();
+    }
+    new ResizeObserver(resize).observe(host);
+    resize();
+
+    // ---------- loop ----------
+    const clock = new THREE.Clock();
+    function frame() {
+      const t = clock.getElapsedTime();
+      shown += (target - shown) * 0.08;
+      applyLook(shown);
+      const m = reduced ? 0 : 1;
+      if (!dragging) {
+        yaw += yawVel;
+        yawVel *= 0.94;
+        if (Math.abs(yawVel) < 0.0005) yaw += 0.0025 * m;
+      }
+      hero.rotation.y = yaw;
+      // Idle: breathing, bob, hover, arms
+      hero.position.y = hover + Math.sin(t * 1.6) * (0.04 + hover * 0.25) * m;
+      torso.scale.y = 1 + Math.sin(t * 1.6) * 0.012 * m;
+      head.rotation.y = Math.sin(t * 0.7) * 0.18 * m;
+      head.rotation.x = Math.sin(t * 1.1) * 0.04 * m;
+      armL.rotation.x = Math.sin(t * 1.6) * 0.08 * m;
+      armR.rotation.x = -Math.sin(t * 1.6) * 0.08 * m;
+      coreGem.rotation.y = t * 1.4;
+      shadow.position.x = 0;
+      shadow.material.opacity = 0.55 - hover;
+      // Tags orbit on tilted circles
+      orbit.rotation.y = t * 0.5 * m;
+      tags.forEach((g, i) => {
+        const a = g.phase + t * 0.3 * m;
+        g.m.position.set(
+          Math.cos(a) * 1.65,
+          Math.sin(a * 2 + i) * 0.35 + g.tilt,
+          Math.sin(a) * 1.65
+        );
+        g.m.lookAt(camera.position.x * 0, g.m.position.y, 0);
+        g.m.rotation.y += Math.PI;
+      });
+      // Crest floats above the head
+      crest.position.set(
+        0,
+        3.55 * body.scale.y + hover + Math.sin(t * 2) * 0.08 * m,
+        0
+      );
+      crest.rotation.y = t * 0.9 * m;
+      // Wings beat slowly
+      wings.forEach((w) => {
+        w.pivot.rotation.y = w.side * (0.45 + Math.sin(t * 1.8) * 0.18 * m);
+      });
+      // Sparks: an aura rising from the feet, and a flame on the head at rank 5
+      if (pMat.opacity > 0.01) {
+        const headY = 2.9 * body.scale.y + hover;
+        const fire = s01(shown, 80, 92);
+        for (let i = 0; i < N; i++) {
+          const k = (seed[i] + t * (0.18 + seed[i] * 0.25)) % 1;
+          if (i < N * 0.3 * fire) {
+            const a = seed[i] * 50;
+            const r = (0.35 - k * 0.3) * (0.6 + 0.4 * Math.sin(seed[i] * 31));
+            pos[i * 3] = Math.cos(a) * r;
+            pos[i * 3 + 1] = headY + k * 1.1;
+            pos[i * 3 + 2] = Math.sin(a) * r;
+          } else {
+            const a = seed[i] * 40 + t * 0.6;
+            const r = 0.7 + 0.6 * Math.sin(seed[i] * 17) ** 2 + k * 0.3;
+            pos[i * 3] = Math.cos(a) * r;
+            pos[i * 3 + 1] = 0.1 + k * 4;
+            pos[i * 3 + 2] = Math.sin(a) * r;
+          }
+        }
+        pGeo.attributes.position.needsUpdate = true;
+      }
+      if (shown > 80) ringMat.opacity *= 0.8 + 0.2 * Math.sin(t * 3) * m;
+      renderer.render(scene, camera);
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+
+    // ---------- UI ----------
+    const $ = (id) => document.getElementById(id);
+    const stagesList = $("stages");
+    stagesList.innerHTML = STAGES.map(
+      (s, i) =>
+        `<li data-i="${i}"><b>${s.from}+</b><span><strong>${s.name}.</strong> ${s.text}</span></li>`
+    ).join("");
+    let lastStage = stageOf(target);
+
+    function setLevel(l, celebrate = true) {
+      target = Math.max(0, Math.min(100, Math.round(l)));
+      $("level").value = target;
+      $("lvl").textContent = target;
+      $("bar").style.width = target + "%";
+      $("skills").textContent =
+        `${Math.round((target / 100) * TOTAL_SKILLS)} из ${TOTAL_SKILLS} навыков`;
+      const st = stageOf(target);
+      $("stagePill").textContent = "Ранг: " + STAGES[st].name;
+      [...stagesList.children].forEach((li, i) => {
+        li.className = i < st ? "done" : i === st ? "now" : "";
+      });
+      if (celebrate && st > lastStage) {
+        const f = $("flash"),
+          toast = $("toast");
+        toast.textContent = "Новый ранг: " + STAGES[st].name;
+        f.classList.add("on");
+        toast.classList.add("on");
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => f.classList.remove("on"))
+        );
+        setTimeout(() => toast.classList.remove("on"), 1600);
+      }
+      lastStage = st;
+    }
+    $("level").addEventListener("input", (e) => setLevel(+e.target.value));
+    $("plus").addEventListener("click", () =>
+      setLevel(target + (100 / TOTAL_SKILLS) * 3)
+    );
+    $("reset").addEventListener("click", () => setLevel(0, false));
+    $("max").addEventListener("click", () => setLevel(100));
+    setLevel(target, false);
+  })();
+</script>
