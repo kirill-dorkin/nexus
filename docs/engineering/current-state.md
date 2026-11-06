@@ -148,7 +148,7 @@ Take the next number after this table and add a row (see `development-workflow.m
 | ADR-0080 | #170 |
 | ADR-0081 | #171 (superseded, number stays unused) |
 
-ADR-0082–0085 and migrations 000052–000055 are merged. The next free numbers are ADR-0086 and migration 000056.
+ADR-0082–0085 and migrations 000052–000055 are merged. ADR-0086 (product analytics with PostHog) is taken by `feat/posthog-analytics`. The next free numbers are ADR-0087 and migration 000056.
 
 Dependabot: NestJS packages arrive as one group. TypeScript ≥7 is held until typescript-eslint and `@nestjs/swagger` support it. Major `@types/node` bumps are ignored while the runtime is Node 24.
 

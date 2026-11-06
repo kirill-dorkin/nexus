@@ -58,8 +58,14 @@
 
 .compact {
   composes: stage;
-  height: 11rem;
+  height: 7.5rem;
   min-height: 0;
+  aspect-ratio: 1;
+}
+
+/* Too small for the drag hint: the strip beside a lesson. */
+.compact .hint {
+  display: none;
 }
 
 .stage:active {
