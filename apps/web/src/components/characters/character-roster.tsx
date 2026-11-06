@@ -7,6 +7,7 @@ import {
   type Character
 } from "../../lib/skill-map/skill-map";
 import { useOwnSkillRecords, utcToday } from "../../lib/skill-map/own-skills";
+import { LEARNING_ROUTE } from "../../lib/learning-route";
 import { skillsWord } from "./character-labels";
 import { DailyPanel } from "./daily-panel";
 import { stageColours, usePortraits } from "./character-stage";
@@ -47,12 +48,20 @@ export function CharacterRoster() {
       <ul className={styles.roster} aria-busy={status === "loading"}>
         {levels.map(({ character, progress }) => {
           const portrait = portraits[character.slug];
+          const step = LEARNING_ROUTE.steps.findIndex(
+            (s) => s.slug === character.slug
+          );
           return (
             <li
               key={character.slug}
               className={styles.card}
               data-ui-accent={character.accent}
             >
+              {step >= 0 && (
+                <span className={styles.stepBadge}>
+                  Шаг {step + 1} из {LEARNING_ROUTE.steps.length}
+                </span>
+              )}
               {portrait && (
                 // A data URL drawn in the browser; next/image cannot optimise it.
                 // eslint-disable-next-line @next/next/no-img-element

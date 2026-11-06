@@ -27,9 +27,14 @@ export default function CharactersPage() {
           Без повторения навык тускнеет и забывается, а уровень персонажа
           снижается.
         </Text>
-        <Link className={buttonClass({ variant: "secondary" })} href="/map">
-          Карта города
-        </Link>
+        <div className={styles.actions}>
+          <Link className={buttonClass()} href="/courses/pc">
+            Начать маршрут с ПК
+          </Link>
+          <Link className={buttonClass({ variant: "secondary" })} href="/map">
+            Карта города
+          </Link>
+        </div>
       </div>
       <CharacterRoster />
       <UpcomingCharacters />
