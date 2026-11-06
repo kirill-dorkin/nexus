@@ -139,7 +139,7 @@ export function SignupNudge({ returnTo }: { returnTo: string }) {
     <aside
       className={styles.nudge}
       aria-label="Сохранить прогресс"
-      style={{ "--c": "#c5f23a" } as CSSProperties}
+      style={{ "--c": "#f26a21" } as CSSProperties}
     >
       <button
         type="button"

@@ -11,7 +11,7 @@ export function AuthFrame({ children }: { children: ReactNode }) {
       className={styles.page}
       data-learner-scope=""
       data-ui-theme="dark"
-      data-ui-accent="lime"
+      data-ui-accent="ember"
     >
       <a className={styles.skip} href="#auth-main">
         Перейти к содержимому
