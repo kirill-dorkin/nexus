@@ -18,7 +18,8 @@ function nextRank(level: number) {
 }
 
 /**
- * The course's character beside a lesson (owner, 2026-11-06): the learner sees it grow while
+ * The course's character beside a lesson, as a compact strip under the course programme
+ * (owner, 2026-11-06: the programme must stay readable) (owner, 2026-11-06): the learner sees it grow while
  * studying. A confirmed skill makes it celebrate, and a new rank is announced. Each course is
  * its character's course (html → HTML), so the course slug picks the character.
  */
@@ -46,33 +47,37 @@ export function LessonCompanion({ courseSlug }: { courseSlug: string }) {
       aria-labelledby="companion-title"
       style={stageColours(character.slug)}
     >
-      <div className={styles.head}>
-        <h2 id="companion-title" className={styles.title}>
-          Ваш персонаж ·{" "}
-          <Link href={`/characters/${character.slug}`}>{character.name}</Link>
-        </h2>
-        <span className={styles.rank}>
-          Уровень {progress.level} · {progress.rank}
-        </span>
+      <div className={styles.figure}>
+        <CharacterStage slug={character.slug} level={level} compact />
       </div>
-      <CharacterStage slug={character.slug} level={level} compact />
-      <progress
-        className={styles.meter}
-        max={progress.maxLevel}
-        value={progress.level}
-        aria-label={`${character.name}: уровень ${progress.level} из ${progress.maxLevel}`}
-      />
-      <p className={styles.note} role="status">
-        {newRank
-          ? `Новый ранг: ${newRank}! Посмотрите, что у него появилось.`
-          : gained > 0
-            ? `+${gained} к уровню за этот урок. Так держать!`
-            : status === "anonymous"
-              ? "Войдите, чтобы ваши тесты прокачивали персонажа."
-              : next
-                ? `До ранга «${next.title}»: ${next.from - progress.level} ур. Сдайте тест урока — персонаж вырастет.`
-                : "Максимальный ранг. Повторяйте навыки, чтобы они не тускнели."}
-      </p>
+      <div className={styles.info}>
+        <div className={styles.head}>
+          <h2 id="companion-title" className={styles.title}>
+            Ваш персонаж ·{" "}
+            <Link href={`/characters/${character.slug}`}>{character.name}</Link>
+          </h2>
+          <span className={styles.rank}>
+            Уровень {progress.level} · {progress.rank}
+          </span>
+        </div>
+        <progress
+          className={styles.meter}
+          max={progress.maxLevel}
+          value={progress.level}
+          aria-label={`${character.name}: уровень ${progress.level} из ${progress.maxLevel}`}
+        />
+        <p className={styles.note} role="status">
+          {newRank
+            ? `Новый ранг: ${newRank}! Посмотрите, что у него появилось.`
+            : gained > 0
+              ? `+${gained} к уровню за этот урок. Так держать!`
+              : status === "anonymous"
+                ? "Войдите, чтобы ваши тесты прокачивали персонажа."
+                : next
+                  ? `До ранга «${next.title}»: ${next.from - progress.level} ур. Сдайте тест урока — персонаж вырастет.`
+                  : "Максимальный ранг. Повторяйте навыки, чтобы они не тускнели."}
+        </p>
+      </div>
     </section>
   );
 }
