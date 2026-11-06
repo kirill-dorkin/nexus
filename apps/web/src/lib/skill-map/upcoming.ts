@@ -20,7 +20,6 @@ export const UPCOMING: UpcomingDistrict[] = [
     district: "Машинный зал",
     characters: [
       { name: "Операционная система", role: "Диспетчер", needs: "ПК" },
-      { name: "Терминал", role: "Заклинатель", needs: "Операционная система" },
       { name: "Сеть и HTTP", role: "Почтальон", needs: "ПК, Браузер" },
       { name: "Git", role: "Хронист", needs: "Терминал" }
     ]

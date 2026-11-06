@@ -1,0 +1,226 @@
+{
+  "note": "Every item is taught by its own concept card; the contracts test keeps the index and the cards in sync.",
+  "source": "Course design by chapter (branches of the character).",
+  "topics": {
+    "shell": {
+      "title": "Оболочка",
+      "items": [
+        "Оболочка",
+        "bash",
+        "zsh",
+        "fish",
+        "PowerShell",
+        "WSL",
+        "Встроенная команда",
+        "type",
+        "which",
+        "alias",
+        "command",
+        "man",
+        "Разделы man",
+        "--help",
+        "help",
+        "apropos"
+      ]
+    },
+    "filesystem": {
+      "title": "Файловая система в терминале",
+      "items": [
+        "cd -",
+        "pushd и popd",
+        "ls -lh",
+        "tree",
+        "Иерархия Linux",
+        "*",
+        "?",
+        "[...]",
+        "{a,b}",
+        "**",
+        "Кавычки и шаблоны",
+        "find -name",
+        "find -type",
+        "find -size и -mtime",
+        "-not и -path",
+        "find -exec",
+        "xargs"
+      ]
+    },
+    "files": {
+      "title": "Файлы, ссылки и место на диске",
+      "items": [
+        "cp -r",
+        "-i и -n",
+        "rm -r",
+        "Правило rm -rf",
+        "rmdir",
+        "mkdir -p",
+        "ln -s",
+        "Битая ссылка",
+        "ln",
+        "readlink",
+        "df -h",
+        "du -sh",
+        "du | sort",
+        "Типичные пожиратели места"
+      ]
+    },
+    "streams": {
+      "title": "Потоки и перенаправления",
+      "items": [
+        "stdout",
+        "stderr",
+        "stdin",
+        "Код возврата",
+        ">",
+        ">>",
+        "2>",
+        "/dev/null",
+        "<",
+        "<<",
+        "|",
+        "tee",
+        "&&",
+        "||",
+        ";"
+      ]
+    },
+    "text": {
+      "title": "Обработка текста",
+      "items": [
+        "less",
+        "head",
+        "tail",
+        "tail -f",
+        "wc",
+        "grep",
+        "grep -i и -n",
+        "grep -r",
+        "grep -v",
+        "grep -E",
+        "ripgrep",
+        "sort",
+        "uniq",
+        "cut",
+        "tr",
+        "sed s///",
+        "sed -i",
+        "sed d",
+        "awk",
+        "awk условия и суммы"
+      ]
+    },
+    "processes": {
+      "title": "Процессы и сигналы",
+      "items": [
+        "ps aux",
+        "pgrep",
+        "top",
+        "htop",
+        "PID",
+        "SIGINT",
+        "kill",
+        "kill -9",
+        "pkill и killall",
+        "&",
+        "Ctrl+Z",
+        "jobs, bg, fg",
+        "nohup",
+        "lsof -i"
+      ]
+    },
+    "environment": {
+      "title": "Переменные и окружение",
+      "items": [
+        "VAR=значение",
+        "Двойные кавычки",
+        "Одинарные кавычки",
+        "Экранирование",
+        "$(команда)",
+        "export",
+        "VAR=… команда",
+        "env и printenv",
+        "PATH в деталях",
+        ".env-файл",
+        ".zshrc и .bashrc",
+        "source",
+        "Функции оболочки",
+        "Приглашение",
+        "dotfiles"
+      ]
+    },
+    "permissions": {
+      "title": "Права доступа",
+      "items": [
+        "r, w, x для файла",
+        "r, w, x для папки",
+        "Числовая запись",
+        "Владелец и группа",
+        "chmod +x",
+        "chmod 755",
+        "chmod -R",
+        "chown",
+        "chmod 777",
+        "root",
+        "sudo",
+        "whoami и id",
+        "sudo npm install -g",
+        "su"
+      ]
+    },
+    "scripts": {
+      "title": "Скрипты",
+      "items": [
+        "Shebang",
+        "Запуск скрипта",
+        "Аргументы",
+        "exit",
+        "if и [ ]",
+        "[[ ]]",
+        "for",
+        "while read",
+        "case",
+        "set -euo pipefail",
+        "Функции в скрипте",
+        "trap",
+        "ShellCheck"
+      ]
+    },
+    "remote": {
+      "title": "Сеть и удалённая работа",
+      "items": [
+        "curl",
+        "curl -I и -v",
+        "curl -X POST",
+        "jq",
+        "ssh",
+        "ssh-keygen",
+        "ssh-copy-id",
+        "Отпечаток сервера",
+        "ssh-agent",
+        "~/.ssh/config",
+        "scp",
+        "rsync",
+        "ssh -L"
+      ]
+    },
+    "archives": {
+      "title": "Архивы и продуктивность",
+      "items": [
+        "tar -czf",
+        "tar -xzf",
+        "gzip и gunzip",
+        "zip и unzip",
+        "Запомнить tar",
+        "crontab -e",
+        "Пять полей",
+        "Окружение cron",
+        "systemd timers",
+        "Ctrl+R",
+        "!!",
+        "Клавиши строки",
+        "tmux",
+        "Современные утилиты"
+      ]
+    }
+  }
+}

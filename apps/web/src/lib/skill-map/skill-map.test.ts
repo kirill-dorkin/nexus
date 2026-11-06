@@ -31,6 +31,7 @@ const manifests = [
   "css-track",
   "js-track",
   "sql-track",
+  "terminal-track",
   "pc-track",
   "browser-track"
 ].map(
@@ -60,14 +61,15 @@ describe("skill map data (ADR-0074)", () => {
     expect(new Set(mapped)).toEqual(new Set(authored));
   });
 
-  it("has the six starting characters, each with skills and a description", () => {
+  it("has the starting characters, each with skills and a description", () => {
     expect(SKILL_MAP.characters.map((c) => c.slug)).toEqual([
       "pc",
       "browser",
       "html",
       "css",
       "js",
-      "sql"
+      "sql",
+      "terminal"
     ]);
     for (const c of SKILL_MAP.characters) {
       expect(c.branches.length).toBeGreaterThan(0);
