@@ -1,12 +1,13 @@
 "use client";
 import { type LearnerLearningCourse } from "@platform/contracts";
 import { clientLearnerLearningCourseSchema as learnerLearningCourseSchema } from "@platform/contracts/client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useApiResource } from "../../lib/hooks/api-resource";
 import Link from "next/link";
 import { browserApiRequest } from "../../lib/public-api";
 import { learningLoginUrl } from "../../lib/learning-return-to";
 import {
+  HOME_ORGANIZATION_SLUG,
   courseUrl,
   lessonUrl,
   organizationName
@@ -95,14 +96,20 @@ export function LearnerEntry({
     }
     return response;
   }
-  async function enroll() {
+  async function enroll(auto = false) {
     const response = await post("enroll");
     if (!response) return false;
     setResource({
       status: "ready",
       data: learnerLearningCourseSchema.parse(await response.json())
     });
-    setMessage("Вы записаны на курс. Результаты практики будут сохраняться.");
+    setMessage(
+      auto
+        ? "Курс начат: он появился в «Моём обучении»."
+        : "Вы записаны на курс. Результаты практики будут сохраняться."
+    );
+    // An automatic start tells the program and the character beside the lesson.
+    if (auto) window.dispatchEvent(new Event("learning-progress-changed"));
     return true;
   }
   /**
@@ -110,7 +117,7 @@ export function LearnerEntry({
    * entry first, then free self-enrollment. Each keeps its own transaction,
    * idempotency and event; a failed second step leaves a visible retry.
    */
-  async function action(kind: "start" | "enroll") {
+  async function action(kind: "start" | "enroll", auto = false) {
     setBusy(true);
     setError(null);
     setMessage(null);
@@ -118,10 +125,10 @@ export function LearnerEntry({
       if (kind === "start") {
         const joined = await post("join");
         if (!joined) return;
-        if (!(await enroll())) reload();
+        if (!(await enroll(auto))) reload();
         return;
       }
-      await enroll();
+      await enroll(auto);
     } catch {
       setError(
         "Не удалось связаться с сервером. Можно безопасно повторить действие."
@@ -130,6 +137,28 @@ export function LearnerEntry({
       setBusy(false);
     }
   }
+  // Opening a lesson starts the course (owner, 2026-11-06): a signed-in learner who reads a
+  // lesson of the site's own free course gets it in «Моё обучение» without pressing «Начать
+  // курс». Only for the home organization, where entry is the site itself; other
+  // organizations keep the explicit button. Runs once per page.
+  const autoStarted = useRef(false);
+  useEffect(() => {
+    if (autoStarted.current || !lessonSlug || resource.status !== "ready")
+      return;
+    if (organizationSlug !== HOME_ORGANIZATION_SLUG) return;
+    const { entry } = resource.data;
+    if (entry.enrollmentStatus !== null) return;
+    const kind =
+      entry.membershipStatus === "active"
+        ? "enroll"
+        : entry.membershipStatus === "none" &&
+            entry.customerEntryPolicy === "open"
+          ? "start"
+          : null;
+    if (!kind) return;
+    autoStarted.current = true;
+    void Promise.resolve().then(() => action(kind, true));
+  });
   const enrolled =
     learning?.progress !== null && learning?.progress !== undefined;
   const next =

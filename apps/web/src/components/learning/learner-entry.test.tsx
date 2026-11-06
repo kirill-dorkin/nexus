@@ -10,6 +10,7 @@ import {
   progress
 } from "../../test/fixtures";
 import { itemAt } from "../../lib/item-at";
+import { HOME_ORGANIZATION_SLUG } from "../../lib/public-learning-routes";
 import { CourseProgress } from "./course-progress";
 import { LearnerEntry } from "./learner-entry";
 
@@ -290,5 +291,60 @@ describe("CourseProgress", () => {
       screen.getByText("Все обязательные задания курса выполнены.")
     ).toBeInTheDocument();
     expect(screen.getByText("Обучение завершено.")).toBeInTheDocument();
+  });
+
+  describe("opening a lesson starts the site's own course", () => {
+    const home = HOME_ORGANIZATION_SLUG;
+    const homeLearning = `/v1/me/learning/${home}/web`;
+    const homeJoin = `/v1/public/organizations/${home}/memberships/me`;
+    const started = learnerCourse({
+      organization: { slug: home, name: "Home Academy" },
+      entry: {
+        customerEntryPolicy: "open",
+        membershipStatus: "active",
+        enrollmentStatus: "active"
+      },
+      progress: progress()
+    });
+    const fresh = learnerCourse({
+      organization: { slug: home, name: "Home Academy" }
+    });
+    const renderHome = (lessonSlug?: string) =>
+      render(
+        <LearnerEntry
+          organizationSlug={home}
+          offeringSlug="web"
+          courseSlug="html"
+          {...(lessonSlug ? { lessonSlug } : {})}
+        />
+      );
+
+    it("joins and enrolls once, without a click, and tells the page", async () => {
+      routes({
+        [homeLearning]: [json(200, fresh), json(200, started)],
+        [homeJoin]: [json(200)],
+        [`${homeLearning}/enrollment`]: [json(201, started)]
+      });
+      const changed = vi.fn();
+      window.addEventListener("learning-progress-changed", changed);
+      renderHome("tags");
+      expect(
+        await screen.findByText("Курс начат: он появился в «Моём обучении».")
+      ).toBeInTheDocument();
+      expect(changed).toHaveBeenCalled();
+      window.removeEventListener("learning-progress-changed", changed);
+      const calls = api.mock.calls.map(([path]) => path);
+      expect(calls.filter((p) => p === homeJoin)).toHaveLength(1);
+      expect(calls.filter((p) => p.endsWith("/enrollment"))).toHaveLength(1);
+    });
+
+    it("waits for the button on the course page", async () => {
+      routes({ [homeLearning]: [json(200, fresh)] });
+      renderHome();
+      expect(
+        await screen.findByRole("button", { name: "Начать курс" })
+      ).toBeInTheDocument();
+      expect(api).toHaveBeenCalledTimes(1);
+    });
   });
 });
