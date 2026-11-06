@@ -298,7 +298,7 @@ describe("CourseProgress", () => {
     const homeLearning = `/v1/me/learning/${home}/web`;
     const homeJoin = `/v1/public/organizations/${home}/memberships/me`;
     const started = learnerCourse({
-      organization: { slug: home, name: "Dorkin Academy" },
+      organization: { slug: home, name: "Home Academy" },
       entry: {
         customerEntryPolicy: "open",
         membershipStatus: "active",
@@ -307,7 +307,7 @@ describe("CourseProgress", () => {
       progress: progress()
     });
     const fresh = learnerCourse({
-      organization: { slug: home, name: "Dorkin Academy" }
+      organization: { slug: home, name: "Home Academy" }
     });
     const renderHome = (lessonSlug?: string) =>
       render(
