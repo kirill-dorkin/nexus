@@ -726,3 +726,16 @@ a:focus-visible .districtBase {
 .waitsFor a {
   color: var(--text-accent);
 }
+
+/* On a phone the city plan is wider than the screen and scrolls sideways. */
+.cityHint {
+  display: none;
+  margin: 0 0 var(--space-3);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+@media (max-width: 700px) {
+  .cityHint {
+    display: block;
+  }
+}
