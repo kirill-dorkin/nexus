@@ -34,10 +34,10 @@ Keep bases deep and saturated. With the hemisphere light at 0.45 and a small emi
 
 | Rank | Levels | Name | What must be visibly new |
 |---|---|---|---|
-| 1 | 0–19 | Каменный | Grey, small (scale ~0.8), hunched, dark cracks, one dead eye. |
-| 2 | 20–39 | Пробуждённый | Fills with its own colour, stands up, both eyes and the core glow in `glow`, cracks light up, the ring wakes, the character's moving parts start (wheels, globe, gears, springs). |
-| 3 | 40–59 | Бронированный | Clearly taller; at least four armour pieces or tools appear one after another. |
-| 4 | 60–79 | Мастер … | Hovers; orbiting subject tokens; a crest above the head; seams glow. |
-| 5 | 80–100 | Легендарный | Wings or a cape from the subject's shapes, head fire in `aura`, the sparks aura, the ring pulses. |
+| 1 | 0–19 | Новичок | Grey, small (scale ~0.8), hunched, dark cracks, one dead eye. |
+| 2 | 20–39 | Ученик | Fills with its own colour, stands up, both eyes and the core glow in `glow`, cracks light up, the ring wakes, the character's moving parts start (wheels, globe, gears, springs). |
+| 3 | 40–59 | Практик | Clearly taller; at least four armour pieces or tools appear one after another. |
+| 4 | 60–79 | Мастер | Hovers; orbiting subject tokens; a crest above the head; seams glow. |
+| 5 | 80–100 | Эксперт (Легенда from 95) | Wings or a cape from the subject's shapes, head fire in `aura`, the sparks aura, the ring pulses. |
 
-Rank 4 is named per character: Мастер железа, Мастер протоколов, Мастер тегов, Мастер стилей, Мастер событий, Мастер запросов. A new character needs its own body plan, palette, orbit tokens, crest and wing. If it looks like a recolour of an existing one, it is not done.
+Rank titles are the site's own, shared by every character, so the look and the rank text never disagree. A new character needs its own body plan, palette, orbit tokens, crest and wing. If it looks like a recolour of an existing one, it is not done.
