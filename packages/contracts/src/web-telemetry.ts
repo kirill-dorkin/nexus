@@ -27,6 +27,7 @@ export const webRouteSchema = z.enum([
   "/studio/[organization]/[course]",
   "/studio/[organization]/[course]/offerings",
   "/studio/[organization]/entry-policy",
+  "/studio/[organization]/feedback",
   "/ui",
   "other"
 ]);

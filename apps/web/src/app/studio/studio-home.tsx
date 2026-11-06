@@ -214,6 +214,10 @@ export function StudioHome() {
                   <p className={styles.courseManageLink}>
                     <Link href={`/studio/${selected.id}/entry-policy`}>
                       Вступление учеников · настройки организации
+                    </Link>{" "}
+                    ·{" "}
+                    <Link href={`/studio/${selected.id}/feedback`}>
+                      Отзывы учеников
                     </Link>
                   </p>
                   {!courses && !error && (
