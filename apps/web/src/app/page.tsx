@@ -6,7 +6,7 @@ import { HomeContent } from "../components/learning/home-discovery";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Бесплатные IT-курсы с практикой",
-  description: `Бесплатный маршрут ${brand.name} «Веб-разработка с нуля»: HTML, CSS, JavaScript и SQL с живыми примерами и заданиями с мгновенной проверкой.`,
+  description: `Бесплатный маршрут ${brand.name} «IT с нуля»: компьютер, браузер, HTML, CSS, JavaScript и SQL с живыми примерами и заданиями с мгновенной проверкой.`,
   alternates: { canonical: "/" },
   openGraph: { url: "/" }
 };
