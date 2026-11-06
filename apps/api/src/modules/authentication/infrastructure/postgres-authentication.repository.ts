@@ -6,6 +6,7 @@ import {
   AuthenticationRepository,
   type NewAuthenticationSession,
   type NewOAuthLoginState,
+  type NewPasswordResetToken,
   type OAuthLoginState
 } from "../application/authentication.repository";
 
@@ -154,6 +155,73 @@ export class PostgresAuthenticationRepository extends AuthenticationRepository {
           SET last_login_at = now()
         WHERE provider = $1 AND subject = $2`,
       [provider, subject]
+    );
+  }
+
+  async createPasswordResetToken(
+    transaction: DatabaseTransaction,
+    token: NewPasswordResetToken
+  ): Promise<void> {
+    await transaction.client.query(
+      `DELETE FROM identity.password_reset_tokens
+        WHERE created_at < now() - interval '7 days'`
+    );
+    await transaction.client.query(
+      `UPDATE identity.password_reset_tokens
+          SET superseded_at = now()
+        WHERE user_id = $1
+          AND used_at IS NULL
+          AND superseded_at IS NULL`,
+      [token.userId]
+    );
+    await transaction.client.query(
+      `INSERT INTO identity.password_reset_tokens (user_id, token_hash, expires_at)
+       VALUES ($1, $2, $3)`,
+      [token.userId, token.tokenHash, token.expiresAt]
+    );
+  }
+
+  async consumePasswordResetToken(
+    transaction: DatabaseTransaction,
+    tokenHash: string
+  ): Promise<string | null> {
+    const result = await transaction.client.query<{ user_id: string }>(
+      `UPDATE identity.password_reset_tokens
+          SET used_at = now()
+        WHERE token_hash = $1
+          AND used_at IS NULL
+          AND superseded_at IS NULL
+          AND expires_at > now()
+      RETURNING user_id::text`,
+      [tokenHash]
+    );
+    return result.rows[0]?.user_id ?? null;
+  }
+
+  async setPasswordHash(
+    transaction: DatabaseTransaction,
+    userId: string,
+    passwordHash: string
+  ): Promise<void> {
+    await transaction.client.query(
+      `INSERT INTO identity.password_credentials (user_id, password_hash)
+       VALUES ($1, $2)
+       ON CONFLICT (user_id)
+       DO UPDATE SET password_hash = EXCLUDED.password_hash, updated_at = now()`,
+      [userId, passwordHash]
+    );
+  }
+
+  async revokeUserSessions(
+    transaction: DatabaseTransaction,
+    userId: string
+  ): Promise<void> {
+    await transaction.client.query(
+      `UPDATE identity.sessions
+          SET revoked_at = now()
+        WHERE user_id = $1
+          AND revoked_at IS NULL`,
+      [userId]
     );
   }
 }

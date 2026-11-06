@@ -15,9 +15,12 @@ import {
 import {
   loginRequestSchema,
   oauthProviderSchema,
+  passwordResetConfirmSchema,
+  passwordResetRequestSchema,
   registerRequestSchema,
   type IdentityUser,
-  type OAuthProvidersResponse
+  type OAuthProvidersResponse,
+  type PasswordResetAvailability
 } from "@platform/contracts";
 
 import { RateLimit, RateLimitGuard } from "../../http/rate-limit";
@@ -27,6 +30,7 @@ import {
   OAuthCallbackFailure,
   OAuthLoginService
 } from "./application/oauth-login.service";
+import { PasswordResetService } from "./application/password-reset.service";
 import {
   readSessionCookie,
   serializeClearedSessionCookie,
@@ -56,8 +60,47 @@ function setNoStore(response: AuthenticationResponse): void {
 export class AuthenticationController {
   constructor(
     private readonly authentication: AuthenticationApplicationService,
-    private readonly oauth: OAuthLoginService
+    private readonly oauth: OAuthLoginService,
+    private readonly passwordReset: PasswordResetService
   ) {}
+
+  @Get("password-reset")
+  passwordResetAvailability(
+    @Res({ passthrough: true }) response: AuthenticationResponse
+  ): PasswordResetAvailability {
+    setNoStore(response);
+    return { available: this.passwordReset.available() };
+  }
+
+  /** Always 202 with no body: the answer never reveals whether an account exists. */
+  @Post("password-reset/request")
+  @UseGuards(RateLimitGuard)
+  @RateLimit("auth.password_reset_request")
+  @HttpCode(202)
+  async requestPasswordReset(
+    @Body() body: unknown,
+    @Res({ passthrough: true }) response: AuthenticationResponse
+  ): Promise<void> {
+    const command = parseRequest(passwordResetRequestSchema, body);
+    await this.passwordReset.request(command);
+    setNoStore(response);
+  }
+
+  /** Sets the new password, revokes every session and signs the learner in. */
+  @Post("password-reset/confirm")
+  @UseGuards(RateLimitGuard)
+  @RateLimit("auth.password_reset_confirm")
+  @HttpCode(200)
+  async confirmPasswordReset(
+    @Body() body: unknown,
+    @Res({ passthrough: true }) response: AuthenticationResponse
+  ): Promise<IdentityUser> {
+    const command = parseRequest(passwordResetConfirmSchema, body);
+    const result = await this.passwordReset.confirm(command);
+    response.header("Set-Cookie", serializeSessionCookie(result.sessionToken));
+    setNoStore(response);
+    return result.user;
+  }
 
   @Get("oauth/providers")
   providers(

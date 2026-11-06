@@ -1,5 +1,6 @@
 "use client";
 import { type OAuthProvider } from "@platform/contracts";
+import { ForgotPasswordLink } from "./forgot-password-link";
 import {
   clientIdentityUserSchema as identityUserSchema,
   clientOAuthProvidersResponseSchema as oauthProvidersResponseSchema,
@@ -246,6 +247,7 @@ export function LearningAuth({
               }
             />
           </Field>
+          {mode === "login" && <ForgotPasswordLink />}
           {mode === "register" && <RegistrationConsents key="consents" />}
         </fieldset>
         <div className={styles.actions}>

@@ -50,6 +50,7 @@ Each row is implemented on `main`. The ADRs hold the details; the backend areas 
 | Studio | Manual and JSON authoring over the same draft, preview, export, publication, Offering visibility, Organization customer-entry policy | 0057 |
 | Web UI | `@platform/ui` + design tokens, light/dark themes with accents, public shell, Blog/SEO surfaces, `/ui` gallery | 0059 |
 | Sign-in | Password, optional Google/GitHub OAuth (PKCE) on the same Nexus session | 0060 |
+| Password reset | ADR-0082: «Забыли пароль?» → emailed single-use link (token hash only, 30 min, fragment) → new password, all sessions revoked. Module `notifications` with the `TransactionalMailer` port and a Resend adapter. Off until `MAIL_PROVIDER=resend`, `RESEND_API_KEY` and `MAIL_FROM` are set in Production | 0082 |
 | Legal minimum | `/privacy`, `/consent` and `/terms` (edition 2026-11-06: Kyrgyz law, 152-ФЗ for users from Russia, separate consent page), footer links, two required consent checkboxes at registration recorded with document versions in `identity.legal_consents`. OAuth-created accounts do not record consent yet; hosting is outside RF/KG | 0083 |
 | Organization provisioning | Organizations are created only by the offline operator command `org:bootstrap-owner` (`platform_migrator` role, `--apply`). Both HTTP create routes return 403/401. | 0068 |
 
@@ -149,7 +150,8 @@ Take the next number after this table and add a row (see `development-workflow.m
 | ADR-0080, 0081, 0082 | #170, #171, #172 |
 | ADR-0083, migration 000052 | #174 legal consent |
 | ADR-0084, migration 000053 | `analytics/collection` |
-| ADR-0085, migration 000054 | `wip/feedback-module` |
+| ADR-0085, migration 000054 | #213 feedback |
+| ADR-0082, migration 000055 | password reset (`feat/password-reset`) |
 
 Dependabot: NestJS packages arrive as one group. TypeScript ≥7 is held until typescript-eslint and `@nestjs/swagger` support it. Major `@types/node` bumps are ignored while the runtime is Node 24.
 
