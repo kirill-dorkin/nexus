@@ -5942,6 +5942,471 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "node",
+      "name": "Node.js",
+      "role": "Двигатель",
+      "summary": "JavaScript на сервере: процессы и модули, npm и версии, цикл событий и async/await, файлы и потоки, HTTP без фреймворков, Express и REST API, базы данных и защита от инъекций, конфигурация и аутентификация, тесты и отладка, журналы, масштабирование и развёртывание.",
+      "accent": "lime",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Среда",
+          "branches": [
+            "node-1",
+            "node-2"
+          ]
+        },
+        {
+          "title": "Асинхронность",
+          "branches": [
+            "node-3"
+          ]
+        },
+        {
+          "title": "Ввод-вывод",
+          "branches": [
+            "node-4",
+            "node-5"
+          ]
+        },
+        {
+          "title": "Сервер",
+          "branches": [
+            "node-6",
+            "node-7"
+          ]
+        },
+        {
+          "title": "Данные",
+          "branches": [
+            "node-8"
+          ]
+        },
+        {
+          "title": "Надёжность",
+          "branches": [
+            "node-9",
+            "node-10"
+          ]
+        },
+        {
+          "title": "Продакшен",
+          "branches": [
+            "node-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "node-1",
+          "title": "Старт Node.js",
+          "depth": "practice",
+          "requires": [
+            "js-1"
+          ],
+          "skills": [
+            {
+              "key": "node-what",
+              "title": "Что такое Node.js",
+              "lesson": {
+                "course": "node",
+                "slug": "what-is-node",
+                "title": "Что такое Node.js"
+              }
+            },
+            {
+              "key": "node-run",
+              "title": "Запуск",
+              "lesson": {
+                "course": "node",
+                "slug": "run-scripts",
+                "title": "Запуск скриптов и REPL"
+              }
+            },
+            {
+              "key": "node-process",
+              "title": "process",
+              "lesson": {
+                "course": "node",
+                "slug": "process",
+                "title": "Объект process"
+              }
+            }
+          ]
+        },
+        {
+          "id": "node-2",
+          "title": "Модули и npm",
+          "depth": "practice",
+          "requires": [
+            "node-1"
+          ],
+          "skills": [
+            {
+              "key": "node-modules",
+              "title": "Модули",
+              "lesson": {
+                "course": "node",
+                "slug": "esm-cjs",
+                "title": "Модули: import и require"
+              }
+            },
+            {
+              "key": "node-npm",
+              "title": "npm",
+              "lesson": {
+                "course": "node",
+                "slug": "npm",
+                "title": "npm и package.json"
+              }
+            },
+            {
+              "key": "node-semver",
+              "title": "Версии зависимостей",
+              "lesson": {
+                "course": "node",
+                "slug": "semver-lock",
+                "title": "Версии пакетов и безопасность зависимостей"
+              }
+            }
+          ]
+        },
+        {
+          "id": "node-3",
+          "title": "Асинхронность и цикл событий",
+          "depth": "practice",
+          "requires": [
+            "node-2"
+          ],
+          "skills": [
+            {
+              "key": "node-event-loop",
+              "title": "Цикл событий",
+              "lesson": {
+                "course": "node",
+                "slug": "event-loop",
+                "title": "Цикл событий"
+              }
+            },
+            {
+              "key": "node-await",
+              "title": "async/await",
+              "lesson": {
+                "course": "node",
+                "slug": "promises-await",
+                "title": "Промисы и async/await"
+              }
+            },
+            {
+              "key": "node-errors",
+              "title": "Асинхронные ошибки",
+              "lesson": {
+                "course": "node",
+                "slug": "async-errors",
+                "title": "Ошибки в асинхронном коде"
+              }
+            }
+          ]
+        },
+        {
+          "id": "node-4",
+          "title": "Файлы и пути",
+          "depth": "practice",
+          "requires": [
+            "node-3"
+          ],
+          "skills": [
+            {
+              "key": "node-fs",
+              "title": "Файлы",
+              "lesson": {
+                "course": "node",
+                "slug": "read-write",
+                "title": "Чтение и запись файлов"
+              }
+            },
+            {
+              "key": "node-path",
+              "title": "Пути и папки",
+              "lesson": {
+                "course": "node",
+                "slug": "paths-dirs",
+                "title": "Пути и папки"
+              }
+            },
+            {
+              "key": "node-json",
+              "title": "JSON-файлы",
+              "lesson": {
+                "course": "node",
+                "slug": "json-config",
+                "title": "JSON-файлы и простое хранилище"
+              }
+            }
+          ]
+        },
+        {
+          "id": "node-5",
+          "title": "Потоки и буферы",
+          "depth": "practice",
+          "requires": [
+            "node-4"
+          ],
+          "skills": [
+            {
+              "key": "node-buffer",
+              "title": "Buffer",
+              "lesson": {
+                "course": "node",
+                "slug": "buffers",
+                "title": "Buffer: байты в Node.js"
+              }
+            },
+            {
+              "key": "node-streams",
+              "title": "Потоки",
+              "lesson": {
+                "course": "node",
+                "slug": "streams",
+                "title": "Потоки данных"
+              }
+            },
+            {
+              "key": "node-backpressure",
+              "title": "Обратное давление",
+              "lesson": {
+                "course": "node",
+                "slug": "backpressure",
+                "title": "Обратное давление и Web Streams"
+              }
+            }
+          ]
+        },
+        {
+          "id": "node-6",
+          "title": "HTTP-сервер",
+          "depth": "practice",
+          "requires": [
+            "node-5"
+          ],
+          "skills": [
+            {
+              "key": "node-http",
+              "title": "HTTP-сервер",
+              "lesson": {
+                "course": "node",
+                "slug": "http-server",
+                "title": "Сервер на node:http"
+              }
+            },
+            {
+              "key": "node-json-api",
+              "title": "JSON API",
+              "lesson": {
+                "course": "node",
+                "slug": "json-body",
+                "title": "JSON-запросы и ответы"
+              }
+            },
+            {
+              "key": "node-static",
+              "title": "Статика и CORS",
+              "lesson": {
+                "course": "node",
+                "slug": "static-files",
+                "title": "Статические файлы и CORS"
+              }
+            }
+          ]
+        },
+        {
+          "id": "node-7",
+          "title": "Express и REST API",
+          "depth": "practice",
+          "requires": [
+            "node-6"
+          ],
+          "skills": [
+            {
+              "key": "node-express",
+              "title": "Express",
+              "lesson": {
+                "course": "node",
+                "slug": "express-routes",
+                "title": "Express: маршруты"
+              }
+            },
+            {
+              "key": "node-middleware",
+              "title": "Middleware",
+              "lesson": {
+                "course": "node",
+                "slug": "middleware",
+                "title": "Middleware"
+              }
+            },
+            {
+              "key": "node-rest",
+              "title": "REST API",
+              "lesson": {
+                "course": "node",
+                "slug": "rest-validation",
+                "title": "REST и проверка данных"
+              }
+            }
+          ]
+        },
+        {
+          "id": "node-8",
+          "title": "Базы данных",
+          "depth": "practice",
+          "requires": [
+            "node-7"
+          ],
+          "skills": [
+            {
+              "key": "node-db",
+              "title": "Подключение к базе",
+              "lesson": {
+                "course": "node",
+                "slug": "db-driver",
+                "title": "Драйвер и пул соединений"
+              }
+            },
+            {
+              "key": "node-injection",
+              "title": "Защита от инъекций",
+              "lesson": {
+                "course": "node",
+                "slug": "sql-injection",
+                "title": "Параметры и SQL-инъекции"
+              }
+            },
+            {
+              "key": "node-orm",
+              "title": "Транзакции и ORM",
+              "lesson": {
+                "course": "node",
+                "slug": "orm-migrations",
+                "title": "Транзакции, ORM и миграции"
+              }
+            }
+          ]
+        },
+        {
+          "id": "node-9",
+          "title": "Конфигурация и безопасность",
+          "depth": "practice",
+          "requires": [
+            "node-8"
+          ],
+          "skills": [
+            {
+              "key": "node-config",
+              "title": "Конфигурация",
+              "lesson": {
+                "course": "node",
+                "slug": "config",
+                "title": "Конфигурация из окружения"
+              }
+            },
+            {
+              "key": "node-auth",
+              "title": "Аутентификация",
+              "lesson": {
+                "course": "node",
+                "slug": "passwords-auth",
+                "title": "Пароли, сессии и токены"
+              }
+            },
+            {
+              "key": "node-hardening",
+              "title": "Защита сервера",
+              "lesson": {
+                "course": "node",
+                "slug": "hardening",
+                "title": "Защита сервера"
+              }
+            }
+          ]
+        },
+        {
+          "id": "node-10",
+          "title": "Тесты и отладка",
+          "depth": "practice",
+          "requires": [
+            "node-9"
+          ],
+          "skills": [
+            {
+              "key": "node-tests",
+              "title": "Модульные тесты",
+              "lesson": {
+                "course": "node",
+                "slug": "unit-tests",
+                "title": "Модульные тесты"
+              }
+            },
+            {
+              "key": "node-api-tests",
+              "title": "Тесты API",
+              "lesson": {
+                "course": "node",
+                "slug": "api-tests",
+                "title": "Тесты API и моки"
+              }
+            },
+            {
+              "key": "node-debug",
+              "title": "Отладка",
+              "lesson": {
+                "course": "node",
+                "slug": "debugging",
+                "title": "Отладка Node.js"
+              }
+            }
+          ]
+        },
+        {
+          "id": "node-11",
+          "title": "В продакшене",
+          "depth": "practice",
+          "requires": [
+            "node-10"
+          ],
+          "skills": [
+            {
+              "key": "node-logs",
+              "title": "Журналы и здоровье",
+              "lesson": {
+                "course": "node",
+                "slug": "logging-health",
+                "title": "Журналы и проверка здоровья"
+              }
+            },
+            {
+              "key": "node-scale",
+              "title": "Масштабирование",
+              "lesson": {
+                "course": "node",
+                "slug": "graceful-scale",
+                "title": "Аккуратная остановка и масштабирование"
+              }
+            },
+            {
+              "key": "node-deploy",
+              "title": "Развёртывание",
+              "lesson": {
+                "course": "node",
+                "slug": "deploy",
+                "title": "Развёртывание"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

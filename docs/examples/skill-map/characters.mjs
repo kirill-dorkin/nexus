@@ -239,6 +239,25 @@ export const characters = [
       "JavaScript с типами: компилятор и tsconfig, примитивы и вывод типов, объекты и интерфейсы, функции, объединения и сужение, дженерики, утилитные, отображённые и условные типы, классы и модули, строгий режим, проверка данных из сети и типы DOM.",
     accent: "blue",
     sources: [{ manifest: "ts-track.manifest.json", published: true }]
+  },
+  {
+    slug: "node",
+    depth: {},
+    abilities: [
+      { title: "Среда", branches: ["Старт Node.js", "Модули и npm"] },
+      { title: "Асинхронность", branches: ["Асинхронность и цикл событий"] },
+      { title: "Ввод-вывод", branches: ["Файлы и пути", "Потоки и буферы"] },
+      { title: "Сервер", branches: ["HTTP-сервер", "Express и REST API"] },
+      { title: "Данные", branches: ["Базы данных"] },
+      { title: "Надёжность", branches: ["Конфигурация и безопасность", "Тесты и отладка"] },
+      { title: "Продакшен", branches: ["В продакшене"] }
+    ],
+    name: "Node.js",
+    role: "Двигатель",
+    summary:
+      "JavaScript на сервере: процессы и модули, npm и версии, цикл событий и async/await, файлы и потоки, HTTP без фреймворков, Express и REST API, базы данных и защита от инъекций, конфигурация и аутентификация, тесты и отладка, журналы, масштабирование и развёртывание.",
+    accent: "lime",
+    sources: [{ manifest: "node-track.manifest.json", published: true }]
   }
 ];
 
@@ -256,7 +275,8 @@ export const requires = {
   "js/Формы": ["html/Формы"],
   "terminal/Оболочка": ["pc/Командная строка"],
   "git/Старт Git": ["terminal/Файловая система в терминале"],
-  "ts/Старт TypeScript": ["js/Старт JavaScript"]
+  "ts/Старт TypeScript": ["js/Старт JavaScript"],
+  "node/Старт Node.js": ["js/Старт JavaScript"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */

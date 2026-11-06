@@ -1,0 +1,4475 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "node",
+    "title": "Node.js: JavaScript на сервере",
+    "description": "Node.js от первого скрипта до сервера в продакшене. Среда выполнения и процессы, модули и npm, цикл событий и промисы, файлы и пути, потоки и буферы, HTTP без фреймворков, Express и REST API, работа с базой данных, переменные окружения и безопасность, тесты и отладка, логи, масштабирование и развёртывание. Каждое понятие объясняется карточкой с примером, каждый урок закрепляется вопросами."
+  },
+  "skills": [
+    {
+      "key": "node-what",
+      "title": "Что такое Node.js",
+      "description": "Объяснять, что такое Node.js и чем он отличается от браузера."
+    },
+    {
+      "key": "node-run",
+      "title": "Запуск",
+      "description": "Запускать скрипты Node.js и управлять версиями."
+    },
+    {
+      "key": "node-process",
+      "title": "process",
+      "description": "Читать аргументы и окружение и управлять завершением программы."
+    },
+    {
+      "key": "node-modules",
+      "title": "Модули",
+      "description": "Подключать модули и понимать разницу ESM и CommonJS."
+    },
+    {
+      "key": "node-npm",
+      "title": "npm",
+      "description": "Управлять зависимостями проекта через npm."
+    },
+    {
+      "key": "node-semver",
+      "title": "Версии зависимостей",
+      "description": "Понимать версии пакетов, lock-файл и обновлять зависимости безопасно."
+    },
+    {
+      "key": "node-event-loop",
+      "title": "Цикл событий",
+      "description": "Понимать, как Node.js обслуживает тысячи запросов в одном потоке."
+    },
+    {
+      "key": "node-await",
+      "title": "async/await",
+      "description": "Писать асинхронный код на async/await, последовательно и параллельно."
+    },
+    {
+      "key": "node-errors",
+      "title": "Асинхронные ошибки",
+      "description": "Обрабатывать ошибки асинхронного кода и не терять их."
+    },
+    {
+      "key": "node-fs",
+      "title": "Файлы",
+      "description": "Читать и записывать файлы в Node.js."
+    },
+    {
+      "key": "node-path",
+      "title": "Пути и папки",
+      "description": "Строить пути переносимо и работать с папками."
+    },
+    {
+      "key": "node-json",
+      "title": "JSON-файлы",
+      "description": "Хранить простые данные в JSON-файлах безопасно."
+    },
+    {
+      "key": "node-buffer",
+      "title": "Buffer",
+      "description": "Работать с двоичными данными через Buffer."
+    },
+    {
+      "key": "node-streams",
+      "title": "Потоки",
+      "description": "Обрабатывать большие данные по частям через потоки."
+    },
+    {
+      "key": "node-backpressure",
+      "title": "Обратное давление",
+      "description": "Понимать обратное давление и работать с потоками fetch."
+    },
+    {
+      "key": "node-http",
+      "title": "HTTP-сервер",
+      "description": "Писать простой HTTP-сервер на встроенном модуле."
+    },
+    {
+      "key": "node-json-api",
+      "title": "JSON API",
+      "description": "Принимать и отдавать JSON с правильными кодами ответа."
+    },
+    {
+      "key": "node-static",
+      "title": "Статика и CORS",
+      "description": "Отдавать файлы безопасно и разрешать запросы с других источников."
+    },
+    {
+      "key": "node-express",
+      "title": "Express",
+      "description": "Описывать маршруты API на Express."
+    },
+    {
+      "key": "node-middleware",
+      "title": "Middleware",
+      "description": "Строить цепочку промежуточных обработчиков и обрабатывать ошибки в одном месте."
+    },
+    {
+      "key": "node-rest",
+      "title": "REST API",
+      "description": "Проектировать REST API и проверять входящие данные."
+    },
+    {
+      "key": "node-db",
+      "title": "Подключение к базе",
+      "description": "Подключаться к базе данных из Node.js через пул."
+    },
+    {
+      "key": "node-injection",
+      "title": "Защита от инъекций",
+      "description": "Передавать значения в SQL только параметрами."
+    },
+    {
+      "key": "node-orm",
+      "title": "Транзакции и ORM",
+      "description": "Делать транзакции и менять схему базы миграциями."
+    },
+    {
+      "key": "node-config",
+      "title": "Конфигурация",
+      "description": "Хранить настройки в окружении и проверять их при старте."
+    },
+    {
+      "key": "node-auth",
+      "title": "Аутентификация",
+      "description": "Хранить пароли безопасно и выбирать между сессией и токеном."
+    },
+    {
+      "key": "node-hardening",
+      "title": "Защита сервера",
+      "description": "Защищать сервер от перебора, атак через браузер и слабых мест в зависимостях."
+    },
+    {
+      "key": "node-tests",
+      "title": "Модульные тесты",
+      "description": "Писать модульные тесты для кода Node.js."
+    },
+    {
+      "key": "node-api-tests",
+      "title": "Тесты API",
+      "description": "Тестировать маршруты API и подменять внешние зависимости."
+    },
+    {
+      "key": "node-debug",
+      "title": "Отладка",
+      "description": "Отлаживать Node.js в DevTools и редакторе."
+    },
+    {
+      "key": "node-logs",
+      "title": "Журналы и здоровье",
+      "description": "Писать структурированные журналы и отдавать проверку здоровья."
+    },
+    {
+      "key": "node-scale",
+      "title": "Масштабирование",
+      "description": "Останавливать сервер без потерь и запускать несколько экземпляров."
+    },
+    {
+      "key": "node-deploy",
+      "title": "Развёртывание",
+      "description": "Выкладывать Node.js-приложение и проверять его после выкладки."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "nw-dom",
+      "type": "quiz.single_choice",
+      "title": "Нет DOM",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-what"
+      ],
+      "presentation": {
+        "question": "Что из этого недоступно в Node.js?",
+        "options": [
+          {
+            "id": "document",
+            "text": "`document` и DOM"
+          },
+          {
+            "id": "fs",
+            "text": "Модуль fs для файлов"
+          },
+          {
+            "id": "process",
+            "text": "Объект process"
+          },
+          {
+            "id": "timers",
+            "text": "setTimeout"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "document",
+        "explanation": "У сервера нет страницы."
+      }
+    },
+    {
+      "slug": "nw-engine",
+      "type": "quiz.single_choice",
+      "title": "Движок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-what"
+      ],
+      "presentation": {
+        "question": "Какой движок выполняет JavaScript в Node.js?",
+        "options": [
+          {
+            "id": "v8",
+            "text": "V8 — тот же, что в Chrome"
+          },
+          {
+            "id": "gecko",
+            "text": "Gecko"
+          },
+          {
+            "id": "webkit",
+            "text": "WebKit"
+          },
+          {
+            "id": "jvm",
+            "text": "JVM"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "v8",
+        "explanation": "Отсюда высокая скорость и поддержка нового синтаксиса."
+      }
+    },
+    {
+      "slug": "nw-lts",
+      "type": "quiz.single_choice",
+      "title": "Версия",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-what"
+      ],
+      "presentation": {
+        "question": "Какую версию Node.js брать для рабочего проекта?",
+        "options": [
+          {
+            "id": "lts",
+            "text": "Текущую LTS (чётную)"
+          },
+          {
+            "id": "odd",
+            "text": "Самую новую нечётную"
+          },
+          {
+            "id": "old",
+            "text": "Самую старую"
+          },
+          {
+            "id": "any",
+            "text": "Любую"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lts",
+        "explanation": "LTS поддерживается годами."
+      }
+    },
+    {
+      "slug": "rs-exit",
+      "type": "quiz.single_choice",
+      "title": "Почему не завершается",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-run"
+      ],
+      "presentation": {
+        "question": "Почему скрипт с HTTP-сервером не завершается сам?",
+        "options": [
+          {
+            "id": "port",
+            "text": "Сервер держит открытый порт, и у Node.js есть ожидающая работа"
+          },
+          {
+            "id": "bug",
+            "text": "Это ошибка Node.js"
+          },
+          {
+            "id": "loop",
+            "text": "В коде бесконечный while"
+          },
+          {
+            "id": "exit",
+            "text": "Забыли вызвать exit"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "port",
+        "explanation": "Node.js завершается, когда ждать больше нечего."
+      }
+    },
+    {
+      "slug": "rs-watch",
+      "type": "quiz.single_choice",
+      "title": "Перезапуск",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-run"
+      ],
+      "presentation": {
+        "question": "Как запустить скрипт так, чтобы он перезапускался при сохранении файлов?",
+        "options": [
+          {
+            "id": "watch",
+            "text": "`node --watch app.js`"
+          },
+          {
+            "id": "repl",
+            "text": "`node`"
+          },
+          {
+            "id": "inspect",
+            "text": "`node --inspect app.js`"
+          },
+          {
+            "id": "nvm",
+            "text": "`nvm app.js`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "watch",
+        "explanation": "--watch встроен в современный Node.js."
+      }
+    },
+    {
+      "slug": "rs-nvmrc",
+      "type": "quiz.short_text",
+      "title": "Версия проекта",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "node-run"
+      ],
+      "presentation": {
+        "question": "Как называется файл в корне проекта с нужной версией Node.js для nvm?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          ".nvmrc",
+          "nvmrc"
+        ],
+        "caseSensitive": false,
+        "explanation": "nvm use читает его автоматически."
+      }
+    },
+    {
+      "slug": "pr-argv",
+      "type": "quiz.single_choice",
+      "title": "Аргумент",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-process"
+      ],
+      "presentation": {
+        "question": "Скрипт запущен как `node app.js report`. Где лежит «report»?",
+        "options": [
+          {
+            "id": "2",
+            "text": "`process.argv[2]`"
+          },
+          {
+            "id": "0",
+            "text": "`process.argv[0]`"
+          },
+          {
+            "id": "1",
+            "text": "`process.argv[1]`"
+          },
+          {
+            "id": "env",
+            "text": "`process.env.report`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "2",
+        "explanation": "0 — node, 1 — скрипт."
+      }
+    },
+    {
+      "slug": "pr-env",
+      "type": "quiz.single_choice",
+      "title": "Тип значения",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-process"
+      ],
+      "presentation": {
+        "question": "Какой тип у `process.env.PORT`?",
+        "options": [
+          {
+            "id": "string",
+            "text": "Строка или undefined"
+          },
+          {
+            "id": "number",
+            "text": "Число"
+          },
+          {
+            "id": "any",
+            "text": "Что угодно"
+          },
+          {
+            "id": "boolean",
+            "text": "Булево"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "string",
+        "explanation": "Числа нужно преобразовать: Number(process.env.PORT)."
+      }
+    },
+    {
+      "slug": "pr-cwd",
+      "type": "quiz.single_choice",
+      "title": "Папка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-process"
+      ],
+      "presentation": {
+        "question": "Что возвращает process.cwd()?",
+        "options": [
+          {
+            "id": "cwd",
+            "text": "Папку, из которой запустили программу"
+          },
+          {
+            "id": "script",
+            "text": "Всегда папку скрипта"
+          },
+          {
+            "id": "home",
+            "text": "Домашнюю папку"
+          },
+          {
+            "id": "root",
+            "text": "Корень диска"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cwd",
+        "explanation": "Для папки скрипта используют import.meta.dirname."
+      }
+    },
+    {
+      "slug": "md-type",
+      "type": "quiz.single_choice",
+      "title": "Включить ESM",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-modules"
+      ],
+      "presentation": {
+        "question": "Как включить ES-модули для .js-файлов проекта?",
+        "options": [
+          {
+            "id": "type",
+            "text": "Добавить `\"type\": \"module\"` в package.json"
+          },
+          {
+            "id": "flag",
+            "text": "Запускать с флагом --esm"
+          },
+          {
+            "id": "rename",
+            "text": "Переименовать в .ts"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего, всегда включены"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "type",
+        "explanation": "Иначе .js считаются CommonJS."
+      }
+    },
+    {
+      "slug": "md-ext",
+      "type": "quiz.single_choice",
+      "title": "Расширение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-modules"
+      ],
+      "presentation": {
+        "question": "Почему `import { sum } from \"./math\"` падает в чистом Node.js с ES-модулями?",
+        "options": [
+          {
+            "id": "ext",
+            "text": "Нужно указать расширение: ./math.js"
+          },
+          {
+            "id": "export",
+            "text": "Нельзя импортировать функции"
+          },
+          {
+            "id": "path",
+            "text": "Нельзя относительные пути"
+          },
+          {
+            "id": "npm",
+            "text": "math не установлен"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ext",
+        "explanation": "Node.js не угадывает расширения в ESM."
+      }
+    },
+    {
+      "slug": "md-node",
+      "type": "quiz.single_choice",
+      "title": "Префикс",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-modules"
+      ],
+      "presentation": {
+        "question": "Что означает `import fs from \"node:fs\"`?",
+        "options": [
+          {
+            "id": "builtin",
+            "text": "Встроенный модуль Node.js, не пакет из npm"
+          },
+          {
+            "id": "npm",
+            "text": "Пакет node из npm"
+          },
+          {
+            "id": "file",
+            "text": "Файл node.js в проекте"
+          },
+          {
+            "id": "global",
+            "text": "Глобальную переменную"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "builtin",
+        "explanation": "Префикс исключает путаницу с одноимёнными пакетами."
+      }
+    },
+    {
+      "slug": "np-dev",
+      "type": "quiz.single_choice",
+      "title": "Только разработка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-npm"
+      ],
+      "presentation": {
+        "question": "Куда ставить тестовый фреймворк vitest?",
+        "options": [
+          {
+            "id": "dev",
+            "text": "В devDependencies: `npm install -D vitest`"
+          },
+          {
+            "id": "deps",
+            "text": "В dependencies"
+          },
+          {
+            "id": "global",
+            "text": "Глобально через sudo"
+          },
+          {
+            "id": "copy",
+            "text": "Скопировать в папку src"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dev",
+        "explanation": "На сервере тесты не нужны."
+      }
+    },
+    {
+      "slug": "np-ci",
+      "type": "quiz.single_choice",
+      "title": "На CI",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-npm"
+      ],
+      "presentation": {
+        "question": "Какая команда ставит зависимости строго по lock-файлу?",
+        "options": [
+          {
+            "id": "ci",
+            "text": "`npm ci`"
+          },
+          {
+            "id": "install",
+            "text": "`npm install`"
+          },
+          {
+            "id": "update",
+            "text": "`npm update`"
+          },
+          {
+            "id": "init",
+            "text": "`npm init`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ci",
+        "explanation": "npm ci не меняет lock-файл и падает, если он не совпадает с package.json."
+      }
+    },
+    {
+      "slug": "np-modules",
+      "type": "quiz.single_choice",
+      "title": "node_modules",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-npm"
+      ],
+      "presentation": {
+        "question": "Почему node_modules не добавляют в Git?",
+        "options": [
+          {
+            "id": "restore",
+            "text": "Папка огромная и восстанавливается командой npm install"
+          },
+          {
+            "id": "secret",
+            "text": "В ней пароли"
+          },
+          {
+            "id": "broken",
+            "text": "Git не умеет хранить папки"
+          },
+          {
+            "id": "temp",
+            "text": "Её удаляет система"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "restore",
+        "explanation": "Достаточно package.json и lock-файла."
+      }
+    },
+    {
+      "slug": "sv-major",
+      "type": "quiz.single_choice",
+      "title": "MAJOR",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-semver"
+      ],
+      "presentation": {
+        "question": "Что означает переход с 4.18.2 на 5.0.0?",
+        "options": [
+          {
+            "id": "breaking",
+            "text": "Несовместимые изменения: может потребоваться менять код"
+          },
+          {
+            "id": "fix",
+            "text": "Только исправления"
+          },
+          {
+            "id": "feature",
+            "text": "Только новые возможности без поломок"
+          },
+          {
+            "id": "same",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "breaking",
+        "explanation": "MAJOR — ломающие изменения."
+      }
+    },
+    {
+      "slug": "sv-caret",
+      "type": "quiz.single_choice",
+      "title": "Каре",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-semver"
+      ],
+      "presentation": {
+        "question": "Какие версии разрешает `^4.18.2`?",
+        "options": [
+          {
+            "id": "minor",
+            "text": "4.18.2 и выше в пределах 4.x.x"
+          },
+          {
+            "id": "exact",
+            "text": "Только 4.18.2"
+          },
+          {
+            "id": "any",
+            "text": "Любые"
+          },
+          {
+            "id": "patch",
+            "text": "Только 4.18.x"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "minor",
+        "explanation": "~ разрешил бы только патчи."
+      }
+    },
+    {
+      "slug": "sv-lock",
+      "type": "quiz.single_choice",
+      "title": "lock-файл",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-semver"
+      ],
+      "presentation": {
+        "question": "Зачем коммитить package-lock.json?",
+        "options": [
+          {
+            "id": "same",
+            "text": "Чтобы у всех и на сервере были одинаковые точные версии"
+          },
+          {
+            "id": "size",
+            "text": "Чтобы уменьшить проект"
+          },
+          {
+            "id": "speed",
+            "text": "Чтобы Node.js работал быстрее"
+          },
+          {
+            "id": "no",
+            "text": "Его не нужно коммитить"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "same",
+        "explanation": "Без него версии могут разъехаться."
+      }
+    },
+    {
+      "slug": "el-thread",
+      "type": "quiz.single_choice",
+      "title": "Поток",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-event-loop"
+      ],
+      "presentation": {
+        "question": "Сколько потоков выполняют твой JavaScript в обычном Node.js-сервере?",
+        "options": [
+          {
+            "id": "one",
+            "text": "Один"
+          },
+          {
+            "id": "many",
+            "text": "По одному на запрос"
+          },
+          {
+            "id": "cores",
+            "text": "По числу ядер"
+          },
+          {
+            "id": "two",
+            "text": "Два"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "Ввод-вывод идёт в фоне, но JavaScript — в одном потоке."
+      }
+    },
+    {
+      "slug": "el-block",
+      "type": "quiz.single_choice",
+      "title": "Блокировка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-event-loop"
+      ],
+      "presentation": {
+        "question": "Что случится, если в обработчике запроса считать что-то синхронно 5 секунд?",
+        "options": [
+          {
+            "id": "freeze",
+            "text": "Все остальные запросы будут ждать эти 5 секунд"
+          },
+          {
+            "id": "parallel",
+            "text": "Другие запросы обработаются параллельно"
+          },
+          {
+            "id": "crash",
+            "text": "Node.js упадёт"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "freeze",
+        "explanation": "Цикл событий занят и не берёт новые задачи."
+      }
+    },
+    {
+      "slug": "el-order",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-event-loop"
+      ],
+      "presentation": {
+        "question": "Что выполнится раньше: `setTimeout(a, 0)` или `Promise.resolve().then(b)`?",
+        "options": [
+          {
+            "id": "b",
+            "text": "b — микрозадачи идут раньше таймеров"
+          },
+          {
+            "id": "a",
+            "text": "a"
+          },
+          {
+            "id": "same",
+            "text": "Одновременно"
+          },
+          {
+            "id": "random",
+            "text": "Случайно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "b",
+        "explanation": "Очередь микрозадач опустошается до таймеров."
+      }
+    },
+    {
+      "slug": "pa-all",
+      "type": "quiz.single_choice",
+      "title": "Параллельно",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-await"
+      ],
+      "presentation": {
+        "question": "Как запустить два независимых запроса одновременно и дождаться обоих?",
+        "options": [
+          {
+            "id": "all",
+            "text": "`await Promise.all([a(), b()])`"
+          },
+          {
+            "id": "seq",
+            "text": "`await a(); await b();`"
+          },
+          {
+            "id": "race",
+            "text": "`Promise.race`"
+          },
+          {
+            "id": "then",
+            "text": "`a().then(b)`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "all",
+        "explanation": "Последовательные await ждут по очереди."
+      }
+    },
+    {
+      "slug": "pa-settled",
+      "type": "quiz.single_choice",
+      "title": "Не падать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-await"
+      ],
+      "presentation": {
+        "question": "Что использовать, чтобы ошибка в одном из промисов не отменила результат остальных?",
+        "options": [
+          {
+            "id": "settled",
+            "text": "Promise.allSettled"
+          },
+          {
+            "id": "all",
+            "text": "Promise.all"
+          },
+          {
+            "id": "race",
+            "text": "Promise.race"
+          },
+          {
+            "id": "any",
+            "text": "Ничего, так нельзя"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "settled",
+        "explanation": "Promise.all отклоняется при первой ошибке."
+      }
+    },
+    {
+      "slug": "pa-timeout",
+      "type": "quiz.single_choice",
+      "title": "Таймаут",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-await"
+      ],
+      "presentation": {
+        "question": "Зачем передавать в fetch `AbortSignal.timeout(3000)`?",
+        "options": [
+          {
+            "id": "limit",
+            "text": "Чтобы не ждать медленный сервис бесконечно"
+          },
+          {
+            "id": "speed",
+            "text": "Чтобы запрос шёл быстрее"
+          },
+          {
+            "id": "retry",
+            "text": "Чтобы повторить запрос"
+          },
+          {
+            "id": "cache",
+            "text": "Чтобы закешировать ответ"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "limit",
+        "explanation": "Запрос отменится через 3 секунды."
+      }
+    },
+    {
+      "slug": "ae-unhandled",
+      "type": "quiz.single_choice",
+      "title": "Без catch",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-errors"
+      ],
+      "presentation": {
+        "question": "Что по умолчанию делает Node.js с отклонённым промисом, который никто не обработал?",
+        "options": [
+          {
+            "id": "crash",
+            "text": "Завершает процесс с ошибкой"
+          },
+          {
+            "id": "ignore",
+            "text": "Молча игнорирует"
+          },
+          {
+            "id": "retry",
+            "text": "Повторяет промис"
+          },
+          {
+            "id": "log",
+            "text": "Пишет в файл и продолжает"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "crash",
+        "explanation": "Поэтому забытый await опасен."
+      }
+    },
+    {
+      "slug": "ae-class",
+      "type": "quiz.single_choice",
+      "title": "Свой класс",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-errors"
+      ],
+      "presentation": {
+        "question": "Зачем заводить класс NotFoundError?",
+        "options": [
+          {
+            "id": "status",
+            "text": "Чтобы различать причины ошибок и отвечать правильным кодом, например 404"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "hide",
+            "text": "Чтобы скрыть ошибку"
+          },
+          {
+            "id": "log",
+            "text": "Чтобы не писать журнал"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "status",
+        "explanation": "instanceof отличает его от остальных."
+      }
+    },
+    {
+      "slug": "ae-cause",
+      "type": "quiz.short_text",
+      "title": "Причина",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "node-errors"
+      ],
+      "presentation": {
+        "question": "Как называется опция конструктора Error, которая хранит исходную ошибку? Одно слово."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "cause"
+        ],
+        "caseSensitive": false,
+        "explanation": "new Error(\"…\", { cause: err })."
+      }
+    },
+    {
+      "slug": "rw-encoding",
+      "type": "quiz.single_choice",
+      "title": "Кодировка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-fs"
+      ],
+      "presentation": {
+        "question": "Что вернёт `readFile(\"a.txt\")` без указания кодировки?",
+        "options": [
+          {
+            "id": "buffer",
+            "text": "Buffer с байтами"
+          },
+          {
+            "id": "string",
+            "text": "Строку"
+          },
+          {
+            "id": "json",
+            "text": "Объект"
+          },
+          {
+            "id": "null",
+            "text": "null"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "buffer",
+        "explanation": "Кодировка \"utf8\" превращает байты в строку."
+      }
+    },
+    {
+      "slug": "rw-sync",
+      "type": "quiz.single_choice",
+      "title": "Sync",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-fs"
+      ],
+      "presentation": {
+        "question": "Где допустимо использовать readFileSync?",
+        "options": [
+          {
+            "id": "script",
+            "text": "В скриптах и при старте программы"
+          },
+          {
+            "id": "handler",
+            "text": "В обработчике каждого запроса"
+          },
+          {
+            "id": "never",
+            "text": "Нигде"
+          },
+          {
+            "id": "browser",
+            "text": "Только в браузере"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "script",
+        "explanation": "В обработчиках он блокирует весь сервер."
+      }
+    },
+    {
+      "slug": "rw-enoent",
+      "type": "quiz.short_text",
+      "title": "Нет файла",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "node-fs"
+      ],
+      "presentation": {
+        "question": "Какой код ошибки означает, что файл не найден?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "ENOENT",
+          "enoent"
+        ],
+        "caseSensitive": false,
+        "explanation": "Error NO ENTry."
+      }
+    },
+    {
+      "slug": "pd-join",
+      "type": "quiz.single_choice",
+      "title": "Переносимо",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-path"
+      ],
+      "presentation": {
+        "question": "Почему путь собирают через path.join, а не склейкой строк?",
+        "options": [
+          {
+            "id": "sep",
+            "text": "join подставляет правильный разделитель для любой системы"
+          },
+          {
+            "id": "fast",
+            "text": "Так быстрее"
+          },
+          {
+            "id": "short",
+            "text": "Так короче"
+          },
+          {
+            "id": "same",
+            "text": "Разницы нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "sep",
+        "explanation": "Windows использует обратную косую черту."
+      }
+    },
+    {
+      "slug": "pd-dirname",
+      "type": "quiz.single_choice",
+      "title": "Папка файла",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-path"
+      ],
+      "presentation": {
+        "question": "Как в ES-модуле получить папку текущего файла?",
+        "options": [
+          {
+            "id": "meta",
+            "text": "`import.meta.dirname`"
+          },
+          {
+            "id": "cwd",
+            "text": "`process.cwd()`"
+          },
+          {
+            "id": "home",
+            "text": "`os.homedir()`"
+          },
+          {
+            "id": "dirname",
+            "text": "`__dirname` всегда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "meta",
+        "explanation": "cwd — папка запуска, а не файла."
+      }
+    },
+    {
+      "slug": "pd-mkdir",
+      "type": "quiz.single_choice",
+      "title": "Цепочка папок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-path"
+      ],
+      "presentation": {
+        "question": "Как создать папку out/reports, даже если out ещё нет?",
+        "options": [
+          {
+            "id": "recursive",
+            "text": "`mkdir(\"out/reports\", { recursive: true })`"
+          },
+          {
+            "id": "plain",
+            "text": "`mkdir(\"out/reports\")`"
+          },
+          {
+            "id": "write",
+            "text": "`writeFile(\"out/reports\")`"
+          },
+          {
+            "id": "rm",
+            "text": "`rm(\"out\")`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "recursive",
+        "explanation": "Без recursive будет ошибка ENOENT."
+      }
+    },
+    {
+      "slug": "jc-atomic",
+      "type": "quiz.single_choice",
+      "title": "Атомарно",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-json"
+      ],
+      "presentation": {
+        "question": "Зачем писать сначала во временный файл, а потом делать rename?",
+        "options": [
+          {
+            "id": "safe",
+            "text": "Чтобы при сбое посреди записи старый файл остался целым"
+          },
+          {
+            "id": "fast",
+            "text": "Чтобы было быстрее"
+          },
+          {
+            "id": "small",
+            "text": "Чтобы файл был меньше"
+          },
+          {
+            "id": "secret",
+            "text": "Чтобы скрыть файл"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "safe",
+        "explanation": "Переименование не оставляет файл наполовину записанным."
+      }
+    },
+    {
+      "slug": "jc-db",
+      "type": "quiz.single_choice",
+      "title": "Не база",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-json"
+      ],
+      "presentation": {
+        "question": "Почему данные заказов не стоит хранить в одном JSON-файле на сервере?",
+        "options": [
+          {
+            "id": "race",
+            "text": "Параллельные запросы затрут изменения друг друга, нет транзакций и индексов"
+          },
+          {
+            "id": "size",
+            "text": "JSON не может хранить больше 10 записей"
+          },
+          {
+            "id": "text",
+            "text": "JSON — не текст"
+          },
+          {
+            "id": "fine",
+            "text": "Это хорошая идея"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "race",
+        "explanation": "Для этого есть базы данных."
+      }
+    },
+    {
+      "slug": "jc-parse",
+      "type": "quiz.single_choice",
+      "title": "Прочитать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-json"
+      ],
+      "presentation": {
+        "question": "Как получить объект из файла settings.json?",
+        "options": [
+          {
+            "id": "parse",
+            "text": "`JSON.parse(await readFile(\"settings.json\", \"utf8\"))`"
+          },
+          {
+            "id": "read",
+            "text": "`await readFile(\"settings.json\")` — сразу объект"
+          },
+          {
+            "id": "require",
+            "text": "`settings.json()`"
+          },
+          {
+            "id": "fetch",
+            "text": "`fetch(\"settings.json\")` в Node.js без сервера"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "parse",
+        "explanation": "readFile возвращает текст или Buffer, разбирает JSON.parse."
+      }
+    },
+    {
+      "slug": "bf-len",
+      "type": "quiz.single_choice",
+      "title": "Байты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-buffer"
+      ],
+      "presentation": {
+        "question": "Сколько байт занимает строка \"Привет\" в UTF-8?",
+        "options": [
+          {
+            "id": "12",
+            "text": "12"
+          },
+          {
+            "id": "6",
+            "text": "6"
+          },
+          {
+            "id": "24",
+            "text": "24"
+          },
+          {
+            "id": "1",
+            "text": "1"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "12",
+        "explanation": "Кириллическая буква — 2 байта."
+      }
+    },
+    {
+      "slug": "bf-what",
+      "type": "quiz.single_choice",
+      "title": "Buffer",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-buffer"
+      ],
+      "presentation": {
+        "question": "Что хранит Buffer?",
+        "options": [
+          {
+            "id": "bytes",
+            "text": "Двоичные данные — последовательность байтов"
+          },
+          {
+            "id": "text",
+            "text": "Только текст"
+          },
+          {
+            "id": "objects",
+            "text": "JavaScript-объекты"
+          },
+          {
+            "id": "files",
+            "text": "Имена файлов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bytes",
+        "explanation": "Это основа для файлов и сети."
+      }
+    },
+    {
+      "slug": "bf-b64",
+      "type": "quiz.short_text",
+      "title": "Байты текстом",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "node-buffer"
+      ],
+      "presentation": {
+        "question": "Как называется кодировка, которая записывает байты латиницей и цифрами для передачи в JSON?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "base64"
+        ],
+        "caseSensitive": false,
+        "explanation": "buf.toString(\"base64\")."
+      }
+    },
+    {
+      "slug": "st-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-streams"
+      ],
+      "presentation": {
+        "question": "Почему файл на 5 ГБ обрабатывают потоком, а не readFile?",
+        "options": [
+          {
+            "id": "memory",
+            "text": "readFile загрузит всё в память, поток — по частям"
+          },
+          {
+            "id": "speed",
+            "text": "readFile не умеет читать такие файлы"
+          },
+          {
+            "id": "text",
+            "text": "Потоки работают только с текстом"
+          },
+          {
+            "id": "same",
+            "text": "Разницы нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "memory",
+        "explanation": "Поток держит в памяти только текущий кусок."
+      }
+    },
+    {
+      "slug": "st-pipeline",
+      "type": "quiz.single_choice",
+      "title": "pipeline",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-streams"
+      ],
+      "presentation": {
+        "question": "Чем pipeline лучше ручного .pipe()?",
+        "options": [
+          {
+            "id": "errors",
+            "text": "Обрабатывает ошибки и закрывает все потоки при сбое"
+          },
+          {
+            "id": "speed",
+            "text": "Быстрее"
+          },
+          {
+            "id": "gzip",
+            "text": "Сам сжимает"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "errors",
+        "explanation": "С .pipe() ошибка может потеряться."
+      }
+    },
+    {
+      "slug": "st-lines",
+      "type": "quiz.single_choice",
+      "title": "По строкам",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-streams"
+      ],
+      "presentation": {
+        "question": "Как перебрать строки огромного журнала без загрузки целиком?",
+        "options": [
+          {
+            "id": "readline",
+            "text": "readline поверх createReadStream и for await"
+          },
+          {
+            "id": "split",
+            "text": "readFile и split(\"\\n\")"
+          },
+          {
+            "id": "json",
+            "text": "JSON.parse"
+          },
+          {
+            "id": "grep",
+            "text": "Это невозможно в Node.js"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "readline",
+        "explanation": "readline читает поток и отдаёт строки по одной."
+      }
+    },
+    {
+      "slug": "bp-what",
+      "type": "quiz.single_choice",
+      "title": "Давление",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-backpressure"
+      ],
+      "presentation": {
+        "question": "Что такое обратное давление в потоках?",
+        "options": [
+          {
+            "id": "pause",
+            "text": "Механизм, который притормаживает быстрый источник, пока медленный приёмник не освободится"
+          },
+          {
+            "id": "speed",
+            "text": "Ускорение потока"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка записи"
+          },
+          {
+            "id": "compress",
+            "text": "Сжатие данных"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pause",
+        "explanation": "Иначе данные копятся в памяти."
+      }
+    },
+    {
+      "slug": "bp-fetch",
+      "type": "quiz.single_choice",
+      "title": "fetch",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-backpressure"
+      ],
+      "presentation": {
+        "question": "Каким типом является res.body у fetch?",
+        "options": [
+          {
+            "id": "web",
+            "text": "ReadableStream (Web Streams)"
+          },
+          {
+            "id": "buffer",
+            "text": "Buffer"
+          },
+          {
+            "id": "string",
+            "text": "Строкой"
+          },
+          {
+            "id": "json",
+            "text": "Объектом JSON"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "web",
+        "explanation": "Его можно читать по частям."
+      }
+    },
+    {
+      "slug": "bp-big",
+      "type": "quiz.single_choice",
+      "title": "Большой ответ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-backpressure"
+      ],
+      "presentation": {
+        "question": "Как сохранить гигабайтный файл из сети, не держа его в памяти?",
+        "options": [
+          {
+            "id": "pipe",
+            "text": "Передать res.body потоком в createWriteStream через pipeline"
+          },
+          {
+            "id": "text",
+            "text": "`await res.text()` и writeFile"
+          },
+          {
+            "id": "json",
+            "text": "`await res.json()`"
+          },
+          {
+            "id": "buffer",
+            "text": "`await res.arrayBuffer()` целиком"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pipe",
+        "explanation": "Остальные варианты читают ответ целиком."
+      }
+    },
+    {
+      "slug": "hs-end",
+      "type": "quiz.single_choice",
+      "title": "Вечная загрузка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-http"
+      ],
+      "presentation": {
+        "question": "Браузер бесконечно ждёт ответа от сервера. Что, скорее всего, забыто?",
+        "options": [
+          {
+            "id": "end",
+            "text": "Вызвать res.end()"
+          },
+          {
+            "id": "listen",
+            "text": "Вызвать listen"
+          },
+          {
+            "id": "status",
+            "text": "Поставить статус 200"
+          },
+          {
+            "id": "header",
+            "text": "Добавить заголовок Date"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "end",
+        "explanation": "Без end ответ не завершён."
+      }
+    },
+    {
+      "slug": "hs-url",
+      "type": "quiz.single_choice",
+      "title": "Путь",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-http"
+      ],
+      "presentation": {
+        "question": "Где в обработчике узнать путь запроса?",
+        "options": [
+          {
+            "id": "url",
+            "text": "`req.url`"
+          },
+          {
+            "id": "path",
+            "text": "`res.path`"
+          },
+          {
+            "id": "host",
+            "text": "`req.host`"
+          },
+          {
+            "id": "body",
+            "text": "`req.body`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "url",
+        "explanation": "Удобно разбирать через new URL."
+      }
+    },
+    {
+      "slug": "hs-type",
+      "type": "quiz.single_choice",
+      "title": "Тип ответа",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-http"
+      ],
+      "presentation": {
+        "question": "Какой заголовок говорит браузеру, что в ответе JSON?",
+        "options": [
+          {
+            "id": "ct",
+            "text": "content-type: application/json"
+          },
+          {
+            "id": "accept",
+            "text": "accept: json"
+          },
+          {
+            "id": "json",
+            "text": "json: true"
+          },
+          {
+            "id": "type",
+            "text": "type: object"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ct",
+        "explanation": "content-type описывает тело ответа."
+      }
+    },
+    {
+      "slug": "jb-400",
+      "type": "quiz.single_choice",
+      "title": "Кривой JSON",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-json-api"
+      ],
+      "presentation": {
+        "question": "Клиент прислал тело, которое не разбирается как JSON. Какой код ответа?",
+        "options": [
+          {
+            "id": "400",
+            "text": "400 Bad Request"
+          },
+          {
+            "id": "500",
+            "text": "500"
+          },
+          {
+            "id": "200",
+            "text": "200"
+          },
+          {
+            "id": "404",
+            "text": "404"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "400",
+        "explanation": "Ошибка в запросе клиента."
+      }
+    },
+    {
+      "slug": "jb-422",
+      "type": "quiz.single_choice",
+      "title": "Не прошли проверку",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-json-api"
+      ],
+      "presentation": {
+        "question": "JSON правильный, но email пустой. Какой код подходит лучше всего?",
+        "options": [
+          {
+            "id": "422",
+            "text": "422 Unprocessable Content"
+          },
+          {
+            "id": "500",
+            "text": "500"
+          },
+          {
+            "id": "301",
+            "text": "301"
+          },
+          {
+            "id": "204",
+            "text": "204"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "422",
+        "explanation": "Формат верный, а смысл — нет."
+      }
+    },
+    {
+      "slug": "jb-limit",
+      "type": "quiz.single_choice",
+      "title": "Лимит",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-json-api"
+      ],
+      "presentation": {
+        "question": "Зачем ограничивать размер тела запроса?",
+        "options": [
+          {
+            "id": "memory",
+            "text": "Чтобы огромный запрос не занял всю память сервера"
+          },
+          {
+            "id": "speed",
+            "text": "Чтобы JSON быстрее разбирался"
+          },
+          {
+            "id": "json",
+            "text": "JSON не может быть больше 1 КБ"
+          },
+          {
+            "id": "no",
+            "text": "Не нужно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "memory",
+        "explanation": "Это базовая защита от злоупотреблений."
+      }
+    },
+    {
+      "slug": "sf-traversal",
+      "type": "quiz.single_choice",
+      "title": "Уязвимость",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-static"
+      ],
+      "presentation": {
+        "question": "Чем опасен запрос `/../../etc/passwd` к самописному серверу статики?",
+        "options": [
+          {
+            "id": "escape",
+            "text": "Сервер может отдать файл за пределами папки со статикой"
+          },
+          {
+            "id": "slow",
+            "text": "Медленно работает"
+          },
+          {
+            "id": "404",
+            "text": "Всегда вернёт 404"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "escape",
+        "explanation": "Путь нужно нормализовать и проверить."
+      }
+    },
+    {
+      "slug": "sf-cors",
+      "type": "quiz.single_choice",
+      "title": "CORS",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-static"
+      ],
+      "presentation": {
+        "question": "Фронтенд на app.example.com не получает ответ от api.example.com. Что настроить на API?",
+        "options": [
+          {
+            "id": "origin",
+            "text": "Access-Control-Allow-Origin для app.example.com"
+          },
+          {
+            "id": "cookie",
+            "text": "Отключить cookies"
+          },
+          {
+            "id": "port",
+            "text": "Сменить порт"
+          },
+          {
+            "id": "https",
+            "text": "Отключить HTTPS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "origin",
+        "explanation": "Это решает сервер API, а не фронтенд."
+      }
+    },
+    {
+      "slug": "sf-mime",
+      "type": "quiz.single_choice",
+      "title": "Стили",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-static"
+      ],
+      "presentation": {
+        "question": "Почему CSS-файл, отданный с content-type text/plain, не применяется?",
+        "options": [
+          {
+            "id": "mime",
+            "text": "Браузер ждёт text/css и не считает файл стилями"
+          },
+          {
+            "id": "size",
+            "text": "Слишком большой"
+          },
+          {
+            "id": "cache",
+            "text": "Из-за кэша"
+          },
+          {
+            "id": "path",
+            "text": "Неправильный путь"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mime",
+        "explanation": "Тип ответа важен."
+      }
+    },
+    {
+      "slug": "er-param",
+      "type": "quiz.single_choice",
+      "title": "Параметр пути",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-express"
+      ],
+      "presentation": {
+        "question": "Как получить «html» из запроса `/api/courses/html` в маршруте `/api/courses/:slug`?",
+        "options": [
+          {
+            "id": "params",
+            "text": "`req.params.slug`"
+          },
+          {
+            "id": "query",
+            "text": "`req.query.slug`"
+          },
+          {
+            "id": "body",
+            "text": "`req.body.slug`"
+          },
+          {
+            "id": "url",
+            "text": "`req.slug`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "params",
+        "explanation": "query — то, что после знака вопроса."
+      }
+    },
+    {
+      "slug": "er-return",
+      "type": "quiz.single_choice",
+      "title": "return",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-express"
+      ],
+      "presentation": {
+        "question": "Почему после `res.status(404).json(...)` пишут return?",
+        "options": [
+          {
+            "id": "once",
+            "text": "Чтобы код ниже не отправил второй ответ"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "style",
+            "text": "Только для стиля"
+          },
+          {
+            "id": "express",
+            "text": "Так требует синтаксис JavaScript"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "once",
+        "explanation": "Второй ответ вызовет ошибку «headers already sent»."
+      }
+    },
+    {
+      "slug": "er-json",
+      "type": "quiz.single_choice",
+      "title": "Тело",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-express"
+      ],
+      "presentation": {
+        "question": "Что делает `app.use(express.json())`?",
+        "options": [
+          {
+            "id": "parse",
+            "text": "Разбирает JSON-тело запроса в req.body"
+          },
+          {
+            "id": "send",
+            "text": "Отправляет JSON"
+          },
+          {
+            "id": "validate",
+            "text": "Проверяет данные"
+          },
+          {
+            "id": "cors",
+            "text": "Включает CORS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "parse",
+        "explanation": "Без него req.body будет undefined."
+      }
+    },
+    {
+      "slug": "mw-next",
+      "type": "quiz.single_choice",
+      "title": "next",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-middleware"
+      ],
+      "presentation": {
+        "question": "Что делает вызов next() в middleware?",
+        "options": [
+          {
+            "id": "pass",
+            "text": "Передаёт запрос следующему обработчику в цепочке"
+          },
+          {
+            "id": "end",
+            "text": "Завершает ответ"
+          },
+          {
+            "id": "error",
+            "text": "Бросает ошибку"
+          },
+          {
+            "id": "restart",
+            "text": "Перезапускает сервер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pass",
+        "explanation": "Без next и без ответа запрос повиснет."
+      }
+    },
+    {
+      "slug": "mw-error",
+      "type": "quiz.single_choice",
+      "title": "Обработчик ошибок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-middleware"
+      ],
+      "presentation": {
+        "question": "Чем обработчик ошибок отличается от обычного middleware в Express?",
+        "options": [
+          {
+            "id": "four",
+            "text": "У него четыре аргумента: (err, req, res, next)"
+          },
+          {
+            "id": "name",
+            "text": "Он называется error"
+          },
+          {
+            "id": "first",
+            "text": "Он стоит первым"
+          },
+          {
+            "id": "async",
+            "text": "Он всегда async"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "four",
+        "explanation": "Express узнаёт его по числу аргументов."
+      }
+    },
+    {
+      "slug": "mw-leak",
+      "type": "quiz.single_choice",
+      "title": "Что показать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-middleware"
+      ],
+      "presentation": {
+        "question": "Что вернуть пользователю при неожиданной ошибке сервера?",
+        "options": [
+          {
+            "id": "generic",
+            "text": "500 и общее сообщение, а подробности — в журнал"
+          },
+          {
+            "id": "stack",
+            "text": "Полный стек вызовов"
+          },
+          {
+            "id": "sql",
+            "text": "Текст SQL-запроса"
+          },
+          {
+            "id": "nothing",
+            "text": "Оборвать соединение"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "generic",
+        "explanation": "Подробности ошибок помогают взломщикам."
+      }
+    },
+    {
+      "slug": "rv-create",
+      "type": "quiz.single_choice",
+      "title": "Создание",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-rest"
+      ],
+      "presentation": {
+        "question": "Каким методом и с каким кодом обычно создают ресурс?",
+        "options": [
+          {
+            "id": "post",
+            "text": "POST и ответ 201 Created"
+          },
+          {
+            "id": "get",
+            "text": "GET и 200"
+          },
+          {
+            "id": "delete",
+            "text": "DELETE и 204"
+          },
+          {
+            "id": "put",
+            "text": "PUT и 404"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "post",
+        "explanation": "201 говорит, что ресурс создан."
+      }
+    },
+    {
+      "slug": "rv-noun",
+      "type": "quiz.single_choice",
+      "title": "Адрес",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-rest"
+      ],
+      "presentation": {
+        "question": "Какой адрес лучше по правилам REST?",
+        "options": [
+          {
+            "id": "noun",
+            "text": "`DELETE /api/courses/html`"
+          },
+          {
+            "id": "verb",
+            "text": "`POST /api/deleteCourse?slug=html`"
+          },
+          {
+            "id": "get",
+            "text": "`GET /api/courses/html/delete`"
+          },
+          {
+            "id": "any",
+            "text": "Неважно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "noun",
+        "explanation": "Действие выражается методом, а не словом в адресе."
+      }
+    },
+    {
+      "slug": "rv-validate",
+      "type": "quiz.single_choice",
+      "title": "Проверка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-rest"
+      ],
+      "presentation": {
+        "question": "Где проверять данные запроса?",
+        "options": [
+          {
+            "id": "edge",
+            "text": "На входе в обработчик, схемой, до бизнес-логики"
+          },
+          {
+            "id": "db",
+            "text": "Только ошибками базы данных"
+          },
+          {
+            "id": "client",
+            "text": "Только в браузере"
+          },
+          {
+            "id": "never",
+            "text": "Не нужно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "edge",
+        "explanation": "Проверку в браузере легко обойти."
+      }
+    },
+    {
+      "slug": "db-pool",
+      "type": "quiz.single_choice",
+      "title": "Пул",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-db"
+      ],
+      "presentation": {
+        "question": "Зачем нужен пул соединений?",
+        "options": [
+          {
+            "id": "reuse",
+            "text": "Чтобы переиспользовать открытые соединения вместо открытия нового на каждый запрос"
+          },
+          {
+            "id": "backup",
+            "text": "Для резервных копий"
+          },
+          {
+            "id": "cache",
+            "text": "Для кэширования ответов"
+          },
+          {
+            "id": "security",
+            "text": "Для шифрования"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "reuse",
+        "explanation": "Открытие соединения — долгая операция."
+      }
+    },
+    {
+      "slug": "db-url",
+      "type": "quiz.single_choice",
+      "title": "Пароль",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-db"
+      ],
+      "presentation": {
+        "question": "Где хранить строку подключения к базе с паролем?",
+        "options": [
+          {
+            "id": "env",
+            "text": "В переменной окружения DATABASE_URL"
+          },
+          {
+            "id": "code",
+            "text": "В коде сервера"
+          },
+          {
+            "id": "git",
+            "text": "В README репозитория"
+          },
+          {
+            "id": "client",
+            "text": "В JavaScript для браузера"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "env",
+        "explanation": "Секреты не хранят в коде."
+      }
+    },
+    {
+      "slug": "db-end",
+      "type": "quiz.short_text",
+      "title": "Закрыть",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "node-db"
+      ],
+      "presentation": {
+        "question": "Какой метод пула pg закрывает все соединения? Формат pool.____()."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "end",
+          "pool.end()",
+          "pool.end"
+        ],
+        "caseSensitive": false,
+        "explanation": "Вызывают при остановке сервера."
+      }
+    },
+    {
+      "slug": "in-safe",
+      "type": "quiz.single_choice",
+      "title": "Безопасно",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-injection"
+      ],
+      "presentation": {
+        "question": "Какой вызов защищён от SQL-инъекции?",
+        "options": [
+          {
+            "id": "param",
+            "text": "`pool.query(\"select * from users where id = $1\", [id])`"
+          },
+          {
+            "id": "concat",
+            "text": "`pool.query(\"select * from users where id = \" + id)`"
+          },
+          {
+            "id": "template",
+            "text": "`pool.query(`select * from users where id = ${id}`)`"
+          },
+          {
+            "id": "replace",
+            "text": "Склейка после замены кавычек"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "param",
+        "explanation": "Значение передано отдельно от текста запроса."
+      }
+    },
+    {
+      "slug": "in-why",
+      "type": "quiz.single_choice",
+      "title": "Почему",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-injection"
+      ],
+      "presentation": {
+        "question": "Почему параметры защищают от инъекций?",
+        "options": [
+          {
+            "id": "data",
+            "text": "База получает значения отдельно и никогда не исполняет их как SQL"
+          },
+          {
+            "id": "encrypt",
+            "text": "Они шифруют данные"
+          },
+          {
+            "id": "fast",
+            "text": "Они быстрее"
+          },
+          {
+            "id": "filter",
+            "text": "Они удаляют опасные символы"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "data",
+        "explanation": "Это разделение кода и данных."
+      }
+    },
+    {
+      "slug": "in-escape",
+      "type": "quiz.single_choice",
+      "title": "Экранирование",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-injection"
+      ],
+      "presentation": {
+        "question": "Достаточно ли вручную экранировать кавычки во вводе пользователя?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет: надёжны только параметры"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "mostly",
+            "text": "Да, если вводить только латиницу"
+          },
+          {
+            "id": "mysql",
+            "text": "Да, но только в MySQL"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Краевые случаи всегда найдутся."
+      }
+    },
+    {
+      "slug": "om-tx",
+      "type": "quiz.single_choice",
+      "title": "Транзакция",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-orm"
+      ],
+      "presentation": {
+        "question": "Что сделать, если второй запрос транзакции упал?",
+        "options": [
+          {
+            "id": "rollback",
+            "text": "Выполнить rollback — отменить и первый"
+          },
+          {
+            "id": "commit",
+            "text": "Выполнить commit — сохранить первый"
+          },
+          {
+            "id": "retry",
+            "text": "Повторить только второй"
+          },
+          {
+            "id": "ignore",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rollback",
+        "explanation": "Всё или ничего."
+      }
+    },
+    {
+      "slug": "om-migrate",
+      "type": "quiz.single_choice",
+      "title": "Миграции",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-orm"
+      ],
+      "presentation": {
+        "question": "Как правильно изменить уже применённую в продакшене миграцию?",
+        "options": [
+          {
+            "id": "new",
+            "text": "Не менять её, а написать новую миграцию"
+          },
+          {
+            "id": "edit",
+            "text": "Отредактировать файл"
+          },
+          {
+            "id": "manual",
+            "text": "Поправить базу руками"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить файл"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "new",
+        "explanation": "Применённая история не переписывается."
+      }
+    },
+    {
+      "slug": "om-orm",
+      "type": "quiz.single_choice",
+      "title": "ORM",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-orm"
+      ],
+      "presentation": {
+        "question": "Что даёт ORM вроде Prisma или Drizzle в TypeScript-проекте?",
+        "options": [
+          {
+            "id": "types",
+            "text": "Типизированные запросы: ошибка в имени колонки видна при сборке"
+          },
+          {
+            "id": "speed",
+            "text": "База работает в 10 раз быстрее"
+          },
+          {
+            "id": "nosql",
+            "text": "Отказ от SQL-базы"
+          },
+          {
+            "id": "backup",
+            "text": "Автоматические бэкапы"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "types",
+        "explanation": "Параметры и типы — бесплатно."
+      }
+    },
+    {
+      "slug": "cf-where",
+      "type": "quiz.single_choice",
+      "title": "Где настройки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-config"
+      ],
+      "presentation": {
+        "question": "Где хранить адрес базы, который разный на ноутбуке и в продакшене?",
+        "options": [
+          {
+            "id": "env",
+            "text": "В переменной окружения"
+          },
+          {
+            "id": "code",
+            "text": "В константе в коде"
+          },
+          {
+            "id": "readme",
+            "text": "В README"
+          },
+          {
+            "id": "git",
+            "text": "В отдельной ветке Git"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "env",
+        "explanation": "Код один, окружения разные."
+      }
+    },
+    {
+      "slug": "cf-check",
+      "type": "quiz.single_choice",
+      "title": "При старте",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-config"
+      ],
+      "presentation": {
+        "question": "Зачем проверять конфигурацию при запуске сервера?",
+        "options": [
+          {
+            "id": "fail",
+            "text": "Чтобы сразу упасть с понятной ошибкой, а не на первом запросе"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "log",
+            "text": "Чтобы записать пароли в журнал"
+          },
+          {
+            "id": "no",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fail",
+        "explanation": "Ошибка конфигурации видна при выкладке."
+      }
+    },
+    {
+      "slug": "cf-example",
+      "type": "quiz.single_choice",
+      "title": ".env.example",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-config"
+      ],
+      "presentation": {
+        "question": "Что кладут в репозиторий вместо .env?",
+        "options": [
+          {
+            "id": "example",
+            "text": ".env.example с именами переменных без секретов"
+          },
+          {
+            "id": "env",
+            "text": "Сам .env"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          },
+          {
+            "id": "zip",
+            "text": "Архив .env с паролем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "example",
+        "explanation": "Так видно, какие переменные нужны."
+      }
+    },
+    {
+      "slug": "au-hash",
+      "type": "quiz.single_choice",
+      "title": "Хранить пароль",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-auth"
+      ],
+      "presentation": {
+        "question": "Как правильно хранить пароли пользователей?",
+        "options": [
+          {
+            "id": "argon2",
+            "text": "Медленным хешем с солью: argon2 или bcrypt"
+          },
+          {
+            "id": "plain",
+            "text": "Как есть, но в защищённой базе"
+          },
+          {
+            "id": "sha",
+            "text": "SHA-256 без соли"
+          },
+          {
+            "id": "base64",
+            "text": "В base64"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "argon2",
+        "explanation": "base64 — это не защита, а кодирование."
+      }
+    },
+    {
+      "slug": "au-httponly",
+      "type": "quiz.single_choice",
+      "title": "HttpOnly",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-auth"
+      ],
+      "presentation": {
+        "question": "Что даёт флаг HttpOnly у cookie сессии?",
+        "options": [
+          {
+            "id": "js",
+            "text": "JavaScript страницы не может прочитать cookie"
+          },
+          {
+            "id": "https",
+            "text": "Cookie передаётся только по HTTPS"
+          },
+          {
+            "id": "site",
+            "text": "Cookie не уходит с чужих сайтов"
+          },
+          {
+            "id": "forever",
+            "text": "Cookie живёт вечно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "js",
+        "explanation": "Secure — про HTTPS, SameSite — про чужие сайты."
+      }
+    },
+    {
+      "slug": "au-jwt",
+      "type": "quiz.single_choice",
+      "title": "JWT",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-auth"
+      ],
+      "presentation": {
+        "question": "Какой главный минус JWT для входа на сайт?",
+        "options": [
+          {
+            "id": "revoke",
+            "text": "Его трудно отозвать до истечения срока"
+          },
+          {
+            "id": "size",
+            "text": "Он слишком маленький"
+          },
+          {
+            "id": "https",
+            "text": "Он не работает по HTTPS"
+          },
+          {
+            "id": "slow",
+            "text": "Его проверка требует базы"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "revoke",
+        "explanation": "Сессию в базе можно удалить мгновенно."
+      }
+    },
+    {
+      "slug": "hd-429",
+      "type": "quiz.single_choice",
+      "title": "Перебор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-hardening"
+      ],
+      "presentation": {
+        "question": "Какой код вернуть, когда клиент превысил лимит запросов?",
+        "options": [
+          {
+            "id": "429",
+            "text": "429 Too Many Requests"
+          },
+          {
+            "id": "500",
+            "text": "500"
+          },
+          {
+            "id": "403",
+            "text": "403"
+          },
+          {
+            "id": "200",
+            "text": "200"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "429",
+        "explanation": "Можно добавить заголовок Retry-After."
+      }
+    },
+    {
+      "slug": "hd-root",
+      "type": "quiz.single_choice",
+      "title": "Права",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-hardening"
+      ],
+      "presentation": {
+        "question": "Почему сервер не запускают от root?",
+        "options": [
+          {
+            "id": "damage",
+            "text": "Если его взломают, атакующий не получит всю систему"
+          },
+          {
+            "id": "speed",
+            "text": "root работает медленнее"
+          },
+          {
+            "id": "port",
+            "text": "root не может слушать порты"
+          },
+          {
+            "id": "fine",
+            "text": "Можно и от root"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "damage",
+        "explanation": "Принцип наименьших прав."
+      }
+    },
+    {
+      "slug": "hd-logs",
+      "type": "quiz.multiple_choice",
+      "title": "Не в журнал",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "node-hardening"
+      ],
+      "presentation": {
+        "question": "Что нельзя записывать в журнал сервера?",
+        "options": [
+          {
+            "id": "password",
+            "text": "Пароли"
+          },
+          {
+            "id": "token",
+            "text": "Токены и cookies сессий"
+          },
+          {
+            "id": "card",
+            "text": "Полные номера карт"
+          },
+          {
+            "id": "status",
+            "text": "Код ответа и время обработки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "password",
+          "token",
+          "card"
+        ],
+        "explanation": "Статус и время как раз нужны в журнале."
+      }
+    },
+    {
+      "slug": "ut-run",
+      "type": "quiz.single_choice",
+      "title": "Встроенный",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-tests"
+      ],
+      "presentation": {
+        "question": "Какой командой запустить встроенные тесты Node.js?",
+        "options": [
+          {
+            "id": "test",
+            "text": "`node --test`"
+          },
+          {
+            "id": "run",
+            "text": "`node run test`"
+          },
+          {
+            "id": "vitest",
+            "text": "`node vitest`"
+          },
+          {
+            "id": "check",
+            "text": "`node --check`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "test",
+        "explanation": "Раннер встроен в Node.js."
+      }
+    },
+    {
+      "slug": "ut-edge",
+      "type": "quiz.single_choice",
+      "title": "Что важнее",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-tests"
+      ],
+      "presentation": {
+        "question": "Какие случаи важнее всего покрыть тестами?",
+        "options": [
+          {
+            "id": "edge",
+            "text": "Краевые: пустые данные, ноль, очень большие значения"
+          },
+          {
+            "id": "happy",
+            "text": "Только самый обычный случай"
+          },
+          {
+            "id": "ui",
+            "text": "Цвет кнопок"
+          },
+          {
+            "id": "none",
+            "text": "Никакие"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "edge",
+        "explanation": "Ошибки чаще всего на краях."
+      }
+    },
+    {
+      "slug": "ut-aaa",
+      "type": "quiz.single_choice",
+      "title": "AAA",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-tests"
+      ],
+      "presentation": {
+        "question": "Что означает схема Arrange-Act-Assert?",
+        "options": [
+          {
+            "id": "steps",
+            "text": "Подготовить данные, выполнить код, проверить результат"
+          },
+          {
+            "id": "names",
+            "text": "Три имени тестов"
+          },
+          {
+            "id": "files",
+            "text": "Три файла теста"
+          },
+          {
+            "id": "roles",
+            "text": "Три роли в команде"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "steps",
+        "explanation": "Тест читается как короткая история."
+      }
+    },
+    {
+      "slug": "at-mock",
+      "type": "quiz.single_choice",
+      "title": "Что мокать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-api-tests"
+      ],
+      "presentation": {
+        "question": "Что разумно подменить моком в тесте регистрации?",
+        "options": [
+          {
+            "id": "mail",
+            "text": "Отправку письма через внешний сервис"
+          },
+          {
+            "id": "validation",
+            "text": "Проверку данных формы"
+          },
+          {
+            "id": "route",
+            "text": "Сам маршрут"
+          },
+          {
+            "id": "everything",
+            "text": "Всё, включая базу и логику"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mail",
+        "explanation": "Внешние сервисы — моки, своя логика — по-настоящему."
+      }
+    },
+    {
+      "slug": "at-db",
+      "type": "quiz.single_choice",
+      "title": "База",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-api-tests"
+      ],
+      "presentation": {
+        "question": "Какая база лучше для тестов API?",
+        "options": [
+          {
+            "id": "test",
+            "text": "Отдельная тестовая база с миграциями, очищаемая между тестами"
+          },
+          {
+            "id": "prod",
+            "text": "Продакшен-база"
+          },
+          {
+            "id": "none",
+            "text": "Никакой — всё на моках"
+          },
+          {
+            "id": "file",
+            "text": "Один JSON-файл"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "test",
+        "explanation": "Так проверяются настоящие запросы."
+      }
+    },
+    {
+      "slug": "at-fn",
+      "type": "quiz.short_text",
+      "title": "Мок-функция",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "node-api-tests"
+      ],
+      "presentation": {
+        "question": "Как в Vitest создать мок-функцию? Формат vi.__()."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "vi.fn()",
+          "fn",
+          "vi.fn"
+        ],
+        "caseSensitive": false,
+        "explanation": "vi.fn() запоминает вызовы и аргументы."
+      }
+    },
+    {
+      "slug": "db-inspect",
+      "type": "quiz.single_choice",
+      "title": "Отладчик",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-debug"
+      ],
+      "presentation": {
+        "question": "Как подключить Chrome DevTools к серверу на Node.js?",
+        "options": [
+          {
+            "id": "inspect",
+            "text": "Запустить с --inspect и открыть chrome://inspect"
+          },
+          {
+            "id": "devtools",
+            "text": "Нажать F12 на странице сайта"
+          },
+          {
+            "id": "log",
+            "text": "Добавить console.log"
+          },
+          {
+            "id": "watch",
+            "text": "Запустить с --watch"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "inspect",
+        "explanation": "F12 на странице отлаживает браузерный код, не серверный."
+      }
+    },
+    {
+      "slug": "db-leak",
+      "type": "quiz.single_choice",
+      "title": "Утечка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-debug"
+      ],
+      "presentation": {
+        "question": "Что чаще всего вызывает утечку памяти в Node.js?",
+        "options": [
+          {
+            "id": "cache",
+            "text": "Кэш без ограничения размера и неотписанные обработчики событий"
+          },
+          {
+            "id": "const",
+            "text": "Использование const"
+          },
+          {
+            "id": "async",
+            "text": "async-функции"
+          },
+          {
+            "id": "json",
+            "text": "JSON.stringify"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cache",
+        "explanation": "Объекты копятся и не освобождаются."
+      }
+    },
+    {
+      "slug": "db-time",
+      "type": "quiz.short_text",
+      "title": "Замер",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "node-debug"
+      ],
+      "presentation": {
+        "question": "Какая пара методов console замеряет время участка кода? Напиши первый."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "console.time",
+          "time",
+          "console.time()"
+        ],
+        "caseSensitive": false,
+        "explanation": "Второй — console.timeEnd."
+      }
+    },
+    {
+      "slug": "lh-json",
+      "type": "quiz.single_choice",
+      "title": "Формат",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-logs"
+      ],
+      "presentation": {
+        "question": "Почему в продакшене логи пишут в JSON?",
+        "options": [
+          {
+            "id": "search",
+            "text": "Сервисы журналов могут искать и считать по полям"
+          },
+          {
+            "id": "size",
+            "text": "JSON меньше текста"
+          },
+          {
+            "id": "secret",
+            "text": "JSON шифрует данные"
+          },
+          {
+            "id": "fast",
+            "text": "Node.js быстрее пишет JSON"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "search",
+        "explanation": "Фильтр по полю вместо чтения строк."
+      }
+    },
+    {
+      "slug": "lh-id",
+      "type": "quiz.single_choice",
+      "title": "ID запроса",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-logs"
+      ],
+      "presentation": {
+        "question": "Зачем добавлять идентификатор запроса во все записи журнала?",
+        "options": [
+          {
+            "id": "trace",
+            "text": "Чтобы найти все записи одного запроса"
+          },
+          {
+            "id": "auth",
+            "text": "Для авторизации"
+          },
+          {
+            "id": "cache",
+            "text": "Для кэша"
+          },
+          {
+            "id": "count",
+            "text": "Чтобы считать пользователей"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "trace",
+        "explanation": "Особенно полезно, когда запрос проходит через несколько сервисов."
+      }
+    },
+    {
+      "slug": "lh-health",
+      "type": "quiz.single_choice",
+      "title": "Health",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-logs"
+      ],
+      "presentation": {
+        "question": "Кто обычно опрашивает маршрут /health?",
+        "options": [
+          {
+            "id": "infra",
+            "text": "Балансировщик, оркестратор и мониторинг"
+          },
+          {
+            "id": "users",
+            "text": "Пользователи сайта"
+          },
+          {
+            "id": "search",
+            "text": "Поисковики"
+          },
+          {
+            "id": "nobody",
+            "text": "Никто"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "infra",
+        "explanation": "По нему решают, жив ли экземпляр."
+      }
+    },
+    {
+      "slug": "gs-state",
+      "type": "quiz.single_choice",
+      "title": "Сессии",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-scale"
+      ],
+      "presentation": {
+        "question": "Почему сессии нельзя хранить в памяти процесса, если экземпляров несколько?",
+        "options": [
+          {
+            "id": "other",
+            "text": "Следующий запрос может попасть на другой экземпляр, где сессии нет"
+          },
+          {
+            "id": "size",
+            "text": "Память слишком мала"
+          },
+          {
+            "id": "secure",
+            "text": "Память небезопасна"
+          },
+          {
+            "id": "fine",
+            "text": "Можно, проблем нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "other",
+        "explanation": "Состояние выносят в общее хранилище."
+      }
+    },
+    {
+      "slug": "gs-sigterm",
+      "type": "quiz.single_choice",
+      "title": "SIGTERM",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-scale"
+      ],
+      "presentation": {
+        "question": "Что сделать первым делом при получении SIGTERM?",
+        "options": [
+          {
+            "id": "close",
+            "text": "Перестать принимать новые соединения: server.close()"
+          },
+          {
+            "id": "exit",
+            "text": "Сразу process.exit(0)"
+          },
+          {
+            "id": "ignore",
+            "text": "Игнорировать"
+          },
+          {
+            "id": "restart",
+            "text": "Перезапуститься"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "close",
+        "explanation": "Текущие запросы нужно доделать."
+      }
+    },
+    {
+      "slug": "gs-worker",
+      "type": "quiz.single_choice",
+      "title": "Тяжёлая задача",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-scale"
+      ],
+      "presentation": {
+        "question": "Как не блокировать сервер долгими вычислениями?",
+        "options": [
+          {
+            "id": "worker",
+            "text": "Вынести их в worker_threads или очередь задач"
+          },
+          {
+            "id": "await",
+            "text": "Добавить await перед циклом"
+          },
+          {
+            "id": "timeout",
+            "text": "Обернуть в setTimeout"
+          },
+          {
+            "id": "bigger",
+            "text": "Купить сервер побольше"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "worker",
+        "explanation": "await не делает синхронные вычисления асинхронными."
+      }
+    },
+    {
+      "slug": "dp-omit",
+      "type": "quiz.single_choice",
+      "title": "Без лишнего",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-deploy"
+      ],
+      "presentation": {
+        "question": "Что делает `npm ci --omit=dev` в Docker-образе?",
+        "options": [
+          {
+            "id": "prod",
+            "text": "Ставит только рабочие зависимости, без инструментов разработки"
+          },
+          {
+            "id": "all",
+            "text": "Ставит всё"
+          },
+          {
+            "id": "update",
+            "text": "Обновляет пакеты"
+          },
+          {
+            "id": "remove",
+            "text": "Удаляет node_modules"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "prod",
+        "explanation": "Образ меньше и безопаснее."
+      }
+    },
+    {
+      "slug": "dp-user",
+      "type": "quiz.single_choice",
+      "title": "Пользователь",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-deploy"
+      ],
+      "presentation": {
+        "question": "Почему в Dockerfile пишут USER node?",
+        "options": [
+          {
+            "id": "least",
+            "text": "Чтобы процесс работал без прав root"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "name",
+            "text": "Так требуется по синтаксису"
+          },
+          {
+            "id": "log",
+            "text": "Для журналов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "least",
+        "explanation": "Принцип наименьших прав."
+      }
+    },
+    {
+      "slug": "dp-smoke",
+      "type": "quiz.single_choice",
+      "title": "Smoke",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "node-deploy"
+      ],
+      "presentation": {
+        "question": "Что такое smoke-тест после выкладки?",
+        "options": [
+          {
+            "id": "check",
+            "text": "Быстрая проверка главных функций сразу после выкладки"
+          },
+          {
+            "id": "load",
+            "text": "Нагрузочный тест на неделю"
+          },
+          {
+            "id": "unit",
+            "text": "Модульные тесты"
+          },
+          {
+            "id": "fire",
+            "text": "Проверка пожарной безопасности"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "check",
+        "explanation": "Ошибка — сразу откат."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "what-is-node",
+      "title": "Что такое Node.js",
+      "summary": "JavaScript вне браузера, движок V8, чем среда Node.js отличается от браузерной и где её используют.",
+      "chapter": "Старт Node.js",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Начинаем курс: выводим JavaScript из браузера на сервер.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Node.js\",\n  \"title\": \"Среда выполнения JavaScript\",\n  \"what\": \"Программа, которая выполняет JavaScript на компьютере или сервере. Внутри — движок V8 из Chrome и библиотека libuv для работы с файлами, сетью и таймерами.\",\n  \"why\": \"На одном языке пишут и интерфейс, и сервер, и инструменты сборки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Где выполняется JavaScript\",\n  \"steps\": [\n    {\n      \"title\": \"Браузер\",\n      \"text\": \"DOM, window, fetch, localStorage — работа со страницей\"\n    },\n    {\n      \"title\": \"Node.js\",\n      \"text\": \"Файлы, процессы, сеть, переменные окружения — работа с системой\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Чего нет в Node.js\",\n  \"title\": \"Ни окна, ни страницы\",\n  \"what\": \"Нет `window`, `document`, DOM и localStorage. Зато есть доступ к файлам, процессам, сети и операционной системе.\",\n  \"why\": \"Код, который трогает DOM, на сервере упадёт; серверный код с файлами не заработает в браузере.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Где используют Node.js\",\n  \"title\": \"От серверов до инструментов\",\n  \"what\": \"API и веб-серверы, сборщики (Vite, webpack), линтеры и форматтеры, тестовые раннеры, скрипты автоматизации, CLI-утилиты, серверный рендеринг Next.js.\",\n  \"why\": \"Даже если ты пишешь только интерфейс, Node.js запускает все твои инструменты.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"LTS-версия\",\n  \"title\": \"Долгая поддержка\",\n  \"what\": \"Чётные версии (20, 22, 24) становятся LTS — их поддерживают около трёх лет. Для проектов берут текущую LTS.\",\n  \"why\": \"Нечётные версии живут полгода и подходят для экспериментов, а не для продакшена.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Node.js — это V8 плюс доступ к системе. Для проектов — LTS-версия."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "nw-dom",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "nw-engine",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "nw-lts",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "run-scripts",
+      "title": "Запуск скриптов и REPL",
+      "summary": "node файл.js, интерактивный режим, --watch, nvm для версий и package.json scripts.",
+      "chapter": "Старт Node.js",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем, что такое Node, и запускаем первый код.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"node файл.js\",\n  \"title\": \"Запустить скрипт\",\n  \"what\": \"`node app.js` выполняет файл и завершается, когда делать больше нечего: нет таймеров, открытых соединений и запросов.\",\n  \"why\": \"Сервер не завершается сам, потому что держит открытым порт.\",\n  \"how\": \"node hello.js\\nПривет из Node.js\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"node без файла\",\n  \"title\": \"REPL\",\n  \"what\": \"Просто `node` открывает интерактивный режим: вводишь выражение — видишь результат. `.exit` или Ctrl+D — выход.\",\n  \"why\": \"Быстро проверить, как работает метод, без создания файла.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"node --watch\",\n  \"title\": \"Перезапуск при изменениях\",\n  \"what\": \"`node --watch app.js` перезапускает программу при каждом сохранении файла.\",\n  \"why\": \"Не нужно останавливать и запускать сервер руками после каждой правки.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"nvm\",\n  \"title\": \"Менеджер версий\",\n  \"what\": \"`nvm install 22`, `nvm use 22` — ставит и переключает версии Node.js без sudo. Файл `.nvmrc` в проекте хранит нужную версию.\",\n  \"why\": \"Разные проекты требуют разных версий, и глобальные пакеты не ломаются от прав root.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"npm run\",\n  \"title\": \"Скрипты проекта\",\n  \"what\": \"В package.json в поле scripts пишут команды: `\\\"dev\\\": \\\"node --watch src/server.js\\\"`. Запуск — `npm run dev`.\",\n  \"why\": \"Вся команда запускает проект одной и той же командой.\",\n  \"kind\": \"statement\"\n}\n```\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Первый сервер в режиме наблюдения\",\n  \"file\": \"Терминал\",\n  \"scenes\": [\n    {\n      \"input\": \"node --watch server.js\",\n      \"key\": \"Enter\",\n      \"output\": \"$ node --watch server.js\\nСервер слушает http://localhost:3000\\nRestarting 'server.js'\\nСервер слушает http://localhost:3000\",\n      \"caption\": \"Сохранил файл — сервер перезапустился сам\"\n    }\n  ]\n}\n```\n\n**Главное.** Скрипт — `node файл.js`, разработка — `--watch`, версии — nvm и `.nvmrc`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-exit",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-watch",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-nvmrc",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "process",
+      "title": "Объект process",
+      "summary": "Аргументы командной строки, переменные окружения, код выхода, текущая папка и сигналы.",
+      "chapter": "Старт Node.js",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Запускаем скрипты и знакомимся с объектом, через который программа общается с системой.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"process.argv\",\n  \"title\": \"Аргументы\",\n  \"what\": \"Массив: путь к node, путь к скрипту и дальше — аргументы. `node greet.js Аня` → `process.argv[2] === \\\"Аня\\\"`.\",\n  \"why\": \"Скрипты и CLI-утилиты получают параметры из командной строки.\",\n  \"how\": \"const name = process.argv[2] ?? \\\"мир\\\";\\nconsole.log(`Привет, ${name}!`);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"process.env\",\n  \"title\": \"Переменные окружения\",\n  \"what\": \"Объект со всеми переменными окружения: `process.env.PORT`, `process.env.DATABASE_URL`. Значения всегда строки или undefined.\",\n  \"why\": \"Настройки и секреты приходят в программу снаружи, а не хранятся в коде.\",\n  \"how\": \"const port = Number(process.env.PORT ?? 3000);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"process.exit и exitCode\",\n  \"title\": \"Код завершения\",\n  \"what\": \"`process.exitCode = 1` — завершиться с ошибкой, когда работа закончится. `process.exit(1)` — немедленно, даже если что-то не дописано.\",\n  \"why\": \"CI и другие скрипты понимают по коду, удалась ли работа. Предпочитай exitCode.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"process.cwd\",\n  \"title\": \"Текущая папка\",\n  \"what\": \"`process.cwd()` — папка, из которой запустили программу. Она может отличаться от папки, где лежит скрипт.\",\n  \"why\": \"Пути к файлам от cwd ломаются, если скрипт запустить из другой папки.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сигналы процесса\",\n  \"title\": \"SIGINT и SIGTERM\",\n  \"what\": \"`process.on(\\\"SIGTERM\\\", () => server.close())` — аккуратно завершиться, когда система просит остановиться.\",\n  \"why\": \"Сервер успевает дописать ответы и закрыть соединения с базой перед перезапуском.\",\n  \"how\": \"process.on(\\\"SIGTERM\\\", () => {\\n  server.close(() => process.exit(0));\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Параметры — argv, настройки — env, результат — exitCode, остановка — обработчик SIGTERM."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-argv",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-env",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-cwd",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "esm-cjs",
+      "title": "Модули: import и require",
+      "summary": "ES-модули и CommonJS, type: module, встроенные модули node: и пути импорта.",
+      "chapter": "Модули и npm",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем объект process и делим код на модули.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"ES-модули\",\n  \"title\": \"import и export\",\n  \"what\": \"Современный стандарт: `export function sum()` и `import { sum } from \\\"./math.js\\\"`. В Node.js включается полем `\\\"type\\\": \\\"module\\\"` в package.json или расширением .mjs.\",\n  \"why\": \"Один синтаксис модулей в браузере и на сервере.\",\n  \"how\": \"// math.js\\nexport const sum = (a, b) => a + b;\\n// app.js\\nimport { sum } from \\\"./math.js\\\";\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"CommonJS\",\n  \"title\": \"require и module.exports\",\n  \"what\": \"Старый формат Node.js: `const fs = require(\\\"fs\\\")` и `module.exports = {...}`. Всё ещё встречается в старых пакетах и проектах.\",\n  \"why\": \"Нужно уметь читать, но новый код пишут на ES-модулях.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Встроенные модули\",\n  \"title\": \"Префикс node:\",\n  \"what\": \"Модули самого Node.js: `node:fs`, `node:path`, `node:http`, `node:crypto`. Префикс node: явно показывает, что это не пакет из npm.\",\n  \"why\": \"Многое не нужно ставить: файлы, сеть, хеши и криптография уже есть.\",\n  \"how\": \"import { readFile } from \\\"node:fs/promises\\\";\\nimport { join } from \\\"node:path\\\";\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Расширение в импорте\",\n  \"title\": \"Обязательно .js\",\n  \"what\": \"В ES-модулях Node.js путь к своему файлу пишут с расширением: `./math.js`. Без него будет ошибка «Cannot find module».\",\n  \"why\": \"Сборщики прощают отсутствие расширения, а чистый Node.js — нет.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Новый код — ES-модули и `\"type\": \"module\"`. Встроенное — с префиксом `node:`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "md-type",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "md-ext",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "md-node",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "npm",
+      "title": "npm и package.json",
+      "summary": "Установка пакетов, dependencies и devDependencies, npx, scripts и что такое node_modules.",
+      "chapter": "Модули и npm",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем свои модули и подключаем чужие из npm.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"npm init -y\",\n  \"title\": \"Создать package.json\",\n  \"what\": \"Создаёт файл описания проекта: имя, версия, scripts, зависимости.\",\n  \"why\": \"package.json — паспорт проекта: по нему любой ставит зависимости и запускает команды.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"npm install пакет\",\n  \"title\": \"Поставить зависимость\",\n  \"what\": \"`npm install express` скачивает пакет в node_modules и записывает его в dependencies. `-D` — в devDependencies (нужно только для разработки: тесты, линтер, TypeScript).\",\n  \"why\": \"Разделение зависимостей уменьшает то, что ставится на сервер.\",\n  \"how\": \"npm install express\\nnpm install -D vitest\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"npm install\",\n  \"title\": \"Поставить всё\",\n  \"what\": \"Без имени пакета ставит всё, что перечислено в package.json, по версиям из lock-файла. `npm ci` — то же, но строго по lock-файлу, для CI.\",\n  \"why\": \"Склонировал проект — одна команда, и всё готово к запуску.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"npx\",\n  \"title\": \"Запустить без установки\",\n  \"what\": \"`npx create-vite@latest` скачивает и запускает пакет один раз; `npx vitest` запускает утилиту из node_modules проекта.\",\n  \"why\": \"Не нужно ставить инструменты глобально.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"node_modules\",\n  \"title\": \"Папка зависимостей\",\n  \"what\": \"Сюда ставятся пакеты и их зависимости — часто тысячи папок. Её не коммитят: она восстанавливается командой npm install.\",\n  \"why\": \"Папка весит сотни мегабайт, но всегда пересоздаётся из package.json и lock-файла.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Рабочие зависимости — `npm install`, инструменты — `npm install -D`, на CI — `npm ci`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "np-dev",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "np-ci",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "np-modules",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "semver-lock",
+      "title": "Версии пакетов и безопасность зависимостей",
+      "summary": "Семантическое версионирование, ^ и ~, package-lock.json, npm audit и обновления.",
+      "chapter": "Модули и npm",
+      "durationMinutes": 7,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Ставим пакеты и разбираемся, какие именно версии мы получили.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"SemVer\",\n  \"title\": \"MAJOR.MINOR.PATCH\",\n  \"what\": \"Версия 4.18.2: PATCH — исправления, MINOR — новые возможности без поломок, MAJOR — несовместимые изменения.\",\n  \"why\": \"По номеру видно, опасно ли обновление.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"^ и ~\",\n  \"title\": \"Диапазоны версий\",\n  \"what\": \"`^4.18.2` — любые 4.x.x не ниже указанной, `~4.18.2` — только 4.18.x, без символа — ровно эта версия.\",\n  \"why\": \"Каре по умолчанию впускает новые минорные версии, а они иногда ломают проект.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"package-lock.json\",\n  \"title\": \"Точные версии\",\n  \"what\": \"Lock-файл записывает точную версию каждого пакета и всех его зависимостей. Его коммитят.\",\n  \"why\": \"У всех разработчиков и на сервере стоят одинаковые версии — «у меня работает» перестаёт быть загадкой.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"npm audit\",\n  \"title\": \"Проверить уязвимости\",\n  \"what\": \"Сверяет зависимости с базой известных уязвимостей; `npm outdated` показывает устаревшие пакеты.\",\n  \"why\": \"Уязвимость в глубокой зависимости — частая дыра в безопасности сайтов.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Обновления без страха\",\n  \"title\": \"Dependabot и Renovate\",\n  \"what\": \"Боты открывают pull request с обновлением пакета; CI проверяет, что тесты зелёные.\",\n  \"why\": \"Зависимости обновляются небольшими шагами, а не раз в год с болью.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Коммить lock-файл, обновляйся через PR с зелёными тестами, раз в неделю смотри `npm audit`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sv-major",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sv-caret",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sv-lock",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "event-loop",
+      "title": "Цикл событий",
+      "summary": "Один поток JavaScript, неблокирующий ввод-вывод, очереди задач и почему нельзя блокировать цикл.",
+      "chapter": "Асинхронность и цикл событий",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Подключаем пакеты и разбираемся с главной особенностью Node — асинхронностью.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Один поток\",\n  \"title\": \"Одновременно — одна функция\",\n  \"what\": \"JavaScript в Node.js выполняется в одном потоке. Чтение файлов и сетевые запросы делает система в фоне, а JavaScript получает результат, когда тот готов.\",\n  \"why\": \"Пока один запрос ждёт базу данных, сервер обслуживает другие — без потоков и блокировок.\",\n  \"kind\": \"idea\"\n}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Как Node.js обслуживает запрос\",\n  \"steps\": [\n    {\n      \"title\": \"Запрос\",\n      \"text\": \"JavaScript начинает обработку и просит прочитать файл\"\n    },\n    {\n      \"title\": \"Ожидание\",\n      \"text\": \"Чтение идёт в фоне, поток свободен для других запросов\"\n    },\n    {\n      \"title\": \"Событие\",\n      \"text\": \"Файл прочитан — колбэк попадает в очередь\"\n    },\n    {\n      \"title\": \"Продолжение\",\n      \"text\": \"Цикл событий выполняет колбэк и отправляет ответ\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Блокировка цикла\",\n  \"title\": \"Худшее, что можно сделать\",\n  \"what\": \"Долгий синхронный код — огромный цикл, `readFileSync` в обработчике запроса, тяжёлый JSON.parse — останавливает весь сервер: остальные ждут.\",\n  \"why\": \"Один медленный запрос не должен замораживать всех пользователей.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Микрозадачи и таймеры\",\n  \"title\": \"Порядок выполнения\",\n  \"what\": \"Сначала завершается текущий код, потом выполняются колбэки промисов (микрозадачи), потом таймеры и события ввода-вывода.\",\n  \"why\": \"Объясняет, почему `setTimeout(fn, 0)` выполнится позже, чем `Promise.resolve().then(fn)`.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ждать — можно и нужно асинхронно. Считать долго в главном потоке — нельзя."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "el-thread",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "el-block",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "el-order",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "promises-await",
+      "title": "Промисы и async/await",
+      "summary": "От колбэков к промисам, async/await, параллельные запросы через Promise.all и таймауты.",
+      "chapter": "Асинхронность и цикл событий",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем цикл событий и пишем асинхронный код удобно.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Колбэки\",\n  \"title\": \"Старый стиль\",\n  \"what\": \"Раньше асинхронные функции Node.js принимали колбэк `(err, result) => …`. Вложенные колбэки превращались в «пирамиду».\",\n  \"why\": \"Встретишь в старом коде; у большинства модулей есть промис-версии (`node:fs/promises`).\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"async/await\",\n  \"title\": \"Асинхронный код как синхронный\",\n  \"what\": \"`await` ждёт промис, не блокируя поток. Ошибки ловятся обычным try/catch.\",\n  \"why\": \"Код читается сверху вниз, как обычный.\",\n  \"how\": \"import { readFile } from \\\"node:fs/promises\\\";\\nasync function load() {\\n  const text = await readFile(\\\"data.json\\\", \\\"utf8\\\");\\n  return JSON.parse(text);\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Promise.all\",\n  \"title\": \"Параллельно\",\n  \"what\": \"`await Promise.all([a(), b()])` запускает обе операции сразу и ждёт обе. Последовательные await без нужды удваивают время.\",\n  \"why\": \"Три запроса по 100 мс: последовательно — 300 мс, через Promise.all — 100 мс.\",\n  \"how\": \"const [user, orders] = await Promise.all([getUser(id), getOrders(id)]);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Promise.allSettled\",\n  \"title\": \"Не падать от одной ошибки\",\n  \"what\": \"Ждёт все промисы и возвращает статус каждого: fulfilled или rejected.\",\n  \"why\": \"Рассылка ста писем, где одно не ушло, не должна отменять остальные.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"AbortSignal.timeout\",\n  \"title\": \"Ограничить ожидание\",\n  \"what\": \"`fetch(url, { signal: AbortSignal.timeout(3000) })` отменяет запрос через 3 секунды.\",\n  \"why\": \"Медленный внешний сервис не повесит твой сервер навсегда.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Независимые операции — `Promise.all`. Внешние запросы — всегда с таймаутом."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pa-all",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pa-settled",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pa-timeout",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "async-errors",
+      "title": "Ошибки в асинхронном коде",
+      "summary": "try/catch с await, необработанные отклонения промисов, error-first колбэки и классы ошибок.",
+      "chapter": "Асинхронность и цикл событий",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем асинхронный код и учимся не терять в нём ошибки.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"try/catch с await\",\n  \"title\": \"Ошибки как обычно\",\n  \"what\": \"Отклонённый промис внутри async-функции бросает исключение в месте await, и его ловит try/catch.\",\n  \"why\": \"Обработка ошибок не отличается от синхронного кода.\",\n  \"how\": \"try {\\n  const user = await getUser(id);\\n} catch (err) {\\n  console.error(\\\"Не удалось загрузить\\\", err);\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Необработанное отклонение\",\n  \"title\": \"unhandledRejection\",\n  \"what\": \"Промис, который отклонился и которого никто не ждал, по умолчанию завершает процесс Node.js с ошибкой.\",\n  \"why\": \"Забытый await или catch может уронить весь сервер. Линтер ловит такие промисы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Свои классы ошибок\",\n  \"title\": \"class NotFoundError extends Error\",\n  \"what\": \"Свои классы ошибок позволяют различать причины: `if (err instanceof NotFoundError) res.status(404)`.\",\n  \"why\": \"Сервер отвечает правильным кодом, а не всегда 500.\",\n  \"how\": \"class NotFoundError extends Error {\\n  constructor(what) {\\n    super(`${what} не найден`);\\n    this.name = \\\"NotFoundError\\\";\\n  }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"cause\",\n  \"title\": \"Цепочка причин\",\n  \"what\": \"`throw new Error(\\\"Не удалось сохранить заказ\\\", { cause: err })` сохраняет исходную ошибку внутри новой.\",\n  \"why\": \"В журнале видно и что пошло не так на уровне задачи, и исходную причину.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Каждый промис кто-то ждёт или ловит. Ошибки — свои классы и `cause`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ae-unhandled",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ae-class",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ae-cause",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "read-write",
+      "title": "Чтение и запись файлов",
+      "summary": "readFile и writeFile из node:fs/promises, кодировки, дописывание и синхронные версии.",
+      "chapter": "Файлы и пути",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Ловим асинхронные ошибки и начинаем работать с файлами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"readFile\",\n  \"title\": \"Прочитать файл\",\n  \"what\": \"`await readFile(путь, \\\"utf8\\\")` возвращает строку. Без кодировки — Buffer с байтами.\",\n  \"why\": \"Чтение настроек, шаблонов, данных.\",\n  \"how\": \"import { readFile } from \\\"node:fs/promises\\\";\\nconst text = await readFile(\\\"notes.txt\\\", \\\"utf8\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"writeFile\",\n  \"title\": \"Записать файл\",\n  \"what\": \"`await writeFile(путь, данные)` создаёт или перезаписывает файл целиком. `appendFile` дописывает в конец.\",\n  \"why\": \"Сохранить отчёт, экспорт, кэш.\",\n  \"how\": \"await writeFile(\\\"report.json\\\", JSON.stringify(data, null, 2));\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Синхронные версии\",\n  \"title\": \"readFileSync\",\n  \"what\": \"У каждой функции есть синхронная версия с суффиксом Sync. Она блокирует цикл событий.\",\n  \"why\": \"Допустимо в скриптах и при старте программы, но не в обработчиках запросов сервера.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ошибка ENOENT\",\n  \"title\": \"Нет такого файла\",\n  \"what\": \"Код `ENOENT` значит «файл или папка не найдены». Его проверяют: `if (err.code === \\\"ENOENT\\\")`.\",\n  \"why\": \"Отсутствующий файл настроек можно обработать: создать со значениями по умолчанию.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Файлы — `node:fs/promises` и await. `…Sync` — только в скриптах и при старте."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rw-encoding",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rw-sync",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rw-enoent",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "paths-dirs",
+      "title": "Пути и папки",
+      "summary": "node:path, join и resolve, import.meta.dirname, создание, чтение и удаление папок.",
+      "chapter": "Файлы и пути",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Читаем и пишем файлы и учимся правильно строить пути к ним.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"path.join\",\n  \"title\": \"Склеить путь\",\n  \"what\": \"`join(\\\"data\\\", \\\"users\\\", \\\"1.json\\\")` собирает путь с правильным разделителем для системы: `/` в Linux и macOS, `\\\\` в Windows.\",\n  \"why\": \"Склейка строк через `+ \\\"/\\\" +` ломается в Windows.\",\n  \"how\": \"import { join } from \\\"node:path\\\";\\nconst file = join(\\\"data\\\", \\\"users\\\", `${id}.json`);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"import.meta.dirname\",\n  \"title\": \"Папка этого файла\",\n  \"what\": \"В ES-модулях `import.meta.dirname` — папка текущего файла (в CommonJS был `__dirname`). Пути к файлам рядом со скриптом строят от неё.\",\n  \"why\": \"Скрипт находит свои файлы, откуда бы его ни запустили.\",\n  \"how\": \"const templates = join(import.meta.dirname, \\\"templates\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"path.resolve\",\n  \"title\": \"Абсолютный путь\",\n  \"what\": \"`resolve(\\\"logs\\\")` превращает путь в абсолютный от текущей папки. `basename`, `dirname`, `extname` — имя файла, папка и расширение.\",\n  \"why\": \"Получить расширение загружаемого файла или имя без пути.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"mkdir, readdir, rm\",\n  \"title\": \"Папки\",\n  \"what\": \"`mkdir(путь, { recursive: true })` создаёт цепочку папок, `readdir` — список содержимого, `rm(путь, { recursive: true, force: true })` — удаляет папку целиком.\",\n  \"why\": \"Подготовить папку для выгрузки или очистить временные файлы.\",\n  \"how\": \"await mkdir(\\\"out/reports\\\", { recursive: true });\\nconst files = await readdir(\\\"out\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Пути — только через `path.join`. Файлы рядом со скриптом — от `import.meta.dirname`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-join",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-dirname",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-mkdir",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "json-config",
+      "title": "JSON-файлы и простое хранилище",
+      "summary": "Чтение и запись JSON, атомарная запись через временный файл и почему файл — не база данных.",
+      "chapter": "Файлы и пути",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Строим пути и храним небольшие данные в файлах.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"JSON-файл\",\n  \"title\": \"Прочитать и разобрать\",\n  \"what\": \"`JSON.parse(await readFile(путь, \\\"utf8\\\"))` — объект из файла. В ES-модулях можно и `import data from \\\"./data.json\\\" with { type: \\\"json\\\" }`.\",\n  \"why\": \"Настройки, справочники, тестовые данные.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Атомарная запись\",\n  \"title\": \"Через временный файл\",\n  \"what\": \"Сначала пишут во временный файл, потом переименовывают его поверх старого: `rename` выполняется целиком или не выполняется вовсе.\",\n  \"why\": \"Если программа упадёт посреди записи, старый файл останется целым, а не наполовину пустым.\",\n  \"how\": \"await writeFile(`${file}.tmp`, json);\\nawait rename(`${file}.tmp`, file);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Файл — не база данных\",\n  \"title\": \"Ограничения\",\n  \"what\": \"Два запроса, которые одновременно читают, меняют и записывают один JSON-файл, затрут изменения друг друга. Нет индексов и транзакций.\",\n  \"why\": \"Для пользователей, заказов и всего, что меняется параллельно, нужна база данных — об этом отдельная глава.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** JSON-файл — для настроек и справочников. Данные пользователей — в базе."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "jc-atomic",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "jc-db",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "jc-parse",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "buffers",
+      "title": "Buffer: байты в Node.js",
+      "summary": "Что такое Buffer, кодировки utf8 и base64, длина в байтах и когда нужны двоичные данные.",
+      "chapter": "Потоки и буферы",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Храним данные в файлах и спускаемся на уровень байтов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Buffer\",\n  \"title\": \"Массив байтов\",\n  \"what\": \"Buffer хранит двоичные данные: содержимое картинки, архива, сетевого пакета. `Buffer.from(\\\"Привет\\\")` — байты строки в UTF-8.\",\n  \"why\": \"Файлы и сеть на самом деле передают байты, а не строки.\",\n  \"how\": \"const buf = Buffer.from(\\\"Привет\\\");\\nconsole.log(buf.length); // 12 — кириллица по 2 байта\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Длина в байтах\",\n  \"title\": \"Не равна длине строки\",\n  \"what\": \"\\\"Привет\\\".length — 6 символов, а в байтах UTF-8 — 12. Ограничения размера загрузок и заголовков считаются в байтах.\",\n  \"why\": \"Проверка «не больше 1000 символов» не защищает от тела в 4 КБ.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"base64\",\n  \"title\": \"Байты как текст\",\n  \"what\": \"`buf.toString(\\\"base64\\\")` превращает байты в текст из латиницы и цифр; `Buffer.from(текст, \\\"base64\\\")` — обратно.\",\n  \"why\": \"Так передают файлы внутри JSON и картинки в data:-ссылках.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Строка — символы, Buffer — байты. Размеры и лимиты считай в байтах."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bf-len",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bf-what",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bf-b64",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "streams",
+      "title": "Потоки данных",
+      "summary": "Читаемые и записываемые потоки, обработка файла по частям и pipeline.",
+      "chapter": "Потоки и буферы",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем Buffer и обрабатываем данные, которые не помещаются в память.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Поток\",\n  \"title\": \"Данные по кусочкам\",\n  \"what\": \"Поток выдаёт или принимает данные частями (chunks), а не целиком. Файл на 5 ГБ читается по 64 КБ, и память не кончается.\",\n  \"why\": \"Загрузки, выгрузки, видео, большие журналы — всё обрабатывается потоками.\",\n  \"kind\": \"idea\"\n}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Копирование большого файла потоком\",\n  \"steps\": [\n    {\n      \"title\": \"createReadStream\",\n      \"text\": \"Читает файл частями\"\n    },\n    {\n      \"title\": \"createGzip\",\n      \"text\": \"Сжимает каждую часть на лету\"\n    },\n    {\n      \"title\": \"createWriteStream\",\n      \"text\": \"Пишет части в новый файл\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"pipeline\",\n  \"title\": \"Соединить потоки\",\n  \"what\": \"`await pipeline(источник, преобразование, приёмник)` соединяет потоки, следит за ошибками и закрывает все потоки при сбое.\",\n  \"why\": \"Ручное соединение через .pipe() теряет ошибки и оставляет открытые файлы.\",\n  \"how\": \"import { pipeline } from \\\"node:stream/promises\\\";\\nimport { createReadStream, createWriteStream } from \\\"node:fs\\\";\\nimport { createGzip } from \\\"node:zlib\\\";\\nawait pipeline(\\n  createReadStream(\\\"access.log\\\"),\\n  createGzip(),\\n  createWriteStream(\\\"access.log.gz\\\")\\n);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Построчное чтение\",\n  \"title\": \"readline\",\n  \"what\": \"`for await (const line of createInterface({ input: createReadStream(file) }))` перебирает огромный файл по строкам.\",\n  \"why\": \"Анализ журнала на миллионы строк без загрузки в память.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Большие данные — потоками и `pipeline`, а не `readFile` целиком."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-pipeline",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-lines",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "backpressure",
+      "title": "Обратное давление и Web Streams",
+      "summary": "Почему быстрый источник переполняет медленный приёмник, highWaterMark и потоки fetch.",
+      "chapter": "Потоки и буферы",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Соединяем потоки и разбираемся, что происходит, когда одна сторона быстрее другой.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Обратное давление\",\n  \"title\": \"Backpressure\",\n  \"what\": \"Если источник выдаёт данные быстрее, чем приёмник успевает их записать, данные копятся в памяти. Потоки умеют приостанавливать источник, пока приёмник не освободится.\",\n  \"why\": \"pipeline делает это сам; ручной цикл write без проверки результата может съесть всю память.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"highWaterMark\",\n  \"title\": \"Размер буфера\",\n  \"what\": \"Порог, после которого поток просит источник подождать (по умолчанию 64 КБ для файлов).\",\n  \"why\": \"Баланс между скоростью и расходом памяти.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Web Streams\",\n  \"title\": \"Потоки fetch\",\n  \"what\": \"Тело ответа fetch — `ReadableStream` из стандарта Web Streams. В Node.js его можно читать `for await` и превращать в поток Node через `Readable.fromWeb`.\",\n  \"why\": \"Скачивание большого файла по сети прямо в файл без загрузки в память.\",\n  \"how\": \"const res = await fetch(url);\\nawait pipeline(Readable.fromWeb(res.body), createWriteStream(\\\"video.mp4\\\"));\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Доверь давление `pipeline`. Ответ fetch — тоже поток: не делай `await res.text()` для гигабайтов."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bp-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bp-fetch",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bp-big",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "http-server",
+      "title": "Сервер на node:http",
+      "summary": "createServer, запрос и ответ, статус, заголовки и тело, порт и listen.",
+      "chapter": "HTTP-сервер",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Владеем потоками и пишем свой веб-сервер без единой зависимости.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"createServer\",\n  \"title\": \"Сервер в пять строк\",\n  \"what\": \"`createServer((req, res) => …)` вызывает функцию на каждый запрос: req — что пришло, res — что ответить. `listen(3000)` открывает порт.\",\n  \"why\": \"Под любым фреймворком Node.js — именно этот механизм.\",\n  \"how\": \"import { createServer } from \\\"node:http\\\";\\ncreateServer((req, res) => {\\n  res.writeHead(200, { \\\"content-type\\\": \\\"text/plain; charset=utf-8\\\" });\\n  res.end(\\\"Привет!\\\");\\n}).listen(3000);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Жизнь запроса на сервере\",\n  \"steps\": [\n    {\n      \"title\": \"Запрос\",\n      \"text\": \"Метод, адрес, заголовки и тело приходят в req\"\n    },\n    {\n      \"title\": \"Маршрут\",\n      \"text\": \"По методу и пути выбирается, что делать\"\n    },\n    {\n      \"title\": \"Обработка\",\n      \"text\": \"Читаем данные, считаем, обращаемся к базе\"\n    },\n    {\n      \"title\": \"Ответ\",\n      \"text\": \"Статус, заголовки и тело через res\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"req.method и req.url\",\n  \"title\": \"Что запросили\",\n  \"what\": \"`req.method` — GET, POST и так далее, `req.url` — путь с параметрами. Разобрать адрес: `new URL(req.url, \\\"http://localhost\\\")`.\",\n  \"why\": \"Маршрутизация — это просто if по методу и пути.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ответ\",\n  \"title\": \"statusCode, заголовки, тело\",\n  \"what\": \"`res.statusCode = 404`, `res.setHeader(\\\"content-type\\\", \\\"application/json\\\")`, `res.end(тело)`. Без end запрос повиснет.\",\n  \"why\": \"Забытый res.end — частая причина «вечной загрузки» в браузере.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Проверяем сервер curl-ом\",\n  \"file\": \"Терминал\",\n  \"scenes\": [\n    {\n      \"input\": \"curl -i localhost:3000\",\n      \"key\": \"Enter\",\n      \"output\": \"$ curl -i localhost:3000\\nHTTP/1.1 200 OK\\ncontent-type: text/plain; charset=utf-8\\n\\nПривет!\",\n      \"caption\": \"Статус, заголовок и тело — ровно то, что мы отправили\"\n    }\n  ]\n}\n```\n\n**Главное.** Каждый запрос заканчивается `res.end()`. Тип ответа — в заголовке content-type."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hs-end",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hs-url",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hs-type",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "json-body",
+      "title": "JSON-запросы и ответы",
+      "summary": "Прочитать тело запроса, разобрать JSON, ответить JSON и правильными кодами ошибок.",
+      "chapter": "HTTP-сервер",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Отвечаем простым текстом и переходим к языку API — JSON.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Тело запроса\",\n  \"title\": \"Собрать из потока\",\n  \"what\": \"Тело POST-запроса приходит потоком: `const body = await new Response(req).text()` или сбор кусков в цикле `for await (const chunk of req)`.\",\n  \"why\": \"Фреймворки делают это сами, но понимать механику полезно.\",\n  \"how\": \"let raw = \\\"\\\";\\nfor await (const chunk of req) raw += chunk;\\nconst data = JSON.parse(raw);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ответ JSON\",\n  \"title\": \"Помощник sendJson\",\n  \"what\": \"Небольшая функция `sendJson(res, status, data)` ставит заголовок и сериализует объект — так код обработчиков остаётся коротким.\",\n  \"why\": \"Все ответы API выглядят одинаково.\",\n  \"how\": \"function sendJson(res, status, data) {\\n  res.writeHead(status, { \\\"content-type\\\": \\\"application/json\\\" });\\n  res.end(JSON.stringify(data));\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Коды ошибок API\",\n  \"title\": \"400, 404, 422, 500\",\n  \"what\": \"400 — запрос не разобрать (кривой JSON), 404 — нет ресурса, 422 — данные не прошли проверку, 500 — ошибка сервера. Тело ошибки — тоже JSON с понятным сообщением.\",\n  \"why\": \"Клиент по коду понимает, что делать: исправить форму, показать «не найдено» или повторить позже.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Лимит тела\",\n  \"title\": \"Защита от огромных запросов\",\n  \"what\": \"Ограничивай размер тела (например, 1 МБ) и обрывай запрос, если он больше.\",\n  \"why\": \"Иначе один запрос на гигабайт съест память сервера.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Кривой JSON — 400, неверные данные — 422, свой сбой — 500. Тело ошибки — JSON."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "jb-400",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "jb-422",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "jb-limit",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "static-files",
+      "title": "Статические файлы и CORS",
+      "summary": "Отдать HTML, CSS и картинки, MIME-типы, защита от выхода из папки и заголовки CORS.",
+      "chapter": "HTTP-сервер",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Отдаём JSON и учимся отдавать файлы и разрешать запросы с других сайтов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Отдать файл\",\n  \"title\": \"Поток и MIME-тип\",\n  \"what\": \"Файл отдают потоком (`createReadStream(file).pipe(res)`) с правильным content-type: text/html, text/css, image/png.\",\n  \"why\": \"Без верного типа браузер не применит стили и не покажет картинку.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Выход из папки\",\n  \"title\": \"Path traversal\",\n  \"what\": \"Запрос `/../../etc/passwd` может вывести сервер за пределы папки со статикой. Путь нормализуют и проверяют, что он внутри разрешённой папки.\",\n  \"why\": \"Классическая уязвимость серверов, написанных вручную.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Заголовки CORS\",\n  \"title\": \"Разрешить другой источник\",\n  \"what\": \"Если фронтенд на одном адресе, а API на другом, сервер отвечает `Access-Control-Allow-Origin: https://site.example.com` и на предварительный OPTIONS-запрос — разрешёнными методами и заголовками.\",\n  \"why\": \"Без них браузер не отдаст ответ скрипту, хотя сервер его отправил.\",\n  \"how\": \"res.setHeader(\\\"access-control-allow-origin\\\", \\\"https://app.example.com\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Готовые решения\",\n  \"title\": \"Не изобретать велосипед\",\n  \"what\": \"В реальных проектах статику отдаёт CDN или nginx, а CORS настраивают middleware фреймворка.\",\n  \"why\": \"Ручная реализация полезна для понимания, но в продакшене берут проверенное.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Файлы — потоком и с MIME-типом. Путь — только внутри своей папки. CORS — точный origin, не звёздочка."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sf-traversal",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sf-cors",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sf-mime",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "express-routes",
+      "title": "Express: маршруты",
+      "summary": "Приложение Express, маршруты по методам, параметры пути и query, express.json.",
+      "chapter": "Express и REST API",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем, как устроен HTTP в Node, и берём фреймворк, чтобы писать меньше кода.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"npm install express\",\n  \"title\": \"Поставить Express\",\n  \"what\": \"Самый распространённый минималистичный веб-фреймворк Node.js. Другие популярные — Fastify, Hono, Koa.\",\n  \"why\": \"Маршруты, разбор тела, ответы JSON — в несколько строк.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Маршрут\",\n  \"title\": \"app.get и app.post\",\n  \"what\": \"`app.get(\\\"/api/courses\\\", (req, res) => res.json(courses))` — обработчик для метода и пути. `res.json` сам ставит заголовок и сериализует.\",\n  \"why\": \"Каждый адрес API — отдельный понятный обработчик.\",\n  \"how\": \"import express from \\\"express\\\";\\nconst app = express();\\napp.use(express.json());\\napp.get(\\\"/api/courses\\\", (req, res) => res.json(courses));\\napp.listen(3000);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Параметры пути и query\",\n  \"title\": \"req.params и req.query\",\n  \"what\": \"`/api/courses/:slug` — `req.params.slug`; `/api/courses?level=easy` — `req.query.level`.\",\n  \"why\": \"Один маршрут обслуживает все курсы, а фильтры приходят в query.\",\n  \"how\": \"app.get(\\\"/api/courses/:slug\\\", (req, res) => {\\n  const course = find(req.params.slug);\\n  if (!course) return res.status(404).json({ error: \\\"Не найдено\\\" });\\n  res.json(course);\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"express.json\",\n  \"title\": \"Разбор тела\",\n  \"what\": \"`app.use(express.json({ limit: \\\"1mb\\\" }))` разбирает JSON-тело в `req.body` и ограничивает размер.\",\n  \"why\": \"Тело и защита от огромных запросов — одной строкой.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Один ресурс — один путь, разные действия — разные методы. Не забывай `return` после ответа с ошибкой."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "er-param",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "er-return",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "er-json",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "middleware",
+      "title": "Middleware",
+      "summary": "Цепочка обработчиков, next(), журнал запросов, авторизация и централизованная обработка ошибок.",
+      "chapter": "Express и REST API",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Описываем маршруты и выносим общее в промежуточные обработчики.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Цепочка middleware\",\n  \"steps\": [\n    {\n      \"title\": \"Журнал\",\n      \"text\": \"Записать метод, путь и время\"\n    },\n    {\n      \"title\": \"Разбор тела\",\n      \"text\": \"express.json\"\n    },\n    {\n      \"title\": \"Авторизация\",\n      \"text\": \"Проверить сессию, иначе 401\"\n    },\n    {\n      \"title\": \"Маршрут\",\n      \"text\": \"Сама логика\"\n    },\n    {\n      \"title\": \"Ошибки\",\n      \"text\": \"Один обработчик для всех сбоев\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Middleware\",\n  \"title\": \"(req, res, next)\",\n  \"what\": \"Функция, которая что-то делает с запросом и вызывает `next()`, чтобы передать его дальше, или сама отвечает.\",\n  \"why\": \"Журнал, авторизация, CORS и лимиты пишутся один раз для всех маршрутов.\",\n  \"how\": \"app.use((req, res, next) => {\\n  const start = Date.now();\\n  res.on(\\\"finish\\\", () => console.log(req.method, req.url, res.statusCode, Date.now() - start, \\\"мс\\\"));\\n  next();\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Авторизация\",\n  \"title\": \"Защитить маршруты\",\n  \"what\": \"Middleware `requireUser` проверяет сессию или токен и отвечает 401, если пользователя нет. Подключается к нужным маршрутам: `app.get(\\\"/api/me\\\", requireUser, handler)`.\",\n  \"why\": \"Забыть проверку в одном из двадцати маршрутов невозможно, если она подключена к группе.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Обработчик ошибок\",\n  \"title\": \"Четыре аргумента\",\n  \"what\": \"`app.use((err, req, res, next) => …)` — последний в цепочке, ловит все ошибки. Отвечает 500 без подробностей наружу и пишет полную ошибку в журнал.\",\n  \"why\": \"Пользователь не видит стек вызовов, а разработчик видит всё в журнале.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Общее — в middleware. Ошибки — в одном обработчике с четырьмя аргументами."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mw-next",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mw-error",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mw-leak",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "rest-validation",
+      "title": "REST и проверка данных",
+      "summary": "Ресурсы и методы REST, коды ответа, проверка входящих данных схемой и пагинация.",
+      "chapter": "Express и REST API",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Строим цепочки middleware и проектируем API так, чтобы им было удобно пользоваться.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"REST\",\n  \"title\": \"Ресурсы и методы\",\n  \"what\": \"Адреса — существительные (`/api/courses`, `/api/courses/html`), действия — методы: GET читает, POST создаёт, PATCH меняет часть, PUT заменяет, DELETE удаляет.\",\n  \"why\": \"API, построенный по одним правилам, понятен без документации.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Коды успеха\",\n  \"title\": \"200, 201, 204\",\n  \"what\": \"200 — данные в ответе, 201 Created — ресурс создан (с заголовком Location), 204 — успешно, но тела нет (удаление).\",\n  \"why\": \"Клиент понимает результат по коду, не разбирая тело.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проверка входа\",\n  \"title\": \"Схема на границе\",\n  \"what\": \"Тело запроса проверяют схемой (Zod, Valibot) до логики: `const data = CourseInput.parse(req.body)`. Ошибку превращают в 422 с полями, которые не прошли.\",\n  \"why\": \"В бизнес-логику попадают только корректные данные, а клиент знает, что исправить.\",\n  \"how\": \"const result = CourseInput.safeParse(req.body);\\nif (!result.success) return res.status(422).json({ errors: result.error.flatten() });\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Пагинация\",\n  \"title\": \"Не всё сразу\",\n  \"what\": \"Список отдают страницами: `?limit=20&cursor=…`. В ответе — элементы и курсор следующей страницы.\",\n  \"why\": \"Список на миллион записей не повесит ни сервер, ни браузер.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Существительные в путях, действия — методами, проверка — схемой на входе, списки — страницами."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rv-create",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rv-noun",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rv-validate",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "db-driver",
+      "title": "Драйвер и пул соединений",
+      "summary": "Подключение к PostgreSQL через pg, пул соединений, строка подключения и закрытие при остановке.",
+      "chapter": "Базы данных",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проектируем API и подключаем настоящую базу данных вместо файлов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Драйвер pg\",\n  \"title\": \"Node.js и PostgreSQL\",\n  \"what\": \"Пакет `pg` — драйвер PostgreSQL: отправляет SQL и возвращает строки как объекты.\",\n  \"why\": \"Знания SQL из курса SQL применяются напрямую.\",\n  \"how\": \"import pg from \\\"pg\\\";\\nconst pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });\\nconst { rows } = await pool.query(\\\"select id, title from courses\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Пул соединений\",\n  \"title\": \"Переиспользовать подключения\",\n  \"what\": \"Открыть соединение с базой дорого. Пул держит несколько открытых соединений и выдаёт их запросам по очереди.\",\n  \"why\": \"Сервер выдерживает сотни запросов в секунду, не открывая соединение на каждый.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Строка подключения\",\n  \"title\": \"DATABASE_URL\",\n  \"what\": \"`postgres://user:password@host:5432/dbname` — адрес базы с логином и паролем. Хранится в переменной окружения, никогда в коде.\",\n  \"why\": \"Пароль от базы в репозитории — самая частая утечка.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Закрыть пул\",\n  \"title\": \"При остановке\",\n  \"what\": \"`await pool.end()` в обработчике SIGTERM закрывает соединения аккуратно.\",\n  \"why\": \"Иначе база держит «мёртвые» подключения после каждого перезапуска.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Один пул на всё приложение, адрес — из `DATABASE_URL`, закрыть — при SIGTERM."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-pool",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-url",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-end",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "sql-injection",
+      "title": "Параметры и SQL-инъекции",
+      "summary": "Почему нельзя склеивать SQL со строками, параметры $1 и как выглядит атака.",
+      "chapter": "Базы данных",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Подключили базу и закрываем самую опасную дыру в работе с ней.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"SQL-инъекция\",\n  \"title\": \"Данные становятся кодом\",\n  \"what\": \"Если подставить ввод пользователя прямо в строку SQL, он может дописать свой код: `' OR '1'='1` превращает проверку пароля в «всегда правда».\",\n  \"why\": \"Через инъекцию крадут базы целиком; это одна из самых известных уязвимостей.\",\n  \"how\": \"// Так нельзя:\\npool.query(`select * from users where email = '${email}'`);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Параметры\",\n  \"title\": \"$1, $2\",\n  \"what\": \"Значения передают отдельно от текста запроса: `pool.query(\\\"select * from users where email = $1\\\", [email])`. База никогда не исполнит их как код.\",\n  \"why\": \"Инъекция становится невозможной в принципе, а не «маловероятной».\",\n  \"how\": \"await pool.query(\\n  \\\"select id from users where email = $1\\\",\\n  [email]\\n);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Экранирование не спасает\",\n  \"title\": \"Только параметры\",\n  \"what\": \"Ручная замена кавычек и «очистка» строк ломается на краевых случаях. Единственный надёжный способ — параметры или query builder, который использует их сам.\",\n  \"why\": \"Правило без исключений: значение пользователя — всегда параметр.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ни одного значения пользователя внутри строки SQL. Только `$1` и массив параметров."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "in-safe",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "in-why",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "in-escape",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "orm-migrations",
+      "title": "Транзакции, ORM и миграции",
+      "summary": "Транзакции в Node.js, ORM и query builders (Prisma, Drizzle) и миграции схемы.",
+      "chapter": "Базы данных",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Защитились от инъекций и собираем надёжную работу с данными.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Транзакция\",\n  \"title\": \"Всё или ничего\",\n  \"what\": \"Берут одно соединение из пула, выполняют `begin`, запросы, затем `commit`; при ошибке — `rollback`.\",\n  \"why\": \"Списание денег и создание заказа либо происходят оба, либо ни одно.\",\n  \"how\": \"const client = await pool.connect();\\ntry {\\n  await client.query(\\\"begin\\\");\\n  await client.query(\\\"update balances set amount = amount - $1 where user_id = $2\\\", [sum, userId]);\\n  await client.query(\\\"insert into orders(user_id, total) values ($1, $2)\\\", [userId, sum]);\\n  await client.query(\\\"commit\\\");\\n} catch (err) {\\n  await client.query(\\\"rollback\\\");\\n  throw err;\\n} finally {\\n  client.release();\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"ORM и query builder\",\n  \"title\": \"Prisma, Drizzle, Kysely\",\n  \"what\": \"ORM описывает таблицы в коде и даёт типизированные запросы: `db.course.findMany({ where: { published: true } })`. Query builder ближе к SQL, но тоже с типами.\",\n  \"why\": \"Опечатка в имени колонки ловится при сборке, а параметры подставляются сами.\",\n  \"kind\": \"idea\"\n}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Изменение схемы миграцией\",\n  \"steps\": [\n    {\n      \"title\": \"Файл миграции\",\n      \"text\": \"SQL или код: добавить колонку, индекс\"\n    },\n    {\n      \"title\": \"Ревью\",\n      \"text\": \"Миграция проходит pull request как код\"\n    },\n    {\n      \"title\": \"Применение\",\n      \"text\": \"При выкладке миграции выполняются по порядку\"\n    },\n    {\n      \"title\": \"Журнал\",\n      \"text\": \"База помнит, какие миграции уже применены\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Миграции\",\n  \"title\": \"История схемы\",\n  \"what\": \"Изменения схемы хранят в пронумерованных файлах и применяют по порядку. Уже применённую миграцию не правят — пишут новую.\",\n  \"why\": \"Схема базы на ноутбуке, в тестах и в продакшене всегда одинаковая.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Связанные изменения — в транзакции. Схема — только миграциями, без ручных правок в продакшене."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "om-tx",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "om-migrate",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "om-orm",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "config",
+      "title": "Конфигурация из окружения",
+      "summary": "Настройки через переменные окружения, файл .env, проверка конфигурации при старте.",
+      "chapter": "Конфигурация и безопасность",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем с базой и наводим порядок в настройках и секретах.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Двенадцать факторов\",\n  \"title\": \"Настройки — в окружении\",\n  \"what\": \"Всё, что отличается между ноутбуком, тестами и продакшеном (адреса, ключи, порты), берут из переменных окружения, а не из кода.\",\n  \"why\": \"Один и тот же код запускается везде, меняется только окружение.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"--env-file\",\n  \"title\": \".env без пакетов\",\n  \"what\": \"`node --env-file=.env server.js` загружает переменные из файла. Файл .env не коммитят, в репозиторий кладут .env.example без секретов.\",\n  \"why\": \"Локально — удобно, в продакшене переменные задаёт хостинг.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проверка при старте\",\n  \"title\": \"Упасть сразу\",\n  \"what\": \"Конфиг проверяют схемой при запуске: нет DATABASE_URL — сервер не стартует с понятной ошибкой.\",\n  \"why\": \"Лучше упасть при выкладке, чем в три часа ночи на первом запросе к базе.\",\n  \"how\": \"const env = z.object({\\n  DATABASE_URL: z.string().url(),\\n  PORT: z.coerce.number().default(3000)\\n}).parse(process.env);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Секреты — только в окружении. Конфиг — проверять схемой при старте."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cf-where",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cf-check",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cf-example",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "passwords-auth",
+      "title": "Пароли, сессии и токены",
+      "summary": "Хеширование паролей argon2 и bcrypt, сессии в cookies, JWT и где хранить токены.",
+      "chapter": "Конфигурация и безопасность",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Держим секреты в окружении и разбираемся, как безопасно входить в систему.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Хеш пароля\",\n  \"title\": \"argon2 или bcrypt\",\n  \"what\": \"Пароль никогда не хранят как есть. Сохраняют медленный хеш с солью: `await argon2.hash(password)`; при входе — `argon2.verify(hash, password)`.\",\n  \"why\": \"Даже если базу украдут, пароли пользователей не прочитать.\",\n  \"how\": \"import argon2 from \\\"argon2\\\";\\nconst hash = await argon2.hash(password);\\nconst ok = await argon2.verify(hash, attempt);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Почему не SHA-256\",\n  \"title\": \"Быстрый хеш — плохо\",\n  \"what\": \"Обычные хеши считаются миллиардами в секунду на видеокарте. Функции для паролей специально медленные и требуют памяти.\",\n  \"why\": \"Подбор пароля по украденному хешу становится невыгодным.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сессия в cookie\",\n  \"title\": \"Сервер помнит\",\n  \"what\": \"После входа сервер создаёт сессию в базе и отдаёт её идентификатор в cookie с флагами HttpOnly, Secure, SameSite.\",\n  \"why\": \"JavaScript страницы не может украсть HttpOnly-cookie; сессию можно отозвать на сервере.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"JWT\",\n  \"title\": \"Подписанный токен\",\n  \"what\": \"JSON Web Token хранит данные пользователя с подписью сервера. Сервер проверяет подпись без базы, но отозвать токен до истечения срока сложно.\",\n  \"why\": \"Хорош для общения сервисов между собой; для входа в сайт обычно проще и безопаснее сессия.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Пароли — argon2. Вход на сайт — сессия в HttpOnly-cookie. Токен в localStorage — уязвим к XSS."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "au-hash",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "au-httponly",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "au-jwt",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "hardening",
+      "title": "Защита сервера",
+      "summary": "Ограничение частоты запросов, заголовки безопасности, проверка зависимостей и принцип наименьших прав.",
+      "chapter": "Конфигурация и безопасность",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Защитили вход и укрепляем сервер целиком.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Ограничение частоты\",\n  \"title\": \"Rate limiting\",\n  \"what\": \"Не больше N запросов в минуту с одного адреса на чувствительные маршруты: вход, сброс пароля, отправка писем. Лишние получают 429 Too Many Requests.\",\n  \"why\": \"Перебор паролей и рассылка спама становятся бесполезными.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Заголовки безопасности\",\n  \"title\": \"helmet\",\n  \"what\": \"Middleware helmet ставит заголовки: Content-Security-Policy, X-Content-Type-Options, Strict-Transport-Security и другие.\",\n  \"why\": \"Браузер сам блокирует целые классы атак: XSS, подмену типа, понижение до HTTP.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Наименьшие права\",\n  \"title\": \"Ничего лишнего\",\n  \"what\": \"Сервер работает не от root, у пользователя базы — только нужные права, ключи API — с минимальными разрешениями.\",\n  \"why\": \"Если одну часть взломают, ущерб останется маленьким.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Журнал без секретов\",\n  \"title\": \"Что не писать в логи\",\n  \"what\": \"Пароли, токены, cookies, полные номера карт в журнал не попадают; их маскируют.\",\n  \"why\": \"Журналы читает больше людей и программ, чем базу.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Лимиты на вход, helmet на все ответы, никакого root и никаких секретов в журналах."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hd-429",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hd-root",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hd-logs",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "unit-tests",
+      "title": "Модульные тесты",
+      "summary": "node:test и assert, Vitest, структура теста и что стоит проверять.",
+      "chapter": "Тесты и отладка",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Укрепили сервер и учимся доказывать, что код работает, тестами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"node:test\",\n  \"title\": \"Тесты без пакетов\",\n  \"what\": \"Встроенный раннер: `test(\\\"название\\\", () => { assert.equal(sum(2, 2), 4) })`, запуск — `node --test`.\",\n  \"why\": \"Для небольших проектов и скриптов не нужно ничего ставить.\",\n  \"how\": \"import { test } from \\\"node:test\\\";\\nimport assert from \\\"node:assert/strict\\\";\\ntest(\\\"считает скидку\\\", () => {\\n  assert.equal(discount(1000, 10), 900);\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Vitest\",\n  \"title\": \"Быстрый раннер\",\n  \"what\": \"`npm install -D vitest`, тесты в файлах `*.test.js`, запуск `npx vitest`. Режим наблюдения перезапускает тесты при сохранении.\",\n  \"why\": \"Тот же API (describe, it, expect), что у Jest, и поддержка TypeScript без настройки.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что тестировать\",\n  \"title\": \"Логику и края\",\n  \"what\": \"Чистые функции с логикой: расчёты, проверки, преобразования. Особенно краевые случаи: пустой список, ноль, отрицательные числа, очень длинная строка.\",\n  \"why\": \"Ошибки живут на краях; обычный случай обычно и так работает.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Структура AAA\",\n  \"title\": \"Подготовить, выполнить, проверить\",\n  \"what\": \"Arrange — подготовить данные, Act — вызвать код, Assert — проверить результат. Один тест — одна проверяемая мысль.\",\n  \"why\": \"Упавший тест сразу говорит, что сломалось.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Логику — в чистые функции и под тесты, краевые случаи — в первую очередь."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ut-run",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ut-edge",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ut-aaa",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "api-tests",
+      "title": "Тесты API и моки",
+      "summary": "Тестировать HTTP-маршруты без настоящей сети, тестовая база и моки внешних сервисов.",
+      "chapter": "Тесты и отладка",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Тестируем функции и поднимаемся до тестов целых маршрутов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Тест маршрута\",\n  \"title\": \"Запрос к приложению\",\n  \"what\": \"Приложение запускают на случайном порту в тесте (или используют supertest / inject) и делают настоящий HTTP-запрос: статус, заголовки, тело.\",\n  \"why\": \"Проверяется вся цепочка: middleware, проверка данных, ответ.\",\n  \"how\": \"const res = await fetch(`${baseUrl}/api/courses/unknown`);\\nexpect(res.status).toBe(404);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тестовая база\",\n  \"title\": \"Настоящая, но своя\",\n  \"what\": \"Для тестов поднимают отдельную базу (часто в Docker), применяют миграции и очищают данные между тестами.\",\n  \"why\": \"Тесты проверяют настоящие SQL-запросы, а не воображаемые.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Мок\",\n  \"title\": \"Подмена зависимости\",\n  \"what\": \"`vi.fn()` или `vi.mock(\\\"./mailer.js\\\")` подменяют отправку писем или платёжный сервис: тест проверяет, что их вызвали с нужными данными.\",\n  \"why\": \"Тесты не отправляют настоящие письма и не списывают деньги.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Мокать границы\",\n  \"title\": \"Не всё подряд\",\n  \"what\": \"Подменяют внешнее: сеть, почту, платежи, время. Свою логику и базу тестируют по-настоящему.\",\n  \"why\": \"Тест, где замокано всё, проверяет только сами моки.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Маршруты — настоящими запросами, база — тестовая, моки — только для внешних сервисов."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "at-mock",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "at-db",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "at-fn",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "debugging",
+      "title": "Отладка Node.js",
+      "summary": "--inspect и DevTools, точки останова в VS Code, console.time и разбор утечек памяти.",
+      "chapter": "Тесты и отладка",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем тесты и учимся находить ошибки, которые тесты не поймали.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"node --inspect\",\n  \"title\": \"Отладчик Chrome\",\n  \"what\": \"`node --inspect server.js`, затем в Chrome адрес chrome://inspect — те же DevTools, что для страниц: точки останова, переменные, профилировщик.\",\n  \"why\": \"Знакомые инструменты из курса «Браузер» работают и для сервера.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Отладка в VS Code\",\n  \"title\": \"F5\",\n  \"what\": \"В VS Code можно запустить скрипт или тест под отладчиком: точка останова по клику на номер строки, шаги F10/F11, просмотр переменных.\",\n  \"why\": \"Не нужно засыпать код console.log и потом его вычищать.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"console.time\",\n  \"title\": \"Сколько заняло\",\n  \"what\": \"`console.time(\\\"query\\\")` и `console.timeEnd(\\\"query\\\")` печатают длительность участка.\",\n  \"why\": \"Быстрый способ найти медленное место без профилировщика.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Сервер под отладчиком\",\n  \"file\": \"Терминал\",\n  \"scenes\": [\n    {\n      \"input\": \"node --inspect server.js\",\n      \"key\": \"Enter\",\n      \"output\": \"$ node --inspect server.js\\nDebugger listening on ws://127.0.0.1:9229/3f1c…\\nСервер слушает http://localhost:3000\",\n      \"caption\": \"Открой chrome://inspect и подключись к процессу\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Утечка памяти\",\n  \"title\": \"Память растёт и не падает\",\n  \"what\": \"Типичные причины: кэш без ограничения размера, подписки на события без отписки, глобальные массивы. Снимки кучи в DevTools показывают, какие объекты копятся.\",\n  \"why\": \"Сервер, который падает раз в сутки с «out of memory», почти всегда течёт.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ошибка — отладчик с точкой останова. Медленно — console.time и профилировщик. Память растёт — снимок кучи."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-inspect",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-leak",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-time",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "logging-health",
+      "title": "Журналы и проверка здоровья",
+      "summary": "Структурированные логи в JSON, уровни, идентификатор запроса и эндпоинт /health.",
+      "chapter": "В продакшене",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем отлаживать и готовим сервер к жизни в продакшене.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Структурированный лог\",\n  \"title\": \"JSON вместо текста\",\n  \"what\": \"Библиотеки pino и winston пишут каждую запись объектом JSON: уровень, время, сообщение, поля. Сервисы журналов ищут и считают по полям.\",\n  \"why\": \"«Все ошибки оплаты за час» — это фильтр, а не чтение тысяч строк.\",\n  \"how\": \"logger.info({ userId, orderId, ms: 42 }, \\\"Заказ создан\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Уровни\",\n  \"title\": \"debug, info, warn, error\",\n  \"what\": \"debug — подробности для разработки, info — обычные события, warn — подозрительное, error — сбой. В продакшене обычно пишут от info.\",\n  \"why\": \"Важное не тонет в шуме.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"ID запроса\",\n  \"title\": \"Связать записи\",\n  \"what\": \"Каждому запросу дают уникальный идентификатор и добавляют его во все записи и в ответ (заголовок x-request-id).\",\n  \"why\": \"Пользователь присылает id из ошибки — ты находишь все записи этого запроса.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"/health\",\n  \"title\": \"Жив ли сервер\",\n  \"what\": \"Маршрут `/health` отвечает 200, если сервер работает и, например, база доступна. Его опрашивают балансировщик и мониторинг.\",\n  \"why\": \"Упавший экземпляр автоматически выводят из ротации и перезапускают.\",\n  \"how\": \"app.get(\\\"/health\\\", async (req, res) => {\\n  await pool.query(\\\"select 1\\\");\\n  res.json({ status: \\\"ok\\\", release: process.env.RELEASE });\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Логи — JSON с уровнем и id запроса. Здоровье — `/health`, который проверяет и базу."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lh-json",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lh-id",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lh-health",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "graceful-scale",
+      "title": "Аккуратная остановка и масштабирование",
+      "summary": "Graceful shutdown, несколько экземпляров, состояние вне процесса и worker threads.",
+      "chapter": "В продакшене",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем журналы и учим сервер переживать перезапуски и нагрузку.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Аккуратная остановка\",\n  \"steps\": [\n    {\n      \"title\": \"SIGTERM\",\n      \"text\": \"Платформа просит завершиться\"\n    },\n    {\n      \"title\": \"Не брать новое\",\n      \"text\": \"server.close() перестаёт принимать соединения\"\n    },\n    {\n      \"title\": \"Доделать\",\n      \"text\": \"Текущие запросы получают ответы\"\n    },\n    {\n      \"title\": \"Закрыть ресурсы\",\n      \"text\": \"Пул базы, очереди, файлы\"\n    },\n    {\n      \"title\": \"Выход\",\n      \"text\": \"Код 0\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Graceful shutdown\",\n  \"title\": \"Без оборванных запросов\",\n  \"what\": \"При выкладке новой версии старые экземпляры получают SIGTERM. Аккуратная остановка доделывает текущие запросы.\",\n  \"why\": \"Пользователь во время выкладки не видит ошибки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Несколько экземпляров\",\n  \"title\": \"Горизонтальное масштабирование\",\n  \"what\": \"Один процесс Node.js использует одно ядро для JavaScript. Под нагрузкой запускают несколько экземпляров за балансировщиком.\",\n  \"why\": \"Нагрузка делится, а падение одного экземпляра незаметно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Состояние вне процесса\",\n  \"title\": \"Сессии и кэш — снаружи\",\n  \"what\": \"Если сессии хранятся в памяти процесса, следующий запрос может попасть на другой экземпляр и «забыть» пользователя. Сессии и кэш держат в базе или Redis.\",\n  \"why\": \"Без этого масштабирование ломает вход и корзины.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"worker_threads\",\n  \"title\": \"Тяжёлые вычисления\",\n  \"what\": \"Для долгих вычислений (сжатие картинок, отчёты) — отдельный поток через worker_threads или очередь задач, чтобы не блокировать цикл событий.\",\n  \"why\": \"Сервер отвечает быстро, пока тяжёлая работа идёт в фоне.\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** SIGTERM → server.close → закрыть ресурсы. Состояние — в базе или Redis, а не в памяти процесса."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gs-state",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gs-sigterm",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gs-worker",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "deploy",
+      "title": "Развёртывание",
+      "summary": "Сборка и запуск в продакшене, NODE_ENV, Docker-образ, платформы и проверка после выкладки.",
+      "chapter": "В продакшене",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Масштабируем сервер и доводим путь кода до продакшена.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"NODE_ENV=production\",\n  \"title\": \"Режим продакшена\",\n  \"what\": \"Многие библиотеки (Express, React SSR) в этом режиме отключают отладку и включают кэши. Ставь его в продакшене.\",\n  \"why\": \"Быстрее и без лишних подробностей в ответах.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Docker-образ\",\n  \"title\": \"Окружение в коробке\",\n  \"what\": \"Образ на базе `node:22-slim`: копируют package.json и lock-файл, `npm ci --omit=dev`, затем код; запуск от непривилегированного пользователя.\",\n  \"why\": \"Один и тот же образ работает на ноутбуке, в CI и на сервере.\",\n  \"how\": \"FROM node:22-slim\\nWORKDIR /app\\nCOPY package*.json ./\\nRUN npm ci --omit=dev\\nCOPY . .\\nUSER node\\nCMD [\\\"node\\\", \\\"src/server.js\\\"]\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Платформы\",\n  \"title\": \"Где запускать\",\n  \"what\": \"PaaS (Render, Railway, Fly.io, Vercel для серверных функций), свой сервер с Docker, Kubernetes в больших компаниях.\",\n  \"why\": \"Для начала PaaS снимает заботу о серверах, балансировщике и HTTPS.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проверка после выкладки\",\n  \"title\": \"Smoke-тест\",\n  \"what\": \"Сразу после выкладки скрипт проверяет главное: /health, главную страницу, ключевой API. Ошибка — откат на прошлую версию.\",\n  \"why\": \"Поломку замечаешь ты, а не пользователи.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Образ — `npm ci --omit=dev` и не root. После выкладки — smoke-тест, при ошибке — откат."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dp-omit",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dp-user",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dp-smoke",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

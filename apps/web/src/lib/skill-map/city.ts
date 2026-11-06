@@ -24,7 +24,8 @@ export const DISTRICT_NAMES: Record<string, string> = {
   sql: "Архив",
   terminal: "Пульт",
   git: "Архив времени",
-  ts: "Сторожевая башня"
+  ts: "Сторожевая башня",
+  node: "Машинное отделение"
 };
 
 /** Positions on a 1000×600 plan; characters without one are laid out on the bottom row. */
@@ -37,7 +38,8 @@ const LAYOUT: Record<string, { x: number; y: number }> = {
   sql: { x: 400, y: 420 },
   terminal: { x: 130, y: 330 },
   git: { x: 130, y: 510 },
-  ts: { x: 860, y: 510 }
+  ts: { x: 860, y: 510 },
+  node: { x: 860, y: 330 }
 };
 
 export type District = {
