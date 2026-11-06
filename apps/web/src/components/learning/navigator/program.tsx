@@ -9,21 +9,27 @@ import {
 import { itemAt } from "../../../lib/item-at";
 import { groupByChapter } from "../lesson-outline";
 import styles from "../course-navigator.module.css";
+import type { OwnProgress } from "./own-progress";
 import { matchesQuery, useVisited, type ProgramItem } from "./visited";
 
 export function Program({
   courseSlug,
   items,
   current,
+  progress = null,
   onNavigate
 }: {
   courseSlug: string;
   items: ProgramItem[];
   current: string;
+  /** The signed-in learner's saved progress; null shows the lessons opened in this browser. */
+  progress?: OwnProgress | null;
   onNavigate?: () => void;
 }) {
   const [query, setQuery] = useState("");
   const visited = useVisited(courseSlug, current);
+  // A learner who started the course sees lessons whose test is passed; a guest sees opened ones.
+  const ticked = progress ? progress.passed : visited;
   const scroller = useRef<HTMLDivElement>(null);
   const searchId = useId();
   const index = items.findIndex((i) => i.slug === current);
@@ -62,7 +68,7 @@ export function Program({
       return next;
     });
 
-  const done = items.filter((i) => visited.has(i.slug)).length;
+  const done = items.filter((i) => ticked.has(i.slug)).length;
   return (
     <div className={styles.program}>
       <div className={styles.top}>
@@ -78,7 +84,8 @@ export function Program({
           />
         </div>
         <p className={styles.visitedLine}>
-          Открыто уроков: {done} из {items.length}
+          {progress ? "Пройдено уроков" : "Открыто уроков"}: {done} из{" "}
+          {items.length}
         </p>
         <label className={styles.search} htmlFor={searchId}>
           <MagnifyingGlassIcon size={16} aria-hidden="true" />
@@ -112,7 +119,7 @@ export function Program({
           const isOpen = !chaptered || searching || open.has(n);
           const all = itemAt(groups, n).lessons;
           const seen = all.filter(({ lesson }) =>
-            visited.has(lesson.slug)
+            ticked.has(lesson.slug)
           ).length;
           return (
             <section
@@ -136,7 +143,7 @@ export function Program({
                   </span>
                   <span
                     className={styles.chapterCount}
-                    aria-label={`открыто ${seen} из ${all.length}`}
+                    aria-label={`${progress ? "пройдено" : "открыто"} ${seen} из ${all.length}`}
                   >
                     {seen}/{all.length}
                   </span>
@@ -146,7 +153,10 @@ export function Program({
                 <ol className={styles.lessons}>
                   {group.lessons.map(({ lesson, index: i }) => {
                     const here = lesson.slug === current;
-                    const seenLesson = visited.has(lesson.slug) && !here;
+                    // A passed lesson keeps its tick even when it is the open one.
+                    const seenLesson =
+                      ticked.has(lesson.slug) && (progress !== null || !here);
+                    const isNext = progress?.next === lesson.slug && !here;
                     return (
                       <li key={lesson.slug}>
                         <Link
@@ -154,6 +164,7 @@ export function Program({
                           className={styles.lesson}
                           aria-current={here ? "page" : undefined}
                           data-visited={seenLesson || undefined}
+                          data-next={isNext || undefined}
                           {...(onNavigate ? { onClick: onNavigate } : {})}
                         >
                           <span className={styles.no} aria-hidden="true">
@@ -165,12 +176,12 @@ export function Program({
                           </span>
                           <span className={styles.title}>{lesson.title}</span>
                           <span className={styles.minutes}>
-                            {lesson.minutes} мин
+                            {isNext ? "Следующий" : `${lesson.minutes} мин`}
                           </span>
                           {seenLesson ? (
                             <span className={styles.srOnly}>
                               {" "}
-                              — уже открывали
+                              {progress ? "— пройден" : "— уже открывали"}
                             </span>
                           ) : null}
                         </Link>

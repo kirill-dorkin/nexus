@@ -14,6 +14,7 @@ import { routePosition } from "../../lib/learning-route";
 import { courseUrl, lessonUrl } from "../../lib/public-learning-routes";
 import { LearningPageHeading } from "./learning-page-heading";
 import { CourseNavigator } from "./course-navigator";
+import { LessonOrderHint } from "./lesson-order-hint";
 import { SignupNudge } from "./signup-nudge";
 import styles from "./flow.module.css";
 import { absoluteUrl, jsonLd } from "../../lib/site";
@@ -102,6 +103,18 @@ export function LessonPageView({
                 <span style={{ width: `${lessonProgress}%` }} />
               </div>
             </div>
+            <LessonOrderHint
+              organizationSlug={course.organization.slug}
+              offeringSlug={course.offering.slug}
+              lessons={course.course.lessons}
+              current={lessonSlug}
+              hrefFor={Object.fromEntries(
+                course.course.lessons.map((l) => [
+                  l.slug,
+                  lessonUrl(course, l.slug)
+                ])
+              )}
+            />
             <LessonBlocks
               lesson={course.lesson}
               organizationSlug={course.organization.slug}
@@ -149,6 +162,8 @@ export function LessonPageView({
             aria-label="Программа и сохранённое обучение"
           >
             <CourseNavigator
+              organizationSlug={course.organization.slug}
+              offeringSlug={course.offering.slug}
               courseSlug={course.course.slug}
               current={lessonSlug}
               items={course.course.lessons.map((lesson) => ({
