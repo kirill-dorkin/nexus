@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function MapPage() {
   return (
-    <LearningShell width="full">
+    <LearningShell>
       <div className={styles.intro}>
         <Eyebrow>Нексус</Eyebrow>
         <Heading level={1} size="display">
@@ -33,6 +33,9 @@ export default function MapPage() {
           Все персонажи
         </Link>
       </div>
+      <p className={styles.cityHint}>
+        Карта шире экрана: листайте её вбок, чтобы увидеть все районы.
+      </p>
       <CityMap />
     </LearningShell>
   );
