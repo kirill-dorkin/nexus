@@ -49,7 +49,7 @@ export function LearningShell({
       className={styles.scope}
       data-learner-scope=""
       data-ui-theme="dark"
-      data-ui-accent="lime"
+      data-ui-accent="ember"
     >
       <a className={styles.skip} href="#learning-main">
         Перейти к содержимому
