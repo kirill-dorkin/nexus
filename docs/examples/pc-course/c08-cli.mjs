@@ -48,9 +48,9 @@ export default function cli(c, rc) {
       cmd("cd", "Перейти в папку", "Change Directory. `cd projects` — в папку projects внутри текущей, `cd ..` — на уровень вверх, `cd ~` или просто `cd` — домой, `cd /` — в корень, `cd -` — в предыдущую папку.", "Почти любая работа в терминале начинается с перехода в папку проекта: `cd ~/projects/my-site`.", "cd ~/projects/my-site\ncd css\ncd ..\npwd\n/Users/ann/projects/my-site"),
       idea("Автодополнение", "Tab дописывает за тебя", "Начни вводить имя папки или файла и нажми Tab — оболочка допишет его. Если вариантов несколько, двойной Tab покажет их список.", "Tab избавляет от опечаток в длинных именах и сразу показывает, что такой файл действительно есть."),
       demo({ kind: "typing", title: "Прогулка по папкам", file: "Терминал", scenes: [
-        { input: "pwd", key: "Enter", output: "/Users/ann", caption: "Сначала узнаём, где мы" },
-        { input: "cd proj", key: "Tab", output: "cd projects/", caption: "Tab дописал имя папки" },
-        { input: "ls", key: "Enter", output: "my-site  notes.txt", caption: "Смотрим, что внутри" }
+        { input: "pwd", key: "Enter", output: "$ pwd\n/Users/ann", caption: "Сначала узнаём, где мы" },
+        { input: "cd proj", key: "Tab", output: "$ cd projects/", caption: "Tab дописал имя папки" },
+        { input: "ls", key: "Enter", output: "$ ls\nmy-site  notes.txt", caption: "Смотрим, что внутри" }
       ] }),
       idea("История команд", "Стрелка вверх", "Стрелки ↑ и ↓ листают ранее введённые команды. Ctrl+R — поиск по истории: начни вводить кусок команды. Команда `history` показывает весь список.", "Не нужно перепечатывать длинную команду — подними её из истории и поправь."),
       cmd("clear", "Очистить экран", "Очищает окно терминала. Сочетание Ctrl+L делает то же самое, в macOS ещё и Cmd+K. Сами команды и их результаты не отменяются.", "Чистый экран помогает увидеть вывод новой команды, особенно сообщение об ошибке.", "clear"),
@@ -84,7 +84,7 @@ export default function cli(c, rc) {
       demo({ kind: "typing", title: "Создаём, пишем и читаем файл", file: "Терминал", scenes: [
         { input: "echo \"Купить хлеб\" > notes/todo.txt", key: "Enter", caption: "> создал файл и записал строку" },
         { input: "echo \"Позвонить\" >> notes/todo.txt", key: "Enter", caption: ">> дописал в конец, не стирая" },
-        { input: "cat notes/todo.txt", key: "Enter", output: "Купить хлеб\nПозвонить", caption: "cat показывает содержимое" }
+        { input: "cat notes/todo.txt", key: "Enter", output: "$ cat notes/todo.txt\nКупить хлеб\nПозвонить", caption: "cat показывает содержимое" }
       ] }),
       idea("Конвейер", "Символ |", "`команда1 | команда2` передаёт вывод первой команды на вход второй. Например, `ls | sort` — отсортировать список, `history | grep cd` — найти в истории команды с cd.", "Из простых команд конвейером собирают мощные: каждая делает одно дело хорошо."),
       tip("`rm` удаляет навсегда, `>` перезаписывает файл. Перед опасной командой — `pwd` и `ls`.")
