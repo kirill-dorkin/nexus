@@ -94,8 +94,8 @@ function securityHeaders(
   ];
 }
 
-/** PostHog project key (EU cloud). Empty until the project exists; then analytics turns on. */
-const POSTHOG_PROJECT_KEY = "";
+/** PostHog project key (EU cloud, project 338129). Public by design: it can only send events. */
+const POSTHOG_PROJECT_KEY = "phc_uqy8VeUZzduBcKf9D3csPNFrVFDbjKfvxrZsMGJWMEHk";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
