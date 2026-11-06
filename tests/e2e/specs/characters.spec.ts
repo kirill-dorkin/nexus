@@ -33,7 +33,7 @@ test("a visitor browses the characters and a character's skill tree", async ({
   });
   await expect(basics).toBeVisible();
   await expect(basics).not.toHaveAttribute("open");
-  await basics.locator("summary").click();
+  await basics.locator(":scope > summary").click();
   await expect(basics).toHaveAttribute("open");
   // The season-1 scene of a branch opens on demand and is plain text for screen readers.
   const start = page.locator("details", {
