@@ -17,10 +17,6 @@ export type UpcomingDistrict = {
 
 export const UPCOMING: UpcomingDistrict[] = [
   {
-    district: "Машинный зал",
-    characters: []
-  },
-  {
     district: "Ворота",
     characters: [{ name: "Web API", role: "Связной", needs: "JavaScript" }]
   },
