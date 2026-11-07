@@ -394,6 +394,25 @@ export const characters = [
       "Как устроен компьютер изнутри: ядро и системные вызовы, процессы и сигналы, потоки и планировщик, виртуальная память, файловые системы, драйверы и асинхронный ввод-вывод, синхронизация, пользователи и права, загрузка и службы, виртуализация и контейнеры, наблюдение и диагностика.",
     accent: "amber",
     sources: [{ manifest: "os-track.manifest.json", published: true }]
+  },
+  {
+    slug: "vue",
+    depth: {},
+    abilities: [
+      { title: "Основы", branches: ["Старт Vue", "Шаблоны"] },
+      { title: "Реактивность", branches: ["Реактивность"] },
+      { title: "Компоненты", branches: ["Компоненты", "Composition API"] },
+      { title: "Интерфейс", branches: ["Формы и события", "Списки и условия"] },
+      { title: "Приложение", branches: ["Маршрутизация", "Состояние приложения"] },
+      { title: "Данные", branches: ["Данные и асинхронность"] },
+      { title: "Практика", branches: ["Vue на практике"] }
+    ],
+    name: "Vue",
+    role: "Мастер реактивности",
+    summary:
+      "Реактивные интерфейсы: проект на Vite, шаблоны и директивы, ref, computed и watch, компоненты, props, события и слоты, формы и v-model, списки и анимации, Composition API и composables, Vue Router, Pinia, загрузка данных и SSR, тесты, скорость и выпуск.",
+    accent: "lime",
+    sources: [{ manifest: "vue-track.manifest.json", published: true }]
   }
 ];
 
@@ -420,7 +439,8 @@ export const requires = {
   "docker/Сети контейнеров": ["network/IP-адреса и подсети"],
   "next/Старт Next.js": ["react/Маршруты и структура приложения"],
   "go/Старт Go": ["pc/Командная строка"],
-  "os/Что делает ОС": ["pc/Операционная система"]
+  "os/Что делает ОС": ["pc/Операционная система"],
+  "vue/Старт Vue": ["js/Старт JavaScript"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */

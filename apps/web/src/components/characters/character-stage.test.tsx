@@ -15,7 +15,7 @@ describe("CharacterStage", () => {
     expect(stage).not.toHaveAttribute("data-ready");
     // The rank preview appears only once the scene is drawn.
     expect(container.querySelector("button")).toBeNull();
-    rerender(<CharacterStage slug="vue" level={40} />);
+    rerender(<CharacterStage slug="angular" level={40} />);
     expect(container.firstElementChild).toBeNull();
   });
 

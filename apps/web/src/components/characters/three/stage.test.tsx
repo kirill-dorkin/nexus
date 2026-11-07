@@ -89,7 +89,7 @@ describe("roster portraits", () => {
     const images = renderPortraits([
       { slug: "pc", level: 10 },
       { slug: "js", level: 90 },
-      { slug: "vue", level: 50 }
+      { slug: "angular", level: 50 }
     ]);
     expect(Object.keys(images)).toEqual(["pc", "js"]);
     expect(renders.count).toBe(2);

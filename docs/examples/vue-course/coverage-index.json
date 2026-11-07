@@ -1,0 +1,193 @@
+{
+  "note": "Every item is taught by its own concept card; the contracts test keeps the index and the cards in sync.",
+  "source": "Course design by chapter (branches of the character).",
+  "topics": {
+    "start": {
+      "title": "Старт Vue",
+      "items": [
+        "Vue",
+        "Декларативность",
+        "Реактивность",
+        "Экосистема",
+        "npm create vue",
+        "createApp",
+        "Vite",
+        "build",
+        ".vue-файл",
+        "script setup",
+        "scoped",
+        "Редактор"
+      ]
+    },
+    "templates": {
+      "title": "Шаблоны",
+      "items": [
+        "{{ }}",
+        "Только выражения",
+        "Безопасность",
+        "v-html",
+        ":атрибут",
+        ":class",
+        ":style",
+        "Логические атрибуты",
+        "@click",
+        ".prevent и .stop",
+        "Клавиши",
+        "$event"
+      ]
+    },
+    "reactivity": {
+      "title": "Реактивность",
+      "items": [
+        "ref",
+        "reactive",
+        "Ловушка деструктуризации",
+        "ref или reactive",
+        "computed",
+        "computed или метод",
+        "Без побочных эффектов",
+        "Записываемый computed",
+        "watch",
+        "immediate и deep",
+        "watchEffect",
+        "Гонки запросов"
+      ]
+    },
+    "components": {
+      "title": "Компоненты",
+      "items": [
+        "defineProps",
+        "Передача",
+        "Односторонний поток",
+        "TypeScript",
+        "defineEmits",
+        "Слушать в родителе",
+        "defineModel",
+        "Данные вниз, события вверх",
+        "slot",
+        "Именованные слоты",
+        "Слот с данными"
+      ]
+    },
+    "forms": {
+      "title": "Формы и события",
+      "items": [
+        "v-model",
+        "checkbox и radio",
+        "select",
+        "Под капотом",
+        ".trim",
+        ".number",
+        ".lazy",
+        "Своё поле ввода",
+        "Ошибки через computed",
+        "Отправка",
+        "Библиотеки",
+        "Сервер проверяет тоже"
+      ]
+    },
+    "lists": {
+      "title": "Списки и условия",
+      "items": [
+        "v-if",
+        "v-show",
+        "v-if или v-show",
+        "template",
+        "v-for",
+        "key",
+        "Индекс как key",
+        "v-for с v-if",
+        "Числа",
+        "Transition",
+        "TransitionGroup",
+        "Меньше движения"
+      ]
+    },
+    "composition": {
+      "title": "Composition API",
+      "items": [
+        "onMounted",
+        "onUnmounted",
+        "ref на элемент",
+        "Порядок",
+        "Composable",
+        "Соглашения",
+        "VueUse",
+        "Вместо миксинов",
+        "provide",
+        "Проброс props",
+        "Реактивный provide",
+        "Когда хранилище"
+      ]
+    },
+    "router": {
+      "title": "Маршрутизация",
+      "items": [
+        "createRouter",
+        "RouterView",
+        "RouterLink",
+        "Сервер и история",
+        ":slug",
+        "useRouter",
+        "query",
+        "Вложенные маршруты",
+        "404",
+        "beforeEach",
+        "meta",
+        "Ленивая загрузка",
+        "Защита только в браузере"
+      ]
+    },
+    "state": {
+      "title": "Состояние приложения",
+      "items": [
+        "defineStore",
+        "В компоненте",
+        "storeToRefs",
+        "Инструменты",
+        "По предметным областям",
+        "Асинхронное действие",
+        "Сохранение",
+        "Что не хранить",
+        "lang=\"ts\"",
+        "Типизированный ref",
+        "vue-tsc",
+        "Постепенно"
+      ]
+    },
+    "data": {
+      "title": "Данные и асинхронность",
+      "items": [
+        "Три состояния",
+        "При смене параметра",
+        "Свой useFetch",
+        "Пустые состояния",
+        "defineAsyncComponent",
+        "Suspense",
+        "KeepAlive",
+        "Teleport",
+        "Одностраничное приложение",
+        "SSR",
+        "Nuxt",
+        "Vite или Nuxt"
+      ]
+    },
+    "practice": {
+      "title": "Vue на практике",
+      "items": [
+        "Тест компонента",
+        "Тест хранилища",
+        "Сквозные тесты",
+        "vitest",
+        "Большие списки",
+        "shallowRef",
+        "v-once и v-memo",
+        "Доступность",
+        "npm run build",
+        "VITE_",
+        "Перенаправления",
+        "Что дальше"
+      ]
+    }
+  }
+}

@@ -9678,6 +9678,471 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "vue",
+      "name": "Vue",
+      "role": "Мастер реактивности",
+      "summary": "Реактивные интерфейсы: проект на Vite, шаблоны и директивы, ref, computed и watch, компоненты, props, события и слоты, формы и v-model, списки и анимации, Composition API и composables, Vue Router, Pinia, загрузка данных и SSR, тесты, скорость и выпуск.",
+      "accent": "lime",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Основы",
+          "branches": [
+            "vue-1",
+            "vue-2"
+          ]
+        },
+        {
+          "title": "Реактивность",
+          "branches": [
+            "vue-3"
+          ]
+        },
+        {
+          "title": "Компоненты",
+          "branches": [
+            "vue-4",
+            "vue-7"
+          ]
+        },
+        {
+          "title": "Интерфейс",
+          "branches": [
+            "vue-5",
+            "vue-6"
+          ]
+        },
+        {
+          "title": "Приложение",
+          "branches": [
+            "vue-8",
+            "vue-9"
+          ]
+        },
+        {
+          "title": "Данные",
+          "branches": [
+            "vue-10"
+          ]
+        },
+        {
+          "title": "Практика",
+          "branches": [
+            "vue-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "vue-1",
+          "title": "Старт Vue",
+          "depth": "practice",
+          "requires": [
+            "js-1"
+          ],
+          "skills": [
+            {
+              "key": "vue-why",
+              "title": "Что такое Vue",
+              "lesson": {
+                "course": "vue",
+                "slug": "why-vue",
+                "title": "Что такое Vue"
+              }
+            },
+            {
+              "key": "vue-create",
+              "title": "Создание проекта",
+              "lesson": {
+                "course": "vue",
+                "slug": "create-vue",
+                "title": "Новый проект"
+              }
+            },
+            {
+              "key": "vue-sfc",
+              "title": "Однофайловые компоненты",
+              "lesson": {
+                "course": "vue",
+                "slug": "sfc",
+                "title": "Однофайловый компонент"
+              }
+            }
+          ]
+        },
+        {
+          "id": "vue-2",
+          "title": "Шаблоны",
+          "depth": "practice",
+          "requires": [
+            "vue-1"
+          ],
+          "skills": [
+            {
+              "key": "vue-interp",
+              "title": "Вывод данных",
+              "lesson": {
+                "course": "vue",
+                "slug": "interpolation",
+                "title": "Вывод данных"
+              }
+            },
+            {
+              "key": "vue-bind",
+              "title": "Привязка атрибутов",
+              "lesson": {
+                "course": "vue",
+                "slug": "bindings",
+                "title": "Привязка атрибутов"
+              }
+            },
+            {
+              "key": "vue-events",
+              "title": "События",
+              "lesson": {
+                "course": "vue",
+                "slug": "events",
+                "title": "События"
+              }
+            }
+          ]
+        },
+        {
+          "id": "vue-3",
+          "title": "Реактивность",
+          "depth": "practice",
+          "requires": [
+            "vue-2"
+          ],
+          "skills": [
+            {
+              "key": "vue-ref",
+              "title": "ref и reactive",
+              "lesson": {
+                "course": "vue",
+                "slug": "ref-reactive",
+                "title": "ref и reactive"
+              }
+            },
+            {
+              "key": "vue-computed",
+              "title": "computed",
+              "lesson": {
+                "course": "vue",
+                "slug": "computed",
+                "title": "Вычисляемые значения"
+              }
+            },
+            {
+              "key": "vue-watch",
+              "title": "watch",
+              "lesson": {
+                "course": "vue",
+                "slug": "watchers",
+                "title": "Наблюдатели"
+              }
+            }
+          ]
+        },
+        {
+          "id": "vue-4",
+          "title": "Компоненты",
+          "depth": "practice",
+          "requires": [
+            "vue-3"
+          ],
+          "skills": [
+            {
+              "key": "vue-props",
+              "title": "Props",
+              "lesson": {
+                "course": "vue",
+                "slug": "props",
+                "title": "Props"
+              }
+            },
+            {
+              "key": "vue-emits",
+              "title": "События компонента",
+              "lesson": {
+                "course": "vue",
+                "slug": "emits",
+                "title": "События компонента"
+              }
+            },
+            {
+              "key": "vue-slots",
+              "title": "Слоты",
+              "lesson": {
+                "course": "vue",
+                "slug": "slots",
+                "title": "Слоты"
+              }
+            }
+          ]
+        },
+        {
+          "id": "vue-5",
+          "title": "Формы и события",
+          "depth": "practice",
+          "requires": [
+            "vue-4"
+          ],
+          "skills": [
+            {
+              "key": "vue-vmodel",
+              "title": "v-model",
+              "lesson": {
+                "course": "vue",
+                "slug": "v-model",
+                "title": "v-model"
+              }
+            },
+            {
+              "key": "vue-modifiers",
+              "title": "Модификаторы v-model",
+              "lesson": {
+                "course": "vue",
+                "slug": "model-modifiers",
+                "title": "Модификаторы и своё поле"
+              }
+            },
+            {
+              "key": "vue-validate",
+              "title": "Проверка форм",
+              "lesson": {
+                "course": "vue",
+                "slug": "validation",
+                "title": "Проверка и отправка"
+              }
+            }
+          ]
+        },
+        {
+          "id": "vue-6",
+          "title": "Списки и условия",
+          "depth": "practice",
+          "requires": [
+            "vue-5"
+          ],
+          "skills": [
+            {
+              "key": "vue-if",
+              "title": "Условия в шаблоне",
+              "lesson": {
+                "course": "vue",
+                "slug": "conditions",
+                "title": "Условия"
+              }
+            },
+            {
+              "key": "vue-for",
+              "title": "Списки",
+              "lesson": {
+                "course": "vue",
+                "slug": "v-for",
+                "title": "Списки"
+              }
+            },
+            {
+              "key": "vue-transition",
+              "title": "Анимации",
+              "lesson": {
+                "course": "vue",
+                "slug": "transitions",
+                "title": "Анимации появления"
+              }
+            }
+          ]
+        },
+        {
+          "id": "vue-7",
+          "title": "Composition API",
+          "depth": "practice",
+          "requires": [
+            "vue-6"
+          ],
+          "skills": [
+            {
+              "key": "vue-lifecycle",
+              "title": "Жизненный цикл",
+              "lesson": {
+                "course": "vue",
+                "slug": "lifecycle",
+                "title": "Жизненный цикл"
+              }
+            },
+            {
+              "key": "vue-composables",
+              "title": "Composables",
+              "lesson": {
+                "course": "vue",
+                "slug": "composables",
+                "title": "Composables"
+              }
+            },
+            {
+              "key": "vue-provide",
+              "title": "provide и inject",
+              "lesson": {
+                "course": "vue",
+                "slug": "provide-inject",
+                "title": "provide и inject"
+              }
+            }
+          ]
+        },
+        {
+          "id": "vue-8",
+          "title": "Маршрутизация",
+          "depth": "practice",
+          "requires": [
+            "vue-7"
+          ],
+          "skills": [
+            {
+              "key": "vue-routes",
+              "title": "Маршруты",
+              "lesson": {
+                "course": "vue",
+                "slug": "routes",
+                "title": "Маршруты"
+              }
+            },
+            {
+              "key": "vue-params",
+              "title": "Параметры маршрутов",
+              "lesson": {
+                "course": "vue",
+                "slug": "route-params",
+                "title": "Параметры и вложенность"
+              }
+            },
+            {
+              "key": "vue-guards",
+              "title": "Защита маршрутов",
+              "lesson": {
+                "course": "vue",
+                "slug": "guards",
+                "title": "Защита и ленивая загрузка"
+              }
+            }
+          ]
+        },
+        {
+          "id": "vue-9",
+          "title": "Состояние приложения",
+          "depth": "practice",
+          "requires": [
+            "vue-8"
+          ],
+          "skills": [
+            {
+              "key": "vue-pinia",
+              "title": "Pinia",
+              "lesson": {
+                "course": "vue",
+                "slug": "pinia",
+                "title": "Хранилище Pinia"
+              }
+            },
+            {
+              "key": "vue-storepatterns",
+              "title": "Устройство хранилищ",
+              "lesson": {
+                "course": "vue",
+                "slug": "store-patterns",
+                "title": "Устройство хранилищ"
+              }
+            },
+            {
+              "key": "vue-ts",
+              "title": "Vue и TypeScript",
+              "lesson": {
+                "course": "vue",
+                "slug": "typescript-vue",
+                "title": "Vue и TypeScript"
+              }
+            }
+          ]
+        },
+        {
+          "id": "vue-10",
+          "title": "Данные и асинхронность",
+          "depth": "practice",
+          "requires": [
+            "vue-9"
+          ],
+          "skills": [
+            {
+              "key": "vue-fetch",
+              "title": "Загрузка данных",
+              "lesson": {
+                "course": "vue",
+                "slug": "fetching",
+                "title": "Загрузка данных"
+              }
+            },
+            {
+              "key": "vue-async",
+              "title": "Встроенные компоненты",
+              "lesson": {
+                "course": "vue",
+                "slug": "async-components",
+                "title": "Асинхронные компоненты"
+              }
+            },
+            {
+              "key": "vue-ssr",
+              "title": "SSR и Nuxt",
+              "lesson": {
+                "course": "vue",
+                "slug": "ssr-nuxt",
+                "title": "Серверная отрисовка и Nuxt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "vue-11",
+          "title": "Vue на практике",
+          "depth": "practice",
+          "requires": [
+            "vue-10"
+          ],
+          "skills": [
+            {
+              "key": "vue-testing",
+              "title": "Тесты Vue",
+              "lesson": {
+                "course": "vue",
+                "slug": "testing-vue",
+                "title": "Тесты"
+              }
+            },
+            {
+              "key": "vue-perf",
+              "title": "Скорость и доступность",
+              "lesson": {
+                "course": "vue",
+                "slug": "perf-a11y",
+                "title": "Скорость и доступность"
+              }
+            },
+            {
+              "key": "vue-deploy",
+              "title": "Выпуск приложения",
+              "lesson": {
+                "course": "vue",
+                "slug": "deploy-vue",
+                "title": "Выпуск и что дальше"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
