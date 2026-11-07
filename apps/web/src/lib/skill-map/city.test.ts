@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { cityPlan, districtState } from "./city";
-import { findCharacter } from "./skill-map";
+import { SKILL_MAP, findCharacter } from "./skill-map";
 
 describe("city map", () => {
   it("rebuilds a district as its skills become active", () => {
@@ -47,5 +47,20 @@ describe("city map", () => {
       "browser-pc"
     ])
       expect(roads).toContain(road);
+  });
+});
+
+describe("a character without a planned district", () => {
+  it("stands on the bottom row under its own name", () => {
+    const stranger = {
+      ...SKILL_MAP.characters[0]!,
+      slug: "stranger",
+      name: "Чужак"
+    };
+    const { districts } = cityPlan(new Map(), "2026-11-07", {
+      ...SKILL_MAP,
+      characters: [stranger]
+    });
+    expect(districts[0]).toMatchObject({ name: "Чужак", x: 130, y: 560 });
   });
 });
