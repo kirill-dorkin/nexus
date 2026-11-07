@@ -68,4 +68,8 @@ describe("season-1 scenes (docs/story/season-1.md)", () => {
       "sql-11"
     ]);
   });
+
+  it("skips branches the script has no scene for", () => {
+    expect(scenesFor(["no-such-branch"])).toEqual({});
+  });
 });
