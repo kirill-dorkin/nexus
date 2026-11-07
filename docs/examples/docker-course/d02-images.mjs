@@ -3,7 +3,7 @@ import { idea, sh, tip, makeLesson } from "./dkit.mjs";
 
 export default function images(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "docker-run", title: "docker run", summary: "Запуск контейнера: -it, -d, --name, --rm, что происходит при запуске.",

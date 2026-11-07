@@ -3,7 +3,7 @@ import { idea, sh, yml, df, tip, makeLesson } from "./dkit.mjs";
 
 export default function config(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "env-config", title: "Настройки через окружение", summary: "Двенадцатифакторный подход, .env в Compose, подстановка ${VAR}, ARG и ENV.",
