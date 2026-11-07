@@ -1,0 +1,45 @@
+/* The code character bar above a phone keyboard. */
+.bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 70;
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.4rem 0.5rem calc(0.4rem + env(safe-area-inset-bottom, 0px));
+  overflow-x: auto;
+  border-top: 1px solid var(--border-default);
+  background: var(--surface-elevated);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bar::-webkit-scrollbar {
+  display: none;
+}
+
+.key {
+  flex: none;
+  min-width: 2.6rem;
+  min-height: 2.6rem;
+  padding: 0 0.7rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--code-bg, var(--surface-base));
+  color: var(--text-primary);
+  font: 600 1rem var(--font-mono);
+  touch-action: manipulation;
+}
+
+.key:active {
+  background: color-mix(
+    in srgb,
+    var(--action-primary) 25%,
+    var(--surface-elevated)
+  );
+}
+
+.key:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+}

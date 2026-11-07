@@ -3,7 +3,7 @@ import { go, idea, tip, makeLesson } from "./gokit.mjs";
 
 export default function interfaces(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "interfaces", title: "Интерфейсы", summary: "Неявная реализация, маленькие интерфейсы io.Reader и fmt.Stringer, принимай интерфейсы, возвращай структуры.",

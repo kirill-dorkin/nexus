@@ -3,7 +3,7 @@ import { idea, nx, sh, tip, makeLesson } from "./nxkit.mjs";
 
 export default function start(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single, multi } = c;
 
   L({
     slug: "why-next", title: "Что такое Next.js", summary: "Фреймворк поверх React: маршруты, сервер, рендеринг, оптимизация и чем он отличается от «голого» React.",

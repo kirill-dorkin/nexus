@@ -3,7 +3,7 @@ import { go, sh, idea, tip, makeLesson } from "./gokit.mjs";
 
 export default function practice(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "http-server", title: "HTTP-сервер", summary: "net/http, маршруты с методами и параметрами в ServeMux, обработчики, тайм-ауты сервера, slog.",

@@ -3,7 +3,7 @@ import { go, sh, idea, tip, makeLesson } from "./gokit.mjs";
 
 export default function testing(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "unit-tests", title: "Тесты", summary: "Файлы _test.go, func TestX(t *testing.T), t.Errorf и t.Fatal, go test ./..., покрытие.",

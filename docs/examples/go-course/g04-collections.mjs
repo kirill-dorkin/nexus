@@ -3,7 +3,7 @@ import { go, idea, tip, makeLesson } from "./gokit.mjs";
 
 export default function collections(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "slices", title: "Срезы", summary: "Массивы фиксированной длины, срезы, append, len и cap, make, срез среза и общая память.",

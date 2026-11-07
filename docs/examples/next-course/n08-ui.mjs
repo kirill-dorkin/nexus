@@ -3,7 +3,7 @@ import { idea, nx, tip, makeLesson } from "./nxkit.mjs";
 
 export default function ui(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "styling", title: "Стили", summary: "Глобальный CSS, CSS-модули, Tailwind CSS, тёмная тема без мигания.",

@@ -3,7 +3,7 @@ import { go, sh, idea, tip, makeLesson } from "./gokit.mjs";
 
 export default function packages(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "packages", title: "Пакеты", summary: "Папка — пакет, имя пакета, импорт по пути модуля, internal, init.",

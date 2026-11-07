@@ -73,3 +73,13 @@ svg {
     scroll-behavior: auto;
   }
 }
+
+/* Touch screens: iOS zooms the page into any field whose text is under 16px when it gets
+   focus. Every field stays at least 16px there; pinch zoom is never disabled. */
+@media (pointer: coarse) {
+  input:not([type="checkbox"], [type="radio"], [type="range"]),
+  textarea,
+  select {
+    font-size: max(16px, 1em);
+  }
+}

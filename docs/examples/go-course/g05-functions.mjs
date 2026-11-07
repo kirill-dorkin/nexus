@@ -3,7 +3,7 @@ import { go, idea, tip, makeLesson } from "./gokit.mjs";
 
 export default function functions(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "functions", title: "Функции", summary: "Параметры и типы, несколько возвращаемых значений, именованные результаты, функции как значения и замыкания.",

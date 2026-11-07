@@ -3,7 +3,7 @@ import { idea, nx, sh, tip, makeLesson } from "./nxkit.mjs";
 
 export default function deploy(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single, multi } = c;
 
   L({
     slug: "hosting", title: "Выпуск на платформу", summary: "Развёртывание из git, превью для каждой ветки, переменные окружения, домен.",
