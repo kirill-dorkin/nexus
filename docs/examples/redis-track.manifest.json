@@ -1,0 +1,4520 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "redis",
+    "title": "Redis: быстрая память приложений",
+    "description": "Redis с нуля до кэша, очередей и счётчиков в боевом приложении. Ключи и время жизни, строки и счётчики, списки, множества, хэши и упорядоченные множества, стратегии кэширования и инвалидация, сессии и ограничение частоты запросов, очереди и потоки, публикация и подписка, транзакции, Lua и блокировки, сохранение на диск, репликация и кластер, наблюдение и безопасность. Каждое понятие объясняется карточкой с примером, каждый урок закрепляется вопросами."
+  },
+  "skills": [
+    {
+      "key": "rd-why",
+      "title": "Зачем Redis",
+      "description": "Объяснять, что такое Redis и для чего он нужен."
+    },
+    {
+      "key": "rd-cli",
+      "title": "redis-cli",
+      "description": "Запускать Redis и выполнять команды в redis-cli."
+    },
+    {
+      "key": "rd-ttl",
+      "title": "Время жизни ключей",
+      "description": "Задавать время жизни ключей и безопасно искать ключи."
+    },
+    {
+      "key": "rd-strings",
+      "title": "Строки Redis",
+      "description": "Хранить значения строками и работать с ними из приложения."
+    },
+    {
+      "key": "rd-counters",
+      "title": "Счётчики",
+      "description": "Считать события атомарными счётчиками."
+    },
+    {
+      "key": "rd-bits",
+      "title": "Биты и HyperLogLog",
+      "description": "Экономно считать отметки и уникальные значения."
+    },
+    {
+      "key": "rd-lists",
+      "title": "Списки",
+      "description": "Хранить упорядоченные последовательности в списках."
+    },
+    {
+      "key": "rd-sets",
+      "title": "Множества",
+      "description": "Хранить уникальные значения и пересекать множества."
+    },
+    {
+      "key": "rd-modeling",
+      "title": "Моделирование данных",
+      "description": "Выбирать структуры Redis под нужные запросы."
+    },
+    {
+      "key": "rd-hashes",
+      "title": "Хэши",
+      "description": "Хранить объекты полями в хэшах."
+    },
+    {
+      "key": "rd-zsets",
+      "title": "Упорядоченные множества",
+      "description": "Строить рейтинги и упорядоченные выборки."
+    },
+    {
+      "key": "rd-time",
+      "title": "Данные по времени",
+      "description": "Хранить события по времени и искать по расстоянию."
+    },
+    {
+      "key": "rd-cacheaside",
+      "title": "Cache-aside",
+      "description": "Кэшировать ответы базы по схеме cache-aside."
+    },
+    {
+      "key": "rd-invalidate",
+      "title": "Инвалидация кэша",
+      "description": "Сбрасывать кэш при изменении данных."
+    },
+    {
+      "key": "rd-eviction",
+      "title": "Нагрузка и вытеснение",
+      "description": "Защищать базу от наплыва и настраивать вытеснение."
+    },
+    {
+      "key": "rd-sessions",
+      "title": "Сессии в Redis",
+      "description": "Хранить сессии пользователей в Redis."
+    },
+    {
+      "key": "rd-ratelimit",
+      "title": "Rate limiting",
+      "description": "Ограничивать частоту запросов с помощью Redis."
+    },
+    {
+      "key": "rd-idempotency",
+      "title": "Идемпотентность",
+      "description": "Защищаться от повторной обработки запросов."
+    },
+    {
+      "key": "rd-streams",
+      "title": "Потоки Redis",
+      "description": "Записывать и читать события в потоках."
+    },
+    {
+      "key": "rd-groups",
+      "title": "Группы обработчиков",
+      "description": "Распределять задачи из потока между обработчиками надёжно."
+    },
+    {
+      "key": "rd-jobs",
+      "title": "Очереди задач",
+      "description": "Использовать готовые очереди задач поверх Redis."
+    },
+    {
+      "key": "rd-pubsub",
+      "title": "Публикация и подписка",
+      "description": "Рассылать сообщения подписчикам через каналы."
+    },
+    {
+      "key": "rd-realtime",
+      "title": "Масштаб реального времени",
+      "description": "Связывать несколько серверов реального времени через Redis."
+    },
+    {
+      "key": "rd-keyspace",
+      "title": "События ключей",
+      "description": "Реагировать на изменения ключей."
+    },
+    {
+      "key": "rd-multi",
+      "title": "Транзакции Redis",
+      "description": "Выполнять группы команд атомарно."
+    },
+    {
+      "key": "rd-lua",
+      "title": "Скрипты",
+      "description": "Переносить логику на сервер Redis скриптами."
+    },
+    {
+      "key": "rd-locks",
+      "title": "Блокировки",
+      "description": "Безопасно делать распределённые блокировки на Redis."
+    },
+    {
+      "key": "rd-persist",
+      "title": "Сохранение на диск",
+      "description": "Настраивать сохранность данных Redis."
+    },
+    {
+      "key": "rd-replication",
+      "title": "Репликация",
+      "description": "Делать Redis устойчивым к падению сервера."
+    },
+    {
+      "key": "rd-cluster",
+      "title": "Кластер Redis",
+      "description": "Понимать шардирование Redis Cluster."
+    },
+    {
+      "key": "rd-monitor",
+      "title": "Наблюдение за Redis",
+      "description": "Следить за состоянием и производительностью Redis."
+    },
+    {
+      "key": "rd-security",
+      "title": "Безопасность Redis",
+      "description": "Защищать сервер Redis."
+    },
+    {
+      "key": "rd-production",
+      "title": "Redis в бою",
+      "description": "Готовить Redis к работе с настоящей нагрузкой."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "im-speed",
+      "type": "quiz.single_choice",
+      "title": "Скорость",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-why"
+      ],
+      "presentation": {
+        "question": "Почему Redis отвечает так быстро?",
+        "options": [
+          {
+            "id": "memory",
+            "text": "Данные хранятся в оперативной памяти"
+          },
+          {
+            "id": "disk",
+            "text": "Он пишет на самый быстрый диск"
+          },
+          {
+            "id": "cloud",
+            "text": "Он всегда в облаке"
+          },
+          {
+            "id": "magic",
+            "text": "Без причины"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "memory",
+        "explanation": "Доли миллисекунды на операцию."
+      }
+    },
+    {
+      "slug": "im-main",
+      "type": "quiz.single_choice",
+      "title": "Основная база",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-why"
+      ],
+      "presentation": {
+        "question": "Можно ли хранить в Redis единственную копию платежей?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, главные данные — в надёжной базе, Redis — для быстрого и временного"
+          },
+          {
+            "id": "yes",
+            "text": "Да, это лучший вариант"
+          },
+          {
+            "id": "sometimes",
+            "text": "Только по выходным"
+          },
+          {
+            "id": "none",
+            "text": "Redis не хранит данные"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Каждому хранилищу — своя задача."
+      }
+    },
+    {
+      "slug": "im-uses",
+      "type": "quiz.multiple_choice",
+      "title": "Применение",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "rd-why"
+      ],
+      "presentation": {
+        "question": "Для чего обычно используют Redis?",
+        "options": [
+          {
+            "id": "cache",
+            "text": "Кэш ответов"
+          },
+          {
+            "id": "session",
+            "text": "Сессии пользователей"
+          },
+          {
+            "id": "queue",
+            "text": "Очереди задач"
+          },
+          {
+            "id": "ledger",
+            "text": "Единственное хранилище бухгалтерии"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "cache",
+          "session",
+          "queue"
+        ],
+        "explanation": "Главные данные — в надёжной базе."
+      }
+    },
+    {
+      "slug": "rc-ping",
+      "type": "quiz.single_choice",
+      "title": "Проверка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-cli"
+      ],
+      "presentation": {
+        "question": "Что ответит Redis на команду PING?",
+        "options": [
+          {
+            "id": "pong",
+            "text": "PONG"
+          },
+          {
+            "id": "ok",
+            "text": "OK"
+          },
+          {
+            "id": "ping",
+            "text": "PING"
+          },
+          {
+            "id": "nil",
+            "text": "nil"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pong",
+        "explanation": "Сервер жив."
+      }
+    },
+    {
+      "slug": "rc-names",
+      "type": "quiz.single_choice",
+      "title": "Имена",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-cli"
+      ],
+      "presentation": {
+        "question": "Как принято называть ключи?",
+        "options": [
+          {
+            "id": "colon",
+            "text": "Частями через двоеточие: user:42:session"
+          },
+          {
+            "id": "random",
+            "text": "Случайными строками"
+          },
+          {
+            "id": "numbers",
+            "text": "Только числами"
+          },
+          {
+            "id": "spaces",
+            "text": "Словами через пробел"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "colon",
+        "explanation": "Понятно и группируется."
+      }
+    },
+    {
+      "slug": "rc-get",
+      "type": "quiz.short_text",
+      "title": "Чтение",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "rd-cli"
+      ],
+      "presentation": {
+        "question": "Какой командой прочитать значение строки по ключу?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "GET",
+          "get"
+        ],
+        "caseSensitive": false,
+        "explanation": "SET — записать."
+      }
+    },
+    {
+      "slug": "kt-ex",
+      "type": "quiz.single_choice",
+      "title": "Срок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-ttl"
+      ],
+      "presentation": {
+        "question": "Что делает `SET code 7731 EX 60`?",
+        "options": [
+          {
+            "id": "expire",
+            "text": "Записывает значение, которое исчезнет через 60 секунд"
+          },
+          {
+            "id": "repeat",
+            "text": "Повторяет запись 60 раз"
+          },
+          {
+            "id": "limit",
+            "text": "Ограничивает длину до 60"
+          },
+          {
+            "id": "none",
+            "text": "Ошибка"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "expire",
+        "explanation": "TTL покажет остаток."
+      }
+    },
+    {
+      "slug": "kt-keys",
+      "type": "quiz.single_choice",
+      "title": "KEYS",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-ttl"
+      ],
+      "presentation": {
+        "question": "Почему KEYS * опасна на боевом сервере?",
+        "options": [
+          {
+            "id": "block",
+            "text": "Она перебирает все ключи разом и блокирует Redis"
+          },
+          {
+            "id": "delete",
+            "text": "Она удаляет ключи"
+          },
+          {
+            "id": "slow",
+            "text": "Только чуть медленнее"
+          },
+          {
+            "id": "none",
+            "text": "Не опасна"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "block",
+        "explanation": "Используй SCAN."
+      }
+    },
+    {
+      "slug": "kt-ttl",
+      "type": "quiz.single_choice",
+      "title": "TTL",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-ttl"
+      ],
+      "presentation": {
+        "question": "Что возвращает TTL для ключа без срока жизни?",
+        "options": [
+          {
+            "id": "minus1",
+            "text": "-1"
+          },
+          {
+            "id": "zero",
+            "text": "0"
+          },
+          {
+            "id": "nil",
+            "text": "nil"
+          },
+          {
+            "id": "inf",
+            "text": "Бесконечность"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "minus1",
+        "explanation": "-2 — ключа нет вовсе."
+      }
+    },
+    {
+      "slug": "st-nx",
+      "type": "quiz.single_choice",
+      "title": "NX",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-strings"
+      ],
+      "presentation": {
+        "question": "Что делает SET key value NX?",
+        "options": [
+          {
+            "id": "absent",
+            "text": "Записывает, только если ключа ещё нет"
+          },
+          {
+            "id": "always",
+            "text": "Записывает всегда"
+          },
+          {
+            "id": "exists",
+            "text": "Только если ключ уже есть"
+          },
+          {
+            "id": "delete",
+            "text": "Удаляет ключ"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "absent",
+        "explanation": "XX — наоборот."
+      }
+    },
+    {
+      "slug": "st-mget",
+      "type": "quiz.single_choice",
+      "title": "Много ключей",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-strings"
+      ],
+      "presentation": {
+        "question": "Как прочитать десять ключей за одну поездку по сети?",
+        "options": [
+          {
+            "id": "mget",
+            "text": "MGET с перечислением ключей"
+          },
+          {
+            "id": "get10",
+            "text": "Десять отдельных GET с ожиданием каждого"
+          },
+          {
+            "id": "keys",
+            "text": "KEYS *"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mget",
+        "explanation": "Или конвейер."
+      }
+    },
+    {
+      "slug": "st-size",
+      "type": "quiz.single_choice",
+      "title": "Размер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-strings"
+      ],
+      "presentation": {
+        "question": "Что можно хранить в строке Redis?",
+        "options": [
+          {
+            "id": "bytes",
+            "text": "Любые байты до 512 МБ: текст, число, JSON"
+          },
+          {
+            "id": "text",
+            "text": "Только текст до 255 символов"
+          },
+          {
+            "id": "numbers",
+            "text": "Только числа"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bytes",
+        "explanation": "Самый универсальный тип."
+      }
+    },
+    {
+      "slug": "cn-new",
+      "type": "quiz.single_choice",
+      "title": "Новый ключ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-counters"
+      ],
+      "presentation": {
+        "question": "Что вернёт INCR для несуществующего ключа?",
+        "options": [
+          {
+            "id": "one",
+            "text": "1"
+          },
+          {
+            "id": "zero",
+            "text": "0"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          },
+          {
+            "id": "nil",
+            "text": "nil"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "Начинает с нуля и прибавляет."
+      }
+    },
+    {
+      "slug": "cn-race",
+      "type": "quiz.single_choice",
+      "title": "Гонки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-counters"
+      ],
+      "presentation": {
+        "question": "Почему INCR не теряет значения при тысяче одновременных клиентов?",
+        "options": [
+          {
+            "id": "atomic",
+            "text": "Redis выполняет команды по одной, каждая атомарна"
+          },
+          {
+            "id": "lock",
+            "text": "Нужно вручную ставить замок"
+          },
+          {
+            "id": "luck",
+            "text": "Везение"
+          },
+          {
+            "id": "no",
+            "text": "Он теряет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "atomic",
+        "explanation": "Однопоточная обработка команд."
+      }
+    },
+    {
+      "slug": "cn-cmd",
+      "type": "quiz.short_text",
+      "title": "Плюс десять",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "rd-counters"
+      ],
+      "presentation": {
+        "question": "Какой командой прибавить к счётчику 10? Только название."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "INCRBY",
+          "incrby"
+        ],
+        "caseSensitive": false,
+        "explanation": "INCRBY ключ 10."
+      }
+    },
+    {
+      "slug": "bh-hll",
+      "type": "quiz.single_choice",
+      "title": "HyperLogLog",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-bits"
+      ],
+      "presentation": {
+        "question": "Для чего HyperLogLog?",
+        "options": [
+          {
+            "id": "unique",
+            "text": "Приблизительный подсчёт уникальных значений при малой памяти"
+          },
+          {
+            "id": "exact",
+            "text": "Точный подсчёт любой ценой"
+          },
+          {
+            "id": "sort",
+            "text": "Сортировка"
+          },
+          {
+            "id": "queue",
+            "text": "Очереди"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "unique",
+        "explanation": "Погрешность около 1%."
+      }
+    },
+    {
+      "slug": "bh-bits",
+      "type": "quiz.single_choice",
+      "title": "Биты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-bits"
+      ],
+      "presentation": {
+        "question": "Сколько памяти займёт отметка «заходил сегодня» для миллиона пользователей в битовой карте?",
+        "options": [
+          {
+            "id": "kb",
+            "text": "Около 125 КБ"
+          },
+          {
+            "id": "gb",
+            "text": "Около 1 ГБ"
+          },
+          {
+            "id": "mb",
+            "text": "Около 100 МБ"
+          },
+          {
+            "id": "tb",
+            "text": "Терабайт"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "kb",
+        "explanation": "Один бит на пользователя."
+      }
+    },
+    {
+      "slug": "bh-count",
+      "type": "quiz.single_choice",
+      "title": "Подсчёт",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-bits"
+      ],
+      "presentation": {
+        "question": "Какая команда считает установленные биты?",
+        "options": [
+          {
+            "id": "bitcount",
+            "text": "BITCOUNT"
+          },
+          {
+            "id": "count",
+            "text": "COUNT"
+          },
+          {
+            "id": "len",
+            "text": "STRLEN"
+          },
+          {
+            "id": "incr",
+            "text": "INCR"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bitcount",
+        "explanation": "Сколько пользователей было активно."
+      }
+    },
+    {
+      "slug": "ls-trim",
+      "type": "quiz.single_choice",
+      "title": "Последние N",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-lists"
+      ],
+      "presentation": {
+        "question": "Как хранить только последние 10 элементов списка?",
+        "options": [
+          {
+            "id": "trim",
+            "text": "После LPUSH вызывать LTRIM 0 9"
+          },
+          {
+            "id": "delete",
+            "text": "Удалять список каждый раз"
+          },
+          {
+            "id": "ttl",
+            "text": "Поставить TTL"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "trim",
+        "explanation": "Список не растёт бесконечно."
+      }
+    },
+    {
+      "slug": "ls-brpop",
+      "type": "quiz.single_choice",
+      "title": "BRPOP",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-lists"
+      ],
+      "presentation": {
+        "question": "Что делает BRPOP, если список пуст?",
+        "options": [
+          {
+            "id": "wait",
+            "text": "Ждёт появления элемента заданное время"
+          },
+          {
+            "id": "error",
+            "text": "Сразу возвращает ошибку"
+          },
+          {
+            "id": "delete",
+            "text": "Удаляет ключ"
+          },
+          {
+            "id": "loop",
+            "text": "Крутится в цикле на клиенте"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "wait",
+        "explanation": "Блокирующее чтение."
+      }
+    },
+    {
+      "slug": "ls-lost",
+      "type": "quiz.single_choice",
+      "title": "Надёжность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-lists"
+      ],
+      "presentation": {
+        "question": "Чем рискует очередь на списке?",
+        "options": [
+          {
+            "id": "lost",
+            "text": "Задача теряется, если обработчик упал после чтения"
+          },
+          {
+            "id": "order",
+            "text": "Порядок всегда случайный"
+          },
+          {
+            "id": "size",
+            "text": "Список ограничен 10 элементами"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lost",
+        "explanation": "Для важного — потоки."
+      }
+    },
+    {
+      "slug": "se-dup",
+      "type": "quiz.single_choice",
+      "title": "Повтор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-sets"
+      ],
+      "presentation": {
+        "question": "Что будет при SADD уже существующего элемента?",
+        "options": [
+          {
+            "id": "ignore",
+            "text": "Ничего не добавится — множество хранит уникальные"
+          },
+          {
+            "id": "dup",
+            "text": "Появится дубликат"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка"
+          },
+          {
+            "id": "replace",
+            "text": "Удалит множество"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ignore",
+        "explanation": "Ответ — 0 добавленных."
+      }
+    },
+    {
+      "slug": "se-inter",
+      "type": "quiz.single_choice",
+      "title": "Пересечение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-sets"
+      ],
+      "presentation": {
+        "question": "Как найти пользователей, прошедших оба курса?",
+        "options": [
+          {
+            "id": "sinter",
+            "text": "SINTER двух множеств"
+          },
+          {
+            "id": "sunion",
+            "text": "SUNION"
+          },
+          {
+            "id": "sdiff",
+            "text": "SDIFF"
+          },
+          {
+            "id": "scard",
+            "text": "SCARD"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "sinter",
+        "explanation": "На сервере, без передачи всех данных."
+      }
+    },
+    {
+      "slug": "se-check",
+      "type": "quiz.short_text",
+      "title": "Проверка",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "rd-sets"
+      ],
+      "presentation": {
+        "question": "Какой командой проверить, есть ли элемент в множестве?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "SISMEMBER",
+          "sismember"
+        ],
+        "caseSensitive": false,
+        "explanation": "Вернёт 1 или 0."
+      }
+    },
+    {
+      "slug": "dm-index",
+      "type": "quiz.single_choice",
+      "title": "Поиск по почте",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-modeling"
+      ],
+      "presentation": {
+        "question": "Как быстро найти пользователя по почте в Redis?",
+        "options": [
+          {
+            "id": "index",
+            "text": "Завести ключ-индекс email → id и поддерживать его"
+          },
+          {
+            "id": "scan",
+            "text": "Перебирать все ключи SCAN"
+          },
+          {
+            "id": "sql",
+            "text": "Написать SQL-запрос"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "index",
+        "explanation": "Индексы — забота приложения."
+      }
+    },
+    {
+      "slug": "dm-big",
+      "type": "quiz.single_choice",
+      "title": "Большой ключ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-modeling"
+      ],
+      "presentation": {
+        "question": "Чем опасен хэш на миллионы полей?",
+        "options": [
+          {
+            "id": "block",
+            "text": "Его удаление и копирование блокирует сервер"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          },
+          {
+            "id": "lost",
+            "text": "Он теряет данные"
+          },
+          {
+            "id": "slowcli",
+            "text": "Только медленный redis-cli"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "block",
+        "explanation": "Дели на части."
+      }
+    },
+    {
+      "slug": "dm-first",
+      "type": "quiz.single_choice",
+      "title": "С чего начать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-modeling"
+      ],
+      "presentation": {
+        "question": "С чего начинают проектирование данных в Redis?",
+        "options": [
+          {
+            "id": "query",
+            "text": "С того, как данные будут читать"
+          },
+          {
+            "id": "types",
+            "text": "С выбора всех типов сразу"
+          },
+          {
+            "id": "memory",
+            "text": "С покупки памяти"
+          },
+          {
+            "id": "name",
+            "text": "С красивых имён"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "query",
+        "explanation": "Сначала вопрос."
+      }
+    },
+    {
+      "slug": "hs-field",
+      "type": "quiz.single_choice",
+      "title": "Одно поле",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-hashes"
+      ],
+      "presentation": {
+        "question": "Как увеличить одно числовое поле хэша?",
+        "options": [
+          {
+            "id": "hincr",
+            "text": "HINCRBY ключ поле 1"
+          },
+          {
+            "id": "get",
+            "text": "HGETALL, изменить и записать всё"
+          },
+          {
+            "id": "incr",
+            "text": "INCR ключ"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hincr",
+        "explanation": "Без чтения всего объекта."
+      }
+    },
+    {
+      "slug": "hs-json",
+      "type": "quiz.single_choice",
+      "title": "Выбор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-hashes"
+      ],
+      "presentation": {
+        "question": "Когда удобнее JSON-строка, а не хэш?",
+        "options": [
+          {
+            "id": "whole",
+            "text": "Когда объект всегда читают и пишут целиком"
+          },
+          {
+            "id": "field",
+            "text": "Когда часто меняют одно поле"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "count",
+            "text": "Для счётчиков"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "whole",
+        "explanation": "Например, кэш ответа API."
+      }
+    },
+    {
+      "slug": "hs-all",
+      "type": "quiz.short_text",
+      "title": "Все поля",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "rd-hashes"
+      ],
+      "presentation": {
+        "question": "Какой командой получить все поля и значения хэша?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "HGETALL",
+          "hgetall"
+        ],
+        "caseSensitive": false,
+        "explanation": "HGET — одно поле."
+      }
+    },
+    {
+      "slug": "zs-top",
+      "type": "quiz.single_choice",
+      "title": "Топ-10",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-zsets"
+      ],
+      "presentation": {
+        "question": "Как получить десять лучших по убыванию счёта?",
+        "options": [
+          {
+            "id": "rev",
+            "text": "ZREVRANGE ключ 0 9"
+          },
+          {
+            "id": "range",
+            "text": "ZRANGE ключ 0 9 по возрастанию"
+          },
+          {
+            "id": "sort",
+            "text": "SORT"
+          },
+          {
+            "id": "keys",
+            "text": "KEYS *"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rev",
+        "explanation": "WITHSCORES — вместе со счётом."
+      }
+    },
+    {
+      "slug": "zs-rank",
+      "type": "quiz.single_choice",
+      "title": "Место",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-zsets"
+      ],
+      "presentation": {
+        "question": "Как узнать место пользователя в рейтинге?",
+        "options": [
+          {
+            "id": "rank",
+            "text": "ZREVRANK ключ участник"
+          },
+          {
+            "id": "count",
+            "text": "ZCARD"
+          },
+          {
+            "id": "score",
+            "text": "ZSCORE"
+          },
+          {
+            "id": "none",
+            "text": "Перебрать всех"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rank",
+        "explanation": "ZSCORE — сам счёт."
+      }
+    },
+    {
+      "slug": "zs-add",
+      "type": "quiz.single_choice",
+      "title": "Начислить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-zsets"
+      ],
+      "presentation": {
+        "question": "Как прибавить участнику 50 очков?",
+        "options": [
+          {
+            "id": "zincr",
+            "text": "ZINCRBY ключ 50 участник"
+          },
+          {
+            "id": "incr",
+            "text": "INCR участник"
+          },
+          {
+            "id": "hset",
+            "text": "HSET"
+          },
+          {
+            "id": "sadd",
+            "text": "SADD"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "zincr",
+        "explanation": "Порядок пересчитается сам."
+      }
+    },
+    {
+      "slug": "tsr-range",
+      "type": "quiz.single_choice",
+      "title": "Период",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-time"
+      ],
+      "presentation": {
+        "question": "Как получить события за последний час из множества со временем?",
+        "options": [
+          {
+            "id": "byscore",
+            "text": "ZRANGEBYSCORE от времени час назад до +inf"
+          },
+          {
+            "id": "lrange",
+            "text": "LRANGE"
+          },
+          {
+            "id": "scan",
+            "text": "SCAN"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "byscore",
+        "explanation": "Счёт — время."
+      }
+    },
+    {
+      "slug": "tsr-clean",
+      "type": "quiz.single_choice",
+      "title": "Очистка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-time"
+      ],
+      "presentation": {
+        "question": "Как удалить события старше суток?",
+        "options": [
+          {
+            "id": "rem",
+            "text": "ZREMRANGEBYSCORE до отметки сутки назад"
+          },
+          {
+            "id": "del",
+            "text": "Удалить весь ключ"
+          },
+          {
+            "id": "ttl",
+            "text": "Только TTL на каждый элемент"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rem",
+        "explanation": "Окно не растёт."
+      }
+    },
+    {
+      "slug": "tsr-geo",
+      "type": "quiz.single_choice",
+      "title": "Рядом",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-time"
+      ],
+      "presentation": {
+        "question": "Какая команда найдёт точки в радиусе 5 км?",
+        "options": [
+          {
+            "id": "geosearch",
+            "text": "GEOSEARCH"
+          },
+          {
+            "id": "zrange",
+            "text": "ZRANGE"
+          },
+          {
+            "id": "sinter",
+            "text": "SINTER"
+          },
+          {
+            "id": "get",
+            "text": "GET"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "geosearch",
+        "explanation": "GEOADD добавляет точки."
+      }
+    },
+    {
+      "slug": "ca-miss",
+      "type": "quiz.single_choice",
+      "title": "Промах",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-cacheaside"
+      ],
+      "presentation": {
+        "question": "Что делает приложение, если в кэше нет ключа?",
+        "options": [
+          {
+            "id": "db",
+            "text": "Читает из базы, кладёт в кэш со сроком и возвращает"
+          },
+          {
+            "id": "error",
+            "text": "Возвращает ошибку"
+          },
+          {
+            "id": "empty",
+            "text": "Возвращает пустой ответ"
+          },
+          {
+            "id": "wait",
+            "text": "Ждёт, пока ключ появится"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "db",
+        "explanation": "Cache-aside."
+      }
+    },
+    {
+      "slug": "ca-ttl",
+      "type": "quiz.single_choice",
+      "title": "Срок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-cacheaside"
+      ],
+      "presentation": {
+        "question": "Почему ключу кэша нужен срок жизни?",
+        "options": [
+          {
+            "id": "stale",
+            "text": "Иначе устаревшие данные останутся навсегда"
+          },
+          {
+            "id": "speed",
+            "text": "Без срока Redis медленнее"
+          },
+          {
+            "id": "law",
+            "text": "По закону"
+          },
+          {
+            "id": "none",
+            "text": "Не нужен"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "stale",
+        "explanation": "Кэш сам обновится."
+      }
+    },
+    {
+      "slug": "ca-what",
+      "type": "quiz.single_choice",
+      "title": "Что кэшировать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-cacheaside"
+      ],
+      "presentation": {
+        "question": "Что лучше всего подходит для кэша?",
+        "options": [
+          {
+            "id": "often",
+            "text": "Часто читаемые и дорогие в расчёте данные"
+          },
+          {
+            "id": "balance",
+            "text": "Баланс счёта, который должен быть точным всегда"
+          },
+          {
+            "id": "password",
+            "text": "Пароли"
+          },
+          {
+            "id": "all",
+            "text": "Всё подряд"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "often",
+        "explanation": "Допустима небольшая устарелость."
+      }
+    },
+    {
+      "slug": "iv-order",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-invalidate"
+      ],
+      "presentation": {
+        "question": "В каком порядке обновлять базу и кэш?",
+        "options": [
+          {
+            "id": "dbfirst",
+            "text": "Сначала записать в базу, потом удалить ключ кэша"
+          },
+          {
+            "id": "cachefirst",
+            "text": "Сначала удалить кэш, потом записать в базу, и ничего больше"
+          },
+          {
+            "id": "same",
+            "text": "Не важно"
+          },
+          {
+            "id": "never",
+            "text": "Кэш никогда не удаляют"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dbfirst",
+        "explanation": "Иначе в кэш может попасть старое."
+      }
+    },
+    {
+      "slug": "iv-version",
+      "type": "quiz.single_choice",
+      "title": "Версии",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-invalidate"
+      ],
+      "presentation": {
+        "question": "Как сбросить сразу все ключи каталога?",
+        "options": [
+          {
+            "id": "version",
+            "text": "Сменить версию в имени ключей"
+          },
+          {
+            "id": "keys",
+            "text": "KEYS catalog:* и удалить"
+          },
+          {
+            "id": "flush",
+            "text": "FLUSHALL на боевом сервере"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "version",
+        "explanation": "Старые истекут сами."
+      }
+    },
+    {
+      "slug": "iv-safety",
+      "type": "quiz.single_choice",
+      "title": "Страховка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-invalidate"
+      ],
+      "presentation": {
+        "question": "Что спасает, если сброс кэша где-то забыли?",
+        "options": [
+          {
+            "id": "ttl",
+            "text": "Срок жизни ключей"
+          },
+          {
+            "id": "luck",
+            "text": "Удача"
+          },
+          {
+            "id": "restart",
+            "text": "Перезапуск сервера каждую минуту"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ttl",
+        "explanation": "Кэш устаревает сам."
+      }
+    },
+    {
+      "slug": "se-stampede",
+      "type": "quiz.single_choice",
+      "title": "Наплыв",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-eviction"
+      ],
+      "presentation": {
+        "question": "Что такое cache stampede?",
+        "options": [
+          {
+            "id": "herd",
+            "text": "Множество запросов одновременно пересчитывает истёкший ключ и нагружает базу"
+          },
+          {
+            "id": "fast",
+            "text": "Слишком быстрый кэш"
+          },
+          {
+            "id": "empty",
+            "text": "Пустая база"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "herd",
+        "explanation": "Один пересчитывает, остальные ждут."
+      }
+    },
+    {
+      "slug": "se-jitter",
+      "type": "quiz.single_choice",
+      "title": "Разброс",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-eviction"
+      ],
+      "presentation": {
+        "question": "Зачем добавлять случайные секунды к сроку жизни?",
+        "options": [
+          {
+            "id": "spread",
+            "text": "Чтобы ключи не истекали все одновременно"
+          },
+          {
+            "id": "secure",
+            "text": "Для безопасности"
+          },
+          {
+            "id": "random",
+            "text": "Ради веселья"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "spread",
+        "explanation": "Нагрузка размазывается."
+      }
+    },
+    {
+      "slug": "se-lru",
+      "type": "quiz.single_choice",
+      "title": "allkeys-lru",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-eviction"
+      ],
+      "presentation": {
+        "question": "Что делает политика allkeys-lru при нехватке памяти?",
+        "options": [
+          {
+            "id": "lru",
+            "text": "Удаляет давно не использованные ключи"
+          },
+          {
+            "id": "error",
+            "text": "Отказывает в записи всегда"
+          },
+          {
+            "id": "newest",
+            "text": "Удаляет самые новые"
+          },
+          {
+            "id": "all",
+            "text": "Удаляет всё"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lru",
+        "explanation": "Подходит для чистого кэша."
+      }
+    },
+    {
+      "slug": "ss-cookie",
+      "type": "quiz.single_choice",
+      "title": "Cookie",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-sessions"
+      ],
+      "presentation": {
+        "question": "Что лежит в cookie при сессиях в Redis?",
+        "options": [
+          {
+            "id": "id",
+            "text": "Случайный идентификатор сессии"
+          },
+          {
+            "id": "data",
+            "text": "Все данные пользователя"
+          },
+          {
+            "id": "password",
+            "text": "Пароль"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "id",
+        "explanation": "Данные — на сервере."
+      }
+    },
+    {
+      "slug": "ss-extend",
+      "type": "quiz.single_choice",
+      "title": "Продление",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-sessions"
+      ],
+      "presentation": {
+        "question": "Как не разлогинивать активного пользователя?",
+        "options": [
+          {
+            "id": "expire",
+            "text": "Продлевать срок ключа сессии при каждом запросе"
+          },
+          {
+            "id": "forever",
+            "text": "Делать сессии вечными"
+          },
+          {
+            "id": "ask",
+            "text": "Спрашивать пароль каждый час"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "expire",
+        "explanation": "Скользящий срок."
+      }
+    },
+    {
+      "slug": "ss-all",
+      "type": "quiz.single_choice",
+      "title": "Выход везде",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-sessions"
+      ],
+      "presentation": {
+        "question": "Как реализовать «выйти на всех устройствах»?",
+        "options": [
+          {
+            "id": "set",
+            "text": "Хранить id сессий пользователя во множестве и удалить все"
+          },
+          {
+            "id": "cookie",
+            "text": "Удалить cookie на текущем устройстве"
+          },
+          {
+            "id": "flush",
+            "text": "FLUSHALL"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "set",
+        "explanation": "Одна команда на каждую сессию."
+      }
+    },
+    {
+      "slug": "rl-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-ratelimit"
+      ],
+      "presentation": {
+        "question": "Зачем ограничивать попытки входа?",
+        "options": [
+          {
+            "id": "brute",
+            "text": "Чтобы перебор паролей стал бессмысленным"
+          },
+          {
+            "id": "speed",
+            "text": "Чтобы вход был быстрее"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "brute",
+        "explanation": "5 попыток в минуту."
+      }
+    },
+    {
+      "slug": "rl-code",
+      "type": "quiz.single_choice",
+      "title": "Код ответа",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-ratelimit"
+      ],
+      "presentation": {
+        "question": "Какой код ответа при превышении лимита?",
+        "options": [
+          {
+            "id": "429",
+            "text": "429 Too Many Requests"
+          },
+          {
+            "id": "404",
+            "text": "404"
+          },
+          {
+            "id": "500",
+            "text": "500"
+          },
+          {
+            "id": "200",
+            "text": "200"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "429",
+        "explanation": "С заголовком Retry-After."
+      }
+    },
+    {
+      "slug": "rl-sliding",
+      "type": "quiz.single_choice",
+      "title": "Скользящее окно",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-ratelimit"
+      ],
+      "presentation": {
+        "question": "Чем скользящее окно лучше фиксированного?",
+        "options": [
+          {
+            "id": "edge",
+            "text": "Нет всплеска запросов на границе окон"
+          },
+          {
+            "id": "simple",
+            "text": "Оно проще"
+          },
+          {
+            "id": "memory",
+            "text": "Не занимает памяти"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "edge",
+        "explanation": "Точнее, но дороже."
+      }
+    },
+    {
+      "slug": "id-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-idempotency"
+      ],
+      "presentation": {
+        "question": "От чего защищает ключ идемпотентности?",
+        "options": [
+          {
+            "id": "double",
+            "text": "От повторной обработки одной операции, например двойной оплаты"
+          },
+          {
+            "id": "xss",
+            "text": "От XSS"
+          },
+          {
+            "id": "slow",
+            "text": "От медленных запросов"
+          },
+          {
+            "id": "none",
+            "text": "Ни от чего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "double",
+        "explanation": "Сеть ненадёжна."
+      }
+    },
+    {
+      "slug": "id-nx",
+      "type": "quiz.single_choice",
+      "title": "Проверка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-idempotency"
+      ],
+      "presentation": {
+        "question": "Какая команда атомарно отмечает, что операция начата?",
+        "options": [
+          {
+            "id": "setnx",
+            "text": "SET ключ значение NX"
+          },
+          {
+            "id": "get",
+            "text": "GET"
+          },
+          {
+            "id": "incr",
+            "text": "INCR без условий"
+          },
+          {
+            "id": "del",
+            "text": "DEL"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "setnx",
+        "explanation": "Не получилось — уже обрабатывается."
+      }
+    },
+    {
+      "slug": "id-repeat",
+      "type": "quiz.single_choice",
+      "title": "Повтор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-idempotency"
+      ],
+      "presentation": {
+        "question": "Что лучше вернуть на повтор уже выполненной операции?",
+        "options": [
+          {
+            "id": "same",
+            "text": "Сохранённый результат первой обработки"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку 500"
+          },
+          {
+            "id": "new",
+            "text": "Выполнить заново"
+          },
+          {
+            "id": "nothing",
+            "text": "Пустой ответ"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "same",
+        "explanation": "Клиент может повторять спокойно."
+      }
+    },
+    {
+      "slug": "str-id",
+      "type": "quiz.single_choice",
+      "title": "Идентификатор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-streams"
+      ],
+      "presentation": {
+        "question": "Из чего состоит идентификатор записи потока?",
+        "options": [
+          {
+            "id": "time",
+            "text": "Из времени в миллисекундах и порядкового номера"
+          },
+          {
+            "id": "random",
+            "text": "Из случайной строки"
+          },
+          {
+            "id": "user",
+            "text": "Из имени пользователя"
+          },
+          {
+            "id": "none",
+            "text": "Его нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "time",
+        "explanation": "Записи упорядочены по времени."
+      }
+    },
+    {
+      "slug": "str-keep",
+      "type": "quiz.single_choice",
+      "title": "Чтение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-streams"
+      ],
+      "presentation": {
+        "question": "Удаляется ли запись потока после чтения?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, её можно перечитать"
+          },
+          {
+            "id": "yes",
+            "text": "Да, как в списке"
+          },
+          {
+            "id": "sometimes",
+            "text": "Только по выходным"
+          },
+          {
+            "id": "error",
+            "text": "Чтение невозможно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Поэтому задачи не теряются."
+      }
+    },
+    {
+      "slug": "str-maxlen",
+      "type": "quiz.single_choice",
+      "title": "Длина",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-streams"
+      ],
+      "presentation": {
+        "question": "Зачем MAXLEN в XADD?",
+        "options": [
+          {
+            "id": "limit",
+            "text": "Ограничить длину потока и память"
+          },
+          {
+            "id": "speed",
+            "text": "Ускорить запись в 10 раз"
+          },
+          {
+            "id": "secure",
+            "text": "Для безопасности"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "limit",
+        "explanation": "Тильда — примерно, зато быстро."
+      }
+    },
+    {
+      "slug": "cg-ack",
+      "type": "quiz.single_choice",
+      "title": "XACK",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-groups"
+      ],
+      "presentation": {
+        "question": "Что будет с задачей, которую обработчик не подтвердил XACK?",
+        "options": [
+          {
+            "id": "pending",
+            "text": "Она останется в ожидающих и её можно забрать снова"
+          },
+          {
+            "id": "lost",
+            "text": "Исчезнет навсегда"
+          },
+          {
+            "id": "done",
+            "text": "Будет считаться выполненной"
+          },
+          {
+            "id": "error",
+            "text": "Остановит поток"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pending",
+        "explanation": "Надёжная доставка."
+      }
+    },
+    {
+      "slug": "cg-claim",
+      "type": "quiz.single_choice",
+      "title": "Зависшие",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-groups"
+      ],
+      "presentation": {
+        "question": "Как другой обработчик заберёт задачи упавшего?",
+        "options": [
+          {
+            "id": "claim",
+            "text": "XAUTOCLAIM по времени ожидания"
+          },
+          {
+            "id": "del",
+            "text": "Удалить поток"
+          },
+          {
+            "id": "restart",
+            "text": "Перезапустить Redis"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "claim",
+        "explanation": "Очередь не останавливается."
+      }
+    },
+    {
+      "slug": "cg-twice",
+      "type": "quiz.single_choice",
+      "title": "Дважды",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-groups"
+      ],
+      "presentation": {
+        "question": "Почему обработчик задачи должен быть идемпотентным?",
+        "options": [
+          {
+            "id": "redeliver",
+            "text": "Задача может прийти повторно, если упасть до XACK"
+          },
+          {
+            "id": "law",
+            "text": "По закону"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "none",
+            "text": "Не должен"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "redeliver",
+        "explanation": "Проверяй отметку выполнения."
+      }
+    },
+    {
+      "slug": "jq-backoff",
+      "type": "quiz.single_choice",
+      "title": "Повторы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-jobs"
+      ],
+      "presentation": {
+        "question": "Зачем повторять задачу с растущей паузой?",
+        "options": [
+          {
+            "id": "recover",
+            "text": "Чтобы пережить временный сбой внешнего сервиса, не перегружая его"
+          },
+          {
+            "id": "slow",
+            "text": "Чтобы замедлить систему"
+          },
+          {
+            "id": "cost",
+            "text": "Чтобы потратить деньги"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "recover",
+        "explanation": "1, 2, 4, 8 секунд."
+      }
+    },
+    {
+      "slug": "jq-delay",
+      "type": "quiz.single_choice",
+      "title": "Отложенная",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-jobs"
+      ],
+      "presentation": {
+        "question": "Как отправить напоминание через сутки?",
+        "options": [
+          {
+            "id": "delay",
+            "text": "Добавить задачу с задержкой delay"
+          },
+          {
+            "id": "sleep",
+            "text": "sleep в обработчике на сутки"
+          },
+          {
+            "id": "cron",
+            "text": "Только системный cron"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "delay",
+        "explanation": "Или repeat для расписания."
+      }
+    },
+    {
+      "slug": "jq-own",
+      "type": "quiz.single_choice",
+      "title": "Своя очередь",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-jobs"
+      ],
+      "presentation": {
+        "question": "Почему лучше взять готовую библиотеку очередей?",
+        "options": [
+          {
+            "id": "solved",
+            "text": "Повторы, задержки, статусы и зависшие задачи уже решены"
+          },
+          {
+            "id": "law",
+            "text": "По закону"
+          },
+          {
+            "id": "fast",
+            "text": "Она всегда в 100 раз быстрее"
+          },
+          {
+            "id": "none",
+            "text": "Не лучше"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "solved",
+        "explanation": "BullMQ, Celery, Sidekiq."
+      }
+    },
+    {
+      "slug": "ps-offline",
+      "type": "quiz.single_choice",
+      "title": "Офлайн-подписчик",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-pubsub"
+      ],
+      "presentation": {
+        "question": "Получит ли сообщение подписчик, который подключился после PUBLISH?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, Pub/Sub не хранит сообщения"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "later",
+            "text": "Да, через минуту"
+          },
+          {
+            "id": "email",
+            "text": "Получит письмом"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Для надёжности — потоки."
+      }
+    },
+    {
+      "slug": "ps-pattern",
+      "type": "quiz.single_choice",
+      "title": "Шаблон",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-pubsub"
+      ],
+      "presentation": {
+        "question": "Как подписаться на все каналы чатов сразу?",
+        "options": [
+          {
+            "id": "psub",
+            "text": "PSUBSCRIBE chat:*"
+          },
+          {
+            "id": "sub",
+            "text": "SUBSCRIBE *"
+          },
+          {
+            "id": "keys",
+            "text": "KEYS chat:*"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "psub",
+        "explanation": "Подписка по шаблону."
+      }
+    },
+    {
+      "slug": "ps-conn",
+      "type": "quiz.single_choice",
+      "title": "Соединение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-pubsub"
+      ],
+      "presentation": {
+        "question": "Почему для подписки нужно отдельное соединение?",
+        "options": [
+          {
+            "id": "busy",
+            "text": "В режиме подписки соединение не выполняет обычные команды"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "law",
+            "text": "По закону"
+          },
+          {
+            "id": "none",
+            "text": "Не нужно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "busy",
+        "explanation": "Иначе клиент зависнет."
+      }
+    },
+    {
+      "slug": "rs-problem",
+      "type": "quiz.single_choice",
+      "title": "Проблема",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-realtime"
+      ],
+      "presentation": {
+        "question": "Почему чат на двух серверах без общей шины не работает?",
+        "options": [
+          {
+            "id": "split",
+            "text": "Клиенты на разных серверах не получают сообщения друг друга"
+          },
+          {
+            "id": "slow",
+            "text": "Он медленный"
+          },
+          {
+            "id": "tls",
+            "text": "Нет HTTPS"
+          },
+          {
+            "id": "none",
+            "text": "Работает"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "split",
+        "explanation": "Нужна общая шина."
+      }
+    },
+    {
+      "slug": "rs-online",
+      "type": "quiz.single_choice",
+      "title": "Онлайн",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-realtime"
+      ],
+      "presentation": {
+        "question": "Как отмечать, что пользователь в сети?",
+        "options": [
+          {
+            "id": "ttl",
+            "text": "Ключом с коротким сроком, продлеваемым сердцебиением"
+          },
+          {
+            "id": "forever",
+            "text": "Ключом навсегда"
+          },
+          {
+            "id": "db",
+            "text": "Записью в основную базу каждую секунду"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ttl",
+        "explanation": "Перестал отвечать — ключ истёк."
+      }
+    },
+    {
+      "slug": "rs-adapter",
+      "type": "quiz.single_choice",
+      "title": "Адаптер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-realtime"
+      ],
+      "presentation": {
+        "question": "Что делает адаптер Redis для Socket.IO?",
+        "options": [
+          {
+            "id": "bus",
+            "text": "Рассылает события между экземплярами сервера через Redis"
+          },
+          {
+            "id": "db",
+            "text": "Хранит базу"
+          },
+          {
+            "id": "css",
+            "text": "Стили"
+          },
+          {
+            "id": "auth",
+            "text": "Вход"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bus",
+        "explanation": "Масштабирование одной настройкой."
+      }
+    },
+    {
+      "slug": "ke-expired",
+      "type": "quiz.single_choice",
+      "title": "Истечение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-keyspace"
+      ],
+      "presentation": {
+        "question": "Можно ли полностью полагаться на событие истечения ключа для оплаты брони?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, оно может опоздать или потеряться — нужна проверка по расписанию"
+          },
+          {
+            "id": "yes",
+            "text": "Да, оно гарантировано"
+          },
+          {
+            "id": "always",
+            "text": "Да, если ключ короткий"
+          },
+          {
+            "id": "none",
+            "text": "События нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Удобство, а не гарантия."
+      }
+    },
+    {
+      "slug": "ke-config",
+      "type": "quiz.single_choice",
+      "title": "Включить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-keyspace"
+      ],
+      "presentation": {
+        "question": "Что нужно, чтобы Redis публиковал события об истечении ключей?",
+        "options": [
+          {
+            "id": "config",
+            "text": "Настроить notify-keyspace-events"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего, включено всегда"
+          },
+          {
+            "id": "restart",
+            "text": "Перезапустить сервер"
+          },
+          {
+            "id": "module",
+            "text": "Установить модуль"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "config",
+        "explanation": "По умолчанию выключено."
+      }
+    },
+    {
+      "slug": "ke-client",
+      "type": "quiz.single_choice",
+      "title": "Кэш на клиенте",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-keyspace"
+      ],
+      "presentation": {
+        "question": "Что даёт кэширование на стороне клиента?",
+        "options": [
+          {
+            "id": "local",
+            "text": "Горячие ключи читаются из памяти приложения, Redis сообщает об изменениях"
+          },
+          {
+            "id": "disk",
+            "text": "Запись на диск"
+          },
+          {
+            "id": "backup",
+            "text": "Резервную копию"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "local",
+        "explanation": "Без сети на чтение."
+      }
+    },
+    {
+      "slug": "tx-rollback",
+      "type": "quiz.single_choice",
+      "title": "Откат",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-multi"
+      ],
+      "presentation": {
+        "question": "Что будет, если одна команда внутри MULTI/EXEC завершилась ошибкой?",
+        "options": [
+          {
+            "id": "continue",
+            "text": "Остальные команды всё равно выполнятся — отката нет"
+          },
+          {
+            "id": "rollback",
+            "text": "Все отменятся, как в SQL"
+          },
+          {
+            "id": "stop",
+            "text": "Сервер остановится"
+          },
+          {
+            "id": "retry",
+            "text": "Redis повторит её"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "continue",
+        "explanation": "Проверяй условия заранее."
+      }
+    },
+    {
+      "slug": "tx-watch",
+      "type": "quiz.single_choice",
+      "title": "WATCH",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-multi"
+      ],
+      "presentation": {
+        "question": "Что делает WATCH перед транзакцией?",
+        "options": [
+          {
+            "id": "cancel",
+            "text": "Отменяет EXEC, если наблюдаемый ключ изменили"
+          },
+          {
+            "id": "lock",
+            "text": "Блокирует ключ для всех"
+          },
+          {
+            "id": "log",
+            "text": "Пишет в журнал"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cancel",
+        "explanation": "Оптимистичная блокировка."
+      }
+    },
+    {
+      "slug": "tx-atomic",
+      "type": "quiz.single_choice",
+      "title": "Неделимость",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-multi"
+      ],
+      "presentation": {
+        "question": "Могут ли чужие команды выполниться между командами MULTI и EXEC?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, пачка выполняется подряд"
+          },
+          {
+            "id": "yes",
+            "text": "Да, в любой момент"
+          },
+          {
+            "id": "half",
+            "text": "Только чтение"
+          },
+          {
+            "id": "none",
+            "text": "Нет такого"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Однопоточная обработка."
+      }
+    },
+    {
+      "slug": "lu-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-lua"
+      ],
+      "presentation": {
+        "question": "Зачем писать скрипт Lua вместо нескольких команд из приложения?",
+        "options": [
+          {
+            "id": "atomic",
+            "text": "Логика с условиями выполнится атомарно и без лишних поездок по сети"
+          },
+          {
+            "id": "pretty",
+            "text": "Красивее код"
+          },
+          {
+            "id": "secure",
+            "text": "Он шифрует данные"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "atomic",
+        "explanation": "Нет гонок между чтением и записью."
+      }
+    },
+    {
+      "slug": "lu-long",
+      "type": "quiz.single_choice",
+      "title": "Долгий скрипт",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-lua"
+      ],
+      "presentation": {
+        "question": "Чем опасен долгий скрипт?",
+        "options": [
+          {
+            "id": "block",
+            "text": "Он блокирует Redis для всех остальных клиентов"
+          },
+          {
+            "id": "memory",
+            "text": "Только памятью"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          },
+          {
+            "id": "disk",
+            "text": "Он пишет на диск"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "block",
+        "explanation": "Скрипт — короткий."
+      }
+    },
+    {
+      "slug": "lu-fn",
+      "type": "quiz.single_choice",
+      "title": "Функции",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-lua"
+      ],
+      "presentation": {
+        "question": "Чем удобны функции Redis (FUNCTION LOAD)?",
+        "options": [
+          {
+            "id": "stored",
+            "text": "Логика хранится на сервере и вызывается по имени"
+          },
+          {
+            "id": "fast",
+            "text": "Они всегда быстрее в 100 раз"
+          },
+          {
+            "id": "sql",
+            "text": "Они на SQL"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "stored",
+        "explanation": "Вызов — FCALL."
+      }
+    },
+    {
+      "slug": "lk-acquire",
+      "type": "quiz.single_choice",
+      "title": "Захват",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-locks"
+      ],
+      "presentation": {
+        "question": "Какая команда атомарно захватывает блокировку со сроком?",
+        "options": [
+          {
+            "id": "setnx",
+            "text": "SET ключ токен NX PX 30000"
+          },
+          {
+            "id": "get",
+            "text": "GET ключ"
+          },
+          {
+            "id": "incr",
+            "text": "INCR ключ"
+          },
+          {
+            "id": "keys",
+            "text": "KEYS lock:*"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "setnx",
+        "explanation": "Только если её ещё нет."
+      }
+    },
+    {
+      "slug": "lk-token",
+      "type": "quiz.single_choice",
+      "title": "Токен",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-locks"
+      ],
+      "presentation": {
+        "question": "Зачем при снятии блокировки проверять токен?",
+        "options": [
+          {
+            "id": "own",
+            "text": "Чтобы не удалить чужую блокировку после истечения своей"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "log",
+            "text": "Для журнала"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "own",
+        "explanation": "Скрипт «удали, если моё»."
+      }
+    },
+    {
+      "slug": "lk-expire",
+      "type": "quiz.single_choice",
+      "title": "Срок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-locks"
+      ],
+      "presentation": {
+        "question": "Что произойдёт, если работа длится дольше срока блокировки?",
+        "options": [
+          {
+            "id": "second",
+            "text": "Блокировка истечёт, и задачу может начать второй сервер"
+          },
+          {
+            "id": "wait",
+            "text": "Redis продлит её сам"
+          },
+          {
+            "id": "error",
+            "text": "Redis выдаст ошибку"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "second",
+        "explanation": "Продлевай или бери запас."
+      }
+    },
+    {
+      "slug": "pr-rdb",
+      "type": "quiz.single_choice",
+      "title": "RDB",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-persist"
+      ],
+      "presentation": {
+        "question": "Что теряется при сбое, если включены только снимки RDB?",
+        "options": [
+          {
+            "id": "since",
+            "text": "Изменения после последнего снимка"
+          },
+          {
+            "id": "all",
+            "text": "Всё всегда"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          },
+          {
+            "id": "keys",
+            "text": "Только имена ключей"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "since",
+        "explanation": "AOF уменьшает потери."
+      }
+    },
+    {
+      "slug": "pr-aof",
+      "type": "quiz.single_choice",
+      "title": "AOF",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-persist"
+      ],
+      "presentation": {
+        "question": "Сколько данных теряется с AOF и appendfsync everysec?",
+        "options": [
+          {
+            "id": "second",
+            "text": "Не больше примерно секунды"
+          },
+          {
+            "id": "hour",
+            "text": "До часа"
+          },
+          {
+            "id": "all",
+            "text": "Всё"
+          },
+          {
+            "id": "day",
+            "text": "День"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "second",
+        "explanation": "Компромисс скорости и сохранности."
+      }
+    },
+    {
+      "slug": "pr-cache",
+      "type": "quiz.single_choice",
+      "title": "Кэш",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-persist"
+      ],
+      "presentation": {
+        "question": "Нужно ли сохранение на диск, если Redis — только кэш?",
+        "options": [
+          {
+            "id": "optional",
+            "text": "Часто нет: кэш наполнится заново"
+          },
+          {
+            "id": "always",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "law",
+            "text": "По закону да"
+          },
+          {
+            "id": "never",
+            "text": "Сохранение невозможно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "optional",
+        "explanation": "Меньше нагрузки на диск."
+      }
+    },
+    {
+      "slug": "rp-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем реплики",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-replication"
+      ],
+      "presentation": {
+        "question": "Что дают реплики Redis?",
+        "options": [
+          {
+            "id": "failover",
+            "text": "Возможность быстро заменить упавший ведущий сервер и читать с копий"
+          },
+          {
+            "id": "speed",
+            "text": "Ускорение записи в 10 раз"
+          },
+          {
+            "id": "sql",
+            "text": "SQL-запросы"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "failover",
+        "explanation": "Копии ведущего."
+      }
+    },
+    {
+      "slug": "rp-async",
+      "type": "quiz.single_choice",
+      "title": "Асинхронность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-replication"
+      ],
+      "presentation": {
+        "question": "Могут ли потеряться последние записи при внезапном падении ведущего?",
+        "options": [
+          {
+            "id": "yes",
+            "text": "Да, репликация асинхронная"
+          },
+          {
+            "id": "no",
+            "text": "Нет, никогда"
+          },
+          {
+            "id": "only",
+            "text": "Только по выходным"
+          },
+          {
+            "id": "none",
+            "text": "Данных нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "yes",
+        "explanation": "Учитывай для важного."
+      }
+    },
+    {
+      "slug": "rp-sentinel",
+      "type": "quiz.single_choice",
+      "title": "Sentinel",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-replication"
+      ],
+      "presentation": {
+        "question": "Что делает Sentinel?",
+        "options": [
+          {
+            "id": "watch",
+            "text": "Следит за ведущим и при падении назначает новый из реплик"
+          },
+          {
+            "id": "backup",
+            "text": "Только делает копии"
+          },
+          {
+            "id": "cache",
+            "text": "Кэширует запросы"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "watch",
+        "explanation": "Переключение без человека."
+      }
+    },
+    {
+      "slug": "cl-slot",
+      "type": "quiz.single_choice",
+      "title": "Слоты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-cluster"
+      ],
+      "presentation": {
+        "question": "На сколько слотов делит ключи Redis Cluster?",
+        "options": [
+          {
+            "id": "16384",
+            "text": "16384"
+          },
+          {
+            "id": "10",
+            "text": "10"
+          },
+          {
+            "id": "256",
+            "text": "256"
+          },
+          {
+            "id": "infinite",
+            "text": "Бесконечно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "16384",
+        "explanation": "Слоты распределены по серверам."
+      }
+    },
+    {
+      "slug": "cl-tag",
+      "type": "quiz.single_choice",
+      "title": "Хэш-тег",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-cluster"
+      ],
+      "presentation": {
+        "question": "Зачем хэш-тег {42} в именах ключей?",
+        "options": [
+          {
+            "id": "together",
+            "text": "Чтобы связанные ключи попали в один слот и на один сервер"
+          },
+          {
+            "id": "secure",
+            "text": "Для шифрования"
+          },
+          {
+            "id": "sort",
+            "text": "Для сортировки"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "together",
+        "explanation": "Нужно для транзакций и скриптов."
+      }
+    },
+    {
+      "slug": "cl-need",
+      "type": "quiz.single_choice",
+      "title": "Нужен ли",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-cluster"
+      ],
+      "presentation": {
+        "question": "Когда действительно нужен Redis Cluster?",
+        "options": [
+          {
+            "id": "big",
+            "text": "Когда данных или нагрузки больше, чем выдерживает один сервер"
+          },
+          {
+            "id": "always",
+            "text": "Всегда"
+          },
+          {
+            "id": "small",
+            "text": "Для маленького сайта"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "big",
+        "explanation": "Один сервер тянет много."
+      }
+    },
+    {
+      "slug": "mo-slow",
+      "type": "quiz.single_choice",
+      "title": "Медленное",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-monitor"
+      ],
+      "presentation": {
+        "question": "Какая команда покажет медленные команды?",
+        "options": [
+          {
+            "id": "slowlog",
+            "text": "SLOWLOG GET"
+          },
+          {
+            "id": "info",
+            "text": "INFO keyspace"
+          },
+          {
+            "id": "ping",
+            "text": "PING"
+          },
+          {
+            "id": "keys",
+            "text": "KEYS *"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "slowlog",
+        "explanation": "С длительностью в микросекундах."
+      }
+    },
+    {
+      "slug": "mo-hits",
+      "type": "quiz.single_choice",
+      "title": "Польза кэша",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-monitor"
+      ],
+      "presentation": {
+        "question": "Что показывает соотношение keyspace_hits и keyspace_misses?",
+        "options": [
+          {
+            "id": "ratio",
+            "text": "Насколько часто кэш находит нужные данные"
+          },
+          {
+            "id": "memory",
+            "text": "Сколько памяти занято"
+          },
+          {
+            "id": "clients",
+            "text": "Число клиентов"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ratio",
+        "explanation": "Мало попаданий — кэш бесполезен."
+      }
+    },
+    {
+      "slug": "mo-big",
+      "type": "quiz.single_choice",
+      "title": "Большие ключи",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-monitor"
+      ],
+      "presentation": {
+        "question": "Как найти самые крупные ключи?",
+        "options": [
+          {
+            "id": "bigkeys",
+            "text": "redis-cli --bigkeys"
+          },
+          {
+            "id": "flush",
+            "text": "FLUSHALL"
+          },
+          {
+            "id": "ping",
+            "text": "PING"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bigkeys",
+        "explanation": "Или MEMORY USAGE для одного."
+      }
+    },
+    {
+      "slug": "sc-open",
+      "type": "quiz.single_choice",
+      "title": "Наружу",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-security"
+      ],
+      "presentation": {
+        "question": "Что будет с Redis без пароля, открытым в интернет?",
+        "options": [
+          {
+            "id": "owned",
+            "text": "Его быстро найдут и захватят"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          },
+          {
+            "id": "slow",
+            "text": "Он станет медленнее"
+          },
+          {
+            "id": "seo",
+            "text": "Его проиндексируют поисковики"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "owned",
+        "explanation": "Только внутренняя сеть."
+      }
+    },
+    {
+      "slug": "sc-acl",
+      "type": "quiz.single_choice",
+      "title": "ACL",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-security"
+      ],
+      "presentation": {
+        "question": "Что позволяет ACL в Redis?",
+        "options": [
+          {
+            "id": "rights",
+            "text": "Создавать пользователей с ограниченными командами и ключами"
+          },
+          {
+            "id": "backup",
+            "text": "Делать копии"
+          },
+          {
+            "id": "sql",
+            "text": "Писать SQL"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rights",
+        "explanation": "Наименьшие права."
+      }
+    },
+    {
+      "slug": "sc-flush",
+      "type": "quiz.single_choice",
+      "title": "Опасное",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-security"
+      ],
+      "presentation": {
+        "question": "Как защититься от случайного FLUSHALL из приложения?",
+        "options": [
+          {
+            "id": "deny",
+            "text": "Запретить эту команду пользователю приложения через ACL"
+          },
+          {
+            "id": "hope",
+            "text": "Надеяться"
+          },
+          {
+            "id": "rename",
+            "text": "Переименовать сервер"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "deny",
+        "explanation": "Права по ролям."
+      }
+    },
+    {
+      "slug": "pd-noevict",
+      "type": "quiz.single_choice",
+      "title": "Очереди",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-production"
+      ],
+      "presentation": {
+        "question": "Какая политика вытеснения подходит, если Redis хранит очереди задач?",
+        "options": [
+          {
+            "id": "noeviction",
+            "text": "noeviction — не удалять, а отказывать в записи"
+          },
+          {
+            "id": "lru",
+            "text": "allkeys-lru"
+          },
+          {
+            "id": "random",
+            "text": "allkeys-random"
+          },
+          {
+            "id": "none",
+            "text": "Любая"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "noeviction",
+        "explanation": "Задачи не должны пропадать."
+      }
+    },
+    {
+      "slug": "pd-down",
+      "type": "quiz.single_choice",
+      "title": "Падение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "rd-production"
+      ],
+      "presentation": {
+        "question": "Что должно делать приложение, если кэш Redis недоступен?",
+        "options": [
+          {
+            "id": "fallback",
+            "text": "Работать медленнее, читая из базы напрямую"
+          },
+          {
+            "id": "crash",
+            "text": "Падать целиком"
+          },
+          {
+            "id": "wait",
+            "text": "Ждать вечно"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fallback",
+        "explanation": "Кэш — ускорение."
+      }
+    },
+    {
+      "slug": "pd-check",
+      "type": "quiz.multiple_choice",
+      "title": "Проверочный список",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "rd-production"
+      ],
+      "presentation": {
+        "question": "Что проверить перед запуском Redis в бою?",
+        "options": [
+          {
+            "id": "memory",
+            "text": "maxmemory и политику вытеснения"
+          },
+          {
+            "id": "timeout",
+            "text": "Тайм-ауты и пулы подключений клиента"
+          },
+          {
+            "id": "acl",
+            "text": "Пароль и ACL"
+          },
+          {
+            "id": "color",
+            "text": "Цвет логотипа в панели"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "memory",
+          "timeout",
+          "acl"
+        ],
+        "explanation": "Цвет не влияет."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "in-memory",
+      "title": "Данные в памяти",
+      "summary": "Почему память быстрее диска, ключ-значение, структуры данных, Redis рядом с основной базой.",
+      "chapter": "Зачем Redis",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Начинаем курс: знаем, как работает сеть, и знакомимся с быстрой памятью приложений.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Redis\",\n  \"title\": \"Хранилище в памяти\",\n  \"what\": \"Сервер, который держит данные в оперативной памяти и отвечает за доли миллисекунды. Данные — по ключам, значения — разные структуры.\",\n  \"why\": \"Тысячи операций в секунду там, где основная база задумается.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не замена базе\",\n  \"title\": \"Рядом с ней\",\n  \"what\": \"Основные данные живут в PostgreSQL или другой базе; Redis хранит то, что нужно быстро и часто: кэш, сессии, счётчики, очереди.\",\n  \"why\": \"Каждому хранилищу — своя задача.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Структуры данных\",\n  \"title\": \"Не только строки\",\n  \"what\": \"Строки, списки, множества, хэши, упорядоченные множества, потоки — у каждой свои команды.\",\n  \"why\": \"Рейтинг игроков — одна команда, а не запрос с сортировкой.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Однопоточность\",\n  \"title\": \"Команды по очереди\",\n  \"what\": \"Redis выполняет команды по одной, поэтому каждая команда атомарна. Медленная команда задерживает всех.\",\n  \"why\": \"INCR из тысячи клиентов не теряет значения.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Redis — быстрая память рядом с основной базой: кэш, сессии, счётчики, очереди."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "im-speed",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "im-main",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "im-uses",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "redis-cli",
+      "title": "Установка и redis-cli",
+      "summary": "Запуск в Docker, redis-cli, PING, SET и GET, базы по номерам, Valkey и совместимые серверы.",
+      "chapter": "Зачем Redis",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем, зачем Redis, и запускаем его у себя.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Запуск\",\n  \"title\": \"Docker\",\n  \"what\": \"Проще всего запустить Redis в контейнере и подключиться клиентом командной строки.\",\n  \"why\": \"Не нужно ставить ничего в систему.\",\n  \"how\": \"$ docker run -d --name redis -p 6379:6379 redis:8\\n$ docker exec -it redis redis-cli\\n127.0.0.1:6379> PING\\nPONG\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"SET и GET\",\n  \"title\": \"Первые команды\",\n  \"what\": \"SET ключ значение — записать, GET ключ — прочитать, DEL — удалить, EXISTS — проверить.\",\n  \"why\": \"Основа любой работы с Redis.\",\n  \"how\": \"127.0.0.1:6379> SET course:python:title \\\"Python\\\"\\nOK\\n127.0.0.1:6379> GET course:python:title\\n\\\"Python\\\"\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Имена ключей\",\n  \"title\": \"Через двоеточие\",\n  \"what\": \"Принято называть ключи частями через двоеточие: user:42:session, course:python:views.\",\n  \"why\": \"Ключи понятны и группируются.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Совместимые серверы\",\n  \"title\": \"Valkey и другие\",\n  \"what\": \"Valkey, KeyDB, Dragonfly и облачные сервисы понимают тот же протокол и команды.\",\n  \"why\": \"Знания переносятся на любой из них.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Запуск — в Docker, команды — в redis-cli, ключи — части через двоеточие."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rc-ping",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rc-names",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rc-get",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "keys-ttl",
+      "title": "Ключи и время жизни",
+      "summary": "EXPIRE и TTL, SET с EX, удаление по истечении, SCAN вместо KEYS.",
+      "chapter": "Зачем Redis",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Выполняем первые команды и учим ключи исчезать вовремя.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Время жизни\",\n  \"title\": \"EX и TTL\",\n  \"what\": \"`SET code:42 7731 EX 300` — ключ исчезнет через 5 минут. TTL показывает, сколько осталось.\",\n  \"why\": \"Коды подтверждения и кэш устаревают сами.\",\n  \"how\": \"127.0.0.1:6379> SET login:code:42 7731 EX 300\\nOK\\n127.0.0.1:6379> TTL login:code:42\\n(integer) 297\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"EXPIRE и PERSIST\",\n  \"title\": \"Поменять срок\",\n  \"what\": \"EXPIRE ставит срок существующему ключу, PERSIST снимает его.\",\n  \"why\": \"Продлить сессию при активности.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"KEYS опасен\",\n  \"title\": \"Блокирует сервер\",\n  \"what\": \"KEYS * перебирает все ключи разом и останавливает Redis на это время. В бою используют SCAN — по частям.\",\n  \"why\": \"Одна команда может положить продакшен.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"SCAN\",\n  \"title\": \"Перебор частями\",\n  \"what\": \"SCAN 0 MATCH user:* COUNT 100 возвращает часть ключей и курсор для продолжения.\",\n  \"why\": \"Обход миллионов ключей без остановки сервера.\",\n  \"how\": \"127.0.0.1:6379> SCAN 0 MATCH session:* COUNT 100\\n1) \\\"1792\\\"\\n2) 1) \\\"session:a8f3k\\\"\\n   2) \\\"session:b21x\\\"\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n**Главное.** Временное — с EX. Ключи ищи SCAN, а не KEYS."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "kt-ex",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "kt-keys",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "kt-ttl",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "strings",
+      "title": "Строки",
+      "summary": "Строки как основной тип, JSON в строке, MSET и MGET, SET NX и XX, клиент в приложении.",
+      "chapter": "Строки и ключи",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Задаём время жизни и разбираем самый простой тип — строки.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Строка\",\n  \"title\": \"Любые байты\",\n  \"what\": \"Строка в Redis — до 512 МБ любых байтов: текст, число, JSON, картинка.\",\n  \"why\": \"Самый частый тип: кэш, флаги, токены.\",\n  \"how\": \"127.0.0.1:6379> SET course:python:json '{\\\"title\\\":\\\"Python\\\",\\\"lessons\\\":33}'\\nOK\\n127.0.0.1:6379> MGET course:python:json course:go:json\\n1) \\\"{\\\\\\\"title\\\\\\\":\\\\\\\"Python\\\\\\\",\\\\\\\"lessons\\\\\\\":33}\\\"\\n2) (nil)\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"NX и XX\",\n  \"title\": \"Записать при условии\",\n  \"what\": \"SET … NX — только если ключа нет, XX — только если есть.\",\n  \"why\": \"Основа простых блокировок и «создать один раз».\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Клиент\",\n  \"title\": \"Из приложения\",\n  \"what\": \"Клиенты есть для всех языков: node-redis и ioredis для Node.js, redis-py для Python.\",\n  \"why\": \"Приложение говорит с Redis теми же командами.\",\n  \"how\": \"import { createClient } from \\\"redis\\\";\\n\\nconst redis = await createClient({ url: process.env.REDIS_URL }).connect();\\nawait redis.set(\\\"course:python:title\\\", \\\"Python\\\", { EX: 3600 });\\nconst title = await redis.get(\\\"course:python:title\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Много за раз\",\n  \"title\": \"MGET и конвейер\",\n  \"what\": \"MGET читает много ключей одной командой, конвейер (pipeline) отправляет пачку команд без ожидания каждого ответа.\",\n  \"why\": \"Сто запросов за одну поездку по сети.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Значения — строками, условия — NX и XX, много ключей — MGET и конвейер."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-nx",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-mget",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-size",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "counters",
+      "title": "Счётчики",
+      "summary": "INCR и INCRBY, атомарность, счётчики просмотров и лайков, INCRBYFLOAT, сброс по времени.",
+      "chapter": "Строки и ключи",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Храним строки и считаем события без потерь.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"INCR\",\n  \"title\": \"Плюс один\",\n  \"what\": \"INCR увеличивает число на 1 и возвращает новое значение. Если ключа нет — начинает с нуля.\",\n  \"why\": \"Счётчик просмотров урока.\",\n  \"how\": \"127.0.0.1:6379> INCR lesson:loops:views\\n(integer) 1\\n127.0.0.1:6379> INCRBY lesson:loops:views 10\\n(integer) 11\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Атомарность\",\n  \"title\": \"Без гонок\",\n  \"what\": \"Команды выполняются по одной, поэтому тысяча клиентов с INCR дадут ровно тысячу.\",\n  \"why\": \"В обычной базе «прочитать, прибавить, записать» теряет значения.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Счётчик за период\",\n  \"title\": \"Ключ с датой\",\n  \"what\": \"views:2026-11-07 с EXPIRE на неделю — счётчики по дням без ручной очистки.\",\n  \"why\": \"Статистика без отдельной таблицы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сбросить в базу\",\n  \"title\": \"Периодически\",\n  \"what\": \"Горячие счётчики живут в Redis, а раз в минуту фоновая задача сохраняет их в основную базу.\",\n  \"why\": \"База не захлёбывается от тысяч обновлений.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Счётчики — INCR без гонок. По периодам — ключ с датой и сроком жизни."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cn-new",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cn-race",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cn-cmd",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "bits-hll",
+      "title": "Биты и приблизительный подсчёт",
+      "summary": "SETBIT и BITCOUNT для отметок по дням, HyperLogLog для уникальных посетителей.",
+      "chapter": "Строки и ключи",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Считаем события и учимся делать это экономно для миллионов пользователей.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Битовые карты\",\n  \"title\": \"Один бит на пользователя\",\n  \"what\": \"SETBIT active:2026-11-07 42 1 — пользователь 42 заходил сегодня. BITCOUNT — сколько всего.\",\n  \"why\": \"Миллион пользователей — 125 КБ на день.\",\n  \"how\": \"127.0.0.1:6379> SETBIT active:2026-11-07 42 1\\n(integer) 0\\n127.0.0.1:6379> BITCOUNT active:2026-11-07\\n(integer) 1\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"HyperLogLog\",\n  \"title\": \"Уникальные с погрешностью\",\n  \"what\": \"PFADD добавляет элементы, PFCOUNT даёт примерное число уникальных с погрешностью около 1%, занимая 12 КБ.\",\n  \"why\": \"Уникальные посетители страницы без хранения всех идентификаторов.\",\n  \"how\": \"127.0.0.1:6379> PFADD visitors:home a8f3k b21x a8f3k\\n(integer) 1\\n127.0.0.1:6379> PFCOUNT visitors:home\\n(integer) 2\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Точность или память\",\n  \"title\": \"Компромисс\",\n  \"what\": \"Точный подсчёт уникальных требует хранить всех; HyperLogLog жертвует процентом точности ради крошечной памяти.\",\n  \"why\": \"Для аналитики погрешность в 1% допустима.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Отметки по дням — биты, уникальные — HyperLogLog. Точность меняй на память осознанно."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bh-hll",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bh-bits",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bh-count",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "lists",
+      "title": "Списки",
+      "summary": "LPUSH и RPUSH, LRANGE, LTRIM для последних N, LPOP и BRPOP для простых очередей.",
+      "chapter": "Списки и множества",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Экономно считаем и переходим к спискам.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Список\",\n  \"title\": \"С двух концов\",\n  \"what\": \"LPUSH добавляет в начало, RPUSH — в конец, LRANGE читает диапазон, LLEN — длину.\",\n  \"why\": \"Лента последних событий, история действий.\",\n  \"how\": \"127.0.0.1:6379> LPUSH user:42:recent \\\"loops\\\" \\\"strings\\\"\\n(integer) 2\\n127.0.0.1:6379> LRANGE user:42:recent 0 9\\n1) \\\"strings\\\"\\n2) \\\"loops\\\"\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Последние N\",\n  \"title\": \"LPUSH + LTRIM\",\n  \"what\": \"После добавления обрезают список до N элементов — список не растёт бесконечно.\",\n  \"why\": \"«Недавно открытые уроки» всегда из десяти пунктов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Простая очередь\",\n  \"title\": \"BRPOP\",\n  \"what\": \"Производитель делает LPUSH, обработчик ждёт BRPOP — блокирующее чтение, пока не появится задача.\",\n  \"why\": \"Фоновая отправка писем без опроса.\",\n  \"how\": \"127.0.0.1:6379> BRPOP jobs:email 5\\n1) \\\"jobs:email\\\"\\n2) \\\"{\\\\\\\"to\\\\\\\":\\\\\\\"anna@example.com\\\\\\\"}\\\"\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Потеря задач\",\n  \"title\": \"Ограничение списков\",\n  \"what\": \"Если обработчик упал после BRPOP, задача потеряна. Для надёжных очередей лучше потоки (о них — дальше).\",\n  \"why\": \"Список — для простого, поток — для важного.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Последние N — LPUSH и LTRIM. Простая очередь — BRPOP, надёжная — потоки."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ls-trim",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ls-brpop",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ls-lost",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "sets",
+      "title": "Множества",
+      "summary": "SADD, SISMEMBER, SCARD, пересечение и объединение, случайный элемент.",
+      "chapter": "Списки и множества",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем списки и храним уникальные значения.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Множество\",\n  \"title\": \"Без повторов\",\n  \"what\": \"SADD добавляет, SISMEMBER проверяет, SCARD считает. Повторный элемент не добавится.\",\n  \"why\": \"Кто лайкнул пост, какие теги у курса.\",\n  \"how\": \"127.0.0.1:6379> SADD course:python:students 42 7 42\\n(integer) 2\\n127.0.0.1:6379> SISMEMBER course:python:students 42\\n(integer) 1\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Операции\",\n  \"title\": \"SINTER, SUNION, SDIFF\",\n  \"what\": \"Пересечение, объединение и разность множеств прямо на сервере.\",\n  \"why\": \"Кто прошёл и Python, и SQL — одной командой.\",\n  \"how\": \"127.0.0.1:6379> SINTER course:python:done course:sql:done\\n1) \\\"42\\\"\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Случайный элемент\",\n  \"title\": \"SRANDMEMBER и SPOP\",\n  \"what\": \"Взять случайный элемент — без удаления или с ним.\",\n  \"why\": \"Розыгрыш среди участников, случайный совет дня.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Уникальное — множество. Общие элементы — SINTER на сервере."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "se-dup",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "se-inter",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "se-check",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "data-modeling",
+      "title": "Как раскладывать данные",
+      "summary": "Выбор структуры под запрос, ключи-индексы, размер значений, без больших ключей.",
+      "chapter": "Списки и множества",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем строки, списки и множества и учимся выбирать между ними.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"От запроса\",\n  \"title\": \"Сначала вопрос\",\n  \"what\": \"В Redis нет SQL-запросов по полям: структуру выбирают под то, как данные будут читать.\",\n  \"why\": \"Сначала «что спросим», потом «как хранить».\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Свой индекс\",\n  \"title\": \"Ещё один ключ\",\n  \"what\": \"Нужно найти по почте — заводят ключ email:anna@example.com → id. Индексы поддерживает приложение.\",\n  \"why\": \"Быстрый поиск без перебора.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Большие ключи\",\n  \"title\": \"Опасность\",\n  \"what\": \"Список или хэш на миллионы элементов медленно удаляется и копируется, блокируя сервер.\",\n  \"why\": \"Дели большие коллекции по ключам: по дням, по пользователям.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Память\",\n  \"title\": \"Считай заранее\",\n  \"what\": \"Каждый ключ стоит десятки байт накладных расходов. Миллионы мелких ключей — гигабайты.\",\n  \"why\": \"MEMORY USAGE покажет реальный размер.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Структура — под запрос. Большие коллекции дели на части. Память считай заранее."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dm-index",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dm-big",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dm-first",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "hashes",
+      "title": "Хэши",
+      "summary": "HSET и HGET, объекты как хэши, HINCRBY, хэш или JSON-строка, срок жизни полей.",
+      "chapter": "Хэши и упорядоченные множества",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Раскладываем данные и храним объекты по полям.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Хэш\",\n  \"title\": \"Поля объекта\",\n  \"what\": \"HSET задаёт поля, HGET читает одно, HGETALL — все, HINCRBY увеличивает числовое поле.\",\n  \"why\": \"Профиль, настройки, прогресс по курсу.\",\n  \"how\": \"127.0.0.1:6379> HSET progress:42:python lessons 12 quizzes 30\\n(integer) 2\\n127.0.0.1:6379> HINCRBY progress:42:python lessons 1\\n(integer) 13\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Хэш или JSON\",\n  \"title\": \"Что выбрать\",\n  \"what\": \"Хэш позволяет менять одно поле без чтения всего объекта. JSON-строка удобна, если объект читают и пишут целиком.\",\n  \"why\": \"Счётчики полей — хэш, кэш ответа — строка.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Срок жизни полей\",\n  \"title\": \"HEXPIRE\",\n  \"what\": \"Новые версии Redis умеют задавать срок жизни отдельным полям хэша.\",\n  \"why\": \"Временные отметки внутри одного объекта.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Объект с отдельными изменениями — хэш. Целиком — JSON-строка."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hs-field",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hs-json",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hs-all",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "sorted-sets",
+      "title": "Упорядоченные множества",
+      "summary": "ZADD со счётом, ZRANGE и ZREVRANGE, рейтинг игроков, ранг участника.",
+      "chapter": "Хэши и упорядоченные множества",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Храним объекты в хэшах и строим рейтинги.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"ZADD\",\n  \"title\": \"Элемент со счётом\",\n  \"what\": \"У каждого элемента есть число-счёт; множество всегда отсортировано по нему.\",\n  \"why\": \"Таблица лидеров по опыту.\",\n  \"how\": \"127.0.0.1:6379> ZINCRBY leaderboard:week 120 user:42\\n\\\"120\\\"\\n127.0.0.1:6379> ZREVRANGE leaderboard:week 0 2 WITHSCORES\\n1) \\\"user:7\\\"\\n2) \\\"340\\\"\\n3) \\\"user:42\\\"\\n4) \\\"120\\\"\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ранг\",\n  \"title\": \"ZREVRANK\",\n  \"what\": \"Место конкретного участника в рейтинге за одну команду.\",\n  \"why\": \"«Ты на 57-м месте из 3000».\",\n  \"how\": \"127.0.0.1:6379> ZREVRANK leaderboard:week user:42\\n(integer) 1\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Скорость\",\n  \"title\": \"Логарифм\",\n  \"what\": \"Добавление и поиск места работают быстро даже на миллионах элементов.\",\n  \"why\": \"Рейтинг обновляется на каждое действие.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Рейтинг — упорядоченное множество: ZINCRBY, ZREVRANGE, ZREVRANK."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "zs-top",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "zs-rank",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "zs-add",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "time-series",
+      "title": "Данные по времени",
+      "summary": "Упорядоченное множество со временем как счётом, окна по времени, очистка старого, геоданные.",
+      "chapter": "Хэши и упорядоченные множества",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Строим рейтинги и храним события по времени.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Время как счёт\",\n  \"title\": \"ZADD с отметкой\",\n  \"what\": \"Счёт — время в миллисекундах. ZRANGEBYSCORE достаёт события за период.\",\n  \"why\": \"Активность пользователя за последний час.\",\n  \"how\": \"127.0.0.1:6379> ZADD user:42:events 1762480000000 \\\"quiz:loops\\\"\\n(integer) 1\\n127.0.0.1:6379> ZRANGEBYSCORE user:42:events 1762476400000 +inf\\n1) \\\"quiz:loops\\\"\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Очистка\",\n  \"title\": \"ZREMRANGEBYSCORE\",\n  \"what\": \"Старые события удаляют по диапазону времени.\",\n  \"why\": \"Окно «последние 24 часа» не разрастается.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Геоданные\",\n  \"title\": \"GEOADD и GEOSEARCH\",\n  \"what\": \"Координаты точек и поиск в радиусе.\",\n  \"why\": \"Ближайшие пункты выдачи к пользователю.\",\n  \"how\": \"127.0.0.1:6379> GEOADD shops 74.59 42.87 \\\"bishkek-center\\\"\\n(integer) 1\\n127.0.0.1:6379> GEOSEARCH shops FROMLONLAT 74.6 42.87 BYRADIUS 5 km ASC\\n1) \\\"bishkek-center\\\"\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n**Главное.** События по времени — счёт-время и ZRANGEBYSCORE. Близость — GEOSEARCH."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tsr-range",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tsr-clean",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tsr-geo",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "cache-aside",
+      "title": "Кэш рядом с базой",
+      "summary": "Схема cache-aside: прочитать из кэша, иначе из базы и положить в кэш; срок жизни.",
+      "chapter": "Кэширование",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Храним данные по времени и ускоряем приложение кэшем.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Cache-aside\",\n  \"title\": \"Сначала кэш\",\n  \"what\": \"Приложение ищет в Redis; не нашло — читает из базы, кладёт в Redis со сроком жизни и возвращает.\",\n  \"why\": \"Тяжёлый запрос выполняется раз в час, а не на каждый показ.\",\n  \"how\": \"async function getCourse(slug) {\\n  const hit = await redis.get(`course:${slug}`);\\n  if (hit) return JSON.parse(hit);\\n  const course = await db.course.findUnique({ where: { slug } });\\n  await redis.set(`course:${slug}`, JSON.stringify(course), { EX: 3600 });\\n  return course;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Срок жизни\",\n  \"title\": \"Всегда задавай\",\n  \"what\": \"Ключ без срока живёт вечно, и устаревшие данные остаются навсегда.\",\n  \"why\": \"Даже если забыли сбросить кэш, он сам обновится.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что кэшировать\",\n  \"title\": \"Часто и дорого\",\n  \"what\": \"Кэшируют то, что читают часто, считают долго и что может быть немного устаревшим.\",\n  \"why\": \"Каталог курсов — да, баланс счёта — осторожно.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Кэш — по схеме cache-aside и всегда со сроком жизни. Кэшируй частое и дорогое."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ca-miss",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ca-ttl",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ca-what",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "invalidation",
+      "title": "Сброс кэша",
+      "summary": "Удаление при изменении, версии ключей, теги, почему инвалидация сложна.",
+      "chapter": "Кэширование",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Кэшируем ответы и учимся сбрасывать устаревшее.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Удалить при записи\",\n  \"title\": \"DEL после обновления\",\n  \"what\": \"После изменения в базе удаляют ключ кэша — следующий запрос возьмёт свежие данные.\",\n  \"why\": \"Исправил название курса — все видят новое.\",\n  \"how\": \"await db.course.update({ where: { slug }, data });\\nawait redis.del(`course:${slug}`);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Порядок\",\n  \"title\": \"Сначала база, потом кэш\",\n  \"what\": \"Сначала записать в базу, потом удалить ключ. Наоборот — кто-то успеет положить в кэш старое значение.\",\n  \"why\": \"Мелочь, которая решает, увидят ли пользователи свежее.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Версии ключей\",\n  \"title\": \"Сменить имя\",\n  \"what\": \"В имя ключа добавляют версию: catalog:v7. Поменяли версию — старые ключи никто не читает и они истекут сами.\",\n  \"why\": \"Сброс сразу множества ключей.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сложность\",\n  \"title\": \"Одна из трудных задач\",\n  \"what\": \"Данные одного ключа часто зависят от многих записей. Короткий срок жизни — страховка от забытых сбросов.\",\n  \"why\": \"Сначала простые схемы, потом хитрые.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Записал в базу — удали ключ. Много ключей — версия в имени. Страховка — срок жизни."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "iv-order",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "iv-version",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "iv-safety",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "stampede-eviction",
+      "title": "Нагрузка и вытеснение",
+      "summary": "Наплыв запросов при промахе, блокировка пересчёта, случайный разброс сроков, maxmemory и политики вытеснения.",
+      "chapter": "Кэширование",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Сбрасываем кэш и защищаем базу от наплыва запросов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Наплыв\",\n  \"title\": \"Cache stampede\",\n  \"what\": \"Популярный ключ истёк — тысяча запросов одновременно идёт в базу пересчитывать одно и то же.\",\n  \"why\": \"База падает в самый неудобный момент.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Защита\",\n  \"title\": \"Один пересчитывает\",\n  \"what\": \"Первый запрос ставит короткую блокировку (SET NX) и пересчитывает, остальные ждут или берут старое значение.\",\n  \"why\": \"База получает один запрос вместо тысячи.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Разброс сроков\",\n  \"title\": \"Не все разом\",\n  \"what\": \"К сроку жизни добавляют случайные секунды, чтобы ключи не истекали одновременно.\",\n  \"why\": \"Нагрузка размазывается во времени.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"maxmemory\",\n  \"title\": \"Когда память кончилась\",\n  \"what\": \"maxmemory задаёт предел, политика allkeys-lru удаляет давно не использованные ключи.\",\n  \"why\": \"Кэш не роняет сервер нехваткой памяти.\",\n  \"how\": \"127.0.0.1:6379> CONFIG SET maxmemory 512mb\\nOK\\n127.0.0.1:6379> CONFIG SET maxmemory-policy allkeys-lru\\nOK\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n**Главное.** Защищай пересчёт блокировкой, разбрасывай сроки, задай maxmemory и политику вытеснения."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "se-stampede",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "se-jitter",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "se-lru",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "session-store",
+      "title": "Сессии",
+      "summary": "Сессия по идентификатору из cookie, продление при активности, выход со всех устройств.",
+      "chapter": "Сессии и ограничения",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Защищаем базу от наплыва и храним сессии пользователей.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Сессия\",\n  \"title\": \"Ключ из cookie\",\n  \"what\": \"В cookie лежит случайный идентификатор, в Redis — данные сессии со сроком жизни.\",\n  \"why\": \"Любой экземпляр сервера узнаёт пользователя.\",\n  \"how\": \"const sid = crypto.randomUUID();\\nawait redis.set(`session:${sid}`, JSON.stringify({ userId: 42 }), { EX: 60 * 60 * 24 * 7 });\\nres.cookie(\\\"sid\\\", sid, { httpOnly: true, secure: true, sameSite: \\\"lax\\\" });\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Продление\",\n  \"title\": \"Скользящий срок\",\n  \"what\": \"При каждом запросе срок сессии продлевают EXPIRE — активный пользователь не выходит.\",\n  \"why\": \"Неактивные сессии исчезают сами.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Выход везде\",\n  \"title\": \"Множество сессий пользователя\",\n  \"what\": \"Идентификаторы сессий пользователя хранят во множестве; выход везде — удалить все.\",\n  \"why\": \"Потерял телефон — закрыл все входы.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Сессия — случайный id в httpOnly cookie и данные в Redis со сроком. Выход везде — множество сессий."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ss-cookie",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ss-extend",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ss-all",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "rate-limit",
+      "title": "Ограничение частоты",
+      "summary": "Фиксированное окно на INCR и EXPIRE, скользящее окно, ответ 429, защита входа и API.",
+      "chapter": "Сессии и ограничения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Храним сессии и защищаем сервис от слишком частых запросов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Фиксированное окно\",\n  \"title\": \"INCR + EXPIRE\",\n  \"what\": \"Ключ на пользователя и минуту: увеличиваем, первому ставим срок 60 секунд, больше лимита — отказ.\",\n  \"why\": \"Не больше 5 попыток входа в минуту.\",\n  \"how\": \"const key = `rl:login:${ip}:${Math.floor(Date.now() / 60000)}`;\\nconst count = await redis.incr(key);\\nif (count === 1) await redis.expire(key, 60);\\nif (count > 5) return res.status(429).send(\\\"Слишком много попыток\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Скользящее окно\",\n  \"title\": \"Точнее\",\n  \"what\": \"Упорядоченное множество с отметками времени запросов: удалить старые, посчитать оставшиеся.\",\n  \"why\": \"Нет всплеска на границе минут.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"429\",\n  \"title\": \"Too Many Requests\",\n  \"what\": \"Ответ 429 с заголовком Retry-After говорит клиенту, когда попробовать снова.\",\n  \"why\": \"Честные клиенты подождут, а не будут долбить сервер.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что ограничивать\",\n  \"title\": \"Дорогое и опасное\",\n  \"what\": \"Вход и сброс пароля, отправку писем, тяжёлые запросы API.\",\n  \"why\": \"Перебор паролей и спам становятся бессмысленными.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Лимит — INCR со сроком или скользящее окно. Превышение — 429 и Retry-After."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rl-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rl-code",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rl-sliding",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "idempotency",
+      "title": "Повторы и дубликаты",
+      "summary": "Ключ идемпотентности, SET NX со сроком, защита от двойной оплаты и двойной отправки.",
+      "chapter": "Сессии и ограничения",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Ограничиваем частоту и защищаемся от повторной обработки.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Повторы неизбежны\",\n  \"title\": \"Сеть ненадёжна\",\n  \"what\": \"Клиент не получил ответ и повторил запрос — сервер может выполнить оплату дважды.\",\n  \"why\": \"Двойное списание — худший сценарий.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ключ идемпотентности\",\n  \"title\": \"SET NX\",\n  \"what\": \"Клиент присылает уникальный ключ операции. Сервер делает SET NX с этим ключом: не получилось — запрос уже обрабатывался.\",\n  \"why\": \"Повтор не создаст второй заказ.\",\n  \"how\": \"const fresh = await redis.set(`idem:${key}`, \\\"processing\\\", { NX: true, EX: 86400 });\\nif (!fresh) return res.status(409).send(\\\"Уже обрабатывается\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сохранить ответ\",\n  \"title\": \"Вернуть тот же результат\",\n  \"what\": \"После обработки в ключ кладут ответ — повтор получает тот же результат, а не ошибку.\",\n  \"why\": \"Клиент спокойно повторяет запрос.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Опасные операции — с ключом идемпотентности и SET NX. Повтор получает сохранённый ответ."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "id-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "id-nx",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "id-repeat",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "streams",
+      "title": "Потоки",
+      "summary": "XADD и XRANGE, журнал событий с идентификаторами по времени, ограничение длины MAXLEN.",
+      "chapter": "Очереди и потоки",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Защищаемся от повторов и записываем события в журнал.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"XADD\",\n  \"title\": \"Запись в журнал\",\n  \"what\": \"Поток — журнал записей с полями. Каждая запись получает идентификатор из времени и номера.\",\n  \"why\": \"События «урок пройден», «оплата получена».\",\n  \"how\": \"127.0.0.1:6379> XADD events MAXLEN ~ 100000 * type lesson_done user 42 lesson loops\\n\\\"1762480000000-0\\\"\\n127.0.0.1:6379> XRANGE events - + COUNT 1\\n1) 1) \\\"1762480000000-0\\\"\\n   2) 1) \\\"type\\\" 2) \\\"lesson_done\\\" 3) \\\"user\\\" 4) \\\"42\\\" 5) \\\"lesson\\\" 6) \\\"loops\\\"\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не теряется\",\n  \"title\": \"Записи остаются\",\n  \"what\": \"В отличие от списка, чтение не удаляет запись: её можно перечитать и обработать повторно.\",\n  \"why\": \"Упавший обработчик не теряет задачи.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"MAXLEN\",\n  \"title\": \"Ограничить длину\",\n  \"what\": \"MAXLEN ~ N обрезает старые записи примерно до N — память не растёт бесконечно.\",\n  \"why\": \"Журнал за последние дни, а не за годы.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Журнал событий — поток с XADD и ограничением MAXLEN. Чтение не удаляет записи."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "str-id",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "str-keep",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "str-maxlen",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "consumer-groups",
+      "title": "Группы обработчиков",
+      "summary": "XGROUP, XREADGROUP, подтверждение XACK, зависшие задачи и XAUTOCLAIM.",
+      "chapter": "Очереди и потоки",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем события в поток и раздаём их нескольким обработчикам.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Группа\",\n  \"title\": \"Делить работу\",\n  \"what\": \"Обработчики одной группы получают разные записи — работа делится между ними.\",\n  \"why\": \"Три обработчика писем вместо одного.\",\n  \"how\": \"127.0.0.1:6379> XGROUP CREATE jobs mailers $ MKSTREAM\\nOK\\n127.0.0.1:6379> XREADGROUP GROUP mailers worker-1 COUNT 10 BLOCK 5000 STREAMS jobs >\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"XACK\",\n  \"title\": \"Готово\",\n  \"what\": \"После успешной обработки задачу подтверждают. Неподтверждённые остаются в списке ожидающих.\",\n  \"why\": \"Упал посреди работы — задача не потеряна.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Зависшие задачи\",\n  \"title\": \"XAUTOCLAIM\",\n  \"what\": \"Задачи, которые долго не подтверждали, другой обработчик забирает себе.\",\n  \"why\": \"Смерть одного обработчика не останавливает очередь.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Повторная обработка\",\n  \"title\": \"Будь готов\",\n  \"what\": \"Задачу могут выполнить дважды (упал после работы, но до XACK). Обработчик должен быть идемпотентным.\",\n  \"why\": \"Письмо не уйдёт дважды, если проверять отметку.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Группа делит задачи, XACK подтверждает, XAUTOCLAIM подбирает зависшие. Обработчик — идемпотентный."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cg-ack",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cg-claim",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cg-twice",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "job-queues",
+      "title": "Библиотеки очередей",
+      "summary": "BullMQ и подобные: повторы с задержкой, отложенные и периодические задачи, приоритеты, наблюдение.",
+      "chapter": "Очереди и потоки",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Делим задачи между обработчиками и берём готовые инструменты для очередей.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"BullMQ\",\n  \"title\": \"Очередь для Node.js\",\n  \"what\": \"Задачи добавляют в очередь, обработчик выполняет их, библиотека берёт на себя повторы, задержки и статусы.\",\n  \"why\": \"Не писать свою очередь с нуля.\",\n  \"how\": \"import { Queue, Worker } from \\\"bullmq\\\";\\n\\nconst emails = new Queue(\\\"emails\\\", { connection });\\nawait emails.add(\\\"welcome\\\", { to: \\\"anna@example.com\\\" }, { attempts: 5, backoff: { type: \\\"exponential\\\", delay: 1000 } });\\n\\nnew Worker(\\\"emails\\\", async (job) => sendEmail(job.data), { connection });\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Повторы\",\n  \"title\": \"С растущей паузой\",\n  \"what\": \"Упавшую задачу повторяют через 1, 2, 4, 8 секунд — временный сбой почтового сервиса не теряет письма.\",\n  \"why\": \"Сбой внешнего сервиса переживается сам.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Отложенные и по расписанию\",\n  \"title\": \"delay и repeat\",\n  \"what\": \"Задачу можно выполнить через час или каждый день в 9:00.\",\n  \"why\": \"Напоминание о незаконченном уроке.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Другие языки\",\n  \"title\": \"Celery, RQ, Sidekiq\",\n  \"what\": \"Python, Ruby и другие языки имеют свои библиотеки с теми же идеями.\",\n  \"why\": \"Знания переносятся.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Очередь — готовой библиотекой с повторами и паузами. Не изобретай свою."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "jq-backoff",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "jq-delay",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "jq-own",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "pubsub",
+      "title": "Каналы сообщений",
+      "summary": "PUBLISH и SUBSCRIBE, шаблоны каналов, доставка «в моменте», отдельное соединение для подписки.",
+      "chapter": "Публикация и подписка",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пользуемся очередями и рассылаем сообщения сразу всем подписчикам.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"PUBLISH и SUBSCRIBE\",\n  \"title\": \"Радиоэфир\",\n  \"what\": \"Подписчик слушает канал, издатель отправляет сообщение — его получают все подписчики, которые сейчас на связи.\",\n  \"why\": \"Уведомить все серверы о событии.\",\n  \"how\": \"# окно 1\\n127.0.0.1:6379> SUBSCRIBE chat:room:42\\n# окно 2\\n127.0.0.1:6379> PUBLISH chat:room:42 \\\"привет\\\"\\n(integer) 1\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"В моменте\",\n  \"title\": \"Без хранения\",\n  \"what\": \"Сообщение не сохраняется: кто не был подписан в момент отправки — не получит.\",\n  \"why\": \"Для важного — потоки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Шаблоны\",\n  \"title\": \"PSUBSCRIBE\",\n  \"what\": \"PSUBSCRIBE chat:* — подписка на все каналы по шаблону.\",\n  \"why\": \"Один подписчик на все комнаты.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Отдельное соединение\",\n  \"title\": \"Подписка занимает его\",\n  \"what\": \"Соединение в режиме подписки не выполняет обычные команды — для подписки открывают отдельное.\",\n  \"why\": \"Иначе клиент «зависает».\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Мгновенная рассылка — Pub/Sub. Нужно не потерять — потоки."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ps-offline",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ps-pattern",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ps-conn",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "realtime-scale",
+      "title": "Реальное время на многих серверах",
+      "summary": "WebSocket на нескольких экземплярах, рассылка через Redis, адаптеры Socket.IO, присутствие онлайн.",
+      "chapter": "Публикация и подписка",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем Pub/Sub и связываем через него несколько серверов чата.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Проблема\",\n  \"title\": \"Пользователи на разных серверах\",\n  \"what\": \"Аня подключена к серверу A, Борис — к серверу B. Сообщение Ани должно попасть на сервер Бориса.\",\n  \"why\": \"Без общей шины чат работает только в пределах одного сервера.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Шина через Redis\",\n  \"title\": \"Все слышат всех\",\n  \"what\": \"Каждый сервер публикует сообщения в канал комнаты и подписан на него; получив, рассылает своим клиентам.\",\n  \"why\": \"Сколько угодно серверов чата.\",\n  \"how\": \"sub.subscribe(\\\"room:42\\\", (message) => {\\n  for (const socket of localSockets(\\\"room:42\\\")) socket.send(message);\\n});\\n\\nfunction onClientMessage(text) {\\n  pub.publish(\\\"room:42\\\", JSON.stringify({ user: 42, text }));\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Готовые адаптеры\",\n  \"title\": \"Socket.IO и другие\",\n  \"what\": \"Адаптер Redis для Socket.IO делает это автоматически.\",\n  \"why\": \"Масштабирование одной строкой настройки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Кто онлайн\",\n  \"title\": \"Присутствие\",\n  \"what\": \"Ключи online:user:42 с коротким сроком, продлеваемым сердцебиением.\",\n  \"why\": \"Перестал отвечать — через 30 секунд «не в сети».\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Несколько серверов реального времени — общая шина Pub/Sub. Онлайн — ключи с коротким сроком."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-problem",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-online",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-adapter",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "keyspace-events",
+      "title": "События ключей и кэш на клиенте",
+      "summary": "Уведомления об изменении и истечении ключей, отслеживание на стороне клиента, ограничения.",
+      "chapter": "Публикация и подписка",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Масштабируем реальное время и реагируем на изменения самих ключей.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Уведомления\",\n  \"title\": \"notify-keyspace-events\",\n  \"what\": \"Redis может публиковать событие при изменении или истечении ключа.\",\n  \"why\": \"Сделать что-то, когда истекла бронь.\",\n  \"how\": \"127.0.0.1:6379> CONFIG SET notify-keyspace-events Ex\\nOK\\n127.0.0.1:6379> PSUBSCRIBE __keyevent@0__:expired\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не гарантия\",\n  \"title\": \"Может опоздать\",\n  \"what\": \"Событие истечения приходит, когда Redis заметил истечение, и теряется, если подписчик был не на связи.\",\n  \"why\": \"Для важного — проверка по расписанию.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Кэш на клиенте\",\n  \"title\": \"Client-side caching\",\n  \"what\": \"Redis сообщает клиенту, что ключ изменился, и тот сбрасывает свою локальную копию.\",\n  \"why\": \"Самые горячие ключи читаются вообще без сети.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** События ключей — для удобства, не для гарантий. Важное — проверять по расписанию."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ke-expired",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ke-config",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ke-client",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "transactions",
+      "title": "Транзакции",
+      "summary": "MULTI и EXEC, нет отката, WATCH для оптимистичной блокировки, конвейер против транзакции.",
+      "chapter": "Атомарность и скрипты",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Реагируем на события ключей и выполняем несколько команд как одну.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"MULTI и EXEC\",\n  \"title\": \"Пачка без вмешательства\",\n  \"what\": \"Команды между MULTI и EXEC выполняются подряд, и чужие команды не вклиниваются.\",\n  \"why\": \"Списать монеты и выдать предмет одним блоком.\",\n  \"how\": \"127.0.0.1:6379> MULTI\\nOK\\n127.0.0.1:6379(TX)> DECRBY user:42:coins 100\\nQUEUED\\n127.0.0.1:6379(TX)> SADD user:42:items sword\\nQUEUED\\n127.0.0.1:6379(TX)> EXEC\\n1) (integer) 400\\n2) (integer) 1\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Без отката\",\n  \"title\": \"Не как в SQL\",\n  \"what\": \"Если одна команда внутри упала, остальные всё равно выполнятся — отката нет.\",\n  \"why\": \"Проверяй условия заранее.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"WATCH\",\n  \"title\": \"Если никто не менял\",\n  \"what\": \"WATCH ключ перед MULTI: если ключ изменился до EXEC, транзакция отменится и её повторяют.\",\n  \"why\": \"Не списать монеты, если баланс уже изменился.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Неделимая пачка — MULTI/EXEC. Условие «если не менялось» — WATCH. Отката нет."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tx-rollback",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tx-watch",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tx-atomic",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "lua-functions",
+      "title": "Скрипты Lua и функции",
+      "summary": "EVAL с логикой на сервере, атомарность скрипта, функции Redis, осторожно с долгими скриптами.",
+      "chapter": "Атомарность и скрипты",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Выполняем пачки команд и переносим логику с условиями прямо в Redis.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"EVAL\",\n  \"title\": \"Логика на сервере\",\n  \"what\": \"Скрипт на Lua читает и пишет ключи с условиями, и весь выполняется атомарно.\",\n  \"why\": \"«Списать, только если хватает» — без гонок и лишних поездок по сети.\",\n  \"how\": \"127.0.0.1:6379> EVAL \\\"local c = tonumber(redis.call('GET', KEYS[1]) or '0') if c >= tonumber(ARGV[1]) then return redis.call('DECRBY', KEYS[1], ARGV[1]) else return -1 end\\\" 1 user:42:coins 100\\n(integer) 300\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Функции\",\n  \"title\": \"FUNCTION LOAD\",\n  \"what\": \"Скрипты можно сохранить на сервере как функции с именами и вызывать FCALL.\",\n  \"why\": \"Логика не пересылается каждый раз.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Долгий скрипт\",\n  \"title\": \"Блокирует всех\",\n  \"what\": \"Пока скрипт работает, Redis не отвечает другим. Скрипт должен быть коротким.\",\n  \"why\": \"Цикл на миллион ключей остановит сервис.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Условная логика без гонок — скрипт Lua или функция. Только короткие."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lu-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lu-long",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lu-fn",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "locks",
+      "title": "Распределённые блокировки",
+      "summary": "SET NX PX с токеном, снятие только своей блокировки, сроки, когда блокировок избегать.",
+      "chapter": "Атомарность и скрипты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем скрипты и не даём двум серверам делать одно дело одновременно.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Захват\",\n  \"title\": \"SET NX PX\",\n  \"what\": \"Блокировку ставят командой SET ключ токен NX PX 30000 — только если её нет, и с автоматическим снятием через 30 секунд.\",\n  \"why\": \"Ночной отчёт формирует только один сервер из пяти.\",\n  \"how\": \"const token = crypto.randomUUID();\\nconst ok = await redis.set(\\\"lock:nightly-report\\\", token, { NX: true, PX: 30000 });\\nif (!ok) return; // уже кто-то делает\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Снять свою\",\n  \"title\": \"Проверить токен\",\n  \"what\": \"Снимать блокировку можно только своим токеном — скриптом «удали, если значение моё».\",\n  \"why\": \"Иначе удалишь чужую блокировку после истечения своей.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Срок\",\n  \"title\": \"Работа дольше срока\",\n  \"what\": \"Если работа длится дольше срока, блокировка истечёт и задачу начнёт второй. Продлевай или выбирай срок с запасом.\",\n  \"why\": \"Блокировка — это аренда, а не собственность.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Без блокировок\",\n  \"title\": \"Лучше идемпотентность\",\n  \"what\": \"Часто надёжнее сделать операцию безопасной для повтора, чем полагаться на блокировку.\",\n  \"why\": \"Блокировки в распределённых системах не дают абсолютных гарантий.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Захват — SET NX PX с токеном, снятие — только своим токеном. По возможности — идемпотентность."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lk-acquire",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lk-token",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lk-expire",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "persistence",
+      "title": "Сохранение на диск",
+      "summary": "Снимки RDB, журнал AOF и fsync, что теряется при сбое, Redis как чистый кэш.",
+      "chapter": "Надёжность и масштаб",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Делаем блокировки и разбираемся, что будет с данными при перезапуске.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"RDB\",\n  \"title\": \"Снимок\",\n  \"what\": \"Время от времени Redis сохраняет снимок всей памяти в файл. Быстро восстанавливается, но теряет изменения после последнего снимка.\",\n  \"why\": \"Минуты потерь допустимы для кэша.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"AOF\",\n  \"title\": \"Журнал команд\",\n  \"what\": \"Каждая команда записи дописывается в журнал. С appendfsync everysec теряется не больше секунды.\",\n  \"why\": \"Для сессий и очередей потеря минут недопустима.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Настройка\",\n  \"title\": \"appendonly\",\n  \"what\": \"Оба механизма можно включить вместе: AOF для сохранности, RDB для быстрых резервных копий.\",\n  \"why\": \"Баланс надёжности и скорости.\",\n  \"how\": \"127.0.0.1:6379> CONFIG SET appendonly yes\\nOK\\n127.0.0.1:6379> CONFIG SET appendfsync everysec\\nOK\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Чистый кэш\",\n  \"title\": \"Без диска\",\n  \"what\": \"Если Redis только кэш, сохранение можно выключить: при перезапуске кэш просто наполнится заново.\",\n  \"why\": \"Меньше нагрузки на диск.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Кэш — можно без диска. Сессии и очереди — AOF everysec. Копии — снимки RDB."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-rdb",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-aof",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pr-cache",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "replication",
+      "title": "Репликация и отказоустойчивость",
+      "summary": "Ведущий и реплики, асинхронная репликация, Sentinel и автоматическое переключение, чтение с реплик.",
+      "chapter": "Надёжность и масштаб",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Сохраняем данные на диск и защищаемся от падения сервера.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Реплики\",\n  \"title\": \"Копии ведущего\",\n  \"what\": \"Реплики получают все изменения ведущего. Если ведущий умер, одна из реплик может его заменить.\",\n  \"why\": \"Падение сервера — секунды, а не часы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Асинхронно\",\n  \"title\": \"Возможна потеря\",\n  \"what\": \"Реплика отстаёт на доли секунды; при внезапной смерти ведущего последние записи могут пропасть.\",\n  \"why\": \"Учитывай это для важных данных.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Sentinel\",\n  \"title\": \"Сторож\",\n  \"what\": \"Процессы Sentinel следят за ведущим и при падении назначают новым одну из реплик, сообщая клиентам адрес.\",\n  \"why\": \"Переключение без человека.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Управляемый Redis\",\n  \"title\": \"Облако делает это\",\n  \"what\": \"Облачные сервисы дают репликацию, переключение и копии из коробки.\",\n  \"why\": \"Меньше эксплуатации своими руками.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Устойчивость — реплики и Sentinel или управляемый сервис. Репликация асинхронная."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rp-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rp-async",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rp-sentinel",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "cluster",
+      "title": "Кластер",
+      "summary": "Шардирование по слотам, хэш-теги для связанных ключей, команды с несколькими ключами, когда нужен кластер.",
+      "chapter": "Надёжность и масштаб",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Сделали Redis устойчивым и распределяем данные на несколько серверов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"16384 слота\",\n  \"title\": \"Ключи по частям\",\n  \"what\": \"Кластер делит пространство ключей на 16384 слота и раздаёт их серверам. Слот ключа считается по его имени.\",\n  \"why\": \"Данных больше, чем памяти одного сервера.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Хэш-теги\",\n  \"title\": \"Вместе на одном сервере\",\n  \"what\": \"Часть имени в фигурных скобках {user:42} определяет слот: user:{42}:cart и user:{42}:profile окажутся вместе.\",\n  \"why\": \"Транзакции и скрипты по нескольким ключам требуют, чтобы ключи были на одном сервере.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ограничения\",\n  \"title\": \"Многоключевые команды\",\n  \"what\": \"MGET, SINTER, MULTI по ключам из разных слотов в кластере не работают.\",\n  \"why\": \"Продумай имена ключей заранее.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Нужен ли\",\n  \"title\": \"Обычно нет\",\n  \"what\": \"Один сервер Redis держит десятки гигабайт и сотни тысяч операций в секунду. Кластер — когда этого правда мало.\",\n  \"why\": \"Не усложняй раньше времени.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Кластер — когда не хватает одного сервера. Связанные ключи — с хэш-тегом."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cl-slot",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cl-tag",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cl-need",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "monitoring",
+      "title": "Наблюдение",
+      "summary": "INFO и метрики, SLOWLOG, MEMORY USAGE, большие и горячие ключи, задержка.",
+      "chapter": "Redis на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем масштабирование и следим за здоровьем Redis.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"INFO\",\n  \"title\": \"Всё о сервере\",\n  \"what\": \"Память, клиенты, попадания и промахи кэша, репликация — в разделах INFO.\",\n  \"why\": \"Доля попаданий кэша показывает, есть ли от него польза.\",\n  \"how\": \"127.0.0.1:6379> INFO stats\\nkeyspace_hits:982341\\nkeyspace_misses:41203\\nevicted_keys:0\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"SLOWLOG\",\n  \"title\": \"Медленные команды\",\n  \"what\": \"SLOWLOG GET 10 показывает последние медленные команды с длительностью.\",\n  \"why\": \"Найти KEYS * или огромный HGETALL, который тормозит всех.\",\n  \"how\": \"127.0.0.1:6379> SLOWLOG GET 1\\n1) 1) (integer) 14\\n   2) (integer) 1762480000\\n   3) (integer) 52031\\n   4) 1) \\\"KEYS\\\" 2) \\\"*\\\"\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Поиск больших ключей\",\n  \"title\": \"--bigkeys и MEMORY USAGE\",\n  \"what\": \"redis-cli --bigkeys находит самые крупные ключи, MEMORY USAGE показывает размер одного.\",\n  \"why\": \"Огромный ключ — частая причина задержек.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Метрики\",\n  \"title\": \"Prometheus и графики\",\n  \"what\": \"Экспортёр метрик Redis отдаёт память, команды в секунду, задержки и попадания на графики и в тревоги.\",\n  \"why\": \"Узнать о проблеме до пользователей.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Следи за памятью, попаданиями и SLOWLOG. Ищи большие ключи заранее."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mo-slow",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mo-hits",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mo-big",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "security",
+      "title": "Безопасность",
+      "summary": "Не открывать наружу, пароль и ACL-пользователи, TLS, опасные команды, сеть только для приложений.",
+      "chapter": "Redis на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Следим за Redis и закрываем его от посторонних.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Не наружу\",\n  \"title\": \"Только своя сеть\",\n  \"what\": \"Redis, открытый в интернет без пароля, находят и захватывают за часы: стирают данные или ставят майнеры.\",\n  \"why\": \"Слушать только внутреннюю сеть или localhost.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"ACL\",\n  \"title\": \"Пользователи и права\",\n  \"what\": \"ACL SETUSER создаёт пользователя с паролем и разрешёнными командами и ключами.\",\n  \"why\": \"Приложение кэша не может выполнить FLUSHALL.\",\n  \"how\": \"127.0.0.1:6379> ACL SETUSER cache on >s3cr3t-pass ~cache:* +get +set +del\\nOK\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"TLS\",\n  \"title\": \"Шифрование\",\n  \"what\": \"Если трафик идёт через общую сеть или между облаками — включай TLS.\",\n  \"why\": \"Сессии и токены не читаются по дороге.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Опасные команды\",\n  \"title\": \"FLUSHALL, CONFIG, KEYS\",\n  \"what\": \"Запрети их обычным пользователям через ACL.\",\n  \"why\": \"Одна ошибка в скрипте не сотрёт всё.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Только внутренняя сеть, пароль и ACL по ролям, TLS через общие сети, опасные команды — запретить."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sc-open",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sc-acl",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sc-flush",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "production",
+      "title": "Redis в бою",
+      "summary": "Проверочный список: память и вытеснение, сохранность, подключения и пулы, тайм-ауты, что изучать дальше.",
+      "chapter": "Redis на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Защитили Redis и готовим его к настоящей нагрузке.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Предел памяти\",\n  \"title\": \"Предел и политика\",\n  \"what\": \"Задай maxmemory и политику вытеснения под роль: кэш — allkeys-lru, очереди — noeviction.\",\n  \"why\": \"Очереди не должны терять задачи из-за вытеснения.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Подключения\",\n  \"title\": \"Пул и тайм-ауты\",\n  \"what\": \"Клиент держит несколько постоянных соединений, а у команд — тайм-ауты.\",\n  \"why\": \"Тормозящий Redis не вешает всё приложение.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Падение Redis\",\n  \"title\": \"План Б\",\n  \"what\": \"Если кэш недоступен — приложение должно работать медленнее, но работать: читать из базы напрямую.\",\n  \"why\": \"Кэш — ускорение, а не единственная опора.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что дальше\",\n  \"title\": \"Куда расти\",\n  \"what\": \"Модули поиска и JSON, векторный поиск для ИИ, проектирование кэша для больших систем.\",\n  \"why\": \"Redis растёт вместе с проектом.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Предел памяти под роль, пулы и тайм-ауты, работа без кэша при его падении."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-noevict",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-down",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-check",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

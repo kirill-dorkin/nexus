@@ -470,6 +470,25 @@ export const characters = [
       "Возможности браузера: DOM и события глубже, fetch, потоки и CORS, localStorage, IndexedDB и Cache, Web Workers и Service Worker, PWA и уведомления, Canvas, звук и 3D, камера, геолокация и буфер обмена, наблюдатели, WebSocket и WebRTC, разрешения и защита от XSS, офлайн-приложения и доступность.",
     accent: "teal",
     sources: [{ manifest: "webapi-track.manifest.json", published: true }]
+  },
+  {
+    slug: "redis",
+    depth: {},
+    abilities: [
+      { title: "Ключи", branches: ["Зачем Redis", "Строки и ключи"] },
+      { title: "Структуры", branches: ["Списки и множества", "Хэши и упорядоченные множества"] },
+      { title: "Кэш", branches: ["Кэширование"] },
+      { title: "Защита", branches: ["Сессии и ограничения"] },
+      { title: "Сообщения", branches: ["Очереди и потоки", "Публикация и подписка"] },
+      { title: "Атомарность", branches: ["Атомарность и скрипты"] },
+      { title: "Надёжность", branches: ["Надёжность и масштаб", "Redis на практике"] }
+    ],
+    name: "Redis",
+    role: "Быстрая память",
+    summary:
+      "Быстрая память приложений: ключи и время жизни, строки и счётчики, списки и множества, хэши и рейтинги, кэширование и инвалидация, сессии и ограничение частоты, очереди и потоки, публикация и подписка, транзакции, Lua и блокировки, сохранение, репликация и кластер, наблюдение и безопасность.",
+    accent: "rose",
+    sources: [{ manifest: "redis-track.manifest.json", published: true }]
   }
 ];
 
@@ -501,7 +520,8 @@ export const requires = {
   "cicd/Зачем автоматизация": ["git/Командная работа на GitHub"],
   "kubernetes/Зачем Kubernetes": ["docker/Docker Compose"],
   "webapi/Что такое Web API": ["js/Асинхронность"],
-  "webapi/DOM глубже": ["js/События"]
+  "webapi/DOM глубже": ["js/События"],
+  "redis/Зачем Redis": ["network/TCP и UDP"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */

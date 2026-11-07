@@ -11539,6 +11539,471 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "redis",
+      "name": "Redis",
+      "role": "Быстрая память",
+      "summary": "Быстрая память приложений: ключи и время жизни, строки и счётчики, списки и множества, хэши и рейтинги, кэширование и инвалидация, сессии и ограничение частоты, очереди и потоки, публикация и подписка, транзакции, Lua и блокировки, сохранение, репликация и кластер, наблюдение и безопасность.",
+      "accent": "rose",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Ключи",
+          "branches": [
+            "redis-1",
+            "redis-2"
+          ]
+        },
+        {
+          "title": "Структуры",
+          "branches": [
+            "redis-3",
+            "redis-4"
+          ]
+        },
+        {
+          "title": "Кэш",
+          "branches": [
+            "redis-5"
+          ]
+        },
+        {
+          "title": "Защита",
+          "branches": [
+            "redis-6"
+          ]
+        },
+        {
+          "title": "Сообщения",
+          "branches": [
+            "redis-7",
+            "redis-8"
+          ]
+        },
+        {
+          "title": "Атомарность",
+          "branches": [
+            "redis-9"
+          ]
+        },
+        {
+          "title": "Надёжность",
+          "branches": [
+            "redis-10",
+            "redis-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "redis-1",
+          "title": "Зачем Redis",
+          "depth": "practice",
+          "requires": [
+            "network-3"
+          ],
+          "skills": [
+            {
+              "key": "rd-why",
+              "title": "Зачем Redis",
+              "lesson": {
+                "course": "redis",
+                "slug": "in-memory",
+                "title": "Данные в памяти"
+              }
+            },
+            {
+              "key": "rd-cli",
+              "title": "redis-cli",
+              "lesson": {
+                "course": "redis",
+                "slug": "redis-cli",
+                "title": "Установка и redis-cli"
+              }
+            },
+            {
+              "key": "rd-ttl",
+              "title": "Время жизни ключей",
+              "lesson": {
+                "course": "redis",
+                "slug": "keys-ttl",
+                "title": "Ключи и время жизни"
+              }
+            }
+          ]
+        },
+        {
+          "id": "redis-2",
+          "title": "Строки и ключи",
+          "depth": "practice",
+          "requires": [
+            "redis-1"
+          ],
+          "skills": [
+            {
+              "key": "rd-strings",
+              "title": "Строки Redis",
+              "lesson": {
+                "course": "redis",
+                "slug": "strings",
+                "title": "Строки"
+              }
+            },
+            {
+              "key": "rd-counters",
+              "title": "Счётчики",
+              "lesson": {
+                "course": "redis",
+                "slug": "counters",
+                "title": "Счётчики"
+              }
+            },
+            {
+              "key": "rd-bits",
+              "title": "Биты и HyperLogLog",
+              "lesson": {
+                "course": "redis",
+                "slug": "bits-hll",
+                "title": "Биты и приблизительный подсчёт"
+              }
+            }
+          ]
+        },
+        {
+          "id": "redis-3",
+          "title": "Списки и множества",
+          "depth": "practice",
+          "requires": [
+            "redis-2"
+          ],
+          "skills": [
+            {
+              "key": "rd-lists",
+              "title": "Списки",
+              "lesson": {
+                "course": "redis",
+                "slug": "lists",
+                "title": "Списки"
+              }
+            },
+            {
+              "key": "rd-sets",
+              "title": "Множества",
+              "lesson": {
+                "course": "redis",
+                "slug": "sets",
+                "title": "Множества"
+              }
+            },
+            {
+              "key": "rd-modeling",
+              "title": "Моделирование данных",
+              "lesson": {
+                "course": "redis",
+                "slug": "data-modeling",
+                "title": "Как раскладывать данные"
+              }
+            }
+          ]
+        },
+        {
+          "id": "redis-4",
+          "title": "Хэши и упорядоченные множества",
+          "depth": "practice",
+          "requires": [
+            "redis-3"
+          ],
+          "skills": [
+            {
+              "key": "rd-hashes",
+              "title": "Хэши",
+              "lesson": {
+                "course": "redis",
+                "slug": "hashes",
+                "title": "Хэши"
+              }
+            },
+            {
+              "key": "rd-zsets",
+              "title": "Упорядоченные множества",
+              "lesson": {
+                "course": "redis",
+                "slug": "sorted-sets",
+                "title": "Упорядоченные множества"
+              }
+            },
+            {
+              "key": "rd-time",
+              "title": "Данные по времени",
+              "lesson": {
+                "course": "redis",
+                "slug": "time-series",
+                "title": "Данные по времени"
+              }
+            }
+          ]
+        },
+        {
+          "id": "redis-5",
+          "title": "Кэширование",
+          "depth": "practice",
+          "requires": [
+            "redis-4"
+          ],
+          "skills": [
+            {
+              "key": "rd-cacheaside",
+              "title": "Cache-aside",
+              "lesson": {
+                "course": "redis",
+                "slug": "cache-aside",
+                "title": "Кэш рядом с базой"
+              }
+            },
+            {
+              "key": "rd-invalidate",
+              "title": "Инвалидация кэша",
+              "lesson": {
+                "course": "redis",
+                "slug": "invalidation",
+                "title": "Сброс кэша"
+              }
+            },
+            {
+              "key": "rd-eviction",
+              "title": "Нагрузка и вытеснение",
+              "lesson": {
+                "course": "redis",
+                "slug": "stampede-eviction",
+                "title": "Нагрузка и вытеснение"
+              }
+            }
+          ]
+        },
+        {
+          "id": "redis-6",
+          "title": "Сессии и ограничения",
+          "depth": "practice",
+          "requires": [
+            "redis-5"
+          ],
+          "skills": [
+            {
+              "key": "rd-sessions",
+              "title": "Сессии в Redis",
+              "lesson": {
+                "course": "redis",
+                "slug": "session-store",
+                "title": "Сессии"
+              }
+            },
+            {
+              "key": "rd-ratelimit",
+              "title": "Rate limiting",
+              "lesson": {
+                "course": "redis",
+                "slug": "rate-limit",
+                "title": "Ограничение частоты"
+              }
+            },
+            {
+              "key": "rd-idempotency",
+              "title": "Идемпотентность",
+              "lesson": {
+                "course": "redis",
+                "slug": "idempotency",
+                "title": "Повторы и дубликаты"
+              }
+            }
+          ]
+        },
+        {
+          "id": "redis-7",
+          "title": "Очереди и потоки",
+          "depth": "practice",
+          "requires": [
+            "redis-6"
+          ],
+          "skills": [
+            {
+              "key": "rd-streams",
+              "title": "Потоки Redis",
+              "lesson": {
+                "course": "redis",
+                "slug": "streams",
+                "title": "Потоки"
+              }
+            },
+            {
+              "key": "rd-groups",
+              "title": "Группы обработчиков",
+              "lesson": {
+                "course": "redis",
+                "slug": "consumer-groups",
+                "title": "Группы обработчиков"
+              }
+            },
+            {
+              "key": "rd-jobs",
+              "title": "Очереди задач",
+              "lesson": {
+                "course": "redis",
+                "slug": "job-queues",
+                "title": "Библиотеки очередей"
+              }
+            }
+          ]
+        },
+        {
+          "id": "redis-8",
+          "title": "Публикация и подписка",
+          "depth": "practice",
+          "requires": [
+            "redis-7"
+          ],
+          "skills": [
+            {
+              "key": "rd-pubsub",
+              "title": "Публикация и подписка",
+              "lesson": {
+                "course": "redis",
+                "slug": "pubsub",
+                "title": "Каналы сообщений"
+              }
+            },
+            {
+              "key": "rd-realtime",
+              "title": "Масштаб реального времени",
+              "lesson": {
+                "course": "redis",
+                "slug": "realtime-scale",
+                "title": "Реальное время на многих серверах"
+              }
+            },
+            {
+              "key": "rd-keyspace",
+              "title": "События ключей",
+              "lesson": {
+                "course": "redis",
+                "slug": "keyspace-events",
+                "title": "События ключей и кэш на клиенте"
+              }
+            }
+          ]
+        },
+        {
+          "id": "redis-9",
+          "title": "Атомарность и скрипты",
+          "depth": "practice",
+          "requires": [
+            "redis-8"
+          ],
+          "skills": [
+            {
+              "key": "rd-multi",
+              "title": "Транзакции Redis",
+              "lesson": {
+                "course": "redis",
+                "slug": "transactions",
+                "title": "Транзакции"
+              }
+            },
+            {
+              "key": "rd-lua",
+              "title": "Скрипты",
+              "lesson": {
+                "course": "redis",
+                "slug": "lua-functions",
+                "title": "Скрипты Lua и функции"
+              }
+            },
+            {
+              "key": "rd-locks",
+              "title": "Блокировки",
+              "lesson": {
+                "course": "redis",
+                "slug": "locks",
+                "title": "Распределённые блокировки"
+              }
+            }
+          ]
+        },
+        {
+          "id": "redis-10",
+          "title": "Надёжность и масштаб",
+          "depth": "practice",
+          "requires": [
+            "redis-9"
+          ],
+          "skills": [
+            {
+              "key": "rd-persist",
+              "title": "Сохранение на диск",
+              "lesson": {
+                "course": "redis",
+                "slug": "persistence",
+                "title": "Сохранение на диск"
+              }
+            },
+            {
+              "key": "rd-replication",
+              "title": "Репликация",
+              "lesson": {
+                "course": "redis",
+                "slug": "replication",
+                "title": "Репликация и отказоустойчивость"
+              }
+            },
+            {
+              "key": "rd-cluster",
+              "title": "Кластер Redis",
+              "lesson": {
+                "course": "redis",
+                "slug": "cluster",
+                "title": "Кластер"
+              }
+            }
+          ]
+        },
+        {
+          "id": "redis-11",
+          "title": "Redis на практике",
+          "depth": "practice",
+          "requires": [
+            "redis-10"
+          ],
+          "skills": [
+            {
+              "key": "rd-monitor",
+              "title": "Наблюдение за Redis",
+              "lesson": {
+                "course": "redis",
+                "slug": "monitoring",
+                "title": "Наблюдение"
+              }
+            },
+            {
+              "key": "rd-security",
+              "title": "Безопасность Redis",
+              "lesson": {
+                "course": "redis",
+                "slug": "security",
+                "title": "Безопасность"
+              }
+            },
+            {
+              "key": "rd-production",
+              "title": "Redis в бою",
+              "lesson": {
+                "course": "redis",
+                "slug": "production",
+                "title": "Redis в бою"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

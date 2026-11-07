@@ -45,7 +45,6 @@ export const UPCOMING: UpcomingDistrict[] = [
     district: "Архив",
     characters: [
       { name: "MongoDB", role: "Хранитель документов", needs: "JavaScript" },
-      { name: "Redis", role: "Быстрая память", needs: "Сеть и HTTP" },
       { name: "Prisma", role: "Переводчик схем", needs: "SQL, TypeScript" }
     ]
   },
