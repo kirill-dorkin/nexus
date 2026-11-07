@@ -3,7 +3,7 @@ import { py, idea, tip, makeLesson } from "./pykit.mjs";
 
 export default function functions(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "def-return", title: "Функции и return", summary: "def, параметры, return, несколько возвращаемых значений и docstring.",
