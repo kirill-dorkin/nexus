@@ -28,7 +28,8 @@ describe("city map", () => {
       "git",
       "ts",
       "node",
-      "react"
+      "react",
+      "network"
     ]);
     expect(
       plan.districts.find((d) => d.character.slug === "browser")

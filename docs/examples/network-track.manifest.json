@@ -1,0 +1,4431 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "network",
+    "title": "Сеть и HTTP: как данные путешествуют",
+    "description": "Что происходит под HTTP. Модели сети и пакеты, IP-адреса, подсети и маршрутизация, TCP и UDP, порты и сокеты, DNS изнутри, TLS-рукопожатие и сертификаты, HTTP/1.1, HTTP/2 и HTTP/3, WebSocket и Server-Sent Events, проектирование API, CDN, кэш и балансировщики, прокси, NAT и файрволы и диагностика сети от ping до Wireshark. Каждое понятие объясняется карточкой с примером, каждый урок закрепляется вопросами."
+  },
+  "skills": [
+    {
+      "key": "net-packets",
+      "title": "Пакеты",
+      "description": "Объяснять, как данные передаются по сети пакетами."
+    },
+    {
+      "key": "net-layers",
+      "title": "Уровни сети",
+      "description": "Объяснять уровни сети и что делает каждый."
+    },
+    {
+      "key": "net-routing",
+      "title": "Маршрутизация",
+      "description": "Понимать, как пакет находит путь через сети."
+    },
+    {
+      "key": "net-ipv4",
+      "title": "IPv4",
+      "description": "Читать адреса IPv4 и их двоичный смысл."
+    },
+    {
+      "key": "net-cidr",
+      "title": "CIDR",
+      "description": "Читать запись CIDR и считать размер подсети."
+    },
+    {
+      "key": "net-ipv6",
+      "title": "Частные адреса и IPv6",
+      "description": "Различать частные и публичные адреса и читать IPv6."
+    },
+    {
+      "key": "net-ports",
+      "title": "Порты",
+      "description": "Понимать порты и сокеты и известные номера портов."
+    },
+    {
+      "key": "net-tcp",
+      "title": "TCP",
+      "description": "Объяснять, как TCP обеспечивает надёжную доставку."
+    },
+    {
+      "key": "net-udp",
+      "title": "UDP и QUIC",
+      "description": "Выбирать между TCP и UDP и понимать QUIC."
+    },
+    {
+      "key": "net-dns-chain",
+      "title": "Разрешение имён",
+      "description": "Объяснять цепочку DNS-запросов от браузера до авторитетного сервера."
+    },
+    {
+      "key": "net-dns-records",
+      "title": "DNS-записи",
+      "description": "Настраивать записи DNS для сайта и почты."
+    },
+    {
+      "key": "net-dns-tools",
+      "title": "Диагностика DNS",
+      "description": "Проверять записи DNS и планировать их изменения."
+    },
+    {
+      "key": "net-crypto",
+      "title": "Основы шифрования",
+      "description": "Объяснять, как TLS шифрует соединение."
+    },
+    {
+      "key": "net-certs",
+      "title": "Сертификаты",
+      "description": "Понимать сертификаты и разбирать их ошибки."
+    },
+    {
+      "key": "net-https-setup",
+      "title": "Настройка HTTPS",
+      "description": "Включать и поддерживать HTTPS на своём сайте."
+    },
+    {
+      "key": "net-http-versions",
+      "title": "Версии HTTP",
+      "description": "Объяснять различия версий HTTP и их влияние на скорость."
+    },
+    {
+      "key": "net-negotiation",
+      "title": "Согласование",
+      "description": "Настраивать сжатие и согласование форматов ответа."
+    },
+    {
+      "key": "net-idempotency",
+      "title": "Семантика HTTP",
+      "description": "Использовать методы HTTP по смыслу и безопасно повторять запросы."
+    },
+    {
+      "key": "net-sse",
+      "title": "Опрос и SSE",
+      "description": "Получать обновления с сервера опросом и через SSE."
+    },
+    {
+      "key": "net-websocket",
+      "title": "WebSocket",
+      "description": "Использовать WebSocket для двусторонней связи в реальном времени."
+    },
+    {
+      "key": "net-webrtc",
+      "title": "WebRTC",
+      "description": "Объяснять, как браузеры соединяются напрямую для звонков."
+    },
+    {
+      "key": "net-rest",
+      "title": "REST",
+      "description": "Проектировать понятный REST API."
+    },
+    {
+      "key": "net-api-versioning",
+      "title": "Развитие API",
+      "description": "Менять API, не ломая клиентов, и документировать его."
+    },
+    {
+      "key": "net-api-styles",
+      "title": "Стили API",
+      "description": "Выбирать стиль API под задачу."
+    },
+    {
+      "key": "net-cdn",
+      "title": "CDN",
+      "description": "Объяснять, как CDN ускоряет сайт, и что через него отдавать."
+    },
+    {
+      "key": "net-cache-strategy",
+      "title": "Стратегии кэша",
+      "description": "Настраивать кэш на CDN и обновлять контент без задержек."
+    },
+    {
+      "key": "net-lb",
+      "title": "Балансировка",
+      "description": "Объяснять, как балансировщик распределяет запросы между серверами."
+    },
+    {
+      "key": "net-proxy",
+      "title": "Прокси",
+      "description": "Различать прямой и обратный прокси и настраивать приложение за прокси."
+    },
+    {
+      "key": "net-nat",
+      "title": "NAT и файрволы",
+      "description": "Понимать NAT и настраивать правила доступа."
+    },
+    {
+      "key": "net-vpn",
+      "title": "VPN",
+      "description": "Объяснять, как VPN объединяет сети и защищает трафик."
+    },
+    {
+      "key": "net-ping",
+      "title": "ping и traceroute",
+      "description": "Проверять доступность узла и путь до него."
+    },
+    {
+      "key": "net-timing",
+      "title": "Тайминги и порты",
+      "description": "Разбирать, на каком этапе тратится время запроса, и проверять порты."
+    },
+    {
+      "key": "net-method",
+      "title": "Поиск сетевых проблем",
+      "description": "Находить сетевые проблемы по шагам и смотреть пакеты."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "pk-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем пакеты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-packets"
+      ],
+      "presentation": {
+        "question": "Почему данные передаются пакетами, а не целым файлом?",
+        "options": [
+          {
+            "id": "retry",
+            "text": "Потерянный кусок можно переслать отдельно, а сеть делится между многими"
+          },
+          {
+            "id": "secure",
+            "text": "Так безопаснее"
+          },
+          {
+            "id": "small",
+            "text": "Файлы становятся меньше"
+          },
+          {
+            "id": "rule",
+            "text": "Так требует браузер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "retry",
+        "explanation": "И канал не занят одним большим файлом."
+      }
+    },
+    {
+      "slug": "pk-latency",
+      "type": "quiz.single_choice",
+      "title": "Задержка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-packets"
+      ],
+      "presentation": {
+        "question": "Что такое задержка (latency)?",
+        "options": [
+          {
+            "id": "time",
+            "text": "Время, за которое пакет доходит до получателя"
+          },
+          {
+            "id": "speed",
+            "text": "Объём данных в секунду"
+          },
+          {
+            "id": "size",
+            "text": "Размер пакета"
+          },
+          {
+            "id": "loss",
+            "text": "Доля потерянных пакетов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "time",
+        "explanation": "Пропускная способность — другое."
+      }
+    },
+    {
+      "slug": "pk-mtu",
+      "type": "quiz.short_text",
+      "title": "Размер пакета",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "net-packets"
+      ],
+      "presentation": {
+        "question": "Как называется максимальный размер пакета в канале? Аббревиатура латиницей."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "MTU",
+          "mtu"
+        ],
+        "caseSensitive": false,
+        "explanation": "Maximum Transmission Unit."
+      }
+    },
+    {
+      "slug": "ly-tcp",
+      "type": "quiz.single_choice",
+      "title": "Транспорт",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-layers"
+      ],
+      "presentation": {
+        "question": "На каком уровне работают TCP и UDP?",
+        "options": [
+          {
+            "id": "transport",
+            "text": "Транспортном"
+          },
+          {
+            "id": "app",
+            "text": "Прикладном"
+          },
+          {
+            "id": "net",
+            "text": "Сетевом"
+          },
+          {
+            "id": "link",
+            "text": "Канальном"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "transport",
+        "explanation": "Они доставляют данные между программами по портам."
+      }
+    },
+    {
+      "slug": "ly-l7",
+      "type": "quiz.single_choice",
+      "title": "L7",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-layers"
+      ],
+      "presentation": {
+        "question": "С чем работает «балансировщик L7»?",
+        "options": [
+          {
+            "id": "http",
+            "text": "С содержимым HTTP: путями, заголовками"
+          },
+          {
+            "id": "ip",
+            "text": "Только с IP-адресами"
+          },
+          {
+            "id": "wifi",
+            "text": "С Wi-Fi"
+          },
+          {
+            "id": "cable",
+            "text": "С кабелями"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "http",
+        "explanation": "L7 — прикладной уровень OSI."
+      }
+    },
+    {
+      "slug": "ly-encap",
+      "type": "quiz.single_choice",
+      "title": "Инкапсуляция",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-layers"
+      ],
+      "presentation": {
+        "question": "Что такое инкапсуляция в сети?",
+        "options": [
+          {
+            "id": "nest",
+            "text": "Вложение сообщения каждого уровня в пакет уровня ниже со своим заголовком"
+          },
+          {
+            "id": "encrypt",
+            "text": "Шифрование"
+          },
+          {
+            "id": "compress",
+            "text": "Сжатие"
+          },
+          {
+            "id": "route",
+            "text": "Маршрутизация"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "nest",
+        "explanation": "Конверт в конверте."
+      }
+    },
+    {
+      "slug": "rt-gw",
+      "type": "quiz.single_choice",
+      "title": "Шлюз",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-routing"
+      ],
+      "presentation": {
+        "question": "Локальная сеть работает, а интернета нет. Что проверить в первую очередь?",
+        "options": [
+          {
+            "id": "gateway",
+            "text": "Шлюз по умолчанию"
+          },
+          {
+            "id": "css",
+            "text": "CSS сайта"
+          },
+          {
+            "id": "mtu",
+            "text": "Размер экрана"
+          },
+          {
+            "id": "browser",
+            "text": "Версию браузера"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "gateway",
+        "explanation": "Через шлюз уходят все пакеты наружу."
+      }
+    },
+    {
+      "slug": "rt-ttl",
+      "type": "quiz.single_choice",
+      "title": "TTL",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-routing"
+      ],
+      "presentation": {
+        "question": "Зачем в пакете счётчик TTL?",
+        "options": [
+          {
+            "id": "loop",
+            "text": "Чтобы пакет не кружил по петле маршрутов вечно"
+          },
+          {
+            "id": "time",
+            "text": "Чтобы задать время жизни сайта"
+          },
+          {
+            "id": "cache",
+            "text": "Для кэша"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "loop",
+        "explanation": "Каждый маршрутизатор уменьшает его на 1."
+      }
+    },
+    {
+      "slug": "rt-bgp",
+      "type": "quiz.short_text",
+      "title": "Между провайдерами",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "net-routing"
+      ],
+      "presentation": {
+        "question": "Как называется протокол, которым сети провайдеров обмениваются маршрутами? Аббревиатура."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "BGP",
+          "bgp"
+        ],
+        "caseSensitive": false,
+        "explanation": "Border Gateway Protocol."
+      }
+    },
+    {
+      "slug": "v4-range",
+      "type": "quiz.single_choice",
+      "title": "Диапазон",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-ipv4"
+      ],
+      "presentation": {
+        "question": "Какое максимальное значение одного числа в адресе IPv4?",
+        "options": [
+          {
+            "id": "255",
+            "text": "255"
+          },
+          {
+            "id": "256",
+            "text": "256"
+          },
+          {
+            "id": "999",
+            "text": "999"
+          },
+          {
+            "id": "128",
+            "text": "128"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "255",
+        "explanation": "8 бит дают 256 значений: от 0 до 255."
+      }
+    },
+    {
+      "slug": "v4-bits",
+      "type": "quiz.single_choice",
+      "title": "Длина",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-ipv4"
+      ],
+      "presentation": {
+        "question": "Сколько бит в адресе IPv4?",
+        "options": [
+          {
+            "id": "32",
+            "text": "32"
+          },
+          {
+            "id": "64",
+            "text": "64"
+          },
+          {
+            "id": "128",
+            "text": "128"
+          },
+          {
+            "id": "8",
+            "text": "8"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "32",
+        "explanation": "Четыре октета по 8 бит."
+      }
+    },
+    {
+      "slug": "v4-parts",
+      "type": "quiz.single_choice",
+      "title": "Части",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-ipv4"
+      ],
+      "presentation": {
+        "question": "Из каких частей состоит адрес IPv4?",
+        "options": [
+          {
+            "id": "nethost",
+            "text": "Часть сети и часть устройства"
+          },
+          {
+            "id": "countrycity",
+            "text": "Страна и город"
+          },
+          {
+            "id": "userpass",
+            "text": "Имя и пароль"
+          },
+          {
+            "id": "portpath",
+            "text": "Порт и путь"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "nethost",
+        "explanation": "Границу задаёт маска."
+      }
+    },
+    {
+      "slug": "cd-24",
+      "type": "quiz.single_choice",
+      "title": "/24",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-cidr"
+      ],
+      "presentation": {
+        "question": "Сколько адресов в сети /24?",
+        "options": [
+          {
+            "id": "256",
+            "text": "256"
+          },
+          {
+            "id": "24",
+            "text": "24"
+          },
+          {
+            "id": "65536",
+            "text": "65 536"
+          },
+          {
+            "id": "1",
+            "text": "1"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "256",
+        "explanation": "8 свободных бит: 2⁸."
+      }
+    },
+    {
+      "slug": "cd-32",
+      "type": "quiz.single_choice",
+      "title": "/32",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-cidr"
+      ],
+      "presentation": {
+        "question": "Что означает правило файрвола для 203.0.113.7/32?",
+        "options": [
+          {
+            "id": "one",
+            "text": "Ровно один адрес"
+          },
+          {
+            "id": "all",
+            "text": "Весь интернет"
+          },
+          {
+            "id": "32",
+            "text": "32 адреса"
+          },
+          {
+            "id": "subnet",
+            "text": "Всю подсеть 203.0.113.0"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "Все 32 бита — сеть."
+      }
+    },
+    {
+      "slug": "cd-mask",
+      "type": "quiz.single_choice",
+      "title": "Маска",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-cidr"
+      ],
+      "presentation": {
+        "question": "Какая маска соответствует /16?",
+        "options": [
+          {
+            "id": "16",
+            "text": "255.255.0.0"
+          },
+          {
+            "id": "24",
+            "text": "255.255.255.0"
+          },
+          {
+            "id": "8",
+            "text": "255.0.0.0"
+          },
+          {
+            "id": "32",
+            "text": "255.255.255.255"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "16",
+        "explanation": "16 единичных бит — два октета."
+      }
+    },
+    {
+      "slug": "pv-private",
+      "type": "quiz.single_choice",
+      "title": "Частный",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-ipv6"
+      ],
+      "presentation": {
+        "question": "Какой адрес частный?",
+        "options": [
+          {
+            "id": "192",
+            "text": "192.168.0.10"
+          },
+          {
+            "id": "8",
+            "text": "8.8.8.8"
+          },
+          {
+            "id": "1",
+            "text": "1.1.1.1"
+          },
+          {
+            "id": "203",
+            "text": "203.0.113.5"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "192",
+        "explanation": "192.168.0.0/16 — частный диапазон."
+      }
+    },
+    {
+      "slug": "pv-phone",
+      "type": "quiz.single_choice",
+      "title": "С телефона",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-ipv6"
+      ],
+      "presentation": {
+        "question": "Почему сайт на localhost:3000 не открывается с телефона в той же сети?",
+        "options": [
+          {
+            "id": "self",
+            "text": "localhost на телефоне — это сам телефон; нужен адрес компьютера в локальной сети"
+          },
+          {
+            "id": "https",
+            "text": "Нужен HTTPS"
+          },
+          {
+            "id": "port",
+            "text": "Порт 3000 запрещён"
+          },
+          {
+            "id": "ipv6",
+            "text": "Телефоны не поддерживают IPv4"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "self",
+        "explanation": "И сервер должен слушать не только 127.0.0.1."
+      }
+    },
+    {
+      "slug": "pv-v6",
+      "type": "quiz.single_choice",
+      "title": "IPv6",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-ipv6"
+      ],
+      "presentation": {
+        "question": "Сколько бит в адресе IPv6?",
+        "options": [
+          {
+            "id": "128",
+            "text": "128"
+          },
+          {
+            "id": "32",
+            "text": "32"
+          },
+          {
+            "id": "64",
+            "text": "64"
+          },
+          {
+            "id": "256",
+            "text": "256"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "128",
+        "explanation": "Поэтому адресов хватает всем."
+      }
+    },
+    {
+      "slug": "pt-https",
+      "type": "quiz.single_choice",
+      "title": "HTTPS",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-ports"
+      ],
+      "presentation": {
+        "question": "Какой порт по умолчанию у HTTPS?",
+        "options": [
+          {
+            "id": "443",
+            "text": "443"
+          },
+          {
+            "id": "80",
+            "text": "80"
+          },
+          {
+            "id": "22",
+            "text": "22"
+          },
+          {
+            "id": "8080",
+            "text": "8080"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "443",
+        "explanation": "80 — у незашифрованного HTTP."
+      }
+    },
+    {
+      "slug": "pt-what",
+      "type": "quiz.single_choice",
+      "title": "Порт",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-ports"
+      ],
+      "presentation": {
+        "question": "Что определяет порт?",
+        "options": [
+          {
+            "id": "program",
+            "text": "Конкретную программу на компьютере"
+          },
+          {
+            "id": "computer",
+            "text": "Компьютер в сети"
+          },
+          {
+            "id": "country",
+            "text": "Страну"
+          },
+          {
+            "id": "speed",
+            "text": "Скорость соединения"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "program",
+        "explanation": "Компьютер определяет IP-адрес."
+      }
+    },
+    {
+      "slug": "pt-ssh",
+      "type": "quiz.short_text",
+      "title": "SSH",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "net-ports"
+      ],
+      "presentation": {
+        "question": "Какой порт по умолчанию у SSH? Число."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "22"
+        ],
+        "caseSensitive": false,
+        "explanation": "ssh -p меняет его на другой."
+      }
+    },
+    {
+      "slug": "tc-hs",
+      "type": "quiz.single_choice",
+      "title": "Рукопожатие",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-tcp"
+      ],
+      "presentation": {
+        "question": "В каком порядке идут пакеты рукопожатия TCP?",
+        "options": [
+          {
+            "id": "order",
+            "text": "SYN → SYN-ACK → ACK"
+          },
+          {
+            "id": "rev",
+            "text": "ACK → SYN → FIN"
+          },
+          {
+            "id": "fin",
+            "text": "FIN → ACK → SYN"
+          },
+          {
+            "id": "one",
+            "text": "Одним пакетом HELLO"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "order",
+        "explanation": "Три шага до начала передачи данных."
+      }
+    },
+    {
+      "slug": "tc-lost",
+      "type": "quiz.single_choice",
+      "title": "Потеря",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-tcp"
+      ],
+      "presentation": {
+        "question": "Что делает TCP, если сегмент потерялся?",
+        "options": [
+          {
+            "id": "resend",
+            "text": "Отправляет его снова, а получатель ждёт, чтобы сохранить порядок"
+          },
+          {
+            "id": "skip",
+            "text": "Пропускает"
+          },
+          {
+            "id": "error",
+            "text": "Закрывает соединение"
+          },
+          {
+            "id": "udp",
+            "text": "Переключается на UDP"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "resend",
+        "explanation": "Надёжность и порядок — главные свойства TCP."
+      }
+    },
+    {
+      "slug": "tc-hol",
+      "type": "quiz.single_choice",
+      "title": "Блокировка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-tcp"
+      ],
+      "presentation": {
+        "question": "Что такое head-of-line blocking в TCP?",
+        "options": [
+          {
+            "id": "wait",
+            "text": "Все данные ждут один потерянный сегмент, хотя остальные уже пришли"
+          },
+          {
+            "id": "firewall",
+            "text": "Блокировка файрволом"
+          },
+          {
+            "id": "dns",
+            "text": "Ошибка DNS"
+          },
+          {
+            "id": "cpu",
+            "text": "Перегрузка процессора"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "wait",
+        "explanation": "QUIC решает это по-другому."
+      }
+    },
+    {
+      "slug": "ud-game",
+      "type": "quiz.single_choice",
+      "title": "Игра",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-udp"
+      ],
+      "presentation": {
+        "question": "Почему онлайн-игры используют UDP?",
+        "options": [
+          {
+            "id": "fresh",
+            "text": "Устаревший пакет не нужен; лучше потерять его, чем ждать повторной отправки"
+          },
+          {
+            "id": "secure",
+            "text": "UDP безопаснее"
+          },
+          {
+            "id": "order",
+            "text": "UDP гарантирует порядок"
+          },
+          {
+            "id": "browser",
+            "text": "Так требует браузер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fresh",
+        "explanation": "Задержка важнее полноты."
+      }
+    },
+    {
+      "slug": "ud-quic",
+      "type": "quiz.single_choice",
+      "title": "QUIC",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-udp"
+      ],
+      "presentation": {
+        "question": "Поверх какого протокола работает QUIC?",
+        "options": [
+          {
+            "id": "udp",
+            "text": "UDP"
+          },
+          {
+            "id": "tcp",
+            "text": "TCP"
+          },
+          {
+            "id": "http",
+            "text": "HTTP/1.1"
+          },
+          {
+            "id": "dns",
+            "text": "DNS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "udp",
+        "explanation": "А надёжность реализует сам QUIC."
+      }
+    },
+    {
+      "slug": "ud-where",
+      "type": "quiz.multiple_choice",
+      "title": "Где UDP",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "net-udp"
+      ],
+      "presentation": {
+        "question": "Что обычно работает поверх UDP?",
+        "options": [
+          {
+            "id": "dns",
+            "text": "Запросы DNS"
+          },
+          {
+            "id": "webrtc",
+            "text": "Голос и видео в звонках"
+          },
+          {
+            "id": "http3",
+            "text": "HTTP/3"
+          },
+          {
+            "id": "ssh",
+            "text": "Сеансы SSH"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "dns",
+          "webrtc",
+          "http3"
+        ],
+        "explanation": "SSH работает поверх TCP."
+      }
+    },
+    {
+      "slug": "dc-resolver",
+      "type": "quiz.single_choice",
+      "title": "Резолвер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-dns-chain"
+      ],
+      "presentation": {
+        "question": "Кто обходит цепочку корень → TLD → авторитетный сервер?",
+        "options": [
+          {
+            "id": "resolver",
+            "text": "Рекурсивный резолвер"
+          },
+          {
+            "id": "browser",
+            "text": "Браузер сам"
+          },
+          {
+            "id": "registrar",
+            "text": "Регистратор домена"
+          },
+          {
+            "id": "site",
+            "text": "Сам сайт"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "resolver",
+        "explanation": "Компьютер просто задаёт ему вопрос."
+      }
+    },
+    {
+      "slug": "dc-where",
+      "type": "quiz.single_choice",
+      "title": "Где менять",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-dns-chain"
+      ],
+      "presentation": {
+        "question": "Где меняют A-запись домена?",
+        "options": [
+          {
+            "id": "auth",
+            "text": "На авторитетном DNS-сервере домена (указан в NS)"
+          },
+          {
+            "id": "browser",
+            "text": "В браузере"
+          },
+          {
+            "id": "root",
+            "text": "На корневом сервере"
+          },
+          {
+            "id": "resolver",
+            "text": "У резолвера 8.8.8.8"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "auth",
+        "explanation": "Остальные только кэшируют."
+      }
+    },
+    {
+      "slug": "dc-root",
+      "type": "quiz.short_text",
+      "title": "Начало цепочки",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "net-dns-chain"
+      ],
+      "presentation": {
+        "question": "Как называются серверы самой вершины DNS-иерархии? Одно слово по-русски или root."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "корневые",
+          "root",
+          "корневой"
+        ],
+        "caseSensitive": false,
+        "explanation": "Они знают серверы зон верхнего уровня."
+      }
+    },
+    {
+      "slug": "dr-mx",
+      "type": "quiz.single_choice",
+      "title": "Почта",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-dns-records"
+      ],
+      "presentation": {
+        "question": "Какая запись указывает почтовые серверы домена?",
+        "options": [
+          {
+            "id": "mx",
+            "text": "MX"
+          },
+          {
+            "id": "a",
+            "text": "A"
+          },
+          {
+            "id": "cname",
+            "text": "CNAME"
+          },
+          {
+            "id": "caa",
+            "text": "CAA"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mx",
+        "explanation": "Mail eXchanger."
+      }
+    },
+    {
+      "slug": "dr-spam",
+      "type": "quiz.single_choice",
+      "title": "Спам",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-dns-records"
+      ],
+      "presentation": {
+        "question": "Письма с сайта попадают в спам. Что проверить в DNS?",
+        "options": [
+          {
+            "id": "spf",
+            "text": "Записи SPF и DKIM"
+          },
+          {
+            "id": "aaaa",
+            "text": "Запись AAAA"
+          },
+          {
+            "id": "ns",
+            "text": "Количество NS-серверов"
+          },
+          {
+            "id": "ttl",
+            "text": "TTL на корне"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "spf",
+        "explanation": "Они подтверждают право отправлять почту."
+      }
+    },
+    {
+      "slug": "dr-cname",
+      "type": "quiz.single_choice",
+      "title": "CNAME на корне",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-dns-records"
+      ],
+      "presentation": {
+        "question": "Почему CNAME обычно нельзя поставить на корень домена example.com?",
+        "options": [
+          {
+            "id": "rule",
+            "text": "CNAME не может соседствовать с другими записями, а на корне нужны NS и SOA"
+          },
+          {
+            "id": "length",
+            "text": "Имя слишком короткое"
+          },
+          {
+            "id": "https",
+            "text": "Это ломает HTTPS"
+          },
+          {
+            "id": "price",
+            "text": "Это платно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rule",
+        "explanation": "Хостинги предлагают ALIAS или flattening."
+      }
+    },
+    {
+      "slug": "dt-ttl",
+      "type": "quiz.single_choice",
+      "title": "Перед переездом",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-dns-tools"
+      ],
+      "presentation": {
+        "question": "Что сделать с TTL за сутки до смены IP сервера?",
+        "options": [
+          {
+            "id": "lower",
+            "text": "Снизить, например, до 300 секунд"
+          },
+          {
+            "id": "raise",
+            "text": "Поднять до недели"
+          },
+          {
+            "id": "zero",
+            "text": "Удалить запись"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lower",
+        "explanation": "Тогда кэши быстро подхватят новый адрес."
+      }
+    },
+    {
+      "slug": "dt-dig",
+      "type": "quiz.single_choice",
+      "title": "dig",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-dns-tools"
+      ],
+      "presentation": {
+        "question": "Как посмотреть только ответ на запрос A-записи?",
+        "options": [
+          {
+            "id": "short",
+            "text": "`dig +short A example.com`"
+          },
+          {
+            "id": "ping",
+            "text": "`ping example.com`"
+          },
+          {
+            "id": "curl",
+            "text": "`curl example.com`"
+          },
+          {
+            "id": "nslook",
+            "text": "`dig -v`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "short",
+        "explanation": "+short убирает подробности."
+      }
+    },
+    {
+      "slug": "dt-doh",
+      "type": "quiz.single_choice",
+      "title": "DoH",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-dns-tools"
+      ],
+      "presentation": {
+        "question": "Что даёт DNS over HTTPS?",
+        "options": [
+          {
+            "id": "privacy",
+            "text": "Шифрует DNS-запросы, их не видит провайдер"
+          },
+          {
+            "id": "speed",
+            "text": "Ускоряет сайты в 10 раз"
+          },
+          {
+            "id": "cache",
+            "text": "Отключает кэш"
+          },
+          {
+            "id": "ipv6",
+            "text": "Включает IPv6"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "privacy",
+        "explanation": "Обычные запросы идут открытым текстом."
+      }
+    },
+    {
+      "slug": "cb-sym",
+      "type": "quiz.single_choice",
+      "title": "Трафик",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-crypto"
+      ],
+      "presentation": {
+        "question": "Каким шифрованием защищён основной поток данных HTTPS?",
+        "options": [
+          {
+            "id": "sym",
+            "text": "Симметричным — после согласования общего ключа"
+          },
+          {
+            "id": "asym",
+            "text": "Только асимметричным"
+          },
+          {
+            "id": "none",
+            "text": "Никаким"
+          },
+          {
+            "id": "base64",
+            "text": "Base64"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "sym",
+        "explanation": "Асимметричное используется при рукопожатии."
+      }
+    },
+    {
+      "slug": "cb-visible",
+      "type": "quiz.single_choice",
+      "title": "Что видно",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-crypto"
+      ],
+      "presentation": {
+        "question": "Что провайдер обычно видит при HTTPS-соединении?",
+        "options": [
+          {
+            "id": "host",
+            "text": "IP-адрес и имя сайта, но не путь, cookies и содержимое"
+          },
+          {
+            "id": "all",
+            "text": "Всё содержимое страницы"
+          },
+          {
+            "id": "password",
+            "text": "Пароли"
+          },
+          {
+            "id": "nothing",
+            "text": "Вообще ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "host",
+        "explanation": "Имя сайта передаётся в SNI."
+      }
+    },
+    {
+      "slug": "cb-forward",
+      "type": "quiz.single_choice",
+      "title": "Прямая секретность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-crypto"
+      ],
+      "presentation": {
+        "question": "Что даёт прямая секретность (forward secrecy)?",
+        "options": [
+          {
+            "id": "past",
+            "text": "Украденный ключ сервера не позволит расшифровать старый трафик"
+          },
+          {
+            "id": "speed",
+            "text": "Ускорение"
+          },
+          {
+            "id": "cache",
+            "text": "Кэширование"
+          },
+          {
+            "id": "dns",
+            "text": "Шифрование DNS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "past",
+        "explanation": "Сеансовые ключи вычисляются заново."
+      }
+    },
+    {
+      "slug": "ce-chain",
+      "type": "quiz.single_choice",
+      "title": "Цепочка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-certs"
+      ],
+      "presentation": {
+        "question": "Что браузер проверяет в сертификате сайта?",
+        "options": [
+          {
+            "id": "chain",
+            "text": "Подпись по цепочке до доверенного корня, имя домена и срок"
+          },
+          {
+            "id": "color",
+            "text": "Цвет сайта"
+          },
+          {
+            "id": "size",
+            "text": "Размер страницы"
+          },
+          {
+            "id": "ip",
+            "text": "Только IP-адрес"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "chain",
+        "explanation": "Всё три должно сойтись."
+      }
+    },
+    {
+      "slug": "ce-name",
+      "type": "quiz.single_choice",
+      "title": "Другое имя",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-certs"
+      ],
+      "presentation": {
+        "question": "Браузер пишет, что сертификат выдан для другого домена. В чём дело?",
+        "options": [
+          {
+            "id": "mismatch",
+            "text": "Имя в сертификате не совпадает с адресом сайта"
+          },
+          {
+            "id": "expired",
+            "text": "Истёк срок"
+          },
+          {
+            "id": "dns",
+            "text": "Ошибка DNS"
+          },
+          {
+            "id": "cache",
+            "text": "Кэш браузера"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mismatch",
+        "explanation": "Например, сертификат для site.app, а открыт www.site.app."
+      }
+    },
+    {
+      "slug": "ce-root",
+      "type": "quiz.single_choice",
+      "title": "Корни",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-certs"
+      ],
+      "presentation": {
+        "question": "Где хранятся корневые сертификаты, которым доверяет браузер?",
+        "options": [
+          {
+            "id": "store",
+            "text": "Встроены в браузер или операционную систему"
+          },
+          {
+            "id": "site",
+            "text": "На каждом сайте"
+          },
+          {
+            "id": "dns",
+            "text": "В DNS"
+          },
+          {
+            "id": "cookie",
+            "text": "В cookies"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "store",
+        "explanation": "Их список обновляется с обновлениями."
+      }
+    },
+    {
+      "slug": "hs-le",
+      "type": "quiz.single_choice",
+      "title": "Let's Encrypt",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-https-setup"
+      ],
+      "presentation": {
+        "question": "На какой срок Let's Encrypt выдаёт сертификаты?",
+        "options": [
+          {
+            "id": "90",
+            "text": "90 дней — поэтому нужно автопродление"
+          },
+          {
+            "id": "year",
+            "text": "На год"
+          },
+          {
+            "id": "forever",
+            "text": "Навсегда"
+          },
+          {
+            "id": "week",
+            "text": "На неделю"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "90",
+        "explanation": "Короткий срок уменьшает вред от утечки ключа."
+      }
+    },
+    {
+      "slug": "hs-hsts",
+      "type": "quiz.single_choice",
+      "title": "HSTS",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-https-setup"
+      ],
+      "presentation": {
+        "question": "Что делает заголовок Strict-Transport-Security?",
+        "options": [
+          {
+            "id": "https",
+            "text": "Заставляет браузер ходить на домен только по HTTPS"
+          },
+          {
+            "id": "cache",
+            "text": "Включает кэш"
+          },
+          {
+            "id": "cors",
+            "text": "Разрешает CORS"
+          },
+          {
+            "id": "cookie",
+            "text": "Удаляет cookies"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "https",
+        "explanation": "Даже если адрес набрали без https."
+      }
+    },
+    {
+      "slug": "hs-redirect",
+      "type": "quiz.single_choice",
+      "title": "HTTP",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-https-setup"
+      ],
+      "presentation": {
+        "question": "Что делать с запросами на http:// версию сайта?",
+        "options": [
+          {
+            "id": "301",
+            "text": "Перенаправлять 301 на https://"
+          },
+          {
+            "id": "serve",
+            "text": "Отдавать сайт без шифрования"
+          },
+          {
+            "id": "block",
+            "text": "Отвечать 500"
+          },
+          {
+            "id": "ignore",
+            "text": "Не отвечать"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "301",
+        "explanation": "Вместе с HSTS это закрывает дыру."
+      }
+    },
+    {
+      "slug": "hv-mux",
+      "type": "quiz.single_choice",
+      "title": "HTTP/2",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-http-versions"
+      ],
+      "presentation": {
+        "question": "Главное отличие HTTP/2 от HTTP/1.1?",
+        "options": [
+          {
+            "id": "mux",
+            "text": "Много запросов параллельно в одном соединении"
+          },
+          {
+            "id": "text",
+            "text": "Текстовый формат"
+          },
+          {
+            "id": "udp",
+            "text": "Работает поверх UDP"
+          },
+          {
+            "id": "nohead",
+            "text": "Нет заголовков"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mux",
+        "explanation": "Это мультиплексирование."
+      }
+    },
+    {
+      "slug": "hv-3",
+      "type": "quiz.single_choice",
+      "title": "HTTP/3",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-http-versions"
+      ],
+      "presentation": {
+        "question": "Поверх чего работает HTTP/3?",
+        "options": [
+          {
+            "id": "quic",
+            "text": "QUIC поверх UDP"
+          },
+          {
+            "id": "tcp",
+            "text": "TCP"
+          },
+          {
+            "id": "ws",
+            "text": "WebSocket"
+          },
+          {
+            "id": "ftp",
+            "text": "FTP"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "quic",
+        "explanation": "Отсюда устойчивость к потерям."
+      }
+    },
+    {
+      "slug": "hv-bundle",
+      "type": "quiz.single_choice",
+      "title": "Склейка файлов",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-http-versions"
+      ],
+      "presentation": {
+        "question": "Почему склейка всех файлов в один стала менее важной?",
+        "options": [
+          {
+            "id": "mux",
+            "text": "HTTP/2 эффективно передаёт много файлов в одном соединении"
+          },
+          {
+            "id": "fast",
+            "text": "Интернет стал быстрым"
+          },
+          {
+            "id": "cache",
+            "text": "Браузеры не кэшируют"
+          },
+          {
+            "id": "ban",
+            "text": "Склейка запрещена"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mux",
+        "explanation": "Но слишком много мелких файлов всё равно вредно."
+      }
+    },
+    {
+      "slug": "ng-encoding",
+      "type": "quiz.single_choice",
+      "title": "Сжатие",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-negotiation"
+      ],
+      "presentation": {
+        "question": "Каким заголовком клиент сообщает, какие сжатия понимает?",
+        "options": [
+          {
+            "id": "ae",
+            "text": "Accept-Encoding"
+          },
+          {
+            "id": "ce",
+            "text": "Content-Encoding"
+          },
+          {
+            "id": "cl",
+            "text": "Content-Length"
+          },
+          {
+            "id": "host",
+            "text": "Host"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ae",
+        "explanation": "Сервер отвечает Content-Encoding."
+      }
+    },
+    {
+      "slug": "ng-vary",
+      "type": "quiz.single_choice",
+      "title": "Vary",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-negotiation"
+      ],
+      "presentation": {
+        "question": "Зачем нужен заголовок Vary: Accept-Encoding?",
+        "options": [
+          {
+            "id": "cache",
+            "text": "Чтобы кэши хранили отдельные версии для разных сжатий"
+          },
+          {
+            "id": "speed",
+            "text": "Чтобы ускорить сжатие"
+          },
+          {
+            "id": "cors",
+            "text": "Для CORS"
+          },
+          {
+            "id": "auth",
+            "text": "Для авторизации"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cache",
+        "explanation": "Иначе кэш может перепутать версии."
+      }
+    },
+    {
+      "slug": "ng-jpeg",
+      "type": "quiz.single_choice",
+      "title": "JPEG",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-negotiation"
+      ],
+      "presentation": {
+        "question": "Стоит ли сжимать JPEG через gzip?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, он уже сжат, выигрыша почти не будет"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "twice",
+            "text": "Да, дважды"
+          },
+          {
+            "id": "br",
+            "text": "Только brotli"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Сжимают текстовые форматы."
+      }
+    },
+    {
+      "slug": "se-get",
+      "type": "quiz.single_choice",
+      "title": "Удаление по GET",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-idempotency"
+      ],
+      "presentation": {
+        "question": "Почему нельзя удалять данные по GET-ссылке?",
+        "options": [
+          {
+            "id": "safe",
+            "text": "GET считается безопасным: его могут выполнить роботы и предзагрузка"
+          },
+          {
+            "id": "slow",
+            "text": "Это медленно"
+          },
+          {
+            "id": "length",
+            "text": "Длинный адрес"
+          },
+          {
+            "id": "cache",
+            "text": "Ничего не произойдёт"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "safe",
+        "explanation": "Изменения — POST, PUT, PATCH, DELETE."
+      }
+    },
+    {
+      "slug": "se-idem",
+      "type": "quiz.single_choice",
+      "title": "Идемпотентность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-idempotency"
+      ],
+      "presentation": {
+        "question": "Какой метод не идемпотентен?",
+        "options": [
+          {
+            "id": "post",
+            "text": "POST"
+          },
+          {
+            "id": "put",
+            "text": "PUT"
+          },
+          {
+            "id": "delete",
+            "text": "DELETE"
+          },
+          {
+            "id": "get",
+            "text": "GET"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "post",
+        "explanation": "Повтор POST создаёт новый ресурс."
+      }
+    },
+    {
+      "slug": "se-key",
+      "type": "quiz.short_text",
+      "title": "Двойная оплата",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "net-idempotency"
+      ],
+      "presentation": {
+        "question": "Какой заголовок защищает от двойного выполнения POST при повторе? Формат Xxx-Key."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "Idempotency-Key",
+          "idempotency-key"
+        ],
+        "caseSensitive": false,
+        "explanation": "Сервер запоминает уже обработанные ключи."
+      }
+    },
+    {
+      "slug": "ps-sse",
+      "type": "quiz.single_choice",
+      "title": "SSE",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-sse"
+      ],
+      "presentation": {
+        "question": "Когда SSE подходит лучше всего?",
+        "options": [
+          {
+            "id": "oneway",
+            "text": "Когда события идут только от сервера к клиенту"
+          },
+          {
+            "id": "chat",
+            "text": "Для двустороннего чата с частыми сообщениями от клиента"
+          },
+          {
+            "id": "video",
+            "text": "Для видеозвонков"
+          },
+          {
+            "id": "files",
+            "text": "Для загрузки файлов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "oneway",
+        "explanation": "Для двусторонней связи — WebSocket."
+      }
+    },
+    {
+      "slug": "ps-long",
+      "type": "quiz.single_choice",
+      "title": "Долгий опрос",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-sse"
+      ],
+      "presentation": {
+        "question": "Что делает сервер при долгом опросе?",
+        "options": [
+          {
+            "id": "hold",
+            "text": "Держит запрос, пока не появятся новые данные"
+          },
+          {
+            "id": "close",
+            "text": "Сразу закрывает"
+          },
+          {
+            "id": "redirect",
+            "text": "Перенаправляет"
+          },
+          {
+            "id": "cache",
+            "text": "Отдаёт из кэша"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hold",
+        "explanation": "Потом клиент шлёт следующий запрос."
+      }
+    },
+    {
+      "slug": "ps-api",
+      "type": "quiz.short_text",
+      "title": "Браузерный API",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "net-sse"
+      ],
+      "presentation": {
+        "question": "Каким классом браузера подписываются на Server-Sent Events?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "EventSource"
+        ],
+        "caseSensitive": false,
+        "explanation": "new EventSource(url)."
+      }
+    },
+    {
+      "slug": "ws-code",
+      "type": "quiz.single_choice",
+      "title": "Апгрейд",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-websocket"
+      ],
+      "presentation": {
+        "question": "Каким кодом сервер подтверждает переход на WebSocket?",
+        "options": [
+          {
+            "id": "101",
+            "text": "101 Switching Protocols"
+          },
+          {
+            "id": "200",
+            "text": "200 OK"
+          },
+          {
+            "id": "301",
+            "text": "301"
+          },
+          {
+            "id": "426",
+            "text": "426"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "101",
+        "explanation": "Протокол меняется прямо в этом соединении."
+      }
+    },
+    {
+      "slug": "ws-wss",
+      "type": "quiz.single_choice",
+      "title": "Защищённый",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-websocket"
+      ],
+      "presentation": {
+        "question": "Какой адрес у WebSocket с шифрованием?",
+        "options": [
+          {
+            "id": "wss",
+            "text": "wss://"
+          },
+          {
+            "id": "ws",
+            "text": "ws://"
+          },
+          {
+            "id": "https",
+            "text": "https:// всегда"
+          },
+          {
+            "id": "tls",
+            "text": "tls://"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "wss",
+        "explanation": "Как https для http."
+      }
+    },
+    {
+      "slug": "ws-scale",
+      "type": "quiz.single_choice",
+      "title": "Несколько серверов",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-websocket"
+      ],
+      "presentation": {
+        "question": "Почему чат на WebSocket ломается при добавлении второго сервера?",
+        "options": [
+          {
+            "id": "sticky",
+            "text": "Подключения на разных серверах; нужен общий канал вроде Redis Pub/Sub"
+          },
+          {
+            "id": "port",
+            "text": "Заняты порты"
+          },
+          {
+            "id": "dns",
+            "text": "Ошибка DNS"
+          },
+          {
+            "id": "tls",
+            "text": "Нужен второй сертификат"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "sticky",
+        "explanation": "Сообщение должно дойти до всех серверов."
+      }
+    },
+    {
+      "slug": "rtc-signal",
+      "type": "quiz.single_choice",
+      "title": "Сигнальный сервер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-webrtc"
+      ],
+      "presentation": {
+        "question": "Зачем WebRTC сигнальный сервер?",
+        "options": [
+          {
+            "id": "meet",
+            "text": "Чтобы браузеры обменялись адресами и параметрами до прямого соединения"
+          },
+          {
+            "id": "video",
+            "text": "Чтобы передавать всё видео"
+          },
+          {
+            "id": "record",
+            "text": "Для записи звонков"
+          },
+          {
+            "id": "dns",
+            "text": "Для DNS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "meet",
+        "explanation": "Медиа потом идёт напрямую."
+      }
+    },
+    {
+      "slug": "rtc-turn",
+      "type": "quiz.single_choice",
+      "title": "TURN",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-webrtc"
+      ],
+      "presentation": {
+        "question": "Когда нужен сервер TURN?",
+        "options": [
+          {
+            "id": "relay",
+            "text": "Когда прямое соединение невозможно из-за NAT или файрвола"
+          },
+          {
+            "id": "always",
+            "text": "Всегда"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "audio",
+            "text": "Только для звука"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "relay",
+        "explanation": "Он пересылает трафик через себя."
+      }
+    },
+    {
+      "slug": "rtc-stun",
+      "type": "quiz.short_text",
+      "title": "Внешний адрес",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "net-webrtc"
+      ],
+      "presentation": {
+        "question": "Какой сервер сообщает браузеру его внешний адрес за NAT? Аббревиатура."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "STUN",
+          "stun"
+        ],
+        "caseSensitive": false,
+        "explanation": "Session Traversal Utilities for NAT."
+      }
+    },
+    {
+      "slug": "rd-200",
+      "type": "quiz.single_choice",
+      "title": "ok: false",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-rest"
+      ],
+      "presentation": {
+        "question": "Почему плохо отвечать 200 с телом { \"ok\": false } при ошибке?",
+        "options": [
+          {
+            "id": "codes",
+            "text": "Мониторинг и клиенты считают ответ успешным, ошибки не видны"
+          },
+          {
+            "id": "size",
+            "text": "Ответ длиннее"
+          },
+          {
+            "id": "json",
+            "text": "Это неверный JSON"
+          },
+          {
+            "id": "fine",
+            "text": "Так правильно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "codes",
+        "explanation": "Используй коды 4xx и 5xx."
+      }
+    },
+    {
+      "slug": "rd-cursor",
+      "type": "quiz.single_choice",
+      "title": "Пагинация",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-rest"
+      ],
+      "presentation": {
+        "question": "Чем курсорная пагинация лучше номеров страниц?",
+        "options": [
+          {
+            "id": "stable",
+            "text": "Не дублирует и не теряет элементы при добавлении новых данных"
+          },
+          {
+            "id": "short",
+            "text": "Адрес короче"
+          },
+          {
+            "id": "seo",
+            "text": "Лучше для SEO"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "stable",
+        "explanation": "Курсор указывает на конкретное место в списке."
+      }
+    },
+    {
+      "slug": "rd-noun",
+      "type": "quiz.single_choice",
+      "title": "Адрес",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-rest"
+      ],
+      "presentation": {
+        "question": "Какой адрес лучше для списка уроков курса html?",
+        "options": [
+          {
+            "id": "nested",
+            "text": "`/courses/html/lessons`"
+          },
+          {
+            "id": "verb",
+            "text": "`/getLessons?course=html`"
+          },
+          {
+            "id": "deep",
+            "text": "`/api/v1/all/data/courses/html/items/lessons/list`"
+          },
+          {
+            "id": "post",
+            "text": "`POST /lessons/get`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "nested",
+        "explanation": "Существительные и неглубокая вложенность."
+      }
+    },
+    {
+      "slug": "ae-break",
+      "type": "quiz.single_choice",
+      "title": "Ломающее",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-api-versioning"
+      ],
+      "presentation": {
+        "question": "Какое изменение API ломает клиентов?",
+        "options": [
+          {
+            "id": "remove",
+            "text": "Удаление поля из ответа"
+          },
+          {
+            "id": "add",
+            "text": "Добавление нового поля"
+          },
+          {
+            "id": "optional",
+            "text": "Новый необязательный параметр"
+          },
+          {
+            "id": "endpoint",
+            "text": "Новый адрес"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "remove",
+        "explanation": "Старые клиенты могут на него рассчитывать."
+      }
+    },
+    {
+      "slug": "ae-version",
+      "type": "quiz.single_choice",
+      "title": "Новая версия",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-api-versioning"
+      ],
+      "presentation": {
+        "question": "Когда выпускают /v2?",
+        "options": [
+          {
+            "id": "breaking",
+            "text": "Когда нужны ломающие изменения"
+          },
+          {
+            "id": "always",
+            "text": "При каждой выкладке"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "bug",
+            "text": "При исправлении опечатки в документации"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "breaking",
+        "explanation": "Совместимые изменения идут в текущую версию."
+      }
+    },
+    {
+      "slug": "ae-spec",
+      "type": "quiz.short_text",
+      "title": "Описание API",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "net-api-versioning"
+      ],
+      "presentation": {
+        "question": "Как называется стандартный формат описания REST API в файле? Одно слово."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "OpenAPI",
+          "openapi",
+          "swagger"
+        ],
+        "caseSensitive": false,
+        "explanation": "Раньше назывался Swagger."
+      }
+    },
+    {
+      "slug": "gg-graphql",
+      "type": "quiz.single_choice",
+      "title": "GraphQL",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-api-styles"
+      ],
+      "presentation": {
+        "question": "Чем GraphQL отличается от REST?",
+        "options": [
+          {
+            "id": "fields",
+            "text": "Клиент сам выбирает нужные поля в одном запросе"
+          },
+          {
+            "id": "udp",
+            "text": "Работает поверх UDP"
+          },
+          {
+            "id": "nojson",
+            "text": "Не использует JSON"
+          },
+          {
+            "id": "faster",
+            "text": "Всегда быстрее"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fields",
+        "explanation": "Один адрес, гибкие запросы."
+      }
+    },
+    {
+      "slug": "gg-webhook",
+      "type": "quiz.single_choice",
+      "title": "Вебхук",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-api-styles"
+      ],
+      "presentation": {
+        "question": "Что такое вебхук?",
+        "options": [
+          {
+            "id": "callback",
+            "text": "HTTP-запрос от внешнего сервиса на твой адрес при событии"
+          },
+          {
+            "id": "hook",
+            "text": "Хук React"
+          },
+          {
+            "id": "cron",
+            "text": "Задача по расписанию"
+          },
+          {
+            "id": "dns",
+            "text": "DNS-запись"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "callback",
+        "explanation": "Например, уведомление об оплате."
+      }
+    },
+    {
+      "slug": "gg-sign",
+      "type": "quiz.single_choice",
+      "title": "Подпись",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-api-styles"
+      ],
+      "presentation": {
+        "question": "Зачем проверять подпись вебхука?",
+        "options": [
+          {
+            "id": "forge",
+            "text": "Чтобы никто не подделал событие, отправив запрос на твой адрес"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "json",
+            "text": "Чтобы разобрать JSON"
+          },
+          {
+            "id": "cache",
+            "text": "Для кэша"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "forge",
+        "explanation": "Секрет знают только ты и сервис."
+      }
+    },
+    {
+      "slug": "cd-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-cdn"
+      ],
+      "presentation": {
+        "question": "Как CDN ускоряет сайт?",
+        "options": [
+          {
+            "id": "near",
+            "text": "Отдаёт копии файлов с ближайшего к пользователю сервера"
+          },
+          {
+            "id": "compress",
+            "text": "Сжимает код вдвое"
+          },
+          {
+            "id": "cpu",
+            "text": "Ускоряет процессор пользователя"
+          },
+          {
+            "id": "dns",
+            "text": "Заменяет DNS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "near",
+        "explanation": "Задержка зависит от расстояния."
+      }
+    },
+    {
+      "slug": "cd-what",
+      "type": "quiz.single_choice",
+      "title": "Что кешировать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-cdn"
+      ],
+      "presentation": {
+        "question": "Что лучше всего подходит для долгого кэша на CDN?",
+        "options": [
+          {
+            "id": "static",
+            "text": "Файлы с хешем в имени: JS, CSS, шрифты, картинки"
+          },
+          {
+            "id": "cart",
+            "text": "Ответ API с корзиной пользователя"
+          },
+          {
+            "id": "profile",
+            "text": "Страницу личного кабинета"
+          },
+          {
+            "id": "login",
+            "text": "Ответ на вход"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "static",
+        "explanation": "Личное в общий кэш не кладут."
+      }
+    },
+    {
+      "slug": "cd-origin",
+      "type": "quiz.single_choice",
+      "title": "Промах кэша",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-cdn"
+      ],
+      "presentation": {
+        "question": "Что делает узел CDN, если файла нет в кэше?",
+        "options": [
+          {
+            "id": "origin",
+            "text": "Запрашивает его у сервера-источника и запоминает"
+          },
+          {
+            "id": "404",
+            "text": "Возвращает 404"
+          },
+          {
+            "id": "wait",
+            "text": "Ждёт, пока файл появится"
+          },
+          {
+            "id": "other",
+            "text": "Отправляет пользователя на другой сайт"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "origin",
+        "explanation": "Следующий запрос уже будет из кэша."
+      }
+    },
+    {
+      "slug": "cs-smax",
+      "type": "quiz.single_choice",
+      "title": "s-maxage",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-cache-strategy"
+      ],
+      "presentation": {
+        "question": "Что значит `max-age=0, s-maxage=600`?",
+        "options": [
+          {
+            "id": "split",
+            "text": "Браузер проверяет каждый раз, а CDN хранит 10 минут"
+          },
+          {
+            "id": "both",
+            "text": "Оба хранят 10 минут"
+          },
+          {
+            "id": "none",
+            "text": "Никто не хранит"
+          },
+          {
+            "id": "browser",
+            "text": "Браузер хранит 10 минут"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "split",
+        "explanation": "s — shared, для общих кэшей."
+      }
+    },
+    {
+      "slug": "cs-swr",
+      "type": "quiz.single_choice",
+      "title": "stale-while-revalidate",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-cache-strategy"
+      ],
+      "presentation": {
+        "question": "Что даёт stale-while-revalidate?",
+        "options": [
+          {
+            "id": "fast",
+            "text": "Мгновенный ответ старой копией и обновление в фоне"
+          },
+          {
+            "id": "fresh",
+            "text": "Всегда только свежие данные"
+          },
+          {
+            "id": "delete",
+            "text": "Удаление кэша"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку при устаревании"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fast",
+        "explanation": "Пользователь не ждёт источник."
+      }
+    },
+    {
+      "slug": "cs-hash",
+      "type": "quiz.single_choice",
+      "title": "Хеш в имени",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-cache-strategy"
+      ],
+      "presentation": {
+        "question": "Зачем в именах файлов сборки хеш, например app.3f2a9c.js?",
+        "options": [
+          {
+            "id": "bust",
+            "text": "Новая версия получает новое имя, и старый кэш не мешает"
+          },
+          {
+            "id": "secure",
+            "text": "Для безопасности"
+          },
+          {
+            "id": "seo",
+            "text": "Для SEO"
+          },
+          {
+            "id": "size",
+            "text": "Чтобы уменьшить файл"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bust",
+        "explanation": "Такие файлы можно кэшировать навсегда."
+      }
+    },
+    {
+      "slug": "lb-l7",
+      "type": "quiz.single_choice",
+      "title": "L7",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-lb"
+      ],
+      "presentation": {
+        "question": "Что умеет балансировщик L7, чего не умеет L4?",
+        "options": [
+          {
+            "id": "path",
+            "text": "Направлять запросы по пути и заголовкам HTTP"
+          },
+          {
+            "id": "tcp",
+            "text": "Работать с TCP"
+          },
+          {
+            "id": "ip",
+            "text": "Видеть IP-адреса"
+          },
+          {
+            "id": "fast",
+            "text": "Работать быстрее"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "path",
+        "explanation": "L4 не заглядывает внутрь HTTP."
+      }
+    },
+    {
+      "slug": "lb-health",
+      "type": "quiz.single_choice",
+      "title": "Health check",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-lb"
+      ],
+      "presentation": {
+        "question": "Зачем балансировщику проверки здоровья?",
+        "options": [
+          {
+            "id": "remove",
+            "text": "Чтобы перестать слать запросы упавшему серверу"
+          },
+          {
+            "id": "log",
+            "text": "Для журналов"
+          },
+          {
+            "id": "cache",
+            "text": "Для кэша"
+          },
+          {
+            "id": "tls",
+            "text": "Для TLS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "remove",
+        "explanation": "Обычно опрашивают /health."
+      }
+    },
+    {
+      "slug": "lb-sticky",
+      "type": "quiz.single_choice",
+      "title": "Липкие сессии",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-lb"
+      ],
+      "presentation": {
+        "question": "Почему липкие сессии считают костылём?",
+        "options": [
+          {
+            "id": "state",
+            "text": "Они нужны, только если сессии хранятся в памяти сервера, а это плохо масштабируется"
+          },
+          {
+            "id": "slow",
+            "text": "Они медленные"
+          },
+          {
+            "id": "secure",
+            "text": "Они небезопасны всегда"
+          },
+          {
+            "id": "paid",
+            "text": "Они платные"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "state",
+        "explanation": "Лучше хранить сессии в общей базе."
+      }
+    },
+    {
+      "slug": "px-reverse",
+      "type": "quiz.single_choice",
+      "title": "Обратный прокси",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-proxy"
+      ],
+      "presentation": {
+        "question": "Что делает обратный прокси вроде nginx перед приложением?",
+        "options": [
+          {
+            "id": "front",
+            "text": "Принимает запросы извне, завершает TLS и передаёт их приложению"
+          },
+          {
+            "id": "client",
+            "text": "Прячет клиента от сайтов"
+          },
+          {
+            "id": "dns",
+            "text": "Раздаёт DNS"
+          },
+          {
+            "id": "db",
+            "text": "Хранит базу данных"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "front",
+        "explanation": "Прямой прокси — посредник клиента."
+      }
+    },
+    {
+      "slug": "px-ip",
+      "type": "quiz.single_choice",
+      "title": "Адрес клиента",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-proxy"
+      ],
+      "presentation": {
+        "question": "Почему приложение за прокси видит один и тот же IP у всех?",
+        "options": [
+          {
+            "id": "proxy",
+            "text": "Оно видит адрес прокси; настоящий — в X-Forwarded-For"
+          },
+          {
+            "id": "nat",
+            "text": "Все клиенты из одной сети"
+          },
+          {
+            "id": "bug",
+            "text": "Ошибка Node.js"
+          },
+          {
+            "id": "ipv6",
+            "text": "Из-за IPv6"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "proxy",
+        "explanation": "Нужно читать заголовок от доверенного прокси."
+      }
+    },
+    {
+      "slug": "px-trust",
+      "type": "quiz.single_choice",
+      "title": "Доверие",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-proxy"
+      ],
+      "presentation": {
+        "question": "Когда можно доверять заголовку X-Forwarded-For?",
+        "options": [
+          {
+            "id": "own",
+            "text": "Только когда его поставил твой собственный прокси"
+          },
+          {
+            "id": "always",
+            "text": "Всегда"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "https",
+            "text": "Только по HTTPS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "own",
+        "explanation": "Клиент может прислать любой заголовок сам."
+      }
+    },
+    {
+      "slug": "nf-nat",
+      "type": "quiz.single_choice",
+      "title": "NAT",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-nat"
+      ],
+      "presentation": {
+        "question": "Почему к ноутбуку дома нельзя подключиться из интернета по его адресу 192.168.1.20?",
+        "options": [
+          {
+            "id": "private",
+            "text": "Это частный адрес за NAT; снаружи виден только адрес роутера"
+          },
+          {
+            "id": "off",
+            "text": "Ноутбук выключен"
+          },
+          {
+            "id": "ipv6",
+            "text": "Нужен IPv6"
+          },
+          {
+            "id": "https",
+            "text": "Нет HTTPS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "private",
+        "explanation": "Нужен проброс порта или туннель."
+      }
+    },
+    {
+      "slug": "nf-db",
+      "type": "quiz.single_choice",
+      "title": "База",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-nat"
+      ],
+      "presentation": {
+        "question": "С каких адресов должна принимать подключения база данных в продакшене?",
+        "options": [
+          {
+            "id": "app",
+            "text": "Только с серверов приложения внутри своей сети"
+          },
+          {
+            "id": "all",
+            "text": "Со всего интернета"
+          },
+          {
+            "id": "office",
+            "text": "Со всех офисных Wi-Fi"
+          },
+          {
+            "id": "none",
+            "text": "Ни с каких"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "app",
+        "explanation": "Минимально необходимый доступ."
+      }
+    },
+    {
+      "slug": "nf-tunnel",
+      "type": "quiz.single_choice",
+      "title": "Показать локальный сервер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-nat"
+      ],
+      "presentation": {
+        "question": "Как удобнее всего показать локальный сервер разработки коллеге снаружи?",
+        "options": [
+          {
+            "id": "tunnel",
+            "text": "Туннель вроде Cloudflare Tunnel или ngrok"
+          },
+          {
+            "id": "dmz",
+            "text": "Открыть все порты роутера"
+          },
+          {
+            "id": "firewall",
+            "text": "Выключить файрвол"
+          },
+          {
+            "id": "email",
+            "text": "Отправить исходники по почте"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "tunnel",
+        "explanation": "Туннель не требует настройки роутера."
+      }
+    },
+    {
+      "slug": "vp-what",
+      "type": "quiz.single_choice",
+      "title": "VPN",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-vpn"
+      ],
+      "presentation": {
+        "question": "Что делает VPN с трафиком?",
+        "options": [
+          {
+            "id": "tunnel",
+            "text": "Шифрует и отправляет через туннель до VPN-сервера"
+          },
+          {
+            "id": "speed",
+            "text": "Всегда ускоряет"
+          },
+          {
+            "id": "dns",
+            "text": "Удаляет DNS"
+          },
+          {
+            "id": "cache",
+            "text": "Кэширует страницы"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "tunnel",
+        "explanation": "Наружу трафик выходит с VPN-сервера."
+      }
+    },
+    {
+      "slug": "vp-vpc",
+      "type": "quiz.single_choice",
+      "title": "VPC",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-vpn"
+      ],
+      "presentation": {
+        "question": "Зачем серверам проекта частная сеть облака?",
+        "options": [
+          {
+            "id": "hide",
+            "text": "Чтобы база и внутренние сервисы не были доступны из интернета"
+          },
+          {
+            "id": "speed",
+            "text": "Чтобы ускорить сайт для пользователей"
+          },
+          {
+            "id": "dns",
+            "text": "Чтобы не платить за DNS"
+          },
+          {
+            "id": "mail",
+            "text": "Для почты"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hide",
+        "explanation": "Наружу смотрит только балансировщик."
+      }
+    },
+    {
+      "slug": "vp-wg",
+      "type": "quiz.short_text",
+      "title": "Современный VPN",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "net-vpn"
+      ],
+      "presentation": {
+        "question": "Как называется простой и быстрый современный протокол VPN поверх UDP? Одно слово."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "WireGuard",
+          "wireguard"
+        ],
+        "caseSensitive": false,
+        "explanation": "Конфигурация — пара ключей и адреса."
+      }
+    },
+    {
+      "slug": "pt-noping",
+      "type": "quiz.single_choice",
+      "title": "Нет ответа",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-ping"
+      ],
+      "presentation": {
+        "question": "Сервер не отвечает на ping, но сайт открывается. Что это значит?",
+        "options": [
+          {
+            "id": "icmp",
+            "text": "ICMP закрыт файрволом, сервер работает"
+          },
+          {
+            "id": "down",
+            "text": "Сервер лежит"
+          },
+          {
+            "id": "dns",
+            "text": "Сломан DNS"
+          },
+          {
+            "id": "cert",
+            "text": "Истёк сертификат"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "icmp",
+        "explanation": "ping — не единственный признак жизни."
+      }
+    },
+    {
+      "slug": "pt-where",
+      "type": "quiz.single_choice",
+      "title": "Где задержка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-ping"
+      ],
+      "presentation": {
+        "question": "Какой инструмент покажет, на каком маршрутизаторе растёт задержка?",
+        "options": [
+          {
+            "id": "trace",
+            "text": "traceroute или mtr"
+          },
+          {
+            "id": "ping",
+            "text": "Только ping"
+          },
+          {
+            "id": "dig",
+            "text": "dig"
+          },
+          {
+            "id": "curl",
+            "text": "curl -I"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "trace",
+        "explanation": "Он показывает каждый узел пути."
+      }
+    },
+    {
+      "slug": "pt-win",
+      "type": "quiz.short_text",
+      "title": "Windows",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "net-ping"
+      ],
+      "presentation": {
+        "question": "Как называется traceroute в Windows? Одно слово."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "tracert"
+        ],
+        "caseSensitive": false,
+        "explanation": "tracert example.com."
+      }
+    },
+    {
+      "slug": "cp-ttfb",
+      "type": "quiz.single_choice",
+      "title": "Долгий первый байт",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-timing"
+      ],
+      "presentation": {
+        "question": "DNS, TCP и TLS быстрые, а time_starttransfer почти секунда. Где проблема?",
+        "options": [
+          {
+            "id": "server",
+            "text": "Медленно работает сам сервер"
+          },
+          {
+            "id": "dns",
+            "text": "В DNS"
+          },
+          {
+            "id": "network",
+            "text": "В сети"
+          },
+          {
+            "id": "cert",
+            "text": "В сертификате"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "server",
+        "explanation": "Сеть отработала, сервер долго формирует ответ."
+      }
+    },
+    {
+      "slug": "cp-nc",
+      "type": "quiz.single_choice",
+      "title": "Порт",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-timing"
+      ],
+      "presentation": {
+        "question": "Как проверить, открыт ли порт 5432 на сервере db.internal?",
+        "options": [
+          {
+            "id": "nc",
+            "text": "`nc -zv db.internal 5432`"
+          },
+          {
+            "id": "ping",
+            "text": "`ping db.internal:5432`"
+          },
+          {
+            "id": "dig",
+            "text": "`dig db.internal 5432`"
+          },
+          {
+            "id": "curl",
+            "text": "`curl db.internal`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "nc",
+        "explanation": "ping не работает с портами."
+      }
+    },
+    {
+      "slug": "cp-listen",
+      "type": "quiz.single_choice",
+      "title": "Слушает только себя",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-timing"
+      ],
+      "presentation": {
+        "question": "Сервер работает, но снаружи не подключиться. ss показывает 127.0.0.1:3000. В чём дело?",
+        "options": [
+          {
+            "id": "bind",
+            "text": "Сервер слушает только локальный адрес; нужно 0.0.0.0"
+          },
+          {
+            "id": "port",
+            "text": "Порт 3000 запрещён"
+          },
+          {
+            "id": "dns",
+            "text": "DNS"
+          },
+          {
+            "id": "https",
+            "text": "Нужен HTTPS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bind",
+        "explanation": "127.0.0.1 доступен только с этой машины."
+      }
+    },
+    {
+      "slug": "wm-order",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-method"
+      ],
+      "presentation": {
+        "question": "В каком порядке искать причину «сайт не открывается»?",
+        "options": [
+          {
+            "id": "bottom",
+            "text": "Связь → DNS → порт → TLS → HTTP"
+          },
+          {
+            "id": "top",
+            "text": "Сразу переписать код сайта"
+          },
+          {
+            "id": "random",
+            "text": "В случайном порядке"
+          },
+          {
+            "id": "reboot",
+            "text": "Перезагрузить всё и ждать"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bottom",
+        "explanation": "Каждый шаг отсекает целый уровень."
+      }
+    },
+    {
+      "slug": "wm-har",
+      "type": "quiz.single_choice",
+      "title": "HAR",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-method"
+      ],
+      "presentation": {
+        "question": "Что такое HAR-файл?",
+        "options": [
+          {
+            "id": "record",
+            "text": "Запись всех запросов страницы с таймингами из DevTools"
+          },
+          {
+            "id": "archive",
+            "text": "Архив сайта"
+          },
+          {
+            "id": "cert",
+            "text": "Сертификат"
+          },
+          {
+            "id": "log",
+            "text": "Журнал сервера"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "record",
+        "explanation": "Его удобно прислать разработчику."
+      }
+    },
+    {
+      "slug": "wm-compare",
+      "type": "quiz.single_choice",
+      "title": "Сравнение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "net-method"
+      ],
+      "presentation": {
+        "question": "Сайт не открывается только в офисной сети. Что это подсказывает?",
+        "options": [
+          {
+            "id": "network",
+            "text": "Проблема в сети офиса: файрвол, прокси или DNS"
+          },
+          {
+            "id": "code",
+            "text": "Ошибка в коде сайта"
+          },
+          {
+            "id": "browser",
+            "text": "Ошибка браузера"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "network",
+        "explanation": "В других сетях всё работает — значит, дело в этой сети."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "packets",
+      "title": "Пакеты и коммутация",
+      "summary": "Почему данные режутся на пакеты, как пакеты идут разными путями и собираются снова.",
+      "chapter": "Как устроена сеть",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Начинаем курс: смотрим, как данные на самом деле путешествуют по сети.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Пакет\",\n  \"title\": \"Порция данных с адресом\",\n  \"what\": \"Сеть не передаёт файл целиком. Данные режутся на пакеты по полтора килобайта, у каждого — заголовок с адресом отправителя и получателя.\",\n  \"why\": \"Если один пакет потерялся, повторяют только его, а не весь файл.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Коммутация пакетов\",\n  \"title\": \"Каждый пакет сам по себе\",\n  \"what\": \"Пакеты одного сообщения могут идти разными маршрутами и приходить не по порядку. Получатель собирает их обратно по номерам.\",\n  \"why\": \"Сеть продолжает работать, даже если часть маршрутов выходит из строя.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"MTU\",\n  \"title\": \"Максимальный размер пакета\",\n  \"what\": \"Обычно 1500 байт для Ethernet. Большие данные делятся на части, которые помещаются в этот размер.\",\n  \"why\": \"Странные обрывы соединений в VPN часто связаны с неподходящим MTU.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Задержка и пропускная способность\",\n  \"title\": \"Latency и bandwidth\",\n  \"what\": \"Задержка — сколько миллисекунд идёт один пакет. Пропускная способность — сколько данных проходит в секунду. Это разные вещи.\",\n  \"why\": \"Быстрый канал с большой задержкой медленно открывает сайты из множества мелких запросов.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Данные идут пакетами; задержка и пропускная способность — разные характеристики сети."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pk-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pk-latency",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pk-mtu",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "layer-model",
+      "title": "Модель уровней",
+      "summary": "Модель TCP/IP и OSI, что делает каждый уровень и инкапсуляция.",
+      "chapter": "Как устроена сеть",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем про пакеты и раскладываем сеть по уровням.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Уровни TCP/IP: сверху вниз\",\n  \"steps\": [\n    {\n      \"title\": \"Прикладной\",\n      \"text\": \"HTTP, DNS, SMTP — смысл сообщения\"\n    },\n    {\n      \"title\": \"Транспортный\",\n      \"text\": \"TCP или UDP — доставка между программами, порты\"\n    },\n    {\n      \"title\": \"Сетевой\",\n      \"text\": \"IP — доставка между компьютерами по адресам\"\n    },\n    {\n      \"title\": \"Канальный\",\n      \"text\": \"Ethernet, Wi-Fi — передача в пределах одной сети\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Модель TCP/IP\",\n  \"title\": \"Четыре уровня\",\n  \"what\": \"Каждый уровень решает свою задачу и пользуется уровнем ниже: HTTP не знает про Wi-Fi, а Wi-Fi не знает про HTTP.\",\n  \"why\": \"Ошибку ищут по уровням: нет сети, нет адреса, не открыт порт или ошибка в приложении.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Модель OSI\",\n  \"title\": \"Семь уровней\",\n  \"what\": \"Учебная модель из семи уровней. Её номера живут в жаргоне: «балансировщик L4» работает с TCP, «L7» — с HTTP.\",\n  \"why\": \"Понимаешь, что значит L4 и L7 в документации облаков.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Инкапсуляция\",\n  \"title\": \"Конверт в конверте\",\n  \"what\": \"HTTP-сообщение кладётся в TCP-сегмент, тот — в IP-пакет, тот — в кадр Ethernet. На каждом уровне добавляется свой заголовок.\",\n  \"why\": \"Wireshark показывает именно эти вложенные слои.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Проблему сети ищи снизу вверх: связь → IP → порт → приложение."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ly-tcp",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ly-l7",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ly-encap",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "routing",
+      "title": "Маршрутизация",
+      "summary": "Маршрутизаторы, шлюз по умолчанию, таблица маршрутов и путь пакета через интернет.",
+      "chapter": "Как устроена сеть",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Разложили сеть по уровням и следим, как пакет находит дорогу.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Маршрутизатор\",\n  \"title\": \"Перекрёсток сетей\",\n  \"what\": \"Устройство, которое соединяет сети и пересылает пакет в сторону получателя по своей таблице маршрутов.\",\n  \"why\": \"Пакет до другого континента проходит 10–20 маршрутизаторов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Шлюз по умолчанию\",\n  \"title\": \"Куда отправлять всё чужое\",\n  \"what\": \"Адрес маршрутизатора, которому компьютер отдаёт пакеты для всех адресов за пределами своей сети.\",\n  \"why\": \"Неверный шлюз — локальная сеть работает, интернет нет.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Автономная система\",\n  \"title\": \"Сети провайдеров\",\n  \"what\": \"Интернет — тысячи сетей провайдеров и компаний (автономных систем), договорившихся о маршрутах по протоколу BGP.\",\n  \"why\": \"Ошибка в BGP у крупного провайдера может «выключить» часть интернета на часы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"TTL пакета\",\n  \"title\": \"Счётчик переходов\",\n  \"what\": \"В каждом пакете счётчик, который уменьшается на каждом маршрутизаторе. Дошёл до нуля — пакет выбрасывается.\",\n  \"why\": \"Петли маршрутов не забивают сеть вечно; traceroute использует этот счётчик.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Чужие адреса — к шлюзу по умолчанию, дальше пакет ведут таблицы маршрутов."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rt-gw",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rt-ttl",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rt-bgp",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "ipv4",
+      "title": "IPv4 изнутри",
+      "summary": "Четыре октета, двоичная запись, сеть и узел в адресе.",
+      "chapter": "IP-адреса и подсети",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем, как пакеты идут по маршрутам, и разбираем адреса, по которым они идут.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"url\",\n  \"title\": \"Адрес IPv4 — четыре числа от 0 до 255\",\n  \"parts\": [\n    {\n      \"text\": \"192\",\n      \"label\": \"11000000\"\n    },\n    {\n      \"text\": \".168\",\n      \"label\": \"10101000\"\n    },\n    {\n      \"text\": \".1\",\n      \"label\": \"00000001\"\n    },\n    {\n      \"text\": \".42\",\n      \"label\": \"00101010\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Октет\",\n  \"title\": \"8 бит\",\n  \"what\": \"Каждое число адреса — 8 бит, поэтому от 0 до 255. Весь адрес — 32 бита, около 4,3 миллиарда адресов.\",\n  \"why\": \"Двоичная запись нужна, чтобы понимать маски подсетей.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сеть и узел\",\n  \"title\": \"Две части адреса\",\n  \"what\": \"Первая часть адреса обозначает сеть, вторая — устройство внутри неё. Где проходит граница, говорит маска.\",\n  \"why\": \"Два компьютера в одной сети общаются напрямую, в разных — через маршрутизатор.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Нехватка адресов\",\n  \"title\": \"Почему IPv4 мало\",\n  \"what\": \"4,3 миллиарда адресов на всех людей, телефоны и серверы не хватает. Выручают частные сети с NAT и переход на IPv6.\",\n  \"why\": \"Отсюда NAT, «серые» адреса провайдеров и платные «белые» IP.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Адрес IPv4 — 32 бита; маска делит их на сеть и устройство."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "v4-range",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "v4-bits",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "v4-parts",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "subnets",
+      "title": "Подсети и CIDR",
+      "summary": "Запись /24, маска подсети, сколько адресов в сети, адрес сети и широковещательный.",
+      "chapter": "IP-адреса и подсети",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Читаем адреса IPv4 и учимся делить их на подсети.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"CIDR\",\n  \"title\": \"Адрес/длина префикса\",\n  \"what\": \"`192.168.1.0/24` — первые 24 бита — сеть, оставшиеся 8 — устройства. Это 256 адресов: от .0 до .255.\",\n  \"why\": \"Так задают сети в облаках, Docker и правилах файрвола.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Маска подсети\",\n  \"title\": \"255.255.255.0\",\n  \"what\": \"Та же граница в другой записи: единицы в маске — биты сети. /24 = 255.255.255.0, /16 = 255.255.0.0.\",\n  \"why\": \"В настройках Wi-Fi и роутера маска обычно записана так.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Размер подсети\",\n  \"title\": \"2 в степени свободных бит\",\n  \"what\": \"/24 — 256 адресов, /25 — 128, /16 — 65 536, /32 — один адрес. Меньше число после косой — больше сеть.\",\n  \"why\": \"Правило файрвола с /32 открывает доступ одному адресу, с /0 — всему интернету.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Особые адреса сети\",\n  \"title\": \"Первый и последний\",\n  \"what\": \"Первый адрес — адрес самой сети, последний — широковещательный (всем в сети). Устройствам их не выдают.\",\n  \"why\": \"В сети /24 устройств 254, а не 256.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Чем меньше число после «/», тем больше сеть. /32 — один адрес, /0 — весь интернет."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cd-24",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cd-32",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cd-mask",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "private-ipv6",
+      "title": "Частные адреса и IPv6",
+      "summary": "Диапазоны 10/8, 172.16/12, 192.168/16, localhost, DHCP и устройство IPv6.",
+      "chapter": "IP-адреса и подсети",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Считаем подсети и разбираем особые адреса и новое поколение — IPv6.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Частные диапазоны\",\n  \"title\": \"Для внутренних сетей\",\n  \"what\": \"10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 не маршрутизируются в интернете и используются дома, в офисах, в облачных сетях и Docker.\",\n  \"why\": \"Адрес 192.168.x.x виден только внутри твоей сети; снаружи — адрес роутера.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"127.0.0.1\",\n  \"title\": \"Сам себе\",\n  \"what\": \"Адреса 127.0.0.0/8 (обычно 127.0.0.1, имя localhost) ведут на этот же компьютер, не выходя в сеть.\",\n  \"why\": \"Сервер разработки на localhost недоступен с телефона в той же Wi-Fi-сети — нужен адрес компьютера в локальной сети.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"IPv6\",\n  \"title\": \"128 бит\",\n  \"what\": \"Адрес из восьми групп шестнадцатеричных чисел: `2001:db8::1`. Нули можно сокращать через ::. Адресов хватает на каждое устройство.\",\n  \"why\": \"Всё больше провайдеров и мобильных сетей работают по IPv6 — сервер должен его поддерживать.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"::1\",\n  \"title\": \"localhost в IPv6\",\n  \"what\": \"Тот же «сам себе», что 127.0.0.1, только для IPv6.\",\n  \"why\": \"Иногда сервер слушает только IPv4, а localhost резолвится в ::1 — и подключение не проходит.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** 10.x, 172.16–31.x, 192.168.x — частные. localhost — это 127.0.0.1 и ::1."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pv-private",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pv-phone",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pv-v6",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "ports-sockets",
+      "title": "Порты и сокеты",
+      "summary": "Порт как номер программы, известные порты, сокет — пара адрес и порт, эфемерные порты.",
+      "chapter": "TCP и UDP",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Разобрались с адресами компьютеров и переходим к адресам программ — портам.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Порт\",\n  \"title\": \"Номер программы на компьютере\",\n  \"what\": \"IP доставляет пакет до компьютера, а порт (0–65535) — до конкретной программы на нём.\",\n  \"why\": \"На одном сервере сайт на 443, база на 5432, почта на 25 — и они не мешают друг другу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Известные порты\",\n  \"title\": \"Договорённости\",\n  \"what\": \"80 — HTTP, 443 — HTTPS, 22 — SSH, 53 — DNS, 5432 — PostgreSQL, 6379 — Redis, 3000 и 5173 — частые порты разработки.\",\n  \"why\": \"По номеру сразу понятно, что за сервис открыт.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сокет\",\n  \"title\": \"Конец соединения\",\n  \"what\": \"Пара «адрес:порт». Соединение TCP однозначно задаётся четырьмя значениями: адрес и порт клиента, адрес и порт сервера.\",\n  \"why\": \"Поэтому один сервер на порту 443 держит тысячи соединений одновременно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Эфемерный порт\",\n  \"title\": \"Порт клиента\",\n  \"what\": \"Когда браузер подключается к серверу, система выдаёт ему случайный временный порт из высокого диапазона (обычно 49152–65535).\",\n  \"why\": \"Ответ сервера возвращается именно на этот порт.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** IP — до компьютера, порт — до программы. Соединение — четыре числа."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pt-https",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pt-what",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pt-ssh",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "tcp",
+      "title": "TCP: надёжная доставка",
+      "summary": "Трёхстороннее рукопожатие, подтверждения и повторы, порядок данных, управление потоком и закрытие соединения.",
+      "chapter": "TCP и UDP",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем порты и разбираем протокол, на котором работает почти весь веб.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Трёхстороннее рукопожатие TCP\",\n  \"steps\": [\n    {\n      \"title\": \"SYN\",\n      \"text\": \"Клиент: хочу соединиться\"\n    },\n    {\n      \"title\": \"SYN-ACK\",\n      \"text\": \"Сервер: согласен, подтверждаю\"\n    },\n    {\n      \"title\": \"ACK\",\n      \"text\": \"Клиент: подтверждаю, начинаем\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Рукопожатие\",\n  \"title\": \"Цена соединения\",\n  \"what\": \"Перед первым байтом данных тратится один круг туда-обратно. При задержке 100 мс — это 100 мс ожидания.\",\n  \"why\": \"Поэтому соединения переиспользуют (keep-alive) и ставят серверы ближе к людям.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Подтверждения и повторы\",\n  \"title\": \"Ничего не теряется\",\n  \"what\": \"Получатель подтверждает принятые данные. Неподтверждённое отправитель посылает снова. Байты приходят в программу строго по порядку.\",\n  \"why\": \"Программа видит надёжный поток байтов поверх ненадёжной сети.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Управление перегрузкой\",\n  \"title\": \"Медленный старт\",\n  \"what\": \"TCP начинает отправку осторожно и ускоряется, пока сеть не начнёт терять пакеты.\",\n  \"why\": \"Первые килобайты нового соединения идут медленнее — ещё одна причина держать первую загрузку страницы маленькой.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Блокировка начала очереди\",\n  \"title\": \"Head-of-line blocking\",\n  \"what\": \"Если потерялся один сегмент, все следующие ждут его повторной отправки, даже если уже пришли.\",\n  \"why\": \"Именно это решает QUIC в HTTP/3.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** TCP надёжен, но платит за это рукопожатием и ожиданием потерянных пакетов."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tc-hs",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tc-lost",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tc-hol",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "udp-quic",
+      "title": "UDP и QUIC",
+      "summary": "UDP без гарантий и когда он лучше TCP, QUIC как основа HTTP/3.",
+      "chapter": "TCP и UDP",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем надёжный TCP и знакомимся с быстрым UDP и его наследником QUIC.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"UDP\",\n  \"title\": \"Отправил и забыл\",\n  \"what\": \"Без соединения, подтверждений и порядка: пакет либо дошёл, либо нет. Зато без задержек на рукопожатие и повторы.\",\n  \"why\": \"Игры, звонки и видео предпочитают потерять кадр, чем ждать его.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Где UDP\",\n  \"title\": \"Скорость важнее полноты\",\n  \"what\": \"DNS-запросы, голос и видео (WebRTC), онлайн-игры, стриминг, а теперь и HTTP/3.\",\n  \"why\": \"Старый кадр видео никому не нужен — нужен следующий.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"QUIC\",\n  \"title\": \"TCP-надёжность поверх UDP\",\n  \"what\": \"Протокол от Google, ставший стандартом: надёжность, шифрование TLS 1.3 и мультиплексирование поверх UDP. Потеря пакета задерживает только свой поток.\",\n  \"why\": \"Быстрее на мобильных сетях и переживает смену Wi-Fi на LTE без разрыва.\",\n  \"kind\": \"idea\"\n}\n```\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Проверяем, какой протокол отдал страницу\",\n  \"file\": \"Терминал\",\n  \"scenes\": [\n    {\n      \"input\": \"curl -sI --http3 https://example.com | head -1\",\n      \"key\": \"Enter\",\n      \"output\": \"$ curl -sI --http3 https://example.com | head -1\\nHTTP/3 200\",\n      \"caption\": \"Страница пришла по HTTP/3, то есть поверх QUIC и UDP\"\n    }\n  ]\n}\n```\n\n**Главное.** Надёжность и порядок — TCP. Свежесть важнее полноты — UDP. Современный веб — QUIC."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ud-game",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ud-quic",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ud-where",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "dns-chain",
+      "title": "Как разрешается имя",
+      "summary": "Рекурсивный резолвер, корневые серверы, TLD и авторитетные серверы, кэш на каждом шаге.",
+      "chapter": "DNS изнутри",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем транспорт и разбираем, как имя сайта превращается в адрес.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Путь запроса www.example.com\",\n  \"steps\": [\n    {\n      \"title\": \"Резолвер\",\n      \"text\": \"Провайдер или 1.1.1.1 проверяет свой кэш\"\n    },\n    {\n      \"title\": \"Корень\",\n      \"text\": \"Подсказывает серверы зоны .com\"\n    },\n    {\n      \"title\": \"TLD .com\",\n      \"text\": \"Подсказывает серверы домена example.com\"\n    },\n    {\n      \"title\": \"Авторитетный\",\n      \"text\": \"Отвечает: www.example.com — 93.184.215.14\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Рекурсивный резолвер\",\n  \"title\": \"Делает всю работу\",\n  \"what\": \"Сервер, которому компьютер задаёт вопрос; он сам обходит цепочку и кэширует ответы. Примеры: резолвер провайдера, 1.1.1.1, 8.8.8.8.\",\n  \"why\": \"Большинство ответов приходит из кэша резолвера за миллисекунды.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Авторитетный сервер\",\n  \"title\": \"Источник правды\",\n  \"what\": \"Сервер, где хранятся записи домена. Его задают у регистратора как NS-серверы (например, у Cloudflare или хостинга).\",\n  \"why\": \"Записи меняют именно там, а не у регистратора или в браузере.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Кэш на каждом шаге\",\n  \"title\": \"Браузер, система, резолвер\",\n  \"what\": \"Ответ запоминают браузер, операционная система и резолвер — каждый на время TTL.\",\n  \"why\": \"Изменения DNS расходятся по миру постепенно.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Записи домена — у авторитетного сервера (NS). Все остальные только кэшируют."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dc-resolver",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dc-where",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dc-root",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "dns-records-deep",
+      "title": "Записи для сайта и почты",
+      "summary": "A и AAAA, CNAME и его ограничения, MX, TXT для SPF и DKIM, CAA и NS.",
+      "chapter": "DNS изнутри",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем цепочку DNS и настраиваем записи, которые нужны настоящему проекту.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"A и AAAA\",\n  \"title\": \"Адрес сервера\",\n  \"what\": \"A — адрес IPv4, AAAA — адрес IPv6 для имени.\",\n  \"why\": \"Без них имя никуда не ведёт.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"CNAME\",\n  \"title\": \"Имя другого имени\",\n  \"what\": \"Указывает, что www.site — это то же, что site.hosting.app. Нельзя ставить на корень домена вместе с другими записями; хостинги предлагают ALIAS или «CNAME flattening».\",\n  \"why\": \"Частая ошибка подключения домена к Vercel или Netlify.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"MX и почта\",\n  \"title\": \"Куда слать письма\",\n  \"what\": \"MX указывает почтовые серверы домена. TXT-записи SPF и DKIM говорят, кто имеет право отправлять письма от имени домена.\",\n  \"why\": \"Без SPF и DKIM письма регистрации попадают в спам.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"TXT для проверки\",\n  \"title\": \"Подтверждение владения\",\n  \"what\": \"Сервисы просят добавить TXT-запись с кодом, чтобы убедиться, что домен твой.\",\n  \"why\": \"Так подключают поисковые консоли, почтовые сервисы и сертификаты.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"CAA\",\n  \"title\": \"Кто выдаёт сертификаты\",\n  \"what\": \"Запись CAA разрешает выдавать сертификаты для домена только указанным центрам.\",\n  \"why\": \"Защита от выпуска поддельного сертификата другим центром.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Сайт — A/AAAA или CNAME, почта — MX плюс SPF и DKIM, проверки — TXT."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dr-mx",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dr-spam",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dr-cname",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "ttl-tools",
+      "title": "TTL и инструменты DNS",
+      "summary": "TTL и смена записей без простоя, dig и nslookup, DNS over HTTPS.",
+      "chapter": "DNS изнутри",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Настраиваем записи и учимся их проверять и менять без простоя.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"TTL записи\",\n  \"title\": \"Сколько помнить\",\n  \"what\": \"Время в секундах, на которое ответ можно кэшировать. 3600 — час, 300 — пять минут.\",\n  \"why\": \"Перед переездом сервера TTL заранее снижают до 300, чтобы новый адрес разошёлся быстро.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"dig\",\n  \"title\": \"Спросить DNS напрямую\",\n  \"what\": \"`dig example.com` — A-запись, `dig MX example.com` — почта, `dig +short` — только ответ, `dig @1.1.1.1 example.com` — спросить конкретный резолвер.\",\n  \"why\": \"Видно, что на самом деле отвечает DNS, без кэша браузера.\",\n  \"how\": \"dig +short A www.example.com\\n93.184.215.14\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Проверяем почтовые записи\",\n  \"file\": \"Терминал\",\n  \"scenes\": [\n    {\n      \"input\": \"dig +short MX example.com\",\n      \"key\": \"Enter\",\n      \"output\": \"$ dig +short MX example.com\\n10 mail.example.com.\",\n      \"caption\": \"Приоритет 10 и адрес почтового сервера\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"DNS over HTTPS\",\n  \"title\": \"Шифрованные запросы\",\n  \"what\": \"Обычные DNS-запросы идут открытым текстом: провайдер видит, какие сайты ты открываешь. DoH и DoT шифруют их.\",\n  \"why\": \"Браузеры включают DoH для приватности; в корпоративных сетях его иногда отключают.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Переезд — сначала снизить TTL, потом менять запись. Проверка — `dig`, а не браузер."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dt-ttl",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dt-dig",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dt-doh",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "crypto-basics",
+      "title": "Шифрование для веба",
+      "summary": "Симметричные и асимметричные ключи, обмен ключами и что именно защищает TLS.",
+      "chapter": "TLS и сертификаты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Разобрались с DNS и защищаем соединение от чужих глаз.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Симметричное шифрование\",\n  \"title\": \"Один ключ на двоих\",\n  \"what\": \"Один и тот же ключ шифрует и расшифровывает. Быстро, но ключ нужно как-то передать собеседнику.\",\n  \"why\": \"Весь трафик HTTPS шифруется именно так — после того, как стороны договорились о ключе.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Асимметричное шифрование\",\n  \"title\": \"Пара ключей\",\n  \"what\": \"Открытый ключ знают все, закрытый — только владелец. Подписанное закрытым проверяется открытым.\",\n  \"why\": \"Так сервер доказывает, что он настоящий, не раскрывая секрет.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Обмен ключами\",\n  \"title\": \"Diffie–Hellman\",\n  \"what\": \"Стороны вычисляют общий секретный ключ, обмениваясь только открытыми значениями. Подслушивающий ключ не получит.\",\n  \"why\": \"Даже если позже украдут ключ сервера, старый трафик не расшифровать (прямая секретность).\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что скрывает TLS\",\n  \"title\": \"И что нет\",\n  \"what\": \"Скрыты путь, заголовки, cookies и тело. Видны IP-адреса и обычно имя сайта (в SNI) — поэтому провайдер знает, какой сайт открыт, но не что на нём.\",\n  \"why\": \"HTTPS защищает содержимое, но не сам факт посещения.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ключ договорились асимметрично, данные шифруют симметрично. Имя сайта обычно видно."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cb-sym",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cb-visible",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cb-forward",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "certificates",
+      "title": "Сертификаты и цепочка доверия",
+      "summary": "Что внутри сертификата, центры сертификации, цепочка до корня и ошибки сертификатов.",
+      "chapter": "TLS и сертификаты",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем, как шифруется соединение, и проверяем, что сервер — тот, за кого себя выдаёт.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Сертификат\",\n  \"title\": \"Паспорт сайта\",\n  \"what\": \"Документ с именем домена, открытым ключом, сроком действия и подписью центра сертификации.\",\n  \"why\": \"Браузер проверяет, что ключ сервера действительно принадлежит этому домену.\",\n  \"kind\": \"idea\"\n}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Цепочка доверия\",\n  \"steps\": [\n    {\n      \"title\": \"Сертификат сайта\",\n      \"text\": \"Подписан промежуточным центром\"\n    },\n    {\n      \"title\": \"Промежуточный\",\n      \"text\": \"Подписан корневым центром\"\n    },\n    {\n      \"title\": \"Корневой\",\n      \"text\": \"Встроен в браузер или систему\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Центр сертификации\",\n  \"title\": \"Тот, кому доверяют\",\n  \"what\": \"Организация, которая проверяет владение доменом и подписывает сертификаты. Список корневых центров встроен в браузеры и системы.\",\n  \"why\": \"Если подпись ведёт к доверенному корню — замок в адресной строке.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ошибки сертификатов\",\n  \"title\": \"Что значат\",\n  \"what\": \"Истёк срок, имя не совпадает (сертификат для другого домена), неполная цепочка (сервер не отдал промежуточный), самоподписанный.\",\n  \"why\": \"Каждая ошибка указывает на конкретную проблему настройки сервера.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Сайт → промежуточный → корень. Ошибка сертификата — это срок, имя или цепочка."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ce-chain",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ce-name",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ce-root",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "https-setup",
+      "title": "HTTPS на своём сайте",
+      "summary": "Let's Encrypt и автообновление, TLS 1.3, HSTS и перенаправление с HTTP.",
+      "chapter": "TLS и сертификаты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем сертификаты и включаем HTTPS на своём проекте.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Let's Encrypt\",\n  \"title\": \"Бесплатные сертификаты\",\n  \"what\": \"Центр, выдающий сертификаты бесплатно и автоматически на 90 дней. Хостинги (Vercel, Netlify) делают это сами.\",\n  \"why\": \"HTTPS больше не стоит денег и не требует ручной работы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Автообновление\",\n  \"title\": \"Сертификат не должен истечь\",\n  \"what\": \"Короткий срок означает обязательное автоматическое продление (certbot, встроенное в хостинг или Caddy).\",\n  \"why\": \"Истёкший сертификат кладёт сайт так же надёжно, как упавший сервер.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"HSTS\",\n  \"title\": \"Только HTTPS\",\n  \"what\": \"Заголовок Strict-Transport-Security говорит браузеру: к этому домену — только по HTTPS, даже если адрес набрали без https.\",\n  \"why\": \"Нельзя подменить первый незашифрованный запрос в кафе.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"openssl s_client\",\n  \"title\": \"Проверить сертификат\",\n  \"what\": \"`openssl s_client -connect example.com:443 -servername example.com` показывает цепочку, срок и протокол.\",\n  \"why\": \"Точная диагностика, когда браузер просто пишет «соединение не защищено».\",\n  \"kind\": \"statement\"\n}\n```\n\n**Главное.** Сертификат — автоматически и с автопродлением. HTTP → 301 на HTTPS, плюс HSTS."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hs-le",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hs-hsts",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hs-redirect",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "http-versions",
+      "title": "HTTP/1.1, HTTP/2 и HTTP/3",
+      "summary": "Keep-alive, мультиплексирование, сжатие заголовков и QUIC: что изменилось и зачем.",
+      "chapter": "HTTP в деталях",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Защитили соединение и разбираем, как развивался сам HTTP.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Эволюция HTTP\",\n  \"steps\": [\n    {\n      \"title\": \"HTTP/1.1\",\n      \"text\": \"Один запрос за раз на соединение, браузер открывает 6 соединений\"\n    },\n    {\n      \"title\": \"HTTP/2\",\n      \"text\": \"Много запросов в одном TCP-соединении, сжатые заголовки\"\n    },\n    {\n      \"title\": \"HTTP/3\",\n      \"text\": \"То же поверх QUIC: потеря пакета не тормозит остальные запросы\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Keep-alive\",\n  \"title\": \"Переиспользовать соединение\",\n  \"what\": \"В HTTP/1.1 соединение не закрывается после ответа и обслуживает следующие запросы.\",\n  \"why\": \"Экономит рукопожатия TCP и TLS на каждом файле.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Мультиплексирование\",\n  \"title\": \"Много потоков в одном\",\n  \"what\": \"HTTP/2 разбивает запросы на кадры и отправляет их вперемешку в одном соединении.\",\n  \"why\": \"Склеивание файлов и спрайты, нужные во времена HTTP/1.1, стали не обязательны.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"HTTP/3\",\n  \"title\": \"Поверх QUIC\",\n  \"what\": \"Потерянный пакет задерживает только свой поток, соединение быстрее устанавливается и переживает смену сети.\",\n  \"why\": \"Особенно ускоряет мобильный интернет с потерями.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** HTTP/2 и /3 включаются на сервере или CDN — код сайта менять не нужно."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hv-mux",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hv-3",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hv-bundle",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "negotiation",
+      "title": "Сжатие и согласование содержимого",
+      "summary": "gzip и brotli, Accept и Accept-Encoding, Vary, сжатие картинок и форматы.",
+      "chapter": "HTTP в деталях",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем версии HTTP и разбираем, как клиент и сервер договариваются о формате.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Сжатие ответа\",\n  \"title\": \"gzip и brotli\",\n  \"what\": \"Клиент сообщает `Accept-Encoding: br, gzip`, сервер сжимает текст (HTML, CSS, JS, JSON) и отвечает `Content-Encoding: br`.\",\n  \"why\": \"Текстовые файлы становятся в 3–10 раз меньше.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Accept\",\n  \"title\": \"Какой формат нужен\",\n  \"what\": \"Заголовок Accept говорит, что клиент понимает: `application/json`, `image/avif,image/webp`. Сервер выбирает лучший вариант.\",\n  \"why\": \"Один адрес картинки отдаёт AVIF современным браузерам и JPEG старым.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Vary\",\n  \"title\": \"Важный для кэша\",\n  \"what\": \"`Vary: Accept-Encoding` говорит кэшам, что ответ зависит от этого заголовка — нужно хранить отдельные версии.\",\n  \"why\": \"Без Vary CDN может отдать сжатую версию клиенту, который её не понимает.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не сжимать сжатое\",\n  \"title\": \"Картинки и видео\",\n  \"what\": \"JPEG, PNG, WebP, MP4 и архивы уже сжаты; gzip их только замедлит.\",\n  \"why\": \"Сжатие включают для текстовых типов.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Текст — brotli или gzip, картинки — современные форматы через Accept, и не забудь Vary."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ng-encoding",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ng-vary",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ng-jpeg",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "semantics",
+      "title": "Семантика методов",
+      "summary": "Безопасные и идемпотентные методы, повтор запросов, условные запросы и ключ идемпотентности.",
+      "chapter": "HTTP в деталях",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Договариваемся о форматах и разбираем, что обещает каждый метод HTTP.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Безопасные методы\",\n  \"title\": \"Ничего не меняют\",\n  \"what\": \"GET и HEAD только читают. Поисковики, предзагрузка и кэши могут выполнять их когда угодно.\",\n  \"why\": \"Удаление по ссылке GET — уязвимость: его может «нажать» поисковый робот.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Идемпотентность\",\n  \"title\": \"Повтор не вредит\",\n  \"what\": \"PUT и DELETE идемпотентны: повторить запрос — тот же результат. POST — нет: повтор создаст второй заказ.\",\n  \"why\": \"При обрыве сети GET и PUT можно повторить, а POST — только осторожно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ключ идемпотентности\",\n  \"title\": \"Безопасный повтор POST\",\n  \"what\": \"Клиент отправляет заголовок `Idempotency-Key` с уникальным значением; сервер не выполняет одно и то же дважды.\",\n  \"why\": \"Так платёжные API защищают от двойного списания.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Условный запрос\",\n  \"title\": \"If-Match\",\n  \"what\": \"`If-Match: \\\"etag\\\"` выполнит изменение, только если ресурс не изменился с момента чтения; иначе 412.\",\n  \"why\": \"Два редактора не перезапишут правки друг друга молча.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** GET ничего не меняет. POST повторяй только с ключом идемпотентности."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "se-get",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "se-idem",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "se-key",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "polling-sse",
+      "title": "Опрос и Server-Sent Events",
+      "summary": "Периодический и долгий опрос, поток событий от сервера через EventSource.",
+      "chapter": "Реальное время",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем семантику HTTP и учимся получать обновления без перезагрузки страницы.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Периодический опрос\",\n  \"title\": \"Спросить каждые N секунд\",\n  \"what\": \"Клиент повторяет GET раз в несколько секунд. Просто, но тратит запросы впустую и даёт задержку до N секунд.\",\n  \"why\": \"Подходит для редких обновлений: статус сборки раз в 10 секунд.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Долгий опрос\",\n  \"title\": \"Long polling\",\n  \"what\": \"Сервер не отвечает сразу, а держит запрос, пока не появятся новые данные (или таймаут), затем клиент сразу шлёт новый.\",\n  \"why\": \"Почти мгновенные обновления на обычном HTTP — так работали ранние чаты.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Server-Sent Events\",\n  \"title\": \"Поток от сервера\",\n  \"what\": \"Одно долгое HTTP-соединение, по которому сервер присылает события текстом. В браузере — `new EventSource(url)` с автопереподключением.\",\n  \"why\": \"Уведомления, прогресс задачи, лента — когда данные идут только от сервера.\",\n  \"how\": \"const events = new EventSource(\\\"/api/progress\\\");\\nevents.onmessage = (e) => update(JSON.parse(e.data));\",\n  \"kind\": \"idea\",\n  \"lang\": \"text\"\n}\n```\n\n```text\ndata: {\"progress\": 40}\n\ndata: {\"progress\": 80}\n```\n\n**Главное.** Данные только от сервера — SSE. Редкие проверки — простой опрос."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ps-sse",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ps-long",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ps-api",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "websocket",
+      "title": "WebSocket",
+      "summary": "Двусторонний канал поверх HTTP Upgrade, сообщения, переподключение и масштабирование.",
+      "chapter": "Реальное время",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Получаем события от сервера и открываем полноценный двусторонний канал.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Как открывается WebSocket\",\n  \"steps\": [\n    {\n      \"title\": \"HTTP-запрос\",\n      \"text\": \"Upgrade: websocket\"\n    },\n    {\n      \"title\": \"101 Switching Protocols\",\n      \"text\": \"Сервер согласен сменить протокол\"\n    },\n    {\n      \"title\": \"Канал\",\n      \"text\": \"Обе стороны шлют сообщения когда угодно\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"WebSocket\",\n  \"title\": \"Постоянный двусторонний канал\",\n  \"what\": \"После «апгрейда» HTTP-соединения обе стороны отправляют сообщения в любой момент без новых запросов. Адреса `ws://` и `wss://` (с TLS).\",\n  \"why\": \"Чаты, совместное редактирование, игры, биржевые котировки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Переподключение\",\n  \"title\": \"Связь рвётся\",\n  \"what\": \"WebSocket не переподключается сам: клиент должен заметить обрыв и подключиться снова с паузой, растущей после неудач.\",\n  \"why\": \"Телефон в метро теряет связь постоянно; без этого чат молча перестанет работать.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Масштабирование\",\n  \"title\": \"Много серверов\",\n  \"what\": \"Подключения привязаны к конкретному серверу. Чтобы сообщение дошло до всех, серверы обмениваются через Redis Pub/Sub или брокер сообщений.\",\n  \"why\": \"На одном сервере чат работает, на трёх — нет, пока не добавлен общий канал.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Двусторонне и часто — WebSocket через wss://, с переподключением и общим каналом между серверами."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ws-code",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ws-wss",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ws-scale",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "webrtc",
+      "title": "WebRTC и звонки",
+      "summary": "Прямое соединение браузеров, сигнальный сервер, STUN и TURN.",
+      "chapter": "Реальное время",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем WebSocket и разбираем, как браузеры говорят напрямую друг с другом.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"WebRTC\",\n  \"title\": \"Браузер с браузером\",\n  \"what\": \"Технология прямой передачи голоса, видео и данных между браузерами, обычно поверх UDP.\",\n  \"why\": \"Звонки и демонстрация экрана без плагинов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сигнальный сервер\",\n  \"title\": \"Чтобы найти друг друга\",\n  \"what\": \"Перед прямым соединением браузеры обмениваются описаниями (адреса, кодеки) через обычный сервер, часто по WebSocket.\",\n  \"why\": \"Сам звук и видео потом идут напрямую, минуя сервер.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"STUN\",\n  \"title\": \"Узнать свой внешний адрес\",\n  \"what\": \"Сервер STUN сообщает браузеру, какой у него адрес снаружи за NAT.\",\n  \"why\": \"Без этого собеседник не знает, куда слать пакеты.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"TURN\",\n  \"title\": \"Ретранслятор\",\n  \"what\": \"Если прямое соединение невозможно (строгий NAT, корпоративный файрвол), трафик идёт через сервер TURN.\",\n  \"why\": \"Звонок работает всегда, но TURN дорогой: весь видеопоток проходит через него.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Сигналы — через сервер, медиа — напрямую; STUN помогает найтись, TURN спасает, когда напрямую нельзя."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rtc-signal",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rtc-turn",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rtc-stun",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "rest-design",
+      "title": "Хороший REST API",
+      "summary": "Ресурсы и вложенность, фильтры и пагинация, единый формат ошибок и коды ответа.",
+      "chapter": "Проектирование API",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Разобрались с реальным временем и проектируем API, которым удобно пользоваться.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Ресурсы\",\n  \"title\": \"Существительные во множественном числе\",\n  \"what\": \"`/courses`, `/courses/html`, `/courses/html/lessons`. Вложенность — не глубже одного-двух уровней.\",\n  \"why\": \"API читается без документации.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Фильтры и пагинация\",\n  \"title\": \"В query\",\n  \"what\": \"`/courses?level=easy&limit=20&cursor=abc`. Курсорная пагинация устойчивее номеров страниц при добавлении данных.\",\n  \"why\": \"Списки не дублируют и не теряют элементы между страницами.\",\n  \"kind\": \"idea\"\n}\n```\n\n```json\n{\n  \"error\": {\n    \"code\": \"validation_failed\",\n    \"message\": \"Проверьте поля формы\",\n    \"fields\": { \"email\": \"Неверный адрес\" }\n  }\n}\n```\n\n```concept\n{\n  \"name\": \"Единый формат ошибок\",\n  \"title\": \"Машине и человеку\",\n  \"what\": \"Код ошибки для программы, сообщение для человека, подробности по полям. Один формат во всём API.\",\n  \"why\": \"Клиент обрабатывает ошибки одним кодом, а не десятью.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Коды статуса по смыслу\",\n  \"title\": \"Не всё — 200\",\n  \"what\": \"Не отвечай 200 с `{ \\\"ok\\\": false }`: используй 4xx и 5xx. Мониторинг, кэши и клиенты понимают коды.\",\n  \"why\": \"Ошибки видны в графиках, а не прячутся в теле.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ресурсы — существительные, списки — с курсором, ошибки — одним форматом и правильным кодом."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rd-200",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rd-cursor",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rd-noun",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "api-evolution",
+      "title": "Версии, совместимость и документация",
+      "summary": "Обратная совместимость, версионирование, устаревание и OpenAPI.",
+      "chapter": "Проектирование API",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Спроектировали API и учимся развивать его, не ломая тех, кто им пользуется.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Обратная совместимость\",\n  \"title\": \"Добавлять, а не менять\",\n  \"what\": \"Новые поля и необязательные параметры добавлять можно. Удалять поля, менять типы и смысл — ломает клиентов.\",\n  \"why\": \"Мобильное приложение старой версии продолжает работать после обновления сервера.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Версия API\",\n  \"title\": \"/v1 и /v2\",\n  \"what\": \"Ломающие изменения выпускают новой версией: `/v2/courses` или заголовком. Старую поддерживают ещё какое-то время.\",\n  \"why\": \"Клиенты переходят, когда готовы, а не в момент выкладки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Устаревание\",\n  \"title\": \"Deprecation\",\n  \"what\": \"Сначала объявляют (заголовки Deprecation и Sunset, письмо, документация), потом через срок отключают.\",\n  \"why\": \"Никто не узнаёт о поломке из ошибок в продакшене.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"OpenAPI\",\n  \"title\": \"Описание API в файле\",\n  \"what\": \"Формат, где описаны все пути, параметры, тела и ответы. Из него генерируют документацию, клиентов и тесты.\",\n  \"why\": \"Документация не устаревает, если её генерируют из того же описания, что проверяет запросы.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Добавлять — можно, ломать — только новой версией и с объявленным сроком."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ae-break",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ae-version",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ae-spec",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "graphql-grpc",
+      "title": "GraphQL, gRPC и вебхуки",
+      "summary": "Когда вместо REST выбирают GraphQL или gRPC и как сервисы оповещают друг друга вебхуками.",
+      "chapter": "Проектирование API",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Развиваем REST и знакомимся с другими способами общения программ.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"GraphQL\",\n  \"title\": \"Клиент выбирает поля\",\n  \"what\": \"Один адрес, клиент пишет запрос с нужными полями и связями и получает ровно их.\",\n  \"why\": \"Удобно для сложных интерфейсов и мобильных клиентов; сложнее с кэшем и защитой от тяжёлых запросов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"gRPC\",\n  \"title\": \"Быстрый вызов между сервисами\",\n  \"what\": \"Методы описаны в .proto, данные передаются в двоичном формате поверх HTTP/2.\",\n  \"why\": \"Популярен для общения микросервисов внутри компании, в браузере используется редко.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Вебхук\",\n  \"title\": \"Сервер звонит тебе\",\n  \"what\": \"Внешний сервис отправляет POST на твой адрес, когда что-то произошло: оплата прошла, пришло письмо.\",\n  \"why\": \"Не нужно опрашивать платёжный сервис каждую минуту.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Защита вебхука\",\n  \"title\": \"Подпись\",\n  \"what\": \"Вебхуки подписывают секретом (HMAC в заголовке); сервер проверяет подпись и обрабатывает повторы идемпотентно.\",\n  \"why\": \"Иначе кто угодно пришлёт «оплата прошла» на твой адрес.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Публичный API — REST, сложный интерфейс — возможно GraphQL, внутренние сервисы — gRPC, события извне — вебхуки с подписью."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gg-graphql",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gg-webhook",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gg-sign",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "cdn",
+      "title": "CDN",
+      "summary": "Пограничные серверы по всему миру, что кешировать на CDN и как это ускоряет сайт.",
+      "chapter": "CDN, кэш и балансировка",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем стили API и разбираем, как контент оказывается рядом с пользователем.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Запрос через CDN\",\n  \"steps\": [\n    {\n      \"title\": \"Пользователь\",\n      \"text\": \"Запрос идёт на ближайший узел CDN\"\n    },\n    {\n      \"title\": \"Узел CDN\",\n      \"text\": \"Есть в кэше — отвечает сразу за миллисекунды\"\n    },\n    {\n      \"title\": \"Источник\",\n      \"text\": \"Нет в кэше — узел запрашивает origin и запоминает\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"CDN\",\n  \"title\": \"Сеть доставки контента\",\n  \"what\": \"Сотни серверов в разных городах хранят копии файлов. Пользователь получает их с ближайшего.\",\n  \"why\": \"Задержка падает со 150 мс до 10–20 мс, а нагрузка на сервер — в разы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что отдавать через CDN\",\n  \"title\": \"Статика в первую очередь\",\n  \"what\": \"Картинки, шрифты, CSS и JS с хешами в именах — идеально. HTML и API — с осторожными правилами кэша.\",\n  \"why\": \"Тяжёлое и неизменное летает быстро, личное не утекает.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Защита на краю\",\n  \"title\": \"Не только кэш\",\n  \"what\": \"CDN принимает удар DDoS, завершает TLS, фильтрует ботов и делает перенаправления.\",\n  \"why\": \"Сервер не видит большей части мусорного трафика.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Статика — через CDN с долгим кэшем. Личные ответы — никогда в общий кэш."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cd-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cd-what",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cd-origin",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "cache-strategy",
+      "title": "Стратегии кэша и сброс",
+      "summary": "s-maxage и stale-while-revalidate, ключ кэша, хеши в именах файлов и очистка кэша.",
+      "chapter": "CDN, кэш и балансировка",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Подключили CDN и настраиваем, что и сколько он хранит.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"s-maxage\",\n  \"title\": \"Отдельно для общих кэшей\",\n  \"what\": \"`Cache-Control: max-age=0, s-maxage=600` — браузер всегда проверяет, а CDN хранит 10 минут.\",\n  \"why\": \"Страница каталога быстрая для всех, но обновляется за минуты.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"stale-while-revalidate\",\n  \"title\": \"Отдать старое, обновить в фоне\",\n  \"what\": \"CDN сразу отдаёт устаревшую копию и параллельно запрашивает свежую.\",\n  \"why\": \"Пользователь никогда не ждёт медленного источника.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ключ кэша\",\n  \"title\": \"Что делает ответы разными\",\n  \"what\": \"Обычно адрес плюс некоторые заголовки. Лишний параметр в адресе (например, utm-метки) создаёт новые записи и снижает попадания.\",\n  \"why\": \"Неправильный ключ — либо мало пользы от кэша, либо чужие данные в ответе.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сброс кэша\",\n  \"title\": \"Purge и хеши\",\n  \"what\": \"Файлы с хешем в имени не нужно сбрасывать: новая версия — новое имя. HTML и API сбрасывают через purge по адресу или тегу.\",\n  \"why\": \"Выкладка видна сразу, а старые файлы не мешают.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Статика — хеш в имени и `immutable`; страницы — `s-maxage` плюс `stale-while-revalidate`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cs-smax",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cs-swr",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cs-hash",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "load-balancing",
+      "title": "Балансировка нагрузки",
+      "summary": "L4 и L7 балансировщики, алгоритмы, проверки здоровья и липкие сессии.",
+      "chapter": "CDN, кэш и балансировка",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Кэшируем на краю и распределяем остальные запросы между серверами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Балансировщик\",\n  \"title\": \"Распределитель\",\n  \"what\": \"Принимает запросы и раздаёт их нескольким серверам, скрывая их за одним адресом.\",\n  \"why\": \"Можно добавлять серверы под нагрузкой и выводить на обслуживание без простоя.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"L4 и L7\",\n  \"title\": \"По соединениям или по запросам\",\n  \"what\": \"L4 распределяет TCP-соединения, не заглядывая внутрь. L7 видит HTTP: может направлять `/api` на одни серверы, а `/images` — на другие.\",\n  \"why\": \"L7 гибче, L4 быстрее и проще.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Алгоритмы\",\n  \"title\": \"Кому следующий\",\n  \"what\": \"По кругу (round robin), наименее загруженному, по хешу адреса клиента.\",\n  \"why\": \"Разные запросы — разная тяжесть; «наименее загруженный» выравнивает нагрузку.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проверки здоровья\",\n  \"title\": \"Health checks\",\n  \"what\": \"Балансировщик опрашивает /health и перестаёт слать запросы серверу, который не отвечает.\",\n  \"why\": \"Упавший сервер исчезает из ротации за секунды.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Липкие сессии\",\n  \"title\": \"Sticky sessions\",\n  \"what\": \"Привязка клиента к одному серверу cookie-меткой. Костыль для приложений, которые хранят сессии в памяти.\",\n  \"why\": \"Лучше хранить сессии в общей базе, чем зависеть от липкости.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Балансировщик + health checks + сессии вне памяти серверов = масштабирование без боли."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lb-l7",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lb-health",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lb-sticky",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "proxies",
+      "title": "Прямые и обратные прокси",
+      "summary": "Прокси клиента и прокси сервера, nginx перед приложением, заголовки X-Forwarded-For.",
+      "chapter": "Прокси, NAT и файрволы",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Распределяем нагрузку и разбираем посредников между клиентом и сервером.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Прямой прокси\",\n  \"title\": \"Посредник клиента\",\n  \"what\": \"Клиент отправляет запросы через прокси, а тот — дальше в интернет. Используется в компаниях для фильтрации и в VPN-подобных сервисах.\",\n  \"why\": \"Сайт видит адрес прокси, а не клиента.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Обратный прокси\",\n  \"title\": \"Посредник сервера\",\n  \"what\": \"Принимает запросы от всех и передаёт их приложению: nginx, Caddy, балансировщик облака. Завершает TLS, сжимает, отдаёт статику.\",\n  \"why\": \"Приложение на Node.js слушает localhost:3000, а наружу смотрит только прокси.\",\n  \"kind\": \"idea\"\n}\n```\n\n```text\nserver {\n  listen 443 ssl;\n  server_name example.com;\n  location / {\n    proxy_pass http://127.0.0.1:3000;\n    proxy_set_header X-Forwarded-For $remote_addr;\n  }\n}\n```\n\n```concept\n{\n  \"name\": \"X-Forwarded-For\",\n  \"title\": \"Настоящий адрес клиента\",\n  \"what\": \"За прокси приложение видит адрес прокси. Настоящий адрес передаётся в заголовке X-Forwarded-For; доверять ему можно, только если его поставил свой прокси.\",\n  \"why\": \"Иначе лимиты по IP либо блокируют всех разом, либо обходятся подделкой заголовка.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Наружу — обратный прокси; адрес клиента — из X-Forwarded-For, но только от своего прокси."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "px-reverse",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "px-ip",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "px-trust",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "nat-firewall",
+      "title": "NAT и файрволы",
+      "summary": "Как десятки устройств делят один адрес, проброс портов, правила файрвола и группы безопасности.",
+      "chapter": "Прокси, NAT и файрволы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем прокси и разбираем, как сети прячут устройства и закрывают порты.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Как работает NAT\",\n  \"steps\": [\n    {\n      \"title\": \"Устройство\",\n      \"text\": \"192.168.1.20:51000 → сайт\"\n    },\n    {\n      \"title\": \"Роутер\",\n      \"text\": \"Подменяет адрес на внешний и запоминает пару\"\n    },\n    {\n      \"title\": \"Сайт\",\n      \"text\": \"Видит только внешний адрес роутера\"\n    },\n    {\n      \"title\": \"Ответ\",\n      \"text\": \"Роутер по таблице возвращает его устройству\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"NAT\",\n  \"title\": \"Один адрес на всех\",\n  \"what\": \"Роутер подменяет частные адреса устройств своим внешним адресом и запоминает, кому вернуть ответ.\",\n  \"why\": \"Поэтому дома десяток устройств работает через один IP, и снаружи к ним не достучаться.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проброс портов\",\n  \"title\": \"Открыть устройство наружу\",\n  \"what\": \"Правило на роутере: входящие на порт 8080 отправлять на 192.168.1.20:3000.\",\n  \"why\": \"Так показывают локальный сервер наружу; для разработки удобнее туннели вроде Cloudflare Tunnel или ngrok.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Файрвол\",\n  \"title\": \"Что разрешено\",\n  \"what\": \"Правила: какие порты и с каких адресов можно подключаться. Принцип — запрещено всё, кроме нужного.\",\n  \"why\": \"Наружу открыты 80 и 443, а база и Redis — только из внутренней сети.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Группы безопасности\",\n  \"title\": \"Файрвол в облаке\",\n  \"what\": \"В облаках правила задают группами безопасности: «база принимает 5432 только от серверов приложения».\",\n  \"why\": \"Даже утёкший пароль от базы бесполезен без доступа к сети.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Наружу — только 80 и 443. База и кэш — только из своей сети."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "nf-nat",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "nf-db",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "nf-tunnel",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "vpn",
+      "title": "VPN и частные сети",
+      "summary": "Как работает VPN, WireGuard, сети между серверами и Zero Trust.",
+      "chapter": "Прокси, NAT и файрволы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем NAT и файрволы и соединяем удалённые сети безопасно.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"VPN\",\n  \"title\": \"Туннель в чужой сети\",\n  \"what\": \"Весь трафик упаковывается в зашифрованный туннель до VPN-сервера и выходит в сеть оттуда.\",\n  \"why\": \"В открытом Wi-Fi никто не видит, что внутри; компания пускает сотрудника во внутреннюю сеть.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"WireGuard\",\n  \"title\": \"Современный VPN\",\n  \"what\": \"Простой и быстрый протокол VPN с короткой конфигурацией из ключей и адресов. Работает поверх UDP.\",\n  \"why\": \"Сети между серверами и доступ разработчиков настраиваются за минуты.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Частная сеть облака\",\n  \"title\": \"VPC\",\n  \"what\": \"Серверы проекта общаются по внутренней сети облака, недоступной из интернета. Наружу смотрит только балансировщик.\",\n  \"why\": \"База и внутренние сервисы физически не видны снаружи.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Zero Trust\",\n  \"title\": \"Не доверять сети\",\n  \"what\": \"Вместо «всё внутри сети — свои» каждый запрос проверяет пользователя и устройство (Cloudflare Access, Tailscale).\",\n  \"why\": \"Утечка одного ноутбука не открывает всю внутреннюю сеть.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Внутреннее — во внутренней сети. Доступ людей — через VPN или Zero Trust, а не открытые порты."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vp-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vp-vpc",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vp-wg",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "ping-trace",
+      "title": "ping, traceroute и mtr",
+      "summary": "Доступность и задержка, путь пакета по маршрутизаторам и потери на маршруте.",
+      "chapter": "Диагностика сети",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Соединяем сети через VPN и учимся находить, где ломается связь.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"ping\",\n  \"title\": \"Жив ли узел\",\n  \"what\": \"Отправляет пакеты ICMP и показывает время ответа и потери. Многие серверы не отвечают на ping — это не значит, что они лежат.\",\n  \"why\": \"Первая проверка: есть ли связь вообще и насколько она быстрая.\",\n  \"how\": \"ping -c 4 example.com\\n64 bytes from 93.184.215.14: time=38.2 ms\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"traceroute\",\n  \"title\": \"Путь пакета\",\n  \"what\": \"Показывает маршрутизаторы на пути и задержку до каждого (в Windows — tracert).\",\n  \"why\": \"Видно, на каком участке растёт задержка или пропадают пакеты: у тебя, у провайдера или у хостинга.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"mtr\",\n  \"title\": \"ping и traceroute вместе\",\n  \"what\": \"Непрерывно опрашивает каждый узел маршрута и показывает потери и задержку по каждому.\",\n  \"why\": \"Отчёт mtr — лучшее доказательство проблемы для поддержки провайдера.\",\n  \"kind\": \"statement\"\n}\n```\n\n**Главное.** Связь есть? — ping. Где тормозит? — traceroute или mtr."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pt-noping",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pt-where",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pt-win",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "curl-ports",
+      "title": "curl по секундам и проверка портов",
+      "summary": "Тайминги curl: DNS, TCP, TLS, первый байт; nc и ss для портов.",
+      "chapter": "Диагностика сети",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Находим проблемы маршрута и измеряем, из чего складывается время запроса.\",\"cast\":[\"nika\"]}\n```\n\n```diagram\n{\n  \"kind\": \"flow\",\n  \"title\": \"Из чего складывается время ответа\",\n  \"steps\": [\n    {\n      \"title\": \"DNS\",\n      \"text\": \"Поиск адреса\"\n    },\n    {\n      \"title\": \"TCP\",\n      \"text\": \"Рукопожатие\"\n    },\n    {\n      \"title\": \"TLS\",\n      \"text\": \"Защищённое соединение\"\n    },\n    {\n      \"title\": \"Первый байт\",\n      \"text\": \"Сервер думает\"\n    },\n    {\n      \"title\": \"Загрузка\",\n      \"text\": \"Передача тела\"\n    }\n  ]\n}\n```\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Где теряется время\",\n  \"file\": \"Терминал\",\n  \"scenes\": [\n    {\n      \"input\": \"curl -o /dev/null -s -w 'dns %{time_namelookup} tcp %{time_connect} tls %{time_appconnect} ttfb %{time_starttransfer}\\\\n' https://example.com\",\n      \"key\": \"Enter\",\n      \"output\": \"$ curl -o /dev/null -s -w '…' https://example.com\\ndns 0.012 tcp 0.051 tls 0.118 ttfb 0.940\",\n      \"caption\": \"Сеть быстрая — почти секунду думает сервер\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"curl -w\",\n  \"title\": \"Тайминги запроса\",\n  \"what\": \"Флаг -w печатает времена этапов: time_namelookup, time_connect, time_appconnect, time_starttransfer, time_total.\",\n  \"why\": \"Сразу понятно, виновата сеть, TLS или медленный сервер.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"nc\",\n  \"title\": \"Открыт ли порт\",\n  \"what\": \"`nc -zv host 5432` проверяет, принимает ли порт TCP-соединения.\",\n  \"why\": \"Отличить «база упала» от «файрвол не пускает».\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"ss и lsof\",\n  \"title\": \"Кто слушает у меня\",\n  \"what\": \"`ss -ltnp` (Linux) или `lsof -i -P` показывает, какие порты открыты на этой машине и какой программой.\",\n  \"why\": \"Сервер «запущен», но слушает только 127.0.0.1 — снаружи его не видно.\",\n  \"kind\": \"statement\"\n}\n```\n\n**Главное.** Медленно — разложи по этапам `curl -w`. Не подключается — `nc -zv` и `ss -ltnp`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-ttfb",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-nc",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-listen",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "wireshark-method",
+      "title": "Wireshark и метод поиска проблем",
+      "summary": "Захват пакетов, фильтры, HAR из браузера и пошаговый поиск сетевой ошибки.",
+      "chapter": "Диагностика сети",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Измеряем запросы и собираем всё в метод поиска сетевых ошибок.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Wireshark\",\n  \"title\": \"Пакеты своими глазами\",\n  \"what\": \"Программа захватывает пакеты и раскладывает их по уровням: Ethernet → IP → TCP → TLS → HTTP. Фильтры вроде `tcp.port == 443` или `dns`.\",\n  \"why\": \"Видно, ушёл ли запрос, пришёл ли ответ и где оборвалось соединение.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"HAR\",\n  \"title\": \"Запись из браузера\",\n  \"what\": \"Вкладка Network в DevTools сохраняет все запросы страницы в файл HAR с таймингами и заголовками.\",\n  \"why\": \"Пользователь присылает HAR — и ты видишь его загрузку так, будто сидишь рядом.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Метод снизу вверх\",\n  \"title\": \"Уровень за уровнем\",\n  \"what\": \"1) Есть ли связь (ping). 2) Разрешается ли имя (dig). 3) Открыт ли порт (nc). 4) Работает ли TLS (openssl). 5) Что отвечает HTTP (curl -v).\",\n  \"why\": \"Вместо догадок — последовательность, которая находит уровень поломки за минуты.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Воспроизвести и сравнить\",\n  \"title\": \"Где работает, где нет\",\n  \"what\": \"Сравни: другая сеть (телефон), другой резолвер, другой браузер, запрос с сервера. Отличие указывает на причину.\",\n  \"why\": \"«У меня работает» превращается в точное описание проблемы.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ищи снизу вверх: связь → имя → порт → TLS → HTTP. Сравнивай, где работает, а где нет."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wm-order",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wm-har",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wm-compare",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    }
+  ]
+}
