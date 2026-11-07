@@ -7807,6 +7807,472 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "docker",
+      "name": "Docker",
+      "role": "Грузчик контейнеров",
+      "summary": "Приложения в контейнерах: образы и слои, жизнь контейнера, Dockerfile, кэш и многоэтапная сборка, безопасные образы, тома и резервные копии, сети, Docker Compose, настройки и секреты, проверки здоровья, диагностика и уборка, реестры, CI и запуск на сервере.",
+      "accent": "blue",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Контейнеры",
+          "branches": [
+            "docker-1",
+            "docker-2",
+            "docker-3"
+          ]
+        },
+        {
+          "title": "Сборка",
+          "branches": [
+            "docker-4",
+            "docker-5"
+          ]
+        },
+        {
+          "title": "Данные",
+          "branches": [
+            "docker-6"
+          ]
+        },
+        {
+          "title": "Сети",
+          "branches": [
+            "docker-7"
+          ]
+        },
+        {
+          "title": "Оркестр",
+          "branches": [
+            "docker-8"
+          ]
+        },
+        {
+          "title": "Эксплуатация",
+          "branches": [
+            "docker-9",
+            "docker-10"
+          ]
+        },
+        {
+          "title": "Доставка",
+          "branches": [
+            "docker-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "docker-1",
+          "title": "Зачем контейнеры",
+          "depth": "practice",
+          "requires": [
+            "terminal-6"
+          ],
+          "skills": [
+            {
+              "key": "dk-why",
+              "title": "Зачем контейнеры",
+              "lesson": {
+                "course": "docker",
+                "slug": "why-containers",
+                "title": "Зачем нужны контейнеры"
+              }
+            },
+            {
+              "key": "dk-vm",
+              "title": "Контейнеры и ВМ",
+              "lesson": {
+                "course": "docker",
+                "slug": "containers-vs-vm",
+                "title": "Контейнер и виртуальная машина"
+              }
+            },
+            {
+              "key": "dk-install",
+              "title": "Установка Docker",
+              "lesson": {
+                "course": "docker",
+                "slug": "install-docker",
+                "title": "Установка Docker"
+              }
+            }
+          ]
+        },
+        {
+          "id": "docker-2",
+          "title": "Образы и контейнеры",
+          "depth": "practice",
+          "requires": [
+            "docker-1"
+          ],
+          "skills": [
+            {
+              "key": "dk-run",
+              "title": "Запуск контейнеров",
+              "lesson": {
+                "course": "docker",
+                "slug": "docker-run",
+                "title": "docker run"
+              }
+            },
+            {
+              "key": "dk-layers",
+              "title": "Слои образа",
+              "lesson": {
+                "course": "docker",
+                "slug": "image-layers",
+                "title": "Слои образа"
+              }
+            },
+            {
+              "key": "dk-tags",
+              "title": "Реестры и теги",
+              "lesson": {
+                "course": "docker",
+                "slug": "registry-tags",
+                "title": "Реестры и теги"
+              }
+            }
+          ]
+        },
+        {
+          "id": "docker-3",
+          "title": "Жизнь контейнера",
+          "depth": "practice",
+          "requires": [
+            "docker-2"
+          ],
+          "skills": [
+            {
+              "key": "dk-ps",
+              "title": "Управление контейнерами",
+              "lesson": {
+                "course": "docker",
+                "slug": "ps-stop-rm",
+                "title": "Список, остановка, удаление"
+              }
+            },
+            {
+              "key": "dk-logs",
+              "title": "Логи и exec",
+              "lesson": {
+                "course": "docker",
+                "slug": "logs-exec",
+                "title": "Логи и вход внутрь"
+              }
+            },
+            {
+              "key": "dk-ports",
+              "title": "Порты и окружение",
+              "lesson": {
+                "course": "docker",
+                "slug": "ports-env",
+                "title": "Порты и переменные окружения"
+              }
+            }
+          ]
+        },
+        {
+          "id": "docker-4",
+          "title": "Dockerfile",
+          "depth": "practice",
+          "requires": [
+            "docker-3"
+          ],
+          "skills": [
+            {
+              "key": "dk-dockerfile",
+              "title": "Dockerfile",
+              "lesson": {
+                "course": "docker",
+                "slug": "dockerfile-basics",
+                "title": "Первый Dockerfile"
+              }
+            },
+            {
+              "key": "dk-context",
+              "title": "Контекст сборки",
+              "lesson": {
+                "course": "docker",
+                "slug": "build-context",
+                "title": "Контекст сборки и .dockerignore"
+              }
+            },
+            {
+              "key": "dk-cmd",
+              "title": "CMD и ENTRYPOINT",
+              "lesson": {
+                "course": "docker",
+                "slug": "cmd-entrypoint",
+                "title": "CMD и ENTRYPOINT"
+              }
+            }
+          ]
+        },
+        {
+          "id": "docker-5",
+          "title": "Хорошие образы",
+          "depth": "practice",
+          "requires": [
+            "docker-4"
+          ],
+          "skills": [
+            {
+              "key": "dk-cache",
+              "title": "Кэш сборки",
+              "lesson": {
+                "course": "docker",
+                "slug": "layer-cache",
+                "title": "Кэш сборки"
+              }
+            },
+            {
+              "key": "dk-multistage",
+              "title": "Многоэтапная сборка",
+              "lesson": {
+                "course": "docker",
+                "slug": "multi-stage",
+                "title": "Многоэтапная сборка"
+              }
+            },
+            {
+              "key": "dk-secure",
+              "title": "Безопасность образов",
+              "lesson": {
+                "course": "docker",
+                "slug": "secure-images",
+                "title": "Маленькие и безопасные образы"
+              }
+            }
+          ]
+        },
+        {
+          "id": "docker-6",
+          "title": "Данные и тома",
+          "depth": "practice",
+          "requires": [
+            "docker-5"
+          ],
+          "skills": [
+            {
+              "key": "dk-volumes",
+              "title": "Тома",
+              "lesson": {
+                "course": "docker",
+                "slug": "volumes",
+                "title": "Тома"
+              }
+            },
+            {
+              "key": "dk-bind",
+              "title": "Привязка папок",
+              "lesson": {
+                "course": "docker",
+                "slug": "bind-mounts",
+                "title": "Привязка папок"
+              }
+            },
+            {
+              "key": "dk-backup",
+              "title": "Резервные копии",
+              "lesson": {
+                "course": "docker",
+                "slug": "backups",
+                "title": "Резервные копии данных"
+              }
+            }
+          ]
+        },
+        {
+          "id": "docker-7",
+          "title": "Сети контейнеров",
+          "depth": "practice",
+          "requires": [
+            "docker-6",
+            "network-2"
+          ],
+          "skills": [
+            {
+              "key": "dk-networks",
+              "title": "Сети Docker",
+              "lesson": {
+                "course": "docker",
+                "slug": "bridge-networks",
+                "title": "Сети Docker"
+              }
+            },
+            {
+              "key": "dk-dns",
+              "title": "DNS контейнеров",
+              "lesson": {
+                "course": "docker",
+                "slug": "service-dns",
+                "title": "Имена вместо адресов"
+              }
+            },
+            {
+              "key": "dk-publish",
+              "title": "Публикация портов",
+              "lesson": {
+                "course": "docker",
+                "slug": "publish-expose",
+                "title": "Что открывать наружу"
+              }
+            }
+          ]
+        },
+        {
+          "id": "docker-8",
+          "title": "Docker Compose",
+          "depth": "practice",
+          "requires": [
+            "docker-7"
+          ],
+          "skills": [
+            {
+              "key": "dk-compose",
+              "title": "Docker Compose",
+              "lesson": {
+                "course": "docker",
+                "slug": "compose-basics",
+                "title": "Первый compose-файл"
+              }
+            },
+            {
+              "key": "dk-services",
+              "title": "Сервисы Compose",
+              "lesson": {
+                "course": "docker",
+                "slug": "compose-services",
+                "title": "Сервисы, зависимости и масштаб"
+              }
+            },
+            {
+              "key": "dk-composedev",
+              "title": "Разработка с Compose",
+              "lesson": {
+                "course": "docker",
+                "slug": "compose-dev",
+                "title": "Разработка с Compose"
+              }
+            }
+          ]
+        },
+        {
+          "id": "docker-9",
+          "title": "Настройки и здоровье",
+          "depth": "practice",
+          "requires": [
+            "docker-8"
+          ],
+          "skills": [
+            {
+              "key": "dk-env",
+              "title": "Настройки окружения",
+              "lesson": {
+                "course": "docker",
+                "slug": "env-config",
+                "title": "Настройки через окружение"
+              }
+            },
+            {
+              "key": "dk-secrets",
+              "title": "Секреты",
+              "lesson": {
+                "course": "docker",
+                "slug": "secrets",
+                "title": "Секреты"
+              }
+            },
+            {
+              "key": "dk-health",
+              "title": "Здоровье и ресурсы",
+              "lesson": {
+                "course": "docker",
+                "slug": "health-limits",
+                "title": "Проверки здоровья и ресурсы"
+              }
+            }
+          ]
+        },
+        {
+          "id": "docker-10",
+          "title": "Отладка и обслуживание",
+          "depth": "practice",
+          "requires": [
+            "docker-9"
+          ],
+          "skills": [
+            {
+              "key": "dk-inspect",
+              "title": "Диагностика",
+              "lesson": {
+                "course": "docker",
+                "slug": "inspect",
+                "title": "Заглянуть в детали"
+              }
+            },
+            {
+              "key": "dk-troubleshoot",
+              "title": "Типичные поломки",
+              "lesson": {
+                "course": "docker",
+                "slug": "troubleshooting",
+                "title": "Типичные поломки"
+              }
+            },
+            {
+              "key": "dk-cleanup",
+              "title": "Уборка Docker",
+              "lesson": {
+                "course": "docker",
+                "slug": "cleanup",
+                "title": "Уборка"
+              }
+            }
+          ]
+        },
+        {
+          "id": "docker-11",
+          "title": "Docker на практике",
+          "depth": "practice",
+          "requires": [
+            "docker-10"
+          ],
+          "skills": [
+            {
+              "key": "dk-push",
+              "title": "Публикация образов",
+              "lesson": {
+                "course": "docker",
+                "slug": "push-registry",
+                "title": "Публикация образа"
+              }
+            },
+            {
+              "key": "dk-ci",
+              "title": "Docker в CI",
+              "lesson": {
+                "course": "docker",
+                "slug": "ci-images",
+                "title": "Docker в CI"
+              }
+            },
+            {
+              "key": "dk-deploy",
+              "title": "Запуск на сервере",
+              "lesson": {
+                "course": "docker",
+                "slug": "deploy-next",
+                "title": "Запуск на сервере и что дальше"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

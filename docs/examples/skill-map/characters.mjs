@@ -316,6 +316,25 @@ export const characters = [
       "Первый язык программирования: значения и типы, условия и циклы, списки и словари, функции, файлы, CSV и JSON, ошибки и отладка, модули и окружения, классы, идиомы Python, запросы к API, автоматизация и тесты.",
     accent: "teal",
     sources: [{ manifest: "python-track.manifest.json", published: true }]
+  },
+  {
+    slug: "docker",
+    depth: {},
+    abilities: [
+      { title: "Контейнеры", branches: ["Зачем контейнеры", "Образы и контейнеры", "Жизнь контейнера"] },
+      { title: "Сборка", branches: ["Dockerfile", "Хорошие образы"] },
+      { title: "Данные", branches: ["Данные и тома"] },
+      { title: "Сети", branches: ["Сети контейнеров"] },
+      { title: "Оркестр", branches: ["Docker Compose"] },
+      { title: "Эксплуатация", branches: ["Настройки и здоровье", "Отладка и обслуживание"] },
+      { title: "Доставка", branches: ["Docker на практике"] }
+    ],
+    name: "Docker",
+    role: "Грузчик контейнеров",
+    summary:
+      "Приложения в контейнерах: образы и слои, жизнь контейнера, Dockerfile, кэш и многоэтапная сборка, безопасные образы, тома и резервные копии, сети, Docker Compose, настройки и секреты, проверки здоровья, диагностика и уборка, реестры, CI и запуск на сервере.",
+    accent: "blue",
+    sources: [{ manifest: "docker-track.manifest.json", published: true }]
   }
 ];
 
@@ -337,7 +356,9 @@ export const requires = {
   "node/Старт Node.js": ["js/Старт JavaScript"],
   "react/Старт React": ["js/Старт JavaScript"],
   "network/Как устроена сеть": ["browser/HTTP и HTTPS"],
-  "python/Старт Python": ["pc/Командная строка"]
+  "python/Старт Python": ["pc/Командная строка"],
+  "docker/Зачем контейнеры": ["terminal/Процессы и сигналы"],
+  "docker/Сети контейнеров": ["network/IP-адреса и подсети"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */
