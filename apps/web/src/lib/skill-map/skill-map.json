@@ -6407,6 +6407,471 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "react",
+      "name": "React",
+      "role": "Сборщик интерфейсов",
+      "summary": "Интерфейсы из компонентов: JSX и компоненты, props и композиция, состояние и его правила, события и формы, списки и условия, эффекты и загрузка данных, контекст, редьюсеры и свои хуки, маршруты и структура приложения, производительность, тесты и доступность.",
+      "accent": "blue",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Компоненты",
+          "branches": [
+            "react-1",
+            "react-2",
+            "react-3"
+          ]
+        },
+        {
+          "title": "Состояние",
+          "branches": [
+            "react-4",
+            "react-5"
+          ]
+        },
+        {
+          "title": "Интерфейс",
+          "branches": [
+            "react-6"
+          ]
+        },
+        {
+          "title": "Данные",
+          "branches": [
+            "react-7",
+            "react-8"
+          ]
+        },
+        {
+          "title": "Приложение",
+          "branches": [
+            "react-9"
+          ]
+        },
+        {
+          "title": "Скорость",
+          "branches": [
+            "react-10"
+          ]
+        },
+        {
+          "title": "Качество",
+          "branches": [
+            "react-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "react-1",
+          "title": "Старт React",
+          "depth": "practice",
+          "requires": [
+            "js-1"
+          ],
+          "skills": [
+            {
+              "key": "react-why",
+              "title": "Зачем React",
+              "lesson": {
+                "course": "react",
+                "slug": "why-react",
+                "title": "Зачем нужен React"
+              }
+            },
+            {
+              "key": "react-setup",
+              "title": "Проект на React",
+              "lesson": {
+                "course": "react",
+                "slug": "first-project",
+                "title": "Первый проект"
+              }
+            },
+            {
+              "key": "react-devtools",
+              "title": "React DevTools",
+              "lesson": {
+                "course": "react",
+                "slug": "devtools-react",
+                "title": "Как смотреть на приложение"
+              }
+            }
+          ]
+        },
+        {
+          "id": "react-2",
+          "title": "JSX и компоненты",
+          "depth": "practice",
+          "requires": [
+            "react-1"
+          ],
+          "skills": [
+            {
+              "key": "react-jsx",
+              "title": "JSX",
+              "lesson": {
+                "course": "react",
+                "slug": "jsx",
+                "title": "JSX"
+              }
+            },
+            {
+              "key": "react-components",
+              "title": "Компоненты",
+              "lesson": {
+                "course": "react",
+                "slug": "components",
+                "title": "Компоненты"
+              }
+            },
+            {
+              "key": "react-styles",
+              "title": "Стили",
+              "lesson": {
+                "course": "react",
+                "slug": "styling",
+                "title": "Стили компонентов"
+              }
+            }
+          ]
+        },
+        {
+          "id": "react-3",
+          "title": "Props и композиция",
+          "depth": "practice",
+          "requires": [
+            "react-2"
+          ],
+          "skills": [
+            {
+              "key": "react-props",
+              "title": "Props",
+              "lesson": {
+                "course": "react",
+                "slug": "props",
+                "title": "Props: данные в компонент"
+              }
+            },
+            {
+              "key": "react-children",
+              "title": "Композиция",
+              "lesson": {
+                "course": "react",
+                "slug": "children-composition",
+                "title": "children и композиция"
+              }
+            },
+            {
+              "key": "react-data-flow",
+              "title": "Поток данных",
+              "lesson": {
+                "course": "react",
+                "slug": "data-flow",
+                "title": "Поток данных сверху вниз"
+              }
+            }
+          ]
+        },
+        {
+          "id": "react-4",
+          "title": "Состояние",
+          "depth": "practice",
+          "requires": [
+            "react-3"
+          ],
+          "skills": [
+            {
+              "key": "react-usestate",
+              "title": "useState",
+              "lesson": {
+                "course": "react",
+                "slug": "use-state",
+                "title": "useState"
+              }
+            },
+            {
+              "key": "react-immutable",
+              "title": "Обновление состояния",
+              "lesson": {
+                "course": "react",
+                "slug": "state-updates",
+                "title": "Обновление состояния правильно"
+              }
+            },
+            {
+              "key": "react-lifting",
+              "title": "Проектирование состояния",
+              "lesson": {
+                "course": "react",
+                "slug": "lifting-derived",
+                "title": "Где хранить состояние"
+              }
+            }
+          ]
+        },
+        {
+          "id": "react-5",
+          "title": "События и формы",
+          "depth": "practice",
+          "requires": [
+            "react-4"
+          ],
+          "skills": [
+            {
+              "key": "react-events",
+              "title": "События",
+              "lesson": {
+                "course": "react",
+                "slug": "events",
+                "title": "События"
+              }
+            },
+            {
+              "key": "react-controlled",
+              "title": "Управляемые поля",
+              "lesson": {
+                "course": "react",
+                "slug": "controlled",
+                "title": "Управляемые поля"
+              }
+            },
+            {
+              "key": "react-form-submit",
+              "title": "Отправка формы",
+              "lesson": {
+                "course": "react",
+                "slug": "submit-validate",
+                "title": "Отправка и проверка формы"
+              }
+            }
+          ]
+        },
+        {
+          "id": "react-6",
+          "title": "Списки и условия",
+          "depth": "practice",
+          "requires": [
+            "react-5"
+          ],
+          "skills": [
+            {
+              "key": "react-lists",
+              "title": "Списки",
+              "lesson": {
+                "course": "react",
+                "slug": "lists-keys",
+                "title": "Списки и ключи"
+              }
+            },
+            {
+              "key": "react-conditional",
+              "title": "Условный рендер",
+              "lesson": {
+                "course": "react",
+                "slug": "conditional",
+                "title": "Условный рендер"
+              }
+            },
+            {
+              "key": "react-ui-states",
+              "title": "Состояния экрана",
+              "lesson": {
+                "course": "react",
+                "slug": "ui-states",
+                "title": "Состояния интерфейса"
+              }
+            }
+          ]
+        },
+        {
+          "id": "react-7",
+          "title": "Эффекты и данные",
+          "depth": "practice",
+          "requires": [
+            "react-6"
+          ],
+          "skills": [
+            {
+              "key": "react-effect",
+              "title": "useEffect",
+              "lesson": {
+                "course": "react",
+                "slug": "use-effect",
+                "title": "useEffect"
+              }
+            },
+            {
+              "key": "react-fetch",
+              "title": "Загрузка данных",
+              "lesson": {
+                "course": "react",
+                "slug": "fetch-data",
+                "title": "Загрузка данных"
+              }
+            },
+            {
+              "key": "react-refs",
+              "title": "useRef",
+              "lesson": {
+                "course": "react",
+                "slug": "refs",
+                "title": "useRef и доступ к DOM"
+              }
+            }
+          ]
+        },
+        {
+          "id": "react-8",
+          "title": "Контекст и свои хуки",
+          "depth": "practice",
+          "requires": [
+            "react-7"
+          ],
+          "skills": [
+            {
+              "key": "react-context",
+              "title": "Контекст",
+              "lesson": {
+                "course": "react",
+                "slug": "context",
+                "title": "Контекст"
+              }
+            },
+            {
+              "key": "react-reducer",
+              "title": "useReducer",
+              "lesson": {
+                "course": "react",
+                "slug": "reducer",
+                "title": "useReducer"
+              }
+            },
+            {
+              "key": "react-custom-hooks",
+              "title": "Свои хуки",
+              "lesson": {
+                "course": "react",
+                "slug": "custom-hooks",
+                "title": "Свои хуки"
+              }
+            }
+          ]
+        },
+        {
+          "id": "react-9",
+          "title": "Маршруты и структура приложения",
+          "depth": "practice",
+          "requires": [
+            "react-8"
+          ],
+          "skills": [
+            {
+              "key": "react-router",
+              "title": "Маршруты",
+              "lesson": {
+                "course": "react",
+                "slug": "router",
+                "title": "Маршруты"
+              }
+            },
+            {
+              "key": "react-url-state",
+              "title": "Состояние в адресе",
+              "lesson": {
+                "course": "react",
+                "slug": "url-state",
+                "title": "Адрес как состояние"
+              }
+            },
+            {
+              "key": "react-structure",
+              "title": "Структура приложения",
+              "lesson": {
+                "course": "react",
+                "slug": "structure",
+                "title": "Структура приложения"
+              }
+            }
+          ]
+        },
+        {
+          "id": "react-10",
+          "title": "Производительность",
+          "depth": "practice",
+          "requires": [
+            "react-9"
+          ],
+          "skills": [
+            {
+              "key": "react-rerender",
+              "title": "Перерисовки",
+              "lesson": {
+                "course": "react",
+                "slug": "rerenders",
+                "title": "Почему компонент перерисовался"
+              }
+            },
+            {
+              "key": "react-memo",
+              "title": "Мемоизация",
+              "lesson": {
+                "course": "react",
+                "slug": "memo",
+                "title": "memo, useMemo и useCallback"
+              }
+            },
+            {
+              "key": "react-lazy",
+              "title": "Ленивая загрузка",
+              "lesson": {
+                "course": "react",
+                "slug": "bundle-lists",
+                "title": "Ленивая загрузка и длинные списки"
+              }
+            }
+          ]
+        },
+        {
+          "id": "react-11",
+          "title": "Тесты и практика",
+          "depth": "practice",
+          "requires": [
+            "react-10"
+          ],
+          "skills": [
+            {
+              "key": "react-testing",
+              "title": "Тесты компонентов",
+              "lesson": {
+                "course": "react",
+                "slug": "testing-library",
+                "title": "Тесты компонентов"
+              }
+            },
+            {
+              "key": "react-a11y",
+              "title": "Доступность",
+              "lesson": {
+                "course": "react",
+                "slug": "a11y-react",
+                "title": "Доступность в React"
+              }
+            },
+            {
+              "key": "react-project",
+              "title": "Проект на React",
+              "lesson": {
+                "course": "react",
+                "slug": "react-ts-project",
+                "title": "React с TypeScript и итоговый проект"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

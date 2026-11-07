@@ -30,7 +30,6 @@ export const UPCOMING: UpcomingDistrict[] = [
   {
     district: "Мастерские фреймворков",
     characters: [
-      { name: "React", role: "Сборщик интерфейсов", needs: "JavaScript" },
       { name: "Vue", role: "Мастер реактивности", needs: "JavaScript" },
       { name: "Angular", role: "Инженер платформы", needs: "TypeScript" },
       { name: "Svelte", role: "Компилятор", needs: "JavaScript" }
