@@ -41,6 +41,7 @@ const manifests = [
   "docker-track",
   "next-track",
   "go-track",
+  "os-track",
   "pc-track",
   "browser-track"
 ].map(
@@ -87,7 +88,8 @@ describe("skill map data (ADR-0074)", () => {
       "python",
       "docker",
       "next",
-      "go"
+      "go",
+      "os"
     ]);
     for (const c of SKILL_MAP.characters) {
       expect(c.branches.length).toBeGreaterThan(0);

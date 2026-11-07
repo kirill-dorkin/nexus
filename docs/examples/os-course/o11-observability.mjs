@@ -38,7 +38,7 @@ export default function observability(c, rc) {
       sh("strace -p", "Чем занят процесс", "Подключиться к зависшему процессу и увидеть, на каком системном вызове он ждёт.", "Завис на read сокета — ждёт сеть, на futex — ждёт замок."),
       idea("perf и флейм-граф", "Где тратится процессор", "perf снимает выборки стеков, флейм-граф показывает, какие функции занимают больше всего времени.", "Узкое место видно с одного взгляда."),
       idea("eBPF", "Программы в ядре", "Безопасные маленькие программы, которые ядро выполняет на событиях: bpftrace, инструменты BCC.", "Наблюдение за продом без перезапуска и замедления."),
-      idea("Другие системы", "Instruments и Process Monitor", "В macOS — Instruments, в Windows — Process Monitor и Process Explorer.", "Те же вопросы, другие инструменты."),
+      idea("Трассировка в macOS и Windows", "Instruments и Process Monitor", "В macOS — Instruments, в Windows — Process Monitor и Process Explorer.", "Те же вопросы, другие инструменты."),
       tip("Кто держит файл или порт — lsof. Чего ждёт процесс — strace. Где горит процессор — perf.")
     ],
     quizzes: [

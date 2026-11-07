@@ -19,7 +19,8 @@ export const BODY_UI = {
   python: ["#ffd43b", "#fff3b0", "#2b5b8c", "#0b1a2b"],
   docker: ["#2496ed", "#bfe3ff", "#1d4f91", "#071a33"],
   next: ["#f5f5f5", "#ffffff", "#3f3f46", "#0a0a0c"],
-  go: ["#00add8", "#b8f1ff", "#0f6f86", "#04212a"]
+  go: ["#00add8", "#b8f1ff", "#0f6f86", "#04212a"],
+  os: ["#f59e0b", "#ffe2a8", "#4a4038", "#1c1712"]
 } as const satisfies Record<string, readonly [string, string, string, string]>;
 
 export type BodySlug = keyof typeof BODY_UI;

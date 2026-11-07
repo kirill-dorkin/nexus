@@ -14,6 +14,7 @@ import { python } from "./python";
 import { docker } from "./docker";
 import { next } from "./next";
 import { go } from "./go";
+import { os } from "./os";
 import type { CharacterDef } from "./types";
 
 /** Characters that have a 3D body. The rest of the roster keeps its text card for now. */
@@ -33,7 +34,8 @@ export const CHARACTER_DEFS: readonly CharacterDef[] = [
   python,
   docker,
   next,
-  go
+  go,
+  os
 ];
 
 export const characterDef = (slug: string) =>

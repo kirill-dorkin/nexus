@@ -9208,6 +9208,476 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "os",
+      "name": "Операционная система",
+      "role": "Диспетчер",
+      "summary": "Как устроен компьютер изнутри: ядро и системные вызовы, процессы и сигналы, потоки и планировщик, виртуальная память, файловые системы, драйверы и асинхронный ввод-вывод, синхронизация, пользователи и права, загрузка и службы, виртуализация и контейнеры, наблюдение и диагностика.",
+      "accent": "amber",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Ядро",
+          "branches": [
+            "os-1"
+          ]
+        },
+        {
+          "title": "Процессы",
+          "branches": [
+            "os-2",
+            "os-3"
+          ]
+        },
+        {
+          "title": "Память",
+          "branches": [
+            "os-4"
+          ]
+        },
+        {
+          "title": "Хранение",
+          "branches": [
+            "os-5",
+            "os-6"
+          ]
+        },
+        {
+          "title": "Порядок",
+          "branches": [
+            "os-7"
+          ]
+        },
+        {
+          "title": "Защита",
+          "branches": [
+            "os-8"
+          ]
+        },
+        {
+          "title": "Запуск",
+          "branches": [
+            "os-9",
+            "os-10"
+          ]
+        },
+        {
+          "title": "Наблюдение",
+          "branches": [
+            "os-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "os-1",
+          "title": "Что делает ОС",
+          "depth": "practice",
+          "requires": [
+            "pc-5"
+          ],
+          "skills": [
+            {
+              "key": "os-role",
+              "title": "Роль ОС",
+              "lesson": {
+                "course": "os",
+                "slug": "os-role",
+                "title": "Зачем нужна ОС"
+              }
+            },
+            {
+              "key": "os-kernel",
+              "title": "Ядро",
+              "lesson": {
+                "course": "os",
+                "slug": "kernel-syscalls",
+                "title": "Ядро и системные вызовы"
+              }
+            },
+            {
+              "key": "os-families",
+              "title": "Семейства ОС",
+              "lesson": {
+                "course": "os",
+                "slug": "os-families",
+                "title": "Семейства ОС"
+              }
+            }
+          ]
+        },
+        {
+          "id": "os-2",
+          "title": "Процессы",
+          "depth": "practice",
+          "requires": [
+            "os-1"
+          ],
+          "skills": [
+            {
+              "key": "os-process",
+              "title": "Процесс",
+              "lesson": {
+                "course": "os",
+                "slug": "process",
+                "title": "Процесс"
+              }
+            },
+            {
+              "key": "os-fork",
+              "title": "Создание процессов",
+              "lesson": {
+                "course": "os",
+                "slug": "fork-exec",
+                "title": "Создание процессов"
+              }
+            },
+            {
+              "key": "os-signals",
+              "title": "Состояния и сигналы",
+              "lesson": {
+                "course": "os",
+                "slug": "states-signals",
+                "title": "Состояния и сигналы"
+              }
+            }
+          ]
+        },
+        {
+          "id": "os-3",
+          "title": "Потоки и планировщик",
+          "depth": "practice",
+          "requires": [
+            "os-2"
+          ],
+          "skills": [
+            {
+              "key": "os-threads",
+              "title": "Потоки",
+              "lesson": {
+                "course": "os",
+                "slug": "threads",
+                "title": "Потоки"
+              }
+            },
+            {
+              "key": "os-scheduler",
+              "title": "Планировщик",
+              "lesson": {
+                "course": "os",
+                "slug": "scheduler",
+                "title": "Планировщик"
+              }
+            },
+            {
+              "key": "os-load",
+              "title": "Нагрузка процессора",
+              "lesson": {
+                "course": "os",
+                "slug": "cpu-load",
+                "title": "Нагрузка на процессор"
+              }
+            }
+          ]
+        },
+        {
+          "id": "os-4",
+          "title": "Память",
+          "depth": "practice",
+          "requires": [
+            "os-3"
+          ],
+          "skills": [
+            {
+              "key": "os-vmem",
+              "title": "Виртуальная память",
+              "lesson": {
+                "course": "os",
+                "slug": "virtual-memory",
+                "title": "Виртуальная память"
+              }
+            },
+            {
+              "key": "os-heap",
+              "title": "Стек и куча",
+              "lesson": {
+                "course": "os",
+                "slug": "heap-stack",
+                "title": "Стек и куча"
+              }
+            },
+            {
+              "key": "os-swap",
+              "title": "Подкачка и OOM",
+              "lesson": {
+                "course": "os",
+                "slug": "swap-oom",
+                "title": "Подкачка и нехватка памяти"
+              }
+            }
+          ]
+        },
+        {
+          "id": "os-5",
+          "title": "Файловые системы",
+          "depth": "practice",
+          "requires": [
+            "os-4"
+          ],
+          "skills": [
+            {
+              "key": "os-inodes",
+              "title": "Устройство файлов",
+              "lesson": {
+                "course": "os",
+                "slug": "inodes",
+                "title": "Как хранятся файлы"
+              }
+            },
+            {
+              "key": "os-journal",
+              "title": "Журналирование",
+              "lesson": {
+                "course": "os",
+                "slug": "journaling",
+                "title": "Надёжность файловых систем"
+              }
+            },
+            {
+              "key": "os-mounts",
+              "title": "Монтирование",
+              "lesson": {
+                "course": "os",
+                "slug": "mounts",
+                "title": "Монтирование и типы ФС"
+              }
+            }
+          ]
+        },
+        {
+          "id": "os-6",
+          "title": "Ввод-вывод и драйверы",
+          "depth": "practice",
+          "requires": [
+            "os-5"
+          ],
+          "skills": [
+            {
+              "key": "os-drivers",
+              "title": "Драйверы",
+              "lesson": {
+                "course": "os",
+                "slug": "drivers",
+                "title": "Устройства и драйверы"
+              }
+            },
+            {
+              "key": "os-interrupts",
+              "title": "Прерывания",
+              "lesson": {
+                "course": "os",
+                "slug": "interrupts",
+                "title": "Прерывания и DMA"
+              }
+            },
+            {
+              "key": "os-asyncio",
+              "title": "Асинхронный ввод-вывод",
+              "lesson": {
+                "course": "os",
+                "slug": "async-io",
+                "title": "Буферы и асинхронный ввод-вывод"
+              }
+            }
+          ]
+        },
+        {
+          "id": "os-7",
+          "title": "Синхронизация",
+          "depth": "practice",
+          "requires": [
+            "os-6"
+          ],
+          "skills": [
+            {
+              "key": "os-races",
+              "title": "Гонки",
+              "lesson": {
+                "course": "os",
+                "slug": "race-conditions",
+                "title": "Гонки и критические секции"
+              }
+            },
+            {
+              "key": "os-locks",
+              "title": "Замки",
+              "lesson": {
+                "course": "os",
+                "slug": "locks",
+                "title": "Замки и семафоры"
+              }
+            },
+            {
+              "key": "os-ipc",
+              "title": "Deadlock и IPC",
+              "lesson": {
+                "course": "os",
+                "slug": "deadlock-ipc",
+                "title": "Взаимные блокировки и обмен между процессами"
+              }
+            }
+          ]
+        },
+        {
+          "id": "os-8",
+          "title": "Пользователи и безопасность",
+          "depth": "practice",
+          "requires": [
+            "os-7"
+          ],
+          "skills": [
+            {
+              "key": "os-users",
+              "title": "Пользователи",
+              "lesson": {
+                "course": "os",
+                "slug": "users-groups",
+                "title": "Пользователи и группы"
+              }
+            },
+            {
+              "key": "os-perms",
+              "title": "Права доступа",
+              "lesson": {
+                "course": "os",
+                "slug": "permissions",
+                "title": "Права доступа"
+              }
+            },
+            {
+              "key": "os-isolation",
+              "title": "Механизмы защиты",
+              "lesson": {
+                "course": "os",
+                "slug": "isolation",
+                "title": "Изоляция и защита"
+              }
+            }
+          ]
+        },
+        {
+          "id": "os-9",
+          "title": "Загрузка и службы",
+          "depth": "practice",
+          "requires": [
+            "os-8"
+          ],
+          "skills": [
+            {
+              "key": "os-boot",
+              "title": "Загрузка",
+              "lesson": {
+                "course": "os",
+                "slug": "boot",
+                "title": "Загрузка компьютера"
+              }
+            },
+            {
+              "key": "os-services",
+              "title": "Службы",
+              "lesson": {
+                "course": "os",
+                "slug": "services",
+                "title": "Службы"
+              }
+            },
+            {
+              "key": "os-logs",
+              "title": "Журналы и расписание",
+              "lesson": {
+                "course": "os",
+                "slug": "logs-cron",
+                "title": "Журналы и расписание"
+              }
+            }
+          ]
+        },
+        {
+          "id": "os-10",
+          "title": "Виртуализация и контейнеры",
+          "depth": "practice",
+          "requires": [
+            "os-9"
+          ],
+          "skills": [
+            {
+              "key": "os-hypervisor",
+              "title": "Гипервизоры",
+              "lesson": {
+                "course": "os",
+                "slug": "hypervisors",
+                "title": "Гипервизоры"
+              }
+            },
+            {
+              "key": "os-containers",
+              "title": "Механизмы контейнеров",
+              "lesson": {
+                "course": "os",
+                "slug": "containers-kernel",
+                "title": "Контейнеры глазами ядра"
+              }
+            },
+            {
+              "key": "os-wsl",
+              "title": "Совместимость систем",
+              "lesson": {
+                "course": "os",
+                "slug": "wsl-emulation",
+                "title": "WSL, эмуляция и совместимость"
+              }
+            }
+          ]
+        },
+        {
+          "id": "os-11",
+          "title": "Наблюдение за системой",
+          "depth": "practice",
+          "requires": [
+            "os-10"
+          ],
+          "skills": [
+            {
+              "key": "os-monitor",
+              "title": "Мониторы ресурсов",
+              "lesson": {
+                "course": "os",
+                "slug": "monitors",
+                "title": "Мониторы ресурсов"
+              }
+            },
+            {
+              "key": "os-tracing",
+              "title": "Трассировка",
+              "lesson": {
+                "course": "os",
+                "slug": "tracing",
+                "title": "Трассировка"
+              }
+            },
+            {
+              "key": "os-troubleshoot",
+              "title": "Диагностика системы",
+              "lesson": {
+                "course": "os",
+                "slug": "troubleshooting",
+                "title": "Метод диагностики"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
