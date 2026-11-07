@@ -413,6 +413,25 @@ export const characters = [
       "Реактивные интерфейсы: проект на Vite, шаблоны и директивы, ref, computed и watch, компоненты, props, события и слоты, формы и v-model, списки и анимации, Composition API и composables, Vue Router, Pinia, загрузка данных и SSR, тесты, скорость и выпуск.",
     accent: "lime",
     sources: [{ manifest: "vue-track.manifest.json", published: true }]
+  },
+  {
+    slug: "cicd",
+    depth: {},
+    abilities: [
+      { title: "Основы", branches: ["Зачем автоматизация", "Первый конвейер"] },
+      { title: "Качество", branches: ["Проверки качества", "Тесты в конвейере"] },
+      { title: "Скорость", branches: ["Скорость конвейера"] },
+      { title: "Выпуск", branches: ["Артефакты и версии"] },
+      { title: "Защита", branches: ["Секреты и безопасность"] },
+      { title: "Выкладка", branches: ["Доставка и выкладка", "Окружения и миграции"] },
+      { title: "Надёжность", branches: ["Наблюдение после выкладки", "Культура и практика"] }
+    ],
+    name: "CI/CD",
+    role: "Конвейер",
+    summary:
+      "Автоматическая проверка и выкладка: первый конвейер в GitHub Actions, линтеры, типы и тесты в CI, кэш и параллельность, артефакты и версии, секреты и цепочка поставки, стратегии выкладки, окружения и миграции, наблюдение и откат, культура маленьких изменений.",
+    accent: "violet",
+    sources: [{ manifest: "cicd-track.manifest.json", published: true }]
   }
 ];
 
@@ -440,7 +459,8 @@ export const requires = {
   "next/Старт Next.js": ["react/Маршруты и структура приложения"],
   "go/Старт Go": ["pc/Командная строка"],
   "os/Что делает ОС": ["pc/Операционная система"],
-  "vue/Старт Vue": ["js/Старт JavaScript"]
+  "vue/Старт Vue": ["js/Старт JavaScript"],
+  "cicd/Зачем автоматизация": ["git/Командная работа на GitHub"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */
