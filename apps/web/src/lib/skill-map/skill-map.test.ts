@@ -37,6 +37,7 @@ const manifests = [
   "node-track",
   "react-track",
   "network-track",
+  "python-track",
   "pc-track",
   "browser-track"
 ].map(
@@ -79,7 +80,8 @@ describe("skill map data (ADR-0074)", () => {
       "ts",
       "node",
       "react",
-      "network"
+      "network",
+      "python"
     ]);
     for (const c of SKILL_MAP.characters) {
       expect(c.branches.length).toBeGreaterThan(0);

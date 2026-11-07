@@ -296,6 +296,26 @@ export const characters = [
       "Как данные путешествуют: пакеты и уровни сети, IP-адреса и подсети, TCP, UDP и QUIC, DNS изнутри, TLS и сертификаты, версии HTTP, WebSocket и SSE, проектирование API, CDN и балансировка, прокси, NAT и VPN, диагностика сети.",
     accent: "amber",
     sources: [{ manifest: "network-track.manifest.json", published: true }]
+  },
+  {
+    slug: "python",
+    depth: {},
+    abilities: [
+      { title: "Основы", branches: ["Старт Python", "Значения и типы"] },
+      { title: "Логика", branches: ["Условия и циклы"] },
+      { title: "Данные", branches: ["Коллекции", "Строки и файлы"] },
+      { title: "Функции", branches: ["Функции"] },
+      { title: "Надёжность", branches: ["Ошибки и отладка"] },
+      { title: "Экосистема", branches: ["Модули и окружения"] },
+      { title: "Объекты", branches: ["Классы", "Идиомы Python"] },
+      { title: "Практика", branches: ["Python на практике"] }
+    ],
+    name: "Python",
+    role: "Мудрец",
+    summary:
+      "Первый язык программирования: значения и типы, условия и циклы, списки и словари, функции, файлы, CSV и JSON, ошибки и отладка, модули и окружения, классы, идиомы Python, запросы к API, автоматизация и тесты.",
+    accent: "teal",
+    sources: [{ manifest: "python-track.manifest.json", published: true }]
   }
 ];
 
@@ -316,7 +336,8 @@ export const requires = {
   "ts/Старт TypeScript": ["js/Старт JavaScript"],
   "node/Старт Node.js": ["js/Старт JavaScript"],
   "react/Старт React": ["js/Старт JavaScript"],
-  "network/Как устроена сеть": ["browser/HTTP и HTTPS"]
+  "network/Как устроена сеть": ["browser/HTTP и HTTPS"],
+  "python/Старт Python": ["pc/Командная строка"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */

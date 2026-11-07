@@ -7337,6 +7337,476 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "python",
+      "name": "Python",
+      "role": "Мудрец",
+      "summary": "Первый язык программирования: значения и типы, условия и циклы, списки и словари, функции, файлы, CSV и JSON, ошибки и отладка, модули и окружения, классы, идиомы Python, запросы к API, автоматизация и тесты.",
+      "accent": "teal",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Основы",
+          "branches": [
+            "python-1",
+            "python-2"
+          ]
+        },
+        {
+          "title": "Логика",
+          "branches": [
+            "python-3"
+          ]
+        },
+        {
+          "title": "Данные",
+          "branches": [
+            "python-4",
+            "python-6"
+          ]
+        },
+        {
+          "title": "Функции",
+          "branches": [
+            "python-5"
+          ]
+        },
+        {
+          "title": "Надёжность",
+          "branches": [
+            "python-7"
+          ]
+        },
+        {
+          "title": "Экосистема",
+          "branches": [
+            "python-8"
+          ]
+        },
+        {
+          "title": "Объекты",
+          "branches": [
+            "python-9",
+            "python-10"
+          ]
+        },
+        {
+          "title": "Практика",
+          "branches": [
+            "python-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "python-1",
+          "title": "Старт Python",
+          "depth": "practice",
+          "requires": [
+            "pc-8"
+          ],
+          "skills": [
+            {
+              "key": "py-why",
+              "title": "Что такое Python",
+              "lesson": {
+                "course": "python",
+                "slug": "why-python",
+                "title": "Что такое Python"
+              }
+            },
+            {
+              "key": "py-run",
+              "title": "Запуск Python",
+              "lesson": {
+                "course": "python",
+                "slug": "install-run",
+                "title": "Установка и первый запуск"
+              }
+            },
+            {
+              "key": "py-io",
+              "title": "Ввод и вывод",
+              "lesson": {
+                "course": "python",
+                "slug": "print-input",
+                "title": "Вывод, ввод и комментарии"
+              }
+            }
+          ]
+        },
+        {
+          "id": "python-2",
+          "title": "Значения и типы",
+          "depth": "practice",
+          "requires": [
+            "python-1"
+          ],
+          "skills": [
+            {
+              "key": "py-numbers",
+              "title": "Числа",
+              "lesson": {
+                "course": "python",
+                "slug": "variables-numbers",
+                "title": "Переменные и числа"
+              }
+            },
+            {
+              "key": "py-strings",
+              "title": "Строки",
+              "lesson": {
+                "course": "python",
+                "slug": "strings",
+                "title": "Строки и f-строки"
+              }
+            },
+            {
+              "key": "py-bool",
+              "title": "Логика и типы",
+              "lesson": {
+                "course": "python",
+                "slug": "bool-none-convert",
+                "title": "Логика, None и преобразования"
+              }
+            }
+          ]
+        },
+        {
+          "id": "python-3",
+          "title": "Условия и циклы",
+          "depth": "practice",
+          "requires": [
+            "python-2"
+          ],
+          "skills": [
+            {
+              "key": "py-if",
+              "title": "Условия",
+              "lesson": {
+                "course": "python",
+                "slug": "if-else",
+                "title": "Условия"
+              }
+            },
+            {
+              "key": "py-loops",
+              "title": "Циклы",
+              "lesson": {
+                "course": "python",
+                "slug": "loops",
+                "title": "Циклы for и while"
+              }
+            },
+            {
+              "key": "py-match",
+              "title": "match",
+              "lesson": {
+                "course": "python",
+                "slug": "match",
+                "title": "match и вложенные решения"
+              }
+            }
+          ]
+        },
+        {
+          "id": "python-4",
+          "title": "Коллекции",
+          "depth": "practice",
+          "requires": [
+            "python-3"
+          ],
+          "skills": [
+            {
+              "key": "py-lists",
+              "title": "Списки",
+              "lesson": {
+                "course": "python",
+                "slug": "lists",
+                "title": "Списки"
+              }
+            },
+            {
+              "key": "py-dicts",
+              "title": "Словари",
+              "lesson": {
+                "course": "python",
+                "slug": "dicts",
+                "title": "Словари"
+              }
+            },
+            {
+              "key": "py-sets",
+              "title": "Кортежи и множества",
+              "lesson": {
+                "course": "python",
+                "slug": "tuples-sets",
+                "title": "Кортежи и множества"
+              }
+            }
+          ]
+        },
+        {
+          "id": "python-5",
+          "title": "Функции",
+          "depth": "practice",
+          "requires": [
+            "python-4"
+          ],
+          "skills": [
+            {
+              "key": "py-functions",
+              "title": "Функции",
+              "lesson": {
+                "course": "python",
+                "slug": "def-return",
+                "title": "Функции и return"
+              }
+            },
+            {
+              "key": "py-args",
+              "title": "Аргументы функций",
+              "lesson": {
+                "course": "python",
+                "slug": "arguments",
+                "title": "Аргументы"
+              }
+            },
+            {
+              "key": "py-lambda",
+              "title": "Функции как значения",
+              "lesson": {
+                "course": "python",
+                "slug": "scope-lambda",
+                "title": "Область видимости и lambda"
+              }
+            }
+          ]
+        },
+        {
+          "id": "python-6",
+          "title": "Строки и файлы",
+          "depth": "practice",
+          "requires": [
+            "python-5"
+          ],
+          "skills": [
+            {
+              "key": "py-text",
+              "title": "Методы строк",
+              "lesson": {
+                "course": "python",
+                "slug": "string-methods",
+                "title": "Методы строк"
+              }
+            },
+            {
+              "key": "py-files",
+              "title": "Работа с файлами",
+              "lesson": {
+                "course": "python",
+                "slug": "files-io",
+                "title": "Файлы"
+              }
+            },
+            {
+              "key": "py-json",
+              "title": "CSV и JSON",
+              "lesson": {
+                "course": "python",
+                "slug": "csv-json",
+                "title": "CSV и JSON"
+              }
+            }
+          ]
+        },
+        {
+          "id": "python-7",
+          "title": "Ошибки и отладка",
+          "depth": "practice",
+          "requires": [
+            "python-6"
+          ],
+          "skills": [
+            {
+              "key": "py-traceback",
+              "title": "Чтение ошибок",
+              "lesson": {
+                "course": "python",
+                "slug": "traceback",
+                "title": "Читать ошибки"
+              }
+            },
+            {
+              "key": "py-exceptions",
+              "title": "Исключения",
+              "lesson": {
+                "course": "python",
+                "slug": "try-except",
+                "title": "try и except"
+              }
+            },
+            {
+              "key": "py-debug",
+              "title": "Отладка",
+              "lesson": {
+                "course": "python",
+                "slug": "debugging",
+                "title": "Отладка"
+              }
+            }
+          ]
+        },
+        {
+          "id": "python-8",
+          "title": "Модули и окружения",
+          "depth": "practice",
+          "requires": [
+            "python-7"
+          ],
+          "skills": [
+            {
+              "key": "py-import",
+              "title": "Модули",
+              "lesson": {
+                "course": "python",
+                "slug": "import",
+                "title": "Модули и import"
+              }
+            },
+            {
+              "key": "py-venv",
+              "title": "Окружения и пакеты",
+              "lesson": {
+                "course": "python",
+                "slug": "venv-pip",
+                "title": "Пакеты и окружения"
+              }
+            },
+            {
+              "key": "py-stdlib",
+              "title": "Стандартная библиотека",
+              "lesson": {
+                "course": "python",
+                "slug": "stdlib-tour",
+                "title": "Полезная стандартная библиотека"
+              }
+            }
+          ]
+        },
+        {
+          "id": "python-9",
+          "title": "Классы",
+          "depth": "practice",
+          "requires": [
+            "python-8"
+          ],
+          "skills": [
+            {
+              "key": "py-classes",
+              "title": "Классы",
+              "lesson": {
+                "course": "python",
+                "slug": "class-basics",
+                "title": "Классы и объекты"
+              }
+            },
+            {
+              "key": "py-dataclass",
+              "title": "dataclass",
+              "lesson": {
+                "course": "python",
+                "slug": "dataclasses",
+                "title": "dataclass и особые методы"
+              }
+            },
+            {
+              "key": "py-inherit",
+              "title": "Наследование",
+              "lesson": {
+                "course": "python",
+                "slug": "inheritance",
+                "title": "Наследование и композиция"
+              }
+            }
+          ]
+        },
+        {
+          "id": "python-10",
+          "title": "Идиомы Python",
+          "depth": "practice",
+          "requires": [
+            "python-9"
+          ],
+          "skills": [
+            {
+              "key": "py-comprehensions",
+              "title": "Списочные выражения",
+              "lesson": {
+                "course": "python",
+                "slug": "comprehensions",
+                "title": "Списочные выражения"
+              }
+            },
+            {
+              "key": "py-generators",
+              "title": "Генераторы",
+              "lesson": {
+                "course": "python",
+                "slug": "generators",
+                "title": "Итераторы и генераторы"
+              }
+            },
+            {
+              "key": "py-types",
+              "title": "Аннотации типов",
+              "lesson": {
+                "course": "python",
+                "slug": "type-hints",
+                "title": "Аннотации типов"
+              }
+            }
+          ]
+        },
+        {
+          "id": "python-11",
+          "title": "Python на практике",
+          "depth": "practice",
+          "requires": [
+            "python-10"
+          ],
+          "skills": [
+            {
+              "key": "py-http",
+              "title": "HTTP из Python",
+              "lesson": {
+                "course": "python",
+                "slug": "http-requests",
+                "title": "Запросы к API"
+              }
+            },
+            {
+              "key": "py-automation",
+              "title": "Автоматизация",
+              "lesson": {
+                "course": "python",
+                "slug": "automation",
+                "title": "Автоматизация"
+              }
+            },
+            {
+              "key": "py-testing",
+              "title": "Тесты и проект",
+              "lesson": {
+                "course": "python",
+                "slug": "testing-project",
+                "title": "Тесты и структура проекта"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

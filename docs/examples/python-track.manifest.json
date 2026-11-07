@@ -1,0 +1,4491 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "python",
+    "title": "Python: первый язык программирования",
+    "description": "Python с нуля до своих скриптов и программ. Установка и первая программа, числа, строки и логические значения, условия и циклы, списки, словари и множества, функции, строки и файлы, ошибки и отладка, модули, pip и виртуальные окружения, классы и dataclass, списочные выражения, генераторы и аннотации типов, работа с API, данными и тестами. Каждое понятие объясняется карточкой с примером, каждый урок закрепляется вопросами."
+  },
+  "skills": [
+    {
+      "key": "py-why",
+      "title": "Что такое Python",
+      "description": "Объяснять, что такое Python и где его применяют."
+    },
+    {
+      "key": "py-run",
+      "title": "Запуск Python",
+      "description": "Устанавливать Python и запускать код в REPL и из файла."
+    },
+    {
+      "key": "py-io",
+      "title": "Ввод и вывод",
+      "description": "Выводить данные, читать ввод пользователя и писать читаемый код."
+    },
+    {
+      "key": "py-numbers",
+      "title": "Числа",
+      "description": "Работать с переменными и числами в Python."
+    },
+    {
+      "key": "py-strings",
+      "title": "Строки",
+      "description": "Создавать и форматировать строки."
+    },
+    {
+      "key": "py-bool",
+      "title": "Логика и типы",
+      "description": "Использовать логические значения, None и преобразование типов."
+    },
+    {
+      "key": "py-if",
+      "title": "Условия",
+      "description": "Писать ветвления с if, elif и else."
+    },
+    {
+      "key": "py-loops",
+      "title": "Циклы",
+      "description": "Повторять действия циклами for и while."
+    },
+    {
+      "key": "py-match",
+      "title": "match",
+      "description": "Выбирать действие через match и упрощать вложенные условия."
+    },
+    {
+      "key": "py-lists",
+      "title": "Списки",
+      "description": "Хранить и обрабатывать упорядоченные данные в списках."
+    },
+    {
+      "key": "py-dicts",
+      "title": "Словари",
+      "description": "Хранить данные по ключам в словарях."
+    },
+    {
+      "key": "py-sets",
+      "title": "Кортежи и множества",
+      "description": "Использовать кортежи и множества по назначению."
+    },
+    {
+      "key": "py-functions",
+      "title": "Функции",
+      "description": "Объявлять функции с параметрами и возвращаемым значением."
+    },
+    {
+      "key": "py-args",
+      "title": "Аргументы функций",
+      "description": "Использовать именованные аргументы, значения по умолчанию, *args и **kwargs."
+    },
+    {
+      "key": "py-lambda",
+      "title": "Функции как значения",
+      "description": "Понимать области видимости и передавать функции как значения."
+    },
+    {
+      "key": "py-text",
+      "title": "Методы строк",
+      "description": "Чистить и разбирать текст методами строк."
+    },
+    {
+      "key": "py-files",
+      "title": "Работа с файлами",
+      "description": "Читать и записывать текстовые файлы."
+    },
+    {
+      "key": "py-json",
+      "title": "CSV и JSON",
+      "description": "Читать и записывать данные в форматах CSV и JSON."
+    },
+    {
+      "key": "py-traceback",
+      "title": "Чтение ошибок",
+      "description": "Понимать traceback и типичные исключения."
+    },
+    {
+      "key": "py-exceptions",
+      "title": "Исключения",
+      "description": "Перехватывать и выбрасывать исключения."
+    },
+    {
+      "key": "py-debug",
+      "title": "Отладка",
+      "description": "Находить ошибки отладчиком, assert и логированием."
+    },
+    {
+      "key": "py-import",
+      "title": "Модули",
+      "description": "Разбивать код на модули и подключать стандартную библиотеку."
+    },
+    {
+      "key": "py-venv",
+      "title": "Окружения и пакеты",
+      "description": "Создавать виртуальное окружение и ставить пакеты."
+    },
+    {
+      "key": "py-stdlib",
+      "title": "Стандартная библиотека",
+      "description": "Решать типовые задачи модулями стандартной библиотеки."
+    },
+    {
+      "key": "py-classes",
+      "title": "Классы",
+      "description": "Описывать свои типы данных классами."
+    },
+    {
+      "key": "py-dataclass",
+      "title": "dataclass",
+      "description": "Описывать данные через dataclass и особые методы."
+    },
+    {
+      "key": "py-inherit",
+      "title": "Наследование",
+      "description": "Использовать наследование и композицию для повторного использования кода."
+    },
+    {
+      "key": "py-comprehensions",
+      "title": "Списочные выражения",
+      "description": "Писать коллекции через comprehensions и встроенные функции."
+    },
+    {
+      "key": "py-generators",
+      "title": "Генераторы",
+      "description": "Обрабатывать большие данные лениво генераторами."
+    },
+    {
+      "key": "py-types",
+      "title": "Аннотации типов",
+      "description": "Добавлять аннотации типов и проверять их."
+    },
+    {
+      "key": "py-http",
+      "title": "HTTP из Python",
+      "description": "Получать и отправлять данные по HTTP из Python."
+    },
+    {
+      "key": "py-automation",
+      "title": "Автоматизация",
+      "description": "Писать скрипты, которые делают рутину за тебя."
+    },
+    {
+      "key": "py-testing",
+      "title": "Тесты и проект",
+      "description": "Писать тесты pytest и оформлять проект."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "wp-blocks",
+      "type": "quiz.single_choice",
+      "title": "Блоки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-why"
+      ],
+      "presentation": {
+        "question": "Чем в Python задаются блоки кода?",
+        "options": [
+          {
+            "id": "indent",
+            "text": "Отступами"
+          },
+          {
+            "id": "braces",
+            "text": "Фигурными скобками"
+          },
+          {
+            "id": "begin",
+            "text": "Словами begin и end"
+          },
+          {
+            "id": "semicolon",
+            "text": "Точками с запятой"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "indent",
+        "explanation": "Отступы — часть синтаксиса."
+      }
+    },
+    {
+      "slug": "wp-run",
+      "type": "quiz.single_choice",
+      "title": "Запуск",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-why"
+      ],
+      "presentation": {
+        "question": "Нужно ли собирать программу на Python перед запуском?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, интерпретатор выполняет файл .py сразу"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда компилировать в .exe"
+          },
+          {
+            "id": "browser",
+            "text": "Нужно открыть в браузере"
+          },
+          {
+            "id": "server",
+            "text": "Нужен сервер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Поэтому цикл «написал — проверил» короткий."
+      }
+    },
+    {
+      "slug": "wp-where",
+      "type": "quiz.multiple_choice",
+      "title": "Где используют",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "py-why"
+      ],
+      "presentation": {
+        "question": "Где широко применяют Python?",
+        "options": [
+          {
+            "id": "data",
+            "text": "Анализ данных и машинное обучение"
+          },
+          {
+            "id": "auto",
+            "text": "Автоматизация и скрипты"
+          },
+          {
+            "id": "web",
+            "text": "Серверы и API"
+          },
+          {
+            "id": "css",
+            "text": "Стилизация веб-страниц вместо CSS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "data",
+          "auto",
+          "web"
+        ],
+        "explanation": "Стили страниц — это CSS."
+      }
+    },
+    {
+      "slug": "ir-cmd",
+      "type": "quiz.single_choice",
+      "title": "Команда",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-run"
+      ],
+      "presentation": {
+        "question": "Какой командой обычно запускают Python в macOS и Linux?",
+        "options": [
+          {
+            "id": "python3",
+            "text": "`python3`"
+          },
+          {
+            "id": "py3",
+            "text": "`py3`"
+          },
+          {
+            "id": "run",
+            "text": "`run python`"
+          },
+          {
+            "id": "node",
+            "text": "`node`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "python3",
+        "explanation": "В Windows — python или py."
+      }
+    },
+    {
+      "slug": "ir-repl",
+      "type": "quiz.single_choice",
+      "title": "REPL",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-run"
+      ],
+      "presentation": {
+        "question": "Что такое REPL?",
+        "options": [
+          {
+            "id": "interactive",
+            "text": "Интерактивный режим, где выражение сразу выполняется"
+          },
+          {
+            "id": "editor",
+            "text": "Редактор кода"
+          },
+          {
+            "id": "compiler",
+            "text": "Компилятор"
+          },
+          {
+            "id": "package",
+            "text": "Менеджер пакетов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "interactive",
+        "explanation": "Read–Eval–Print Loop."
+      }
+    },
+    {
+      "slug": "ir-ext",
+      "type": "quiz.short_text",
+      "title": "Расширение",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "py-run"
+      ],
+      "presentation": {
+        "question": "Какое расширение у файлов с кодом на Python? С точкой."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          ".py",
+          "py"
+        ],
+        "caseSensitive": false,
+        "explanation": "Например, hello.py."
+      }
+    },
+    {
+      "slug": "pi-input",
+      "type": "quiz.single_choice",
+      "title": "Тип ввода",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-io"
+      ],
+      "presentation": {
+        "question": "Что вернёт input(), если пользователь ввёл 42?",
+        "options": [
+          {
+            "id": "str",
+            "text": "Строку \"42\""
+          },
+          {
+            "id": "int",
+            "text": "Число 42"
+          },
+          {
+            "id": "float",
+            "text": "Число 42.0"
+          },
+          {
+            "id": "none",
+            "text": "None"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "str",
+        "explanation": "Для числа нужен int(...)."
+      }
+    },
+    {
+      "slug": "pi-concat",
+      "type": "quiz.single_choice",
+      "title": "Сложение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-io"
+      ],
+      "presentation": {
+        "question": "Что выведет `print(input() + input())`, если ввести 5 и 5?",
+        "options": [
+          {
+            "id": "55",
+            "text": "55"
+          },
+          {
+            "id": "10",
+            "text": "10"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          },
+          {
+            "id": "5",
+            "text": "5"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "55",
+        "explanation": "Строки склеиваются."
+      }
+    },
+    {
+      "slug": "pi-pep8",
+      "type": "quiz.single_choice",
+      "title": "Стиль",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-io"
+      ],
+      "presentation": {
+        "question": "Как по PEP 8 принято называть переменные?",
+        "options": [
+          {
+            "id": "snake",
+            "text": "snake_case, например total_price"
+          },
+          {
+            "id": "camel",
+            "text": "camelCase"
+          },
+          {
+            "id": "upper",
+            "text": "ВСЕ_ЗАГЛАВНЫЕ"
+          },
+          {
+            "id": "any",
+            "text": "Как угодно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "snake",
+        "explanation": "ЗАГЛАВНЫЕ — для констант."
+      }
+    },
+    {
+      "slug": "vn-div",
+      "type": "quiz.single_choice",
+      "title": "Деление",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-numbers"
+      ],
+      "presentation": {
+        "question": "Что вернёт 7 / 2?",
+        "options": [
+          {
+            "id": "35",
+            "text": "3.5"
+          },
+          {
+            "id": "3",
+            "text": "3"
+          },
+          {
+            "id": "4",
+            "text": "4"
+          },
+          {
+            "id": "1",
+            "text": "1"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "35",
+        "explanation": "Обычное деление всегда даёт float."
+      }
+    },
+    {
+      "slug": "vn-floor",
+      "type": "quiz.single_choice",
+      "title": "Целое деление",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-numbers"
+      ],
+      "presentation": {
+        "question": "Что вернёт 7 // 2?",
+        "options": [
+          {
+            "id": "3",
+            "text": "3"
+          },
+          {
+            "id": "35",
+            "text": "3.5"
+          },
+          {
+            "id": "4",
+            "text": "4"
+          },
+          {
+            "id": "1",
+            "text": "1"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "3",
+        "explanation": "// отбрасывает дробную часть."
+      }
+    },
+    {
+      "slug": "vn-mod",
+      "type": "quiz.short_text",
+      "title": "Остаток",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "py-numbers"
+      ],
+      "presentation": {
+        "question": "Какой оператор даёт остаток от деления?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "%"
+        ],
+        "caseSensitive": false,
+        "explanation": "10 % 3 — это 1."
+      }
+    },
+    {
+      "slug": "st-fstr",
+      "type": "quiz.single_choice",
+      "title": "f-строка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-strings"
+      ],
+      "presentation": {
+        "question": "Что выведет `print(f\"{2 + 3} курса\")`?",
+        "options": [
+          {
+            "id": "5",
+            "text": "5 курса"
+          },
+          {
+            "id": "expr",
+            "text": "{2 + 3} курса"
+          },
+          {
+            "id": "23",
+            "text": "23 курса"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "5",
+        "explanation": "В фигурных скобках вычисляется выражение."
+      }
+    },
+    {
+      "slug": "st-slice",
+      "type": "quiz.single_choice",
+      "title": "Срез",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-strings"
+      ],
+      "presentation": {
+        "question": "Что даст \"Python\"[1:4]?",
+        "options": [
+          {
+            "id": "yth",
+            "text": "yth"
+          },
+          {
+            "id": "pyth",
+            "text": "Pyth"
+          },
+          {
+            "id": "ytho",
+            "text": "ytho"
+          },
+          {
+            "id": "p",
+            "text": "P"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "yth",
+        "explanation": "С индекса 1 по 3 включительно."
+      }
+    },
+    {
+      "slug": "st-neg",
+      "type": "quiz.single_choice",
+      "title": "Отрицательный индекс",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-strings"
+      ],
+      "presentation": {
+        "question": "Что даст \"Python\"[-1]?",
+        "options": [
+          {
+            "id": "n",
+            "text": "n"
+          },
+          {
+            "id": "p",
+            "text": "P"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          },
+          {
+            "id": "o",
+            "text": "o"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "n",
+        "explanation": "-1 — последний символ."
+      }
+    },
+    {
+      "slug": "bn-empty",
+      "type": "quiz.single_choice",
+      "title": "Пустой список",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-bool"
+      ],
+      "presentation": {
+        "question": "Как в Python проверить, что список items не пуст?",
+        "options": [
+          {
+            "id": "if",
+            "text": "`if items:`"
+          },
+          {
+            "id": "len",
+            "text": "`if items.length > 0:`"
+          },
+          {
+            "id": "notnull",
+            "text": "`if items != null:`"
+          },
+          {
+            "id": "size",
+            "text": "`if items.size():`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "if",
+        "explanation": "Пустой список считается ложью."
+      }
+    },
+    {
+      "slug": "bn-none",
+      "type": "quiz.single_choice",
+      "title": "None",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-bool"
+      ],
+      "presentation": {
+        "question": "Как правильно проверить, что значение — None?",
+        "options": [
+          {
+            "id": "is",
+            "text": "`x is None`"
+          },
+          {
+            "id": "eq",
+            "text": "`x == null`"
+          },
+          {
+            "id": "empty",
+            "text": "`x == \"\"`"
+          },
+          {
+            "id": "zero",
+            "text": "`x == 0`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "is",
+        "explanation": "None — единственный объект, сравнивают через is."
+      }
+    },
+    {
+      "slug": "bn-int",
+      "type": "quiz.single_choice",
+      "title": "Ошибка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-bool"
+      ],
+      "presentation": {
+        "question": "Что произойдёт при int(\"abc\")?",
+        "options": [
+          {
+            "id": "error",
+            "text": "Ошибка ValueError"
+          },
+          {
+            "id": "zero",
+            "text": "Вернётся 0"
+          },
+          {
+            "id": "none",
+            "text": "Вернётся None"
+          },
+          {
+            "id": "str",
+            "text": "Вернётся \"abc\""
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "error",
+        "explanation": "Строку без цифр не превратить в число."
+      }
+    },
+    {
+      "slug": "ie-colon",
+      "type": "quiz.single_choice",
+      "title": "Синтаксис",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-if"
+      ],
+      "presentation": {
+        "question": "Что ставят в конце строки с if?",
+        "options": [
+          {
+            "id": "colon",
+            "text": "Двоеточие"
+          },
+          {
+            "id": "brace",
+            "text": "Фигурную скобку"
+          },
+          {
+            "id": "semi",
+            "text": "Точку с запятой"
+          },
+          {
+            "id": "then",
+            "text": "Слово then"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "colon",
+        "explanation": "А тело блока — с отступом."
+      }
+    },
+    {
+      "slug": "ie-elif",
+      "type": "quiz.single_choice",
+      "title": "elif",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-if"
+      ],
+      "presentation": {
+        "question": "Когда проверяется условие в elif?",
+        "options": [
+          {
+            "id": "prev",
+            "text": "Только если все условия выше оказались ложными"
+          },
+          {
+            "id": "always",
+            "text": "Всегда"
+          },
+          {
+            "id": "after",
+            "text": "После else"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "prev",
+        "explanation": "Сработает первая подходящая ветка."
+      }
+    },
+    {
+      "slug": "ie-range",
+      "type": "quiz.single_choice",
+      "title": "Диапазон",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-if"
+      ],
+      "presentation": {
+        "question": "Как в Python записать «x от 1 до 9 включительно»?",
+        "options": [
+          {
+            "id": "chain",
+            "text": "`if 1 <= x <= 9:`"
+          },
+          {
+            "id": "and",
+            "text": "`if 1 <= x && x <= 9:`"
+          },
+          {
+            "id": "between",
+            "text": "`if x between 1 and 9:`"
+          },
+          {
+            "id": "in",
+            "text": "`if x in 1..9:`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "chain",
+        "explanation": "Python поддерживает цепочки сравнений."
+      }
+    },
+    {
+      "slug": "lp-range",
+      "type": "quiz.single_choice",
+      "title": "range",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-loops"
+      ],
+      "presentation": {
+        "question": "Какие числа даёт range(1, 5)?",
+        "options": [
+          {
+            "id": "1to4",
+            "text": "1, 2, 3, 4"
+          },
+          {
+            "id": "1to5",
+            "text": "1, 2, 3, 4, 5"
+          },
+          {
+            "id": "0to5",
+            "text": "0, 1, 2, 3, 4, 5"
+          },
+          {
+            "id": "5",
+            "text": "Только 5"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "1to4",
+        "explanation": "Верхняя граница не включается."
+      }
+    },
+    {
+      "slug": "lp-enum",
+      "type": "quiz.single_choice",
+      "title": "Номер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-loops"
+      ],
+      "presentation": {
+        "question": "Как пройти по списку и получить номер каждого элемента?",
+        "options": [
+          {
+            "id": "enumerate",
+            "text": "`for i, x in enumerate(items):`"
+          },
+          {
+            "id": "index",
+            "text": "`for x in items: i = x.index`"
+          },
+          {
+            "id": "range",
+            "text": "`for i in items:`"
+          },
+          {
+            "id": "count",
+            "text": "`for x in count(items):`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "enumerate",
+        "explanation": "enumerate возвращает пары (номер, элемент)."
+      }
+    },
+    {
+      "slug": "lp-break",
+      "type": "quiz.single_choice",
+      "title": "Выйти",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-loops"
+      ],
+      "presentation": {
+        "question": "Какое слово сразу прекращает цикл?",
+        "options": [
+          {
+            "id": "break",
+            "text": "break"
+          },
+          {
+            "id": "continue",
+            "text": "continue"
+          },
+          {
+            "id": "stop",
+            "text": "stop"
+          },
+          {
+            "id": "exit",
+            "text": "return всегда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "break",
+        "explanation": "continue переходит к следующему шагу."
+      }
+    },
+    {
+      "slug": "mt-default",
+      "type": "quiz.single_choice",
+      "title": "Всё остальное",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-match"
+      ],
+      "presentation": {
+        "question": "Как в match описать ветку «всё остальное»?",
+        "options": [
+          {
+            "id": "underscore",
+            "text": "`case _:`"
+          },
+          {
+            "id": "else",
+            "text": "`else:`"
+          },
+          {
+            "id": "default",
+            "text": "`default:`"
+          },
+          {
+            "id": "star",
+            "text": "`case *:`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "underscore",
+        "explanation": "_ совпадает с чем угодно."
+      }
+    },
+    {
+      "slug": "mt-or",
+      "type": "quiz.single_choice",
+      "title": "Несколько значений",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-match"
+      ],
+      "presentation": {
+        "question": "Как в одной ветке case обработать \"stop\" и \"exit\"?",
+        "options": [
+          {
+            "id": "pipe",
+            "text": "`case \"stop\" | \"exit\":`"
+          },
+          {
+            "id": "or",
+            "text": "`case \"stop\" or \"exit\":`"
+          },
+          {
+            "id": "comma",
+            "text": "`case \"stop\", \"exit\":` всегда"
+          },
+          {
+            "id": "two",
+            "text": "Только двумя ветками"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pipe",
+        "explanation": "Вертикальная черта — «или» в образцах."
+      }
+    },
+    {
+      "slug": "mt-early",
+      "type": "quiz.single_choice",
+      "title": "Вложенность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-match"
+      ],
+      "presentation": {
+        "question": "Как уменьшить глубокую вложенность if?",
+        "options": [
+          {
+            "id": "early",
+            "text": "Проверять плохие случаи первыми и выходить раньше"
+          },
+          {
+            "id": "more",
+            "text": "Добавить ещё уровней"
+          },
+          {
+            "id": "tabs",
+            "text": "Использовать табы"
+          },
+          {
+            "id": "while",
+            "text": "Заменить на while"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "early",
+        "explanation": "Основная логика — на одном уровне."
+      }
+    },
+    {
+      "slug": "ls-copy",
+      "type": "quiz.single_choice",
+      "title": "Копия",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-lists"
+      ],
+      "presentation": {
+        "question": "Что будет с a после `a = [1, 2]; b = a; b.append(3)`?",
+        "options": [
+          {
+            "id": "changed",
+            "text": "a тоже станет [1, 2, 3]"
+          },
+          {
+            "id": "same",
+            "text": "a останется [1, 2]"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка"
+          },
+          {
+            "id": "empty",
+            "text": "a станет пустым"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "changed",
+        "explanation": "b и a указывают на один список."
+      }
+    },
+    {
+      "slug": "ls-sorted",
+      "type": "quiz.single_choice",
+      "title": "sorted",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-lists"
+      ],
+      "presentation": {
+        "question": "Чем sorted(items) отличается от items.sort()?",
+        "options": [
+          {
+            "id": "new",
+            "text": "sorted возвращает новый список, sort меняет исходный"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          },
+          {
+            "id": "reverse",
+            "text": "sorted сортирует наоборот"
+          },
+          {
+            "id": "str",
+            "text": "sorted работает только со строками"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "new",
+        "explanation": "sort возвращает None."
+      }
+    },
+    {
+      "slug": "ls-pop",
+      "type": "quiz.single_choice",
+      "title": "pop",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-lists"
+      ],
+      "presentation": {
+        "question": "Что делает items.pop() без аргументов?",
+        "options": [
+          {
+            "id": "last",
+            "text": "Удаляет и возвращает последний элемент"
+          },
+          {
+            "id": "first",
+            "text": "Удаляет первый"
+          },
+          {
+            "id": "all",
+            "text": "Удаляет все"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "last",
+        "explanation": "pop(0) — первый."
+      }
+    },
+    {
+      "slug": "dc-get",
+      "type": "quiz.single_choice",
+      "title": "Нет ключа",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-dicts"
+      ],
+      "presentation": {
+        "question": "Что вернёт user.get(\"age\", 0), если ключа age нет?",
+        "options": [
+          {
+            "id": "zero",
+            "text": "0"
+          },
+          {
+            "id": "error",
+            "text": "KeyError"
+          },
+          {
+            "id": "none",
+            "text": "None"
+          },
+          {
+            "id": "age",
+            "text": "\"age\""
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "zero",
+        "explanation": "Второй аргумент — значение по умолчанию."
+      }
+    },
+    {
+      "slug": "dc-items",
+      "type": "quiz.single_choice",
+      "title": "Перебор пар",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-dicts"
+      ],
+      "presentation": {
+        "question": "Как перебрать ключи и значения словаря?",
+        "options": [
+          {
+            "id": "items",
+            "text": "`for k, v in d.items():`"
+          },
+          {
+            "id": "keys",
+            "text": "`for k, v in d:`"
+          },
+          {
+            "id": "enum",
+            "text": "`for k, v in enumerate(d):`"
+          },
+          {
+            "id": "values",
+            "text": "`for k, v in d.values():`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "items",
+        "explanation": "items() даёт пары."
+      }
+    },
+    {
+      "slug": "dc-key",
+      "type": "quiz.single_choice",
+      "title": "KeyError",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-dicts"
+      ],
+      "presentation": {
+        "question": "Почему user[\"email\"] вызывает ошибку?",
+        "options": [
+          {
+            "id": "missing",
+            "text": "В словаре нет такого ключа"
+          },
+          {
+            "id": "type",
+            "text": "Строки нельзя использовать как ключи"
+          },
+          {
+            "id": "case",
+            "text": "Нужно писать Email"
+          },
+          {
+            "id": "dot",
+            "text": "Нужно user.email"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "missing",
+        "explanation": "Используй get или проверку in."
+      }
+    },
+    {
+      "slug": "ts-dedup",
+      "type": "quiz.single_choice",
+      "title": "Дубликаты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-sets"
+      ],
+      "presentation": {
+        "question": "Как быстрее всего убрать повторы из списка?",
+        "options": [
+          {
+            "id": "set",
+            "text": "Превратить в множество: set(items)"
+          },
+          {
+            "id": "sort",
+            "text": "Отсортировать"
+          },
+          {
+            "id": "tuple",
+            "text": "Превратить в кортеж"
+          },
+          {
+            "id": "loop",
+            "text": "Удалять вручную во вложенных циклах"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "set",
+        "explanation": "Порядок при этом не сохраняется."
+      }
+    },
+    {
+      "slug": "ts-both",
+      "type": "quiz.single_choice",
+      "title": "И то, и другое",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-sets"
+      ],
+      "presentation": {
+        "question": "Как найти учеников, прошедших и html, и css, если это множества?",
+        "options": [
+          {
+            "id": "and",
+            "text": "`html & css`"
+          },
+          {
+            "id": "or",
+            "text": "`html | css`"
+          },
+          {
+            "id": "minus",
+            "text": "`html - css`"
+          },
+          {
+            "id": "plus",
+            "text": "`html + css`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "and",
+        "explanation": "& — пересечение."
+      }
+    },
+    {
+      "slug": "ts-swap",
+      "type": "quiz.single_choice",
+      "title": "Обмен",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-sets"
+      ],
+      "presentation": {
+        "question": "Как поменять местами значения a и b?",
+        "options": [
+          {
+            "id": "swap",
+            "text": "`a, b = b, a`"
+          },
+          {
+            "id": "temp",
+            "text": "Только через третью переменную"
+          },
+          {
+            "id": "fn",
+            "text": "`swap(a, b)`"
+          },
+          {
+            "id": "no",
+            "text": "Нельзя"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "swap",
+        "explanation": "Распаковка кортежа."
+      }
+    },
+    {
+      "slug": "dr-none",
+      "type": "quiz.single_choice",
+      "title": "Без return",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-functions"
+      ],
+      "presentation": {
+        "question": "Что возвращает функция без return?",
+        "options": [
+          {
+            "id": "none",
+            "text": "None"
+          },
+          {
+            "id": "zero",
+            "text": "0"
+          },
+          {
+            "id": "empty",
+            "text": "Пустую строку"
+          },
+          {
+            "id": "error",
+            "text": "Вызывает ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "none",
+        "explanation": "None — «ничего»."
+      }
+    },
+    {
+      "slug": "dr-print",
+      "type": "quiz.single_choice",
+      "title": "print или return",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-functions"
+      ],
+      "presentation": {
+        "question": "Функция печатает результат через print. Что получит `x = f()`?",
+        "options": [
+          {
+            "id": "none",
+            "text": "None"
+          },
+          {
+            "id": "value",
+            "text": "Напечатанное значение"
+          },
+          {
+            "id": "str",
+            "text": "Строку с выводом"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "none",
+        "explanation": "print только выводит на экран."
+      }
+    },
+    {
+      "slug": "dr-kw",
+      "type": "quiz.short_text",
+      "title": "Ключевое слово",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "py-functions"
+      ],
+      "presentation": {
+        "question": "Каким словом объявляют функцию в Python?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "def"
+        ],
+        "caseSensitive": false,
+        "explanation": "def name(params):"
+      }
+    },
+    {
+      "slug": "ar-mutable",
+      "type": "quiz.single_choice",
+      "title": "Ловушка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-args"
+      ],
+      "presentation": {
+        "question": "Почему `def add(x, items=[])` опасно?",
+        "options": [
+          {
+            "id": "shared",
+            "text": "Один и тот же список копится между вызовами"
+          },
+          {
+            "id": "syntax",
+            "text": "Это синтаксическая ошибка"
+          },
+          {
+            "id": "slow",
+            "text": "Это медленно"
+          },
+          {
+            "id": "none",
+            "text": "Ничем не опасно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "shared",
+        "explanation": "Значение по умолчанию создаётся один раз."
+      }
+    },
+    {
+      "slug": "ar-args",
+      "type": "quiz.single_choice",
+      "title": "*args",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-args"
+      ],
+      "presentation": {
+        "question": "Во что *args собирает аргументы?",
+        "options": [
+          {
+            "id": "tuple",
+            "text": "В кортеж"
+          },
+          {
+            "id": "dict",
+            "text": "В словарь"
+          },
+          {
+            "id": "list",
+            "text": "В строку"
+          },
+          {
+            "id": "set",
+            "text": "В множество"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "tuple",
+        "explanation": "**kwargs — в словарь."
+      }
+    },
+    {
+      "slug": "ar-order",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-args"
+      ],
+      "presentation": {
+        "question": "Какое объявление правильное?",
+        "options": [
+          {
+            "id": "ok",
+            "text": "`def f(a, b=1):`"
+          },
+          {
+            "id": "bad",
+            "text": "`def f(b=1, a):`"
+          },
+          {
+            "id": "both",
+            "text": "Оба"
+          },
+          {
+            "id": "none",
+            "text": "Никакое"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ok",
+        "explanation": "Параметры по умолчанию — после обязательных."
+      }
+    },
+    {
+      "slug": "sl-local",
+      "type": "quiz.single_choice",
+      "title": "Локальная",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-lambda"
+      ],
+      "presentation": {
+        "question": "Видна ли снаружи переменная, созданная внутри функции?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, она локальная"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "global",
+            "text": "Только если имя с заглавной"
+          },
+          {
+            "id": "return",
+            "text": "Только после print"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Наружу значение передают через return."
+      }
+    },
+    {
+      "slug": "sl-lambda",
+      "type": "quiz.single_choice",
+      "title": "lambda",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-lambda"
+      ],
+      "presentation": {
+        "question": "Что делает `sorted(users, key=lambda u: u[\"age\"])`?",
+        "options": [
+          {
+            "id": "byage",
+            "text": "Сортирует пользователей по возрасту"
+          },
+          {
+            "id": "filter",
+            "text": "Отбирает взрослых"
+          },
+          {
+            "id": "max",
+            "text": "Находит самого старшего"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "byage",
+        "explanation": "key говорит, по чему сравнивать."
+      }
+    },
+    {
+      "slug": "sl-value",
+      "type": "quiz.single_choice",
+      "title": "Функция как значение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-lambda"
+      ],
+      "presentation": {
+        "question": "Что передаётся в `sorted(words, key=len)`?",
+        "options": [
+          {
+            "id": "fn",
+            "text": "Сама функция len, без вызова"
+          },
+          {
+            "id": "num",
+            "text": "Длина списка"
+          },
+          {
+            "id": "str",
+            "text": "Строка len"
+          },
+          {
+            "id": "none",
+            "text": "None"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fn",
+        "explanation": "Без скобок — сама функция."
+      }
+    },
+    {
+      "slug": "sm-split",
+      "type": "quiz.single_choice",
+      "title": "split",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-text"
+      ],
+      "presentation": {
+        "question": "Что вернёт \"a b c\".split()?",
+        "options": [
+          {
+            "id": "list",
+            "text": "['a', 'b', 'c']"
+          },
+          {
+            "id": "str",
+            "text": "'abc'"
+          },
+          {
+            "id": "tuple",
+            "text": "('a', 'b', 'c')"
+          },
+          {
+            "id": "one",
+            "text": "['a b c']"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "list",
+        "explanation": "Без аргумента режет по пробелам."
+      }
+    },
+    {
+      "slug": "sm-join",
+      "type": "quiz.single_choice",
+      "title": "join",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-text"
+      ],
+      "presentation": {
+        "question": "Как склеить список words через запятую с пробелом?",
+        "options": [
+          {
+            "id": "join",
+            "text": "`\", \".join(words)`"
+          },
+          {
+            "id": "wjoin",
+            "text": "`words.join(\", \")`"
+          },
+          {
+            "id": "plus",
+            "text": "`words + \", \"`"
+          },
+          {
+            "id": "concat",
+            "text": "`concat(words)`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "join",
+        "explanation": "join — метод строки-разделителя."
+      }
+    },
+    {
+      "slug": "sm-immut",
+      "type": "quiz.single_choice",
+      "title": "Неизменяемость",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-text"
+      ],
+      "presentation": {
+        "question": "Что выведет `s = \"hi\"; s.upper(); print(s)`?",
+        "options": [
+          {
+            "id": "same",
+            "text": "hi"
+          },
+          {
+            "id": "upper",
+            "text": "HI"
+          },
+          {
+            "id": "none",
+            "text": "None"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "same",
+        "explanation": "Метод вернул новую строку, а s не изменилась."
+      }
+    },
+    {
+      "slug": "fi-with",
+      "type": "quiz.single_choice",
+      "title": "with",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-files"
+      ],
+      "presentation": {
+        "question": "Зачем открывать файл через with?",
+        "options": [
+          {
+            "id": "close",
+            "text": "Файл закроется автоматически, даже при ошибке"
+          },
+          {
+            "id": "fast",
+            "text": "Так быстрее читать"
+          },
+          {
+            "id": "lock",
+            "text": "Чтобы другие не могли открыть"
+          },
+          {
+            "id": "create",
+            "text": "Чтобы создать папку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "close",
+        "explanation": "Контекстный менеджер сам вызывает close."
+      }
+    },
+    {
+      "slug": "fi-w",
+      "type": "quiz.single_choice",
+      "title": "Режим w",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-files"
+      ],
+      "presentation": {
+        "question": "Что сделает open(\"a.txt\", \"w\") с существующим файлом?",
+        "options": [
+          {
+            "id": "erase",
+            "text": "Очистит его и запишет заново"
+          },
+          {
+            "id": "append",
+            "text": "Допишет в конец"
+          },
+          {
+            "id": "error",
+            "text": "Выдаст ошибку"
+          },
+          {
+            "id": "read",
+            "text": "Откроет для чтения"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "erase",
+        "explanation": "Для дописывания — режим a."
+      }
+    },
+    {
+      "slug": "fi-enc",
+      "type": "quiz.single_choice",
+      "title": "Кодировка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-files"
+      ],
+      "presentation": {
+        "question": "Что лучше всегда указывать при открытии текстового файла?",
+        "options": [
+          {
+            "id": "utf8",
+            "text": "encoding=\"utf-8\""
+          },
+          {
+            "id": "size",
+            "text": "Размер файла"
+          },
+          {
+            "id": "lines",
+            "text": "Число строк"
+          },
+          {
+            "id": "binary",
+            "text": "Режим b"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "utf8",
+        "explanation": "Иначе кириллица может сломаться."
+      }
+    },
+    {
+      "slug": "cj-type",
+      "type": "quiz.single_choice",
+      "title": "JSON-объект",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-json"
+      ],
+      "presentation": {
+        "question": "Во что превращается JSON-объект после json.load?",
+        "options": [
+          {
+            "id": "dict",
+            "text": "В словарь"
+          },
+          {
+            "id": "list",
+            "text": "В список"
+          },
+          {
+            "id": "str",
+            "text": "В строку"
+          },
+          {
+            "id": "tuple",
+            "text": "В кортеж"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dict",
+        "explanation": "Массив — в список."
+      }
+    },
+    {
+      "slug": "cj-ascii",
+      "type": "quiz.single_choice",
+      "title": "Кириллица",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-json"
+      ],
+      "presentation": {
+        "question": "Зачем ensure_ascii=False в json.dump?",
+        "options": [
+          {
+            "id": "cyr",
+            "text": "Чтобы русский текст записался буквами, а не кодами \\u"
+          },
+          {
+            "id": "fast",
+            "text": "Для скорости"
+          },
+          {
+            "id": "small",
+            "text": "Чтобы файл был меньше в 10 раз"
+          },
+          {
+            "id": "valid",
+            "text": "Иначе JSON невалиден"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cyr",
+        "explanation": "С кодами файл тоже валиден, но нечитаем."
+      }
+    },
+    {
+      "slug": "cj-csv",
+      "type": "quiz.single_choice",
+      "title": "Значения CSV",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-json"
+      ],
+      "presentation": {
+        "question": "Какого типа row[\"score\"] из csv.DictReader?",
+        "options": [
+          {
+            "id": "str",
+            "text": "Строка"
+          },
+          {
+            "id": "int",
+            "text": "Число"
+          },
+          {
+            "id": "float",
+            "text": "Дробное число"
+          },
+          {
+            "id": "auto",
+            "text": "Зависит от содержимого"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "str",
+        "explanation": "Преобразуй через int()."
+      }
+    },
+    {
+      "slug": "tb-read",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-traceback"
+      ],
+      "presentation": {
+        "question": "С какой строки traceback начинать чтение?",
+        "options": [
+          {
+            "id": "last",
+            "text": "С последней — там тип и текст ошибки"
+          },
+          {
+            "id": "first",
+            "text": "С первой"
+          },
+          {
+            "id": "middle",
+            "text": "С середины"
+          },
+          {
+            "id": "none",
+            "text": "Читать не нужно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "last",
+        "explanation": "Выше — путь к месту ошибки."
+      }
+    },
+    {
+      "slug": "tb-type",
+      "type": "quiz.single_choice",
+      "title": "TypeError",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-traceback"
+      ],
+      "presentation": {
+        "question": "Какая ошибка будет при \"5\" + 5?",
+        "options": [
+          {
+            "id": "type",
+            "text": "TypeError"
+          },
+          {
+            "id": "name",
+            "text": "NameError"
+          },
+          {
+            "id": "value",
+            "text": "ValueError"
+          },
+          {
+            "id": "none",
+            "text": "Никакой, будет 10"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "type",
+        "explanation": "Строку и число не сложить."
+      }
+    },
+    {
+      "slug": "tb-name",
+      "type": "quiz.single_choice",
+      "title": "NameError",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-traceback"
+      ],
+      "presentation": {
+        "question": "Что обычно означает NameError?",
+        "options": [
+          {
+            "id": "typo",
+            "text": "Опечатка в имени или переменная не создана"
+          },
+          {
+            "id": "disk",
+            "text": "Нет места на диске"
+          },
+          {
+            "id": "net",
+            "text": "Нет интернета"
+          },
+          {
+            "id": "type",
+            "text": "Неверный тип"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "typo",
+        "explanation": "Проверь написание имени."
+      }
+    },
+    {
+      "slug": "te-specific",
+      "type": "quiz.single_choice",
+      "title": "Что ловить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-exceptions"
+      ],
+      "presentation": {
+        "question": "Как правильно обработать ошибку int(input())?",
+        "options": [
+          {
+            "id": "value",
+            "text": "`except ValueError:`"
+          },
+          {
+            "id": "bare",
+            "text": "`except:` без типа"
+          },
+          {
+            "id": "all",
+            "text": "`except BaseException:`"
+          },
+          {
+            "id": "none",
+            "text": "Не обрабатывать"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "value",
+        "explanation": "Ловим именно ожидаемую ошибку."
+      }
+    },
+    {
+      "slug": "te-finally",
+      "type": "quiz.single_choice",
+      "title": "finally",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-exceptions"
+      ],
+      "presentation": {
+        "question": "Когда выполняется блок finally?",
+        "options": [
+          {
+            "id": "always",
+            "text": "Всегда, была ошибка или нет"
+          },
+          {
+            "id": "error",
+            "text": "Только при ошибке"
+          },
+          {
+            "id": "ok",
+            "text": "Только без ошибки"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "always",
+        "explanation": "else — только без ошибки."
+      }
+    },
+    {
+      "slug": "te-raise",
+      "type": "quiz.short_text",
+      "title": "Выбросить",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "py-exceptions"
+      ],
+      "presentation": {
+        "question": "Каким словом выбрасывают исключение?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "raise"
+        ],
+        "caseSensitive": false,
+        "explanation": "raise ValueError(\"...\")."
+      }
+    },
+    {
+      "slug": "db-fstr",
+      "type": "quiz.single_choice",
+      "title": "Быстрый вывод",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-debug"
+      ],
+      "presentation": {
+        "question": "Что напечатает `print(f\"{x=}\")` при x = 5?",
+        "options": [
+          {
+            "id": "xeq",
+            "text": "x=5"
+          },
+          {
+            "id": "five",
+            "text": "5"
+          },
+          {
+            "id": "x",
+            "text": "x"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "xeq",
+        "explanation": "Удобно для отладки."
+      }
+    },
+    {
+      "slug": "db-bp",
+      "type": "quiz.single_choice",
+      "title": "breakpoint",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-debug"
+      ],
+      "presentation": {
+        "question": "Что делает breakpoint()?",
+        "options": [
+          {
+            "id": "pdb",
+            "text": "Останавливает программу и открывает отладчик"
+          },
+          {
+            "id": "exit",
+            "text": "Завершает программу"
+          },
+          {
+            "id": "print",
+            "text": "Печатает все переменные"
+          },
+          {
+            "id": "error",
+            "text": "Выбрасывает ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pdb",
+        "explanation": "n — шаг, c — продолжить."
+      }
+    },
+    {
+      "slug": "db-log",
+      "type": "quiz.single_choice",
+      "title": "logging",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-debug"
+      ],
+      "presentation": {
+        "question": "Чем logging лучше print в рабочем коде?",
+        "options": [
+          {
+            "id": "levels",
+            "text": "Есть уровни, время и включение без правки кода"
+          },
+          {
+            "id": "fast",
+            "text": "Он в 100 раз быстрее"
+          },
+          {
+            "id": "color",
+            "text": "Только цветом"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "levels",
+        "explanation": "Журнал настраивается."
+      }
+    },
+    {
+      "slug": "im-from",
+      "type": "quiz.single_choice",
+      "title": "from",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-import"
+      ],
+      "presentation": {
+        "question": "Как подключить только функцию sqrt из math?",
+        "options": [
+          {
+            "id": "from",
+            "text": "`from math import sqrt`"
+          },
+          {
+            "id": "import",
+            "text": "`import sqrt from math`"
+          },
+          {
+            "id": "use",
+            "text": "`use math.sqrt`"
+          },
+          {
+            "id": "require",
+            "text": "`require(\"math\").sqrt`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "from",
+        "explanation": "Порядок как в фразе: из math взять sqrt."
+      }
+    },
+    {
+      "slug": "im-main",
+      "type": "quiz.single_choice",
+      "title": "__main__",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-import"
+      ],
+      "presentation": {
+        "question": "Когда выполняется код под if __name__ == \"__main__\"?",
+        "options": [
+          {
+            "id": "direct",
+            "text": "Только при прямом запуске файла"
+          },
+          {
+            "id": "import",
+            "text": "Только при импорте"
+          },
+          {
+            "id": "always",
+            "text": "Всегда"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "direct",
+        "explanation": "При импорте __name__ равно имени модуля."
+      }
+    },
+    {
+      "slug": "im-std",
+      "type": "quiz.multiple_choice",
+      "title": "Встроено",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "py-import"
+      ],
+      "presentation": {
+        "question": "Какие модули входят в стандартную библиотеку?",
+        "options": [
+          {
+            "id": "json",
+            "text": "json"
+          },
+          {
+            "id": "datetime",
+            "text": "datetime"
+          },
+          {
+            "id": "random",
+            "text": "random"
+          },
+          {
+            "id": "requests",
+            "text": "requests"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "json",
+          "datetime",
+          "random"
+        ],
+        "explanation": "requests ставят отдельно."
+      }
+    },
+    {
+      "slug": "vp-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем venv",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-venv"
+      ],
+      "presentation": {
+        "question": "Зачем нужно виртуальное окружение?",
+        "options": [
+          {
+            "id": "isolate",
+            "text": "Чтобы пакеты разных проектов не конфликтовали"
+          },
+          {
+            "id": "speed",
+            "text": "Чтобы Python работал быстрее"
+          },
+          {
+            "id": "vpn",
+            "text": "Это VPN для Python"
+          },
+          {
+            "id": "cloud",
+            "text": "Чтобы запускать в облаке"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "isolate",
+        "explanation": "У каждого проекта — свои версии."
+      }
+    },
+    {
+      "slug": "vp-req",
+      "type": "quiz.single_choice",
+      "title": "Повторить окружение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-venv"
+      ],
+      "presentation": {
+        "question": "Как поставить пакеты по списку из requirements.txt?",
+        "options": [
+          {
+            "id": "r",
+            "text": "`pip install -r requirements.txt`"
+          },
+          {
+            "id": "file",
+            "text": "`pip requirements.txt`"
+          },
+          {
+            "id": "load",
+            "text": "`python requirements.txt`"
+          },
+          {
+            "id": "all",
+            "text": "`pip install all`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "r",
+        "explanation": "Флаг -r читает файл."
+      }
+    },
+    {
+      "slug": "vp-cmd",
+      "type": "quiz.short_text",
+      "title": "Команда",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "py-venv"
+      ],
+      "presentation": {
+        "question": "Какой командой (модулем) создают окружение: python3 -m ...?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "venv"
+        ],
+        "caseSensitive": false,
+        "explanation": "python3 -m venv .venv."
+      }
+    },
+    {
+      "slug": "sb-counter",
+      "type": "quiz.single_choice",
+      "title": "Частоты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-stdlib"
+      ],
+      "presentation": {
+        "question": "Как проще всего найти три самых частых слова?",
+        "options": [
+          {
+            "id": "counter",
+            "text": "`Counter(words).most_common(3)`"
+          },
+          {
+            "id": "sort",
+            "text": "`sorted(words)[:3]`"
+          },
+          {
+            "id": "set",
+            "text": "`set(words)`"
+          },
+          {
+            "id": "max",
+            "text": "`max(words)`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "counter",
+        "explanation": "Counter создан для подсчёта."
+      }
+    },
+    {
+      "slug": "sb-dd",
+      "type": "quiz.single_choice",
+      "title": "Группировка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-stdlib"
+      ],
+      "presentation": {
+        "question": "Что делает defaultdict(list) при обращении к новому ключу?",
+        "options": [
+          {
+            "id": "create",
+            "text": "Создаёт пустой список для ключа"
+          },
+          {
+            "id": "error",
+            "text": "Вызывает KeyError"
+          },
+          {
+            "id": "none",
+            "text": "Возвращает None"
+          },
+          {
+            "id": "skip",
+            "text": "Пропускает ключ"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "create",
+        "explanation": "Можно сразу делать append."
+      }
+    },
+    {
+      "slug": "sb-rand",
+      "type": "quiz.single_choice",
+      "title": "Случайный элемент",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-stdlib"
+      ],
+      "presentation": {
+        "question": "Как выбрать случайный элемент списка?",
+        "options": [
+          {
+            "id": "choice",
+            "text": "`random.choice(items)`"
+          },
+          {
+            "id": "rand",
+            "text": "`random(items)`"
+          },
+          {
+            "id": "pick",
+            "text": "`items.random()`"
+          },
+          {
+            "id": "shuffle",
+            "text": "`random.shuffle(items)[0]`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "choice",
+        "explanation": "shuffle перемешивает на месте и возвращает None."
+      }
+    },
+    {
+      "slug": "cb-self",
+      "type": "quiz.single_choice",
+      "title": "self",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-classes"
+      ],
+      "presentation": {
+        "question": "Что такое self в методе?",
+        "options": [
+          {
+            "id": "obj",
+            "text": "Сам объект, у которого вызван метод"
+          },
+          {
+            "id": "class",
+            "text": "Имя класса"
+          },
+          {
+            "id": "kw",
+            "text": "Ключевое слово для импорта"
+          },
+          {
+            "id": "parent",
+            "text": "Родительский класс"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "obj",
+        "explanation": "pc.is_long() передаёт pc как self."
+      }
+    },
+    {
+      "slug": "cb-init",
+      "type": "quiz.single_choice",
+      "title": "__init__",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-classes"
+      ],
+      "presentation": {
+        "question": "Когда вызывается __init__?",
+        "options": [
+          {
+            "id": "create",
+            "text": "При создании объекта"
+          },
+          {
+            "id": "delete",
+            "text": "При удалении"
+          },
+          {
+            "id": "import",
+            "text": "При импорте модуля"
+          },
+          {
+            "id": "print",
+            "text": "При печати"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "create",
+        "explanation": "Course(\"pc\", 40) вызывает __init__."
+      }
+    },
+    {
+      "slug": "cb-call",
+      "type": "quiz.single_choice",
+      "title": "Вызов",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-classes"
+      ],
+      "presentation": {
+        "question": "Сколько аргументов передают при вызове pc.is_long(), если объявлено def is_long(self)?",
+        "options": [
+          {
+            "id": "zero",
+            "text": "Ни одного"
+          },
+          {
+            "id": "one",
+            "text": "Один — self"
+          },
+          {
+            "id": "two",
+            "text": "Два"
+          },
+          {
+            "id": "any",
+            "text": "Сколько угодно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "zero",
+        "explanation": "self подставляется автоматически."
+      }
+    },
+    {
+      "slug": "dc2-what",
+      "type": "quiz.single_choice",
+      "title": "dataclass",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-dataclass"
+      ],
+      "presentation": {
+        "question": "Что @dataclass пишет за тебя?",
+        "options": [
+          {
+            "id": "init",
+            "text": "__init__, __repr__ и сравнение по полям"
+          },
+          {
+            "id": "db",
+            "text": "Таблицу в базе данных"
+          },
+          {
+            "id": "json",
+            "text": "Сохранение в JSON"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "init",
+        "explanation": "Меньше шаблонного кода."
+      }
+    },
+    {
+      "slug": "dc2-prop",
+      "type": "quiz.single_choice",
+      "title": "property",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-dataclass"
+      ],
+      "presentation": {
+        "question": "Как читается свойство с @property?",
+        "options": [
+          {
+            "id": "attr",
+            "text": "Как атрибут, без скобок: obj.hours"
+          },
+          {
+            "id": "call",
+            "text": "Только как метод: obj.hours()"
+          },
+          {
+            "id": "static",
+            "text": "Через класс"
+          },
+          {
+            "id": "get",
+            "text": "obj.get(\"hours\")"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "attr",
+        "explanation": "Выглядит как поле, считается как метод."
+      }
+    },
+    {
+      "slug": "dc2-str",
+      "type": "quiz.single_choice",
+      "title": "Печать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-dataclass"
+      ],
+      "presentation": {
+        "question": "Какой метод определяет, что выведет print(obj)?",
+        "options": [
+          {
+            "id": "str",
+            "text": "__str__"
+          },
+          {
+            "id": "init",
+            "text": "__init__"
+          },
+          {
+            "id": "len",
+            "text": "__len__"
+          },
+          {
+            "id": "print",
+            "text": "__print__"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "str",
+        "explanation": "Если его нет — используется __repr__."
+      }
+    },
+    {
+      "slug": "ih-super",
+      "type": "quiz.single_choice",
+      "title": "super",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-inherit"
+      ],
+      "presentation": {
+        "question": "Зачем вызывать super().__init__() в дочернем классе?",
+        "options": [
+          {
+            "id": "parent",
+            "text": "Чтобы выполнить инициализацию родителя"
+          },
+          {
+            "id": "import",
+            "text": "Чтобы импортировать класс"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "delete",
+            "text": "Чтобы удалить родителя"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "parent",
+        "explanation": "Затем добавляешь своё."
+      }
+    },
+    {
+      "slug": "ih-comp",
+      "type": "quiz.single_choice",
+      "title": "Композиция",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-inherit"
+      ],
+      "presentation": {
+        "question": "Course хранит список объектов Lesson. Это…",
+        "options": [
+          {
+            "id": "comp",
+            "text": "Композиция"
+          },
+          {
+            "id": "inh",
+            "text": "Наследование"
+          },
+          {
+            "id": "poly",
+            "text": "Перегрузка"
+          },
+          {
+            "id": "dec",
+            "text": "Декоратор"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "comp",
+        "explanation": "«Имеет», а не «является»."
+      }
+    },
+    {
+      "slug": "ih-duck",
+      "type": "quiz.single_choice",
+      "title": "Утиная типизация",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-inherit"
+      ],
+      "presentation": {
+        "question": "Что требует Python, чтобы вызвать obj.check()?",
+        "options": [
+          {
+            "id": "method",
+            "text": "Чтобы у объекта был метод check"
+          },
+          {
+            "id": "parent",
+            "text": "Общего родителя Task"
+          },
+          {
+            "id": "iface",
+            "text": "Объявленного интерфейса"
+          },
+          {
+            "id": "type",
+            "text": "Указания типа"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "method",
+        "explanation": "Если крякает — значит утка."
+      }
+    },
+    {
+      "slug": "cp-filter",
+      "type": "quiz.single_choice",
+      "title": "Фильтр",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-comprehensions"
+      ],
+      "presentation": {
+        "question": "Что даст `[x for x in [1, -2, 3] if x > 0]`?",
+        "options": [
+          {
+            "id": "pos",
+            "text": "[1, 3]"
+          },
+          {
+            "id": "all",
+            "text": "[1, -2, 3]"
+          },
+          {
+            "id": "neg",
+            "text": "[-2]"
+          },
+          {
+            "id": "bool",
+            "text": "[True, False, True]"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pos",
+        "explanation": "Условие после for отбирает элементы."
+      }
+    },
+    {
+      "slug": "cp-zip",
+      "type": "quiz.single_choice",
+      "title": "zip",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-comprehensions"
+      ],
+      "presentation": {
+        "question": "Что вернёт `list(zip([\"a\", \"b\"], [1, 2]))`?",
+        "options": [
+          {
+            "id": "pairs",
+            "text": "[('a', 1), ('b', 2)]"
+          },
+          {
+            "id": "flat",
+            "text": "['a', 'b', 1, 2]"
+          },
+          {
+            "id": "dict",
+            "text": "{'a': 1, 'b': 2}"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pairs",
+        "explanation": "dict(zip(...)) даст словарь."
+      }
+    },
+    {
+      "slug": "cp-any",
+      "type": "quiz.single_choice",
+      "title": "any",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-comprehensions"
+      ],
+      "presentation": {
+        "question": "Что проверяет any(x > 10 for x in items)?",
+        "options": [
+          {
+            "id": "one",
+            "text": "Есть ли хотя бы один элемент больше 10"
+          },
+          {
+            "id": "all",
+            "text": "Все ли больше 10"
+          },
+          {
+            "id": "count",
+            "text": "Сколько больше 10"
+          },
+          {
+            "id": "max",
+            "text": "Максимум"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "all — все ли."
+      }
+    },
+    {
+      "slug": "gn-lazy",
+      "type": "quiz.single_choice",
+      "title": "Лениво",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-generators"
+      ],
+      "presentation": {
+        "question": "Чем генератор лучше списка на файле в 10 ГБ?",
+        "options": [
+          {
+            "id": "memory",
+            "text": "Не держит все данные в памяти сразу"
+          },
+          {
+            "id": "sorted",
+            "text": "Сортирует данные"
+          },
+          {
+            "id": "fast",
+            "text": "Читает диск быстрее"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "memory",
+        "explanation": "Значения создаются по одному."
+      }
+    },
+    {
+      "slug": "gn-twice",
+      "type": "quiz.single_choice",
+      "title": "Повторный проход",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-generators"
+      ],
+      "presentation": {
+        "question": "Что будет при втором for по одному и тому же генератору?",
+        "options": [
+          {
+            "id": "empty",
+            "text": "Ничего — он уже исчерпан"
+          },
+          {
+            "id": "same",
+            "text": "Те же значения"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка"
+          },
+          {
+            "id": "reverse",
+            "text": "Значения в обратном порядке"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "empty",
+        "explanation": "Генератор одноразовый."
+      }
+    },
+    {
+      "slug": "gn-kw",
+      "type": "quiz.short_text",
+      "title": "Слово",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "py-generators"
+      ],
+      "presentation": {
+        "question": "Каким словом функция-генератор отдаёт значение?"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "yield"
+        ],
+        "caseSensitive": false,
+        "explanation": "yield вместо return."
+      }
+    },
+    {
+      "slug": "th-run",
+      "type": "quiz.single_choice",
+      "title": "При запуске",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-types"
+      ],
+      "presentation": {
+        "question": "Проверяет ли Python аннотации типов при выполнении?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, их проверяют редактор и mypy"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "strict",
+            "text": "Только в строгом режиме"
+          },
+          {
+            "id": "class",
+            "text": "Только в классах"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Аннотации — подсказки."
+      }
+    },
+    {
+      "slug": "th-none",
+      "type": "quiz.single_choice",
+      "title": "Может не быть",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-types"
+      ],
+      "presentation": {
+        "question": "Как аннотировать «строка или None»?",
+        "options": [
+          {
+            "id": "union",
+            "text": "`str | None`"
+          },
+          {
+            "id": "opt",
+            "text": "`str?`"
+          },
+          {
+            "id": "null",
+            "text": "`nullable str`"
+          },
+          {
+            "id": "or",
+            "text": "`str or None`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "union",
+        "explanation": "Или Optional[str] в старом стиле."
+      }
+    },
+    {
+      "slug": "th-ret",
+      "type": "quiz.single_choice",
+      "title": "Результат",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-types"
+      ],
+      "presentation": {
+        "question": "Как указать, что функция возвращает float?",
+        "options": [
+          {
+            "id": "arrow",
+            "text": "`def f() -> float:`"
+          },
+          {
+            "id": "colon",
+            "text": "`def f(): float`"
+          },
+          {
+            "id": "as",
+            "text": "`def f() as float:`"
+          },
+          {
+            "id": "ret",
+            "text": "`return float`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "arrow",
+        "explanation": "Стрелка после скобок."
+      }
+    },
+    {
+      "slug": "hr-timeout",
+      "type": "quiz.single_choice",
+      "title": "Таймаут",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-http"
+      ],
+      "presentation": {
+        "question": "Почему важно указывать timeout в requests?",
+        "options": [
+          {
+            "id": "hang",
+            "text": "Без него запрос может висеть бесконечно"
+          },
+          {
+            "id": "speed",
+            "text": "Он ускоряет сервер"
+          },
+          {
+            "id": "auth",
+            "text": "Это пароль"
+          },
+          {
+            "id": "cache",
+            "text": "Он включает кэш"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hang",
+        "explanation": "По умолчанию таймаута нет."
+      }
+    },
+    {
+      "slug": "hr-status",
+      "type": "quiz.single_choice",
+      "title": "Ошибка сервера",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-http"
+      ],
+      "presentation": {
+        "question": "Что значит код ответа 500?",
+        "options": [
+          {
+            "id": "server",
+            "text": "Ошибка на стороне сервера"
+          },
+          {
+            "id": "ok",
+            "text": "Успех"
+          },
+          {
+            "id": "notfound",
+            "text": "Страница не найдена"
+          },
+          {
+            "id": "auth",
+            "text": "Нужна авторизация"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "server",
+        "explanation": "4xx — ошибка запроса, 5xx — сервера."
+      }
+    },
+    {
+      "slug": "hr-json",
+      "type": "quiz.single_choice",
+      "title": "JSON",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-http"
+      ],
+      "presentation": {
+        "question": "Как получить разобранный JSON из ответа r?",
+        "options": [
+          {
+            "id": "json",
+            "text": "`r.json()`"
+          },
+          {
+            "id": "text",
+            "text": "`r.text()`"
+          },
+          {
+            "id": "load",
+            "text": "`json(r)`"
+          },
+          {
+            "id": "data",
+            "text": "`r.data`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "json",
+        "explanation": "r.text — сырой текст."
+      }
+    },
+    {
+      "slug": "au-dry",
+      "type": "quiz.single_choice",
+      "title": "Пробный прогон",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-automation"
+      ],
+      "presentation": {
+        "question": "Зачем скрипту переименования режим --dry-run?",
+        "options": [
+          {
+            "id": "preview",
+            "text": "Показать, что будет сделано, ничего не меняя"
+          },
+          {
+            "id": "fast",
+            "text": "Чтобы работал быстрее"
+          },
+          {
+            "id": "backup",
+            "text": "Чтобы сделать копию диска"
+          },
+          {
+            "id": "log",
+            "text": "Чтобы удалить журнал"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "preview",
+        "explanation": "Проверка шаблона без риска."
+      }
+    },
+    {
+      "slug": "au-argparse",
+      "type": "quiz.single_choice",
+      "title": "argparse",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-automation"
+      ],
+      "presentation": {
+        "question": "Что даёт argparse?",
+        "options": [
+          {
+            "id": "args",
+            "text": "Разбор аргументов командной строки и справку --help"
+          },
+          {
+            "id": "parse",
+            "text": "Разбор HTML"
+          },
+          {
+            "id": "json",
+            "text": "Чтение JSON"
+          },
+          {
+            "id": "sched",
+            "text": "Запуск по расписанию"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "args",
+        "explanation": "Справка пишется автоматически."
+      }
+    },
+    {
+      "slug": "au-glob",
+      "type": "quiz.single_choice",
+      "title": "Найти файлы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-automation"
+      ],
+      "presentation": {
+        "question": "Как найти все .jpg в папке photos через pathlib?",
+        "options": [
+          {
+            "id": "glob",
+            "text": "`Path(\"photos\").glob(\"*.jpg\")`"
+          },
+          {
+            "id": "find",
+            "text": "`find(\"photos/*.jpg\")`"
+          },
+          {
+            "id": "ls",
+            "text": "`ls(\"photos\")`"
+          },
+          {
+            "id": "open",
+            "text": "`open(\"photos/*.jpg\")`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "glob",
+        "explanation": "glob ищет по шаблону."
+      }
+    },
+    {
+      "slug": "tp-name",
+      "type": "quiz.single_choice",
+      "title": "Имена",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-testing"
+      ],
+      "presentation": {
+        "question": "Как pytest находит тесты?",
+        "options": [
+          {
+            "id": "prefix",
+            "text": "По файлам test_*.py и функциям test_*"
+          },
+          {
+            "id": "folder",
+            "text": "Только в папке pytest"
+          },
+          {
+            "id": "decorator",
+            "text": "Только по декоратору @test"
+          },
+          {
+            "id": "manual",
+            "text": "Их нужно перечислить вручную"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "prefix",
+        "explanation": "Соглашение об именах."
+      }
+    },
+    {
+      "slug": "tp-venv",
+      "type": "quiz.single_choice",
+      "title": "В git",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "py-testing"
+      ],
+      "presentation": {
+        "question": "Нужно ли класть .venv в git?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, окружение пересоздают по списку зависимостей"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "zip",
+            "text": "Только в архиве"
+          },
+          {
+            "id": "half",
+            "text": "Только папку bin"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": ".venv добавляют в .gitignore."
+      }
+    },
+    {
+      "slug": "tp-tools",
+      "type": "quiz.multiple_choice",
+      "title": "Инструменты",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "py-testing"
+      ],
+      "presentation": {
+        "question": "Что помогает поддерживать качество Python-проекта?",
+        "options": [
+          {
+            "id": "pytest",
+            "text": "pytest"
+          },
+          {
+            "id": "ruff",
+            "text": "ruff"
+          },
+          {
+            "id": "mypy",
+            "text": "mypy"
+          },
+          {
+            "id": "paint",
+            "text": "Paint"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "pytest",
+          "ruff",
+          "mypy"
+        ],
+        "explanation": "Тесты, линтер и проверка типов."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "why-python",
+      "title": "Что такое Python",
+      "summary": "Интерпретируемый язык с простым синтаксисом, где его используют и почему с него удобно начинать.",
+      "chapter": "Старт Python",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Начинаем курс: знакомимся с языком, с которого удобно начинать программировать.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Python\",\n  \"title\": \"Язык, который читается как текст\",\n  \"what\": \"Язык программирования общего назначения с простым синтаксисом: блоки задаются отступами, а не скобками. Программа выполняется интерпретатором строка за строкой.\",\n  \"why\": \"Новичок думает о задаче, а не о запятых и фигурных скобках.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Где используют Python\",\n  \"title\": \"Почти везде\",\n  \"what\": \"Анализ данных и машинное обучение, автоматизация и скрипты, серверы (Django, FastAPI), научные расчёты, тестирование, обучение программированию.\",\n  \"why\": \"Один язык закрывает огромное число задач — от таблицы отчёта до нейросети.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Интерпретатор\",\n  \"title\": \"Выполняет код сразу\",\n  \"what\": \"Python не нужно собирать в программу: интерпретатор читает файл .py и выполняет его.\",\n  \"why\": \"Написал строку — запустил — увидел результат. Цикл обучения очень короткий.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Python 3\",\n  \"title\": \"Только третья версия\",\n  \"what\": \"Python 2 устарел и не поддерживается. Весь современный код и этот курс — Python 3.12 и новее.\",\n  \"why\": \"Встретишь в старых статьях print без скобок — это Python 2, так уже не пишут.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Python — читаемый язык общего назначения. Учим только Python 3."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wp-blocks",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wp-run",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wp-where",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "install-run",
+      "title": "Установка и первый запуск",
+      "summary": "Установить Python, проверить версию, интерактивный режим и запуск файла.",
+      "chapter": "Старт Python",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем, что такое Python, и запускаем первую программу.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"python3 --version\",\n  \"title\": \"Проверить установку\",\n  \"what\": \"В macOS и Linux команда — `python3`, в Windows — `python` или `py`. Ставят с официального установщика, через Homebrew или менеджер uv.\",\n  \"why\": \"Первая проверка: установлен ли Python и какой версии.\",\n  \"how\": \"python3 --version\\nPython 3.13.1\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"REPL\",\n  \"title\": \"Интерактивный режим\",\n  \"what\": \"`python3` без файла открывает приглашение `>>>`: вводишь выражение — сразу видишь результат. Выход — `exit()` или Ctrl+D.\",\n  \"why\": \"Быстро проверить, как работает функция, не создавая файл.\",\n  \"kind\": \"statement\"\n}\n```\n\n```demo\n{\n  \"kind\": \"typing\",\n  \"title\": \"Python как калькулятор\",\n  \"file\": \"Терминал\",\n  \"scenes\": [\n    {\n      \"input\": \"python3 -c \\\"print(2 ** 10)\\\"\",\n      \"key\": \"Enter\",\n      \"output\": \"$ python3 -c \\\"print(2 ** 10)\\\"\\n1024\",\n      \"caption\": \"Флаг -c выполняет одну строку кода\"\n    }\n  ]\n}\n```\n\n```concept\n{\n  \"name\": \"Первый скрипт\",\n  \"title\": \"hello.py\",\n  \"what\": \"Код пишут в файле с расширением .py и запускают командой `python3 hello.py`.\",\n  \"why\": \"Программа сохраняется и запускается снова в любой момент.\",\n  \"how\": \"name = input(\\\"Как тебя зовут? \\\")\\nprint(f\\\"Привет, {name}!\\\")\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Редактор\",\n  \"title\": \"VS Code и расширение Python\",\n  \"what\": \"Подойдёт VS Code с расширением Python: подсветка, подсказки, запуск по кнопке и отладчик.\",\n  \"why\": \"Ошибки подсвечиваются ещё до запуска.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Проверь `python3 --version`, пробуй в REPL, программы сохраняй в .py-файлах."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ir-cmd",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ir-repl",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ir-ext",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "print-input",
+      "title": "Вывод, ввод и комментарии",
+      "summary": "print с несколькими аргументами, input возвращает строку, комментарии и стиль PEP 8.",
+      "chapter": "Старт Python",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Запустили первую программу и учимся общаться с пользователем.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"print\",\n  \"title\": \"Вывести на экран\",\n  \"what\": \"`print(\\\"Итого:\\\", total)` печатает аргументы через пробел. `sep` меняет разделитель, `end` — окончание строки.\",\n  \"why\": \"Самый простой способ увидеть результат и найти ошибку.\",\n  \"how\": \"print(\\\"Курсов:\\\", 6, \\\"уроков:\\\", 210)\\nprint(\\\"a\\\", \\\"b\\\", sep=\\\"-\\\")\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"input\",\n  \"title\": \"Прочитать ввод\",\n  \"what\": \"`input(\\\"Сколько? \\\")` ждёт ввода и возвращает **строку**. Число нужно преобразовать: `int(input())`.\",\n  \"why\": \"Частая первая ошибка: «5» + «5» даёт «55», а не 10.\",\n  \"how\": \"age = int(input(\\\"Возраст: \\\"))\\nprint(age + 1)\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Комментарий\",\n  \"title\": \"Решётка\",\n  \"what\": \"Всё после `#` до конца строки — комментарий, Python его пропускает.\",\n  \"why\": \"Объясняй в комментариях «почему», а не «что» — что делает код, видно из него самого.\",\n  \"how\": \"# Скидка для учеников, прошедших курс ПК\\nprice = price * 0.9\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"PEP 8\",\n  \"title\": \"Стиль кода\",\n  \"what\": \"Общие правила оформления: отступ 4 пробела, имена переменных snake_case, пробелы вокруг операторов. Форматтеры black и ruff делают это автоматически.\",\n  \"why\": \"Код в любом проекте выглядит одинаково, его легко читать.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** input всегда возвращает строку. Отступ — 4 пробела, имена — snake_case."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pi-input",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pi-concat",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pi-pep8",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "variables-numbers",
+      "title": "Переменные и числа",
+      "summary": "Присваивание, int и float, арифметика, целочисленное деление и остаток, округление.",
+      "chapter": "Значения и типы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Общаемся с пользователем и разбираемся, какие бывают значения.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Переменная\",\n  \"title\": \"Имя для значения\",\n  \"what\": \"`price = 990` связывает имя с значением. Тип объявлять не нужно — его знает само значение. Переменную можно переприсвоить значением другого типа.\",\n  \"why\": \"Код становится понятным: `total = price * count` читается как фраза.\",\n  \"how\": \"price = 990\\ncount = 3\\ntotal = price * count\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"int и float\",\n  \"title\": \"Целые и дробные\",\n  \"what\": \"`int` — целые числа любой длины, `float` — дробные с точкой. `0.1 + 0.2` даёт 0.30000000000000004 — так устроены дробные числа в компьютере.\",\n  \"why\": \"Деньги считают в копейках целыми числами или через Decimal, а не float.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Операции\",\n  \"title\": \"// % **\",\n  \"what\": \"`/` — деление (всегда float), `//` — целочисленное, `%` — остаток, `**` — степень.\",\n  \"why\": \"Остаток помогает проверить чётность, `//` — разложить минуты на часы.\",\n  \"how\": \"minutes = 135\\nprint(minutes // 60, \\\"ч\\\", minutes % 60, \\\"мин\\\")  # 2 ч 15 мин\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"round\",\n  \"title\": \"Округление\",\n  \"what\": \"`round(3.14159, 2)` — 3.14. Округление .5 идёт к ближайшему чётному: round(2.5) — 2.\",\n  \"why\": \"Для отчётов форматируют вывод, а не значение: f\\\"{x:.2f}\\\".\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** `/` всегда даёт float, `//` — целое. Деньги — в копейках или Decimal."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vn-div",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vn-floor",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vn-mod",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "strings",
+      "title": "Строки и f-строки",
+      "summary": "Кавычки, конкатенация и повтор, индексы и срезы, f-строки и форматирование чисел.",
+      "chapter": "Значения и типы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Считаем числа и переходим к тексту.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Строка\",\n  \"title\": \"str\",\n  \"what\": \"Текст в одинарных или двойных кавычках. Многострочный — в тройных `\\\"\\\"\\\"…\\\"\\\"\\\"`. Строки неизменяемы: методы возвращают новую строку.\",\n  \"why\": \"Имена, сообщения, адреса — всё это строки.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"f-строка\",\n  \"title\": \"Подстановка значений\",\n  \"what\": \"`f\\\"Привет, {name}!\\\"` подставляет значения выражений в фигурных скобках. `{price:.2f}` — два знака после точки, `{n:,}` — разделение тысяч.\",\n  \"why\": \"Самый удобный и читаемый способ собрать текст.\",\n  \"how\": \"name, lessons = \\\"Аня\\\", 12\\nprint(f\\\"{name} прошла {lessons} уроков\\\")\\nprint(f\\\"{1234567:,}\\\")  # 1,234,567\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Индексы и срезы\",\n  \"title\": \"s[0], s[1:4]\",\n  \"what\": \"`s[0]` — первый символ, `s[-1]` — последний, `s[1:4]` — с 1-го по 3-й, `s[::-1]` — строка задом наперёд.\",\n  \"why\": \"Срезы работают одинаково для строк и списков.\",\n  \"how\": \"word = \\\"Python\\\"\\nprint(word[0], word[-1], word[0:3])  # P n Pyt\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"len и in\",\n  \"title\": \"Длина и поиск\",\n  \"what\": \"`len(s)` — число символов, `\\\"py\\\" in s` — содержит ли строка подстроку.\",\n  \"why\": \"Проверка ввода: не пустой ли, есть ли @ в адресе.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** Собирай текст f-строками. Срез `s[a:b]` берёт с a до b, не включая b."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-fstr",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-slice",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-neg",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "bool-none-convert",
+      "title": "Логика, None и преобразования",
+      "summary": "True и False, сравнения, and/or/not, None, приведение типов и type().",
+      "chapter": "Значения и типы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем со строками и разбираемся с логикой и превращениями типов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"bool\",\n  \"title\": \"True и False\",\n  \"what\": \"Сравнения `==`, `!=`, `<`, `>=` возвращают True или False. Логика — словами `and`, `or`, `not`.\",\n  \"why\": \"Условия читаются почти как русская речь.\",\n  \"how\": \"is_adult = age >= 18\\ncan_buy = is_adult and balance >= price\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Истинность\",\n  \"title\": \"Что считается False\",\n  \"what\": \"Пустые строка, список, словарь, число 0 и None в условии считаются ложью: `if items:` — «если список не пуст».\",\n  \"why\": \"Короткие проверки без сравнения с длиной.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"None\",\n  \"title\": \"Значения нет\",\n  \"what\": \"Особое значение «ничего». Функция без return возвращает None. Проверяют через `is None`.\",\n  \"why\": \"Отличает «не задано» от нуля и пустой строки.\",\n  \"how\": \"discount = None\\nif discount is None:\\n    discount = 0\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Преобразование\",\n  \"title\": \"int(), float(), str()\",\n  \"what\": \"`int(\\\"42\\\")` — число, `str(42)` — строка, `float(\\\"3.5\\\")` — дробь. `int(\\\"abc\\\")` вызовет ошибку ValueError. `type(x)` показывает тип.\",\n  \"why\": \"Ввод пользователя и данные из файлов почти всегда строки.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** Пустое и ноль — ложь. «Нет значения» — None и проверка `is None`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bn-empty",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bn-none",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bn-int",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "if-else",
+      "title": "Условия",
+      "summary": "if, elif, else, отступы, вложенные условия и тернарный оператор.",
+      "chapter": "Условия и циклы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем типы значений и учим программу принимать решения.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"if, elif, else\",\n  \"title\": \"Ветвление\",\n  \"what\": \"После условия ставят двоеточие, тело — с отступом 4 пробела. elif проверяется, только если предыдущие условия ложны.\",\n  \"why\": \"Программа ведёт себя по-разному в разных ситуациях.\",\n  \"how\": \"if score >= 90:\\n    grade = \\\"Эксперт\\\"\\nelif score >= 60:\\n    grade = \\\"Мастер\\\"\\nelse:\\n    grade = \\\"Ученик\\\"\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Отступ — это синтаксис\",\n  \"title\": \"IndentationError\",\n  \"what\": \"Неровный отступ — ошибка: Python по отступам понимает, где заканчивается блок.\",\n  \"why\": \"Смешение табов и пробелов даёт загадочные ошибки; редактор делает отступы пробелами.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тернарный оператор\",\n  \"title\": \"Значение по условию\",\n  \"what\": \"`label = \\\"бесплатно\\\" if price == 0 else f\\\"{price} ₽\\\"` — короткое условие в выражении.\",\n  \"why\": \"Удобно для подписей и значений по умолчанию.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Цепочка сравнений\",\n  \"title\": \"0 < x < 10\",\n  \"what\": \"Python позволяет писать `if 18 <= age < 65:` как в математике.\",\n  \"why\": \"Проверка диапазона читается с первого взгляда.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** Двоеточие после условия и 4 пробела в теле. elif — вместо вложенных if."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ie-colon",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ie-elif",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ie-range",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "loops",
+      "title": "Циклы for и while",
+      "summary": "for по последовательностям, range, while, break и continue, enumerate.",
+      "chapter": "Условия и циклы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Принимаем решения и учим программу повторять действия.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"for\",\n  \"title\": \"Пройти по элементам\",\n  \"what\": \"`for item in items:` выполняет тело для каждого элемента списка, строки или другой последовательности.\",\n  \"why\": \"Обработать каждого пользователя, каждую строку файла, каждый курс.\",\n  \"how\": \"for course in [\\\"ПК\\\", \\\"Браузер\\\", \\\"HTML\\\"]:\\n    print(\\\"Курс:\\\", course)\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"range\",\n  \"title\": \"Последовательность чисел\",\n  \"what\": \"`range(5)` — 0…4, `range(1, 6)` — 1…5, `range(0, 10, 2)` — чётные. Верхняя граница не включается.\",\n  \"why\": \"Повторить действие N раз или пройти по номерам.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"enumerate\",\n  \"title\": \"Индекс и элемент\",\n  \"what\": \"`for i, name in enumerate(names, start=1):` даёт номер и значение.\",\n  \"why\": \"Нумерованный список без ручного счётчика.\",\n  \"how\": \"for i, lesson in enumerate(lessons, start=1):\\n    print(i, lesson)\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"while\",\n  \"title\": \"Пока условие истинно\",\n  \"what\": \"Повторяет тело, пока условие верно. Нужно, чтобы условие когда-то стало ложным, иначе цикл бесконечный.\",\n  \"why\": \"Когда заранее неизвестно, сколько раз повторять: ждать правильного ввода.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"break и continue\",\n  \"title\": \"Выйти или пропустить\",\n  \"what\": \"`break` прерывает цикл, `continue` переходит к следующей итерации.\",\n  \"why\": \"Нашёл нужное — выходи; неподходящий элемент — пропусти.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** По элементам — for, по числам — range, с номером — enumerate, до условия — while."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lp-range",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lp-enum",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lp-break",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "match",
+      "title": "match и вложенные решения",
+      "summary": "Сопоставление с образцом match/case, проверки ввода и как не утонуть во вложенных if.",
+      "chapter": "Условия и циклы",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем циклы и знакомимся с удобным выбором по значению.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"match\",\n  \"title\": \"Выбор по значению\",\n  \"what\": \"`match command:` и ветки `case \\\"start\\\":`, `case \\\"stop\\\":`, `case _:` (всё остальное). Появился в Python 3.10.\",\n  \"why\": \"Меню и команды читаются лучше, чем длинная цепочка elif.\",\n  \"how\": \"match command:\\n    case \\\"start\\\":\\n        run()\\n    case \\\"stop\\\" | \\\"exit\\\":\\n        stop()\\n    case _:\\n        print(\\\"Неизвестная команда\\\")\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Образцы\",\n  \"title\": \"Не только строки\",\n  \"what\": \"case умеет разбирать структуры: `case {\\\"type\\\": \\\"click\\\", \\\"x\\\": x}:` достанет x из словаря.\",\n  \"why\": \"Обработка событий и JSON без ручных проверок ключей.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ранний выход\",\n  \"title\": \"Сначала особые случаи\",\n  \"what\": \"Вместо глубокой вложенности проверяй плохие случаи первыми и выходи (`return`, `continue`).\",\n  \"why\": \"Основная логика остаётся на одном уровне отступа.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Много вариантов одного значения — match. Глубокая вложенность — переставь проверки и выходи раньше."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mt-default",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mt-or",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mt-early",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "lists",
+      "title": "Списки",
+      "summary": "Создание, append и insert, удаление, срезы, сортировка и изменяемость.",
+      "chapter": "Коллекции",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Управляем ходом программы и храним много значений сразу.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"list\",\n  \"title\": \"Упорядоченный изменяемый набор\",\n  \"what\": \"`courses = [\\\"ПК\\\", \\\"Браузер\\\"]`. Элементы по индексу, можно добавлять, удалять и менять.\",\n  \"why\": \"Список заказов, оценок, строк файла.\",\n  \"how\": \"courses = [\\\"ПК\\\", \\\"Браузер\\\"]\\ncourses.append(\\\"HTML\\\")\\ncourses.insert(0, \\\"Старт\\\")\\nprint(courses[1], len(courses))\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Удаление\",\n  \"title\": \"remove, pop, del\",\n  \"what\": \"`remove(x)` — по значению, `pop()` — последний (и вернёт его), `pop(i)` — по индексу, `del items[i]`.\",\n  \"why\": \"Разные способы для разных случаев.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сортировка\",\n  \"title\": \"sort и sorted\",\n  \"what\": \"`items.sort()` сортирует сам список, `sorted(items)` возвращает новый. `key=` — по какому признаку, `reverse=True` — наоборот.\",\n  \"why\": \"Отсортировать курсы по числу уроков одной строкой.\",\n  \"how\": \"by_size = sorted(courses, key=len, reverse=True)\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Копия списка\",\n  \"title\": \"Ссылка, а не копия\",\n  \"what\": \"`b = a` не копирует: обе переменные указывают на один список. Копия — `a.copy()` или `a[:]`.\",\n  \"why\": \"Изменил «копию» — изменился оригинал: классическая ловушка.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** `sorted` — новый список, `.sort()` — меняет на месте. `b = a` — не копия."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ls-copy",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ls-sorted",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ls-pop",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "dicts",
+      "title": "Словари",
+      "summary": "Ключ и значение, get и значение по умолчанию, перебор items, вложенные словари.",
+      "chapter": "Коллекции",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем со списками и храним данные по названиям, а не по номерам.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"dict\",\n  \"title\": \"Ключ → значение\",\n  \"what\": \"`user = {\\\"name\\\": \\\"Аня\\\", \\\"level\\\": 3}`. Доступ `user[\\\"name\\\"]`, изменение `user[\\\"level\\\"] = 4`, добавление нового ключа так же.\",\n  \"why\": \"Описание объекта: пользователь, курс, настройки. JSON превращается именно в словари.\",\n  \"how\": \"course = {\\\"slug\\\": \\\"pc\\\", \\\"lessons\\\": 40}\\ncourse[\\\"published\\\"] = True\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"get\",\n  \"title\": \"Без ошибки\",\n  \"what\": \"`user[\\\"age\\\"]` вызовет KeyError, если ключа нет. `user.get(\\\"age\\\", 0)` вернёт значение по умолчанию.\",\n  \"why\": \"Данные из API часто приходят неполными.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Перебор\",\n  \"title\": \"keys, values, items\",\n  \"what\": \"`for key, value in user.items():` — пары ключ-значение. `in` проверяет наличие ключа.\",\n  \"why\": \"Вывести все настройки, посчитать сумму значений.\",\n  \"how\": \"for slug, count in progress.items():\\n    print(f\\\"{slug}: {count} уроков\\\")\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Подсчёт\",\n  \"title\": \"Словарь как счётчик\",\n  \"what\": \"`counts[word] = counts.get(word, 0) + 1` — частоты слов. Для этого же есть `collections.Counter`.\",\n  \"why\": \"Классическая задача анализа текста и журналов.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** Ключа может не быть — `.get(ключ, по_умолчанию)`. Перебор пар — `.items()`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dc-get",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dc-items",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dc-key",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "tuples-sets",
+      "title": "Кортежи и множества",
+      "summary": "Неизменяемые кортежи и распаковка, множества для уникальности и операций.",
+      "chapter": "Коллекции",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем списки и словари и добавляем две коллекции с особыми свойствами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"tuple\",\n  \"title\": \"Неизменяемый набор\",\n  \"what\": \"`point = (10, 20)`. Изменить элемент нельзя. Часто возвращают из функций несколько значений.\",\n  \"why\": \"Данные, которые не должны меняться: координаты, пара «ключ-значение».\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Распаковка\",\n  \"title\": \"a, b = …\",\n  \"what\": \"`x, y = point`, `name, *rest = items`. Обмен значений: `a, b = b, a`.\",\n  \"why\": \"Короткий и читаемый разбор значений без индексов.\",\n  \"how\": \"first, *others = [\\\"ПК\\\", \\\"Браузер\\\", \\\"HTML\\\"]\\nprint(first, others)  # ПК ['Браузер', 'HTML']\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"set\",\n  \"title\": \"Уникальные значения\",\n  \"what\": \"`tags = {\\\"html\\\", \\\"css\\\"}` — без повторов и порядка. `set(items)` убирает дубликаты. Проверка `in` очень быстрая.\",\n  \"why\": \"Уникальные посетители, теги, проверка «уже видели».\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Операции множеств\",\n  \"title\": \"| & -\",\n  \"what\": \"`a | b` — объединение, `a & b` — пересечение, `a - b` — разность.\",\n  \"why\": \"Кто прошёл и HTML, и CSS: пересечение двух множеств.\",\n  \"how\": \"both = html_done & css_done\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** Неизменяемое — tuple, уникальное — set. Дубликаты — `set(список)`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ts-dedup",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ts-both",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ts-swap",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "def-return",
+      "title": "Функции и return",
+      "summary": "def, параметры, return, несколько возвращаемых значений и docstring.",
+      "chapter": "Функции",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Храним данные в коллекциях и упаковываем повторяющийся код в функции.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"def\",\n  \"title\": \"Объявить функцию\",\n  \"what\": \"`def name(params):` и тело с отступом. Вызов — `name(args)`.\",\n  \"why\": \"Код пишется один раз и используется много раз; у действия появляется понятное имя.\",\n  \"how\": \"def total_price(price, count):\\n    return price * count\\n\\nprint(total_price(990, 3))\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"return\",\n  \"title\": \"Вернуть результат\",\n  \"what\": \"return завершает функцию и отдаёт значение. Без return функция возвращает None.\",\n  \"why\": \"Частая ошибка — print вместо return: значение видно на экране, но в программу оно не попадает.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Несколько значений\",\n  \"title\": \"return a, b\",\n  \"what\": \"`return low, high` возвращает кортеж, его распаковывают: `lo, hi = bounds(items)`.\",\n  \"why\": \"Не нужно заводить отдельный класс ради пары чисел.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"docstring\",\n  \"title\": \"Описание функции\",\n  \"what\": \"Строка в тройных кавычках сразу после def. Её показывает `help(func)` и подсказки редактора.\",\n  \"why\": \"Через месяц ты сам не вспомнишь, что принимает функция.\",\n  \"how\": \"def slugify(title):\\n    \\\"\\\"\\\"Превращает заголовок в адрес: «Мой курс» → «мой-курс».\\\"\\\"\\\"\\n    return title.lower().replace(\\\" \\\", \\\"-\\\")\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** Функция возвращает результат через return, а не печатает его."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dr-none",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dr-print",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dr-kw",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "arguments",
+      "title": "Аргументы",
+      "summary": "Позиционные и именованные аргументы, значения по умолчанию, *args и **kwargs, ловушка изменяемого default.",
+      "chapter": "Функции",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем функции и учимся гибко передавать им данные.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Значение по умолчанию\",\n  \"title\": \"def f(x, y=10)\",\n  \"what\": \"Параметр со значением можно не передавать. Параметры по умолчанию идут после обязательных.\",\n  \"why\": \"Простые вызовы короткие, сложные — настраиваемые.\",\n  \"how\": \"def greet(name, greeting=\\\"Привет\\\"):\\n    return f\\\"{greeting}, {name}!\\\"\\n\\ngreet(\\\"Аня\\\")\\ngreet(\\\"Аня\\\", greeting=\\\"Здравствуй\\\")\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Именованные аргументы\",\n  \"title\": \"f(count=3)\",\n  \"what\": \"Аргумент можно передать по имени — тогда порядок не важен, а вызов читается.\",\n  \"why\": \"`send(to=user, silent=True)` понятнее, чем `send(user, True)`.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"*args и **kwargs\",\n  \"title\": \"Любое число аргументов\",\n  \"what\": \"`*args` собирает лишние позиционные в кортеж, `**kwargs` — именованные в словарь.\",\n  \"why\": \"Обёртки и функции вроде print, принимающие сколько угодно значений.\",\n  \"how\": \"def total(*prices):\\n    return sum(prices)\\n\\ntotal(100, 250, 40)  # 390\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ловушка\",\n  \"title\": \"Изменяемое значение по умолчанию\",\n  \"what\": \"`def add(item, items=[])` — список создаётся один раз и копится между вызовами. Пиши `items=None` и внутри `if items is None: items = []`.\",\n  \"why\": \"Самая известная ловушка Python на собеседованиях.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Флаги передавай по имени. Список или словарь по умолчанию — через None."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ar-mutable",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ar-args",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ar-order",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "scope-lambda",
+      "title": "Область видимости и lambda",
+      "summary": "Локальные и глобальные переменные, функции как значения, lambda, map, filter и key в sorted.",
+      "chapter": "Функции",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Гибко передаём аргументы и разбираемся, где живут переменные.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Область видимости\",\n  \"title\": \"Локальное и глобальное\",\n  \"what\": \"Переменные внутри функции видны только в ней. Изменить глобальную изнутри можно через `global`, но лучше передать значение аргументом и вернуть результат.\",\n  \"why\": \"Функции без скрытых зависимостей проще проверять и переиспользовать.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Функция — значение\",\n  \"title\": \"Передать функцию\",\n  \"what\": \"Функцию можно положить в переменную, список, передать в другую функцию: `sorted(items, key=len)`.\",\n  \"why\": \"Поведение настраивается, не меняя кода функции.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"lambda\",\n  \"title\": \"Короткая функция\",\n  \"what\": \"`lambda x: x * 2` — функция в одно выражение без имени. Часто для key=.\",\n  \"why\": \"Отсортировать курсы по числу уроков на месте.\",\n  \"how\": \"courses.sort(key=lambda c: c[\\\"lessons\\\"])\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"map и filter\",\n  \"title\": \"Применить и отобрать\",\n  \"what\": \"`map(f, items)` применяет f к каждому, `filter(f, items)` оставляет подходящие. Чаще пишут списочные выражения — о них дальше.\",\n  \"why\": \"Встретишь в чужом коде, нужно уметь читать.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** Данные в функцию — аргументами, наружу — return. lambda — только для коротких key."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sl-local",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sl-lambda",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sl-value",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "string-methods",
+      "title": "Методы строк",
+      "summary": "strip, lower, replace, split и join, startswith, проверки и форматирование.",
+      "chapter": "Строки и файлы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Владеем функциями и учимся обрабатывать текст.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Очистка\",\n  \"title\": \"strip, lower, upper\",\n  \"what\": \"`s.strip()` убирает пробелы по краям, `lower()` и `upper()` меняют регистр.\",\n  \"why\": \"Ввод пользователя почти всегда нужно почистить: « Anna@Example.com » → «anna@example.com».\",\n  \"how\": \"email = input(\\\"Почта: \\\").strip().lower()\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"split и join\",\n  \"title\": \"Разрезать и склеить\",\n  \"what\": \"`\\\"a,b,c\\\".split(\\\",\\\")` даёт список, `\\\", \\\".join(items)` собирает строку.\",\n  \"why\": \"Разбор строк CSV, тегов, команд; красивый вывод списков.\",\n  \"how\": \"tags = \\\"python, курс, новичок\\\".split(\\\", \\\")\\nprint(\\\" | \\\".join(tags))\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"replace и find\",\n  \"title\": \"Заменить и найти\",\n  \"what\": \"`s.replace(\\\"old\\\", \\\"new\\\")`, `s.find(\\\"x\\\")` — индекс или -1, `s.count(\\\"x\\\")` — сколько раз.\",\n  \"why\": \"Быстрые правки текста без регулярных выражений.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проверки\",\n  \"title\": \"startswith, isdigit\",\n  \"what\": \"`startswith`, `endswith`, `isdigit`, `isalpha` возвращают True или False.\",\n  \"why\": \"Проверить расширение файла или что ввод — число.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** strip().lower() для ввода, split для разбора, join для сборки."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sm-split",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sm-join",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sm-immut",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "files-io",
+      "title": "Файлы",
+      "summary": "open и with, режимы r, w, a, кодировка, чтение построчно и pathlib.",
+      "chapter": "Строки и файлы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Обрабатываем текст и сохраняем его в файлы.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"with open\",\n  \"title\": \"Открыть и закрыть\",\n  \"what\": \"`with open(path, encoding=\\\"utf-8\\\") as f:` — файл сам закроется после блока, даже при ошибке.\",\n  \"why\": \"Незакрытые файлы теряют данные и держат ресурсы.\",\n  \"how\": \"with open(\\\"notes.txt\\\", encoding=\\\"utf-8\\\") as f:\\n    for line in f:\\n        print(line.strip())\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Режимы\",\n  \"title\": \"r, w, a\",\n  \"what\": \"`\\\"r\\\"` — чтение (по умолчанию), `\\\"w\\\"` — запись с перезаписью, `\\\"a\\\"` — дописать в конец.\",\n  \"why\": \"Режим w стирает файл — частая неприятная неожиданность.\",\n  \"how\": \"with open(\\\"log.txt\\\", \\\"a\\\", encoding=\\\"utf-8\\\") as f:\\n    f.write(\\\"урок пройден\\\\n\\\")\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Кодировка\",\n  \"title\": \"encoding=\\\"utf-8\\\"\",\n  \"what\": \"Всегда указывай кодировку: в Windows по умолчанию может быть другая, и кириллица превратится в кракозябры.\",\n  \"why\": \"Одна строка избавляет от UnicodeDecodeError.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"pathlib\",\n  \"title\": \"Пути как объекты\",\n  \"what\": \"`Path(\\\"data\\\") / \\\"report.txt\\\"` склеивает пути под любую систему, `p.exists()`, `p.read_text()`, `p.glob(\\\"*.csv\\\")`.\",\n  \"why\": \"Современный способ работы с путями вместо склейки строк.\",\n  \"how\": \"from pathlib import Path\\nfor p in Path(\\\"data\\\").glob(\\\"*.csv\\\"):\\n    print(p.name)\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** Всегда `with open(..., encoding=\"utf-8\")`. Режим w стирает файл."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fi-with",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fi-w",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fi-enc",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "csv-json",
+      "title": "CSV и JSON",
+      "summary": "Модули csv и json: чтение таблиц, DictReader, json.load и json.dump, ensure_ascii.",
+      "chapter": "Строки и файлы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем с текстовыми файлами и переходим к структурированным данным.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"csv.DictReader\",\n  \"title\": \"Таблица как словари\",\n  \"what\": \"Каждая строка CSV становится словарём с ключами из заголовка.\",\n  \"why\": \"Выгрузки из таблиц и отчётов разбираются в пару строк.\",\n  \"how\": \"import csv\\nwith open(\\\"students.csv\\\", encoding=\\\"utf-8\\\") as f:\\n    for row in csv.DictReader(f):\\n        print(row[\\\"name\\\"], row[\\\"score\\\"])\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"json.load\",\n  \"title\": \"JSON → Python\",\n  \"what\": \"`json.load(f)` читает файл, `json.loads(text)` — строку. Объекты становятся словарями, массивы — списками.\",\n  \"why\": \"Настройки, ответы API, обмен данными между программами.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"json.dump\",\n  \"title\": \"Python → JSON\",\n  \"what\": \"`json.dump(data, f, ensure_ascii=False, indent=2)` — с кириллицей и отступами.\",\n  \"why\": \"Без ensure_ascii=False русский текст превратится в \\\\u0410…\",\n  \"how\": \"import json\\nwith open(\\\"progress.json\\\", \\\"w\\\", encoding=\\\"utf-8\\\") as f:\\n    json.dump(progress, f, ensure_ascii=False, indent=2)\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Числа из CSV\",\n  \"title\": \"Всё — строки\",\n  \"what\": \"csv отдаёт значения строками: `int(row[\\\"score\\\"])`.\",\n  \"why\": \"Иначе «90» > «100» при сравнении строк.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** CSV — DictReader, JSON — load и dump с ensure_ascii=False. Из CSV всё приходит строками."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cj-type",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cj-ascii",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cj-csv",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "traceback",
+      "title": "Читать ошибки",
+      "summary": "Traceback снизу вверх, частые исключения: SyntaxError, NameError, TypeError, KeyError, IndexError.",
+      "chapter": "Ошибки и отладка",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем с файлами и учимся спокойно читать ошибки.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Traceback\",\n  \"title\": \"Отчёт об ошибке\",\n  \"what\": \"Python печатает цепочку вызовов и в последней строке — тип и текст ошибки. Читай снизу вверх: последняя строка — что случилось, строка выше — где.\",\n  \"why\": \"Ошибка — подсказка, а не приговор: в ней обычно уже есть ответ.\",\n  \"how\": \"Traceback (most recent call last):\\n  File \\\"app.py\\\", line 3, in <module>\\n    print(total / count)\\nZeroDivisionError: division by zero\",\n  \"kind\": \"idea\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"Частые ошибки\",\n  \"title\": \"Знать в лицо\",\n  \"what\": \"`NameError` — имя не определено (опечатка), `TypeError` — операция с неподходящим типом (\\\"5\\\" + 5), `KeyError` — нет ключа, `IndexError` — индекс за пределами, `AttributeError` — нет такого метода.\",\n  \"why\": \"По имени ошибки сразу понятно, куда смотреть.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"SyntaxError\",\n  \"title\": \"Код не разобран\",\n  \"what\": \"Python не смог прочитать файл: пропущено двоеточие, скобка, кавычка. Программа не запустилась вообще.\",\n  \"why\": \"Смотри на указанную строку и строку перед ней.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Последняя строка traceback — что случилось, строка выше — где."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tb-read",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tb-type",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tb-name",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "try-except",
+      "title": "try и except",
+      "summary": "Перехват конкретных исключений, else и finally, raise и свои исключения.",
+      "chapter": "Ошибки и отладка",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Читаем ошибки и учимся обрабатывать ожидаемые сбои.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"try/except\",\n  \"title\": \"Перехватить ошибку\",\n  \"what\": \"Код, который может упасть, — в try, обработка — в except с конкретным типом ошибки.\",\n  \"why\": \"Неправильный ввод не роняет всю программу.\",\n  \"how\": \"try:\\n    age = int(input(\\\"Возраст: \\\"))\\nexcept ValueError:\\n    print(\\\"Нужно число\\\")\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Конкретный тип\",\n  \"title\": \"Не глотай всё подряд\",\n  \"what\": \"Голый `except:` или `except Exception:` прячет любые ошибки, включая опечатки. Лови только то, что ожидаешь.\",\n  \"why\": \"Иначе ошибка исчезнет, а программа тихо будет работать неправильно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"else и finally\",\n  \"title\": \"Если без ошибки и всегда\",\n  \"what\": \"`else` — выполняется, если ошибки не было; `finally` — всегда, даже при ошибке.\",\n  \"why\": \"finally закрывает ресурсы; чаще это делает with.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"raise\",\n  \"title\": \"Сообщить об ошибке\",\n  \"what\": \"`raise ValueError(\\\"цена не может быть отрицательной\\\")` прерывает функцию с понятным сообщением.\",\n  \"why\": \"Ошибка в момент неправильных данных лучше, чем странный результат потом.\",\n  \"how\": \"def set_price(price):\\n    if price < 0:\\n        raise ValueError(\\\"цена не может быть отрицательной\\\")\\n    return price\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** Лови конкретный тип ошибки. Плохие данные — raise с понятным текстом."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "te-specific",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "te-finally",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "te-raise",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "debugging",
+      "title": "Отладка",
+      "summary": "print-отладка, breakpoint и pdb, отладчик в VS Code, assert и логирование.",
+      "chapter": "Ошибки и отладка",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Обрабатываем исключения и ищем ошибки в логике программы.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"print-отладка\",\n  \"title\": \"Посмотреть значение\",\n  \"what\": \"`print(f\\\"{total=}\\\")` печатает имя и значение: total=1990.\",\n  \"why\": \"Быстрый способ проверить догадку.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"breakpoint()\",\n  \"title\": \"Остановить программу\",\n  \"what\": \"Вызов `breakpoint()` открывает отладчик pdb: `n` — следующая строка, `p x` — значение, `c` — продолжить.\",\n  \"why\": \"Можно смотреть все переменные в момент ошибки.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Отладчик VS Code\",\n  \"title\": \"Точки остановки\",\n  \"what\": \"Клик слева от номера строки ставит точку остановки, F5 запускает. Видно переменные и стек вызовов.\",\n  \"why\": \"Удобнее, чем расставлять print по всему файлу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"assert\",\n  \"title\": \"Проверка предположения\",\n  \"what\": \"`assert price >= 0, \\\"цена отрицательная\\\"` падает, если условие ложно.\",\n  \"why\": \"Ловит неверные предположения рано. Не для проверки ввода пользователя.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"logging\",\n  \"title\": \"Журнал вместо print\",\n  \"what\": \"`logging.info(...)`, `warning`, `error` с уровнями и временем.\",\n  \"why\": \"В рабочем коде журнал можно включить и выключить без правки кода.\",\n  \"how\": \"import logging\\nlogging.basicConfig(level=logging.INFO)\\nlogging.info(\\\"урок %s пройден\\\", slug)\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** `print(f\"{x=}\")` для быстрой проверки, breakpoint для глубокой, logging в рабочем коде."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-fstr",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-bp",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-log",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "import",
+      "title": "Модули и import",
+      "summary": "import и from, свои модули, __name__ == \"__main__\" и стандартная библиотека.",
+      "chapter": "Модули и окружения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем отлаживать и раскладываем код по файлам.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"import\",\n  \"title\": \"Подключить модуль\",\n  \"what\": \"`import math` и `math.sqrt(16)`; `from datetime import date` — взять одно имя; `import numpy as np` — короткое имя.\",\n  \"why\": \"Не нужно писать всё самому: готовый код уже есть.\",\n  \"how\": \"from datetime import date\\nprint(date.today().isoformat())\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Свой модуль\",\n  \"title\": \"Любой .py-файл\",\n  \"what\": \"Файл utils.py рядом с программой подключается как `import utils` или `from utils import slugify`.\",\n  \"why\": \"Большая программа делится на понятные части.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"__main__\",\n  \"title\": \"Запуск или импорт\",\n  \"what\": \"Код под `if __name__ == \\\"__main__\\\":` выполняется только при прямом запуске файла, а не при импорте.\",\n  \"why\": \"Модуль можно и импортировать, и запускать как скрипт.\",\n  \"how\": \"def main():\\n    print(\\\"Запуск\\\")\\n\\nif __name__ == \\\"__main__\\\":\\n    main()\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Стандартная библиотека\",\n  \"title\": \"Батарейки в комплекте\",\n  \"what\": \"math, random, datetime, pathlib, json, csv, collections, itertools, re, statistics — уже установлены вместе с Python.\",\n  \"why\": \"Прежде чем ставить пакет, проверь, нет ли решения в стандартной библиотеке.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Один файл — один модуль. Точку входа прячь под `if __name__ == \"__main__\":`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "im-from",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "im-main",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "im-std",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "venv-pip",
+      "title": "Пакеты и окружения",
+      "summary": "pip, PyPI, виртуальное окружение venv, requirements.txt и менеджер uv.",
+      "chapter": "Модули и окружения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Подключаем модули и ставим сторонние пакеты правильно.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"python3 -m venv .venv\",\n  \"title\": \"Виртуальное окружение\",\n  \"what\": \"Отдельная папка с Python и пакетами для одного проекта. Активация: `source .venv/bin/activate`, в Windows — `.venv\\\\Scripts\\\\activate`.\",\n  \"why\": \"У разных проектов разные версии пакетов — они не мешают друг другу.\",\n  \"how\": \"python3 -m venv .venv\\nsource .venv/bin/activate\",\n  \"kind\": \"statement\",\n  \"lang\": \"text\"\n}\n```\n\n```concept\n{\n  \"name\": \"pip install\",\n  \"title\": \"Поставить пакет\",\n  \"what\": \"`pip install requests` ставит пакет из каталога PyPI в активное окружение.\",\n  \"why\": \"Готовые решения для HTTP, таблиц, графиков и тысяч других задач.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"requirements.txt\",\n  \"title\": \"Список зависимостей\",\n  \"what\": \"`pip freeze > requirements.txt` сохраняет версии, `pip install -r requirements.txt` ставит их на другом компьютере.\",\n  \"why\": \"Коллега получает ровно то же окружение.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"uv\",\n  \"title\": \"Быстрый менеджер\",\n  \"what\": \"uv создаёт окружение и ставит пакеты в десятки раз быстрее: `uv venv`, `uv pip install`, `uv run script.py`.\",\n  \"why\": \"Современная замена связке venv и pip.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не ставь глобально\",\n  \"title\": \"sudo pip — плохая идея\",\n  \"what\": \"Пакеты в системный Python ломают системные программы. Всегда работай в окружении.\",\n  \"why\": \"Окружение удаляется одной командой, система — нет.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Каждому проекту — своё .venv. Версии пакетов — в requirements.txt."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vp-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vp-req",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vp-cmd",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "stdlib-tour",
+      "title": "Полезная стандартная библиотека",
+      "summary": "random, datetime, collections.Counter и defaultdict, itertools, re для поиска по шаблону.",
+      "chapter": "Модули и окружения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем ставить пакеты и пользуемся тем, что уже есть в Python.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"random\",\n  \"title\": \"Случайность\",\n  \"what\": \"`random.choice(items)`, `random.randint(1, 6)`, `random.shuffle(items)`.\",\n  \"why\": \"Перемешать вопросы теста, выбрать случайный совет.\",\n  \"how\": \"import random\\nquestion = random.choice(questions)\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"datetime\",\n  \"title\": \"Даты и время\",\n  \"what\": \"`datetime.now()`, разница дат через timedelta, формат `strftime(\\\"%d.%m.%Y\\\")`.\",\n  \"why\": \"Сроки, дедлайны, «сколько дней до конца курса».\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Counter\",\n  \"title\": \"Подсчёт\",\n  \"what\": \"`Counter(words).most_common(3)` — три самых частых.\",\n  \"why\": \"Анализ текста и журналов в одну строку.\",\n  \"how\": \"from collections import Counter\\nprint(Counter(\\\"abracadabra\\\").most_common(2))  # [('a', 5), ('b', 2)]\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"defaultdict\",\n  \"title\": \"Словарь со значением по умолчанию\",\n  \"what\": \"`defaultdict(list)` сам создаёт пустой список для нового ключа.\",\n  \"why\": \"Группировка: ученики по курсам без проверок ключа.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"re\",\n  \"title\": \"Регулярные выражения\",\n  \"what\": \"`re.findall(r\\\"\\\\d+\\\", text)` — все числа в тексте, `re.sub` — замена по шаблону.\",\n  \"why\": \"Найти телефоны, даты, адреса в тексте.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** Посчитать — Counter, сгруппировать — defaultdict, найти по шаблону — re."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sb-counter",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sb-dd",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sb-rand",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "class-basics",
+      "title": "Классы и объекты",
+      "summary": "class, __init__ и self, атрибуты и методы, объект как данные плюс поведение.",
+      "chapter": "Классы",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пользуемся модулями и создаём собственные типы данных.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"class\",\n  \"title\": \"Свой тип\",\n  \"what\": \"Класс описывает, какие данные хранит объект и что он умеет. Объект создаётся вызовом класса: `Course(\\\"pc\\\", 40)`.\",\n  \"why\": \"Данные и действия над ними живут вместе.\",\n  \"how\": \"class Course:\\n    def __init__(self, slug, lessons):\\n        self.slug = slug\\n        self.lessons = lessons\\n\\n    def is_long(self):\\n        return self.lessons > 30\\n\\npc = Course(\\\"pc\\\", 40)\\nprint(pc.is_long())\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"__init__ и self\",\n  \"title\": \"Создание объекта\",\n  \"what\": \"`__init__` вызывается при создании, `self` — сам объект. Атрибуты задают через `self.name = ...`.\",\n  \"why\": \"self — первый параметр каждого метода; при вызове его не передают.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Когда нужен класс\",\n  \"title\": \"Не всегда\",\n  \"what\": \"Если есть данные и несколько функций, которые работают с ними, — класс. Если только функция — оставь функцию.\",\n  \"why\": \"Лишние классы усложняют код.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Класс = данные + поведение. self — сам объект, его не передают при вызове."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cb-self",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cb-init",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cb-call",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "dataclasses",
+      "title": "dataclass и особые методы",
+      "summary": "@dataclass, __repr__ и __str__, сравнение объектов, свойства @property.",
+      "chapter": "Классы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем классы и сокращаем шаблонный код.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"@dataclass\",\n  \"title\": \"Класс для данных\",\n  \"what\": \"Декоратор сам пишет __init__, __repr__ и сравнение по полям. Поля с типами перечисляют в теле.\",\n  \"why\": \"Описание данных в три строки вместо пятнадцати.\",\n  \"how\": \"from dataclasses import dataclass\\n\\n@dataclass\\nclass Lesson:\\n    slug: str\\n    minutes: int = 10\\n\\nprint(Lesson(\\\"loops\\\"))  # Lesson(slug='loops', minutes=10)\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"__str__ и __repr__\",\n  \"title\": \"Как объект печатается\",\n  \"what\": \"`__str__` — для людей (print), `__repr__` — для разработчика (отладка).\",\n  \"why\": \"Вместо <Course object at 0x…> видно содержимое.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"@property\",\n  \"title\": \"Вычисляемый атрибут\",\n  \"what\": \"Метод с @property читается как атрибут: `course.hours` без скобок.\",\n  \"why\": \"Значение всегда актуально и не хранится отдельно.\",\n  \"how\": \"class Course:\\n    def __init__(self, minutes):\\n        self.minutes = minutes\\n\\n    @property\\n    def hours(self):\\n        return round(self.minutes / 60, 1)\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Особые методы\",\n  \"title\": \"__len__, __eq__\",\n  \"what\": \"Методы с двойными подчёркиваниями подключают объект к языку: `len(obj)`, `obj == other`, `for x in obj`.\",\n  \"why\": \"Свои объекты работают как встроенные.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** Данные без сложного поведения — @dataclass. Вычисляемое значение — @property."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dc2-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dc2-prop",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dc2-str",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "inheritance",
+      "title": "Наследование и композиция",
+      "summary": "Наследование, super(), переопределение методов, композиция и утиная типизация.",
+      "chapter": "Классы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Описываем данные классами и строим иерархии типов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Наследование\",\n  \"title\": \"class B(A)\",\n  \"what\": \"Дочерний класс получает атрибуты и методы родителя и может их переопределить.\",\n  \"why\": \"Общее поведение пишется один раз.\",\n  \"how\": \"class Task:\\n    def check(self, answer):\\n        return False\\n\\nclass QuizTask(Task):\\n    def __init__(self, correct):\\n        self.correct = correct\\n\\n    def check(self, answer):\\n        return answer == self.correct\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"super()\",\n  \"title\": \"Вызвать родителя\",\n  \"what\": \"`super().__init__(...)` выполняет код родителя, а потом добавляет своё.\",\n  \"why\": \"Не нужно копировать инициализацию родителя.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Композиция\",\n  \"title\": \"Иметь, а не быть\",\n  \"what\": \"Объект хранит другие объекты как атрибуты: у Course есть список Lesson. Это часто проще и гибче наследования.\",\n  \"why\": \"Глубокие цепочки наследования трудно менять.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Утиная типизация\",\n  \"title\": \"Если крякает\",\n  \"what\": \"Python не требует общего родителя: если у объекта есть нужный метод, его можно использовать.\",\n  \"why\": \"Функция работает с любым объектом, у которого есть check().\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Наследуй для «является», храни объект для «имеет». Не строй глубоких иерархий."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ih-super",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ih-comp",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ih-duck",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "comprehensions",
+      "title": "Списочные выражения",
+      "summary": "List, dict и set comprehensions, условие внутри, zip, any и all.",
+      "chapter": "Идиомы Python",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Строим классы и пишем код в стиле Python.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"List comprehension\",\n  \"title\": \"Список в одну строку\",\n  \"what\": \"`[x * 2 for x in items]` — новый список, `[x for x in items if x > 0]` — с фильтром.\",\n  \"why\": \"Короче и обычно быстрее цикла с append.\",\n  \"how\": \"squares = [n ** 2 for n in range(1, 6)]\\npassed = [s for s in students if s[\\\"score\\\"] >= 60]\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Dict comprehension\",\n  \"title\": \"Словарь в одну строку\",\n  \"what\": \"`{c[\\\"slug\\\"]: c[\\\"lessons\\\"] for c in courses}` — словарь из списка.\",\n  \"why\": \"Построить индекс для быстрого поиска по ключу.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"zip\",\n  \"title\": \"Пройти параллельно\",\n  \"what\": \"`for name, score in zip(names, scores):` — пары из двух списков.\",\n  \"why\": \"Соединить два столбца данных без индексов.\",\n  \"how\": \"results = dict(zip(names, scores))\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"any и all\",\n  \"title\": \"Хоть один или все\",\n  \"what\": \"`any(s >= 90 for s in scores)` — есть ли отличник, `all(...)` — все ли прошли.\",\n  \"why\": \"Проверка коллекции без ручного флага.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"sum, min, max\",\n  \"title\": \"Агрегаты\",\n  \"what\": \"`sum(prices)`, `max(courses, key=len)`; принимают выражения-генераторы.\",\n  \"why\": \"Итог и экстремум одной функцией.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** Преобразовать или отфильтровать — comprehension. Читается плохо — вернись к циклу."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-filter",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-zip",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-any",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "generators",
+      "title": "Итераторы и генераторы",
+      "summary": "Итерируемые объекты, yield, выражения-генераторы, ленивые вычисления и большие файлы.",
+      "chapter": "Идиомы Python",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем comprehensions и учимся не держать всё в памяти.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"yield\",\n  \"title\": \"Функция-генератор\",\n  \"what\": \"Функция с yield отдаёт значения по одному и замирает до следующего запроса.\",\n  \"why\": \"Можно обработать файл в гигабайты, не загружая его целиком.\",\n  \"how\": \"def read_errors(path):\\n    with open(path, encoding=\\\"utf-8\\\") as f:\\n        for line in f:\\n            if \\\"ERROR\\\" in line:\\n                yield line.strip()\\n\\nfor err in read_errors(\\\"app.log\\\"):\\n    print(err)\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Выражение-генератор\",\n  \"title\": \"Круглые скобки\",\n  \"what\": \"`(x * 2 for x in items)` — как comprehension, но лениво. `sum(x for x in items)` не создаёт список.\",\n  \"why\": \"Экономия памяти на больших данных.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Итератор\",\n  \"title\": \"Что понимает for\",\n  \"what\": \"for работает с любым итерируемым: список, строка, файл, словарь, range, генератор. Генератор проходится только один раз.\",\n  \"why\": \"Второй проход по генератору ничего не даст — частая неожиданность.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"itertools\",\n  \"title\": \"Инструменты итерации\",\n  \"what\": \"`islice` — первые N, `chain` — склеить последовательности, `groupby` — группы подряд идущих.\",\n  \"why\": \"Сложные проходы без промежуточных списков.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** Большие данные — генераторы и yield. Генератор одноразовый."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gn-lazy",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gn-twice",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gn-kw",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "type-hints",
+      "title": "Аннотации типов",
+      "summary": "Подсказки типов, list[str] и dict, Optional и |, проверка mypy и подсказки редактора.",
+      "chapter": "Идиомы Python",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем идиоматичный код и делаем его надёжнее аннотациями.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Аннотации\",\n  \"title\": \"name: str\",\n  \"what\": \"`def price(count: int, unit: float = 9.9) -> float:` — типы параметров и результата. Python их не проверяет при запуске.\",\n  \"why\": \"Редактор подсказывает и подсвечивает ошибки, код документирует сам себя.\",\n  \"how\": \"def average(scores: list[int]) -> float:\\n    return sum(scores) / len(scores)\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Составные типы\",\n  \"title\": \"list[str], dict[str, int]\",\n  \"what\": \"Типы элементов коллекций пишут в квадратных скобках. «Или» — через `|`: `int | None`.\",\n  \"why\": \"Сразу видно, что лежит в словаре.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"mypy\",\n  \"title\": \"Проверка типов\",\n  \"what\": \"`mypy app.py` или проверка в редакторе находит несоответствия до запуска.\",\n  \"why\": \"Ошибка «передал строку вместо числа» ловится заранее.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n**Главное.** Аннотируй параметры и результат функций. Нет значения — `тип | None`."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "th-run",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "th-none",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "th-ret",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "http-requests",
+      "title": "Запросы к API",
+      "summary": "Пакет requests, GET и POST, JSON-ответ, коды статуса, таймауты.",
+      "chapter": "Python на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем надёжный код и подключаем программу к сети.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"requests.get\",\n  \"title\": \"Получить данные\",\n  \"what\": \"`requests.get(url, timeout=10)` отправляет запрос, `r.json()` разбирает ответ.\",\n  \"why\": \"Курсы валют, погода, данные своего сервера — всё через API.\",\n  \"how\": \"import requests\\n\\nr = requests.get(\\\"https://api.example.com/courses\\\", timeout=10)\\nr.raise_for_status()\\nfor course in r.json():\\n    print(course[\\\"title\\\"])\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"raise_for_status\",\n  \"title\": \"Проверить ответ\",\n  \"what\": \"Код 200 — успех, 4xx — ошибка запроса, 5xx — ошибка сервера. `r.raise_for_status()` выбросит исключение при ошибке.\",\n  \"why\": \"Иначе программа молча обработает страницу ошибки как данные.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"requests.post\",\n  \"title\": \"Отправить данные\",\n  \"what\": \"`requests.post(url, json=data, timeout=10)` — отправить JSON.\",\n  \"why\": \"Создать запись, отправить форму, вызвать бота.\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Таймаут\",\n  \"title\": \"Всегда указывай timeout\",\n  \"what\": \"Без timeout запрос может висеть вечно, если сервер не отвечает.\",\n  \"why\": \"Скрипт не зависнет на ночь.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Всегда timeout и raise_for_status. Ответ — r.json()."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hr-timeout",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hr-status",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hr-json",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "automation",
+      "title": "Автоматизация",
+      "summary": "Скрипты для файлов: переименование, отчёты, аргументы командной строки argparse, запуск по расписанию.",
+      "chapter": "Python на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем ходить в сеть и автоматизируем рутинные задачи.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Переименование файлов\",\n  \"title\": \"pathlib в деле\",\n  \"what\": \"Скрипт проходит по папке и переименовывает файлы по шаблону.\",\n  \"why\": \"Сотни файлов за секунду вместо часа ручной работы.\",\n  \"how\": \"from pathlib import Path\\n\\nfor i, p in enumerate(sorted(Path(\\\"photos\\\").glob(\\\"*.jpg\\\")), start=1):\\n    p.rename(p.with_name(f\\\"trip-{i:03}.jpg\\\"))\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"argparse\",\n  \"title\": \"Аргументы командной строки\",\n  \"what\": \"`parser.add_argument(\\\"folder\\\")` и `args = parser.parse_args()` — скрипт принимает параметры и сам пишет --help.\",\n  \"why\": \"Один скрипт для разных папок и режимов.\",\n  \"how\": \"import argparse\\n\\nparser = argparse.ArgumentParser(description=\\\"Отчёт по оценкам\\\")\\nparser.add_argument(\\\"csv\\\")\\nparser.add_argument(\\\"--min\\\", type=int, default=60)\\nargs = parser.parse_args()\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сначала пробный прогон\",\n  \"title\": \"--dry-run\",\n  \"what\": \"Скрипт, который меняет файлы, сначала печатает, что сделает, и только с флагом выполняет.\",\n  \"why\": \"Ошибка в шаблоне не испортит сотни файлов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"cron\",\n  \"title\": \"По расписанию\",\n  \"what\": \"Задача cron или Планировщик заданий Windows запускает скрипт каждый день.\",\n  \"why\": \"Ежедневный отчёт собирается сам.\",\n  \"kind\": \"statement\"\n}\n```\n\n**Главное.** Скрипт, меняющий файлы, — сначала с --dry-run. Параметры — через argparse."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "au-dry",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "au-argparse",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "au-glob",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "testing-project",
+      "title": "Тесты и структура проекта",
+      "summary": "pytest и assert, структура папок, pyproject.toml, ruff и что учить дальше.",
+      "chapter": "Python на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Автоматизируем рутину и оформляем код как настоящий проект.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"pytest\",\n  \"title\": \"Тест — функция с assert\",\n  \"what\": \"Файл test_*.py, функция test_*, внутри assert. Запуск — команда `pytest`.\",\n  \"why\": \"Изменил код — за секунду проверил, что ничего не сломал.\",\n  \"how\": \"# test_prices.py\\nfrom prices import total_price\\n\\ndef test_total_price():\\n    assert total_price(990, 3) == 2970\\n\\ndef test_zero_count():\\n    assert total_price(990, 0) == 0\",\n  \"kind\": \"idea\",\n  \"lang\": \"python\"\n}\n```\n\n```concept\n{\n  \"name\": \"Структура проекта\",\n  \"title\": \"Порядок в папках\",\n  \"what\": \"Код — в пакете (папка с модулями), тесты — в tests/, зависимости и настройки — в pyproject.toml, окружение — в .venv (не в git).\",\n  \"why\": \"Любой разработчик сразу понимает, где что.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"ruff\",\n  \"title\": \"Линтер и форматтер\",\n  \"what\": \"`ruff check .` находит ошибки и плохой стиль, `ruff format .` приводит код к единому виду.\",\n  \"why\": \"Стиль проверяет машина, люди обсуждают логику.\",\n  \"kind\": \"statement\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что дальше\",\n  \"title\": \"Куда расти\",\n  \"what\": \"Веб — FastAPI или Django, данные — pandas и Jupyter, автоматизация — ещё больше скриптов. Главное — свои маленькие проекты.\",\n  \"why\": \"Язык закрепляется только практикой.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Каждая функция с логикой — с тестом. Проект: пакет, tests/, pyproject.toml, ruff."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tp-name",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tp-venv",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tp-tools",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    }
+  ]
+}
