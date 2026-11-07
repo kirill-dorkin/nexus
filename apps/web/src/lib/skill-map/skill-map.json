@@ -10608,6 +10608,471 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "kubernetes",
+      "name": "Kubernetes",
+      "role": "Капитан флота",
+      "summary": "Флот контейнеров: устройство кластера и kubectl, поды и манифесты, развёртывания и обновления, сервисы, Ingress и сеть, ConfigMap и Secret, постоянные тома и StatefulSet, проверки здоровья и ресурсы, автомасштабирование, RBAC и сетевые политики, Helm, Kustomize и GitOps, наблюдение, отладка и обновления.",
+      "accent": "blue",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Кластер",
+          "branches": [
+            "kubernetes-1",
+            "kubernetes-2"
+          ]
+        },
+        {
+          "title": "Нагрузки",
+          "branches": [
+            "kubernetes-3"
+          ]
+        },
+        {
+          "title": "Сеть",
+          "branches": [
+            "kubernetes-4"
+          ]
+        },
+        {
+          "title": "Данные",
+          "branches": [
+            "kubernetes-5",
+            "kubernetes-6"
+          ]
+        },
+        {
+          "title": "Надёжность",
+          "branches": [
+            "kubernetes-7",
+            "kubernetes-8"
+          ]
+        },
+        {
+          "title": "Защита",
+          "branches": [
+            "kubernetes-9"
+          ]
+        },
+        {
+          "title": "Флот",
+          "branches": [
+            "kubernetes-10",
+            "kubernetes-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "kubernetes-1",
+          "title": "Зачем Kubernetes",
+          "depth": "practice",
+          "requires": [
+            "docker-8"
+          ],
+          "skills": [
+            {
+              "key": "k8s-why",
+              "title": "Зачем Kubernetes",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "orchestration",
+                "title": "Зачем оркестратор"
+              }
+            },
+            {
+              "key": "k8s-arch",
+              "title": "Архитектура кластера",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "architecture",
+                "title": "Устройство кластера"
+              }
+            },
+            {
+              "key": "k8s-kubectl",
+              "title": "kubectl",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "kubectl",
+                "title": "Свой кластер и kubectl"
+              }
+            }
+          ]
+        },
+        {
+          "id": "kubernetes-2",
+          "title": "Поды",
+          "depth": "practice",
+          "requires": [
+            "kubernetes-1"
+          ],
+          "skills": [
+            {
+              "key": "k8s-pod",
+              "title": "Под",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "pod",
+                "title": "Под"
+              }
+            },
+            {
+              "key": "k8s-manifest",
+              "title": "Манифесты",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "manifests",
+                "title": "Манифесты"
+              }
+            },
+            {
+              "key": "k8s-labels",
+              "title": "Метки",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "labels",
+                "title": "Метки и селекторы"
+              }
+            }
+          ]
+        },
+        {
+          "id": "kubernetes-3",
+          "title": "Развёртывания",
+          "depth": "practice",
+          "requires": [
+            "kubernetes-2"
+          ],
+          "skills": [
+            {
+              "key": "k8s-deploy",
+              "title": "Deployment",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "deployment",
+                "title": "Развёртывание"
+              }
+            },
+            {
+              "key": "k8s-rollout",
+              "title": "Обновления",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "rollouts",
+                "title": "Обновления и откаты"
+              }
+            },
+            {
+              "key": "k8s-workloads",
+              "title": "Виды нагрузок",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "workloads",
+                "title": "Другие рабочие нагрузки"
+              }
+            }
+          ]
+        },
+        {
+          "id": "kubernetes-4",
+          "title": "Сервисы и сеть",
+          "depth": "practice",
+          "requires": [
+            "kubernetes-3"
+          ],
+          "skills": [
+            {
+              "key": "k8s-service",
+              "title": "Service",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "service",
+                "title": "Service"
+              }
+            },
+            {
+              "key": "k8s-ingress",
+              "title": "Ingress",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "ingress",
+                "title": "Вход снаружи"
+              }
+            },
+            {
+              "key": "k8s-network",
+              "title": "Сеть кластера",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "network-model",
+                "title": "Сетевая модель"
+              }
+            }
+          ]
+        },
+        {
+          "id": "kubernetes-5",
+          "title": "Настройки и секреты",
+          "depth": "practice",
+          "requires": [
+            "kubernetes-4"
+          ],
+          "skills": [
+            {
+              "key": "k8s-configmap",
+              "title": "ConfigMap",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "configmap",
+                "title": "ConfigMap"
+              }
+            },
+            {
+              "key": "k8s-secret",
+              "title": "Secret",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "secrets",
+                "title": "Secret"
+              }
+            },
+            {
+              "key": "k8s-extsecrets",
+              "title": "Хранилища секретов",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "external-secrets",
+                "title": "Внешние хранилища секретов"
+              }
+            }
+          ]
+        },
+        {
+          "id": "kubernetes-6",
+          "title": "Хранение данных",
+          "depth": "practice",
+          "requires": [
+            "kubernetes-5"
+          ],
+          "skills": [
+            {
+              "key": "k8s-volumes",
+              "title": "Тома подов",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "volumes",
+                "title": "Тома"
+              }
+            },
+            {
+              "key": "k8s-pvc",
+              "title": "Постоянные тома",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "persistent-volumes",
+                "title": "Постоянные тома"
+              }
+            },
+            {
+              "key": "k8s-statefulset",
+              "title": "StatefulSet",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "statefulset",
+                "title": "StatefulSet и базы"
+              }
+            }
+          ]
+        },
+        {
+          "id": "kubernetes-7",
+          "title": "Здоровье и ресурсы",
+          "depth": "practice",
+          "requires": [
+            "kubernetes-6"
+          ],
+          "skills": [
+            {
+              "key": "k8s-probes",
+              "title": "Проверки здоровья",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "probes",
+                "title": "Проверки здоровья"
+              }
+            },
+            {
+              "key": "k8s-resources",
+              "title": "Ресурсы",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "resources",
+                "title": "Запросы и лимиты"
+              }
+            },
+            {
+              "key": "k8s-pdb",
+              "title": "Устойчивость к перебоям",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "disruptions",
+                "title": "Плановые перебои"
+              }
+            }
+          ]
+        },
+        {
+          "id": "kubernetes-8",
+          "title": "Масштабирование",
+          "depth": "practice",
+          "requires": [
+            "kubernetes-7"
+          ],
+          "skills": [
+            {
+              "key": "k8s-hpa",
+              "title": "HPA",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "hpa",
+                "title": "Автомасштабирование подов"
+              }
+            },
+            {
+              "key": "k8s-ca",
+              "title": "Масштаб кластера",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "cluster-autoscaler",
+                "title": "Масштаб кластера"
+              }
+            },
+            {
+              "key": "k8s-cost",
+              "title": "Ёмкость и стоимость",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "capacity",
+                "title": "Ёмкость и стоимость"
+              }
+            }
+          ]
+        },
+        {
+          "id": "kubernetes-9",
+          "title": "Безопасность кластера",
+          "depth": "practice",
+          "requires": [
+            "kubernetes-8"
+          ],
+          "skills": [
+            {
+              "key": "k8s-rbac",
+              "title": "RBAC",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "rbac",
+                "title": "RBAC"
+              }
+            },
+            {
+              "key": "k8s-netpol",
+              "title": "Сетевые политики",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "network-policies",
+                "title": "Сетевые политики"
+              }
+            },
+            {
+              "key": "k8s-podsec",
+              "title": "Безопасность подов",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "pod-security",
+                "title": "Безопасность подов"
+              }
+            }
+          ]
+        },
+        {
+          "id": "kubernetes-10",
+          "title": "Пакеты и GitOps",
+          "depth": "practice",
+          "requires": [
+            "kubernetes-9"
+          ],
+          "skills": [
+            {
+              "key": "k8s-helm",
+              "title": "Helm",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "helm",
+                "title": "Helm"
+              }
+            },
+            {
+              "key": "k8s-kustomize",
+              "title": "Kustomize",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "kustomize",
+                "title": "Kustomize"
+              }
+            },
+            {
+              "key": "k8s-gitops",
+              "title": "GitOps",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "gitops-tools",
+                "title": "GitOps"
+              }
+            }
+          ]
+        },
+        {
+          "id": "kubernetes-11",
+          "title": "Эксплуатация",
+          "depth": "practice",
+          "requires": [
+            "kubernetes-10"
+          ],
+          "skills": [
+            {
+              "key": "k8s-observe",
+              "title": "Наблюдаемость",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "observability",
+                "title": "Наблюдаемость"
+              }
+            },
+            {
+              "key": "k8s-debug",
+              "title": "Отладка",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "debugging",
+                "title": "Порядок отладки"
+              }
+            },
+            {
+              "key": "k8s-upgrades",
+              "title": "Обслуживание кластера",
+              "lesson": {
+                "course": "kubernetes",
+                "slug": "upgrades-backups",
+                "title": "Обновления и резервные копии"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
