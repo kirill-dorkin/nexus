@@ -3,7 +3,7 @@ import { py, cmd, idea, tip, makeLesson } from "./pykit.mjs";
 
 export default function practice(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single, multi } = c;
 
   L({
     slug: "http-requests", title: "Запросы к API", summary: "Пакет requests, GET и POST, JSON-ответ, коды статуса, таймауты.",

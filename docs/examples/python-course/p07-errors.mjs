@@ -3,7 +3,7 @@ import { py, idea, tip, makeLesson } from "./pykit.mjs";
 
 export default function errors(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "traceback", title: "Читать ошибки", summary: "Traceback снизу вверх, частые исключения: SyntaxError, NameError, TypeError, KeyError, IndexError.",

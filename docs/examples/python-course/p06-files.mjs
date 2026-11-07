@@ -3,7 +3,7 @@ import { py, tip, makeLesson } from "./pykit.mjs";
 
 export default function files(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "string-methods", title: "Методы строк", summary: "strip, lower, replace, split и join, startswith, проверки и форматирование.",
