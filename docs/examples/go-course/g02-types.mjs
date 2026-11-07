@@ -3,7 +3,7 @@ import { go, idea, tip, makeLesson } from "./gokit.mjs";
 
 export default function types(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "variables", title: "Переменные", summary: "var и короткое объявление :=, вывод типа, нулевые значения, область видимости.",

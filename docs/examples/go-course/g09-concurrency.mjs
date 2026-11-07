@@ -3,7 +3,7 @@ import { go, idea, tip, makeLesson } from "./gokit.mjs";
 
 export default function concurrency(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "goroutines", title: "Горутины", summary: "Слово go, лёгкие потоки, sync.WaitGroup, гонки данных и флаг -race, Mutex.",

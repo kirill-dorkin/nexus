@@ -3,7 +3,7 @@ import { go, idea, tip, makeLesson } from "./gokit.mjs";
 
 export default function flow(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "if-switch", title: "if и switch", summary: "if без скобок, if с инициализацией, switch без break, switch без условия.",
