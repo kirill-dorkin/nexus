@@ -3,7 +3,7 @@ import { idea, nx, tip, makeLesson } from "./nxkit.mjs";
 
 export default function components(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "server-components", title: "Серверные компоненты", summary: "Компоненты по умолчанию выполняются на сервере: async, доступ к базе и секретам, ноль JavaScript в браузере.",

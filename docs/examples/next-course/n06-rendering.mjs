@@ -3,7 +3,7 @@ import { idea, nx, tip, makeLesson } from "./nxkit.mjs";
 
 export default function rendering(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "static-dynamic", title: "Статика и динамика", summary: "Статический рендеринг при сборке, динамический на запрос, что делает страницу динамической.",
