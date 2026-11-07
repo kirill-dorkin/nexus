@@ -3,7 +3,7 @@ import { idea, sh, tip, makeLesson } from "./dkit.mjs";
 
 export default function lifecycle(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "ps-stop-rm", title: "Список, остановка, удаление", summary: "docker ps и ps -a, stop и start, rm, состояния контейнера и политика перезапуска.",

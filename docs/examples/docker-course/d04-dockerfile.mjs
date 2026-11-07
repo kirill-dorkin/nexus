@@ -3,7 +3,7 @@ import { idea, sh, df, tip, makeLesson } from "./dkit.mjs";
 
 export default function dockerfile(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single, multi } = c;
 
   L({
     slug: "dockerfile-basics", title: "Первый Dockerfile", summary: "FROM, WORKDIR, COPY, RUN, EXPOSE, CMD и сборка docker build -t.",

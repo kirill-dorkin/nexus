@@ -3,7 +3,7 @@ import { idea, sh, yml, tip, makeLesson } from "./dkit.mjs";
 
 export default function compose(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "compose-basics", title: "Первый compose-файл", summary: "compose.yaml, services, image и build, ports, docker compose up и down.",

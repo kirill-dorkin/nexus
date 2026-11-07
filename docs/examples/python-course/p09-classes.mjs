@@ -3,7 +3,7 @@ import { py, idea, tip, makeLesson } from "./pykit.mjs";
 
 export default function classes(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "class-basics", title: "Классы и объекты", summary: "class, __init__ и self, атрибуты и методы, объект как данные плюс поведение.",
