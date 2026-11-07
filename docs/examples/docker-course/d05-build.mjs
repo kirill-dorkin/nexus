@@ -3,7 +3,7 @@ import { idea, sh, df, tip, makeLesson } from "./dkit.mjs";
 
 export default function build(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "layer-cache", title: "Кэш сборки", summary: "Как работает кэш слоёв, порядок инструкций, зависимости до кода, объединение RUN.",

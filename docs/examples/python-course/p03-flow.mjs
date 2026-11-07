@@ -3,7 +3,7 @@ import { py, idea, tip, makeLesson } from "./pykit.mjs";
 
 export default function flow(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "if-else", title: "Условия", summary: "if, elif, else, отступы, вложенные условия и тернарный оператор.",
