@@ -22,7 +22,8 @@ describe("character roster", () => {
       "python",
       "docker",
       "next",
-      "go"
+      "go",
+      "os"
     ]);
     // Owner decision 2026-11-06: characters differ in body and colour.
     const bases = new Set(CHARACTER_DEFS.map((d) => d.pal.base));
