@@ -35,7 +35,8 @@ export const DISTRICT_NAMES: Record<string, string> = {
   os: "Диспетчерская",
   vue: "Оранжерея",
   cicd: "Сборочный цех",
-  kubernetes: "Верфь флота"
+  kubernetes: "Верфь флота",
+  webapi: "Телеграф"
 };
 
 /** Positions on a 1000×600 plan; characters without one are laid out on the bottom row. */
@@ -59,7 +60,8 @@ const LAYOUT: Record<string, { x: number; y: number }> = {
   os: { x: 130, y: 240 },
   vue: { x: 540, y: 510 },
   cicd: { x: 270, y: 520 },
-  kubernetes: { x: 130, y: 420 }
+  kubernetes: { x: 130, y: 420 },
+  webapi: { x: 860, y: 240 }
 };
 
 export type District = {

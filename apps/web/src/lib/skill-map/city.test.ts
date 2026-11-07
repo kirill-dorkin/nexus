@@ -37,7 +37,8 @@ describe("city map", () => {
       "os",
       "vue",
       "cicd",
-      "kubernetes"
+      "kubernetes",
+      "webapi"
     ]);
     expect(
       plan.districts.find((d) => d.character.slug === "browser")

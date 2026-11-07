@@ -451,6 +451,25 @@ export const characters = [
       "Флот контейнеров: устройство кластера и kubectl, поды и манифесты, развёртывания и обновления, сервисы, Ingress и сеть, ConfigMap и Secret, постоянные тома и StatefulSet, проверки здоровья и ресурсы, автомасштабирование, RBAC и сетевые политики, Helm, Kustomize и GitOps, наблюдение, отладка и обновления.",
     accent: "blue",
     sources: [{ manifest: "kubernetes-track.manifest.json", published: true }]
+  },
+  {
+    slug: "webapi",
+    depth: {},
+    abilities: [
+      { title: "Платформа", branches: ["Что такое Web API", "DOM глубже"] },
+      { title: "Сеть", branches: ["Сеть из браузера", "Связь в реальном времени"] },
+      { title: "Данные", branches: ["Хранилища браузера"] },
+      { title: "Фон", branches: ["Работа в фоне"] },
+      { title: "Чувства", branches: ["Медиа и графика", "Устройства и датчики"] },
+      { title: "Внимание", branches: ["Наблюдатели"] },
+      { title: "Защита", branches: ["Безопасность и разрешения", "Web API на практике"] }
+    ],
+    name: "Web API",
+    role: "Связной",
+    summary:
+      "Возможности браузера: DOM и события глубже, fetch, потоки и CORS, localStorage, IndexedDB и Cache, Web Workers и Service Worker, PWA и уведомления, Canvas, звук и 3D, камера, геолокация и буфер обмена, наблюдатели, WebSocket и WebRTC, разрешения и защита от XSS, офлайн-приложения и доступность.",
+    accent: "teal",
+    sources: [{ manifest: "webapi-track.manifest.json", published: true }]
   }
 ];
 
@@ -480,7 +499,9 @@ export const requires = {
   "os/Что делает ОС": ["pc/Операционная система"],
   "vue/Старт Vue": ["js/Старт JavaScript"],
   "cicd/Зачем автоматизация": ["git/Командная работа на GitHub"],
-  "kubernetes/Зачем Kubernetes": ["docker/Docker Compose"]
+  "kubernetes/Зачем Kubernetes": ["docker/Docker Compose"],
+  "webapi/Что такое Web API": ["js/Асинхронность"],
+  "webapi/DOM глубже": ["js/События"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */

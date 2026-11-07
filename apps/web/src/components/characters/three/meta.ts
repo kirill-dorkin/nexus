@@ -23,7 +23,8 @@ export const BODY_UI = {
   os: ["#f59e0b", "#ffe2a8", "#4a4038", "#1c1712"],
   vue: ["#42b883", "#d1fae5", "#2e6b55", "#0b1f17"],
   cicd: ["#8b7cf6", "#e4defe", "#4b3f8a", "#120f26"],
-  kubernetes: ["#5b8def", "#c7d7fe", "#2a4f9e", "#0a1430"]
+  kubernetes: ["#5b8def", "#c7d7fe", "#2a4f9e", "#0a1430"],
+  webapi: ["#22d3c5", "#ccfbf1", "#1f6f6a", "#06201e"]
 } as const satisfies Record<string, readonly [string, string, string, string]>;
 
 export type BodySlug = keyof typeof BODY_UI;
