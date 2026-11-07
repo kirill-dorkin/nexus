@@ -37,7 +37,6 @@ export const UPCOMING: UpcomingDistrict[] = [
   {
     district: "Башни мета-фреймворков",
     characters: [
-      { name: "Next.js", role: "Архитектор React", needs: "React" },
       { name: "Nuxt", role: "Архитектор Vue", needs: "Vue" },
       { name: "SvelteKit", role: "Архитектор Svelte", needs: "Svelte" },
       { name: "Astro", role: "Строитель островов", needs: "HTML, JavaScript" }

@@ -12,6 +12,7 @@ import { react } from "./react";
 import { network } from "./network";
 import { python } from "./python";
 import { docker } from "./docker";
+import { next } from "./next";
 import type { CharacterDef } from "./types";
 
 /** Characters that have a 3D body. The rest of the roster keeps its text card for now. */
@@ -29,7 +30,8 @@ export const CHARACTER_DEFS: readonly CharacterDef[] = [
   react,
   network,
   python,
-  docker
+  docker,
+  next
 ];
 
 export const characterDef = (slug: string) =>
