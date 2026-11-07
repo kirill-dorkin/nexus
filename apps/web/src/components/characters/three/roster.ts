@@ -13,6 +13,7 @@ import { network } from "./network";
 import { python } from "./python";
 import { docker } from "./docker";
 import { next } from "./next";
+import { go } from "./go";
 import type { CharacterDef } from "./types";
 
 /** Characters that have a 3D body. The rest of the roster keeps its text card for now. */
@@ -31,7 +32,8 @@ export const CHARACTER_DEFS: readonly CharacterDef[] = [
   network,
   python,
   docker,
-  next
+  next,
+  go
 ];
 
 export const characterDef = (slug: string) =>

@@ -30,7 +30,8 @@ export const DISTRICT_NAMES: Record<string, string> = {
   network: "Почтамт",
   python: "Библиотека",
   docker: "Порт",
-  next: "Башня архитекторов"
+  next: "Башня архитекторов",
+  go: "Стадион"
 };
 
 /** Positions on a 1000×600 plan; characters without one are laid out on the bottom row. */
@@ -49,7 +50,8 @@ const LAYOUT: Record<string, { x: number; y: number }> = {
   network: { x: 400, y: 330 },
   python: { x: 860, y: 140 },
   docker: { x: 270, y: 240 },
-  next: { x: 540, y: 240 }
+  next: { x: 540, y: 240 },
+  go: { x: 270, y: 420 }
 };
 
 export type District = {
