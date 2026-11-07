@@ -3,7 +3,7 @@ import { idea, sh, tip, makeLesson } from "./dkit.mjs";
 
 export default function network(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "bridge-networks", title: "Сети Docker", summary: "Сеть bridge по умолчанию, свои сети, docker network create и connect.",
