@@ -3,7 +3,7 @@ import { py, tip, makeLesson } from "./pykit.mjs";
 
 export default function types(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "variables-numbers", title: "Переменные и числа", summary: "Присваивание, int и float, арифметика, целочисленное деление и остаток, округление.",

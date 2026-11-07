@@ -3,7 +3,7 @@ import { idea, sh, yml, tip, makeLesson } from "./dkit.mjs";
 
 export default function practice(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "push-registry", title: "Публикация образа", summary: "docker tag и push, вход в реестр, закрытые реестры, теги версий и sha коммита.",
