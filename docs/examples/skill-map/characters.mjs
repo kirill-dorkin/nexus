@@ -489,6 +489,25 @@ export const characters = [
       "Быстрая память приложений: ключи и время жизни, строки и счётчики, списки и множества, хэши и рейтинги, кэширование и инвалидация, сессии и ограничение частоты, очереди и потоки, публикация и подписка, транзакции, Lua и блокировки, сохранение, репликация и кластер, наблюдение и безопасность.",
     accent: "rose",
     sources: [{ manifest: "redis-track.manifest.json", published: true }]
+  },
+  {
+    slug: "nestjs",
+    depth: {},
+    abilities: [
+      { title: "Каркас", branches: ["Старт NestJS", "Модули и внедрение зависимостей"] },
+      { title: "API", branches: ["Контроллеры и маршруты", "Проверка данных"] },
+      { title: "Данные", branches: ["База данных"] },
+      { title: "Доступ", branches: ["Вход и права"] },
+      { title: "Конвейер", branches: ["Конвейер запроса", "Конфигурация и ошибки"] },
+      { title: "Фон", branches: ["Фоновые задачи и события"] },
+      { title: "Качество", branches: ["Тесты", "NestJS на практике"] }
+    ],
+    name: "NestJS",
+    role: "Командир модулей",
+    summary:
+      "Серверные приложения на TypeScript: модули и внедрение зависимостей, контроллеры и маршруты, DTO и проверка данных, база данных, миграции и транзакции, вход, гарды и права, перехватчики и фильтры, конфигурация, логи и OpenAPI, события, очереди и WebSocket, тесты, защита, скорость и выпуск.",
+    accent: "rose",
+    sources: [{ manifest: "nestjs-track.manifest.json", published: true }]
   }
 ];
 
@@ -521,7 +540,8 @@ export const requires = {
   "kubernetes/Зачем Kubernetes": ["docker/Docker Compose"],
   "webapi/Что такое Web API": ["js/Асинхронность"],
   "webapi/DOM глубже": ["js/События"],
-  "redis/Зачем Redis": ["network/TCP и UDP"]
+  "redis/Зачем Redis": ["network/TCP и UDP"],
+  "nestjs/Старт NestJS": ["node/Express и REST API", "ts/Старт TypeScript"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */
