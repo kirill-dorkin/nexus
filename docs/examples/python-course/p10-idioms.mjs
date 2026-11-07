@@ -3,7 +3,7 @@ import { py, tip, makeLesson } from "./pykit.mjs";
 
 export default function idioms(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single, short } = c;
 
   L({
     slug: "comprehensions", title: "Списочные выражения", summary: "List, dict и set comprehensions, условие внутри, zip, any и all.",
