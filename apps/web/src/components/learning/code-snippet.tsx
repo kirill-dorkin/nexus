@@ -39,6 +39,7 @@ const LANGUAGE_NAMES: Record<string, string> = {
   python: "Python",
   go: "Go",
   c: "C",
+  vue: "Vue",
   py: "Python",
   json: "JSON",
   sql: "SQL",

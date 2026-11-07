@@ -34,7 +34,8 @@ describe("city map", () => {
       "docker",
       "next",
       "go",
-      "os"
+      "os",
+      "vue"
     ]);
     expect(
       plan.districts.find((d) => d.character.slug === "browser")

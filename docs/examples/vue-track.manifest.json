@@ -1,0 +1,4576 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "vue",
+    "title": "Vue: реактивные интерфейсы",
+    "description": "Vue 3 с нуля до приложения. Создание проекта на Vite, шаблоны и директивы, реактивность ref, reactive и computed, компоненты, props и события, формы и v-model, списки и условия, Composition API и composables, Vue Router, состояние в Pinia, загрузка данных, тесты и выпуск. Каждое понятие объясняется карточкой с примером, каждый урок закрепляется вопросами."
+  },
+  "skills": [
+    {
+      "key": "vue-why",
+      "title": "Что такое Vue",
+      "description": "Объяснять, что такое Vue и чем он отличается от других фреймворков."
+    },
+    {
+      "key": "vue-create",
+      "title": "Создание проекта",
+      "description": "Создавать и запускать проект на Vue."
+    },
+    {
+      "key": "vue-sfc",
+      "title": "Однофайловые компоненты",
+      "description": "Писать компоненты в файлах .vue."
+    },
+    {
+      "key": "vue-interp",
+      "title": "Вывод данных",
+      "description": "Выводить данные в шаблоне."
+    },
+    {
+      "key": "vue-bind",
+      "title": "Привязка атрибутов",
+      "description": "Привязывать атрибуты, классы и стили к данным."
+    },
+    {
+      "key": "vue-events",
+      "title": "События",
+      "description": "Обрабатывать события в шаблоне."
+    },
+    {
+      "key": "vue-ref",
+      "title": "ref и reactive",
+      "description": "Создавать реактивное состояние."
+    },
+    {
+      "key": "vue-computed",
+      "title": "computed",
+      "description": "Выводить значения из состояния через computed."
+    },
+    {
+      "key": "vue-watch",
+      "title": "watch",
+      "description": "Выполнять побочные эффекты при изменении данных."
+    },
+    {
+      "key": "vue-props",
+      "title": "Props",
+      "description": "Передавать данные в компоненты через props."
+    },
+    {
+      "key": "vue-emits",
+      "title": "События компонента",
+      "description": "Сообщать родителю о действиях через события."
+    },
+    {
+      "key": "vue-slots",
+      "title": "Слоты",
+      "description": "Передавать разметку в компоненты через слоты."
+    },
+    {
+      "key": "vue-vmodel",
+      "title": "v-model",
+      "description": "Связывать поля формы с данными через v-model."
+    },
+    {
+      "key": "vue-modifiers",
+      "title": "Модификаторы v-model",
+      "description": "Очищать и преобразовывать ввод модификаторами."
+    },
+    {
+      "key": "vue-validate",
+      "title": "Проверка форм",
+      "description": "Проверять формы и показывать ошибки."
+    },
+    {
+      "key": "vue-if",
+      "title": "Условия в шаблоне",
+      "description": "Показывать и скрывать части интерфейса по условию."
+    },
+    {
+      "key": "vue-for",
+      "title": "Списки",
+      "description": "Выводить списки через v-for с правильными ключами."
+    },
+    {
+      "key": "vue-transition",
+      "title": "Анимации",
+      "description": "Анимировать появление и исчезновение элементов."
+    },
+    {
+      "key": "vue-lifecycle",
+      "title": "Жизненный цикл",
+      "description": "Выполнять код при появлении и удалении компонента."
+    },
+    {
+      "key": "vue-composables",
+      "title": "Composables",
+      "description": "Выносить повторяющуюся логику в composables."
+    },
+    {
+      "key": "vue-provide",
+      "title": "provide и inject",
+      "description": "Передавать данные глубоко по дереву без цепочки props."
+    },
+    {
+      "key": "vue-routes",
+      "title": "Маршруты",
+      "description": "Настраивать страницы приложения через Vue Router."
+    },
+    {
+      "key": "vue-params",
+      "title": "Параметры маршрутов",
+      "description": "Использовать параметры адреса и вложенные маршруты."
+    },
+    {
+      "key": "vue-guards",
+      "title": "Защита маршрутов",
+      "description": "Защищать страницы и загружать их по требованию."
+    },
+    {
+      "key": "vue-pinia",
+      "title": "Pinia",
+      "description": "Хранить общее состояние приложения в Pinia."
+    },
+    {
+      "key": "vue-storepatterns",
+      "title": "Устройство хранилищ",
+      "description": "Организовывать хранилища и асинхронные действия."
+    },
+    {
+      "key": "vue-ts",
+      "title": "Vue и TypeScript",
+      "description": "Писать компоненты Vue на TypeScript."
+    },
+    {
+      "key": "vue-fetch",
+      "title": "Загрузка данных",
+      "description": "Загружать данные с сервера и показывать их состояние."
+    },
+    {
+      "key": "vue-async",
+      "title": "Встроенные компоненты",
+      "description": "Использовать Suspense, KeepAlive и Teleport."
+    },
+    {
+      "key": "vue-ssr",
+      "title": "SSR и Nuxt",
+      "description": "Понимать серверную отрисовку и когда нужен Nuxt."
+    },
+    {
+      "key": "vue-testing",
+      "title": "Тесты Vue",
+      "description": "Покрывать компоненты и хранилища тестами."
+    },
+    {
+      "key": "vue-perf",
+      "title": "Скорость и доступность",
+      "description": "Делать приложения на Vue быстрыми и доступными."
+    },
+    {
+      "key": "vue-deploy",
+      "title": "Выпуск приложения",
+      "description": "Собирать и выпускать приложение на Vue."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "wv-decl",
+      "type": "quiz.single_choice",
+      "title": "Декларативность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-why"
+      ],
+      "presentation": {
+        "question": "Что значит «декларативный» интерфейс во Vue?",
+        "options": [
+          {
+            "id": "result",
+            "text": "Описываешь, как выглядит интерфейс при данных, Vue обновляет сам"
+          },
+          {
+            "id": "manual",
+            "text": "Вручную меняешь элементы через DOM"
+          },
+          {
+            "id": "css",
+            "text": "Пишешь только CSS"
+          },
+          {
+            "id": "server",
+            "text": "Всё рисует сервер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "result",
+        "explanation": "Данные → интерфейс."
+      }
+    },
+    {
+      "slug": "wv-eco",
+      "type": "quiz.multiple_choice",
+      "title": "Экосистема",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "vue-why"
+      ],
+      "presentation": {
+        "question": "Какие инструменты входят в официальную экосистему Vue?",
+        "options": [
+          {
+            "id": "router",
+            "text": "Vue Router"
+          },
+          {
+            "id": "pinia",
+            "text": "Pinia"
+          },
+          {
+            "id": "vite",
+            "text": "Vite"
+          },
+          {
+            "id": "django",
+            "text": "Django"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "router",
+          "pinia",
+          "vite"
+        ],
+        "explanation": "Django — фреймворк на Python."
+      }
+    },
+    {
+      "slug": "wv-progressive",
+      "type": "quiz.single_choice",
+      "title": "Прогрессивный",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-why"
+      ],
+      "presentation": {
+        "question": "Почему Vue называют прогрессивным?",
+        "options": [
+          {
+            "id": "scale",
+            "text": "Можно начать с одной страницы и вырасти до большого приложения"
+          },
+          {
+            "id": "new",
+            "text": "Он самый новый"
+          },
+          {
+            "id": "fast",
+            "text": "Он прогрессивно ускоряется"
+          },
+          {
+            "id": "paid",
+            "text": "Он платный"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "scale",
+        "explanation": "Подключай столько, сколько нужно."
+      }
+    },
+    {
+      "slug": "cv-cmd",
+      "type": "quiz.single_choice",
+      "title": "Создание",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-create"
+      ],
+      "presentation": {
+        "question": "Какой командой создают проект на Vue?",
+        "options": [
+          {
+            "id": "create",
+            "text": "`npm create vue@latest`"
+          },
+          {
+            "id": "new",
+            "text": "`vue new app`"
+          },
+          {
+            "id": "init",
+            "text": "`npx init vue`"
+          },
+          {
+            "id": "git",
+            "text": "`git clone vue`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "create",
+        "explanation": "Мастер задаст вопросы."
+      }
+    },
+    {
+      "slug": "cv-mount",
+      "type": "quiz.single_choice",
+      "title": "Запуск",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-create"
+      ],
+      "presentation": {
+        "question": "Что делает createApp(App).mount(\"#app\")?",
+        "options": [
+          {
+            "id": "mount",
+            "text": "Создаёт приложение и показывает его в элементе с id app"
+          },
+          {
+            "id": "build",
+            "text": "Собирает проект"
+          },
+          {
+            "id": "route",
+            "text": "Создаёт маршрут"
+          },
+          {
+            "id": "fetch",
+            "text": "Загружает данные"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mount",
+        "explanation": "Точка входа приложения."
+      }
+    },
+    {
+      "slug": "cv-dist",
+      "type": "quiz.single_choice",
+      "title": "Сборка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-create"
+      ],
+      "presentation": {
+        "question": "Куда npm run build кладёт готовые файлы?",
+        "options": [
+          {
+            "id": "dist",
+            "text": "В папку dist"
+          },
+          {
+            "id": "src",
+            "text": "В src"
+          },
+          {
+            "id": "public",
+            "text": "В public"
+          },
+          {
+            "id": "nm",
+            "text": "В node_modules"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dist",
+        "explanation": "Её выкладывают на хостинг."
+      }
+    },
+    {
+      "slug": "sf-parts",
+      "type": "quiz.single_choice",
+      "title": "Части",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-sfc"
+      ],
+      "presentation": {
+        "question": "Из каких частей обычно состоит файл .vue?",
+        "options": [
+          {
+            "id": "three",
+            "text": "template, script и style"
+          },
+          {
+            "id": "html",
+            "text": "Только HTML"
+          },
+          {
+            "id": "json",
+            "text": "JSON и CSS"
+          },
+          {
+            "id": "class",
+            "text": "Только класс"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "three",
+        "explanation": "Всё про компонент — вместе."
+      }
+    },
+    {
+      "slug": "sf-scoped",
+      "type": "quiz.single_choice",
+      "title": "scoped",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-sfc"
+      ],
+      "presentation": {
+        "question": "Что делает атрибут scoped у style?",
+        "options": [
+          {
+            "id": "local",
+            "text": "Стили применяются только к этому компоненту"
+          },
+          {
+            "id": "global",
+            "text": "Делает стили глобальными"
+          },
+          {
+            "id": "dark",
+            "text": "Включает тёмную тему"
+          },
+          {
+            "id": "minify",
+            "text": "Сжимает CSS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "local",
+        "explanation": "Через уникальный атрибут."
+      }
+    },
+    {
+      "slug": "sf-setup",
+      "type": "quiz.single_choice",
+      "title": "script setup",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-sfc"
+      ],
+      "presentation": {
+        "question": "Как в script setup сделать переменную доступной шаблону?",
+        "options": [
+          {
+            "id": "declare",
+            "text": "Просто объявить её — она сразу видна в шаблоне"
+          },
+          {
+            "id": "export",
+            "text": "Обязательно export default"
+          },
+          {
+            "id": "return",
+            "text": "Вернуть из функции data"
+          },
+          {
+            "id": "window",
+            "text": "Положить в window"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "declare",
+        "explanation": "Импортированные компоненты — тоже."
+      }
+    },
+    {
+      "slug": "ip-xss",
+      "type": "quiz.single_choice",
+      "title": "Безопасность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-interp"
+      ],
+      "presentation": {
+        "question": "Что покажет `{{ text }}`, если `text = \"<b>привет</b>\"`?",
+        "options": [
+          {
+            "id": "literal",
+            "text": "Слово привет вместе с угловыми тегами, как текст"
+          },
+          {
+            "id": "bold",
+            "text": "Жирное слово привет"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          },
+          {
+            "id": "empty",
+            "text": "Пустоту"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "literal",
+        "explanation": "Интерполяция экранирует HTML."
+      }
+    },
+    {
+      "slug": "ip-expr",
+      "type": "quiz.single_choice",
+      "title": "Выражение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-interp"
+      ],
+      "presentation": {
+        "question": "Что можно написать внутри {{ }}?",
+        "options": [
+          {
+            "id": "expr",
+            "text": "Одно выражение, например тернарный оператор"
+          },
+          {
+            "id": "if",
+            "text": "Инструкцию if"
+          },
+          {
+            "id": "for",
+            "text": "Цикл for"
+          },
+          {
+            "id": "import",
+            "text": "import"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "expr",
+        "explanation": "Сложное — в computed."
+      }
+    },
+    {
+      "slug": "ip-html",
+      "type": "quiz.single_choice",
+      "title": "v-html",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-interp"
+      ],
+      "presentation": {
+        "question": "Почему нельзя выводить комментарии пользователей через v-html?",
+        "options": [
+          {
+            "id": "xss",
+            "text": "Можно внедрить вредоносный HTML и скрипты"
+          },
+          {
+            "id": "slow",
+            "text": "Это медленно"
+          },
+          {
+            "id": "style",
+            "text": "Пропадут стили"
+          },
+          {
+            "id": "none",
+            "text": "Можно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "xss",
+        "explanation": "Это называется XSS-атакой."
+      }
+    },
+    {
+      "slug": "bd-colon",
+      "type": "quiz.single_choice",
+      "title": "Двоеточие",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-bind"
+      ],
+      "presentation": {
+        "question": "Чем `:href=\"link\"` отличается от `href=\"link\"`?",
+        "options": [
+          {
+            "id": "data",
+            "text": "С двоеточием значение берётся из переменной link"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          },
+          {
+            "id": "css",
+            "text": "Двоеточие — для CSS"
+          },
+          {
+            "id": "event",
+            "text": "Двоеточие — событие"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "data",
+        "explanation": "Сокращение v-bind."
+      }
+    },
+    {
+      "slug": "bd-class",
+      "type": "quiz.single_choice",
+      "title": "Класс",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-bind"
+      ],
+      "presentation": {
+        "question": "Когда добавится класс в `:class=\"{ done: lesson.done }\"`?",
+        "options": [
+          {
+            "id": "true",
+            "text": "Когда lesson.done истинно"
+          },
+          {
+            "id": "always",
+            "text": "Всегда"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "false",
+            "text": "Когда lesson.done ложно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "true",
+        "explanation": "Объект условий."
+      }
+    },
+    {
+      "slug": "bd-disabled",
+      "type": "quiz.single_choice",
+      "title": "disabled",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-bind"
+      ],
+      "presentation": {
+        "question": "Что будет с атрибутом при `:disabled=\"false\"`?",
+        "options": [
+          {
+            "id": "removed",
+            "text": "Атрибут не появится вовсе"
+          },
+          {
+            "id": "false",
+            "text": "Будет disabled=\"false\" и кнопка заблокируется"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка"
+          },
+          {
+            "id": "hidden",
+            "text": "Кнопка скроется"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "removed",
+        "explanation": "Логические атрибуты убираются."
+      }
+    },
+    {
+      "slug": "ev-prevent",
+      "type": "quiz.single_choice",
+      "title": "Форма",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-events"
+      ],
+      "presentation": {
+        "question": "Как не дать форме перезагрузить страницу при отправке?",
+        "options": [
+          {
+            "id": "prevent",
+            "text": "`@submit.prevent=\"handler\"`"
+          },
+          {
+            "id": "stop",
+            "text": "`@submit.stop`"
+          },
+          {
+            "id": "none",
+            "text": "`@submit.none`"
+          },
+          {
+            "id": "return",
+            "text": "Вернуть false из шаблона"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "prevent",
+        "explanation": "Аналог preventDefault()."
+      }
+    },
+    {
+      "slug": "ev-key",
+      "type": "quiz.single_choice",
+      "title": "Клавиша",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-events"
+      ],
+      "presentation": {
+        "question": "Как вызвать search по нажатию Enter в поле?",
+        "options": [
+          {
+            "id": "enter",
+            "text": "`@keyup.enter=\"search\"`"
+          },
+          {
+            "id": "key",
+            "text": "`@enter=\"search\"`"
+          },
+          {
+            "id": "press",
+            "text": "`@press(13)`"
+          },
+          {
+            "id": "input",
+            "text": "`@input.enter`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "enter",
+        "explanation": "Модификатор клавиши."
+      }
+    },
+    {
+      "slug": "ev-at",
+      "type": "quiz.single_choice",
+      "title": "Сокращение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-events"
+      ],
+      "presentation": {
+        "question": "Сокращением чего является @?",
+        "options": [
+          {
+            "id": "von",
+            "text": "v-on"
+          },
+          {
+            "id": "vbind",
+            "text": "v-bind"
+          },
+          {
+            "id": "vif",
+            "text": "v-if"
+          },
+          {
+            "id": "vmodel",
+            "text": "v-model"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "von",
+        "explanation": "Двоеточие — v-bind."
+      }
+    },
+    {
+      "slug": "rr-value",
+      "type": "quiz.single_choice",
+      "title": ".value",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-ref"
+      ],
+      "presentation": {
+        "question": "Как изменить ref count в script setup?",
+        "options": [
+          {
+            "id": "value",
+            "text": "`count.value++`"
+          },
+          {
+            "id": "direct",
+            "text": "`count++`"
+          },
+          {
+            "id": "set",
+            "text": "`count.set(1)`"
+          },
+          {
+            "id": "state",
+            "text": "`setCount(1)`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "value",
+        "explanation": "В шаблоне .value не нужен."
+      }
+    },
+    {
+      "slug": "rr-destructure",
+      "type": "quiz.single_choice",
+      "title": "Деструктуризация",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-ref"
+      ],
+      "presentation": {
+        "question": "Что будет после `const { email } = reactive({ email: \"\" })`?",
+        "options": [
+          {
+            "id": "lost",
+            "text": "email — обычная копия, без реактивности"
+          },
+          {
+            "id": "kept",
+            "text": "email останется реактивным"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка"
+          },
+          {
+            "id": "ref",
+            "text": "email станет ref автоматически"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lost",
+        "explanation": "Нужен toRefs."
+      }
+    },
+    {
+      "slug": "rr-template",
+      "type": "quiz.single_choice",
+      "title": "В шаблоне",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-ref"
+      ],
+      "presentation": {
+        "question": "Как вывести ref count в шаблоне?",
+        "options": [
+          {
+            "id": "plain",
+            "text": "`{{ count }}`"
+          },
+          {
+            "id": "value",
+            "text": "Только `{{ count.value }}`"
+          },
+          {
+            "id": "get",
+            "text": "`{{ get(count) }}`"
+          },
+          {
+            "id": "dollar",
+            "text": "`{{ $count }}`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "plain",
+        "explanation": "Шаблон разворачивает ref сам."
+      }
+    },
+    {
+      "slug": "cp-cache",
+      "type": "quiz.single_choice",
+      "title": "Кэш",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-computed"
+      ],
+      "presentation": {
+        "question": "Когда computed пересчитывается?",
+        "options": [
+          {
+            "id": "deps",
+            "text": "Когда меняются данные, от которых он зависит"
+          },
+          {
+            "id": "always",
+            "text": "При каждой перерисовке"
+          },
+          {
+            "id": "second",
+            "text": "Каждую секунду"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "deps",
+        "explanation": "Иначе берёт результат из кэша."
+      }
+    },
+    {
+      "slug": "cp-side",
+      "type": "quiz.single_choice",
+      "title": "Побочные эффекты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-computed"
+      ],
+      "presentation": {
+        "question": "Можно ли в computed отправлять запрос на сервер?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, computed только вычисляет значение"
+          },
+          {
+            "id": "yes",
+            "text": "Да, это обычная практика"
+          },
+          {
+            "id": "post",
+            "text": "Только POST"
+          },
+          {
+            "id": "once",
+            "text": "Только один раз"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Для эффектов — watch."
+      }
+    },
+    {
+      "slug": "cp-vs",
+      "type": "quiz.single_choice",
+      "title": "Метод или computed",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-computed"
+      ],
+      "presentation": {
+        "question": "Почему фильтр большого списка лучше сделать computed, а не методом в шаблоне?",
+        "options": [
+          {
+            "id": "cache",
+            "text": "computed не пересчитывает без изменений, метод — при каждой перерисовке"
+          },
+          {
+            "id": "syntax",
+            "text": "Метод нельзя вызвать в шаблоне"
+          },
+          {
+            "id": "css",
+            "text": "Из-за стилей"
+          },
+          {
+            "id": "same",
+            "text": "Разницы нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cache",
+        "explanation": "Экономия работы."
+      }
+    },
+    {
+      "slug": "wt-when",
+      "type": "quiz.single_choice",
+      "title": "Когда watch",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-watch"
+      ],
+      "presentation": {
+        "question": "Для чего нужен watch?",
+        "options": [
+          {
+            "id": "effect",
+            "text": "Выполнять действие при изменении данных"
+          },
+          {
+            "id": "compute",
+            "text": "Вычислять значение для шаблона"
+          },
+          {
+            "id": "style",
+            "text": "Менять стили"
+          },
+          {
+            "id": "route",
+            "text": "Создавать маршруты"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "effect",
+        "explanation": "Вычисление — computed."
+      }
+    },
+    {
+      "slug": "wt-immediate",
+      "type": "quiz.single_choice",
+      "title": "Сразу",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-watch"
+      ],
+      "presentation": {
+        "question": "Как вызвать обработчик watch сразу при создании компонента?",
+        "options": [
+          {
+            "id": "immediate",
+            "text": "Опция immediate: true"
+          },
+          {
+            "id": "deep",
+            "text": "Опция deep: true"
+          },
+          {
+            "id": "now",
+            "text": "Опция now: true"
+          },
+          {
+            "id": "sync",
+            "text": "Опция sync"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "immediate",
+        "explanation": "deep — для вложенных изменений."
+      }
+    },
+    {
+      "slug": "wt-race",
+      "type": "quiz.single_choice",
+      "title": "Гонка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-watch"
+      ],
+      "presentation": {
+        "question": "Почему при поиске по мере ввода нужно отменять старые запросы?",
+        "options": [
+          {
+            "id": "order",
+            "text": "Ответы могут прийти не по порядку и показать устаревшие результаты"
+          },
+          {
+            "id": "cost",
+            "text": "Только ради экономии денег"
+          },
+          {
+            "id": "vue",
+            "text": "Vue запрещает параллельные запросы"
+          },
+          {
+            "id": "none",
+            "text": "Не нужно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "order",
+        "explanation": "onCleanup в watch."
+      }
+    },
+    {
+      "slug": "pp-colon",
+      "type": "quiz.single_choice",
+      "title": "Число",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-props"
+      ],
+      "presentation": {
+        "question": "Как передать в prop lessons число 33, а не строку?",
+        "options": [
+          {
+            "id": "colon",
+            "text": "`:lessons=\"33\"`"
+          },
+          {
+            "id": "plain",
+            "text": "`lessons=\"33\"`"
+          },
+          {
+            "id": "braces",
+            "text": "`lessons={33}`"
+          },
+          {
+            "id": "num",
+            "text": "`lessons=33n`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "colon",
+        "explanation": "Двоеточие вычисляет выражение."
+      }
+    },
+    {
+      "slug": "pp-mutate",
+      "type": "quiz.single_choice",
+      "title": "Изменение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-props"
+      ],
+      "presentation": {
+        "question": "Можно ли ребёнку менять полученный prop?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, он сообщает родителю событием"
+          },
+          {
+            "id": "yes",
+            "text": "Да, свободно"
+          },
+          {
+            "id": "copy",
+            "text": "Да, это изменит копию у всех"
+          },
+          {
+            "id": "ts",
+            "text": "Только в TypeScript"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Односторонний поток данных."
+      }
+    },
+    {
+      "slug": "pp-default",
+      "type": "quiz.single_choice",
+      "title": "По умолчанию",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-props"
+      ],
+      "presentation": {
+        "question": "Как задать значение по умолчанию для необязательного prop?",
+        "options": [
+          {
+            "id": "default",
+            "text": "Опцией default в defineProps"
+          },
+          {
+            "id": "init",
+            "text": "В шаблоне через ||"
+          },
+          {
+            "id": "data",
+            "text": "В data()"
+          },
+          {
+            "id": "none",
+            "text": "Нельзя"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "default",
+        "explanation": "Или withDefaults с TypeScript."
+      }
+    },
+    {
+      "slug": "em-up",
+      "type": "quiz.single_choice",
+      "title": "Вверх",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-emits"
+      ],
+      "presentation": {
+        "question": "Как ребёнку сообщить родителю о нажатии?",
+        "options": [
+          {
+            "id": "emit",
+            "text": "Отправить событие через emit"
+          },
+          {
+            "id": "prop",
+            "text": "Изменить prop"
+          },
+          {
+            "id": "global",
+            "text": "Записать в глобальную переменную"
+          },
+          {
+            "id": "dom",
+            "text": "Найти родителя через DOM"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "emit",
+        "explanation": "Данные вниз, события вверх."
+      }
+    },
+    {
+      "slug": "em-listen",
+      "type": "quiz.single_choice",
+      "title": "Слушать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-emits"
+      ],
+      "presentation": {
+        "question": "Как родитель подписывается на событие add?",
+        "options": [
+          {
+            "id": "at",
+            "text": "`<Child @add=\"handler\" />`"
+          },
+          {
+            "id": "colon",
+            "text": "`<Child :add=\"handler\" />`"
+          },
+          {
+            "id": "on",
+            "text": "`<Child onadd=\"handler\" />` строкой"
+          },
+          {
+            "id": "watch",
+            "text": "Через watch"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "at",
+        "explanation": "Как на событие DOM."
+      }
+    },
+    {
+      "slug": "em-model",
+      "type": "quiz.single_choice",
+      "title": "defineModel",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-emits"
+      ],
+      "presentation": {
+        "question": "Для чего defineModel?",
+        "options": [
+          {
+            "id": "vmodel",
+            "text": "Поддержать v-model на собственном компоненте"
+          },
+          {
+            "id": "store",
+            "text": "Создать хранилище"
+          },
+          {
+            "id": "route",
+            "text": "Создать маршрут"
+          },
+          {
+            "id": "fetch",
+            "text": "Загрузить модель данных"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "vmodel",
+        "explanation": "Двусторонняя привязка."
+      }
+    },
+    {
+      "slug": "sl-what",
+      "type": "quiz.single_choice",
+      "title": "Слот",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-slots"
+      ],
+      "presentation": {
+        "question": "Для чего нужен slot?",
+        "options": [
+          {
+            "id": "content",
+            "text": "Чтобы родитель вставил свою разметку внутрь компонента"
+          },
+          {
+            "id": "data",
+            "text": "Чтобы хранить данные"
+          },
+          {
+            "id": "style",
+            "text": "Для стилей"
+          },
+          {
+            "id": "route",
+            "text": "Для маршрутов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "content",
+        "explanation": "Обёртки для разного содержимого."
+      }
+    },
+    {
+      "slug": "sl-named",
+      "type": "quiz.single_choice",
+      "title": "Именованный",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-slots"
+      ],
+      "presentation": {
+        "question": "Как заполнить слот footer в родителе?",
+        "options": [
+          {
+            "id": "template",
+            "text": "`<template #footer>…</template>`"
+          },
+          {
+            "id": "slot",
+            "text": "`<slot footer>`"
+          },
+          {
+            "id": "prop",
+            "text": "`:footer=\"…\"`"
+          },
+          {
+            "id": "div",
+            "text": "`<div footer>`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "template",
+        "explanation": "# — сокращение v-slot."
+      }
+    },
+    {
+      "slug": "sl-scoped",
+      "type": "quiz.single_choice",
+      "title": "Слот с данными",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-slots"
+      ],
+      "presentation": {
+        "question": "Что даёт слот с параметрами?",
+        "options": [
+          {
+            "id": "data",
+            "text": "Ребёнок передаёт данные, родитель решает, как их нарисовать"
+          },
+          {
+            "id": "speed",
+            "text": "Ускорение"
+          },
+          {
+            "id": "css",
+            "text": "Стили"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "data",
+        "explanation": "Гибкие списки и таблицы."
+      }
+    },
+    {
+      "slug": "vm-two",
+      "type": "quiz.single_choice",
+      "title": "Двусторонняя",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-vmodel"
+      ],
+      "presentation": {
+        "question": "Что делает v-model?",
+        "options": [
+          {
+            "id": "both",
+            "text": "Синхронизирует значение поля и переменную в обе стороны"
+          },
+          {
+            "id": "read",
+            "text": "Только читает поле"
+          },
+          {
+            "id": "write",
+            "text": "Только пишет в поле"
+          },
+          {
+            "id": "submit",
+            "text": "Отправляет форму"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "both",
+        "explanation": ":value + @input."
+      }
+    },
+    {
+      "slug": "vm-boxes",
+      "type": "quiz.single_choice",
+      "title": "Флажки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-vmodel"
+      ],
+      "presentation": {
+        "question": "Что окажется в topics, если несколько флажков привязаны к массиву topics?",
+        "options": [
+          {
+            "id": "values",
+            "text": "Массив value отмеченных флажков"
+          },
+          {
+            "id": "bool",
+            "text": "Одно значение true"
+          },
+          {
+            "id": "count",
+            "text": "Число отмеченных"
+          },
+          {
+            "id": "last",
+            "text": "Только последний отмеченный"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "values",
+        "explanation": "Снимаешь флажок — значение уходит из массива."
+      }
+    },
+    {
+      "slug": "vm-check",
+      "type": "quiz.single_choice",
+      "title": "Один флажок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-vmodel"
+      ],
+      "presentation": {
+        "question": "Что хранит v-model одного флажка без value?",
+        "options": [
+          {
+            "id": "bool",
+            "text": "true или false"
+          },
+          {
+            "id": "text",
+            "text": "Текст подписи"
+          },
+          {
+            "id": "array",
+            "text": "Массив"
+          },
+          {
+            "id": "null",
+            "text": "Всегда null"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bool",
+        "explanation": "Согласие с правилами."
+      }
+    },
+    {
+      "slug": "mm-number",
+      "type": "quiz.single_choice",
+      "title": ".number",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-modifiers"
+      ],
+      "presentation": {
+        "question": "Зачем v-model.number для поля возраста?",
+        "options": [
+          {
+            "id": "num",
+            "text": "Чтобы значение было числом, а не строкой"
+          },
+          {
+            "id": "limit",
+            "text": "Чтобы ограничить возраст"
+          },
+          {
+            "id": "mobile",
+            "text": "Чтобы показать цифровую клавиатуру"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "num",
+        "explanation": "Ввод всегда приходит строкой."
+      }
+    },
+    {
+      "slug": "mm-lazy",
+      "type": "quiz.single_choice",
+      "title": ".lazy",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-modifiers"
+      ],
+      "presentation": {
+        "question": "Когда обновится переменная с v-model.lazy?",
+        "options": [
+          {
+            "id": "change",
+            "text": "После события change, например при уходе с поля"
+          },
+          {
+            "id": "each",
+            "text": "На каждый символ"
+          },
+          {
+            "id": "submit",
+            "text": "Только при отправке формы"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "change",
+        "explanation": "Меньше лишних реакций."
+      }
+    },
+    {
+      "slug": "mm-trim",
+      "type": "quiz.single_choice",
+      "title": ".trim",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-modifiers"
+      ],
+      "presentation": {
+        "question": "Что делает .trim?",
+        "options": [
+          {
+            "id": "spaces",
+            "text": "Убирает пробелы по краям введённого текста"
+          },
+          {
+            "id": "lower",
+            "text": "Делает буквы строчными"
+          },
+          {
+            "id": "cut",
+            "text": "Обрезает до 10 символов"
+          },
+          {
+            "id": "html",
+            "text": "Удаляет HTML"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "spaces",
+        "explanation": "Полезно для почты и имён."
+      }
+    },
+    {
+      "slug": "vd-computed",
+      "type": "quiz.single_choice",
+      "title": "Ошибки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-validate"
+      ],
+      "presentation": {
+        "question": "Как удобно вычислять ошибку поля во Vue?",
+        "options": [
+          {
+            "id": "computed",
+            "text": "computed от значения поля"
+          },
+          {
+            "id": "watch",
+            "text": "Только watch с setTimeout"
+          },
+          {
+            "id": "dom",
+            "text": "Читать DOM"
+          },
+          {
+            "id": "alert",
+            "text": "Показывать alert"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "computed",
+        "explanation": "Обновляется сама."
+      }
+    },
+    {
+      "slug": "vd-double",
+      "type": "quiz.single_choice",
+      "title": "Двойная отправка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-validate"
+      ],
+      "presentation": {
+        "question": "Как не дать отправить форму дважды?",
+        "options": [
+          {
+            "id": "flag",
+            "text": "Блокировать кнопку флагом sending на время запроса"
+          },
+          {
+            "id": "reload",
+            "text": "Перезагружать страницу"
+          },
+          {
+            "id": "hide",
+            "text": "Прятать форму навсегда"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "flag",
+        "explanation": "И показывать «Отправляем…»."
+      }
+    },
+    {
+      "slug": "vd-server",
+      "type": "quiz.single_choice",
+      "title": "Сервер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-validate"
+      ],
+      "presentation": {
+        "question": "Нужна ли проверка на сервере, если форма уже проверена во Vue?",
+        "options": [
+          {
+            "id": "yes",
+            "text": "Да, запрос можно отправить в обход формы"
+          },
+          {
+            "id": "no",
+            "text": "Нет"
+          },
+          {
+            "id": "ts",
+            "text": "Только с TypeScript"
+          },
+          {
+            "id": "https",
+            "text": "Только без HTTPS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "yes",
+        "explanation": "Браузерная проверка — для удобства."
+      }
+    },
+    {
+      "slug": "cn-show",
+      "type": "quiz.single_choice",
+      "title": "v-show",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-if"
+      ],
+      "presentation": {
+        "question": "Что делает v-show при ложном условии?",
+        "options": [
+          {
+            "id": "hide",
+            "text": "Оставляет элемент в DOM, скрывая через display: none"
+          },
+          {
+            "id": "remove",
+            "text": "Удаляет элемент из DOM"
+          },
+          {
+            "id": "error",
+            "text": "Ошибка"
+          },
+          {
+            "id": "opacity",
+            "text": "Делает прозрачным"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hide",
+        "explanation": "v-if удаляет."
+      }
+    },
+    {
+      "slug": "cn-tabs",
+      "type": "quiz.single_choice",
+      "title": "Вкладки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-if"
+      ],
+      "presentation": {
+        "question": "Что лучше для вкладок, которые переключают постоянно?",
+        "options": [
+          {
+            "id": "show",
+            "text": "v-show"
+          },
+          {
+            "id": "if",
+            "text": "v-if"
+          },
+          {
+            "id": "for",
+            "text": "v-for"
+          },
+          {
+            "id": "model",
+            "text": "v-model"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "show",
+        "explanation": "Переключение дешёвое."
+      }
+    },
+    {
+      "slug": "cn-else",
+      "type": "quiz.single_choice",
+      "title": "v-else",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-if"
+      ],
+      "presentation": {
+        "question": "Где должен стоять элемент с v-else?",
+        "options": [
+          {
+            "id": "next",
+            "text": "Сразу после элемента с v-if или v-else-if"
+          },
+          {
+            "id": "any",
+            "text": "Где угодно"
+          },
+          {
+            "id": "first",
+            "text": "Перед v-if"
+          },
+          {
+            "id": "parent",
+            "text": "В родителе"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "next",
+        "explanation": "Иначе Vue не свяжет их."
+      }
+    },
+    {
+      "slug": "vf-key",
+      "type": "quiz.single_choice",
+      "title": "key",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-for"
+      ],
+      "presentation": {
+        "question": "Что лучше всего использовать как key в v-for?",
+        "options": [
+          {
+            "id": "id",
+            "text": "Уникальный id элемента из данных"
+          },
+          {
+            "id": "index",
+            "text": "Индекс в массиве"
+          },
+          {
+            "id": "random",
+            "text": "Math.random()"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "id",
+        "explanation": "Ключ должен быть стабильным."
+      }
+    },
+    {
+      "slug": "vf-if",
+      "type": "quiz.single_choice",
+      "title": "Фильтр",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-for"
+      ],
+      "presentation": {
+        "question": "Как показать только пройденные уроки в v-for?",
+        "options": [
+          {
+            "id": "computed",
+            "text": "Отфильтровать список в computed и перебрать его"
+          },
+          {
+            "id": "sameif",
+            "text": "v-if на том же элементе, что v-for"
+          },
+          {
+            "id": "css",
+            "text": "Скрыть через CSS"
+          },
+          {
+            "id": "slice",
+            "text": "Обрезать массив вручную в шаблоне"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "computed",
+        "explanation": "Не смешивай v-for и v-if."
+      }
+    },
+    {
+      "slug": "vf-n",
+      "type": "quiz.single_choice",
+      "title": "Повтор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-for"
+      ],
+      "presentation": {
+        "question": "Что выведет `<span v-for=\"n in 3\">{{ n }}</span>`?",
+        "options": [
+          {
+            "id": "123",
+            "text": "1 2 3"
+          },
+          {
+            "id": "012",
+            "text": "0 1 2"
+          },
+          {
+            "id": "3",
+            "text": "3"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "123",
+        "explanation": "Счёт с единицы."
+      }
+    },
+    {
+      "slug": "tr-css",
+      "type": "quiz.single_choice",
+      "title": "Где анимация",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-transition"
+      ],
+      "presentation": {
+        "question": "Где описывается сама анимация в Transition?",
+        "options": [
+          {
+            "id": "css",
+            "text": "В CSS через классы enter и leave"
+          },
+          {
+            "id": "js",
+            "text": "Только в JavaScript"
+          },
+          {
+            "id": "template",
+            "text": "В шаблоне атрибутами"
+          },
+          {
+            "id": "router",
+            "text": "В роутере"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "css",
+        "explanation": "Vue только ставит классы."
+      }
+    },
+    {
+      "slug": "tr-group",
+      "type": "quiz.single_choice",
+      "title": "Список",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-transition"
+      ],
+      "presentation": {
+        "question": "Что использовать для анимации добавления в список v-for?",
+        "options": [
+          {
+            "id": "group",
+            "text": "TransitionGroup"
+          },
+          {
+            "id": "transition",
+            "text": "Transition вокруг каждого элемента без ключей"
+          },
+          {
+            "id": "keep",
+            "text": "KeepAlive"
+          },
+          {
+            "id": "teleport",
+            "text": "Teleport"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "group",
+        "explanation": "С обязательными key."
+      }
+    },
+    {
+      "slug": "tr-reduce",
+      "type": "quiz.single_choice",
+      "title": "Доступность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-transition"
+      ],
+      "presentation": {
+        "question": "Зачем учитывать prefers-reduced-motion?",
+        "options": [
+          {
+            "id": "motion",
+            "text": "Некоторым людям анимации вредят — их нужно отключать по настройке системы"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "motion",
+        "explanation": "Медиазапрос в CSS."
+      }
+    },
+    {
+      "slug": "lc-dom",
+      "type": "quiz.single_choice",
+      "title": "DOM",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-lifecycle"
+      ],
+      "presentation": {
+        "question": "Когда можно обращаться к DOM-элементам компонента?",
+        "options": [
+          {
+            "id": "mounted",
+            "text": "В onMounted и позже"
+          },
+          {
+            "id": "setup",
+            "text": "Сразу в script setup"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "created",
+            "text": "Только до создания"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mounted",
+        "explanation": "До этого их ещё нет."
+      }
+    },
+    {
+      "slug": "lc-clean",
+      "type": "quiz.single_choice",
+      "title": "Очистка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-lifecycle"
+      ],
+      "presentation": {
+        "question": "Где останавливать setInterval компонента?",
+        "options": [
+          {
+            "id": "unmounted",
+            "text": "В onUnmounted"
+          },
+          {
+            "id": "mounted",
+            "text": "В onMounted"
+          },
+          {
+            "id": "template",
+            "text": "В шаблоне"
+          },
+          {
+            "id": "never",
+            "text": "Его не нужно останавливать"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "unmounted",
+        "explanation": "Иначе таймер живёт после компонента."
+      }
+    },
+    {
+      "slug": "lc-ref",
+      "type": "quiz.single_choice",
+      "title": "ref на элемент",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-lifecycle"
+      ],
+      "presentation": {
+        "question": "Как получить доступ к input для фокуса?",
+        "options": [
+          {
+            "id": "ref",
+            "text": "Атрибут ref=\"input\" и const input = ref(null)"
+          },
+          {
+            "id": "id",
+            "text": "Только document.getElementById"
+          },
+          {
+            "id": "query",
+            "text": "querySelector в setup"
+          },
+          {
+            "id": "none",
+            "text": "Нельзя"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ref",
+        "explanation": "Доступен после монтирования."
+      }
+    },
+    {
+      "slug": "cm-what",
+      "type": "quiz.single_choice",
+      "title": "Composable",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-composables"
+      ],
+      "presentation": {
+        "question": "Что такое composable?",
+        "options": [
+          {
+            "id": "fn",
+            "text": "Функция, которая использует Composition API и возвращает реактивные значения"
+          },
+          {
+            "id": "component",
+            "text": "Особый компонент"
+          },
+          {
+            "id": "plugin",
+            "text": "Плагин сборщика"
+          },
+          {
+            "id": "css",
+            "text": "CSS-модуль"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fn",
+        "explanation": "Начинается с use."
+      }
+    },
+    {
+      "slug": "cm-where",
+      "type": "quiz.single_choice",
+      "title": "Где вызывать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-composables"
+      ],
+      "presentation": {
+        "question": "Где вызывают composable?",
+        "options": [
+          {
+            "id": "setup",
+            "text": "В script setup компонента или другом composable"
+          },
+          {
+            "id": "template",
+            "text": "В шаблоне"
+          },
+          {
+            "id": "css",
+            "text": "В стилях"
+          },
+          {
+            "id": "main",
+            "text": "Только в main.js"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "setup",
+        "explanation": "Там работают хуки."
+      }
+    },
+    {
+      "slug": "cm-vueuse",
+      "type": "quiz.single_choice",
+      "title": "VueUse",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-composables"
+      ],
+      "presentation": {
+        "question": "Что такое VueUse?",
+        "options": [
+          {
+            "id": "lib",
+            "text": "Коллекция готовых composables"
+          },
+          {
+            "id": "router",
+            "text": "Роутер"
+          },
+          {
+            "id": "store",
+            "text": "Хранилище"
+          },
+          {
+            "id": "cli",
+            "text": "Командная строка Vue"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lib",
+        "explanation": "useLocalStorage, useDark…"
+      }
+    },
+    {
+      "slug": "pi-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-provide"
+      ],
+      "presentation": {
+        "question": "Какую проблему решает provide/inject?",
+        "options": [
+          {
+            "id": "drill",
+            "text": "Передачу данных через много уровней без цепочки props"
+          },
+          {
+            "id": "speed",
+            "text": "Скорость отрисовки"
+          },
+          {
+            "id": "css",
+            "text": "Стили"
+          },
+          {
+            "id": "route",
+            "text": "Маршрутизацию"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "drill",
+        "explanation": "Prop drilling."
+      }
+    },
+    {
+      "slug": "pi-reactive",
+      "type": "quiz.single_choice",
+      "title": "Реактивность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-provide"
+      ],
+      "presentation": {
+        "question": "Как сделать, чтобы потомки видели изменения переданного значения?",
+        "options": [
+          {
+            "id": "ref",
+            "text": "Передать ref или reactive"
+          },
+          {
+            "id": "string",
+            "text": "Передать строку"
+          },
+          {
+            "id": "copy",
+            "text": "Передать копию"
+          },
+          {
+            "id": "none",
+            "text": "Невозможно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ref",
+        "explanation": "Обычное значение не обновится."
+      }
+    },
+    {
+      "slug": "pi-store",
+      "type": "quiz.single_choice",
+      "title": "Или хранилище",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-provide"
+      ],
+      "presentation": {
+        "question": "Когда лучше взять Pinia вместо provide/inject?",
+        "options": [
+          {
+            "id": "global",
+            "text": "Когда данные нужны во всём приложении и меняются из многих мест"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "small",
+            "text": "Для одного компонента"
+          },
+          {
+            "id": "css",
+            "text": "Для стилей"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "global",
+        "explanation": "provide — для поддерева."
+      }
+    },
+    {
+      "slug": "rt-view",
+      "type": "quiz.single_choice",
+      "title": "Где страница",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-routes"
+      ],
+      "presentation": {
+        "question": "Где показывается компонент текущего маршрута?",
+        "options": [
+          {
+            "id": "view",
+            "text": "В RouterView"
+          },
+          {
+            "id": "link",
+            "text": "В RouterLink"
+          },
+          {
+            "id": "app",
+            "text": "Всегда вместо всего App"
+          },
+          {
+            "id": "head",
+            "text": "В head"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "view",
+        "explanation": "Остальная разметка App остаётся."
+      }
+    },
+    {
+      "slug": "rt-link",
+      "type": "quiz.single_choice",
+      "title": "Ссылка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-routes"
+      ],
+      "presentation": {
+        "question": "Чем RouterLink лучше обычного a href?",
+        "options": [
+          {
+            "id": "spa",
+            "text": "Переход без перезагрузки страницы"
+          },
+          {
+            "id": "color",
+            "text": "Другой цвет"
+          },
+          {
+            "id": "seo",
+            "text": "Поисковики видят только RouterLink"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "spa",
+        "explanation": "И класс активной ссылки."
+      }
+    },
+    {
+      "slug": "rt-404",
+      "type": "quiz.single_choice",
+      "title": "Прямой заход",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-routes"
+      ],
+      "presentation": {
+        "question": "Почему при прямом заходе на /courses хостинг может вернуть 404?",
+        "options": [
+          {
+            "id": "server",
+            "text": "Сервер ищет файл courses, а должен вернуть index.html"
+          },
+          {
+            "id": "router",
+            "text": "Ошибка роутера"
+          },
+          {
+            "id": "dns",
+            "text": "DNS"
+          },
+          {
+            "id": "css",
+            "text": "Стили"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "server",
+        "explanation": "Нужна настройка перенаправления на index.html."
+      }
+    },
+    {
+      "slug": "rp-param",
+      "type": "quiz.single_choice",
+      "title": "Параметр",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-params"
+      ],
+      "presentation": {
+        "question": "Как получить slug из адреса /courses/python?",
+        "options": [
+          {
+            "id": "params",
+            "text": "`useRoute().params.slug`"
+          },
+          {
+            "id": "query",
+            "text": "`useRoute().query.slug`"
+          },
+          {
+            "id": "window",
+            "text": "`window.slug`"
+          },
+          {
+            "id": "props",
+            "text": "Только через props"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "params",
+        "explanation": "query — для ?ключ=значение."
+      }
+    },
+    {
+      "slug": "rp-push",
+      "type": "quiz.single_choice",
+      "title": "Перейти",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-params"
+      ],
+      "presentation": {
+        "question": "Как перейти на /done из кода?",
+        "options": [
+          {
+            "id": "push",
+            "text": "`useRouter().push(\"/done\")`"
+          },
+          {
+            "id": "href",
+            "text": "`location.href` обязательно"
+          },
+          {
+            "id": "route",
+            "text": "`useRoute().go`"
+          },
+          {
+            "id": "link",
+            "text": "`RouterLink(\"/done\")`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "push",
+        "explanation": "router.back() — назад."
+      }
+    },
+    {
+      "slug": "rp-filters",
+      "type": "quiz.single_choice",
+      "title": "Фильтры",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-params"
+      ],
+      "presentation": {
+        "question": "Почему фильтры удобно хранить в query?",
+        "options": [
+          {
+            "id": "url",
+            "text": "Они сохраняются в адресе: можно обновить страницу и поделиться ссылкой"
+          },
+          {
+            "id": "speed",
+            "text": "Так быстрее"
+          },
+          {
+            "id": "secure",
+            "text": "Так безопаснее"
+          },
+          {
+            "id": "none",
+            "text": "Не удобно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "url",
+        "explanation": "Состояние в адресе."
+      }
+    },
+    {
+      "slug": "gd-redirect",
+      "type": "quiz.single_choice",
+      "title": "Вход",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-guards"
+      ],
+      "presentation": {
+        "question": "Как отправить неавторизованного пользователя на /login?",
+        "options": [
+          {
+            "id": "guard",
+            "text": "Вернуть адрес /login из router.beforeEach"
+          },
+          {
+            "id": "css",
+            "text": "Скрыть страницу CSS"
+          },
+          {
+            "id": "alert",
+            "text": "Показать alert"
+          },
+          {
+            "id": "reload",
+            "text": "Перезагрузить страницу"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "guard",
+        "explanation": "Охранник маршрута."
+      }
+    },
+    {
+      "slug": "gd-lazy",
+      "type": "quiz.single_choice",
+      "title": "Ленивая загрузка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-guards"
+      ],
+      "presentation": {
+        "question": "Что даёт `component: () => import(\"./Admin.vue\")`?",
+        "options": [
+          {
+            "id": "lazy",
+            "text": "Код страницы загрузится только при первом переходе"
+          },
+          {
+            "id": "fast",
+            "text": "Страница всегда грузится первой"
+          },
+          {
+            "id": "ssr",
+            "text": "Серверную отрисовку"
+          },
+          {
+            "id": "error",
+            "text": "Ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lazy",
+        "explanation": "Лёгкий старт приложения."
+      }
+    },
+    {
+      "slug": "gd-api",
+      "type": "quiz.single_choice",
+      "title": "Безопасность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-guards"
+      ],
+      "presentation": {
+        "question": "Защищают ли охранники маршрутов данные на сервере?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, права обязан проверять API"
+          },
+          {
+            "id": "yes",
+            "text": "Да, полностью"
+          },
+          {
+            "id": "https",
+            "text": "Да, на HTTPS"
+          },
+          {
+            "id": "meta",
+            "text": "Да, если есть meta"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Это удобство интерфейса."
+      }
+    },
+    {
+      "slug": "pn-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-pinia"
+      ],
+      "presentation": {
+        "question": "Когда нужно хранилище Pinia?",
+        "options": [
+          {
+            "id": "shared",
+            "text": "Когда данные нужны многим компонентам в разных частях приложения"
+          },
+          {
+            "id": "local",
+            "text": "Для состояния одной кнопки"
+          },
+          {
+            "id": "css",
+            "text": "Для стилей"
+          },
+          {
+            "id": "route",
+            "text": "Для маршрутов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "shared",
+        "explanation": "Корзина, пользователь, настройки."
+      }
+    },
+    {
+      "slug": "pn-refs",
+      "type": "quiz.single_choice",
+      "title": "storeToRefs",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-pinia"
+      ],
+      "presentation": {
+        "question": "Зачем storeToRefs?",
+        "options": [
+          {
+            "id": "reactive",
+            "text": "Деструктурировать состояние хранилища без потери реактивности"
+          },
+          {
+            "id": "save",
+            "text": "Сохранить хранилище на диск"
+          },
+          {
+            "id": "reset",
+            "text": "Сбросить хранилище"
+          },
+          {
+            "id": "copy",
+            "text": "Скопировать в другой store"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "reactive",
+        "explanation": "Действия берут напрямую."
+      }
+    },
+    {
+      "slug": "pn-getter",
+      "type": "quiz.single_choice",
+      "title": "Геттер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-pinia"
+      ],
+      "presentation": {
+        "question": "Чем в хранилище стиля setup является геттер?",
+        "options": [
+          {
+            "id": "computed",
+            "text": "computed"
+          },
+          {
+            "id": "ref",
+            "text": "ref"
+          },
+          {
+            "id": "watch",
+            "text": "watch"
+          },
+          {
+            "id": "method",
+            "text": "Обычным полем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "computed",
+        "explanation": "Состояние — ref, действия — функции."
+      }
+    },
+    {
+      "slug": "sp-split",
+      "type": "quiz.single_choice",
+      "title": "Разделение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-storepatterns"
+      ],
+      "presentation": {
+        "question": "Как лучше организовать состояние большого приложения?",
+        "options": [
+          {
+            "id": "areas",
+            "text": "Несколько хранилищ по предметным областям"
+          },
+          {
+            "id": "one",
+            "text": "Одно огромное хранилище на всё"
+          },
+          {
+            "id": "global",
+            "text": "Глобальные переменные window"
+          },
+          {
+            "id": "props",
+            "text": "Только props"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "areas",
+        "explanation": "useAuth, useCart…"
+      }
+    },
+    {
+      "slug": "sp-async",
+      "type": "quiz.single_choice",
+      "title": "Запрос",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-storepatterns"
+      ],
+      "presentation": {
+        "question": "Где удобно делать загрузку данных для хранилища?",
+        "options": [
+          {
+            "id": "action",
+            "text": "В асинхронном действии хранилища"
+          },
+          {
+            "id": "getter",
+            "text": "В геттере"
+          },
+          {
+            "id": "template",
+            "text": "В шаблоне"
+          },
+          {
+            "id": "css",
+            "text": "В стилях"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "action",
+        "explanation": "С флагами loading и error."
+      }
+    },
+    {
+      "slug": "sp-local",
+      "type": "quiz.single_choice",
+      "title": "Локальное",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-storepatterns"
+      ],
+      "presentation": {
+        "question": "Где хранить состояние «открыто ли выпадающее меню»?",
+        "options": [
+          {
+            "id": "component",
+            "text": "В самом компоненте меню"
+          },
+          {
+            "id": "pinia",
+            "text": "Обязательно в Pinia"
+          },
+          {
+            "id": "server",
+            "text": "На сервере"
+          },
+          {
+            "id": "cookie",
+            "text": "В cookie"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "component",
+        "explanation": "Не всё нужно делать глобальным."
+      }
+    },
+    {
+      "slug": "tv-props",
+      "type": "quiz.single_choice",
+      "title": "Типы props",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-ts"
+      ],
+      "presentation": {
+        "question": "Как описать props с типами в script setup lang=\"ts\"?",
+        "options": [
+          {
+            "id": "generic",
+            "text": "`defineProps<{ title: string }>()`"
+          },
+          {
+            "id": "proptypes",
+            "text": "`PropTypes.string`"
+          },
+          {
+            "id": "interface",
+            "text": "Только interface Props без defineProps"
+          },
+          {
+            "id": "any",
+            "text": "Типы props не поддерживаются"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "generic",
+        "explanation": "Типовой параметр."
+      }
+    },
+    {
+      "slug": "tv-tsc",
+      "type": "quiz.single_choice",
+      "title": "Проверка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-ts"
+      ],
+      "presentation": {
+        "question": "Чем проверить типы в шаблонах .vue?",
+        "options": [
+          {
+            "id": "vuetsc",
+            "text": "vue-tsc"
+          },
+          {
+            "id": "tsc",
+            "text": "Только обычным tsc"
+          },
+          {
+            "id": "eslint",
+            "text": "Только ESLint"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "vuetsc",
+        "explanation": "Запускают в CI."
+      }
+    },
+    {
+      "slug": "tv-ref",
+      "type": "quiz.single_choice",
+      "title": "ref с типом",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-ts"
+      ],
+      "presentation": {
+        "question": "Как объявить ref, в котором будет User или null?",
+        "options": [
+          {
+            "id": "typed",
+            "text": "`ref<User | null>(null)`"
+          },
+          {
+            "id": "any",
+            "text": "`ref(any)`"
+          },
+          {
+            "id": "cast",
+            "text": "`ref(null as string)`"
+          },
+          {
+            "id": "no",
+            "text": "Нельзя"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "typed",
+        "explanation": "Редактор подскажет поля."
+      }
+    },
+    {
+      "slug": "fe-states",
+      "type": "quiz.single_choice",
+      "title": "Состояния",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-fetch"
+      ],
+      "presentation": {
+        "question": "Какие состояния должен учитывать интерфейс при загрузке?",
+        "options": [
+          {
+            "id": "three",
+            "text": "Загрузка, ошибка и данные (и пустой результат)"
+          },
+          {
+            "id": "one",
+            "text": "Только данные"
+          },
+          {
+            "id": "two",
+            "text": "Только загрузка и данные"
+          },
+          {
+            "id": "none",
+            "text": "Никакие"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "three",
+        "explanation": "Пользователь понимает, что происходит."
+      }
+    },
+    {
+      "slug": "fe-param",
+      "type": "quiz.single_choice",
+      "title": "Смена параметра",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-fetch"
+      ],
+      "presentation": {
+        "question": "Почему при переходе с /courses/a на /courses/b могут остаться старые данные?",
+        "options": [
+          {
+            "id": "reuse",
+            "text": "Компонент переиспользуется, и загрузка не повторяется без watch"
+          },
+          {
+            "id": "cache",
+            "text": "Браузер кэширует"
+          },
+          {
+            "id": "server",
+            "text": "Сервер медленный"
+          },
+          {
+            "id": "css",
+            "text": "Из-за CSS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "reuse",
+        "explanation": "Следи за route.params."
+      }
+    },
+    {
+      "slug": "fe-composable",
+      "type": "quiz.single_choice",
+      "title": "Повтор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-fetch"
+      ],
+      "presentation": {
+        "question": "Как не повторять код загрузки в каждом компоненте?",
+        "options": [
+          {
+            "id": "composable",
+            "text": "Вынести в composable вроде useFetch"
+          },
+          {
+            "id": "copy",
+            "text": "Копировать"
+          },
+          {
+            "id": "global",
+            "text": "Глобальная переменная"
+          },
+          {
+            "id": "mixin",
+            "text": "Только миксин"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "composable",
+        "explanation": "Одна строка в компоненте."
+      }
+    },
+    {
+      "slug": "ac-keep",
+      "type": "quiz.single_choice",
+      "title": "KeepAlive",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-async"
+      ],
+      "presentation": {
+        "question": "Что делает KeepAlive?",
+        "options": [
+          {
+            "id": "cache",
+            "text": "Сохраняет состояние компонента при переключении"
+          },
+          {
+            "id": "ping",
+            "text": "Держит соединение с сервером"
+          },
+          {
+            "id": "timer",
+            "text": "Запускает таймер"
+          },
+          {
+            "id": "log",
+            "text": "Пишет логи"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cache",
+        "explanation": "Прокрутка и ввод сохраняются."
+      }
+    },
+    {
+      "slug": "ac-teleport",
+      "type": "quiz.single_choice",
+      "title": "Teleport",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-async"
+      ],
+      "presentation": {
+        "question": "Зачем модальному окну Teleport to=\"body\"?",
+        "options": [
+          {
+            "id": "escape",
+            "text": "Чтобы окно не обрезалось и не перекрывалось стилями родителя"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "route",
+            "text": "Для маршрута"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "escape",
+        "explanation": "Логика внутри, разметка — в body."
+      }
+    },
+    {
+      "slug": "ac-async",
+      "type": "quiz.single_choice",
+      "title": "Async-компонент",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-async"
+      ],
+      "presentation": {
+        "question": "Что даёт defineAsyncComponent?",
+        "options": [
+          {
+            "id": "lazy",
+            "text": "Код компонента загружается только при первом показе"
+          },
+          {
+            "id": "ssr",
+            "text": "Серверный рендеринг"
+          },
+          {
+            "id": "sync",
+            "text": "Синхронную загрузку"
+          },
+          {
+            "id": "test",
+            "text": "Тесты"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lazy",
+        "explanation": "Лёгкий старт."
+      }
+    },
+    {
+      "slug": "sn-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем SSR",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-ssr"
+      ],
+      "presentation": {
+        "question": "Чем SSR лучше для интернет-магазина?",
+        "options": [
+          {
+            "id": "seo",
+            "text": "Поисковики и превью сразу видят содержимое, первый показ быстрее"
+          },
+          {
+            "id": "cheap",
+            "text": "Сервер не нужен"
+          },
+          {
+            "id": "simple",
+            "text": "Код всегда проще"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "seo",
+        "explanation": "HTML готов сразу."
+      }
+    },
+    {
+      "slug": "sn-nuxt",
+      "type": "quiz.single_choice",
+      "title": "Nuxt",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-ssr"
+      ],
+      "presentation": {
+        "question": "Что такое Nuxt?",
+        "options": [
+          {
+            "id": "framework",
+            "text": "Фреймворк поверх Vue с маршрутами из файлов и SSR"
+          },
+          {
+            "id": "db",
+            "text": "База данных"
+          },
+          {
+            "id": "css",
+            "text": "CSS-библиотека"
+          },
+          {
+            "id": "test",
+            "text": "Библиотека тестов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "framework",
+        "explanation": "Аналог Next.js."
+      }
+    },
+    {
+      "slug": "sn-hydr",
+      "type": "quiz.single_choice",
+      "title": "Гидратация",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-ssr"
+      ],
+      "presentation": {
+        "question": "Что такое гидратация?",
+        "options": [
+          {
+            "id": "alive",
+            "text": "Браузер подключает интерактивность к HTML, пришедшему с сервера"
+          },
+          {
+            "id": "water",
+            "text": "Охлаждение сервера"
+          },
+          {
+            "id": "cache",
+            "text": "Очистка кэша"
+          },
+          {
+            "id": "build",
+            "text": "Сборка проекта"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "alive",
+        "explanation": "HTML оживает."
+      }
+    },
+    {
+      "slug": "tv2-how",
+      "type": "quiz.single_choice",
+      "title": "Как тестировать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-testing"
+      ],
+      "presentation": {
+        "question": "Что проверяет хороший тест компонента?",
+        "options": [
+          {
+            "id": "behavior",
+            "text": "Поведение глазами пользователя: клик → текст"
+          },
+          {
+            "id": "internals",
+            "text": "Внутренние переменные"
+          },
+          {
+            "id": "css",
+            "text": "Точные пиксели"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "behavior",
+        "explanation": "Так тесты не ломаются от рефакторинга."
+      }
+    },
+    {
+      "slug": "tv2-store",
+      "type": "quiz.single_choice",
+      "title": "Хранилище",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-testing"
+      ],
+      "presentation": {
+        "question": "Как тестировать хранилище Pinia?",
+        "options": [
+          {
+            "id": "direct",
+            "text": "Напрямую: создать pinia, вызвать действие, проверить состояние"
+          },
+          {
+            "id": "browser",
+            "text": "Только в браузере"
+          },
+          {
+            "id": "manual",
+            "text": "Только вручную"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "direct",
+        "explanation": "Быстро и без компонентов."
+      }
+    },
+    {
+      "slug": "tv2-e2e",
+      "type": "quiz.single_choice",
+      "title": "Сквозной",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-testing"
+      ],
+      "presentation": {
+        "question": "Что лучше проверять сквозными тестами?",
+        "options": [
+          {
+            "id": "flows",
+            "text": "Главные сценарии: вход, покупка, прохождение урока"
+          },
+          {
+            "id": "all",
+            "text": "Каждую функцию"
+          },
+          {
+            "id": "css",
+            "text": "Цвета кнопок"
+          },
+          {
+            "id": "types",
+            "text": "Типы"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "flows",
+        "explanation": "Их немного, но они важные."
+      }
+    },
+    {
+      "slug": "pa-virtual",
+      "type": "quiz.single_choice",
+      "title": "10 000 строк",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-perf"
+      ],
+      "presentation": {
+        "question": "Как показать список из 10 000 строк без тормозов?",
+        "options": [
+          {
+            "id": "virtual",
+            "text": "Виртуализация: рисовать только видимые строки"
+          },
+          {
+            "id": "all",
+            "text": "Рисовать всё сразу"
+          },
+          {
+            "id": "pages",
+            "text": "Только постраничный вывод по 1 строке"
+          },
+          {
+            "id": "css",
+            "text": "Уменьшить шрифт"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "virtual",
+        "explanation": "vue-virtual-scroller, TanStack Virtual."
+      }
+    },
+    {
+      "slug": "pa-shallow",
+      "type": "quiz.single_choice",
+      "title": "shallowRef",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-perf"
+      ],
+      "presentation": {
+        "question": "Когда полезен shallowRef?",
+        "options": [
+          {
+            "id": "big",
+            "text": "Для больших данных, которые заменяют целиком"
+          },
+          {
+            "id": "small",
+            "text": "Для маленьких счётчиков"
+          },
+          {
+            "id": "forms",
+            "text": "Для полей форм"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "big",
+        "explanation": "Не следит за глубокими изменениями."
+      }
+    },
+    {
+      "slug": "pa-a11y",
+      "type": "quiz.multiple_choice",
+      "title": "Доступность",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "vue-perf"
+      ],
+      "presentation": {
+        "question": "Что делает интерфейс доступнее?",
+        "options": [
+          {
+            "id": "button",
+            "text": "Настоящие элементы button вместо div с кликом"
+          },
+          {
+            "id": "label",
+            "text": "label у полей ввода"
+          },
+          {
+            "id": "focus",
+            "text": "Видимый фокус и управление с клавиатуры"
+          },
+          {
+            "id": "tiny",
+            "text": "Очень мелкий серый текст"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "button",
+          "label",
+          "focus"
+        ],
+        "explanation": "Мелкий серый текст мешает читать."
+      }
+    },
+    {
+      "slug": "dv-env",
+      "type": "quiz.single_choice",
+      "title": "Переменные",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-deploy"
+      ],
+      "presentation": {
+        "question": "Какие переменные окружения попадают в код фронтенда на Vite?",
+        "options": [
+          {
+            "id": "vite",
+            "text": "Только с префиксом VITE_"
+          },
+          {
+            "id": "all",
+            "text": "Все из .env"
+          },
+          {
+            "id": "none",
+            "text": "Никакие"
+          },
+          {
+            "id": "secret",
+            "text": "Только SECRET_"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "vite",
+        "explanation": "Их видят все посетители."
+      }
+    },
+    {
+      "slug": "dv-rewrite",
+      "type": "quiz.single_choice",
+      "title": "404 при обновлении",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-deploy"
+      ],
+      "presentation": {
+        "question": "Что настроить на хостинге для createWebHistory?",
+        "options": [
+          {
+            "id": "rewrite",
+            "text": "Отдавать index.html на любые пути"
+          },
+          {
+            "id": "https",
+            "text": "Только HTTPS"
+          },
+          {
+            "id": "cache",
+            "text": "Отключить кэш"
+          },
+          {
+            "id": "cors",
+            "text": "CORS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rewrite",
+        "explanation": "Маршруты знает приложение, не сервер."
+      }
+    },
+    {
+      "slug": "dv-hash",
+      "type": "quiz.single_choice",
+      "title": "Хэши в именах",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "vue-deploy"
+      ],
+      "presentation": {
+        "question": "Зачем хэши в именах файлов сборки?",
+        "options": [
+          {
+            "id": "cache",
+            "text": "Чтобы надолго кэшировать файлы и сразу получать новые после выпуска"
+          },
+          {
+            "id": "secure",
+            "text": "Для шифрования"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cache",
+        "explanation": "Новое имя — новый файл."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "why-vue",
+      "title": "Что такое Vue",
+      "summary": "Прогрессивный фреймворк: декларативные шаблоны, реактивность, компоненты, экосистема.",
+      "chapter": "Старт Vue",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Начинаем курс: знаем JavaScript и знакомимся с фреймворком для интерфейсов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Vue\",\n  \"title\": \"Прогрессивный фреймворк\",\n  \"what\": \"Библиотека для интерфейсов, которую можно подключить к одной странице или построить на ней целое приложение с маршрутами и состоянием.\",\n  \"why\": \"Порог входа низкий, а потолок — высокий.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Декларативность\",\n  \"title\": \"Описываешь результат\",\n  \"what\": \"Шаблон описывает, как интерфейс выглядит при текущих данных. Изменились данные — Vue сам обновил страницу.\",\n  \"why\": \"Не нужно вручную искать элементы и менять их текст.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Реактивность\",\n  \"title\": \"Данные следят за собой\",\n  \"what\": \"Vue отслеживает, какие данные использует шаблон, и перерисовывает только то, что от них зависит.\",\n  \"why\": \"Быстро без ручной оптимизации.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Экосистема\",\n  \"title\": \"Всё официальное\",\n  \"what\": \"Vue Router — маршруты, Pinia — состояние, Vite — сборка, Nuxt — серверный рендеринг. Всё поддерживается одной командой.\",\n  \"why\": \"Не нужно выбирать из десятка конкурирующих библиотек.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Vue — декларативные шаблоны и реактивность. Официальные Router, Pinia и Vite закрывают остальное."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wv-decl",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wv-eco",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wv-progressive",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "create-vue",
+      "title": "Новый проект",
+      "summary": "npm create vue, Vite, структура проекта, main.js и createApp, dev и build.",
+      "chapter": "Старт Vue",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем, что такое Vue, и создаём первый проект.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"npm create vue\",\n  \"title\": \"Мастер проекта\",\n  \"what\": \"`npm create vue@latest` спрашивает про TypeScript, Router, Pinia, тесты и создаёт проект на Vite.\",\n  \"why\": \"Готовая настройка за минуту.\",\n  \"how\": \"$ npm create vue@latest my-app\\n✔ Add TypeScript? Yes\\n✔ Add Vue Router? Yes\\n✔ Add Pinia? Yes\\n$ cd my-app && npm install && npm run dev\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"createApp\",\n  \"title\": \"Точка входа\",\n  \"what\": \"main.js создаёт приложение из корневого компонента и монтирует его в элемент страницы.\",\n  \"why\": \"Отсюда подключают роутер и хранилище.\",\n  \"how\": \"import { createApp } from \\\"vue\\\";\\nimport App from \\\"./App.vue\\\";\\n\\ncreateApp(App).mount(\\\"#app\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Vite\",\n  \"title\": \"Быстрая сборка\",\n  \"what\": \"Сервер разработки стартует мгновенно и обновляет изменённый компонент без перезагрузки страницы.\",\n  \"why\": \"Правка видна через долю секунды, состояние сохраняется.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"build\",\n  \"title\": \"Сборка для выпуска\",\n  \"what\": \"`npm run build` собирает оптимизированные файлы в папку dist — их можно положить на любой статический хостинг.\",\n  \"why\": \"Готовый сайт без своего сервера.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** npm create vue@latest — старт, npm run dev — разработка, npm run build — выпуск."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cv-cmd",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cv-mount",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cv-dist",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "sfc",
+      "title": "Однофайловый компонент",
+      "summary": "Файл .vue: template, script setup и style scoped, расширение редактора Vue.",
+      "chapter": "Старт Vue",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Создали проект и разбираем, из чего состоит компонент.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \".vue-файл\",\n  \"title\": \"Три части\",\n  \"what\": \"template — разметка, script setup — логика, style scoped — стили только этого компонента.\",\n  \"why\": \"Всё про один кусок интерфейса — в одном файле.\",\n  \"how\": \"<script setup>\\nimport { ref } from \\\"vue\\\";\\nconst count = ref(0);\\n</script>\\n\\n<template>\\n  <button @click=\\\"count++\\\">Нажато {{ count }} раз</button>\\n</template>\\n\\n<style scoped>\\nbutton { font-weight: 600; }\\n</style>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"script setup\",\n  \"title\": \"Короткий синтаксис\",\n  \"what\": \"Всё, что объявлено в script setup, сразу доступно в шаблоне. Импортированные компоненты используются без регистрации.\",\n  \"why\": \"Меньше шаблонного кода.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"scoped\",\n  \"title\": \"Стили не протекают\",\n  \"what\": \"Vue добавляет уникальный атрибут элементам компонента, и стили применяются только к ним.\",\n  \"why\": \"Класс .title в двух компонентах не конфликтует.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Редактор\",\n  \"title\": \"Расширение Vue (Official)\",\n  \"what\": \"Подсветка, подсказки и проверка типов в шаблонах в VS Code.\",\n  \"why\": \"Ошибки в шаблоне видны до запуска.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Компонент .vue: template, script setup, style scoped."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sf-parts",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sf-scoped",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sf-setup",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "interpolation",
+      "title": "Вывод данных",
+      "summary": "Двойные фигурные скобки, выражения, v-text и v-html и почему v-html опасен.",
+      "chapter": "Шаблоны",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем устройство компонента и выводим данные в шаблон.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"{{ }}\",\n  \"title\": \"Интерполяция\",\n  \"what\": \"Двойные фигурные скобки выводят значение выражения как текст.\",\n  \"why\": \"Имя пользователя, цена, счётчик.\",\n  \"how\": \"<p>{{ user.name }} прошла {{ done }} из {{ total }} уроков</p>\\n<p>{{ total > 0 ? Math.round(done / total * 100) : 0 }}%</p>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Только выражения\",\n  \"title\": \"Не инструкции\",\n  \"what\": \"Внутри скобок — одно выражение: тернарный оператор, вызов функции. Циклы и if не работают.\",\n  \"why\": \"Сложная логика уходит в computed.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Безопасность\",\n  \"title\": \"Текст экранируется\",\n  \"what\": \"Интерполяция выводит текст, а не HTML: <script> из данных покажется как текст.\",\n  \"why\": \"Защита от XSS по умолчанию.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"v-html\",\n  \"title\": \"Опасно\",\n  \"what\": \"v-html вставляет строку как HTML. Только для доверенного содержимого.\",\n  \"why\": \"Комментарий пользователя через v-html — дыра для атак.\",\n  \"how\": \"<div v-html=\\\"trustedArticleHtml\\\"></div>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n**Главное.** Выводи через {{ }} — это безопасно. v-html — только для своего, проверенного HTML."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ip-xss",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ip-expr",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ip-html",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "bindings",
+      "title": "Привязка атрибутов",
+      "summary": "v-bind и сокращение двоеточие, привязка class и style, логические атрибуты.",
+      "chapter": "Шаблоны",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Выводим текст и привязываем к данным атрибуты.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \":атрибут\",\n  \"title\": \"v-bind\",\n  \"what\": \"`:src=\\\"avatar\\\"` — значение атрибута берётся из данных. Без двоеточия это была бы строка «avatar».\",\n  \"why\": \"Картинки, ссылки, disabled — всё из данных.\",\n  \"how\": \"<img :src=\\\"course.cover\\\" :alt=\\\"course.title\\\" />\\n<button :disabled=\\\"saving\\\">Сохранить</button>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \":class\",\n  \"title\": \"Классы по условию\",\n  \"what\": \"Объект `{ active: isActive, done: progress === 100 }` добавляет класс, когда значение истинно.\",\n  \"why\": \"Подсветить активный пункт и пройденный урок.\",\n  \"how\": \"<li :class=\\\"{ active: lesson.id === currentId, done: lesson.done }\\\">{{ lesson.title }}</li>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \":style\",\n  \"title\": \"Стили из данных\",\n  \"what\": \"`:style=\\\"{ width: progress + '%' }\\\"` — значение свойства из данных.\",\n  \"why\": \"Полоса прогресса нужной ширины.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Логические атрибуты\",\n  \"title\": \"disabled и hidden\",\n  \"what\": \"Если значение ложное, Vue убирает атрибут целиком.\",\n  \"why\": \"Кнопка блокируется только во время сохранения.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Двоеточие перед атрибутом — значение из данных. Классы — объектом условий."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bd-colon",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bd-class",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bd-disabled",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "events",
+      "title": "События",
+      "summary": "v-on и сокращение @, обработчики и аргументы, модификаторы prevent, stop и клавиш.",
+      "chapter": "Шаблоны",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Привязываем атрибуты и реагируем на действия пользователя.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"@click\",\n  \"title\": \"Обработчик\",\n  \"what\": \"`@click=\\\"save\\\"` вызывает метод, `@click=\\\"count++\\\"` — выполняет выражение, `@click=\\\"remove(item.id)\\\"` — с аргументом.\",\n  \"why\": \"Кнопки, ссылки, любые события DOM.\",\n  \"how\": \"<button @click=\\\"addToCart(course.id)\\\">В корзину</button>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \".prevent и .stop\",\n  \"title\": \"Модификаторы\",\n  \"what\": \"`@submit.prevent` отменяет отправку формы с перезагрузкой, `@click.stop` не даёт событию всплыть.\",\n  \"why\": \"Не нужно писать event.preventDefault() вручную.\",\n  \"how\": \"<form @submit.prevent=\\\"login\\\">…</form>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Клавиши\",\n  \"title\": \"@keyup.enter\",\n  \"what\": \"Модификаторы клавиш: .enter, .esc, .ctrl. `@keydown.esc=\\\"close\\\"` закрывает окно по Escape.\",\n  \"why\": \"Удобная клавиатурная навигация.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"$event\",\n  \"title\": \"Само событие\",\n  \"what\": \"В шаблоне объект события доступен как $event: `@input=\\\"onInput($event.target.value)\\\"`.\",\n  \"why\": \"Когда нужны детали события.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** @событие — обработчик. Формы — @submit.prevent. Клавиши — модификаторами."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ev-prevent",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ev-key",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ev-at",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "ref-reactive",
+      "title": "ref и reactive",
+      "summary": "Реактивное значение ref и .value, reactive для объектов, почему нельзя разрушать reactive.",
+      "chapter": "Реактивность",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Реагируем на события и разбираемся, как Vue узнаёт об изменениях данных.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"ref\",\n  \"title\": \"Реактивное значение\",\n  \"what\": \"`const count = ref(0)` — обёртка над значением. В script читают и пишут `count.value`, в шаблоне — просто `count`.\",\n  \"why\": \"Изменил значение — интерфейс обновился сам.\",\n  \"how\": \"import { ref } from \\\"vue\\\";\\n\\nconst count = ref(0);\\nfunction inc() {\\n  count.value++;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"reactive\",\n  \"title\": \"Реактивный объект\",\n  \"what\": \"`const form = reactive({ email: \\\"\\\", agree: false })` — свойства объекта реактивны без .value.\",\n  \"why\": \"Удобно для групп связанных полей.\",\n  \"how\": \"const form = reactive({ email: \\\"\\\", agree: false });\\nform.email = \\\"anna@example.com\\\";\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ловушка деструктуризации\",\n  \"title\": \"Потеря реактивности\",\n  \"what\": \"`const { email } = form` даёт обычную копию значения — она больше не обновляется. Используй toRefs или обращайся через form.email.\",\n  \"why\": \"Частая причина «почему не обновляется».\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"ref или reactive\",\n  \"title\": \"Чаще ref\",\n  \"what\": \"ref работает с любыми значениями и одинаково ведёт себя везде. Многие команды пишут только на ref.\",\n  \"why\": \"Меньше особых случаев.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** ref — для всего, в script через .value. reactive не разрушай деструктуризацией."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rr-value",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rr-destructure",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rr-template",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "computed",
+      "title": "Вычисляемые значения",
+      "summary": "computed с кэшем, зависимости, записываемый computed, когда computed лучше метода.",
+      "chapter": "Реактивность",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Создаём состояние и выводим из него новые значения.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"computed\",\n  \"title\": \"Значение из других\",\n  \"what\": \"computed пересчитывается только когда меняются данные, от которых он зависит, и кэширует результат.\",\n  \"why\": \"Сумма корзины, отфильтрованный список, процент прогресса.\",\n  \"how\": \"const done = computed(() => lessons.value.filter((l) => l.done).length);\\nconst percent = computed(() => Math.round(done.value / lessons.value.length * 100));\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"computed или метод\",\n  \"title\": \"Кэш\",\n  \"what\": \"Метод в шаблоне вызывается при каждой перерисовке, computed — только при изменении зависимостей.\",\n  \"why\": \"Тяжёлую фильтрацию — в computed.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Без побочных эффектов\",\n  \"title\": \"Только вычислять\",\n  \"what\": \"В computed не меняют другие данные и не делают запросов — только возвращают значение.\",\n  \"why\": \"Предсказуемый и легко тестируемый код.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Записываемый computed\",\n  \"title\": \"get и set\",\n  \"what\": \"computed с get и set позволяет присваивать: полное имя разбивается на имя и фамилию.\",\n  \"why\": \"Удобно для v-model на составных данных.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n**Главное.** Всё, что выводится из состояния, — computed. Внутри только вычисление."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-cache",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-side",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-vs",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "watchers",
+      "title": "Наблюдатели",
+      "summary": "watch за значением, старое и новое значение, immediate и deep, watchEffect, отмена.",
+      "chapter": "Реактивность",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Вычисляем значения и реагируем на изменения побочными эффектами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"watch\",\n  \"title\": \"Сделать что-то при изменении\",\n  \"what\": \"watch следит за значением и вызывает функцию с новым и старым значением.\",\n  \"why\": \"Сохранить черновик, загрузить данные при смене фильтра.\",\n  \"how\": \"watch(query, async (q) => {\\n  results.value = await search(q);\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"immediate и deep\",\n  \"title\": \"Настройки\",\n  \"what\": \"immediate: true — вызвать сразу при создании, deep: true — следить за изменениями внутри объекта.\",\n  \"why\": \"Загрузить данные и при открытии, и при смене параметра.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"watchEffect\",\n  \"title\": \"Следить автоматически\",\n  \"what\": \"Запускается сразу и следит за всеми реактивными данными, которые прочитал.\",\n  \"why\": \"Меньше кода, когда зависимостей несколько.\",\n  \"how\": \"watchEffect(() => {\\n  localStorage.setItem(\\\"draft\\\", text.value);\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Гонки запросов\",\n  \"title\": \"Старый ответ позже нового\",\n  \"what\": \"При быстром вводе ответы приходят не по порядку. onCleanup в watch отменяет устаревший запрос.\",\n  \"why\": \"В списке — результаты последнего запроса, а не случайного.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Вычислить — computed, сделать действие — watch. Отменяй устаревшие запросы."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wt-when",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wt-immediate",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wt-race",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "props",
+      "title": "Props",
+      "summary": "defineProps, типы и значения по умолчанию, односторонний поток данных, не менять props.",
+      "chapter": "Компоненты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Владеем реактивностью и делим интерфейс на компоненты.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"defineProps\",\n  \"title\": \"Входные данные\",\n  \"what\": \"Компонент объявляет, какие данные принимает. Родитель передаёт их атрибутами.\",\n  \"why\": \"Одна карточка курса для любого курса.\",\n  \"how\": \"<script setup>\\nconst props = defineProps({\\n  title: { type: String, required: true },\\n  lessons: { type: Number, default: 0 }\\n});\\n</script>\\n\\n<template>\\n  <h3>{{ title }}</h3>\\n  <p>{{ lessons }} уроков</p>\\n</template>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Передача\",\n  \"title\": \"Из родителя\",\n  \"what\": \"`<CourseCard title=\\\"Python\\\" :lessons=\\\"33\\\" />` — число и выражения передают с двоеточием.\",\n  \"why\": \"Без двоеточия придёт строка «33».\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Односторонний поток\",\n  \"title\": \"Сверху вниз\",\n  \"what\": \"props меняет только родитель. Ребёнок не изменяет их — он сообщает о желании изменить событием.\",\n  \"why\": \"Понятно, кто владеет данными.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"TypeScript\",\n  \"title\": \"defineProps<…>()\",\n  \"what\": \"С TypeScript props описывают типом: `defineProps<{ title: string; lessons?: number }>()`.\",\n  \"why\": \"Ошибки в передаче видны в редакторе.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Данные вниз — props. Число и выражения — с двоеточием. props не изменяют."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pp-colon",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pp-mutate",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pp-default",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "emits",
+      "title": "События компонента",
+      "summary": "defineEmits, emit с данными, обработка в родителе, v-model на своём компоненте.",
+      "chapter": "Компоненты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Передаём данные вниз и учимся сообщать о событиях вверх.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"defineEmits\",\n  \"title\": \"Объявить события\",\n  \"what\": \"Компонент объявляет, какие события может отправить, и вызывает emit с данными.\",\n  \"why\": \"Карточка сообщает «добавить в корзину», а решает родитель.\",\n  \"how\": \"<script setup>\\nconst emit = defineEmits([\\\"add\\\"]);\\n</script>\\n\\n<template>\\n  <button @click=\\\"emit('add', course.id)\\\">В корзину</button>\\n</template>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Слушать в родителе\",\n  \"title\": \"@имя\",\n  \"what\": \"`<CourseCard @add=\\\"addToCart\\\" />` — родитель получает данные события аргументом.\",\n  \"why\": \"Связь «ребёнок → родитель» без общих переменных.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"defineModel\",\n  \"title\": \"v-model на своём компоненте\",\n  \"what\": \"defineModel создаёт двустороннюю привязку: родитель пишет `v-model=\\\"rating\\\"`, ребёнок меняет model.value.\",\n  \"why\": \"Свои поля ввода работают как стандартные.\",\n  \"how\": \"<script setup>\\nconst model = defineModel();\\n</script>\\n\\n<template>\\n  <button v-for=\\\"n in 5\\\" :key=\\\"n\\\" @click=\\\"model = n\\\">★</button>\\n</template>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Данные вниз, события вверх\",\n  \"title\": \"Главное правило\",\n  \"what\": \"Родитель передаёт props, ребёнок отправляет события. Так поток данных остаётся понятным.\",\n  \"why\": \"Легко найти, где меняются данные.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Вверх — emit. Двусторонняя привязка своего компонента — defineModel."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "em-up",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "em-listen",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "em-model",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "slots",
+      "title": "Слоты",
+      "summary": "Слот по умолчанию, именованные слоты, слоты с данными, компоненты-обёртки.",
+      "chapter": "Компоненты",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Общаемся событиями и передаём в компоненты целые куски разметки.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"slot\",\n  \"title\": \"Место для содержимого\",\n  \"what\": \"Компонент оставляет `<slot />`, а родитель вкладывает туда любую разметку между тегами.\",\n  \"why\": \"Карточка, модальное окно, кнопка с иконкой — одна обёртка для разного содержимого.\",\n  \"how\": \"<!-- Card.vue -->\\n<div class=\\\"card\\\"><slot /></div>\\n\\n<!-- использование -->\\n<Card><h3>Python</h3><p>33 урока</p></Card>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Именованные слоты\",\n  \"title\": \"header, footer\",\n  \"what\": \"`<slot name=\\\"footer\\\" />` и в родителе `<template #footer>…</template>`.\",\n  \"why\": \"Шапка и подвал модального окна задаются отдельно.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Слот с данными\",\n  \"title\": \"Ребёнок отдаёт данные\",\n  \"what\": \"`<slot :item=\\\"item\\\" />` в цикле, родитель получает `<template #default=\\\"{ item }\\\">`.\",\n  \"why\": \"Список решает, как перебирать, а родитель — как рисовать элемент.\",\n  \"how\": \"<DataList :items=\\\"courses\\\">\\n  <template #default=\\\"{ item }\\\">\\n    <strong>{{ item.title }}</strong>\\n  </template>\\n</DataList>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n**Главное.** Разметку внутрь — слот. Несколько мест — именованные слоты. Данные наружу — слот с параметрами."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sl-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sl-named",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sl-scoped",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "v-model",
+      "title": "v-model",
+      "summary": "Двусторонняя привязка для input, textarea, checkbox, radio и select.",
+      "chapter": "Формы и события",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Строим компоненты и собираем данные пользователя формами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"v-model\",\n  \"title\": \"Поле ↔ данные\",\n  \"what\": \"Значение поля и переменная всегда совпадают: ввёл текст — переменная изменилась, изменил переменную — поле обновилось.\",\n  \"why\": \"Не нужно вручную слушать input и писать значение.\",\n  \"how\": \"<script setup>\\nconst email = ref(\\\"\\\");\\n</script>\\n\\n<template>\\n  <input v-model=\\\"email\\\" type=\\\"email\\\" />\\n  <p>Отправим на: {{ email }}</p>\\n</template>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"checkbox и radio\",\n  \"title\": \"Флажки и выбор\",\n  \"what\": \"Флажок с v-model даёт true/false; несколько флажков с одним массивом — список выбранных значений; radio — одно значение.\",\n  \"why\": \"Согласие с правилами, выбор тем, уровень сложности.\",\n  \"how\": \"<label><input type=\\\"checkbox\\\" v-model=\\\"topics\\\" value=\\\"html\\\" /> HTML</label>\\n<label><input type=\\\"checkbox\\\" v-model=\\\"topics\\\" value=\\\"css\\\" /> CSS</label>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"select\",\n  \"title\": \"Выпадающий список\",\n  \"what\": \"v-model на select хранит значение выбранного option; с multiple — массив.\",\n  \"why\": \"Выбор курса или страны.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Под капотом\",\n  \"title\": \"Свойство и событие\",\n  \"what\": \"v-model — это :value плюс @input (у разных полей свои свойства и события).\",\n  \"why\": \"Понимание помогает сделать v-model своим компонентам.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Любое поле формы — v-model. Несколько флажков — один массив."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vm-two",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vm-boxes",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vm-check",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "model-modifiers",
+      "title": "Модификаторы и своё поле",
+      "summary": ".trim, .number, .lazy, поле ввода как компонент с defineModel.",
+      "chapter": "Формы и события",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Привязываем поля и чистим ввод на лету.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \".trim\",\n  \"title\": \"Убрать пробелы\",\n  \"what\": \"`v-model.trim` обрезает пробелы по краям.\",\n  \"why\": \"« anna@example.com » превращается в нормальный адрес.\",\n  \"how\": \"<input v-model.trim=\\\"email\\\" />\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \".number\",\n  \"title\": \"Число из поля\",\n  \"what\": \"`v-model.number` превращает ввод в число (если получается).\",\n  \"why\": \"Иначе возраст придёт строкой «25».\",\n  \"how\": \"<input v-model.number=\\\"age\\\" type=\\\"number\\\" />\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \".lazy\",\n  \"title\": \"Только после ухода\",\n  \"what\": \"Обновлять переменную по событию change, а не на каждый символ.\",\n  \"why\": \"Тяжёлая проверка не запускается на каждую букву.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Своё поле ввода\",\n  \"title\": \"defineModel + модификаторы\",\n  \"what\": \"Компонент TextField с defineModel работает с v-model и может поддержать свои модификаторы.\",\n  \"why\": \"Единый стиль полей во всём приложении.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Почта — .trim, числа — .number, тяжёлая реакция — .lazy."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mm-number",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mm-lazy",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mm-trim",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "validation",
+      "title": "Проверка и отправка",
+      "summary": "Ошибки полей через computed, блокировка кнопки, отправка с ожиданием, библиотеки VeeValidate и Zod.",
+      "chapter": "Формы и события",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Чистим ввод и проверяем форму перед отправкой.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Ошибки через computed\",\n  \"title\": \"Проверка на лету\",\n  \"what\": \"Каждая ошибка — вычисляемое значение от данных формы. Кнопка блокируется, пока есть ошибки.\",\n  \"why\": \"Пользователь видит, что исправить, ещё до отправки.\",\n  \"how\": \"const emailError = computed(() =>\\n  email.value.includes(\\\"@\\\") ? \\\"\\\" : \\\"Нужна почта с @\\\"\\n);\\nconst canSubmit = computed(() => !emailError.value && !sending.value);\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Отправка\",\n  \"title\": \"Ожидание и ошибки\",\n  \"what\": \"Флаг sending на время запроса блокирует кнопку и показывает «Отправляем…». Ошибку сервера показываем рядом с формой.\",\n  \"why\": \"Форму не отправят дважды.\",\n  \"how\": \"async function submit() {\\n  sending.value = true;\\n  try {\\n    await api.signup(form);\\n  } catch {\\n    serverError.value = \\\"Не удалось отправить, попробуйте ещё раз\\\";\\n  } finally {\\n    sending.value = false;\\n  }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Библиотеки\",\n  \"title\": \"VeeValidate и Zod\",\n  \"what\": \"Для больших форм — VeeValidate со схемой Zod: правила, сообщения, состояние «поле трогали».\",\n  \"why\": \"Одна схема для проверки и типов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сервер проверяет тоже\",\n  \"title\": \"Не доверяй браузеру\",\n  \"what\": \"Проверка во Vue — для удобства. Сервер обязан проверить всё заново.\",\n  \"why\": \"Запрос можно отправить в обход формы.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ошибки — computed, отправка — с флагом ожидания. Сервер всегда проверяет сам."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vd-computed",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vd-double",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vd-server",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "conditions",
+      "title": "Условия",
+      "summary": "v-if, v-else-if, v-else, v-show и разница между ними, template как обёртка.",
+      "chapter": "Списки и условия",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проверяем формы и показываем разные части интерфейса по условию.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"v-if\",\n  \"title\": \"Есть или нет\",\n  \"what\": \"Элемент создаётся, только если условие истинно. v-else-if и v-else идут сразу следом.\",\n  \"why\": \"Загрузка, ошибка или данные — три состояния одного блока.\",\n  \"how\": \"<p v-if=\\\"loading\\\">Загружаем…</p>\\n<p v-else-if=\\\"error\\\">{{ error }}</p>\\n<CourseList v-else :courses=\\\"courses\\\" />\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"v-show\",\n  \"title\": \"Скрыть, но оставить\",\n  \"what\": \"Элемент всегда в DOM, условие лишь включает display: none.\",\n  \"why\": \"Для того, что часто переключается: вкладки, раскрывающиеся панели.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"v-if или v-show\",\n  \"title\": \"Цена\",\n  \"what\": \"v-if дешевле при старте и дороже при переключении, v-show — наоборот.\",\n  \"why\": \"Редко меняется — v-if, часто — v-show.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"template\",\n  \"title\": \"Обёртка без тега\",\n  \"what\": \"`<template v-if=\\\"…\\\">` группирует несколько элементов без лишнего div.\",\n  \"why\": \"Чистая разметка.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n**Главное.** Три состояния — v-if / v-else-if / v-else. Частое переключение — v-show."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cn-show",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cn-tabs",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cn-else",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "v-for",
+      "title": "Списки",
+      "summary": "v-for по массиву и объекту, обязательный key, почему не индекс, v-for с v-if.",
+      "chapter": "Списки и условия",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Показываем по условию и выводим списки данных.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"v-for\",\n  \"title\": \"Повторить для каждого\",\n  \"what\": \"`v-for=\\\"course in courses\\\"` создаёт элемент для каждого элемента массива; `(course, i) in courses` — с индексом.\",\n  \"why\": \"Каталог, уроки, комментарии.\",\n  \"how\": \"<li v-for=\\\"lesson in lessons\\\" :key=\\\"lesson.id\\\">\\n  {{ lesson.title }}\\n</li>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"key\",\n  \"title\": \"Паспорт элемента\",\n  \"what\": \"Уникальный и стабильный key (обычно id) помогает Vue понять, какой элемент добавлен, удалён или перемещён.\",\n  \"why\": \"Без него при сортировке состояние полей «переезжает» к чужим строкам.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Индекс как key\",\n  \"title\": \"Ловушка\",\n  \"what\": \"Индекс меняется при вставке и удалении — ключ перестаёт быть паспортом.\",\n  \"why\": \"Используй id из данных.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"v-for с v-if\",\n  \"title\": \"Не на одном элементе\",\n  \"what\": \"Не ставь v-if на тот же элемент, что v-for. Отфильтруй список в computed.\",\n  \"why\": \"Код понятнее и быстрее.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Числа\",\n  \"title\": \"v-for=\\\"n in 5\\\"\",\n  \"what\": \"Повторить разметку N раз: звёзды рейтинга, заглушки загрузки.\",\n  \"why\": \"Не нужен массив ради повторения.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n**Главное.** v-for всегда с :key из id. Фильтр — в computed, а не v-if рядом с v-for."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vf-key",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vf-if",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vf-n",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "transitions",
+      "title": "Анимации появления",
+      "summary": "Transition и классы enter и leave, TransitionGroup для списков, уважение prefers-reduced-motion.",
+      "chapter": "Списки и условия",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Выводим списки и плавно анимируем их изменения.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Transition\",\n  \"title\": \"Плавно появиться\",\n  \"what\": \"Обёртка Transition добавляет классы v-enter-from, v-enter-active, v-leave-to — анимацию описывают в CSS.\",\n  \"why\": \"Окно и подсказка появляются мягко, а не прыжком.\",\n  \"how\": \"<Transition name=\\\"fade\\\">\\n  <p v-if=\\\"saved\\\">Сохранено</p>\\n</Transition>\\n\\n<style>\\n.fade-enter-active, .fade-leave-active { transition: opacity .2s; }\\n.fade-enter-from, .fade-leave-to { opacity: 0; }\\n</style>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"TransitionGroup\",\n  \"title\": \"Анимация списка\",\n  \"what\": \"Анимирует добавление, удаление и перемещение элементов v-for (нужны key).\",\n  \"why\": \"Новая задача въезжает в список.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Меньше движения\",\n  \"title\": \"prefers-reduced-motion\",\n  \"what\": \"Некоторых людей анимации укачивают. Отключай их в медиазапросе prefers-reduced-motion: reduce.\",\n  \"why\": \"Доступность для всех.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Появление — Transition, списки — TransitionGroup. Уважай prefers-reduced-motion."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tr-css",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tr-group",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tr-reduce",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "lifecycle",
+      "title": "Жизненный цикл",
+      "summary": "onMounted, onUnmounted, onUpdated, ref на элемент, очистка таймеров и подписок.",
+      "chapter": "Composition API",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Анимируем интерфейс и учимся выполнять код в нужный момент жизни компонента.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"onMounted\",\n  \"title\": \"Компонент на странице\",\n  \"what\": \"Вызывается, когда компонент вставлен в DOM: можно обращаться к элементам, подключать сторонние библиотеки.\",\n  \"why\": \"Фокус на поле, график, карта.\",\n  \"how\": \"const input = ref(null);\\nonMounted(() => input.value.focus());\\n\\n// <input ref=\\\"input\\\" />\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"onUnmounted\",\n  \"title\": \"Убрать за собой\",\n  \"what\": \"Вызывается при удалении компонента: снять таймеры, отписаться от событий, закрыть соединения.\",\n  \"why\": \"Иначе утечки памяти и обработчики-призраки.\",\n  \"how\": \"const timer = setInterval(tick, 1000);\\nonUnmounted(() => clearInterval(timer));\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"ref на элемент\",\n  \"title\": \"Доступ к DOM\",\n  \"what\": \"Атрибут ref=\\\"имя\\\" и переменная с тем же именем дают доступ к настоящему элементу после монтирования.\",\n  \"why\": \"Нужен редко: фокус, размеры, сторонние библиотеки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Порядок\",\n  \"title\": \"setup → mounted → updated → unmounted\",\n  \"what\": \"Код в script setup выполняется до появления DOM; onMounted — после.\",\n  \"why\": \"Обращаться к элементам можно только с onMounted.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Подключить — onMounted, убрать — onUnmounted. Каждому setInterval — свой clearInterval."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lc-dom",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lc-clean",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lc-ref",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "composables",
+      "title": "Composables",
+      "summary": "Свои функции use…, повторное использование логики, VueUse.",
+      "chapter": "Composition API",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Управляем жизненным циклом и выносим общую логику в функции.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Composable\",\n  \"title\": \"Функция с реактивностью\",\n  \"what\": \"Функция useX создаёт ref, computed, watch и хуки жизненного цикла и возвращает их. Её можно вызвать в любом компоненте.\",\n  \"why\": \"Логика «загрузить данные» или «следить за размером окна» пишется один раз.\",\n  \"how\": \"export function useOnline() {\\n  const online = ref(navigator.onLine);\\n  const update = () => (online.value = navigator.onLine);\\n  onMounted(() => window.addEventListener(\\\"online\\\", update));\\n  onUnmounted(() => window.removeEventListener(\\\"online\\\", update));\\n  return { online };\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Соглашения\",\n  \"title\": \"use в начале\",\n  \"what\": \"Имя начинается с use, функция вызывается в setup, возвращает объект с ref.\",\n  \"why\": \"Сразу видно, что функция работает с реактивностью.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"VueUse\",\n  \"title\": \"Готовая коллекция\",\n  \"what\": \"Сотни готовых composables: useLocalStorage, useDark, useFetch, useMediaQuery.\",\n  \"why\": \"Не изобретать типовые вещи заново.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Вместо миксинов\",\n  \"title\": \"Явные источники\",\n  \"what\": \"В отличие от старых миксинов, видно, откуда пришло каждое значение.\",\n  \"why\": \"Нет конфликтов имён и скрытых зависимостей.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Повторяющаяся логика — composable useX. Сначала загляни в VueUse."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-where",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-vueuse",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "provide-inject",
+      "title": "provide и inject",
+      "summary": "Передача данных через много уровней, ключи-символы, реактивность, когда лучше хранилище.",
+      "chapter": "Composition API",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Выносим логику в composables и передаём данные сквозь много уровней.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"provide\",\n  \"title\": \"Предоставить вниз\",\n  \"what\": \"Предок вызывает provide(ключ, значение) — все потомки могут его получить.\",\n  \"why\": \"Тема, язык, текущий пользователь без передачи через десять компонентов.\",\n  \"how\": \"// Предок\\nprovide(\\\"theme\\\", theme);\\n\\n// Потомок на любой глубине\\nconst theme = inject(\\\"theme\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проброс props\",\n  \"title\": \"Prop drilling\",\n  \"what\": \"Передавать значение через компоненты, которым оно не нужно, — утомительно и хрупко.\",\n  \"why\": \"provide/inject убирает лишние звенья.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Реактивный provide\",\n  \"title\": \"Передавай ref\",\n  \"what\": \"Если передать ref, потомки увидят изменения. Изменять лучше через функцию, тоже переданную provide.\",\n  \"why\": \"Владелец данных остаётся один.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Когда хранилище\",\n  \"title\": \"Pinia\",\n  \"what\": \"Если данные нужны в разных ветках приложения и меняются из многих мест — используй Pinia.\",\n  \"why\": \"provide/inject — для поддерева, Pinia — для приложения.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Данные для поддерева — provide/inject. Глобальное состояние — Pinia."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pi-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pi-reactive",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pi-store",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "routes",
+      "title": "Маршруты",
+      "summary": "createRouter, таблица маршрутов, RouterView и RouterLink, история браузера.",
+      "chapter": "Маршрутизация",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Передаём данные по дереву и делаем из приложения несколько страниц.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"createRouter\",\n  \"title\": \"Таблица маршрутов\",\n  \"what\": \"Каждый маршрут — путь и компонент страницы. createWebHistory даёт обычные адреса без #.\",\n  \"why\": \"Приложение на одной странице с настоящими адресами.\",\n  \"how\": \"const router = createRouter({\\n  history: createWebHistory(),\\n  routes: [\\n    { path: \\\"/\\\", component: Home },\\n    { path: \\\"/courses\\\", component: Courses }\\n  ]\\n});\\ncreateApp(App).use(router).mount(\\\"#app\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"RouterView\",\n  \"title\": \"Место для страницы\",\n  \"what\": \"В App.vue `<RouterView />` показывает компонент текущего маршрута.\",\n  \"why\": \"Шапка и подвал общие, меняется середина.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"RouterLink\",\n  \"title\": \"Ссылка без перезагрузки\",\n  \"what\": \"`<RouterLink to=\\\"/courses\\\">Курсы</RouterLink>` меняет адрес и страницу без загрузки с сервера.\",\n  \"why\": \"Мгновенные переходы и активный класс у текущей ссылки.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сервер и история\",\n  \"title\": \"Отдавать index.html\",\n  \"what\": \"При прямом заходе на /courses сервер должен вернуть index.html, иначе — 404.\",\n  \"why\": \"Настройка хостинга для одностраничных приложений.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Маршруты — в createRouter, страница — в RouterView, ссылки — RouterLink."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rt-view",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rt-link",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rt-404",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "route-params",
+      "title": "Параметры и вложенность",
+      "summary": "Динамические сегменты :id, useRoute и useRouter, query, вложенные маршруты, 404.",
+      "chapter": "Маршрутизация",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Настроили страницы и делаем адреса с параметрами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \":slug\",\n  \"title\": \"Параметр пути\",\n  \"what\": \"`{ path: \\\"/courses/:slug\\\", component: Course }` — одна страница на все курсы. Значение — в useRoute().params.slug.\",\n  \"why\": \"Адрес можно сохранить и отправить другу.\",\n  \"how\": \"const route = useRoute();\\nconst course = computed(() => findCourse(route.params.slug));\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"useRouter\",\n  \"title\": \"Переход из кода\",\n  \"what\": \"`router.push(\\\"/done\\\")` — перейти после действия, `router.back()` — назад.\",\n  \"why\": \"После оформления заказа — на страницу заказа.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"query\",\n  \"title\": \"Параметры запроса\",\n  \"what\": \"`/courses?level=2&sort=new` — фильтры в route.query.\",\n  \"why\": \"Фильтры сохраняются в адресе и переживают обновление страницы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Вложенные маршруты\",\n  \"title\": \"children\",\n  \"what\": \"Маршрут с children и вложенный RouterView — раздел с общими вкладками.\",\n  \"why\": \"Профиль: обзор, настройки, история — с общей шапкой.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"404\",\n  \"title\": \"Всё остальное\",\n  \"what\": \"Маршрут `{ path: \\\"/:pathMatch(.*)*\\\", component: NotFound }` ловит неизвестные адреса.\",\n  \"why\": \"Понятная страница вместо пустоты.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n**Главное.** Параметр — :имя, фильтры — query, разделы — children, неизвестное — pathMatch."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rp-param",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rp-push",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rp-filters",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "guards",
+      "title": "Защита и ленивая загрузка",
+      "summary": "beforeEach и проверка входа, meta маршрутов, ленивые компоненты страниц, прокрутка.",
+      "chapter": "Маршрутизация",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем с параметрами и закрываем страницы от неавторизованных.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"beforeEach\",\n  \"title\": \"Проверка перед переходом\",\n  \"what\": \"Глобальный охранник получает целевой маршрут и может вернуть другой адрес.\",\n  \"why\": \"Неавторизованного — на страницу входа.\",\n  \"how\": \"router.beforeEach((to) => {\\n  if (to.meta.requiresAuth && !auth.user) {\\n    return { path: \\\"/login\\\", query: { next: to.fullPath } };\\n  }\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"meta\",\n  \"title\": \"Метки маршрута\",\n  \"what\": \"`meta: { requiresAuth: true, title: \\\"Кабинет\\\" }` — свои данные маршрута для охранников и заголовков.\",\n  \"why\": \"Правила доступа рядом с маршрутом.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ленивая загрузка\",\n  \"title\": \"Страница по требованию\",\n  \"what\": \"`component: () => import(\\\"./pages/Admin.vue\\\")` — код страницы скачается при первом переходе.\",\n  \"why\": \"Первая загрузка приложения легче.\",\n  \"how\": \"{ path: \\\"/admin\\\", component: () => import(\\\"./pages/Admin.vue\\\") }\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Защита только в браузере\",\n  \"title\": \"Это удобство\",\n  \"what\": \"Охранник маршрута не защищает данные: API обязан проверить права сам.\",\n  \"why\": \"Код страницы можно открыть и без маршрута.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Доступ к страницам — beforeEach и meta. Тяжёлые страницы — import(). Данные защищает сервер."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gd-redirect",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gd-lazy",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gd-api",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "pinia",
+      "title": "Хранилище Pinia",
+      "summary": "defineStore, состояние, геттеры и действия, использование в компонентах, storeToRefs.",
+      "chapter": "Состояние приложения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Защитили маршруты и храним общее состояние приложения.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"defineStore\",\n  \"title\": \"Хранилище\",\n  \"what\": \"Хранилище в стиле setup: ref — состояние, computed — геттеры, функции — действия.\",\n  \"why\": \"Корзина доступна в шапке, каталоге и оформлении заказа.\",\n  \"how\": \"export const useCart = defineStore(\\\"cart\\\", () => {\\n  const items = ref([]);\\n  const total = computed(() => items.value.reduce((s, i) => s + i.price, 0));\\n  function add(course) {\\n    items.value.push(course);\\n  }\\n  return { items, total, add };\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"В компоненте\",\n  \"title\": \"Вызвать хранилище\",\n  \"what\": \"`const cart = useCart()` — и в шаблоне `{{ cart.total }}`, `@click=\\\"cart.add(course)\\\"`.\",\n  \"why\": \"Все компоненты видят одни и те же данные.\",\n  \"how\": \"const cart = useCart();\\nconst { items, total } = storeToRefs(cart);\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"storeToRefs\",\n  \"title\": \"Деструктуризация без потерь\",\n  \"what\": \"Обычная деструктуризация хранилища теряет реактивность; storeToRefs сохраняет её для состояния и геттеров.\",\n  \"why\": \"Действия берут напрямую из cart.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Инструменты\",\n  \"title\": \"Vue DevTools\",\n  \"what\": \"Pinia видна в DevTools: состояние, история изменений, путешествие во времени.\",\n  \"why\": \"Видно, кто и когда изменил данные.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Общее состояние — Pinia. Деструктуризация — через storeToRefs."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pn-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pn-refs",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pn-getter",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "store-patterns",
+      "title": "Устройство хранилищ",
+      "summary": "Несколько маленьких хранилищ, асинхронные действия, сохранение в localStorage, сброс.",
+      "chapter": "Состояние приложения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Создали хранилище и учимся раскладывать состояние правильно.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"По предметным областям\",\n  \"title\": \"Много маленьких\",\n  \"what\": \"useAuth, useCart, useProgress — каждое отвечает за своё. Хранилища могут использовать друг друга.\",\n  \"why\": \"Код проще читать и тестировать.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Асинхронное действие\",\n  \"title\": \"Загрузка с флагами\",\n  \"what\": \"Действие ставит loading, делает запрос, сохраняет результат или ошибку.\",\n  \"why\": \"Компоненты только вызывают load() и показывают состояние.\",\n  \"how\": \"async function load() {\\n  loading.value = true;\\n  error.value = null;\\n  try {\\n    courses.value = await api.courses();\\n  } catch (e) {\\n    error.value = \\\"Не удалось загрузить курсы\\\";\\n  } finally {\\n    loading.value = false;\\n  }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сохранение\",\n  \"title\": \"Пережить перезагрузку\",\n  \"what\": \"watch за состоянием пишет его в localStorage, при создании хранилища читаем обратно. Или плагин pinia-plugin-persistedstate.\",\n  \"why\": \"Корзина не пропадает после обновления страницы.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что не хранить\",\n  \"title\": \"Не всё — в хранилище\",\n  \"what\": \"Состояние одного компонента (открыто ли меню) держи в нём. Данные с сервера часто удобнее кэшировать отдельной библиотекой.\",\n  \"why\": \"Хранилище не превращается в свалку.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Хранилище на область. Запросы — в действиях с loading и error."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sp-split",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sp-async",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sp-local",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "typescript-vue",
+      "title": "Vue и TypeScript",
+      "summary": "lang=\"ts\", типы props и emits, типизированные ref, vue-tsc в проверках.",
+      "chapter": "Состояние приложения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Организовали хранилища и добавляем типы во всё приложение.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"lang=\\\"ts\\\"\",\n  \"title\": \"Типы в компоненте\",\n  \"what\": \"`<script setup lang=\\\"ts\\\">` — TypeScript в компоненте. Props и события описывают типами.\",\n  \"why\": \"Ошибки передачи данных видны в редакторе.\",\n  \"how\": \"<script setup lang=\\\"ts\\\">\\nconst props = defineProps<{ title: string; lessons?: number }>();\\nconst emit = defineEmits<{ add: [id: string] }>();\\n</script>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Типизированный ref\",\n  \"title\": \"ref<Тип>()\",\n  \"what\": \"`const user = ref<User | null>(null)` — понятно, что может лежать в переменной.\",\n  \"why\": \"Редактор подскажет поля user и предупредит о null.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"vue-tsc\",\n  \"title\": \"Проверка шаблонов\",\n  \"what\": \"Обычный tsc не понимает .vue. vue-tsc проверяет и script, и шаблоны — его запускают в CI.\",\n  \"why\": \"Опечатка в имени поля в шаблоне ловится до выпуска.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Постепенно\",\n  \"title\": \"Не обязательно сразу\",\n  \"what\": \"Можно начать с JavaScript и добавлять TypeScript по компонентам.\",\n  \"why\": \"Порог входа низкий.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** lang=\"ts\", props и emits — типами, проверка — vue-tsc в CI."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tv-props",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tv-tsc",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tv-ref",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "fetching",
+      "title": "Загрузка данных",
+      "summary": "fetch в onMounted или при смене параметра, состояния загрузки и ошибки, composable useFetch.",
+      "chapter": "Данные и асинхронность",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Добавили типы и загружаем настоящие данные с сервера.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Три состояния\",\n  \"title\": \"Загрузка, ошибка, данные\",\n  \"what\": \"Каждый запрос даёт loading, error и data — шаблон показывает нужное.\",\n  \"why\": \"Пользователь всегда понимает, что происходит.\",\n  \"how\": \"const { data, error, loading } = useFetch(() => `/api/courses/${route.params.slug}`);\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"При смене параметра\",\n  \"title\": \"watch на маршрут\",\n  \"what\": \"Компонент страницы не пересоздаётся при переходе с /courses/a на /courses/b — нужно следить за параметром.\",\n  \"why\": \"Иначе показываются данные прошлой страницы.\",\n  \"how\": \"watch(() => route.params.slug, (slug) => load(slug), { immediate: true });\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Свой useFetch\",\n  \"title\": \"Composable\",\n  \"what\": \"Логику loading/error/data и отмену устаревших запросов выносят в один composable.\",\n  \"why\": \"Каждый компонент — одна строка вместо двадцати.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Пустые состояния\",\n  \"title\": \"Ничего не найдено\",\n  \"what\": \"Пустой список — отдельное состояние с понятным текстом и действием.\",\n  \"why\": \"«Курсов пока нет — посмотрите каталог».\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Всегда три состояния: загрузка, ошибка, данные. Следи за параметрами маршрута."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fe-states",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fe-param",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fe-composable",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "async-components",
+      "title": "Асинхронные компоненты",
+      "summary": "defineAsyncComponent, Suspense и top-level await, KeepAlive для вкладок, Teleport для модальных окон.",
+      "chapter": "Данные и асинхронность",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Загружаем данные и пользуемся встроенными компонентами Vue.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"defineAsyncComponent\",\n  \"title\": \"Компонент по требованию\",\n  \"what\": \"Тяжёлый компонент (редактор, график) загружается только когда показывается.\",\n  \"why\": \"Первая загрузка страницы легче.\",\n  \"how\": \"const Chart = defineAsyncComponent(() => import(\\\"./Chart.vue\\\"));\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Suspense\",\n  \"title\": \"Ждать асинхронных детей\",\n  \"what\": \"Компонент с await в script setup можно обернуть в Suspense с запасным содержимым #fallback.\",\n  \"why\": \"Одна заглушка на весь блок вместо флагов в каждом компоненте.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"KeepAlive\",\n  \"title\": \"Помнить вкладку\",\n  \"what\": \"Обёрнутые компоненты не уничтожаются при переключении — сохраняют прокрутку и введённый текст.\",\n  \"why\": \"Вернулся на вкладку — всё на месте.\",\n  \"how\": \"<KeepAlive>\\n  <component :is=\\\"currentTab\\\" />\\n</KeepAlive>\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Teleport\",\n  \"title\": \"Отрисовать в другом месте\",\n  \"what\": \"`<Teleport to=\\\"body\\\">` выносит модальное окно в конец body, хотя логически оно внутри компонента.\",\n  \"why\": \"Окно не обрезается родителем с overflow: hidden.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n**Главное.** Тяжёлое — async-компонент, вкладки — KeepAlive, модальные окна — Teleport."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ac-keep",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ac-teleport",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ac-async",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "ssr-nuxt",
+      "title": "Серверная отрисовка и Nuxt",
+      "summary": "Чем плоха пустая страница для поиска, SSR и гидратация, Nuxt как фреймворк поверх Vue.",
+      "chapter": "Данные и асинхронность",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пользуемся встроенными компонентами и смотрим, как отдавать готовый HTML.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Одностраничное приложение\",\n  \"title\": \"Пустой HTML\",\n  \"what\": \"Обычное приложение Vue приходит пустым и рисуется в браузере. Поисковики и превью ссылок могут увидеть пустую страницу.\",\n  \"why\": \"Для кабинета это нормально, для блога и магазина — плохо.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"SSR\",\n  \"title\": \"HTML на сервере\",\n  \"what\": \"Сервер выполняет компоненты и отдаёт готовый HTML, а браузер затем «оживляет» его (гидратация).\",\n  \"why\": \"Быстрый первый показ и хорошая индексация.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Nuxt\",\n  \"title\": \"Фреймворк поверх Vue\",\n  \"what\": \"Маршруты из файлов, SSR и статическая генерация, серверные API, useFetch с кэшем — всё настроено.\",\n  \"why\": \"Как Next.js для React, только для Vue.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Vite или Nuxt\",\n  \"title\": \"По задаче\",\n  \"what\": \"Кабинет, админка — обычный Vue на Vite. Сайт, блог, магазин — Nuxt.\",\n  \"why\": \"Лишний сервер не нужен, если поиск не важен.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Нужен поиск и быстрый первый показ — Nuxt и SSR. Закрытое приложение — Vite."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sn-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sn-nuxt",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sn-hydr",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "testing-vue",
+      "title": "Тесты",
+      "summary": "Vitest и Vue Test Utils, Testing Library, тест хранилища, сквозные тесты Playwright.",
+      "chapter": "Vue на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем серверную отрисовку и защищаем приложение тестами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Тест компонента\",\n  \"title\": \"mount и проверка\",\n  \"what\": \"Тест монтирует компонент, нажимает кнопку и проверяет текст — как пользователь.\",\n  \"why\": \"Изменения не ломают поведение незаметно.\",\n  \"how\": \"import { mount } from \\\"@vue/test-utils\\\";\\n\\ntest(\\\"считает нажатия\\\", async () => {\\n  const wrapper = mount(Counter);\\n  await wrapper.get(\\\"button\\\").trigger(\\\"click\\\");\\n  expect(wrapper.text()).toContain(\\\"Нажато 1 раз\\\");\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тест хранилища\",\n  \"title\": \"Без компонентов\",\n  \"what\": \"Хранилище Pinia тестируют напрямую: создать pinia, вызвать действие, проверить состояние.\",\n  \"why\": \"Бизнес-логика проверяется быстро.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сквозные тесты\",\n  \"title\": \"Playwright\",\n  \"what\": \"Главные сценарии — вход, покупка, прохождение урока — в настоящем браузере.\",\n  \"why\": \"Ловят поломки на стыках.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"vitest\",\n  \"title\": \"Запуск\",\n  \"what\": \"`npx vitest` следит за файлами и перезапускает тесты при сохранении.\",\n  \"why\": \"Мгновенная обратная связь.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Компоненты — Vue Test Utils, логика — тесты хранилищ, сценарии — Playwright."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tv2-how",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tv2-store",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tv2-e2e",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "perf-a11y",
+      "title": "Скорость и доступность",
+      "summary": "Большие списки и виртуализация, shallowRef, v-once и v-memo, доступные компоненты.",
+      "chapter": "Vue на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем тесты и делаем приложение быстрым и доступным.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Большие списки\",\n  \"title\": \"Виртуализация\",\n  \"what\": \"Список из 10 000 строк рисуют частично — только видимые строки (vue-virtual-scroller, TanStack Virtual).\",\n  \"why\": \"Прокрутка остаётся плавной.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"shallowRef\",\n  \"title\": \"Не следить вглубь\",\n  \"what\": \"Для больших неизменяемых данных shallowRef следит только за заменой значения целиком.\",\n  \"why\": \"Меньше накладных расходов на огромных объектах.\",\n  \"how\": \"const rows = shallowRef([]);\\nrows.value = await loadRows();\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"v-once и v-memo\",\n  \"title\": \"Не перерисовывать\",\n  \"what\": \"v-once рисует один раз, v-memo — только при изменении указанных значений.\",\n  \"why\": \"Тяжёлые неизменные блоки не пересчитываются.\",\n  \"kind\": \"idea\",\n  \"lang\": \"vue\"\n}\n```\n\n```concept\n{\n  \"name\": \"Доступность\",\n  \"title\": \"Для всех\",\n  \"what\": \"Настоящие button и label, видимый фокус, aria-атрибуты для своих компонентов, управление с клавиатуры.\",\n  \"why\": \"Интерфейсом пользуются и с экранным диктором, и без мыши.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Огромные списки — виртуализация, огромные данные — shallowRef. Кнопки — button, поля — с label."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pa-virtual",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pa-shallow",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pa-a11y",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "deploy-vue",
+      "title": "Выпуск и что дальше",
+      "summary": "Сборка Vite, переменные окружения VITE_, статический хостинг и перенаправления, что изучать дальше.",
+      "chapter": "Vue на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Ускорили приложение и выпускаем его в интернет.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"npm run build\",\n  \"title\": \"Готовые файлы\",\n  \"what\": \"Vite собирает dist: HTML, JS и CSS с хэшами в именах для долгого кэша.\",\n  \"why\": \"Папку dist кладут на любой статический хостинг.\",\n  \"how\": \"$ npm run build\\nvite v7.1.3 building for production...\\n✓ 84 modules transformed.\\ndist/index.html            0.46 kB\\ndist/assets/index-Bx3f.js  98.12 kB │ gzip: 38.40 kB\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"VITE_\",\n  \"title\": \"Переменные окружения\",\n  \"what\": \"В код попадают только переменные с префиксом VITE_ из .env — и их видит любой посетитель.\",\n  \"why\": \"Никаких секретов во фронтенде.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Перенаправления\",\n  \"title\": \"История и хостинг\",\n  \"what\": \"Для createWebHistory хостинг должен отдавать index.html на любые пути (правило rewrite).\",\n  \"why\": \"Иначе обновление страницы даёт 404.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что дальше\",\n  \"title\": \"Куда расти\",\n  \"what\": \"Nuxt для сайтов с SSR, Vitest и Playwright глубже, библиотеки компонентов, анимации. Главное — своё приложение.\",\n  \"why\": \"Фреймворк закрепляется на настоящем проекте.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** dist — на статический хостинг с rewrite на index.html. В VITE_ — только публичное."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dv-env",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dv-rewrite",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dv-hash",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    }
+  ]
+}
