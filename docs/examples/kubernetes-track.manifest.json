@@ -1,0 +1,4568 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "kubernetes",
+    "title": "Kubernetes: флот контейнеров",
+    "description": "Kubernetes с нуля до своего кластера. Зачем оркестратор, поды и манифесты, развёртывания и обновления, сервисы, Ingress и сеть, ConfigMap и Secret, тома и StatefulSet, проверки здоровья, запросы и лимиты ресурсов, автомасштабирование, RBAC и сетевые политики, Helm, Kustomize и GitOps, наблюдение и отладка. Каждое понятие объясняется карточкой с примером, каждый урок закрепляется вопросами."
+  },
+  "skills": [
+    {
+      "key": "k8s-why",
+      "title": "Зачем Kubernetes",
+      "description": "Объяснять, какие задачи решает оркестратор контейнеров."
+    },
+    {
+      "key": "k8s-arch",
+      "title": "Архитектура кластера",
+      "description": "Описывать части кластера Kubernetes."
+    },
+    {
+      "key": "k8s-kubectl",
+      "title": "kubectl",
+      "description": "Поднимать локальный кластер и работать с kubectl."
+    },
+    {
+      "key": "k8s-pod",
+      "title": "Под",
+      "description": "Объяснять, что такое под."
+    },
+    {
+      "key": "k8s-manifest",
+      "title": "Манифесты",
+      "description": "Описывать объекты Kubernetes в YAML."
+    },
+    {
+      "key": "k8s-labels",
+      "title": "Метки",
+      "description": "Связывать объекты метками и селекторами."
+    },
+    {
+      "key": "k8s-deploy",
+      "title": "Deployment",
+      "description": "Запускать приложения через Deployment."
+    },
+    {
+      "key": "k8s-rollout",
+      "title": "Обновления",
+      "description": "Обновлять приложения без простоя и откатывать их."
+    },
+    {
+      "key": "k8s-workloads",
+      "title": "Виды нагрузок",
+      "description": "Выбирать вид объекта под задачу."
+    },
+    {
+      "key": "k8s-service",
+      "title": "Service",
+      "description": "Давать подам стабильный адрес через Service."
+    },
+    {
+      "key": "k8s-ingress",
+      "title": "Ingress",
+      "description": "Открывать приложения наружу через Ingress или Gateway."
+    },
+    {
+      "key": "k8s-network",
+      "title": "Сеть кластера",
+      "description": "Понимать сетевую модель Kubernetes и отлаживать её."
+    },
+    {
+      "key": "k8s-configmap",
+      "title": "ConfigMap",
+      "description": "Передавать настройки приложениям через ConfigMap."
+    },
+    {
+      "key": "k8s-secret",
+      "title": "Secret",
+      "description": "Хранить и передавать секреты в Kubernetes."
+    },
+    {
+      "key": "k8s-extsecrets",
+      "title": "Хранилища секретов",
+      "description": "Подключать внешние хранилища секретов к кластеру."
+    },
+    {
+      "key": "k8s-volumes",
+      "title": "Тома подов",
+      "description": "Подключать тома к подам."
+    },
+    {
+      "key": "k8s-pvc",
+      "title": "Постоянные тома",
+      "description": "Запрашивать постоянное хранилище для подов."
+    },
+    {
+      "key": "k8s-statefulset",
+      "title": "StatefulSet",
+      "description": "Запускать приложения с состоянием и выбирать, где держать базы."
+    },
+    {
+      "key": "k8s-probes",
+      "title": "Проверки здоровья",
+      "description": "Настраивать проверки готовности и живости."
+    },
+    {
+      "key": "k8s-resources",
+      "title": "Ресурсы",
+      "description": "Задавать запросы и лимиты ресурсов."
+    },
+    {
+      "key": "k8s-pdb",
+      "title": "Устойчивость к перебоям",
+      "description": "Сохранять работу приложения при обслуживании кластера."
+    },
+    {
+      "key": "k8s-hpa",
+      "title": "HPA",
+      "description": "Автоматически менять число подов по нагрузке."
+    },
+    {
+      "key": "k8s-ca",
+      "title": "Масштаб кластера",
+      "description": "Добавлять и убирать узлы автоматически."
+    },
+    {
+      "key": "k8s-cost",
+      "title": "Ёмкость и стоимость",
+      "description": "Планировать мощность и стоимость кластера."
+    },
+    {
+      "key": "k8s-rbac",
+      "title": "RBAC",
+      "description": "Ограничивать права людей и приложений в кластере."
+    },
+    {
+      "key": "k8s-netpol",
+      "title": "Сетевые политики",
+      "description": "Ограничивать сетевой доступ между подами."
+    },
+    {
+      "key": "k8s-podsec",
+      "title": "Безопасность подов",
+      "description": "Запускать поды с минимальными привилегиями."
+    },
+    {
+      "key": "k8s-helm",
+      "title": "Helm",
+      "description": "Устанавливать и параметризовать приложения через Helm."
+    },
+    {
+      "key": "k8s-kustomize",
+      "title": "Kustomize",
+      "description": "Настраивать манифесты под окружения через наложения."
+    },
+    {
+      "key": "k8s-gitops",
+      "title": "GitOps",
+      "description": "Управлять кластером через Git."
+    },
+    {
+      "key": "k8s-observe",
+      "title": "Наблюдаемость",
+      "description": "Собирать логи, метрики и события кластера."
+    },
+    {
+      "key": "k8s-debug",
+      "title": "Отладка",
+      "description": "Находить причину типичных проблем в кластере."
+    },
+    {
+      "key": "k8s-upgrades",
+      "title": "Обслуживание кластера",
+      "description": "Обновлять кластер и восстанавливать его из копий."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "or-desired",
+      "type": "quiz.single_choice",
+      "title": "Желаемое состояние",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-why"
+      ],
+      "presentation": {
+        "question": "Что значит «желаемое состояние» в Kubernetes?",
+        "options": [
+          {
+            "id": "declare",
+            "text": "Описываешь, что должно работать, а контроллеры приводят систему к этому"
+          },
+          {
+            "id": "wish",
+            "text": "Список пожеланий команды"
+          },
+          {
+            "id": "manual",
+            "text": "Ручные команды запуска"
+          },
+          {
+            "id": "backup",
+            "text": "Резервная копия"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "declare",
+        "explanation": "Декларативный подход."
+      }
+    },
+    {
+      "slug": "or-crash",
+      "type": "quiz.single_choice",
+      "title": "Падение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-why"
+      ],
+      "presentation": {
+        "question": "Что произойдёт, если под API упал, а описано 3 копии?",
+        "options": [
+          {
+            "id": "recreate",
+            "text": "Kubernetes запустит новый под взамен"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего, пока не заметит человек"
+          },
+          {
+            "id": "stop",
+            "text": "Остановятся все"
+          },
+          {
+            "id": "email",
+            "text": "Придёт письмо, и только"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "recreate",
+        "explanation": "Контроллер исправляет разницу."
+      }
+    },
+    {
+      "slug": "or-small",
+      "type": "quiz.single_choice",
+      "title": "Маленький сайт",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-why"
+      ],
+      "presentation": {
+        "question": "Нужен ли Kubernetes одному маленькому сайту?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Обычно нет — хватит Compose или управляемой платформы"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "law",
+            "text": "Да, по закону"
+          },
+          {
+            "id": "seo",
+            "text": "Да, для поисковиков"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Сложность должна окупаться."
+      }
+    },
+    {
+      "slug": "ar-api",
+      "type": "quiz.single_choice",
+      "title": "Вход",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-arch"
+      ],
+      "presentation": {
+        "question": "Через что общаются с кластером kubectl и контроллеры?",
+        "options": [
+          {
+            "id": "api",
+            "text": "Через API-сервер"
+          },
+          {
+            "id": "etcd",
+            "text": "Напрямую с etcd"
+          },
+          {
+            "id": "ssh",
+            "text": "По SSH на узлы"
+          },
+          {
+            "id": "docker",
+            "text": "Через Docker Hub"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "api",
+        "explanation": "Единственный вход."
+      }
+    },
+    {
+      "slug": "ar-etcd",
+      "type": "quiz.single_choice",
+      "title": "etcd",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-arch"
+      ],
+      "presentation": {
+        "question": "Что хранится в etcd?",
+        "options": [
+          {
+            "id": "state",
+            "text": "Описание всех объектов кластера"
+          },
+          {
+            "id": "images",
+            "text": "Образы контейнеров"
+          },
+          {
+            "id": "logs",
+            "text": "Логи приложений"
+          },
+          {
+            "id": "code",
+            "text": "Исходный код"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "state",
+        "explanation": "Его регулярно копируют."
+      }
+    },
+    {
+      "slug": "ar-kubelet",
+      "type": "quiz.single_choice",
+      "title": "kubelet",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-arch"
+      ],
+      "presentation": {
+        "question": "Что делает kubelet?",
+        "options": [
+          {
+            "id": "run",
+            "text": "Запускает поды на своём узле и следит за ними"
+          },
+          {
+            "id": "schedule",
+            "text": "Выбирает узел для пода"
+          },
+          {
+            "id": "dns",
+            "text": "Отвечает за DNS"
+          },
+          {
+            "id": "build",
+            "text": "Собирает образы"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "run",
+        "explanation": "Агент на каждом узле."
+      }
+    },
+    {
+      "slug": "kc-describe",
+      "type": "quiz.single_choice",
+      "title": "Проблема",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-kubectl"
+      ],
+      "presentation": {
+        "question": "Какая команда покажет подробности и события конкретного пода?",
+        "options": [
+          {
+            "id": "describe",
+            "text": "`kubectl describe pod имя`"
+          },
+          {
+            "id": "get",
+            "text": "`kubectl get all`"
+          },
+          {
+            "id": "delete",
+            "text": "`kubectl delete pod`"
+          },
+          {
+            "id": "top",
+            "text": "`kubectl version`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "describe",
+        "explanation": "Смотри раздел Events."
+      }
+    },
+    {
+      "slug": "kc-apply",
+      "type": "quiz.single_choice",
+      "title": "apply",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-kubectl"
+      ],
+      "presentation": {
+        "question": "Что делает kubectl apply -f app.yaml?",
+        "options": [
+          {
+            "id": "desired",
+            "text": "Отправляет описание в кластер, создавая или обновляя объекты"
+          },
+          {
+            "id": "delete",
+            "text": "Удаляет объекты"
+          },
+          {
+            "id": "build",
+            "text": "Собирает образ"
+          },
+          {
+            "id": "log",
+            "text": "Показывает логи"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "desired",
+        "explanation": "Повторный apply меняет только разницу."
+      }
+    },
+    {
+      "slug": "kc-context",
+      "type": "quiz.single_choice",
+      "title": "Контекст",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-kubectl"
+      ],
+      "presentation": {
+        "question": "Почему перед опасной командой стоит проверить контекст?",
+        "options": [
+          {
+            "id": "cluster",
+            "text": "Чтобы не выполнить её в боевом кластере вместо тестового"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "color",
+            "text": "Для цвета"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cluster",
+        "explanation": "kubectl config current-context."
+      }
+    },
+    {
+      "slug": "pd-share",
+      "type": "quiz.single_choice",
+      "title": "Общее",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-pod"
+      ],
+      "presentation": {
+        "question": "Что делят контейнеры одного пода?",
+        "options": [
+          {
+            "id": "net",
+            "text": "IP-адрес и тома"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          },
+          {
+            "id": "node",
+            "text": "Только имя узла"
+          },
+          {
+            "id": "image",
+            "text": "Один образ"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "net",
+        "explanation": "И всегда на одном узле."
+      }
+    },
+    {
+      "slug": "pd-ip",
+      "type": "quiz.single_choice",
+      "title": "Адрес",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-pod"
+      ],
+      "presentation": {
+        "question": "Можно ли надёжно обращаться к поду по его IP?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, под может быть пересоздан с новым IP — нужен Service"
+          },
+          {
+            "id": "yes",
+            "text": "Да, IP вечный"
+          },
+          {
+            "id": "dns",
+            "text": "Да, если записать в DNS вручную"
+          },
+          {
+            "id": "root",
+            "text": "Только от root"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Поды — скот, а не питомцы."
+      }
+    },
+    {
+      "slug": "pd-crash",
+      "type": "quiz.single_choice",
+      "title": "CrashLoopBackOff",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-pod"
+      ],
+      "presentation": {
+        "question": "Что значит статус CrashLoopBackOff?",
+        "options": [
+          {
+            "id": "loop",
+            "text": "Контейнер падает при старте, Kubernetes перезапускает его с растущей паузой"
+          },
+          {
+            "id": "ok",
+            "text": "Всё хорошо"
+          },
+          {
+            "id": "pull",
+            "text": "Не скачивается образ"
+          },
+          {
+            "id": "pending",
+            "text": "Нет свободного узла"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "loop",
+        "explanation": "Смотри logs --previous."
+      }
+    },
+    {
+      "slug": "mf-spec",
+      "type": "quiz.single_choice",
+      "title": "spec",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-manifest"
+      ],
+      "presentation": {
+        "question": "Что описывает раздел spec?",
+        "options": [
+          {
+            "id": "desired",
+            "text": "Желаемое состояние объекта"
+          },
+          {
+            "id": "name",
+            "text": "Только имя"
+          },
+          {
+            "id": "status",
+            "text": "Текущее состояние"
+          },
+          {
+            "id": "author",
+            "text": "Автора манифеста"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "desired",
+        "explanation": "status заполняет сам кластер."
+      }
+    },
+    {
+      "slug": "mf-kind",
+      "type": "quiz.single_choice",
+      "title": "kind",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-manifest"
+      ],
+      "presentation": {
+        "question": "За что отвечает поле kind?",
+        "options": [
+          {
+            "id": "type",
+            "text": "За тип объекта: Pod, Deployment, Service"
+          },
+          {
+            "id": "version",
+            "text": "За версию Kubernetes"
+          },
+          {
+            "id": "user",
+            "text": "За пользователя"
+          },
+          {
+            "id": "color",
+            "text": "За цвет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "type",
+        "explanation": "apiVersion — группа и версия API."
+      }
+    },
+    {
+      "slug": "mf-dry",
+      "type": "quiz.single_choice",
+      "title": "Проверка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-manifest"
+      ],
+      "presentation": {
+        "question": "Как проверить манифест на сервере, ничего не меняя?",
+        "options": [
+          {
+            "id": "dry",
+            "text": "`kubectl apply --dry-run=server -f файл`"
+          },
+          {
+            "id": "test",
+            "text": "`kubectl test файл`"
+          },
+          {
+            "id": "lint",
+            "text": "`kubectl lint`"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dry",
+        "explanation": "Ошибки — до выкладки."
+      }
+    },
+    {
+      "slug": "lb-select",
+      "type": "quiz.single_choice",
+      "title": "Выбор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-labels"
+      ],
+      "presentation": {
+        "question": "Как показать только поды с меткой app=api?",
+        "options": [
+          {
+            "id": "l",
+            "text": "`kubectl get pods -l app=api`"
+          },
+          {
+            "id": "grep",
+            "text": "Только через grep"
+          },
+          {
+            "id": "name",
+            "text": "`kubectl get api`"
+          },
+          {
+            "id": "ns",
+            "text": "`-n api`"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "l",
+        "explanation": "Селектор по меткам."
+      }
+    },
+    {
+      "slug": "lb-annot",
+      "type": "quiz.single_choice",
+      "title": "Аннотации",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-labels"
+      ],
+      "presentation": {
+        "question": "Чем аннотации отличаются от меток?",
+        "options": [
+          {
+            "id": "info",
+            "text": "Аннотации — информация для людей и инструментов, по ним не выбирают"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          },
+          {
+            "id": "secret",
+            "text": "Аннотации секретные"
+          },
+          {
+            "id": "size",
+            "text": "Аннотации меньше"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "info",
+        "explanation": "Метки — для селекторов."
+      }
+    },
+    {
+      "slug": "lb-init",
+      "type": "quiz.single_choice",
+      "title": "Init-контейнер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-labels"
+      ],
+      "presentation": {
+        "question": "Когда выполняется init-контейнер?",
+        "options": [
+          {
+            "id": "before",
+            "text": "До запуска основных контейнеров пода"
+          },
+          {
+            "id": "after",
+            "text": "После завершения пода"
+          },
+          {
+            "id": "parallel",
+            "text": "Одновременно с основными"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "before",
+        "explanation": "Например, дождаться базы."
+      }
+    },
+    {
+      "slug": "dp-heal",
+      "type": "quiz.single_choice",
+      "title": "Самовосстановление",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-deploy"
+      ],
+      "presentation": {
+        "question": "Что сделает Deployment с replicas: 3, если удалить один под?",
+        "options": [
+          {
+            "id": "new",
+            "text": "Создаст новый под, чтобы снова было три"
+          },
+          {
+            "id": "two",
+            "text": "Оставит два"
+          },
+          {
+            "id": "all",
+            "text": "Удалит все"
+          },
+          {
+            "id": "alert",
+            "text": "Только отправит уведомление"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "new",
+        "explanation": "Контроллер держит желаемое число."
+      }
+    },
+    {
+      "slug": "dp-selector",
+      "type": "quiz.single_choice",
+      "title": "Селектор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-deploy"
+      ],
+      "presentation": {
+        "question": "Как Deployment находит свои поды?",
+        "options": [
+          {
+            "id": "labels",
+            "text": "По меткам из selector, совпадающим с метками шаблона"
+          },
+          {
+            "id": "names",
+            "text": "По именам"
+          },
+          {
+            "id": "ip",
+            "text": "По IP"
+          },
+          {
+            "id": "random",
+            "text": "Случайно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "labels",
+        "explanation": "matchLabels."
+      }
+    },
+    {
+      "slug": "dp-scale",
+      "type": "quiz.single_choice",
+      "title": "Масштаб",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-deploy"
+      ],
+      "presentation": {
+        "question": "Как правильнее изменить число реплик в проекте с GitOps?",
+        "options": [
+          {
+            "id": "manifest",
+            "text": "Изменить replicas в манифесте и применить"
+          },
+          {
+            "id": "kubectl",
+            "text": "Только kubectl scale вручную"
+          },
+          {
+            "id": "ssh",
+            "text": "Зайти на узел"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить лишние поды"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "manifest",
+        "explanation": "Источник правды — Git."
+      }
+    },
+    {
+      "slug": "ro-surge",
+      "type": "quiz.single_choice",
+      "title": "maxSurge",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-rollout"
+      ],
+      "presentation": {
+        "question": "Что задаёт maxSurge?",
+        "options": [
+          {
+            "id": "extra",
+            "text": "Сколько подов сверх нужного можно поднять во время обновления"
+          },
+          {
+            "id": "down",
+            "text": "Сколько можно потерять"
+          },
+          {
+            "id": "cpu",
+            "text": "Лимит процессора"
+          },
+          {
+            "id": "time",
+            "text": "Время обновления"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "extra",
+        "explanation": "maxUnavailable — сколько можно потерять."
+      }
+    },
+    {
+      "slug": "ro-undo",
+      "type": "quiz.single_choice",
+      "title": "Откат",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-rollout"
+      ],
+      "presentation": {
+        "question": "Как откатить развёртывание к предыдущей версии?",
+        "options": [
+          {
+            "id": "undo",
+            "text": "`kubectl rollout undo deployment/api`"
+          },
+          {
+            "id": "delete",
+            "text": "`kubectl delete deployment api`"
+          },
+          {
+            "id": "restart",
+            "text": "`kubectl restart api`"
+          },
+          {
+            "id": "git",
+            "text": "Только git revert"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "undo",
+        "explanation": "history — список версий."
+      }
+    },
+    {
+      "slug": "ro-ready",
+      "type": "quiz.single_choice",
+      "title": "Готовность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-rollout"
+      ],
+      "presentation": {
+        "question": "Почему без readinessProbe обновление рискованно?",
+        "options": [
+          {
+            "id": "traffic",
+            "text": "Трафик может пойти на ещё не готовые поды"
+          },
+          {
+            "id": "slow",
+            "text": "Оно медленнее"
+          },
+          {
+            "id": "cost",
+            "text": "Оно дороже"
+          },
+          {
+            "id": "none",
+            "text": "Не рискованно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "traffic",
+        "explanation": "Проверка готовности обязательна."
+      }
+    },
+    {
+      "slug": "wl-cron",
+      "type": "quiz.single_choice",
+      "title": "Расписание",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-workloads"
+      ],
+      "presentation": {
+        "question": "Какой объект запускает задачу каждую ночь?",
+        "options": [
+          {
+            "id": "cronjob",
+            "text": "CronJob"
+          },
+          {
+            "id": "deployment",
+            "text": "Deployment"
+          },
+          {
+            "id": "daemonset",
+            "text": "DaemonSet"
+          },
+          {
+            "id": "service",
+            "text": "Service"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cronjob",
+        "explanation": "Job — один раз."
+      }
+    },
+    {
+      "slug": "wl-daemon",
+      "type": "quiz.single_choice",
+      "title": "На каждом узле",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-workloads"
+      ],
+      "presentation": {
+        "question": "Где запускает поды DaemonSet?",
+        "options": [
+          {
+            "id": "each",
+            "text": "По одному на каждом узле"
+          },
+          {
+            "id": "one",
+            "text": "Только на одном узле"
+          },
+          {
+            "id": "random",
+            "text": "На случайных узлах"
+          },
+          {
+            "id": "master",
+            "text": "Только на плоскости управления"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "each",
+        "explanation": "Агенты логов и мониторинга."
+      }
+    },
+    {
+      "slug": "wl-state",
+      "type": "quiz.single_choice",
+      "title": "База данных",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-workloads"
+      ],
+      "presentation": {
+        "question": "Какой объект подходит для базы данных в кластере?",
+        "options": [
+          {
+            "id": "sts",
+            "text": "StatefulSet"
+          },
+          {
+            "id": "deploy",
+            "text": "Deployment"
+          },
+          {
+            "id": "job",
+            "text": "Job"
+          },
+          {
+            "id": "cm",
+            "text": "ConfigMap"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "sts",
+        "explanation": "Стабильные имена и свои диски."
+      }
+    },
+    {
+      "slug": "sv-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-service"
+      ],
+      "presentation": {
+        "question": "Зачем нужен Service, если у подов есть IP?",
+        "options": [
+          {
+            "id": "stable",
+            "text": "Поды пересоздаются с новыми IP, а у сервиса адрес постоянный"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "tls",
+            "text": "Для HTTPS"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "stable",
+        "explanation": "И балансировка между подами."
+      }
+    },
+    {
+      "slug": "sv-dns",
+      "type": "quiz.single_choice",
+      "title": "Имя",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-service"
+      ],
+      "presentation": {
+        "question": "Как под фронтенда обращается к сервису api в том же пространстве имён?",
+        "options": [
+          {
+            "id": "name",
+            "text": "По имени api"
+          },
+          {
+            "id": "ip",
+            "text": "Только по IP пода"
+          },
+          {
+            "id": "localhost",
+            "text": "Через localhost"
+          },
+          {
+            "id": "public",
+            "text": "Через публичный адрес"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "name",
+        "explanation": "Встроенный DNS."
+      }
+    },
+    {
+      "slug": "sv-pf",
+      "type": "quiz.single_choice",
+      "title": "Отладка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-service"
+      ],
+      "presentation": {
+        "question": "Как проверить внутренний сервис со своего компьютера?",
+        "options": [
+          {
+            "id": "pf",
+            "text": "`kubectl port-forward svc/api 8080:80`"
+          },
+          {
+            "id": "expose",
+            "text": "Сделать его публичным навсегда"
+          },
+          {
+            "id": "ssh",
+            "text": "Зайти на узел"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pf",
+        "explanation": "Только для отладки."
+      }
+    },
+    {
+      "slug": "in-why",
+      "type": "quiz.single_choice",
+      "title": "Ingress",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-ingress"
+      ],
+      "presentation": {
+        "question": "Чем Ingress лучше отдельного LoadBalancer для каждого сервиса?",
+        "options": [
+          {
+            "id": "one",
+            "text": "Один внешний вход и маршрутизация по доменам и путям"
+          },
+          {
+            "id": "speed",
+            "text": "Он всегда быстрее"
+          },
+          {
+            "id": "db",
+            "text": "Он хранит данные"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "Дешевле и удобнее."
+      }
+    },
+    {
+      "slug": "in-cert",
+      "type": "quiz.single_choice",
+      "title": "Сертификаты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-ingress"
+      ],
+      "presentation": {
+        "question": "Что делает cert-manager?",
+        "options": [
+          {
+            "id": "tls",
+            "text": "Получает и продлевает TLS-сертификаты автоматически"
+          },
+          {
+            "id": "users",
+            "text": "Управляет пользователями"
+          },
+          {
+            "id": "images",
+            "text": "Собирает образы"
+          },
+          {
+            "id": "dns",
+            "text": "Покупает домены"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "tls",
+        "explanation": "Обычно у Let's Encrypt."
+      }
+    },
+    {
+      "slug": "in-gw",
+      "type": "quiz.single_choice",
+      "title": "Gateway API",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-ingress"
+      ],
+      "presentation": {
+        "question": "Что такое Gateway API?",
+        "options": [
+          {
+            "id": "next",
+            "text": "Более выразительная замена Ingress для маршрутизации трафика"
+          },
+          {
+            "id": "db",
+            "text": "API базы данных"
+          },
+          {
+            "id": "auth",
+            "text": "Система входа"
+          },
+          {
+            "id": "cdn",
+            "text": "Облачный CDN"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "next",
+        "explanation": "Веса для канарейки, разделение ролей."
+      }
+    },
+    {
+      "slug": "nm-flat",
+      "type": "quiz.single_choice",
+      "title": "Модель",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-network"
+      ],
+      "presentation": {
+        "question": "Какое правило лежит в основе сети Kubernetes?",
+        "options": [
+          {
+            "id": "flat",
+            "text": "Каждый под имеет свой IP и доступен другим подам без NAT"
+          },
+          {
+            "id": "nat",
+            "text": "Все поды за одним NAT"
+          },
+          {
+            "id": "none",
+            "text": "Поды не видят друг друга никогда"
+          },
+          {
+            "id": "vpn",
+            "text": "Каждый под в своём VPN"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "flat",
+        "explanation": "Плоская сеть."
+      }
+    },
+    {
+      "slug": "nm-cni",
+      "type": "quiz.single_choice",
+      "title": "CNI",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-network"
+      ],
+      "presentation": {
+        "question": "Что такое Cilium и Calico?",
+        "options": [
+          {
+            "id": "cni",
+            "text": "Сетевые плагины CNI"
+          },
+          {
+            "id": "db",
+            "text": "Базы данных"
+          },
+          {
+            "id": "ci",
+            "text": "Системы CI"
+          },
+          {
+            "id": "editors",
+            "text": "Редакторы манифестов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cni",
+        "explanation": "От них зависят политики."
+      }
+    },
+    {
+      "slug": "nm-debug",
+      "type": "quiz.single_choice",
+      "title": "Отладка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-network"
+      ],
+      "presentation": {
+        "question": "Как проверить DNS изнутри кластера?",
+        "options": [
+          {
+            "id": "pod",
+            "text": "Запустить временный под с инструментами и выполнить dig"
+          },
+          {
+            "id": "laptop",
+            "text": "dig на своём ноутбуке"
+          },
+          {
+            "id": "restart",
+            "text": "Перезапустить кластер"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pod",
+        "explanation": "netshoot — набор инструментов."
+      }
+    },
+    {
+      "slug": "cm-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-configmap"
+      ],
+      "presentation": {
+        "question": "Зачем выносить настройки в ConfigMap?",
+        "options": [
+          {
+            "id": "image",
+            "text": "Чтобы один образ работал с разными настройками"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "secret",
+            "text": "Чтобы хранить пароли"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "image",
+        "explanation": "Пароли — в Secret."
+      }
+    },
+    {
+      "slug": "cm-restart",
+      "type": "quiz.single_choice",
+      "title": "Обновление",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-configmap"
+      ],
+      "presentation": {
+        "question": "Изменили ConfigMap, подключённый через envFrom. Что нужно, чтобы под увидел изменения?",
+        "options": [
+          {
+            "id": "restart",
+            "text": "Перезапустить поды, например rollout restart"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего, обновится мгновенно"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить кластер"
+          },
+          {
+            "id": "rebuild",
+            "text": "Пересобрать образ"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "restart",
+        "explanation": "Окружение читается при старте."
+      }
+    },
+    {
+      "slug": "cm-file",
+      "type": "quiz.single_choice",
+      "title": "Файлом",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-configmap"
+      ],
+      "presentation": {
+        "question": "Как передать в под целый файл nginx.conf?",
+        "options": [
+          {
+            "id": "volume",
+            "text": "Подключить ConfigMap как том"
+          },
+          {
+            "id": "env",
+            "text": "Только переменной окружения"
+          },
+          {
+            "id": "image",
+            "text": "Только вшить в образ"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "volume",
+        "explanation": "Ключи станут файлами."
+      }
+    },
+    {
+      "slug": "sc-b64",
+      "type": "quiz.single_choice",
+      "title": "base64",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-secret"
+      ],
+      "presentation": {
+        "question": "Защищает ли base64 значение секрета?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, это кодировка, её легко раскодировать"
+          },
+          {
+            "id": "yes",
+            "text": "Да, это шифрование"
+          },
+          {
+            "id": "half",
+            "text": "Наполовину"
+          },
+          {
+            "id": "root",
+            "text": "Да, от всех кроме root"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "base64 -d."
+      }
+    },
+    {
+      "slug": "sc-git",
+      "type": "quiz.single_choice",
+      "title": "В Git",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-secret"
+      ],
+      "presentation": {
+        "question": "Можно ли класть манифест Secret с паролем в Git как есть?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, только в зашифрованном виде или через внешнее хранилище"
+          },
+          {
+            "id": "yes",
+            "text": "Да"
+          },
+          {
+            "id": "private",
+            "text": "Да, если репозиторий закрыт"
+          },
+          {
+            "id": "base64",
+            "text": "Да, ведь там base64"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Закрытый репозиторий тоже утекает."
+      }
+    },
+    {
+      "slug": "sc-rbac",
+      "type": "quiz.single_choice",
+      "title": "Доступ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-secret"
+      ],
+      "presentation": {
+        "question": "Кто должен иметь право читать секреты?",
+        "options": [
+          {
+            "id": "need",
+            "text": "Только те сервисы и люди, кому это нужно"
+          },
+          {
+            "id": "all",
+            "text": "Все пользователи кластера"
+          },
+          {
+            "id": "none",
+            "text": "Никто, даже приложение"
+          },
+          {
+            "id": "public",
+            "text": "Все в интернете"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "need",
+        "explanation": "Наименьшие привилегии."
+      }
+    },
+    {
+      "slug": "es-sealed",
+      "type": "quiz.single_choice",
+      "title": "Sealed Secrets",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-extsecrets"
+      ],
+      "presentation": {
+        "question": "Что позволяет Sealed Secrets?",
+        "options": [
+          {
+            "id": "git",
+            "text": "Хранить секреты в Git зашифрованными, расшифровывает только кластер"
+          },
+          {
+            "id": "speed",
+            "text": "Ускорять кластер"
+          },
+          {
+            "id": "backup",
+            "text": "Делать резервные копии"
+          },
+          {
+            "id": "logs",
+            "text": "Читать логи"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "git",
+        "explanation": "GitOps без утечек."
+      }
+    },
+    {
+      "slug": "es-rotate",
+      "type": "quiz.single_choice",
+      "title": "Ротация",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-extsecrets"
+      ],
+      "presentation": {
+        "question": "Зачем регулярно менять секреты?",
+        "options": [
+          {
+            "id": "stale",
+            "text": "Украденный старый ключ становится бесполезным"
+          },
+          {
+            "id": "law",
+            "text": "Только по закону"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "stale",
+        "explanation": "Хранилища делают это сами."
+      }
+    },
+    {
+      "slug": "es-identity",
+      "type": "quiz.single_choice",
+      "title": "Без ключа",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-extsecrets"
+      ],
+      "presentation": {
+        "question": "Как поду получить права облака без постоянного ключа?",
+        "options": [
+          {
+            "id": "identity",
+            "text": "Через удостоверение нагрузки (workload identity)"
+          },
+          {
+            "id": "env",
+            "text": "Ключом в переменной окружения"
+          },
+          {
+            "id": "image",
+            "text": "Ключом в образе"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "identity",
+        "explanation": "Утекать нечему."
+      }
+    },
+    {
+      "slug": "vl-temp",
+      "type": "quiz.single_choice",
+      "title": "Временность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-volumes"
+      ],
+      "presentation": {
+        "question": "Что будет с файлом, записанным в контейнер, при пересоздании пода?",
+        "options": [
+          {
+            "id": "lost",
+            "text": "Пропадёт"
+          },
+          {
+            "id": "kept",
+            "text": "Сохранится"
+          },
+          {
+            "id": "moved",
+            "text": "Переместится на другой узел"
+          },
+          {
+            "id": "git",
+            "text": "Уйдёт в Git"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lost",
+        "explanation": "Нужны постоянные тома или хранилище."
+      }
+    },
+    {
+      "slug": "vl-empty",
+      "type": "quiz.single_choice",
+      "title": "emptyDir",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-volumes"
+      ],
+      "presentation": {
+        "question": "Сколько живёт emptyDir?",
+        "options": [
+          {
+            "id": "pod",
+            "text": "Пока жив под"
+          },
+          {
+            "id": "forever",
+            "text": "Вечно"
+          },
+          {
+            "id": "node",
+            "text": "Пока жив кластер"
+          },
+          {
+            "id": "minute",
+            "text": "Одну минуту"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pod",
+        "explanation": "Общая папка контейнеров пода."
+      }
+    },
+    {
+      "slug": "vl-uploads",
+      "type": "quiz.single_choice",
+      "title": "Загрузки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-volumes"
+      ],
+      "presentation": {
+        "question": "Где лучше хранить картинки, загруженные пользователями?",
+        "options": [
+          {
+            "id": "s3",
+            "text": "В объектном хранилище вроде S3"
+          },
+          {
+            "id": "container",
+            "text": "В контейнере"
+          },
+          {
+            "id": "configmap",
+            "text": "В ConfigMap"
+          },
+          {
+            "id": "etcd",
+            "text": "В etcd"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "s3",
+        "explanation": "Поды остаются без состояния."
+      }
+    },
+    {
+      "slug": "pv-pvc",
+      "type": "quiz.single_choice",
+      "title": "PVC",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-pvc"
+      ],
+      "presentation": {
+        "question": "Что такое PersistentVolumeClaim?",
+        "options": [
+          {
+            "id": "claim",
+            "text": "Заявка пода на постоянный диск нужного размера"
+          },
+          {
+            "id": "pod",
+            "text": "Особый под"
+          },
+          {
+            "id": "image",
+            "text": "Образ"
+          },
+          {
+            "id": "config",
+            "text": "Настройки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "claim",
+        "explanation": "Диск создаётся по StorageClass."
+      }
+    },
+    {
+      "slug": "pv-rwo",
+      "type": "quiz.single_choice",
+      "title": "ReadWriteOnce",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-pvc"
+      ],
+      "presentation": {
+        "question": "Что значит ReadWriteOnce?",
+        "options": [
+          {
+            "id": "one",
+            "text": "Диск подключён на запись к одному узлу"
+          },
+          {
+            "id": "many",
+            "text": "Пишут многие узлы"
+          },
+          {
+            "id": "read",
+            "text": "Только чтение"
+          },
+          {
+            "id": "once",
+            "text": "Записать можно один раз"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "Самый частый режим облачных дисков."
+      }
+    },
+    {
+      "slug": "pv-retain",
+      "type": "quiz.single_choice",
+      "title": "Retain",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-pvc"
+      ],
+      "presentation": {
+        "question": "Что даёт политика Retain?",
+        "options": [
+          {
+            "id": "keep",
+            "text": "Диск с данными остаётся после удаления заявки"
+          },
+          {
+            "id": "delete",
+            "text": "Удаляет диск сразу"
+          },
+          {
+            "id": "backup",
+            "text": "Делает резервную копию"
+          },
+          {
+            "id": "speed",
+            "text": "Ускоряет диск"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "keep",
+        "explanation": "Для важных данных."
+      }
+    },
+    {
+      "slug": "ss-names",
+      "type": "quiz.single_choice",
+      "title": "Имена",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-statefulset"
+      ],
+      "presentation": {
+        "question": "Какие имена получают поды StatefulSet db с тремя репликами?",
+        "options": [
+          {
+            "id": "ordinal",
+            "text": "db-0, db-1, db-2"
+          },
+          {
+            "id": "random",
+            "text": "Случайные"
+          },
+          {
+            "id": "same",
+            "text": "Все db"
+          },
+          {
+            "id": "ip",
+            "text": "Их IP-адреса"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ordinal",
+        "explanation": "Стабильные имена."
+      }
+    },
+    {
+      "slug": "ss-disk",
+      "type": "quiz.single_choice",
+      "title": "Диск",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-statefulset"
+      ],
+      "presentation": {
+        "question": "Что получит пересозданный под db-1?",
+        "options": [
+          {
+            "id": "same",
+            "text": "Свой прежний диск"
+          },
+          {
+            "id": "new",
+            "text": "Новый пустой диск"
+          },
+          {
+            "id": "none",
+            "text": "Никакого диска"
+          },
+          {
+            "id": "shared",
+            "text": "Диск db-0"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "same",
+        "explanation": "PVC закреплён за именем."
+      }
+    },
+    {
+      "slug": "ss-managed",
+      "type": "quiz.single_choice",
+      "title": "Выбор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-statefulset"
+      ],
+      "presentation": {
+        "question": "Почему часто выбирают управляемую базу облака?",
+        "options": [
+          {
+            "id": "ops",
+            "text": "Бэкапы, обновления и восстановление делает провайдер"
+          },
+          {
+            "id": "free",
+            "text": "Она всегда бесплатна"
+          },
+          {
+            "id": "k8s",
+            "text": "Kubernetes запрещает базы"
+          },
+          {
+            "id": "fast",
+            "text": "Она в 100 раз быстрее"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ops",
+        "explanation": "Меньше эксплуатационной работы."
+      }
+    },
+    {
+      "slug": "pb-ready",
+      "type": "quiz.single_choice",
+      "title": "readiness",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-probes"
+      ],
+      "presentation": {
+        "question": "Что происходит, пока readinessProbe не проходит?",
+        "options": [
+          {
+            "id": "notraffic",
+            "text": "Под не получает трафик от сервиса"
+          },
+          {
+            "id": "restart",
+            "text": "Под перезапускается"
+          },
+          {
+            "id": "delete",
+            "text": "Под удаляется"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "notraffic",
+        "explanation": "Перезапуск — это liveness."
+      }
+    },
+    {
+      "slug": "pb-live",
+      "type": "quiz.single_choice",
+      "title": "liveness",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-probes"
+      ],
+      "presentation": {
+        "question": "Что делает Kubernetes при падении livenessProbe несколько раз подряд?",
+        "options": [
+          {
+            "id": "restart",
+            "text": "Перезапускает контейнер"
+          },
+          {
+            "id": "scale",
+            "text": "Добавляет реплики"
+          },
+          {
+            "id": "alert",
+            "text": "Только пишет в лог"
+          },
+          {
+            "id": "dns",
+            "text": "Меняет DNS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "restart",
+        "explanation": "Зависший процесс оживает."
+      }
+    },
+    {
+      "slug": "pb-trap",
+      "type": "quiz.single_choice",
+      "title": "Ловушка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-probes"
+      ],
+      "presentation": {
+        "question": "Почему liveness не должна зависеть от базы данных?",
+        "options": [
+          {
+            "id": "cascade",
+            "text": "Сбой базы перезапустит все поды разом и усугубит проблему"
+          },
+          {
+            "id": "slow",
+            "text": "Это медленно"
+          },
+          {
+            "id": "secure",
+            "text": "Это небезопасно"
+          },
+          {
+            "id": "none",
+            "text": "Должна зависеть"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cascade",
+        "explanation": "Живость — про сам процесс."
+      }
+    },
+    {
+      "slug": "rs-req",
+      "type": "quiz.single_choice",
+      "title": "requests",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-resources"
+      ],
+      "presentation": {
+        "question": "Для чего планировщик использует requests?",
+        "options": [
+          {
+            "id": "place",
+            "text": "Чтобы выбрать узел, где хватит ресурсов"
+          },
+          {
+            "id": "limit",
+            "text": "Чтобы ограничить потребление"
+          },
+          {
+            "id": "bill",
+            "text": "Только для счёта"
+          },
+          {
+            "id": "none",
+            "text": "Не использует"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "place",
+        "explanation": "limits — потолок."
+      }
+    },
+    {
+      "slug": "rs-oom",
+      "type": "quiz.single_choice",
+      "title": "OOMKilled",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-resources"
+      ],
+      "presentation": {
+        "question": "Что значит статус OOMKilled?",
+        "options": [
+          {
+            "id": "memory",
+            "text": "Контейнер превысил лимит памяти и был убит"
+          },
+          {
+            "id": "cpu",
+            "text": "Превысил лимит процессора"
+          },
+          {
+            "id": "disk",
+            "text": "Кончился диск"
+          },
+          {
+            "id": "net",
+            "text": "Нет сети"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "memory",
+        "explanation": "Процессор при превышении замедляется."
+      }
+    },
+    {
+      "slug": "rs-unit",
+      "type": "quiz.single_choice",
+      "title": "Единицы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-resources"
+      ],
+      "presentation": {
+        "question": "Что значит cpu: 500m?",
+        "options": [
+          {
+            "id": "half",
+            "text": "Половина ядра процессора"
+          },
+          {
+            "id": "mega",
+            "text": "500 мегагерц"
+          },
+          {
+            "id": "five",
+            "text": "Пять ядер"
+          },
+          {
+            "id": "mem",
+            "text": "500 мегабайт"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "half",
+        "explanation": "1000m — одно ядро."
+      }
+    },
+    {
+      "slug": "dr-pdb",
+      "type": "quiz.single_choice",
+      "title": "PDB",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-pdb"
+      ],
+      "presentation": {
+        "question": "Что делает PodDisruptionBudget с minAvailable: 2?",
+        "options": [
+          {
+            "id": "keep",
+            "text": "Не даёт плановым операциям оставить меньше двух работающих подов"
+          },
+          {
+            "id": "scale",
+            "text": "Создаёт два новых пода"
+          },
+          {
+            "id": "limit",
+            "text": "Ограничивает память"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "keep",
+        "explanation": "Защита при обслуживании."
+      }
+    },
+    {
+      "slug": "dr-drain",
+      "type": "quiz.single_choice",
+      "title": "drain",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-pdb"
+      ],
+      "presentation": {
+        "question": "Что делает kubectl drain узла?",
+        "options": [
+          {
+            "id": "evict",
+            "text": "Выселяет поды с узла перед обслуживанием"
+          },
+          {
+            "id": "delete",
+            "text": "Удаляет узел навсегда"
+          },
+          {
+            "id": "clean",
+            "text": "Чистит диск"
+          },
+          {
+            "id": "logs",
+            "text": "Собирает логи"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "evict",
+        "explanation": "Поды переезжают на другие узлы."
+      }
+    },
+    {
+      "slug": "dr-spread",
+      "type": "quiz.single_choice",
+      "title": "Распределение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-pdb"
+      ],
+      "presentation": {
+        "question": "Зачем размещать реплики на разных узлах и зонах?",
+        "options": [
+          {
+            "id": "survive",
+            "text": "Чтобы падение одного узла или зоны не убило все копии"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "cost",
+            "text": "Это всегда дешевле"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "survive",
+        "explanation": "Не все яйца в одну корзину."
+      }
+    },
+    {
+      "slug": "hp-what",
+      "type": "quiz.single_choice",
+      "title": "HPA",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-hpa"
+      ],
+      "presentation": {
+        "question": "Что меняет HorizontalPodAutoscaler?",
+        "options": [
+          {
+            "id": "replicas",
+            "text": "Число реплик развёртывания"
+          },
+          {
+            "id": "cpu",
+            "text": "Размер процессора узла"
+          },
+          {
+            "id": "image",
+            "text": "Версию образа"
+          },
+          {
+            "id": "nodes",
+            "text": "Число узлов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "replicas",
+        "explanation": "Узлы — Cluster Autoscaler."
+      }
+    },
+    {
+      "slug": "hp-req",
+      "type": "quiz.single_choice",
+      "title": "requests",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-hpa"
+      ],
+      "presentation": {
+        "question": "Почему HPA по процессору требует requests?",
+        "options": [
+          {
+            "id": "percent",
+            "text": "Загрузка считается в процентах от запрошенного"
+          },
+          {
+            "id": "law",
+            "text": "По закону"
+          },
+          {
+            "id": "none",
+            "text": "Не требует"
+          },
+          {
+            "id": "secure",
+            "text": "Для безопасности"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "percent",
+        "explanation": "70% от чего-то."
+      }
+    },
+    {
+      "slug": "hp-keda",
+      "type": "quiz.single_choice",
+      "title": "Очередь",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-hpa"
+      ],
+      "presentation": {
+        "question": "Чем масштабировать обработчики по длине очереди?",
+        "options": [
+          {
+            "id": "keda",
+            "text": "KEDA или HPA со своими метриками"
+          },
+          {
+            "id": "manual",
+            "text": "Только вручную"
+          },
+          {
+            "id": "cron",
+            "text": "CronJob"
+          },
+          {
+            "id": "none",
+            "text": "Нельзя"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "keda",
+        "explanation": "Событийное масштабирование."
+      }
+    },
+    {
+      "slug": "ca-pending",
+      "type": "quiz.single_choice",
+      "title": "Pending",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-ca"
+      ],
+      "presentation": {
+        "question": "Почему поды могут висеть в Pending после масштабирования?",
+        "options": [
+          {
+            "id": "capacity",
+            "text": "На узлах не хватает ресурсов для них"
+          },
+          {
+            "id": "image",
+            "text": "Всегда из-за образа"
+          },
+          {
+            "id": "dns",
+            "text": "Из-за DNS"
+          },
+          {
+            "id": "none",
+            "text": "Так не бывает"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "capacity",
+        "explanation": "Нужно больше узлов."
+      }
+    },
+    {
+      "slug": "ca-what",
+      "type": "quiz.single_choice",
+      "title": "Cluster Autoscaler",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-ca"
+      ],
+      "presentation": {
+        "question": "Что делает Cluster Autoscaler?",
+        "options": [
+          {
+            "id": "nodes",
+            "text": "Добавляет и убирает узлы по потребности подов"
+          },
+          {
+            "id": "pods",
+            "text": "Меняет число подов"
+          },
+          {
+            "id": "cpu",
+            "text": "Разгоняет процессор"
+          },
+          {
+            "id": "logs",
+            "text": "Собирает логи"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "nodes",
+        "explanation": "Платишь только за нужное."
+      }
+    },
+    {
+      "slug": "ca-vpa",
+      "type": "quiz.single_choice",
+      "title": "VPA",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-ca"
+      ],
+      "presentation": {
+        "question": "Что делает Vertical Pod Autoscaler?",
+        "options": [
+          {
+            "id": "size",
+            "text": "Подбирает requests и limits по реальному потреблению"
+          },
+          {
+            "id": "replicas",
+            "text": "Добавляет реплики"
+          },
+          {
+            "id": "nodes",
+            "text": "Добавляет узлы"
+          },
+          {
+            "id": "net",
+            "text": "Настраивает сеть"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "size",
+        "explanation": "Вертикальное масштабирование."
+      }
+    },
+    {
+      "slug": "cp-spot",
+      "type": "quiz.single_choice",
+      "title": "Spot",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-cost"
+      ],
+      "presentation": {
+        "question": "Каким нагрузкам подходят прерываемые узлы?",
+        "options": [
+          {
+            "id": "stateless",
+            "text": "Приложениям без состояния с несколькими репликами"
+          },
+          {
+            "id": "db",
+            "text": "Единственной базе данных"
+          },
+          {
+            "id": "all",
+            "text": "Любым без исключений"
+          },
+          {
+            "id": "none",
+            "text": "Никаким"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "stateless",
+        "explanation": "Узел могут забрать в любой момент."
+      }
+    },
+    {
+      "slug": "cp-load",
+      "type": "quiz.single_choice",
+      "title": "Нагрузочный тест",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-cost"
+      ],
+      "presentation": {
+        "question": "Зачем нагрузочное тестирование?",
+        "options": [
+          {
+            "id": "know",
+            "text": "Узнать заранее, сколько выдержит приложение"
+          },
+          {
+            "id": "break",
+            "text": "Чтобы сломать прод"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "know",
+        "explanation": "k6, Locust."
+      }
+    },
+    {
+      "slug": "cp-reserve",
+      "type": "quiz.single_choice",
+      "title": "Запас",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-cost"
+      ],
+      "presentation": {
+        "question": "Почему нужен запас мощности при автомасштабировании?",
+        "options": [
+          {
+            "id": "minutes",
+            "text": "Новые узлы появляются за минуты, а пик — сразу"
+          },
+          {
+            "id": "law",
+            "text": "По закону"
+          },
+          {
+            "id": "cost",
+            "text": "Чтобы платить больше"
+          },
+          {
+            "id": "none",
+            "text": "Не нужен"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "minutes",
+        "explanation": "Пик не ждёт."
+      }
+    },
+    {
+      "slug": "rb-role",
+      "type": "quiz.single_choice",
+      "title": "Role",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-rbac"
+      ],
+      "presentation": {
+        "question": "Что описывает Role?",
+        "options": [
+          {
+            "id": "verbs",
+            "text": "Какие действия над какими ресурсами разрешены"
+          },
+          {
+            "id": "user",
+            "text": "Список пользователей"
+          },
+          {
+            "id": "image",
+            "text": "Образ"
+          },
+          {
+            "id": "net",
+            "text": "Сетевые правила"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "verbs",
+        "explanation": "Выдаёт её RoleBinding."
+      }
+    },
+    {
+      "slug": "rb-sa",
+      "type": "quiz.single_choice",
+      "title": "ServiceAccount",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-rbac"
+      ],
+      "presentation": {
+        "question": "От чьего имени под обращается к API кластера?",
+        "options": [
+          {
+            "id": "sa",
+            "text": "От имени своего ServiceAccount"
+          },
+          {
+            "id": "admin",
+            "text": "Всегда от администратора"
+          },
+          {
+            "id": "node",
+            "text": "От имени узла"
+          },
+          {
+            "id": "user",
+            "text": "От имени разработчика"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "sa",
+        "explanation": "Давай ему минимум прав."
+      }
+    },
+    {
+      "slug": "rb-admin",
+      "type": "quiz.single_choice",
+      "title": "cluster-admin",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-rbac"
+      ],
+      "presentation": {
+        "question": "Кому стоит выдавать cluster-admin?",
+        "options": [
+          {
+            "id": "admins",
+            "text": "Только администраторам кластера"
+          },
+          {
+            "id": "all",
+            "text": "Всем разработчикам"
+          },
+          {
+            "id": "apps",
+            "text": "Всем приложениям"
+          },
+          {
+            "id": "ci",
+            "text": "Каждому шагу CI"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "admins",
+        "explanation": "Широкие права — главная цель атак."
+      }
+    },
+    {
+      "slug": "np-default",
+      "type": "quiz.single_choice",
+      "title": "По умолчанию",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-netpol"
+      ],
+      "presentation": {
+        "question": "Какой сетевой доступ между подами без политик?",
+        "options": [
+          {
+            "id": "open",
+            "text": "Всё открыто: любой под достучится до любого"
+          },
+          {
+            "id": "closed",
+            "text": "Всё закрыто"
+          },
+          {
+            "id": "ns",
+            "text": "Только внутри пространства имён"
+          },
+          {
+            "id": "dns",
+            "text": "Только DNS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "open",
+        "explanation": "Поэтому нужен default deny."
+      }
+    },
+    {
+      "slug": "np-db",
+      "type": "quiz.single_choice",
+      "title": "База",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-netpol"
+      ],
+      "presentation": {
+        "question": "Как разрешить доступ к базе только подам API?",
+        "options": [
+          {
+            "id": "policy",
+            "text": "NetworkPolicy для подов app=db с разрешением от подов app=api"
+          },
+          {
+            "id": "password",
+            "text": "Только сложным паролем"
+          },
+          {
+            "id": "hide",
+            "text": "Не публиковать сервис"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "policy",
+        "explanation": "Разрешение по меткам."
+      }
+    },
+    {
+      "slug": "np-cni",
+      "type": "quiz.single_choice",
+      "title": "Исполнение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-netpol"
+      ],
+      "presentation": {
+        "question": "Почему политика может не работать?",
+        "options": [
+          {
+            "id": "cni",
+            "text": "Сетевой плагин кластера не поддерживает политики"
+          },
+          {
+            "id": "yaml",
+            "text": "YAML всегда игнорируется"
+          },
+          {
+            "id": "root",
+            "text": "Нужен root"
+          },
+          {
+            "id": "dns",
+            "text": "Из-за DNS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cni",
+        "explanation": "Calico и Cilium поддерживают."
+      }
+    },
+    {
+      "slug": "ps-root",
+      "type": "quiz.single_choice",
+      "title": "Не root",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-podsec"
+      ],
+      "presentation": {
+        "question": "Что запрещает runAsNonRoot: true?",
+        "options": [
+          {
+            "id": "root",
+            "text": "Запуск контейнера от root"
+          },
+          {
+            "id": "net",
+            "text": "Сетевые запросы"
+          },
+          {
+            "id": "logs",
+            "text": "Запись логов"
+          },
+          {
+            "id": "cpu",
+            "text": "Использование процессора"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "root",
+        "explanation": "Меньше прав — меньше ущерб."
+      }
+    },
+    {
+      "slug": "ps-pss",
+      "type": "quiz.single_choice",
+      "title": "Стандарты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-podsec"
+      ],
+      "presentation": {
+        "question": "Что даёт уровень restricted в Pod Security Standards?",
+        "options": [
+          {
+            "id": "strict",
+            "text": "Запрещает создавать поды с опасными настройками"
+          },
+          {
+            "id": "speed",
+            "text": "Ускоряет поды"
+          },
+          {
+            "id": "free",
+            "text": "Даёт бесплатные узлы"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "strict",
+        "explanation": "Метка на пространстве имён."
+      }
+    },
+    {
+      "slug": "ps-images",
+      "type": "quiz.single_choice",
+      "title": "Образы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-podsec"
+      ],
+      "presentation": {
+        "question": "Как не пустить в кластер образ из случайного источника?",
+        "options": [
+          {
+            "id": "policy",
+            "text": "Политикой Kyverno или Gatekeeper, разрешающей только свой реестр"
+          },
+          {
+            "id": "trust",
+            "text": "Доверять разработчикам"
+          },
+          {
+            "id": "dns",
+            "text": "Через DNS"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "policy",
+        "explanation": "И проверка подписи."
+      }
+    },
+    {
+      "slug": "hl-values",
+      "type": "quiz.single_choice",
+      "title": "values",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-helm"
+      ],
+      "presentation": {
+        "question": "Для чего файл values в Helm?",
+        "options": [
+          {
+            "id": "params",
+            "text": "Для параметров, которые подставляются в шаблоны"
+          },
+          {
+            "id": "secrets",
+            "text": "Только для секретов"
+          },
+          {
+            "id": "logs",
+            "text": "Для логов"
+          },
+          {
+            "id": "none",
+            "text": "Ни для чего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "params",
+        "explanation": "Разные окружения — разные values."
+      }
+    },
+    {
+      "slug": "hl-upgrade",
+      "type": "quiz.single_choice",
+      "title": "Установка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-helm"
+      ],
+      "presentation": {
+        "question": "Что делает helm upgrade --install?",
+        "options": [
+          {
+            "id": "both",
+            "text": "Устанавливает релиз или обновляет, если он уже есть"
+          },
+          {
+            "id": "delete",
+            "text": "Удаляет релиз"
+          },
+          {
+            "id": "build",
+            "text": "Собирает образ"
+          },
+          {
+            "id": "test",
+            "text": "Только тестирует"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "both",
+        "explanation": "Удобно в конвейере."
+      }
+    },
+    {
+      "slug": "hl-rollback",
+      "type": "quiz.single_choice",
+      "title": "Откат",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-helm"
+      ],
+      "presentation": {
+        "question": "Как вернуть прошлую ревизию релиза?",
+        "options": [
+          {
+            "id": "rollback",
+            "text": "`helm rollback имя ревизия`"
+          },
+          {
+            "id": "undo",
+            "text": "`helm undo`"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить и поставить заново"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rollback",
+        "explanation": "История хранится."
+      }
+    },
+    {
+      "slug": "kz-overlay",
+      "type": "quiz.single_choice",
+      "title": "Наложения",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-kustomize"
+      ],
+      "presentation": {
+        "question": "Где в Kustomize описывают отличия production?",
+        "options": [
+          {
+            "id": "overlay",
+            "text": "В наложении overlays/prod с патчами к base"
+          },
+          {
+            "id": "base",
+            "text": "Прямо в base"
+          },
+          {
+            "id": "values",
+            "text": "В values.yaml Helm"
+          },
+          {
+            "id": "env",
+            "text": "В переменных окружения"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "overlay",
+        "explanation": "Обычный YAML."
+      }
+    },
+    {
+      "slug": "kz-apply",
+      "type": "quiz.single_choice",
+      "title": "Применение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-kustomize"
+      ],
+      "presentation": {
+        "question": "Как применить наложение Kustomize?",
+        "options": [
+          {
+            "id": "k",
+            "text": "`kubectl apply -k overlays/prod`"
+          },
+          {
+            "id": "f",
+            "text": "`kubectl apply -f kustomize`"
+          },
+          {
+            "id": "helm",
+            "text": "`helm install`"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "k",
+        "explanation": "Встроено в kubectl."
+      }
+    },
+    {
+      "slug": "kz-choose",
+      "type": "quiz.single_choice",
+      "title": "Выбор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-kustomize"
+      ],
+      "presentation": {
+        "question": "Когда особенно уместен Helm?",
+        "options": [
+          {
+            "id": "package",
+            "text": "Для пакетов, которые ставят другие с разными параметрами"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "small",
+            "text": "Только для одного манифеста"
+          },
+          {
+            "id": "db",
+            "text": "Только для баз"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "package",
+        "explanation": "Свои приложения — часто Kustomize."
+      }
+    },
+    {
+      "slug": "go-source",
+      "type": "quiz.single_choice",
+      "title": "Источник правды",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-gitops"
+      ],
+      "presentation": {
+        "question": "Где в GitOps находится описание желаемого состояния кластера?",
+        "options": [
+          {
+            "id": "git",
+            "text": "В репозитории Git"
+          },
+          {
+            "id": "etcd",
+            "text": "Только в etcd"
+          },
+          {
+            "id": "wiki",
+            "text": "В вики"
+          },
+          {
+            "id": "head",
+            "text": "В голове администратора"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "git",
+        "explanation": "Изменения — через PR."
+      }
+    },
+    {
+      "slug": "go-drift",
+      "type": "quiz.single_choice",
+      "title": "Дрейф",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-gitops"
+      ],
+      "presentation": {
+        "question": "Что сделает Argo CD с ручной правкой через kubectl?",
+        "options": [
+          {
+            "id": "revert",
+            "text": "Вернёт состояние как в Git"
+          },
+          {
+            "id": "keep",
+            "text": "Сохранит и запишет в Git"
+          },
+          {
+            "id": "ignore",
+            "text": "Ничего"
+          },
+          {
+            "id": "crash",
+            "text": "Уронит кластер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "revert",
+        "explanation": "Кластер не расходится с описанием."
+      }
+    },
+    {
+      "slug": "go-operator",
+      "type": "quiz.single_choice",
+      "title": "Оператор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-gitops"
+      ],
+      "presentation": {
+        "question": "Что такое оператор Kubernetes?",
+        "options": [
+          {
+            "id": "controller",
+            "text": "Контроллер, который управляет сложной системой по её объектам"
+          },
+          {
+            "id": "person",
+            "text": "Дежурный инженер"
+          },
+          {
+            "id": "cli",
+            "text": "Команда kubectl"
+          },
+          {
+            "id": "node",
+            "text": "Узел кластера"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "controller",
+        "explanation": "CloudNativePG, Strimzi."
+      }
+    },
+    {
+      "slug": "ob-prev",
+      "type": "quiz.single_choice",
+      "title": "Упавший контейнер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-observe"
+      ],
+      "presentation": {
+        "question": "Как посмотреть логи контейнера до его перезапуска?",
+        "options": [
+          {
+            "id": "previous",
+            "text": "`kubectl logs pod --previous`"
+          },
+          {
+            "id": "old",
+            "text": "`kubectl logs --old`"
+          },
+          {
+            "id": "describe",
+            "text": "Только describe"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "previous",
+        "explanation": "Причина падения — в конце."
+      }
+    },
+    {
+      "slug": "ob-collect",
+      "type": "quiz.single_choice",
+      "title": "Сбор логов",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-observe"
+      ],
+      "presentation": {
+        "question": "Зачем собирать логи в общее хранилище?",
+        "options": [
+          {
+            "id": "keep",
+            "text": "Логи удалённых подов не пропадают, по ним можно искать"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости подов"
+          },
+          {
+            "id": "cost",
+            "text": "Это бесплатно"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "keep",
+        "explanation": "Fluent Bit, Loki."
+      }
+    },
+    {
+      "slug": "ob-events",
+      "type": "quiz.single_choice",
+      "title": "События",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-observe"
+      ],
+      "presentation": {
+        "question": "Где увидеть ошибки скачивания образа и планирования?",
+        "options": [
+          {
+            "id": "events",
+            "text": "В событиях кластера: kubectl get events"
+          },
+          {
+            "id": "logs",
+            "text": "Только в логах приложения"
+          },
+          {
+            "id": "git",
+            "text": "В Git"
+          },
+          {
+            "id": "dns",
+            "text": "В DNS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "events",
+        "explanation": "Или в describe."
+      }
+    },
+    {
+      "slug": "db-pull",
+      "type": "quiz.single_choice",
+      "title": "ImagePullBackOff",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-debug"
+      ],
+      "presentation": {
+        "question": "Частая причина ImagePullBackOff?",
+        "options": [
+          {
+            "id": "image",
+            "text": "Опечатка в имени или теге образа, нет доступа к реестру"
+          },
+          {
+            "id": "cpu",
+            "text": "Мало процессора"
+          },
+          {
+            "id": "dns",
+            "text": "Неверный DNS приложения"
+          },
+          {
+            "id": "probe",
+            "text": "Проверка готовности"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "image",
+        "explanation": "Проверь имя и imagePullSecrets."
+      }
+    },
+    {
+      "slug": "db-endpoints",
+      "type": "quiz.single_choice",
+      "title": "Нет трафика",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-debug"
+      ],
+      "presentation": {
+        "question": "Сервис есть, но запросы не доходят. Что проверить?",
+        "options": [
+          {
+            "id": "endpoints",
+            "text": "kubectl get endpoints: совпадает ли селектор и готовы ли поды"
+          },
+          {
+            "id": "reboot",
+            "text": "Перезагрузить кластер"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить namespace"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "endpoints",
+        "explanation": "Цепочка Ingress → Service → поды."
+      }
+    },
+    {
+      "slug": "db-debug",
+      "type": "quiz.single_choice",
+      "title": "Нет оболочки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-debug"
+      ],
+      "presentation": {
+        "question": "Как отлаживать под из образа без оболочки?",
+        "options": [
+          {
+            "id": "debug",
+            "text": "kubectl debug с временным отладочным контейнером"
+          },
+          {
+            "id": "ssh",
+            "text": "SSH в контейнер"
+          },
+          {
+            "id": "rebuild",
+            "text": "Пересобрать образ с bash в бою"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "debug",
+        "explanation": "Подключается к работающему поду."
+      }
+    },
+    {
+      "slug": "ub-why",
+      "type": "quiz.single_choice",
+      "title": "Обновления",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-upgrades"
+      ],
+      "presentation": {
+        "question": "Почему нельзя годами не обновлять Kubernetes?",
+        "options": [
+          {
+            "id": "support",
+            "text": "Старые версии перестают получать исправления безопасности"
+          },
+          {
+            "id": "speed",
+            "text": "Кластер замедляется"
+          },
+          {
+            "id": "license",
+            "text": "Кончается лицензия"
+          },
+          {
+            "id": "none",
+            "text": "Можно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "support",
+        "explanation": "Поддержка — около года."
+      }
+    },
+    {
+      "slug": "ub-order",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-upgrades"
+      ],
+      "presentation": {
+        "question": "В каком порядке обновляют кластер?",
+        "options": [
+          {
+            "id": "cp",
+            "text": "Сначала плоскость управления, потом узлы по одному"
+          },
+          {
+            "id": "nodes",
+            "text": "Сначала все узлы разом"
+          },
+          {
+            "id": "random",
+            "text": "В любом порядке"
+          },
+          {
+            "id": "apps",
+            "text": "Сначала приложения"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cp",
+        "explanation": "Узлы — через drain."
+      }
+    },
+    {
+      "slug": "ub-velero",
+      "type": "quiz.single_choice",
+      "title": "Velero",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "k8s-upgrades"
+      ],
+      "presentation": {
+        "question": "Что делает Velero?",
+        "options": [
+          {
+            "id": "backup",
+            "text": "Сохраняет объекты и диски кластера и восстанавливает их"
+          },
+          {
+            "id": "deploy",
+            "text": "Выкладывает приложения"
+          },
+          {
+            "id": "scale",
+            "text": "Масштабирует поды"
+          },
+          {
+            "id": "dns",
+            "text": "Управляет DNS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "backup",
+        "explanation": "Подъём кластера после аварии."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "orchestration",
+      "title": "Зачем оркестратор",
+      "summary": "Много контейнеров на многих серверах: размещение, перезапуск, масштаб, обновления, желаемое состояние.",
+      "chapter": "Зачем Kubernetes",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Начинаем курс: знаем Docker и смотрим, что делать, когда контейнеров и серверов много.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Проблема масштаба\",\n  \"title\": \"Сотни контейнеров\",\n  \"what\": \"На одном сервере хватает Compose. Когда серверов десятки, нужно решать: где запустить контейнер, что делать при падении сервера, как обновить без простоя.\",\n  \"why\": \"Вручную это не масштабируется.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Оркестратор\",\n  \"title\": \"Капитан флота\",\n  \"what\": \"Kubernetes сам размещает контейнеры по серверам, перезапускает упавшие, масштабирует и обновляет их.\",\n  \"why\": \"Команда описывает, что нужно, а не как это сделать.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Желаемое состояние\",\n  \"title\": \"Декларативность\",\n  \"what\": \"Ты описываешь: «3 копии API версии 1.4». Контроллеры постоянно сравнивают реальность с описанием и исправляют разницу.\",\n  \"why\": \"Упал под — через секунды появится новый.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Когда не нужен\",\n  \"title\": \"Честно\",\n  \"what\": \"Одному маленькому сайту Kubernetes добавит сложности. Сначала Compose или управляемая платформа.\",\n  \"why\": \"Инструмент — под масштаб задачи.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Kubernetes держит желаемое состояние флота контейнеров. Маленькому проекту хватит Compose."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "or-desired",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "or-crash",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "or-small",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "architecture",
+      "title": "Устройство кластера",
+      "summary": "Плоскость управления и рабочие узлы, API-сервер, etcd, планировщик, контроллеры, kubelet.",
+      "chapter": "Зачем Kubernetes",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем, зачем оркестратор, и разбираем его устройство.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"API-сервер\",\n  \"title\": \"Единственный вход\",\n  \"what\": \"Все — люди, kubectl, контроллеры — общаются с кластером через API-сервер.\",\n  \"why\": \"Права и проверки — в одном месте.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"etcd\",\n  \"title\": \"Память кластера\",\n  \"what\": \"Хранилище ключ-значение с описанием всех объектов кластера.\",\n  \"why\": \"Потерять etcd — потерять кластер; его копируют.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Планировщик и контроллеры\",\n  \"title\": \"Мозг\",\n  \"what\": \"Планировщик выбирает узел для нового пода, контроллеры следят за развёртываниями, узлами, заданиями.\",\n  \"why\": \"Каждый контроллер отвечает за свой вид объектов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Рабочие узлы\",\n  \"title\": \"Где работают контейнеры\",\n  \"what\": \"На каждом узле kubelet запускает поды через containerd, kube-proxy настраивает сеть.\",\n  \"why\": \"Узлы — это серверы или виртуальные машины.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Управляемые кластеры\",\n  \"title\": \"Облако берёт мозг на себя\",\n  \"what\": \"EKS, GKE, AKS и другие обслуживают плоскость управления за тебя.\",\n  \"why\": \"Ты занимаешься приложениями, а не etcd.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** API-сервер — вход, etcd — память, планировщик и контроллеры — мозг, kubelet — руки на узлах."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ar-api",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ar-etcd",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ar-kubelet",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "kubectl",
+      "title": "Свой кластер и kubectl",
+      "summary": "Локальный кластер kind или minikube, kubectl get, describe, apply, контексты и пространства имён.",
+      "chapter": "Зачем Kubernetes",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем устройство кластера и поднимаем свой на ноутбуке.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"kind\",\n  \"title\": \"Кластер в Docker\",\n  \"what\": \"`kind create cluster` поднимает кластер из контейнеров за минуту. Есть также minikube, k3d и кластер в Docker Desktop.\",\n  \"why\": \"Учиться и тестировать можно без облака.\",\n  \"how\": \"$ kind create cluster --name lab\\nCreating cluster \\\"lab\\\" ...\\n ✓ Ensuring node image\\n ✓ Starting control-plane\\n$ kubectl get nodes\\nNAME                STATUS   ROLES           AGE\\nlab-control-plane   Ready    control-plane   40s\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"get и describe\",\n  \"title\": \"Посмотреть\",\n  \"what\": \"`kubectl get pods` — список, `-o wide` — подробнее, `kubectl describe pod имя` — всё о поде и его события.\",\n  \"why\": \"describe — первый шаг при любой проблеме.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"apply\",\n  \"title\": \"Применить манифест\",\n  \"what\": \"`kubectl apply -f app.yaml` отправляет желаемое состояние в кластер. Повторный apply обновляет только изменённое.\",\n  \"why\": \"Манифесты живут в Git, кластер к ним приводится.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Пространства имён\",\n  \"title\": \"namespace\",\n  \"what\": \"Логические разделы кластера: dev, staging, team-a. `-n имя` выбирает раздел.\",\n  \"why\": \"Команды и окружения не мешают друг другу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Контекст\",\n  \"title\": \"Какой кластер\",\n  \"what\": \"kubeconfig хранит несколько кластеров; `kubectl config use-context` переключает.\",\n  \"why\": \"Проверь контекст, прежде чем удалять что-то в «тесте».\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Локально — kind. Смотреть — get и describe, менять — apply. Всегда проверяй контекст и namespace."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "kc-describe",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "kc-apply",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "kc-context",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "pod",
+      "title": "Под",
+      "summary": "Наименьшая единица: один или несколько контейнеров с общей сетью и томами, недолговечность.",
+      "chapter": "Поды",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Подняли кластер и знакомимся с его основной единицей.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Под\",\n  \"title\": \"Обёртка для контейнеров\",\n  \"what\": \"Под — один или несколько контейнеров, которые всегда запускаются вместе на одном узле, делят IP-адрес и тома.\",\n  \"why\": \"Kubernetes управляет подами, а не отдельными контейнерами.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Недолговечность\",\n  \"title\": \"Скот, а не питомцы\",\n  \"what\": \"Под может исчезнуть в любой момент: узел упал, развёртывание обновилось. Новый под получит новое имя и IP.\",\n  \"why\": \"Нельзя полагаться на конкретный под и его адрес.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Запустить под\",\n  \"title\": \"kubectl run\",\n  \"what\": \"`kubectl run web --image=nginx:1.27` — быстро запустить под для опыта. В работе поды создают через развёртывания.\",\n  \"why\": \"Посмотреть, как устроен под изнутри.\",\n  \"how\": \"$ kubectl run web --image=nginx:1.27\\npod/web created\\n$ kubectl get pod web -o wide\\nNAME  READY  STATUS   IP          NODE\\nweb   1/1    Running  10.244.0.7  lab-control-plane\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Жизненный цикл\",\n  \"title\": \"Pending → Running → Succeeded\",\n  \"what\": \"Pending — ждёт узла или образа, Running — работает, Succeeded или Failed — завершился. CrashLoopBackOff — падает и перезапускается.\",\n  \"why\": \"Статус подсказывает, где искать проблему.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Под — недолговечная обёртка контейнеров с общим IP. Не привязывайся к конкретному поду."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-share",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-ip",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-crash",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "manifests",
+      "title": "Манифесты",
+      "summary": "apiVersion, kind, metadata, spec; YAML-файл пода, образ, порты, команда и переменные.",
+      "chapter": "Поды",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем, что такое под, и описываем его файлом.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Манифест пода\",\n  \"title\": \"Четыре раздела\",\n  \"what\": \"apiVersion и kind — что за объект, metadata — имя и метки, spec — желаемое состояние.\",\n  \"why\": \"Любой объект Kubernetes описывается так же.\",\n  \"how\": \"apiVersion: v1\\nkind: Pod\\nmetadata:\\n  name: api\\n  labels:\\n    app: api\\nspec:\\n  containers:\\n    - name: api\\n      image: ghcr.io/team/api:1.4.0\\n      ports:\\n        - containerPort: 8000\\n      env:\\n        - name: LOG_LEVEL\\n          value: info\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"explain\",\n  \"title\": \"Справка по полям\",\n  \"what\": \"`kubectl explain pod.spec.containers` показывает описание полей прямо в терминале.\",\n  \"why\": \"Не нужно искать документацию.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Манифесты в Git\",\n  \"title\": \"Инфраструктура как код\",\n  \"what\": \"Файлы манифестов хранят в репозитории и применяют конвейером.\",\n  \"why\": \"Видно, кто и зачем изменил кластер.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"dry-run\",\n  \"title\": \"Проверить без применения\",\n  \"what\": \"`kubectl apply -f api.yaml --dry-run=server` — сервер проверит манифест, ничего не меняя.\",\n  \"why\": \"Ошибка в поле найдётся до выкладки.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** apiVersion, kind, metadata, spec. Манифесты — в Git, проверка — dry-run."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mf-spec",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mf-kind",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mf-dry",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "labels",
+      "title": "Метки и селекторы",
+      "summary": "Метки на объектах, выбор по селектору, аннотации, sidecar и init-контейнеры.",
+      "chapter": "Поды",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Описываем поды файлами и учимся связывать объекты между собой.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Метки\",\n  \"title\": \"Ярлыки ключ-значение\",\n  \"what\": \"app: api, env: prod, team: billing — метки на любых объектах.\",\n  \"why\": \"Через метки объекты находят друг друга.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Селекторы\",\n  \"title\": \"Выбрать по меткам\",\n  \"what\": \"`kubectl get pods -l app=api` — только поды API. Развёртывания и сервисы находят свои поды так же.\",\n  \"why\": \"Сервис отправляет трафик всем подам с меткой app=api.\",\n  \"how\": \"$ kubectl get pods -l app=api\\nNAME                   READY  STATUS\\napi-7d9f8c6b5d-2xk4p   1/1    Running\\napi-7d9f8c6b5d-9qwtz   1/1    Running\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Аннотации\",\n  \"title\": \"Заметки для инструментов\",\n  \"what\": \"Неиндексируемые данные: ссылка на коммит, настройки для прокси, описание.\",\n  \"why\": \"Метки — для выбора, аннотации — для информации.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Sidecar и init\",\n  \"title\": \"Вспомогательные контейнеры\",\n  \"what\": \"Init-контейнер выполняется до основного (дождаться базы, применить миграции). Sidecar работает рядом (сбор логов, прокси).\",\n  \"why\": \"Основной контейнер остаётся простым.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Метки — чтобы выбирать, аннотации — чтобы описывать. Помощники — init и sidecar."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lb-select",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lb-annot",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lb-init",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "deployment",
+      "title": "Развёртывание",
+      "summary": "Deployment и ReplicaSet, число реплик, шаблон пода, самовосстановление.",
+      "chapter": "Развёртывания",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Связываем объекты метками и запускаем приложение правильно — развёртыванием.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Deployment\",\n  \"title\": \"N одинаковых подов\",\n  \"what\": \"Описывает шаблон пода и число реплик. Через ReplicaSet поддерживает нужное количество.\",\n  \"why\": \"Основной способ запускать приложения без состояния.\",\n  \"how\": \"apiVersion: apps/v1\\nkind: Deployment\\nmetadata:\\n  name: api\\nspec:\\n  replicas: 3\\n  selector:\\n    matchLabels: { app: api }\\n  template:\\n    metadata:\\n      labels: { app: api }\\n    spec:\\n      containers:\\n        - name: api\\n          image: ghcr.io/team/api:1.4.0\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Самовосстановление\",\n  \"title\": \"Всегда N\",\n  \"what\": \"Удалили под, упал узел — контроллер создаёт замену, чтобы реплик снова было три.\",\n  \"why\": \"Приложение переживает сбои без человека.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"scale\",\n  \"title\": \"Изменить число копий\",\n  \"what\": \"`kubectl scale deployment api --replicas=5`, но лучше поменять replicas в манифесте и применить.\",\n  \"why\": \"Манифест в Git — источник правды.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"ReplicaSet\",\n  \"title\": \"Внутренний механизм\",\n  \"what\": \"Deployment создаёт ReplicaSet для каждой версии шаблона. Напрямую с ними обычно не работают.\",\n  \"why\": \"Через них устроены обновления и откаты.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Приложение без состояния — Deployment с replicas. Число копий — в манифесте."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dp-heal",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dp-selector",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dp-scale",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "rollouts",
+      "title": "Обновления и откаты",
+      "summary": "Постепенное обновление, maxSurge и maxUnavailable, rollout status, history и undo.",
+      "chapter": "Развёртывания",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Запускаем развёртывания и обновляем их без простоя.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"RollingUpdate\",\n  \"title\": \"По одному\",\n  \"what\": \"Новая версия образа — новые поды поднимаются, старые убираются постепенно. maxSurge — сколько лишних можно поднять, maxUnavailable — сколько можно потерять.\",\n  \"why\": \"Пользователи не замечают обновления.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"rollout status\",\n  \"title\": \"Следить за выкладкой\",\n  \"what\": \"`kubectl rollout status deployment/api` ждёт окончания и сообщает об успехе или зависании.\",\n  \"why\": \"Конвейер узнаёт, что выкладка прошла.\",\n  \"how\": \"$ kubectl set image deployment/api api=ghcr.io/team/api:1.5.0\\n$ kubectl rollout status deployment/api\\nWaiting for deployment \\\"api\\\" rollout to finish: 2 of 3 updated replicas are available...\\ndeployment \\\"api\\\" successfully rolled out\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"rollout undo\",\n  \"title\": \"Откат\",\n  \"what\": \"`kubectl rollout undo deployment/api` возвращает предыдущую версию, `history` показывает список.\",\n  \"why\": \"Откат за секунды.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Готовность\",\n  \"title\": \"Без проверки — вслепую\",\n  \"what\": \"Обновление идёт безопасно, только если у подов есть readinessProbe: иначе трафик пойдёт на ещё не готовые поды.\",\n  \"why\": \"О проверках — отдельная глава.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Обновление — новым образом и rollout status. Неудача — rollout undo."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ro-surge",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ro-undo",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ro-ready",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "workloads",
+      "title": "Другие рабочие нагрузки",
+      "summary": "Job и CronJob для задач, DaemonSet на каждом узле, StatefulSet для баз.",
+      "chapter": "Развёртывания",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Обновляем развёртывания и знакомимся с другими видами нагрузок.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Job и CronJob\",\n  \"title\": \"Задача до конца\",\n  \"what\": \"Job выполняет под до успешного завершения (миграция, отчёт), CronJob — по расписанию.\",\n  \"why\": \"Ночной отчёт работает в кластере, а не на чьём-то ноутбуке.\",\n  \"how\": \"apiVersion: batch/v1\\nkind: CronJob\\nmetadata:\\n  name: nightly-report\\nspec:\\n  schedule: \\\"0 3 * * *\\\"\\n  jobTemplate:\\n    spec:\\n      template:\\n        spec:\\n          restartPolicy: OnFailure\\n          containers:\\n            - name: report\\n              image: ghcr.io/team/report:1.0\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"DaemonSet\",\n  \"title\": \"По одному на узел\",\n  \"what\": \"Запускает под на каждом узле: сбор логов, агенты мониторинга, сетевые плагины.\",\n  \"why\": \"Новый узел сразу получает агент.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"StatefulSet\",\n  \"title\": \"Для состояния\",\n  \"what\": \"Стабильные имена (db-0, db-1), свой диск у каждой реплики и порядок запуска — для баз и очередей.\",\n  \"why\": \"Подробнее — в главе о хранении.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Как выбрать\",\n  \"title\": \"По характеру\",\n  \"what\": \"Без состояния и постоянно — Deployment, до конца — Job, по расписанию — CronJob, на каждом узле — DaemonSet, с состоянием — StatefulSet.\",\n  \"why\": \"Правильный вид объекта решает половину проблем.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Сервис — Deployment, разовое — Job, по расписанию — CronJob, агент — DaemonSet, база — StatefulSet."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wl-cron",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wl-daemon",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wl-state",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "service",
+      "title": "Service",
+      "summary": "Стабильный адрес для набора подов, ClusterIP, балансировка, DNS-имена сервисов.",
+      "chapter": "Сервисы и сеть",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем виды нагрузок и даём подам постоянный адрес.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Service\",\n  \"title\": \"Постоянный адрес\",\n  \"what\": \"Сервис выбирает поды по меткам и распределяет между ними трафик. Его адрес и имя не меняются, даже когда поды пересоздаются.\",\n  \"why\": \"Фронтенд всегда обращается к api, а не к конкретному поду.\",\n  \"how\": \"apiVersion: v1\\nkind: Service\\nmetadata:\\n  name: api\\nspec:\\n  selector: { app: api }\\n  ports:\\n    - port: 80\\n      targetPort: 8000\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"DNS\",\n  \"title\": \"Имя вместо IP\",\n  \"what\": \"Внутри кластера сервис доступен по имени api, из другого пространства — api.billing.svc.cluster.local.\",\n  \"why\": \"Как имена контейнеров в Compose.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"ClusterIP\",\n  \"title\": \"Только внутри\",\n  \"what\": \"Тип по умолчанию: адрес доступен только внутри кластера.\",\n  \"why\": \"База и внутренние API не видны снаружи.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"port-forward\",\n  \"title\": \"Заглянуть снаружи\",\n  \"what\": \"`kubectl port-forward svc/api 8080:80` пробрасывает сервис на твой компьютер для отладки.\",\n  \"why\": \"Проверить внутренний сервис без публикации.\",\n  \"how\": \"$ kubectl port-forward svc/api 8080:80\\nForwarding from 127.0.0.1:8080 -> 8000\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n**Главное.** Постоянный адрес для подов — Service по меткам. Внутри кластера — по имени."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sv-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sv-dns",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sv-pf",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "ingress",
+      "title": "Вход снаружи",
+      "summary": "NodePort и LoadBalancer, Ingress и Gateway API, маршрутизация по доменам и путям, HTTPS и cert-manager.",
+      "chapter": "Сервисы и сеть",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Даём сервисам имена внутри и открываем приложение наружу.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"NodePort и LoadBalancer\",\n  \"title\": \"Простые способы\",\n  \"what\": \"NodePort открывает порт на каждом узле, LoadBalancer просит облако создать балансировщик с внешним IP.\",\n  \"why\": \"Один балансировщик на каждый сервис — дорого.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ingress\",\n  \"title\": \"Один вход на всех\",\n  \"what\": \"Один контроллер (nginx, Traefik) принимает внешний трафик и направляет по домену и пути к нужным сервисам.\",\n  \"why\": \"Десяток сервисов за одним IP.\",\n  \"how\": \"apiVersion: networking.k8s.io/v1\\nkind: Ingress\\nmetadata:\\n  name: web\\nspec:\\n  rules:\\n    - host: app.example.com\\n      http:\\n        paths:\\n          - path: /api\\n            pathType: Prefix\\n            backend: { service: { name: api, port: { number: 80 } } }\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Gateway API\",\n  \"title\": \"Новое поколение\",\n  \"what\": \"Более выразительная замена Ingress: разделение ролей, веса трафика для канарейки, не только HTTP.\",\n  \"why\": \"Новые проекты всё чаще выбирают Gateway API.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"cert-manager\",\n  \"title\": \"HTTPS автоматически\",\n  \"what\": \"Получает и продлевает сертификаты Let's Encrypt для доменов из Ingress.\",\n  \"why\": \"Забытый сертификат больше не роняет сайт.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Наружу — Ingress или Gateway с одним входом. Сертификаты — cert-manager."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "in-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "in-cert",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "in-gw",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "network-model",
+      "title": "Сетевая модель",
+      "summary": "Каждому поду свой IP, сетевые плагины CNI, kube-proxy, отладка сети изнутри кластера.",
+      "chapter": "Сервисы и сеть",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Открыли приложение наружу и разбираемся, как устроена сеть внутри.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Плоская сеть\",\n  \"title\": \"IP у каждого пода\",\n  \"what\": \"Любой под может обратиться к любому другому поду по IP без NAT — это правило модели.\",\n  \"why\": \"Приложения работают как на обычной сети.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"CNI\",\n  \"title\": \"Сетевой плагин\",\n  \"what\": \"Сеть реализует плагин: Calico, Cilium, Flannel. От него зависят сетевые политики и производительность.\",\n  \"why\": \"В управляемых кластерах он уже выбран.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"kube-proxy\",\n  \"title\": \"Как работает Service\",\n  \"what\": \"Настраивает правила (iptables, IPVS или eBPF), которые перенаправляют адрес сервиса на поды.\",\n  \"why\": \"Магии нет — только правила ядра.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Отладка\",\n  \"title\": \"Под с инструментами\",\n  \"what\": \"`kubectl run -it --rm debug --image=nicolaka/netshoot -- bash` — временный под с curl, dig и tcpdump.\",\n  \"why\": \"Проверить DNS и доступность изнутри кластера.\",\n  \"how\": \"$ kubectl run -it --rm debug --image=nicolaka/netshoot -- bash\\ndebug:~# dig +short api.default.svc.cluster.local\\n10.96.143.7\\ndebug:~# curl -s api/health\\n{\\\"status\\\":\\\"ok\\\"}\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n**Главное.** У каждого пода свой IP, сеть делает CNI, сервисы — kube-proxy. Отладка — временным подом."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "nm-flat",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "nm-cni",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "nm-debug",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "configmap",
+      "title": "ConfigMap",
+      "summary": "Настройки отдельно от образа: переменные окружения и файлы из ConfigMap, обновление настроек.",
+      "chapter": "Настройки и секреты",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Разобрались с сетью и выносим настройки из образа.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"ConfigMap\",\n  \"title\": \"Словарь настроек\",\n  \"what\": \"Пары ключ-значение или целые файлы. Подключаются в под как переменные окружения или как файлы в папке.\",\n  \"why\": \"Один образ — разные настройки в разных окружениях.\",\n  \"how\": \"apiVersion: v1\\nkind: ConfigMap\\nmetadata:\\n  name: api-config\\ndata:\\n  LOG_LEVEL: info\\n  FEATURE_SEARCH: \\\"true\\\"\\n---\\n# в контейнере пода\\nenvFrom:\\n  - configMapRef: { name: api-config }\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Файлом\",\n  \"title\": \"Конфиг целиком\",\n  \"what\": \"ConfigMap, подключённый томом, превращается в файлы: nginx.conf, settings.yaml.\",\n  \"why\": \"Приложение читает привычный файл настроек.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Обновление\",\n  \"title\": \"Не мгновенно\",\n  \"what\": \"Переменные окружения читаются только при старте пода — после изменения нужен перезапуск (`kubectl rollout restart`). Файлы из тома обновляются сами с задержкой.\",\n  \"why\": \"Иначе удивишься, почему новая настройка не работает.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Настройки — в ConfigMap. После смены переменных — rollout restart."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-restart",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-file",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "secrets",
+      "title": "Secret",
+      "summary": "Объект Secret, base64 — не шифрование, шифрование в etcd, доступ по правам, как не утечь.",
+      "chapter": "Настройки и секреты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Вынесли настройки и отдельно разбираемся с паролями и ключами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Secret\",\n  \"title\": \"Для чувствительного\",\n  \"what\": \"Похож на ConfigMap, но для паролей и ключей: доступ ограничивают отдельно, значения не показываются в describe.\",\n  \"why\": \"Пароль базы не лежит в манифесте развёртывания.\",\n  \"how\": \"apiVersion: v1\\nkind: Secret\\nmetadata:\\n  name: db\\ntype: Opaque\\nstringData:\\n  DATABASE_URL: postgres://app:devpass@db:5432/app\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"base64 — не шифр\",\n  \"title\": \"Любой прочитает\",\n  \"what\": \"В data значения закодированы base64, а это просто кодировка: `base64 -d` вернёт пароль.\",\n  \"why\": \"Secret в Git в открытом виде — утечка.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Шифрование в etcd\",\n  \"title\": \"На диске\",\n  \"what\": \"Кластер нужно настроить, чтобы секреты шифровались в etcd. В управляемых кластерах это часто включено.\",\n  \"why\": \"Копия etcd не раскроет пароли.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не печатай\",\n  \"title\": \"Осторожно с выводом\",\n  \"what\": \"`kubectl get secret db -o yaml` показывает значения. Права на чтение секретов — только тем, кому нужно.\",\n  \"why\": \"Логи конвейера часто становятся местом утечки.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Пароли — в Secret, доступ — по правам, в Git — только зашифрованными."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sc-b64",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sc-git",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sc-rbac",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "external-secrets",
+      "title": "Внешние хранилища секретов",
+      "summary": "Sealed Secrets и SOPS для Git, External Secrets и Vault, ротация.",
+      "chapter": "Настройки и секреты",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем Secret и подключаем надёжные хранилища для ключей.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Sealed Secrets и SOPS\",\n  \"title\": \"Секрет в Git зашифрованным\",\n  \"what\": \"Секрет шифруется открытым ключом; расшифровать может только контроллер в кластере.\",\n  \"why\": \"GitOps без утечек.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"External Secrets\",\n  \"title\": \"Из облачного хранилища\",\n  \"what\": \"Оператор читает секреты из AWS Secrets Manager, GCP Secret Manager, Vault и создаёт объекты Secret.\",\n  \"why\": \"Секреты живут в одном защищённом месте.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ротация\",\n  \"title\": \"Менять регулярно\",\n  \"what\": \"Пароли и ключи меняют по расписанию и сразу при подозрении на утечку. Хранилища умеют делать это автоматически.\",\n  \"why\": \"Украденный старый ключ бесполезен.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Без секретов вовсе\",\n  \"title\": \"Удостоверения нагрузки\",\n  \"what\": \"Под получает права облака через удостоверение (workload identity) — постоянный ключ не нужен.\",\n  \"why\": \"Утекать нечему.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** В Git — только зашифрованное. Лучше — внешнее хранилище или удостоверение нагрузки."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "es-sealed",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "es-rotate",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "es-identity",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "volumes",
+      "title": "Тома",
+      "summary": "emptyDir для временных файлов, тома из ConfigMap и Secret, почему данные в поде временны.",
+      "chapter": "Хранение данных",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Защитили секреты и разбираемся, где поды хранят файлы.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Временная файловая система\",\n  \"title\": \"Исчезает с подом\",\n  \"what\": \"Файлы, записанные в контейнер, пропадают при пересоздании пода.\",\n  \"why\": \"Загрузки пользователей нельзя хранить в контейнере.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"emptyDir\",\n  \"title\": \"Общая временная папка\",\n  \"what\": \"Папка живёт, пока жив под; её видят все контейнеры пода.\",\n  \"why\": \"Обмен файлами между основным контейнером и sidecar.\",\n  \"how\": \"volumes:\\n  - name: cache\\n    emptyDir: {}\\ncontainers:\\n  - name: app\\n    volumeMounts:\\n      - name: cache\\n        mountPath: /tmp/cache\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тома настроек\",\n  \"title\": \"configMap и secret\",\n  \"what\": \"Тома типа configMap и secret превращают настройки в файлы.\",\n  \"why\": \"Сертификаты и конфиги — файлами.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Объектное хранилище\",\n  \"title\": \"Файлы пользователей\",\n  \"what\": \"Загрузки, картинки и отчёты чаще хранят в S3-совместимом хранилище, а не на дисках кластера.\",\n  \"why\": \"Поды остаются без состояния и легко масштабируются.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Файлы контейнера временны. Временное — emptyDir, файлы пользователей — объектное хранилище."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vl-temp",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vl-empty",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vl-uploads",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "persistent-volumes",
+      "title": "Постоянные тома",
+      "summary": "PersistentVolumeClaim, StorageClass и динамическое выделение, режимы доступа, политика удаления.",
+      "chapter": "Хранение данных",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем временные тома и получаем диск, который переживёт под.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"PVC\",\n  \"title\": \"Заявка на диск\",\n  \"what\": \"PersistentVolumeClaim просит диск нужного размера и класса. Кластер создаёт его автоматически через StorageClass.\",\n  \"why\": \"Диск переживает пересоздание пода.\",\n  \"how\": \"apiVersion: v1\\nkind: PersistentVolumeClaim\\nmetadata:\\n  name: uploads\\nspec:\\n  accessModes: [ReadWriteOnce]\\n  storageClassName: standard\\n  resources:\\n    requests:\\n      storage: 10Gi\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"StorageClass\",\n  \"title\": \"Тип диска\",\n  \"what\": \"Класс описывает, какой диск создать: SSD или HDD облака, локальный, сетевой.\",\n  \"why\": \"Базам — быстрые диски, архивам — дешёвые.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Режимы доступа\",\n  \"title\": \"Кто может писать\",\n  \"what\": \"ReadWriteOnce — один узел пишет, ReadWriteMany — многие (нужна сетевая ФС), ReadOnlyMany — многие читают.\",\n  \"why\": \"Большинство облачных дисков — только ReadWriteOnce.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Политика удаления\",\n  \"title\": \"Retain или Delete\",\n  \"what\": \"Delete удаляет диск вместе с заявкой, Retain оставляет данные.\",\n  \"why\": \"Для важных данных — Retain и резервные копии.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Диск — через PVC и StorageClass. Важные данные — Retain и копии."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pv-pvc",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pv-rwo",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pv-retain",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "statefulset",
+      "title": "StatefulSet и базы",
+      "summary": "Стабильные имена и диски, headless-сервис, порядок запуска, базы в кластере или управляемые.",
+      "chapter": "Хранение данных",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Получили постоянные диски и запускаем приложения с состоянием.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Стабильная личность\",\n  \"title\": \"db-0, db-1, db-2\",\n  \"what\": \"StatefulSet даёт подам постоянные имена и у каждого — свой PVC. Пересозданный db-1 получит тот же диск.\",\n  \"why\": \"Реплики базы знают, кто есть кто.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Headless-сервис\",\n  \"title\": \"Адрес каждой реплики\",\n  \"what\": \"Сервис без ClusterIP даёт DNS-имя каждому поду: db-0.db.default.svc.\",\n  \"why\": \"Приложение может обратиться к главной реплике напрямую.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Порядок\",\n  \"title\": \"По одному\",\n  \"what\": \"Поды создаются и обновляются по порядку: 0, 1, 2.\",\n  \"why\": \"Главная реплика стартует раньше остальных.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Своя база или управляемая\",\n  \"title\": \"Честный выбор\",\n  \"what\": \"Базы в кластере — это бэкапы, обновления, восстановление. Управляемые базы облака часто дешевле по усилиям. Операторы (CloudNativePG) упрощают свои.\",\n  \"why\": \"Начни с управляемой, если нет причин иначе.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Состояние — StatefulSet со своими дисками. Базу сначала рассмотри управляемую."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ss-names",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ss-disk",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ss-managed",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "probes",
+      "title": "Проверки здоровья",
+      "summary": "readinessProbe, livenessProbe и startupProbe, что проверять и типичные ошибки.",
+      "chapter": "Здоровье и ресурсы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Храним данные и учим кластер понимать, здоров ли под.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"readiness\",\n  \"title\": \"Готов принимать трафик\",\n  \"what\": \"Пока проверка не прошла, под не получает запросы от сервиса.\",\n  \"why\": \"Обновление не отправит пользователей на ещё не готовый под.\",\n  \"how\": \"readinessProbe:\\n  httpGet: { path: /ready, port: 8000 }\\n  periodSeconds: 5\\nlivenessProbe:\\n  httpGet: { path: /health, port: 8000 }\\n  periodSeconds: 10\\n  failureThreshold: 3\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"liveness\",\n  \"title\": \"Жив ли\",\n  \"what\": \"Если проверка падает несколько раз подряд, контейнер перезапускается.\",\n  \"why\": \"Зависший процесс оживёт сам.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"startup\",\n  \"title\": \"Долгий старт\",\n  \"what\": \"Пока не прошла startupProbe, liveness не проверяется — медленное приложение не убьют на старте.\",\n  \"why\": \"Java и большие модели стартуют минутами.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ловушка liveness\",\n  \"title\": \"Не проверяй базу\",\n  \"what\": \"Если liveness зависит от базы, падение базы перезапустит все поды разом. Живость — только про сам процесс.\",\n  \"why\": \"Иначе маленький сбой превращается в большой.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** readiness — готов к трафику, liveness — процесс жив, startup — для медленного старта. В liveness — без внешних зависимостей."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pb-ready",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pb-live",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pb-trap",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "resources",
+      "title": "Запросы и лимиты",
+      "summary": "requests для планировщика, limits для потолка, OOMKilled и троттлинг процессора, классы QoS.",
+      "chapter": "Здоровье и ресурсы",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проверяем здоровье и делим ресурсы узлов честно.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"requests\",\n  \"title\": \"Сколько нужно\",\n  \"what\": \"Запросы говорят планировщику, сколько процессора и памяти поду нужно гарантированно. Узел выбирается по ним.\",\n  \"why\": \"Под не попадёт на переполненный узел.\",\n  \"how\": \"resources:\\n  requests:\\n    cpu: 250m\\n    memory: 256Mi\\n  limits:\\n    memory: 512Mi\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"limits\",\n  \"title\": \"Потолок\",\n  \"what\": \"Превысил лимит памяти — OOMKilled и перезапуск. Превысил лимит процессора — троттлинг (замедление).\",\n  \"why\": \"Утечка в одном поде не уронит соседей.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Единицы\",\n  \"title\": \"m и Mi\",\n  \"what\": \"cpu: 250m — четверть ядра, memory: 256Mi — 256 мебибайт.\",\n  \"why\": \"Пиши явно, не гадай.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Как подобрать\",\n  \"title\": \"По наблюдениям\",\n  \"what\": \"Смотри реальное потребление (kubectl top, метрики) и задавай запросы чуть выше обычного, лимит памяти — с запасом.\",\n  \"why\": \"Слишком большие запросы — переплата, слишком маленькие — тесно.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** requests — для планировщика, limits — потолок. Память без лимита — риск для соседей."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-req",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-oom",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-unit",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "disruptions",
+      "title": "Плановые перебои",
+      "summary": "Обслуживание узлов, drain, PodDisruptionBudget, распределение реплик по узлам и зонам.",
+      "chapter": "Здоровье и ресурсы",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Делим ресурсы и готовимся к плановому обслуживанию узлов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"drain\",\n  \"title\": \"Освободить узел\",\n  \"what\": \"Перед обновлением узла `kubectl drain` выселяет с него поды на другие узлы.\",\n  \"why\": \"Обновление кластера без остановки сервисов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"PodDisruptionBudget\",\n  \"title\": \"Не больше N сразу\",\n  \"what\": \"PDB запрещает одновременно выселять слишком много подов приложения.\",\n  \"why\": \"Обслуживание не уронит все реплики разом.\",\n  \"how\": \"apiVersion: policy/v1\\nkind: PodDisruptionBudget\\nmetadata:\\n  name: api\\nspec:\\n  minAvailable: 2\\n  selector:\\n    matchLabels: { app: api }\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Распределение\",\n  \"title\": \"Не в одну корзину\",\n  \"what\": \"topologySpreadConstraints и anti-affinity размещают реплики на разных узлах и в разных зонах.\",\n  \"why\": \"Падение одного узла или зоны не убивает все копии.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Обслуживание — через drain. Защита — PDB и реплики на разных узлах и зонах."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dr-pdb",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dr-drain",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dr-spread",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "hpa",
+      "title": "Автомасштабирование подов",
+      "summary": "HorizontalPodAutoscaler по процессору и своим метрикам, metrics-server, границы и задержки.",
+      "chapter": "Масштабирование",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Готовы к перебоям и учим приложение расти под нагрузкой.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"HPA\",\n  \"title\": \"Больше подов под нагрузкой\",\n  \"what\": \"HorizontalPodAutoscaler меняет replicas, чтобы средняя загрузка процессора держалась около цели.\",\n  \"why\": \"Вечерний пик обслуживается без ручного вмешательства.\",\n  \"how\": \"apiVersion: autoscaling/v2\\nkind: HorizontalPodAutoscaler\\nmetadata:\\n  name: api\\nspec:\\n  scaleTargetRef: { apiVersion: apps/v1, kind: Deployment, name: api }\\n  minReplicas: 2\\n  maxReplicas: 20\\n  metrics:\\n    - type: Resource\\n      resource:\\n        name: cpu\\n        target: { type: Utilization, averageUtilization: 70 }\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"kubectl top\",\n  \"title\": \"Сколько потребляют\",\n  \"what\": \"metrics-server собирает потребление, `kubectl top pods` его показывает. Без него HPA не работает.\",\n  \"why\": \"Видно, кто сколько ест.\",\n  \"how\": \"$ kubectl top pods -l app=api\\nNAME                   CPU(cores)  MEMORY(bytes)\\napi-7d9f8c6b5d-2xk4p   180m        210Mi\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Нужны requests\",\n  \"title\": \"Процент от чего\",\n  \"what\": \"Загрузка считается в процентах от requests — без них HPA не знает, что такое 70%.\",\n  \"why\": \"Задай запросы ресурсов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Свои метрики\",\n  \"title\": \"Не только процессор\",\n  \"what\": \"Масштаб по длине очереди, запросам в секунду, задержке — через адаптер метрик или KEDA.\",\n  \"why\": \"Обработчики очереди растут, когда задач много.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** HPA с min и max, цель — процент от requests. Очереди — KEDA."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hp-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hp-req",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hp-keda",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "cluster-autoscaler",
+      "title": "Масштаб кластера",
+      "summary": "Cluster Autoscaler и Karpenter, ожидающие поды, вертикальное масштабирование VPA.",
+      "chapter": "Масштабирование",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Масштабируем поды и следим, чтобы им хватало узлов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Ожидающие поды\",\n  \"title\": \"Нет места\",\n  \"what\": \"Если подам не хватает ресурсов узлов, они висят в Pending.\",\n  \"why\": \"HPA добавил поды, а запустить их негде.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Cluster Autoscaler\",\n  \"title\": \"Больше узлов\",\n  \"what\": \"Видит Pending-поды и просит облако добавить узлы; убирает пустые узлы при спаде.\",\n  \"why\": \"Платишь только за нужное.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Karpenter\",\n  \"title\": \"Подходящий узел\",\n  \"what\": \"Подбирает размер и тип узла под ожидающие поды, быстро добавляет и консолидирует.\",\n  \"why\": \"Меньше переплаты за неудачные размеры.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"VPA\",\n  \"title\": \"Вертикально\",\n  \"what\": \"Vertical Pod Autoscaler подсказывает или сам меняет requests и limits по реальному потреблению.\",\n  \"why\": \"Не нужно угадывать ресурсы вручную.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Поды — HPA, узлы — Cluster Autoscaler или Karpenter, размеры — VPA."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ca-pending",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ca-what",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ca-vpa",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "capacity",
+      "title": "Ёмкость и стоимость",
+      "summary": "Запас мощности, нагрузочные тесты, прерываемые узлы, учёт стоимости по командам.",
+      "chapter": "Масштабирование",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Узлы добавляются сами, и мы считаем, сколько это стоит.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Нагрузочный тест\",\n  \"title\": \"Узнать заранее\",\n  \"what\": \"k6, Locust и подобные инструменты показывают, сколько запросов выдержит приложение и как растёт кластер.\",\n  \"why\": \"Пик не станет сюрпризом.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Прерываемые узлы\",\n  \"title\": \"Spot\",\n  \"what\": \"Дешёвые узлы, которые облако может забрать. Подходят для подов без состояния с запасом реплик.\",\n  \"why\": \"Экономия в разы для подходящих нагрузок.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Учёт стоимости\",\n  \"title\": \"Кто сколько тратит\",\n  \"what\": \"Метки команд и инструменты вроде OpenCost показывают стоимость по пространствам имён.\",\n  \"why\": \"Команда видит цену своих решений.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Запас\",\n  \"title\": \"Не впритык\",\n  \"what\": \"Оставляй запас мощности: масштабирование узлов занимает минуты.\",\n  \"why\": \"Пик не ждёт новых серверов.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Проверь нагрузку заранее, держи запас, экономь на spot, считай стоимость по командам."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-spot",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-load",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cp-reserve",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "rbac",
+      "title": "RBAC",
+      "summary": "Role и ClusterRole, RoleBinding, ServiceAccount приложений, наименьшие права, проверка can-i.",
+      "chapter": "Безопасность кластера",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Считаем стоимость и закрываем кластер от лишних прав.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Role и RoleBinding\",\n  \"title\": \"Что и кому\",\n  \"what\": \"Role перечисляет разрешённые действия над ресурсами в пространстве имён, RoleBinding выдаёт её пользователю или ServiceAccount.\",\n  \"why\": \"Команда видит только свои ресурсы.\",\n  \"how\": \"apiVersion: rbac.authorization.k8s.io/v1\\nkind: Role\\nmetadata: { name: read-pods, namespace: shop }\\nrules:\\n  - apiGroups: [\\\"\\\"]\\n    resources: [pods, pods/log]\\n    verbs: [get, list, watch]\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"ServiceAccount\",\n  \"title\": \"Удостоверение приложения\",\n  \"what\": \"Поды работают от ServiceAccount. По умолчанию ему почти ничего не нужно — не давай лишнего.\",\n  \"why\": \"Взломанный под не управляет кластером.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"ClusterRole\",\n  \"title\": \"На весь кластер\",\n  \"what\": \"Права на все пространства имён. cluster-admin — только администраторам кластера.\",\n  \"why\": \"Широкие права — главная цель атак.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"can-i\",\n  \"title\": \"Проверить\",\n  \"what\": \"`kubectl auth can-i delete pods --as=system:serviceaccount:shop:api` — проверить права до инцидента.\",\n  \"why\": \"Видно, что разрешено на самом деле.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Права — по ролям и наименьшие. У приложений — свои ServiceAccount без лишнего."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rb-role",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rb-sa",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rb-admin",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "network-policies",
+      "title": "Сетевые политики",
+      "summary": "По умолчанию всё открыто, запрет по умолчанию, разрешения по меткам, проверка политик.",
+      "chapter": "Безопасность кластера",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Ограничили права и закрываем сеть между подами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Всё открыто\",\n  \"title\": \"По умолчанию\",\n  \"what\": \"Без политик любой под может обратиться к любому другому, включая базу.\",\n  \"why\": \"Взломанный фронтенд сразу видит базу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Запрет по умолчанию\",\n  \"title\": \"default deny\",\n  \"what\": \"Политика без правил для всех подов пространства запрещает входящий трафик. Затем разрешают нужное.\",\n  \"why\": \"Доступ есть только там, где его явно дали.\",\n  \"how\": \"apiVersion: networking.k8s.io/v1\\nkind: NetworkPolicy\\nmetadata: { name: db-from-api }\\nspec:\\n  podSelector: { matchLabels: { app: db } }\\n  ingress:\\n    - from:\\n        - podSelector: { matchLabels: { app: api } }\\n      ports: [{ port: 5432 }]\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Нужен CNI\",\n  \"title\": \"Не везде работает\",\n  \"what\": \"Политики исполняет сетевой плагин (Calico, Cilium). Без поддержки они просто игнорируются.\",\n  \"why\": \"Проверь, что политики действительно применяются.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Исходящий трафик\",\n  \"title\": \"egress\",\n  \"what\": \"Ограничь и исходящие соединения: базе не нужно ходить в интернет.\",\n  \"why\": \"Вредонос не сможет выгрузить данные наружу.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Запрет по умолчанию, разрешения по меткам, проверь, что CNI их исполняет."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "np-default",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "np-db",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "np-cni",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "pod-security",
+      "title": "Безопасность подов",
+      "summary": "Не root, только чтение файловой системы, capabilities, Pod Security Standards, проверка образов.",
+      "chapter": "Безопасность кластера",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Закрыли сеть и ограничиваем права самих контейнеров.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"securityContext\",\n  \"title\": \"Ограничения контейнера\",\n  \"what\": \"runAsNonRoot, readOnlyRootFilesystem, allowPrivilegeEscalation: false и сброс capabilities.\",\n  \"why\": \"Взлом приложения не даёт прав в узле.\",\n  \"how\": \"securityContext:\\n  runAsNonRoot: true\\n  runAsUser: 10001\\n  readOnlyRootFilesystem: true\\n  allowPrivilegeEscalation: false\\n  capabilities:\\n    drop: [ALL]\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Pod Security Standards\",\n  \"title\": \"Уровни политики\",\n  \"what\": \"Метка на пространстве имён включает уровень privileged, baseline или restricted — опасные поды не создадутся.\",\n  \"why\": \"Правила для всех команд сразу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проверка образов\",\n  \"title\": \"Что запускаем\",\n  \"what\": \"Политики (Kyverno, Gatekeeper) разрешают только образы из своего реестра, с подписью и без критичных уязвимостей.\",\n  \"why\": \"Случайный образ из интернета не попадёт в кластер.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Привилегированные поды\",\n  \"title\": \"Почти root узла\",\n  \"what\": \"privileged: true и монтирование сокета Docker дают власть над узлом.\",\n  \"why\": \"Только для системных агентов и осознанно.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Не root, только чтение, без capabilities. Уровень restricted и проверка образов."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ps-root",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ps-pss",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ps-images",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "helm",
+      "title": "Helm",
+      "summary": "Чарты, values и шаблоны, установка и обновление релизов, готовые чарты.",
+      "chapter": "Пакеты и GitOps",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Защитили кластер и упаковываем приложения в пакеты.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Чарт\",\n  \"title\": \"Пакет манифестов\",\n  \"what\": \"Шаблоны манифестов плюс файл values с параметрами: число реплик, образ, домен.\",\n  \"why\": \"Одно приложение — разные настройки для разных окружений.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"helm install\",\n  \"title\": \"Установить и обновить\",\n  \"what\": \"`helm upgrade --install api ./chart -f values.prod.yaml` ставит или обновляет релиз.\",\n  \"why\": \"Сложное приложение — одной командой.\",\n  \"how\": \"$ helm upgrade --install api ./chart -f values.prod.yaml\\nRelease \\\"api\\\" has been upgraded. Happy Helming!\\nREVISION: 7\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Готовые чарты\",\n  \"title\": \"Не писать с нуля\",\n  \"what\": \"Для nginx-ingress, cert-manager, Prometheus есть официальные чарты.\",\n  \"why\": \"Поставить инфраструктуру за минуты.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Откат\",\n  \"title\": \"helm rollback\",\n  \"what\": \"Helm хранит историю релизов: `helm rollback api 6` возвращает прошлую ревизию.\",\n  \"why\": \"Быстрый откат целиком.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Приложение — чарт с values, инфраструктура — готовые чарты, откат — helm rollback."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hl-values",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hl-upgrade",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hl-rollback",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "kustomize",
+      "title": "Kustomize",
+      "summary": "База и наложения для окружений, патчи без шаблонов, kubectl apply -k.",
+      "chapter": "Пакеты и GitOps",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем Helm и пробуем подход без шаблонов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"База и наложения\",\n  \"title\": \"base и overlays\",\n  \"what\": \"Общие манифесты лежат в base, различия окружений — в overlays/dev, overlays/prod как патчи.\",\n  \"why\": \"Нет шаблонного языка — обычный YAML.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"kustomization.yaml\",\n  \"title\": \"Что и как менять\",\n  \"what\": \"Файл перечисляет ресурсы и патчи: число реплик, тег образа, метки.\",\n  \"why\": \"Различия окружений видны в нескольких строках.\",\n  \"how\": \"resources:\\n  - ../../base\\nimages:\\n  - name: ghcr.io/team/api\\n    newTag: 1.5.0\\npatches:\\n  - target: { kind: Deployment, name: api }\\n    patch: |-\\n      - op: replace\\n        path: /spec/replicas\\n        value: 5\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"apply -k\",\n  \"title\": \"Встроено в kubectl\",\n  \"what\": \"`kubectl apply -k overlays/prod` собирает и применяет итоговые манифесты.\",\n  \"why\": \"Отдельный инструмент не нужен.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Helm или Kustomize\",\n  \"title\": \"Что выбрать\",\n  \"what\": \"Helm — для распространяемых пакетов с параметрами, Kustomize — для своих приложений с небольшими различиями. Их можно сочетать.\",\n  \"why\": \"Выбор по задаче.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Свои приложения — base плюс overlays. Пакеты для других — Helm."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "kz-overlay",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "kz-apply",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "kz-choose",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "gitops-tools",
+      "title": "GitOps",
+      "summary": "Git как источник правды, Argo CD и Flux, синхронизация и дрейф, операторы.",
+      "chapter": "Пакеты и GitOps",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Упаковали приложения и отдаём управление кластером Git.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Git — источник правды\",\n  \"title\": \"Желаемое состояние в репозитории\",\n  \"what\": \"Все манифесты кластера лежат в Git. Изменения — только через pull request.\",\n  \"why\": \"История, обзор и откат для всего кластера.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Argo CD и Flux\",\n  \"title\": \"Агент синхронизации\",\n  \"what\": \"Агент в кластере следит за репозиторием и приводит кластер к описанному. Конвейеру не нужен доступ к кластеру.\",\n  \"why\": \"Меньше ключей снаружи — безопаснее.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Дрейф\",\n  \"title\": \"Ручные правки откатываются\",\n  \"what\": \"Изменил что-то через kubectl руками — агент вернёт как в Git.\",\n  \"why\": \"Кластер не расходится с описанием.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Операторы\",\n  \"title\": \"Знания в коде\",\n  \"what\": \"Оператор — контроллер со своими объектами (Postgres, Kafka): создаёт, обновляет, делает бэкапы по описанию.\",\n  \"why\": \"Сложная эксплуатация описывается одним манифестом.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Кластер — из Git через Argo CD или Flux. Сложные системы — операторами."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "go-source",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "go-drift",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "go-operator",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "observability",
+      "title": "Наблюдаемость",
+      "summary": "Логи в stdout и сбор логов, метрики Prometheus и Grafana, трассировки, события кластера.",
+      "chapter": "Эксплуатация",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Управляем кластером через Git и следим за его состоянием.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"kubectl logs\",\n  \"title\": \"Логи пода\",\n  \"what\": \"`kubectl logs deploy/api -f`, `--previous` — логи упавшего контейнера.\",\n  \"why\": \"Причину падения видно в последних строках.\",\n  \"how\": \"$ kubectl logs api-7d9f8c6b5d-2xk4p --previous | tail -2\\nError: connect ECONNREFUSED 10.96.12.5:5432\\n    at TCPConnectWrap.afterConnect\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сбор логов\",\n  \"title\": \"Всё в одно место\",\n  \"what\": \"DaemonSet (Fluent Bit, Vector) собирает логи со всех узлов в Loki или Elasticsearch.\",\n  \"why\": \"Логи удалённых подов не пропадают.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Метрики\",\n  \"title\": \"Prometheus и Grafana\",\n  \"what\": \"Prometheus собирает метрики подов и кластера, Grafana рисует графики и тревоги.\",\n  \"why\": \"Видно нагрузку, ошибки и ресурсы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"События\",\n  \"title\": \"kubectl get events\",\n  \"what\": \"`kubectl get events --sort-by=.lastTimestamp` — что делал кластер: планирование, ошибки образов, OOM.\",\n  \"why\": \"Часто ответ здесь, а не в логах.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Логи — в stdout и в общее хранилище, метрики — Prometheus, события кластера — get events."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ob-prev",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ob-collect",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ob-events",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "debugging",
+      "title": "Порядок отладки",
+      "summary": "Pending, ImagePullBackOff, CrashLoopBackOff, нет трафика — что проверять по шагам, kubectl debug.",
+      "chapter": "Эксплуатация",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Видим логи и метрики и разбираем типичные поломки по шагам.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Pending\",\n  \"title\": \"Не запускается\",\n  \"what\": \"Нет подходящего узла: не хватает ресурсов, не подходит селектор, нет свободного диска. Смотри Events в describe.\",\n  \"why\": \"Чаще всего — слишком большие requests.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"ImagePullBackOff\",\n  \"title\": \"Нет образа\",\n  \"what\": \"Опечатка в теге, нет доступа к закрытому реестру (imagePullSecrets), образ под другую архитектуру.\",\n  \"why\": \"Проверь имя образа и доступ.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"CrashLoopBackOff\",\n  \"title\": \"Падает при старте\",\n  \"what\": \"Ошибка в приложении или настройках: logs --previous покажет причину.\",\n  \"why\": \"Часто — нет переменной окружения или базы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Нет трафика\",\n  \"title\": \"Цепочка\",\n  \"what\": \"Ingress → Service → endpoints → поды → readiness. `kubectl get endpoints api` пустой — селектор не совпадает или поды не готовы.\",\n  \"why\": \"Иди по цепочке от входа к поду.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"kubectl debug\",\n  \"title\": \"Отладочный контейнер\",\n  \"what\": \"`kubectl debug -it pod/api --image=busybox --target=api` подключает временный контейнер к работающему поду.\",\n  \"why\": \"Отладка образов без оболочки (distroless).\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Pending — ресурсы, ImagePull — образ, CrashLoop — logs --previous, нет трафика — endpoints."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-pull",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-endpoints",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "db-debug",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "upgrades-backups",
+      "title": "Обновления и резервные копии",
+      "summary": "Версии Kubernetes и устаревшие API, обновление узлов, бэкап etcd и Velero, что дальше.",
+      "chapter": "Эксплуатация",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Отлаживаем по шагам и поддерживаем кластер в порядке годами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Версии\",\n  \"title\": \"Каждые несколько месяцев\",\n  \"what\": \"Kubernetes выпускает новую версию примерно трижды в год и поддерживает около года. Отставать опасно.\",\n  \"why\": \"Устаревшие версии не получают исправлений безопасности.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Устаревшие API\",\n  \"title\": \"Проверить манифесты\",\n  \"what\": \"Перед обновлением ищут манифесты со старыми apiVersion — их уберут в новой версии.\",\n  \"why\": \"Инструменты вроде pluto находят их заранее.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Порядок\",\n  \"title\": \"Сначала мозг, потом узлы\",\n  \"what\": \"Обновляют плоскость управления, затем узлы по одному через drain, с PDB у приложений.\",\n  \"why\": \"Без простоя для пользователей.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Velero\",\n  \"title\": \"Резервные копии\",\n  \"what\": \"Velero сохраняет объекты кластера и диски в объектное хранилище и восстанавливает их в новый кластер.\",\n  \"why\": \"Кластер можно поднять заново после аварии.\",\n  \"how\": \"$ velero backup create nightly --include-namespaces shop\\nBackup request \\\"nightly\\\" submitted successfully.\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что дальше\",\n  \"title\": \"Куда расти\",\n  \"what\": \"Service mesh (Istio, Linkerd), платформенная инженерия, многокластерность, сертификации CKA и CKAD.\",\n  \"why\": \"Kubernetes — основа современной инфраструктуры.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Обновляйся регулярно, проверяй устаревшие API, узлы — по одному, бэкапы — Velero и etcd."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ub-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ub-order",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ub-velero",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

@@ -34,7 +34,8 @@ export const DISTRICT_NAMES: Record<string, string> = {
   go: "Стадион",
   os: "Диспетчерская",
   vue: "Оранжерея",
-  cicd: "Сборочный цех"
+  cicd: "Сборочный цех",
+  kubernetes: "Верфь флота"
 };
 
 /** Positions on a 1000×600 plan; characters without one are laid out on the bottom row. */
@@ -57,7 +58,8 @@ const LAYOUT: Record<string, { x: number; y: number }> = {
   go: { x: 270, y: 420 },
   os: { x: 130, y: 240 },
   vue: { x: 540, y: 510 },
-  cicd: { x: 270, y: 520 }
+  cicd: { x: 270, y: 520 },
+  kubernetes: { x: 130, y: 420 }
 };
 
 export type District = {
