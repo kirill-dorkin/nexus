@@ -3,7 +3,7 @@ import { idea, sh, tip, makeLesson } from "./dkit.mjs";
 
 export default function data(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "volumes", title: "Тома", summary: "Именованные тома для данных баз, docker volume, -v и --mount, жизнь тома отдельно от контейнера.",
