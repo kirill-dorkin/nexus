@@ -3,7 +3,7 @@ import { idea, nx, sh, tip, makeLesson } from "./nxkit.mjs";
 
 export default function quality(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "error-pages", title: "Ошибки и 404", summary: "error.tsx как граница ошибок, not-found.tsx, global-error, что видит пользователь и что видно в логах.",

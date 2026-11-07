@@ -3,7 +3,7 @@ import { idea, nx, tip, makeLesson } from "./nxkit.mjs";
 
 export default function data(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "fetch-data", title: "Данные на сервере", summary: "await fetch и запросы к базе в серверном компоненте, параллельные запросы, слой доступа к данным.",

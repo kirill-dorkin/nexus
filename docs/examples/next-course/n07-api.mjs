@@ -3,7 +3,7 @@ import { idea, nx, tip, makeLesson } from "./nxkit.mjs";
 
 export default function api(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "route-handlers", title: "Обработчики маршрутов", summary: "route.ts с GET и POST, Request и Response, JSON, вебхуки и когда нужен свой API.",

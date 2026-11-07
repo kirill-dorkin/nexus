@@ -3,7 +3,7 @@ import { idea, nx, tip, makeLesson } from "./nxkit.mjs";
 
 export default function routing(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "file-routes", title: "Маршруты из папок", summary: "Папка — сегмент адреса, вложенность, группы маршрутов (скобки), приватные папки.",

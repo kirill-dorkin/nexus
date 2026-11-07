@@ -3,7 +3,7 @@ import { idea, nx, sh, tip, makeLesson } from "./nxkit.mjs";
 
 export default function auth(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "database", title: "База данных", summary: "Подключение Postgres через ORM (Prisma или Drizzle), один клиент на приложение, миграции.",
