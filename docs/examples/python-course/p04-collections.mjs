@@ -3,7 +3,7 @@ import { py, tip, makeLesson } from "./pykit.mjs";
 
 export default function collections(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "lists", title: "Списки", summary: "Создание, append и insert, удаление, срезы, сортировка и изменяемость.",

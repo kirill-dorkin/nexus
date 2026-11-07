@@ -3,7 +3,7 @@ import { idea, sh, tip, makeLesson } from "./dkit.mjs";
 
 export default function debug(c, rc) {
   const L = makeLesson(c, rc);
-  const { single, multi, short } = c;
+  const { single } = c;
 
   L({
     slug: "inspect", title: "Заглянуть в детали", summary: "docker inspect и --format, docker events, docker top, diff и port.",
