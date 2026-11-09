@@ -11073,6 +11073,472 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "webapi",
+      "name": "Web API",
+      "role": "Связной",
+      "summary": "Возможности браузера: DOM и события глубже, fetch, потоки и CORS, localStorage, IndexedDB и Cache, Web Workers и Service Worker, PWA и уведомления, Canvas, звук и 3D, камера, геолокация и буфер обмена, наблюдатели, WebSocket и WebRTC, разрешения и защита от XSS, офлайн-приложения и доступность.",
+      "accent": "teal",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Платформа",
+          "branches": [
+            "webapi-1",
+            "webapi-2"
+          ]
+        },
+        {
+          "title": "Сеть",
+          "branches": [
+            "webapi-3",
+            "webapi-9"
+          ]
+        },
+        {
+          "title": "Данные",
+          "branches": [
+            "webapi-4"
+          ]
+        },
+        {
+          "title": "Фон",
+          "branches": [
+            "webapi-5"
+          ]
+        },
+        {
+          "title": "Чувства",
+          "branches": [
+            "webapi-6",
+            "webapi-7"
+          ]
+        },
+        {
+          "title": "Внимание",
+          "branches": [
+            "webapi-8"
+          ]
+        },
+        {
+          "title": "Защита",
+          "branches": [
+            "webapi-10",
+            "webapi-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "webapi-1",
+          "title": "Что такое Web API",
+          "depth": "practice",
+          "requires": [
+            "js-10"
+          ],
+          "skills": [
+            {
+              "key": "wa-platform",
+              "title": "Браузер как платформа",
+              "lesson": {
+                "course": "webapi",
+                "slug": "browser-platform",
+                "title": "Браузер как платформа"
+              }
+            },
+            {
+              "key": "wa-detect",
+              "title": "Проверка возможностей",
+              "lesson": {
+                "course": "webapi",
+                "slug": "feature-detection",
+                "title": "Проверка возможностей"
+              }
+            },
+            {
+              "key": "wa-async",
+              "title": "Асинхронные API",
+              "lesson": {
+                "course": "webapi",
+                "slug": "async-patterns",
+                "title": "Обещания и события"
+              }
+            }
+          ]
+        },
+        {
+          "id": "webapi-2",
+          "title": "DOM глубже",
+          "depth": "practice",
+          "requires": [
+            "webapi-1",
+            "js-8"
+          ],
+          "skills": [
+            {
+              "key": "wa-events",
+              "title": "События DOM",
+              "lesson": {
+                "course": "webapi",
+                "slug": "event-flow",
+                "title": "Путь события"
+              }
+            },
+            {
+              "key": "wa-templates",
+              "title": "Шаблоны DOM",
+              "lesson": {
+                "course": "webapi",
+                "slug": "templates-fragments",
+                "title": "Шаблоны и вставка"
+              }
+            },
+            {
+              "key": "wa-components",
+              "title": "Веб-компоненты",
+              "lesson": {
+                "course": "webapi",
+                "slug": "web-components",
+                "title": "Веб-компоненты"
+              }
+            }
+          ]
+        },
+        {
+          "id": "webapi-3",
+          "title": "Сеть из браузера",
+          "depth": "practice",
+          "requires": [
+            "webapi-2"
+          ],
+          "skills": [
+            {
+              "key": "wa-fetch",
+              "title": "fetch",
+              "lesson": {
+                "course": "webapi",
+                "slug": "fetch-deep",
+                "title": "fetch подробно"
+              }
+            },
+            {
+              "key": "wa-streams",
+              "title": "Потоки",
+              "lesson": {
+                "course": "webapi",
+                "slug": "streams",
+                "title": "Потоки и прогресс"
+              }
+            },
+            {
+              "key": "wa-cors",
+              "title": "CORS",
+              "lesson": {
+                "course": "webapi",
+                "slug": "cors",
+                "title": "CORS и cookies"
+              }
+            }
+          ]
+        },
+        {
+          "id": "webapi-4",
+          "title": "Хранилища браузера",
+          "depth": "practice",
+          "requires": [
+            "webapi-3"
+          ],
+          "skills": [
+            {
+              "key": "wa-localstorage",
+              "title": "Web Storage",
+              "lesson": {
+                "course": "webapi",
+                "slug": "web-storage",
+                "title": "localStorage и sessionStorage"
+              }
+            },
+            {
+              "key": "wa-indexeddb",
+              "title": "IndexedDB",
+              "lesson": {
+                "course": "webapi",
+                "slug": "indexeddb",
+                "title": "IndexedDB"
+              }
+            },
+            {
+              "key": "wa-cache",
+              "title": "Cache API",
+              "lesson": {
+                "course": "webapi",
+                "slug": "cache-quota",
+                "title": "Cache API и квоты"
+              }
+            }
+          ]
+        },
+        {
+          "id": "webapi-5",
+          "title": "Работа в фоне",
+          "depth": "practice",
+          "requires": [
+            "webapi-4"
+          ],
+          "skills": [
+            {
+              "key": "wa-workers",
+              "title": "Web Workers",
+              "lesson": {
+                "course": "webapi",
+                "slug": "web-workers",
+                "title": "Web Workers"
+              }
+            },
+            {
+              "key": "wa-sw",
+              "title": "Service Worker",
+              "lesson": {
+                "course": "webapi",
+                "slug": "service-worker",
+                "title": "Service Worker"
+              }
+            },
+            {
+              "key": "wa-pwa",
+              "title": "PWA",
+              "lesson": {
+                "course": "webapi",
+                "slug": "pwa-notifications",
+                "title": "PWA и уведомления"
+              }
+            }
+          ]
+        },
+        {
+          "id": "webapi-6",
+          "title": "Медиа и графика",
+          "depth": "practice",
+          "requires": [
+            "webapi-5"
+          ],
+          "skills": [
+            {
+              "key": "wa-canvas",
+              "title": "Canvas",
+              "lesson": {
+                "course": "webapi",
+                "slug": "canvas",
+                "title": "Canvas"
+              }
+            },
+            {
+              "key": "wa-media",
+              "title": "Аудио и видео",
+              "lesson": {
+                "course": "webapi",
+                "slug": "audio-video",
+                "title": "Аудио и видео"
+              }
+            },
+            {
+              "key": "wa-gpu",
+              "title": "3D в браузере",
+              "lesson": {
+                "course": "webapi",
+                "slug": "webgl-webgpu",
+                "title": "3D и видеокарта"
+              }
+            }
+          ]
+        },
+        {
+          "id": "webapi-7",
+          "title": "Устройства и датчики",
+          "depth": "practice",
+          "requires": [
+            "webapi-6"
+          ],
+          "skills": [
+            {
+              "key": "wa-camera",
+              "title": "Камера и микрофон",
+              "lesson": {
+                "course": "webapi",
+                "slug": "camera-mic",
+                "title": "Камера и микрофон"
+              }
+            },
+            {
+              "key": "wa-geo",
+              "title": "Геолокация",
+              "lesson": {
+                "course": "webapi",
+                "slug": "geolocation",
+                "title": "Геолокация и датчики"
+              }
+            },
+            {
+              "key": "wa-share",
+              "title": "Буфер и «Поделиться»",
+              "lesson": {
+                "course": "webapi",
+                "slug": "clipboard-share",
+                "title": "Буфер обмена и «Поделиться»"
+              }
+            }
+          ]
+        },
+        {
+          "id": "webapi-8",
+          "title": "Наблюдатели",
+          "depth": "practice",
+          "requires": [
+            "webapi-7"
+          ],
+          "skills": [
+            {
+              "key": "wa-intersection",
+              "title": "IntersectionObserver",
+              "lesson": {
+                "course": "webapi",
+                "slug": "intersection",
+                "title": "IntersectionObserver"
+              }
+            },
+            {
+              "key": "wa-resize",
+              "title": "Наблюдатели размера и DOM",
+              "lesson": {
+                "course": "webapi",
+                "slug": "resize-mutation",
+                "title": "ResizeObserver и MutationObserver"
+              }
+            },
+            {
+              "key": "wa-perf",
+              "title": "Performance API",
+              "lesson": {
+                "course": "webapi",
+                "slug": "performance-api",
+                "title": "Измерение скорости"
+              }
+            }
+          ]
+        },
+        {
+          "id": "webapi-9",
+          "title": "Связь в реальном времени",
+          "depth": "practice",
+          "requires": [
+            "webapi-8"
+          ],
+          "skills": [
+            {
+              "key": "wa-websocket",
+              "title": "WebSocket",
+              "lesson": {
+                "course": "webapi",
+                "slug": "websocket",
+                "title": "WebSocket"
+              }
+            },
+            {
+              "key": "wa-crosstab",
+              "title": "Связь вкладок",
+              "lesson": {
+                "course": "webapi",
+                "slug": "cross-tab",
+                "title": "Связь между вкладками"
+              }
+            },
+            {
+              "key": "wa-webrtc",
+              "title": "WebRTC",
+              "lesson": {
+                "course": "webapi",
+                "slug": "webrtc",
+                "title": "WebRTC"
+              }
+            }
+          ]
+        },
+        {
+          "id": "webapi-10",
+          "title": "Безопасность и разрешения",
+          "depth": "practice",
+          "requires": [
+            "webapi-9"
+          ],
+          "skills": [
+            {
+              "key": "wa-permissions",
+              "title": "Разрешения",
+              "lesson": {
+                "course": "webapi",
+                "slug": "permissions",
+                "title": "Разрешения"
+              }
+            },
+            {
+              "key": "wa-csp",
+              "title": "Защита от XSS",
+              "lesson": {
+                "course": "webapi",
+                "slug": "csp-xss",
+                "title": "XSS и CSP"
+              }
+            },
+            {
+              "key": "wa-iframe",
+              "title": "Фреймы и изоляция",
+              "lesson": {
+                "course": "webapi",
+                "slug": "iframe-sandbox",
+                "title": "Фреймы и изоляция"
+              }
+            }
+          ]
+        },
+        {
+          "id": "webapi-11",
+          "title": "Web API на практике",
+          "depth": "practice",
+          "requires": [
+            "webapi-10"
+          ],
+          "skills": [
+            {
+              "key": "wa-offline",
+              "title": "Офлайн-приложение",
+              "lesson": {
+                "course": "webapi",
+                "slug": "offline-app",
+                "title": "Приложение без сети"
+              }
+            },
+            {
+              "key": "wa-a11y",
+              "title": "API доступности",
+              "lesson": {
+                "course": "webapi",
+                "slug": "accessibility-apis",
+                "title": "Доступность в браузере"
+              }
+            },
+            {
+              "key": "wa-choose",
+              "title": "Выбор Web API",
+              "lesson": {
+                "course": "webapi",
+                "slug": "choosing-apis",
+                "title": "Выбор возможностей"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

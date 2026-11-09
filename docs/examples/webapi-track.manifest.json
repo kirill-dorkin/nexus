@@ -1,0 +1,4576 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "webapi",
+    "title": "Web API: возможности браузера",
+    "description": "Что умеет браузер помимо страниц. DOM и события глубже, fetch, потоки и отмена запросов, localStorage, IndexedDB и Cache, Web Workers и Service Worker, офлайн-режим и уведомления, Canvas, аудио и видео, камера, геолокация и буфер обмена, IntersectionObserver и ResizeObserver, WebSocket и WebRTC, разрешения и безопасность, прогрессивные веб-приложения. Каждое понятие объясняется карточкой с примером, каждый урок закрепляется вопросами."
+  },
+  "skills": [
+    {
+      "key": "wa-platform",
+      "title": "Браузер как платформа",
+      "description": "Объяснять, что такое Web API и откуда они берутся."
+    },
+    {
+      "key": "wa-detect",
+      "title": "Проверка возможностей",
+      "description": "Проверять поддержку API и предусматривать запасной путь."
+    },
+    {
+      "key": "wa-async",
+      "title": "Асинхронные API",
+      "description": "Работать с асинхронными Web API и отменять операции."
+    },
+    {
+      "key": "wa-events",
+      "title": "События DOM",
+      "description": "Управлять событиями и использовать делегирование."
+    },
+    {
+      "key": "wa-templates",
+      "title": "Шаблоны DOM",
+      "description": "Быстро и безопасно создавать разметку."
+    },
+    {
+      "key": "wa-components",
+      "title": "Веб-компоненты",
+      "description": "Создавать собственные элементы средствами браузера."
+    },
+    {
+      "key": "wa-fetch",
+      "title": "fetch",
+      "description": "Отправлять запросы и правильно обрабатывать ответы."
+    },
+    {
+      "key": "wa-streams",
+      "title": "Потоки",
+      "description": "Читать ответ сервера по частям."
+    },
+    {
+      "key": "wa-cors",
+      "title": "CORS",
+      "description": "Понимать ограничения запросов к другим доменам."
+    },
+    {
+      "key": "wa-localstorage",
+      "title": "Web Storage",
+      "description": "Хранить небольшие настройки в браузере."
+    },
+    {
+      "key": "wa-indexeddb",
+      "title": "IndexedDB",
+      "description": "Хранить большие структурированные данные в браузере."
+    },
+    {
+      "key": "wa-cache",
+      "title": "Cache API",
+      "description": "Кэшировать ответы и управлять местом в браузере."
+    },
+    {
+      "key": "wa-workers",
+      "title": "Web Workers",
+      "description": "Выносить тяжёлые вычисления в фоновый поток."
+    },
+    {
+      "key": "wa-sw",
+      "title": "Service Worker",
+      "description": "Делать сайт доступным без сети через Service Worker."
+    },
+    {
+      "key": "wa-pwa",
+      "title": "PWA",
+      "description": "Делать сайт устанавливаемым и отправлять уведомления."
+    },
+    {
+      "key": "wa-canvas",
+      "title": "Canvas",
+      "description": "Рисовать и анимировать на холсте."
+    },
+    {
+      "key": "wa-media",
+      "title": "Аудио и видео",
+      "description": "Управлять воспроизведением и звуком из кода."
+    },
+    {
+      "key": "wa-gpu",
+      "title": "3D в браузере",
+      "description": "Понимать, как браузер рисует 3D на видеокарте."
+    },
+    {
+      "key": "wa-camera",
+      "title": "Камера и микрофон",
+      "description": "Получать доступ к камере и микрофону."
+    },
+    {
+      "key": "wa-geo",
+      "title": "Геолокация",
+      "description": "Получать местоположение и данные датчиков бережно."
+    },
+    {
+      "key": "wa-share",
+      "title": "Буфер и «Поделиться»",
+      "description": "Копировать, делиться и управлять экраном устройства."
+    },
+    {
+      "key": "wa-intersection",
+      "title": "IntersectionObserver",
+      "description": "Узнавать, когда элемент появляется на экране."
+    },
+    {
+      "key": "wa-resize",
+      "title": "Наблюдатели размера и DOM",
+      "description": "Реагировать на изменение размеров и разметки."
+    },
+    {
+      "key": "wa-perf",
+      "title": "Performance API",
+      "description": "Измерять скорость страницы у реальных пользователей."
+    },
+    {
+      "key": "wa-websocket",
+      "title": "WebSocket",
+      "description": "Обмениваться сообщениями с сервером в реальном времени."
+    },
+    {
+      "key": "wa-crosstab",
+      "title": "Связь вкладок",
+      "description": "Обмениваться сообщениями между вкладками и окнами."
+    },
+    {
+      "key": "wa-webrtc",
+      "title": "WebRTC",
+      "description": "Понимать, как браузеры связываются напрямую."
+    },
+    {
+      "key": "wa-permissions",
+      "title": "Разрешения",
+      "description": "Запрашивать разрешения бережно и проверять их состояние."
+    },
+    {
+      "key": "wa-csp",
+      "title": "Защита от XSS",
+      "description": "Защищать страницу от внедрения скриптов."
+    },
+    {
+      "key": "wa-iframe",
+      "title": "Фреймы и изоляция",
+      "description": "Безопасно встраивать чужое и защищаться от встраивания."
+    },
+    {
+      "key": "wa-offline",
+      "title": "Офлайн-приложение",
+      "description": "Строить приложение, которое работает без сети."
+    },
+    {
+      "key": "wa-a11y",
+      "title": "API доступности",
+      "description": "Делать интерфейсы понятными вспомогательным технологиям."
+    },
+    {
+      "key": "wa-choose",
+      "title": "Выбор Web API",
+      "description": "Выбирать возможности браузера осознанно."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "bp-node",
+      "type": "quiz.single_choice",
+      "title": "Node.js",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-platform"
+      ],
+      "presentation": {
+        "question": "Почему в Node.js нет объекта document?",
+        "options": [
+          {
+            "id": "webapi",
+            "text": "document — это Web API браузера, а не часть языка"
+          },
+          {
+            "id": "old",
+            "text": "Node.js устарел"
+          },
+          {
+            "id": "bug",
+            "text": "Это ошибка"
+          },
+          {
+            "id": "import",
+            "text": "Его нужно установить из npm"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "webapi",
+        "explanation": "Язык один, окружения разные."
+      }
+    },
+    {
+      "slug": "bp-https",
+      "type": "quiz.single_choice",
+      "title": "HTTPS",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-platform"
+      ],
+      "presentation": {
+        "question": "Почему камера может не работать на сайте по http://?",
+        "options": [
+          {
+            "id": "secure",
+            "text": "Мощные API доступны только в безопасном контексте — HTTPS или localhost"
+          },
+          {
+            "id": "slow",
+            "text": "HTTP слишком медленный"
+          },
+          {
+            "id": "old",
+            "text": "Камера устарела"
+          },
+          {
+            "id": "none",
+            "text": "Причин нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "secure",
+        "explanation": "Безопасный контекст."
+      }
+    },
+    {
+      "slug": "bp-which",
+      "type": "quiz.multiple_choice",
+      "title": "Что относится к Web API",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "wa-platform"
+      ],
+      "presentation": {
+        "question": "Что из этого — возможности браузера, а не самого языка?",
+        "options": [
+          {
+            "id": "fetch",
+            "text": "fetch"
+          },
+          {
+            "id": "dom",
+            "text": "document.querySelector"
+          },
+          {
+            "id": "storage",
+            "text": "localStorage"
+          },
+          {
+            "id": "map",
+            "text": "Array.prototype.map"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "fetch",
+          "dom",
+          "storage"
+        ],
+        "explanation": "map — часть самого языка."
+      }
+    },
+    {
+      "slug": "fd-how",
+      "type": "quiz.single_choice",
+      "title": "Как проверить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-detect"
+      ],
+      "presentation": {
+        "question": "Как правильно проверить поддержку Web Share API?",
+        "options": [
+          {
+            "id": "in",
+            "text": "`\"share\" in navigator`"
+          },
+          {
+            "id": "ua",
+            "text": "Разобрать строку User-Agent"
+          },
+          {
+            "id": "version",
+            "text": "Сравнить версию браузера"
+          },
+          {
+            "id": "try",
+            "text": "Вызвать и ждать падения страницы"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "in",
+        "explanation": "Проверяем саму возможность."
+      }
+    },
+    {
+      "slug": "fd-ua",
+      "type": "quiz.single_choice",
+      "title": "User-Agent",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-detect"
+      ],
+      "presentation": {
+        "question": "Почему не стоит определять возможности по User-Agent?",
+        "options": [
+          {
+            "id": "unreliable",
+            "text": "Строка ненадёжна и меняется, а поддержка зависит от версии"
+          },
+          {
+            "id": "slow",
+            "text": "Это медленно"
+          },
+          {
+            "id": "illegal",
+            "text": "Это запрещено"
+          },
+          {
+            "id": "none",
+            "text": "Стоит"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "unreliable",
+        "explanation": "Feature detection надёжнее."
+      }
+    },
+    {
+      "slug": "fd-progressive",
+      "type": "quiz.single_choice",
+      "title": "Постепенное улучшение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-detect"
+      ],
+      "presentation": {
+        "question": "Что значит постепенное улучшение?",
+        "options": [
+          {
+            "id": "base",
+            "text": "Основа работает везде, улучшения включаются при поддержке"
+          },
+          {
+            "id": "slow",
+            "text": "Сайт загружается постепенно"
+          },
+          {
+            "id": "new",
+            "text": "Только новые браузеры"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "base",
+        "explanation": "Полезно для всех."
+      }
+    },
+    {
+      "slug": "ap-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем асинхронно",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-async"
+      ],
+      "presentation": {
+        "question": "Почему fetch возвращает Promise, а не сразу данные?",
+        "options": [
+          {
+            "id": "wait",
+            "text": "Сеть отвечает не сразу, а страница не должна замирать"
+          },
+          {
+            "id": "style",
+            "text": "Так красивее"
+          },
+          {
+            "id": "old",
+            "text": "Так было исторически, без причины"
+          },
+          {
+            "id": "none",
+            "text": "Он возвращает данные сразу"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "wait",
+        "explanation": "Интерфейс остаётся отзывчивым."
+      }
+    },
+    {
+      "slug": "ap-abort",
+      "type": "quiz.single_choice",
+      "title": "Отмена",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-async"
+      ],
+      "presentation": {
+        "question": "Как отменить начатый fetch?",
+        "options": [
+          {
+            "id": "abort",
+            "text": "Передать signal от AbortController и вызвать abort()"
+          },
+          {
+            "id": "close",
+            "text": "Закрыть вкладку"
+          },
+          {
+            "id": "null",
+            "text": "Присвоить переменной null"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "abort",
+        "explanation": "Работает и для слушателей событий."
+      }
+    },
+    {
+      "slug": "ap-catch",
+      "type": "quiz.single_choice",
+      "title": "Ошибки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-async"
+      ],
+      "presentation": {
+        "question": "Как поймать ошибку сети при await fetch()?",
+        "options": [
+          {
+            "id": "try",
+            "text": "Обернуть в try/catch"
+          },
+          {
+            "id": "if",
+            "text": "Проверить if (fetch)"
+          },
+          {
+            "id": "onerror",
+            "text": "Только через window.onerror"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "try",
+        "explanation": "Для статуса — ещё res.ok."
+      }
+    },
+    {
+      "slug": "ef-deleg",
+      "type": "quiz.single_choice",
+      "title": "Делегирование",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-events"
+      ],
+      "presentation": {
+        "question": "Чем хорошо делегирование событий?",
+        "options": [
+          {
+            "id": "one",
+            "text": "Один обработчик на контейнере работает и для новых элементов"
+          },
+          {
+            "id": "fast",
+            "text": "Клик быстрее в 10 раз"
+          },
+          {
+            "id": "css",
+            "text": "Не нужен CSS"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "event.target.closest()."
+      }
+    },
+    {
+      "slug": "ef-bubble",
+      "type": "quiz.single_choice",
+      "title": "Всплытие",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-events"
+      ],
+      "presentation": {
+        "question": "Сработает ли обработчик клика на списке при клике по кнопке внутри строки?",
+        "options": [
+          {
+            "id": "yes",
+            "text": "Да, событие всплывает к предкам"
+          },
+          {
+            "id": "no",
+            "text": "Нет, только на кнопке"
+          },
+          {
+            "id": "capture",
+            "text": "Только при погружении"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "yes",
+        "explanation": "Если никто не остановил всплытие."
+      }
+    },
+    {
+      "slug": "ef-passive",
+      "type": "quiz.single_choice",
+      "title": "passive",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-events"
+      ],
+      "presentation": {
+        "question": "Что даёт { passive: true } у обработчика прокрутки?",
+        "options": [
+          {
+            "id": "smooth",
+            "text": "Браузер не ждёт обработчик, прокрутка плавнее"
+          },
+          {
+            "id": "once",
+            "text": "Сработает один раз"
+          },
+          {
+            "id": "stop",
+            "text": "Отменяет прокрутку"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "smooth",
+        "explanation": "Обещание не вызывать preventDefault."
+      }
+    },
+    {
+      "slug": "tf-text",
+      "type": "quiz.single_choice",
+      "title": "Безопасность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-templates"
+      ],
+      "presentation": {
+        "question": "Как вставить имя пользователя на страницу безопасно?",
+        "options": [
+          {
+            "id": "text",
+            "text": "Через textContent"
+          },
+          {
+            "id": "inner",
+            "text": "Через innerHTML"
+          },
+          {
+            "id": "eval",
+            "text": "Через eval"
+          },
+          {
+            "id": "write",
+            "text": "Через document.write"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "text",
+        "explanation": "Текст не разбирается как HTML."
+      }
+    },
+    {
+      "slug": "tf-tpl",
+      "type": "quiz.single_choice",
+      "title": "template",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-templates"
+      ],
+      "presentation": {
+        "question": "Что происходит с содержимым тега template при загрузке страницы?",
+        "options": [
+          {
+            "id": "hidden",
+            "text": "Оно не отображается, его клонируют из кода"
+          },
+          {
+            "id": "shown",
+            "text": "Отображается сразу"
+          },
+          {
+            "id": "deleted",
+            "text": "Удаляется"
+          },
+          {
+            "id": "run",
+            "text": "Выполняется как скрипт"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hidden",
+        "explanation": "Заготовка разметки."
+      }
+    },
+    {
+      "slug": "tf-layout",
+      "type": "quiz.single_choice",
+      "title": "Рывки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-templates"
+      ],
+      "presentation": {
+        "question": "Почему чередование чтения offsetHeight и изменения стилей тормозит?",
+        "options": [
+          {
+            "id": "reflow",
+            "text": "Браузер вынужден пересчитывать макет на каждом шаге"
+          },
+          {
+            "id": "net",
+            "text": "Это сетевые запросы"
+          },
+          {
+            "id": "gpu",
+            "text": "Перегревается видеокарта"
+          },
+          {
+            "id": "none",
+            "text": "Не тормозит"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "reflow",
+        "explanation": "Сначала читай, потом пиши."
+      }
+    },
+    {
+      "slug": "wc-dash",
+      "type": "quiz.single_choice",
+      "title": "Имя тега",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-components"
+      ],
+      "presentation": {
+        "question": "Какое требование к имени собственного элемента?",
+        "options": [
+          {
+            "id": "dash",
+            "text": "В имени должен быть дефис"
+          },
+          {
+            "id": "upper",
+            "text": "Только заглавные буквы"
+          },
+          {
+            "id": "x",
+            "text": "Начинаться с x"
+          },
+          {
+            "id": "none",
+            "text": "Никаких"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dash",
+        "explanation": "Чтобы не конфликтовать со стандартными тегами."
+      }
+    },
+    {
+      "slug": "wc-shadow",
+      "type": "quiz.single_choice",
+      "title": "Shadow DOM",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-components"
+      ],
+      "presentation": {
+        "question": "Что даёт Shadow DOM?",
+        "options": [
+          {
+            "id": "isolate",
+            "text": "Изоляцию разметки и стилей компонента"
+          },
+          {
+            "id": "speed",
+            "text": "Ускорение сети"
+          },
+          {
+            "id": "dark",
+            "text": "Тёмную тему"
+          },
+          {
+            "id": "storage",
+            "text": "Хранилище"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "isolate",
+        "explanation": "Внешний CSS не ломает компонент."
+      }
+    },
+    {
+      "slug": "wc-when",
+      "type": "quiz.single_choice",
+      "title": "Когда",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-components"
+      ],
+      "presentation": {
+        "question": "Где веб-компоненты особенно уместны?",
+        "options": [
+          {
+            "id": "shared",
+            "text": "Виджеты и дизайн-системы, которые используют разные фреймворки"
+          },
+          {
+            "id": "db",
+            "text": "В базе данных"
+          },
+          {
+            "id": "server",
+            "text": "Только на сервере"
+          },
+          {
+            "id": "never",
+            "text": "Нигде"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "shared",
+        "explanation": "Независимы от фреймворка."
+      }
+    },
+    {
+      "slug": "fd-404",
+      "type": "quiz.single_choice",
+      "title": "404",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-fetch"
+      ],
+      "presentation": {
+        "question": "Что делает Promise fetch при ответе 404?",
+        "options": [
+          {
+            "id": "resolve",
+            "text": "Выполняется успешно — нужно проверить res.ok"
+          },
+          {
+            "id": "reject",
+            "text": "Отклоняется с ошибкой"
+          },
+          {
+            "id": "hang",
+            "text": "Зависает"
+          },
+          {
+            "id": "retry",
+            "text": "Повторяет запрос"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "resolve",
+        "explanation": "Отклоняется только при сетевой ошибке."
+      }
+    },
+    {
+      "slug": "fd-form",
+      "type": "quiz.single_choice",
+      "title": "Файлы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-fetch"
+      ],
+      "presentation": {
+        "question": "Как отправить форму вместе с файлом?",
+        "options": [
+          {
+            "id": "formdata",
+            "text": "body: new FormData(form)"
+          },
+          {
+            "id": "json",
+            "text": "JSON.stringify(form)"
+          },
+          {
+            "id": "text",
+            "text": "form.innerHTML"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "formdata",
+        "explanation": "Заголовок поставится сам."
+      }
+    },
+    {
+      "slug": "fd-timeout",
+      "type": "quiz.single_choice",
+      "title": "Тайм-аут",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-fetch"
+      ],
+      "presentation": {
+        "question": "Как ограничить ожидание ответа восемью секундами?",
+        "options": [
+          {
+            "id": "signal",
+            "text": "signal: AbortSignal.timeout(8000)"
+          },
+          {
+            "id": "timeout",
+            "text": "timeout: 8000 в fetch"
+          },
+          {
+            "id": "sleep",
+            "text": "setTimeout после fetch"
+          },
+          {
+            "id": "none",
+            "text": "Нельзя"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "signal",
+        "explanation": "У fetch нет опции timeout."
+      }
+    },
+    {
+      "slug": "st-body",
+      "type": "quiz.single_choice",
+      "title": "Поток",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-streams"
+      ],
+      "presentation": {
+        "question": "Как читать ответ fetch по частям?",
+        "options": [
+          {
+            "id": "reader",
+            "text": "res.body.getReader() и чтение в цикле"
+          },
+          {
+            "id": "json",
+            "text": "Только res.json()"
+          },
+          {
+            "id": "text",
+            "text": "Только res.text()"
+          },
+          {
+            "id": "none",
+            "text": "Нельзя"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "reader",
+        "explanation": "Плюс TextDecoder для текста."
+      }
+    },
+    {
+      "slug": "st-sse",
+      "type": "quiz.single_choice",
+      "title": "SSE",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-streams"
+      ],
+      "presentation": {
+        "question": "Что такое EventSource?",
+        "options": [
+          {
+            "id": "sse",
+            "text": "Получение событий от сервера по одному долгому соединению"
+          },
+          {
+            "id": "db",
+            "text": "База данных"
+          },
+          {
+            "id": "file",
+            "text": "Чтение файлов"
+          },
+          {
+            "id": "ws",
+            "text": "Двусторонний WebSocket"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "sse",
+        "explanation": "Переподключается сам."
+      }
+    },
+    {
+      "slug": "st-progress",
+      "type": "quiz.single_choice",
+      "title": "Прогресс",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-streams"
+      ],
+      "presentation": {
+        "question": "Что нужно, чтобы показать процент скачивания?",
+        "options": [
+          {
+            "id": "length",
+            "text": "Размер из заголовка Content-Length и подсчёт прочитанных байтов"
+          },
+          {
+            "id": "guess",
+            "text": "Угадать"
+          },
+          {
+            "id": "timer",
+            "text": "Таймер"
+          },
+          {
+            "id": "none",
+            "text": "Это невозможно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "length",
+        "explanation": "Читаем поток и считаем."
+      }
+    },
+    {
+      "slug": "cr-where",
+      "type": "quiz.single_choice",
+      "title": "Где чинить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-cors"
+      ],
+      "presentation": {
+        "question": "Где исправляют ошибку CORS?",
+        "options": [
+          {
+            "id": "server",
+            "text": "На сервере — заголовками Access-Control-Allow-*"
+          },
+          {
+            "id": "browser",
+            "text": "В настройках браузера пользователя"
+          },
+          {
+            "id": "css",
+            "text": "В CSS"
+          },
+          {
+            "id": "none",
+            "text": "Нигде"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "server",
+        "explanation": "Сервер даёт разрешение."
+      }
+    },
+    {
+      "slug": "cr-origin",
+      "type": "quiz.single_choice",
+      "title": "Источник",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-cors"
+      ],
+      "presentation": {
+        "question": "Что составляет источник (origin)?",
+        "options": [
+          {
+            "id": "triple",
+            "text": "Схема, домен и порт"
+          },
+          {
+            "id": "domain",
+            "text": "Только домен"
+          },
+          {
+            "id": "path",
+            "text": "Путь страницы"
+          },
+          {
+            "id": "ip",
+            "text": "Только IP"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "triple",
+        "explanation": "http и https — разные источники."
+      }
+    },
+    {
+      "slug": "cr-preflight",
+      "type": "quiz.single_choice",
+      "title": "OPTIONS",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-cors"
+      ],
+      "presentation": {
+        "question": "Зачем браузер отправляет OPTIONS перед запросом с JSON?",
+        "options": [
+          {
+            "id": "ask",
+            "text": "Спросить у сервера разрешение на такой запрос"
+          },
+          {
+            "id": "cache",
+            "text": "Для кэша"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ask",
+        "explanation": "Предварительный запрос."
+      }
+    },
+    {
+      "slug": "ws-types",
+      "type": "quiz.single_choice",
+      "title": "Типы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-localstorage"
+      ],
+      "presentation": {
+        "question": "Что хранит localStorage?",
+        "options": [
+          {
+            "id": "strings",
+            "text": "Только строки — объекты превращают в JSON"
+          },
+          {
+            "id": "any",
+            "text": "Любые объекты"
+          },
+          {
+            "id": "files",
+            "text": "Файлы"
+          },
+          {
+            "id": "numbers",
+            "text": "Только числа"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "strings",
+        "explanation": "JSON.stringify и JSON.parse."
+      }
+    },
+    {
+      "slug": "ws-session",
+      "type": "quiz.single_choice",
+      "title": "sessionStorage",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-localstorage"
+      ],
+      "presentation": {
+        "question": "Сколько живут данные sessionStorage?",
+        "options": [
+          {
+            "id": "tab",
+            "text": "До закрытия вкладки"
+          },
+          {
+            "id": "forever",
+            "text": "Навсегда"
+          },
+          {
+            "id": "hour",
+            "text": "Один час"
+          },
+          {
+            "id": "reload",
+            "text": "До перезагрузки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "tab",
+        "explanation": "Перезагрузку переживают."
+      }
+    },
+    {
+      "slug": "ws-token",
+      "type": "quiz.single_choice",
+      "title": "Токены",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-localstorage"
+      ],
+      "presentation": {
+        "question": "Почему не стоит хранить токен входа в localStorage?",
+        "options": [
+          {
+            "id": "xss",
+            "text": "Любой скрипт на странице, включая внедрённый, может его прочитать"
+          },
+          {
+            "id": "size",
+            "text": "Он не поместится"
+          },
+          {
+            "id": "slow",
+            "text": "Это медленно"
+          },
+          {
+            "id": "none",
+            "text": "Стоит"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "xss",
+        "explanation": "Сессию — в httpOnly cookie."
+      }
+    },
+    {
+      "slug": "idb-when",
+      "type": "quiz.single_choice",
+      "title": "Когда",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-indexeddb"
+      ],
+      "presentation": {
+        "question": "Когда стоит выбрать IndexedDB вместо localStorage?",
+        "options": [
+          {
+            "id": "big",
+            "text": "Для больших и структурированных данных и файлов"
+          },
+          {
+            "id": "theme",
+            "text": "Для одной настройки темы"
+          },
+          {
+            "id": "secret",
+            "text": "Для паролей"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "big",
+        "explanation": "Асинхронно и без лимита в 5 МБ."
+      }
+    },
+    {
+      "slug": "idb-upgrade",
+      "type": "quiz.single_choice",
+      "title": "Схема",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-indexeddb"
+      ],
+      "presentation": {
+        "question": "Где создают хранилища объектов?",
+        "options": [
+          {
+            "id": "upgrade",
+            "text": "В обработчике upgrade при открытии новой версии"
+          },
+          {
+            "id": "anywhere",
+            "text": "Где угодно"
+          },
+          {
+            "id": "server",
+            "text": "На сервере"
+          },
+          {
+            "id": "css",
+            "text": "В CSS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "upgrade",
+        "explanation": "Как миграции."
+      }
+    },
+    {
+      "slug": "idb-idb",
+      "type": "quiz.single_choice",
+      "title": "idb",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-indexeddb"
+      ],
+      "presentation": {
+        "question": "Зачем библиотека idb?",
+        "options": [
+          {
+            "id": "promise",
+            "text": "Даёт удобный async/await поверх событийного API"
+          },
+          {
+            "id": "server",
+            "text": "Подключает сервер"
+          },
+          {
+            "id": "sql",
+            "text": "Добавляет SQL"
+          },
+          {
+            "id": "none",
+            "text": "Ни за чем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "promise",
+        "explanation": "Меньше кода."
+      }
+    },
+    {
+      "slug": "cq-what",
+      "type": "quiz.single_choice",
+      "title": "Cache API",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-cache"
+      ],
+      "presentation": {
+        "question": "Что хранит Cache API?",
+        "options": [
+          {
+            "id": "responses",
+            "text": "Пары запрос → ответ"
+          },
+          {
+            "id": "cookies",
+            "text": "Cookie"
+          },
+          {
+            "id": "passwords",
+            "text": "Пароли"
+          },
+          {
+            "id": "dom",
+            "text": "Состояние DOM"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "responses",
+        "explanation": "Основа офлайна."
+      }
+    },
+    {
+      "slug": "cq-persist",
+      "type": "quiz.single_choice",
+      "title": "persist",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-cache"
+      ],
+      "presentation": {
+        "question": "Что делает navigator.storage.persist()?",
+        "options": [
+          {
+            "id": "keep",
+            "text": "Просит браузер не удалять данные сайта при нехватке места"
+          },
+          {
+            "id": "upload",
+            "text": "Загружает данные на сервер"
+          },
+          {
+            "id": "encrypt",
+            "text": "Шифрует данные"
+          },
+          {
+            "id": "clear",
+            "text": "Очищает данные"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "keep",
+        "explanation": "Браузер может отказать."
+      }
+    },
+    {
+      "slug": "cq-evict",
+      "type": "quiz.single_choice",
+      "title": "Вытеснение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-cache"
+      ],
+      "presentation": {
+        "question": "Может ли браузер сам удалить данные сайта?",
+        "options": [
+          {
+            "id": "yes",
+            "text": "Да, при нехватке места, если хранилище не постоянное"
+          },
+          {
+            "id": "no",
+            "text": "Никогда"
+          },
+          {
+            "id": "server",
+            "text": "Только по команде сервера"
+          },
+          {
+            "id": "user",
+            "text": "Только по нажатию кнопки"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "yes",
+        "explanation": "Важное — копируй на сервер."
+      }
+    },
+    {
+      "slug": "ww-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-workers"
+      ],
+      "presentation": {
+        "question": "Зачем выносить тяжёлый расчёт в Web Worker?",
+        "options": [
+          {
+            "id": "ui",
+            "text": "Чтобы не замораживать интерфейс в основном потоке"
+          },
+          {
+            "id": "security",
+            "text": "Для безопасности"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ui",
+        "explanation": "Основной поток один."
+      }
+    },
+    {
+      "slug": "ww-dom",
+      "type": "quiz.single_choice",
+      "title": "DOM",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-workers"
+      ],
+      "presentation": {
+        "question": "Может ли воркер изменить элемент страницы?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, он отправляет результат сообщением, а рисует основной поток"
+          },
+          {
+            "id": "yes",
+            "text": "Да, напрямую"
+          },
+          {
+            "id": "css",
+            "text": "Только CSS"
+          },
+          {
+            "id": "half",
+            "text": "Только текст"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "У воркера нет document."
+      }
+    },
+    {
+      "slug": "ww-msg",
+      "type": "quiz.single_choice",
+      "title": "Общение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-workers"
+      ],
+      "presentation": {
+        "question": "Как воркер и страница обмениваются данными?",
+        "options": [
+          {
+            "id": "post",
+            "text": "Сообщениями postMessage и onmessage"
+          },
+          {
+            "id": "global",
+            "text": "Через общие переменные"
+          },
+          {
+            "id": "cookie",
+            "text": "Через cookie"
+          },
+          {
+            "id": "dom",
+            "text": "Через DOM"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "post",
+        "explanation": "Данные копируются или передаются."
+      }
+    },
+    {
+      "slug": "sw-what",
+      "type": "quiz.single_choice",
+      "title": "Роль",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-sw"
+      ],
+      "presentation": {
+        "question": "Что делает Service Worker?",
+        "options": [
+          {
+            "id": "proxy",
+            "text": "Перехватывает запросы сайта и может отвечать из кэша"
+          },
+          {
+            "id": "draw",
+            "text": "Рисует страницу"
+          },
+          {
+            "id": "db",
+            "text": "Это база данных"
+          },
+          {
+            "id": "auth",
+            "text": "Отвечает за вход"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "proxy",
+        "explanation": "Посредник между страницей и сетью."
+      }
+    },
+    {
+      "slug": "sw-static",
+      "type": "quiz.single_choice",
+      "title": "Статика",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-sw"
+      ],
+      "presentation": {
+        "question": "Какая стратегия подходит для неизменных файлов стилей и шрифтов?",
+        "options": [
+          {
+            "id": "cache",
+            "text": "Сначала кэш"
+          },
+          {
+            "id": "network",
+            "text": "Всегда только сеть"
+          },
+          {
+            "id": "none",
+            "text": "Никакая"
+          },
+          {
+            "id": "random",
+            "text": "Случайная"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cache",
+        "explanation": "Данные — сначала сеть."
+      }
+    },
+    {
+      "slug": "sw-https",
+      "type": "quiz.single_choice",
+      "title": "Требование",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-sw"
+      ],
+      "presentation": {
+        "question": "Где работает Service Worker?",
+        "options": [
+          {
+            "id": "https",
+            "text": "Только на HTTPS или localhost"
+          },
+          {
+            "id": "http",
+            "text": "Только на HTTP"
+          },
+          {
+            "id": "file",
+            "text": "Только с файлов на диске"
+          },
+          {
+            "id": "any",
+            "text": "Везде"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "https",
+        "explanation": "Безопасный контекст."
+      }
+    },
+    {
+      "slug": "pw-install",
+      "type": "quiz.single_choice",
+      "title": "Установка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-pwa"
+      ],
+      "presentation": {
+        "question": "Что нужно, чтобы сайт можно было установить как приложение?",
+        "options": [
+          {
+            "id": "manifest",
+            "text": "Манифест приложения, Service Worker и HTTPS"
+          },
+          {
+            "id": "store",
+            "text": "Публикация в магазине"
+          },
+          {
+            "id": "native",
+            "text": "Нативный код"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "manifest",
+        "explanation": "Так сайт становится PWA."
+      }
+    },
+    {
+      "slug": "pw-ask",
+      "type": "quiz.single_choice",
+      "title": "Разрешение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-pwa"
+      ],
+      "presentation": {
+        "question": "Когда лучше спрашивать разрешение на уведомления?",
+        "options": [
+          {
+            "id": "context",
+            "text": "После действия пользователя и объяснения пользы"
+          },
+          {
+            "id": "first",
+            "text": "Сразу при первом заходе"
+          },
+          {
+            "id": "always",
+            "text": "На каждой странице"
+          },
+          {
+            "id": "never",
+            "text": "Никогда не спрашивать"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "context",
+        "explanation": "Отказ запоминается."
+      }
+    },
+    {
+      "slug": "pw-push",
+      "type": "quiz.single_choice",
+      "title": "Push",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-pwa"
+      ],
+      "presentation": {
+        "question": "Может ли уведомление прийти при закрытой вкладке?",
+        "options": [
+          {
+            "id": "yes",
+            "text": "Да, его покажет Service Worker"
+          },
+          {
+            "id": "no",
+            "text": "Нет, никогда"
+          },
+          {
+            "id": "sms",
+            "text": "Только по SMS"
+          },
+          {
+            "id": "email",
+            "text": "Только письмом"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "yes",
+        "explanation": "Через push-службу браузера."
+      }
+    },
+    {
+      "slug": "cv-raf",
+      "type": "quiz.single_choice",
+      "title": "Анимация",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-canvas"
+      ],
+      "presentation": {
+        "question": "Чем requestAnimationFrame лучше setInterval для анимации?",
+        "options": [
+          {
+            "id": "sync",
+            "text": "Синхронизирован с перерисовкой экрана и останавливается на скрытой вкладке"
+          },
+          {
+            "id": "fast",
+            "text": "Всегда в 10 раз быстрее"
+          },
+          {
+            "id": "old",
+            "text": "setInterval запрещён"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "sync",
+        "explanation": "Плавно и экономно."
+      }
+    },
+    {
+      "slug": "cv-blur",
+      "type": "quiz.single_choice",
+      "title": "Размытие",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-canvas"
+      ],
+      "presentation": {
+        "question": "Почему холст размыт на ретина-экране?",
+        "options": [
+          {
+            "id": "dpr",
+            "text": "Не учтён devicePixelRatio при выборе размера холста"
+          },
+          {
+            "id": "gpu",
+            "text": "Слабая видеокарта"
+          },
+          {
+            "id": "font",
+            "text": "Неверный шрифт"
+          },
+          {
+            "id": "none",
+            "text": "Он не размыт"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dpr",
+        "explanation": "Рисуй крупнее и уменьшай стилями."
+      }
+    },
+    {
+      "slug": "cv-a11y",
+      "type": "quiz.single_choice",
+      "title": "Доступность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-canvas"
+      ],
+      "presentation": {
+        "question": "Увидит ли экранный диктор текст, нарисованный на холсте?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, нужен текстовый дубль или описание"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "sometimes",
+            "text": "Только жирный"
+          },
+          {
+            "id": "css",
+            "text": "Если есть CSS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Холст — это картинка."
+      }
+    },
+    {
+      "slug": "av-autoplay",
+      "type": "quiz.single_choice",
+      "title": "Автозапуск",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-media"
+      ],
+      "presentation": {
+        "question": "Почему video.play() может не сработать при загрузке страницы?",
+        "options": [
+          {
+            "id": "policy",
+            "text": "Браузеры блокируют автозапуск со звуком до действия пользователя"
+          },
+          {
+            "id": "format",
+            "text": "Всегда неверный формат"
+          },
+          {
+            "id": "net",
+            "text": "Нет сети"
+          },
+          {
+            "id": "none",
+            "text": "Он всегда срабатывает"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "policy",
+        "explanation": "play() вернёт отклонённый Promise."
+      }
+    },
+    {
+      "slug": "av-track",
+      "type": "quiz.single_choice",
+      "title": "Субтитры",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-media"
+      ],
+      "presentation": {
+        "question": "Как добавить субтитры к видео?",
+        "options": [
+          {
+            "id": "track",
+            "text": "Тегом track с файлом WebVTT"
+          },
+          {
+            "id": "p",
+            "text": "Абзацем под видео"
+          },
+          {
+            "id": "alt",
+            "text": "Атрибутом alt"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "track",
+        "explanation": "Доступность для всех."
+      }
+    },
+    {
+      "slug": "av-webaudio",
+      "type": "quiz.single_choice",
+      "title": "Web Audio",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-media"
+      ],
+      "presentation": {
+        "question": "Для чего Web Audio API?",
+        "options": [
+          {
+            "id": "graph",
+            "text": "Синтез и обработка звука графом узлов"
+          },
+          {
+            "id": "video",
+            "text": "Для видео"
+          },
+          {
+            "id": "mic",
+            "text": "Только для микрофона"
+          },
+          {
+            "id": "files",
+            "text": "Для загрузки файлов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "graph",
+        "explanation": "Осцилляторы, фильтры, анализаторы."
+      }
+    },
+    {
+      "slug": "gp-three",
+      "type": "quiz.single_choice",
+      "title": "three.js",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-gpu"
+      ],
+      "presentation": {
+        "question": "Что такое three.js?",
+        "options": [
+          {
+            "id": "lib",
+            "text": "Библиотека для 3D-сцен поверх WebGL"
+          },
+          {
+            "id": "game",
+            "text": "Игра"
+          },
+          {
+            "id": "css",
+            "text": "CSS-фреймворк"
+          },
+          {
+            "id": "db",
+            "text": "База данных"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lib",
+        "explanation": "Сцены, камеры, свет."
+      }
+    },
+    {
+      "slug": "gp-fallback",
+      "type": "quiz.single_choice",
+      "title": "Запасной путь",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-gpu"
+      ],
+      "presentation": {
+        "question": "Что делать, если WebGL недоступен?",
+        "options": [
+          {
+            "id": "image",
+            "text": "Показать картинку или упрощённый вид вместо сцены"
+          },
+          {
+            "id": "crash",
+            "text": "Показать ошибку и остановиться"
+          },
+          {
+            "id": "reload",
+            "text": "Перезагружать страницу"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "image",
+        "explanation": "Страница работает и без 3D."
+      }
+    },
+    {
+      "slug": "gp-webgpu",
+      "type": "quiz.single_choice",
+      "title": "WebGPU",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-gpu"
+      ],
+      "presentation": {
+        "question": "Чем WebGPU интересен, кроме графики?",
+        "options": [
+          {
+            "id": "compute",
+            "text": "Вычислениями на видеокарте, например для нейросетей"
+          },
+          {
+            "id": "storage",
+            "text": "Хранением файлов"
+          },
+          {
+            "id": "net",
+            "text": "Сетью"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "compute",
+        "explanation": "Ближе к нативным API."
+      }
+    },
+    {
+      "slug": "cm-stop",
+      "type": "quiz.single_choice",
+      "title": "Выключить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-camera"
+      ],
+      "presentation": {
+        "question": "Как выключить камеру, когда она больше не нужна?",
+        "options": [
+          {
+            "id": "stop",
+            "text": "Вызвать stop() у всех дорожек потока"
+          },
+          {
+            "id": "hide",
+            "text": "Скрыть video"
+          },
+          {
+            "id": "null",
+            "text": "Присвоить null переменной"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "stop",
+        "explanation": "Иначе индикатор горит."
+      }
+    },
+    {
+      "slug": "cm-deny",
+      "type": "quiz.single_choice",
+      "title": "Отказ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-camera"
+      ],
+      "presentation": {
+        "question": "Что делать, если пользователь запретил доступ к камере?",
+        "options": [
+          {
+            "id": "explain",
+            "text": "Показать объяснение и альтернативный путь"
+          },
+          {
+            "id": "loop",
+            "text": "Спрашивать снова в цикле"
+          },
+          {
+            "id": "crash",
+            "text": "Показать белый экран"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "explain",
+        "explanation": "NotAllowedError."
+      }
+    },
+    {
+      "slug": "cm-record",
+      "type": "quiz.single_choice",
+      "title": "Запись",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-camera"
+      ],
+      "presentation": {
+        "question": "Чем записать звук с микрофона в файл?",
+        "options": [
+          {
+            "id": "recorder",
+            "text": "MediaRecorder"
+          },
+          {
+            "id": "canvas",
+            "text": "Canvas"
+          },
+          {
+            "id": "fetch",
+            "text": "fetch"
+          },
+          {
+            "id": "storage",
+            "text": "localStorage"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "recorder",
+        "explanation": "Потом Blob можно отправить."
+      }
+    },
+    {
+      "slug": "gl-watch",
+      "type": "quiz.single_choice",
+      "title": "Следить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-geo"
+      ],
+      "presentation": {
+        "question": "Как следить за изменением местоположения во время пробежки?",
+        "options": [
+          {
+            "id": "watch",
+            "text": "watchPosition"
+          },
+          {
+            "id": "get",
+            "text": "getCurrentPosition в бесконечном цикле"
+          },
+          {
+            "id": "fetch",
+            "text": "fetch"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "watch",
+        "explanation": "Не забудь clearWatch."
+      }
+    },
+    {
+      "slug": "gl-accuracy",
+      "type": "quiz.single_choice",
+      "title": "Точность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-geo"
+      ],
+      "presentation": {
+        "question": "Почему не стоит всегда включать enableHighAccuracy?",
+        "options": [
+          {
+            "id": "battery",
+            "text": "GPS тратит батарею, а высокая точность часто не нужна"
+          },
+          {
+            "id": "wrong",
+            "text": "Она даёт неверные данные"
+          },
+          {
+            "id": "slow",
+            "text": "Она запрещена"
+          },
+          {
+            "id": "none",
+            "text": "Стоит всегда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "battery",
+        "explanation": "Точность — по задаче."
+      }
+    },
+    {
+      "slug": "gl-fallback",
+      "type": "quiz.single_choice",
+      "title": "Отказ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-geo"
+      ],
+      "presentation": {
+        "question": "Что предложить, если пользователь не дал доступ к геолокации?",
+        "options": [
+          {
+            "id": "manual",
+            "text": "Ввести город или адрес вручную"
+          },
+          {
+            "id": "block",
+            "text": "Закрыть сайт"
+          },
+          {
+            "id": "again",
+            "text": "Спрашивать каждую секунду"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "manual",
+        "explanation": "Запасной путь."
+      }
+    },
+    {
+      "slug": "cs-copy",
+      "type": "quiz.single_choice",
+      "title": "Копировать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-share"
+      ],
+      "presentation": {
+        "question": "Как скопировать текст в буфер обмена?",
+        "options": [
+          {
+            "id": "clip",
+            "text": "`navigator.clipboard.writeText(text)`"
+          },
+          {
+            "id": "exec",
+            "text": "Только document.execCommand"
+          },
+          {
+            "id": "storage",
+            "text": "localStorage.setItem"
+          },
+          {
+            "id": "none",
+            "text": "Нельзя"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "clip",
+        "explanation": "По действию пользователя."
+      }
+    },
+    {
+      "slug": "cs-share",
+      "type": "quiz.single_choice",
+      "title": "Поделиться",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-share"
+      ],
+      "presentation": {
+        "question": "Что открывает navigator.share?",
+        "options": [
+          {
+            "id": "menu",
+            "text": "Системное меню «Поделиться» устройства"
+          },
+          {
+            "id": "email",
+            "text": "Только почту"
+          },
+          {
+            "id": "new",
+            "text": "Новую вкладку"
+          },
+          {
+            "id": "print",
+            "text": "Печать"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "menu",
+        "explanation": "Проверь поддержку."
+      }
+    },
+    {
+      "slug": "cs-gesture",
+      "type": "quiz.single_choice",
+      "title": "Жест",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-share"
+      ],
+      "presentation": {
+        "question": "Почему navigator.share нельзя вызвать при загрузке страницы?",
+        "options": [
+          {
+            "id": "gesture",
+            "text": "Нужен жест пользователя — нажатие или клик"
+          },
+          {
+            "id": "slow",
+            "text": "Страница медленная"
+          },
+          {
+            "id": "https",
+            "text": "Нужен HTTP"
+          },
+          {
+            "id": "none",
+            "text": "Можно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "gesture",
+        "explanation": "Защита от навязчивых сайтов."
+      }
+    },
+    {
+      "slug": "is-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-intersection"
+      ],
+      "presentation": {
+        "question": "Чем IntersectionObserver лучше обработчика scroll?",
+        "options": [
+          {
+            "id": "browser",
+            "text": "Браузер сам вычисляет видимость, не нагружая прокрутку"
+          },
+          {
+            "id": "old",
+            "text": "scroll запрещён"
+          },
+          {
+            "id": "style",
+            "text": "Только красивее код"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "browser",
+        "explanation": "Нет вычислений на каждый пиксель."
+      }
+    },
+    {
+      "slug": "is-margin",
+      "type": "quiz.single_choice",
+      "title": "rootMargin",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-intersection"
+      ],
+      "presentation": {
+        "question": "Что даёт rootMargin: \"300px\"?",
+        "options": [
+          {
+            "id": "early",
+            "text": "Срабатывать заранее, за 300px до появления"
+          },
+          {
+            "id": "late",
+            "text": "Позже на 300px"
+          },
+          {
+            "id": "size",
+            "text": "Задаёт размер элемента"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "early",
+        "explanation": "Подгрузка до того, как увидят."
+      }
+    },
+    {
+      "slug": "is-lazy",
+      "type": "quiz.single_choice",
+      "title": "Картинки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-intersection"
+      ],
+      "presentation": {
+        "question": "Как проще всего лениво загружать картинки?",
+        "options": [
+          {
+            "id": "attr",
+            "text": "Атрибутом loading=\"lazy\""
+          },
+          {
+            "id": "js",
+            "text": "Только своим кодом"
+          },
+          {
+            "id": "css",
+            "text": "Через CSS"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "attr",
+        "explanation": "Встроено в браузер."
+      }
+    },
+    {
+      "slug": "rm-resize",
+      "type": "quiz.single_choice",
+      "title": "Размер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-resize"
+      ],
+      "presentation": {
+        "question": "Как узнать, что изменилась ширина конкретного блока, а не окна?",
+        "options": [
+          {
+            "id": "ro",
+            "text": "ResizeObserver"
+          },
+          {
+            "id": "resize",
+            "text": "Только window.onresize"
+          },
+          {
+            "id": "io",
+            "text": "IntersectionObserver"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ro",
+        "explanation": "Работает для любого элемента."
+      }
+    },
+    {
+      "slug": "rm-container",
+      "type": "quiz.single_choice",
+      "title": "CSS",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-resize"
+      ],
+      "presentation": {
+        "question": "Чем можно изменить вид карточки по ширине её контейнера без JavaScript?",
+        "options": [
+          {
+            "id": "container",
+            "text": "Контейнерными запросами @container"
+          },
+          {
+            "id": "media",
+            "text": "Только @media по окну"
+          },
+          {
+            "id": "js",
+            "text": "Только JavaScript"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "container",
+        "explanation": "Современный CSS."
+      }
+    },
+    {
+      "slug": "rm-mutation",
+      "type": "quiz.single_choice",
+      "title": "MutationObserver",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-resize"
+      ],
+      "presentation": {
+        "question": "Что отслеживает MutationObserver?",
+        "options": [
+          {
+            "id": "dom",
+            "text": "Изменения DOM: узлы, атрибуты, текст"
+          },
+          {
+            "id": "size",
+            "text": "Размер окна"
+          },
+          {
+            "id": "net",
+            "text": "Сетевые запросы"
+          },
+          {
+            "id": "mouse",
+            "text": "Движение мыши"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dom",
+        "explanation": "Полезно для чужой разметки."
+      }
+    },
+    {
+      "slug": "pa-measure",
+      "type": "quiz.single_choice",
+      "title": "Замер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-perf"
+      ],
+      "presentation": {
+        "question": "Как измерить время между двумя точками кода?",
+        "options": [
+          {
+            "id": "mark",
+            "text": "performance.mark и performance.measure"
+          },
+          {
+            "id": "date",
+            "text": "Только new Date()"
+          },
+          {
+            "id": "alert",
+            "text": "alert"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "mark",
+        "explanation": "Высокая точность."
+      }
+    },
+    {
+      "slug": "pa-real",
+      "type": "quiz.single_choice",
+      "title": "Реальные данные",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-perf"
+      ],
+      "presentation": {
+        "question": "Почему метрики собирают у реальных посетителей?",
+        "options": [
+          {
+            "id": "devices",
+            "text": "Лабораторный тест не видит слабые телефоны и медленные сети"
+          },
+          {
+            "id": "law",
+            "text": "По закону"
+          },
+          {
+            "id": "seo",
+            "text": "Только для поисковиков"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "devices",
+        "explanation": "Web Vitals в поле."
+      }
+    },
+    {
+      "slug": "pa-beacon",
+      "type": "quiz.single_choice",
+      "title": "Отправка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-perf"
+      ],
+      "presentation": {
+        "question": "Чем отправить метрики при закрытии страницы?",
+        "options": [
+          {
+            "id": "beacon",
+            "text": "navigator.sendBeacon"
+          },
+          {
+            "id": "alert",
+            "text": "alert"
+          },
+          {
+            "id": "sync",
+            "text": "Синхронным XHR"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "beacon",
+        "explanation": "Надёжно и без задержки закрытия."
+      }
+    },
+    {
+      "slug": "wsk-two",
+      "type": "quiz.single_choice",
+      "title": "Двусторонний",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-websocket"
+      ],
+      "presentation": {
+        "question": "Чем WebSocket отличается от обычного HTTP-запроса?",
+        "options": [
+          {
+            "id": "duplex",
+            "text": "Это постоянный двусторонний канал: сообщения в обе стороны в любой момент"
+          },
+          {
+            "id": "fast",
+            "text": "Просто быстрее загружает картинки"
+          },
+          {
+            "id": "secure",
+            "text": "Он всегда без шифрования"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "duplex",
+        "explanation": "Подходит для чатов."
+      }
+    },
+    {
+      "slug": "wsk-reconnect",
+      "type": "quiz.single_choice",
+      "title": "Обрыв",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-websocket"
+      ],
+      "presentation": {
+        "question": "Что делать при обрыве WebSocket?",
+        "options": [
+          {
+            "id": "retry",
+            "text": "Переподключаться с растущей паузой"
+          },
+          {
+            "id": "reload",
+            "text": "Перезагружать страницу"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          },
+          {
+            "id": "alert",
+            "text": "Показать alert и сдаться"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "retry",
+        "explanation": "Связь рвётся регулярно."
+      }
+    },
+    {
+      "slug": "wsk-sse",
+      "type": "quiz.single_choice",
+      "title": "Только от сервера",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-websocket"
+      ],
+      "presentation": {
+        "question": "Что выбрать, если сервер только присылает обновления?",
+        "options": [
+          {
+            "id": "sse",
+            "text": "EventSource (Server-Sent Events)"
+          },
+          {
+            "id": "ws",
+            "text": "Только WebSocket"
+          },
+          {
+            "id": "webrtc",
+            "text": "WebRTC"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "sse",
+        "explanation": "Проще и переподключается сам."
+      }
+    },
+    {
+      "slug": "ct-bc",
+      "type": "quiz.single_choice",
+      "title": "Вкладки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-crosstab"
+      ],
+      "presentation": {
+        "question": "Как сообщить всем вкладкам сайта о выходе пользователя?",
+        "options": [
+          {
+            "id": "bc",
+            "text": "BroadcastChannel с общим именем"
+          },
+          {
+            "id": "cookie",
+            "text": "Удалить cookie и ждать"
+          },
+          {
+            "id": "alert",
+            "text": "alert в каждой"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bc",
+        "explanation": "Сообщение получат все."
+      }
+    },
+    {
+      "slug": "ct-origin",
+      "type": "quiz.single_choice",
+      "title": "Проверка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-crosstab"
+      ],
+      "presentation": {
+        "question": "Что обязательно проверять в обработчике message от другого окна?",
+        "options": [
+          {
+            "id": "origin",
+            "text": "event.origin — что сообщение от ожидаемого сайта"
+          },
+          {
+            "id": "time",
+            "text": "Время"
+          },
+          {
+            "id": "size",
+            "text": "Размер сообщения"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "origin",
+        "explanation": "Защита от подделки."
+      }
+    },
+    {
+      "slug": "ct-iframe",
+      "type": "quiz.single_choice",
+      "title": "iframe",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-crosstab"
+      ],
+      "presentation": {
+        "question": "Как встроенный фрейм с другого домена сообщает странице результат?",
+        "options": [
+          {
+            "id": "post",
+            "text": "Через window.postMessage"
+          },
+          {
+            "id": "dom",
+            "text": "Меняет DOM родителя напрямую"
+          },
+          {
+            "id": "storage",
+            "text": "Пишет в её localStorage"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "post",
+        "explanation": "Политика одного источника запрещает прямой доступ."
+      }
+    },
+    {
+      "slug": "rtc-signal",
+      "type": "quiz.single_choice",
+      "title": "Сигнальный сервер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-webrtc"
+      ],
+      "presentation": {
+        "question": "Зачем WebRTC нужен свой сервер?",
+        "options": [
+          {
+            "id": "intro",
+            "text": "Чтобы браузеры обменялись описаниями и адресами перед соединением"
+          },
+          {
+            "id": "video",
+            "text": "Чтобы пересылать всё видео всегда"
+          },
+          {
+            "id": "none",
+            "text": "Не нужен вовсе"
+          },
+          {
+            "id": "dns",
+            "text": "Для DNS"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "intro",
+        "explanation": "Разговор потом идёт напрямую."
+      }
+    },
+    {
+      "slug": "rtc-turn",
+      "type": "quiz.single_choice",
+      "title": "TURN",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-webrtc"
+      ],
+      "presentation": {
+        "question": "Когда нужен TURN-сервер?",
+        "options": [
+          {
+            "id": "relay",
+            "text": "Когда прямое соединение невозможно и трафик нужно пересылать"
+          },
+          {
+            "id": "always",
+            "text": "Всегда для всего"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "dns",
+            "text": "Для имён доменов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "relay",
+        "explanation": "STUN — узнать внешний адрес."
+      }
+    },
+    {
+      "slug": "rtc-data",
+      "type": "quiz.single_choice",
+      "title": "Данные",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-webrtc"
+      ],
+      "presentation": {
+        "question": "Что передаёт RTCDataChannel?",
+        "options": [
+          {
+            "id": "any",
+            "text": "Произвольные данные: файлы, события"
+          },
+          {
+            "id": "video",
+            "text": "Только видео"
+          },
+          {
+            "id": "audio",
+            "text": "Только звук"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "any",
+        "explanation": "Напрямую между браузерами."
+      }
+    },
+    {
+      "slug": "pm-query",
+      "type": "quiz.single_choice",
+      "title": "Состояние",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-permissions"
+      ],
+      "presentation": {
+        "question": "Как узнать, разрешена ли геолокация, не вызывая запрос?",
+        "options": [
+          {
+            "id": "query",
+            "text": "navigator.permissions.query({ name: \"geolocation\" })"
+          },
+          {
+            "id": "call",
+            "text": "Вызвать getCurrentPosition и смотреть"
+          },
+          {
+            "id": "cookie",
+            "text": "Проверить cookie"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "query",
+        "explanation": "granted, denied или prompt."
+      }
+    },
+    {
+      "slug": "pm-policy",
+      "type": "quiz.single_choice",
+      "title": "Permissions-Policy",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-permissions"
+      ],
+      "presentation": {
+        "question": "Что делает заголовок Permissions-Policy?",
+        "options": [
+          {
+            "id": "disable",
+            "text": "Отключает выбранные API для страницы и встроенных фреймов"
+          },
+          {
+            "id": "enable",
+            "text": "Даёт все разрешения сразу"
+          },
+          {
+            "id": "cache",
+            "text": "Включает кэш"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "disable",
+        "explanation": "Например, камеру во фреймах рекламы."
+      }
+    },
+    {
+      "slug": "pm-denied",
+      "type": "quiz.single_choice",
+      "title": "Отказ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-permissions"
+      ],
+      "presentation": {
+        "question": "Что делать, если пользователь запретил доступ навсегда?",
+        "options": [
+          {
+            "id": "guide",
+            "text": "Предложить альтернативу и подсказать, где изменить настройку"
+          },
+          {
+            "id": "loop",
+            "text": "Спрашивать снова в цикле"
+          },
+          {
+            "id": "crash",
+            "text": "Сломать страницу"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "guide",
+        "explanation": "Браузер не покажет запрос повторно."
+      }
+    },
+    {
+      "slug": "cx-xss",
+      "type": "quiz.single_choice",
+      "title": "XSS",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-csp"
+      ],
+      "presentation": {
+        "question": "Что такое XSS?",
+        "options": [
+          {
+            "id": "inject",
+            "text": "Внедрение чужого скрипта в страницу через непроверенные данные"
+          },
+          {
+            "id": "css",
+            "text": "Ошибка в CSS"
+          },
+          {
+            "id": "ddos",
+            "text": "Перегрузка сервера"
+          },
+          {
+            "id": "sql",
+            "text": "Ошибка SQL"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "inject",
+        "explanation": "Скрипт действует от имени пользователя."
+      }
+    },
+    {
+      "slug": "cx-csp",
+      "type": "quiz.single_choice",
+      "title": "CSP",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-csp"
+      ],
+      "presentation": {
+        "question": "Чем помогает Content-Security-Policy?",
+        "options": [
+          {
+            "id": "limit",
+            "text": "Разрешает загрузку и выполнение скриптов только из указанных источников"
+          },
+          {
+            "id": "speed",
+            "text": "Ускоряет сайт"
+          },
+          {
+            "id": "seo",
+            "text": "Помогает поисковикам"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "limit",
+        "explanation": "Вторая линия обороны."
+      }
+    },
+    {
+      "slug": "cx-sri",
+      "type": "quiz.single_choice",
+      "title": "integrity",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-csp"
+      ],
+      "presentation": {
+        "question": "Что гарантирует атрибут integrity у внешнего скрипта?",
+        "options": [
+          {
+            "id": "hash",
+            "text": "Что файл совпадает с ожидаемым хэшем и не подменён"
+          },
+          {
+            "id": "fast",
+            "text": "Быструю загрузку"
+          },
+          {
+            "id": "cache",
+            "text": "Кэширование"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "hash",
+        "explanation": "Subresource Integrity."
+      }
+    },
+    {
+      "slug": "if-sandbox",
+      "type": "quiz.single_choice",
+      "title": "sandbox",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-iframe"
+      ],
+      "presentation": {
+        "question": "Что делает атрибут sandbox у iframe без значений?",
+        "options": [
+          {
+            "id": "restrict",
+            "text": "Отключает скрипты, формы и другие опасные возможности фрейма"
+          },
+          {
+            "id": "allow",
+            "text": "Разрешает всё"
+          },
+          {
+            "id": "hide",
+            "text": "Прячет фрейм"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "restrict",
+        "explanation": "Нужное включают явно."
+      }
+    },
+    {
+      "slug": "if-click",
+      "type": "quiz.single_choice",
+      "title": "Кликджекинг",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-iframe"
+      ],
+      "presentation": {
+        "question": "Как запретить встраивать свой сайт в чужие фреймы?",
+        "options": [
+          {
+            "id": "ancestors",
+            "text": "Директивой frame-ancestors в CSP"
+          },
+          {
+            "id": "alt",
+            "text": "Атрибутом alt"
+          },
+          {
+            "id": "robots",
+            "text": "Файлом robots.txt"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ancestors",
+        "explanation": "Или X-Frame-Options."
+      }
+    },
+    {
+      "slug": "if-coop",
+      "type": "quiz.single_choice",
+      "title": "Изоляция",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-iframe"
+      ],
+      "presentation": {
+        "question": "Что включают заголовки COOP и COEP?",
+        "options": [
+          {
+            "id": "isolate",
+            "text": "Изоляцию страницы от чужих окон и доступ к SharedArrayBuffer"
+          },
+          {
+            "id": "cache",
+            "text": "Кэш"
+          },
+          {
+            "id": "seo",
+            "text": "SEO"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "isolate",
+        "explanation": "Защита от побочных каналов."
+      }
+    },
+    {
+      "slug": "oa-online",
+      "type": "quiz.single_choice",
+      "title": "onLine",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-offline"
+      ],
+      "presentation": {
+        "question": "Гарантирует ли navigator.onLine === true, что сервер доступен?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, только что есть подключение к сети"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "https",
+            "text": "Да, на HTTPS"
+          },
+          {
+            "id": "sw",
+            "text": "Да, с Service Worker"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Проверяй ответы запросов."
+      }
+    },
+    {
+      "slug": "oa-queue",
+      "type": "quiz.single_choice",
+      "title": "Очередь",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-offline"
+      ],
+      "presentation": {
+        "question": "Что делать с ответом на тест, отправленным без сети?",
+        "options": [
+          {
+            "id": "queue",
+            "text": "Сохранить в IndexedDB и отправить при восстановлении связи"
+          },
+          {
+            "id": "drop",
+            "text": "Выбросить"
+          },
+          {
+            "id": "alert",
+            "text": "Показать ошибку и забыть"
+          },
+          {
+            "id": "retry",
+            "text": "Повторять каждую миллисекунду"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "queue",
+        "explanation": "Фоновая синхронизация."
+      }
+    },
+    {
+      "slug": "oa-conflict",
+      "type": "quiz.single_choice",
+      "title": "Конфликт",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-offline"
+      ],
+      "presentation": {
+        "question": "Что нужно продумать при синхронизации изменений с двух устройств?",
+        "options": [
+          {
+            "id": "rule",
+            "text": "Правило разрешения конфликтов"
+          },
+          {
+            "id": "color",
+            "text": "Цвет кнопки"
+          },
+          {
+            "id": "font",
+            "text": "Шрифт"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rule",
+        "explanation": "Иначе данные перезапишутся."
+      }
+    },
+    {
+      "slug": "ac-aria",
+      "type": "quiz.single_choice",
+      "title": "ARIA",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-a11y"
+      ],
+      "presentation": {
+        "question": "Каково первое правило ARIA?",
+        "options": [
+          {
+            "id": "native",
+            "text": "Не использовать ARIA, если есть подходящий HTML-тег"
+          },
+          {
+            "id": "always",
+            "text": "Добавлять ARIA ко всему"
+          },
+          {
+            "id": "never",
+            "text": "Никогда не использовать"
+          },
+          {
+            "id": "div",
+            "text": "Делать всё из div"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "native",
+        "explanation": "button лучше div с role."
+      }
+    },
+    {
+      "slug": "ac-focus",
+      "type": "quiz.single_choice",
+      "title": "Фокус",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-a11y"
+      ],
+      "presentation": {
+        "question": "Что делать с фокусом при открытии модального окна?",
+        "options": [
+          {
+            "id": "inside",
+            "text": "Перевести фокус внутрь окна и вернуть при закрытии"
+          },
+          {
+            "id": "leave",
+            "text": "Оставить на странице"
+          },
+          {
+            "id": "remove",
+            "text": "Убрать фокус совсем"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "inside",
+        "explanation": "dialog.showModal() помогает."
+      }
+    },
+    {
+      "slug": "ac-motion",
+      "type": "quiz.single_choice",
+      "title": "Движение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-a11y"
+      ],
+      "presentation": {
+        "question": "Как узнать, что пользователь просит меньше анимаций?",
+        "options": [
+          {
+            "id": "media",
+            "text": "matchMedia(\"(prefers-reduced-motion: reduce)\")"
+          },
+          {
+            "id": "ua",
+            "text": "По User-Agent"
+          },
+          {
+            "id": "ask",
+            "text": "Спрашивать на каждой странице"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "media",
+        "explanation": "Настройка системы."
+      }
+    },
+    {
+      "slug": "ch-html",
+      "type": "quiz.single_choice",
+      "title": "Проще",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-choose"
+      ],
+      "presentation": {
+        "question": "Нужен ли JavaScript для раскрывающегося блока?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, хватит тега details"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "lib",
+            "text": "Да, нужна библиотека"
+          },
+          {
+            "id": "server",
+            "text": "Нужен сервер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Сначала HTML."
+      }
+    },
+    {
+      "slug": "ch-cost",
+      "type": "quiz.single_choice",
+      "title": "Цена",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "wa-choose"
+      ],
+      "presentation": {
+        "question": "Почему не стоит без нужды следить за геолокацией?",
+        "options": [
+          {
+            "id": "cost",
+            "text": "Это тратит батарею и доверие пользователя"
+          },
+          {
+            "id": "illegal",
+            "text": "Это незаконно всегда"
+          },
+          {
+            "id": "slow",
+            "text": "Это замедляет CSS"
+          },
+          {
+            "id": "none",
+            "text": "Стоит"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cost",
+        "explanation": "Только для понятной пользы."
+      }
+    },
+    {
+      "slug": "ch-checklist",
+      "type": "quiz.multiple_choice",
+      "title": "Проверочный список",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "wa-choose"
+      ],
+      "presentation": {
+        "question": "Что проверить перед использованием нового Web API?",
+        "options": [
+          {
+            "id": "support",
+            "text": "Поддержку в нужных браузерах"
+          },
+          {
+            "id": "fallback",
+            "text": "Запасной путь"
+          },
+          {
+            "id": "privacy",
+            "text": "Цену для приватности и батареи"
+          },
+          {
+            "id": "logo",
+            "text": "Красоту логотипа API"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "support",
+          "fallback",
+          "privacy"
+        ],
+        "explanation": "Логотипа у API нет."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "browser-platform",
+      "title": "Браузер как платформа",
+      "summary": "Что такое Web API, чем они отличаются от языка JavaScript, стандарты и движки браузеров.",
+      "chapter": "Что такое Web API",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Начинаем курс: знаем JavaScript и смотрим, что ещё умеет браузер.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"JavaScript и Web API\",\n  \"title\": \"Язык и возможности\",\n  \"what\": \"Язык даёт переменные, функции и объекты. Всё остальное — document, fetch, localStorage, камера — это Web API, которые предоставляет браузер.\",\n  \"why\": \"В Node.js язык тот же, но document нет: это не часть языка.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Стандарты\",\n  \"title\": \"Общие правила\",\n  \"what\": \"Web API описывают открытые стандарты (W3C, WHATWG). Браузеры реализуют их в своих движках: Chromium, Gecko, WebKit.\",\n  \"why\": \"Код работает во всех браузерах, а не в одном.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Объект window\",\n  \"title\": \"Глобальная точка\",\n  \"what\": \"Почти все API доступны через глобальный объект: window.fetch, window.navigator, window.document.\",\n  \"why\": \"Писать window. не обязательно — он подразумевается.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Безопасный контекст\",\n  \"title\": \"Только HTTPS\",\n  \"what\": \"Многие мощные API (камера, Service Worker, буфер обмена) работают только на HTTPS или localhost.\",\n  \"why\": \"Без HTTPS половина возможностей недоступна.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** JavaScript — язык, Web API — возможности браузера. Мощные API — только по HTTPS."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bp-node",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bp-https",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bp-which",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "feature-detection",
+      "title": "Проверка возможностей",
+      "summary": "Проверять наличие API, а не браузер; запасной путь; постепенное улучшение.",
+      "chapter": "Что такое Web API",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем, что такое Web API, и учимся проверять, есть ли нужное в браузере.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Проверка наличия\",\n  \"title\": \"if ('…' in …)\",\n  \"what\": \"Перед использованием проверяют, есть ли API: `\\\"geolocation\\\" in navigator`, `\\\"IntersectionObserver\\\" in window`.\",\n  \"why\": \"Старый браузер не упадёт с ошибкой.\",\n  \"how\": \"if (\\\"share\\\" in navigator) {\\n  shareButton.hidden = false;\\n} else {\\n  copyLinkButton.hidden = false;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не по названию браузера\",\n  \"title\": \"User-Agent обманчив\",\n  \"what\": \"Определять браузер по строке User-Agent ненадёжно: она меняется и подделывается. Проверяй саму возможность.\",\n  \"why\": \"Код не ломается с выходом новой версии.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Постепенное улучшение\",\n  \"title\": \"Основа работает везде\",\n  \"what\": \"Базовая функция работает без новых API, а улучшения включаются, если браузер их поддерживает.\",\n  \"why\": \"Сайт полезен даже в старом браузере.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Таблицы поддержки\",\n  \"title\": \"Где проверить\",\n  \"what\": \"Таблицы совместимости в документации браузеров показывают, какие версии поддерживают API.\",\n  \"why\": \"Решение «можно ли использовать» за минуту.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Проверяй возможность, а не браузер. Основное работает везде, улучшения — где поддерживаются."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fd-how",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fd-ua",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fd-progressive",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "async-patterns",
+      "title": "Обещания и события",
+      "summary": "Большинство Web API асинхронны: Promise, async/await, события и AbortController.",
+      "chapter": "Что такое Web API",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проверяем возможности и разбираемся, как браузер сообщает о результате.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Асинхронность\",\n  \"title\": \"Не ждать на месте\",\n  \"what\": \"Сеть, диск, камера отвечают не сразу. API возвращают Promise или вызывают событие, чтобы страница не замирала.\",\n  \"why\": \"Интерфейс остаётся отзывчивым.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"async и await\",\n  \"title\": \"Читается сверху вниз\",\n  \"what\": \"`const res = await fetch(url)` — код ждёт результата, не блокируя страницу. Ошибки ловятся try/catch.\",\n  \"why\": \"Асинхронный код выглядит как обычный.\",\n  \"how\": \"try {\\n  const res = await fetch(\\\"/api/courses\\\");\\n  const courses = await res.json();\\n  render(courses);\\n} catch (error) {\\n  showError(\\\"Нет связи\\\");\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"AbortController\",\n  \"title\": \"Отменить операцию\",\n  \"what\": \"Сигнал отмены передают в fetch и обработчики событий: `controller.abort()` прерывает запрос.\",\n  \"why\": \"Устаревший поиск не перезапишет свежий.\",\n  \"how\": \"const controller = new AbortController();\\nfetch(url, { signal: controller.signal });\\n// пользователь ушёл со страницы\\ncontroller.abort();\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"События\",\n  \"title\": \"addEventListener\",\n  \"what\": \"Многие API сообщают о происходящем событиями: online, visibilitychange, message.\",\n  \"why\": \"Реагировать на изменения в любой момент.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ждать — await, ловить — try/catch, отменять — AbortController."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ap-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ap-abort",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ap-catch",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "event-flow",
+      "title": "Путь события",
+      "summary": "Погружение и всплытие, делегирование, preventDefault и stopPropagation, passive и once.",
+      "chapter": "DOM глубже",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем асинхронные API и углубляемся в события страницы.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Всплытие\",\n  \"title\": \"От цели вверх\",\n  \"what\": \"Событие сначала идёт от документа к цели (погружение), затем поднимается обратно к документу (всплытие). Обработчики по умолчанию срабатывают на всплытии.\",\n  \"why\": \"Клик по кнопке виден и в её родителе.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Делегирование\",\n  \"title\": \"Один обработчик на список\",\n  \"what\": \"Вместо обработчика на каждой строке — один на контейнере, а нужный элемент находят через event.target.closest().\",\n  \"why\": \"Работает и для строк, добавленных позже.\",\n  \"how\": \"list.addEventListener(\\\"click\\\", (event) => {\\n  const row = event.target.closest(\\\"[data-id]\\\");\\n  if (row) openLesson(row.dataset.id);\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"preventDefault и stopPropagation\",\n  \"title\": \"Отменить и остановить\",\n  \"what\": \"preventDefault отменяет действие браузера (переход по ссылке, отправку формы), stopPropagation останавливает всплытие.\",\n  \"why\": \"stopPropagation ломает делегирование — применяй редко.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Опции слушателя\",\n  \"title\": \"once и passive\",\n  \"what\": \"`{ once: true }` — сработать один раз, `{ passive: true }` — обещание не вызывать preventDefault, ускоряет прокрутку.\",\n  \"why\": \"Плавная прокрутка на телефоне.\",\n  \"how\": \"window.addEventListener(\\\"scroll\\\", onScroll, { passive: true });\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Много одинаковых элементов — делегирование. Прокрутка — passive. stopPropagation — редко."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ef-deleg",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ef-bubble",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ef-passive",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "templates-fragments",
+      "title": "Шаблоны и вставка",
+      "summary": "template, DocumentFragment, insertAdjacentHTML и безопасная вставка текста, textContent против innerHTML.",
+      "chapter": "DOM глубже",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Управляем событиями и учимся быстро строить разметку.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"template\",\n  \"title\": \"Заготовка разметки\",\n  \"what\": \"Содержимое тега template не отображается; его клонируют и заполняют данными.\",\n  \"why\": \"Повторяющиеся карточки без строк HTML в коде.\",\n  \"how\": \"const tpl = document.querySelector(\\\"#course-card\\\");\\nconst card = tpl.content.cloneNode(true);\\ncard.querySelector(\\\"h3\\\").textContent = course.title;\\nlist.append(card);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"textContent\",\n  \"title\": \"Безопасно\",\n  \"what\": \"textContent вставляет текст как есть, без разбора HTML. innerHTML с данными пользователя — дыра XSS.\",\n  \"why\": \"Имя «<img onerror=…>» останется просто текстом.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"DocumentFragment\",\n  \"title\": \"Одна вставка\",\n  \"what\": \"Элементы собирают во фрагменте и добавляют на страницу разом.\",\n  \"why\": \"Тысяча строк — одна перерисовка.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Пакетные изменения\",\n  \"title\": \"Чтение и запись отдельно\",\n  \"what\": \"Чередование чтения размеров и изменения стилей заставляет браузер пересчитывать макет много раз. Сначала прочитай всё, потом меняй.\",\n  \"why\": \"Анимации без рывков.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Разметку — из template, данные — через textContent, много элементов — фрагментом."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tf-text",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tf-tpl",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tf-layout",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "web-components",
+      "title": "Веб-компоненты",
+      "summary": "customElements, Shadow DOM и изоляция стилей, слоты, когда они полезны.",
+      "chapter": "DOM глубже",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Строим разметку и создаём собственные HTML-элементы.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"customElements\",\n  \"title\": \"Свой тег\",\n  \"what\": \"Класс, наследующий HTMLElement, регистрируют как тег с дефисом в имени: `<progress-ring>`.\",\n  \"why\": \"Компонент работает в любом фреймворке и без него.\",\n  \"how\": \"class ProgressRing extends HTMLElement {\\n  connectedCallback() {\\n    this.textContent = `${this.getAttribute(\\\"value\\\")}%`;\\n  }\\n}\\ncustomElements.define(\\\"progress-ring\\\", ProgressRing);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Shadow DOM\",\n  \"title\": \"Изоляция\",\n  \"what\": \"Теневое дерево прячет внутреннюю разметку и стили компонента: внешний CSS не ломает его, его CSS не протекает наружу.\",\n  \"why\": \"Виджет на чужом сайте выглядит одинаково.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"slot\",\n  \"title\": \"Содержимое снаружи\",\n  \"what\": \"Слот в теневом дереве показывает разметку, которую автор страницы положил внутрь тега.\",\n  \"why\": \"Компонент-обёртка для любого содержимого.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Когда полезны\",\n  \"title\": \"Общие виджеты\",\n  \"what\": \"Дизайн-системы для разных фреймворков, встраиваемые виджеты, независимые элементы.\",\n  \"why\": \"Для приложения целиком обычно удобнее фреймворк.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Свой тег — customElements с дефисом. Изоляция — Shadow DOM. Наполнение — slot."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wc-dash",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wc-shadow",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wc-when",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "fetch-deep",
+      "title": "fetch подробно",
+      "summary": "Метод, заголовки и тело, res.ok и статус, JSON и FormData, тайм-аут через AbortSignal.timeout.",
+      "chapter": "Сеть из браузера",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Создаём свои элементы и разговариваем с сервером.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"POST с JSON\",\n  \"title\": \"Метод, заголовки, тело\",\n  \"what\": \"fetch принимает второй аргумент с method, headers и body.\",\n  \"why\": \"Отправить форму или создать запись через API.\",\n  \"how\": \"const res = await fetch(\\\"/api/comments\\\", {\\n  method: \\\"POST\\\",\\n  headers: { \\\"Content-Type\\\": \\\"application/json\\\" },\\n  body: JSON.stringify({ text })\\n});\\nif (!res.ok) throw new Error(`Ошибка ${res.status}`);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"res.ok\",\n  \"title\": \"fetch не падает на 404\",\n  \"what\": \"Promise fetch отклоняется только при сетевой ошибке. Ответы 404 и 500 приходят «успешно» — проверяй res.ok или res.status.\",\n  \"why\": \"Самая частая ошибка новичков с fetch.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"FormData\",\n  \"title\": \"Файлы и формы\",\n  \"what\": \"`new FormData(form)` собирает поля формы вместе с файлами; Content-Type ставится сам.\",\n  \"why\": \"Загрузка аватара одной строкой.\",\n  \"how\": \"await fetch(\\\"/api/avatar\\\", { method: \\\"POST\\\", body: new FormData(form) });\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тайм-аут\",\n  \"title\": \"AbortSignal.timeout\",\n  \"what\": \"`signal: AbortSignal.timeout(8000)` отменит запрос через 8 секунд.\",\n  \"why\": \"Запрос не висит бесконечно на плохой связи.\",\n  \"how\": \"await fetch(url, { signal: AbortSignal.timeout(8000) });\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Проверяй res.ok, файлы — FormData, тайм-аут — AbortSignal.timeout."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fd-404",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fd-form",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fd-timeout",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "streams",
+      "title": "Потоки и прогресс",
+      "summary": "Чтение ответа по частям, ReadableStream, прогресс загрузки, потоковые ответы чата.",
+      "chapter": "Сеть из браузера",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Владеем fetch и читаем большие ответы по частям.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"res.body\",\n  \"title\": \"Поток байтов\",\n  \"what\": \"Тело ответа — поток. Его читают кусками через getReader() и TextDecoder.\",\n  \"why\": \"Показывать текст по мере прихода, как в чатах с ИИ.\",\n  \"how\": \"const reader = res.body.getReader();\\nconst decoder = new TextDecoder();\\nfor (;;) {\\n  const { value, done } = await reader.read();\\n  if (done) break;\\n  output.textContent += decoder.decode(value, { stream: true });\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Прогресс скачивания\",\n  \"title\": \"Content-Length\",\n  \"what\": \"Зная размер из заголовка, считают загруженные байты и показывают процент.\",\n  \"why\": \"Полоса прогресса для больших файлов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Server-Sent Events\",\n  \"title\": \"EventSource\",\n  \"what\": \"Сервер шлёт события по одному соединению, браузер сам переподключается.\",\n  \"why\": \"Уведомления и живые ленты без WebSocket.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Длинные ответы — читай потоком. Односторонние события сервера — EventSource."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-body",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-sse",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "st-progress",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "cors",
+      "title": "CORS и cookies",
+      "summary": "Политика одного источника, заголовки CORS, предварительный запрос, credentials и cookie.",
+      "chapter": "Сеть из браузера",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Читаем ответы потоком и разбираемся, почему запрос к чужому домену блокируется.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Один источник\",\n  \"title\": \"Same-origin\",\n  \"what\": \"Страница может свободно читать ответы только своего источника: схема, домен и порт совпадают.\",\n  \"why\": \"Чужой сайт не прочитает твою почту, даже если ты в ней вошёл.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"CORS\",\n  \"title\": \"Разрешение сервера\",\n  \"what\": \"Сервер разрешает другим источникам читать ответы заголовком Access-Control-Allow-Origin.\",\n  \"why\": \"Ошибка CORS исправляется на сервере, а не в браузере.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Предварительный запрос\",\n  \"title\": \"OPTIONS\",\n  \"what\": \"Для «непростых» запросов (JSON, свои заголовки, PUT) браузер сначала спрашивает разрешение запросом OPTIONS.\",\n  \"why\": \"Если сервер не отвечает на OPTIONS — запрос не уйдёт.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"credentials\",\n  \"title\": \"Cookie на другой домен\",\n  \"what\": \"`credentials: \\\"include\\\"` отправляет cookie; сервер должен разрешить это и указать точный источник.\",\n  \"why\": \"Вход через общий домен API.\",\n  \"how\": \"await fetch(\\\"https://api.example.com/me\\\", { credentials: \\\"include\\\" });\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Ошибку CORS чинят заголовками на сервере. Cookie на другой домен — credentials и точный источник."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cr-where",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cr-origin",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cr-preflight",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "web-storage",
+      "title": "localStorage и sessionStorage",
+      "summary": "Пары строк, JSON внутри, событие storage, ограничения и что туда не класть.",
+      "chapter": "Хранилища браузера",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем CORS и сохраняем данные прямо в браузере.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"localStorage\",\n  \"title\": \"Ключ → строка\",\n  \"what\": \"setItem и getItem хранят строки навсегда (пока не очистят). Объекты — через JSON.\",\n  \"why\": \"Тема, язык, черновик комментария.\",\n  \"how\": \"localStorage.setItem(\\\"theme\\\", \\\"dark\\\");\\nconst draft = JSON.parse(localStorage.getItem(\\\"draft\\\") ?? \\\"null\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"sessionStorage\",\n  \"title\": \"До закрытия вкладки\",\n  \"what\": \"То же API, но данные живут только в этой вкладке до её закрытия.\",\n  \"why\": \"Шаг многошаговой формы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ограничения\",\n  \"title\": \"Маленькое и синхронное\",\n  \"what\": \"Около 5 МБ на сайт, только строки, чтение блокирует поток. В приватном режиме может бросить ошибку.\",\n  \"why\": \"Оборачивай в try/catch.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не для секретов\",\n  \"title\": \"Видно любому скрипту\",\n  \"what\": \"Любой скрипт страницы (включая внедрённый) читает localStorage. Токены входа там уязвимы для XSS.\",\n  \"why\": \"Сессию — в httpOnly cookie.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Мелкие настройки — localStorage в try/catch. Секреты — никогда."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ws-types",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ws-session",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ws-token",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "indexeddb",
+      "title": "IndexedDB",
+      "summary": "База в браузере: хранилища объектов, транзакции, индексы, обёртка idb, офлайн-данные.",
+      "chapter": "Хранилища браузера",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Храним мелочи в localStorage и переходим к настоящей базе в браузере.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"IndexedDB\",\n  \"title\": \"Асинхронная база\",\n  \"what\": \"Хранит объекты, файлы и большие объёмы, работает асинхронно и не блокирует страницу.\",\n  \"why\": \"Офлайн-заметки, кэш данных, очередь отправки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Обёртка idb\",\n  \"title\": \"Удобный Promise\",\n  \"what\": \"Родное API построено на событиях; маленькая библиотека idb даёт привычный async/await.\",\n  \"why\": \"Код в несколько строк вместо десятков.\",\n  \"how\": \"import { openDB } from \\\"idb\\\";\\n\\nconst db = await openDB(\\\"academy\\\", 1, {\\n  upgrade(db) {\\n    db.createObjectStore(\\\"notes\\\", { keyPath: \\\"id\\\" });\\n  }\\n});\\nawait db.put(\\\"notes\\\", { id: \\\"loops\\\", text: \\\"range не включает конец\\\" });\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Версии и upgrade\",\n  \"title\": \"Схема базы\",\n  \"what\": \"Структуру меняют при открытии с новой версией в обработчике upgrade.\",\n  \"why\": \"Как миграции, только в браузере.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Индексы\",\n  \"title\": \"Быстрый поиск\",\n  \"what\": \"Индекс по полю позволяет искать записи не только по ключу: все заметки урока.\",\n  \"why\": \"Не нужно перебирать всё хранилище.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Большие и структурированные данные — IndexedDB, удобнее через idb. Схема — через версии."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "idb-when",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "idb-upgrade",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "idb-idb",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "cache-quota",
+      "title": "Cache API и квоты",
+      "summary": "Кэш ответов для офлайна, сколько места дают, navigator.storage и постоянное хранилище, очистка.",
+      "chapter": "Хранилища браузера",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем с IndexedDB и сохраняем целые ответы сервера.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"caches\",\n  \"title\": \"Хранилище ответов\",\n  \"what\": \"caches.open(имя) даёт кэш пар «запрос → ответ». Обычно им управляет Service Worker.\",\n  \"why\": \"Страницы и картинки доступны без сети.\",\n  \"how\": \"const cache = await caches.open(\\\"lessons-v1\\\");\\nawait cache.add(\\\"/courses/python/loops\\\");\\nconst saved = await cache.match(\\\"/courses/python/loops\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"navigator.storage\",\n  \"title\": \"Сколько места\",\n  \"what\": \"estimate() показывает занятое и доступное место; persist() просит не очищать данные при нехватке места.\",\n  \"why\": \"Понять, поместится ли курс для офлайна.\",\n  \"how\": \"const { usage, quota } = await navigator.storage.estimate();\\nconsole.log(`${Math.round(usage / quota * 100)}% занято`);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Вытеснение\",\n  \"title\": \"Браузер может очистить\",\n  \"what\": \"При нехватке места браузер удаляет данные давно не посещённых сайтов, если хранилище не постоянное.\",\n  \"why\": \"Не храни единственную копию важного только в браузере.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ответы — Cache API, место — navigator.storage. Важное дублируй на сервере."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cq-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cq-persist",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cq-evict",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "web-workers",
+      "title": "Web Workers",
+      "summary": "Отдельный поток для тяжёлых вычислений, postMessage, передача данных, ограничения.",
+      "chapter": "Работа в фоне",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Храним данные в браузере и разгружаем основной поток.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Основной поток\",\n  \"title\": \"Один на всё\",\n  \"what\": \"JavaScript страницы, отрисовка и реакция на клики делят один поток. Тяжёлый цикл замораживает интерфейс.\",\n  \"why\": \"Кнопки не нажимаются, анимации стоят.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Worker\",\n  \"title\": \"Отдельный поток\",\n  \"what\": \"new Worker(файл) запускает скрипт в фоне. Общаются сообщениями postMessage и onmessage.\",\n  \"why\": \"Разбор большого файла без зависания страницы.\",\n  \"how\": \"// main.js\\nconst worker = new Worker(new URL(\\\"./parse.js\\\", import.meta.url), { type: \\\"module\\\" });\\nworker.postMessage(fileText);\\nworker.onmessage = (e) => render(e.data);\\n\\n// parse.js\\nonmessage = (e) => postMessage(parseCsv(e.data));\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Без DOM\",\n  \"title\": \"Только вычисления\",\n  \"what\": \"У воркера нет доступа к document и элементам страницы — только данные и сетевые API.\",\n  \"why\": \"Результат возвращают сообщением, а рисует основной поток.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Передача данных\",\n  \"title\": \"Копия или передача\",\n  \"what\": \"Данные копируются; большие ArrayBuffer можно передать без копирования (transferable).\",\n  \"why\": \"Мегабайты переходят мгновенно.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Тяжёлое — в Worker, общение — postMessage. DOM трогает только основной поток."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ww-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ww-dom",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ww-msg",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "service-worker",
+      "title": "Service Worker",
+      "summary": "Посредник между страницей и сетью, жизненный цикл, стратегии кэширования, офлайн-страница.",
+      "chapter": "Работа в фоне",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Разгружаем основной поток и учим сайт работать без сети.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Посредник\",\n  \"title\": \"Между страницей и сетью\",\n  \"what\": \"Service Worker перехватывает запросы сайта в событии fetch и решает: ответить из кэша или сходить в сеть.\",\n  \"why\": \"Сайт открывается в метро и в самолёте.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Регистрация\",\n  \"title\": \"Подключить\",\n  \"what\": \"Страница регистрирует файл воркера; он работает и после закрытия вкладки.\",\n  \"why\": \"Одна строка — и сайт получает фоновые возможности.\",\n  \"how\": \"if (\\\"serviceWorker\\\" in navigator) {\\n  navigator.serviceWorker.register(\\\"/sw.js\\\");\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Стратегии кэша\",\n  \"title\": \"Кэш или сеть\",\n  \"what\": \"Сначала кэш — для статики; сначала сеть — для данных; устаревшее с обновлением — показать кэш и обновить в фоне.\",\n  \"why\": \"Быстро и свежо одновременно.\",\n  \"how\": \"// sw.js — сначала кэш, потом сеть\\nself.addEventListener(\\\"fetch\\\", (event) => {\\n  event.respondWith(\\n    caches.match(event.request).then((hit) => hit ?? fetch(event.request))\\n  );\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Жизненный цикл\",\n  \"title\": \"install, activate\",\n  \"what\": \"Новая версия воркера устанавливается и ждёт, пока закроются старые вкладки. Ошибка в воркере может «закэшировать» сломанный сайт.\",\n  \"why\": \"Продумай обновление и очистку старых кэшей.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Офлайн — Service Worker со стратегиями кэша. Следи за обновлением версий."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sw-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sw-static",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sw-https",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "pwa-notifications",
+      "title": "PWA и уведомления",
+      "summary": "Манифест приложения и установка, push-уведомления, фоновая синхронизация, уважение к пользователю.",
+      "chapter": "Работа в фоне",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Сайт работает офлайн, и мы делаем его похожим на приложение.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Манифест\",\n  \"title\": \"manifest.webmanifest\",\n  \"what\": \"Название, иконки, цвета и режим отображения. С манифестом и Service Worker сайт можно установить на экран телефона.\",\n  \"why\": \"Иконка на главном экране без магазина приложений.\",\n  \"how\": \"{\\n  \\\"name\\\": \\\"Dorkin Academy\\\",\\n  \\\"short_name\\\": \\\"Академия\\\",\\n  \\\"start_url\\\": \\\"/\\\",\\n  \\\"display\\\": \\\"standalone\\\",\\n  \\\"icons\\\": [{ \\\"src\\\": \\\"/icon-512.png\\\", \\\"sizes\\\": \\\"512x512\\\", \\\"type\\\": \\\"image/png\\\" }]\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Push\",\n  \"title\": \"Уведомления с сервера\",\n  \"what\": \"Сервер отправляет сообщение через push-службу браузера, Service Worker показывает уведомление даже при закрытом сайте.\",\n  \"why\": \"«Новый урок вышел» — без открытой вкладки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Разрешение\",\n  \"title\": \"Спрашивать к месту\",\n  \"what\": \"Notification.requestPermission() вызывают после действия пользователя и объяснения пользы, а не при первом заходе.\",\n  \"why\": \"Отказ запоминается надолго — второго шанса может не быть.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Фоновая синхронизация\",\n  \"title\": \"Отправить позже\",\n  \"what\": \"Действия без сети сохраняются в очередь и отправляются, когда связь вернётся.\",\n  \"why\": \"Ответ на тест не потеряется в метро.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Установка — манифест и Service Worker. Уведомления — только с согласия и к месту."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pw-install",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pw-ask",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pw-push",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "canvas",
+      "title": "Canvas",
+      "summary": "Рисование на холсте: фигуры, текст, картинки, анимация через requestAnimationFrame, чёткость на ретине.",
+      "chapter": "Медиа и графика",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Делаем сайт похожим на приложение и рисуем графику.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Контекст 2D\",\n  \"title\": \"Кисть холста\",\n  \"what\": \"getContext(\\\"2d\\\") даёт методы рисования: прямоугольники, линии, дуги, текст, картинки.\",\n  \"why\": \"Графики, игры, редакторы изображений.\",\n  \"how\": \"const ctx = canvas.getContext(\\\"2d\\\");\\nctx.fillStyle = \\\"#42b883\\\";\\nctx.fillRect(20, 20, 120, 60);\\nctx.font = \\\"20px sans-serif\\\";\\nctx.fillText(\\\"Прогресс 60%\\\", 20, 110);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"requestAnimationFrame\",\n  \"title\": \"Плавная анимация\",\n  \"what\": \"Браузер вызывает функцию перед каждой перерисовкой экрана — обычно 60 раз в секунду, и останавливает её на скрытой вкладке.\",\n  \"why\": \"Плавно и без лишней работы в фоне.\",\n  \"how\": \"function frame(time) {\\n  draw(time);\\n  requestAnimationFrame(frame);\\n}\\nrequestAnimationFrame(frame);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Чёткость\",\n  \"title\": \"devicePixelRatio\",\n  \"what\": \"На экранах высокой плотности холст рисуют в devicePixelRatio раз больше и уменьшают стилями.\",\n  \"why\": \"Иначе графика выглядит размытой.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Доступность\",\n  \"title\": \"Холст — картинка\",\n  \"what\": \"Содержимое холста не видно экранным дикторам. Дублируй смысл текстом или aria-описанием.\",\n  \"why\": \"График должен быть понятен всем.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Рисуй через 2D-контекст, анимируй requestAnimationFrame, учитывай devicePixelRatio."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cv-raf",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cv-blur",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cv-a11y",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "audio-video",
+      "title": "Аудио и видео",
+      "summary": "Теги audio и video, управление из кода, автозапуск, субтитры, Web Audio API.",
+      "chapter": "Медиа и графика",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Рисуем на холсте и добавляем звук и видео.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"HTMLMediaElement\",\n  \"title\": \"play и pause\",\n  \"what\": \"У audio и video есть play(), pause(), currentTime, volume и события ended, timeupdate.\",\n  \"why\": \"Свой плеер с кнопками в стиле сайта.\",\n  \"how\": \"const video = document.querySelector(\\\"video\\\");\\nawait video.play();\\nvideo.addEventListener(\\\"ended\\\", () => showNextLesson());\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Автозапуск\",\n  \"title\": \"Только без звука\",\n  \"what\": \"Браузеры блокируют автозапуск со звуком до действия пользователя. play() возвращает Promise, который может отклониться.\",\n  \"why\": \"Обрабатывай отказ и показывай кнопку запуска.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Субтитры\",\n  \"title\": \"track\",\n  \"what\": \"Тег track с файлом WebVTT добавляет субтитры и описание.\",\n  \"why\": \"Видео понятно без звука и людям с нарушением слуха.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Web Audio\",\n  \"title\": \"Синтез и обработка\",\n  \"what\": \"AudioContext строит граф узлов: генераторы, фильтры, громкость, анализатор.\",\n  \"why\": \"Звуки интерфейса, визуализация, синтезаторы.\",\n  \"how\": \"const ctx = new AudioContext();\\nconst osc = ctx.createOscillator();\\nosc.frequency.value = 440;\\nosc.connect(ctx.destination);\\nosc.start();\\nosc.stop(ctx.currentTime + 0.2);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Плеер — через методы media-элемента. Автозапуск со звуком — только после действия. Субтитры — track."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "av-autoplay",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "av-track",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "av-webaudio",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "webgl-webgpu",
+      "title": "3D и видеокарта",
+      "summary": "WebGL и библиотеки вроде three.js, WebGPU для графики и вычислений, когда это нужно.",
+      "chapter": "Медиа и графика",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем со звуком и смотрим, как браузер рисует трёхмерные сцены.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"WebGL\",\n  \"title\": \"Видеокарта из браузера\",\n  \"what\": \"Низкоуровневое API для рисования треугольников шейдерами на видеокарте.\",\n  \"why\": \"Карты, игры, трёхмерные персонажи — как в этой академии.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"three.js\",\n  \"title\": \"Удобная обёртка\",\n  \"what\": \"Библиотека даёт сцены, камеры, свет и материалы поверх WebGL.\",\n  \"why\": \"Трёхмерная сцена за десяток строк.\",\n  \"how\": \"const scene = new THREE.Scene();\\nconst camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 100);\\nconst cube = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshStandardMaterial({ color: 0x42b883 }));\\nscene.add(cube);\\nrenderer.render(scene, camera);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"WebGPU\",\n  \"title\": \"Следующее поколение\",\n  \"what\": \"Современное API для графики и вычислений на видеокарте — быстрее и ближе к нативным.\",\n  \"why\": \"Нейросети и тяжёлые расчёты прямо в браузере.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Запасной путь\",\n  \"title\": \"Не у всех есть\",\n  \"what\": \"На слабых устройствах или при отключённом ускорении WebGL недоступен. Проверь поддержку и покажи картинку вместо сцены.\",\n  \"why\": \"Страница работает и без 3D.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** 3D — WebGL через three.js, вычисления — WebGPU. Всегда предусматривай картинку-заглушку."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gp-three",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gp-fallback",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gp-webgpu",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "camera-mic",
+      "title": "Камера и микрофон",
+      "summary": "getUserMedia, разрешения, показ в video, запись MediaRecorder, остановка потоков.",
+      "chapter": "Устройства и датчики",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем графику и подключаем камеру и микрофон.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"getUserMedia\",\n  \"title\": \"Поток с устройства\",\n  \"what\": \"navigator.mediaDevices.getUserMedia просит разрешение и возвращает поток, который показывают в video.\",\n  \"why\": \"Видеозвонки, сканирование QR, запись ответа голосом.\",\n  \"how\": \"const stream = await navigator.mediaDevices.getUserMedia({ video: true });\\nvideo.srcObject = stream;\\nawait video.play();\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Остановить\",\n  \"title\": \"Выключить индикатор\",\n  \"what\": \"Когда камера не нужна, вызывают track.stop() для каждой дорожки — иначе индикатор камеры горит.\",\n  \"why\": \"Пользователь доверяет сайту, который выключает камеру.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"MediaRecorder\",\n  \"title\": \"Записать\",\n  \"what\": \"Записывает поток в файл: аудиоответ, видео с экрана.\",\n  \"why\": \"Голосовой ответ на задание.\",\n  \"how\": \"const recorder = new MediaRecorder(stream);\\nconst chunks = [];\\nrecorder.ondataavailable = (e) => chunks.push(e.data);\\nrecorder.onstop = () => upload(new Blob(chunks, { type: recorder.mimeType }));\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Отказ\",\n  \"title\": \"Будь готов\",\n  \"what\": \"Пользователь может отказать или устройства может не быть — покажи понятное объяснение и альтернативу.\",\n  \"why\": \"Ошибка NotAllowedError — не повод для белого экрана.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Камера — getUserMedia после действия пользователя. Не нужна — stop() у дорожек."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-stop",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-deny",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cm-record",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "geolocation",
+      "title": "Геолокация и датчики",
+      "summary": "getCurrentPosition и watchPosition, точность, датчики ориентации, приватность.",
+      "chapter": "Устройства и датчики",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Подключили камеру и узнаём, где находится пользователь.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Геолокация\",\n  \"title\": \"Где я\",\n  \"what\": \"getCurrentPosition — один раз, watchPosition — следить за перемещением. Работает с разрешения пользователя.\",\n  \"why\": \"Ближайший пункт выдачи, карта пробежки.\",\n  \"how\": \"navigator.geolocation.getCurrentPosition(\\n  ({ coords }) => showNearest(coords.latitude, coords.longitude),\\n  () => askForCity(),\\n  { enableHighAccuracy: false, timeout: 10000 }\\n);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Точность и батарея\",\n  \"title\": \"Не дороже нужного\",\n  \"what\": \"Высокая точность включает GPS и тратит батарею. Для города хватит обычной точности.\",\n  \"why\": \"Не сажай телефон без причины.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Датчики\",\n  \"title\": \"Ориентация и движение\",\n  \"what\": \"Событие deviceorientation даёт наклон телефона, devicemotion — ускорение. На iOS нужно разрешение.\",\n  \"why\": \"Игры с наклоном, панорамы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Приватность\",\n  \"title\": \"Только для дела\",\n  \"what\": \"Запрашивай местоположение, когда оно нужно для действия, объясняй зачем и не храни дольше нужного.\",\n  \"why\": \"Местоположение — чувствительные данные.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Геолокация — по делу, с обычной точностью, с запасным вводом города."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gl-watch",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gl-accuracy",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gl-fallback",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "clipboard-share",
+      "title": "Буфер обмена и «Поделиться»",
+      "summary": "navigator.clipboard, Web Share API, вибрация и Wake Lock, жесты пользователя.",
+      "chapter": "Устройства и датчики",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем датчики и добавляем привычные действия телефона.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Clipboard\",\n  \"title\": \"Копировать\",\n  \"what\": \"navigator.clipboard.writeText копирует текст; чтение буфера требует разрешения.\",\n  \"why\": \"Кнопка «Скопировать код» в уроке.\",\n  \"how\": \"await navigator.clipboard.writeText(code);\\nbutton.textContent = \\\"Скопировано\\\";\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Web Share\",\n  \"title\": \"Системное меню\",\n  \"what\": \"navigator.share открывает меню «Поделиться» телефона с мессенджерами и почтой.\",\n  \"why\": \"Делиться ссылкой на урок привычным способом.\",\n  \"how\": \"await navigator.share({ title: \\\"Урок Python\\\", url: location.href });\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Жест пользователя\",\n  \"title\": \"Только по нажатию\",\n  \"what\": \"Буфер, «Поделиться», полноэкранный режим работают только в ответ на действие пользователя.\",\n  \"why\": \"Сайт не может сам что-то копировать без спроса.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Wake Lock и вибрация\",\n  \"title\": \"Экран и отклик\",\n  \"what\": \"navigator.wakeLock не даёт экрану погаснуть, navigator.vibrate даёт короткий отклик на телефоне.\",\n  \"why\": \"Рецепт на кухне не гаснет, правильный ответ ощущается.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Копирование и «Поделиться» — по нажатию. Проверяй поддержку и давай запасной путь."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cs-copy",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cs-share",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cs-gesture",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "intersection",
+      "title": "IntersectionObserver",
+      "summary": "Виден ли элемент: ленивая загрузка, бесконечная лента, анимация при появлении, порог и отступы.",
+      "chapter": "Наблюдатели",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пользуемся устройствами и узнаём, что пользователь видит на экране.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Наблюдатель видимости\",\n  \"title\": \"Без событий прокрутки\",\n  \"what\": \"Браузер сам сообщает, когда элемент входит в видимую область или уходит из неё.\",\n  \"why\": \"Нет тяжёлых обработчиков scroll.\",\n  \"how\": \"const io = new IntersectionObserver((entries) => {\\n  for (const e of entries) if (e.isIntersecting) loadMore();\\n}, { rootMargin: \\\"300px\\\" });\\nio.observe(document.querySelector(\\\"#sentinel\\\"));\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Бесконечная лента\",\n  \"title\": \"Маячок внизу\",\n  \"what\": \"Невидимый элемент в конце списка: появился — загружаем следующую порцию.\",\n  \"why\": \"Лента грузится заранее, без рывков.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"rootMargin и threshold\",\n  \"title\": \"Когда срабатывать\",\n  \"what\": \"rootMargin расширяет область заранее, threshold задаёт, какая доля элемента должна быть видна.\",\n  \"why\": \"Загружать картинки за 300px до появления.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"loading=\\\"lazy\\\"\",\n  \"title\": \"Иногда хватит HTML\",\n  \"what\": \"Для картинок и iframe ленивая загрузка встроена: атрибут loading=\\\"lazy\\\".\",\n  \"why\": \"Не пиши код, если хватает атрибута.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Видимость — IntersectionObserver, а не scroll. Картинкам хватит loading=\"lazy\"."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "is-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "is-margin",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "is-lazy",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "resize-mutation",
+      "title": "ResizeObserver и MutationObserver",
+      "summary": "Изменение размеров элемента, контейнерные запросы, слежение за изменениями DOM.",
+      "chapter": "Наблюдатели",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Следим за видимостью и реагируем на изменения размеров и разметки.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"ResizeObserver\",\n  \"title\": \"Размер элемента\",\n  \"what\": \"Сообщает, когда меняется размер конкретного элемента — не только окна.\",\n  \"why\": \"График перерисовывается при сворачивании боковой панели.\",\n  \"how\": \"new ResizeObserver(([entry]) => {\\n  chart.resize(entry.contentRect.width);\\n}).observe(chartBox);\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Контейнерные запросы\",\n  \"title\": \"Часто хватит CSS\",\n  \"what\": \"@container в CSS меняет вид элемента по ширине его контейнера без JavaScript.\",\n  \"why\": \"Карточка перестраивается в узкой колонке сама.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"MutationObserver\",\n  \"title\": \"Изменения DOM\",\n  \"what\": \"Сообщает о добавлении узлов, смене атрибутов и текста.\",\n  \"why\": \"Расширения, виджеты и интеграции, которые реагируют на чужую разметку.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не злоупотребляй\",\n  \"title\": \"Своё — меняй сам\",\n  \"what\": \"Если разметку меняет твой код, проще вызвать реакцию напрямую, чем следить за DOM.\",\n  \"why\": \"Меньше скрытых связей.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Размер элемента — ResizeObserver или @container. Чужие изменения DOM — MutationObserver."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rm-resize",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rm-container",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rm-mutation",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "performance-api",
+      "title": "Измерение скорости",
+      "summary": "performance.now, mark и measure, PerformanceObserver, Web Vitals реальных пользователей.",
+      "chapter": "Наблюдатели",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Следим за размерами и DOM и измеряем скорость страницы.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"mark и measure\",\n  \"title\": \"Свои замеры\",\n  \"what\": \"performance.mark ставит отметку, measure считает время между отметками.\",\n  \"why\": \"Сколько занимает отрисовка списка на самом деле.\",\n  \"how\": \"performance.mark(\\\"render-start\\\");\\nrenderList(items);\\nperformance.mark(\\\"render-end\\\");\\nperformance.measure(\\\"render\\\", \\\"render-start\\\", \\\"render-end\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"PerformanceObserver\",\n  \"title\": \"Подписка на метрики\",\n  \"what\": \"Сообщает о долгих задачах, загрузке ресурсов, отрисовке крупнейшего элемента.\",\n  \"why\": \"Видно, что тормозит у реальных людей.\",\n  \"how\": \"new PerformanceObserver((list) => {\\n  for (const e of list.getEntries()) report(\\\"lcp\\\", e.startTime);\\n}).observe({ type: \\\"largest-contentful-paint\\\", buffered: true });\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Web Vitals\",\n  \"title\": \"Три главные метрики\",\n  \"what\": \"LCP — главный контент, INP — отклик на действия, CLS — сдвиги макета. Их измеряют у посетителей и отправляют на сервер.\",\n  \"why\": \"Лабораторный тест не видит слабые телефоны.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"sendBeacon\",\n  \"title\": \"Отправить при уходе\",\n  \"what\": \"navigator.sendBeacon надёжно отправляет метрики при закрытии страницы.\",\n  \"why\": \"Данные не теряются.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Свои замеры — mark и measure, реальные метрики — PerformanceObserver и sendBeacon."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pa-measure",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pa-real",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pa-beacon",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "websocket",
+      "title": "WebSocket",
+      "summary": "Двусторонний канал, события open, message, close, переподключение, сообщения в JSON.",
+      "chapter": "Связь в реальном времени",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Измеряем скорость и держим постоянную связь с сервером.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"WebSocket\",\n  \"title\": \"Постоянное соединение\",\n  \"what\": \"new WebSocket(адрес) открывает двусторонний канал: сервер и браузер шлют сообщения когда угодно.\",\n  \"why\": \"Чат, совместное редактирование, живые результаты.\",\n  \"how\": \"const ws = new WebSocket(\\\"wss://chat.example.com/room/42\\\");\\nws.addEventListener(\\\"message\\\", (e) => addMessage(JSON.parse(e.data)));\\nws.addEventListener(\\\"open\\\", () => ws.send(JSON.stringify({ type: \\\"hello\\\" })));\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Переподключение\",\n  \"title\": \"Связь рвётся\",\n  \"what\": \"Соединение обрывается при смене сети или сне ноутбука. Нужна повторная попытка с растущей паузой.\",\n  \"why\": \"Чат сам восстанавливается после метро.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"wss://\",\n  \"title\": \"Только защищённый\",\n  \"what\": \"На HTTPS-странице используют wss:// — зашифрованный WebSocket.\",\n  \"why\": \"Смешанный незащищённый канал браузер заблокирует.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Когда не нужен\",\n  \"title\": \"Иногда проще\",\n  \"what\": \"Если данные идут только от сервера — хватит EventSource; если обновления редкие — обычного опроса.\",\n  \"why\": \"Меньше инфраструктуры.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Двусторонний обмен — WebSocket по wss:// с переподключением. Только от сервера — EventSource."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wsk-two",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wsk-reconnect",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wsk-sse",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "cross-tab",
+      "title": "Связь между вкладками",
+      "summary": "BroadcastChannel, событие storage, postMessage для iframe и окон, проверка origin.",
+      "chapter": "Связь в реальном времени",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Держим связь с сервером и связываем вкладки одного сайта.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"BroadcastChannel\",\n  \"title\": \"Общий канал вкладок\",\n  \"what\": \"Все вкладки сайта, открывшие канал с одним именем, получают сообщения друг друга.\",\n  \"why\": \"Вышел в одной вкладке — вышел во всех.\",\n  \"how\": \"const channel = new BroadcastChannel(\\\"auth\\\");\\nchannel.postMessage({ type: \\\"logout\\\" });\\nchannel.onmessage = (e) => {\\n  if (e.data.type === \\\"logout\\\") location.assign(\\\"/login\\\");\\n};\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"postMessage\",\n  \"title\": \"Окна и iframe\",\n  \"what\": \"window.postMessage передаёт сообщение другому окну или встроенному фрейму, даже с другого домена.\",\n  \"why\": \"Платёжный виджет сообщает об успехе.\",\n  \"how\": \"window.addEventListener(\\\"message\\\", (e) => {\\n  if (e.origin !== \\\"https://pay.example.com\\\") return;\\n  if (e.data.status === \\\"paid\\\") showReceipt();\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проверяй origin\",\n  \"title\": \"От кого сообщение\",\n  \"what\": \"Сообщение может прислать любой сайт. Обрабатывай только от ожидаемого источника.\",\n  \"why\": \"Иначе чужая страница подделает «оплата прошла».\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Вкладки — BroadcastChannel, окна и iframe — postMessage с проверкой origin."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ct-bc",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ct-origin",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ct-iframe",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "webrtc",
+      "title": "WebRTC",
+      "summary": "Видеосвязь между браузерами напрямую, сигнальный сервер, STUN и TURN, каналы данных.",
+      "chapter": "Связь в реальном времени",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Связали вкладки и соединяем браузеры разных людей напрямую.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Прямое соединение\",\n  \"title\": \"Браузер к браузеру\",\n  \"what\": \"WebRTC передаёт видео, звук и данные между браузерами напрямую, с шифрованием.\",\n  \"why\": \"Видеозвонок без пересылки видео через сервер.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сигнальный сервер\",\n  \"title\": \"Познакомить\",\n  \"what\": \"Чтобы соединиться, браузеры обмениваются описаниями (SDP) и кандидатами адресов через свой сервер — например, по WebSocket.\",\n  \"why\": \"Сервер знакомит, а разговор идёт напрямую.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"STUN и TURN\",\n  \"title\": \"Сквозь NAT\",\n  \"what\": \"STUN помогает узнать внешний адрес, TURN пересылает трафик, если прямой путь невозможен.\",\n  \"why\": \"Звонок работает даже из корпоративной сети.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Каналы данных\",\n  \"title\": \"Не только видео\",\n  \"what\": \"RTCDataChannel передаёт произвольные данные: файлы, игровые события.\",\n  \"why\": \"Передача файла между устройствами без сервера.\",\n  \"how\": \"const pc = new RTCPeerConnection({ iceServers: [{ urls: \\\"stun:stun.example.com\\\" }] });\\nconst channel = pc.createDataChannel(\\\"files\\\");\\nchannel.onopen = () => channel.send(\\\"привет\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** WebRTC — напрямую и с шифрованием, знакомство — через сигнальный сервер, сквозь NAT — STUN и TURN."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rtc-signal",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rtc-turn",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rtc-data",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "permissions",
+      "title": "Разрешения",
+      "summary": "Модель разрешений, Permissions API, Permissions-Policy, как просить и что делать при отказе.",
+      "chapter": "Безопасность и разрешения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Соединяем браузеры напрямую и разбираемся, как пользователь даёт разрешения.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Permissions API\",\n  \"title\": \"Узнать состояние\",\n  \"what\": \"navigator.permissions.query показывает: granted, denied или prompt — без лишнего запроса.\",\n  \"why\": \"Не показывать кнопку, если доступ уже запрещён.\",\n  \"how\": \"const { state } = await navigator.permissions.query({ name: \\\"geolocation\\\" });\\nif (state === \\\"denied\\\") showManualCityInput();\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Просить к месту\",\n  \"title\": \"Объяснить зачем\",\n  \"what\": \"Запрос показывают после действия пользователя и короткого объяснения, зачем нужен доступ.\",\n  \"why\": \"Отказ по умолчанию — обычная реакция на внезапный запрос.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Permissions-Policy\",\n  \"title\": \"Запретить лишнее\",\n  \"what\": \"Заголовок отключает API для страницы и встроенных фреймов: камеру, геолокацию, оплату.\",\n  \"why\": \"Встроенная реклама не попросит камеру.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Отказ навсегда\",\n  \"title\": \"Сайт не спросит снова\",\n  \"what\": \"Повторно спросить после отказа браузер не даст — пользователь меняет решение в настройках сайта.\",\n  \"why\": \"Подскажи, где это сделать, и предложи альтернативу.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Проверяй состояние до запроса, проси после объяснения, лишнее отключай Permissions-Policy."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pm-query",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pm-policy",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pm-denied",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "csp-xss",
+      "title": "XSS и CSP",
+      "summary": "Межсайтовый скриптинг, экранирование, Content-Security-Policy, Trusted Types, SRI для внешних скриптов.",
+      "chapter": "Безопасность и разрешения",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Бережно просим разрешения и защищаем страницу от чужих скриптов.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"XSS\",\n  \"title\": \"Чужой скрипт на странице\",\n  \"what\": \"Если данные пользователя попадают в страницу как HTML, злоумышленник внедряет скрипт, который крадёт данные и действует от имени жертвы.\",\n  \"why\": \"Самая частая уязвимость веба.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Экранирование\",\n  \"title\": \"Текст — это текст\",\n  \"what\": \"Выводи данные через textContent или шаблоны фреймворков, которые экранируют автоматически. innerHTML — только для доверенного.\",\n  \"why\": \"Половина защиты — в привычках.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"CSP\",\n  \"title\": \"Список разрешённого\",\n  \"what\": \"Заголовок Content-Security-Policy задаёт, откуда можно загружать скрипты, стили и картинки. Встроенные скрипты без nonce блокируются.\",\n  \"why\": \"Даже найденная дыра не даст выполнить чужой код.\",\n  \"how\": \"Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-r4nd0m'; img-src 'self' data:; object-src 'none'\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"SRI\",\n  \"title\": \"Проверка внешнего файла\",\n  \"what\": \"Атрибут integrity с хэшем у тега script гарантирует, что CDN не подменил файл.\",\n  \"why\": \"Взломанный CDN не взломает твой сайт.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Данные — как текст, политика — CSP с nonce, внешние скрипты — с integrity."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cx-xss",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cx-csp",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cx-sri",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "iframe-sandbox",
+      "title": "Фреймы и изоляция",
+      "summary": "iframe и sandbox, защита от кликджекинга, изоляция между источниками COOP и COEP.",
+      "chapter": "Безопасность и разрешения",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Защищаемся от XSS и разбираемся со встраиванием страниц друг в друга.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"sandbox\",\n  \"title\": \"Песочница для iframe\",\n  \"what\": \"Атрибут sandbox отключает скрипты, формы и переходы во фрейме; нужное включают явно.\",\n  \"why\": \"Пользовательский HTML показывается без опасных возможностей.\",\n  \"how\": \"<iframe src=\\\"/preview\\\" sandbox=\\\"allow-scripts\\\" title=\\\"Предпросмотр\\\"></iframe>\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Кликджекинг\",\n  \"title\": \"Невидимая кнопка\",\n  \"what\": \"Злоумышленник встраивает твой сайт прозрачным фреймом и заставляет нажать «Удалить аккаунт».\",\n  \"why\": \"Заголовок frame-ancestors в CSP запрещает встраивание.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"COOP и COEP\",\n  \"title\": \"Полная изоляция\",\n  \"what\": \"Заголовки изоляции между источниками отделяют твою страницу от чужих окон и включают мощные API вроде SharedArrayBuffer.\",\n  \"why\": \"Защита от утечек через побочные каналы.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Чужое — во фрейм с sandbox. Своё от встраивания — frame-ancestors."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "if-sandbox",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "if-click",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "if-coop",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "offline-app",
+      "title": "Приложение без сети",
+      "summary": "Сборка всего вместе: Service Worker, IndexedDB, очередь отправки, состояние сети.",
+      "chapter": "Web API на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем защиту и собираем приложение, которое работает без сети.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Офлайн прежде всего\",\n  \"title\": \"Сеть — бонус\",\n  \"what\": \"Интерфейс и данные читаются локально, сеть только синхронизирует.\",\n  \"why\": \"Приложение мгновенное и работает в метро.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Состояние сети\",\n  \"title\": \"online и offline\",\n  \"what\": \"navigator.onLine и события online/offline показывают, есть ли связь (не гарантируя, что сервер доступен).\",\n  \"why\": \"Показать «Нет сети — ответы сохранятся».\",\n  \"how\": \"window.addEventListener(\\\"offline\\\", () => banner.hidden = false);\\nwindow.addEventListener(\\\"online\\\", () => {\\n  banner.hidden = true;\\n  flushQueue();\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Очередь отправки\",\n  \"title\": \"Сохранить и отправить позже\",\n  \"what\": \"Действия без сети пишут в IndexedDB и отправляют при восстановлении связи.\",\n  \"why\": \"Ответ на тест не теряется.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Конфликты\",\n  \"title\": \"Кто прав\",\n  \"what\": \"Если данные изменили в двух местах, нужно правило: последний побеждает, слияние или вопрос пользователю.\",\n  \"why\": \"Иначе данные тихо перезапишутся.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Читай локально, пиши в очередь, синхронизируй при связи. Продумай конфликты."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "oa-online",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "oa-queue",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "oa-conflict",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "accessibility-apis",
+      "title": "Доступность в браузере",
+      "summary": "Дерево доступности, ARIA и роли, управление фокусом, prefers-reduced-motion и другие предпочтения.",
+      "chapter": "Web API на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем без сети и делаем интерфейс доступным всем.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Дерево доступности\",\n  \"title\": \"Как видит диктор\",\n  \"what\": \"Браузер строит из DOM дерево с ролями, именами и состояниями — его читают экранные дикторы.\",\n  \"why\": \"Правильные теги дают правильное дерево бесплатно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"ARIA\",\n  \"title\": \"Когда тегов не хватает\",\n  \"what\": \"role, aria-label, aria-expanded описывают свои виджеты. Первое правило — не использовать ARIA, если есть подходящий тег.\",\n  \"why\": \"Кнопка — это button, а не div с role.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Управление фокусом\",\n  \"title\": \"focus() и inert\",\n  \"what\": \"Открыл окно — переведи фокус внутрь, закрыл — верни. Атрибут inert делает фон недоступным.\",\n  \"why\": \"С клавиатуры невозможно «потеряться».\",\n  \"how\": \"dialog.showModal();\\ndialog.querySelector(\\\"input\\\").focus();\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n```concept\n{\n  \"name\": \"Предпочтения\",\n  \"title\": \"matchMedia\",\n  \"what\": \"matchMedia(\\\"(prefers-reduced-motion: reduce)\\\") и prefers-color-scheme сообщают настройки пользователя.\",\n  \"why\": \"Анимации отключаются для тех, кому они вредят.\",\n  \"how\": \"const calm = matchMedia(\\\"(prefers-reduced-motion: reduce)\\\").matches;\\nif (!calm) startConfetti();\",\n  \"kind\": \"idea\",\n  \"lang\": \"js\"\n}\n```\n\n**Главное.** Сначала правильные теги, ARIA — дополнение. Фокус под контролем, предпочтения — уважать."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ac-aria",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ac-focus",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ac-motion",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "choosing-apis",
+      "title": "Выбор возможностей",
+      "summary": "Нужен ли API, цена для приватности и батареи, поддержка браузерами, что изучать дальше.",
+      "chapter": "Web API на практике",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Сделали интерфейс доступным и учимся выбирать возможности браузера с умом.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Нужен ли\",\n  \"title\": \"Проще — лучше\",\n  \"what\": \"Если задачу решает HTML или CSS (details, dialog, loading=\\\"lazy\\\", @container), не пиши JavaScript.\",\n  \"why\": \"Меньше кода — меньше ошибок.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Цена\",\n  \"title\": \"Приватность и батарея\",\n  \"what\": \"Геолокация, камера, постоянный WebSocket и фоновая работа тратят доверие и заряд.\",\n  \"why\": \"Включай только для понятной пользы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Поддержка\",\n  \"title\": \"Где работает\",\n  \"what\": \"Проверь поддержку в нужных браузерах и предусмотри запасной путь.\",\n  \"why\": \"Не каждый пользователь на свежем браузере.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Сначала HTML и CSS, потом API. Оцени поддержку, приватность и запасной путь."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-html",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-cost",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-checklist",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

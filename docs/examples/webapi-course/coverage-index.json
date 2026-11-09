@@ -1,0 +1,188 @@
+{
+  "note": "Every item is taught by its own concept card; the contracts test keeps the index and the cards in sync.",
+  "source": "Course design by chapter (branches of the character).",
+  "topics": {
+    "intro": {
+      "title": "Что такое Web API",
+      "items": [
+        "JavaScript и Web API",
+        "Стандарты",
+        "Объект window",
+        "Безопасный контекст",
+        "Проверка наличия",
+        "Не по названию браузера",
+        "Постепенное улучшение",
+        "Таблицы поддержки",
+        "Асинхронность",
+        "async и await",
+        "AbortController",
+        "События"
+      ]
+    },
+    "dom": {
+      "title": "DOM глубже",
+      "items": [
+        "Всплытие",
+        "Делегирование",
+        "preventDefault и stopPropagation",
+        "Опции слушателя",
+        "template",
+        "textContent",
+        "DocumentFragment",
+        "Пакетные изменения",
+        "customElements",
+        "Shadow DOM",
+        "slot",
+        "Когда полезны"
+      ]
+    },
+    "fetch": {
+      "title": "Сеть из браузера",
+      "items": [
+        "POST с JSON",
+        "res.ok",
+        "FormData",
+        "Тайм-аут",
+        "res.body",
+        "Прогресс скачивания",
+        "Server-Sent Events",
+        "Один источник",
+        "CORS",
+        "Предварительный запрос",
+        "credentials"
+      ]
+    },
+    "storage": {
+      "title": "Хранилища браузера",
+      "items": [
+        "localStorage",
+        "sessionStorage",
+        "Ограничения",
+        "Не для секретов",
+        "IndexedDB",
+        "Обёртка idb",
+        "Версии и upgrade",
+        "Индексы",
+        "caches",
+        "navigator.storage",
+        "Вытеснение"
+      ]
+    },
+    "workers": {
+      "title": "Работа в фоне",
+      "items": [
+        "Основной поток",
+        "Worker",
+        "Без DOM",
+        "Передача данных",
+        "Посредник",
+        "Регистрация",
+        "Стратегии кэша",
+        "Жизненный цикл",
+        "Манифест",
+        "Push",
+        "Разрешение",
+        "Фоновая синхронизация"
+      ]
+    },
+    "media": {
+      "title": "Медиа и графика",
+      "items": [
+        "Контекст 2D",
+        "requestAnimationFrame",
+        "Чёткость",
+        "Доступность",
+        "HTMLMediaElement",
+        "Автозапуск",
+        "Субтитры",
+        "Web Audio",
+        "WebGL",
+        "three.js",
+        "WebGPU",
+        "Запасной путь"
+      ]
+    },
+    "devices": {
+      "title": "Устройства и датчики",
+      "items": [
+        "getUserMedia",
+        "Остановить",
+        "MediaRecorder",
+        "Отказ",
+        "Геолокация",
+        "Точность и батарея",
+        "Датчики",
+        "Приватность",
+        "Clipboard",
+        "Web Share",
+        "Жест пользователя",
+        "Wake Lock и вибрация"
+      ]
+    },
+    "observers": {
+      "title": "Наблюдатели",
+      "items": [
+        "Наблюдатель видимости",
+        "Бесконечная лента",
+        "rootMargin и threshold",
+        "loading=\"lazy\"",
+        "ResizeObserver",
+        "Контейнерные запросы",
+        "MutationObserver",
+        "Не злоупотребляй",
+        "mark и measure",
+        "PerformanceObserver",
+        "Web Vitals",
+        "sendBeacon"
+      ]
+    },
+    "realtime": {
+      "title": "Связь в реальном времени",
+      "items": [
+        "WebSocket",
+        "Переподключение",
+        "wss://",
+        "Когда не нужен",
+        "BroadcastChannel",
+        "postMessage",
+        "Проверяй origin",
+        "Прямое соединение",
+        "Сигнальный сервер",
+        "STUN и TURN",
+        "Каналы данных"
+      ]
+    },
+    "security": {
+      "title": "Безопасность и разрешения",
+      "items": [
+        "Permissions API",
+        "Просить к месту",
+        "Permissions-Policy",
+        "Отказ навсегда",
+        "XSS",
+        "Экранирование",
+        "CSP",
+        "SRI",
+        "sandbox",
+        "Кликджекинг",
+        "COOP и COEP"
+      ]
+    },
+    "practice": {
+      "title": "Web API на практике",
+      "items": [
+        "Офлайн прежде всего",
+        "Состояние сети",
+        "Очередь отправки",
+        "Конфликты",
+        "Дерево доступности",
+        "ARIA",
+        "Управление фокусом",
+        "Предпочтения",
+        "Нужен ли",
+        "Цена",
+        "Поддержка"
+      ]
+    }
+  }
+}
