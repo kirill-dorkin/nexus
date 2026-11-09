@@ -63,9 +63,5 @@ export const UPCOMING: UpcomingDistrict[] = [
         needs: "Браузер, JavaScript"
       }
     ]
-  },
-  {
-    district: "Порт",
-    characters: [{ name: "Kubernetes", role: "Капитан флота", needs: "Docker" }]
   }
 ];

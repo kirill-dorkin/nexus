@@ -432,6 +432,25 @@ export const characters = [
       "Автоматическая проверка и выкладка: первый конвейер в GitHub Actions, линтеры, типы и тесты в CI, кэш и параллельность, артефакты и версии, секреты и цепочка поставки, стратегии выкладки, окружения и миграции, наблюдение и откат, культура маленьких изменений.",
     accent: "violet",
     sources: [{ manifest: "cicd-track.manifest.json", published: true }]
+  },
+  {
+    slug: "kubernetes",
+    depth: {},
+    abilities: [
+      { title: "Кластер", branches: ["Зачем Kubernetes", "Поды"] },
+      { title: "Нагрузки", branches: ["Развёртывания"] },
+      { title: "Сеть", branches: ["Сервисы и сеть"] },
+      { title: "Данные", branches: ["Настройки и секреты", "Хранение данных"] },
+      { title: "Надёжность", branches: ["Здоровье и ресурсы", "Масштабирование"] },
+      { title: "Защита", branches: ["Безопасность кластера"] },
+      { title: "Флот", branches: ["Пакеты и GitOps", "Эксплуатация"] }
+    ],
+    name: "Kubernetes",
+    role: "Капитан флота",
+    summary:
+      "Флот контейнеров: устройство кластера и kubectl, поды и манифесты, развёртывания и обновления, сервисы, Ingress и сеть, ConfigMap и Secret, постоянные тома и StatefulSet, проверки здоровья и ресурсы, автомасштабирование, RBAC и сетевые политики, Helm, Kustomize и GitOps, наблюдение, отладка и обновления.",
+    accent: "blue",
+    sources: [{ manifest: "kubernetes-track.manifest.json", published: true }]
   }
 ];
 
@@ -460,7 +479,8 @@ export const requires = {
   "go/Старт Go": ["pc/Командная строка"],
   "os/Что делает ОС": ["pc/Операционная система"],
   "vue/Старт Vue": ["js/Старт JavaScript"],
-  "cicd/Зачем автоматизация": ["git/Командная работа на GitHub"]
+  "cicd/Зачем автоматизация": ["git/Командная работа на GitHub"],
+  "kubernetes/Зачем Kubernetes": ["docker/Docker Compose"]
 };
 
 /** Share of a required branch's skills that must be active before a branch opens. */

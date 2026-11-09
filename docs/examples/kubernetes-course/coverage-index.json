@@ -1,0 +1,195 @@
+{
+  "note": "Every item is taught by its own concept card; the contracts test keeps the index and the cards in sync.",
+  "source": "Course design by chapter (branches of the character).",
+  "topics": {
+    "why": {
+      "title": "Зачем Kubernetes",
+      "items": [
+        "Проблема масштаба",
+        "Оркестратор",
+        "Желаемое состояние",
+        "Когда не нужен",
+        "API-сервер",
+        "etcd",
+        "Планировщик и контроллеры",
+        "Рабочие узлы",
+        "Управляемые кластеры",
+        "kind",
+        "get и describe",
+        "apply",
+        "Пространства имён",
+        "Контекст"
+      ]
+    },
+    "pods": {
+      "title": "Поды",
+      "items": [
+        "Под",
+        "Недолговечность",
+        "Запустить под",
+        "Жизненный цикл",
+        "Манифест пода",
+        "explain",
+        "Манифесты в Git",
+        "dry-run",
+        "Метки",
+        "Селекторы",
+        "Аннотации",
+        "Sidecar и init"
+      ]
+    },
+    "deployments": {
+      "title": "Развёртывания",
+      "items": [
+        "Deployment",
+        "Самовосстановление",
+        "scale",
+        "ReplicaSet",
+        "RollingUpdate",
+        "rollout status",
+        "rollout undo",
+        "Готовность",
+        "Job и CronJob",
+        "DaemonSet",
+        "StatefulSet",
+        "Как выбрать"
+      ]
+    },
+    "services": {
+      "title": "Сервисы и сеть",
+      "items": [
+        "Service",
+        "DNS",
+        "ClusterIP",
+        "port-forward",
+        "NodePort и LoadBalancer",
+        "Ingress",
+        "Gateway API",
+        "cert-manager",
+        "Плоская сеть",
+        "CNI",
+        "kube-proxy",
+        "Отладка"
+      ]
+    },
+    "config": {
+      "title": "Настройки и секреты",
+      "items": [
+        "ConfigMap",
+        "Файлом",
+        "Обновление",
+        "Secret",
+        "base64 — не шифр",
+        "Шифрование в etcd",
+        "Не печатай",
+        "Sealed Secrets и SOPS",
+        "External Secrets",
+        "Ротация",
+        "Без секретов вовсе"
+      ]
+    },
+    "storage": {
+      "title": "Хранение данных",
+      "items": [
+        "Временная файловая система",
+        "emptyDir",
+        "Тома настроек",
+        "Объектное хранилище",
+        "PVC",
+        "StorageClass",
+        "Режимы доступа",
+        "Политика удаления",
+        "Стабильная личность",
+        "Headless-сервис",
+        "Порядок запуска реплик",
+        "Своя база или управляемая"
+      ]
+    },
+    "health": {
+      "title": "Здоровье и ресурсы",
+      "items": [
+        "readiness",
+        "liveness",
+        "startup",
+        "Ловушка liveness",
+        "requests",
+        "limits",
+        "Единицы",
+        "Как подобрать",
+        "drain",
+        "PodDisruptionBudget",
+        "Распределение"
+      ]
+    },
+    "scaling": {
+      "title": "Масштабирование",
+      "items": [
+        "HPA",
+        "kubectl top",
+        "Нужны requests",
+        "Свои метрики",
+        "Ожидающие поды",
+        "Cluster Autoscaler",
+        "Karpenter",
+        "VPA",
+        "Нагрузочный тест",
+        "Прерываемые узлы",
+        "Учёт стоимости",
+        "Запас"
+      ]
+    },
+    "security": {
+      "title": "Безопасность кластера",
+      "items": [
+        "Role и RoleBinding",
+        "ServiceAccount",
+        "ClusterRole",
+        "can-i",
+        "Всё открыто",
+        "Запрет по умолчанию",
+        "Нужен CNI",
+        "Исходящий трафик",
+        "securityContext",
+        "Pod Security Standards",
+        "Проверка образов",
+        "Привилегированные поды"
+      ]
+    },
+    "gitops": {
+      "title": "Пакеты и GitOps",
+      "items": [
+        "Чарт",
+        "helm install",
+        "Готовые чарты",
+        "Откат",
+        "База и наложения",
+        "kustomization.yaml",
+        "apply -k",
+        "Helm или Kustomize",
+        "Git — источник правды",
+        "Argo CD и Flux",
+        "Дрейф",
+        "Операторы"
+      ]
+    },
+    "operations": {
+      "title": "Эксплуатация",
+      "items": [
+        "kubectl logs",
+        "Сбор логов",
+        "Метрики",
+        "События",
+        "Pending",
+        "ImagePullBackOff",
+        "CrashLoopBackOff",
+        "Нет трафика",
+        "kubectl debug",
+        "Версии",
+        "Устаревшие API",
+        "Порядок обновления",
+        "Velero",
+        "Что дальше"
+      ]
+    }
+  }
+}
