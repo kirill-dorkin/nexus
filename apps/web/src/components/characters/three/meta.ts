@@ -25,7 +25,8 @@ export const BODY_UI = {
   cicd: ["#8b7cf6", "#e4defe", "#4b3f8a", "#120f26"],
   kubernetes: ["#5b8def", "#c7d7fe", "#2a4f9e", "#0a1430"],
   webapi: ["#22d3c5", "#ccfbf1", "#1f6f6a", "#06201e"],
-  redis: ["#ff4438", "#ffc9c2", "#8f2a2a", "#240808"]
+  redis: ["#ff4438", "#ffc9c2", "#8f2a2a", "#240808"],
+  nestjs: ["#e0234e", "#fecdd8", "#7a1f3a", "#22080f"]
 } as const satisfies Record<string, readonly [string, string, string, string]>;
 
 export type BodySlug = keyof typeof BODY_UI;

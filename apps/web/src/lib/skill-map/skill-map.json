@@ -12004,6 +12004,472 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "nestjs",
+      "name": "NestJS",
+      "role": "Командир модулей",
+      "summary": "Серверные приложения на TypeScript: модули и внедрение зависимостей, контроллеры и маршруты, DTO и проверка данных, база данных, миграции и транзакции, вход, гарды и права, перехватчики и фильтры, конфигурация, логи и OpenAPI, события, очереди и WebSocket, тесты, защита, скорость и выпуск.",
+      "accent": "rose",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Каркас",
+          "branches": [
+            "nestjs-1",
+            "nestjs-2"
+          ]
+        },
+        {
+          "title": "API",
+          "branches": [
+            "nestjs-3",
+            "nestjs-4"
+          ]
+        },
+        {
+          "title": "Данные",
+          "branches": [
+            "nestjs-5"
+          ]
+        },
+        {
+          "title": "Доступ",
+          "branches": [
+            "nestjs-6"
+          ]
+        },
+        {
+          "title": "Конвейер",
+          "branches": [
+            "nestjs-7",
+            "nestjs-8"
+          ]
+        },
+        {
+          "title": "Фон",
+          "branches": [
+            "nestjs-9"
+          ]
+        },
+        {
+          "title": "Качество",
+          "branches": [
+            "nestjs-10",
+            "nestjs-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "nestjs-1",
+          "title": "Старт NestJS",
+          "depth": "practice",
+          "requires": [
+            "node-7",
+            "ts-1"
+          ],
+          "skills": [
+            {
+              "key": "ns-why",
+              "title": "Что такое NestJS",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "why-nest",
+                "title": "Что такое NestJS"
+              }
+            },
+            {
+              "key": "ns-create",
+              "title": "Создание проекта",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "create-nest",
+                "title": "Новый проект"
+              }
+            },
+            {
+              "key": "ns-flow",
+              "title": "Путь запроса",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "request-path",
+                "title": "Путь запроса"
+              }
+            }
+          ]
+        },
+        {
+          "id": "nestjs-2",
+          "title": "Модули и внедрение зависимостей",
+          "depth": "practice",
+          "requires": [
+            "nestjs-1"
+          ],
+          "skills": [
+            {
+              "key": "ns-di",
+              "title": "Внедрение зависимостей",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "providers-di",
+                "title": "Провайдеры и внедрение"
+              }
+            },
+            {
+              "key": "ns-modules",
+              "title": "Модули",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "feature-modules",
+                "title": "Модули"
+              }
+            },
+            {
+              "key": "ns-lifecycle",
+              "title": "Жизненный цикл",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "scopes-lifecycle",
+                "title": "Области и жизненный цикл"
+              }
+            }
+          ]
+        },
+        {
+          "id": "nestjs-3",
+          "title": "Контроллеры и маршруты",
+          "depth": "practice",
+          "requires": [
+            "nestjs-2"
+          ],
+          "skills": [
+            {
+              "key": "ns-routes",
+              "title": "Маршруты",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "routes",
+                "title": "Маршруты"
+              }
+            },
+            {
+              "key": "ns-params",
+              "title": "Данные запроса",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "params-body",
+                "title": "Параметры и тело"
+              }
+            },
+            {
+              "key": "ns-responses",
+              "title": "Ответы",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "responses",
+                "title": "Ответы и коды"
+              }
+            }
+          ]
+        },
+        {
+          "id": "nestjs-4",
+          "title": "Проверка данных",
+          "depth": "practice",
+          "requires": [
+            "nestjs-3"
+          ],
+          "skills": [
+            {
+              "key": "ns-dto",
+              "title": "DTO",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "dto",
+                "title": "DTO"
+              }
+            },
+            {
+              "key": "ns-validate",
+              "title": "Проверка данных",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "validation-pipe",
+                "title": "ValidationPipe"
+              }
+            },
+            {
+              "key": "ns-rules",
+              "title": "Свои правила проверки",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "custom-validation",
+                "title": "Свои правила и Zod"
+              }
+            }
+          ]
+        },
+        {
+          "id": "nestjs-5",
+          "title": "База данных",
+          "depth": "practice",
+          "requires": [
+            "nestjs-4"
+          ],
+          "skills": [
+            {
+              "key": "ns-orm",
+              "title": "ORM",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "orm",
+                "title": "ORM в Nest"
+              }
+            },
+            {
+              "key": "ns-migrations",
+              "title": "Миграции",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "migrations",
+                "title": "Миграции"
+              }
+            },
+            {
+              "key": "ns-transactions",
+              "title": "Транзакции",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "transactions",
+                "title": "Транзакции"
+              }
+            }
+          ]
+        },
+        {
+          "id": "nestjs-6",
+          "title": "Вход и права",
+          "depth": "practice",
+          "requires": [
+            "nestjs-5"
+          ],
+          "skills": [
+            {
+              "key": "ns-authn",
+              "title": "Аутентификация",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "authentication",
+                "title": "Вход"
+              }
+            },
+            {
+              "key": "ns-guards",
+              "title": "Гарды",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "guards",
+                "title": "Гарды"
+              }
+            },
+            {
+              "key": "ns-authz",
+              "title": "Авторизация",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "authorization",
+                "title": "Роли и владение"
+              }
+            }
+          ]
+        },
+        {
+          "id": "nestjs-7",
+          "title": "Конвейер запроса",
+          "depth": "practice",
+          "requires": [
+            "nestjs-6"
+          ],
+          "skills": [
+            {
+              "key": "ns-order",
+              "title": "Конвейер запроса",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "pipeline-order",
+                "title": "Порядок обработки"
+              }
+            },
+            {
+              "key": "ns-interceptors",
+              "title": "Перехватчики",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "interceptors",
+                "title": "Перехватчики"
+              }
+            },
+            {
+              "key": "ns-filters",
+              "title": "Фильтры исключений",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "exception-filters",
+                "title": "Фильтры исключений"
+              }
+            }
+          ]
+        },
+        {
+          "id": "nestjs-8",
+          "title": "Конфигурация и ошибки",
+          "depth": "practice",
+          "requires": [
+            "nestjs-7"
+          ],
+          "skills": [
+            {
+              "key": "ns-config",
+              "title": "Конфигурация",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "config-module",
+                "title": "Конфигурация"
+              }
+            },
+            {
+              "key": "ns-logging",
+              "title": "Логирование",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "logging",
+                "title": "Логи"
+              }
+            },
+            {
+              "key": "ns-openapi",
+              "title": "OpenAPI",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "openapi",
+                "title": "Документация API"
+              }
+            }
+          ]
+        },
+        {
+          "id": "nestjs-9",
+          "title": "Фоновые задачи и события",
+          "depth": "practice",
+          "requires": [
+            "nestjs-8"
+          ],
+          "skills": [
+            {
+              "key": "ns-events",
+              "title": "События",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "events",
+                "title": "События внутри приложения"
+              }
+            },
+            {
+              "key": "ns-queues",
+              "title": "Очереди и расписание",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "queues-cron",
+                "title": "Очереди и расписание"
+              }
+            },
+            {
+              "key": "ns-ws",
+              "title": "WebSocket в Nest",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "gateways",
+                "title": "WebSocket-шлюзы"
+              }
+            }
+          ]
+        },
+        {
+          "id": "nestjs-10",
+          "title": "Тесты",
+          "depth": "practice",
+          "requires": [
+            "nestjs-9"
+          ],
+          "skills": [
+            {
+              "key": "ns-unit",
+              "title": "Модульные тесты",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "unit-tests",
+                "title": "Модульные тесты"
+              }
+            },
+            {
+              "key": "ns-integration",
+              "title": "Интеграционные тесты",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "integration-tests",
+                "title": "Интеграционные тесты"
+              }
+            },
+            {
+              "key": "ns-e2e",
+              "title": "Сквозные тесты",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "e2e-tests",
+                "title": "Сквозные тесты API"
+              }
+            }
+          ]
+        },
+        {
+          "id": "nestjs-11",
+          "title": "NestJS на практике",
+          "depth": "practice",
+          "requires": [
+            "nestjs-10"
+          ],
+          "skills": [
+            {
+              "key": "ns-harden",
+              "title": "Защита API",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "hardening",
+                "title": "Защита сервера"
+              }
+            },
+            {
+              "key": "ns-perf",
+              "title": "Производительность",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "performance",
+                "title": "Скорость"
+              }
+            },
+            {
+              "key": "ns-deploy",
+              "title": "Выпуск и архитектура",
+              "lesson": {
+                "course": "nestjs",
+                "slug": "deploy-grow",
+                "title": "Выпуск и рост"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

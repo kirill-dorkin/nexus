@@ -32,16 +32,6 @@ export const UPCOMING: UpcomingDistrict[] = [
     ]
   },
   {
-    district: "Сервер",
-    characters: [
-      {
-        name: "NestJS",
-        role: "Командир модулей",
-        needs: "Node.js, TypeScript"
-      }
-    ]
-  },
-  {
     district: "Архив",
     characters: [
       { name: "MongoDB", role: "Хранитель документов", needs: "JavaScript" },

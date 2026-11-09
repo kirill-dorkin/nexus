@@ -20,6 +20,7 @@ import { cicd } from "./cicd";
 import { kubernetes } from "./kubernetes";
 import { webapi } from "./webapi";
 import { redis } from "./redis";
+import { nestjs } from "./nestjs";
 import type { CharacterDef } from "./types";
 
 /** Characters that have a 3D body. The rest of the roster keeps its text card for now. */
@@ -45,7 +46,8 @@ export const CHARACTER_DEFS: readonly CharacterDef[] = [
   cicd,
   kubernetes,
   webapi,
-  redis
+  redis,
+  nestjs
 ];
 
 export const characterDef = (slug: string) =>

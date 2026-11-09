@@ -37,7 +37,8 @@ export const DISTRICT_NAMES: Record<string, string> = {
   cicd: "Сборочный цех",
   kubernetes: "Верфь флота",
   webapi: "Телеграф",
-  redis: "Кладовая памяти"
+  redis: "Кладовая памяти",
+  nestjs: "Штаб"
 };
 
 /** Positions on a 1000×600 plan; characters without one are laid out on the bottom row. */
@@ -63,7 +64,8 @@ const LAYOUT: Record<string, { x: number; y: number }> = {
   cicd: { x: 270, y: 520 },
   kubernetes: { x: 130, y: 420 },
   webapi: { x: 860, y: 240 },
-  redis: { x: 540, y: 140 }
+  redis: { x: 540, y: 140 },
+  nestjs: { x: 860, y: 420 }
 };
 
 export type District = {

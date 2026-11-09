@@ -1,0 +1,4547 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "nestjs",
+    "title": "NestJS: серверные приложения на TypeScript",
+    "description": "NestJS с нуля до надёжного API. Модули, провайдеры и внедрение зависимостей, контроллеры и маршруты, DTO и проверка данных, база данных через ORM, вход и права, гарды, пайпы, перехватчики и фильтры исключений, конфигурация, фоновые задачи, очереди и события, модульные и сквозные тесты, документация OpenAPI и выпуск. Каждое понятие объясняется карточкой с примером, каждый урок закрепляется вопросами."
+  },
+  "skills": [
+    {
+      "key": "ns-why",
+      "title": "Что такое NestJS",
+      "description": "Объяснять, что даёт NestJS по сравнению с Express."
+    },
+    {
+      "key": "ns-create",
+      "title": "Создание проекта",
+      "description": "Создавать и запускать проект NestJS."
+    },
+    {
+      "key": "ns-flow",
+      "title": "Путь запроса",
+      "description": "Понимать, как запрос проходит через приложение Nest."
+    },
+    {
+      "key": "ns-di",
+      "title": "Внедрение зависимостей",
+      "description": "Использовать провайдеры и внедрение зависимостей."
+    },
+    {
+      "key": "ns-modules",
+      "title": "Модули",
+      "description": "Делить приложение на модули с явными границами."
+    },
+    {
+      "key": "ns-lifecycle",
+      "title": "Жизненный цикл",
+      "description": "Управлять созданием и остановкой провайдеров."
+    },
+    {
+      "key": "ns-routes",
+      "title": "Маршруты",
+      "description": "Описывать маршруты REST в контроллерах."
+    },
+    {
+      "key": "ns-params",
+      "title": "Данные запроса",
+      "description": "Получать параметры, запрос и тело в контроллере."
+    },
+    {
+      "key": "ns-responses",
+      "title": "Ответы",
+      "description": "Возвращать правильные коды и ошибки."
+    },
+    {
+      "key": "ns-dto",
+      "title": "DTO",
+      "description": "Описывать входные данные классами DTO."
+    },
+    {
+      "key": "ns-validate",
+      "title": "Проверка данных",
+      "description": "Проверять все входные данные автоматически."
+    },
+    {
+      "key": "ns-rules",
+      "title": "Свои правила проверки",
+      "description": "Добавлять собственные правила и разделять проверки формы и бизнеса."
+    },
+    {
+      "key": "ns-orm",
+      "title": "ORM",
+      "description": "Подключать базу данных к приложению Nest."
+    },
+    {
+      "key": "ns-migrations",
+      "title": "Миграции",
+      "description": "Менять схему базы миграциями."
+    },
+    {
+      "key": "ns-transactions",
+      "title": "Транзакции",
+      "description": "Выполнять связанные изменения атомарно."
+    },
+    {
+      "key": "ns-authn",
+      "title": "Аутентификация",
+      "description": "Реализовывать вход пользователей в Nest."
+    },
+    {
+      "key": "ns-guards",
+      "title": "Гарды",
+      "description": "Защищать маршруты гардами."
+    },
+    {
+      "key": "ns-authz",
+      "title": "Авторизация",
+      "description": "Проверять права по ролям и владению."
+    },
+    {
+      "key": "ns-order",
+      "title": "Конвейер запроса",
+      "description": "Понимать порядок этапов обработки запроса в Nest."
+    },
+    {
+      "key": "ns-interceptors",
+      "title": "Перехватчики",
+      "description": "Оборачивать обработчики общей логикой."
+    },
+    {
+      "key": "ns-filters",
+      "title": "Фильтры исключений",
+      "description": "Превращать ошибки в понятные ответы."
+    },
+    {
+      "key": "ns-config",
+      "title": "Конфигурация",
+      "description": "Загружать и проверять настройки приложения."
+    },
+    {
+      "key": "ns-logging",
+      "title": "Логирование",
+      "description": "Вести структурные логи сервера."
+    },
+    {
+      "key": "ns-openapi",
+      "title": "OpenAPI",
+      "description": "Генерировать документацию API из кода."
+    },
+    {
+      "key": "ns-events",
+      "title": "События",
+      "description": "Связывать модули событиями вместо прямых вызовов."
+    },
+    {
+      "key": "ns-queues",
+      "title": "Очереди и расписание",
+      "description": "Выносить долгую работу в очереди и запускать задачи по расписанию."
+    },
+    {
+      "key": "ns-ws",
+      "title": "WebSocket в Nest",
+      "description": "Строить функции реального времени в Nest."
+    },
+    {
+      "key": "ns-unit",
+      "title": "Модульные тесты",
+      "description": "Тестировать сервисы Nest с подменой зависимостей."
+    },
+    {
+      "key": "ns-integration",
+      "title": "Интеграционные тесты",
+      "description": "Тестировать работу с настоящей базой."
+    },
+    {
+      "key": "ns-e2e",
+      "title": "Сквозные тесты",
+      "description": "Проверять API целиком через HTTP."
+    },
+    {
+      "key": "ns-harden",
+      "title": "Защита API",
+      "description": "Закрывать типичные уязвимости API в Nest."
+    },
+    {
+      "key": "ns-perf",
+      "title": "Производительность",
+      "description": "Находить и устранять узкие места в API."
+    },
+    {
+      "key": "ns-deploy",
+      "title": "Выпуск и архитектура",
+      "description": "Выпускать Nest-приложение и развивать его архитектуру."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "wn-base",
+      "type": "quiz.single_choice",
+      "title": "Основа",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-why"
+      ],
+      "presentation": {
+        "question": "На чём работает NestJS под капотом?",
+        "options": [
+          {
+            "id": "express",
+            "text": "На Express или Fastify"
+          },
+          {
+            "id": "django",
+            "text": "На Django"
+          },
+          {
+            "id": "php",
+            "text": "На PHP"
+          },
+          {
+            "id": "nothing",
+            "text": "Ни на чём"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "express",
+        "explanation": "Nest добавляет структуру."
+      }
+    },
+    {
+      "slug": "wn-when",
+      "type": "quiz.single_choice",
+      "title": "Когда",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-why"
+      ],
+      "presentation": {
+        "question": "Когда NestJS особенно уместен?",
+        "options": [
+          {
+            "id": "big",
+            "text": "Для большого сервера, который развивает команда"
+          },
+          {
+            "id": "script",
+            "text": "Для скрипта на 20 строк"
+          },
+          {
+            "id": "css",
+            "text": "Для стилей"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "big",
+        "explanation": "Структура окупается с ростом."
+      }
+    },
+    {
+      "slug": "wn-parts",
+      "type": "quiz.multiple_choice",
+      "title": "Части",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "ns-why"
+      ],
+      "presentation": {
+        "question": "Из чего строится приложение NestJS?",
+        "options": [
+          {
+            "id": "modules",
+            "text": "Модули"
+          },
+          {
+            "id": "controllers",
+            "text": "Контроллеры"
+          },
+          {
+            "id": "providers",
+            "text": "Провайдеры (сервисы)"
+          },
+          {
+            "id": "templates",
+            "text": "Только HTML-шаблоны"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "modules",
+          "controllers",
+          "providers"
+        ],
+        "explanation": "Шаблоны — не основа."
+      }
+    },
+    {
+      "slug": "cn-boot",
+      "type": "quiz.single_choice",
+      "title": "Точка входа",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-create"
+      ],
+      "presentation": {
+        "question": "Где создаётся и запускается приложение Nest?",
+        "options": [
+          {
+            "id": "main",
+            "text": "В main.ts через NestFactory.create"
+          },
+          {
+            "id": "module",
+            "text": "В каждом модуле"
+          },
+          {
+            "id": "controller",
+            "text": "В контроллере"
+          },
+          {
+            "id": "package",
+            "text": "В package.json"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "main",
+        "explanation": "Функция bootstrap."
+      }
+    },
+    {
+      "slug": "cn-gen",
+      "type": "quiz.single_choice",
+      "title": "Генератор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-create"
+      ],
+      "presentation": {
+        "question": "Что создаёт nest g resource courses?",
+        "options": [
+          {
+            "id": "all",
+            "text": "Модуль, контроллер, сервис, DTO и тесты для ресурса"
+          },
+          {
+            "id": "db",
+            "text": "Базу данных"
+          },
+          {
+            "id": "page",
+            "text": "HTML-страницу"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "all",
+        "explanation": "Меньше шаблонного кода."
+      }
+    },
+    {
+      "slug": "cn-dev",
+      "type": "quiz.short_text",
+      "title": "Разработка",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "ns-create"
+      ],
+      "presentation": {
+        "question": "Какой npm-скрипт запускает сервер с перезапуском при изменениях? Например, start:…"
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "start:dev"
+        ],
+        "caseSensitive": false,
+        "explanation": "npm run start:dev."
+      }
+    },
+    {
+      "slug": "rp-logic",
+      "type": "quiz.single_choice",
+      "title": "Логика",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-flow"
+      ],
+      "presentation": {
+        "question": "Где должна жить бизнес-логика?",
+        "options": [
+          {
+            "id": "service",
+            "text": "В сервисе (провайдере)"
+          },
+          {
+            "id": "controller",
+            "text": "В контроллере"
+          },
+          {
+            "id": "main",
+            "text": "В main.ts"
+          },
+          {
+            "id": "module",
+            "text": "В декораторе модуля"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "service",
+        "explanation": "Контроллер — тонкий."
+      }
+    },
+    {
+      "slug": "rp-json",
+      "type": "quiz.single_choice",
+      "title": "Ответ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-flow"
+      ],
+      "presentation": {
+        "question": "Что делает Nest с объектом, который вернул метод контроллера?",
+        "options": [
+          {
+            "id": "json",
+            "text": "Превращает в JSON-ответ с кодом 200"
+          },
+          {
+            "id": "html",
+            "text": "Рендерит HTML"
+          },
+          {
+            "id": "ignore",
+            "text": "Игнорирует"
+          },
+          {
+            "id": "error",
+            "text": "Выдаёт ошибку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "json",
+        "explanation": "Для POST по умолчанию — 201."
+      }
+    },
+    {
+      "slug": "rp-inject",
+      "type": "quiz.single_choice",
+      "title": "Сервис",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-flow"
+      ],
+      "presentation": {
+        "question": "Как сервис попадает в контроллер?",
+        "options": [
+          {
+            "id": "ctor",
+            "text": "Через параметр конструктора — его внедряет Nest"
+          },
+          {
+            "id": "new",
+            "text": "Через new в каждом методе"
+          },
+          {
+            "id": "global",
+            "text": "Через глобальную переменную"
+          },
+          {
+            "id": "import",
+            "text": "Только import"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ctor",
+        "explanation": "Внедрение зависимостей."
+      }
+    },
+    {
+      "slug": "pd-singleton",
+      "type": "quiz.single_choice",
+      "title": "Экземпляры",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-di"
+      ],
+      "presentation": {
+        "question": "Сколько экземпляров провайдера создаёт Nest по умолчанию?",
+        "options": [
+          {
+            "id": "one",
+            "text": "Один на всё приложение"
+          },
+          {
+            "id": "each",
+            "text": "Новый на каждый запрос"
+          },
+          {
+            "id": "zero",
+            "text": "Ни одного"
+          },
+          {
+            "id": "two",
+            "text": "Два"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "Можно поменять область действия."
+      }
+    },
+    {
+      "slug": "pd-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-di"
+      ],
+      "presentation": {
+        "question": "Главная польза внедрения зависимостей?",
+        "options": [
+          {
+            "id": "swap",
+            "text": "Зависимости легко заменить, например в тестах"
+          },
+          {
+            "id": "speed",
+            "text": "Скорость"
+          },
+          {
+            "id": "css",
+            "text": "Стили"
+          },
+          {
+            "id": "none",
+            "text": "Никакой"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "swap",
+        "explanation": "Подделка вместо базы."
+      }
+    },
+    {
+      "slug": "pd-factory",
+      "type": "quiz.single_choice",
+      "title": "Фабрика",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-di"
+      ],
+      "presentation": {
+        "question": "Как внедрить клиент, который создаётся из настроек?",
+        "options": [
+          {
+            "id": "factory",
+            "text": "Провайдер с useFactory и inject"
+          },
+          {
+            "id": "new",
+            "text": "new в каждом сервисе"
+          },
+          {
+            "id": "global",
+            "text": "Глобальная переменная"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "factory",
+        "explanation": "Или useValue для готового значения."
+      }
+    },
+    {
+      "slug": "fm-exports",
+      "type": "quiz.single_choice",
+      "title": "exports",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-modules"
+      ],
+      "presentation": {
+        "question": "Что видят другие модули?",
+        "options": [
+          {
+            "id": "exported",
+            "text": "Только экспортированные провайдеры"
+          },
+          {
+            "id": "all",
+            "text": "Всё содержимое модуля"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          },
+          {
+            "id": "controllers",
+            "text": "Только контроллеры"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "exported",
+        "explanation": "Остальное — внутреннее."
+      }
+    },
+    {
+      "slug": "fm-cycle",
+      "type": "quiz.single_choice",
+      "title": "Цикл",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-modules"
+      ],
+      "presentation": {
+        "question": "Что означает взаимный импорт двух модулей?",
+        "options": [
+          {
+            "id": "bad",
+            "text": "Границы модулей проведены неудачно"
+          },
+          {
+            "id": "good",
+            "text": "Хорошую архитектуру"
+          },
+          {
+            "id": "fast",
+            "text": "Ускорение"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "bad",
+        "explanation": "forwardRef — костыль."
+      }
+    },
+    {
+      "slug": "fm-name",
+      "type": "quiz.single_choice",
+      "title": "Имена",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-modules"
+      ],
+      "presentation": {
+        "question": "Как лучше делить приложение на модули?",
+        "options": [
+          {
+            "id": "domain",
+            "text": "По предметным областям: courses, billing"
+          },
+          {
+            "id": "layers",
+            "text": "По слоям: все контроллеры в один модуль"
+          },
+          {
+            "id": "size",
+            "text": "По размеру файлов"
+          },
+          {
+            "id": "random",
+            "text": "Случайно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "domain",
+        "explanation": "Связанное — вместе."
+      }
+    },
+    {
+      "slug": "sl-request",
+      "type": "quiz.single_choice",
+      "title": "Область запроса",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-lifecycle"
+      ],
+      "presentation": {
+        "question": "Чем плох провайдер с областью запроса?",
+        "options": [
+          {
+            "id": "cost",
+            "text": "Он создаётся на каждый запрос — это дороже"
+          },
+          {
+            "id": "insecure",
+            "text": "Он небезопасен"
+          },
+          {
+            "id": "slow",
+            "text": "Он ломает базу"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cost",
+        "explanation": "Только когда нужно."
+      }
+    },
+    {
+      "slug": "sl-shutdown",
+      "type": "quiz.single_choice",
+      "title": "Остановка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-lifecycle"
+      ],
+      "presentation": {
+        "question": "Зачем enableShutdownHooks?",
+        "options": [
+          {
+            "id": "graceful",
+            "text": "Чтобы при SIGTERM закрыть соединения и доработать запросы"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "log",
+            "text": "Для логов"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "graceful",
+        "explanation": "Мягкая остановка."
+      }
+    },
+    {
+      "slug": "sl-init",
+      "type": "quiz.single_choice",
+      "title": "Старт",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-lifecycle"
+      ],
+      "presentation": {
+        "question": "Где удобно подключиться к внешнему брокеру при запуске?",
+        "options": [
+          {
+            "id": "init",
+            "text": "В onModuleInit провайдера"
+          },
+          {
+            "id": "ctor",
+            "text": "Синхронно в конструкторе"
+          },
+          {
+            "id": "controller",
+            "text": "В каждом запросе контроллера"
+          },
+          {
+            "id": "none",
+            "text": "Нигде"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "init",
+        "explanation": "Асинхронно и один раз."
+      }
+    },
+    {
+      "slug": "rt-patch",
+      "type": "quiz.single_choice",
+      "title": "Изменение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-routes"
+      ],
+      "presentation": {
+        "question": "Каким методом частично изменить курс?",
+        "options": [
+          {
+            "id": "patch",
+            "text": "PATCH /courses/:slug"
+          },
+          {
+            "id": "get",
+            "text": "GET /courses/update"
+          },
+          {
+            "id": "post",
+            "text": "POST /updateCourse"
+          },
+          {
+            "id": "delete",
+            "text": "DELETE"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "patch",
+        "explanation": "Действие — методом, не словом в пути."
+      }
+    },
+    {
+      "slug": "rt-prefix",
+      "type": "quiz.single_choice",
+      "title": "Префикс",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-routes"
+      ],
+      "presentation": {
+        "question": "Какой путь у @Get(\":slug\") в @Controller(\"courses\")?",
+        "options": [
+          {
+            "id": "path",
+            "text": "/courses/:slug"
+          },
+          {
+            "id": "slug",
+            "text": "/:slug"
+          },
+          {
+            "id": "controller",
+            "text": "/controller/courses"
+          },
+          {
+            "id": "get",
+            "text": "/get/courses"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "path",
+        "explanation": "Префикс + путь метода."
+      }
+    },
+    {
+      "slug": "rt-version",
+      "type": "quiz.single_choice",
+      "title": "Версии",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-routes"
+      ],
+      "presentation": {
+        "question": "Зачем версии API вроде /v1/?",
+        "options": [
+          {
+            "id": "compat",
+            "text": "Менять API, не ломая старых клиентов"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "compat",
+        "explanation": "Старые приложения продолжают работать."
+      }
+    },
+    {
+      "slug": "pb-query",
+      "type": "quiz.single_choice",
+      "title": "Фильтры",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-params"
+      ],
+      "presentation": {
+        "question": "Как получить page из /courses?page=2?",
+        "options": [
+          {
+            "id": "query",
+            "text": "@Query(\"page\")"
+          },
+          {
+            "id": "param",
+            "text": "@Param(\"page\")"
+          },
+          {
+            "id": "body",
+            "text": "@Body(\"page\")"
+          },
+          {
+            "id": "header",
+            "text": "@Headers(\"page\")"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "query",
+        "explanation": "Строка запроса."
+      }
+    },
+    {
+      "slug": "pb-type",
+      "type": "quiz.single_choice",
+      "title": "Тип",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-params"
+      ],
+      "presentation": {
+        "question": "Каким типом приходит id из пути без преобразования?",
+        "options": [
+          {
+            "id": "string",
+            "text": "Строкой"
+          },
+          {
+            "id": "number",
+            "text": "Числом"
+          },
+          {
+            "id": "object",
+            "text": "Объектом"
+          },
+          {
+            "id": "null",
+            "text": "null"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "string",
+        "explanation": "ParseIntPipe превратит в число."
+      }
+    },
+    {
+      "slug": "pb-400",
+      "type": "quiz.single_choice",
+      "title": "Неверный id",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-params"
+      ],
+      "presentation": {
+        "question": "Что сделает ParseIntPipe с id = \"abc\"?",
+        "options": [
+          {
+            "id": "400",
+            "text": "Ответит ошибкой 400"
+          },
+          {
+            "id": "zero",
+            "text": "Превратит в 0"
+          },
+          {
+            "id": "pass",
+            "text": "Пропустит строку дальше"
+          },
+          {
+            "id": "500",
+            "text": "Упадёт с 500"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "400",
+        "explanation": "Неверный ввод не доходит до базы."
+      }
+    },
+    {
+      "slug": "rs-404",
+      "type": "quiz.single_choice",
+      "title": "Не найдено",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-responses"
+      ],
+      "presentation": {
+        "question": "Как вернуть 404 из сервиса?",
+        "options": [
+          {
+            "id": "throw",
+            "text": "throw new NotFoundException()"
+          },
+          {
+            "id": "return",
+            "text": "return null и надеяться"
+          },
+          {
+            "id": "res",
+            "text": "res.status(404) в сервисе"
+          },
+          {
+            "id": "log",
+            "text": "console.log"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "throw",
+        "explanation": "Nest превратит исключение в ответ."
+      }
+    },
+    {
+      "slug": "rs-204",
+      "type": "quiz.single_choice",
+      "title": "Удаление",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-responses"
+      ],
+      "presentation": {
+        "question": "Какой код уместен для успешного удаления без тела ответа?",
+        "options": [
+          {
+            "id": "204",
+            "text": "204 No Content"
+          },
+          {
+            "id": "200",
+            "text": "Только 200"
+          },
+          {
+            "id": "404",
+            "text": "404"
+          },
+          {
+            "id": "500",
+            "text": "500"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "204",
+        "explanation": "@HttpCode(204)."
+      }
+    },
+    {
+      "slug": "rs-page",
+      "type": "quiz.single_choice",
+      "title": "Большие списки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-responses"
+      ],
+      "presentation": {
+        "question": "Как отдавать список из миллиона записей?",
+        "options": [
+          {
+            "id": "pages",
+            "text": "Частями: страницы или курсор"
+          },
+          {
+            "id": "all",
+            "text": "Всё одним ответом"
+          },
+          {
+            "id": "csv",
+            "text": "Только CSV-файлом"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "pages",
+        "explanation": "{ items, nextCursor }."
+      }
+    },
+    {
+      "slug": "dt-what",
+      "type": "quiz.single_choice",
+      "title": "DTO",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-dto"
+      ],
+      "presentation": {
+        "question": "Что описывает DTO?",
+        "options": [
+          {
+            "id": "input",
+            "text": "Какие данные клиент может прислать"
+          },
+          {
+            "id": "db",
+            "text": "Таблицу базы"
+          },
+          {
+            "id": "route",
+            "text": "Маршрут"
+          },
+          {
+            "id": "css",
+            "text": "Стили"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "input",
+        "explanation": "Не модель базы."
+      }
+    },
+    {
+      "slug": "dt-partial",
+      "type": "quiz.single_choice",
+      "title": "Изменение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-dto"
+      ],
+      "presentation": {
+        "question": "Как получить DTO изменения со всеми необязательными полями?",
+        "options": [
+          {
+            "id": "partial",
+            "text": "PartialType(CreateCourseDto)"
+          },
+          {
+            "id": "copy",
+            "text": "Скопировать класс руками"
+          },
+          {
+            "id": "any",
+            "text": "Использовать any"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "partial",
+        "explanation": "Правила не дублируются."
+      }
+    },
+    {
+      "slug": "dt-leak",
+      "type": "quiz.single_choice",
+      "title": "Утечка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-dto"
+      ],
+      "presentation": {
+        "question": "Почему нельзя отдавать наружу запись пользователя из базы целиком?",
+        "options": [
+          {
+            "id": "secret",
+            "text": "В ней могут быть хэш пароля и внутренние поля"
+          },
+          {
+            "id": "size",
+            "text": "Она слишком большая"
+          },
+          {
+            "id": "slow",
+            "text": "Это медленно"
+          },
+          {
+            "id": "none",
+            "text": "Можно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "secret",
+        "explanation": "Отдельный объект ответа."
+      }
+    },
+    {
+      "slug": "vp-whitelist",
+      "type": "quiz.single_choice",
+      "title": "Лишнее поле",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-validate"
+      ],
+      "presentation": {
+        "question": "Что будет с полем isAdmin в теле, если его нет в DTO и включён whitelist?",
+        "options": [
+          {
+            "id": "dropped",
+            "text": "Оно будет отброшено"
+          },
+          {
+            "id": "saved",
+            "text": "Сохранится в базу"
+          },
+          {
+            "id": "admin",
+            "text": "Пользователь станет админом"
+          },
+          {
+            "id": "crash",
+            "text": "Сервер упадёт"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dropped",
+        "explanation": "forbidNonWhitelisted — ответит 400."
+      }
+    },
+    {
+      "slug": "vp-global",
+      "type": "quiz.single_choice",
+      "title": "Глобально",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-validate"
+      ],
+      "presentation": {
+        "question": "Зачем подключать ValidationPipe глобально?",
+        "options": [
+          {
+            "id": "forget",
+            "text": "Чтобы проверка работала в каждом маршруте и её нельзя было забыть"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "log",
+            "text": "Для логов"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "forget",
+        "explanation": "Один раз в main.ts."
+      }
+    },
+    {
+      "slug": "vp-transform",
+      "type": "quiz.single_choice",
+      "title": "transform",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-validate"
+      ],
+      "presentation": {
+        "question": "Что делает опция transform?",
+        "options": [
+          {
+            "id": "types",
+            "text": "Приводит входные данные к типам и классам DTO"
+          },
+          {
+            "id": "encrypt",
+            "text": "Шифрует данные"
+          },
+          {
+            "id": "translate",
+            "text": "Переводит текст"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "types",
+        "explanation": "page — числом."
+      }
+    },
+    {
+      "slug": "cv-nested",
+      "type": "quiz.single_choice",
+      "title": "Вложенные",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-rules"
+      ],
+      "presentation": {
+        "question": "Что нужно, чтобы проверить массив вложенных объектов в DTO?",
+        "options": [
+          {
+            "id": "nested",
+            "text": "@ValidateNested({ each: true }) и @Type"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего, проверится само"
+          },
+          {
+            "id": "any",
+            "text": "Тип any"
+          },
+          {
+            "id": "json",
+            "text": "JSON.parse"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "nested",
+        "explanation": "Иначе внутренность не проверится."
+      }
+    },
+    {
+      "slug": "cv-unique",
+      "type": "quiz.single_choice",
+      "title": "Уникальность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-rules"
+      ],
+      "presentation": {
+        "question": "Где проверять, что название курса уникально?",
+        "options": [
+          {
+            "id": "service",
+            "text": "В сервисе, с обращением к базе"
+          },
+          {
+            "id": "dto",
+            "text": "Только в DTO"
+          },
+          {
+            "id": "client",
+            "text": "Только на фронтенде"
+          },
+          {
+            "id": "none",
+            "text": "Нигде"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "service",
+        "explanation": "Это бизнес-правило."
+      }
+    },
+    {
+      "slug": "cv-zod",
+      "type": "quiz.single_choice",
+      "title": "Zod",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-rules"
+      ],
+      "presentation": {
+        "question": "Чем привлекателен Zod для проверки в Nest?",
+        "options": [
+          {
+            "id": "shared",
+            "text": "Одна схема может использоваться и на фронте, и на бэке"
+          },
+          {
+            "id": "fast",
+            "text": "Он всегда в 100 раз быстрее"
+          },
+          {
+            "id": "sql",
+            "text": "Он пишет SQL"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "shared",
+        "explanation": "Через свой пайп."
+      }
+    },
+    {
+      "slug": "or-provider",
+      "type": "quiz.single_choice",
+      "title": "Клиент",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-orm"
+      ],
+      "presentation": {
+        "question": "Как подключить клиент базы в Nest?",
+        "options": [
+          {
+            "id": "provider",
+            "text": "Обернуть в провайдер модуля базы и экспортировать"
+          },
+          {
+            "id": "global",
+            "text": "Создавать new в каждом запросе"
+          },
+          {
+            "id": "controller",
+            "text": "Хранить в контроллере"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "provider",
+        "explanation": "Один пул на приложение."
+      }
+    },
+    {
+      "slug": "or-repo",
+      "type": "quiz.single_choice",
+      "title": "Репозиторий",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-orm"
+      ],
+      "presentation": {
+        "question": "Зачем отдельный класс-репозиторий?",
+        "options": [
+          {
+            "id": "single",
+            "text": "Запросы к таблице в одном месте, сервис легко тестировать"
+          },
+          {
+            "id": "speed",
+            "text": "Скорость"
+          },
+          {
+            "id": "css",
+            "text": "Стили"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "single",
+        "explanation": "Подмена в тестах."
+      }
+    },
+    {
+      "slug": "or-options",
+      "type": "quiz.multiple_choice",
+      "title": "Варианты",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "ns-orm"
+      ],
+      "presentation": {
+        "question": "Какие ORM используют с NestJS?",
+        "options": [
+          {
+            "id": "prisma",
+            "text": "Prisma"
+          },
+          {
+            "id": "typeorm",
+            "text": "TypeORM"
+          },
+          {
+            "id": "drizzle",
+            "text": "Drizzle"
+          },
+          {
+            "id": "jquery",
+            "text": "jQuery"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "prisma",
+          "typeorm",
+          "drizzle"
+        ],
+        "explanation": "jQuery — для DOM."
+      }
+    },
+    {
+      "slug": "mg-edit",
+      "type": "quiz.single_choice",
+      "title": "Старая миграция",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-migrations"
+      ],
+      "presentation": {
+        "question": "Можно ли исправить уже применённую миграцию?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, пишут новую миграцию"
+          },
+          {
+            "id": "yes",
+            "text": "Да, свободно"
+          },
+          {
+            "id": "prod",
+            "text": "Только на проде"
+          },
+          {
+            "id": "dev",
+            "text": "Только вечером"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "История везде одинакова."
+      }
+    },
+    {
+      "slug": "mg-when",
+      "type": "quiz.single_choice",
+      "title": "Когда",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-migrations"
+      ],
+      "presentation": {
+        "question": "Когда применять миграции при выкладке?",
+        "options": [
+          {
+            "id": "before",
+            "text": "До запуска новой версии кода"
+          },
+          {
+            "id": "after",
+            "text": "Через неделю"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "manual",
+            "text": "Только руками по SSH"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "before",
+        "explanation": "migrate deploy в конвейере."
+      }
+    },
+    {
+      "slug": "mg-review",
+      "type": "quiz.single_choice",
+      "title": "Обзор",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-migrations"
+      ],
+      "presentation": {
+        "question": "Чем полезна миграция-файл в PR?",
+        "options": [
+          {
+            "id": "review",
+            "text": "Изменение схемы видно и проверяется как код"
+          },
+          {
+            "id": "speed",
+            "text": "Ускоряет базу"
+          },
+          {
+            "id": "backup",
+            "text": "Это резервная копия"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "review",
+        "explanation": "SQL виден ревьюеру."
+      }
+    },
+    {
+      "slug": "tr-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-transactions"
+      ],
+      "presentation": {
+        "question": "Зачем создание заказа и списание баланса делать в одной транзакции?",
+        "options": [
+          {
+            "id": "atomic",
+            "text": "Чтобы не было заказа без оплаты и наоборот"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "log",
+            "text": "Для логов"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "atomic",
+        "explanation": "Всё или ничего."
+      }
+    },
+    {
+      "slug": "tr-where",
+      "type": "quiz.single_choice",
+      "title": "Где",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-transactions"
+      ],
+      "presentation": {
+        "question": "Кто должен открывать транзакцию?",
+        "options": [
+          {
+            "id": "service",
+            "text": "Сервис, который знает всю бизнес-операцию"
+          },
+          {
+            "id": "controller",
+            "text": "Контроллер"
+          },
+          {
+            "id": "dto",
+            "text": "DTO"
+          },
+          {
+            "id": "module",
+            "text": "Модуль"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "service",
+        "explanation": "Передаёт её репозиториям."
+      }
+    },
+    {
+      "slug": "tr-outbox",
+      "type": "quiz.single_choice",
+      "title": "Outbox",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-transactions"
+      ],
+      "presentation": {
+        "question": "Что решает таблица outbox?",
+        "options": [
+          {
+            "id": "event",
+            "text": "Событие сохраняется атомарно с данными и не теряется"
+          },
+          {
+            "id": "cache",
+            "text": "Кэширование"
+          },
+          {
+            "id": "auth",
+            "text": "Вход"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "event",
+        "explanation": "Отправку делает отдельный процесс."
+      }
+    },
+    {
+      "slug": "an-hash",
+      "type": "quiz.single_choice",
+      "title": "Пароль",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-authn"
+      ],
+      "presentation": {
+        "question": "Как хранить пароли?",
+        "options": [
+          {
+            "id": "argon",
+            "text": "Хэшем медленной функции argon2 или bcrypt"
+          },
+          {
+            "id": "plain",
+            "text": "Открытым текстом"
+          },
+          {
+            "id": "base64",
+            "text": "В base64"
+          },
+          {
+            "id": "md5",
+            "text": "Быстрым MD5"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "argon",
+        "explanation": "Медленная функция мешает перебору."
+      }
+    },
+    {
+      "slug": "an-jwt",
+      "type": "quiz.single_choice",
+      "title": "JWT",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-authn"
+      ],
+      "presentation": {
+        "question": "Главный недостаток JWT по сравнению с сессией?",
+        "options": [
+          {
+            "id": "revoke",
+            "text": "Его сложно отозвать до истечения срока"
+          },
+          {
+            "id": "slow",
+            "text": "Он медленный"
+          },
+          {
+            "id": "size",
+            "text": "Он всегда больше мегабайта"
+          },
+          {
+            "id": "none",
+            "text": "Недостатков нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "revoke",
+        "explanation": "Поэтому срок короткий."
+      }
+    },
+    {
+      "slug": "an-error",
+      "type": "quiz.single_choice",
+      "title": "Ошибка входа",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-authn"
+      ],
+      "presentation": {
+        "question": "Какое сообщение показывать при неудачном входе?",
+        "options": [
+          {
+            "id": "same",
+            "text": "Одинаковое: «неверная почта или пароль»"
+          },
+          {
+            "id": "detail",
+            "text": "«Такой почты нет»"
+          },
+          {
+            "id": "code",
+            "text": "Код ошибки базы"
+          },
+          {
+            "id": "none",
+            "text": "Никакое"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "same",
+        "explanation": "Не раскрываем зарегистрированные почты."
+      }
+    },
+    {
+      "slug": "gd-what",
+      "type": "quiz.single_choice",
+      "title": "Гард",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-guards"
+      ],
+      "presentation": {
+        "question": "Что решает гард?",
+        "options": [
+          {
+            "id": "allow",
+            "text": "Допускать ли запрос до обработчика"
+          },
+          {
+            "id": "format",
+            "text": "Формат ответа"
+          },
+          {
+            "id": "db",
+            "text": "Подключение к базе"
+          },
+          {
+            "id": "log",
+            "text": "Что писать в лог"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "allow",
+        "explanation": "canActivate."
+      }
+    },
+    {
+      "slug": "gd-default",
+      "type": "quiz.single_choice",
+      "title": "По умолчанию",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-guards"
+      ],
+      "presentation": {
+        "question": "Почему лучше глобальный гард и @Public для открытых маршрутов?",
+        "options": [
+          {
+            "id": "closed",
+            "text": "Новый маршрут не окажется случайно открытым"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "closed",
+        "explanation": "Закрыто по умолчанию."
+      }
+    },
+    {
+      "slug": "gd-user",
+      "type": "quiz.single_choice",
+      "title": "Пользователь",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-guards"
+      ],
+      "presentation": {
+        "question": "Как удобно получить текущего пользователя в методе контроллера?",
+        "options": [
+          {
+            "id": "decorator",
+            "text": "Своим декоратором параметра вроде @CurrentUser()"
+          },
+          {
+            "id": "global",
+            "text": "Из глобальной переменной"
+          },
+          {
+            "id": "db",
+            "text": "Запросом к базе в каждом методе"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "decorator",
+        "explanation": "Гард кладёт пользователя в запрос."
+      }
+    },
+    {
+      "slug": "az-owner",
+      "type": "quiz.single_choice",
+      "title": "Владение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-authz"
+      ],
+      "presentation": {
+        "question": "Почему проверки роли недостаточно для изменения профиля?",
+        "options": [
+          {
+            "id": "owner",
+            "text": "Нужно ещё проверить, что профиль принадлежит пользователю"
+          },
+          {
+            "id": "roles",
+            "text": "Роли не работают"
+          },
+          {
+            "id": "none",
+            "text": "Достаточно"
+          },
+          {
+            "id": "seo",
+            "text": "Из-за поисковиков"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "owner",
+        "explanation": "Иначе подставят чужой id."
+      }
+    },
+    {
+      "slug": "az-reflector",
+      "type": "quiz.single_choice",
+      "title": "Reflector",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-authz"
+      ],
+      "presentation": {
+        "question": "Зачем Reflector в гарде ролей?",
+        "options": [
+          {
+            "id": "meta",
+            "text": "Прочитать метаданные @Roles с маршрута"
+          },
+          {
+            "id": "db",
+            "text": "Подключиться к базе"
+          },
+          {
+            "id": "mirror",
+            "text": "Отразить запрос"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "meta",
+        "explanation": "Роли из декоратора."
+      }
+    },
+    {
+      "slug": "az-policy",
+      "type": "quiz.single_choice",
+      "title": "Политики",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-authz"
+      ],
+      "presentation": {
+        "question": "Что дают библиотеки политик вроде CASL?",
+        "options": [
+          {
+            "id": "central",
+            "text": "Правила доступа описаны в одном месте и проверяются одинаково"
+          },
+          {
+            "id": "speed",
+            "text": "Скорость"
+          },
+          {
+            "id": "ui",
+            "text": "Интерфейс"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "central",
+        "explanation": "Права не размазаны по коду."
+      }
+    },
+    {
+      "slug": "po-first",
+      "type": "quiz.single_choice",
+      "title": "Раньше всех",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-order"
+      ],
+      "presentation": {
+        "question": "Какой этап видит запрос раньше всех?",
+        "options": [
+          {
+            "id": "middleware",
+            "text": "Middleware"
+          },
+          {
+            "id": "pipe",
+            "text": "Пайп"
+          },
+          {
+            "id": "filter",
+            "text": "Фильтр исключений"
+          },
+          {
+            "id": "interceptor",
+            "text": "Перехватчик после обработчика"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "middleware",
+        "explanation": "До маршрутизации."
+      }
+    },
+    {
+      "slug": "po-guard-pipe",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-order"
+      ],
+      "presentation": {
+        "question": "Что выполняется раньше — гард или пайп проверки?",
+        "options": [
+          {
+            "id": "guard",
+            "text": "Гард"
+          },
+          {
+            "id": "pipe",
+            "text": "Пайп"
+          },
+          {
+            "id": "same",
+            "text": "Одновременно"
+          },
+          {
+            "id": "never",
+            "text": "Пайп не выполняется"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "guard",
+        "explanation": "Сначала «пускать ли», потом данные."
+      }
+    },
+    {
+      "slug": "po-where",
+      "type": "quiz.single_choice",
+      "title": "Права",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-order"
+      ],
+      "presentation": {
+        "question": "Где проверять права доступа?",
+        "options": [
+          {
+            "id": "guard",
+            "text": "В гарде"
+          },
+          {
+            "id": "pipe",
+            "text": "В пайпе"
+          },
+          {
+            "id": "filter",
+            "text": "В фильтре исключений"
+          },
+          {
+            "id": "middleware",
+            "text": "Только в middleware"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "guard",
+        "explanation": "Каждый этап — для своего."
+      }
+    },
+    {
+      "slug": "ic-what",
+      "type": "quiz.single_choice",
+      "title": "Перехватчик",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-interceptors"
+      ],
+      "presentation": {
+        "question": "Что может перехватчик?",
+        "options": [
+          {
+            "id": "around",
+            "text": "Выполнить код до и после обработчика и изменить результат"
+          },
+          {
+            "id": "only-before",
+            "text": "Только код до маршрутизации"
+          },
+          {
+            "id": "db",
+            "text": "Только подключиться к базе"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "around",
+        "explanation": "Обёртка вокруг обработчика."
+      }
+    },
+    {
+      "slug": "ic-timing",
+      "type": "quiz.single_choice",
+      "title": "Время",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-interceptors"
+      ],
+      "presentation": {
+        "question": "Как измерить время всех запросов, не меняя контроллеры?",
+        "options": [
+          {
+            "id": "interceptor",
+            "text": "Глобальным перехватчиком"
+          },
+          {
+            "id": "each",
+            "text": "Добавить замер в каждый метод"
+          },
+          {
+            "id": "dto",
+            "text": "В DTO"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "interceptor",
+        "explanation": "tap после next.handle()."
+      }
+    },
+    {
+      "slug": "ic-format",
+      "type": "quiz.single_choice",
+      "title": "Формат",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-interceptors"
+      ],
+      "presentation": {
+        "question": "Как сделать одинаковую форму всех ответов?",
+        "options": [
+          {
+            "id": "wrap",
+            "text": "Перехватчиком, который оборачивает результат"
+          },
+          {
+            "id": "manual",
+            "text": "Вручную в каждом методе"
+          },
+          {
+            "id": "filter",
+            "text": "Фильтром исключений"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "wrap",
+        "explanation": "Фронтенду проще."
+      }
+    },
+    {
+      "slug": "ef-unknown",
+      "type": "quiz.single_choice",
+      "title": "Неизвестная ошибка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-filters"
+      ],
+      "presentation": {
+        "question": "Что получит клиент при неожиданной ошибке TypeError?",
+        "options": [
+          {
+            "id": "500",
+            "text": "500 без внутренних деталей"
+          },
+          {
+            "id": "stack",
+            "text": "Полный стек ошибки"
+          },
+          {
+            "id": "200",
+            "text": "200 с пустым телом"
+          },
+          {
+            "id": "hang",
+            "text": "Ничего, запрос зависнет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "500",
+        "explanation": "Детали — в лог."
+      }
+    },
+    {
+      "slug": "ef-custom",
+      "type": "quiz.single_choice",
+      "title": "Свой фильтр",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-filters"
+      ],
+      "presentation": {
+        "question": "Зачем свой фильтр для CourseExistsError?",
+        "options": [
+          {
+            "id": "code",
+            "text": "Вернуть понятный код вроде 409 вместо 500"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "log",
+            "text": "Чтобы не писать лог"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "code",
+        "explanation": "Ошибка предметной области."
+      }
+    },
+    {
+      "slug": "ef-id",
+      "type": "quiz.single_choice",
+      "title": "Поддержка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-filters"
+      ],
+      "presentation": {
+        "question": "Как связать жалобу пользователя с записью в логе?",
+        "options": [
+          {
+            "id": "reqid",
+            "text": "Отдать клиенту идентификатор запроса, который есть в логе"
+          },
+          {
+            "id": "stack",
+            "text": "Показать клиенту стек"
+          },
+          {
+            "id": "email",
+            "text": "Попросить прислать скриншот"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "reqid",
+        "explanation": "Request id."
+      }
+    },
+    {
+      "slug": "cf-validate",
+      "type": "quiz.single_choice",
+      "title": "Проверка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-config"
+      ],
+      "presentation": {
+        "question": "Зачем проверять конфигурацию при старте приложения?",
+        "options": [
+          {
+            "id": "fail",
+            "text": "Чтобы сразу упасть при отсутствии важной настройки, а не через час"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fail",
+        "explanation": "Быстрая обратная связь."
+      }
+    },
+    {
+      "slug": "cf-where",
+      "type": "quiz.single_choice",
+      "title": "Источник",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-config"
+      ],
+      "presentation": {
+        "question": "Откуда ConfigModule берёт настройки?",
+        "options": [
+          {
+            "id": "env",
+            "text": "Из переменных окружения и файла .env"
+          },
+          {
+            "id": "code",
+            "text": "Только из кода"
+          },
+          {
+            "id": "db",
+            "text": "Из базы данных"
+          },
+          {
+            "id": "none",
+            "text": "Ниоткуда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "env",
+        "explanation": "Один образ — разные среды."
+      }
+    },
+    {
+      "slug": "cf-types",
+      "type": "quiz.single_choice",
+      "title": "Типы",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-config"
+      ],
+      "presentation": {
+        "question": "Чем плох доступ config.get(\"DB_URL\") по строке?",
+        "options": [
+          {
+            "id": "typo",
+            "text": "Опечатку в имени не поймает компилятор"
+          },
+          {
+            "id": "slow",
+            "text": "Он медленный"
+          },
+          {
+            "id": "secure",
+            "text": "Он небезопасен"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "typo",
+        "explanation": "Лучше типизированный объект."
+      }
+    },
+    {
+      "slug": "lg-struct",
+      "type": "quiz.single_choice",
+      "title": "Формат",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-logging"
+      ],
+      "presentation": {
+        "question": "Чем структурные JSON-логи лучше текстовых строк?",
+        "options": [
+          {
+            "id": "search",
+            "text": "Их легко искать и фильтровать по полям"
+          },
+          {
+            "id": "pretty",
+            "text": "Они красивее"
+          },
+          {
+            "id": "small",
+            "text": "Они всегда меньше"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "search",
+        "explanation": "Например, через pino."
+      }
+    },
+    {
+      "slug": "lg-secret",
+      "type": "quiz.single_choice",
+      "title": "Секреты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-logging"
+      ],
+      "presentation": {
+        "question": "Можно ли писать токен доступа в лог для отладки?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, секреты и личные данные в лог не пишут"
+          },
+          {
+            "id": "yes",
+            "text": "Да"
+          },
+          {
+            "id": "debug",
+            "text": "Да, на уровне debug"
+          },
+          {
+            "id": "prod",
+            "text": "Только в бою"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Лог читают многие."
+      }
+    },
+    {
+      "slug": "lg-reqid",
+      "type": "quiz.single_choice",
+      "title": "Связь",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-logging"
+      ],
+      "presentation": {
+        "question": "Зачем request id в каждой строке лога?",
+        "options": [
+          {
+            "id": "trace",
+            "text": "Чтобы найти всю историю одного запроса"
+          },
+          {
+            "id": "count",
+            "text": "Чтобы считать запросы"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "trace",
+        "explanation": "И отдавать его клиенту."
+      }
+    },
+    {
+      "slug": "oa-source",
+      "type": "quiz.single_choice",
+      "title": "Источник",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-openapi"
+      ],
+      "presentation": {
+        "question": "Откуда берётся документация в @nestjs/swagger?",
+        "options": [
+          {
+            "id": "code",
+            "text": "Из контроллеров, DTO и декораторов"
+          },
+          {
+            "id": "manual",
+            "text": "Только из ручного файла"
+          },
+          {
+            "id": "db",
+            "text": "Из базы данных"
+          },
+          {
+            "id": "none",
+            "text": "Ниоткуда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "code",
+        "explanation": "Не отстаёт от кода."
+      }
+    },
+    {
+      "slug": "oa-client",
+      "type": "quiz.single_choice",
+      "title": "Клиент",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-openapi"
+      ],
+      "presentation": {
+        "question": "Что можно сделать со спецификацией OpenAPI?",
+        "options": [
+          {
+            "id": "generate",
+            "text": "Сгенерировать типизированный клиент для фронтенда"
+          },
+          {
+            "id": "deploy",
+            "text": "Выложить сервер"
+          },
+          {
+            "id": "migrate",
+            "text": "Применить миграции"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "generate",
+        "explanation": "Поля не расходятся."
+      }
+    },
+    {
+      "slug": "oa-ui",
+      "type": "quiz.single_choice",
+      "title": "Страница",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-openapi"
+      ],
+      "presentation": {
+        "question": "Что показывает Swagger UI?",
+        "options": [
+          {
+            "id": "docs",
+            "text": "Интерактивную документацию API с примерами"
+          },
+          {
+            "id": "admin",
+            "text": "Админку базы"
+          },
+          {
+            "id": "logs",
+            "text": "Логи"
+          },
+          {
+            "id": "metrics",
+            "text": "Метрики"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "docs",
+        "explanation": "Можно отправить запрос прямо со страницы."
+      }
+    },
+    {
+      "slug": "ev-why",
+      "type": "quiz.single_choice",
+      "title": "Зачем",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-events"
+      ],
+      "presentation": {
+        "question": "Что даёт публикация события вместо прямого вызова модуля писем?",
+        "options": [
+          {
+            "id": "loose",
+            "text": "Источник не знает о подписчиках, новые реакции добавляются без его правок"
+          },
+          {
+            "id": "speed",
+            "text": "Скорость"
+          },
+          {
+            "id": "secure",
+            "text": "Безопасность"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "loose",
+        "explanation": "Слабая связь."
+      }
+    },
+    {
+      "slug": "ev-lost",
+      "type": "quiz.single_choice",
+      "title": "Надёжность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-events"
+      ],
+      "presentation": {
+        "question": "Что будет с событием в памяти, если процесс упал?",
+        "options": [
+          {
+            "id": "lost",
+            "text": "Оно потеряется"
+          },
+          {
+            "id": "saved",
+            "text": "Сохранится на диск"
+          },
+          {
+            "id": "retry",
+            "text": "Отправится повторно само"
+          },
+          {
+            "id": "db",
+            "text": "Запишется в базу"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lost",
+        "explanation": "Для важного — outbox."
+      }
+    },
+    {
+      "slug": "ev-sub",
+      "type": "quiz.single_choice",
+      "title": "Подписка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-events"
+      ],
+      "presentation": {
+        "question": "Каким декоратором подписаться на событие в Nest?",
+        "options": [
+          {
+            "id": "onevent",
+            "text": "@OnEvent(\"имя\")"
+          },
+          {
+            "id": "get",
+            "text": "@Get"
+          },
+          {
+            "id": "sub",
+            "text": "@Subscribe"
+          },
+          {
+            "id": "listen",
+            "text": "@Listen"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "onevent",
+        "explanation": "Модуль @nestjs/event-emitter."
+      }
+    },
+    {
+      "slug": "qc-why",
+      "type": "quiz.single_choice",
+      "title": "Очередь",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-queues"
+      ],
+      "presentation": {
+        "question": "Зачем выносить генерацию сертификата в очередь?",
+        "options": [
+          {
+            "id": "fast",
+            "text": "Запрос отвечает сразу, а работа идёт в фоне с повторами"
+          },
+          {
+            "id": "secure",
+            "text": "Для безопасности"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fast",
+        "explanation": "Пользователь не ждёт."
+      }
+    },
+    {
+      "slug": "qc-copies",
+      "type": "quiz.single_choice",
+      "title": "Копии",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-queues"
+      ],
+      "presentation": {
+        "question": "Сколько раз сработает @Cron на пяти экземплярах сервера без защиты?",
+        "options": [
+          {
+            "id": "five",
+            "text": "Пять раз"
+          },
+          {
+            "id": "one",
+            "text": "Один раз"
+          },
+          {
+            "id": "zero",
+            "text": "Ни разу"
+          },
+          {
+            "id": "random",
+            "text": "Случайно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "five",
+        "explanation": "Нужна блокировка."
+      }
+    },
+    {
+      "slug": "qc-dec",
+      "type": "quiz.short_text",
+      "title": "Расписание",
+      "instructions": "Введите короткий ответ без лишних пробелов.",
+      "skillKeys": [
+        "ns-queues"
+      ],
+      "presentation": {
+        "question": "Каким декоратором запустить метод по расписанию? Без @."
+      },
+      "validation": {
+        "acceptedAnswers": [
+          "Cron",
+          "cron"
+        ],
+        "caseSensitive": false,
+        "explanation": "@Cron(\"0 9 * * *\")."
+      }
+    },
+    {
+      "slug": "gw-auth",
+      "type": "quiz.single_choice",
+      "title": "Вход",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-ws"
+      ],
+      "presentation": {
+        "question": "Где проверять сессию для WebSocket?",
+        "options": [
+          {
+            "id": "connect",
+            "text": "При подключении сокета"
+          },
+          {
+            "id": "never",
+            "text": "Не нужно"
+          },
+          {
+            "id": "http",
+            "text": "Только в HTTP-маршрутах"
+          },
+          {
+            "id": "client",
+            "text": "Только на клиенте"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "connect",
+        "explanation": "Закрытые комнаты."
+      }
+    },
+    {
+      "slug": "gw-scale",
+      "type": "quiz.single_choice",
+      "title": "Масштаб",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-ws"
+      ],
+      "presentation": {
+        "question": "Как доставить событие клиентам, подключённым к разным серверам?",
+        "options": [
+          {
+            "id": "redis",
+            "text": "Через Redis-адаптер"
+          },
+          {
+            "id": "sticky",
+            "text": "Только одним сервером навсегда"
+          },
+          {
+            "id": "poll",
+            "text": "Опросом каждую секунду"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "redis",
+        "explanation": "Общая шина."
+      }
+    },
+    {
+      "slug": "gw-what",
+      "type": "quiz.single_choice",
+      "title": "Шлюз",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-ws"
+      ],
+      "presentation": {
+        "question": "Чем шлюз похож на контроллер?",
+        "options": [
+          {
+            "id": "handler",
+            "text": "Он принимает сообщения своего протокола и вызывает обработчики"
+          },
+          {
+            "id": "db",
+            "text": "Он хранит данные"
+          },
+          {
+            "id": "css",
+            "text": "Он рисует интерфейс"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "handler",
+        "explanation": "Только вместо HTTP — WebSocket."
+      }
+    },
+    {
+      "slug": "ut-mock",
+      "type": "quiz.single_choice",
+      "title": "Подмена",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-unit"
+      ],
+      "presentation": {
+        "question": "Как протестировать сервис без настоящей базы?",
+        "options": [
+          {
+            "id": "usevalue",
+            "text": "Подменить репозиторий провайдером useValue в TestingModule"
+          },
+          {
+            "id": "prod",
+            "text": "Подключить боевую базу"
+          },
+          {
+            "id": "skip",
+            "text": "Пропустить тест"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "usevalue",
+        "explanation": "Внедрение зависимостей помогает."
+      }
+    },
+    {
+      "slug": "ut-what",
+      "type": "quiz.single_choice",
+      "title": "Что",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-unit"
+      ],
+      "presentation": {
+        "question": "Что важнее всего покрыть модульными тестами?",
+        "options": [
+          {
+            "id": "rules",
+            "text": "Бизнес-правила и ошибки сервисов"
+          },
+          {
+            "id": "decorators",
+            "text": "Работу декораторов Nest"
+          },
+          {
+            "id": "imports",
+            "text": "Импорты"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rules",
+        "explanation": "Свой код, не фреймворк."
+      }
+    },
+    {
+      "slug": "ut-get",
+      "type": "quiz.single_choice",
+      "title": "Получить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-unit"
+      ],
+      "presentation": {
+        "question": "Как достать сервис из собранного тестового модуля?",
+        "options": [
+          {
+            "id": "get",
+            "text": "moduleRef.get(CoursesService)"
+          },
+          {
+            "id": "new",
+            "text": "new CoursesService() без зависимостей"
+          },
+          {
+            "id": "import",
+            "text": "import"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "get",
+        "explanation": "Зависимости уже подставлены."
+      }
+    },
+    {
+      "slug": "it-real",
+      "type": "quiz.single_choice",
+      "title": "Настоящая база",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-integration"
+      ],
+      "presentation": {
+        "question": "Почему репозитории тестируют на настоящей базе?",
+        "options": [
+          {
+            "id": "sql",
+            "text": "Подделка не поймает ошибку SQL и ограничений базы"
+          },
+          {
+            "id": "fast",
+            "text": "Это всегда быстрее"
+          },
+          {
+            "id": "law",
+            "text": "По закону"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "sql",
+        "explanation": "Ограничения, индексы, транзакции."
+      }
+    },
+    {
+      "slug": "it-tc",
+      "type": "quiz.single_choice",
+      "title": "Testcontainers",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-integration"
+      ],
+      "presentation": {
+        "question": "Что делает Testcontainers?",
+        "options": [
+          {
+            "id": "container",
+            "text": "Поднимает контейнер с базой на время тестов"
+          },
+          {
+            "id": "deploy",
+            "text": "Выкладывает сайт"
+          },
+          {
+            "id": "mock",
+            "text": "Подделывает базу в памяти"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "container",
+        "explanation": "Чистая база каждый раз."
+      }
+    },
+    {
+      "slug": "it-iso",
+      "type": "quiz.single_choice",
+      "title": "Изоляция",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-integration"
+      ],
+      "presentation": {
+        "question": "Как сделать тесты независимыми от порядка?",
+        "options": [
+          {
+            "id": "own",
+            "text": "Каждый тест готовит свои данные или откатывает транзакцию"
+          },
+          {
+            "id": "shared",
+            "text": "Общие данные для всех"
+          },
+          {
+            "id": "order",
+            "text": "Строгий порядок запуска"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "own",
+        "explanation": "Независимые тесты."
+      }
+    },
+    {
+      "slug": "e2-what",
+      "type": "quiz.single_choice",
+      "title": "supertest",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-e2e"
+      ],
+      "presentation": {
+        "question": "Что делает supertest?",
+        "options": [
+          {
+            "id": "http",
+            "text": "Отправляет HTTP-запросы к приложению в тесте"
+          },
+          {
+            "id": "db",
+            "text": "Подключает базу"
+          },
+          {
+            "id": "browser",
+            "text": "Открывает браузер"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "http",
+        "explanation": "Без настоящей сети."
+      }
+    },
+    {
+      "slug": "e2-config",
+      "type": "quiz.single_choice",
+      "title": "Настройки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-e2e"
+      ],
+      "presentation": {
+        "question": "Почему в тестовом приложении нужны те же глобальные пайпы и гарды?",
+        "options": [
+          {
+            "id": "same",
+            "text": "Иначе тест проверяет приложение, отличное от боевого"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "law",
+            "text": "По закону"
+          },
+          {
+            "id": "none",
+            "text": "Не нужны"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "same",
+        "explanation": "Вынеси настройку в общую функцию."
+      }
+    },
+    {
+      "slug": "e2-scope",
+      "type": "quiz.single_choice",
+      "title": "Что тестировать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-e2e"
+      ],
+      "presentation": {
+        "question": "Какие сценарии важнее всего покрыть сквозными тестами?",
+        "options": [
+          {
+            "id": "key",
+            "text": "Вход, запись на курс, оплату и права доступа"
+          },
+          {
+            "id": "all",
+            "text": "Каждую строку кода"
+          },
+          {
+            "id": "css",
+            "text": "Стили"
+          },
+          {
+            "id": "none",
+            "text": "Никакие"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "key",
+        "explanation": "Ключевые пути."
+      }
+    },
+    {
+      "slug": "hd-cors",
+      "type": "quiz.single_choice",
+      "title": "CORS",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-harden"
+      ],
+      "presentation": {
+        "question": "Как правильно настроить CORS для API своего фронтенда?",
+        "options": [
+          {
+            "id": "exact",
+            "text": "Разрешить только точный адрес своего фронтенда"
+          },
+          {
+            "id": "star",
+            "text": "Разрешить * вместе с cookie"
+          },
+          {
+            "id": "off",
+            "text": "Отключить проверку на сервере"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "exact",
+        "explanation": "* с credentials запрещено браузером."
+      }
+    },
+    {
+      "slug": "hd-throttle",
+      "type": "quiz.single_choice",
+      "title": "Частота",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-harden"
+      ],
+      "presentation": {
+        "question": "Что делает ThrottlerModule?",
+        "options": [
+          {
+            "id": "limit",
+            "text": "Ограничивает число запросов за период"
+          },
+          {
+            "id": "cache",
+            "text": "Кэширует ответы"
+          },
+          {
+            "id": "log",
+            "text": "Пишет логи"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "limit",
+        "explanation": "Защита от перебора и спама."
+      }
+    },
+    {
+      "slug": "hd-body",
+      "type": "quiz.single_choice",
+      "title": "Размер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-harden"
+      ],
+      "presentation": {
+        "question": "Зачем ограничивать размер тела запроса?",
+        "options": [
+          {
+            "id": "dos",
+            "text": "Чтобы один огромный запрос не занял всю память"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "style",
+            "text": "Для стиля"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dos",
+        "explanation": "Простые атаки на отказ."
+      }
+    },
+    {
+      "slug": "pf-n1",
+      "type": "quiz.single_choice",
+      "title": "N+1",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-perf"
+      ],
+      "presentation": {
+        "question": "Что такое проблема N+1?",
+        "options": [
+          {
+            "id": "queries",
+            "text": "Отдельный запрос к базе на каждый элемент списка"
+          },
+          {
+            "id": "users",
+            "text": "Лишний пользователь"
+          },
+          {
+            "id": "loop",
+            "text": "Бесконечный цикл"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "queries",
+        "explanation": "include или пакетная загрузка."
+      }
+    },
+    {
+      "slug": "pf-fastify",
+      "type": "quiz.single_choice",
+      "title": "Fastify",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-perf"
+      ],
+      "presentation": {
+        "question": "Что даёт адаптер Fastify?",
+        "options": [
+          {
+            "id": "throughput",
+            "text": "Больше запросов в секунду без смены кода контроллеров"
+          },
+          {
+            "id": "db",
+            "text": "Новую базу"
+          },
+          {
+            "id": "ui",
+            "text": "Интерфейс"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "throughput",
+        "explanation": "Замена Express под капотом."
+      }
+    },
+    {
+      "slug": "pf-measure",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-perf"
+      ],
+      "presentation": {
+        "question": "Что делать перед оптимизацией?",
+        "options": [
+          {
+            "id": "measure",
+            "text": "Измерить и найти реальное узкое место"
+          },
+          {
+            "id": "rewrite",
+            "text": "Переписать всё"
+          },
+          {
+            "id": "guess",
+            "text": "Угадать"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "measure",
+        "explanation": "Профиль, метрики, трассировки."
+      }
+    },
+    {
+      "slug": "dg-health",
+      "type": "quiz.single_choice",
+      "title": "Здоровье",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-deploy"
+      ],
+      "presentation": {
+        "question": "Зачем /health с проверкой базы?",
+        "options": [
+          {
+            "id": "traffic",
+            "text": "Чтобы балансировщик не слал трафик на сломанный экземпляр"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "log",
+            "text": "Для логов"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "traffic",
+        "explanation": "Это делает модуль Terminus."
+      }
+    },
+    {
+      "slug": "dg-monolith",
+      "type": "quiz.single_choice",
+      "title": "Архитектура",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-deploy"
+      ],
+      "presentation": {
+        "question": "С чего разумно начинать новый сервис на Nest?",
+        "options": [
+          {
+            "id": "modular",
+            "text": "С модульного монолита с чёткими границами"
+          },
+          {
+            "id": "micro",
+            "text": "Сразу с двадцати микросервисов"
+          },
+          {
+            "id": "script",
+            "text": "С одного файла на всё"
+          },
+          {
+            "id": "none",
+            "text": "Ни с чего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "modular",
+        "explanation": "Делить — когда есть причина."
+      }
+    },
+    {
+      "slug": "dg-image",
+      "type": "quiz.single_choice",
+      "title": "Образ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ns-deploy"
+      ],
+      "presentation": {
+        "question": "Что кладут в финальный Docker-образ Nest-приложения?",
+        "options": [
+          {
+            "id": "dist",
+            "text": "Собранный dist и production-зависимости"
+          },
+          {
+            "id": "src",
+            "text": "Исходники и все dev-зависимости"
+          },
+          {
+            "id": "git",
+            "text": "Папку .git"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dist",
+        "explanation": "Многоэтапная сборка."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "why-nest",
+      "title": "Что такое NestJS",
+      "summary": "Фреймворк для серверов на Node.js и TypeScript: структура, модули, внедрение зависимостей, когда он нужен.",
+      "chapter": "Старт NestJS",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Начинаем курс: знаем Node и TypeScript и строим серверы по чёткой структуре.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"NestJS\",\n  \"title\": \"Каркас для сервера\",\n  \"what\": \"Фреймворк поверх Express или Fastify с готовой архитектурой: модули, контроллеры, сервисы, внедрение зависимостей.\",\n  \"why\": \"Большой сервер остаётся понятным, когда в команде десять человек.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Express или Nest\",\n  \"title\": \"Свобода и порядок\",\n  \"what\": \"Express даёт минимум и полную свободу; Nest задаёт структуру и соглашения.\",\n  \"why\": \"Маленький сервис — Express, большое приложение с командой — Nest.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"TypeScript и декораторы\",\n  \"title\": \"Описание прямо в коде\",\n  \"what\": \"Декораторы @Controller, @Get, @Injectable описывают роль класса, а типы помогают ловить ошибки.\",\n  \"why\": \"Код читается как схема приложения.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Где используют\",\n  \"title\": \"Бэкенды и API\",\n  \"what\": \"API для веба и мобильных приложений, микросервисы, серверы с очередями и WebSocket.\",\n  \"why\": \"Популярный выбор для TypeScript-бэкенда.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Nest — структура и внедрение зависимостей поверх Express. Для больших серверов и команд."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wn-base",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wn-when",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wn-parts",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "create-nest",
+      "title": "Новый проект",
+      "summary": "Nest CLI, nest new, структура src, main.ts и bootstrap, режим разработки.",
+      "chapter": "Старт NestJS",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем, что такое Nest, и создаём первый проект.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"nest new\",\n  \"title\": \"Создать проект\",\n  \"what\": \"`npx @nestjs/cli new api` создаёт проект с модулем, контроллером, сервисом и тестами.\",\n  \"why\": \"Работающий сервер за минуту.\",\n  \"how\": \"$ npx @nestjs/cli new api\\n$ cd api && npm run start:dev\\n[Nest] LOG [NestApplication] Nest application successfully started\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"main.ts\",\n  \"title\": \"Точка входа\",\n  \"what\": \"bootstrap создаёт приложение из корневого модуля и слушает порт.\",\n  \"why\": \"Здесь же подключают глобальные настройки.\",\n  \"how\": \"import { NestFactory } from \\\"@nestjs/core\\\";\\nimport { AppModule } from \\\"./app.module\\\";\\n\\nasync function bootstrap() {\\n  const app = await NestFactory.create(AppModule);\\n  await app.listen(process.env.PORT ?? 3000);\\n}\\nbootstrap();\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"nest generate\",\n  \"title\": \"Генераторы\",\n  \"what\": \"`nest g resource courses` создаёт модуль, контроллер, сервис, DTO и тесты для ресурса.\",\n  \"why\": \"Не писать шаблонный код руками.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"start:dev\",\n  \"title\": \"Перезапуск при изменениях\",\n  \"what\": \"Сервер сам перезапускается после сохранения файла.\",\n  \"why\": \"Быстрый цикл разработки.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Создать — nest new, ресурс — nest g resource, разработка — start:dev."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cn-boot",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cn-gen",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cn-dev",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "request-path",
+      "title": "Путь запроса",
+      "summary": "Модуль → контроллер → сервис, тонкие контроллеры, логика в сервисах, ответ в JSON.",
+      "chapter": "Старт NestJS",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Создали проект и прослеживаем путь одного запроса.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Контроллер и сервис\",\n  \"title\": \"Разделение ролей\",\n  \"what\": \"Контроллер принимает HTTP-запрос и отдаёт ответ, сервис содержит логику. Сервис приходит в контроллер через конструктор.\",\n  \"why\": \"Логику можно переиспользовать и тестировать без HTTP.\",\n  \"how\": \"@Controller(\\\"courses\\\")\\nexport class CoursesController {\\n  constructor(private readonly courses: CoursesService) {}\\n\\n  @Get()\\n  findAll() {\\n    return this.courses.findAll();\\n  }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тонкий контроллер\",\n  \"title\": \"Без логики\",\n  \"what\": \"Контроллер только разбирает запрос и вызывает сервис. Правила и расчёты — в сервисе.\",\n  \"why\": \"Тот же сервис вызовут очередь, команда или другой модуль.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ответ\",\n  \"title\": \"Объект → JSON\",\n  \"what\": \"Возвращённый объект или Promise Nest сам превращает в JSON с кодом 200.\",\n  \"why\": \"Не нужно вручную писать res.json.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Запрос → контроллер → сервис. Контроллер тонкий, логика — в сервисе."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rp-logic",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rp-json",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rp-inject",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "providers-di",
+      "title": "Провайдеры и внедрение",
+      "summary": "@Injectable, контейнер зависимостей, одиночки по умолчанию, зачем DI.",
+      "chapter": "Модули и внедрение зависимостей",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем путь запроса и разбираемся, кто создаёт сервисы.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"@Injectable\",\n  \"title\": \"Провайдер\",\n  \"what\": \"Класс с @Injectable регистрируют в модуле — Nest сам создаст его и передаст тем, кому он нужен.\",\n  \"why\": \"Не нужно вручную собирать цепочки new A(new B(new C())).\",\n  \"how\": \"@Injectable()\\nexport class CoursesService {\\n  constructor(private readonly repo: CoursesRepository) {}\\n  findAll() {\\n    return this.repo.list();\\n  }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Одиночки\",\n  \"title\": \"Один экземпляр\",\n  \"what\": \"По умолчанию провайдер создаётся один раз на всё приложение и переиспользуется.\",\n  \"why\": \"Пул соединений к базе — один на всех.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Зачем DI\",\n  \"title\": \"Подмена в тестах\",\n  \"what\": \"Зависимость приходит снаружи, поэтому в тесте её легко заменить подделкой.\",\n  \"why\": \"Сервис тестируется без настоящей базы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Свои провайдеры\",\n  \"title\": \"useValue и useFactory\",\n  \"what\": \"Провайдером может быть значение или фабрика: настройки, клиент внешнего API.\",\n  \"why\": \"Внедрять не только классы.\",\n  \"how\": \"{ provide: \\\"MAIL_CLIENT\\\", useFactory: (config: ConfigService) => createMailClient(config.get(\\\"MAIL_URL\\\")), inject: [ConfigService] }\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Сервис — @Injectable в providers модуля. Зависимости — через конструктор."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-singleton",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-why",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-factory",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "feature-modules",
+      "title": "Модули",
+      "summary": "@Module, imports, providers, exports, модуль на предметную область, общий модуль.",
+      "chapter": "Модули и внедрение зависимостей",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Создаём провайдеры и делим приложение на модули.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"@Module\",\n  \"title\": \"Граница области\",\n  \"what\": \"Модуль объявляет свои контроллеры и провайдеры, импортирует нужные модули и экспортирует то, чем делится.\",\n  \"why\": \"Видно, от чего зависит каждая часть.\",\n  \"how\": \"@Module({\\n  imports: [DatabaseModule],\\n  controllers: [CoursesController],\\n  providers: [CoursesService, CoursesRepository],\\n  exports: [CoursesService]\\n})\\nexport class CoursesModule {}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"exports\",\n  \"title\": \"Публичный интерфейс\",\n  \"what\": \"Другие модули видят только экспортированные провайдеры. Остальное — внутреннее.\",\n  \"why\": \"Нельзя случайно залезть во внутренности чужого модуля.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"По областям\",\n  \"title\": \"Не по слоям\",\n  \"what\": \"Модули называют по предметной области: courses, enrollment, billing.\",\n  \"why\": \"Связанный код — вместе.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Циклы\",\n  \"title\": \"Плохой знак\",\n  \"what\": \"Если два модуля импортируют друг друга, границы проведены неудачно. forwardRef — костыль.\",\n  \"why\": \"Лучше вынести общее или использовать события.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Модуль — область с явным exports. Циклы между модулями — повод пересмотреть границы."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fm-exports",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fm-cycle",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fm-name",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "scopes-lifecycle",
+      "title": "Области и жизненный цикл",
+      "summary": "Область запроса, onModuleInit и onApplicationShutdown, корректная остановка.",
+      "chapter": "Модули и внедрение зависимостей",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Делим приложение на модули и управляем жизнью провайдеров.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Область запроса\",\n  \"title\": \"Scope.REQUEST\",\n  \"what\": \"Провайдер может создаваться заново на каждый запрос — например, чтобы знать текущего пользователя. Это дороже.\",\n  \"why\": \"Используй только когда без этого нельзя.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Хуки\",\n  \"title\": \"onModuleInit и onApplicationShutdown\",\n  \"what\": \"Методы, которые Nest вызывает при старте модуля и при остановке приложения.\",\n  \"why\": \"Подключиться к брокеру при старте, закрыть соединения при выключении.\",\n  \"how\": \"@Injectable()\\nexport class QueueClient implements OnModuleInit, OnApplicationShutdown {\\n  async onModuleInit() { await this.connect(); }\\n  async onApplicationShutdown() { await this.close(); }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Мягкая остановка\",\n  \"title\": \"enableShutdownHooks\",\n  \"what\": \"app.enableShutdownHooks() включает обработку SIGTERM — запросы доработают, соединения закроются.\",\n  \"why\": \"Выкладка без оборванных запросов.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** По умолчанию — одиночки. Подключения открывай в onModuleInit, закрывай при остановке."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sl-request",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sl-shutdown",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sl-init",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "routes",
+      "title": "Маршруты",
+      "summary": "@Get, @Post, @Patch, @Delete, префикс контроллера, REST-ресурс.",
+      "chapter": "Контроллеры и маршруты",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Управляем жизнью провайдеров и описываем адреса API.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Декораторы методов\",\n  \"title\": \"Метод и путь\",\n  \"what\": \"Префикс в @Controller, метод HTTP и путь в декораторе метода.\",\n  \"why\": \"Весь ресурс курсов — в одном классе.\",\n  \"how\": \"@Controller(\\\"courses\\\")\\nexport class CoursesController {\\n  @Get() findAll() {}\\n  @Get(\\\":slug\\\") findOne() {}\\n  @Post() create() {}\\n  @Patch(\\\":slug\\\") update() {}\\n  @Delete(\\\":slug\\\") remove() {}\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"REST\",\n  \"title\": \"Ресурс и действия\",\n  \"what\": \"Существительное в пути, действие — методом: GET читает, POST создаёт, PATCH меняет, DELETE удаляет.\",\n  \"why\": \"API понятно без документации.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Версии\",\n  \"title\": \"/v1/\",\n  \"what\": \"Глобальный префикс и версии API (app.enableVersioning) позволяют менять API, не ломая старых клиентов.\",\n  \"why\": \"Мобильное приложение старой версии продолжит работать.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ресурс — контроллер, действия — методами HTTP. Версия — в пути."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rt-patch",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rt-prefix",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rt-version",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "params-body",
+      "title": "Параметры и тело",
+      "summary": "@Param, @Query, @Body, @Headers, преобразование типов ParseIntPipe.",
+      "chapter": "Контроллеры и маршруты",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Описали маршруты и достаём данные из запроса.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"@Param и @Query\",\n  \"title\": \"Путь и строка запроса\",\n  \"what\": \"@Param(\\\"slug\\\") — часть пути, @Query(\\\"page\\\") — параметр после ?.\",\n  \"why\": \"Фильтры и пагинация.\",\n  \"how\": \"@Get(\\\":id\\\")\\nfindOne(@Param(\\\"id\\\", ParseIntPipe) id: number, @Query(\\\"lang\\\") lang = \\\"ru\\\") {\\n  return this.lessons.findOne(id, lang);\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"@Body\",\n  \"title\": \"Тело запроса\",\n  \"what\": \"@Body() даёт разобранный JSON тела, обычно в виде DTO-класса.\",\n  \"why\": \"Данные для создания записи.\",\n  \"how\": \"@Post()\\ncreate(@Body() dto: CreateCourseDto) {\\n  return this.courses.create(dto);\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Типы из строки\",\n  \"title\": \"ParseIntPipe\",\n  \"what\": \"Всё из пути и строки запроса приходит строками. ParseIntPipe превращает в число или отвечает 400.\",\n  \"why\": \"«abc» вместо id не дойдёт до базы.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Путь — @Param, фильтры — @Query, данные — @Body с DTO. Числа — через ParseIntPipe."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pb-query",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pb-type",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pb-400",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "responses",
+      "title": "Ответы и коды",
+      "summary": "@HttpCode, исключения HttpException, NotFoundException, заголовки, пагинация ответа.",
+      "chapter": "Контроллеры и маршруты",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Получаем данные запроса и формируем правильные ответы.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Исключения\",\n  \"title\": \"Ошибки с кодом\",\n  \"what\": \"throw new NotFoundException() даёт 404, BadRequestException — 400, ForbiddenException — 403.\",\n  \"why\": \"Клиент понимает, что пошло не так.\",\n  \"how\": \"async findOne(slug: string) {\\n  const course = await this.repo.find(slug);\\n  if (!course) throw new NotFoundException(`Курс ${slug} не найден`);\\n  return course;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"@HttpCode\",\n  \"title\": \"Свой код\",\n  \"what\": \"@HttpCode(204) для удаления без тела.\",\n  \"why\": \"Точные коды по стандарту HTTP.\",\n  \"how\": \"@Delete(\\\":slug\\\")\\n@HttpCode(204)\\nremove(@Param(\\\"slug\\\") slug: string) {\\n  return this.courses.remove(slug);\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Пагинация\",\n  \"title\": \"Страницы и курсор\",\n  \"what\": \"Большие списки отдают частями: { items, nextCursor } или с номером страницы.\",\n  \"why\": \"Ответ не растёт до мегабайт.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ошибки — исключениями Nest с правильным кодом. Списки — частями."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-404",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-204",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-page",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "dto",
+      "title": "DTO",
+      "summary": "Класс-описание входных данных, отличие от модели базы, отдельные DTO для создания и изменения.",
+      "chapter": "Проверка данных",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Возвращаем правильные ответы и описываем, какие данные принимаем.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"DTO\",\n  \"title\": \"Объект передачи данных\",\n  \"what\": \"Класс, описывающий, что клиент может прислать. Не то же самое, что модель в базе.\",\n  \"why\": \"Клиент не сможет прислать поле role или id.\",\n  \"how\": \"export class CreateCourseDto {\\n  @IsString() @Length(3, 120)\\n  title: string;\\n\\n  @IsOptional() @IsInt() @Min(1)\\n  lessons?: number;\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Создание и изменение\",\n  \"title\": \"PartialType\",\n  \"what\": \"UpdateCourseDto = PartialType(CreateCourseDto) — те же поля, но необязательные.\",\n  \"why\": \"Правила не дублируются.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не отдавай модель\",\n  \"title\": \"Ответ тоже описывают\",\n  \"what\": \"Наружу отдают отдельный объект без лишних полей (хэш пароля, внутренние флаги).\",\n  \"why\": \"Утечка через «просто вернули запись из базы».\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Вход — DTO, ответ — отдельный объект. Изменение — PartialType от создания."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dt-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dt-partial",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dt-leak",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "validation-pipe",
+      "title": "ValidationPipe",
+      "summary": "Глобальная проверка, whitelist и forbidNonWhitelisted, transform, понятные ошибки 400.",
+      "chapter": "Проверка данных",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Описали DTO и включаем их автоматическую проверку.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Глобальный ValidationPipe\",\n  \"title\": \"Проверка везде\",\n  \"what\": \"Один раз в main.ts — и каждое тело, параметр и запрос проверяются по DTO.\",\n  \"why\": \"Невозможно забыть проверку в новом маршруте.\",\n  \"how\": \"app.useGlobalPipes(new ValidationPipe({\\n  whitelist: true,\\n  forbidNonWhitelisted: true,\\n  transform: true\\n}));\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"whitelist\",\n  \"title\": \"Лишние поля\",\n  \"what\": \"whitelist выбрасывает поля, которых нет в DTO; forbidNonWhitelisted отвечает 400, если они есть.\",\n  \"why\": \"Поле isAdmin в запросе не попадёт в базу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"transform\",\n  \"title\": \"Строки в типы\",\n  \"what\": \"transform превращает входные данные в экземпляры DTO и приводит типы параметров.\",\n  \"why\": \"page приходит числом, а не строкой.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ошибки\",\n  \"title\": \"Понятные клиенту\",\n  \"what\": \"Ответ 400 перечисляет, какие поля и почему неверны.\",\n  \"why\": \"Фронтенд показывает ошибки рядом с полями.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Глобальный ValidationPipe с whitelist, forbidNonWhitelisted и transform."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vp-whitelist",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vp-global",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vp-transform",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "custom-validation",
+      "title": "Свои правила и Zod",
+      "summary": "Собственные декораторы проверки, проверка вложенных объектов, Zod как альтернатива, бизнес-правила в сервисе.",
+      "chapter": "Проверка данных",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проверяем данные автоматически и добавляем собственные правила.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Вложенные объекты\",\n  \"title\": \"@ValidateNested\",\n  \"what\": \"Для массивов и вложенных объектов нужны @ValidateNested и @Type, иначе внутренность не проверится.\",\n  \"why\": \"Список уроков в теле проверяется целиком.\",\n  \"how\": \"export class CreateCourseDto {\\n  @ValidateNested({ each: true })\\n  @Type(() => LessonDto)\\n  lessons: LessonDto[];\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Zod\",\n  \"title\": \"Схема вместо декораторов\",\n  \"what\": \"Вместо class-validator можно проверять схемой Zod через свой пайп — одна схема для фронта и бэка.\",\n  \"why\": \"Общие правила в монорепозитории.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Форма и бизнес\",\n  \"title\": \"Разные проверки\",\n  \"what\": \"DTO проверяет форму (строка, длина). Бизнес-правила (уникальность названия, права) — в сервисе.\",\n  \"why\": \"Каждая проверка на своём месте.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Вложенное — @ValidateNested с @Type. Форма — в DTO, бизнес-правила — в сервисе."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cv-nested",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cv-unique",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cv-zod",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "orm",
+      "title": "ORM в Nest",
+      "summary": "Prisma, TypeORM, Drizzle или MikroORM, модуль базы, сервис-клиент как провайдер.",
+      "chapter": "База данных",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проверяем входные данные и подключаем базу данных.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Выбор ORM\",\n  \"title\": \"Несколько вариантов\",\n  \"what\": \"Prisma — схема в отдельном файле и типы; TypeORM и MikroORM — сущности-классы с декораторами; Drizzle — схема на TypeScript близко к SQL.\",\n  \"why\": \"Все работают с Nest как обычные провайдеры.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Клиент как провайдер\",\n  \"title\": \"PrismaService\",\n  \"what\": \"Клиент базы оборачивают в провайдер, подключают в onModuleInit и экспортируют из модуля базы.\",\n  \"why\": \"Один пул соединений на приложение.\",\n  \"how\": \"@Injectable()\\nexport class PrismaService extends PrismaClient implements OnModuleInit {\\n  async onModuleInit() {\\n    await this.$connect();\\n  }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Репозиторий\",\n  \"title\": \"Доступ к данным в одном месте\",\n  \"what\": \"Запросы к таблице собирают в классе-репозитории; сервис не пишет SQL сам.\",\n  \"why\": \"Логику легко тестировать, подменив репозиторий.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** ORM — провайдер в модуле базы, запросы — в репозиториях."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "or-provider",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "or-repo",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "or-options",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "migrations",
+      "title": "Миграции",
+      "summary": "Изменения схемы как файлы, генерация и применение, миграции при выкладке.",
+      "chapter": "База данных",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Подключили базу и меняем её схему безопасно.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Создать миграцию\",\n  \"title\": \"Из изменений схемы\",\n  \"what\": \"`npx prisma migrate dev --name add_level` сравнивает схему и создаёт файл миграции.\",\n  \"why\": \"Изменение схемы видно в PR как SQL.\",\n  \"how\": \"$ npx prisma migrate dev --name add_level\\nApplying migration `20261107_add_level`\\nYour database is now in sync with your schema.\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Применение при выкладке\",\n  \"title\": \"До нового кода\",\n  \"what\": \"На сервере миграции применяет конвейер перед запуском новой версии (migrate deploy).\",\n  \"why\": \"Код не стартует со старой схемой.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не править прошлое\",\n  \"title\": \"Только новые\",\n  \"what\": \"Применённую миграцию не редактируют — пишут новую.\",\n  \"why\": \"История схемы одинакова во всех окружениях.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Схему меняй миграциями, применяй до выкладки, прошлые не правь."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mg-edit",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mg-when",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "mg-review",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "transactions",
+      "title": "Транзакции",
+      "summary": "Несколько изменений атомарно, транзакция в ORM, где её начинать, outbox для событий.",
+      "chapter": "База данных",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Меняем схему миграциями и делаем связанные изменения неделимыми.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Транзакция\",\n  \"title\": \"Всё или ничего\",\n  \"what\": \"Связанные изменения выполняют в одной транзакции: ошибка — откат всего.\",\n  \"why\": \"Заказ без оплаты или оплата без заказа невозможны.\",\n  \"how\": \"await this.prisma.$transaction(async (tx) => {\\n  await tx.order.create({ data: order });\\n  await tx.wallet.update({ where: { userId }, data: { balance: { decrement: order.total } } });\\n});\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Где начинать\",\n  \"title\": \"В сервисе\",\n  \"what\": \"Транзакцию открывает сервис, который знает всё действие целиком, и передаёт её репозиториям.\",\n  \"why\": \"Границы транзакции совпадают с бизнес-операцией.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Outbox\",\n  \"title\": \"Событие вместе с данными\",\n  \"what\": \"Событие «заказ создан» записывают в таблицу outbox в той же транзакции, а отдельный процесс отправляет его дальше.\",\n  \"why\": \"Нет ситуации «данные сохранили, событие потеряли».\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Связанное — в одной транзакции в сервисе. События — через outbox в той же транзакции."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tr-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tr-where",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tr-outbox",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "authentication",
+      "title": "Вход",
+      "summary": "Хэширование паролей argon2, сессия в cookie или JWT, срок жизни и обновление токенов.",
+      "chapter": "Вход и права",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Делаем изменения атомарными и пускаем пользователей в систему.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Пароль\",\n  \"title\": \"Только хэш\",\n  \"what\": \"Пароль хранят хэшем медленной функции argon2 или bcrypt и сравнивают через verify.\",\n  \"why\": \"Утечка базы не раскроет пароли.\",\n  \"how\": \"const hash = await argon2.hash(dto.password);\\n// при входе\\nconst ok = await argon2.verify(user.passwordHash, dto.password);\\nif (!ok) throw new UnauthorizedException();\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сессия или JWT\",\n  \"title\": \"Два подхода\",\n  \"what\": \"Сессия — идентификатор в httpOnly cookie, данные на сервере (легко отозвать). JWT — подписанный токен с данными (без хранилища, но отзыв сложнее).\",\n  \"why\": \"Для веба часто проще сессии.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Срок жизни\",\n  \"title\": \"Короткий доступ\",\n  \"what\": \"Токен доступа живёт минуты, токен обновления — дни и хранится безопасно.\",\n  \"why\": \"Украденный токен быстро становится бесполезным.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ошибки входа\",\n  \"title\": \"Одинаковые ответы\",\n  \"what\": \"«Неверная почта или пароль» — без уточнения, что именно не так.\",\n  \"why\": \"Злоумышленник не узнает, какие почты зарегистрированы.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Пароли — argon2. Сессия в httpOnly cookie или короткий JWT. Ошибки входа — одинаковые."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "an-hash",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "an-jwt",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "an-error",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "guards",
+      "title": "Гарды",
+      "summary": "CanActivate, гард аутентификации, глобальный гард с @Public, текущий пользователь в запросе.",
+      "chapter": "Вход и права",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пускаем пользователей и закрываем маршруты гардами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Гард\",\n  \"title\": \"Пускать или нет\",\n  \"what\": \"Класс с canActivate решает, допустить ли запрос до обработчика. Не пустил — 403 или 401.\",\n  \"why\": \"Защита маршрутов без проверок в каждом методе.\",\n  \"how\": \"@Injectable()\\nexport class SessionGuard implements CanActivate {\\n  async canActivate(ctx: ExecutionContext) {\\n    const req = ctx.switchToHttp().getRequest();\\n    req.user = await this.sessions.userFrom(req.cookies.sid);\\n    return Boolean(req.user);\\n  }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Закрыто по умолчанию\",\n  \"title\": \"Глобальный гард\",\n  \"what\": \"Гард подключают глобально, а открытые маршруты помечают декоратором @Public.\",\n  \"why\": \"Новый маршрут не окажется случайно открытым.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Текущий пользователь\",\n  \"title\": \"Свой декоратор\",\n  \"what\": \"Декоратор @CurrentUser() достаёт пользователя из запроса прямо в параметр метода.\",\n  \"why\": \"Код контроллера чистый.\",\n  \"how\": \"@Get(\\\"me\\\")\\nme(@CurrentUser() user: User) {\\n  return toProfile(user);\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n**Главное.** Защита — гардами, по умолчанию закрыто, открытое — @Public."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gd-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gd-default",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gd-user",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "authorization",
+      "title": "Роли и владение",
+      "summary": "Роли через метаданные и Reflector, проверка владельца записи, политики CASL.",
+      "chapter": "Вход и права",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Закрыли маршруты и проверяем, что именно можно каждому.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Роли\",\n  \"title\": \"@Roles и Reflector\",\n  \"what\": \"Декоратор вешает на маршрут нужные роли, гард читает их через Reflector и сравнивает с ролью пользователя.\",\n  \"why\": \"Админка доступна только администраторам.\",\n  \"how\": \"@Roles(\\\"admin\\\")\\n@Delete(\\\":slug\\\")\\nremove(@Param(\\\"slug\\\") slug: string) {}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Владение\",\n  \"title\": \"Чьё это\",\n  \"what\": \"Роли мало: ученик может менять только свои ответы. Проверку владельца делают в сервисе по данным записи.\",\n  \"why\": \"Иначе любой изменит чужой профиль, подставив id.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Политики\",\n  \"title\": \"CASL и подобные\",\n  \"what\": \"Правила «кто что может с чем» описывают в одном месте и проверяют везде одинаково.\",\n  \"why\": \"Сложные права не размазаны по коду.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Роли — гардом по метаданным, владение — в сервисе по записи. Сложные права — политиками."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "az-owner",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "az-reflector",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "az-policy",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "pipeline-order",
+      "title": "Порядок обработки",
+      "summary": "Middleware → гарды → перехватчики → пайпы → обработчик → перехватчики → фильтры.",
+      "chapter": "Конвейер запроса",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проверяем права и разбираем весь путь запроса по этапам.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Этапы\",\n  \"title\": \"По порядку\",\n  \"what\": \"Middleware (сырой запрос) → гарды (пускать ли) → перехватчики (до) → пайпы (проверка и преобразование) → обработчик → перехватчики (после) → фильтры исключений (ошибки).\",\n  \"why\": \"Каждый этап отвечает за своё.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Middleware\",\n  \"title\": \"Самый ранний\",\n  \"what\": \"Видит запрос до маршрутизации: логирование, CORS, разбор cookie, request id.\",\n  \"why\": \"То, что не зависит от конкретного маршрута.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Где что делать\",\n  \"title\": \"По назначению\",\n  \"what\": \"Права — гард, формат данных — пайп, общий вид ответа и время — перехватчик, ошибки — фильтр.\",\n  \"why\": \"Логика не смешивается в контроллере.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Middleware → гард → перехватчик → пайп → обработчик → перехватчик → фильтр."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "po-first",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "po-guard-pipe",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "po-where",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "interceptors",
+      "title": "Перехватчики",
+      "summary": "До и после обработчика, логирование времени, единый формат ответа, тайм-аут, кэш.",
+      "chapter": "Конвейер запроса",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем порядок этапов и пишем перехватчики.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Перехватчик\",\n  \"title\": \"Обернуть обработчик\",\n  \"what\": \"intercept получает контекст и поток результата — можно сделать что-то до и после.\",\n  \"why\": \"Время каждого запроса в логе без правки контроллеров.\",\n  \"how\": \"@Injectable()\\nexport class TimingInterceptor implements NestInterceptor {\\n  intercept(ctx: ExecutionContext, next: CallHandler) {\\n    const start = Date.now();\\n    return next.handle().pipe(tap(() => this.log.info({ ms: Date.now() - start })));\\n  }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Единый ответ\",\n  \"title\": \"Обёртка данных\",\n  \"what\": \"Перехватчик может оборачивать каждый ответ в { data } или убирать служебные поля.\",\n  \"why\": \"Фронтенд получает одинаковую форму.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тайм-аут и кэш\",\n  \"title\": \"Готовые приёмы\",\n  \"what\": \"Перехватчик может прервать долгий обработчик или вернуть ответ из кэша.\",\n  \"why\": \"Защита от зависших запросов.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Общая логика вокруг обработчика — перехватчик: время, формат ответа, тайм-аут, кэш."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ic-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ic-timing",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ic-format",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "exception-filters",
+      "title": "Фильтры исключений",
+      "summary": "Как Nest превращает ошибки в ответы, свой фильтр, ошибки предметной области, не раскрывать детали.",
+      "chapter": "Конвейер запроса",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Оборачиваем обработчики и аккуратно обрабатываем ошибки.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"По умолчанию\",\n  \"title\": \"HttpException → ответ\",\n  \"what\": \"Исключения Nest превращаются в JSON с кодом. Любая другая ошибка — 500 «Internal server error» без деталей.\",\n  \"why\": \"Стек ошибки не уходит клиенту.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Свой фильтр\",\n  \"title\": \"@Catch\",\n  \"what\": \"Фильтр ловит нужный тип ошибок и формирует ответ: например, ошибку «курс уже существует» в 409.\",\n  \"why\": \"Ошибки предметной области — понятными кодами.\",\n  \"how\": \"@Catch(CourseExistsError)\\nexport class CourseExistsFilter implements ExceptionFilter {\\n  catch(error: CourseExistsError, host: ArgumentsHost) {\\n    host.switchToHttp().getResponse().status(409).json({ message: error.message });\\n  }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Детали — в лог\",\n  \"title\": \"Не клиенту\",\n  \"what\": \"Подробности и стек записывают в журнал с идентификатором запроса, клиенту — короткое сообщение и этот идентификатор.\",\n  \"why\": \"Поддержка находит ошибку по id из жалобы.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ошибки домена — свои фильтры с правильными кодами. Детали — только в лог."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ef-unknown",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ef-custom",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ef-id",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "config-module",
+      "title": "Конфигурация",
+      "summary": "ConfigModule и переменные окружения, проверка конфигурации при старте, типизированный доступ.",
+      "chapter": "Конфигурация и ошибки",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Обрабатываем ошибки и выносим настройки в окружение.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"ConfigModule\",\n  \"title\": \"Переменные окружения\",\n  \"what\": \"Модуль читает окружение и .env, ConfigService даёт значения в любом провайдере.\",\n  \"why\": \"Один образ — разные настройки.\",\n  \"how\": \"ConfigModule.forRoot({\\n  isGlobal: true,\\n  validate: (env) => EnvSchema.parse(env)\\n})\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проверка при старте\",\n  \"title\": \"Упасть сразу\",\n  \"what\": \"Схема (Zod или Joi) проверяет обязательные переменные при запуске. Нет DATABASE_URL — приложение не стартует.\",\n  \"why\": \"Ошибка видна сразу, а не через час на первом запросе.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Типы\",\n  \"title\": \"Без строковой магии\",\n  \"what\": \"Типизированный объект конфигурации вместо config.get(\\\"DB_URL\\\") с опечатками.\",\n  \"why\": \"Редактор подсказывает имена.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Настройки — из окружения через ConfigModule. Проверяй схемой при старте."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cf-validate",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cf-where",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cf-types",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "logging",
+      "title": "Логи",
+      "summary": "Встроенный Logger, структурные логи pino, идентификатор запроса, уровни и что не писать в лог.",
+      "chapter": "Конфигурация и ошибки",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Настроили конфигурацию и ведём понятные журналы.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Структурные логи\",\n  \"title\": \"JSON с полями\",\n  \"what\": \"pino и nestjs-pino пишут логи JSON с полями: уровень, время, request id, пользователь.\",\n  \"why\": \"Логи можно искать и фильтровать.\",\n  \"how\": \"this.logger.info({ courseSlug, userId }, \\\"course enrolled\\\");\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Request id\",\n  \"title\": \"Связать всё\",\n  \"what\": \"Каждому запросу — идентификатор во всех его логах и в ответе.\",\n  \"why\": \"Вся история одного запроса за один поиск.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Уровни\",\n  \"title\": \"debug, info, warn, error\",\n  \"what\": \"В бою — info и выше, debug включают временно.\",\n  \"why\": \"Логи не тонут в шуме.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Чего не писать\",\n  \"title\": \"Секреты и личное\",\n  \"what\": \"Пароли, токены, номера карт и лишние персональные данные в лог не попадают.\",\n  \"why\": \"Лог часто читает больше людей, чем базу.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Логи — JSON с request id и уровнями. Секреты и личные данные — никогда."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lg-struct",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lg-secret",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lg-reqid",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "openapi",
+      "title": "Документация API",
+      "summary": "@nestjs/swagger, описание из DTO и декораторов, Swagger UI, генерация клиента.",
+      "chapter": "Конфигурация и ошибки",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Ведём логи и описываем API для фронтенда и партнёров.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Swagger\",\n  \"title\": \"Документация из кода\",\n  \"what\": \"Модуль swagger собирает спецификацию OpenAPI из контроллеров и DTO и показывает её страницей.\",\n  \"why\": \"Документация не отстаёт от кода.\",\n  \"how\": \"const doc = SwaggerModule.createDocument(app, new DocumentBuilder().setTitle(\\\"Academy API\\\").build());\\nSwaggerModule.setup(\\\"docs\\\", app, doc);\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Декораторы описания\",\n  \"title\": \"@ApiProperty и @ApiResponse\",\n  \"what\": \"Поля DTO и возможные ответы описывают декораторами — или плагином CLI автоматически.\",\n  \"why\": \"Видны типы, примеры и коды ошибок.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Клиент из спецификации\",\n  \"title\": \"Генерация\",\n  \"what\": \"Из OpenAPI генерируют типизированный клиент для фронтенда.\",\n  \"why\": \"Фронтенд и бэкенд не расходятся в полях.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Документация — из кода через swagger. Фронтенд-клиент — генерировать из спецификации."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "oa-source",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "oa-client",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "oa-ui",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "events",
+      "title": "События внутри приложения",
+      "summary": "EventEmitter2, слабая связь модулей, синхронные и асинхронные обработчики, ограничения.",
+      "chapter": "Фоновые задачи и события",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Описали API и связываем модули событиями.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Событие\",\n  \"title\": \"Сообщить, а не вызвать\",\n  \"what\": \"Модуль записи на курс публикует «ученик записан», модуль писем и модуль аналитики подписываются сами.\",\n  \"why\": \"Модуль записи не знает о письмах.\",\n  \"how\": \"this.events.emit(\\\"enrollment.created\\\", { userId, course });\\n\\n@OnEvent(\\\"enrollment.created\\\")\\nasync sendWelcome(payload: EnrollmentCreated) {\\n  await this.mail.welcome(payload.userId, payload.course);\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Слабая связь\",\n  \"title\": \"Меньше зависимостей\",\n  \"what\": \"Добавить реакцию на событие можно, не меняя модуль-источник.\",\n  \"why\": \"Новый модуль бейджей подключается без правок записи.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ограничение\",\n  \"title\": \"Только в памяти\",\n  \"what\": \"Внутренние события живут в процессе: упал сервер — событие потеряно. Для важного — outbox и очередь.\",\n  \"why\": \"Письмо об оплате не должно потеряться.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Слабая связь модулей — события. Важное — через outbox и очередь, а не только в памяти."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ev-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ev-lost",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ev-sub",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "queues-cron",
+      "title": "Очереди и расписание",
+      "summary": "@nestjs/bullmq, процессоры задач, повторы, @Cron для периодических задач, одна копия задачи.",
+      "chapter": "Фоновые задачи и события",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Связали модули событиями и уводим долгую работу в фон.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Очередь\",\n  \"title\": \"BullMQ в Nest\",\n  \"what\": \"Контроллер добавляет задачу и сразу отвечает, процессор выполняет её в фоне с повторами.\",\n  \"why\": \"Генерация сертификата не держит запрос минуту.\",\n  \"how\": \"await this.certificates.add(\\\"render\\\", { userId, course }, { attempts: 5 });\\n\\n@Processor(\\\"certificates\\\")\\nexport class CertificateProcessor extends WorkerHost {\\n  async process(job: Job) {\\n    await this.render(job.data);\\n  }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"@Cron\",\n  \"title\": \"По расписанию\",\n  \"what\": \"Метод с @Cron выполняется по выражению cron: каждую ночь, каждый час.\",\n  \"why\": \"Ночная рассылка напоминаний.\",\n  \"how\": \"@Cron(\\\"0 9 * * *\\\")\\nasync remindUnfinished() {\\n  await this.reminders.sendDaily();\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Несколько копий\",\n  \"title\": \"Не выполнить дважды\",\n  \"what\": \"При пяти экземплярах сервера @Cron сработает пять раз. Нужна блокировка или отдельный процесс-планировщик.\",\n  \"why\": \"Пользователь не получит пять одинаковых писем.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Долгое — в очередь с повторами. Расписание — @Cron с защитой от запуска на каждой копии."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "qc-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "qc-copies",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "qc-dec",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "gateways",
+      "title": "WebSocket-шлюзы",
+      "summary": "@WebSocketGateway, события сообщений, комнаты, проверка входа, масштаб через Redis-адаптер.",
+      "chapter": "Фоновые задачи и события",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем в фоне и добавляем связь в реальном времени.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Шлюз\",\n  \"title\": \"@WebSocketGateway\",\n  \"what\": \"Класс-шлюз принимает подключения и сообщения по WebSocket, как контроллер — HTTP.\",\n  \"why\": \"Живой прогресс группы на занятии.\",\n  \"how\": \"@WebSocketGateway({ namespace: \\\"/live\\\" })\\nexport class LiveGateway {\\n  @SubscribeMessage(\\\"join\\\")\\n  join(@ConnectedSocket() socket: Socket, @MessageBody() room: string) {\\n    socket.join(room);\\n  }\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проверка входа\",\n  \"title\": \"При подключении\",\n  \"what\": \"Сессию проверяют при подключении сокета, а не только в HTTP.\",\n  \"why\": \"Чужой не подпишется на закрытую комнату.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Много серверов\",\n  \"title\": \"Redis-адаптер\",\n  \"what\": \"Адаптер Redis рассылает события между экземплярами.\",\n  \"why\": \"Сообщение доходит до клиентов на любом сервере.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Реальное время — шлюз с проверкой входа при подключении и Redis-адаптером для масштаба."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gw-auth",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gw-scale",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "gw-what",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "unit-tests",
+      "title": "Модульные тесты",
+      "summary": "Test.createTestingModule, подмена провайдеров, тест сервиса без базы.",
+      "chapter": "Тесты",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Добавили реальное время и защищаем код тестами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"TestingModule\",\n  \"title\": \"Мини-приложение для теста\",\n  \"what\": \"Тест собирает модуль с нужными провайдерами, подменяя зависимости.\",\n  \"why\": \"Сервис проверяется без базы и сети.\",\n  \"how\": \"const moduleRef = await Test.createTestingModule({\\n  providers: [CoursesService, { provide: CoursesRepository, useValue: { list: async () => [course] } }]\\n}).compile();\\n\\nconst service = moduleRef.get(CoursesService);\\nexpect(await service.findAll()).toEqual([course]);\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что проверять\",\n  \"title\": \"Правила и ветки\",\n  \"what\": \"Бизнес-правила сервиса: что можно, что нельзя, какие ошибки.\",\n  \"why\": \"Тест ловит поломку правила при рефакторинге.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не тестируй Nest\",\n  \"title\": \"Свой код\",\n  \"what\": \"Не нужно проверять, что декоратор @Get работает — проверяй свою логику.\",\n  \"why\": \"Тесты короче и полезнее.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Сервис — в TestingModule с подменённым репозиторием. Проверяй свои правила."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ut-mock",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ut-what",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ut-get",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "integration-tests",
+      "title": "Интеграционные тесты",
+      "summary": "Настоящая база в контейнере, миграции перед тестами, очистка данных, Testcontainers.",
+      "chapter": "Тесты",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Пишем модульные тесты и проверяем работу с настоящей базой.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Настоящая база\",\n  \"title\": \"Не подделка\",\n  \"what\": \"Репозитории и транзакции проверяют на настоящем Postgres — подделка не поймает ошибку SQL.\",\n  \"why\": \"Ошибка в запросе видна до выкладки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Testcontainers\",\n  \"title\": \"База на время теста\",\n  \"what\": \"Библиотека поднимает контейнер Postgres перед тестами и удаляет после.\",\n  \"why\": \"Каждый запуск — с чистой базой.\",\n  \"how\": \"const pg = await new PostgreSqlContainer(\\\"postgres:17\\\").start();\\nprocess.env.DATABASE_URL = pg.getConnectionUri();\\nawait runMigrations();\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Изоляция\",\n  \"title\": \"Чистые данные\",\n  \"what\": \"Каждый тест создаёт свои данные или работает в транзакции, которую откатывают.\",\n  \"why\": \"Тесты не зависят от порядка.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Запросы к базе — на настоящем Postgres в контейнере, с миграциями и чистыми данными."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "it-real",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "it-tc",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "it-iso",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "e2e-tests",
+      "title": "Сквозные тесты API",
+      "summary": "Приложение целиком, supertest, вход в тестах, проверка кодов и тел ответов.",
+      "chapter": "Тесты",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проверили работу с базой и тестируем API целиком.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"supertest\",\n  \"title\": \"Запросы к приложению\",\n  \"what\": \"Тест создаёт приложение из AppModule и отправляет ему HTTP-запросы без сети.\",\n  \"why\": \"Проверка пути: гард → пайп → контроллер → база.\",\n  \"how\": \"const app = moduleRef.createNestApplication();\\nawait app.init();\\n\\nawait request(app.getHttpServer())\\n  .post(\\\"/courses\\\")\\n  .send({ title: \\\"Go\\\" })\\n  .expect(401);\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Главные сценарии\",\n  \"title\": \"Не всё подряд\",\n  \"what\": \"Сквозные тесты — для ключевых путей: вход, запись на курс, оплата, права.\",\n  \"why\": \"Ловят поломки на стыках этапов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Настройки как в бою\",\n  \"title\": \"Те же пайпы и гарды\",\n  \"what\": \"В тестовом приложении включают те же глобальные пайпы, гарды и фильтры, что в main.ts.\",\n  \"why\": \"Иначе тест проверяет не то приложение.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ключевые сценарии — supertest против приложения с теми же глобальными настройками."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "e2-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "e2-config",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "e2-scope",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "hardening",
+      "title": "Защита сервера",
+      "summary": "helmet, CORS, ограничение частоты throttler, размер тела, проверка всего входа.",
+      "chapter": "NestJS на практике",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Тестируем API и укрепляем его защиту.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Базовая защита\",\n  \"title\": \"helmet, CORS, throttler\",\n  \"what\": \"helmet ставит заголовки безопасности, CORS разрешает только свой фронтенд, ThrottlerModule ограничивает частоту.\",\n  \"why\": \"Типичные атаки отсекаются на входе.\",\n  \"how\": \"app.use(helmet());\\napp.enableCors({ origin: [\\\"https://app.example.com\\\"], credentials: true });\\n// в AppModule\\nThrottlerModule.forRoot([{ ttl: 60000, limit: 100 }])\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Размер тела\",\n  \"title\": \"Не бесконечно\",\n  \"what\": \"Ограничь размер JSON и загружаемых файлов — иначе один запрос съест память.\",\n  \"why\": \"Защита от простых атак на отказ.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Каждый вход\",\n  \"title\": \"Не только тело\",\n  \"what\": \"Проверяй параметры, заголовки, файлы и сообщения WebSocket так же строго, как тело.\",\n  \"why\": \"Атакуют туда, где не проверяли.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** helmet, точный CORS, throttler, лимит тела и проверка всего входа."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hd-cors",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hd-throttle",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "hd-body",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "performance",
+      "title": "Скорость",
+      "summary": "Fastify-адаптер, кэш, N+1 запросы, пагинация, профилирование.",
+      "chapter": "NestJS на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Защитили сервер и ускоряем его.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"N+1\",\n  \"title\": \"Главный тормоз\",\n  \"what\": \"Список из ста курсов и отдельный запрос за автором каждого — сто один запрос. Нужны include или пакетная загрузка.\",\n  \"why\": \"Страница грузится за секунды вместо миллисекунд.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Кэш\",\n  \"title\": \"CacheModule и Redis\",\n  \"what\": \"Частые и дорогие ответы кэшируют в Redis с коротким сроком.\",\n  \"why\": \"База не считает одно и то же тысячи раз.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Fastify\",\n  \"title\": \"Быстрее Express\",\n  \"what\": \"Адаптер Fastify даёт больше запросов в секунду без изменения кода контроллеров.\",\n  \"why\": \"Простой выигрыш для нагруженных API.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Измеряй\",\n  \"title\": \"Сначала профиль\",\n  \"what\": \"Логи медленных запросов базы, метрики и трассировки показывают реальное узкое место.\",\n  \"why\": \"Не оптимизируй наугад.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Убери N+1, кэшируй дорогое, измеряй прежде чем ускорять."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pf-n1",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pf-fastify",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pf-measure",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "deploy-grow",
+      "title": "Выпуск и рост",
+      "summary": "Docker-образ, health-проверка Terminus, мягкая остановка, модульный монолит и микросервисы.",
+      "chapter": "NestJS на практике",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Ускорили API и выпускаем его, думая о росте.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Terminus\",\n  \"title\": \"Проверка здоровья\",\n  \"what\": \"Модуль health отдаёт /health с проверкой базы и памяти — для балансировщика и оркестратора.\",\n  \"why\": \"Сломанный экземпляр не получает трафик.\",\n  \"how\": \"@Get(\\\"health\\\")\\n@HealthCheck()\\ncheck() {\\n  return this.health.check([() => this.db.pingCheck(\\\"database\\\")]);\\n}\",\n  \"kind\": \"idea\",\n  \"lang\": \"ts\"\n}\n```\n\n```concept\n{\n  \"name\": \"Образ\",\n  \"title\": \"Многоэтапная сборка\",\n  \"what\": \"Сборка TypeScript в одном этапе, в финальный образ — только dist и production-зависимости.\",\n  \"why\": \"Маленький и безопасный образ.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Модульный монолит\",\n  \"title\": \"Сначала один сервис\",\n  \"what\": \"Модули с чёткими границами и общением через интерфейсы и события — в одном приложении. Отделять в микросервис — когда есть причина.\",\n  \"why\": \"Меньше сетевых сбоев и проще выкладка.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что дальше\",\n  \"title\": \"Куда расти\",\n  \"what\": \"Микросервисы Nest (транспорты), GraphQL, CQRS, наблюдаемость. Главное — свой проект до пользователей.\",\n  \"why\": \"Фреймворк закрепляется на практике.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Здоровье — Terminus, образ — многоэтапный, архитектура — модульный монолит до явной причины делить."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dg-health",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dg-monolith",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dg-image",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    }
+  ]
+}
