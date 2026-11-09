@@ -46,6 +46,7 @@ const manifests = [
   "cicd-track",
   "kubernetes-track",
   "webapi-track",
+  "redis-track",
   "pc-track",
   "browser-track"
 ].map(
@@ -97,7 +98,8 @@ describe("skill map data (ADR-0074)", () => {
       "vue",
       "cicd",
       "kubernetes",
-      "webapi"
+      "webapi",
+      "redis"
     ]);
     for (const c of SKILL_MAP.characters) {
       expect(c.branches.length).toBeGreaterThan(0);
