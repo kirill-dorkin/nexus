@@ -21,7 +21,8 @@ export const BODY_UI = {
   next: ["#f5f5f5", "#ffffff", "#3f3f46", "#0a0a0c"],
   go: ["#00add8", "#b8f1ff", "#0f6f86", "#04212a"],
   os: ["#f59e0b", "#ffe2a8", "#4a4038", "#1c1712"],
-  vue: ["#42b883", "#d1fae5", "#2e6b55", "#0b1f17"]
+  vue: ["#42b883", "#d1fae5", "#2e6b55", "#0b1f17"],
+  cicd: ["#8b7cf6", "#e4defe", "#4b3f8a", "#120f26"]
 } as const satisfies Record<string, readonly [string, string, string, string]>;
 
 export type BodySlug = keyof typeof BODY_UI;

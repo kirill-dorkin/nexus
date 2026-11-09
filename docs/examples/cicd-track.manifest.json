@@ -1,0 +1,4572 @@
+{
+  "schemaVersion": 1,
+  "course": {
+    "slug": "cicd",
+    "title": "CI/CD: автоматическая проверка и выкладка",
+    "description": "Непрерывная интеграция и доставка с нуля. Зачем автоматизировать проверки, первый конвейер в GitHub Actions, линтеры, типы и тесты в CI, кэш и параллельность, артефакты и версии, секреты и безопасность цепочки поставки, стратегии выкладки, окружения и миграции базы, наблюдение и откат, культура маленьких изменений. Каждое понятие объясняется карточкой с примером, каждый урок закрепляется вопросами."
+  },
+  "skills": [
+    {
+      "key": "ci-pain",
+      "title": "Зачем автоматизация",
+      "description": "Объяснять, какие проблемы решает CI/CD."
+    },
+    {
+      "key": "ci-terms",
+      "title": "Понятия CI/CD",
+      "description": "Различать непрерывную интеграцию, доставку и развёртывание."
+    },
+    {
+      "key": "ci-tools",
+      "title": "Инструменты CI",
+      "description": "Ориентироваться в системах CI/CD."
+    },
+    {
+      "key": "ci-workflow",
+      "title": "Устройство workflow",
+      "description": "Читать и писать файл workflow GitHub Actions."
+    },
+    {
+      "key": "ci-triggers",
+      "title": "Триггеры",
+      "description": "Настраивать, когда запускается конвейер."
+    },
+    {
+      "key": "ci-results",
+      "title": "Результаты конвейера",
+      "description": "Читать результаты и защищать основную ветку."
+    },
+    {
+      "key": "ci-lint",
+      "title": "Линтеры в CI",
+      "description": "Проверять формат и стиль кода в конвейере."
+    },
+    {
+      "key": "ci-types",
+      "title": "Типы и сборка в CI",
+      "description": "Проверять типы и сборку в конвейере."
+    },
+    {
+      "key": "ci-local",
+      "title": "Локальные проверки",
+      "description": "Запускать проверки до отправки кода."
+    },
+    {
+      "key": "ci-testlevels",
+      "title": "Тесты в конвейере",
+      "description": "Строить набор тестов в конвейере по уровням."
+    },
+    {
+      "key": "ci-services",
+      "title": "Сервисы в CI",
+      "description": "Поднимать базы и сервисы для интеграционных тестов."
+    },
+    {
+      "key": "ci-flaky",
+      "title": "Надёжность тестов",
+      "description": "Бороться с нестабильными тестами и следить за покрытием."
+    },
+    {
+      "key": "ci-cache",
+      "title": "Кэш в CI",
+      "description": "Ускорять конвейер кэшированием."
+    },
+    {
+      "key": "ci-matrix",
+      "title": "Параллельность",
+      "description": "Распараллеливать конвейер задачами и матрицей."
+    },
+    {
+      "key": "ci-affected",
+      "title": "Проверка затронутого",
+      "description": "Запускать только нужные проверки и отменять устаревшие."
+    },
+    {
+      "key": "ci-artifact",
+      "title": "Артефакты",
+      "description": "Собирать артефакт один раз и продвигать его по окружениям."
+    },
+    {
+      "key": "ci-version",
+      "title": "Версии",
+      "description": "Назначать версии выпускам автоматически."
+    },
+    {
+      "key": "ci-registry",
+      "title": "Публикация",
+      "description": "Публиковать артефакты в реестры из конвейера."
+    },
+    {
+      "key": "ci-secrets",
+      "title": "Секреты в CI",
+      "description": "Безопасно передавать секреты в конвейер."
+    },
+    {
+      "key": "ci-permissions",
+      "title": "Права конвейера",
+      "description": "Ограничивать права конвейера."
+    },
+    {
+      "key": "ci-supply",
+      "title": "Цепочка поставки",
+      "description": "Защищать конвейер от подмены зависимостей и действий."
+    },
+    {
+      "key": "ci-deploy",
+      "title": "Выкладка из CI",
+      "description": "Автоматизировать выкладку в конвейере."
+    },
+    {
+      "key": "ci-strategies",
+      "title": "Стратегии выкладки",
+      "description": "Выбирать стратегию выкладки без простоя."
+    },
+    {
+      "key": "ci-flags",
+      "title": "Флаги и откат",
+      "description": "Выпускать функции флагами и быстро откатываться."
+    },
+    {
+      "key": "ci-envs",
+      "title": "Окружения",
+      "description": "Строить цепочку окружений от PR до боя."
+    },
+    {
+      "key": "ci-migrations",
+      "title": "Миграции в CI",
+      "description": "Безопасно менять схему базы при выкладке."
+    },
+    {
+      "key": "ci-iac",
+      "title": "Инфраструктура как код",
+      "description": "Менять инфраструктуру через код и конвейер."
+    },
+    {
+      "key": "ci-postdeploy",
+      "title": "Проверка после выкладки",
+      "description": "Убеждаться, что выкладка прошла успешно."
+    },
+    {
+      "key": "ci-alerts",
+      "title": "Метрики и тревоги",
+      "description": "Настраивать полезные тревоги."
+    },
+    {
+      "key": "ci-dora",
+      "title": "Метрики доставки",
+      "description": "Измерять качество процесса доставки."
+    },
+    {
+      "key": "ci-trunk",
+      "title": "Работа в основной ветке",
+      "description": "Работать короткими ветками и маленькими изменениями."
+    },
+    {
+      "key": "ci-review",
+      "title": "Обзор кода",
+      "description": "Делить проверку между людьми и автоматикой."
+    },
+    {
+      "key": "ci-full",
+      "title": "Полный конвейер",
+      "description": "Проектировать полный конвейер от коммита до боя."
+    }
+  ],
+  "activities": [
+    {
+      "slug": "ip-long",
+      "type": "quiz.single_choice",
+      "title": "Долгие ветки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-pain"
+      ],
+      "presentation": {
+        "question": "Почему долгая отдельная ветка опасна?",
+        "options": [
+          {
+            "id": "merge",
+            "text": "Её трудно слить: накопились конфликты с работой коллег"
+          },
+          {
+            "id": "disk",
+            "text": "Она занимает много места"
+          },
+          {
+            "id": "slow",
+            "text": "Git работает медленнее"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "merge",
+        "explanation": "Сливай чаще."
+      }
+    },
+    {
+      "slug": "ip-manual",
+      "type": "quiz.single_choice",
+      "title": "Ручные проверки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-pain"
+      ],
+      "presentation": {
+        "question": "Главный недостаток ручного запуска тестов?",
+        "options": [
+          {
+            "id": "forget",
+            "text": "Их забывают запускать, и ошибки проходят дальше"
+          },
+          {
+            "id": "slow",
+            "text": "Тесты медленнее"
+          },
+          {
+            "id": "cost",
+            "text": "Это дорого стоит"
+          },
+          {
+            "id": "none",
+            "text": "Недостатков нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "forget",
+        "explanation": "Машина не забывает."
+      }
+    },
+    {
+      "slug": "ip-rare",
+      "type": "quiz.single_choice",
+      "title": "Редкие выкладки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-pain"
+      ],
+      "presentation": {
+        "question": "Почему редкие выкладки рискованнее частых?",
+        "options": [
+          {
+            "id": "big",
+            "text": "В каждой много изменений — трудно найти причину сбоя"
+          },
+          {
+            "id": "night",
+            "text": "Их делают ночью"
+          },
+          {
+            "id": "law",
+            "text": "Так требует закон"
+          },
+          {
+            "id": "no",
+            "text": "Они не рискованнее"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "big",
+        "explanation": "Маленькие изменения проще проверить и откатить."
+      }
+    },
+    {
+      "slug": "ct-ci",
+      "type": "quiz.single_choice",
+      "title": "CI",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-terms"
+      ],
+      "presentation": {
+        "question": "Что такое непрерывная интеграция?",
+        "options": [
+          {
+            "id": "often",
+            "text": "Частое слияние в основную ветку с автоматической проверкой каждого изменения"
+          },
+          {
+            "id": "deploy",
+            "text": "Автоматическая выкладка"
+          },
+          {
+            "id": "chat",
+            "text": "Общение в чате"
+          },
+          {
+            "id": "backup",
+            "text": "Резервное копирование"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "often",
+        "explanation": "Основная ветка всегда рабочая."
+      }
+    },
+    {
+      "slug": "ct-cd",
+      "type": "quiz.single_choice",
+      "title": "Доставка или развёртывание",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-terms"
+      ],
+      "presentation": {
+        "question": "Чем continuous deployment отличается от continuous delivery?",
+        "options": [
+          {
+            "id": "auto",
+            "text": "В развёртывании выкладка происходит автоматически, без кнопки"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          },
+          {
+            "id": "manual",
+            "text": "Развёртывание всегда ручное"
+          },
+          {
+            "id": "tests",
+            "text": "В доставке нет тестов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "auto",
+        "explanation": "Доставка — готово к выпуску по кнопке."
+      }
+    },
+    {
+      "slug": "ct-stages",
+      "type": "quiz.multiple_choice",
+      "title": "Этапы",
+      "instructions": "Выберите все подходящие варианты.",
+      "skillKeys": [
+        "ci-terms"
+      ],
+      "presentation": {
+        "question": "Что обычно входит в конвейер?",
+        "options": [
+          {
+            "id": "build",
+            "text": "Сборка"
+          },
+          {
+            "id": "test",
+            "text": "Тесты"
+          },
+          {
+            "id": "deploy",
+            "text": "Выкладка"
+          },
+          {
+            "id": "coffee",
+            "text": "Ручная проверка дизайна каждым сотрудником"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionIds": [
+          "build",
+          "test",
+          "deploy"
+        ],
+        "explanation": "Всё, что можно автоматизировать."
+      }
+    },
+    {
+      "slug": "tl-code",
+      "type": "quiz.single_choice",
+      "title": "Конвейер как код",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-tools"
+      ],
+      "presentation": {
+        "question": "Где хранится описание конвейера в GitHub Actions?",
+        "options": [
+          {
+            "id": "repo",
+            "text": "В репозитории, в .github/workflows"
+          },
+          {
+            "id": "ui",
+            "text": "Только в настройках сайта"
+          },
+          {
+            "id": "email",
+            "text": "В письме администратору"
+          },
+          {
+            "id": "wiki",
+            "text": "В вики"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "repo",
+        "explanation": "Меняется через pull request."
+      }
+    },
+    {
+      "slug": "tl-runner",
+      "type": "quiz.single_choice",
+      "title": "Раннер",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-tools"
+      ],
+      "presentation": {
+        "question": "Что такое раннер?",
+        "options": [
+          {
+            "id": "machine",
+            "text": "Машина, на которой выполняются задачи конвейера"
+          },
+          {
+            "id": "person",
+            "text": "Человек, который запускает тесты"
+          },
+          {
+            "id": "script",
+            "text": "Скрипт сборки"
+          },
+          {
+            "id": "branch",
+            "text": "Ветка Git"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "machine",
+        "explanation": "Облачная или своя."
+      }
+    },
+    {
+      "slug": "tl-transfer",
+      "type": "quiz.single_choice",
+      "title": "Другая система",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-tools"
+      ],
+      "presentation": {
+        "question": "Пригодятся ли знания GitHub Actions в GitLab CI?",
+        "options": [
+          {
+            "id": "yes",
+            "text": "Да, принципы те же, отличается синтаксис"
+          },
+          {
+            "id": "no",
+            "text": "Нет, всё совсем другое"
+          },
+          {
+            "id": "half",
+            "text": "Только для Python"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "yes",
+        "explanation": "Этапы, кэш, секреты — везде."
+      }
+    },
+    {
+      "slug": "wa-on",
+      "type": "quiz.single_choice",
+      "title": "on",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-workflow"
+      ],
+      "presentation": {
+        "question": "За что отвечает ключ on в workflow?",
+        "options": [
+          {
+            "id": "trigger",
+            "text": "За события, которые запускают конвейер"
+          },
+          {
+            "id": "os",
+            "text": "За операционную систему"
+          },
+          {
+            "id": "steps",
+            "text": "За шаги"
+          },
+          {
+            "id": "power",
+            "text": "За включение раннера"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "trigger",
+        "explanation": "push, pull_request, schedule…"
+      }
+    },
+    {
+      "slug": "wa-uses",
+      "type": "quiz.single_choice",
+      "title": "uses",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-workflow"
+      ],
+      "presentation": {
+        "question": "Чем uses отличается от run?",
+        "options": [
+          {
+            "id": "action",
+            "text": "uses подключает готовое действие, run выполняет команду"
+          },
+          {
+            "id": "same",
+            "text": "Ничем"
+          },
+          {
+            "id": "os",
+            "text": "uses — для Windows"
+          },
+          {
+            "id": "secret",
+            "text": "uses — для секретов"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "action",
+        "explanation": "actions/checkout — готовое действие."
+      }
+    },
+    {
+      "slug": "wa-parallel",
+      "type": "quiz.single_choice",
+      "title": "Параллельно",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-workflow"
+      ],
+      "presentation": {
+        "question": "Как по умолчанию выполняются разные jobs?",
+        "options": [
+          {
+            "id": "parallel",
+            "text": "Параллельно на разных машинах"
+          },
+          {
+            "id": "serial",
+            "text": "Строго по очереди"
+          },
+          {
+            "id": "random",
+            "text": "Случайно"
+          },
+          {
+            "id": "once",
+            "text": "Только одна задача за раз"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "parallel",
+        "explanation": "Порядок задают needs."
+      }
+    },
+    {
+      "slug": "tg-paths",
+      "type": "quiz.single_choice",
+      "title": "paths",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-triggers"
+      ],
+      "presentation": {
+        "question": "Зачем фильтр paths?",
+        "options": [
+          {
+            "id": "skip",
+            "text": "Не запускать конвейер, если изменились неважные для него файлы"
+          },
+          {
+            "id": "secure",
+            "text": "Для безопасности"
+          },
+          {
+            "id": "order",
+            "text": "Для порядка шагов"
+          },
+          {
+            "id": "none",
+            "text": "Ни зачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "skip",
+        "explanation": "Документация не требует тестов."
+      }
+    },
+    {
+      "slug": "tg-pr",
+      "type": "quiz.single_choice",
+      "title": "pull_request",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-triggers"
+      ],
+      "presentation": {
+        "question": "Что даёт запуск конвейера на pull request?",
+        "options": [
+          {
+            "id": "before",
+            "text": "Проверку изменений до слияния с результатом прямо в PR"
+          },
+          {
+            "id": "after",
+            "text": "Только после слияния"
+          },
+          {
+            "id": "deploy",
+            "text": "Автоматическую выкладку"
+          },
+          {
+            "id": "nothing",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "before",
+        "explanation": "Красный PR не сливают."
+      }
+    },
+    {
+      "slug": "tg-manual",
+      "type": "quiz.single_choice",
+      "title": "Кнопка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-triggers"
+      ],
+      "presentation": {
+        "question": "Какой триггер добавляет ручной запуск?",
+        "options": [
+          {
+            "id": "dispatch",
+            "text": "workflow_dispatch"
+          },
+          {
+            "id": "manual",
+            "text": "manual"
+          },
+          {
+            "id": "button",
+            "text": "on_click"
+          },
+          {
+            "id": "run",
+            "text": "run_now"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "dispatch",
+        "explanation": "Удобно для выкладки."
+      }
+    },
+    {
+      "slug": "rr-first",
+      "type": "quiz.single_choice",
+      "title": "Где искать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-results"
+      ],
+      "presentation": {
+        "question": "С чего начинать разбор упавшего конвейера?",
+        "options": [
+          {
+            "id": "first",
+            "text": "С первого упавшего шага и первой ошибки в нём"
+          },
+          {
+            "id": "last",
+            "text": "С последней строки последнего шага"
+          },
+          {
+            "id": "rerun",
+            "text": "Перезапускать, пока не позеленеет"
+          },
+          {
+            "id": "ignore",
+            "text": "Игнорировать"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "first",
+        "explanation": "Остальное часто следствие."
+      }
+    },
+    {
+      "slug": "rr-protect",
+      "type": "quiz.single_choice",
+      "title": "Защита",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-results"
+      ],
+      "presentation": {
+        "question": "Что даёт защита ветки main с обязательными проверками?",
+        "options": [
+          {
+            "id": "green",
+            "text": "Слить можно только через PR с зелёными проверками"
+          },
+          {
+            "id": "read",
+            "text": "Ветку нельзя читать"
+          },
+          {
+            "id": "fast",
+            "text": "Ветка быстрее"
+          },
+          {
+            "id": "backup",
+            "text": "Резервную копию"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "green",
+        "explanation": "Основная ветка всегда рабочая."
+      }
+    },
+    {
+      "slug": "rr-rerun",
+      "type": "quiz.single_choice",
+      "title": "Перезапуск",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-results"
+      ],
+      "presentation": {
+        "question": "Тест то падает, то проходит. Правильно ли перезапускать до зелёного?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, нестабильный тест нужно чинить"
+          },
+          {
+            "id": "yes",
+            "text": "Да, это нормальная практика"
+          },
+          {
+            "id": "always",
+            "text": "Всегда трижды"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить все тесты"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Нестабильный тест скрывает настоящие ошибки."
+      }
+    },
+    {
+      "slug": "lf-check",
+      "type": "quiz.single_choice",
+      "title": "В CI",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-lint"
+      ],
+      "presentation": {
+        "question": "Что делать с форматированием в CI?",
+        "options": [
+          {
+            "id": "check",
+            "text": "Проверять с --check и падать, если код не отформатирован"
+          },
+          {
+            "id": "fix",
+            "text": "Молча переформатировать и коммитить за разработчика"
+          },
+          {
+            "id": "skip",
+            "text": "Пропускать"
+          },
+          {
+            "id": "warn",
+            "text": "Только предупреждать в чате"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "check",
+        "explanation": "Исправляют локально."
+      }
+    },
+    {
+      "slug": "lf-first",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-lint"
+      ],
+      "presentation": {
+        "question": "Почему линтер ставят в начало конвейера?",
+        "options": [
+          {
+            "id": "fast",
+            "text": "Он быстрый и ловит простые ошибки до долгих тестов"
+          },
+          {
+            "id": "required",
+            "text": "Так требует GitHub"
+          },
+          {
+            "id": "slow",
+            "text": "Он самый медленный"
+          },
+          {
+            "id": "none",
+            "text": "Порядок не важен"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fast",
+        "explanation": "Быстрое падение."
+      }
+    },
+    {
+      "slug": "lf-config",
+      "type": "quiz.single_choice",
+      "title": "Конфиг",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-lint"
+      ],
+      "presentation": {
+        "question": "Где должны лежать настройки линтера?",
+        "options": [
+          {
+            "id": "repo",
+            "text": "В репозитории, чтобы CI и редакторы использовали одни правила"
+          },
+          {
+            "id": "laptop",
+            "text": "Только на ноутбуке ведущего"
+          },
+          {
+            "id": "wiki",
+            "text": "В вики"
+          },
+          {
+            "id": "none",
+            "text": "Нигде"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "repo",
+        "explanation": "Одинаково у всех."
+      }
+    },
+    {
+      "slug": "tb-noemit",
+      "type": "quiz.single_choice",
+      "title": "--noEmit",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-types"
+      ],
+      "presentation": {
+        "question": "Что делает tsc --noEmit?",
+        "options": [
+          {
+            "id": "check",
+            "text": "Проверяет типы, не создавая файлов"
+          },
+          {
+            "id": "build",
+            "text": "Собирает проект"
+          },
+          {
+            "id": "format",
+            "text": "Форматирует код"
+          },
+          {
+            "id": "test",
+            "text": "Запускает тесты"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "check",
+        "explanation": "Быстрая проверка."
+      }
+    },
+    {
+      "slug": "tb-build",
+      "type": "quiz.single_choice",
+      "title": "Сборка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-types"
+      ],
+      "presentation": {
+        "question": "Зачем собирать проект в CI, если тесты прошли?",
+        "options": [
+          {
+            "id": "config",
+            "text": "Сборка ловит ошибки конфигурации и импортов, которых не видно в тестах"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          },
+          {
+            "id": "speed",
+            "text": "Чтобы ускорить тесты"
+          },
+          {
+            "id": "style",
+            "text": "Для стиля"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "config",
+        "explanation": "Не собралось в CI — не соберётся на сервере."
+      }
+    },
+    {
+      "slug": "tb-warn",
+      "type": "quiz.single_choice",
+      "title": "Предупреждения",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-types"
+      ],
+      "presentation": {
+        "question": "Почему опасно копить предупреждения?",
+        "options": [
+          {
+            "id": "noise",
+            "text": "Новые важные проблемы тонут в старом шуме"
+          },
+          {
+            "id": "slow",
+            "text": "Они замедляют компьютер"
+          },
+          {
+            "id": "legal",
+            "text": "Это нарушает лицензию"
+          },
+          {
+            "id": "none",
+            "text": "Не опасно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "noise",
+        "explanation": "Важные — как ошибки."
+      }
+    },
+    {
+      "slug": "lg-hook",
+      "type": "quiz.single_choice",
+      "title": "Хук",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-local"
+      ],
+      "presentation": {
+        "question": "Что делает pre-commit хук?",
+        "options": [
+          {
+            "id": "check",
+            "text": "Запускает проверки перед созданием коммита"
+          },
+          {
+            "id": "push",
+            "text": "Отправляет код на сервер"
+          },
+          {
+            "id": "merge",
+            "text": "Сливает ветки"
+          },
+          {
+            "id": "deploy",
+            "text": "Выкладывает сайт"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "check",
+        "explanation": "Обычно — только изменённые файлы."
+      }
+    },
+    {
+      "slug": "lg-bypass",
+      "type": "quiz.single_choice",
+      "title": "Обход",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-local"
+      ],
+      "presentation": {
+        "question": "Можно ли полагаться только на локальные хуки?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, их можно обойти — решающая проверка в CI"
+          },
+          {
+            "id": "yes",
+            "text": "Да, их нельзя обойти"
+          },
+          {
+            "id": "admin",
+            "text": "Да, если ты администратор"
+          },
+          {
+            "id": "git",
+            "text": "Да, Git их проверяет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "--no-verify."
+      }
+    },
+    {
+      "slug": "lg-split",
+      "type": "quiz.single_choice",
+      "title": "Разделение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-local"
+      ],
+      "presentation": {
+        "question": "Как разделить проверки между компьютером и CI?",
+        "options": [
+          {
+            "id": "split",
+            "text": "Локально — быстрые по изменённому коду, в CI — полный набор"
+          },
+          {
+            "id": "all",
+            "text": "Всё только локально"
+          },
+          {
+            "id": "ci",
+            "text": "Всё только в CI, локально ничего"
+          },
+          {
+            "id": "none",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "split",
+        "explanation": "Быстрая обратная связь и полная гарантия."
+      }
+    },
+    {
+      "slug": "tl-many",
+      "type": "quiz.single_choice",
+      "title": "Больше всего",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-testlevels"
+      ],
+      "presentation": {
+        "question": "Каких тестов должно быть больше всего?",
+        "options": [
+          {
+            "id": "unit",
+            "text": "Модульных"
+          },
+          {
+            "id": "e2e",
+            "text": "Сквозных"
+          },
+          {
+            "id": "manual",
+            "text": "Ручных"
+          },
+          {
+            "id": "load",
+            "text": "Нагрузочных"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "unit",
+        "explanation": "Они быстрые и дешёвые."
+      }
+    },
+    {
+      "slug": "tl-int",
+      "type": "quiz.single_choice",
+      "title": "Интеграционные",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-testlevels"
+      ],
+      "presentation": {
+        "question": "Что проверяют интеграционные тесты?",
+        "options": [
+          {
+            "id": "together",
+            "text": "Совместную работу модулей, например API с настоящей базой"
+          },
+          {
+            "id": "style",
+            "text": "Стиль кода"
+          },
+          {
+            "id": "types",
+            "text": "Типы"
+          },
+          {
+            "id": "ui",
+            "text": "Только цвета кнопок"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "together",
+        "explanation": "Ошибки на стыках."
+      }
+    },
+    {
+      "slug": "tl-order",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-testlevels"
+      ],
+      "presentation": {
+        "question": "В каком порядке запускать уровни тестов?",
+        "options": [
+          {
+            "id": "fast",
+            "text": "От быстрых к медленным"
+          },
+          {
+            "id": "slow",
+            "text": "От медленных к быстрым"
+          },
+          {
+            "id": "random",
+            "text": "Случайно"
+          },
+          {
+            "id": "all",
+            "text": "Всё одновременно всегда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fast",
+        "explanation": "Быстрое падение экономит время."
+      }
+    },
+    {
+      "slug": "sc-what",
+      "type": "quiz.single_choice",
+      "title": "services",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-services"
+      ],
+      "presentation": {
+        "question": "Что даёт блок services в задаче GitHub Actions?",
+        "options": [
+          {
+            "id": "containers",
+            "text": "Поднимает контейнеры вроде Postgres рядом с тестами"
+          },
+          {
+            "id": "secrets",
+            "text": "Хранит секреты"
+          },
+          {
+            "id": "cache",
+            "text": "Кэширует зависимости"
+          },
+          {
+            "id": "deploy",
+            "text": "Выкладывает сайт"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "containers",
+        "explanation": "Доступны по localhost."
+      }
+    },
+    {
+      "slug": "sc-ready",
+      "type": "quiz.single_choice",
+      "title": "Готовность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-services"
+      ],
+      "presentation": {
+        "question": "Почему тесты иногда падают с «connection refused» к базе в CI?",
+        "options": [
+          {
+            "id": "notready",
+            "text": "База ещё не готова — нужна проверка здоровья или ожидание"
+          },
+          {
+            "id": "password",
+            "text": "Всегда неверный пароль"
+          },
+          {
+            "id": "network",
+            "text": "Нет интернета"
+          },
+          {
+            "id": "disk",
+            "text": "Мало места"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "notready",
+        "explanation": "health-cmd pg_isready."
+      }
+    },
+    {
+      "slug": "sc-data",
+      "type": "quiz.single_choice",
+      "title": "Данные",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-services"
+      ],
+      "presentation": {
+        "question": "Как готовить данные для интеграционных тестов?",
+        "options": [
+          {
+            "id": "fresh",
+            "text": "Создавать заново в каждом запуске миграциями и фикстурами"
+          },
+          {
+            "id": "prod",
+            "text": "Копировать боевую базу"
+          },
+          {
+            "id": "keep",
+            "text": "Оставлять от прошлых запусков"
+          },
+          {
+            "id": "manual",
+            "text": "Вручную перед каждым запуском"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fresh",
+        "explanation": "Тесты независимы."
+      }
+    },
+    {
+      "slug": "fc-why",
+      "type": "quiz.single_choice",
+      "title": "Опасность",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-flaky"
+      ],
+      "presentation": {
+        "question": "Чем опасен нестабильный тест?",
+        "options": [
+          {
+            "id": "trust",
+            "text": "Команда привыкает игнорировать красный конвейер"
+          },
+          {
+            "id": "slow",
+            "text": "Он только медленнее"
+          },
+          {
+            "id": "disk",
+            "text": "Занимает место"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "trust",
+        "explanation": "Доверие — главное."
+      }
+    },
+    {
+      "slug": "fc-fix",
+      "type": "quiz.single_choice",
+      "title": "Что делать",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-flaky"
+      ],
+      "presentation": {
+        "question": "Что делать с нестабильным тестом?",
+        "options": [
+          {
+            "id": "fix",
+            "text": "Найти причину и починить, временно — в карантин с задачей"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить навсегда"
+          },
+          {
+            "id": "retry",
+            "text": "Включить 10 повторов и забыть"
+          },
+          {
+            "id": "ignore",
+            "text": "Игнорировать"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fix",
+        "explanation": "Это скрытая ошибка."
+      }
+    },
+    {
+      "slug": "fc-100",
+      "type": "quiz.single_choice",
+      "title": "100%",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-flaky"
+      ],
+      "presentation": {
+        "question": "Гарантирует ли 100% покрытия отсутствие ошибок?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, код может выполняться без проверок результата"
+          },
+          {
+            "id": "yes",
+            "text": "Да"
+          },
+          {
+            "id": "ts",
+            "text": "Да, с TypeScript"
+          },
+          {
+            "id": "ci",
+            "text": "Да, в CI"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Цифра — подсказка."
+      }
+    },
+    {
+      "slug": "ch-key",
+      "type": "quiz.single_choice",
+      "title": "Ключ",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-cache"
+      ],
+      "presentation": {
+        "question": "Из чего обычно строят ключ кэша зависимостей?",
+        "options": [
+          {
+            "id": "lock",
+            "text": "Из ОС и хэша lock-файла"
+          },
+          {
+            "id": "date",
+            "text": "Из текущей даты"
+          },
+          {
+            "id": "random",
+            "text": "Из случайного числа"
+          },
+          {
+            "id": "author",
+            "text": "Из имени автора коммита"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "lock",
+        "explanation": "Изменились зависимости — новый ключ."
+      }
+    },
+    {
+      "slug": "ch-gain",
+      "type": "quiz.single_choice",
+      "title": "Выигрыш",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-cache"
+      ],
+      "presentation": {
+        "question": "Что даёт кэш зависимостей?",
+        "options": [
+          {
+            "id": "fast",
+            "text": "Не скачивать пакеты заново в каждом запуске"
+          },
+          {
+            "id": "secure",
+            "text": "Безопасность"
+          },
+          {
+            "id": "tests",
+            "text": "Больше тестов"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fast",
+        "explanation": "Минуты экономии на каждом запуске."
+      }
+    },
+    {
+      "slug": "ch-harm",
+      "type": "quiz.single_choice",
+      "title": "Вред",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-cache"
+      ],
+      "presentation": {
+        "question": "Как кэш может навредить?",
+        "options": [
+          {
+            "id": "stale",
+            "text": "Устаревшие файлы маскируют настоящую проблему"
+          },
+          {
+            "id": "slow",
+            "text": "Он всегда замедляет"
+          },
+          {
+            "id": "cost",
+            "text": "Он очень дорогой"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "stale",
+        "explanation": "Ключ должен учитывать всё важное."
+      }
+    },
+    {
+      "slug": "pm-needs",
+      "type": "quiz.single_choice",
+      "title": "needs",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-matrix"
+      ],
+      "presentation": {
+        "question": "Что делает needs: [test] у задачи deploy?",
+        "options": [
+          {
+            "id": "wait",
+            "text": "deploy начнётся только после успешной задачи test"
+          },
+          {
+            "id": "parallel",
+            "text": "Запускает их одновременно"
+          },
+          {
+            "id": "skip",
+            "text": "Пропускает test"
+          },
+          {
+            "id": "copy",
+            "text": "Копирует test"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "wait",
+        "explanation": "Порядок задач."
+      }
+    },
+    {
+      "slug": "pm-matrix",
+      "type": "quiz.single_choice",
+      "title": "Матрица",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-matrix"
+      ],
+      "presentation": {
+        "question": "Сколько запусков даст матрица node: [20, 22] и os: [ubuntu, windows]?",
+        "options": [
+          {
+            "id": "4",
+            "text": "4"
+          },
+          {
+            "id": "2",
+            "text": "2"
+          },
+          {
+            "id": "1",
+            "text": "1"
+          },
+          {
+            "id": "8",
+            "text": "8"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "4",
+        "explanation": "Все сочетания."
+      }
+    },
+    {
+      "slug": "pm-shard",
+      "type": "quiz.single_choice",
+      "title": "Шардирование",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-matrix"
+      ],
+      "presentation": {
+        "question": "Что такое шардирование тестов?",
+        "options": [
+          {
+            "id": "split",
+            "text": "Разбиение набора тестов на части для параллельного запуска"
+          },
+          {
+            "id": "delete",
+            "text": "Удаление медленных тестов"
+          },
+          {
+            "id": "merge",
+            "text": "Слияние тестов в один"
+          },
+          {
+            "id": "mock",
+            "text": "Подмена базы"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "split",
+        "explanation": "N машин — быстрее в N раз (почти)."
+      }
+    },
+    {
+      "slug": "af-concurrency",
+      "type": "quiz.single_choice",
+      "title": "Отмена",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-affected"
+      ],
+      "presentation": {
+        "question": "Что делает concurrency с cancel-in-progress: true?",
+        "options": [
+          {
+            "id": "cancel",
+            "text": "Отменяет устаревший запуск при новом push в ту же ветку"
+          },
+          {
+            "id": "parallel",
+            "text": "Запускает всё параллельно"
+          },
+          {
+            "id": "retry",
+            "text": "Повторяет упавшие"
+          },
+          {
+            "id": "lock",
+            "text": "Блокирует ветку"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "cancel",
+        "explanation": "Экономия раннеров."
+      }
+    },
+    {
+      "slug": "af-mono",
+      "type": "quiz.single_choice",
+      "title": "Монорепозиторий",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-affected"
+      ],
+      "presentation": {
+        "question": "Что делает проверка только затронутого?",
+        "options": [
+          {
+            "id": "affected",
+            "text": "Запускает проверки только пакетов, которых касается изменение"
+          },
+          {
+            "id": "all",
+            "text": "Запускает всё всегда"
+          },
+          {
+            "id": "none",
+            "text": "Ничего не запускает"
+          },
+          {
+            "id": "random",
+            "text": "Случайные тесты"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "affected",
+        "explanation": "Turborepo, Nx."
+      }
+    },
+    {
+      "slug": "af-full",
+      "type": "quiz.single_choice",
+      "title": "Полный прогон",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-affected"
+      ],
+      "presentation": {
+        "question": "Зачем иногда запускать всё целиком?",
+        "options": [
+          {
+            "id": "safety",
+            "text": "Проверка затронутого может пропустить скрытую зависимость"
+          },
+          {
+            "id": "cost",
+            "text": "Чтобы потратить деньги"
+          },
+          {
+            "id": "habit",
+            "text": "По привычке"
+          },
+          {
+            "id": "never",
+            "text": "Не нужно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "safety",
+        "explanation": "main и ночные прогоны."
+      }
+    },
+    {
+      "slug": "bo-why",
+      "type": "quiz.single_choice",
+      "title": "Почему один раз",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-artifact"
+      ],
+      "presentation": {
+        "question": "Почему не пересобирают артефакт перед выкладкой в бой?",
+        "options": [
+          {
+            "id": "same",
+            "text": "Чтобы в бой ушло ровно то, что проверили"
+          },
+          {
+            "id": "slow",
+            "text": "Только из-за скорости"
+          },
+          {
+            "id": "license",
+            "text": "Из-за лицензии"
+          },
+          {
+            "id": "no",
+            "text": "Пересобирают всегда"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "same",
+        "explanation": "Пересборка может дать другое."
+      }
+    },
+    {
+      "slug": "bo-what",
+      "type": "quiz.single_choice",
+      "title": "Артефакт",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-artifact"
+      ],
+      "presentation": {
+        "question": "Что из этого — артефакт сборки?",
+        "options": [
+          {
+            "id": "image",
+            "text": "Образ Docker с приложением"
+          },
+          {
+            "id": "issue",
+            "text": "Задача в трекере"
+          },
+          {
+            "id": "chat",
+            "text": "Сообщение в чате"
+          },
+          {
+            "id": "branch",
+            "text": "Ветка Git"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "image",
+        "explanation": "И архивы, и бинарники."
+      }
+    },
+    {
+      "slug": "bo-config",
+      "type": "quiz.single_choice",
+      "title": "Настройки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-artifact"
+      ],
+      "presentation": {
+        "question": "Как один артефакт работает в разных окружениях?",
+        "options": [
+          {
+            "id": "env",
+            "text": "Настройки приходят из переменных окружения при запуске"
+          },
+          {
+            "id": "rebuild",
+            "text": "Пересобирается под каждое"
+          },
+          {
+            "id": "edit",
+            "text": "Правится вручную на сервере"
+          },
+          {
+            "id": "no",
+            "text": "Никак"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "env",
+        "explanation": "Двенадцатифакторный подход."
+      }
+    },
+    {
+      "slug": "vr-major",
+      "type": "quiz.single_choice",
+      "title": "MAJOR",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-version"
+      ],
+      "presentation": {
+        "question": "Когда увеличивают MAJOR-версию?",
+        "options": [
+          {
+            "id": "break",
+            "text": "При ломающих изменениях"
+          },
+          {
+            "id": "fix",
+            "text": "При исправлении ошибки"
+          },
+          {
+            "id": "feature",
+            "text": "При любой новой функции"
+          },
+          {
+            "id": "daily",
+            "text": "Каждый день"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "break",
+        "explanation": "PATCH — исправления, MINOR — новое без поломок."
+      }
+    },
+    {
+      "slug": "vr-tag",
+      "type": "quiz.single_choice",
+      "title": "Тег",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-version"
+      ],
+      "presentation": {
+        "question": "Зачем отмечать выпуск тегом Git?",
+        "options": [
+          {
+            "id": "link",
+            "text": "Чтобы однозначно связать версию с коммитом и запустить выпуск"
+          },
+          {
+            "id": "color",
+            "text": "Для цвета в интерфейсе"
+          },
+          {
+            "id": "delete",
+            "text": "Чтобы удалить ветку"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "link",
+        "explanation": "Например, тег v2.4.1."
+      }
+    },
+    {
+      "slug": "vr-cc",
+      "type": "quiz.single_choice",
+      "title": "Conventional Commits",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-version"
+      ],
+      "presentation": {
+        "question": "Что даёт формат сообщений feat: и fix:?",
+        "options": [
+          {
+            "id": "auto",
+            "text": "Инструменты сами вычисляют версию и заметки о выпуске"
+          },
+          {
+            "id": "style",
+            "text": "Только красивые сообщения"
+          },
+          {
+            "id": "speed",
+            "text": "Git работает быстрее"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "auto",
+        "explanation": "semantic-release, changesets."
+      }
+    },
+    {
+      "slug": "rg-who",
+      "type": "quiz.single_choice",
+      "title": "Кто публикует",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-registry"
+      ],
+      "presentation": {
+        "question": "Кто должен публиковать пакеты и образы?",
+        "options": [
+          {
+            "id": "ci",
+            "text": "Конвейер CI по тегу или слиянию"
+          },
+          {
+            "id": "laptop",
+            "text": "Разработчик со своего ноутбука"
+          },
+          {
+            "id": "anyone",
+            "text": "Кто угодно"
+          },
+          {
+            "id": "nobody",
+            "text": "Никто"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "ci",
+        "explanation": "Воспроизводимо и проверено."
+      }
+    },
+    {
+      "slug": "rg-trusted",
+      "type": "quiz.single_choice",
+      "title": "Доверенная публикация",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-registry"
+      ],
+      "presentation": {
+        "question": "Что даёт trusted publishing в npm и PyPI?",
+        "options": [
+          {
+            "id": "token",
+            "text": "Публикацию из CI без долгоживущих токенов"
+          },
+          {
+            "id": "free",
+            "text": "Бесплатные пакеты"
+          },
+          {
+            "id": "fast",
+            "text": "Быструю установку"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "token",
+        "explanation": "Меньше секретов — меньше утечек."
+      }
+    },
+    {
+      "slug": "rg-keep",
+      "type": "quiz.single_choice",
+      "title": "Хранение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-registry"
+      ],
+      "presentation": {
+        "question": "Почему старые выпуски не стоит удалять все подряд?",
+        "options": [
+          {
+            "id": "rollback",
+            "text": "Они нужны для быстрого отката"
+          },
+          {
+            "id": "law",
+            "text": "Так требует закон"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "none",
+            "text": "Их нужно удалить"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rollback",
+        "explanation": "Откат — на проверенную версию."
+      }
+    },
+    {
+      "slug": "cs-where",
+      "type": "quiz.single_choice",
+      "title": "Где хранить",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-secrets"
+      ],
+      "presentation": {
+        "question": "Где хранить токен выкладки?",
+        "options": [
+          {
+            "id": "secrets",
+            "text": "В хранилище секретов репозитория или окружения"
+          },
+          {
+            "id": "code",
+            "text": "В коде workflow"
+          },
+          {
+            "id": "readme",
+            "text": "В README"
+          },
+          {
+            "id": "commit",
+            "text": "В сообщении коммита"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "secrets",
+        "explanation": "${{ secrets.ИМЯ }}."
+      }
+    },
+    {
+      "slug": "cs-fork",
+      "type": "quiz.single_choice",
+      "title": "Форки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-secrets"
+      ],
+      "presentation": {
+        "question": "Почему PR из форка не получает секреты?",
+        "options": [
+          {
+            "id": "steal",
+            "text": "Иначе автор мог бы изменить workflow и украсть их"
+          },
+          {
+            "id": "slow",
+            "text": "Для скорости"
+          },
+          {
+            "id": "bug",
+            "text": "Это ошибка GitHub"
+          },
+          {
+            "id": "paid",
+            "text": "Это платная функция"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "steal",
+        "explanation": "Чужой код — без ключей."
+      }
+    },
+    {
+      "slug": "cs-oidc",
+      "type": "quiz.single_choice",
+      "title": "OIDC",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-secrets"
+      ],
+      "presentation": {
+        "question": "Что даёт OIDC для выкладки в облако?",
+        "options": [
+          {
+            "id": "short",
+            "text": "Короткоживущие токены без хранения постоянных ключей"
+          },
+          {
+            "id": "free",
+            "text": "Бесплатный хостинг"
+          },
+          {
+            "id": "fast",
+            "text": "Быструю сборку"
+          },
+          {
+            "id": "ui",
+            "text": "Красивый интерфейс"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "short",
+        "explanation": "Утекать нечему."
+      }
+    },
+    {
+      "slug": "pm-least",
+      "type": "quiz.single_choice",
+      "title": "Права",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-permissions"
+      ],
+      "presentation": {
+        "question": "Какие права дать задаче, которая только запускает тесты?",
+        "options": [
+          {
+            "id": "read",
+            "text": "contents: read"
+          },
+          {
+            "id": "write",
+            "text": "contents: write"
+          },
+          {
+            "id": "all",
+            "text": "write-all"
+          },
+          {
+            "id": "admin",
+            "text": "Права администратора"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "read",
+        "explanation": "Наименьшие привилегии."
+      }
+    },
+    {
+      "slug": "pm-env",
+      "type": "quiz.single_choice",
+      "title": "Окружение",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-permissions"
+      ],
+      "presentation": {
+        "question": "Что даёт защищённое окружение production?",
+        "options": [
+          {
+            "id": "approve",
+            "text": "Выкладку только после одобрения и только из нужной ветки"
+          },
+          {
+            "id": "speed",
+            "text": "Ускорение"
+          },
+          {
+            "id": "free",
+            "text": "Бесплатные раннеры"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "approve",
+        "explanation": "Случайная ветка не выкатится."
+      }
+    },
+    {
+      "slug": "pm-owners",
+      "type": "quiz.single_choice",
+      "title": "CODEOWNERS",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-permissions"
+      ],
+      "presentation": {
+        "question": "Зачем CODEOWNERS на папку .github/workflows?",
+        "options": [
+          {
+            "id": "review",
+            "text": "Изменения конвейера одобряют ответственные"
+          },
+          {
+            "id": "style",
+            "text": "Для стиля"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "delete",
+            "text": "Чтобы удалить workflow"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "review",
+        "explanation": "Конвейер — часть безопасности."
+      }
+    },
+    {
+      "slug": "sp-sha",
+      "type": "quiz.single_choice",
+      "title": "SHA",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-supply"
+      ],
+      "presentation": {
+        "question": "Почему действие закрепляют по SHA, а не по тегу v4?",
+        "options": [
+          {
+            "id": "immutable",
+            "text": "Тег можно переписать, SHA коммита неизменен"
+          },
+          {
+            "id": "short",
+            "text": "SHA короче"
+          },
+          {
+            "id": "fast",
+            "text": "SHA быстрее скачивается"
+          },
+          {
+            "id": "none",
+            "text": "Разницы нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "immutable",
+        "explanation": "Защита от подмены."
+      }
+    },
+    {
+      "slug": "sp-bots",
+      "type": "quiz.single_choice",
+      "title": "Обновления",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-supply"
+      ],
+      "presentation": {
+        "question": "Что делают Dependabot и Renovate?",
+        "options": [
+          {
+            "id": "prs",
+            "text": "Создают PR с обновлениями зависимостей"
+          },
+          {
+            "id": "deploy",
+            "text": "Выкладывают сайт"
+          },
+          {
+            "id": "review",
+            "text": "Пишут код за тебя"
+          },
+          {
+            "id": "delete",
+            "text": "Удаляют зависимости"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "prs",
+        "explanation": "CI проверяет их как обычные изменения."
+      }
+    },
+    {
+      "slug": "sp-sign",
+      "type": "quiz.single_choice",
+      "title": "Подпись",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-supply"
+      ],
+      "presentation": {
+        "question": "Зачем подписывать образы в конвейере?",
+        "options": [
+          {
+            "id": "origin",
+            "text": "Доказать, что образ собран своим конвейером и не подменён"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "size",
+            "text": "Чтобы уменьшить размер"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "origin",
+        "explanation": "cosign и аттестации."
+      }
+    },
+    {
+      "slug": "dj-staging",
+      "type": "quiz.single_choice",
+      "title": "staging",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-deploy"
+      ],
+      "presentation": {
+        "question": "Зачем выкладывать сначала в staging?",
+        "options": [
+          {
+            "id": "rehearse",
+            "text": "Проверить выкладку в похожем окружении до пользователей"
+          },
+          {
+            "id": "backup",
+            "text": "Для резервной копии"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rehearse",
+        "explanation": "Репетиция выкладки."
+      }
+    },
+    {
+      "slug": "dj-smoke",
+      "type": "quiz.single_choice",
+      "title": "Smoke-тест",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-deploy"
+      ],
+      "presentation": {
+        "question": "Что такое smoke-тест после выкладки?",
+        "options": [
+          {
+            "id": "quick",
+            "text": "Быстрая проверка главных страниц и /health на новой версии"
+          },
+          {
+            "id": "fire",
+            "text": "Проверка пожарной сигнализации"
+          },
+          {
+            "id": "load",
+            "text": "Нагрузочный тест на сутки"
+          },
+          {
+            "id": "unit",
+            "text": "Все модульные тесты"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "quick",
+        "explanation": "Сбой виден за минуту."
+      }
+    },
+    {
+      "slug": "dj-queue",
+      "type": "quiz.single_choice",
+      "title": "Очередь",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-deploy"
+      ],
+      "presentation": {
+        "question": "Почему выкладки должны идти по одной?",
+        "options": [
+          {
+            "id": "order",
+            "text": "Чтобы две выкладки не наложились и версии шли по порядку"
+          },
+          {
+            "id": "cost",
+            "text": "Ради экономии"
+          },
+          {
+            "id": "law",
+            "text": "По закону"
+          },
+          {
+            "id": "none",
+            "text": "Не должны"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "order",
+        "explanation": "concurrency без отмены."
+      }
+    },
+    {
+      "slug": "rs-canary",
+      "type": "quiz.single_choice",
+      "title": "Канарейка",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-strategies"
+      ],
+      "presentation": {
+        "question": "Что такое канареечная выкладка?",
+        "options": [
+          {
+            "id": "small",
+            "text": "Новая версия сначала получает небольшую долю трафика"
+          },
+          {
+            "id": "bird",
+            "text": "Выкладка с птичьим логотипом"
+          },
+          {
+            "id": "all",
+            "text": "Сразу всем пользователям"
+          },
+          {
+            "id": "night",
+            "text": "Только ночью"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "small",
+        "explanation": "Потом доля растёт."
+      }
+    },
+    {
+      "slug": "rs-bluegreen",
+      "type": "quiz.single_choice",
+      "title": "Сине-зелёная",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-strategies"
+      ],
+      "presentation": {
+        "question": "Главное преимущество сине-зелёной выкладки?",
+        "options": [
+          {
+            "id": "rollback",
+            "text": "Мгновенный откат переключением трафика"
+          },
+          {
+            "id": "cheap",
+            "text": "Она самая дешёвая"
+          },
+          {
+            "id": "simple",
+            "text": "Не нужно второе окружение"
+          },
+          {
+            "id": "none",
+            "text": "Нет преимуществ"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "rollback",
+        "explanation": "Цена — второе окружение."
+      }
+    },
+    {
+      "slug": "rs-rolling",
+      "type": "quiz.single_choice",
+      "title": "Rolling",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-strategies"
+      ],
+      "presentation": {
+        "question": "Как работает постепенная замена?",
+        "options": [
+          {
+            "id": "one",
+            "text": "Экземпляры заменяются по одному после проверки здоровья нового"
+          },
+          {
+            "id": "all",
+            "text": "Все останавливаются сразу"
+          },
+          {
+            "id": "random",
+            "text": "Случайно"
+          },
+          {
+            "id": "manual",
+            "text": "Только вручную"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "one",
+        "explanation": "Без простоя."
+      }
+    },
+    {
+      "slug": "fr-flag",
+      "type": "quiz.single_choice",
+      "title": "Флаг",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-flags"
+      ],
+      "presentation": {
+        "question": "Что даёт флаг функции?",
+        "options": [
+          {
+            "id": "separate",
+            "text": "Выкладывать код выключенным и включать его отдельно"
+          },
+          {
+            "id": "speed",
+            "text": "Ускорение сборки"
+          },
+          {
+            "id": "test",
+            "text": "Автоматические тесты"
+          },
+          {
+            "id": "design",
+            "text": "Дизайн"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "separate",
+        "explanation": "Выкладка ≠ выпуск."
+      }
+    },
+    {
+      "slug": "fr-rollback",
+      "type": "quiz.single_choice",
+      "title": "Откат",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-flags"
+      ],
+      "presentation": {
+        "question": "Как правильно откатить неудачную выкладку?",
+        "options": [
+          {
+            "id": "artifact",
+            "text": "Выложить прошлый проверенный артефакт"
+          },
+          {
+            "id": "ssh",
+            "text": "Чинить файлы на сервере руками"
+          },
+          {
+            "id": "wait",
+            "text": "Ждать, пока само пройдёт"
+          },
+          {
+            "id": "delete",
+            "text": "Удалить сервер"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "artifact",
+        "explanation": "Минуты, а не часы."
+      }
+    },
+    {
+      "slug": "fr-debt",
+      "type": "quiz.single_choice",
+      "title": "Старые флаги",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-flags"
+      ],
+      "presentation": {
+        "question": "Что делать с флагом, который включён для всех уже месяц?",
+        "options": [
+          {
+            "id": "remove",
+            "text": "Удалить флаг и ветку старого кода"
+          },
+          {
+            "id": "keep",
+            "text": "Оставить навсегда"
+          },
+          {
+            "id": "more",
+            "text": "Добавить ещё флагов"
+          },
+          {
+            "id": "hide",
+            "text": "Спрятать в конфиге"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "remove",
+        "explanation": "Мёртвые ветки — долг."
+      }
+    },
+    {
+      "slug": "pe-preview",
+      "type": "quiz.single_choice",
+      "title": "Превью",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-envs"
+      ],
+      "presentation": {
+        "question": "Зачем отдельное окружение для каждого PR?",
+        "options": [
+          {
+            "id": "look",
+            "text": "Посмотреть изменения в работе до слияния"
+          },
+          {
+            "id": "backup",
+            "text": "Резервная копия"
+          },
+          {
+            "id": "speed",
+            "text": "Ускорить сайт"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "look",
+        "explanation": "Своя ссылка на каждый PR."
+      }
+    },
+    {
+      "slug": "pe-same",
+      "type": "quiz.single_choice",
+      "title": "Сходство",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-envs"
+      ],
+      "presentation": {
+        "question": "Почему staging должен быть похож на production?",
+        "options": [
+          {
+            "id": "surprise",
+            "text": "Чтобы проверка на staging предсказывала поведение в бою"
+          },
+          {
+            "id": "cost",
+            "text": "Чтобы платить больше"
+          },
+          {
+            "id": "law",
+            "text": "По закону"
+          },
+          {
+            "id": "none",
+            "text": "Не должен"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "surprise",
+        "explanation": "Меньше различий — меньше сюрпризов."
+      }
+    },
+    {
+      "slug": "pe-secrets",
+      "type": "quiz.single_choice",
+      "title": "Секреты",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-envs"
+      ],
+      "presentation": {
+        "question": "Должно ли превью-окружение иметь доступ к боевым секретам?",
+        "options": [
+          {
+            "id": "no",
+            "text": "Нет, у каждого окружения свои секреты"
+          },
+          {
+            "id": "yes",
+            "text": "Да, всегда"
+          },
+          {
+            "id": "read",
+            "text": "Только на чтение"
+          },
+          {
+            "id": "weekend",
+            "text": "Только по выходным"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "no",
+        "explanation": "Изоляция окружений."
+      }
+    },
+    {
+      "slug": "dm-when",
+      "type": "quiz.single_choice",
+      "title": "Когда",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-migrations"
+      ],
+      "presentation": {
+        "question": "Когда конвейер применяет миграции?",
+        "options": [
+          {
+            "id": "before",
+            "text": "Перед выкладкой новой версии кода"
+          },
+          {
+            "id": "after",
+            "text": "Через неделю после"
+          },
+          {
+            "id": "never",
+            "text": "Никогда, вручную"
+          },
+          {
+            "id": "random",
+            "text": "Когда угодно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "before",
+        "explanation": "Код ждёт новую схему."
+      }
+    },
+    {
+      "slug": "dm-compat",
+      "type": "quiz.single_choice",
+      "title": "Совместимость",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-migrations"
+      ],
+      "presentation": {
+        "question": "Почему миграция не должна ломать старую версию кода?",
+        "options": [
+          {
+            "id": "both",
+            "text": "Во время выкладки работают обе версии одновременно"
+          },
+          {
+            "id": "law",
+            "text": "По закону"
+          },
+          {
+            "id": "git",
+            "text": "Из-за Git"
+          },
+          {
+            "id": "none",
+            "text": "Это не важно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "both",
+        "explanation": "И для отката."
+      }
+    },
+    {
+      "slug": "dm-rename",
+      "type": "quiz.single_choice",
+      "title": "Переименование",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-migrations"
+      ],
+      "presentation": {
+        "question": "Как безопасно переименовать колонку?",
+        "options": [
+          {
+            "id": "expand",
+            "text": "По шагам: добавить новую, писать в обе, перенести, переключить чтение, удалить старую"
+          },
+          {
+            "id": "once",
+            "text": "Одной командой RENAME в той же выкладке"
+          },
+          {
+            "id": "drop",
+            "text": "Удалить и создать заново"
+          },
+          {
+            "id": "never",
+            "text": "Никогда не переименовывать"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "expand",
+        "explanation": "Expand and contract."
+      }
+    },
+    {
+      "slug": "ic-plan",
+      "type": "quiz.single_choice",
+      "title": "plan",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-iac"
+      ],
+      "presentation": {
+        "question": "Зачем показывать terraform plan в PR?",
+        "options": [
+          {
+            "id": "preview",
+            "text": "Увидеть, что изменится в инфраструктуре, до применения"
+          },
+          {
+            "id": "speed",
+            "text": "Ускорить применение"
+          },
+          {
+            "id": "cost",
+            "text": "Снизить цены"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "preview",
+        "explanation": "Никаких неожиданных удалений."
+      }
+    },
+    {
+      "slug": "ic-drift",
+      "type": "quiz.single_choice",
+      "title": "Дрейф",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-iac"
+      ],
+      "presentation": {
+        "question": "Что такое дрейф инфраструктуры?",
+        "options": [
+          {
+            "id": "manual",
+            "text": "Расхождение реальной системы с кодом из-за ручных правок"
+          },
+          {
+            "id": "move",
+            "text": "Перенос сервера в другую страну"
+          },
+          {
+            "id": "slow",
+            "text": "Замедление сети"
+          },
+          {
+            "id": "none",
+            "text": "Такого не бывает"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "manual",
+        "explanation": "Регулярный plan его покажет."
+      }
+    },
+    {
+      "slug": "ic-state",
+      "type": "quiz.single_choice",
+      "title": "Состояние",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-iac"
+      ],
+      "presentation": {
+        "question": "Зачем хранить состояние Terraform удалённо с блокировкой?",
+        "options": [
+          {
+            "id": "team",
+            "text": "Чтобы команда не применяла изменения одновременно и видела одно состояние"
+          },
+          {
+            "id": "secret",
+            "text": "Чтобы спрятать от всех"
+          },
+          {
+            "id": "speed",
+            "text": "Для скорости"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "team",
+        "explanation": "Общая правда для всех."
+      }
+    },
+    {
+      "slug": "pd-version",
+      "type": "quiz.single_choice",
+      "title": "Версия",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-postdeploy"
+      ],
+      "presentation": {
+        "question": "Зачем /health отдаёт номер версии?",
+        "options": [
+          {
+            "id": "confirm",
+            "text": "Чтобы убедиться, что новая версия действительно работает"
+          },
+          {
+            "id": "seo",
+            "text": "Для поисковиков"
+          },
+          {
+            "id": "style",
+            "text": "Для красоты"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "confirm",
+        "explanation": "Выкладка дошла."
+      }
+    },
+    {
+      "slug": "pd-auto",
+      "type": "quiz.single_choice",
+      "title": "Автооткат",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-postdeploy"
+      ],
+      "presentation": {
+        "question": "Когда срабатывает автоматический откат?",
+        "options": [
+          {
+            "id": "metrics",
+            "text": "Когда после выкладки ухудшились метрики ошибок или задержки"
+          },
+          {
+            "id": "time",
+            "text": "Всегда через час"
+          },
+          {
+            "id": "never",
+            "text": "Никогда"
+          },
+          {
+            "id": "random",
+            "text": "Случайно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "metrics",
+        "explanation": "Канарейка и метрики."
+      }
+    },
+    {
+      "slug": "pd-marker",
+      "type": "quiz.single_choice",
+      "title": "Отметки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-postdeploy"
+      ],
+      "presentation": {
+        "question": "Что дают отметки выпусков на графиках?",
+        "options": [
+          {
+            "id": "link",
+            "text": "Связь изменения метрик с конкретной выкладкой"
+          },
+          {
+            "id": "speed",
+            "text": "Ускорение графиков"
+          },
+          {
+            "id": "color",
+            "text": "Цвет"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "link",
+        "explanation": "Сразу видно виновника."
+      }
+    },
+    {
+      "slug": "al-symptom",
+      "type": "quiz.single_choice",
+      "title": "Тревоги",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-alerts"
+      ],
+      "presentation": {
+        "question": "На что лучше настраивать тревогу, которая будит человека?",
+        "options": [
+          {
+            "id": "users",
+            "text": "На симптомы для пользователей: ошибки и задержку"
+          },
+          {
+            "id": "cpu",
+            "text": "На каждый скачок процессора"
+          },
+          {
+            "id": "disk",
+            "text": "На каждое изменение файла"
+          },
+          {
+            "id": "all",
+            "text": "На всё подряд"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "users",
+        "explanation": "Меньше ложных тревог."
+      }
+    },
+    {
+      "slug": "al-slo",
+      "type": "quiz.single_choice",
+      "title": "SLO",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-alerts"
+      ],
+      "presentation": {
+        "question": "Что такое бюджет ошибок?",
+        "options": [
+          {
+            "id": "budget",
+            "text": "Допустимая доля неудачных запросов по цели SLO"
+          },
+          {
+            "id": "money",
+            "text": "Деньги на исправление ошибок"
+          },
+          {
+            "id": "count",
+            "text": "Число ошибок в коде"
+          },
+          {
+            "id": "none",
+            "text": "Такого нет"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "budget",
+        "explanation": "99,9% → 0,1% бюджета."
+      }
+    },
+    {
+      "slug": "al-runbook",
+      "type": "quiz.single_choice",
+      "title": "Инструкция",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-alerts"
+      ],
+      "presentation": {
+        "question": "Зачем инструкция к каждой тревоге?",
+        "options": [
+          {
+            "id": "act",
+            "text": "Дежурный быстро понимает, что проверить и как откатить"
+          },
+          {
+            "id": "law",
+            "text": "Так требует закон"
+          },
+          {
+            "id": "style",
+            "text": "Для красоты"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "act",
+        "explanation": "Ночью некогда разбираться."
+      }
+    },
+    {
+      "slug": "dr-four",
+      "type": "quiz.single_choice",
+      "title": "Четыре метрики",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-dora"
+      ],
+      "presentation": {
+        "question": "Что из этого входит в метрики DORA?",
+        "options": [
+          {
+            "id": "freq",
+            "text": "Частота выкладок"
+          },
+          {
+            "id": "lines",
+            "text": "Число строк кода"
+          },
+          {
+            "id": "hours",
+            "text": "Часы в офисе"
+          },
+          {
+            "id": "meetings",
+            "text": "Число встреч"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "freq",
+        "explanation": "И время изменения, доля неудач, время восстановления."
+      }
+    },
+    {
+      "slug": "dr-small",
+      "type": "quiz.single_choice",
+      "title": "Маленькие изменения",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-dora"
+      ],
+      "presentation": {
+        "question": "Почему частые маленькие выкладки ломаются реже больших?",
+        "options": [
+          {
+            "id": "simple",
+            "text": "Их проще проверить и откатить"
+          },
+          {
+            "id": "luck",
+            "text": "Везение"
+          },
+          {
+            "id": "law",
+            "text": "По закону"
+          },
+          {
+            "id": "no",
+            "text": "Они ломаются чаще"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "simple",
+        "explanation": "Меньше риска в каждой."
+      }
+    },
+    {
+      "slug": "dr-mttr",
+      "type": "quiz.single_choice",
+      "title": "Восстановление",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-dora"
+      ],
+      "presentation": {
+        "question": "Что важнее для надёжности сервиса?",
+        "options": [
+          {
+            "id": "recover",
+            "text": "Быстро восстанавливаться после сбоев"
+          },
+          {
+            "id": "never",
+            "text": "Никогда не выкладывать"
+          },
+          {
+            "id": "perfect",
+            "text": "Писать код без единой ошибки"
+          },
+          {
+            "id": "hide",
+            "text": "Скрывать сбои"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "recover",
+        "explanation": "Сбои бывают у всех."
+      }
+    },
+    {
+      "slug": "tb-short",
+      "type": "quiz.single_choice",
+      "title": "Ветки",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-trunk"
+      ],
+      "presentation": {
+        "question": "Сколько обычно живёт ветка при работе в основной ветке?",
+        "options": [
+          {
+            "id": "days",
+            "text": "День-два"
+          },
+          {
+            "id": "months",
+            "text": "Месяцы"
+          },
+          {
+            "id": "years",
+            "text": "Годы"
+          },
+          {
+            "id": "forever",
+            "text": "Вечно"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "days",
+        "explanation": "Незаконченное — за флагом."
+      }
+    },
+    {
+      "slug": "tb-small",
+      "type": "quiz.single_choice",
+      "title": "Маленькие PR",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-trunk"
+      ],
+      "presentation": {
+        "question": "Чем хорош маленький PR?",
+        "options": [
+          {
+            "id": "review",
+            "text": "Его быстро проверить, понять и откатить"
+          },
+          {
+            "id": "count",
+            "text": "Больше PR — больше статистики"
+          },
+          {
+            "id": "speed",
+            "text": "Git быстрее"
+          },
+          {
+            "id": "none",
+            "text": "Ничем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "review",
+        "explanation": "Обзор кода становится разговором."
+      }
+    },
+    {
+      "slug": "tb-red",
+      "type": "quiz.single_choice",
+      "title": "Сломанный main",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-trunk"
+      ],
+      "presentation": {
+        "question": "Что делать, если ты сломал main?",
+        "options": [
+          {
+            "id": "fix",
+            "text": "Сразу исправить или откатить своё изменение"
+          },
+          {
+            "id": "wait",
+            "text": "Подождать, пока кто-нибудь заметит"
+          },
+          {
+            "id": "hide",
+            "text": "Отключить проверки"
+          },
+          {
+            "id": "leave",
+            "text": "Уйти домой"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "fix",
+        "explanation": "Остальные не должны ждать."
+      }
+    },
+    {
+      "slug": "cr-machine",
+      "type": "quiz.single_choice",
+      "title": "Машине",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-review"
+      ],
+      "presentation": {
+        "question": "Что лучше отдать автоматике, а не ревьюеру?",
+        "options": [
+          {
+            "id": "format",
+            "text": "Форматирование и стиль кода"
+          },
+          {
+            "id": "design",
+            "text": "Оценку архитектурного решения"
+          },
+          {
+            "id": "intent",
+            "text": "Понимание замысла"
+          },
+          {
+            "id": "product",
+            "text": "Продуктовые решения"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "format",
+        "explanation": "Люди не спорят о пробелах."
+      }
+    },
+    {
+      "slug": "cr-human",
+      "type": "quiz.single_choice",
+      "title": "Человеку",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-review"
+      ],
+      "presentation": {
+        "question": "Что может заметить только человек?",
+        "options": [
+          {
+            "id": "wrong",
+            "text": "Что решена не та задача"
+          },
+          {
+            "id": "semicolon",
+            "text": "Пропущенную точку с запятой"
+          },
+          {
+            "id": "types",
+            "text": "Ошибку типов"
+          },
+          {
+            "id": "tests",
+            "text": "Упавший тест"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "wrong",
+        "explanation": "Смысл и замысел."
+      }
+    },
+    {
+      "slug": "cr-template",
+      "type": "quiz.single_choice",
+      "title": "Шаблон",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-review"
+      ],
+      "presentation": {
+        "question": "Зачем шаблон описания PR?",
+        "options": [
+          {
+            "id": "context",
+            "text": "Чтобы автор описал изменения, проверку и риски"
+          },
+          {
+            "id": "length",
+            "text": "Чтобы PR был длиннее"
+          },
+          {
+            "id": "law",
+            "text": "По закону"
+          },
+          {
+            "id": "none",
+            "text": "Незачем"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "context",
+        "explanation": "Ревьюер сразу понимает контекст."
+      }
+    },
+    {
+      "slug": "fp-order",
+      "type": "quiz.single_choice",
+      "title": "Порядок",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-full"
+      ],
+      "presentation": {
+        "question": "Какой порядок этапов правильный?",
+        "options": [
+          {
+            "id": "right",
+            "text": "Проверки → тесты → артефакт → staging → production"
+          },
+          {
+            "id": "prod",
+            "text": "production → тесты → staging"
+          },
+          {
+            "id": "build",
+            "text": "Сборка в бою → проверки"
+          },
+          {
+            "id": "any",
+            "text": "Любой"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "right",
+        "explanation": "Дешёвое — раньше, бой — в конце."
+      }
+    },
+    {
+      "slug": "fp-goal",
+      "type": "quiz.single_choice",
+      "title": "Цель",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-full"
+      ],
+      "presentation": {
+        "question": "Какая цель хорошего конвейера?",
+        "options": [
+          {
+            "id": "boring",
+            "text": "Сделать выкладки быстрыми, частыми, обратимыми и скучными"
+          },
+          {
+            "id": "rare",
+            "text": "Сделать выкладки редкими"
+          },
+          {
+            "id": "manual",
+            "text": "Больше ручных шагов"
+          },
+          {
+            "id": "complex",
+            "text": "Сделать его как можно сложнее"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "boring",
+        "explanation": "Без страха."
+      }
+    },
+    {
+      "slug": "fp-gitops",
+      "type": "quiz.single_choice",
+      "title": "Дальше",
+      "instructions": "Выберите один ответ.",
+      "skillKeys": [
+        "ci-full"
+      ],
+      "presentation": {
+        "question": "Что такое GitOps?",
+        "options": [
+          {
+            "id": "git",
+            "text": "Желаемое состояние системы хранится в Git, а агент приводит кластер к нему"
+          },
+          {
+            "id": "chat",
+            "text": "Чат для Git"
+          },
+          {
+            "id": "host",
+            "text": "Хостинг кода"
+          },
+          {
+            "id": "none",
+            "text": "Ничего"
+          }
+        ]
+      },
+      "validation": {
+        "correctOptionId": "git",
+        "explanation": "Argo CD, Flux."
+      }
+    }
+  ],
+  "lessons": [
+    {
+      "slug": "integration-pain",
+      "title": "Проблема слияния",
+      "summary": "Долгие ветки, «у меня работает», ручные проверки и выкладка по выходным.",
+      "chapter": "Зачем автоматизация",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Начинаем курс: знаем Git и смотрим, что ломается, когда проверки делают руками.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Долгие ветки\",\n  \"title\": \"Ад слияния\",\n  \"what\": \"Неделю работы в отдельной ветке потом сливают с неделей работы коллег — и тонут в конфликтах.\",\n  \"why\": \"Чем дольше живёт ветка, тем больнее её вливать.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ручные проверки\",\n  \"title\": \"Забыли запустить\",\n  \"what\": \"Тесты и линтер запускают «когда не забудут». Ошибки попадают в основную ветку и к пользователям.\",\n  \"why\": \"Человек забывает, машина — нет.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ручная выкладка\",\n  \"title\": \"Страшный ритуал\",\n  \"what\": \"Выкладка по длинной инструкции раз в месяц: каждый раз что-то идёт не так, поэтому выкладывают ещё реже.\",\n  \"why\": \"Порочный круг: редкие выкладки — большие и рискованные.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Решение\",\n  \"title\": \"Часто и автоматически\",\n  \"what\": \"Маленькие изменения, автоматическая проверка каждого и выкладка нажатием кнопки или вовсе сама.\",\n  \"why\": \"Ошибки находятся за минуты, а выкладка становится скучной.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Боль — от больших редких изменений и ручных проверок. Лекарство — маленькие частые и автоматические."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ip-long",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ip-manual",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ip-rare",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "ci-cd-terms",
+      "title": "CI, CD и CD",
+      "summary": "Непрерывная интеграция, непрерывная доставка и непрерывное развёртывание, конвейер и его этапы.",
+      "chapter": "Зачем автоматизация",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Понимаем проблему и разбираем понятия, которые её решают.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Непрерывная интеграция\",\n  \"title\": \"CI\",\n  \"what\": \"Каждое изменение вливают в основную ветку часто (хотя бы раз в день), и каждое автоматически собирается и проверяется.\",\n  \"why\": \"Основная ветка всегда рабочая.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Непрерывная доставка\",\n  \"title\": \"Continuous delivery\",\n  \"what\": \"Каждая проверенная версия готова к выкладке — выпуск делается одной кнопкой.\",\n  \"why\": \"Выкладка — решение бизнеса, а не подвиг инженеров.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Непрерывное развёртывание\",\n  \"title\": \"Continuous deployment\",\n  \"what\": \"Каждое изменение, прошедшее проверки, уходит к пользователям автоматически.\",\n  \"why\": \"Десятки выкладок в день без участия человека.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Конвейер\",\n  \"title\": \"Pipeline\",\n  \"what\": \"Цепочка этапов: сборка → проверки → тесты → артефакт → выкладка на тест → выкладка в бой. Падение этапа останавливает конвейер.\",\n  \"why\": \"Плохое изменение не доходит до пользователей.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** CI — проверять каждое изменение. Delivery — всегда готово к выпуску. Deployment — выпускается само."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ct-ci",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ct-cd",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ct-stages",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "ci-tools",
+      "title": "Инструменты",
+      "summary": "GitHub Actions, GitLab CI, Jenkins и другие, раннеры, файлы конвейера в репозитории.",
+      "chapter": "Зачем автоматизация",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем понятия и выбираем, на чём строить конвейер.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Системы CI\",\n  \"title\": \"Кто запускает\",\n  \"what\": \"GitHub Actions, GitLab CI, Bitbucket Pipelines, CircleCI, Jenkins — описывают конвейер файлом и запускают его на событиях.\",\n  \"why\": \"Принципы одинаковы, синтаксис разный.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Конвейер как код\",\n  \"title\": \"Файл в репозитории\",\n  \"what\": \"Описание конвейера лежит рядом с кодом (например, .github/workflows/ci.yml) и меняется через обычные pull request.\",\n  \"why\": \"Видно, кто и зачем поменял проверки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Раннер\",\n  \"title\": \"Машина для задач\",\n  \"what\": \"Задачи выполняются на раннерах: облачных одноразовых машинах или своих серверах.\",\n  \"why\": \"Чистое окружение для каждого запуска.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"В этом курсе\",\n  \"title\": \"GitHub Actions\",\n  \"what\": \"Примеры — на GitHub Actions: он встроен в GitHub и бесплатен для открытых проектов. Идеи переносятся на любую систему.\",\n  \"why\": \"Освоил одну систему — разберёшься в любой.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Конвейер — файл в репозитории, задачи — на раннерах. Примеры курса — GitHub Actions."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tl-code",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tl-runner",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tl-transfer",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "workflow-anatomy",
+      "title": "Устройство workflow",
+      "summary": "Файл workflow, name, on, jobs, runs-on, steps, uses и run.",
+      "chapter": "Первый конвейер",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Выбрали инструмент и пишем первый конвейер.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Workflow\",\n  \"title\": \"Файл конвейера\",\n  \"what\": \"YAML в .github/workflows: когда запускать (on), какие задачи (jobs), на какой машине (runs-on) и какие шаги (steps).\",\n  \"why\": \"Десяток строк — и каждый push проверяется.\",\n  \"how\": \"name: CI\\non: [push, pull_request]\\njobs:\\n  test:\\n    runs-on: ubuntu-latest\\n    steps:\\n      - uses: actions/checkout@v4\\n      - uses: actions/setup-node@v4\\n        with:\\n          node-version: 22\\n      - run: npm ci\\n      - run: npm test\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"uses и run\",\n  \"title\": \"Готовое действие или команда\",\n  \"what\": \"uses подключает готовое действие (скачать код, поставить Node), run выполняет команду оболочки.\",\n  \"why\": \"Типовые шаги не пишут с нуля.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Задачи и шаги\",\n  \"title\": \"jobs и steps\",\n  \"what\": \"Задачи по умолчанию идут параллельно на разных машинах, шаги внутри задачи — по порядку на одной.\",\n  \"why\": \"Линтер и тесты — две задачи одновременно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Отступы YAML\",\n  \"title\": \"Пробелы важны\",\n  \"what\": \"YAML задаёт вложенность отступами из пробелов. Лишний пробел — конвейер не запустится.\",\n  \"why\": \"Редактор с подсветкой YAML экономит время.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** on — когда, jobs — что, runs-on — где, steps — по порядку: uses или run."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wa-on",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wa-uses",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "wa-parallel",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "triggers",
+      "title": "Когда запускать",
+      "summary": "push и pull_request, фильтры веток и путей, расписание, ручной запуск workflow_dispatch.",
+      "chapter": "Первый конвейер",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем устройство workflow и решаем, когда его запускать.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Ветки и пути\",\n  \"title\": \"Не запускать лишнее\",\n  \"what\": \"Фильтры branches и paths ограничивают запуск: изменили только документацию — тесты не нужны.\",\n  \"why\": \"Экономия времени и денег.\",\n  \"how\": \"on:\\n  push:\\n    branches: [main]\\n  pull_request:\\n    paths:\\n      - \\\"src/**\\\"\\n      - \\\"package.json\\\"\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"pull_request\",\n  \"title\": \"Проверка до слияния\",\n  \"what\": \"Конвейер на pull request показывает результат прямо в PR. Красный — сливать нельзя.\",\n  \"why\": \"Ошибки ловятся до основной ветки.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"schedule\",\n  \"title\": \"По расписанию\",\n  \"what\": \"`schedule: - cron: \\\"0 3 * * *\\\"` — каждую ночь: проверка зависимостей, долгие тесты.\",\n  \"why\": \"Узнать, что сломалось без изменений кода, например из-за обновления пакета.\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"workflow_dispatch\",\n  \"title\": \"Ручной запуск\",\n  \"what\": \"Кнопка в интерфейсе для разовых задач: выкладка, пересборка, обслуживание.\",\n  \"why\": \"Сложный ручной процесс превращается в одну кнопку.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** PR — проверять, main — выкладывать, ночью — долгие проверки, вручную — разовые задачи."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tg-paths",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tg-pr",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tg-manual",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "reading-runs",
+      "title": "Читать результат",
+      "summary": "Статусы проверок, логи шагов, аннотации, обязательные проверки и защита ветки.",
+      "chapter": "Первый конвейер",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Настроили запуск и учимся читать, что сказал конвейер.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Статус\",\n  \"title\": \"Зелёный, красный, жёлтый\",\n  \"what\": \"У каждого запуска и задачи — статус: успех, ошибка, выполняется. В PR он виден рядом с кнопкой слияния.\",\n  \"why\": \"Видно сразу, можно ли сливать.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Логи шагов\",\n  \"title\": \"Где упало\",\n  \"what\": \"Каждый шаг раскрывается логом. Ищи первый упавший шаг и первую ошибку в нём — остальные часто следствие.\",\n  \"why\": \"Не читай лог с конца наугад.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Аннотации\",\n  \"title\": \"Ошибка на строке\",\n  \"what\": \"Линтеры и тесты могут отмечать ошибки прямо на строках кода в PR.\",\n  \"why\": \"Не нужно искать файл по логу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Защита ветки\",\n  \"title\": \"Обязательные проверки\",\n  \"what\": \"В настройках репозитория main защищают: слияние только через PR и только при зелёных обязательных проверках.\",\n  \"why\": \"Сломать основную ветку случайно становится невозможно.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Ищи первый упавший шаг и первую ошибку. main — под защитой обязательных проверок."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rr-first",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rr-protect",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rr-rerun",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "lint-format",
+      "title": "Формат и линтер",
+      "summary": "Проверка форматирования, линтер как первый шаг, правила как код, автоисправление.",
+      "chapter": "Проверки качества",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Читаем результаты и добавляем первые проверки качества.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Проверка формата\",\n  \"title\": \"--check\",\n  \"what\": \"`prettier --check .` или `ruff format --check` падают, если код не отформатирован. В CI — только проверка, исправляют локально.\",\n  \"why\": \"Споры о пробелах закрыты навсегда.\",\n  \"how\": \"$ npx prettier --check .\\nChecking formatting...\\n[warn] src/app.ts\\n[warn] Code style issues found in 1 file.\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Линтер\",\n  \"title\": \"Быстрые ошибки\",\n  \"what\": \"ESLint, ruff, golangci-lint находят неиспользуемые переменные, опасные конструкции и явные ошибки за секунды.\",\n  \"why\": \"Самая дешёвая проверка — ставят первой.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Правила — в репозитории\",\n  \"title\": \"Одинаково у всех\",\n  \"what\": \"Конфиги форматтера и линтера лежат в репозитории; CI и редактор используют одни и те же.\",\n  \"why\": \"«У меня проходит» больше не бывает.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Быстрое падение\",\n  \"title\": \"Сначала дешёвое\",\n  \"what\": \"Конвейер начинают с быстрых проверок: формат и линтер за минуту лучше, чем ждать 20 минут тестов ради опечатки.\",\n  \"why\": \"Обратная связь быстрее.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** В CI — --check, исправление — локально. Дешёвые проверки — первыми."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lf-check",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lf-first",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lf-config",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "typecheck-build",
+      "title": "Типы и сборка",
+      "summary": "Проверка типов tsc, mypy, сборка как проверка, предупреждения как ошибки.",
+      "chapter": "Проверки качества",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проверяем стиль и добавляем проверку типов и сборки.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Проверка типов\",\n  \"title\": \"tsc --noEmit\",\n  \"what\": \"`tsc --noEmit`, `mypy`, `vue-tsc` проверяют типы без сборки. Ошибка типа — красный конвейер.\",\n  \"why\": \"Передал строку вместо числа — узнаешь до выкладки.\",\n  \"how\": \"$ npx tsc --noEmit\\nsrc/cart.ts:14:22 - error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сборка\",\n  \"title\": \"Собирается ли\",\n  \"what\": \"Сборка в CI ловит то, что не видно в разработке: забытые импорты, ошибки конфигурации, слишком большой бандл.\",\n  \"why\": \"Если не собирается в CI — не соберётся и на сервере.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Предупреждения\",\n  \"title\": \"Не копить\",\n  \"what\": \"Предупреждения, на которые никто не смотрит, растут до сотен. Включай режим «предупреждение = ошибка» для важных правил.\",\n  \"why\": \"Новые проблемы не тонут в старом шуме.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Типы — отдельной быстрой задачей, сборка — обязательно. Предупреждения не копи."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tb-noemit",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tb-build",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tb-warn",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "local-gate",
+      "title": "Локальная проверка",
+      "summary": "Те же проверки до push, pre-commit хуки, быстрая проверка изменённого и полная в CI.",
+      "chapter": "Проверки качества",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проверяем типы в CI и переносим быстрые проверки на свой компьютер.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Одна команда\",\n  \"title\": \"Как в CI\",\n  \"what\": \"Скрипт вроде `npm run check` запускает те же проверки, что CI.\",\n  \"why\": \"Не нужно гадать, что упадёт после push.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"pre-commit\",\n  \"title\": \"Хук перед коммитом\",\n  \"what\": \"Инструменты pre-commit, husky и lint-staged запускают форматтер и линтер на изменённых файлах при каждом коммите.\",\n  \"why\": \"Неотформатированный код просто не попадает в историю.\",\n  \"how\": \"$ git commit -m \\\"fix cart\\\"\\nprettier.....................Passed\\neslint.......................Passed\\n[main 3f9c2a1] fix cart\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Быстро локально, полно в CI\",\n  \"title\": \"Разделение\",\n  \"what\": \"Локально — быстрые проверки затронутого кода. CI — полный набор на чистой машине.\",\n  \"why\": \"Разработчик не ждёт 20 минут перед каждым push.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"CI — последнее слово\",\n  \"title\": \"Хуки можно обойти\",\n  \"what\": \"Хук пропускают флагом --no-verify. Поэтому решающая проверка — всегда в CI.\",\n  \"why\": \"Локальные хуки — удобство, а не защита.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Быстрые проверки — локально и в хуках. Решает всё равно CI."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lg-hook",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lg-bypass",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "lg-split",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "test-levels",
+      "title": "Уровни тестов",
+      "summary": "Модульные, интеграционные и сквозные тесты в конвейере, порядок и время.",
+      "chapter": "Тесты в конвейере",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проверяем код локально и строим тесты в конвейере.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Модульные\",\n  \"title\": \"Секунды\",\n  \"what\": \"Проверяют функции и компоненты по отдельности. Их много, они быстрые и запускаются на каждый push.\",\n  \"why\": \"Основная масса проверок.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Интеграционные\",\n  \"title\": \"С базой и сервисами\",\n  \"what\": \"Проверяют модули вместе: API с настоящей базой, очередь с обработчиком.\",\n  \"why\": \"Ловят ошибки на стыках.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сквозные\",\n  \"title\": \"Как пользователь\",\n  \"what\": \"Браузер проходит главные сценарии на собранном приложении. Медленные — их немного.\",\n  \"why\": \"Последний рубеж перед выкладкой.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Порядок\",\n  \"title\": \"От быстрого к медленному\",\n  \"what\": \"Сначала модульные, потом интеграционные, в конце сквозные. Упало быстрое — медленное не запускаем.\",\n  \"why\": \"Экономия времени раннеров.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Много модульных, меньше интеграционных, немного сквозных — и в таком порядке."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tl-many",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tl-int",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tl-order",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "service-containers",
+      "title": "Сервисы для тестов",
+      "summary": "services в GitHub Actions, база и кэш в контейнерах, Compose в CI, тестовые данные.",
+      "chapter": "Тесты в конвейере",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Знаем уровни тестов и поднимаем для них настоящую базу данных.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"services\",\n  \"title\": \"База рядом с тестами\",\n  \"what\": \"Задача может поднять контейнеры сервисов: Postgres, Redis. Они доступны по localhost и порту.\",\n  \"why\": \"Тесты работают с настоящей базой, а не с заглушкой.\",\n  \"how\": \"jobs:\\n  test:\\n    runs-on: ubuntu-latest\\n    services:\\n      postgres:\\n        image: postgres:17\\n        env:\\n          POSTGRES_PASSWORD: test\\n        ports: [\\\"5432:5432\\\"]\\n        options: >-\\n          --health-cmd pg_isready --health-interval 5s\\n    steps:\\n      - uses: actions/checkout@v4\\n      - run: npm ci && npm run test:integration\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Готовность\",\n  \"title\": \"Проверка здоровья\",\n  \"what\": \"Тесты должны ждать, пока база готова: health-cmd или ожидание в скрипте.\",\n  \"why\": \"Иначе случайные падения «connection refused».\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Чистые данные\",\n  \"title\": \"Каждый раз с нуля\",\n  \"what\": \"Миграции и тестовые данные создаются в каждом запуске; тесты не зависят друг от друга.\",\n  \"why\": \"Результат не зависит от прошлых запусков.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Настоящие сервисы — через services с проверкой здоровья. Данные — с нуля в каждом запуске."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sc-what",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sc-ready",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sc-data",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "flaky-coverage",
+      "title": "Нестабильные тесты и покрытие",
+      "summary": "Почему тесты мигают, карантин и починка, отчёт о покрытии и пороги.",
+      "chapter": "Тесты в конвейере",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Подняли сервисы и следим, чтобы тесты были надёжными.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Нестабильный тест\",\n  \"title\": \"То зелёный, то красный\",\n  \"what\": \"Причины: время и таймеры, порядок тестов, общая база, сеть, гонки. Такой тест учит команду игнорировать красный цвет.\",\n  \"why\": \"Доверие к конвейеру — главное его свойство.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что делать\",\n  \"title\": \"Найти и починить\",\n  \"what\": \"Повтори тест много раз локально, найди причину. Временно — в карантин с задачей на починку, а не просто удалить.\",\n  \"why\": \"Каждый нестабильный тест — скрытая ошибка в коде или тесте.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Покрытие\",\n  \"title\": \"Какой код выполнялся\",\n  \"what\": \"Отчёт показывает строки и ветки, которые тесты не трогали. Порог в CI не даёт покрытию тихо падать.\",\n  \"why\": \"Видно, где тестов не хватает.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не гонись за 100%\",\n  \"title\": \"Качество, а не цифра\",\n  \"what\": \"Высокое покрытие без проверок (assert) ничего не гарантирует. Важнее тесты на важную логику.\",\n  \"why\": \"Цифра — подсказка, а не цель.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Нестабильные тесты чини сразу. Порог покрытия — от падения, а не ради 100%."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fc-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fc-fix",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fc-100",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "caching",
+      "title": "Кэш",
+      "summary": "Кэш зависимостей по lock-файлу, кэш сборки, ключи и восстановление, когда кэш вредит.",
+      "chapter": "Скорость конвейера",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Тесты надёжны, и теперь ускоряем конвейер.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Кэш зависимостей\",\n  \"title\": \"Не скачивать каждый раз\",\n  \"what\": \"setup-node, setup-python и подобные умеют кэшировать пакеты по хэшу lock-файла.\",\n  \"why\": \"Установка за 10 секунд вместо двух минут.\",\n  \"how\": \"- uses: actions/setup-node@v4\\n  with:\\n    node-version: 22\\n    cache: npm\\n- run: npm ci\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Ключ кэша\",\n  \"title\": \"Когда сбрасывать\",\n  \"what\": \"Ключ строят из ОС и хэша lock-файла. Изменились зависимости — новый ключ, новый кэш.\",\n  \"why\": \"Не получишь устаревшие пакеты.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Кэш сборки\",\n  \"title\": \"Не собирать заново\",\n  \"what\": \"Кэш слоёв Docker, Turborepo, Gradle, .next/cache — повторная сборка берёт неизменённое.\",\n  \"why\": \"Сборка за минуту вместо десяти.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Когда кэш вредит\",\n  \"title\": \"Ложная зелень\",\n  \"what\": \"Слишком широкий кэш может прятать проблему: тесты проходят из-за старых файлов. Ключ должен зависеть от всего, что влияет на результат.\",\n  \"why\": \"Ночной прогон без кэша — страховка.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Кэшируй зависимости по хэшу lock-файла и результаты сборки. Ключ — от всего, что влияет."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-key",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-gain",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ch-harm",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "parallel-matrix",
+      "title": "Параллельность и матрица",
+      "summary": "Независимые задачи параллельно, needs, матрица версий и ОС, разбиение тестов на части.",
+      "chapter": "Скорость конвейера",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Включили кэш и запускаем проверки параллельно.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"needs\",\n  \"title\": \"Зависимости задач\",\n  \"what\": \"needs задаёт порядок: выкладка ждёт тестов. Независимые задачи идут одновременно.\",\n  \"why\": \"Линтер, типы и тесты — параллельно, выкладка — после всех.\",\n  \"how\": \"jobs:\\n  lint: { runs-on: ubuntu-latest, steps: [...] }\\n  test: { runs-on: ubuntu-latest, steps: [...] }\\n  deploy:\\n    needs: [lint, test]\\n    runs-on: ubuntu-latest\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"matrix\",\n  \"title\": \"Много вариантов\",\n  \"what\": \"strategy.matrix запускает одну задачу для нескольких версий и ОС.\",\n  \"why\": \"Библиотека проверяется на Node 20, 22 и 24 в Linux и Windows.\",\n  \"how\": \"strategy:\\n  matrix:\\n    node: [20, 22, 24]\\n    os: [ubuntu-latest, windows-latest]\\nruns-on: ${{ matrix.os }}\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Шардирование\",\n  \"title\": \"Тесты на части\",\n  \"what\": \"Долгий набор тестов делят на N частей и запускают на N машинах.\",\n  \"why\": \"30 минут превращаются в 8.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"fail-fast\",\n  \"title\": \"Остановить остальных\",\n  \"what\": \"По умолчанию матрица отменяет остальные варианты при первом падении — можно выключить, чтобы увидеть все.\",\n  \"why\": \"Видно, падает ли везде или только на Windows.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Независимое — параллельно, порядок — needs, варианты — matrix, долгие тесты — на части."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pm-needs",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pm-matrix",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pm-shard",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "affected",
+      "title": "Только затронутое",
+      "summary": "Проверка изменённого в монорепозитории, фильтры путей, отмена устаревших запусков concurrency.",
+      "chapter": "Скорость конвейера",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Распараллелили конвейер и перестаём проверять то, что не менялось.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Монорепозиторий\",\n  \"title\": \"Много проектов\",\n  \"what\": \"Turborepo, Nx и pnpm --filter знают зависимости между пакетами и проверяют только затронутые изменением.\",\n  \"why\": \"Правка в документации не запускает тесты всего репозитория.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"concurrency\",\n  \"title\": \"Отменить старое\",\n  \"what\": \"Новый push в ту же ветку отменяет ещё идущий запуск для прошлого коммита.\",\n  \"why\": \"Раннеры не тратятся на устаревший код.\",\n  \"how\": \"concurrency:\\n  group: ci-${{ github.ref }}\\n  cancel-in-progress: true\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Полный прогон\",\n  \"title\": \"Иногда всё\",\n  \"what\": \"Для main и по ночам запускают всё целиком — проверка затронутого может ошибиться в зависимостях.\",\n  \"why\": \"Страховка от незаметных связей.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** В PR — только затронутое, устаревшие запуски — отменять, main и ночь — всё целиком."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "af-concurrency",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "af-mono",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "af-full",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "build-once",
+      "title": "Собрать один раз",
+      "summary": "Артефакт сборки, одна сборка для всех окружений, загрузка и передача между задачами.",
+      "chapter": "Артефакты и версии",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Ускорили конвейер и разбираемся, что именно мы выкладываем.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Артефакт\",\n  \"title\": \"Результат сборки\",\n  \"what\": \"Готовый к запуску результат: образ Docker, архив, бинарник, папка dist.\",\n  \"why\": \"Именно он, а не исходники, уходит на сервер.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Собрать один раз\",\n  \"title\": \"Продвигать дальше\",\n  \"what\": \"Один и тот же артефакт проходит тестовое окружение и уходит в бой. Пересборка для боя — риск получить другое.\",\n  \"why\": \"В бой попадает ровно то, что проверили.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"upload-artifact\",\n  \"title\": \"Передать между задачами\",\n  \"what\": \"Задача сборки загружает артефакт, задача выкладки скачивает его.\",\n  \"why\": \"Сборка и выкладка разделены, но работают с одним файлом.\",\n  \"how\": \"- uses: actions/upload-artifact@v4\\n  with:\\n    name: dist\\n    path: dist/\\n# в другой задаче\\n- uses: actions/download-artifact@v4\\n  with:\\n    name: dist\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Настройки снаружи\",\n  \"title\": \"Один артефакт — много сред\",\n  \"what\": \"Адреса и ключи приходят из окружения при запуске, а не вшиты при сборке.\",\n  \"why\": \"Иначе пришлось бы собирать отдельно для каждой среды.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Собери один раз, проверь и продвигай тот же артефакт. Настройки — из окружения."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bo-why",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bo-what",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "bo-config",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "versioning",
+      "title": "Версии",
+      "summary": "Семантическое версионирование, теги Git, версия из коммита, автоматические заметки о выпуске.",
+      "chapter": "Артефакты и версии",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Собираем артефакт один раз и даём ему понятную версию.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Семантическая версия\",\n  \"title\": \"MAJOR.MINOR.PATCH\",\n  \"what\": \"2.4.1: PATCH — исправления, MINOR — новые возможности без поломок, MAJOR — ломающие изменения.\",\n  \"why\": \"По номеру понятно, безопасно ли обновляться.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тег Git\",\n  \"title\": \"Отметка выпуска\",\n  \"what\": \"`git tag v2.4.1 && git push --tags` — тег запускает конвейер выпуска.\",\n  \"why\": \"Каждая версия однозначно связана с коммитом.\",\n  \"how\": \"$ git tag v2.4.1\\n$ git push origin v2.4.1\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Версия из коммитов\",\n  \"title\": \"Conventional Commits\",\n  \"what\": \"Сообщения вида feat:, fix:, feat!: позволяют инструментам (semantic-release, changesets) сами вычислить следующую версию.\",\n  \"why\": \"Никто не спорит, какой номер ставить.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Заметки о выпуске\",\n  \"title\": \"Changelog\",\n  \"what\": \"Список изменений собирается из коммитов или файлов changeset и публикуется с выпуском.\",\n  \"why\": \"Пользователи видят, что нового.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Версия — MAJOR.MINOR.PATCH, выпуск — тег, номер и заметки — автоматически из коммитов."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vr-major",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vr-tag",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "vr-cc",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "registries",
+      "title": "Реестры и выпуск",
+      "summary": "Публикация образов в реестр, пакетов в npm и PyPI, выпуски на GitHub, хранение артефактов.",
+      "chapter": "Артефакты и версии",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Даём версии и публикуем артефакты туда, откуда их возьмут.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Образ в реестр\",\n  \"title\": \"Публикация из CI\",\n  \"what\": \"Конвейер собирает образ, ставит теги версии и коммита и отправляет в реестр.\",\n  \"why\": \"Сервер скачивает готовый проверенный образ.\",\n  \"how\": \"- uses: docker/build-push-action@v6\\n  with:\\n    push: true\\n    tags: |\\n      ghcr.io/team/app:${{ github.sha }}\\n      ghcr.io/team/app:2.4.1\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Пакеты\",\n  \"title\": \"npm, PyPI, crates\",\n  \"what\": \"Библиотеки публикуют из CI по тегу. Доверенная публикация (trusted publishing) обходится без долгоживущих токенов.\",\n  \"why\": \"Никто не публикует со своего ноутбука.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"GitHub Releases\",\n  \"title\": \"Выпуск со страницей\",\n  \"what\": \"Тег, заметки и файлы для скачивания на одной странице.\",\n  \"why\": \"Пользователи утилиты скачивают бинарник своей системы.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Хранение\",\n  \"title\": \"Сколько держать\",\n  \"what\": \"Старые артефакты занимают место и стоят денег. Задай срок хранения, но оставь выпуски для отката.\",\n  \"why\": \"Порядок и экономия.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Публикует только CI: образы — в реестр, пакеты — по тегу, выпуски — со страницей и заметками."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rg-who",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rg-trusted",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rg-keep",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "ci-secrets",
+      "title": "Секреты в конвейере",
+      "summary": "Хранилище секретов, маскировка в логах, секреты и PR из форков, OIDC вместо ключей.",
+      "chapter": "Секреты и безопасность",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Публикуем артефакты и защищаем ключи, которыми это делается.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"secrets\",\n  \"title\": \"Хранилище секретов\",\n  \"what\": \"Ключи хранят в настройках репозитория или окружения и передают шагу через ${{ secrets.ИМЯ }}. В логах они маскируются.\",\n  \"why\": \"Ключа нет ни в коде, ни в истории Git.\",\n  \"how\": \"- run: ./deploy.sh\\n  env:\\n    DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Форки\",\n  \"title\": \"Чужой код и твои ключи\",\n  \"what\": \"Pull request из форка не получает секреты: иначе любой мог бы украсть их, изменив workflow.\",\n  \"why\": \"Осторожно с pull_request_target — он запускается с секретами.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"OIDC\",\n  \"title\": \"Без вечных ключей\",\n  \"what\": \"Конвейер получает короткоживущий токен у облака (AWS, GCP, Azure) через OIDC — постоянный ключ не хранится нигде.\",\n  \"why\": \"Утекать нечему.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Не печатай\",\n  \"title\": \"Логи публичны\",\n  \"what\": \"echo секрета, отладочный вывод окружения, ошибки с токеном в URL — частые утечки.\",\n  \"why\": \"Маскировка не спасает от изменённых форм секрета.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Секреты — в хранилище, лучше — OIDC. Форкам — без секретов. В логи — ничего."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cs-where",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cs-fork",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cs-oidc",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "permissions",
+      "title": "Права конвейера",
+      "summary": "permissions для GITHUB_TOKEN, принцип наименьших прав, защита окружений и одобрения.",
+      "chapter": "Секреты и безопасность",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Защитили секреты и урезаем права самого конвейера.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"permissions\",\n  \"title\": \"Минимум прав\",\n  \"what\": \"Встроенный токен по умолчанию может многое. Явно указывай нужное: contents: read, а packages: write — только задаче публикации.\",\n  \"why\": \"Взломанный шаг не сможет переписать репозиторий.\",\n  \"how\": \"permissions:\\n  contents: read\\njobs:\\n  publish:\\n    permissions:\\n      contents: read\\n      packages: write\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Окружения\",\n  \"title\": \"Защита боевого\",\n  \"what\": \"Окружение production с обязательным одобрением и только из ветки main.\",\n  \"why\": \"Случайная ветка не выкатится в бой.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Кто может менять\",\n  \"title\": \"CODEOWNERS\",\n  \"what\": \"Изменения в .github/workflows требуют одобрения ответственных.\",\n  \"why\": \"Конвейер — часть безопасности, его меняют осознанно.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Права по умолчанию — только чтение. Публикация и бой — отдельные права и одобрения."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pm-least",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pm-env",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pm-owners",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "supply-chain",
+      "title": "Цепочка поставки",
+      "summary": "Закрепление действий по SHA, обновления зависимостей, сканирование уязвимостей и секретов, подписи артефактов.",
+      "chapter": "Секреты и безопасность",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Урезали права и защищаем то, из чего собирается приложение.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"SHA вместо тега\",\n  \"title\": \"Закрепить действие\",\n  \"what\": \"Тег v4 можно переписать. Ссылка на полный SHA коммита действия неизменна.\",\n  \"why\": \"Подменённое чужое действие не попадёт в твой конвейер.\",\n  \"how\": \"- uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.2.2\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Обновления зависимостей\",\n  \"title\": \"Dependabot и Renovate\",\n  \"what\": \"Боты создают PR с обновлениями пакетов и действий — конвейер проверяет их как обычные изменения.\",\n  \"why\": \"Уязвимости закрываются без ручного труда.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сканирование\",\n  \"title\": \"Уязвимости и утечки\",\n  \"what\": \"npm audit, pip-audit, Trivy ищут известные уязвимости; сканер секретов не даёт закоммитить ключ.\",\n  \"why\": \"Проблема видна в PR, а не после взлома.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Подпись\",\n  \"title\": \"Откуда артефакт\",\n  \"what\": \"Подпись образов (cosign) и аттестации происхождения доказывают, что артефакт собран твоим конвейером.\",\n  \"why\": \"Сервер может отказаться запускать неподписанное.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Действия — по SHA, обновления — ботами, уязвимости и секреты — сканерами, артефакты — с подписью."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sp-sha",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sp-bots",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "sp-sign",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "deploy-job",
+      "title": "Задача выкладки",
+      "summary": "Выкладка из main, окружения staging и production, ручное одобрение, проверка после выкладки.",
+      "chapter": "Доставка и выкладка",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Защитили цепочку поставки и выкладываем приложение из конвейера.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Выкладка\",\n  \"title\": \"Задача deploy\",\n  \"what\": \"После зелёных проверок задача берёт артефакт и выкладывает его в окружение.\",\n  \"why\": \"Выкладка — тот же код в репозитории, а не ручной ритуал.\",\n  \"how\": \"deploy:\\n  needs: [test, build]\\n  if: github.ref == 'refs/heads/main'\\n  environment: production\\n  runs-on: ubuntu-latest\\n  steps:\\n    - run: ./scripts/deploy.sh ${{ github.sha }}\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сначала staging\",\n  \"title\": \"Репетиция\",\n  \"what\": \"Артефакт сначала выкладывают в тестовое окружение, похожее на боевое, и там проверяют.\",\n  \"why\": \"Ошибки конфигурации ловятся до пользователей.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Проверка после\",\n  \"title\": \"Smoke-тест\",\n  \"what\": \"Сразу после выкладки скрипт открывает главные страницы и /health. Не отвечают — тревога и откат.\",\n  \"why\": \"Сломанная выкладка видна за минуту.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Одна выкладка за раз\",\n  \"title\": \"Очередь\",\n  \"what\": \"concurrency без отмены для выкладки — две выкладки не наложатся друг на друга.\",\n  \"why\": \"Порядок версий на сервере гарантирован.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Выкладка — задача конвейера: staging → проверка → production → smoke-тест."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dj-staging",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dj-smoke",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dj-queue",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "rollout-strategies",
+      "title": "Стратегии выкладки",
+      "summary": "Сразу всё, постепенная замена, сине-зелёная, канареечная выкладка.",
+      "chapter": "Доставка и выкладка",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Выкладываем из конвейера и выбираем, как сделать это без простоя.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Всё сразу\",\n  \"title\": \"Recreate\",\n  \"what\": \"Остановить старое, запустить новое. Просто, но есть простой.\",\n  \"why\": \"Подходит для внутренних инструментов.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Постепенная замена\",\n  \"title\": \"Rolling\",\n  \"what\": \"Экземпляры заменяются по одному: новый прошёл проверку здоровья — убираем старый.\",\n  \"why\": \"Без простоя, стандарт для Kubernetes.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сине-зелёная\",\n  \"title\": \"Два окружения\",\n  \"what\": \"Новая версия поднимается рядом полностью, трафик переключается разом. Откат — переключить обратно.\",\n  \"why\": \"Мгновенный откат.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Канарейка\",\n  \"title\": \"Сначала немногим\",\n  \"what\": \"Новая версия получает 5% трафика; если метрики в норме — 25%, 50%, 100%.\",\n  \"why\": \"Ошибка задевает немногих пользователей.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Без простоя — rolling. Мгновенный откат — сине-зелёная. Осторожный выпуск — канарейка."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-canary",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-bluegreen",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "rs-rolling",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "flags-rollback",
+      "title": "Флаги и откат",
+      "summary": "Флаги функций отделяют выкладку от выпуска, откат на прошлый артефакт, исправление вперёд.",
+      "chapter": "Доставка и выкладка",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Выбрали стратегию и учимся включать функции и откатываться без паники.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Флаг функции\",\n  \"title\": \"Выкладка ≠ выпуск\",\n  \"what\": \"Код новой функции выкладывают выключенным и включают флагом — для себя, для 10% или для всех.\",\n  \"why\": \"Незаконченная работа живёт в main и не мешает пользователям.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Долг флагов\",\n  \"title\": \"Убирать старые\",\n  \"what\": \"Каждый флаг — ветвление в коде. Включили для всех — удали флаг.\",\n  \"why\": \"Иначе код зарастает мёртвыми ветками.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Откат\",\n  \"title\": \"Предыдущий артефакт\",\n  \"what\": \"Откат — выложить прошлую проверенную версию, а не чинить на сервере руками. Должен занимать минуты.\",\n  \"why\": \"Проверяй откат заранее, а не в момент аварии.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Исправление вперёд\",\n  \"title\": \"Fix forward\",\n  \"what\": \"Иногда быстрее выложить маленькое исправление, чем откатываться — если конвейер быстрый.\",\n  \"why\": \"Быстрый конвейер — это и быстрое исправление.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Выключенное — флагом, сломанное — откатом на прошлый артефакт. Старые флаги удаляй."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fr-flag",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fr-rollback",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fr-debt",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "preview-envs",
+      "title": "Окружения",
+      "summary": "Разработка, превью для каждого PR, staging и production, сходство окружений.",
+      "chapter": "Окружения и миграции",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Умеем откатываться и строим цепочку окружений.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Превью для PR\",\n  \"title\": \"Своя ссылка\",\n  \"what\": \"Каждый pull request получает временное окружение со своей ссылкой — его смотрят дизайнер, тестировщик, заказчик.\",\n  \"why\": \"Изменения видят до слияния.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"staging\",\n  \"title\": \"Почти как бой\",\n  \"what\": \"Окружение с теми же настройками и похожими данными, но без настоящих пользователей.\",\n  \"why\": \"Последняя проверка перед боем.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Сходство\",\n  \"title\": \"Меньше различий — меньше сюрпризов\",\n  \"what\": \"Те же образы, та же версия базы, те же настройки, отличаются только секреты и масштаб.\",\n  \"why\": \"«На staging работало» перестаёт быть оправданием.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Окружение в workflow\",\n  \"title\": \"environment\",\n  \"what\": \"Задача с environment получает свои секреты и правила одобрения.\",\n  \"why\": \"Секреты боя недоступны превью.\",\n  \"how\": \"deploy-preview:\\n  environment:\\n    name: preview\\n    url: ${{ steps.deploy.outputs.url }}\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n**Главное.** PR — превью, main — staging, затем production. Окружения максимально похожи."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pe-preview",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pe-same",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pe-secrets",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "db-migrations",
+      "title": "Миграции базы",
+      "summary": "Миграции как код, применение в конвейере до выкладки, обратная совместимость, расширить и сжать.",
+      "chapter": "Окружения и миграции",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Строим окружения и меняем схему базы вместе с кодом.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Миграции как код\",\n  \"title\": \"Шаги изменения схемы\",\n  \"what\": \"Каждое изменение схемы — файл миграции в репозитории, применяется инструментом по порядку.\",\n  \"why\": \"Схема везде одинаковая и воспроизводимая.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Когда применять\",\n  \"title\": \"До нового кода\",\n  \"what\": \"Конвейер применяет миграции перед выкладкой новой версии.\",\n  \"why\": \"Новый код не стартует со старой схемой.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Обратная совместимость\",\n  \"title\": \"Старый код ещё работает\",\n  \"what\": \"Во время выкладки работают обе версии кода. Миграция не должна ломать старую версию.\",\n  \"why\": \"Нельзя за один шаг переименовать колонку.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Расширить и сжать\",\n  \"title\": \"Expand and contract\",\n  \"what\": \"1) добавить новую колонку, 2) писать в обе, 3) перенести данные, 4) читать новую, 5) удалить старую — отдельными выкладками.\",\n  \"why\": \"Изменение схемы без простоя и без потери данных.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Миграции — в репозитории и до выкладки кода. Ломающие изменения — по шагам «расширить и сжать»."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dm-when",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dm-compat",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dm-rename",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "infra-as-code",
+      "title": "Инфраструктура как код",
+      "summary": "Terraform и аналоги, план и применение в CI, проверка изменений инфраструктуры в PR.",
+      "chapter": "Окружения и миграции",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Меняем схему базы безопасно и описываем кодом саму инфраструктуру.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Инфраструктура как код\",\n  \"title\": \"Серверы в файлах\",\n  \"what\": \"Terraform, OpenTofu, Pulumi описывают серверы, базы, DNS и права в файлах репозитория.\",\n  \"why\": \"Окружение воссоздаётся командой, а не по памяти.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"plan в PR\",\n  \"title\": \"Посмотреть до применения\",\n  \"what\": \"Конвейер запускает terraform plan и показывает в PR, что будет создано, изменено и удалено.\",\n  \"why\": \"Никаких неожиданных удалений базы.\",\n  \"how\": \"- run: terraform init\\n- run: terraform plan -out=plan.tfplan\\n# после одобрения и слияния\\n- run: terraform apply plan.tfplan\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Состояние\",\n  \"title\": \"State\",\n  \"what\": \"Terraform хранит состояние в удалённом хранилище с блокировкой — двое не применят изменения одновременно.\",\n  \"why\": \"Без общего состояния команды мешают друг другу.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Без ручных правок\",\n  \"title\": \"Дрейф\",\n  \"what\": \"Ручные изменения в консоли облака расходятся с кодом. Регулярный plan показывает дрейф.\",\n  \"why\": \"Код остаётся правдой о системе.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Инфраструктура — в коде, plan — в PR, apply — после одобрения. Руками в консоли — нельзя."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ic-plan",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ic-drift",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "ic-state",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "post-deploy",
+      "title": "После выкладки",
+      "summary": "Проверка здоровья и версии, автоматический откат по метрикам, отметки выпусков на графиках.",
+      "chapter": "Наблюдение после выкладки",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Описали инфраструктуру кодом и проверяем, что выкладка действительно удалась.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Версия в /health\",\n  \"title\": \"Что сейчас работает\",\n  \"what\": \"Эндпоинт здоровья отдаёт номер версии или коммита. Конвейер ждёт, пока там появится новая версия.\",\n  \"why\": \"Видно, что выкладка действительно дошла.\",\n  \"how\": \"$ curl -s https://app.example.com/health\\n{\\\"status\\\":\\\"ok\\\",\\\"release\\\":\\\"3f9c2a1\\\"}\",\n  \"kind\": \"idea\",\n  \"lang\": \"shell\"\n}\n```\n\n```concept\n{\n  \"name\": \"Автоматический откат\",\n  \"title\": \"По метрикам\",\n  \"what\": \"Если после выкладки выросла доля ошибок или задержка, система сама возвращает прошлую версию.\",\n  \"why\": \"Ночная выкладка не будит дежурного.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Отметки выпусков\",\n  \"title\": \"На графиках\",\n  \"what\": \"Конвейер отмечает момент выкладки в системе мониторинга.\",\n  \"why\": \"Рост ошибок сразу связывается с конкретной версией.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** После выкладки — проверить версию и здоровье, следить за ошибками, откатывать автоматически."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-version",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-auto",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "pd-marker",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "alerts",
+      "title": "Метрики и тревоги",
+      "summary": "Ошибки, задержки, насыщение, SLO и бюджет ошибок, тревоги на симптомы, дежурства.",
+      "chapter": "Наблюдение после выкладки",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Проверяем выкладку и следим за сервисом постоянно.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Золотые сигналы\",\n  \"title\": \"Что измерять\",\n  \"what\": \"Трафик, ошибки, задержка, насыщение ресурсов.\",\n  \"why\": \"Четыре графика покажут почти любую беду.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"SLO\",\n  \"title\": \"Цель надёжности\",\n  \"what\": \"Например, 99,9% запросов успешны за месяц. Оставшиеся 0,1% — бюджет ошибок.\",\n  \"why\": \"Бюджет кончился — меньше выкладок, больше надёжности.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Тревога на симптом\",\n  \"title\": \"Не на причину\",\n  \"what\": \"Будить человека, когда страдают пользователи (ошибки, задержка), а не когда процессор 80%.\",\n  \"why\": \"Меньше ложных тревог — к настоящим относятся серьёзно.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Дежурство\",\n  \"title\": \"Кто отвечает\",\n  \"what\": \"Ротация дежурных и инструкция на каждую тревогу: что проверить и как откатить.\",\n  \"why\": \"Ночью не нужно вспоминать устройство системы.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Следи за ошибками и задержкой, задай SLO. Тревога — на симптом и с инструкцией."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "al-symptom",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "al-slo",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "al-runbook",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "dora",
+      "title": "Метрики доставки",
+      "summary": "Частота выкладок, время от коммита до боя, доля неудачных изменений, время восстановления.",
+      "chapter": "Наблюдение после выкладки",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Следим за сервисом и измеряем сам процесс доставки.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Частота выкладок\",\n  \"title\": \"Как часто\",\n  \"what\": \"Сколько раз в день или неделю изменения доходят до пользователей.\",\n  \"why\": \"Сильные команды выкладывают по требованию, много раз в день.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Время изменения\",\n  \"title\": \"От коммита до боя\",\n  \"what\": \"Сколько проходит от коммита до работы в продакшене.\",\n  \"why\": \"Часы, а не недели.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Доля неудачных изменений\",\n  \"title\": \"Сколько ломается\",\n  \"what\": \"Какая часть выкладок требует отката или срочного исправления.\",\n  \"why\": \"Частые маленькие выкладки ломаются реже.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Время восстановления\",\n  \"title\": \"Как быстро чиним\",\n  \"what\": \"Сколько проходит от сбоя до восстановления сервиса.\",\n  \"why\": \"Быстрый откат важнее идеальной безошибочности.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Чаще, быстрее, реже ломается, быстрее чинится — четыре метрики DORA."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dr-four",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dr-small",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "dr-mttr",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "trunk-based",
+      "title": "Работа в основной ветке",
+      "summary": "Короткие ветки, частые слияния, маленькие PR, флаги вместо долгих веток.",
+      "chapter": "Культура и практика",
+      "durationMinutes": 5,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Измеряем доставку и меняем то, как команда работает с ветками.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Короткие ветки\",\n  \"title\": \"Часы, а не недели\",\n  \"what\": \"Ветка живёт день-два и сливается в main. Незаконченное прячется за флагом.\",\n  \"why\": \"Конфликтов почти нет.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Маленькие PR\",\n  \"title\": \"Сотни строк, а не тысячи\",\n  \"what\": \"Маленький PR быстро проверяют, быстро понимают и легко откатывают.\",\n  \"why\": \"Обзор кода превращается из повинности в разговор.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"main всегда зелёный\",\n  \"title\": \"Общее правило\",\n  \"what\": \"Сломал main — исправляешь сразу или откатываешь. Остальные не должны ждать.\",\n  \"why\": \"Конвейер полезен, только если ему доверяют.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Короткие ветки, маленькие PR, main всегда зелёный."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tb-short",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tb-small",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "tb-red",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "code-review",
+      "title": "Обзор кода и автоматика",
+      "summary": "Что проверяет машина, а что человек, шаблон PR, автоматические проверщики и боты.",
+      "chapter": "Культура и практика",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Работаем короткими ветками и делим проверку между людьми и машинами.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Машине — механическое\",\n  \"title\": \"Формат, типы, тесты\",\n  \"what\": \"Всё, что можно проверить автоматически, проверяет конвейер. Люди не спорят о пробелах.\",\n  \"why\": \"Время ревьюера — на смысл.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Человеку — смысл\",\n  \"title\": \"Замысел и устройство\",\n  \"what\": \"Понятно ли, правильно ли решена задача, безопасно ли, проще ли можно.\",\n  \"why\": \"Машина не скажет, что решение не той задачи.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Шаблон PR\",\n  \"title\": \"Что изменилось и как проверить\",\n  \"what\": \"Файл .github/pull_request_template.md подсказывает автору описать изменения, проверки и риски.\",\n  \"why\": \"Ревьюер сразу понимает контекст.\",\n  \"how\": \"## Что изменилось\\n\\n## Как проверить\\n\\n## Риски и откат\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Помощники\",\n  \"title\": \"Боты и ИИ\",\n  \"what\": \"Боты комментируют размер бандла, покрытие, превью; ИИ-ревью находит подозрительные места.\",\n  \"why\": \"Финальное решение — за человеком.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Механическое — машине, смысл — человеку. PR описывает изменения, проверку и риски."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cr-machine",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cr-human",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "cr-template",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    },
+    {
+      "slug": "full-pipeline",
+      "title": "Полный конвейер",
+      "summary": "Сборка всего вместе: проверки, тесты, артефакт, выкладка, проверка, откат. Что учить дальше.",
+      "chapter": "Культура и практика",
+      "durationMinutes": 6,
+      "blocks": [
+        {
+          "type": "markdown",
+          "markdown": "```recap\n{\"now\":\"Наладили обзор кода и собираем полный конвейер целиком.\",\"cast\":[\"nika\"]}\n```\n\n```concept\n{\n  \"name\": \"Путь изменения\",\n  \"title\": \"От коммита до пользователя\",\n  \"what\": \"PR: формат и линтер → типы → тесты → сборка → превью. Слияние: артефакт → staging → smoke → production → проверка версии и метрик.\",\n  \"why\": \"Каждый шаг ловит свой класс ошибок.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Скелет\",\n  \"title\": \"Всё вместе\",\n  \"what\": \"Задачи связаны needs, окружения защищены, секреты — через OIDC, выкладки — по одной.\",\n  \"why\": \"Можно взять за основу своего проекта.\",\n  \"how\": \"jobs:\\n  checks: { ... }        # формат, линтер, типы\\n  test: { needs: checks }\\n  build: { needs: test } # артефакт один раз\\n  staging: { needs: build, environment: staging }\\n  production: { needs: staging, environment: production }\",\n  \"kind\": \"idea\",\n  \"lang\": \"yaml\"\n}\n```\n\n```concept\n{\n  \"name\": \"Цель\",\n  \"title\": \"Скучные выкладки\",\n  \"what\": \"Хороший конвейер делает выкладку обычным событием: быстрым, частым и обратимым.\",\n  \"why\": \"Команда меняет продукт без страха.\",\n  \"kind\": \"idea\"\n}\n```\n\n```concept\n{\n  \"name\": \"Что дальше\",\n  \"title\": \"Куда расти\",\n  \"what\": \"Kubernetes и GitOps (Argo CD, Flux), платформенная инженерия, наблюдаемость, проектирование надёжности.\",\n  \"why\": \"Каждая тема — продолжение этого курса.\",\n  \"kind\": \"idea\"\n}\n```\n\n**Главное.** Проверки → тесты → артефакт → staging → бой → проверка. Цель — скучные выкладки."
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fp-order",
+          "kind": "practice",
+          "required": true
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fp-goal",
+          "kind": "homework",
+          "required": false
+        },
+        {
+          "type": "activity",
+          "activitySlug": "fp-gitops",
+          "kind": "homework",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

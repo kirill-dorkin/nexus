@@ -10143,6 +10143,471 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "cicd",
+      "name": "CI/CD",
+      "role": "Конвейер",
+      "summary": "Автоматическая проверка и выкладка: первый конвейер в GitHub Actions, линтеры, типы и тесты в CI, кэш и параллельность, артефакты и версии, секреты и цепочка поставки, стратегии выкладки, окружения и миграции, наблюдение и откат, культура маленьких изменений.",
+      "accent": "violet",
+      "published": true,
+      "abilities": [
+        {
+          "title": "Основы",
+          "branches": [
+            "cicd-1",
+            "cicd-2"
+          ]
+        },
+        {
+          "title": "Качество",
+          "branches": [
+            "cicd-3",
+            "cicd-4"
+          ]
+        },
+        {
+          "title": "Скорость",
+          "branches": [
+            "cicd-5"
+          ]
+        },
+        {
+          "title": "Выпуск",
+          "branches": [
+            "cicd-6"
+          ]
+        },
+        {
+          "title": "Защита",
+          "branches": [
+            "cicd-7"
+          ]
+        },
+        {
+          "title": "Выкладка",
+          "branches": [
+            "cicd-8",
+            "cicd-9"
+          ]
+        },
+        {
+          "title": "Надёжность",
+          "branches": [
+            "cicd-10",
+            "cicd-11"
+          ]
+        }
+      ],
+      "branches": [
+        {
+          "id": "cicd-1",
+          "title": "Зачем автоматизация",
+          "depth": "practice",
+          "requires": [
+            "git-8"
+          ],
+          "skills": [
+            {
+              "key": "ci-pain",
+              "title": "Зачем автоматизация",
+              "lesson": {
+                "course": "cicd",
+                "slug": "integration-pain",
+                "title": "Проблема слияния"
+              }
+            },
+            {
+              "key": "ci-terms",
+              "title": "Понятия CI/CD",
+              "lesson": {
+                "course": "cicd",
+                "slug": "ci-cd-terms",
+                "title": "CI, CD и CD"
+              }
+            },
+            {
+              "key": "ci-tools",
+              "title": "Инструменты CI",
+              "lesson": {
+                "course": "cicd",
+                "slug": "ci-tools",
+                "title": "Инструменты"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cicd-2",
+          "title": "Первый конвейер",
+          "depth": "practice",
+          "requires": [
+            "cicd-1"
+          ],
+          "skills": [
+            {
+              "key": "ci-workflow",
+              "title": "Устройство workflow",
+              "lesson": {
+                "course": "cicd",
+                "slug": "workflow-anatomy",
+                "title": "Устройство workflow"
+              }
+            },
+            {
+              "key": "ci-triggers",
+              "title": "Триггеры",
+              "lesson": {
+                "course": "cicd",
+                "slug": "triggers",
+                "title": "Когда запускать"
+              }
+            },
+            {
+              "key": "ci-results",
+              "title": "Результаты конвейера",
+              "lesson": {
+                "course": "cicd",
+                "slug": "reading-runs",
+                "title": "Читать результат"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cicd-3",
+          "title": "Проверки качества",
+          "depth": "practice",
+          "requires": [
+            "cicd-2"
+          ],
+          "skills": [
+            {
+              "key": "ci-lint",
+              "title": "Линтеры в CI",
+              "lesson": {
+                "course": "cicd",
+                "slug": "lint-format",
+                "title": "Формат и линтер"
+              }
+            },
+            {
+              "key": "ci-types",
+              "title": "Типы и сборка в CI",
+              "lesson": {
+                "course": "cicd",
+                "slug": "typecheck-build",
+                "title": "Типы и сборка"
+              }
+            },
+            {
+              "key": "ci-local",
+              "title": "Локальные проверки",
+              "lesson": {
+                "course": "cicd",
+                "slug": "local-gate",
+                "title": "Локальная проверка"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cicd-4",
+          "title": "Тесты в конвейере",
+          "depth": "practice",
+          "requires": [
+            "cicd-3"
+          ],
+          "skills": [
+            {
+              "key": "ci-testlevels",
+              "title": "Тесты в конвейере",
+              "lesson": {
+                "course": "cicd",
+                "slug": "test-levels",
+                "title": "Уровни тестов"
+              }
+            },
+            {
+              "key": "ci-services",
+              "title": "Сервисы в CI",
+              "lesson": {
+                "course": "cicd",
+                "slug": "service-containers",
+                "title": "Сервисы для тестов"
+              }
+            },
+            {
+              "key": "ci-flaky",
+              "title": "Надёжность тестов",
+              "lesson": {
+                "course": "cicd",
+                "slug": "flaky-coverage",
+                "title": "Нестабильные тесты и покрытие"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cicd-5",
+          "title": "Скорость конвейера",
+          "depth": "practice",
+          "requires": [
+            "cicd-4"
+          ],
+          "skills": [
+            {
+              "key": "ci-cache",
+              "title": "Кэш в CI",
+              "lesson": {
+                "course": "cicd",
+                "slug": "caching",
+                "title": "Кэш"
+              }
+            },
+            {
+              "key": "ci-matrix",
+              "title": "Параллельность",
+              "lesson": {
+                "course": "cicd",
+                "slug": "parallel-matrix",
+                "title": "Параллельность и матрица"
+              }
+            },
+            {
+              "key": "ci-affected",
+              "title": "Проверка затронутого",
+              "lesson": {
+                "course": "cicd",
+                "slug": "affected",
+                "title": "Только затронутое"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cicd-6",
+          "title": "Артефакты и версии",
+          "depth": "practice",
+          "requires": [
+            "cicd-5"
+          ],
+          "skills": [
+            {
+              "key": "ci-artifact",
+              "title": "Артефакты",
+              "lesson": {
+                "course": "cicd",
+                "slug": "build-once",
+                "title": "Собрать один раз"
+              }
+            },
+            {
+              "key": "ci-version",
+              "title": "Версии",
+              "lesson": {
+                "course": "cicd",
+                "slug": "versioning",
+                "title": "Версии"
+              }
+            },
+            {
+              "key": "ci-registry",
+              "title": "Публикация",
+              "lesson": {
+                "course": "cicd",
+                "slug": "registries",
+                "title": "Реестры и выпуск"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cicd-7",
+          "title": "Секреты и безопасность",
+          "depth": "practice",
+          "requires": [
+            "cicd-6"
+          ],
+          "skills": [
+            {
+              "key": "ci-secrets",
+              "title": "Секреты в CI",
+              "lesson": {
+                "course": "cicd",
+                "slug": "ci-secrets",
+                "title": "Секреты в конвейере"
+              }
+            },
+            {
+              "key": "ci-permissions",
+              "title": "Права конвейера",
+              "lesson": {
+                "course": "cicd",
+                "slug": "permissions",
+                "title": "Права конвейера"
+              }
+            },
+            {
+              "key": "ci-supply",
+              "title": "Цепочка поставки",
+              "lesson": {
+                "course": "cicd",
+                "slug": "supply-chain",
+                "title": "Цепочка поставки"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cicd-8",
+          "title": "Доставка и выкладка",
+          "depth": "practice",
+          "requires": [
+            "cicd-7"
+          ],
+          "skills": [
+            {
+              "key": "ci-deploy",
+              "title": "Выкладка из CI",
+              "lesson": {
+                "course": "cicd",
+                "slug": "deploy-job",
+                "title": "Задача выкладки"
+              }
+            },
+            {
+              "key": "ci-strategies",
+              "title": "Стратегии выкладки",
+              "lesson": {
+                "course": "cicd",
+                "slug": "rollout-strategies",
+                "title": "Стратегии выкладки"
+              }
+            },
+            {
+              "key": "ci-flags",
+              "title": "Флаги и откат",
+              "lesson": {
+                "course": "cicd",
+                "slug": "flags-rollback",
+                "title": "Флаги и откат"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cicd-9",
+          "title": "Окружения и миграции",
+          "depth": "practice",
+          "requires": [
+            "cicd-8"
+          ],
+          "skills": [
+            {
+              "key": "ci-envs",
+              "title": "Окружения",
+              "lesson": {
+                "course": "cicd",
+                "slug": "preview-envs",
+                "title": "Окружения"
+              }
+            },
+            {
+              "key": "ci-migrations",
+              "title": "Миграции в CI",
+              "lesson": {
+                "course": "cicd",
+                "slug": "db-migrations",
+                "title": "Миграции базы"
+              }
+            },
+            {
+              "key": "ci-iac",
+              "title": "Инфраструктура как код",
+              "lesson": {
+                "course": "cicd",
+                "slug": "infra-as-code",
+                "title": "Инфраструктура как код"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cicd-10",
+          "title": "Наблюдение после выкладки",
+          "depth": "practice",
+          "requires": [
+            "cicd-9"
+          ],
+          "skills": [
+            {
+              "key": "ci-postdeploy",
+              "title": "Проверка после выкладки",
+              "lesson": {
+                "course": "cicd",
+                "slug": "post-deploy",
+                "title": "После выкладки"
+              }
+            },
+            {
+              "key": "ci-alerts",
+              "title": "Метрики и тревоги",
+              "lesson": {
+                "course": "cicd",
+                "slug": "alerts",
+                "title": "Метрики и тревоги"
+              }
+            },
+            {
+              "key": "ci-dora",
+              "title": "Метрики доставки",
+              "lesson": {
+                "course": "cicd",
+                "slug": "dora",
+                "title": "Метрики доставки"
+              }
+            }
+          ]
+        },
+        {
+          "id": "cicd-11",
+          "title": "Культура и практика",
+          "depth": "practice",
+          "requires": [
+            "cicd-10"
+          ],
+          "skills": [
+            {
+              "key": "ci-trunk",
+              "title": "Работа в основной ветке",
+              "lesson": {
+                "course": "cicd",
+                "slug": "trunk-based",
+                "title": "Работа в основной ветке"
+              }
+            },
+            {
+              "key": "ci-review",
+              "title": "Обзор кода",
+              "lesson": {
+                "course": "cicd",
+                "slug": "code-review",
+                "title": "Обзор кода и автоматика"
+              }
+            },
+            {
+              "key": "ci-full",
+              "title": "Полный конвейер",
+              "lesson": {
+                "course": "cicd",
+                "slug": "full-pipeline",
+                "title": "Полный конвейер"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -33,7 +33,8 @@ export const DISTRICT_NAMES: Record<string, string> = {
   next: "Башня архитекторов",
   go: "Стадион",
   os: "Диспетчерская",
-  vue: "Оранжерея"
+  vue: "Оранжерея",
+  cicd: "Сборочный цех"
 };
 
 /** Positions on a 1000×600 plan; characters without one are laid out on the bottom row. */
@@ -55,7 +56,8 @@ const LAYOUT: Record<string, { x: number; y: number }> = {
   next: { x: 540, y: 240 },
   go: { x: 270, y: 420 },
   os: { x: 130, y: 240 },
-  vue: { x: 540, y: 510 }
+  vue: { x: 540, y: 510 },
+  cicd: { x: 270, y: 520 }
 };
 
 export type District = {
