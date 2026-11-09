@@ -63,7 +63,12 @@ export function AnalyticsConsent() {
     });
   };
   return (
-    <section className={styles.banner} aria-label="Согласие на cookies">
+    <section
+      className={styles.banner}
+      aria-label="Согласие на cookies"
+      // The site is dark; the banner floats over the 3D scenes, so it keeps the dark look in any theme.
+      data-ui-theme="dark"
+    >
       <p className={styles.text}>
         Мы используем cookies и аналитику, чтобы понимать, какие уроки помогают,
         а где ученики застревают, и улучшать курсы. Подробнее — в{" "}
