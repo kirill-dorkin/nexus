@@ -17,6 +17,9 @@ import {
   clientOAuthProvidersResponseSchema,
   clientOwnLearningListSchema,
   clientOwnSkillsSchema,
+  clientOwnSubscriptionSchema,
+  clientPublicSubscriptionOffersSchema,
+  clientSubscriptionCheckoutSchema,
   clientQuizCheckResultSchema
 } from "./client";
 import {
@@ -25,6 +28,11 @@ import {
   ownLearningListSchema
 } from "./learner-learning";
 import { ownSkillsSchema } from "./own-skills";
+import {
+  ownSubscriptionSchema,
+  publicSubscriptionOffersSchema,
+  subscriptionCheckoutSchema
+} from "./subscriptions";
 import { quizCheckResultSchema } from "./quiz-check";
 
 // WP-6: the browser parses with zod/mini copies; they must agree with the full
@@ -288,6 +296,142 @@ const pairs: [
       { ...course, offering: { slug: "Bad Slug", name: "x" } },
       { ...course, progress: { ...course.progress, percentage: 101 } },
       { ...course, extra: 1 }
+    ]
+  ],
+  [
+    "subscription offers",
+    publicSubscriptionOffersSchema,
+    clientPublicSubscriptionOffersSchema,
+    [
+      { offers: [] },
+      {
+        offers: [
+          {
+            priceId: "0195f3a0-0000-7000-8000-000000000001",
+            planSlug: "full",
+            planName: "Полный доступ",
+            amountMinor: 99000,
+            currency: "RUB",
+            billingPeriod: "month"
+          }
+        ]
+      },
+      {
+        offers: [
+          {
+            ...{
+              priceId: "0195f3a0-0000-7000-8000-000000000001",
+              planSlug: "full",
+              planName: "Полный доступ",
+              amountMinor: 99000,
+              currency: "RUB",
+              billingPeriod: "month"
+            },
+            billingPeriod: "week"
+          }
+        ]
+      },
+      {
+        offers: [
+          {
+            ...{
+              priceId: "0195f3a0-0000-7000-8000-000000000001",
+              planSlug: "full",
+              planName: "Полный доступ",
+              amountMinor: 99000,
+              currency: "RUB",
+              billingPeriod: "month"
+            },
+            amountMinor: 0
+          }
+        ]
+      },
+      {
+        offers: [
+          {
+            ...{
+              priceId: "0195f3a0-0000-7000-8000-000000000001",
+              planSlug: "full",
+              planName: "Полный доступ",
+              amountMinor: 99000,
+              currency: "RUB",
+              billingPeriod: "month"
+            },
+            currency: "rub"
+          }
+        ]
+      }
+    ]
+  ],
+  [
+    "own subscription",
+    ownSubscriptionSchema,
+    clientOwnSubscriptionSchema,
+    [
+      {
+        subscription: null,
+        access: {
+          access: "trial",
+          until: "2026-11-20T00:00:00.000Z",
+          trialEndsAt: "2026-11-20T00:00:00.000Z"
+        }
+      },
+      {
+        subscription: {
+          id: "0195f3a0-0000-7000-8000-000000000002",
+          status: "active",
+          amountMinor: 99000,
+          currency: "RUB",
+          billingPeriod: "year",
+          currentPeriodEnd: "2027-01-01T00:00:00.000Z",
+          cancelledAt: null
+        },
+        access: {
+          access: "trial",
+          until: "2026-11-20T00:00:00.000Z",
+          trialEndsAt: "2026-11-20T00:00:00.000Z"
+        }
+      },
+      {
+        subscription: {
+          ...{
+            id: "0195f3a0-0000-7000-8000-000000000002",
+            status: "active",
+            amountMinor: 99000,
+            currency: "RUB",
+            billingPeriod: "year",
+            currentPeriodEnd: "2027-01-01T00:00:00.000Z",
+            cancelledAt: null
+          },
+          status: "ended"
+        },
+        access: {
+          access: "trial",
+          until: "2026-11-20T00:00:00.000Z",
+          trialEndsAt: "2026-11-20T00:00:00.000Z"
+        }
+      },
+      {
+        subscription: null,
+        access: {
+          ...{
+            access: "trial",
+            until: "2026-11-20T00:00:00.000Z",
+            trialEndsAt: "2026-11-20T00:00:00.000Z"
+          },
+          access: "free"
+        }
+      }
+    ]
+  ],
+  [
+    "subscription checkout",
+    subscriptionCheckoutSchema,
+    clientSubscriptionCheckoutSchema,
+    [
+      { paymentUrl: "https://pay.lava.top/x" },
+      { paymentUrl: "http://pay.lava.top/x" },
+      { paymentUrl: "javascript:alert(1)" }
     ]
   ],
   [

@@ -6,6 +6,8 @@ import {
 import {
   catalogAccessSchema,
   type CatalogAccess,
+  type OwnSubscription,
+  type SubscriptionOffer,
   type CreateSubscriptionPlanPriceRequest,
   type CreateSubscriptionPlanRequest,
   type SubscriptionPlan,
@@ -23,6 +25,10 @@ import { PublicOrganizationQuery } from "../../organizations/application/public-
 import { resolveCatalogAccess } from "./catalog-access";
 import { CatalogAccessQuery } from "./catalog-access.query";
 import {
+  SubscriptionCheckoutCommand,
+  type PendingSubscription
+} from "./subscription-checkout.command";
+import {
   PlanNotActiveError,
   SubscriptionRepository
 } from "./subscription.repository";
@@ -37,7 +43,9 @@ const snapshot = { readOnly: true, isolationLevel: "repeatable_read" as const };
 
 /** ADR-0087: subscription plans (operator) and the caller's catalog access (learner). */
 @Injectable()
-export class SubscriptionApplicationService implements CatalogAccessQuery {
+export class SubscriptionApplicationService
+  implements CatalogAccessQuery, SubscriptionCheckoutCommand
+{
   constructor(
     private readonly database: DatabaseService,
     private readonly requestContext: RequestContextService,
@@ -65,6 +73,65 @@ export class SubscriptionApplicationService implements CatalogAccessQuery {
         now
       );
     return resolveCatalogAccess(entitlement, createdAt, now);
+  }
+
+  publicOffers(
+    transaction: DatabaseTransaction,
+    organizationSlug: string
+  ): Promise<SubscriptionOffer[]> {
+    return this.subscriptions.publicOffers(transaction, organizationSlug);
+  }
+
+  activeOffers(
+    transaction: DatabaseTransaction,
+    organizationId: string
+  ): Promise<SubscriptionOffer[]> {
+    return this.subscriptions.activeOffers(transaction, organizationId);
+  }
+
+  async openPending(
+    transaction: DatabaseTransaction,
+    input: Parameters<SubscriptionCheckoutCommand["openPending"]>[1]
+  ): Promise<PendingSubscription> {
+    const pending = await this.subscriptions.openPending(transaction, input);
+    if (pending === null)
+      throw new NotFoundException("Active subscription price not found.");
+    if (
+      pending.status === "pending" &&
+      (await this.subscriptions.hasChargingSubscription(
+        transaction,
+        input.organizationId,
+        input.userId
+      ))
+    )
+      throw new ConflictException("You already have an active subscription.");
+    if (pending.status !== "pending")
+      throw new ConflictException("This checkout is already completed.");
+    return pending;
+  }
+
+  ownSubscription(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userId: string
+  ): Promise<OwnSubscription["subscription"]> {
+    return this.subscriptions.ownSubscription(
+      transaction,
+      organizationId,
+      userId
+    );
+  }
+
+  recordCancellation(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    subscriptionId: string
+  ): Promise<void> {
+    return this.subscriptions.applyCancellation(
+      transaction,
+      organizationId,
+      subscriptionId
+    );
   }
 
   sellsCatalogSubscription(

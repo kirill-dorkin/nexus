@@ -269,6 +269,47 @@ export const clientCreateFeedbackReportRequestSchema = z
 export const clientCreateFeedbackReportResponseSchema = z.strictObject({
   id: uuid
 });
+const subscriptionPeriod = z.enum(["month", "days_90", "year"]);
+const currency = z.string().check(z.regex(/^[A-Z]{3}$/));
+const isoDateTime = z.iso.datetime();
+
+export const clientPublicSubscriptionOffersSchema = z.object({
+  offers: z.array(
+    z.object({
+      priceId: uuid,
+      planSlug: slug,
+      planName: z.string().check(z.trim(), z.minLength(1), z.maxLength(160)),
+      amountMinor: int(1),
+      currency,
+      billingPeriod: subscriptionPeriod
+    })
+  )
+});
+
+export const clientOwnSubscriptionSchema = z.object({
+  subscription: z.nullable(
+    z.object({
+      id: uuid,
+      status: z.enum(["pending", "active", "past_due", "cancelled", "revoked"]),
+      amountMinor: int(1),
+      currency,
+      billingPeriod: subscriptionPeriod,
+      currentPeriodEnd: z.nullable(isoDateTime),
+      cancelledAt: z.nullable(isoDateTime)
+    })
+  ),
+  access: z.object({
+    access: z.enum(["subscription", "manual", "trial", "none"]),
+    until: z.nullable(isoDateTime),
+    trialEndsAt: isoDateTime
+  })
+});
+
+export const clientSubscriptionCheckoutSchema = z.object({
+  paymentUrl: z.url({ protocol: /^https$/ })
+});
+
+export { SUBSCRIPTION_TERMS_VERSION } from "./subscription-terms";
 export {
   CURRENT_LEGAL_DOCUMENT_VERSIONS,
   currentRegistrationConsents,

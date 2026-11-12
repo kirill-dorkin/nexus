@@ -117,7 +117,9 @@ This does not use the lease-fenced processor of ADR-0048. That processor has no 
 - `LAVA_WEBHOOK_SECRET` — the value configured in lava.top for `X-Api-Key`.
 - `LAVA_OFFERS` — a JSON map from Nexus Price id to lava `offerId`.
 
-All three live in Vercel Production only. Without them, checkout answers 503 and the paywall says that subscriptions are not open yet. Previews and CI use a fake adapter (ADR-0052 test seams).
+All three live in Vercel Production only. Without them, checkout answers 503 and the page says that subscriptions are not open yet. Integration tests point `LAVA_API_BASE_URL` at a local fake server; production never sets it.
+
+Refund and chargeback webhooks carry no contract id, only the buyer's email. They are stored with outcome `needs_review` and change nothing; the owner refunds and revokes by hand until a reversal flow is worth building.
 
 ### 9. Legal
 

@@ -171,7 +171,7 @@ for (let tries = 0; tries < (fromEnv ? 1 : 5) && !auth?.ok; tries++) {
       email,
       password,
       consents: [
-        { document: "terms", version: "2026-11-06" },
+        { document: "terms", version: "2026-11-13" },
         { document: "personal_data", version: "2026-11-06" }
       ]
     });

@@ -26,15 +26,30 @@ import { PostgresGitHubAppSetupRepository } from "./infrastructure/postgres-gith
 import { PostgresGitHubWebhookInboxRepository } from "./infrastructure/postgres-github-webhook-inbox.repository";
 import { PostgresPaymentCheckoutRepository } from "./infrastructure/postgres-payment-checkout.repository";
 import { PostgresPaymentWebhookInboxRepository } from "./infrastructure/postgres-payment-webhook-inbox.repository";
+import { LavaContractRepository } from "./application/lava-contract.repository";
+import { LavaSubscriptionGateway } from "./application/lava-subscription.gateway";
+import { LavaSubscriptionPort } from "./application/lava-subscription.port";
+import { LavaWebhookApplicationService } from "./application/lava-webhook.service";
+import { HttpLavaSubscriptionGateway } from "./infrastructure/http-lava-subscription.gateway";
+import { PostgresLavaContractRepository } from "./infrastructure/postgres-lava-contract.repository";
+import { LavaWebhookController } from "./lava-webhook.controller";
 
 @Module({
   imports: [IdentityModule, AuthorizationModule],
   controllers: [
     GitHubWebhookController,
     GitHubAppSetupController,
-    PaddlePaymentWebhookController
+    PaddlePaymentWebhookController,
+    LavaWebhookController
   ],
   providers: [
+    LavaSubscriptionPort,
+    LavaWebhookApplicationService,
+    { provide: LavaSubscriptionGateway, useClass: HttpLavaSubscriptionGateway },
+    {
+      provide: LavaContractRepository,
+      useClass: PostgresLavaContractRepository
+    },
     GitHubWebhookApplicationService,
     GitHubWebhookSignatureVerifier,
     GitHubAppSetupApplicationService,
@@ -76,6 +91,10 @@ import { PostgresPaymentWebhookInboxRepository } from "./infrastructure/postgres
       useClass: PostgresGitHubWebhookInboxRepository
     }
   ],
-  exports: [GitHubRepositoryReferenceQuery, PaymentCheckoutGateway]
+  exports: [
+    GitHubRepositoryReferenceQuery,
+    PaymentCheckoutGateway,
+    LavaSubscriptionPort
+  ]
 })
 export class IntegrationsModule {}

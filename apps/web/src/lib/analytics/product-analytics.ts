@@ -109,7 +109,8 @@ export type FunnelEvent =
   | "login_completed"
   | "course_started"
   | "quiz_checked"
-  | "paywall_viewed";
+  | "paywall_viewed"
+  | "checkout_started";
 
 export type TrackOptions = {
   /**
