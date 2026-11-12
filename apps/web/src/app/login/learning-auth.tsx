@@ -10,6 +10,7 @@ import { useEffect, useState, type SubmitEvent } from "react";
 import Link from "next/link";
 import { browserApiRequest, publicApiUrl } from "../../lib/public-api";
 import { safeLearningReturnTo } from "../../lib/learning-return-to";
+import { track } from "../../lib/analytics/product-analytics";
 import {
   ArrowRightIcon,
   GithubLogoIcon,
@@ -129,6 +130,11 @@ export function LearningAuth({
         return;
       }
       identityUserSchema.parse(await response.json());
+      await track(
+        mode === "register" ? "signup_completed" : "login_completed",
+        { method: "password" },
+        { beforeNavigation: true }
+      );
       window.location.assign(safeLearningReturnTo(returnTo));
     } catch {
       setError("Не удалось связаться с сервером. Попробуйте снова.");

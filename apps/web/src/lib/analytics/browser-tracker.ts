@@ -5,6 +5,7 @@ import type {
 } from "@platform/contracts";
 
 import { publicApiUrl } from "../public-api";
+import { track } from "./product-analytics";
 import {
   LEARNING_STEP_EVENT,
   createLessonTracker,
@@ -72,6 +73,14 @@ export function startBrowserLessonTracker(address: LessonAddress) {
           window.removeEventListener(LEARNING_STEP_EVENT, listener);
         };
       }
+    },
+    // The same first steps go to PostHog, where they join the visitor's source and path.
+    (step) => {
+      void track(step, {
+        organization: address.organizationSlug,
+        offering: address.offeringSlug,
+        lesson: address.lessonSlug
+      });
     }
   );
   tracker.start();

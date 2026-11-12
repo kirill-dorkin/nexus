@@ -55,7 +55,14 @@ describe("analytics consent", () => {
     await expect(setConsent("denied")).resolves.toBeUndefined();
     await expect(identifyLearner("user-1")).resolves.toBeUndefined();
     await expect(
-      track("lesson_completed", { lesson: "x" })
+      track("quiz_checked", { lesson: "x", outcome: "passed" })
+    ).resolves.toBeUndefined();
+    await expect(
+      track(
+        "signup_completed",
+        { method: "password" },
+        { beforeNavigation: true }
+      )
     ).resolves.toBeUndefined();
   });
 });
