@@ -40,6 +40,17 @@ export class PostgresIdentityRepository extends IdentityRepository {
     return row === undefined ? null : mapIdentityUser(row);
   }
 
+  async findCreatedAt(
+    transaction: DatabaseTransaction,
+    userId: string
+  ): Promise<string | null> {
+    const result = await transaction.client.query<{ created_at: Date }>(
+      "SELECT created_at FROM identity.users WHERE id = $1",
+      [userId]
+    );
+    return result.rows[0]?.created_at.toISOString() ?? null;
+  }
+
   async findByNormalizedEmail(
     transaction: DatabaseTransaction,
     normalizedEmail: string

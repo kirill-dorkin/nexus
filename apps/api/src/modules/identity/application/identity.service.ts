@@ -20,6 +20,14 @@ function normalizeEmail(email: string): string {
 export class IdentityApplicationService {
   constructor(private readonly users: IdentityRepository) {}
 
+  /** When the account was created (ISO 8601); null for an unknown user. */
+  accountCreatedAt(
+    transaction: DatabaseTransaction,
+    userId: string
+  ): Promise<string | null> {
+    return this.users.findCreatedAt(transaction, userId);
+  }
+
   findByEmail(
     transaction: DatabaseTransaction,
     email: string

@@ -19,6 +19,12 @@ import { PostgresCommerceRepository } from "./infrastructure/postgres-commerce.r
 import { PostgresOwnedPurchaseOrganizationQuery } from "./infrastructure/postgres-owned-purchase-organization.query";
 import { PostgresPublicCommerceCatalogQuery } from "./infrastructure/postgres-public-commerce-catalog.query";
 import { PurchaserPurchaseController } from "./purchaser-purchase.controller";
+import { CatalogAccessQuery } from "./application/catalog-access.query";
+import { SubscriptionRepository } from "./application/subscription.repository";
+import { SubscriptionApplicationService } from "./application/subscription.service";
+import { PostgresSubscriptionRepository } from "./infrastructure/postgres-subscription.repository";
+import { OwnCatalogAccessController } from "./own-catalog-access.controller";
+import { SubscriptionPlanController } from "./subscription-plan.controller";
 
 @Module({
   imports: [
@@ -30,11 +36,22 @@ import { PurchaserPurchaseController } from "./purchaser-purchase.controller";
   controllers: [
     CommerceController,
     CommerceCatalogController,
-    PurchaserPurchaseController
+    PurchaserPurchaseController,
+    SubscriptionPlanController,
+    OwnCatalogAccessController
   ],
   providers: [
     CommerceApplicationService,
     PurchaserPurchaseApplicationService,
+    SubscriptionApplicationService,
+    {
+      provide: CatalogAccessQuery,
+      useExisting: SubscriptionApplicationService
+    },
+    {
+      provide: SubscriptionRepository,
+      useClass: PostgresSubscriptionRepository
+    },
     {
       provide: EntitlementQuery,
       useExisting: CommerceApplicationService
@@ -62,6 +79,7 @@ import { PurchaserPurchaseController } from "./purchaser-purchase.controller";
   ],
   exports: [
     EntitlementQuery,
+    CatalogAccessQuery,
     PurchaseCommand,
     PublicCommerceCatalogQuery,
     CheckoutCommerceOfferQuery
