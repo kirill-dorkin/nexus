@@ -50,7 +50,7 @@ beforeEach(() => {
   api.mockReset();
   push.mockReset();
   assign.mockReset();
-  vi.stubGlobal("location", { ...window.location, assign });
+  vi.stubGlobal("location", { assign, search: "" });
 });
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -86,7 +86,7 @@ describe("SubscriptionOffers", () => {
     const [, init] = api.mock.calls.find(
       ([path]) => path === `/v1/me/subscriptions/${org}/checkout`
     )!;
-    expect(JSON.parse(String(init?.body))).toMatchObject({
+    expect(JSON.parse(init?.body as string)).toMatchObject({
       priceId: offer("2", "days_90", 249000).priceId,
       acceptRenewalTerms: true,
       termsVersion: SUBSCRIPTION_TERMS_VERSION
