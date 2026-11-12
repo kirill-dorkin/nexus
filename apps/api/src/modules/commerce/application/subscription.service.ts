@@ -67,6 +67,13 @@ export class SubscriptionApplicationService implements CatalogAccessQuery {
     return resolveCatalogAccess(entitlement, createdAt, now);
   }
 
+  sellsCatalogSubscription(
+    transaction: DatabaseTransaction,
+    organizationId: string
+  ): Promise<boolean> {
+    return this.subscriptions.hasActiveOffer(transaction, organizationId);
+  }
+
   /** `GET /v1/me/access/{organizationSlug}`: what the paywall and «Моя подписка» show. */
   async ownAccess(organizationSlug: string): Promise<CatalogAccess> {
     const { userId } = this.requestContext.requirePrincipal();

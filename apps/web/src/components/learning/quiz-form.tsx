@@ -24,6 +24,7 @@ import {
   buttonClass
 } from "@platform/ui";
 import styles from "./flow.module.css";
+import { SubscriptionPaywall, isPaymentRequired } from "./subscription-paywall";
 
 export function QuizForm({
   activity,
@@ -54,6 +55,7 @@ export function QuizForm({
   const [result, setResult] = useState<QuizCheckResult | null>(null),
     [error, setError] = useState<string | null>(null);
   const [needsLogin, setNeedsLogin] = useState(false);
+  const [paywalled, setPaywalled] = useState(false);
   const attempt = useRef<{ attemptKey: string; answer: QuizAnswer } | null>(
     null
   );
@@ -108,6 +110,8 @@ export function QuizForm({
       if (!response.ok) {
         if (response.status === 401) {
           setNeedsLogin(true);
+        } else if (isPaymentRequired(response)) {
+          setPaywalled(true);
         } else if ([403, 404, 409].includes(response.status))
           setError(
             "Этот курс сейчас закрыт для самостоятельной записи. Обратитесь к организации курса."
@@ -242,6 +246,13 @@ export function QuizForm({
       <div aria-live="polite">
         {error && <Alert tone="danger">{error}</Alert>}
       </div>
+      {paywalled && (
+        <SubscriptionPaywall
+          organizationSlug={organizationSlug}
+          offeringSlug={offeringSlug}
+          lessonSlug={lessonSlug}
+        />
+      )}
       {needsLogin && (
         <div className={styles.quizSignup} role="status">
           <strong>Ответ готов к проверке — осталось войти</strong>

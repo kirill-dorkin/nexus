@@ -60,4 +60,9 @@ export abstract class SubscriptionRepository {
     userId: string,
     at: Date
   ): Promise<CatalogEntitlementState | null>;
+
+  abstract hasActiveOffer(
+    transaction: DatabaseTransaction,
+    organizationId: string
+  ): Promise<boolean>;
 }

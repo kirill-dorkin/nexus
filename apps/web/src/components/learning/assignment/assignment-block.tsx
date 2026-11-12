@@ -13,6 +13,10 @@ import { browserApiRequest } from "../../../lib/public-api";
 import { learningLoginUrl } from "../../../lib/learning-return-to";
 import { lessonUrl } from "../../../lib/public-learning-routes";
 import styles from "../flow.module.css";
+import {
+  SubscriptionPaywall,
+  isPaymentRequired
+} from "../subscription-paywall";
 import { AssignmentReport } from "./assignment-report";
 import { describeProblem, readUpload, starterZip } from "./files";
 
@@ -44,6 +48,7 @@ export function AssignmentBlock({
   const [result, setResult] = useState<AssignmentCheckResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [needsLogin, setNeedsLogin] = useState(false);
+  const [paywalled, setPaywalled] = useState(false);
   const input = useRef<HTMLInputElement>(null);
   const attemptKey = useRef<string | null>(null);
 
@@ -123,6 +128,7 @@ export function AssignmentBlock({
       if ([403, 404, 409].includes(response.status) && (await startCourse()))
         response = await post();
       if (response.status === 401) setNeedsLogin(true);
+      else if (isPaymentRequired(response)) setPaywalled(true);
       else if (response.status === 429)
         setError("Слишком много сдач подряд. Подождите несколько минут.");
       else if (response.status === 400)
@@ -203,6 +209,13 @@ export function AssignmentBlock({
         {error && <Alert tone="danger">{error}</Alert>}
         {result && <AssignmentReport result={result} />}
       </div>
+      {paywalled && (
+        <SubscriptionPaywall
+          organizationSlug={organizationSlug}
+          offeringSlug={offeringSlug}
+          lessonSlug={lessonSlug}
+        />
+      )}
       {needsLogin && (
         <div className={styles.quizSignup} role="status">
           <strong>Файлы готовы к проверке — осталось войти</strong>

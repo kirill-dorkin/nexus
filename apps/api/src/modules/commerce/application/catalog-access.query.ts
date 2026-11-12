@@ -11,4 +11,10 @@ export abstract class CatalogAccessQuery {
     organizationId: string,
     userId: string
   ): Promise<CatalogAccess>;
+
+  /** True once the organization has an active plan with an active price (the paywall is on). */
+  abstract sellsCatalogSubscription(
+    transaction: DatabaseTransaction,
+    organizationId: string
+  ): Promise<boolean>;
 }

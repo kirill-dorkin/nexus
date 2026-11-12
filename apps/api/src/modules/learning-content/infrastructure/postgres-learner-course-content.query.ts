@@ -22,9 +22,10 @@ export class PostgresLearnerCourseContentQuery extends LearnerCourseContentQuery
     if (!version) return null;
     const result = await tx.client.query<{
       slug: string;
+      chapter: string | null;
       activities: LearnerLessonStructure["activities"];
     }>(
-      `SELECT l.slug, coalesce((SELECT jsonb_agg(jsonb_build_object('slug',a.slug,'activityId',a.activity_id,'activityVersionId',a.id,'required',b.required) ORDER BY b.position)
+      `SELECT l.slug, vl.chapter, coalesce((SELECT jsonb_agg(jsonb_build_object('slug',a.slug,'activityId',a.activity_id,'activityVersionId',a.id,'required',b.required) ORDER BY b.position)
          FROM learning_content.course_version_lesson_blocks b JOIN learning_content.course_version_activities a
            ON a.organization_id=b.organization_id AND a.course_version_id=b.course_version_id AND a.activity_id=b.activity_id
         WHERE b.organization_id=vl.organization_id AND b.course_version_id=vl.course_version_id AND b.lesson_id=vl.lesson_id AND b.block_type='activity'), '[]'::jsonb) AS activities
