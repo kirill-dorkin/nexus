@@ -10,6 +10,7 @@ import {
 import { clientQuizCheckResultSchema as quizCheckResultSchema } from "@platform/contracts/client";
 import { browserApiRequest } from "../../lib/public-api";
 import { learningLoginUrl } from "../../lib/learning-return-to";
+import { track } from "../../lib/analytics/product-analytics";
 import { lessonUrl } from "../../lib/public-learning-routes";
 import {
   Alert,
@@ -127,7 +128,16 @@ export function QuizForm({
           );
         return;
       }
-      setResult(quizCheckResultSchema.parse(await response.json()));
+      const checked = quizCheckResultSchema.parse(await response.json());
+      setResult(checked);
+      void track("quiz_checked", {
+        organization: organizationSlug,
+        offering: offeringSlug,
+        lesson: lessonSlug,
+        activity: activity.slug,
+        outcome: checked.outcome,
+        attempt: checked.attemptNumber
+      });
       setPending(false);
       window.dispatchEvent(new Event("learning-progress-changed"));
     } catch {

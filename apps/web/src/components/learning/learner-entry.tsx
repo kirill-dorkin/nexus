@@ -6,6 +6,8 @@ import { useApiResource } from "../../lib/hooks/api-resource";
 import Link from "next/link";
 import { browserApiRequest } from "../../lib/public-api";
 import { learningLoginUrl } from "../../lib/learning-return-to";
+import { trackCourseStarted } from "../../lib/analytics/product-analytics";
+import { entryCommandError } from "./learner-entry-errors";
 import {
   HOME_ORGANIZATION_SLUG,
   courseUrl,
@@ -85,13 +87,7 @@ export function LearnerEntry({
       return null;
     }
     if (!response.ok) {
-      setError(
-        response.status === 409 ||
-          response.status === 403 ||
-          response.status === 404
-          ? "Доступ изменился. Обновите состояние обучения или обратитесь в организацию."
-          : "Не удалось выполнить действие. Можно безопасно повторить его."
-      );
+      setError(entryCommandError(response.status));
       return null;
     }
     return response;
@@ -103,6 +99,7 @@ export function LearnerEntry({
       status: "ready",
       data: learnerLearningCourseSchema.parse(await response.json())
     });
+    void trackCourseStarted(organizationSlug, offeringSlug, auto);
     setMessage(
       auto
         ? "Курс начат: он появился в «Моём обучении»."

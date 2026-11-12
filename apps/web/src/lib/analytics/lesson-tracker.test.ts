@@ -17,7 +17,7 @@ const address = {
   lessonSlug: "links"
 };
 
-function harness() {
+function harness(onFirstStep?: (step: LearningStepName) => void) {
   let time = 0;
   let visible = true;
   const intervals: { fn: () => void; ms: number; next: number }[] = [];
@@ -43,7 +43,8 @@ function harness() {
       onInput: (fn) => (handlers.input.push(fn), () => undefined),
       onHide: (fn) => (handlers.hide.push(fn), () => undefined),
       onStep: (fn) => (handlers.step.push(fn), () => undefined)
-    }
+    },
+    onFirstStep
   );
   const advance = (ms: number) => {
     const end = time + ms;
@@ -128,5 +129,29 @@ describe("lesson tracker (ADR-0084)", () => {
         expect(event.lessonSlug).toBe("links");
       }
     expect(h.activeSeconds()).toBe(150);
+  });
+
+  it("forwards each first step once to product analytics (ADR-0086)", () => {
+    const forwarded: LearningStepName[] = [];
+    const h = harness((step) => forwarded.push(step));
+    h.tracker.start();
+    h.step("signup_clicked");
+    h.step("signup_clicked");
+    h.step("practice_run");
+    expect(forwarded).toEqual([
+      "lesson_viewed",
+      "signup_clicked",
+      "practice_run"
+    ]);
+  });
+
+  it("keeps counting when the product analytics callback throws", () => {
+    const h = harness(() => {
+      throw new Error("analytics down");
+    });
+    h.tracker.start();
+    h.step("video_started");
+    h.tracker.stop();
+    expect(h.all().filter((e) => e.type === "lesson_step")).toHaveLength(2);
   });
 });

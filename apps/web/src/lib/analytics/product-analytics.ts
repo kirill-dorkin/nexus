@@ -96,11 +96,65 @@ export async function identifyLearner(userId: string) {
     posthog.identify(userId);
 }
 
-/** A named product event, e.g. a quiz answer or a finished lesson. Properties stay small. */
+/**
+ * Named product events of the learning funnel (ADR-0086). Properties are public slugs and
+ * outcomes only — never emails, names, answers or free text.
+ */
+export type FunnelEvent =
+  | "lesson_viewed"
+  | "video_started"
+  | "practice_run"
+  | "signup_clicked"
+  | "signup_completed"
+  | "login_completed"
+  | "course_started"
+  | "quiz_checked";
+
+export type TrackOptions = {
+  /**
+   * The page is about to navigate away (sign-up, sign-in): send at once with sendBeacon and
+   * wait at most `TRACK_BEACON_WAIT_MS` for PostHog to load, so navigation is never held up.
+   */
+  beforeNavigation?: boolean;
+};
+
+export const TRACK_BEACON_WAIT_MS = 400;
+
+/** A named product event, e.g. a quiz answer or a started course. Properties stay small. */
 export async function track(
-  event: string,
-  properties: Record<string, string | number | boolean> = {}
+  event: FunnelEvent,
+  properties: Record<string, string | number | boolean> = {},
+  options: TrackOptions = {}
 ) {
-  const posthog = await productAnalytics();
-  posthog?.capture(event, properties);
+  try {
+    const loading = productAnalytics();
+    const posthog = options.beforeNavigation
+      ? await Promise.race([
+          loading,
+          new Promise<null>((resolve) =>
+            setTimeout(() => {
+              resolve(null);
+            }, TRACK_BEACON_WAIT_MS)
+          )
+        ])
+      : await loading;
+    posthog?.capture(
+      event,
+      properties,
+      options.beforeNavigation
+        ? { send_instantly: true, transport: "sendBeacon" }
+        : undefined
+    );
+  } catch {
+    // Analytics never gets in the way of the page.
+  }
+}
+
+/** Free self-enrollment succeeded; `automatic` when opening a lesson started the course. */
+export function trackCourseStarted(
+  organization: string,
+  offering: string,
+  automatic: boolean
+) {
+  return track("course_started", { organization, offering, automatic });
 }

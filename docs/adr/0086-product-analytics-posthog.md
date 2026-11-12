@@ -30,7 +30,7 @@ Building that in-house (visitor ids, an event store, funnels, session replay) wo
 4. **Captured.**
    - Pageviews on every route change, page leaves and autocapture.
    - `person_profiles: "identified_only"`: anonymous visitors do not create person profiles.
-   - Named product events (quiz answers, lesson completion, course start) come in the next slice, through `track()`.
+   - Named funnel events through `track()` (added 2026-11-12, see «Funnel events» below).
 5. **Only production.** `NEXT_PUBLIC_POSTHOG_KEY` is set at build time only when `VERCEL_ENV === "production"`. Previews, CI, e2e and local runs show no banner and send nothing. The project key is public by design: it can only send events. The read key for reports is a Personal API key. It lives in the owner's macOS Keychain, never in the repository.
 6. **Scope.** ADR-0084 stays the source for learning metrics in Studio. PostHog never feeds access, progress or Evidence.
 7. **Retention:**
@@ -45,3 +45,20 @@ Building that in-house (visitor ids, an event store, funnels, session replay) wo
 - The owner must enable «Cookieless server hash mode» in the PostHog project settings. Without it, PostHog drops the cookieless events.
 - The agent reads PostHog through its query API to report drop-offs and build tasks; reports never include personal data.
 - Ad blockers that block the proxy path, and disabled JavaScript, still lose some visits.
+
+## Funnel events (2026-11-12)
+
+The owner wants a funnel from short videos to a paid subscription. PostHog already records the source (`utm_*`, referrer) with every pageview, so the funnel needs only named steps. `track()` accepts a closed list of names (`FunnelEvent`):
+
+| Event | When | Properties |
+|---|---|---|
+| `lesson_viewed`, `video_started`, `practice_run`, `signup_clicked` | the first time on a lesson page; the same steps as ADR-0084, forwarded by the lesson tracker | `organization`, `offering`, `lesson` |
+| `signup_completed`, `login_completed` | password registration or sign-in succeeded, just before the redirect | `method: "password"` |
+| `course_started` | free self-enrollment succeeded | `organization`, `offering`, `automatic` |
+| `quiz_checked` | a quiz answer was checked | `organization`, `offering`, `lesson`, `activity`, `outcome`, `attempt` |
+
+- Properties are public slugs and outcomes only: never emails, names, answers or typed text.
+- Before a redirect, `track(…, { beforeNavigation: true })` sends with `sendBeacon` and waits at most 400 ms for PostHog to load, so sign-in is never held up.
+- OAuth sign-ups finish on the API redirect and are not counted as `signup_completed` yet. The account link (`identify`) still joins their later events.
+- The events follow the consent rules above: cookieless until «Принять».
+

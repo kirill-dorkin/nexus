@@ -46,7 +46,9 @@ export function createLessonTracker(
   address: LessonAddress,
   send: (events: LearningAnalyticsEvent[]) => void,
   clock: TrackerClock,
-  page: TrackerPage
+  page: TrackerPage,
+  /** Called once per first-seen step, e.g. to forward it to product analytics (ADR-0086). */
+  onFirstStep: (step: LearningStepName) => void = () => undefined
 ) {
   let queue: LearningAnalyticsEvent[] = [];
   const seenSteps = new Set<LearningStepName>();
@@ -59,6 +61,11 @@ export function createLessonTracker(
     if (seenSteps.has(name)) return;
     seenSteps.add(name);
     queue.push({ type: "lesson_step", step: name, ...address });
+    try {
+      onFirstStep(name);
+    } catch {
+      // Analytics never breaks the page.
+    }
   }
 
   function tick() {
