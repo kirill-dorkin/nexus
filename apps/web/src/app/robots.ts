@@ -13,7 +13,8 @@ export default function robots(): MetadataRoute.Robots {
         "/login",
         "/forgot-password",
         "/reset-password",
-        "/ui"
+        "/ui",
+        "/r/"
       ]
     },
     sitemap: absoluteUrl("/sitemap.xml"),
