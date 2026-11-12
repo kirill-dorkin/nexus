@@ -1,3 +1,4 @@
+import { CommerceModule } from "../commerce/commerce.module";
 import { LearningValidationModule } from "../learning-validation/learning-validation.module";
 import { Module } from "@nestjs/common";
 import { BrowserWriteOriginGuard } from "../../http/browser-write-origin.guard";
@@ -13,6 +14,7 @@ import { OwnSkillsController } from "./own-skills.controller";
 import { OwnSkillsService } from "./own-skills.service";
 @Module({
   imports: [
+    CommerceModule,
     LearningValidationModule,
     IdentityModule,
     OrganizationsModule,

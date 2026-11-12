@@ -159,4 +159,21 @@ export class PostgresSubscriptionRepository extends SubscriptionRepository {
           expiresAt: row.expires_at?.toISOString() ?? null
         };
   }
+
+  async hasActiveOffer(
+    transaction: DatabaseTransaction,
+    organizationId: string
+  ): Promise<boolean> {
+    const result = await transaction.client.query<{ sells: boolean }>(
+      `SELECT EXISTS (
+         SELECT 1
+           FROM commerce.subscription_plans AS plan
+           JOIN commerce.subscription_plan_prices AS price
+             ON price.organization_id = plan.organization_id AND price.plan_id = plan.id
+          WHERE plan.organization_id = $1 AND plan.status = 'active' AND price.status = 'active'
+       ) AS sells`,
+      [organizationId]
+    );
+    return result.rows[0]?.sells === true;
+  }
 }

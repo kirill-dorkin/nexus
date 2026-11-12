@@ -1,5 +1,7 @@
 import {
   ConflictException,
+  HttpException,
+  HttpStatus,
   Injectable,
   NotFoundException
 } from "@nestjs/common";
@@ -25,6 +27,8 @@ import { QuizSubmissionCommand } from "../learning-progress/application/quiz-sub
 import { LearningContentQuery } from "../learning-content/application/learning-content.query";
 import { QuizValidationApplicationService } from "../learning-validation/application/quiz-validation.service";
 import { deriveCourseProgress } from "./domain/course-progress.policy";
+import { isFreeLesson } from "./domain/catalog-paywall.policy";
+import { CatalogAccessQuery } from "../commerce/application/catalog-access.query";
 const snapshot = { readOnly: true, isolationLevel: "repeatable_read" as const };
 @Injectable()
 export class LearnerLearningService {
@@ -40,7 +44,8 @@ export class LearnerLearningService {
     private readonly quizSubmissions: QuizSubmissionCommand,
     private readonly activityContent: LearningContentQuery,
     private readonly quiz: QuizValidationApplicationService,
-    private readonly skillProgress: OwnSkillProgressQuery
+    private readonly skillProgress: OwnSkillProgressQuery,
+    private readonly catalogAccess: CatalogAccessQuery
   ) {}
   async checkQuiz(
     organizationSlug: string,
@@ -169,12 +174,52 @@ export class LearnerLearningService {
     );
     if (enrollment?.status !== "active")
       throw new ConflictException("Active own enrollment is required.");
+    const lesson = lessons?.find((l) =>
+      l.activities.some((a) => a.slug === activitySlug)
+    );
+    await this.requireCatalogAccess(
+      tx,
+      route.organizationId,
+      userId,
+      lessons ?? [],
+      lesson?.slug ?? ""
+    );
     const activity = await this.activityContent.requireActivityVersionById(
       tx,
       route.organizationId,
       ref.activityVersionId
     );
     return { route, enrollment, activity };
+  }
+  /**
+   * ADR-0087 §4: once the organization sells a catalog subscription, recording progress after
+   * the first chapter needs a subscription or the trial. Nothing is evaluated without it.
+   */
+  private async requireCatalogAccess(
+    tx: DatabaseTransaction,
+    organizationId: string,
+    userId: string,
+    lessons: readonly { slug: string; chapter?: string | null }[],
+    lessonSlug: string
+  ) {
+    if (isFreeLesson(lessons, lessonSlug)) return;
+    if (
+      !(await this.catalogAccess.sellsCatalogSubscription(tx, organizationId))
+    )
+      return;
+    const { access } = await this.catalogAccess.catalogAccess(
+      tx,
+      organizationId,
+      userId
+    );
+    if (access !== "none") return;
+    throw new HttpException(
+      {
+        message: "A subscription is required for this part of the course.",
+        code: "subscription_required"
+      },
+      HttpStatus.PAYMENT_REQUIRED
+    );
   }
   async course(organizationSlug: string, offeringSlug: string) {
     const { userId } = this.requestContext.requirePrincipal();

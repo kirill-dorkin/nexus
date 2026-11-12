@@ -73,7 +73,7 @@ A learner gets full access for **7 days from account creation**. The trial is co
 - Before a quiz check or an assignment submission outside the first chapter, the server answers **402** `{ "reason": "subscription_required" }`. Nothing is evaluated and no Attempt is created.
 - Web shows the paywall in place, with the learner's progress, and emits `paywall_viewed` (ADR-0086).
 - Evidence already recorded is never removed. Mastery, freshness and the characters still show it after a subscription ends.
-- Organizations other than the home one keep their current behaviour.
+- The paywall is on only while the organization has an active plan with an active price (`CatalogAccessQuery.sellsCatalogSubscription`). Until the owner creates one, nothing changes; archiving the plan turns the paywall off again. Organizations that sell nothing keep their current behaviour.
 
 ### 5. Checkout
 

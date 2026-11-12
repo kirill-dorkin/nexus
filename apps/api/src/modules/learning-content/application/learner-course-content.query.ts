@@ -1,6 +1,8 @@
 import type { DatabaseTransaction } from "@platform/database";
 export type LearnerLessonStructure = Readonly<{
   slug: string;
+  /** The chapter of the lesson in this CourseVersion (ADR-0063), null without chapters. */
+  chapter?: string | null;
   activities: readonly Readonly<{
     slug: string;
     /** Stable Activity identity shared by every published version of the same task. */

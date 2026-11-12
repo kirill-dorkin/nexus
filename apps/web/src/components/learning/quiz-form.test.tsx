@@ -210,6 +210,19 @@ describe("QuizForm", () => {
     ).toHaveAttribute("href", `/login?returnTo=${returnTo}&mode=register`);
   });
 
+  it("offers a subscription when the check needs one (402) and keeps the answer unsaved", async () => {
+    api.mockResolvedValueOnce(json(402, { code: "subscription_required" }));
+    renderQuiz();
+    await userEvent.click(screen.getByRole("radio", { name: "Язык разметки" }));
+    await userEvent.click(submitButton());
+
+    expect(await screen.findByText("Дальше — по подписке")).toBeVisible();
+    expect(
+      screen.getByRole("link", { name: "Оформить подписку" })
+    ).toHaveAttribute("href", "/subscription?from=web%2Flesson-1");
+    expect(screen.queryByText(/Результат сохранён/)).toBeNull();
+  });
+
   it("enrolls a signed-in learner in the free course and checks again", async () => {
     api
       .mockResolvedValueOnce(json(403))
