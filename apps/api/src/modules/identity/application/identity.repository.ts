@@ -14,6 +14,12 @@ export abstract class IdentityRepository {
     lock?: boolean
   ): Promise<IdentityUser | null>;
 
+  /** When the account was created (ISO 8601), e.g. for the trial of ADR-0087. */
+  abstract findCreatedAt(
+    transaction: DatabaseTransaction,
+    userId: string
+  ): Promise<string | null>;
+
   abstract findByNormalizedEmail(
     transaction: DatabaseTransaction,
     normalizedEmail: string

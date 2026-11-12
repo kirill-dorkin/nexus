@@ -19,6 +19,7 @@ export * from "./authorization";
 export * from "./authentication";
 export * from "./legal";
 export * from "./commerce";
+export * from "./subscriptions";
 export * from "./public-catalog";
 export * from "./github-integration";
 export * from "./guided-build";
