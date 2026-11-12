@@ -147,7 +147,8 @@ Take the next number after this table and add a row (see `development-workflow.m
 |---|---|
 | ADR-0080 | #170 |
 | ADR-0081 | #171 (superseded, number stays unused) |
-| ADR-0087 | `docs/adr-subscription` (subscription access, Proposed) |
+| ADR-0087 | subscription access (Accepted 2026-11-13) |
+| migration 000056 | `feat/subscriptions-core` (subscriptions, ADR-0087 slice 1) |
 
 ADR-0082–0085 and migrations 000052–000055 are merged. ADR-0086 (product analytics with PostHog) is taken by `feat/posthog-analytics`. The next free numbers are ADR-0087 and migration 000056.
 

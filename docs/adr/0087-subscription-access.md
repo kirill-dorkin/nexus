@@ -1,6 +1,6 @@
 # ADR-0087: Subscription access to the home catalog
 
-- Status: Proposed (waits for the owner: prices, the free part, trial length; provider confirmation from lava.top support)
+- Status: Accepted (owner, 2026-11-13). Prices are data and stay open; lava.top support answers are pending for slice 3
 - Date: 2026-11-12
 - Extends: ADR-0014 (Entitlement), ADR-0044 (Product and immutable Price), ADR-0048 (provider boundary)
 - Related: ADR-0071 (no worker host in production), ADR-0086 (funnel events)
@@ -28,35 +28,30 @@ The chosen provider is **lava.top**: rubles by Russian cards and SBP, US dollars
 
 ## Decision
 
-### 1. A subscription Product targets the organization catalog
+### 1. Subscription plans are their own Commerce aggregate
 
-A Product gains a target kind:
+A subscription plan opens every public Offering of the organization, now and later. It does not fit `CommerceProduct`: a Product targets exactly one Offering, and Paddle checkout and the public catalog depend on that. So subscriptions get their own tables in Commerce, under the same rules as ADR-0044:
 
-- `offering` — the existing kind;
-- `organization_catalog` — every public Offering of the organization, now and later.
+- `commerce.subscription_plans`: slug, name, `active → archived`.
+- `commerce.subscription_plan_prices`: amount in minor units, currency, `billingPeriod`, `active → archived`.
+  - `billingPeriod` is `month`, `days_90` or `year`.
+  - There is one active price per plan, currency and period.
+  - Terms are immutable: a trigger and column grants allow only archiving. Raising the price archives the old price and creates a new one.
 
-A subscription Price has `billingType = recurring` and an immutable `billingPeriod`:
-
-- `month`;
-- `days_90`;
-- `year`.
-
-A Price stays immutable (ADR-0044). Raising the price archives the old Price and creates a new one.
-
-A subscription keeps the Price it started with. This is how an early subscriber keeps the launch price, the «цена основателя». Whether lava.top also keeps the old amount on renewal is one of the questions to support. If it does not, the launch price needs its own lava offer.
+A subscription copies amount, currency and period when it starts, and a trigger checks that they equal an active price. This is how an early subscriber keeps the launch price, the «цена основателя». Whether lava.top also keeps the old amount on renewal is one of the questions to support. If it does not, the launch price needs its own lava offer.
 
 ### 2. Subscription is a Commerce aggregate; access is still an Entitlement
 
-`commerce.subscriptions` is canonical and does not depend on the provider. It holds:
+`commerce.subscriptions` is canonical and does not depend on the provider. Each applied provider payment is a row in `commerce.subscription_payments`, unique per payment key, so a repeated webhook cannot extend the period twice. A subscription holds:
 
 - the user, the organization, the Product and the Price;
-- `status`: `pending → active → (past_due) → cancelled | ended | revoked`;
+- `status`: `pending → active ⇄ past_due → cancelled | revoked`. A cancelled subscription simply runs out; there is no separate ended state;
 - `currentPeriodEnd`;
 - `startedAt`, `cancelledAt`.
 
 Access goes through the existing Entitlement model:
 
-- A subscription-backed Entitlement has scope `organization_catalog` and `expiresAt = currentPeriodEnd + grace`.
+- Access is a `commerce.catalog_entitlements` row: one per learner and organization, source `subscription` or `manual`, `expiresAt = currentPeriodEnd + grace`. A manual grant without expiry, for example for testers, stays without expiry.
 - `grace` is 2 days. lava.top retries a failed renewal after 8 h and 24 h.
 - A renewal extends the same Entitlement (ADR-0014 §3). Expiry needs no background job.
 - **Cancelling** keeps access until `expiresAt`, and nothing more is charged.
@@ -138,20 +133,13 @@ The texts are the owner's decision. The agent drafts them.
 
 - Revenue does not need a Russian legal entity. The cost is lava.top's commission (about 8 %, to be confirmed) and dependence on a Cyprus intermediary. The provider stays behind the Integrations adapter, so switching later to ЮKassa, CloudPayments or Robokassa (with a Russian ИП) changes only the adapter.
 - Public lesson pages stay public, so search traffic and video landings are not hurt. The paywall appears only where progress is recorded.
-- One migration adds:
-  - the Product target kind;
-  - the recurring Price fields;
-  - `commerce.subscriptions`;
-  - the catalog-scoped Entitlement;
-  - the lava mapping and inbox.
-
-  All of it is additive.
+- Migration `000056_subscriptions.sql` adds plans, plan prices, subscriptions, subscription payments, catalog entitlements and `commerce.apply_subscription_event(...)`. The function is `SECURITY DEFINER`; the application role may execute it because no worker is hosted. The lava mapping and inbox come with slice 3. All of it is additive.
 - An unsigned webhook is protected only by a shared secret over HTTPS. The secret is long, random and rotatable; amount and currency are checked against the pinned Price; routing uses only our own mapping.
 - Funnel: `paywall_viewed`, `checkout_started` and `subscription_activated` join the ADR-0086 events.
 
 ## Implementation slices
 
-1. Migration and Commerce: target kind, recurring Price, Subscription, catalog Entitlement, `CatalogAccessQuery` with the trial.
+1. Migration and Commerce: plans and immutable prices (operator endpoints under `commerce.manage`), subscriptions, `apply_subscription_event`, catalog entitlements, `CatalogAccessQuery` with the trial and `GET /v1/me/access/{organizationSlug}`.
 2. Delivery policy: 402 on quiz checks and assignment submissions outside the first chapter; the Web paywall.
 3. Integrations: lava.top adapter (invoice, cancel, inline webhook settlement), `/me/subscription`, checkout pages, legal texts.
 4. Owner: create the lava products and offers, put the secrets in Vercel, set the webhook URL and secret in lava.top, approve the legal texts, buy a subscription once with a real card and cancel it.
