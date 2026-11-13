@@ -82,7 +82,7 @@ The learner is signed in and calls `POST /v1/me/subscriptions/checkout { priceId
 1. Commerce pins the Price and creates a `pending` Subscription in one transaction. Idempotency follows the existing Purchase rules.
 2. Integrations calls `POST /api/v3/invoice` outside the transaction. The call carries:
    - the learner's email, which lava.top requires;
-   - the lava `offerId` for that Price, from deployment configuration;
+   - the lava `offerId` for the plan, period and currency, from deployment configuration;
    - `periodicity`;
    - `clientUtm` from the first visit;
    - return URLs to `/me/subscription`.
@@ -115,7 +115,7 @@ This does not use the lease-fenced processor of ADR-0048. That processor has no 
 
 - `LAVA_API_KEY` — the author's API key, for creating invoices and cancelling.
 - `LAVA_WEBHOOK_SECRET` — the value configured in lava.top for `X-Api-Key`.
-- `LAVA_OFFERS` — a JSON map from Nexus Price id to lava `offerId`.
+- `LAVA_OFFERS` — a JSON map from `plan:period:currency` (for example `full:month:RUB`) to lava `offerId`. Keys do not depend on database ids, so the owner sets the secret first and the plan is created after it: the paywall turns on only when checkout already works.
 
 All three live in Vercel Production only. Without them, checkout answers 503 and the page says that subscriptions are not open yet. Integration tests point `LAVA_API_BASE_URL` at a local fake server; production never sets it.
 

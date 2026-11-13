@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import type { SubscriptionBillingPeriod } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
 
-import { lavaOfferId } from "./lava-config";
+import { lavaOfferId, lavaOfferKey } from "./lava-config";
 import { LavaContractRepository } from "./lava-contract.repository";
 import {
   LavaSubscriptionGateway,
@@ -32,7 +32,7 @@ export class LavaSubscriptionPort {
   /** Outside any transaction: asks lava.top for the payment page of this price. */
   createInvoice(
     input: Readonly<{
-      priceId: string;
+      planSlug: string;
       email: string;
       currency: string;
       billingPeriod: SubscriptionBillingPeriod;
@@ -42,7 +42,9 @@ export class LavaSubscriptionPort {
   ) {
     return this.gateway.createInvoice({
       email: input.email,
-      offerId: lavaOfferId(input.priceId),
+      offerId: lavaOfferId(
+        lavaOfferKey(input.planSlug, input.billingPeriod, input.currency)
+      ),
       currency: input.currency,
       billingPeriod: input.billingPeriod,
       returnUrl: input.returnUrl,

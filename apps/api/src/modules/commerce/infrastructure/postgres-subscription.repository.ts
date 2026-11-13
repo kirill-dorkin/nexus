@@ -259,16 +259,26 @@ export class PostgresSubscriptionRepository extends SubscriptionRepository {
       billing_period: PendingSubscription["billingPeriod"];
       status: string;
       plan_price_id: string;
+      plan_slug: string;
     }>(
-      `SELECT id::text, amount_minor, currency, billing_period, status, plan_price_id::text
-         FROM commerce.subscriptions
-        WHERE organization_id = $1 AND user_id = $2 AND idempotency_key = $3`,
+      `SELECT subscription.id::text, subscription.amount_minor, subscription.currency,
+              subscription.billing_period, subscription.status,
+              subscription.plan_price_id::text, plan.slug AS plan_slug
+         FROM commerce.subscriptions AS subscription
+         JOIN commerce.subscription_plan_prices AS price
+           ON price.organization_id = subscription.organization_id
+          AND price.id = subscription.plan_price_id
+         JOIN commerce.subscription_plans AS plan
+           ON plan.organization_id = price.organization_id AND plan.id = price.plan_id
+        WHERE subscription.organization_id = $1 AND subscription.user_id = $2
+          AND subscription.idempotency_key = $3`,
       [input.organizationId, input.userId, input.idempotencyKey]
     );
     const row = result.rows[0];
     if (row?.plan_price_id !== input.priceId) return null;
     return {
       id: row.id,
+      planSlug: row.plan_slug,
       amountMinor: row.amount_minor,
       currency: row.currency,
       billingPeriod: row.billing_period,

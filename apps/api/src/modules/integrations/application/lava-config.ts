@@ -1,10 +1,20 @@
 import { ServiceUnavailableException } from "@nestjs/common";
 
 /**
- * Deployment configuration (ADR-0087 §8). `LAVA_OFFERS` maps a platform subscription price id to
- * the lava offer id the owner created for it, e.g. `{"<price uuid>":"<lava offer uuid>"}`.
+ * Deployment configuration (ADR-0087 §8). `LAVA_OFFERS` maps `plan:period:currency` to the lava
+ * offer id the owner created for it, e.g. `{"full:month:RUB":"<lava offer uuid>"}`. Keys do not
+ * depend on database ids, so the secret can be set before the plan exists and survives a price
+ * replaced at the same terms.
  */
-export function lavaOfferId(priceId: string): string {
+export function lavaOfferKey(
+  planSlug: string,
+  billingPeriod: string,
+  currency: string
+): string {
+  return `${planSlug}:${billingPeriod}:${currency}`;
+}
+
+export function lavaOfferId(offerKey: string): string {
   const raw = process.env.LAVA_OFFERS?.trim();
   if (!raw)
     throw new ServiceUnavailableException("Subscriptions are not open yet.");
@@ -17,8 +27,8 @@ export function lavaOfferId(priceId: string): string {
   const offerId =
     typeof offers === "object" &&
     offers !== null &&
-    Object.hasOwn(offers, priceId)
-      ? (offers as Record<string, unknown>)[priceId]
+    Object.hasOwn(offers, offerKey)
+      ? (offers as Record<string, unknown>)[offerKey]
       : undefined;
   if (typeof offerId !== "string" || offerId.length === 0)
     throw new ServiceUnavailableException(

@@ -146,7 +146,9 @@ describe("subscription checkout with lava.top", () => {
       payload: { amountMinor: 99000, currency: "RUB", billingPeriod: "month" }
     });
     priceId = price.json<{ id: string }>().id;
-    process.env.LAVA_OFFERS = JSON.stringify({ [priceId]: randomUUID() });
+    process.env.LAVA_OFFERS = JSON.stringify({
+      "full:month:RUB": randomUUID()
+    });
   });
 
   afterAll(async () => {

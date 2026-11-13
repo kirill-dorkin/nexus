@@ -123,7 +123,7 @@ export class SubscriptionCheckoutService {
       });
 
     const invoice = await this.lava.createInvoice({
-      priceId: command.priceId,
+      planSlug: opened.pending.planSlug,
       email: opened.email,
       currency: opened.pending.currency,
       billingPeriod: opened.pending.billingPeriod,

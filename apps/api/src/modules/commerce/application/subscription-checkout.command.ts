@@ -7,6 +7,8 @@ import type { DatabaseTransaction } from "@platform/database";
 
 export type PendingSubscription = Readonly<{
   id: string;
+  /** The plan's slug: with period and currency it names the provider offer. */
+  planSlug: string;
   amountMinor: number;
   currency: string;
   billingPeriod: SubscriptionBillingPeriod;
