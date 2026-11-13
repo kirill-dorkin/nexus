@@ -10,6 +10,8 @@ export function safeLearningReturnTo(value: unknown): string {
     if (isUuid(org) && (course === "new" || isUuid(course))) return value;
   }
   if (value === "/me/learning") return value;
+  // Subscription (ADR-0087): the offers and «Моя подписка».
+  if (value === "/subscription" || value === "/me/subscription") return value;
   if (typeof value !== "string" || value.length > 220) return "/me/learning";
   // Characters (ADR-0074): /characters and /characters/{character}.
   if (value === "/characters") return value;

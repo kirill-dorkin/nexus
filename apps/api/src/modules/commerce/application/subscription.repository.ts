@@ -1,9 +1,13 @@
 import type {
+  OwnSubscription,
+  SubscriptionOffer,
   SubscriptionBillingPeriod,
   SubscriptionPlan,
   SubscriptionPlanPrice
 } from "@platform/contracts";
 import type { DatabaseTransaction } from "@platform/database";
+
+import type { PendingSubscription } from "./subscription-checkout.command";
 
 export type CatalogEntitlementState = Readonly<{
   grantSource: "subscription" | "manual";
@@ -65,4 +69,44 @@ export abstract class SubscriptionRepository {
     transaction: DatabaseTransaction,
     organizationId: string
   ): Promise<boolean>;
+
+  abstract publicOffers(
+    transaction: DatabaseTransaction,
+    organizationSlug: string
+  ): Promise<SubscriptionOffer[]>;
+
+  abstract activeOffers(
+    transaction: DatabaseTransaction,
+    organizationId: string
+  ): Promise<SubscriptionOffer[]>;
+
+  /** Inserts or returns the pending subscription for this key; null if the price is not active. */
+  abstract openPending(
+    transaction: DatabaseTransaction,
+    input: Readonly<{
+      organizationId: string;
+      userId: string;
+      priceId: string;
+      idempotencyKey: string;
+      termsVersion: string;
+    }>
+  ): Promise<(PendingSubscription & { status: string }) | null>;
+
+  abstract hasChargingSubscription(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userId: string
+  ): Promise<boolean>;
+
+  abstract ownSubscription(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    userId: string
+  ): Promise<OwnSubscription["subscription"]>;
+
+  abstract applyCancellation(
+    transaction: DatabaseTransaction,
+    organizationId: string,
+    subscriptionId: string
+  ): Promise<void>;
 }

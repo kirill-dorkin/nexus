@@ -20,6 +20,7 @@ import { PostgresOwnedPurchaseOrganizationQuery } from "./infrastructure/postgre
 import { PostgresPublicCommerceCatalogQuery } from "./infrastructure/postgres-public-commerce-catalog.query";
 import { PurchaserPurchaseController } from "./purchaser-purchase.controller";
 import { CatalogAccessQuery } from "./application/catalog-access.query";
+import { SubscriptionCheckoutCommand } from "./application/subscription-checkout.command";
 import { SubscriptionRepository } from "./application/subscription.repository";
 import { SubscriptionApplicationService } from "./application/subscription.service";
 import { PostgresSubscriptionRepository } from "./infrastructure/postgres-subscription.repository";
@@ -46,6 +47,10 @@ import { SubscriptionPlanController } from "./subscription-plan.controller";
     SubscriptionApplicationService,
     {
       provide: CatalogAccessQuery,
+      useExisting: SubscriptionApplicationService
+    },
+    {
+      provide: SubscriptionCheckoutCommand,
       useExisting: SubscriptionApplicationService
     },
     {
@@ -80,6 +85,7 @@ import { SubscriptionPlanController } from "./subscription-plan.controller";
   exports: [
     EntitlementQuery,
     CatalogAccessQuery,
+    SubscriptionCheckoutCommand,
     PurchaseCommand,
     PublicCommerceCatalogQuery,
     CheckoutCommerceOfferQuery

@@ -74,3 +74,69 @@ export type CreateSubscriptionPlanPriceRequest = z.infer<
   typeof createSubscriptionPlanPriceRequestSchema
 >;
 export type CatalogAccess = z.infer<typeof catalogAccessSchema>;
+
+export { SUBSCRIPTION_TERMS_VERSION } from "./subscription-terms";
+import { SUBSCRIPTION_TERMS_VERSION } from "./subscription-terms";
+
+/** One price a learner can subscribe to, as the subscription page shows it. */
+export const subscriptionOfferSchema = z.object({
+  priceId: uuidSchema,
+  planSlug: resourceSlugSchema,
+  planName: nameSchema,
+  amountMinor: z.number().int().positive(),
+  currency: currencySchema,
+  billingPeriod: subscriptionBillingPeriodSchema
+});
+
+export const publicSubscriptionOffersSchema = z.object({
+  offers: z.array(subscriptionOfferSchema)
+});
+
+export const ownSubscriptionSchema = z.object({
+  subscription: z
+    .object({
+      id: uuidSchema,
+      status: subscriptionStatusSchema,
+      amountMinor: z.number().int().positive(),
+      currency: currencySchema,
+      billingPeriod: subscriptionBillingPeriodSchema,
+      currentPeriodEnd: z.iso.datetime().nullable(),
+      cancelledAt: z.iso.datetime().nullable()
+    })
+    .nullable(),
+  access: catalogAccessSchema
+});
+
+const utmValueSchema = z.string().trim().min(1).max(100);
+
+export const startSubscriptionCheckoutRequestSchema = z
+  .object({
+    priceId: uuidSchema,
+    idempotencyKey: uuidSchema,
+    /** The learner ticked «Согласен на автоматическое продление». */
+    acceptRenewalTerms: z.literal(true),
+    termsVersion: z.literal(SUBSCRIPTION_TERMS_VERSION),
+    utm: z
+      .object({
+        source: utmValueSchema.optional(),
+        medium: utmValueSchema.optional(),
+        campaign: utmValueSchema.optional()
+      })
+      .strict()
+      .optional()
+  })
+  .strict();
+
+export const subscriptionCheckoutSchema = z.object({
+  paymentUrl: z.url({ protocol: /^https$/ })
+});
+
+export type SubscriptionOffer = z.infer<typeof subscriptionOfferSchema>;
+export type PublicSubscriptionOffers = z.infer<
+  typeof publicSubscriptionOffersSchema
+>;
+export type OwnSubscription = z.infer<typeof ownSubscriptionSchema>;
+export type StartSubscriptionCheckoutRequest = z.infer<
+  typeof startSubscriptionCheckoutRequestSchema
+>;
+export type SubscriptionCheckout = z.infer<typeof subscriptionCheckoutSchema>;

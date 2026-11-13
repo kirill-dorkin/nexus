@@ -16,7 +16,7 @@ What exists today does not cover this:
 - **Entitlement is checked only when an Enrollment is created** (ADR-0014 §4). All 23 home courses are free (`accessMode = membership`), and their practice and quiz checks are open to any signed-in learner.
 - **No worker runs in production** (ADR-0071). Webhook settlement that waits for the lease-fenced Paddle processor would never run there.
 
-The chosen provider is **lava.top**: rubles by Russian cards and SBP, US dollars and euros by foreign cards and PayPal, subscriptions billed monthly, every 90 or 180 days, or yearly, payouts abroad. Its API (`gate.lava.top`, OpenAPI 3) works as follows:
+The chosen provider is **lava.top** (support confirmed on 2026-11-13: renewals are charged automatically from Russian bank cards, with retries after 8 h and 24 h; SBP pays once and cannot start a subscription; commission 8 % per payment; an individual from Kyrgyzstan can be the author, with payouts to a Kyrgyz Visa card): rubles by Russian cards and SBP, US dollars and euros by foreign cards and PayPal, subscriptions billed monthly, every 90 or 180 days, or yearly, payouts abroad. Its API (`gate.lava.top`, OpenAPI 3) works as follows:
 
 - `POST /api/v3/invoice` (`email`, `offerId`, `currency`, `periodicity`, `clientUtm`, return URLs) returns a contract `id` and a `paymentUrl`.
 - Webhooks are protected by HTTP Basic or an `X-Api-Key` header that the author configures. The payload is not signed.
@@ -82,7 +82,7 @@ The learner is signed in and calls `POST /v1/me/subscriptions/checkout { priceId
 1. Commerce pins the Price and creates a `pending` Subscription in one transaction. Idempotency follows the existing Purchase rules.
 2. Integrations calls `POST /api/v3/invoice` outside the transaction. The call carries:
    - the learner's email, which lava.top requires;
-   - the lava `offerId` for that Price, from deployment configuration;
+   - the lava `offerId` for the plan, period and currency, from deployment configuration;
    - `periodicity`;
    - `clientUtm` from the first visit;
    - return URLs to `/me/subscription`.
@@ -115,9 +115,11 @@ This does not use the lease-fenced processor of ADR-0048. That processor has no 
 
 - `LAVA_API_KEY` — the author's API key, for creating invoices and cancelling.
 - `LAVA_WEBHOOK_SECRET` — the value configured in lava.top for `X-Api-Key`.
-- `LAVA_OFFERS` — a JSON map from Nexus Price id to lava `offerId`.
+- `LAVA_OFFERS` — a JSON map from `plan:period:currency` (for example `full:month:RUB`) to lava `offerId`. Keys do not depend on database ids, so the owner sets the secret first and the plan is created after it: the paywall turns on only when checkout already works.
 
-All three live in Vercel Production only. Without them, checkout answers 503 and the paywall says that subscriptions are not open yet. Previews and CI use a fake adapter (ADR-0052 test seams).
+All three live in Vercel Production only. Without them, checkout answers 503 and the page says that subscriptions are not open yet. Integration tests point `LAVA_API_BASE_URL` at a local fake server; production never sets it.
+
+Refund and chargeback webhooks carry no contract id, only the buyer's email. They are stored with outcome `needs_review` and change nothing; the owner refunds and revokes by hand until a reversal flow is worth building.
 
 ### 9. Legal
 
